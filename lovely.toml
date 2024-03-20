@@ -1,0 +1,98 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Display Exotic rarity 
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')})[card.config.center.rarity] end"
+position = "at"
+payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), 'Exotic'})[card.config.center.rarity] end"
+match_indent = true
+overwrite = true
+
+
+# Add Exotic color
+[[patches]]
+[patches.pattern]
+target = "globals.lua"
+pattern = 'HEX("b26cbb")'
+position = "at"
+payload = '''
+HEX("b26cbb"),
+HEX("708b91")
+'''
+match_indent = true
+overwrite = true
+
+# Add New Cards
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '--All Consumeables'
+position = "before"
+payload = '''
+j_iterum=           {order = 151,  unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true, rarity = 5, cost = 50, name = "Iterum", pos = {x=5,y=3}, atlas = "Cryptid", set = "Joker", effect = "", config = {extra = 1.5}},
+c_gateway=        {order = 19,    discovered = true, cost = 4, consumeable = true, name = "Gateway", pos = {x=6,y=3}, atlas = "Cryptid", set = "Spectral", config = {}},
+'''
+match_indent = true
+overwrite = false
+
+# Add New Locale
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'init_localization()'
+position = "before"
+payload = '''
+self.localization.descriptions.Joker.j_iterum = {
+    name = "Iterum",
+    text = {
+        "Retrigger all cards played,",
+        "each played card gives",
+        "{X:mult,C:white} X#1# {} Mult when scored"
+    }
+}
+self.localization.descriptions.Spectral.c_gateway = {
+    name = "Gateway",
+    text = {
+        "Create an {C:legendary,E:1}Exotic{} Joker,",
+        "destroy all other jokers",
+    }
+}
+'''
+match_indent = true
+overwrite = false
+
+# Add Exotic rarity poool
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '{},{},{},{}'
+position = "at"
+payload = '{},{},{},{},{}'
+match_indent = true
+overwrite = true
+
+# Import Sprites
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '{name = "Joker", path = "resources/textures/"..self.SETTINGS.GRAPHICS.texture_scaling.."x/Jokers.png",px=71,py=95},'
+position = "after"
+payload = '''
+{name = "Cryptid", path = "Mods/Cryptid/assets/jokers.png",px=71,py=95},
+'''
+match_indent = true
+overwrite = false
+
+# Inject main code
+[[patches]]
+[patches.copy]
+target = "main.lua"
+position = "append"
+sources = [
+    "Cryptid.lua"
+]
