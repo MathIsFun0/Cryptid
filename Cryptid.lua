@@ -38,7 +38,7 @@ function Card.calculate_joker(self, context)
                                 if self.ability.name == 'Iterum' then
                                         return {
                                             message = localize('k_again_ex'),
-                                            repetitions = 1,
+                                            repetitions = self.ability.extra.repetitions,
                                             card = self
                                         }
                                 end
@@ -47,7 +47,7 @@ function Card.calculate_joker(self, context)
                         if context.cardarea == G.play then
                                 if self.ability.name == 'Iterum' then
                                         return {
-                                            x_mult = self.ability.extra,
+                                            x_mult = self.ability.extra.Xmult,
                                             colour = G.C.RED,
                                             card = self
                                         }
@@ -75,7 +75,7 @@ function Card.generate_UIBox_ability_table(self)
 
       if self.ability.name == 'Iterum' then
         customJoker = true
-        loc_vars = {self.ability.extra}
+        loc_vars = {self.ability.extra.Xmult}
       end
 
       if customJoker then

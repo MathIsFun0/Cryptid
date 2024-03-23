@@ -34,7 +34,7 @@ target = "game.lua"
 pattern = '--All Consumeables'
 position = "before"
 payload = '''
-j_iterum=           {order = 151,  unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true, rarity = 5, cost = 50, name = "Iterum", pos = {x=5,y=3}, atlas = "Cryptid", set = "Joker", effect = "", config = {extra = 1.5}},
+j_iterum=           {order = 151,  unlocked = true, discovered = true, blueprint_compat = true, eternal_compat = true, rarity = 5, cost = 50, name = "Iterum", pos = {x=5,y=3}, atlas = "Cryptid", set = "Joker", effect = "", config = {extra = {Xmult = 1.5, repetitions = 1}}},
 c_gateway=        {order = 19,    discovered = true, cost = 4, consumeable = true, name = "Gateway", pos = {x=6,y=3}, atlas = "Cryptid", set = "Spectral", config = {}},
 '''
 match_indent = true
