@@ -1,7 +1,9 @@
+local universum_extra = 2
+
 local universum = SMODS.Joker:new(
 	"Universum", --name
 	"cry_universum", --slug
-	{extra = 2}, --config
+	{extra = universum_extra}, --config
 	{x = 0, y = 0}, --spritePos
 	{
         name = 'Universum',
@@ -27,8 +29,8 @@ function level_up_hand(card, hand, instant, amount)
     if next(find_joker("Universum")) then
         amount = amount or 1
         G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
-        G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * math.pow(5, amount), 1)
-        G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips * math.pow(5, amount), 0)
+        G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * math.pow(universum_extra, amount), 1)
+        G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips * math.pow(universum_extra, amount), 0)
     else
         amount = amount or 1
         G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
@@ -63,7 +65,7 @@ end
 
 local uht = update_hand_text
 function update_hand_text(config, vals)
-    if next(find_joker("Universum")) and ((vals.chips and type(vals.chips) == 'number' and vals.chips > 0) or (vals.mult and type(vals.mult) == 'number' and vals.mult > 0)) then
+    if next(find_joker("Universum")) then
         G.E_MANAGER:add_event(Event({--This is the Hand name text for the poker hand
         trigger = 'before',
         blockable = not config.immediate,
@@ -71,7 +73,8 @@ function update_hand_text(config, vals)
         func = function()
             local col = G.C.GREEN
             if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
-                local delta = 'X'..(vals.chips / G.GAME.current_round.current_hand.chips)
+                local delta = vals.chips
+                if type(vals.chips) == 'number' and type(G.GAME.current_round.current_hand.chips) == 'number' then delta = 'X'..(vals.chips / G.GAME.current_round.current_hand.chips) end
                 G.GAME.current_round.current_hand.chips = vals.chips
                 G.hand_text_area.chips:update(0)
                 if vals.StatusText then 
@@ -88,7 +91,8 @@ function update_hand_text(config, vals)
                 end
             end
             if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
-                local delta = 'X'..(vals.mult / G.GAME.current_round.current_hand.mult)
+                local delta = vals.mult
+                if type(vals.mult) == 'number' and type(G.GAME.current_round.current_hand.mult) == 'number' then delta = 'X'..(vals.mult / G.GAME.current_round.current_hand.mult) end
                 G.GAME.current_round.current_hand.mult = vals.mult
                 G.hand_text_area.mult:update(0)
                 if vals.StatusText then 
