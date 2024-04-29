@@ -18,7 +18,7 @@ local iterum = SMODS.Joker:new(
 	true, --eternal_compat
 	nil, --effect
 	'j_cry_iterum', --atlas
-	nil --soul_pos
+	{x = 1, y = 0, extra = {x = 2, y = 0}} --soul_pos
 )
 function iterum.loc_def(center)
 	if center.ability.name == 'Iterum' then
@@ -46,6 +46,6 @@ iterum.calculate = function(self, context)
     end
 end
 
-local iterum_sprite = SMODS.Sprite:new("j_cry_iterum", SMODS.findModByID("Cryptid").path, "j_cry_iterum.png", 69, 93, "asset_atli")
+local iterum_sprite = SMODS.Sprite:new("j_cry_iterum", SMODS.findModByID("Cryptid").path, "j_cry_iterum.png", 71, 95, "asset_atli")
 
 return {iterum_sprite, iterum}
