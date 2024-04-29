@@ -1,0 +1,40 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Gateway spawn logic
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then"
+position = "after"
+payload = '''
+if (_type == 'Spectral') and
+not (G.GAME.used_jokers['c_cry_gateway'] and not next(find_joker("Showman")))  then 
+    if pseudorandom('cry_gateway_'.._type..G.GAME.round_resets.ante) > 0.997 then
+        forced_key = 'c_cry_gateway'
+    end
+end
+'''
+match_indent = true
+overwrite = false
+
+# Exotic spawn logic
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "rarity = (_legendary and 4) or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1"
+position = "at"
+payload = "rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1"
+match_indent = true
+overwrite = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if v.name == 'Black Hole' or v.name == 'The Soul' then"
+position = "at"
+payload = "if v.name == 'Black Hole' or v.name == 'The Soul' or v.name == 'Gateway' then"
+match_indent = true
+overwrite = true
