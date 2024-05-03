@@ -19,7 +19,7 @@ local universum = SMODS.Joker:new(
 	true, --eternal_compat
 	nil, --effect
 	'j_cry_universum', --atlas
-	{x = 2, y = 0, extra = {x = 1, y = 0}} --soul_pos
+	{x = 1, y = 0, extra = {x = 2, y = 0}} --soul_pos
 )
 
 local uht = update_hand_text
