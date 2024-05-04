@@ -9,7 +9,7 @@ priority = 0
 target = "functions/UI_definitions.lua"
 pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')})[card.config.center.rarity] end"
 position = "at"
-payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['Exotic'] = localize('k_cry_exotic')})[card.config.center.rarity] end"
+payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['Exotic'] = 'Exotic'})[card.config.center.rarity] end"
 match_indent = true
 overwrite = true
 
