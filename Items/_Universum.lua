@@ -106,9 +106,7 @@ end
 
 
 function universum.loc_def(center)
-	if center.ability.name == 'Universum' then
-		return {center.ability.extra}
-	end
+	return {center.ability.extra}
 end
 
 local universum_sprite = SMODS.Sprite:new("j_cry_universum", SMODS.findModByID("Cryptid").path, "j_cry_universum.png", 71, 95, "asset_atli")

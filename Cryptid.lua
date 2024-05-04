@@ -32,6 +32,16 @@ function SMODS.INIT.Cryptid()
     local set_spritesref = Card.set_sprites
     function Card:set_sprites(_center, _front)
         set_spritesref(self, _center, _front);
+        if _center and _center.name == 'Gateway' then
+            self.children.floating_sprite = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], {x=2,y=0})
+            self.children.floating_sprite.role.draw_major = self
+            self.children.floating_sprite.states.hover.can = false
+            self.children.floating_sprite.states.click.can = false
+            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], {x=1,y=0})
+            self.children.floating_sprite2.role.draw_major = self
+            self.children.floating_sprite2.states.hover.can = false
+            self.children.floating_sprite2.states.click.can = false
+        end
         if _center and _center.soul_pos and _center.soul_pos.extra then
             self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.soul_pos.extra)
             self.children.floating_sprite2.role.draw_major = self

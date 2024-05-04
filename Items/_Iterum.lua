@@ -21,9 +21,7 @@ local iterum = SMODS.Joker:new(
 	{x = 1, y = 0, extra = {x = 2, y = 0}} --soul_pos
 )
 function iterum.loc_def(center)
-	if center.ability.name == 'Iterum' then
-		return {center.ability.extra.x_mult,center.ability.extra.repetitions}
-	end
+	return {center.ability.extra.x_mult,center.ability.extra.repetitions}
 end
 
 iterum.calculate = function(self, context)

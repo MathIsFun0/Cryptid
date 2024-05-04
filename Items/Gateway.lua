@@ -2,7 +2,7 @@ local gateway = SMODS.Spectral:new(
     "Gateway", --name
     "cry_gateway", --slug
     {}, --config
-    {x=5,y=5}, --pos
+    {x=0,y=0}, --pos
     {
         name = 'Gateway',
         text = { "Create a random",
@@ -11,8 +11,8 @@ local gateway = SMODS.Spectral:new(
     }, --loc_txt
     4, --cost
     nil, --consumeable
-    nil --discovered
-    --atlas
+    nil, --discovered
+    "c_cry_gateway"--atlas
 )
 
 function gateway.can_use(card)
@@ -40,5 +40,7 @@ function gateway.use(card, area, copier)
         return true end }))
     delay(0.6)
 end
+local gateway_sprite = SMODS.Sprite:new("c_cry_gateway", SMODS.findModByID("Cryptid").path, "c_cry_gateway.png", 71, 95, "asset_atli")
 
-return {gateway}
+
+return {gateway_sprite, gateway}
