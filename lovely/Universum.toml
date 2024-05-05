@@ -31,8 +31,8 @@ payload = '''
 G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount, 0)
 else
     G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
-    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * math.pow(SMODS.Jokers.j_cry_universum.config.extra, amount), 1)
-    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips * math.pow(SMODS.Jokers.j_cry_universum.config.extra, amount), 0)
+    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * math.pow(G.P_CENTERS["j_cry_universum"].config.extra, amount), 1)
+    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips * math.pow(G.P_CENTERS["j_cry_universum"].config.extra, amount), 0)
 end
 '''
 match_indent = true

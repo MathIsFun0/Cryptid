@@ -1,26 +1,23 @@
-local potofjokes = SMODS.Joker:new(
-	"Pot of Jokes", --name
-	"cry_pot_of_jokes", --slug
-	{extra = {h_size = 1, h_mod = 1}}, --config
-	{x = 0, y = 0}, --spritePos
-	{
+local potofjokes = SMODS.Joker({
+	name = "Pot of Jokes",
+	key = "pot_of_jokes",
+	config = {extra = {h_size = -2, h_mod = 1}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
         name = 'Pot of Jokes',
         text = {
-            "{C:attention}+#1#{} hand size,",
+            "{C:attention}#1#{} hand size,",
             "increases by",
             "{C:blue}#2#{} every round"}
     },
-	3, --rarity
-	10, --cost
-	true, --unlocked
-	true, --discovered
-	false, --blueprint_compat
-	true, --eternal_compat
-	nil, --effect
-	'j_cry_pot_of_jokes' --atlas
-)
+	rarity = 3,
+	cost = 10,
+    discovered = true,
+	blueprint_compat = true,
+	atlas = 'pot_of_jokes'
+})
 function potofjokes.loc_def(center)
-	return {center.ability.extra.h_size,center.ability.extra.h_mod}
+	return {center.ability.extra.h_size<0 and center.ability.extra.h_size or "+"..center.ability.extra.h_size,center.ability.extra.h_mod}
 end
 
 local c_atd = Card.add_to_deck
@@ -49,5 +46,11 @@ potofjokes.calculate = function(self, context)
     end
 end
 
-local potofjokes_sprite = SMODS.Sprite:new("j_cry_pot_of_jokes", SMODS.findModByID("Cryptid").path, "j_cry_pot_of_jokes.png", 71, 95, "asset_atli")
+local potofjokes_sprite = SMODS.Sprite({
+    key = "pot_of_jokes",
+    atlas = "asset_atlas",
+    path = "j_cry_pot_of_jokes.png",
+    px = 71,
+    py = 95
+})
 return {potofjokes_sprite, potofjokes}
