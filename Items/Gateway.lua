@@ -1,19 +1,17 @@
-local gateway = SMODS.Spectral:new(
-    "Gateway", --name
-    "cry_gateway", --slug
-    {}, --config
-    {x=0,y=0}, --pos
-    {
+local gateway = SMODS.Consumable({
+    set = "Spectral",
+    name = "Gateway",
+    key = "gateway",
+    pos = {x=0,y=0},
+    loc_txt = {
         name = 'Gateway',
         text = { "Create a random",
         "{C:exotic}Exotic{C:attention} Joker{}, destroy",
         'all other Jokers' }
-    }, --loc_txt
-    4, --cost
-    nil, --consumeable
-    nil, --discovered
-    "c_cry_gateway"--atlas
-)
+    },
+    cost = 4,
+    atlas = "gateway"
+})
 
 function gateway.can_use(card)
     return true
@@ -40,7 +38,12 @@ function gateway.use(card, area, copier)
         return true end }))
     delay(0.6)
 end
-local gateway_sprite = SMODS.Sprite:new("c_cry_gateway", SMODS.findModByID("Cryptid").path, "c_cry_gateway.png", 71, 95, "asset_atli")
-
+local gateway_sprite = SMODS.Sprite({
+    key = "gateway",
+    atlas = "asset_atlas",
+    path = "c_cry_gateway.png",
+    px = 71,
+    py = 95
+})
 
 return {gateway_sprite, gateway}

@@ -41,7 +41,6 @@ iterum.calculate = function(self, context)
     end
 end
 
--- doesn't work
 local iterum_sprite = SMODS.Sprite({
     key = "iterum",
     atlas = "asset_atlas",

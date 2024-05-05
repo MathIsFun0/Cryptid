@@ -1,9 +1,9 @@
-local universum = SMODS.Joker:new(
-	"Universum", --name
-	"cry_universum", --slug
-	{extra = 2}, --config
-	{x = 0, y = 0}, --spritePos
-	{
+local universum = SMODS.Joker({
+	name = "Universum",
+	key = "universum",
+	config = {extra = 2},
+	pos = {x = 0, y = 0},
+	loc_txt = {
         name = 'Universum',
         text = {
         "{C:planet}Planet{} cards give",
@@ -11,16 +11,12 @@ local universum = SMODS.Joker:new(
         "for their specified",
         "{C:attention}poker hand{} when used"}
     },
-	"Exotic", --rarity
-	50, --cost
-	true, --unlocked
-	true, --discovered
-	false, --blueprint_compat
-	true, --eternal_compat
-	nil, --effect
-	'j_cry_universum', --atlas
-	{x = 1, y = 0, extra = {x = 2, y = 0}} --soul_pos
-)
+	rarity = "Exotic",
+	cost = 50,
+	discovered = true,
+	atlas = "universum",
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}}
+})
 
 local uht = update_hand_text
 function update_hand_text(config, vals)
@@ -109,6 +105,11 @@ function universum.loc_def(center)
 	return {center.ability.extra}
 end
 
-local universum_sprite = SMODS.Sprite:new("j_cry_universum", SMODS.findModByID("Cryptid").path, "j_cry_universum.png", 71, 95, "asset_atli")
-
+local universum_sprite = SMODS.Sprite({
+    key = "universum",
+    atlas = "asset_atlas",
+    path = "j_cry_universum.png",
+    px = 71,
+    py = 95
+})
 return {universum_sprite, universum}
