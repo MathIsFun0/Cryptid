@@ -12,7 +12,8 @@ def upscale_pixel_art(input_image_path, output_image_path):
     resized_image.save(output_image_path)
 
 # Example usage
-_id = "gateway"
-input_image_path = "c_cry_"+_id+".png"
-output_image_path = "../2x/c_cry_"+_id+".png"
+_id = "dropshot"
+_type = "j"
+input_image_path = _type+"_cry_"+_id+".png"
+output_image_path = "../2x/"+_type+"_cry_"+_id+".png"
 upscale_pixel_art(input_image_path, output_image_path)
