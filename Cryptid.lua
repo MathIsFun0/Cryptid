@@ -5,6 +5,7 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
+--- ICON_ATLAS: icon
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -56,5 +57,13 @@ for _, file in ipairs(files) do
         item:register()
     end
 end
+
+SMODS.Sprite({
+    key = "icon",
+    atlas = "asset_atlas",
+    path = "cry_icon.png",
+    px = 32,
+    py = 32
+}):register()
 ----------------------------------------------
 ------------MOD CODE END----------------------
