@@ -2,11 +2,20 @@ local testStake = SMODS.Stake({
 	name = "Test Stake",
 	key = "test",
 	pos = {x = 4, y = 1},
-    applied_stakes = {"blue", "blue", "blue", "cry_test2"},
+    applied_stakes = {"blue", "cry_test2"},
 	loc_txt = {
         name = 'Test Stake',
         text = {
         "Does nothing? (Test Stake 1)"
+        }
+    },
+    sticker_pos = {x = 0, y = 0},
+    sticker_loc_txt = {
+        name = 'Test Sticker',
+        text = {
+            "Used this Joker",
+            "to win on {C:attention}Test",
+            "{C:attention}Stake{} difficulty"
         }
     },
     color = G.C.EDITION,

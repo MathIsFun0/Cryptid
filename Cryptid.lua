@@ -8,7 +8,6 @@
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
-NFS.load(SMODS.current_mod.path.."StakeAPI.lua")()
 _RELEASE_MODE = false
 
 -- Custom Rarity setup (based on Relic-Jokers)
