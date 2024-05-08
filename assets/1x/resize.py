@@ -1,19 +1,25 @@
+import sys
 from PIL import Image
+import os
+import time
 
-def upscale_pixel_art(input_image_path, output_image_path):
-    # Open the image
-    image = Image.open(input_image_path)
-
+def upscale_pixel_art(input_image, output_directory, input_image_path):
     # Double the size
-    new_size = (image.width * 2, image.height * 2)
-    resized_image = image.resize(new_size, Image.NEAREST)  # NEAREST resampling preserves pixelation
+    new_size = (input_image.width * 2, input_image.height * 2)
+    resized_image = input_image.resize(new_size, Image.NEAREST)  # NEAREST resampling preserves pixelation
 
     # Save the resized image
+    filename = os.path.basename(input_image_path)
+    output_image_path = os.path.join(output_directory, filename)
     resized_image.save(output_image_path)
 
-# Example usage
-_id = "dropshot"
-_type = "j"
-input_image_path = _type+"_cry_"+_id+".png"
-output_image_path = "../2x/"+_type+"_cry_"+_id+".png"
-upscale_pixel_art(input_image_path, output_image_path)
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: py resize.py <input_image>")
+        sys.exit(1)
+
+    input_image_path = sys.argv[1]
+    input_image = Image.open(input_image_path)
+
+    output_directory = "../2x/"
+    upscale_pixel_art(input_image, output_directory, input_image_path)
