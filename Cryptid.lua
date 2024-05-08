@@ -8,13 +8,16 @@
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
-
 _RELEASE_MODE = false
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
 G.C.RARITY["Exotic"] = HEX("708b91");
-G.P_JOKER_RARITY_POOLS["Exotic"] = {}
+local ip = SMODS.insert_pool
+function SMODS.insert_pool(pool, center, replace)
+    if pool == nil then pool = {} end
+    ip(pool, center, replace)
+end
 local get_badge_colourref = get_badge_colour
 function get_badge_colour(key)
     local fromRef = get_badge_colourref(key)
