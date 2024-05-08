@@ -1,0 +1,14 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# New perishable texture
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "set_profile_progress()"
+position = "before"
+payload = 'G.shared_sticker_perishable = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["sticker"], {x = 4,y = 4})'
+match_indent = true
+overwrite = false
