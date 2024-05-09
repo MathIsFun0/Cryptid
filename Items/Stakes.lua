@@ -163,6 +163,193 @@ function Card:set_eternal(_eternal)
         self.ability.eternal = _eternal
     end
 end
+-- Disallow use of Debuffed Perishable consumables
+local cuc = Card.can_use_consumeable
+function Card:can_use_consumeable(any_state, skip_check)
+    if self.ability.perishable and self.ability.perish_tally <= 0 then 
+        return false
+    end
+    return cuc(self, any_stake, skip_check)
+end
+-- Remove a slot when using Eternal consumables
+local uc = Card.use_consumeable
+function Card:use_consumeable(area, copier)
+    if self.ability.eternal and area == G.consumeables then 
+        G.E_MANAGER:add_event(Event({func = function()
+            G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+            return true end }))
+    end
+    uc(self, area, copier)
+end
+-- Overriding Steamodded's registering of Incantation/Familiar/Grim
+local function random_destroy(used_tarot)
+    local destroyed_cards = {}
+    local temp_hand = {}
+    local hasHand = false
+    for k, v in ipairs(G.hand.cards) do 
+        if not v.ability.eternal then
+            temp_hand[#temp_hand+1] = v
+            hasHand = true
+        end
+    end
+    if hasHand then destroyed_cards[#destroyed_cards + 1] = pseudorandom_element(temp_hand, pseudoseed('random_destroy')) end
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            used_tarot:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.1,
+        func = function()
+            for i = #destroyed_cards, 1, -1 do
+                local card = destroyed_cards[i]
+                if card.ability.name == 'Glass Card' then
+                    card:shatter()
+                else
+                    card:start_dissolve(nil, i ~= #destroyed_cards)
+                end
+            end
+            return true
+        end
+    }))
+    return destroyed_cards
+end
+SMODS.Consumable:take_ownership('grim', {
+    use = function(self, area, copier)
+        local used_tarot = copier or self
+        local destroyed_cards = random_destroy(used_tarot)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.7,
+            func = function()
+                local cards = {}
+                for i = 1, self.ability.extra do
+                    cards[i] = true
+                    local suit_list = {}
+                    for i = #SMODS.Suit.obj_buffer, 1, -1 do
+                        suit_list[#suit_list + 1] = SMODS.Suit.obj_buffer[i]
+                    end
+                    local _suit, _rank =
+                        SMODS.Suits[pseudorandom_element(suit_list, pseudoseed('grim_create'))].card_key, 'A'
+                    local cen_pool = {}
+                    for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+                        if v.key ~= 'm_stone' then
+                            cen_pool[#cen_pool + 1] = v
+                        end
+                    end
+                    create_playing_card({
+                        front = G.P_CARDS[_suit .. '_' .. _rank],
+                        center = pseudorandom_element(cen_pool, pseudoseed('spe_card'))
+                    }, G.hand, nil, i ~= 1, { G.C.SECONDARY_SET.Spectral })
+                end
+                playing_card_joker_effects(cards)
+                return true
+            end
+        }))
+        delay(0.3)
+        for i = 1, #G.jokers.cards do
+            G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
+        end
+    end,
+    loc_def = 0,
+}):register()
+SMODS.Consumable:take_ownership('familiar', {
+    use = function(self, area, copier)
+        local used_tarot = copier or self
+        local destroyed_cards = random_destroy(used_tarot)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.7,
+            func = function()
+                local cards = {}
+                for i = 1, self.ability.extra do
+                    cards[i] = true
+                    local suit_list = {}
+                    for i = #SMODS.Suit.obj_buffer, 1, -1 do
+                        suit_list[#suit_list + 1] = SMODS.Suit.obj_buffer[i]
+                    end
+                    local faces = {}
+                    for _, v in ipairs(SMODS.Rank.obj_buffer) do
+                        local r = SMODS.Ranks[v]
+                        if r.face then table.insert(faces, r.card_key) end
+                    end
+                    local _suit, _rank =
+                        SMODS.Suits[pseudorandom_element(suit_list, pseudoseed('familiar_create'))].card_key,
+                        pseudorandom_element(faces, pseudoseed('familiar_create'))
+                    local cen_pool = {}
+                    for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+                        if v.key ~= 'm_stone' then
+                            cen_pool[#cen_pool + 1] = v
+                        end
+                    end
+                    create_playing_card({
+                        front = G.P_CARDS[_suit .. '_' .. _rank],
+                        center = pseudorandom_element(cen_pool, pseudoseed('spe_card'))
+                    }, G.hand, nil, i ~= 1, { G.C.SECONDARY_SET.Spectral })
+                end
+                playing_card_joker_effects(cards)
+                return true
+            end
+        }))
+        delay(0.3)
+        for i = 1, #G.jokers.cards do
+            G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
+        end
+    end,
+    loc_def = 0,
+}):register()
+SMODS.Consumable:take_ownership('incantation', {
+    use = function(self, area, copier)
+        local used_tarot = copier or self
+        local destroyed_cards = random_destroy(used_tarot)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.7,
+            func = function()
+                local cards = {}
+                for i = 1, self.ability.extra do
+                    cards[i] = true
+                    local suit_list = {}
+                    for i = #SMODS.Suit.obj_buffer, 1, -1 do
+                        suit_list[#suit_list + 1] = SMODS.Suit.obj_buffer[i]
+                    end
+                    local numbers = {}
+                    for _RELEASE_MODE, v in ipairs(SMODS.Rank.obj_buffer) do
+                        local r = SMODS.Ranks[v]
+                        if v ~= 'Ace' and not r.face then table.insert(numbers, r.card_key) end
+                    end
+                    local _suit, _rank =
+                        SMODS.Suits[pseudorandom_element(suit_list, pseudoseed('incantation_create'))].card_key,
+                        pseudorandom_element(numbers, pseudoseed('incantation_create'))
+                    local cen_pool = {}
+                    for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+                        if v.key ~= 'm_stone' then
+                            cen_pool[#cen_pool + 1] = v
+                        end
+                    end
+                    create_playing_card({
+                        front = G.P_CARDS[_suit .. '_' .. _rank],
+                        center = pseudorandom_element(cen_pool, pseudoseed('spe_card'))
+                    }, G.hand, nil, i ~= 1, { G.C.SECONDARY_SET.Spectral })
+                end
+                playing_card_joker_effects(cards)
+                return true
+            end
+        }))
+        delay(0.3)
+        for i = 1, #G.jokers.cards do
+            G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
+        end
+    end,
+    loc_def = 0,
+}):register()
+
+--Todo: Don't destroy cards with Death, Trading Card, Glass, Sixth Sense
 local silver = SMODS.Stake({
 	name = "Silver Stake",
 	key = "silver",

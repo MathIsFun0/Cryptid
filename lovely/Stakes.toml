@@ -12,3 +12,63 @@ position = "before"
 payload = 'G.shared_sticker_perishable = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["sticker"], {x = 4,y = 4})'
 match_indent = true
 overwrite = false
+
+# Yellow Stake - perishable and rental effects on consumable
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
+position = "before"
+payload = '''
+for i = 1, #G.consumeables.cards do
+    G.consumeables.cards[i]:calculate_rental()
+    G.consumeables.cards[i]:calculate_perishable()
+end
+'''
+match_indent = true
+overwrite = false
+
+# Yellow Stake - perishable and rental effects on cards held in hand
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "local effects = {G.hand.cards[i]:get_end_of_round_effect()}"
+position = "after"
+payload = '''
+G.hand.cards[i]:calculate_rental()
+G.hand.cards[i]:calculate_perishable()
+'''
+match_indent = true
+overwrite = false
+
+# Yellow Stake - Hanged Man can't be used on Eternal cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
+position = "after"
+payload = '''
+if self.ability.name == "The Hanged Man" then
+    for i = 1, #G.hand.highlighted do
+        if G.hand.highlighted[i].ability.eternal then return false end
+    end
+end
+'''
+match_indent = true
+overwrite = false
+
+# Yellow Stake - Immolate can't be used on Eternal cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end"
+position = "at"
+payload = '''
+for k, v in ipairs(G.hand.cards) do 
+    if not v.ability.eternal then
+        temp_hand[#temp_hand+1] = v
+    end
+end
+'''
+match_indent = true
+overwrite = true
