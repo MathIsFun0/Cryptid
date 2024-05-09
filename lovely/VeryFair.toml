@@ -41,7 +41,7 @@ overwrite = true
 target = "cardarea.lua"
 pattern = "{n=G.UIT.T, config={text = 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
 position = "at"
-payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.no_vouchers and very_fair_quip[1] or 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.no_vouchers and (very_fair_quip[1] or '') or 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
 match_indent = true
 overwrite = true
 
@@ -50,7 +50,7 @@ overwrite = true
 target = "cardarea.lua"
 pattern = "{n=G.UIT.T, config={text = 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
 position = "at"
-payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.no_vouchers and very_fair_quip[2] or 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.no_vouchers and (very_fair_quip[2] or '') or 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
 match_indent = true
 overwrite = true
 
@@ -59,7 +59,7 @@ overwrite = true
 target = "cardarea.lua"
 pattern = "{n=G.UIT.T, config={text = 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
 position = "at"
-payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.no_vouchers and very_fair_quip[3] or 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.no_vouchers and (very_fair_quip[3] or '') or 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
 match_indent = true
 overwrite = true
 

@@ -63,8 +63,7 @@ local yellow = SMODS.Stake({
         name = "Yellow Stake",
         text = {
         "{C:attention}Stickers{} can appear on",
-        "all purchasable items",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "all purchasable items"
         }
     },
     color = HEX("f7ff1f")
@@ -349,7 +348,6 @@ SMODS.Consumable:take_ownership('incantation', {
     loc_def = 0,
 }):register()
 
---Todo: Don't destroy cards with Death, Trading Card, Glass, Sixth Sense
 local silver = SMODS.Stake({
 	name = "Silver Stake",
 	key = "silver",

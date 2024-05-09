@@ -40,8 +40,24 @@ G.hand.cards[i]:calculate_perishable()
 '''
 match_indent = true
 overwrite = false
+# Yellow Stake - perishable and rental effects on cards in deck and discard pile
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.FUNCS.draw_from_hand_to_discard()"
+position = "before"
+payload = '''
+for i = 1, #G.discard.cards do
+    G.discard.cards[i]:calculate_perishable()
+end
+for i = 1, #G.deck.cards do
+    G.deck.cards[i]:calculate_perishable()
+end
+'''
+match_indent = true
+overwrite = false
 
-# Yellow Stake - Hanged Man can't be used on Eternal cards
+# Yellow Stake - Hanged Man can't be used on Eternal cards, Death can't remove Eternal
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -52,6 +68,11 @@ if self.ability.name == "The Hanged Man" then
     for i = 1, #G.hand.highlighted do
         if G.hand.highlighted[i].ability.eternal then return false end
     end
+end
+if self.ability.name == "Death" then
+    local leftmost = G.hand.highlighted[1]
+    for i=1, #G.hand.highlighted do if G.hand.highlighted[i].T.x < leftmost.T.x then leftmost = G.hand.highlighted[i] end end
+    if leftmost and leftmost.ability.eternal then return false end
 end
 '''
 match_indent = true
@@ -70,5 +91,45 @@ for k, v in ipairs(G.hand.cards) do
     end
 end
 '''
+match_indent = true
+overwrite = true
+
+# Yellow Stake - Death can't modify Eternal cards (redundant, but may help if Death can be used on more cards)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.hand.highlighted[i] ~= rightmost then"
+position = "at"
+payload = "if G.hand.highlighted[i] ~= rightmost and not G.hand.highlighted[i].ability.eternal then"
+match_indent = true
+overwrite = true
+
+# Yellow Stake - Trading Card can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 then"
+position = "at"
+payload = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 and not context.other_card.ability.eternal then"
+match_indent = true
+overwrite = true
+
+# Yellow Stake - Sixth Sense can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 then"
+position = "at"
+payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not context.full_hand[1].ability.eternal and G.GAME.current_round.hands_played == 0 then"
+match_indent = true
+overwrite = true
+
+# Yellow Stake - Glass can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
+position = "at"
+payload = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and not scoring_hand[i].ability.eternal and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
 match_indent = true
 overwrite = true
