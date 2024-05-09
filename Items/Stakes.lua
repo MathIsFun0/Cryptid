@@ -354,11 +354,13 @@ local silver = SMODS.Stake({
 	pos = {x = 3, y = 0},
     atlas = "stake",
     applied_stakes = {"cry_yellow"},
+    modifiers = function()
+        G.GAME.modifiers.flipped_cards = 20
+    end,
 	loc_txt = {
         name = "Silver Stake",
         text = {
         "Cards can be drawn {C:attention}face down{}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -370,12 +372,14 @@ local cyan = SMODS.Stake({
 	pos = {x = 4, y = 0},
     atlas = "stake",
     applied_stakes = {"cry_silver"},
+    modifiers = function()
+        G.GAME.modifiers.rarer_jokers = true
+    end,
 	loc_txt = {
         name = "Cyan Stake",
         text = {
         "{C:green}Uncommon{} and {C:red}Rare{} Jokers are",
         "less likely to appear",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     color = HEX("39ffcc")
@@ -386,26 +390,38 @@ local gray = SMODS.Stake({
 	pos = {x = 0, y = 1},
     atlas = "stake",
     applied_stakes = {"cry_cyan"},
+    modifiers = function()
+        G.GAME.modifiers.reroll_scaling = 2
+    end,
 	loc_txt = {
         name = "Gray Stake",
         text = {
-        "Rerolls increase by {C:attention}$2{} each",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "Rerolls increase by {C:attention}$2{} each"
         }
     },
     color = HEX("999999")
 })
+-- This is short enough that I'm fine overriding it
+function calculate_reroll_cost(skip_increment)
+    if G.GAME.current_round.free_rerolls < 0 then G.GAME.current_round.free_rerolls = 0 end
+    if G.GAME.current_round.free_rerolls > 0 then G.GAME.current_round.reroll_cost = 0; return end
+    G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
+    if not skip_increment then G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase + (G.GAME.modifiers.reroll_scaling or 1) end
+    G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost) + G.GAME.current_round.reroll_cost_increase
+end
 local crimson = SMODS.Stake({
 	name = "Crimson Stake",
 	key = "crimson",
 	pos = {x = 1, y = 1},
     atlas = "stake",
     applied_stakes = {"cry_gray"},
+    modifiers = function()
+        G.GAME.modifiers.voucher_restock_antes = 2
+    end,
 	loc_txt = {
         name = "Crimson Stake",
         text = {
-        "Vouchers restock every {C:attention}2{} Antes",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "Vouchers restock on {C:attention}even{} Antes",
         }
     },
     color = HEX("800000")
@@ -416,11 +432,13 @@ local diamond = SMODS.Stake({
 	pos = {x = 2, y = 1},
     atlas = "stake",
     applied_stakes = {"cry_crimson"},
+    modifiers = function()
+        G.GAME.win_ante = 10
+    end,
 	loc_txt = {
         name = "Diamond Stake",
         text = {
         "Must beat Ante {C:attention}10{} to win",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
