@@ -1,3 +1,101 @@
+local gateway = SMODS.Consumable({
+    set = "Spectral",
+    name = "Gateway",
+    key = "gateway",
+    pos = {x=0,y=0},
+    loc_txt = {
+        name = 'Gateway',
+        text = { "Create a random",
+        "{C:exotic}Exotic{C:attention} Joker{}, destroy",
+        'all other Jokers' }
+    },
+    cost = 4,
+    atlas = "gateway",
+    hidden = true --default soul_set and soul_rate of 0.3% in spectral packs is used
+})
+
+function gateway.can_use(card)
+    return true
+end
+
+function gateway.use(card, area, copier)
+    local deletable_jokers = {}
+    for k, v in pairs(G.jokers.cards) do
+        if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
+    end
+    local _first_dissolve = nil
+    G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+        for k, v in pairs(deletable_jokers) do
+            v:start_dissolve(nil, _first_dissolve)
+            _first_dissolve = true
+        end
+        return true end }))
+    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+        play_sound('timpani')
+        local card = create_card('Joker', G.jokers, nil, "Exotic", nil, nil, nil, 'cry_gateway')
+        card:add_to_deck()
+        G.jokers:emplace(card)
+        card:juice_up(0.3, 0.5)
+        return true end }))
+    delay(0.6)
+end
+local gateway_sprite = SMODS.Sprite({
+    key = "gateway",
+    atlas = "asset_atlas",
+    path = "c_cry_gateway.png",
+    px = 71,
+    py = 95
+})
+local iterum = SMODS.Joker({
+	name = "Iterum",
+	key = "iterum",
+	config = {extra = {x_mult = 1.5, repetitions = 1}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Iterum',
+        text = {
+        "Retrigger all cards played {C:attention}#2#{} time(s),",
+        "each played card gives",
+        "{X:mult,C:white} X#1# {} Mult when scored"}
+    },
+	rarity = "Exotic",
+	cost = 50,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = 'iterum',
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}}
+})
+function iterum.loc_def(center)
+	return {center.ability.extra.x_mult,center.ability.extra.repetitions}
+end
+
+iterum.calculate = function(self, context)
+    if context.repetition then
+        if context.cardarea == G.play then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = self.ability.extra.repetitions,
+                card = self
+            }
+        end
+    elseif context.individual then
+        if context.cardarea == G.play then
+            return {
+                x_mult = self.ability.extra.x_mult,
+                colour = G.C.RED,
+                card = self
+            }
+        end
+    end
+end
+
+local iterum_sprite = SMODS.Sprite({
+    key = "iterum",
+    atlas = "asset_atlas",
+    path = "j_cry_iterum.png",
+    px = 71,
+    py = 95
+})
 local universum = SMODS.Joker({
 	name = "Universum",
 	key = "universum",
@@ -112,4 +210,7 @@ local universum_sprite = SMODS.Sprite({
     px = 71,
     py = 95
 })
-return {universum_sprite, universum}
+
+G.P_JOKER_RARITY_POOLS["Exotic"] = {iterum, universum}
+
+return {name = "Exotic Jokers", items = {gateway_sprite, iterum_sprite, universum_sprite, gateway, iterum, universum}}

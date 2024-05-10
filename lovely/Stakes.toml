@@ -133,3 +133,18 @@ position = "at"
 payload = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and not scoring_hand[i].ability.eternal and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
 match_indent = true
 overwrite = true
+
+# Yellow Stake - enhancement tarots don't remove stickers
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "perma_bonus = self.ability and self.ability.perma_bonus or 0,"
+position = "after"
+payload = '''
+eternal = self.ability and self.ability.eternal,
+perishable = self.ability and self.ability.perishable,
+perish_tally = self.ability and self.ability.perish_tally,
+rental = self.ability and self.ability.rental
+'''
+match_indent = true
+overwrite = false

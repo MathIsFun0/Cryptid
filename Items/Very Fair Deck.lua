@@ -78,4 +78,4 @@ local very_fair_sprite = SMODS.Sprite({
     py = 95
 })
 
-return {very_fair_sprite, very_fair}
+return {name = "Very Fair Deck", items = {very_fair_sprite, very_fair}}

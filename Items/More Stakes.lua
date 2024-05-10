@@ -76,7 +76,14 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
     --should pool be skipped with a forced key
     if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
-        if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
+    	for _, v in ipairs(SMODS.Consumable.legendaries) do
+    		if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) then
+    			if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+    				forced_key = v.key
+    			end
+    		end
+    	end
+            if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
         not (G.GAME.used_jokers['c_soul'] and not next(find_joker("Showman")))  then
             if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
                 forced_key = 'c_soul'
@@ -348,9 +355,9 @@ SMODS.Consumable:take_ownership('incantation', {
     loc_def = 0,
 }):register()
 
-local silver = SMODS.Stake({
-	name = "Silver Stake",
-	key = "silver",
+local jade = SMODS.Stake({
+	name = "Jade Stake",
+	key = "jade",
 	pos = {x = 3, y = 0},
     atlas = "stake",
     applied_stakes = {"cry_yellow"},
@@ -358,20 +365,20 @@ local silver = SMODS.Stake({
         G.GAME.modifiers.flipped_cards = 20
     end,
 	loc_txt = {
-        name = "Silver Stake",
+        name = "Jade Stake",
         text = {
         "Cards can be drawn {C:attention}face down{}",
         }
     },
     shiny = true,
-    color = HEX("bbbbbb")
+    color = HEX("78953c")
 })
 local cyan = SMODS.Stake({
 	name = "Cyan Stake",
 	key = "cyan",
 	pos = {x = 4, y = 0},
     atlas = "stake",
-    applied_stakes = {"cry_silver"},
+    applied_stakes = {"cry_jade"},
     modifiers = function()
         G.GAME.modifiers.rarer_jokers = true
     end,
@@ -510,28 +517,28 @@ local ruby = SMODS.Stake({
     shiny = true,
     color = HEX("fc5f55")
 })
-local topaz = SMODS.Stake({
-	name = "Topaz Stake",
-	key = "topaz",
+local glass = SMODS.Stake({
+	name = "Glass Stake",
+	key = "glass",
 	pos = {x = 2, y = 2},
     atlas = "stake",
     applied_stakes = {"cry_ruby"},
 	loc_txt = {
-        name = "Topaz Stake",
+        name = "Glass Stake",
         text = {
-        "Blind rewards decreased by {C:attention}$2{}",
+        "Cards can {C:attention}shatter{} when scored",
         "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
-    color = HEX("fcbb63")
+    color = HEX("ffffff")
 })
 local sapphire = SMODS.Stake({
 	name = "Sapphire Stake",
 	key = "sapphire",
 	pos = {x = 3, y = 2},
     atlas = "stake",
-    applied_stakes = {"cry_topaz"},
+    applied_stakes = {"cry_glass"},
 	loc_txt = {
         name = "Sapphire Stake",
         text = {
@@ -621,7 +628,7 @@ local ember = SMODS.Stake({
 	loc_txt = {
         name = "Ember Stake",
         text = {
-        "Deck effects are {C:attention}halved",
+        "All items have no sell value",
         "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
@@ -729,8 +736,8 @@ local sticker_atlas = SMODS.Sprite({
     py = 95
 })
 
-local stakes = {pink, brown, yellow, silver, cyan, gray, crimson, diamond,
-amber, bronze, quartz, ruby, topaz, sapphire, emerald, platinum,
+local stakes = {pink, brown, yellow, jade, cyan, gray, crimson, diamond,
+amber, bronze, quartz, ruby, glass, sapphire, emerald, platinum,
 twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant}
 
 for _, v in pairs(stakes) do
@@ -749,6 +756,6 @@ for _, v in pairs(stakes) do
     }
 end
 
-return {stake_atlas, sticker_atlas, pink, brown, yellow, silver, cyan, gray, crimson, diamond,
-        amber, bronze, quartz, ruby, topaz, sapphire, emerald, platinum,
-        twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant}
+return {name = "More Stakes", items = {stake_atlas, sticker_atlas, pink, brown, yellow, jade, cyan, gray, crimson, diamond,
+        amber, bronze, quartz, ruby, glass, sapphire, emerald, platinum,
+        twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant}}

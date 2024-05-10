@@ -85,5 +85,105 @@ local dropshot_sprite = SMODS.Sprite({
     px = 71,
     py = 95
 })
+local maximized = SMODS.Joker({
+	name = "Maximized",
+	key = "maximized",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Maximized',
+        text = {
+        "All {C:attention}face{} cards",
+		"are considered {C:attention}Kings{},",
+        "all {C:attention}numbered{} cards",
+		"are considered {C:attention}10s{}"
+        }
+    },
+	rarity = 3,
+	cost = 10,
+	discovered = true,
+	atlas = "maximized"
+})
 
-return {dropshot_sprite, dropshot}
+local cgi_ref = Card.get_id
+override_maximized = false
+function Card:get_id()
+    local id = cgi_ref(self)
+    if (next(find_joker("Maximized")) and not override_maximized) then
+        if (id >= 2 and id <= 10) then id = 10 end
+        if (id >= 11 and id <= 13 or next(find_joker("Pareidolia"))) then id = 13 end
+    end
+	return id
+end
+
+--Fix issues with View Deck and Maximized
+local gui_vd = G.UIDEF.view_deck
+function G.UIDEF.view_deck(unplayed_only)
+	override_maximized = true
+	local ret_value = gui_vd(unplayed_only)
+	override_maximized = false
+	return ret_value
+end
+
+local maximized_sprite = SMODS.Sprite({
+    key = "maximized",
+    atlas = "asset_atlas",
+    path = "j_cry_maximized.png",
+    px = 71,
+    py = 95
+})
+local potofjokes = SMODS.Joker({
+	name = "Pot of Jokes",
+	key = "pot_of_jokes",
+	config = {extra = {h_size = -2, h_mod = 1}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Pot of Jokes',
+        text = {
+            "{C:attention}#1#{} hand size,",
+            "increases by",
+            "{C:blue}#2#{} every round"}
+    },
+	rarity = 3,
+	cost = 10,
+    discovered = true,
+	blueprint_compat = true,
+	atlas = 'pot_of_jokes'
+})
+function potofjokes.loc_def(center)
+	return {center.ability.extra.h_size<0 and center.ability.extra.h_size or "+"..center.ability.extra.h_size,center.ability.extra.h_mod}
+end
+
+local c_atd = Card.add_to_deck
+function Card:add_to_deck(from_debuff)
+    if not self.added_to_deck and self.ability.name == "Pot of Jokes" then
+        G.hand:change_size(self.ability.extra.h_size)
+    end
+    return c_atd(self, from_debuff)
+end
+local c_rfd = Card.remove_from_deck
+function Card:remove_from_deck(from_debuff)
+    if self.added_to_deck and self.ability.name == "Pot of Jokes" then
+        G.hand:change_size(-self.ability.extra.h_size)
+    end
+    return c_rfd(self, from_debuff)
+end
+potofjokes.calculate = function(self, context)
+    if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+        self.ability.extra.h_size = self.ability.extra.h_size + self.ability.extra.h_mod
+        G.hand:change_size(self.ability.extra.h_mod)
+        return {
+            message = localize{type='variable',key='a_handsize',vars={self.ability.extra.h_mod}},
+            colour = G.C.FILTER,
+            card = self
+        }
+    end
+end
+
+local potofjokes_sprite = SMODS.Sprite({
+    key = "pot_of_jokes",
+    atlas = "asset_atlas",
+    path = "j_cry_pot_of_jokes.png",
+    px = 71,
+    py = 95
+})
+return {name = "Misc. Jokers", items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, dropshot, maximized, potofjokes}}

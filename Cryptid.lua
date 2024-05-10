@@ -9,7 +9,13 @@
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
-_RELEASE_MODE = false
+
+-- Load Options
+local config_file = {}
+if NFS.read(SMODS.current_mod.path.."/config.lua") then
+    config_file = STR_UNPACK(NFS.read(SMODS.current_mod.path.."/config.lua"))
+    print(NFS.read(SMODS.current_mod.path.."/config.lua"))
+end
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
@@ -22,7 +28,6 @@ end
 local get_badge_colourref = get_badge_colour
 function get_badge_colour(key)
     local fromRef = get_badge_colourref(key)
-
     if key == 'cry_exotic' then return G.C.RARITY["Exotic"]
     else return fromRef end
 end
@@ -52,11 +57,78 @@ end
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(SMODS.current_mod.path.."Items")
 for _, file in ipairs(files) do
-    local curr_obj = NFS.load(SMODS.current_mod.path.."Items/"..file)()
-    for _, item in ipairs(curr_obj) do
-        item:register()
+    local name = file:sub(1, -5)
+    if config_file[name] == nil then config_file[name] = true end
+    if config_file[name] then
+        local curr_obj = NFS.load(SMODS.current_mod.path.."Items/"..file)()
+        for _, item in ipairs(curr_obj.items) do
+            item:register()
+        end
     end
 end
+
+local G_FUNCS_options_ref = G.FUNCS.options
+G.FUNCS.options = function(e)
+  G_FUNCS_options_ref(e)
+  NFS.write(SMODS.current_mod.path.."/config.lua", STR_PACK(config_file))
+end
+
+function create_UIBox_settings()
+    local tabs = {}
+    tabs[#tabs+1] = {
+      label = localize('b_set_game'),
+      chosen = true,
+      tab_definition_function = G.UIDEF.settings_tab,
+      tab_definition_function_args = 'Game'
+    }
+    if G.F_VIDEO_SETTINGS then   tabs[#tabs+1] = {
+        label = localize('b_set_video'),
+        tab_definition_function = G.UIDEF.settings_tab,
+        tab_definition_function_args = 'Video'
+      }
+    end
+    tabs[#tabs+1] = {
+      label = localize('b_set_graphics'),
+      tab_definition_function = G.UIDEF.settings_tab,
+      tab_definition_function_args = 'Graphics'
+    }
+    tabs[#tabs+1] = {
+      label = localize('b_set_audio'),
+      tab_definition_function = G.UIDEF.settings_tab,
+      tab_definition_function_args = 'Audio'
+    }
+    tabs[#tabs+1] = {
+    label = "Cryptid",
+    tab_definition_function = function()
+        cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
+            {n=G.UIT.O, config={object = DynaText({string = "Select features to enable (applies on game restart):", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+          }}}
+        for k, _ in pairs(config_file) do
+            cry_nodes[#cry_nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+        end
+        return {
+        n = G.UIT.ROOT,
+        config = {
+            emboss = 0.05,
+            minh = 6,
+            r = 0.1,
+            minw = 10,
+            align = "cm",
+            padding = 0.2,
+            colour = G.C.BLACK
+        },
+        nodes = cry_nodes
+    }end
+    }
+  
+    local t = create_UIBox_generic_options({back_func = 'options',contents = {create_tabs(
+      {tabs = tabs,
+      tab_h = 7.05,
+      tab_alignment = 'tm',
+      snap_to_nav = true}
+      )}})
+    return t
+  end
 
 SMODS.Sprite({
     key = "icon",
