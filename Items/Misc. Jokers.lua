@@ -74,6 +74,9 @@ function reset_castle_card()
     end
     if valid_castle_cards[1] then 
         local castle_card = pseudorandom_element(valid_castle_cards, pseudoseed('cry_dro'..G.GAME.round_resets.ante))
+        if not G.GAME.current_round.cry_dropshot_card then
+            G.GAME.current_round.cry_dropshot_card = {}
+        end
         G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
     end
 end
@@ -188,15 +191,16 @@ local potofjokes_sprite = SMODS.Sprite({
 })
 
 local queensgambit = SMODS.Joker({
-    name = "Queens Gambit",
+    name = "Queen's Gambit",
     key = "queens_gambit",
     pos = {x = 0, y = 0},
     config = { extra = { mult = 0, x_mult = 2 , type = 'Straight Flush'}},
     loc_txt = {
-        name = 'Queens Gambit',
-        text = { "When a {C:attention}Royal Flush{} is played",
-        "Destroy scored {C:attention}Queen{}",
-        "and create a {C:dark_edition}Negative {}{C:red}Rare{}{C:attention} Joker{}"}
+        name = 'Queen\'s Gambit',
+        text = { "If {C:attention}poker hand{} is a",
+        "{C:attention}Royal Flush{}, destroy scored",
+        "{C:attention}Queen{} and create a",
+        "{C:dark_edition}Negative {}{C:red}Rare{}{C:attention} Joker{}"}
     },
     rarity = 3,
     cost = 10,
@@ -206,18 +210,11 @@ local queensgambit = SMODS.Joker({
 
 queensgambit.calculate = function(self, context)         
     if context.cardarea == G.jokers and context.before and not context.blueprint then
-        local hasace = 0
-        local hasten = 0
-        for i = 1, #context.scoring_hand do
-            if context.scoring_hand[i]:get_id() == 14 then hasace=1 
-            elseif context.scoring_hand[i]:get_id() == 10 then hasten=1
-            end
-        end
-            if next(context.poker_hands[self.ability.extra.type]) and hasace==1 and hasten==1 then
+            if next(context.poker_hands[self.ability.extra.type]) and G.GAME.current_round.current_hand.handname == "Royal Flush" then
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
                     func = function()
-                        local card = create_card("Joker", G.jokers, nil, 0.99, nil, nil, nil, "wra")
+                        local card = create_card("Joker", G.jokers, nil, 0.99, nil, nil, nil, "cry_gambit")
                         card:set_edition({
                             negative = true
                         })
@@ -232,7 +229,7 @@ queensgambit.calculate = function(self, context)
                     trigger = 'after',
                     func = function()
                         for i = 1, #context.scoring_hand do
-                            if context.scoring_hand[i]:get_id() == 12 then
+                            if SMODS.Ranks[context.scoring_hand[i].base.value].key == "Queen" then
                                 local card_to_destroy = context.scoring_hand[i]
                                 card_to_destroy.getting_sliced = true
                                 card_to_destroy:start_dissolve()
