@@ -754,7 +754,7 @@ local stake_atlas = SMODS.Sprite({
     py = 29
 })
 local sticker_atlas = SMODS.Sprite({
-    key = "sticker",
+    key = "cry_sticker",
     atlas = "asset_atlas",
     path = "sticker_cry.png",
     px = 71,
@@ -767,7 +767,7 @@ twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant}
 
 for _, v in pairs(stakes) do
     v.sticker_pos = v.pos
-    v.sticker_atlas = "sticker"
+    v.sticker_atlas = "cry_sticker"
     local words = {}
     words[1], words[2] = v.name:match("(%w+)(.+)")
     local stakeName = words[1]
