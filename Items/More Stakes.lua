@@ -527,12 +527,14 @@ local ruby = SMODS.Stake({
 	pos = {x = 1, y = 2},
     atlas = "stake",
     applied_stakes = {"cry_quartz"},
+    modifiers = function()
+        G.GAME.modifiers.big_boss_rate = 0.3
+    end,
 	loc_txt = {
         name = "Ruby Stake",
         text = {
         "{C:attention}Big{} Blinds can become",
         "{C:attention}Boss{} Blinds",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -544,11 +546,13 @@ local glass = SMODS.Stake({
 	pos = {x = 2, y = 2},
     atlas = "stake",
     applied_stakes = {"cry_ruby"},
+    modifiers = function()
+        G.GAME.modifiers.shatter_rate = 30
+    end,
 	loc_txt = {
         name = "Glass Stake",
         text = {
         "Cards can {C:attention}shatter{} when scored",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
