@@ -144,8 +144,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                     card:set_perishable(true)
                 end
             end
-            if G.GAME.modifiers.enable_rentals_in_shop and pseudorandom((area == G.pack_cards and 'packssjr' or 'ssjr')..G.GAME.round_resets.ante) > 0.7 then
+            if G.GAME.modifiers.enable_rentals_in_shop and pseudorandom('cry_ssjr'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
                 card:set_rental(true)
+            end
+            if G.GAME.modifiers.enable_pinned_in_shop and pseudorandom('cry_pin'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
+                card.pinned = true
             end
         end
         if _type == 'Joker' then
@@ -457,11 +460,13 @@ local amber = SMODS.Stake({
 	pos = {x = 3, y = 1},
     atlas = "stake",
     applied_stakes = {"cry_diamond"},
+    modifiers = function()
+        G.GAME.modifiers.booster_packs = 1
+    end,
 	loc_txt = {
         name = "Amber Stake",
         text = {
         "{C:attention}-1{} Booster Pack slot",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -473,28 +478,44 @@ local bronze = SMODS.Stake({
 	pos = {x = 4, y = 1},
     atlas = "stake",
     applied_stakes = {"cry_amber"},
+    modifiers = function()
+        G.GAME.modifiers.voucher_price_hike = 1.5
+    end,
 	loc_txt = {
         name = "Bronze Stake",
         text = {
         "Vouchers are {C:attention}50%{} more expensive",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
     color = HEX("d27c37")
 })
+local sc = Card.set_cost
+function Card:set_cost()
+    sc(self)
+    if self.ability.set == 'Voucher' and G.GAME.modifiers.voucher_price_hike then
+        self.cost = math.floor(self.cost * G.GAME.modifiers.voucher_price_hike)
+        --Update related costs
+        self.sell_cost = math.max(1, math.floor(self.cost/2)) + (self.ability.extra_value or 0)
+        if self.area and self.ability.couponed and (self.area == G.shop_jokers or self.area == G.shop_booster) then self.cost = 0 end
+        self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost
+    end
+end
+
 local quartz = SMODS.Stake({
 	name = "Quartz Stake",
 	key = "quartz",
 	pos = {x = 0, y = 2},
     atlas = "stake",
     applied_stakes = {"cry_bronze"},
+    modifiers = function()
+        G.GAME.modifiers.enable_pinned_in_shop = true
+    end,
 	loc_txt = {
         name = "Quartz Stake",
         text = {
         "Jokers can be {C:attention}Pinned{}",
         "{s:0.8,C:inactive}(Stays pinned to the leftmost position){}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
