@@ -74,6 +74,9 @@ function reset_castle_card()
     end
     if valid_castle_cards[1] then 
         local castle_card = pseudorandom_element(valid_castle_cards, pseudoseed('cry_dro'..G.GAME.round_resets.ante))
+        if not G.GAME.current_round.cry_dropshot_card then
+            G.GAME.current_round.cry_dropshot_card = {}
+        end
         G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
     end
 end
@@ -186,4 +189,74 @@ local potofjokes_sprite = SMODS.Sprite({
     px = 71,
     py = 95
 })
-return {name = "Misc. Jokers", items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, dropshot, maximized, potofjokes}}
+
+local queensgambit = SMODS.Joker({
+    name = "Queen's Gambit",
+    key = "queens_gambit",
+    pos = {x = 0, y = 0},
+    config = { extra = { mult = 0, x_mult = 2 , type = 'Straight Flush'}},
+    loc_txt = {
+        name = 'Queen\'s Gambit',
+        text = { "If {C:attention}poker hand{} is a",
+        "{C:attention}Royal Flush{}, destroy scored",
+        "{C:attention}Queen{} and create a",
+        "{C:dark_edition}Negative {}{C:red}Rare{}{C:attention} Joker{}"}
+    },
+    rarity = 3,
+    cost = 10,
+    discovered = true,
+    atlas = "queens_gambit"
+})
+
+queensgambit.calculate = function(self, context)         
+    if context.cardarea == G.jokers and context.before and not context.blueprint then
+            if next(context.poker_hands[self.ability.extra.type]) and G.GAME.current_round.current_hand.handname == "Royal Flush" then
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    func = function()
+                        local card = create_card("Joker", G.jokers, nil, 0.99, nil, nil, nil, "cry_gambit")
+                        card:set_edition({
+                            negative = true
+                        })
+                        card:add_to_deck()
+                        G.jokers:emplace(card)
+                        card:start_materialize()
+                        return true
+                    end
+                }))
+
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    func = function()
+                        for i = 1, #context.scoring_hand do
+                            if SMODS.Ranks[context.scoring_hand[i].base.value].key == "Queen" then
+                                local card_to_destroy = context.scoring_hand[i]
+                                card_to_destroy.getting_sliced = true
+                                card_to_destroy:start_dissolve()
+                                return true
+                            end
+                        end
+                    end
+                }))
+                return {
+                    message = localize('k_plus_joker'),
+
+                    colour = G.C.RED
+                }
+            end 
+            end
+        end
+
+local queensgambit_sprite = SMODS.Sprite({
+    key = "queens_gambit",
+    atlas = "asset_atlas",
+    path = "j_cry_queens_gambit.png",
+    px = 71,
+    py = 95
+
+})
+
+
+return {name = "Misc. Jokers", items = {dropshot_sprite, maximized_sprite, queensgambit_sprite, dropshot, maximized, potofjokes, queensgambit}}
+
+

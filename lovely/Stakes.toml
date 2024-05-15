@@ -4,14 +4,17 @@ dump_lua = true
 priority = 0
 
 # New perishable texture
+# Quartz Stake - register pinned sticker
 [[patches]]
 [patches.pattern]
 target = "game.lua"
 pattern = "set_profile_progress()"
 position = "before"
-payload = 'G.shared_sticker_perishable = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["sticker"], {x = 4,y = 4})'
+payload = '''self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
+self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})'''
 match_indent = true
 overwrite = false
+
 
 # Yellow Stake - perishable and rental effects on consumable
 [[patches]]
@@ -183,16 +186,6 @@ if self.pinned then
     G.shared_stickers['pinned']:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
 end
 '''
-match_indent = true
-overwrite = false
-
-# Quartz Stake - register pinned sticker
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "set_profile_progress()"
-position = "before"
-payload = "self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['sticker'], {x=5, y=0})"
 match_indent = true
 overwrite = false
 
