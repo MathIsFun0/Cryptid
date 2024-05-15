@@ -247,3 +247,50 @@ position = "at"
 payload = "elseif G.GAME.blind_on_deck == 'Big' then"
 match_indent = true
 overwrite = true
+
+# Sapphire Stake - ante tax
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+position = "at"
+payload = "delay(0.4); ease_ante(1); apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+match_indent = true
+overwrite = true
+
+# Emerald Stake - Permanently flipped cards
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "if card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then"
+position = "at"
+payload = '''if card.flipped then card.facing = 'back'; card.sprite_facing = 'back' end
+if not (card.flipped and (self == G.shop_jokers or self == G.shop_vouchers or self == G.shop_booster)) and card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then'''
+match_indent = true
+overwrite = true
+
+# Emerald Stake - flipped packs
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.enable_flipped_in_shop and pseudorandom('cry_flip_pack'..G.GAME.round_resets.ante) > 0.7 then
+    card.flipped = true
+end'''
+match_indent = true
+overwrite = false
+
+# Emerald Stake - flipped vouchers
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+    card.flipped = true
+end'''
+match_indent = true
+overwrite = false

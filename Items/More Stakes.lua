@@ -150,6 +150,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
             if G.GAME.modifiers.enable_pinned_in_shop and pseudorandom('cry_pin'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
                 card.pinned = true
             end
+            if G.GAME.modifiers.enable_flipped_in_shop and pseudorandom('cry_flip'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
+                card.flipped = true
+            end
         end
         if _type == 'Joker' then
             local edition = poll_edition('edi'..(key_append or '')..G.GAME.round_resets.ante)
@@ -564,31 +567,44 @@ local sapphire = SMODS.Stake({
 	pos = {x = 3, y = 2},
     atlas = "stake",
     applied_stakes = {"cry_glass"},
+    modifiers = function()
+        G.GAME.modifiers.ante_tax = 0.25
+        G.GAME.modifiers.ante_tax_max = 10
+    end,
 	loc_txt = {
         name = "Sapphire Stake",
         text = {
         "Lose {C:attention}25%{} of current money",
         "at end of Ante",
         "{s:0.8,C:inactive}(Up to $10){}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
     color = HEX("3551fc")
 })
+function apply_ante_tax()
+    if G.GAME.modifiers.ante_tax then
+        local tax = math.max(0, math.min(G.GAME.modifiers.ante_tax_max, math.floor(G.GAME.modifiers.ante_tax*G.GAME.dollars)))
+        ease_dollars(-1*tax)
+        return true
+    end
+    return false
+end
 local emerald = SMODS.Stake({
 	name = "Emerald Stake",
 	key = "emerald",
 	pos = {x = 4, y = 2},
     atlas = "stake",
     applied_stakes = {"cry_sapphire"},
+    modifiers = function()
+        G.GAME.modifiers.enable_flipped_in_shop = true
+    end,
 	loc_txt = {
         name = "Emerald Stake",
         text = {
         "Cards, packs, and vouchers",
         "can be {C:attention}face down{}",
         "{s:0.8,C:inactive}(Unable to be viewed until purchased){}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
