@@ -13,9 +13,10 @@ local wee_fib = SMODS.Joker({
 		"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"}
     },
 	rarity = "Epic",
-	cost = 15,
+	cost = 12,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	loc_def = function(center)
 		return {center.ability.extra.mult,center.ability.extra.mult_mod}
 	end,
@@ -79,5 +80,150 @@ local googol_play_sprite = SMODS.Sprite({
     py = 95
 })
 
-G.P_JOKER_RARITY_POOLS["Epic"] = {wee_fib, googol_play}
-return {name = "Epic Jokers", items = {wee_fib, googol_play}}
+local sync_catalyst = SMODS.Joker({
+	name = "Sync Catalyst",
+	key = "sync_catalyst",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Sync Catalyst',
+        text = {
+			"Balance {C:blue}Chips{} and",
+			"{C:red}Mult{} when this Joker",
+			"is triggered"
+		}
+    },
+	rarity = "Epic",
+	cost = 11,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "sync_catalyst",
+	calculate = function(self, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			local tot = hand_chips + mult
+			hand_chips = mod_chips(math.floor(tot/2))
+			mult = mod_mult(math.floor(tot/2))
+			update_hand_text({delay = 0}, {mult = mult, chips = hand_chips})
+			return {
+				message = localize('k_balanced'),
+				colour = {0.8, 0.45, 0.85, 1}
+			}
+		end
+	end,
+})
+local sync_catalyst_sprite = SMODS.Sprite({
+    key = "sync_catalyst",
+    atlas = "asset_atlas",
+    path = "j_cry_sync_catalyst.png",
+    px = 71,
+    py = 95
+})
+
+local negative = SMODS.Joker({
+	name = "Negative Joker",
+	key = "negative",
+	pos = {x = 0, y = 0},
+	config = {extra = 3},
+	loc_txt = {
+        name = 'Negative Joker',
+        text = {
+			"{C:dark_edition}+#1#{} Joker slots"
+		}
+    },
+	rarity = "Epic",
+	cost = 12,
+	discovered = true,
+	blueprint_compat = false,
+	atlas = "negative",
+	loc_def = function(center)
+		return {center.ability.extra}
+	end,
+})
+local negative_sprite = SMODS.Sprite({
+    key = "negative",
+    atlas = "asset_atlas",
+    path = "j_cry_negative.png",
+    px = 71,
+    py = 95
+})
+local c_atd = Card.add_to_deck
+function Card:add_to_deck(from_debuff)
+    if not self.added_to_deck and self.ability.name == "Negative Joker" then
+        G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra
+    end
+    return c_atd(self, from_debuff)
+end
+local c_rfd = Card.remove_from_deck
+function Card:remove_from_deck(from_debuff)
+    if self.added_to_deck and self.ability.name == "Negative Joker" then
+        G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra
+    end
+    return c_rfd(self, from_debuff)
+end
+local canvas = SMODS.Joker({
+	name = "Canvas",
+	key = "canvas",
+	pos = {x = 0, y = 0},
+	config = {num_retriggers = 0},
+	loc_txt = {
+        name = 'Canvas',
+        text = {
+			"{C:attention}Retrigger{} all Jokers to the left",
+			"once for {C:attention}every{} non-{C:blue}Common{} Joker",
+			"to the right of this Joker"
+		}
+    },
+	rarity = "Epic",
+	cost = 12,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "canvas",
+	calculate = function(self, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and not context.remove_playing_cards and not context.debuffed_hand then
+			if not context.blueprint then
+				self.config.num_retriggers = 0
+				local counting = false
+				for i = 1, #G.jokers.cards do
+					if self.T.x + self.T.w/2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 and G.jokers.cards[i].config.center.rarity ~= 1 then
+						self.config.num_retriggers = self.config.num_retriggers + 1
+					end
+				end
+			end
+			print(self.config.num_retriggers)
+			for i = 1, #G.jokers.cards do
+				for n = 1, self.config.num_retriggers do
+					if self.T.x + self.T.w/2 > G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 then
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								self:juice_up(0.5, 0.5)
+								return true
+							end
+						})) 
+						local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
+						local effects = eval_card(G.jokers.cards[i], context)
+						local percent = 0.3
+						local percent_delta = 0.08
+						if effects.jokers then 
+							local extras = {mult = false, hand_chips = false}
+							if effects.jokers.mult_mod then mult = mod_mult(mult + effects.jokers.mult_mod);extras.mult = true end
+							if effects.jokers.chip_mod then hand_chips = mod_chips(hand_chips + effects.jokers.chip_mod);extras.hand_chips = true end
+							if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.Xmult_mod);extras.mult = true  end
+							update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
+							card_eval_status_text(G.jokers.cards[i], 'jokers', nil, percent, nil, effects.jokers)
+							percent = percent+percent_delta
+						end
+					end
+				end
+			end
+		end
+	end,
+})
+local canvas_sprite = SMODS.Sprite({
+    key = "canvas",
+    atlas = "asset_atlas",
+    path = "j_cry_canvas.png",
+    px = 71,
+    py = 95
+})
+
+G.P_JOKER_RARITY_POOLS["Epic"] = {wee_fib, googol_play, sync_catalyst, negative, canvas}
+return {name = "Epic Jokers", items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, wee_fib, googol_play, sync_catalyst, negative, canvas}}
