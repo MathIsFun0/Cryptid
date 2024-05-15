@@ -20,6 +20,7 @@ end
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
 G.C.RARITY["Exotic"] = HEX("708b91");
+G.C.RARITY["Epic"] = HEX("571d91");
 local ip = SMODS.insert_pool
 function SMODS.insert_pool(pool, center, replace)
     if pool == nil then pool = {} end
@@ -28,8 +29,9 @@ end
 local get_badge_colourref = get_badge_colour
 function get_badge_colour(key)
     local fromRef = get_badge_colourref(key)
-    if key == 'cry_exotic' then return G.C.RARITY["Exotic"]
-    else return fromRef end
+    if key == 'cry_exotic' then return G.C.RARITY["Exotic"] end
+    if key == 'cry_epic' then return G.C.RARITY["Epic"] end
+    return fromRef
 end
 
 -- Midground sprites

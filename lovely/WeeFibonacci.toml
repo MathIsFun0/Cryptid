@@ -1,0 +1,35 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Wee Fibonacci rendering
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'if center.name == "Wee Joker" and (center.discovered or self.bypass_discovery_center) then'
+position = "before"
+payload = '''
+if center.name == "Wee Fibonacci" and (center.discovered or self.bypass_discovery_center) then 
+    H = H*0.7
+    W = W*0.7
+    self.T.h = H
+    self.T.w = W
+end
+'''
+match_indent = true
+overwrite = false
+
+# Wee Fibonacci rendering
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'elseif self.config.center.name == "Wee Joker" then'
+position = "before"
+payload = '''
+elseif self.config.center.name == "Wee Fibonacci" then 
+    self.T.h = H*scale*0.7*scale
+    self.T.w = W*scale*0.7*scale
+'''
+match_indent = true
+overwrite = false

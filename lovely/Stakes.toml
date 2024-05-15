@@ -287,3 +287,33 @@ if G.GAME.modifiers.enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.
 end'''
 match_indent = true
 overwrite = false
+
+# Platinum Stake - start with big blind ready to be selected
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.blind_on_deck = 'Small'"
+position = "at"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.no_small_blind and 'Big' or 'Small'"
+match_indent = true
+overwrite = true
+
+# Platinum Stake - start with big blind ready to be selected
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "G.GAME.blind_on_deck = 'Small'"
+position = "at"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.no_small_blind and 'Big' or 'Small'"
+match_indent = true
+overwrite = true
+
+# Platinum Stake - hide Small Blind
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
+position = "at"
+payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.no_small_blind and 'Hide' or 'Upcoming'"
+match_indent = true
+overwrite = true

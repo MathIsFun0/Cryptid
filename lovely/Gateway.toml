@@ -28,7 +28,7 @@ end
 match_indent = true
 overwrite = false
 
-# Exotic spawn logic and Cyan Stake rate modifiers
+# Exotic/Epic spawn logic and Cyan Stake rate modifiers
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -36,9 +36,9 @@ pattern = "rarity = (_legendary and 4) or (rarity > 0.95 and 3) or (rarity > 0.7
 position = "at"
 payload = '''
 if not G.GAME.modifiers.rarer_jokers then
-    rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1
+    rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (enable_epics and rarity > 0.99 and 'Epic') or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1
 else
-    rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (rarity > 0.97 and 3) or (rarity > 0.82 and 2) or 1
+    rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (enable_epics and rarity > 0.99 and 'Epic') or (rarity > 0.97 and 3) or (rarity > 0.82 and 2) or 1
 end
 '''
 match_indent = true

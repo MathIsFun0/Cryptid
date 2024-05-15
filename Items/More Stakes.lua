@@ -616,6 +616,10 @@ local platinum = SMODS.Stake({
 	pos = {x = 0, y = 3},
     atlas = "stake",
     applied_stakes = {"cry_emerald"},
+    modifiers = function()
+        G.GAME.modifiers.no_small_blind = true
+        G.GAME.round_resets.blind_states['Small'] = 'Hide'
+    end,
 	loc_txt = {
         name = "Platinum Stake",
         text = {
