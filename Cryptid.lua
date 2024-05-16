@@ -56,6 +56,23 @@ function Card:set_sprites(_center, _front)
     end
 end
 
+-- Joker Trigger Function
+function cry_trigger_joker(joker, context)
+  local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
+  local effects = eval_card(joker, context)
+  local percent = 0.3
+  local percent_delta = 0.08
+  if effects.jokers then 
+    local extras = {mult = false, hand_chips = false}
+    if effects.jokers.mult_mod then mult = mod_mult(mult + effects.jokers.mult_mod);extras.mult = true end
+    if effects.jokers.chip_mod then hand_chips = mod_chips(hand_chips + effects.jokers.chip_mod);extras.hand_chips = true end
+    if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.Xmult_mod);extras.mult = true  end
+    update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
+    card_eval_status_text(joker, 'jokers', nil, percent, nil, effects.jokers)
+    percent = percent+percent_delta
+  end
+end
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(SMODS.current_mod.path.."Items")
 for _, file in ipairs(files) do
