@@ -180,7 +180,6 @@ local canvas = {
 					end
 				end
 			end
-			print(self.config.num_retriggers)
 			for i = 1, #G.jokers.cards do
 				for n = 1, self.config.num_retriggers do
 					if self.T.x + self.T.w/2 > G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 then
