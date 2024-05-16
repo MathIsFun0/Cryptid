@@ -9,7 +9,7 @@ priority = 0
 target = "functions/UI_definitions.lua"
 pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')})[card.config.center.rarity] end"
 position = "at"
-payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['Epic'] = 'Epic', ['Exotic'] = 'Exotic'})[card.config.center.rarity] end"
+payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = 'Epic', ['Exotic'] = 'Exotic'})[card.config.center.rarity] end"
 match_indent = true
 overwrite = true
 
@@ -19,7 +19,7 @@ overwrite = true
 target = "functions/misc_functions.lua"
 pattern = "legendary = G.C.RARITY[4],"
 position = "after"
-payload = "exotic = G.C.RARITY['Exotic'], epic = G.C.RARITY['Epic'],"
+payload = "exotic = G.C.RARITY['Exotic'], cry_epic = G.C.RARITY['cry_epic'],"
 match_indent = true
 overwrite = false
 

@@ -1,6 +1,7 @@
-enable_epics = true
-local wee_fib = SMODS.Joker({
-	name = "Wee Fibonacci",
+cry_enable_epics = false
+local wee_fib = {
+	object_type = "Joker",
+	name = "cry-Wee Fibonacci",
 	key = "wee_fib",
 	config = {extra = {mult = 0, mult_mod = 4}},
 	pos = {x = 1, y = 5},
@@ -12,7 +13,7 @@ local wee_fib = SMODS.Joker({
 		"{C:attention}Ace{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, or {C:attention}8{}",
 		"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"}
     },
-	rarity = "Epic",
+	rarity = "cry_epic",
 	cost = 12,
 	discovered = true,
 	blueprint_compat = true,
@@ -41,9 +42,10 @@ local wee_fib = SMODS.Joker({
 			}
 		end
 	end,
-})
-local googol_play = SMODS.Joker({
-	name = "Googol Play Card",
+}
+local googol_play = {
+	object_type = "Joker",
+	name = "cry-Googol Play Card",
 	key = "googol_play",
 	config = {extra = {Xmult = 1e100, odds = 10}},
 	pos = {x = 0, y = 0},
@@ -54,7 +56,7 @@ local googol_play = SMODS.Joker({
 			"{X:red,C:white} X1e100 {} Mult"
 		}
     },
-	rarity = "Epic",
+	rarity = "cry_epic",
 	cost = 10,
 	discovered = true,
 	blueprint_compat = true,
@@ -71,17 +73,18 @@ local googol_play = SMODS.Joker({
 			}
 		end
 	end,
-})
-local googol_play_sprite = SMODS.Sprite({
+}
+local googol_play_sprite = {
+	object_type = "Sprite",
     key = "googol_play",
     atlas = "asset_atlas",
     path = "j_cry_googol_play.png",
     px = 71,
     py = 95
-})
-
-local sync_catalyst = SMODS.Joker({
-	name = "Sync Catalyst",
+}
+local sync_catalyst = {
+	object_type = "Joker",
+	name = "cry-Sync Catalyst",
 	key = "sync_catalyst",
 	pos = {x = 0, y = 0},
 	loc_txt = {
@@ -92,7 +95,7 @@ local sync_catalyst = SMODS.Joker({
 			"is triggered"
 		}
     },
-	rarity = "Epic",
+	rarity = "cry_epic",
 	cost = 11,
 	discovered = true,
 	blueprint_compat = true,
@@ -109,17 +112,18 @@ local sync_catalyst = SMODS.Joker({
 			}
 		end
 	end,
-})
-local sync_catalyst_sprite = SMODS.Sprite({
+}
+local sync_catalyst_sprite = {
+	object_type = "Sprite",
     key = "sync_catalyst",
     atlas = "asset_atlas",
     path = "j_cry_sync_catalyst.png",
     px = 71,
     py = 95
-})
-
-local negative = SMODS.Joker({
-	name = "Negative Joker",
+}
+local negative = {
+	object_type = "Joker",
+	name = "cry-Negative Joker",
 	key = "negative",
 	pos = {x = 0, y = 0},
 	config = {extra = 3},
@@ -129,7 +133,7 @@ local negative = SMODS.Joker({
 			"{C:dark_edition}+#1#{} Joker slots"
 		}
     },
-	rarity = "Epic",
+	rarity = "cry_epic",
 	cost = 12,
 	discovered = true,
 	blueprint_compat = false,
@@ -137,29 +141,17 @@ local negative = SMODS.Joker({
 	loc_def = function(center)
 		return {center.ability.extra}
 	end,
-})
-local negative_sprite = SMODS.Sprite({
+}
+local negative_sprite = {
+	object_type = "Sprite",
     key = "negative",
     atlas = "asset_atlas",
     path = "j_cry_negative.png",
     px = 71,
     py = 95
-})
-local c_atd = Card.add_to_deck
-function Card:add_to_deck(from_debuff)
-    if not self.added_to_deck and self.ability.name == "Negative Joker" then
-        G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra
-    end
-    return c_atd(self, from_debuff)
-end
-local c_rfd = Card.remove_from_deck
-function Card:remove_from_deck(from_debuff)
-    if self.added_to_deck and self.ability.name == "Negative Joker" then
-        G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra
-    end
-    return c_rfd(self, from_debuff)
-end
-local canvas = SMODS.Joker({
+}
+local canvas = {
+	object_type = "Joker",
 	name = "Canvas",
 	key = "canvas",
 	pos = {x = 0, y = 0},
@@ -172,7 +164,7 @@ local canvas = SMODS.Joker({
 			"to the right of this Joker"
 		}
     },
-	rarity = "Epic",
+	rarity = "cry_epic",
 	cost = 12,
 	discovered = true,
 	blueprint_compat = true,
@@ -216,14 +208,35 @@ local canvas = SMODS.Joker({
 			end
 		end
 	end,
-})
-local canvas_sprite = SMODS.Sprite({
+}
+local canvas_sprite = {
+	object_type = "Sprite",
     key = "canvas",
     atlas = "asset_atlas",
     path = "j_cry_canvas.png",
     px = 71,
     py = 95
-})
+}
 
-G.P_JOKER_RARITY_POOLS["Epic"] = {wee_fib, googol_play, sync_catalyst, negative, canvas}
-return {name = "Epic Jokers", items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, wee_fib, googol_play, sync_catalyst, negative, canvas}}
+return {name = "Epic Jokers", 
+		init = function()
+			--Negative Joker Patches
+			local c_atd = Card.add_to_deck
+			function Card:add_to_deck(from_debuff)
+				if not self.added_to_deck and self.ability.name == "cry-Negative Joker" then
+					G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra
+				end
+				return c_atd(self, from_debuff)
+			end
+			local c_rfd = Card.remove_from_deck
+			function Card:remove_from_deck(from_debuff)
+				if self.added_to_deck and self.ability.name == "cry-Negative Joker" then
+					G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra
+				end
+				return c_rfd(self, from_debuff)
+			end
+
+			cry_enable_epics = true
+			G.P_JOKER_RARITY_POOLS["cry_epic"] = {wee_fib, googol_play, sync_catalyst, negative, canvas}
+		end,
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, wee_fib, googol_play, sync_catalyst, negative, canvas}}
