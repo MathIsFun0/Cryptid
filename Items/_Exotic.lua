@@ -127,7 +127,46 @@ local universum_sprite = {
     px = 71,
     py = 95
 }
-
+local exponentia = {
+    object_type = "Joker",
+	name = "cry-Exponentia",
+	key = "exponentia",
+	config = {extra = {pow_mult = 1.1, pow_mult_mod = 0.01}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Exponentia',
+        text = {
+			"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+			"when {C:mult}XMult{} is triggered",
+			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
+        }
+    },
+	rarity = "cry_exotic",
+	cost = 50,
+	discovered = true,
+	atlas = "exponentia",
+	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+	calculate = function(self, context)
+        if context.cardarea == G.jokers and (self.ability.extra.pow_mult > 1) and not context.before and not context.after then
+            return {
+                message = "^"..self.ability.extra.pow_mult.." Mult",
+                pow_mult_mod = self.ability.extra.pow_mult,
+                colour = G.C.MULT
+            }
+        end
+	end,
+    loc_def = function(center)
+        return {center.ability.extra.pow_mult_mod, center.ability.extra.pow_mult}
+    end
+}
+local exponentia_sprite = {
+    object_type = "Sprite",
+    key = "exponentia",
+    atlas = "asset_atlas",
+    path = "j_cry_exponentia.png",
+    px = 71,
+    py = 95
+}
 
 return {name = "Exotic Jokers", 
         init = function()
@@ -214,6 +253,6 @@ return {name = "Exotic Jokers",
                 end
             end
 
-            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum}
+            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia}
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, gateway, iterum, universum}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, gateway, iterum, universum, exponentia}}

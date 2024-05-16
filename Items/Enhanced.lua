@@ -10,7 +10,7 @@ local hierophant_deck = {object_type = "Back",
             "of {C:attention}Bonus Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local empress_deck = {object_type = "Back",
     name = "cry-The Empress's Deck",
@@ -24,7 +24,7 @@ local empress_deck = {object_type = "Back",
             "of {C:attention}Mult Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local lovers_deck = {object_type = "Back",
     name = "cry-The Lovers' Deck",
@@ -38,7 +38,7 @@ local lovers_deck = {object_type = "Back",
             "of {C:attention}Wild Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local justice_deck = {object_type = "Back",
     name = "cry-Deck of Justice",
@@ -52,7 +52,7 @@ local justice_deck = {object_type = "Back",
             "of {C:attention}Glass Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local chariot_deck = {object_type = "Back",
     name = "cry-The Chariot's Deck",
@@ -66,7 +66,7 @@ local chariot_deck = {object_type = "Back",
             "of {C:attention}Steel Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local tower_deck = {object_type = "Back",
     name = "cry-Stoner's Deck",
@@ -80,7 +80,7 @@ local tower_deck = {object_type = "Back",
             "of {C:attention}Stone Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local devil_deck = {object_type = "Back",
     name = "cry-The Devil's Deck",
@@ -94,7 +94,7 @@ local devil_deck = {object_type = "Back",
             "of {C:attention}Gold Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local magician_deck = {object_type = "Back",
     name = "cry-The Magician's Deck",
@@ -108,7 +108,7 @@ local magician_deck = {object_type = "Back",
             "of {C:attention}Lucky Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local foil_deck = {object_type = "Back",
     name = "cry-Deck of Chips",
@@ -122,7 +122,7 @@ local foil_deck = {object_type = "Back",
             "of {C:attention}Foil Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local holo_deck = {object_type = "Back",
     name = "cry-Deck of Mult",
@@ -136,7 +136,7 @@ local holo_deck = {object_type = "Back",
             "of {C:attention}Holographic Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local poly_deck = {object_type = "Back",
     name = "cry-Deck of XMult",
@@ -150,7 +150,7 @@ local poly_deck = {object_type = "Back",
             "of {C:attention}Polychrome Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local talisman_deck = {object_type = "Back",
     name = "cry-Talisman Deck",
@@ -164,7 +164,7 @@ local talisman_deck = {object_type = "Back",
             "of {C:attention}Gold Seal Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local deja_vu_deck = {object_type = "Back",
     name = "cry-Deja Vu Deck",
@@ -178,7 +178,7 @@ local deja_vu_deck = {object_type = "Back",
             "of {C:attention}Red Seal Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local trance_deck = {object_type = "Back",
     name = "cry-Trance Deck",
@@ -192,7 +192,7 @@ local trance_deck = {object_type = "Back",
             "of {C:attention}Blue Seal Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local medium_deck = {object_type = "Back",
     name = "cry-Medium Deck",
@@ -206,7 +206,7 @@ local medium_deck = {object_type = "Back",
             "of {C:attention}Purple Seal Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local eternal_deck = {object_type = "Back",
     name = "cry-Eternal Deck",
@@ -220,7 +220,7 @@ local eternal_deck = {object_type = "Back",
             "of {C:attention}Eternal Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local perishable_deck = {object_type = "Back",
     name = "cry-Perishable Deck",
@@ -234,7 +234,7 @@ local perishable_deck = {object_type = "Back",
             "of {C:attention}Perishable Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local rental_deck = {object_type = "Back",
     name = "cry-Rental Deck",
@@ -248,7 +248,7 @@ local rental_deck = {object_type = "Back",
             "of {C:attention}Rental Cards{}"
         }
     },
-    atlas = "centers"
+    
 }
 local Backapply_to_runRef = Back.apply_to_run
 function Back.apply_to_run(self)

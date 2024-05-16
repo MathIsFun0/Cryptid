@@ -289,7 +289,6 @@ local m = {
     end,
 	atlas = "m",
 	calculate = function(self, context)
-		print(context)
         if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},

@@ -58,3 +58,27 @@ position = "after"
 payload = "if _c.specific_vars then specific_vars = _c.specific_vars end"
 match_indent = true
 overwrite = false
+
+# Exponential Mult and Exponentia
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.Xmult_mod);extras.mult = true  end"
+position = "after"
+payload = '''
+if effects.jokers.pow_mult_mod then mult = mod_mult(mult^effects.jokers.pow_mult_mod);extras.mult = true  end
+'''
+match_indent = true
+overwrite = false
+
+# Exponential Mult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if effect.Xmult_mod then mult = mod_mult(mult*effect.Xmult_mod);extras.mult = true  end"
+position = "after"
+payload = '''
+if effect.pow_mult_mod then mult = mod_mult(mult^effect.pow_mult_mod);extras.mult = true  end
+'''
+match_indent = true
+overwrite = false
