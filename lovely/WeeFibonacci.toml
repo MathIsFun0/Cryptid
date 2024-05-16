@@ -10,7 +10,7 @@ target = "card.lua"
 pattern = 'if center.name == "Wee Joker" and (center.discovered or self.bypass_discovery_center) then'
 position = "before"
 payload = '''
-if center.name == "Wee Fibonacci" and (center.discovered or self.bypass_discovery_center) then 
+if center.name == "cry-Wee Fibonacci" and (center.discovered or self.bypass_discovery_center) then 
     H = H*0.7
     W = W*0.7
     self.T.h = H
@@ -27,7 +27,7 @@ target = "card.lua"
 pattern = 'elseif self.config.center.name == "Wee Joker" then'
 position = "before"
 payload = '''
-elseif self.config.center.name == "Wee Fibonacci" then 
+elseif self.config.center.name == "cry-Wee Fibonacci" then 
     self.T.h = H*scale*0.7*scale
     self.T.w = W*scale*0.7*scale
 '''

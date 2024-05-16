@@ -19,7 +19,7 @@ end
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
-G.C.RARITY["Exotic"] = HEX("708b91");
+G.C.RARITY["cry_exotic"] = HEX("708b91");
 G.C.RARITY["cry_epic"] = HEX("571d91");
 local ip = SMODS.insert_pool
 function SMODS.insert_pool(pool, center, replace)
@@ -29,7 +29,7 @@ end
 local get_badge_colourref = get_badge_colour
 function get_badge_colour(key)
     local fromRef = get_badge_colourref(key)
-    if key == 'cry_exotic' then return G.C.RARITY["Exotic"] end
+    if key == 'cry_exotic' then return G.C.RARITY["cry_exotic"] end
     if key == 'cry_epic' then return G.C.RARITY["cry_epic"] end
     return fromRef
 end
@@ -62,9 +62,9 @@ for _, file in ipairs(files) do
     local curr_obj = NFS.load(SMODS.current_mod.path.."Items/"..file)()
     if config_file[curr_obj.name] == nil then config_file[curr_obj.name] = true end
     if config_file[curr_obj.name] then
-        if curr_obj.init then curr_obj.init() end
+        if curr_obj.init then curr_obj:init() end
         for _, item in ipairs(curr_obj.items) do
-            SMODS[item.object_type](item):register()
+            SMODS[item.object_type](item)
         end
     end
 end

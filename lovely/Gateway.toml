@@ -10,7 +10,7 @@ target = "card.lua"
 pattern = "if self.config.center.soul_pos and (self.config.center.discovered or self.bypass_discovery_center) then"
 position = "before"
 payload = '''
-if self.ability.name == 'Gateway' and (self.config.center.discovered or self.bypass_discovery_center) then
+if self.ability.name == 'cry-Gateway' and (self.config.center.discovered or self.bypass_discovery_center) then
     local scale_mod2 = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
     local rotate_mod2 = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
     self.children.floating_sprite2:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod2, rotate_mod2,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
@@ -35,7 +35,7 @@ target = "functions/common_events.lua"
 pattern = "rarity = (_legendary and 4) or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1"
 position = "at"
 payload = '''
-if not G.GAME.modifiers.rarer_jokers then
+if not G.GAME.modifiers.cry_rarer_jokers then
     rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (cry_enable_epics and rarity > 0.99 and 'cry_epic') or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1
 else
     rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (cry_enable_epics and rarity > 0.99 and 'cry_epic') or (rarity > 0.97 and 3) or (rarity > 0.82 and 2) or 1

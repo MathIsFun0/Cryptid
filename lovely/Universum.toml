@@ -9,7 +9,7 @@ priority = 0
 target = "functions/common_events.lua"
 pattern = "amount = amount or 1"
 position = "after"
-payload = "if not next(find_joker('Universum')) then"
+payload = "if not next(find_joker('cry-Universum')) then"
 match_indent = true
 overwrite = false
 

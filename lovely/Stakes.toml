@@ -134,7 +134,7 @@ overwrite = true
 target = "functions/state_events.lua"
 pattern = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
 position = "at"
-payload = "if ((scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra) or (G.GAME.modifiers.shatter_rate and pseudorandom('cry_shatter') < 1/G.GAME.modifiers.shatter_rate)) and not scoring_hand[i].ability.eternal then"
+payload = "if ((scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra) or (G.GAME.modifiers.cry_shatter_rate and pseudorandom('cry_shatter') < 1/G.GAME.modifiers.cry_shatter_rate)) and not scoring_hand[i].ability.eternal then"
 match_indent = true
 overwrite = true
 
@@ -159,7 +159,7 @@ overwrite = false
 target = "game.lua"
 pattern = "for i = 1, 2 do"
 position = "at"
-payload = "for i = 1, G.GAME.modifiers.booster_packs or 2 do"
+payload = "for i = 1, G.GAME.modifiers.cry_booster_packs or 2 do"
 match_indent = true
 overwrite = true
 
@@ -196,7 +196,7 @@ target = "game.lua"
 pattern = "self.GAME.round_resets.blind_choices.Boss = get_new_boss()"
 position = "before"
 payload = '''
-if G.GAME.modifiers.big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.big_boss_rate then
+if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
     self.GAME.round_resets.blind_choices.Big = get_new_boss()
 else
     self.GAME.round_resets.blind_choices.Big = 'bl_big'
@@ -212,7 +212,7 @@ target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.blind_choices.Boss = get_new_boss()"
 position = "before"
 payload = '''
-if G.GAME.modifiers.big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.big_boss_rate then
+if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
     G.GAME.round_resets.blind_choices.Big = get_new_boss()
 else
     G.GAME.round_resets.blind_choices.Big = 'bl_big'
@@ -247,7 +247,7 @@ overwrite = true
 target = "functions/state_events.lua"
 pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 position = "at"
-payload = "delay(0.4); ease_ante(1); apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+payload = "delay(0.4); ease_ante(1); cry_apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 match_indent = true
 overwrite = true
 
@@ -257,8 +257,8 @@ overwrite = true
 target = "cardarea.lua"
 pattern = "if card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then"
 position = "at"
-payload = '''if card.flipped then card.facing = 'back'; card.sprite_facing = 'back' end
-if not (card.flipped and (self == G.shop_jokers or self == G.shop_vouchers or self == G.shop_booster)) and card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then'''
+payload = '''if card.cry_flipped then card.facing = 'back'; card.sprite_facing = 'back' end
+if not (card.cry_flipped and (self == G.shop_jokers or self == G.shop_vouchers or self == G.shop_booster)) and card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then'''
 match_indent = true
 overwrite = true
 
@@ -269,8 +269,8 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-if G.GAME.modifiers.enable_flipped_in_shop and pseudorandom('cry_flip_pack'..G.GAME.round_resets.ante) > 0.7 then
-    card.flipped = true
+if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_pack'..G.GAME.round_resets.ante) > 0.7 then
+    card.cry_flipped = true
 end'''
 match_indent = true
 overwrite = false
@@ -282,8 +282,8 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-if G.GAME.modifiers.enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
-    card.flipped = true
+if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+    card.cry_flipped = true
 end'''
 match_indent = true
 overwrite = false
@@ -294,7 +294,7 @@ overwrite = false
 target = "functions/common_events.lua"
 pattern = "G.GAME.blind_on_deck = 'Small'"
 position = "at"
-payload = "G.GAME.blind_on_deck = G.GAME.modifiers.no_small_blind and 'Big' or 'Small'"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
 match_indent = true
 overwrite = true
 
@@ -304,7 +304,7 @@ overwrite = true
 target = "functions/UI_definitions.lua"
 pattern = "G.GAME.blind_on_deck = 'Small'"
 position = "at"
-payload = "G.GAME.blind_on_deck = G.GAME.modifiers.no_small_blind and 'Big' or 'Small'"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
 match_indent = true
 overwrite = true
 
@@ -314,6 +314,6 @@ overwrite = true
 target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
 position = "at"
-payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.no_small_blind and 'Hide' or 'Upcoming'"
+payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
 match_indent = true
 overwrite = true
