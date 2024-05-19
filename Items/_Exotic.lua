@@ -39,9 +39,9 @@ local gateway = {
     end
 }
 local gateway_sprite = {
-    object_type = "Sprite",
+    object_type = "Atlas",
     key = "gateway",
-    atlas = "asset_atlas",
+    
     path = "c_cry_gateway.png",
     px = 71,
     py = 95
@@ -65,8 +65,8 @@ local iterum = {
 	blueprint_compat = true,
 	atlas = 'iterum',
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
-    loc_def = function(center)
-        return {center.ability.extra.x_mult,center.ability.extra.repetitions}
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.x_mult,center.ability.extra.repetitions}}
     end,
     calculate = function(self, context)
         if context.repetition then
@@ -89,9 +89,9 @@ local iterum = {
     end
 }
 local iterum_sprite = {
-    object_type = "Sprite",
+    object_type = "Atlas",
     key = "iterum",
-    atlas = "asset_atlas",
+    
     path = "j_cry_iterum.png",
     px = 71,
     py = 95
@@ -115,14 +115,14 @@ local universum = {
 	discovered = true,
 	atlas = "universum",
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
-    loc_def = function(center)
-        return {center.ability.extra}
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra}}
     end
 }
 local universum_sprite = {
-    object_type = "Sprite",
+    object_type = "Atlas",
     key = "universum",
-    atlas = "asset_atlas",
+    
     path = "j_cry_universum.png",
     px = 71,
     py = 95
@@ -155,14 +155,14 @@ local exponentia = {
             }
         end
 	end,
-    loc_def = function(center)
-        return {center.ability.extra.pow_mult_mod, center.ability.extra.pow_mult}
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.pow_mult_mod, center.ability.extra.pow_mult}}
     end
 }
 local exponentia_sprite = {
-    object_type = "Sprite",
+    object_type = "Atlas",
     key = "exponentia",
-    atlas = "asset_atlas",
+    
     path = "j_cry_exponentia.png",
     px = 71,
     py = 95

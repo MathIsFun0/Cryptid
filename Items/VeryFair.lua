@@ -13,8 +13,8 @@ local very_fair = {
             "appear in the shop"
         }
     },
-    --[[loc_def = function(center)
-        return {center.effect.config.hands, center.effect.config.discards}
+    --[[loc_vars = function(self, info_queue, center)
+        return {vars = {center.effect.config.hands, center.effect.config.discards}}
     end,--]] --this doesn't work, will fix later
     atlas = "very_fair"
 }
@@ -84,15 +84,16 @@ very_fair_quips = {
     {"WE'RE VERY SORRY", "THE LAST GUY PANIC BOUGHT", "ALL THE VOUCHERS"},
     {"HOW IT FEELS", "TO BUY NO", "VOUCHERS"},
     {"JIMBO GOT A NAT 1", "AND DUMPED ALL THE", "VOUCHERS IN A DITCH"},
+    {"ATTEMPT TO INDEX", "FIELD 'VOUCHER'", "(A NIL VALUE)"}
     {"OH YOU REALLY THOUGHT THAT READING ALL THESE LINES WOULD BRING YOUR VOUCHERS BACK?", "SORRY TO TELL YOU, BUT THIS DECK DOESN'T CONTAIN THE VOUCHERS YOU SEEK.", "THIS ABNORMALLY LONG TEXT IS HERE AND DESIGNED TO WASTE YOUR TIME AND EFFORT WHILE YOU READ IT."},
     {"GO TO", "https://youtu.be/p7YXXieghto", "FOR FREE VOUCHERS"}
 }
 very_fair_quip = {}
 
 local very_fair_sprite = {
-    object_type = "Sprite",
+    object_type = "Atlas",
     key = "very_fair",
-    atlas = "asset_atlas",
+    
     path = "b_cry_very_fair.png",
     px = 71,
     py = 95

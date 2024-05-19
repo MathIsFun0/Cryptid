@@ -13,6 +13,16 @@ payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarit
 match_indent = true
 overwrite = true
 
+# Fix Rare Tag creating Epic jokers
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = "card = create_card('Joker', _context.area, nil, 1, nil, nil, nil, 'rta')"
+position = "at"
+payload = "card = create_card('Joker', _context.area, nil, 0.99, nil, nil, nil, 'rta')"
+match_indent = true
+overwrite = true
+
 # Localization color
 [[patches]]
 [patches.pattern]

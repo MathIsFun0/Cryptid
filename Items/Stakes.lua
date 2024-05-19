@@ -428,16 +428,16 @@ local ascendant = {object_type = "Stake",
     shiny = true,
     color = HEX("ffffff") --temporary before gradients
 }
-local stake_atlas = {object_type = "Sprite",
+local stake_atlas = {object_type = "Atlas",
     key = "stake",
-    atlas = "asset_atlas",
+    
     path = "stake_cry.png",
     px = 29,
     py = 29
 }
-local sticker_atlas = {object_type = "Sprite",
+local sticker_atlas = {object_type = "Atlas",
     key = "sticker",
-    atlas = "asset_atlas",
+    
     path = "sticker_cry.png",
     px = 71,
     py = 95
@@ -662,7 +662,7 @@ return {name = "More Stakes",
                         G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
                     end
                 end,
-                loc_def = 0,
+                generate_ui = 0,
             }):register()
             SMODS.Consumable:take_ownership('familiar', {
                 use = function(self, area, copier)
@@ -707,7 +707,7 @@ return {name = "More Stakes",
                         G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
                     end
                 end,
-                loc_def = 0,
+                generate_ui = 0,
             }):register()
             SMODS.Consumable:take_ownership('incantation', {
                 use = function(self, area, copier)
@@ -752,7 +752,7 @@ return {name = "More Stakes",
                         G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
                     end
                 end,
-                loc_def = 0,
+                generate_ui = 0,
             }):register()
             
             -- This is short enough that I'm fine overriding it

@@ -5,7 +5,7 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- ICON_ATLAS: icon
+--- DEPENDENCIES: [Talisman]
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -38,7 +38,7 @@ end
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
     set_spritesref(self, _center, _front);
-    if _center and _center.name == 'Gateway' then
+    if _center and _center.name == 'cry-Gateway' then
         self.children.floating_sprite = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], {x=2,y=0})
         self.children.floating_sprite.role.draw_major = self
         self.children.floating_sprite.states.hover.can = false
@@ -60,7 +60,7 @@ end
 function cry_trigger_joker(joker, context)
   if not context.retrigger_joker then context.retrigger_joker = 0 end
   context.retrigger_joker = context.retrigger_joker + 1
-  if context.retrigger_joker >= 1000 then return end
+  if context.retrigger_joker >= 2 then return end --disable nested retriggers
   local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
   local effects = eval_card(joker, context)
   local percent = 0.3
@@ -86,13 +86,21 @@ end
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(SMODS.current_mod.path.."Items")
 for _, file in ipairs(files) do
-    local curr_obj = NFS.load(SMODS.current_mod.path.."Items/"..file)()
-    if config_file[curr_obj.name] == nil then config_file[curr_obj.name] = true end
-    if config_file[curr_obj.name] then
-        if curr_obj.init then curr_obj:init() end
-        for _, item in ipairs(curr_obj.items) do
-            SMODS[item.object_type](item)
-        end
+    print("Loading file "..file)
+    local f, err = NFS.load(SMODS.current_mod.path.."Items/"..file)
+    if err then print("Error loading file: "..err) else
+      local curr_obj = f()
+      if config_file[curr_obj.name] == nil then config_file[curr_obj.name] = true end
+      if config_file[curr_obj.name] then
+          if curr_obj.init then curr_obj:init() end
+          for _, item in ipairs(curr_obj.items) do
+              if SMODS[item.object_type] then
+                SMODS[item.object_type](item)
+              else
+                print("Error loading item "..item.key.." of unknown type "..item.object_type)
+              end
+          end
+      end
     end
 end
 
@@ -159,9 +167,8 @@ function create_UIBox_settings()
     return t
   end
 
-SMODS.Sprite({
-    key = "icon",
-    atlas = "asset_atlas",
+SMODS.Atlas({
+    key = "modicon",
     path = "cry_icon.png",
     px = 32,
     py = 32

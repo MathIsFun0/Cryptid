@@ -1,48 +1,4 @@
 cry_enable_epics = false
-local wee_fib = {
-	object_type = "Joker",
-	name = "cry-Wee Fibonacci",
-	key = "wee_fib",
-	config = {extra = {mult = 0, mult_mod = 4}},
-	pos = {x = 1, y = 5},
-	loc_txt = {
-        name = 'Wee Fibonacci',
-        text = {
-		"This Joker gains",
-		"{C:mult}+#2#{} Mult for each scored",
-		"{C:attention}Ace{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, or {C:attention}8{}",
-		"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"}
-    },
-	rarity = "cry_epic",
-	cost = 12,
-	discovered = true,
-	blueprint_compat = true,
-	perishable_compat = false,
-	loc_def = function(center)
-		return {center.ability.extra.mult,center.ability.extra.mult_mod}
-	end,
-	calculate = function(self, context)
-		if context.cardarea == G.play and context.individual and not context.blueprint then
-			local rank = SMODS.Ranks[context.other_card.base.value].key
-			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
-				self.ability.extra.mult = self.ability.extra.mult + self.ability.extra.mult_mod
-				
-				return {
-					extra = {focus = self, message = localize('k_upgrade_ex')},
-					card = self,
-					colour = G.C.MULT
-				}
-			end
-		end
-		if context.cardarea == G.jokers and (self.ability.extra.mult > 0) and not context.before and not context.after then
-			return {
-				message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult}},
-				mult_mod = self.ability.extra.mult, 
-				colour = G.C.MULT
-			}
-		end
-	end,
-}
 local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
@@ -62,8 +18,8 @@ local googol_play = {
 	blueprint_compat = true,
 	atlas = "googol_play",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
-	loc_def = function(center)
-		return {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
+	loc_vars = function(self, info_queue, center)
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 	end,
 	calculate = function(self, context)
 		if context.cardarea == G.jokers and not context.before and not context.after and pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/self.ability.extra.odds then
@@ -75,9 +31,9 @@ local googol_play = {
 	end,
 }
 local googol_play_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "googol_play",
-    atlas = "asset_atlas",
+    
     path = "j_cry_googol_play.png",
     px = 71,
     py = 95
@@ -114,9 +70,9 @@ local sync_catalyst = {
 	end,
 }
 local sync_catalyst_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "sync_catalyst",
-    atlas = "asset_atlas",
+    
     path = "j_cry_sync_catalyst.png",
     px = 71,
     py = 95
@@ -138,14 +94,14 @@ local negative = {
 	discovered = true,
 	blueprint_compat = false,
 	atlas = "negative",
-	loc_def = function(center)
-		return {center.ability.extra}
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra}}
 	end,
 }
 local negative_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "negative",
-    atlas = "asset_atlas",
+    
     path = "j_cry_negative.png",
     px = 71,
     py = 95
@@ -165,7 +121,7 @@ local canvas = {
 		}
     },
 	rarity = "cry_epic",
-	cost = 12,
+	cost = 15,
 	discovered = true,
 	blueprint_compat = true,
 	atlas = "canvas",
@@ -198,9 +154,9 @@ local canvas = {
 	end,
 }
 local canvas_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "canvas",
-    atlas = "asset_atlas",
+    
     path = "j_cry_canvas.png",
     px = 71,
     py = 95
@@ -243,7 +199,7 @@ local error_joker = {
                                     juice_card_until(self, eval, true)
 			local jokers = {}
 			for i=1, #G.jokers.cards do 
-				if G.jokers.cards[i] ~= self then
+				if G.jokers.cards[i].ability.name ~= "cry-Error" then
 					jokers[#jokers+1] = G.jokers.cards[i]
 				end
 			end
@@ -259,9 +215,9 @@ local error_joker = {
 	end
 }
 local error_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "error",
-    atlas = "asset_atlas",
+    
     path = "j_cry_error.png",
     px = 71,
     py = 95
@@ -271,7 +227,7 @@ local m = {
 	name = "cry-m",
 	key = "m",
 	pos = {x = 0, y = 0},
-	config = {extra = {extra = 19, x_mult = 1}, t_mult = 8, type = 'Pair'},
+	config = {extra = {extra = 13, x_mult = 1}, t_mult = 8, type = 'Pair'},
 	loc_txt = {
         name = 'm',
         text = {
@@ -283,8 +239,9 @@ local m = {
 	rarity = "cry_epic",
 	cost = 13,
 	discovered = true,
-	blueprint_compat = true,loc_def = function(center)
-        return {center.ability.extra.extra, center.ability.extra.x_mult}
+	blueprint_compat = true,loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.t_mult, self.config.type} }
+        return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
 	atlas = "m",
 	calculate = function(self, context)
@@ -298,15 +255,12 @@ local m = {
 			self.ability.extra.x_mult = self.ability.extra.x_mult + self.ability.extra.extra
 			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
 		end
-	end,
-	tooltip = function(self, info_queue)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.t_mult, self.config.type} }
 	end
 }
 local m_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "m",
-    atlas = "asset_atlas",
+    
     path = "j_cry_m.png",
     px = 71,
     py = 95
@@ -329,8 +283,8 @@ local boredom = {
 	cost = 12,
 	discovered = true,
 	blueprint_compat = true,
-	loc_def = function(center)
-		return {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}
+	loc_vars = function(self, info_queue, center)
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
     end,
 	atlas = "boredom",
 	calculate = function(self, context)
@@ -360,9 +314,9 @@ local boredom = {
 	end
 }
 local boredom_sprite = {
-	object_type = "Sprite",
+	object_type = "Atlas",
     key = "boredom",
-    atlas = "asset_atlas",
+    
     path = "j_cry_boredom.png",
     px = 71,
     py = 95
@@ -406,6 +360,6 @@ return {name = "Epic Jokers",
 			}
 
 			cry_enable_epics = true
-			G.P_JOKER_RARITY_POOLS["cry_epic"] = {wee_fib, googol_play, sync_catalyst, negative, canvas, error_joker, m, boredom}
+			G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, m, boredom}
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, m_sprite, boredom_sprite, wee_fib, googol_play, sync_catalyst, negative, canvas, error_joker, m, boredom}}
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, m_sprite, boredom_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, m, boredom}}
