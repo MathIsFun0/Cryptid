@@ -10,11 +10,13 @@
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
+local mod_path = ''..SMODS.current_mod.path
+
 -- Load Options
 local config_file = {}
-if NFS.read(SMODS.current_mod.path.."/config.lua") then
-    config_file = STR_UNPACK(NFS.read(SMODS.current_mod.path.."/config.lua"))
-    print(NFS.read(SMODS.current_mod.path.."/config.lua"))
+if NFS.read(mod_path.."/config.lua") then
+    config_file = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
+    print(NFS.read(mod_path.."/config.lua"))
 end
 
 -- Custom Rarity setup (based on Relic-Jokers)
@@ -84,10 +86,10 @@ function cry_trigger_joker(joker, context)
 end
 
 -- File loading based on Relic-Jokers
-local files = NFS.getDirectoryItems(SMODS.current_mod.path.."Items")
+local files = NFS.getDirectoryItems(mod_path.."Items")
 for _, file in ipairs(files) do
     print("Loading file "..file)
-    local f, err = NFS.load(SMODS.current_mod.path.."Items/"..file)
+    local f, err = NFS.load(mod_path.."Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if config_file[curr_obj.name] == nil then config_file[curr_obj.name] = true end
@@ -107,7 +109,7 @@ end
 local G_FUNCS_options_ref = G.FUNCS.options
 G.FUNCS.options = function(e)
   G_FUNCS_options_ref(e)
-  NFS.write(SMODS.current_mod.path.."/config.lua", STR_PACK(config_file))
+  NFS.write(mod_path.."/config.lua", STR_PACK(config_file))
 end
 
 function create_UIBox_settings()
