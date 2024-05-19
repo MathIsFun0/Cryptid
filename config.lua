@@ -1,1 +1,1 @@
-return {["More Stakes"]=true,["Enhanced Decks"]=true,["Exotic Jokers"]=true,["Misc. Jokers"]=true,["Epic Jokers"]=true,}
+return {["Very Fair Deck"]=true,["More Stakes"]=true,["Spectrals"]=true,["Misc. Jokers"]=true,["Exotic Jokers"]=true,["Enhanced Decks"]=true,["Epic Jokers"]=true,}

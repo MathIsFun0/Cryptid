@@ -447,12 +447,12 @@ return {name = "More Stakes",
             -- Ante scaling changes
             local gba = get_blind_amount
             function get_blind_amount(ante)
-                local k = 0.7
+                local k = Big:new(0.7)
                 if G.GAME.modifiers.scaling == 4 then
                     local amounts = {
-                        300,  1200, 4000,  11000,  30000,  100000,  180000,  300000
+                        Big:new(300),  Big:new(1200), Big:new(4000),  Big:new(11000),  Big:new(30000),  Big:new(100000),  Big:new(180000),  Big:new(300000)
                     }
-                    if ante < 1 then return 100 end
+                    if ante < 1 then return Big:new(100) end
                     if ante <= 8 then return amounts[ante] end
                     local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
                     local amount = math.floor(a*(b+(k*c)^d)^c)

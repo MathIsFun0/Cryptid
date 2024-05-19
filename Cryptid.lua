@@ -62,7 +62,7 @@ end
 function cry_trigger_joker(joker, context)
   if not context.retrigger_joker then context.retrigger_joker = 0 end
   context.retrigger_joker = context.retrigger_joker + 1
-  if context.retrigger_joker >= 2 then return end --disable nested retriggers
+  if context.retrigger_joker >= 1000 then return end
   local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
   local effects = eval_card(joker, context)
   local percent = 0.3

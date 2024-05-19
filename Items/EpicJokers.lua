@@ -97,6 +97,12 @@ local negative = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra}}
 	end,
+	add_to_deck = function(card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra
+	end,
+	remove_from_deck = function(card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra
+	end
 }
 local negative_sprite = {
 	object_type = "Atlas",
@@ -136,17 +142,19 @@ local canvas = {
 					end
 				end
 			end
-			for i = 1, #G.jokers.cards do
-				for n = 1, self.config.num_retriggers do
-					if self.T.x + self.T.w/2 > G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 then
-						G.E_MANAGER:add_event(Event({
-							trigger = 'immediate',
-							func = function()
-								self:juice_up(0.5, 0.5)
-								return true
-							end
-						})) 
-						cry_trigger_joker(G.jokers.cards[i],context)
+			if not context.retrigger_joker then
+				for i = 1, #G.jokers.cards do
+					for n = 1, self.config.num_retriggers do
+						if self.T.x + self.T.w/2 > G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 then
+							G.E_MANAGER:add_event(Event({
+								trigger = 'immediate',
+								func = function()
+									self:juice_up(0.5, 0.5)
+									return true
+								end
+							})) 
+							cry_trigger_joker(G.jokers.cards[i],context)
+						end
 					end
 				end
 			end
@@ -288,7 +296,7 @@ local boredom = {
     end,
 	atlas = "boredom",
 	calculate = function(self, context)
-        if context.cardarea == G.jokers and not context.before and not context.after then
+        if context.cardarea == G.jokers and not context.before and not context.after and not context.retrigger_joker then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.name ~= "cry-Boredom" and pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/self.ability.extra.odds then
 					G.E_MANAGER:add_event(Event({
@@ -323,21 +331,6 @@ local boredom_sprite = {
 }
 return {name = "Epic Jokers", 
 		init = function()
-			--Negative Joker Patches
-			local c_atd = Card.add_to_deck
-			function Card:add_to_deck(from_debuff)
-				if not self.added_to_deck and self.ability.name == "cry-Negative Joker" then
-					G.jokers.config.card_limit = G.jokers.config.card_limit + self.ability.extra
-				end
-				return c_atd(self, from_debuff)
-			end
-			local c_rfd = Card.remove_from_deck
-			function Card:remove_from_deck(from_debuff)
-				if self.added_to_deck and self.ability.name == "cry-Negative Joker" then
-					G.jokers.config.card_limit = G.jokers.config.card_limit - self.ability.extra
-				end
-				return c_rfd(self, from_debuff)
-			end
 			
 			--Error Patches
 			cry_error_operators = {"+","-","X","/","^","=",">","<","m"}

@@ -7,7 +7,7 @@ local gateway = {
     loc_txt = {
         name = 'Gateway',
         text = { "Create a random",
-        "{C:cry_exotic}Exotic{C:attention} Joker{}, destroy",
+        "{C:cry_exotic,E:1}Exotic{C:attention} Joker{}, destroy",
         'all other Jokers' }
     },
     cost = 4,
@@ -105,10 +105,10 @@ local universum = {
 	loc_txt = {
         name = 'Universum',
         text = {
-        "{C:planet}Planet{} cards give",
+        "{C:attention}Poker hands{} gain",
         "{X:red,C:white} X#1# {} Mult and {X:blue,C:white} X#1# {} Chips",
-        "for their specified",
-        "{C:attention}poker hand{} when used"}
+        "when leveled up",
+        }
     },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -182,12 +182,12 @@ return {name = "Exotic Jokers",
                         local col = G.C.GREEN
                         if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
                             local delta = vals.chips
-                            if type(vals.chips) == 'number' and type(G.GAME.current_round.current_hand.chips) == 'number' then delta = 'X'..(vals.chips / G.GAME.current_round.current_hand.chips) end
+                            if is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips) then delta = 'X'..number_format(vals.chips / G.GAME.current_round.current_hand.chips) end
                             G.GAME.current_round.current_hand.chips = vals.chips
                             G.hand_text_area.chips:update(0)
                             if vals.StatusText then 
                                 attention_text({
-                                    text =delta,
+                                    text = delta,
                                     scale = 0.8, 
                                     hold = 1,
                                     cover = G.hand_text_area.chips.parent,
@@ -200,12 +200,12 @@ return {name = "Exotic Jokers",
                         end
                         if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
                             local delta = vals.mult
-                            if type(vals.mult) == 'number' and type(G.GAME.current_round.current_hand.mult) == 'number' then delta = 'X'..(vals.mult / G.GAME.current_round.current_hand.mult) end
+                            if is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult) then delta = 'X'..number_format(vals.mult / G.GAME.current_round.current_hand.mult) end
                             G.GAME.current_round.current_hand.mult = vals.mult
                             G.hand_text_area.mult:update(0)
                             if vals.StatusText then 
                                 attention_text({
-                                    text =delta,
+                                    text = delta,
                                     scale = 0.8, 
                                     hold = 1,
                                     cover = G.hand_text_area.mult.parent,
@@ -229,7 +229,7 @@ return {name = "Exotic Jokers",
                                 G.GAME.current_round.current_hand.hand_level = vals.level
                             else
                                 G.GAME.current_round.current_hand.hand_level = ' '..localize('k_lvl')..tostring(vals.level)
-                                if type(vals.level) == 'number' then 
+                                if is_number(vals.level) then 
                                     G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[math.min(vals.level, 7)]
                                 else
                                     G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]

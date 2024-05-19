@@ -2,7 +2,7 @@ local dropshot = {
     object_type = "Joker",
 	name = "cry-Dropshot",
 	key = "dropshot",
-    config = {extra = {extra = 0.2, x_mult = 1}},
+    config = {extra = {Xmult_mod = 0.2, x_mult = 1}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Dropshot',
@@ -18,7 +18,7 @@ local dropshot = {
 	discovered = true,
 	atlas = "dropshot",
     loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.extra, localize(G.GAME.current_round.cry_dropshot_card.suit, 'suits_singular'), center.ability.extra.x_mult, colours = {G.C.SUITS[G.GAME.current_round.cry_dropshot_card.suit]}}}
+        return {vars = {center.ability.extra.Xmult_mod, localize(G.GAME.current_round.cry_dropshot_card.suit, 'suits_singular'), center.ability.extra.x_mult, colours = {G.C.SUITS[G.GAME.current_round.cry_dropshot_card.suit]}}}
     end,
     calculate = function(self, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint then
@@ -41,7 +41,7 @@ local dropshot = {
                 v.cry_dropshot_incompat = nil
             end
             if cards > 0 then 
-                self.ability.extra.x_mult = self.ability.extra.x_mult + cards * self.ability.extra.extra
+                self.ability.extra.x_mult = self.ability.extra.x_mult + cards * self.ability.extra.Xmult_mod
                 card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
             end
         end
@@ -119,6 +119,12 @@ local potofjokes = {
                 card = self
             }
         end
+    end,
+    add_to_deck = function(card, from_debuff)
+        G.hand:change_size(card.ability.extra.h_size)
+    end,
+    remove_from_deck = function(card, from_debuff)
+        G.hand:change_size(-card.ability.extra.h_size)
     end
 }
 local potofjokes_sprite = {
@@ -236,7 +242,59 @@ local wee_fib = {
 		end
 	end,
 }
-
+local whip = {
+    object_type = "Joker",
+    name = "cry-The WHIP",
+    key = "whip",
+    pos = {x = 0, y = 0},
+    config = {extra = {Xmult_mod = 0.5, x_mult = 1}},
+    loc_txt = {
+        name = 'The WHIP',
+        text = { "If {C:attention}played hand{} contains a",
+        "2 and 7 of different suits,",
+        "this Joker gains {X:mult,C:white} X#1# {} Mult",
+        "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"}
+    },
+    rarity = 2,
+    cost = 10,
+    discovered = true,
+    atlas = "whip",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.x_mult}}
+    end,
+    calculate = function(self, context)
+        if context.cardarea == G.jokers and context.before and not context.blueprint then
+            for i = 1, #context.full_hand do
+                if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
+                    for j = 1, #context.full_hand do
+                        if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
+                            --Different suits
+                            for k, v in pairs(SMODS.Suits) do
+                                if context.full_hand[i]:is_suit(k, nil, true) and context.full_hand[j]:is_suit(k, nil, true) then return end
+                            end
+                            self.ability.extra.x_mult = self.ability.extra.x_mult + self.ability.extra.Xmult_mod
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
+                            return
+                        end
+                    end
+                end
+            end
+        end
+        if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
+                Xmult_mod = self.ability.extra.x_mult
+            }
+        end
+    end
+}
+local whip_sprite = {
+    object_type = "Atlas",
+    key = "whip",
+    path = "j_cry_whip.png",
+    px = 71,
+    py = 95
+}
 
 return {name = "Misc. Jokers", 
         init = function()
@@ -285,21 +343,5 @@ return {name = "Misc. Jokers",
                 override_maximized = false
                 return ret_value
             end
-
-            --Pot of Jokes Patches
-            local c_atd = Card.add_to_deck
-            function Card:add_to_deck(from_debuff)
-                if not self.added_to_deck and self.ability.name == "cry-Pot of Jokes" then
-                    G.hand:change_size(self.ability.extra.h_size)
-                end
-                return c_atd(self, from_debuff)
-            end
-            local c_rfd = Card.remove_from_deck
-            function Card:remove_from_deck(from_debuff)
-                if self.added_to_deck and self.ability.name == "cry-Pot of Jokes" then
-                    G.hand:change_size(-self.ability.extra.h_size)
-                end
-                return c_rfd(self, from_debuff)
-            end
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, whip}}
