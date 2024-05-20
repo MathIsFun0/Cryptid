@@ -22,11 +22,13 @@ local googol_play = {
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 	end,
 	calculate = function(self, context)
-		if context.cardarea == G.jokers and not context.before and not context.after and pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/self.ability.extra.odds then
-			return {
-				message = localize{type='variable',key='a_xmult',vars={self.ability.extra.Xmult}},
-				Xmult_mod = self.ability.extra.Xmult
-			}
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			if pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/self.ability.extra.odds then
+				return {
+					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.Xmult}},
+					Xmult_mod = self.ability.extra.Xmult
+				}
+			else return {calculated = true} end
 		end
 	end,
 }
@@ -132,31 +134,19 @@ local canvas = {
 	blueprint_compat = true,
 	atlas = "canvas",
 	calculate = function(self, context)
-		if context.cardarea == G.jokers and not context.before and not context.after and not context.remove_playing_cards and not context.debuffed_hand then
-			if not context.blueprint then
-				self.config.num_retriggers = 0
-				local counting = false
-				for i = 1, #G.jokers.cards do
-					if self.T.x + self.T.w/2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 and G.jokers.cards[i].config.center.rarity ~= 1 then
-						self.config.num_retriggers = self.config.num_retriggers + 1
-					end
+		if context.retrigger_joker_check and not context.retrigger_joker then
+			self.config.num_retriggers = 0
+			for i = 1, #G.jokers.cards do
+				if self.T.x + self.T.w/2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 and G.jokers.cards[i].config.center.rarity ~= 1 then
+					self.config.num_retriggers = self.config.num_retriggers + 1
 				end
 			end
-			if not context.retrigger_joker then
-				for i = 1, #G.jokers.cards do
-					for n = 1, self.config.num_retriggers do
-						if self.T.x + self.T.w/2 > G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 then
-							G.E_MANAGER:add_event(Event({
-								trigger = 'immediate',
-								func = function()
-									self:juice_up(0.5, 0.5)
-									return true
-								end
-							})) 
-							cry_trigger_joker(G.jokers.cards[i],context)
-						end
-					end
-				end
+			if self.T.x + self.T.w/2 > context.other_card.T.x + context.other_card.T.w/2 then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = self.config.num_retriggers,
+					card = self
+				}
 			end
 		end
 	end,
@@ -212,13 +202,14 @@ local error_joker = {
 				end
 			end
 			for i = 1, #jokers do
-				local card = copy_card(jokers[i]	)
+				local card = copy_card(jokers[i])
 				card:set_edition({
 					negative = true
 				})
 				card:add_to_deck()
 				G.jokers:emplace(card)
 			end
+			return {calculated = true}
 		end
 	end
 }
@@ -262,6 +253,7 @@ local m = {
 		if context.selling_card and context.card.ability.name == "Jolly Joker" then
 			self.ability.extra.x_mult = self.ability.extra.x_mult + self.ability.extra.extra
 			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
+			return {calculated = true}
 		end
 	end
 }
@@ -296,27 +288,24 @@ local boredom = {
     end,
 	atlas = "boredom",
 	calculate = function(self, context)
-        if context.cardarea == G.jokers and not context.before and not context.after and not context.retrigger_joker then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.name ~= "cry-Boredom" and pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/self.ability.extra.odds then
-					G.E_MANAGER:add_event(Event({
-						trigger = 'immediate',
-						func = function()
-							self:juice_up(0.5, 0.5)
-							return true
-						end
-					})) 
-					cry_trigger_joker(G.jokers.cards[i],context)
-				end
-			end
-        end
-		if context.repetition and context.cardarea == G.play then
+        if context.retrigger_joker_check and not context.retrigger_joker then
 			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/self.ability.extra.odds then
 				return {
 					message = localize('k_again_ex'),
 					repetitions = 1,
 					card = self
 				}
+			else return {calculated = true} end
+        end
+		if context.repetition and context.cardarea == G.play then
+			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/self.ability.extra.odds then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = 1,
+					card = self
+				}
+			else
+				return {calculated = true}
 			end
 		end
 	end

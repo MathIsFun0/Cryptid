@@ -44,6 +44,7 @@ local dropshot = {
                 self.ability.extra.x_mult = self.ability.extra.x_mult + cards * self.ability.extra.Xmult_mod
                 card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
             end
+            return {calculated = true}
         end
         if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
@@ -140,7 +141,6 @@ local queensgambit = {
     name = "cry-Queen's Gambit",
     key = "queens_gambit",
     pos = {x = 0, y = 0},
-    config = { extra = { mult = 0, x_mult = 2 , type = 'Straight Flush'}},
     loc_txt = {
         name = 'Queen\'s Gambit',
         text = { "If {C:attention}poker hand{} is a",
@@ -274,7 +274,7 @@ local whip = {
                             end
                             self.ability.extra.x_mult = self.ability.extra.x_mult + self.ability.extra.Xmult_mod
                             card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
-                            return
+                            return {calculated = true}
                         end
                     end
                 end

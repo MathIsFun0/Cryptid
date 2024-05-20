@@ -58,31 +58,74 @@ function Card:set_sprites(_center, _front)
     end
 end
 
--- Joker Trigger Function
-function cry_trigger_joker(joker, context)
-  if not context.retrigger_joker then context.retrigger_joker = 0 end
-  context.retrigger_joker = context.retrigger_joker + 1
-  if context.retrigger_joker >= 1000 then return end
-  local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
-  local effects = eval_card(joker, context)
-  local percent = 0.3
-  local percent_delta = 0.08
-  if effects.jokers then 
-    local extras = {mult = false, hand_chips = false}
-    if effects.jokers.mult_mod then mult = mod_mult(mult + effects.jokers.mult_mod);extras.mult = true end
-    if effects.jokers.chip_mod then hand_chips = mod_chips(hand_chips + effects.jokers.chip_mod);extras.hand_chips = true end
-    if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.Xmult_mod);extras.mult = true  end
-    if effects.jokers.pow_mult_mod then mult = mod_mult(mult^effects.jokers.pow_mult_mod);extras.mult = true  end
-    update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
-    card_eval_status_text(joker, 'jokers', nil, percent, nil, effects.jokers)
-    if effects.jokers.Xmult_mod and effects.jokers.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
-      for _, v in pairs(find_joker("cry-Exponentia")) do
-          v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
-          card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
-      end
+local cj = Card.calculate_joker
+function Card:calculate_joker(context)
+    local ret = cj(self, context)
+    --Make every Joker return a value when triggered
+    if not ret then
+        if context.selling_self then
+            if self.ability.name == "Luchador" then ret = {calculated = true} end
+            if self.ability.name == "Diet Cola" then ret = {calculated = true} end
+            if self.ability.name == 'Invisible Joker' and (self.ability.invis_rounds >= self.ability.extra) and not context.blueprint then ret = {calculated = true} end
+        end
+        if context.selling_card and self.ability.name == 'Campfire' and not context.blueprint then ret = {calculated = true} end
+        if context.reroll_shop and self.ability.name == 'Flash Card' and not context.blueprint then ret = {calculated = true} end
+        if context.ending_shop and self.ability.name == 'Perkeo' then ret = {calculated = true} end
+        if context.skip_blind and self.ability.name == 'Throwback' and not context.blueprint then ret = {calculated = true} end
+        if context.skipping_booster and self.ability.name == 'Red Card' and not context.blueprint then ret = {calculated = true} end
+        if context.playing_card_added and not self.getting_sliced and self.ability.name == 'Hologram' and (not context.blueprint) and context.cards and context.cards[1] then ret = {calculated = true} end
+        if context.first_hand_drawn and self.ability.name == 'Certificate' then ret = {calculated = true} end
+        if context.setting_blind and not self.getting_sliced then
+            if self.ability.name == 'Chicot' and not context.blueprint and context.blind.boss and not self.getting_sliced then ret = {calculated = true} end
+            if self.ability.name == 'Madness' and not context.blueprint and not context.blind.boss then ret = {calculated = true} end
+            if self.ability.name == 'Burglar' and not (context.blueprint_card or self).getting_sliced then ret = {calculated = true} end
+            if self.ability.name == 'Riff-raff' and not (context.blueprint_card or self).getting_sliced and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then ret = {calculated = true} end
+            if self.ability.name == 'Cartomancer' and not (context.blueprint_card or self).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then ret = {calculated = true} end
+            if self.ability.name == 'Ceremonial Dagger' and not context.blueprint then ret = {calculated = true} end
+            if self.ability.name == 'Marble Joker' and not (context.blueprint_card or self).getting_sliced then ret = {calculated = true} end
+        end
+        if context.destroying_card and not context.blueprint and self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then ret = {calculated = true} end
+        if context.cards_destroyed then
+            if self.ability.name == 'Caino' and not context.blueprint then ret = {calculated = true} end
+            --todo: Glass Joker
+        end
+        if context.remove_playing_cards then
+            if self.ability.name == 'Caino' and not context.blueprint then ret = {calculated = true} end
+            --todo: Glass Joker
+        end
+        if context.using_consumeable then
+            --todo: Glass Joker
+            if self.ability.name == 'Fortune Teller' and not context.blueprint and (context.consumeable.ability.set == "Tarot") then ret = {calculated = true} end
+            if self.ability.name == 'Constellation' and not context.blueprint and context.consumeable.ability.set == 'Planet' then ret = {calculated = true} end
+        end
+        if context.pre_discard and self.ability.name == 'Burnt Joker' and G.GAME.current_round.discards_used <= 0 and not context.hook then ret = {calculated = true} end
+        if self.ability.name == 'Yorick' and not context.blueprint then ret = {calculated = true} end
+        if self.ability.name == 'Faceless Joker' and context.other_card == context.full_hand[#context.full_hand] then
+            local face_cards = 0
+            for k, v in ipairs(context.full_hand) do
+                if v:is_face() then face_cards = face_cards + 1 end
+            end
+            if face_cards >= self.ability.extra.faces then
+                ret = {calculated = true}
+            end
+        end
+        if self.ability.name == 'Ride the Bus' and not context.blueprint then ret = {calculated = true} end
+        if self.ability.name == 'Obelisk' and not context.blueprint then ret = {calculated = true} end
     end
-    percent = percent+percent_delta
-  end
+    --Check for retrggering jokers
+    if ret and not context.retrigger_joker and not context.retrigger_joker_check then
+        if type(ret) ~= 'table' then ret = {joker_repetitions = {0}} end
+        ret.joker_repetitions = {0}
+        for i = 1, #G.jokers.cards do
+            local check = G.jokers.cards[i]:calculate_joker{retrigger_joker_check = true, other_card = self}
+            if type(check) == 'table' then 
+                ret.joker_repetitions[i] = check and check.repetitions and check or 0
+            else
+                ret.joker_repetitions[i] = 0
+            end
+        end
+    end
+    return ret
 end
 
 -- File loading based on Relic-Jokers
