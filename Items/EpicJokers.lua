@@ -189,7 +189,7 @@ local error_joker = {
 	calculate = function(self, context)
 		if context.end_of_round and not context.blueprint and not context.repetition then
 			if self.ability.extra.sell_rounds == 0 and not self.ability.extra.active then
-				self.ability.extra.sell_rounds = pseudorandom("cry_error", 1, 10)
+				self.ability.extra.sell_rounds = pseudorandom(pseudoseed("cry_error"), 1, 10)
 			end
 			self.ability.extra.sell_rounds = self.ability.extra.sell_rounds - 1;
 			if self.ability.extra.sell_rounds == 0 then

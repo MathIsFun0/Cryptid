@@ -15,7 +15,6 @@ local white_hole = {
     atlas = "white_hole",
     hidden = true, --default soul_rate of 0.3% in spectral packs is used
     soul_set = "Planet",
-    soul_rate = 1,
     can_use = function(card)
         return true
     end,

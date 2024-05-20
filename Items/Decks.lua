@@ -99,6 +99,28 @@ local very_fair_sprite = {
     py = 95
 }
 
+local equilibrium = {
+    object_type = "Back",
+    name = "cry-Equilibrium",
+    key = "equilibrium",
+	config = {vouchers = {'v_overstock_norm','v_overstock_plus'}, cry_equilibrium = true},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = "Deck of Equilibrium",
+        text = {
+            "All cards have the",
+            "{C:attention}same chance{} of",
+            "appearing in shops,",
+            "start run with",
+            "{C:attention,T:v_overstock_plus}Overstock Plus"
+        }
+    },
+    --[[loc_vars = function(self, info_queue, center)
+        return {vars = {center.effect.config.hands, center.effect.config.discards}}
+    end,--]] --this doesn't work, will fix later
+    --atlas = "very_fair"
+}
+
 return {name = "Very Fair Deck",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
@@ -107,6 +129,50 @@ return {name = "Very Fair Deck",
                 if self.effect.config.cry_no_vouchers then 
                     G.GAME.modifiers.cry_no_vouchers = true
                 end
+                if self.effect.config.cry_equilibrium then 
+                    G.GAME.modifiers.cry_equilibrium = true
+                end
+            end
+            --equilibrium deck patches
+            local gcp = get_current_pool
+            function get_current_pool(t, r, l, a)
+                if G.GAME.modifiers.cry_equilibrium and (a == 'sho' or t == 'Voucher' or t == 'Booster') then 
+                    if t ~= "Enhanced" and t ~= "Edition" and t ~= "Back" and t ~= "Tag" and t ~= "Seal" and t ~= "Stake" then
+                        if not P_CRY_ITEMS then
+                            P_CRY_ITEMS = {}
+                            local valid_pools = {"Joker", "Consumeables", "Voucher", "Booster"}
+                            for _, id in ipairs(valid_pools) do
+                                for k, v in pairs(G.P_CENTER_POOLS[id]) do
+                                    P_CRY_ITEMS[#P_CRY_ITEMS+1] = v.key
+                                end
+                            end
+                            for k, v in pairs(G.P_CARDS) do
+                                P_CRY_ITEMS[#P_CRY_ITEMS+1] = v.key
+                            end
+                        end
+                        return P_CRY_ITEMS, "cry_equilibrium"..G.GAME.round_resets.ante
+                    end
+                end
+                return gcp(t,r,l,a)
+            end
+            local gp = get_pack
+            function get_pack(k, t)
+                if G.GAME.modifiers.cry_equilibrium then
+                    if not P_CRY_ITEMS then
+                        P_CRY_ITEMS = {}
+                        local valid_pools = {"Joker", "Consumeables", "Voucher", "Booster"}
+                        for _, id in ipairs(valid_pools) do
+                            for k, v in pairs(G.P_CENTER_POOLS[id]) do
+                                P_CRY_ITEMS[#P_CRY_ITEMS+1] = v.key
+                            end
+                        end
+                        for k, v in pairs(G.P_CARDS) do
+                            P_CRY_ITEMS[#P_CRY_ITEMS+1] = v.key
+                        end
+                    end
+                    return G.P_CENTERS[pseudorandom_element(P_CRY_ITEMS,pseudoseed('cry_equipackbrium'..G.GAME.round_resets.ante))]
+                end
+                return gp(k,t)
             end
         end,
-        items = {very_fair_sprite, very_fair}}
+        items = {very_fair_sprite, very_fair, equilibrium}}
