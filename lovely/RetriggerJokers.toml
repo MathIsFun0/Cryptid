@@ -36,7 +36,7 @@ if effects.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # End of round retriggering from jokers
 [[patches]]
@@ -60,7 +60,7 @@ if eval and eval.jokers and eval.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Destroying cards
 [[patches]]
@@ -84,7 +84,7 @@ if eval and eval.jokers and eval.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 [[patches]]
 [patches.pattern]
@@ -107,7 +107,7 @@ if eval and eval.jokers and eval.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # Retrigger retriggering jokers
 [[patches]]
@@ -132,7 +132,7 @@ end
 if eval and eval.jokers and not eval.jokers.repetitions then eval.jokers = nil end
 '''
 match_indent = true
-overwrite = false
+
 
 # Pre-round effects
 [[patches]]
@@ -162,7 +162,7 @@ if effects and effects.jokers and effects.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # Retrigger retriggering jokers
 [[patches]]
@@ -187,7 +187,7 @@ end
 if eval and eval.jokers and not eval.jokers.repetitions then eval.jokers = nil end
 '''
 match_indent = true
-overwrite = false
+
 
 # Debuffed cards
 [[patches]]
@@ -216,7 +216,7 @@ if effects and effects.jokers and effects.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # Post-round effects
 [[patches]]
@@ -245,7 +245,7 @@ if effects and effects.jokers and effects.jokers.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # removing cards from a consumable
 [[patches]]
@@ -269,7 +269,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # selling self
 [[patches]]
@@ -293,7 +293,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # opening packs
 [[patches]]
@@ -317,7 +317,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # buying card
 [[patches]]
@@ -341,7 +341,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # first hand drawn
 [[patches]]
@@ -365,7 +365,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # using a consumable
 [[patches]]
@@ -389,7 +389,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # selling a card
 [[patches]]
@@ -413,7 +413,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # buying itself
 [[patches]]
@@ -439,7 +439,7 @@ end
 return true end}))
 '''
 match_indent = true
-overwrite = true
+
 
 # buying a card
 [[patches]]
@@ -463,7 +463,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # ending shop
 [[patches]]
@@ -487,7 +487,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # skipping booster
 [[patches]]
@@ -511,7 +511,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # skipping blind
 [[patches]]
@@ -535,7 +535,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # rerolling shop
 [[patches]]
@@ -559,7 +559,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # playing card added
 [[patches]]
@@ -583,7 +583,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # end of round
 [[patches]]
@@ -612,7 +612,7 @@ if eval and eval.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # end of round
 [[patches]]
@@ -637,7 +637,7 @@ if eval and eval.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # setting blind
 [[patches]]
@@ -661,7 +661,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # on pre-discard
 [[patches]]
@@ -685,7 +685,7 @@ if effects and effects.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # on discard
 [[patches]]
@@ -712,7 +712,7 @@ if eval and eval.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # more hand effects
 [[patches]]
@@ -738,7 +738,7 @@ if eval and eval.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # retrigger effect
 
@@ -753,7 +753,7 @@ if effects[ii].from_retrigger then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # more hand effects
 [[patches]]
@@ -779,7 +779,7 @@ if eval and eval.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # joker on joker effects
 [[patches]]
@@ -811,7 +811,7 @@ if effect and effect.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # more card destroying
 [[patches]]
@@ -843,7 +843,7 @@ if effect and effect.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true
+
 
 [[patches]]
 [patches.pattern]
@@ -856,7 +856,7 @@ if reps[j].from_retrigger then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # destroyed card effects
 [[patches]]
@@ -879,4 +879,3 @@ if destroyed and destroyed.joker_repetitions then
 end
 '''
 match_indent = true
-overwrite = true

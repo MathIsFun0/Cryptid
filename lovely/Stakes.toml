@@ -13,7 +13,7 @@ position = "before"
 payload = '''self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
 self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})'''
 match_indent = true
-overwrite = false
+
 
 
 # Yellow Stake - perishable and rental effects on consumable
@@ -29,7 +29,7 @@ for i = 1, #G.consumeables.cards do
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Yellow Stake - perishable and rental effects on cards held in hand
 [[patches]]
@@ -42,7 +42,7 @@ G.hand.cards[i]:calculate_rental()
 G.hand.cards[i]:calculate_perishable()
 '''
 match_indent = true
-overwrite = false
+
 # Yellow Stake - perishable and rental effects on cards in deck and discard pile
 [[patches]]
 [patches.pattern]
@@ -58,7 +58,7 @@ for i = 1, #G.deck.cards do
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Yellow Stake - Hanged Man can't be used on Eternal cards, Death can't remove Eternal
 [[patches]]
@@ -79,7 +79,7 @@ if self.ability.name == "Death" then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Yellow Stake - Immolate can't be used on Eternal cards
 [[patches]]
@@ -95,7 +95,7 @@ for k, v in ipairs(G.hand.cards) do
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # Yellow Stake - Death can't modify Eternal cards (redundant, but may help if Death can be used on more cards)
 [[patches]]
@@ -105,7 +105,7 @@ pattern = "if G.hand.highlighted[i] ~= rightmost then"
 position = "at"
 payload = "if G.hand.highlighted[i] ~= rightmost and not G.hand.highlighted[i].ability.eternal then"
 match_indent = true
-overwrite = true
+
 
 # Yellow Stake - Trading Card can't destroy Eternals
 [[patches]]
@@ -115,7 +115,7 @@ pattern = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 t
 position = "at"
 payload = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 and not context.other_card.ability.eternal then"
 match_indent = true
-overwrite = true
+
 
 # Yellow Stake - Sixth Sense can't destroy Eternals
 [[patches]]
@@ -125,7 +125,7 @@ pattern = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and
 position = "at"
 payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not context.full_hand[1].ability.eternal and G.GAME.current_round.hands_played == 0 then"
 match_indent = true
-overwrite = true
+
 
 # Yellow Stake - Glass can't destroy Eternals
 # Glass Stake - Any card can shatter
@@ -136,7 +136,7 @@ pattern = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[
 position = "at"
 payload = "if ((scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra) or (G.GAME.modifiers.cry_shatter_rate and pseudorandom('cry_shatter') < 1/G.GAME.modifiers.cry_shatter_rate)) and not scoring_hand[i].ability.eternal then"
 match_indent = true
-overwrite = true
+
 
 # Yellow Stake - enhancement tarots don't remove stickers
 [[patches]]
@@ -151,7 +151,7 @@ perish_tally = self.ability and self.ability.perish_tally,
 rental = self.ability and self.ability.rental
 '''
 match_indent = true
-overwrite = false
+
 
 # Amber Stake - edit number of booster packs
 [[patches]]
@@ -161,7 +161,7 @@ pattern = "for i = 1, 2 do"
 position = "at"
 payload = "for i = 1, G.GAME.modifiers.cry_booster_packs or 2 do"
 match_indent = true
-overwrite = true
+
 
 # Quartz Stake - pinned effect applies in every type of slot
 [[patches]]
@@ -171,7 +171,7 @@ pattern = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 < b.T.x
 position = "at"
 payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(a.pinned and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*(b.pinned and b.sort_id or 0) end)"
 match_indent = true
-overwrite = true
+
 
 # Quartz Stake - render pinned sticker
 [[patches]]
@@ -187,7 +187,7 @@ if self.pinned then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Ruby Stake - big blind bosses
 [[patches]]
@@ -203,7 +203,7 @@ else
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Ruby Stake - big blind bosses
 [[patches]]
@@ -219,7 +219,7 @@ else
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Ruby Stake - big blind doesn't increase ante
 [[patches]]
@@ -229,7 +229,7 @@ pattern = "if G.GAME.blind:get_type() == 'Boss' then"
 position = "at"
 payload = "if G.GAME.blind_on_deck == 'Boss' then"
 match_indent = true
-overwrite = true
+
 
 # Ruby Stake - mark big blind as defeated
 [[patches]]
@@ -239,7 +239,7 @@ pattern = "elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then"
 position = "at"
 payload = "elseif G.GAME.blind_on_deck == 'Big' then"
 match_indent = true
-overwrite = true
+
 
 # Sapphire Stake - ante tax
 [[patches]]
@@ -249,7 +249,7 @@ pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_
 position = "at"
 payload = "delay(0.4); ease_ante(1); cry_apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 match_indent = true
-overwrite = true
+
 
 # Emerald Stake - Permanently flipped cards
 [[patches]]
@@ -260,7 +260,7 @@ position = "at"
 payload = '''if card.cry_flipped then card.facing = 'back'; card.sprite_facing = 'back' end
 if not (card.cry_flipped and (self == G.shop_jokers or self == G.shop_vouchers or self == G.shop_booster)) and card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then'''
 match_indent = true
-overwrite = true
+
 
 # Emerald Stake - flipped packs
 [[patches]]
@@ -273,7 +273,7 @@ if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_pack'.
     card.cry_flipped = true
 end'''
 match_indent = true
-overwrite = false
+
 
 # Emerald Stake - flipped vouchers
 [[patches]]
@@ -286,7 +286,7 @@ if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'
     card.cry_flipped = true
 end'''
 match_indent = true
-overwrite = false
+
 
 # Platinum Stake - start with big blind ready to be selected
 [[patches]]
@@ -296,7 +296,7 @@ pattern = "G.GAME.blind_on_deck = 'Small'"
 position = "at"
 payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
 match_indent = true
-overwrite = true
+
 
 # Platinum Stake - start with big blind ready to be selected
 [[patches]]
@@ -306,7 +306,7 @@ pattern = "G.GAME.blind_on_deck = 'Small'"
 position = "at"
 payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
 match_indent = true
-overwrite = true
+
 
 # Platinum Stake - hide Small Blind
 [[patches]]
@@ -316,4 +316,3 @@ pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
 position = "at"
 payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
 match_indent = true
-overwrite = true

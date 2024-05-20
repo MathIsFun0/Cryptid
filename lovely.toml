@@ -11,7 +11,7 @@ pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarit
 position = "at"
 payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = 'Epic', ['cry_exotic'] = 'Exotic'})[card.config.center.rarity] end"
 match_indent = true
-overwrite = true
+
 
 # Fix Rare Tag creating Epic jokers
 [[patches]]
@@ -21,7 +21,7 @@ pattern = "card = create_card('Joker', _context.area, nil, 1, nil, nil, nil, 'rt
 position = "at"
 payload = "card = create_card('Joker', _context.area, nil, 0.99, nil, nil, nil, 'rta')"
 match_indent = true
-overwrite = true
+
 
 # Localization color
 [[patches]]
@@ -31,7 +31,7 @@ pattern = "legendary = G.C.RARITY[4],"
 position = "after"
 payload = "cry_exotic = G.C.RARITY['cry_exotic'], cry_epic = G.C.RARITY['cry_epic'],"
 match_indent = true
-overwrite = false
+
 
 # Draw midground layer
 [[patches]]
@@ -48,7 +48,7 @@ if self.config.center.soul_pos and self.config.center.soul_pos.extra and (self.c
 end
 '''
 match_indent = true
-overwrite = false
+
 
 [[patches]]
 [patches.pattern]
@@ -57,7 +57,7 @@ pattern = '''if k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "sou
 position = "at"
 payload = '''if k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k ~= 'floating_sprite2' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
 match_indent = true
-overwrite = true
+
 
 # Custom variables in info queue
 [[patches]]
@@ -67,7 +67,7 @@ pattern = "function generate_card_ui(_c, full_UI_table, specific_vars, card_type
 position = "after"
 payload = "if _c.specific_vars then specific_vars = _c.specific_vars end"
 match_indent = true
-overwrite = false
+
 
 # Exponential Mult
 [[patches]]
@@ -79,7 +79,7 @@ payload = '''
 if effects.jokers.pow_mult_mod then mult = mod_mult(mult^effects.jokers.pow_mult_mod);extras.mult = true  end
 '''
 match_indent = true
-overwrite = false
+
 
 # Exponential Mult
 [[patches]]
@@ -91,4 +91,3 @@ payload = '''
 if effect.pow_mult_mod then mult = mod_mult(mult^effect.pow_mult_mod);extras.mult = true  end
 '''
 match_indent = true
-overwrite = false

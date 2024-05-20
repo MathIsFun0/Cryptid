@@ -18,7 +18,7 @@ if center.name == "cry-Wee Fibonacci" and (center.discovered or self.bypass_disc
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Wee Fibonacci rendering
 [[patches]]
@@ -32,4 +32,3 @@ elseif self.config.center.name == "cry-Wee Fibonacci" then
     self.T.w = W*scale*0.7*scale
 '''
 match_indent = true
-overwrite = false

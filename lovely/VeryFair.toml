@@ -19,7 +19,7 @@ else
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # Remove voucher when defeating boss (also for Crimson Stake)
 [[patches]]
@@ -37,7 +37,7 @@ else
 end
 '''
 match_indent = true
-overwrite = true
+
 
 # Change empty voucher text on Very Fair Deck
 [[patches]]
@@ -47,7 +47,7 @@ pattern = "{n=G.UIT.T, config={text = 'DEFEAT', scale = 0.6, colour = G.C.WHITE}
 position = "at"
 payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.cry_no_vouchers and (very_fair_quip[1] or '') or 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
 match_indent = true
-overwrite = true
+
 
 [[patches]]
 [patches.pattern]
@@ -56,7 +56,7 @@ pattern = "{n=G.UIT.T, config={text = 'BOSS BLIND', scale = 0.4, colour = G.C.WH
 position = "at"
 payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.cry_no_vouchers and (very_fair_quip[2] or '') or G.GAME.modifiers.cry_voucher_restock_antes and G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 and 'TWO BOSS BLINDS' or 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
 match_indent = true
-overwrite = true
+
 
 [[patches]]
 [patches.pattern]
@@ -65,5 +65,5 @@ pattern = "{n=G.UIT.T, config={text = 'TO RESTOCK', scale = 0.4, colour = G.C.WH
 position = "at"
 payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.cry_no_vouchers and (very_fair_quip[3] or '') or 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
 match_indent = true
-overwrite = true
+
 

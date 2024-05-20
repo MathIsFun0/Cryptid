@@ -25,4 +25,4 @@ if currentBack.effect.config.cry_force_sticker then
 end
 '''
 match_indent = true
-overwrite = false
+

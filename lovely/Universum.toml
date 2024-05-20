@@ -11,7 +11,7 @@ pattern = "amount = amount or 1"
 position = "after"
 payload = "if not next(find_joker('cry-Universum')) then"
 match_indent = true
-overwrite = false
+
 
 [[patches]]
 [patches.pattern]
@@ -20,7 +20,7 @@ pattern = "G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME
 position = "at"
 payload = "G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult*amount, 1)"
 match_indent = true
-overwrite = true
+
 
 [[patches]]
 [patches.pattern]
@@ -36,4 +36,3 @@ else
 end
 '''
 match_indent = true
-overwrite = true

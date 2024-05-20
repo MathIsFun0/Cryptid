@@ -18,7 +18,7 @@ if effects.jokers.Xmult_mod and effects.jokers.Xmult_mod ~= 1 and next(find_joke
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Increment Exponentia on Misc XMult
 [[patches]]
@@ -35,7 +35,7 @@ if effects.Xmult_mod and next(find_joker("cry-Exponentia")) then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Increment Exponentia on Enhancement XMult
 [[patches]]
@@ -52,7 +52,7 @@ if next(find_joker("cry-Exponentia")) then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Increment Exponentia on Held-in-Hand XMult
 [[patches]]
@@ -69,7 +69,7 @@ if next(find_joker("cry-Exponentia")) then
 end
 '''
 match_indent = true
-overwrite = false
+
 
 # Increment Exponentia on Edition XMult
 [[patches]]
@@ -86,4 +86,3 @@ if (effects and effects[ii] and effects[ii].edition and effects[ii].edition.x_mu
 end
 '''
 match_indent = true
-overwrite = false
