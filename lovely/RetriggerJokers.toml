@@ -26,8 +26,16 @@ if effects.jokers.joker_repetitions then
                     if ef.jokers.mult_mod then mult = mod_mult(mult + ef.jokers.mult_mod);extras.mult = true end
                     if ef.jokers.chip_mod then hand_chips = mod_chips(hand_chips + ef.jokers.chip_mod);extras.hand_chips = true end
                     if ef.jokers.Xmult_mod then mult = mod_mult(mult*ef.jokers.Xmult_mod);extras.mult = true  end
+                    if ef.jokers.pow_mult_mod then mult = mod_mult(mult^ef.jokers.pow_mult_mod);extras.mult = true  end
                     update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
                     card_eval_status_text(_card, 'jokers', nil, percent, nil, effects.jokers)
+                    --Exponentia
+                    if ef.jokers.Xmult_mod and ef.jokers.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
+                        for _, v in pairs(find_joker("cry-Exponentia")) do
+                            v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
+                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+                        end
+                    end
                     if percent then percent = percent+percent_delta end
                 end
             end
@@ -801,8 +809,16 @@ if effect and effect.joker_repetitions then
                     if ef.mult_mod then mult = mod_mult(mult + ef.mult_mod);extras.mult = true end
                     if ef.chip_mod then hand_chips = mod_chips(hand_chips + ef.chip_mod);extras.hand_chips = true end
                     if ef.Xmult_mod then mult = mod_mult(mult*ef.Xmult_mod);extras.mult = true  end
+                    if ef.pow_mult_mod then mult = mod_mult(mult^ef.pow_mult_mod);extras.mult = true  end
                     if extras.mult or extras.hand_chips then update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult}) end
                     if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, ef) end
+                    --Exponentia
+                    if ef.Xmult_mod and next(find_joker("cry-Exponentia")) then
+                        for _, v in pairs(find_joker("cry-Exponentia")) do
+                            v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
+                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+                        end
+                    end
                     percent = percent+percent_delta
                 end
             end
@@ -833,8 +849,16 @@ if effect and effect.joker_repetitions then
                     if ef.mult_mod then mult = mod_mult(mult + ef.mult_mod);extras.mult = true end
                     if ef.chip_mod then hand_chips = mod_chips(hand_chips + ef.chip_mod);extras.hand_chips = true end
                     if ef.Xmult_mod then mult = mod_mult(mult*ef.Xmult_mod);extras.mult = true  end
+                    if ef.pow_mult_mod then mult = mod_mult(mult^ef.pow_mult_mod);extras.mult = true  end
                     if extras.mult or extras.hand_chips then update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult}) end
                     if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, ef) end
+                    --Exponentia
+                    if ef.Xmult_mod and next(find_joker("cry-Exponentia")) then
+                        for _, v in pairs(find_joker("cry-Exponentia")) do
+                            v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
+                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+                        end
+                    end
                     percent = percent+percent_delta
                 end
             end

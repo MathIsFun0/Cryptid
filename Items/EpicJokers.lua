@@ -401,6 +401,20 @@ local double_scale = {
                     end
                 elseif not G.GAME.cry_double_scale[jkr.sort_id].scaler then
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+					if jkr.name == "cry-Exponentia" then
+						dbl_info.base = {"extra", "pow_mult"}
+						dbl_info.scaler = {"extra", "pow_mult_mod"}
+						dbl_info.scaler_base = jkr.ability.extra.pow_mult_mod
+						dbl_info.offset = 1
+						return
+					end
+					if jkr.name == "Yorick" then
+						dbl_info.base = {"x_mult"}
+						dbl_info.scaler = {"xmult"} --not kidding
+						dbl_info.scaler_base = 1
+						dbl_info.offset = 1
+						return
+					end
                     for k, v in pairs(jkr.ability) do
                         if dbl_info.ability[k] ~= v and is_number(v) then
                             dbl_info.base = {k}
@@ -427,7 +441,7 @@ local double_scale = {
                         end
                         if type(jkr.ability[k]) == 'table' then
                             for _k, _v in pairs(jkr.ability[k]) do
-                                if dbl_info.ability[k][_k] ~= _v and type(_v) == 'number' then
+                                if dbl_info.ability[k][_k] ~= _v and is_number(_v) then
                                     dbl_info.base = {k,_k}
                                     local predicted_mod = math.abs(_v-dbl_info.ability[k][_k])
                                     local best_key = {""}

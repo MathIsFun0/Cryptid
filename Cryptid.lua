@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.2.2b
+--- VERSION: 0.2.2c
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -325,7 +325,9 @@ SMODS.Atlas({
     py = 32
 }):register()
 
+
 --quick patch to remove animations
+G.E_MANAGER.queue_dt = 1/1000
 local cest = card_eval_status_text
 function card_eval_status_text(a,b,c,d,e,f)
     if not config_file.Cryptid.disable_anims then cest(a,b,c,d,e,f) end
@@ -334,48 +336,59 @@ local jc = juice_card
 function juice_card(x)
     if not config_file.Cryptid.disable_anims then jc(x) end
 end
+function cry_uht(config, vals)
+    local col = G.C.GREEN
+    if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
+        local delta = (is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips)) and (vals.chips - G.GAME.current_round.current_hand.chips) or 0
+        if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
+        elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
+        else delta = number_format(delta)
+        end
+        if type(vals.chips) == 'string' then delta = vals.chips end
+        G.GAME.current_round.current_hand.chips = vals.chips
+        G.hand_text_area.chips:update(0)
+    end
+    if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
+        local delta = (is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult))and (vals.mult - G.GAME.current_round.current_hand.mult) or 0
+        if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
+        elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
+        else delta = number_format(delta)
+        end
+        if type(vals.mult) == 'string' then delta = vals.mult end
+        G.GAME.current_round.current_hand.mult = vals.mult
+        G.hand_text_area.mult:update(0)
+    end
+    if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
+        G.GAME.current_round.current_hand.handname = vals.handname
+    end
+    if vals.chip_total then G.GAME.current_round.current_hand.chip_total = vals.chip_total;G.hand_text_area.chip_total.config.object:pulse(0.5) end
+    if vals.level and G.GAME.current_round.current_hand.hand_level ~= ' '..localize('k_lvl')..tostring(vals.level) then
+        if vals.level == '' then
+            G.GAME.current_round.current_hand.hand_level = vals.level
+        else
+            G.GAME.current_round.current_hand.hand_level = ' '..localize('k_lvl')..tostring(vals.level)
+            if type(vals.level) == 'number' then 
+                G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[math.min(vals.level, 7)]
+            else
+                G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
+            end
+        end
+    end
+    return true
+end
 local uht = update_hand_text
 function update_hand_text(config, vals)
     if config_file.Cryptid.disable_anims then
-        local col = G.C.GREEN
-        if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
-            local delta = (is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips)) and (vals.chips - G.GAME.current_round.current_hand.chips) or 0
-            if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
-            elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
-            else delta = number_format(delta)
-            end
-            if type(vals.chips) == 'string' then delta = vals.chips end
-            G.GAME.current_round.current_hand.chips = vals.chips
-            G.hand_text_area.chips:update(0)
-        end
-        if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
-            local delta = (is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult))and (vals.mult - G.GAME.current_round.current_hand.mult) or 0
-            if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
-            elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
-            else delta = number_format(delta)
-            end
-            if type(vals.mult) == 'string' then delta = vals.mult end
-            G.GAME.current_round.current_hand.mult = vals.mult
-            G.hand_text_area.mult:update(0)
-        end
-        if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
-            G.GAME.current_round.current_hand.handname = vals.handname
-        end
-        if vals.chip_total then G.GAME.current_round.current_hand.chip_total = vals.chip_total;G.hand_text_area.chip_total.config.object:pulse(0.5) end
-        if vals.level and G.GAME.current_round.current_hand.hand_level ~= ' '..localize('k_lvl')..tostring(vals.level) then
-            if vals.level == '' then
-                G.GAME.current_round.current_hand.hand_level = vals.level
-            else
-                G.GAME.current_round.current_hand.hand_level = ' '..localize('k_lvl')..tostring(vals.level)
-                if type(vals.level) == 'number' then 
-                    G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[math.min(vals.level, 7)]
-                else
-                    G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
-                end
-            end
-        end
-        return true
+        G.latest_uht = {config=config, vals=vals}
     else uht(config, vals)
+    end
+end
+local upd = Game.update
+function Game:update(dt)
+    upd(self, dt)
+    if G.latest_uht then
+        cry_uht(G.latest_uht.config, G.latest_uht.vals)
+        G.latest_uht = nil
     end
 end
 ----------------------------------------------
