@@ -696,7 +696,8 @@ return {name = "More Stakes",
                     local words = {}
                     words[1], words[2] = v.loc_txt.name:match("(%w+)(.+)")
                     local stakeName = words[1]
-                    v.sticker_loc_txt = {
+                    v.loc_txt = {description = v.loc_txt}
+                    v.loc_txt.sticker = {
                         name = stakeName.." Sticker",
                         text = {
                             "Used this Joker",

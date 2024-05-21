@@ -10,8 +10,12 @@ priority = 0
 target = "game.lua"
 pattern = "set_profile_progress()"
 position = "before"
-payload = '''self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
-self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})'''
+payload = '''
+if self.ASSET_ATLAS['cry_sticker'] then
+    self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
+    self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})
+end
+'''
 match_indent = true
 
 

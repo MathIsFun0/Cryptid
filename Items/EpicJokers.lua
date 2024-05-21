@@ -179,7 +179,7 @@ local error_joker = {
 	calculate = function(self, context)
 		if context.end_of_round and not context.blueprint and not context.repetition then
 			if self.ability.extra.sell_rounds == 0 and not self.ability.extra.active then
-				self.ability.extra.sell_rounds = pseudorandom(pseudoseed("cry_error"), 1, 10)
+				self.ability.extra.sell_rounds = math.floor(pseudorandom(pseudoseed("cry_error"))*10+1)
 			end
 			self.ability.extra.sell_rounds = self.ability.extra.sell_rounds - 1;
 			if self.ability.extra.sell_rounds == 0 then
@@ -192,24 +192,24 @@ local error_joker = {
 				colour = G.C.BLACK
 			}
 		end
-		if context.selling_self and self.ability.extra.active then
+		if context.selling_self and self.ability.extra.active and not context.retrigger_joker then
 			local eval = function(card) return (card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
                                     juice_card_until(self, eval, true)
 			local jokers = {}
 			for i=1, #G.jokers.cards do 
-				if G.jokers.cards[i].ability.name ~= "cry-Error" then
+				if G.jokers.cards[i].ability.name ~= "cry-Error" and #jokers < 5 then
 					jokers[#jokers+1] = G.jokers.cards[i]
 				end
 			end
 			for i = 1, #jokers do
 				local card = copy_card(jokers[i])
-				card:set_edition({
+				--[[card:set_edition({
 					negative = true
-				})
+				})--]]
 				card:add_to_deck()
 				G.jokers:emplace(card)
 			end
-			return {calculated = true}
+			return
 		end
 	end
 }
@@ -288,7 +288,7 @@ local boredom = {
     end,
 	atlas = "boredom",
 	calculate = function(self, context)
-        if context.retrigger_joker_check and not context.retrigger_joker then
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
 			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/self.ability.extra.odds then
 				return {
 					message = localize('k_again_ex'),

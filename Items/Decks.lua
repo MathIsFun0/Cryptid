@@ -115,13 +115,17 @@ local equilibrium = {
             "{C:attention,T:v_overstock_plus}Overstock Plus"
         }
     },
-    --[[loc_vars = function(self, info_queue, center)
-        return {vars = {center.effect.config.hands, center.effect.config.discards}}
-    end,--]] --this doesn't work, will fix later
-    --atlas = "very_fair"
+    atlas = "equilibrium"
+}
+local equilibrium_sprite = {
+    object_type = "Atlas",
+    key = "equilibrium",
+    path = "b_cry_equilibrium.png",
+    px = 71,
+    py = 95
 }
 
-return {name = "Very Fair Deck",
+return {name = "Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
             function Back.apply_to_run(self)
@@ -175,4 +179,4 @@ return {name = "Very Fair Deck",
                 return gp(k,t)
             end
         end,
-        items = {very_fair_sprite, very_fair, equilibrium}}
+        items = {very_fair_sprite, equilibrium_sprite, very_fair, equilibrium}}

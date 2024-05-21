@@ -109,7 +109,7 @@ function Card:calculate_joker(context)
                 ret = {calculated = true}
             end
         end
-        if self.ability.name == 'Ride the Bus' and not context.blueprint then ret = {calculated = true} end
+        --if self.ability.name == 'Ride the Bus' and not context.blueprint then ret = {calculated = true} end
         if self.ability.name == 'Obelisk' and not context.blueprint then ret = {calculated = true} end
     end
     --Check for retrggering jokers
