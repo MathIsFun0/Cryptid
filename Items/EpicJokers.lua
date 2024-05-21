@@ -402,7 +402,7 @@ local double_scale = {
                 elseif not G.GAME.cry_double_scale[jkr.sort_id].scaler then
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
                     for k, v in pairs(jkr.ability) do
-                        if dbl_info.ability[k] ~= v and type(v) ~= 'table' then
+                        if dbl_info.ability[k] ~= v and is_number(v) then
                             dbl_info.base = {k}
                             local predicted_mod = math.abs(v-dbl_info.ability[k])
                             local best_key = {""}

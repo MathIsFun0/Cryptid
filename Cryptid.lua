@@ -6,6 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
+--- VERSION: 0.2.2a
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -99,7 +100,6 @@ function Card:calculate_joker(context)
             if self.ability.name == 'Constellation' and not context.blueprint and context.consumeable.ability.set == 'Planet' then ret = {calculated = true} end
         end
         if context.pre_discard and self.ability.name == 'Burnt Joker' and G.GAME.current_round.discards_used <= 0 and not context.hook then ret = {calculated = true} end
-        if self.ability.name == 'Yorick' and not context.blueprint then ret = {calculated = true} end
         if self.ability.name == 'Faceless Joker' and context.other_card == context.full_hand[#context.full_hand] then
             local face_cards = 0
             for k, v in ipairs(context.full_hand) do
@@ -109,8 +109,6 @@ function Card:calculate_joker(context)
                 ret = {calculated = true}
             end
         end
-        --if self.ability.name == 'Ride the Bus' and not context.blueprint then ret = {calculated = true} end
-        if self.ability.name == 'Obelisk' and not context.blueprint then ret = {calculated = true} end
     end
     --Check for retrggering jokers
     if ret and not context.retrigger_joker and not context.retrigger_joker_check then
