@@ -35,7 +35,7 @@ local dropshot = {
                             v:juice_up()
                             return true
                         end
-                    })) 
+                    }))
                 end
             end
             for k, v in ipairs(context.scoring_hand) do
@@ -44,8 +44,8 @@ local dropshot = {
             if cards > 0 then 
                 self.ability.extra.x_mult = self.ability.extra.x_mult + cards * self.ability.extra.Xmult_mod
                 card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
+                return {calculated = true}
             end
-            return {calculated = true}
         end
         if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {

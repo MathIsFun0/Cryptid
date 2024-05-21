@@ -226,7 +226,7 @@ local m = {
 	name = "cry-m",
 	key = "m",
 	pos = {x = 0, y = 0},
-	config = {extra = {extra = 13, x_mult = 1}, t_mult = 8, type = 'Pair'},
+	config = {extra = {extra = 13, x_mult = 1}, jolly = {t_mult = 8, type = 'Pair'}},
 	loc_txt = {
         name = 'm',
         text = {
@@ -239,7 +239,7 @@ local m = {
 	cost = 13,
 	discovered = true,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.t_mult, self.config.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
 	atlas = "m",
@@ -262,6 +262,46 @@ local m_sprite = {
     key = "m",
     
     path = "j_cry_m.png",
+    px = 71,
+    py = 95
+}
+local M = {
+	object_type = "Joker",
+	name = "cry-M",
+	key = "M",
+	pos = {x = 0, y = 0},
+	config = {jolly = {t_mult = 8, type = 'Pair'}},
+	loc_txt = {
+        name = 'M',
+        text = {
+			"When Blind selected,",
+			"create a {C:dark_edition}Negative{}",
+			"{C:attention}Jolly Joker{}"
+		}
+    },
+	rarity = "cry_epic",
+	cost = 13,
+	discovered = true,
+	blueprint_compat = true,loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+    end,
+	atlas = "M",
+	calculate = function(self, context)
+        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+			card:set_edition({
+				negative = true
+			})
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			return true
+		end
+	end
+}
+local M_sprite = {
+	object_type = "Atlas",
+    key = "M",
+    path = "j_cry_big_m.png",
     px = 71,
     py = 95
 }
@@ -534,4 +574,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, m_sprite, boredom_sprite, double_scale_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, m, boredom, double_scale}}
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale}}
