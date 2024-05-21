@@ -125,7 +125,7 @@ local equilibrium_sprite = {
     py = 95
 }
 
-return {name = "Decks",
+return {name = "Misc. Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
             function Back.apply_to_run(self)

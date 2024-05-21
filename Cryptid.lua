@@ -6,19 +6,18 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.2.2a
+--- VERSION: 0.2.2b
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
 local mod_path = ''..SMODS.current_mod.path
-
 -- Load Options
-local config_file = {}
+local config_file = {["Cryptid"]={disable_anims = false}}
 if NFS.read(mod_path.."/config.lua") then
     config_file = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
-    print(NFS.read(mod_path.."/config.lua"))
 end
+if config_file.Cryptid then Cryptid = config_file.Cryptid end
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
@@ -183,9 +182,23 @@ function create_UIBox_settings()
         cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
             {n=G.UIT.O, config={object = DynaText({string = "Select features to enable (applies on game restart):", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
           }}}
+        left_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
+        right_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
         for k, _ in pairs(config_file) do
-            cry_nodes[#cry_nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+            if k ~= "Cryptid" then
+                if #right_settings.nodes < #left_settings.nodes then
+                    right_settings.nodes[# right_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+                else
+                    left_settings.nodes[#left_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+                end
+            end
         end
+        config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={left_settings,right_settings}}
+        cry_nodes[#cry_nodes+1] = config
+        cry_nodes[#cry_nodes+1] = {n=G.UIT.R, config={align = "cm"}, nodes={
+            {n=G.UIT.O, config={object = DynaText({string = "Other Settings", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+          }}
+        cry_nodes[#cry_nodes+1] = create_toggle({label = "Disable Scoring Animations", ref_table = config_file.Cryptid, ref_value = "disable_anims"})
         return {
         n = G.UIT.ROOT,
         config = {
@@ -311,5 +324,59 @@ SMODS.Atlas({
     px = 32,
     py = 32
 }):register()
+
+--quick patch to remove animations
+local cest = card_eval_status_text
+function card_eval_status_text(a,b,c,d,e,f)
+    if not config_file.Cryptid.disable_anims then cest(a,b,c,d,e,f) end
+end
+local jc = juice_card
+function juice_card(x)
+    if not config_file.Cryptid.disable_anims then jc(x) end
+end
+local uht = update_hand_text
+function update_hand_text(config, vals)
+    if config_file.Cryptid.disable_anims then
+        local col = G.C.GREEN
+        if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
+            local delta = (is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips)) and (vals.chips - G.GAME.current_round.current_hand.chips) or 0
+            if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
+            elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
+            else delta = number_format(delta)
+            end
+            if type(vals.chips) == 'string' then delta = vals.chips end
+            G.GAME.current_round.current_hand.chips = vals.chips
+            G.hand_text_area.chips:update(0)
+        end
+        if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
+            local delta = (is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult))and (vals.mult - G.GAME.current_round.current_hand.mult) or 0
+            if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
+            elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
+            else delta = number_format(delta)
+            end
+            if type(vals.mult) == 'string' then delta = vals.mult end
+            G.GAME.current_round.current_hand.mult = vals.mult
+            G.hand_text_area.mult:update(0)
+        end
+        if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
+            G.GAME.current_round.current_hand.handname = vals.handname
+        end
+        if vals.chip_total then G.GAME.current_round.current_hand.chip_total = vals.chip_total;G.hand_text_area.chip_total.config.object:pulse(0.5) end
+        if vals.level and G.GAME.current_round.current_hand.hand_level ~= ' '..localize('k_lvl')..tostring(vals.level) then
+            if vals.level == '' then
+                G.GAME.current_round.current_hand.hand_level = vals.level
+            else
+                G.GAME.current_round.current_hand.hand_level = ' '..localize('k_lvl')..tostring(vals.level)
+                if type(vals.level) == 'number' then 
+                    G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[math.min(vals.level, 7)]
+                else
+                    G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
+                end
+            end
+        end
+        return true
+    else uht(config, vals)
+    end
+end
 ----------------------------------------------
 ------------MOD CODE END----------------------
