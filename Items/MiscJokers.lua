@@ -106,7 +106,6 @@ local potofjokes = {
 	rarity = 3,
 	cost = 10,
     discovered = true,
-	blueprint_compat = true,
 	atlas = 'pot_of_jokes',
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.h_size<0 and center.ability.extra.h_size or "+"..center.ability.extra.h_size,center.ability.extra.h_mod}}

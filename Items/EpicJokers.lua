@@ -416,7 +416,7 @@ local double_scale = {
 						return
 					end
                     for k, v in pairs(jkr.ability) do
-                        if dbl_info.ability[k] ~= v and is_number(v) then
+                        if dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
                             dbl_info.base = {k}
                             local predicted_mod = math.abs(v-dbl_info.ability[k])
                             local best_key = {""}
@@ -441,7 +441,7 @@ local double_scale = {
                         end
                         if type(jkr.ability[k]) == 'table' then
                             for _k, _v in pairs(jkr.ability[k]) do
-                                if dbl_info.ability[k][_k] ~= _v and is_number(_v) then
+                                if dbl_info.ability[k][_k] ~= _v and is_number(_v) and is_number(dbl_info.ability[k][_k]) then
                                     dbl_info.base = {k,_k}
                                     local predicted_mod = math.abs(_v-dbl_info.ability[k][_k])
                                     local best_key = {""}
