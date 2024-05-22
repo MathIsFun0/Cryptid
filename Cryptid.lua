@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.2.2c
+--- VERSION: 0.2.2d
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -17,7 +17,6 @@ local config_file = {["Cryptid"]={disable_anims = false}}
 if NFS.read(mod_path.."/config.lua") then
     config_file = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
 end
-if config_file.Cryptid then Cryptid = config_file.Cryptid end
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
@@ -152,77 +151,45 @@ G.FUNCS.options = function(e)
   NFS.write(mod_path.."/config.lua", STR_PACK(config_file))
 end
 
-function create_UIBox_settings()
-    local tabs = {}
-    tabs[#tabs+1] = {
-      label = localize('b_set_game'),
-      chosen = true,
-      tab_definition_function = G.UIDEF.settings_tab,
-      tab_definition_function_args = 'Game'
-    }
-    if G.F_VIDEO_SETTINGS then   tabs[#tabs+1] = {
-        label = localize('b_set_video'),
-        tab_definition_function = G.UIDEF.settings_tab,
-        tab_definition_function_args = 'Video'
-      }
-    end
-    tabs[#tabs+1] = {
-      label = localize('b_set_graphics'),
-      tab_definition_function = G.UIDEF.settings_tab,
-      tab_definition_function_args = 'Graphics'
-    }
-    tabs[#tabs+1] = {
-      label = localize('b_set_audio'),
-      tab_definition_function = G.UIDEF.settings_tab,
-      tab_definition_function_args = 'Audio'
-    }
-    tabs[#tabs+1] = {
-    label = "Cryptid",
-    tab_definition_function = function()
-        cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
-            {n=G.UIT.O, config={object = DynaText({string = "Select features to enable (applies on game restart):", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
-          }}}
-        left_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
-        right_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
-        for k, _ in pairs(config_file) do
-            if k ~= "Cryptid" then
-                if #right_settings.nodes < #left_settings.nodes then
-                    right_settings.nodes[# right_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
-                else
-                    left_settings.nodes[#left_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+local ct = create_tabs
+function create_tabs(args)
+    if args and args.tab_h == 7.05 then
+        args.tabs[#args.tabs+1] = {
+            label = "Cryptid",
+            tab_definition_function = function()
+                cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
+                    {n=G.UIT.O, config={object = DynaText({string = "Select features to enable (applies on game restart):", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+                  }}}
+                left_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
+                right_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
+                for k, _ in pairs(config_file) do
+                    if k ~= "Cryptid" then
+                        if #right_settings.nodes < #left_settings.nodes then
+                            right_settings.nodes[# right_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+                        else
+                            left_settings.nodes[#left_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+                        end
+                    end
                 end
-            end
-        end
-        config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={left_settings,right_settings}}
-        cry_nodes[#cry_nodes+1] = config
-        cry_nodes[#cry_nodes+1] = {n=G.UIT.R, config={align = "cm"}, nodes={
-            {n=G.UIT.O, config={object = DynaText({string = "Other Settings", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
-          }}
-        cry_nodes[#cry_nodes+1] = create_toggle({label = "Disable Scoring Animations", ref_table = config_file.Cryptid, ref_value = "disable_anims"})
-        return {
-        n = G.UIT.ROOT,
-        config = {
-            emboss = 0.05,
-            minh = 6,
-            r = 0.1,
-            minw = 10,
-            align = "cm",
-            padding = 0.2,
-            colour = G.C.BLACK
-        },
-        nodes = cry_nodes
-    }end
-    }
-  
-    local t = create_UIBox_generic_options({back_func = 'options',contents = {create_tabs(
-      {tabs = tabs,
-      tab_h = 7.05,
-      tab_alignment = 'tm',
-      snap_to_nav = true}
-      )}})
-    return t
-  end
-
+                config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={left_settings,right_settings}}
+                cry_nodes[#cry_nodes+1] = config
+                return {
+                n = G.UIT.ROOT,
+                config = {
+                    emboss = 0.05,
+                    minh = 6,
+                    r = 0.1,
+                    minw = 10,
+                    align = "cm",
+                    padding = 0.2,
+                    colour = G.C.BLACK
+                },
+                nodes = cry_nodes
+            }end
+        }
+    end
+    return ct(args)
+end
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
@@ -324,72 +291,5 @@ SMODS.Atlas({
     px = 32,
     py = 32
 }):register()
-
-
---quick patch to remove animations
-G.E_MANAGER.queue_dt = 1/1000
-local cest = card_eval_status_text
-function card_eval_status_text(a,b,c,d,e,f)
-    if not config_file.Cryptid.disable_anims then cest(a,b,c,d,e,f) end
-end
-local jc = juice_card
-function juice_card(x)
-    if not config_file.Cryptid.disable_anims then jc(x) end
-end
-function cry_uht(config, vals)
-    local col = G.C.GREEN
-    if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
-        local delta = (is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips)) and (vals.chips - G.GAME.current_round.current_hand.chips) or 0
-        if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
-        elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
-        else delta = number_format(delta)
-        end
-        if type(vals.chips) == 'string' then delta = vals.chips end
-        G.GAME.current_round.current_hand.chips = vals.chips
-        G.hand_text_area.chips:update(0)
-    end
-    if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
-        local delta = (is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult))and (vals.mult - G.GAME.current_round.current_hand.mult) or 0
-        if Big:new(delta) < Big:new(0) then delta = number_format(delta); col = G.C.RED
-        elseif Big:new(delta) > Big:new(0) then delta = '+'..number_format(delta)
-        else delta = number_format(delta)
-        end
-        if type(vals.mult) == 'string' then delta = vals.mult end
-        G.GAME.current_round.current_hand.mult = vals.mult
-        G.hand_text_area.mult:update(0)
-    end
-    if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
-        G.GAME.current_round.current_hand.handname = vals.handname
-    end
-    if vals.chip_total then G.GAME.current_round.current_hand.chip_total = vals.chip_total;G.hand_text_area.chip_total.config.object:pulse(0.5) end
-    if vals.level and G.GAME.current_round.current_hand.hand_level ~= ' '..localize('k_lvl')..tostring(vals.level) then
-        if vals.level == '' then
-            G.GAME.current_round.current_hand.hand_level = vals.level
-        else
-            G.GAME.current_round.current_hand.hand_level = ' '..localize('k_lvl')..tostring(vals.level)
-            if type(vals.level) == 'number' then 
-                G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[math.min(vals.level, 7)]
-            else
-                G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
-            end
-        end
-    end
-    return true
-end
-local uht = update_hand_text
-function update_hand_text(config, vals)
-    if config_file.Cryptid.disable_anims then
-        G.latest_uht = {config=config, vals=vals}
-    else uht(config, vals)
-    end
-end
-local upd = Game.update
-function Game:update(dt)
-    upd(self, dt)
-    if G.latest_uht then
-        cry_uht(G.latest_uht.config, G.latest_uht.vals)
-        G.latest_uht = nil
-    end
-end
 ----------------------------------------------
 ------------MOD CODE END----------------------
