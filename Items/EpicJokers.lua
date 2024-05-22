@@ -294,7 +294,7 @@ local M = {
 			})
 			card:add_to_deck()
 			G.jokers:emplace(card)
-			return true
+			return {completed=true}
 		end
 	end
 }
