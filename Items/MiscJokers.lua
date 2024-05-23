@@ -117,7 +117,7 @@ local potofjokes = {
             return {
                 message = localize{type='variable',key='a_handsize',vars={card.ability.extra.h_mod}},
                 colour = G.C.FILTER,
-                card = self
+                card = card
             }
         end
     end,
@@ -228,7 +228,7 @@ local wee_fib = {
 				
 				return {
 					extra = {focus = self, message = localize('k_upgrade_ex')},
-					card = self,
+					card = card,
 					colour = G.C.MULT
 				}
 			end

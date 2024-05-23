@@ -287,7 +287,6 @@ local platinum = {object_type = "Stake",
         name = "Platinum Stake",
         text = {
         "Small Blinds are {C:attention}removed{}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,

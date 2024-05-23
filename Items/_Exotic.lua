@@ -74,7 +74,7 @@ local iterum = {
                 return {
                     message = localize('k_again_ex'),
                     repetitions = card.ability.extra.repetitions,
-                    card = self
+                    card = card
                 }
             end
         elseif context.individual then
@@ -82,7 +82,7 @@ local iterum = {
                 return {
                     x_mult = card.ability.extra.x_mult,
                     colour = G.C.RED,
-                    card = self
+                    card = card
                 }
             end
         end

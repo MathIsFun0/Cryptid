@@ -145,7 +145,7 @@ local canvas = {
 				return {
 					message = localize('k_again_ex'),
 					repetitions = self.config.num_retriggers,
-					card = self
+					card = card
 				}
 			end
 		end
@@ -193,7 +193,7 @@ local error_joker = {
 			}
 		end
 		if context.selling_self and card.ability.extra.active and not context.retrigger_joker then
-			local eval = function(card) return (card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
+			local eval = function(card) return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
                                     juice_card_until(self, eval, true)
 			local jokers = {}
 			for i=1, #G.jokers.cards do 
@@ -333,7 +333,7 @@ local boredom = {
 				return {
 					message = localize('k_again_ex'),
 					repetitions = 1,
-					card = self
+					card = card
 				}
 			else return {calculated = true} end
         end
@@ -342,7 +342,7 @@ local boredom = {
 				return {
 					message = localize('k_again_ex'),
 					repetitions = 1,
-					card = self
+					card = card
 				}
 			else
 				return {calculated = true}
@@ -588,14 +588,14 @@ return {name = "Epic Jokers",
                             return {
                                 message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra}},
                                 colour = G.C.RED,
-                                card = self
+                                card = card
                             }
                         end
                     end
                     if context.cardarea == G.jokers and context.before and not context.blueprint then
                         card.ability.mult = card.ability.mult + card.ability.extra
                         return {
-                            card = self,
+                            card = card,
                             message = localize{type='variable',key='a_mult',vars={card.ability.extra}}
                         }
                     end
