@@ -21,12 +21,12 @@ local googol_play = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 	end,
-	calculate = function(self, context)
+	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then
-			if pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/self.ability.extra.odds then
+			if pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				return {
-					message = localize{type='variable',key='a_xmult',vars={self.ability.extra.Xmult}},
-					Xmult_mod = self.ability.extra.Xmult
+					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+					Xmult_mod = card.ability.extra.Xmult
 				}
 			else return {calculated = true} end
 		end
@@ -58,7 +58,7 @@ local sync_catalyst = {
 	discovered = true,
 	blueprint_compat = true,
 	atlas = "sync_catalyst",
-	calculate = function(self, context)
+	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then
 			local tot = hand_chips + mult
 			hand_chips = mod_chips(math.floor(tot/2))
@@ -99,10 +99,10 @@ local negative = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra}}
 	end,
-	add_to_deck = function(card, from_debuff)
+	add_to_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra
 	end,
-	remove_from_deck = function(card, from_debuff)
+	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra
 	end
 }
@@ -133,15 +133,15 @@ local canvas = {
 	discovered = true,
 	blueprint_compat = true,
 	atlas = "canvas",
-	calculate = function(self, context)
+	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker then
 			self.config.num_retriggers = 0
 			for i = 1, #G.jokers.cards do
-				if self.T.x + self.T.w/2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 and G.jokers.cards[i].config.center.rarity ~= 1 then
+				if card.T.x + card.T.w/2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w/2 and G.jokers.cards[i].config.center.rarity ~= 1 then
 					self.config.num_retriggers = self.config.num_retriggers + 1
 				end
 			end
-			if self.T.x + self.T.w/2 > context.other_card.T.x + context.other_card.T.w/2 then
+			if card.T.x + card.T.w/2 > context.other_card.T.x + context.other_card.T.w/2 then
 				return {
 					message = localize('k_again_ex'),
 					repetitions = self.config.num_retriggers,
@@ -176,14 +176,14 @@ local error_joker = {
 	discovered = true,
 	blueprint_compat = false,
 	atlas = "error",
-	calculate = function(self, context)
+	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.repetition then
-			if self.ability.extra.sell_rounds == 0 and not self.ability.extra.active then
-				self.ability.extra.sell_rounds = math.floor(pseudorandom(pseudoseed("cry_error"))*10+1)
+			if card.ability.extra.sell_rounds == 0 and not card.ability.extra.active then
+				card.ability.extra.sell_rounds = math.floor(pseudorandom(pseudoseed("cry_error"))*10+1)
 			end
-			self.ability.extra.sell_rounds = self.ability.extra.sell_rounds - 1;
-			if self.ability.extra.sell_rounds == 0 then
-				self.ability.extra.active = true
+			card.ability.extra.sell_rounds = card.ability.extra.sell_rounds - 1;
+			if card.ability.extra.sell_rounds == 0 then
+				card.ability.extra.active = true
 				local eval = function(card) return not card.REMOVED end
 				juice_card_until(self, eval, true)
 			end
@@ -192,7 +192,7 @@ local error_joker = {
 				colour = G.C.BLACK
 			}
 		end
-		if context.selling_self and self.ability.extra.active and not context.retrigger_joker then
+		if context.selling_self and card.ability.extra.active and not context.retrigger_joker then
 			local eval = function(card) return (card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
                                     juice_card_until(self, eval, true)
 			local jokers = {}
@@ -243,16 +243,16 @@ local m = {
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
 	atlas = "m",
-	calculate = function(self, context)
-        if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
+	calculate = function(self, card, context)
+        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
-                message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-                Xmult_mod = self.ability.extra.x_mult
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+                Xmult_mod = card.ability.extra.x_mult
             }
         end
 		if context.selling_card and context.card.ability.name == "Jolly Joker" then
-			self.ability.extra.x_mult = self.ability.extra.x_mult + self.ability.extra.extra
-			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
+			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
+			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
 			return {calculated = true}
 		end
 	end
@@ -286,7 +286,7 @@ local M = {
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
     end,
 	atlas = "M",
-	calculate = function(self, context)
+	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
 			card:set_edition({
@@ -327,9 +327,9 @@ local boredom = {
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
     end,
 	atlas = "boredom",
-	calculate = function(self, context)
+	calculate = function(self, card, context)
         if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/self.ability.extra.odds then
+			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
 				return {
 					message = localize('k_again_ex'),
 					repetitions = 1,
@@ -338,7 +338,7 @@ local boredom = {
 			else return {calculated = true} end
         end
 		if context.repetition and context.cardarea == G.play then
-			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/self.ability.extra.odds then
+			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
 				return {
 					message = localize('k_again_ex'),
 					repetitions = 1,
@@ -378,7 +378,7 @@ local double_scale = {
     discovered = true,
     atlas = "double_scale",
     --todo: support jokers that scale multiple variables
-    calculate = function(self, context)
+    calculate = function(self, card, context)
         --initialize tracking object
         if not G.GAME.cry_double_scale then
             G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
@@ -501,21 +501,20 @@ local double_scale = {
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
                     local current_val, last_val, scale = 0, 0, 0
                     if #dbl_info.base == 2 then
+						if not jkr.ability[dbl_info.base[1]] or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
                         current_val = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
-                        last_val = dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]]
+                        last_val = dbl_info.ability[dbl_info.base[1]] and dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]] or 1
                     else
+						if not jkr.ability[dbl_info.base[1]] then return end
                         current_val = jkr.ability[dbl_info.base[1]]
-                        last_val = dbl_info.ability[dbl_info.base[1]]
+                        last_val = dbl_info.ability[dbl_info.base[1]] or 1
                     end
                     if #dbl_info.scaler == 2 then
+						if not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] then return end
                         scale = jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
                     else
+						if not jkr.ability[dbl_info.scaler[1]] then return end
                         scale = jkr.ability[dbl_info.scaler[1]]
-                    end
-                    if not scale then
-                        print(dbl_info.scaler[1])
-                        print(dbl_info.scaler[2])
-                        return
                     end
                     scale_amt = math.abs((current_val-last_val)/scale)
                     if scale_amt > 0 then
@@ -581,29 +580,29 @@ return {name = "Epic Jokers",
                 loc_vars = function(self, info_queue, center)
                     return {vars = {center.ability.extra,center.ability.extra,center.ability.mult}}
                 end,
-                calculate = function(self, context)
+                calculate = function(self, card, context)
                     if context.discard and not context.blueprint and context.other_card == context.full_hand[#context.full_hand] then
-                        local prev_mult = self.ability.mult
-                        self.ability.mult = math.max(0, self.ability.mult - self.ability.extra)
-                        if self.ability.mult ~= prev_mult then 
+                        local prev_mult = card.ability.mult
+                        card.ability.mult = math.max(0, card.ability.mult - card.ability.extra)
+                        if card.ability.mult ~= prev_mult then 
                             return {
-                                message = localize{type='variable',key='a_mult_minus',vars={self.ability.extra}},
+                                message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra}},
                                 colour = G.C.RED,
                                 card = self
                             }
                         end
                     end
                     if context.cardarea == G.jokers and context.before and not context.blueprint then
-                        self.ability.mult = self.ability.mult + self.ability.extra
+                        card.ability.mult = card.ability.mult + card.ability.extra
                         return {
                             card = self,
-                            message = localize{type='variable',key='a_mult',vars={self.ability.extra}}
+                            message = localize{type='variable',key='a_mult',vars={card.ability.extra}}
                         }
                     end
                     if context.cardarea == G.jokers and not context.before and not context.after then
                         return {
-                            message = localize{type='variable',key='a_mult',vars={self.ability.mult}},
-                            mult_mod = self.ability.mult
+                            message = localize{type='variable',key='a_mult',vars={card.ability.mult}},
+                            mult_mod = card.ability.mult
                         }
                     end
                 end,

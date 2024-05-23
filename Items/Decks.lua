@@ -161,7 +161,6 @@ local antimatter = {
         spectral_rate = 2, --Ghost Deck
         remove_faces = true, --Abandoned Deck
         hand_size = 2, --Painted Deck
-        ante_scaling = 2, --Plasma Deck
         randomize_rank_suit = true, --Erratic Deck
         cry_equilibrium = true, --Deck of Equilibrium
         -- Enhanced Decks
@@ -173,7 +172,7 @@ local antimatter = {
 	loc_txt = {
         name = "Antimatter Deck",
         text = {
-            "Applies the upsides",
+            "Applies the {C:legendary,E:1}upsides{}",
             "of {C:attention}every{} deck"
         }
     },

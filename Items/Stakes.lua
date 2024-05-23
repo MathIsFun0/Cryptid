@@ -532,7 +532,7 @@ return {name = "More Stakes",
                 return destroyed_cards
             end
             SMODS.Consumable:take_ownership('grim', {
-                use = function(self, area, copier)
+                use = function(self, card, area, copier)
                     local used_tarot = copier or self
                     local destroyed_cards = random_destroy(used_tarot)
                     G.E_MANAGER:add_event(Event({
@@ -571,7 +571,7 @@ return {name = "More Stakes",
                 generate_ui = 0,
             }):register()
             SMODS.Consumable:take_ownership('familiar', {
-                use = function(self, area, copier)
+                use = function(self, card, area, copier)
                     local used_tarot = copier or self
                     local destroyed_cards = random_destroy(used_tarot)
                     G.E_MANAGER:add_event(Event({
@@ -616,7 +616,7 @@ return {name = "More Stakes",
                 generate_ui = 0,
             }):register()
             SMODS.Consumable:take_ownership('incantation', {
-                use = function(self, area, copier)
+                use = function(self, card, area, copier)
                     local used_tarot = copier or self
                     local destroyed_cards = random_destroy(used_tarot)
                     G.E_MANAGER:add_event(Event({

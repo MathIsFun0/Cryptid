@@ -21,7 +21,7 @@ local dropshot = {
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult_mod, localize(G.GAME.current_round.cry_dropshot_card and G.GAME.current_round.cry_dropshot_card.suit or "Spades", 'suits_singular'), center.ability.extra.x_mult, colours = {G.C.SUITS[G.GAME.current_round.cry_dropshot_card and G.GAME.current_round.cry_dropshot_card.suit or "Spades"]}}}
     end,
-    calculate = function(self, context)
+    calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint then
             cards = 0
             for k, v in ipairs(context.scoring_hand) do
@@ -42,15 +42,15 @@ local dropshot = {
                 v.cry_dropshot_incompat = nil
             end
             if cards > 0 then 
-                self.ability.extra.x_mult = self.ability.extra.x_mult + cards * self.ability.extra.Xmult_mod
-                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
+                card.ability.extra.x_mult = card.ability.extra.x_mult + cards * card.ability.extra.Xmult_mod
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
                 return {calculated = true}
             end
         end
-        if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
-                message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-                Xmult_mod = self.ability.extra.x_mult
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+                Xmult_mod = card.ability.extra.x_mult
             }
         end
     end
@@ -110,12 +110,12 @@ local potofjokes = {
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.h_size<0 and center.ability.extra.h_size or "+"..center.ability.extra.h_size,center.ability.extra.h_mod}}
     end,
-    calculate = function(self, context)
+    calculate = function(self, card, context)
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-            self.ability.extra.h_size = self.ability.extra.h_size + self.ability.extra.h_mod
-            G.hand:change_size(self.ability.extra.h_mod)
+            card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+            G.hand:change_size(card.ability.extra.h_mod)
             return {
-                message = localize{type='variable',key='a_handsize',vars={self.ability.extra.h_mod}},
+                message = localize{type='variable',key='a_handsize',vars={card.ability.extra.h_mod}},
                 colour = G.C.FILTER,
                 card = self
             }
@@ -152,9 +152,9 @@ local queensgambit = {
     cost = 10,
     discovered = true,
     atlas = "queens_gambit",
-    calculate = function(self, context)
+    calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint then
-            if next(context.poker_hands[self.ability.extra.type]) and G.GAME.current_round.current_hand.handname == "Royal Flush" then
+            if next(context.poker_hands[card.ability.extra.type]) and G.GAME.current_round.current_hand.handname == "Royal Flush" then
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
                     func = function()
@@ -220,11 +220,11 @@ local wee_fib = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.mult,center.ability.extra.mult_mod}}
 	end,
-	calculate = function(self, context)
+	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			local rank = SMODS.Ranks[context.other_card.base.value].key
 			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
-				self.ability.extra.mult = self.ability.extra.mult + self.ability.extra.mult_mod
+				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
 				
 				return {
 					extra = {focus = self, message = localize('k_upgrade_ex')},
@@ -233,10 +233,10 @@ local wee_fib = {
 				}
 			end
 		end
-		if context.cardarea == G.jokers and (self.ability.extra.mult > 0) and not context.before and not context.after then
+		if context.cardarea == G.jokers and (card.ability.extra.mult > 0) and not context.before and not context.after then
 			return {
-				message = localize{type='variable',key='a_mult',vars={self.ability.extra.mult}},
-				mult_mod = self.ability.extra.mult, 
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+				mult_mod = card.ability.extra.mult, 
 				colour = G.C.MULT
 			}
 		end
@@ -263,7 +263,7 @@ local whip = {
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.x_mult}}
     end,
-    calculate = function(self, context)
+    calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint then
             for i = 1, #context.full_hand do
                 if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
@@ -273,18 +273,18 @@ local whip = {
                             for k, v in pairs(SMODS.Suits) do
                                 if context.full_hand[i]:is_suit(k, nil, true) and context.full_hand[j]:is_suit(k, nil, true) then return end
                             end
-                            self.ability.extra.x_mult = self.ability.extra.x_mult + self.ability.extra.Xmult_mod
-                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {self.ability.extra.x_mult}}})
+                            card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
+                            card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
                             return {calculated = true}
                         end
                     end
                 end
             end
         end
-        if context.cardarea == G.jokers and (self.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
-                message = localize{type='variable',key='a_xmult',vars={self.ability.extra.x_mult}},
-                Xmult_mod = self.ability.extra.x_mult
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+                Xmult_mod = card.ability.extra.x_mult
             }
         end
     end

@@ -15,10 +15,10 @@ local white_hole = {
     atlas = "white_hole",
     hidden = true, --default soul_rate of 0.3% in spectral packs is used
     soul_set = "Planet",
-    can_use = function(card)
+    can_use = function(self, card)
         return true
     end,
-    use = function(card, area, copier)
+    use = function(self, card, area, copier)
         --Get most played hand type (logic yoinked from Telescope)
         local _planet, _hand, _tally = nil, nil, -1
         for k, v in ipairs(G.handlist) do

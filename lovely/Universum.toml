@@ -36,3 +36,12 @@ else
 end
 '''
 match_indent = true
+
+# Patch crashes with White Hole
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if card then card:juice_up(0.8, 0.5) end"
+position = "at"
+payload = "if card and card.juice_up then card:juice_up(0.8, 0.5) end"
+match_indent = true

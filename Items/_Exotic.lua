@@ -13,10 +13,10 @@ local gateway = {
     cost = 4,
     atlas = "gateway",
     hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
-    can_use = function(card)
+    can_use = function(self, card)
         return true
     end,
-    use = function(card, area, copier)
+    use = function(self, card, area, copier)
         local deletable_jokers = {}
         for k, v in pairs(G.jokers.cards) do
             if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
@@ -68,19 +68,19 @@ local iterum = {
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_mult,center.ability.extra.repetitions}}
     end,
-    calculate = function(self, context)
+    calculate = function(self, card, context)
         if context.repetition then
             if context.cardarea == G.play then
                 return {
                     message = localize('k_again_ex'),
-                    repetitions = self.ability.extra.repetitions,
+                    repetitions = card.ability.extra.repetitions,
                     card = self
                 }
             end
         elseif context.individual then
             if context.cardarea == G.play then
                 return {
-                    x_mult = self.ability.extra.x_mult,
+                    x_mult = card.ability.extra.x_mult,
                     colour = G.C.RED,
                     card = self
                 }
@@ -137,7 +137,7 @@ local exponentia = {
         name = 'Exponentia',
         text = {
 			"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
-			"when {C:mult}XMult{} is triggered",
+			"when {X:red,C:white} XMult {} is triggered",
 			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
         }
     },
@@ -146,11 +146,11 @@ local exponentia = {
 	discovered = true,
 	atlas = "exponentia",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
-	calculate = function(self, context)
-        if context.cardarea == G.jokers and (self.ability.extra.pow_mult > 1) and not context.before and not context.after then
+	calculate = function(self, card, context)
+        if context.cardarea == G.jokers and (card.ability.extra.pow_mult > 1) and not context.before and not context.after then
             return {
-                message = "^"..self.ability.extra.pow_mult.." Mult",
-                pow_mult_mod = self.ability.extra.pow_mult,
+                message = "^"..card.ability.extra.pow_mult.." Mult",
+                pow_mult_mod = card.ability.extra.pow_mult,
                 colour = G.C.MULT
             }
         end

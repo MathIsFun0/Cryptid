@@ -292,7 +292,6 @@ function Back.apply_to_run(self)
                     if self.effect.config.cry_force_edition == 'random' then
                         local editions = {"foil", "holo", "polychrome"} --todo: modded edition support
                         local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
-                        print(random_edition)
                         ed_table[random_edition] = true
                         G.playing_cards[c]:set_edition(ed_table, true, true);
                     else
