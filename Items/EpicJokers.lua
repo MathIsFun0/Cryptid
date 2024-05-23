@@ -401,22 +401,44 @@ local double_scale = {
                     end
                 elseif not G.GAME.cry_double_scale[jkr.sort_id].scaler then
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
-					if jkr.name == "cry-Exponentia" then
+					if jkr.ability.name == "cry-Exponentia" then
 						dbl_info.base = {"extra", "pow_mult"}
 						dbl_info.scaler = {"extra", "pow_mult_mod"}
 						dbl_info.scaler_base = jkr.ability.extra.pow_mult_mod
 						dbl_info.offset = 1
 						return
 					end
-					if jkr.name == "Yorick" then
+					if jkr.ability.name == "Yorick" then
 						dbl_info.base = {"x_mult"}
-						dbl_info.scaler = {"xmult"} --not kidding
+						dbl_info.scaler = {"extra", "xmult"} --not kidding
 						dbl_info.scaler_base = 1
 						dbl_info.offset = 1
 						return
 					end
+					if jkr.ability.name == "Gift Card" then
+						dbl_info.base = {"extra_value"}
+						dbl_info.scaler = {"extra"}
+						dbl_info.scaler_base = jkr.ability.extra
+						dbl_info.offset = 1
+						return
+					end
+					if jkr.ability.name == "Throwback" then
+						dbl_info.base = {"x_mult"}
+						dbl_info.scaler = {"extra"}
+						dbl_info.scaler_base = jkr.ability.x_mult or 1
+						dbl_info.offset = 1
+						return
+					end
+					if jkr.ability.name == "Egg" then
+						dbl_info.base = {"extra_value"}
+						dbl_info.scaler = {"extra"}
+						dbl_info.scaler_base = jkr.ability.extra
+						dbl_info.offset = 1
+						return
+					end
                     for k, v in pairs(jkr.ability) do
-                        if dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
+						--extra_value is ignored because it can be scaled by Gift Card
+                        if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
                             dbl_info.base = {k}
                             local predicted_mod = math.abs(v-dbl_info.ability[k])
                             local best_key = {""}

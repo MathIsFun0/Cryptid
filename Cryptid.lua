@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.2.2f
+--- VERSION: 0.2.2g
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -98,7 +98,7 @@ function Card:calculate_joker(context)
             if self.ability.name == 'Constellation' and not context.blueprint and context.consumeable.ability.set == 'Planet' then ret = {calculated = true} end
         end
         if context.pre_discard and self.ability.name == 'Burnt Joker' and G.GAME.current_round.discards_used <= 0 and not context.hook then ret = {calculated = true} end
-        if self.ability.name == 'Faceless Joker' and context.other_card == context.full_hand[#context.full_hand] then
+        if self.ability.name == 'Faceless Joker' and context.full_hand and context.other_card == context.full_hand[#context.full_hand] then
             local face_cards = 0
             for k, v in ipairs(context.full_hand) do
                 if v:is_face() then face_cards = face_cards + 1 end
