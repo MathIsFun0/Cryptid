@@ -121,10 +121,10 @@ local potofjokes = {
             }
         end
     end,
-    add_to_deck = function(card, from_debuff)
+    add_to_deck = function(self, card, from_debuff)
         G.hand:change_size(card.ability.extra.h_size)
     end,
-    remove_from_deck = function(card, from_debuff)
+    remove_from_deck = function(self, card, from_debuff)
         G.hand:change_size(-card.ability.extra.h_size)
     end
 }
