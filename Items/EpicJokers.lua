@@ -197,15 +197,12 @@ local error_joker = {
                                     juice_card_until(self, eval, true)
 			local jokers = {}
 			for i=1, #G.jokers.cards do 
-				if G.jokers.cards[i].ability.name ~= "cry-Error" and #jokers < 5 then
+				if G.jokers.cards[i].ability.name ~= "cry-Error" then
 					jokers[#jokers+1] = G.jokers.cards[i]
 				end
 			end
 			for i = 1, #jokers do
 				local card = copy_card(jokers[i])
-				--[[card:set_edition({
-					negative = true
-				})--]]
 				card:add_to_deck()
 				G.jokers:emplace(card)
 			end

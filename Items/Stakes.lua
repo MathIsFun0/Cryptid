@@ -509,7 +509,7 @@ return {name = "More Stakes",
                     delay = 0.4,
                     func = function()
                         play_sound('tarot1')
-                        used_tarot:juice_up(0.3, 0.5)
+                        if used_tarot and used_tarot.juice_up then used_tarot:juice_up(0.3, 0.5) end
                         return true
                     end
                 }))
@@ -539,7 +539,7 @@ return {name = "More Stakes",
                         delay = 0.7,
                         func = function()
                             local cards = {}
-                            for i = 1, self.ability.extra do
+                            for i = 1, card.ability.extra do
                                 cards[i] = true
                                 local suit_list = {}
                                 for i = #SMODS.Suit.obj_buffer, 1, -1 do
@@ -567,8 +567,7 @@ return {name = "More Stakes",
                         G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
                     end
                 end,
-                generate_ui = 0,
-            }):register()
+            })
             SMODS.Consumable:take_ownership('familiar', {
                 use = function(self, card, area, copier)
                     local used_tarot = copier or self
@@ -578,7 +577,7 @@ return {name = "More Stakes",
                         delay = 0.7,
                         func = function()
                             local cards = {}
-                            for i = 1, self.ability.extra do
+                            for i = 1, card.ability.extra do
                                 cards[i] = true
                                 local suit_list = {}
                                 for i = #SMODS.Suit.obj_buffer, 1, -1 do
@@ -612,8 +611,7 @@ return {name = "More Stakes",
                         G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
                     end
                 end,
-                generate_ui = 0,
-            }):register()
+            })
             SMODS.Consumable:take_ownership('incantation', {
                 use = function(self, card, area, copier)
                     local used_tarot = copier or self
@@ -623,7 +621,7 @@ return {name = "More Stakes",
                         delay = 0.7,
                         func = function()
                             local cards = {}
-                            for i = 1, self.ability.extra do
+                            for i = 1, card.ability.extra do
                                 cards[i] = true
                                 local suit_list = {}
                                 for i = #SMODS.Suit.obj_buffer, 1, -1 do
@@ -657,8 +655,7 @@ return {name = "More Stakes",
                         G.jokers.cards[i]:calculate_joker({ remove_playing_cards = true, removed = destroyed_cards })
                     end
                 end,
-                generate_ui = 0,
-            }):register()
+            })
             
             -- This is short enough that I'm fine overriding it
             function calculate_reroll_cost(skip_increment)
