@@ -183,8 +183,8 @@ local deja_vu_deck = {object_type = "Back",
 local trance_deck = {object_type = "Back",
     name = "cry-Trance Deck",
     key = "trance_deck",
-	config = {cry_force_seal = 'Blue'},
-	pos = {x = 0, y = 2},
+	config = {cry_force_seal = 'Blue', hide_seal = true},
+	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Trance Deck",
         text = {
@@ -192,13 +192,20 @@ local trance_deck = {object_type = "Back",
             "of {C:attention}Blue Seal Cards{}"
         }
     },
-    
+    atlas = "trance"
+}
+local trance_sprite = {
+	object_type = "Atlas",
+    key = "trance",
+    path = "b_cry_trance.png",
+    px = 71,
+    py = 95
 }
 local medium_deck = {object_type = "Back",
     name = "cry-Medium Deck",
     key = "medium_deck",
-	config = {cry_force_seal = 'Purple'},
-	pos = {x = 0, y = 3},
+	config = {cry_force_seal = 'Purple', hide_seal = true},
+	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Medium Deck",
         text = {
@@ -206,7 +213,14 @@ local medium_deck = {object_type = "Back",
             "of {C:attention}Purple Seal Cards{}"
         }
     },
-    
+    atlas = "medium"
+}
+local medium_sprite = {
+	object_type = "Atlas",
+    key = "medium",
+    path = "b_cry_medium.png",
+    px = 71,
+    py = 95
 }
 local eternal_deck = {object_type = "Back",
     name = "cry-Eternal Deck",
@@ -258,7 +272,12 @@ function Back.apply_to_run(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-                    G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
+                    if self.effect.config.cry_force_enhancement == 'random' then
+                        local random_enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed('cry_ant_enhancement'))
+                        G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
+                    else
+                        G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
+                    end
 				end
 
 				return true
@@ -270,8 +289,16 @@ function Back.apply_to_run(self)
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
                     local ed_table = {}
-                    ed_table[self.effect.config.cry_force_edition] = true
-                    G.playing_cards[c]:set_edition(ed_table, true, true);
+                    if self.effect.config.cry_force_edition == 'random' then
+                        local editions = {"foil", "holo", "polychrome"} --todo: modded edition support
+                        local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
+                        print(random_edition)
+                        ed_table[random_edition] = true
+                        G.playing_cards[c]:set_edition(ed_table, true, true);
+                    else
+                        ed_table[self.effect.config.cry_force_edition] = true
+                        G.playing_cards[c]:set_edition(ed_table, true, true);
+                    end
 				end
 
 				return true
@@ -282,7 +309,12 @@ function Back.apply_to_run(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-                    G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true);
+                    if self.effect.config.cry_force_seal == 'random' then
+                        local random_seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed('cry_ant_seal'))
+                        G.playing_cards[c]:set_seal(random_seal.key, true);
+                    else
+                        G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true);
+                    end
 				end
 				return true
 			end
@@ -305,7 +337,8 @@ end
 return {name = "Enhanced Decks", 
         init = function()
         end,
-        items = {hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
+        items = {trance_sprite, medium_sprite,
+hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
 foil_deck, holo_deck, poly_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,
 eternal_deck, perishable_deck, rental_deck}}

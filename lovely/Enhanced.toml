@@ -11,14 +11,18 @@ pattern = "self.children.back:draw(overlay)"
 position = "after"
 payload = '''
 local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
-if currentBack.effect.config.cry_force_edition then
+if currentBack.effect.config.cry_force_edition and not currentBack.effect.config.cry_antimatter then
     self.children.back:draw_shader(currentBack.effect.config.cry_force_edition , nil, self.ARGS.send_to_shader, true)
 end
-if currentBack.effect.config.cry_force_seal then
+if currentBack.effect.config.cry_antimatter then
+    self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
+    self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
+end
+if currentBack.effect.config.cry_force_seal and not currentBack.effect.config.hide_seal and not currentBack.effect.config.cry_antimatter then
     G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader('dissolve', nil, nil, true, self.children.center)
     if currentBack.effect.config.cry_force_seal == 'Gold' then G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center) end
 end
-if currentBack.effect.config.cry_force_sticker then
+if currentBack.effect.config.cry_force_sticker and not currentBack.effect.config.cry_antimatter then
     G["shared_sticker_"..currentBack.effect.config.cry_force_sticker].role.draw_major = self
     G["shared_sticker_"..currentBack.effect.config.cry_force_sticker]:draw_shader('dissolve', nil, nil, true, self.children.center)
     G["shared_sticker_"..currentBack.effect.config.cry_force_sticker]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center)
