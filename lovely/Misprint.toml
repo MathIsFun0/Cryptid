@@ -39,11 +39,12 @@ match_indent = true
 [patches.pattern]
 target = "card.lua"
 pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
-position = "at"
+position = "after"
 payload = '''
-G.GAME.pack_size = math.max(G.GAME.pack_size, 1)
-G.GAME.pack_choices = self.config.center.config.choose or 1
-G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
+if G.GAME.modifiers.cry_misprint_min then
+    G.GAME.pack_size = math.max(G.GAME.pack_size, 1)
+    G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
+end
 '''
 match_indent = true
 
