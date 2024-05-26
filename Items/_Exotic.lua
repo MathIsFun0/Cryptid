@@ -162,8 +162,55 @@ local exponentia = {
 local exponentia_sprite = {
     object_type = "Atlas",
     key = "exponentia",
-    
     path = "j_cry_exponentia.png",
+    px = 71,
+    py = 95
+}
+local speculo = {
+    object_type = "Joker",
+	name = "cry-Speculo",
+	key = "speculo",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Speculo',
+        text = {
+            "Creates a {C:dark_edition}Negative{} copy",
+            "of a random {C:attention}Joker{}",
+            "in your possession",
+            "at the end of the {C:attention}shop",
+        }
+    },
+	rarity = "cry_exotic",
+	cost = 50,
+	discovered = true,
+	atlas = "speculo",
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	calculate = function(self, card, context)
+        if context.ending_shop then
+            local eligibleJokers = {}
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.name ~= card.ability.name then eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] end
+            end
+            if #eligibleJokers > 0 then
+                G.E_MANAGER:add_event(Event({
+                    func = function() 
+                        local card = copy_card(pseudorandom_element(eligibleJokers, pseudoseed('cry_speculo')), nil)
+                        card:set_edition({negative = true}, true)
+                        card:add_to_deck()
+                        G.jokers:emplace(card) 
+                        return true
+                    end}))
+                card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                return {calculated = true}
+            end
+            return
+        end
+	end
+}
+local speculo_sprite = {
+    object_type = "Atlas",
+    key = "speculo",
+    path = "j_cry_speculo.png",
     px = 71,
     py = 95
 }
@@ -253,6 +300,6 @@ return {name = "Exotic Jokers",
                 end
             end
 
-            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia}
+            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo}
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, gateway, iterum, universum, exponentia}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, gateway, iterum, universum, exponentia, speculo}}
