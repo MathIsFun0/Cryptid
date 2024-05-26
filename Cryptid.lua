@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.2.3d
+--- VERSION: 0.2.3e
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -283,7 +283,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       end
   end
 
-  cry_misprintize(card)
+  if cry_misprintize then cry_misprintize(card) end
   return card
 end
 
