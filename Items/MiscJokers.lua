@@ -296,6 +296,48 @@ local whip_sprite = {
     px = 71,
     py = 95
 }
+local lucky_joker = {
+    object_type = "Joker",
+	name = "cry-Lucky Joker",
+	key = "lucky_joker",
+    config = {extra = { dollars = 5}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Lucky Joker',
+        text = {
+            "Earn {C:money}$#1#{} every time a",
+            "{C:attention}Lucky{} card {C:green}successfully{}",
+            "triggers"
+        }
+    },
+	rarity = 1,
+	cost = 5,
+	discovered = true,
+    blueprint_compat = true,
+	atlas = "lucky_joker",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.dollars}}
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.other_card.lucky_trigger then
+            print("hi mom")
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+            return {
+                dollars = card.ability.extra.dollars,
+                card = card
+            }
+        end
+    end
+}
+local lucky_joker_sprite = {
+    object_type = "Atlas",
+    key = "lucky_joker",
+    
+    path = "j_cry_lucky_joker.png",
+    px = 71,
+    py = 95
+}
 
 return {name = "Misc. Jokers", 
         init = function()
@@ -346,4 +388,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, whip}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, whip, lucky_joker}}
