@@ -1,1 +1,1 @@
-return {["Cryptid"]={["disable_anims"]=false,},["Enhanced Decks"]=true,["More Stakes"]=true,["Spectrals"]=true,["Misc. Decks"]=true,["Exotic Jokers"]=true,["Misc. Jokers"]=true,["Epic Jokers"]=true,}
+return {["Cryptid"]={["disable_anims"]=false,},["Misc. Jokers"]=true,["More Stakes"]=true,["Spectrals"]=true,["Misc. Decks"]=true,["Exotic Jokers"]=true,["Enhanced Decks"]=true,["Epic Jokers"]=true,}

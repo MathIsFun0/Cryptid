@@ -144,6 +144,7 @@ local exponentia = {
 	rarity = "cry_exotic",
 	cost = 50,
 	discovered = true,
+    blueprint_compat = true,
 	atlas = "exponentia",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
 	calculate = function(self, card, context)
@@ -183,6 +184,7 @@ local speculo = {
 	rarity = "cry_exotic",
 	cost = 50,
 	discovered = true,
+    blueprint_compat = true,
 	atlas = "speculo",
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
 	calculate = function(self, card, context)

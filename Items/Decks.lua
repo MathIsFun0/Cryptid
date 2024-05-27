@@ -147,11 +147,24 @@ local misprint_sprite = {
     px = 71,
     py = 95
 }
+local infinite = {
+    object_type = "Back",
+    name = "cry-Infinite",
+    key = "infinite",
+	config = {cry_highlight_limit = 1e20},
+	pos = {x = 2, y = 3},
+	loc_txt = {
+        name = "Infinite Deck",
+        text = {
+            "You can select {C:attention}any",
+            "number of cards"
+        }
+    },
+}
 local blank = {
     object_type = "Back",
     name = "cry-Blank",
     key = "blank",
-	config = {},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Blank Deck",
@@ -186,6 +199,7 @@ local antimatter = {
         randomize_rank_suit = true, --Erratic Deck
         cry_equilibrium = true, --Deck of Equilibrium
         cry_misprint_min = 1, cry_misprint_max = 10, --Misprint Deck
+        cry_highlight_limit = 1e20, --Infinite Deck
         -- Enhanced Decks
         cry_force_enhancement = 'random',
         cry_force_edition = 'random',
@@ -222,6 +236,9 @@ return {name = "Misc. Decks",
                 if self.effect.config.cry_misprint_min then
                     G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
                     G.GAME.modifiers.cry_misprint_max = self.effect.config.cry_misprint_max
+                end
+                if self.effect.config.cry_highlight_limit then
+                    G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
                 end
             end
             --equilibrium deck patches
@@ -273,19 +290,24 @@ return {name = "Misc. Decks",
                 local poll = math.random()*(lmax-lmin)+lmin
                 return math.exp(poll)
             end
-            function cry_misprintize_tbl(tbl, clear)
+            if not Cryptid then Cryptid = {} end
+            Cryptid.base_values = {}
+            function cry_misprintize_tbl(name, tbl, clear)
                 if tbl then
                     for k, v in pairs(tbl) do
                         if type(tbl[k]) ~= 'table' then
-                            if type(tbl[k]) == 'number' and k ~= 'min_highlighted' and not (k == 'x_mult' and v == 1) then
-                                if not tbl[k.."_cry_base"] then tbl[k.."_cry_base"] = tbl[k] end
-                                tbl[k] = clear and tbl[k.."_cry_base"] or cry_format(tbl[k.."_cry_base"] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+                            if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1) then
+                                if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
+                                if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
+                                tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
                             end
                         else
                             for _k, _v in pairs(tbl[k]) do
-                                if type(tbl[k][_k]) == 'number' and k ~= 'min_highlighted' and not (k == 'x_mult' and v == 1) then
-                                    if not tbl[k][_k.."_cry_base"] then tbl[k][_k.."_cry_base"] = tbl[k][_k] end
-                                    tbl[k][_k] = clear and tbl[k][_k.."_cry_base"] or cry_format(tbl[k][_k.."_cry_base"] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+                                if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1) then
+                                    if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
+                                    if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
+                                    if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
+                                    tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format(Cryptid.base_values[name][k][_k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
                                 end
                             end
                         end
@@ -299,15 +321,15 @@ return {name = "Misc. Decks",
             end
             function cry_misprintize(card)
                 if G.GAME.modifiers.cry_misprint_min then
-                    cry_misprintize_tbl(card.ability)
+                    cry_misprintize_tbl(card.ability.name, card.ability)
                     --cry_misprintize_val(card.config.center.config)
                     card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
                 else
-                    cry_misprintize_tbl(card.ability, true)
+                    cry_misprintize_tbl(card.ability.name, card.ability, true)
                 end
             end
             function cry_format(number, str)
                 return tonumber(str:format(Big:new(number):to_number()))
             end
         end,
-        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, blank_sprite, antimatter_sprite, very_fair, equilibrium, misprint, blank, antimatter}}
+        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, blank_sprite, antimatter_sprite, very_fair, equilibrium, misprint, infinite, blank, antimatter}}

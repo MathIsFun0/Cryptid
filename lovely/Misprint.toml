@@ -102,3 +102,38 @@ pattern = "_size*G.CARD_W*1.1 + 0.5,"
 position = "at"
 payload = "math.min(_size,5)*G.CARD_W*1.1 + 0.5,"
 match_indent = true
+
+# Death
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
+position = "at"
+payload = "if self.ability.consumeable.mod_num >= #G.hand.highlighted then"
+match_indent = true
+
+# mod_num has no limit
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.ability.consumeable.mod_num = math.min(5, self.ability.consumeable.max_highlighted)"
+position = "at"
+payload = "self.ability.consumeable.mod_num = self.ability.consumeable.max_highlighted"
+match_indent = true
+
+# Infinite Deck
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "self.config.highlighted_limit = config.highlight_limit or 5"
+position = "at"
+payload = "self.config.highlighted_limit = config.highlight_limit or G.GAME.modifiers.cry_highlight_limit or 5"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"
+position = "at"
+payload = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play then"
+match_indent = true

@@ -94,7 +94,6 @@ local negative = {
 	rarity = "cry_epic",
 	cost = 12,
 	discovered = true,
-	blueprint_compat = false,
 	atlas = "negative",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra}}
@@ -192,7 +191,7 @@ local error_joker = {
 				colour = G.C.BLACK
 			}
 		end
-		if context.selling_self and card.ability.extra.active and not context.retrigger_joker then
+		if context.selling_self and card.ability.extra.active and not context.retrigger_joker and not context.blueprint then
 			local eval = function(card) return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
                                     juice_card_until(self, eval, true)
 			local jokers = {}
@@ -247,7 +246,7 @@ local m = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.selling_card and context.card.ability.name == "Jolly Joker" then
+		if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
 			return {calculated = true}
