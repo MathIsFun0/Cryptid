@@ -161,64 +161,27 @@ local infinite = {
         }
     },
 }
-local blank = {
+local conveyor = {
     object_type = "Back",
-    name = "cry-Blank",
-    key = "blank",
-	pos = {x = 0, y = 0},
-	loc_txt = {
-        name = "Blank Deck",
+    name = "cry-Conveyor",
+    key = "conveyor",
+    config = {cry_conveyor = true},
+    pos = {x = 0, y = 0},
+    atlas = "conveyor",
+    loc_txt = {
+        name = "Conveyor Deck",
         text = {
-            "{C:inactive,E:1}Does nothing?"
+            "Jokers may {C:attention}not{} be moved",
+            "At start of round,",
+            "{C:attention}duplicate{} leftmost joker",
+            "and {C:attention}destroy{} rightmost joker"
         }
-    },
-    atlas = "blank"
+    }
 }
-local blank_sprite = {
+local conveyor_sprite = {
     object_type = "Atlas",
-    key = "blank",
-    path = "b_cry_blank.png",
-    px = 71,
-    py = 95
-}
-local antimatter = {
-    object_type = "Back",
-    name = "cry-Antimatter",
-    key = "antimatter",
-	config = {cry_antimatter = true,
-        discards = 1, --Red Deck: 1
-        hands = 1, --Blue Deck: 1
-        dollars = 10, --Yellow Deck
-        extra_hand_bonus = 2, extra_discard_bonus = 1, --Green Deck
-        joker_slot = 1, --Black Deck: 1
-        vouchers = {'v_crystal_ball', 'v_telescope', 'v_tarot_merchant', 'v_planet_merchant', 'v_overstock_norm', 'v_overstock_plus'}, --Vouchers from all decks
-        consumables = {'c_fool', 'c_fool', 'c_hex'}, --Consumables from all decks
-        spectral_rate = 2, --Ghost Deck
-        remove_faces = true, --Abandoned Deck
-        hand_size = 2, --Painted Deck
-        randomize_rank_suit = true, --Erratic Deck
-        cry_equilibrium = true, --Deck of Equilibrium
-        cry_misprint_min = 1, cry_misprint_max = 10, --Misprint Deck
-        cry_highlight_limit = 1e20, --Infinite Deck
-        -- Enhanced Decks
-        cry_force_enhancement = 'random',
-        cry_force_edition = 'random',
-        cry_force_seal = 'random'
-    },
-	pos = {x = 0, y = 0},
-	loc_txt = {
-        name = "Antimatter Deck",
-        text = {
-            "Applies the {C:legendary,E:1}upsides{}",
-            "of {C:attention}every{} deck"
-        }
-    },
-    atlas = "antimatter"
-}
-local antimatter_sprite = {
-    object_type = "Atlas",
-    key = "antimatter",
-    path = "b_cry_antimatter.png",
+    key = "conveyor",
+    path = "b_cry_conveyor.png",
     px = 71,
     py = 95
 }
@@ -232,6 +195,9 @@ return {name = "Misc. Decks",
                 end
                 if self.effect.config.cry_equilibrium then 
                     G.GAME.modifiers.cry_equilibrium = true
+                end
+                if self.effect.config.cry_conveyor then 
+                    G.GAME.modifiers.cry_conveyor = true
                 end
                 if self.effect.config.cry_misprint_min then
                     G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
@@ -332,4 +298,4 @@ return {name = "Misc. Decks",
                 return tonumber(str:format(Big:new(number):to_number()))
             end
         end,
-        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, blank_sprite, antimatter_sprite, very_fair, equilibrium, misprint, infinite, blank, antimatter}}
+        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, conveyor_sprite, very_fair, equilibrium, misprint, infinite, conveyor}}
