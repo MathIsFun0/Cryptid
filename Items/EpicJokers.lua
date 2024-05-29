@@ -365,8 +365,8 @@ local double_scale = {
         text = {
             "Scaling jokers",
             "scale {C:attention}quadratically",
-            "{C:inactive}(eg. +1, +3, +6, +10)",
-            "{C:inactive}(grows by +1, +2, +3)"
+            "{C:inactive,s:0.7}eg. +1, +3, +6, +10",
+            "{C:inactive,s:0.7}grows by +1, +2, +3"
         }
     },
     rarity = "cry_epic",
@@ -401,6 +401,13 @@ local double_scale = {
 						dbl_info.base = {"extra", "pow_mult"}
 						dbl_info.scaler = {"extra", "pow_mult_mod"}
 						dbl_info.scaler_base = jkr.ability.extra.pow_mult_mod
+						dbl_info.offset = 1
+						return
+					end
+					if jkr.ability.name == "cry-Redeo" then
+						dbl_info.base = {"extra", "money_req"}
+						dbl_info.scaler = {"extra", "money_mod"}
+						dbl_info.scaler_base = jkr.ability.extra.money_mod
 						dbl_info.offset = 1
 						return
 					end

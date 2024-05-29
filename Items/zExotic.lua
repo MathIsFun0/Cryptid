@@ -216,6 +216,52 @@ local speculo_sprite = {
     px = 71,
     py = 95
 }
+local redeo = {
+    object_type = "Joker",
+	name = "cry-Redeo",
+	key = "redeo",
+    config = {extra = {ante_reduction = 1, money_req = 10, money_remaining = 0, money_mod = 10}},
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.ante_reduction, center.ability.extra.money_req, center.ability.extra.money_remaining, center.ability.extra.money_mod}}
+    end,
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Redeo',
+        text = {
+            "{C:attention}-#1#{} Ante when",
+            "{C:money}$#2#{} {C:inactive}($#3#){} spent",
+            "{C:inactive,s:0.7}Requirements increase by",
+            "{C:money,s:0.7}$#4#{C:inactive,s:0.7} after each use"
+        }
+    },
+	rarity = "cry_exotic",
+	cost = 50,
+	discovered = true,
+	atlas = "redeo",
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	calculate = function(self, card, context)
+        if context.cry_ease_dollars and context.cry_ease_dollars < 0 and not context.blueprint then
+            card.ability.extra.money_remaining = card.ability.extra.money_remaining - context.cry_ease_dollars
+            local ante_mod = 0
+            while card.ability.extra.money_remaining >= card.ability.extra.money_req do
+                card.ability.extra.money_remaining = card.ability.extra.money_remaining - card.ability.extra.money_req
+                card.ability.extra.money_req = card.ability.extra.money_req + card.ability.extra.money_mod
+                ante_mod = ante_mod - card.ability.extra.ante_reduction
+            end
+            if ante_mod < 0 then
+                ease_ante(ante_mod)
+            end
+            return {calculated = true}
+        end
+	end
+}
+local redeo_sprite = {
+    object_type = "Atlas",
+    key = "redeo",
+    path = "j_cry_redeo.png",
+    px = 71,
+    py = 95
+}
 
 return {name = "Exotic Jokers", 
         init = function()
@@ -302,6 +348,27 @@ return {name = "Exotic Jokers",
                 end
             end
 
-            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo}
+            --Redeo Patches
+            local ed = ease_dollars
+            function ease_dollars(mod, x)
+                ed(mod,x)
+                for i = 1, #G.jokers.cards do
+                    local effects = G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod})
+                    if effects and effects.joker_repetitions then
+                        rep_list = effects.joker_repetitions
+                        for z=1, #rep_list do
+                            if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
+                                for r=1, rep_list[z].repetitions do
+                                    card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
+                                    if percent then percent = percent+percent_delta end
+                                    G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod, retrigger_joker = true})
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+
+            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo}
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, gateway, iterum, universum, exponentia, speculo}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, gateway, iterum, universum, exponentia, speculo, redeo}}
