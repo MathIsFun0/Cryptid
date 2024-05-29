@@ -75,7 +75,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.ante = G.GAME.round_resets.ante + mod"
 position = "after"
-payload = "G.GAME.round_resets.ante = math.floor(G.GAME.round_resets.ante)"
+payload = "G.GAME.round_resets.ante = Big:new(G.GAME.round_resets.ante):floor():to_number()"
 match_indent = true
 
 # UI Bugs

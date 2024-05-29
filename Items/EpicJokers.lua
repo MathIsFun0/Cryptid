@@ -176,8 +176,8 @@ local error_joker = {
 	blueprint_compat = false,
 	atlas = "error",
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.blueprint and not context.repetition then
-			if card.ability.extra.sell_rounds == 0 and not card.ability.extra.active then
+		if context.end_of_round and not context.blueprint and not context.repetition and not card.ability.extra.active then
+			if card.ability.extra.sell_rounds == 0 then
 				card.ability.extra.sell_rounds = math.floor(pseudorandom(pseudoseed("cry_error"))*10+1)
 			end
 			card.ability.extra.sell_rounds = card.ability.extra.sell_rounds - 1;
