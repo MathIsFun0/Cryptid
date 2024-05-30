@@ -77,6 +77,7 @@ pattern = "if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.
 position = "after"
 payload = '''
 if effects.jokers.pow_mult_mod then mult = mod_mult(mult^effects.jokers.pow_mult_mod);extras.mult = true  end
+if effects.jokers.Xchip_mod then hand_chips = mod_chips(hand_chips*effects.jokers.Xchip_mod);extras.hand_chips = true  end
 '''
 match_indent = true
 
@@ -89,5 +90,15 @@ pattern = "if effect.Xmult_mod then mult = mod_mult(mult*effect.Xmult_mod);extra
 position = "after"
 payload = '''
 if effect.pow_mult_mod then mult = mod_mult(mult^effect.pow_mult_mod);extras.mult = true  end
+if effects.Xchip_mod then hand_chips = mod_chips(hand_chips*effects.Xchip_mod);extras.hand_chips = true  end
 '''
+match_indent = true
+
+# Fix not all cards returning to hand on big hands
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "{card_limit = 500, type = 'discard'})"
+position = "at"
+payload = "{card_limit = 1e308, type = 'discard'})"
 match_indent = true

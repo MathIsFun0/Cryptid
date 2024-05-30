@@ -416,7 +416,11 @@ local pickle = {
                     end
                     tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('cry_pickle_orbital'))
                 end
-                add_tag(tag)
+                if tag.name == 'Boss Tag' then
+                    i = i - 1 --skip these, as they can cause bugs with pack opening from other tags
+                else
+                    add_tag(tag)
+                end
             end
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = "+"..card.ability.extra.tags.." Tag"..(card.ability.extra.tags>1 and "s" or ""), colour = G.C.FILTER})
             return {calculated = true}
@@ -496,6 +500,230 @@ local cube_sprite = {
     py = 95
 }
 
+local triplet_rhythm = {
+    object_type = "Joker",
+	name = "cry-Triplet Rhythm",
+	key = "triplet_rhythm",
+    config = {extra = {Xmult = 3}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Triplet Rhythm',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if scoring hand",
+            "contains {C:attention}exactly{} three {C:attention}3s"
+        }
+    },
+	rarity = 2,
+	cost = 7,
+	discovered = true,
+    blueprint_compat = true,
+	atlas = "triplet_rhythm",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and not context.before and not context.after and context.scoring_hand then
+            local threes = 0
+            for i = 1, #context.scoring_hand do
+                if SMODS.Ranks[context.scoring_hand[i].base.value].key == "3" then
+                    threes = threes + 1
+                end
+            end
+            if threes == 3 then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+                    Xmult_mod = card.ability.extra.Xmult
+                }
+            end
+        end
+    end
+}
+local triplet_rhythm_sprite = {
+    object_type = "Atlas",
+    key = "triplet_rhythm",
+    path = "j_cry_triplet_rhythm.png",
+    px = 71,
+    py = 95
+}
+local booster = {
+    object_type = "Joker",
+	name = "cry-Booster Joker",
+	key = "booster",
+    config = {extra = {booster_slots = 1}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Booster Joker',
+        text = {
+            "{C:attention}+#1#{} Booster Pack slot",
+        }
+    },
+	rarity = 2,
+	cost = 7,
+	discovered = true,
+    blueprint_compat = false,
+	atlas = "booster_joker",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.booster_slots}}
+    end,
+    add_to_deck = function(self, card, from_debuff)
+        if not G.GAME.modifiers.cry_booster_packs then G.GAME.modifiers.cry_booster_packs = 2 end
+        G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + card.ability.extra.booster_slots
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        if not G.GAME.modifiers.cry_booster_packs then G.GAME.modifiers.cry_booster_packs = 2 end
+        G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.booster_slots
+    end
+}
+local booster_sprite = {
+    object_type = "Atlas",
+    key = "booster_joker",
+    path = "j_cry_booster.png",
+    px = 71,
+    py = 95
+}
+local chili_pepper = {
+    object_type = "Joker",
+	name = "cry-Chili Pepper",
+	key = "chili_pepper",
+    config = {extra = {Xmult = 1, Xmult_mod = 0.5, rounds_remaining = 8}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Chili Pepper',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult, increases by",
+            "{X:mult,C:white} X#2# {} Mult at end of round,",
+            "destroyed after {C:attention}#3#{} rounds"
+        }
+    },
+	rarity = 2,
+	cost = 6,
+	discovered = true,
+    blueprint_compat = false,
+	atlas = "chili_pepper",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult, center.ability.extra.Xmult_mod, center.ability.extra.rounds_remaining}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and not context.before and not context.after and card.ability.extra.Xmult > 1 then
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+                Xmult_mod = card.ability.extra.Xmult
+            }
+        end
+        if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
+            card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+            card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
+            if card.ability.extra.rounds_remaining > 0 then
+                return {
+                    message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.Xmult}},
+                    colour = G.C.FILTER
+                }
+            else
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound('tarot1')
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                            func = function()
+                                    G.jokers:remove_card(card)
+                                    card:remove()
+                                    card = nil
+                                return true; end})) 
+                        return true
+                    end
+                })) 
+                return {
+                    message = localize('k_eaten_ex'),
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    end
+}
+local chili_pepper_sprite = {
+    object_type = "Atlas",
+    key = "chili_pepper",
+    path = "j_cry_chili_pepper.png",
+    px = 71,
+    py = 95
+}
+local compound_interest = {
+    object_type = "Joker",
+	name = "cry-Compound Interest",
+	key = "compound_interest",
+    config = {extra = {percent_mod = 3, percent = 15}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Compound Interest',
+        text = {
+			"Earn {C:money}#1#%{} of total money",
+            "at end of round, payout",
+            "increases by {C:money}#2#%{} per",
+            "consecutive payout"
+        }
+    },
+	rarity = 2,
+	cost = 8,
+	discovered = true,
+	atlas = "compound_interest",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.percent, center.ability.extra.percent_mod}}
+    end,
+	calc_dollar_bonus = function(self)
+		local bonus = math.floor(0.01*self.ability.extra.percent*G.GAME.dollars)
+        self.ability.extra.percent = self.ability.extra.percent + self.ability.extra.percent_mod
+        return bonus
+	end
+}
+local compound_interest_sprite = {
+	object_type = "Atlas",
+    key = "compound_interest",
+    path = "j_cry_compound_interest.png",
+    px = 71,
+    py = 95
+}
+
+local big_cube = {
+    object_type = "Joker",
+	name = "cry-Big Cube",
+	key = "big_cube",
+    joker_gate = "cry-Cube",
+    config = {extra = {Xchips = 6}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Big Cube',
+        text = {
+            "{X:chips,C:white} X#1# {} Chips"
+        }
+    },
+	rarity = 1,
+	cost = 25,
+	discovered = true,
+	atlas = "big_cube",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xchips}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and not context.before and not context.after then
+            return {
+                message = "X"..card.ability.extra.Xchips,
+                Xchip_mod = card.ability.extra.Xchips,
+                colour = G.C.CHIPS
+            }
+        end
+    end
+}
+local big_cube_sprite = {
+	object_type = "Atlas",
+    key = "big_cube",
+    path = "j_cry_big_cube.png",
+    px = 71,
+    py = 95
+}
+
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -551,8 +779,11 @@ return {name = "Misc. Jokers",
                 if self.ability.name == "cry-Cube" then
                     self.cost = -25
                 end
+                if self.ability.name == "cry-Big Cube" then
+                    self.cost = 25
+                end
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, whip, pickle, lucky_joker, cursor, cube}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, whip, pickle, triplet_rhythm, booster, chili_pepper, compound_interest, lucky_joker, cursor, cube, big_cube}}

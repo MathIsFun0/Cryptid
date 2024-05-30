@@ -27,6 +27,7 @@ if effects.jokers.joker_repetitions then
                     if ef.jokers.chip_mod then hand_chips = mod_chips(hand_chips + ef.jokers.chip_mod);extras.hand_chips = true end
                     if ef.jokers.Xmult_mod then mult = mod_mult(mult*ef.jokers.Xmult_mod);extras.mult = true  end
                     if ef.jokers.pow_mult_mod then mult = mod_mult(mult^ef.jokers.pow_mult_mod);extras.mult = true  end
+                    if ef.jokers.Xchip_mod then hand_chips = mod_chips(hand_chips*ef.jokers.Xchip_mod);extras.hand_chips = true  end
                     update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
                     card_eval_status_text(_card, 'jokers', nil, percent, nil, effects.jokers)
                     --Exponentia
@@ -810,6 +811,7 @@ if effect and effect.joker_repetitions then
                     if ef.chip_mod then hand_chips = mod_chips(hand_chips + ef.chip_mod);extras.hand_chips = true end
                     if ef.Xmult_mod then mult = mod_mult(mult*ef.Xmult_mod);extras.mult = true  end
                     if ef.pow_mult_mod then mult = mod_mult(mult^ef.pow_mult_mod);extras.mult = true  end
+                    if ef.Xchip_mod then hand_chips = mod_chips(hand_chips*ef.Xchip_mod);extras.hand_chips = true  end
                     if extras.mult or extras.hand_chips then update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult}) end
                     if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, ef) end
                     --Exponentia
@@ -850,6 +852,7 @@ if effect and effect.joker_repetitions then
                     if ef.chip_mod then hand_chips = mod_chips(hand_chips + ef.chip_mod);extras.hand_chips = true end
                     if ef.Xmult_mod then mult = mod_mult(mult*ef.Xmult_mod);extras.mult = true  end
                     if ef.pow_mult_mod then mult = mod_mult(mult^ef.pow_mult_mod);extras.mult = true  end
+                    if ef.Xchip_mod then hand_chips = mod_chips(hand_chips*ef.Xchip_mod);extras.hand_chips = true  end
                     if extras.mult or extras.hand_chips then update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult}) end
                     if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, ef) end
                     --Exponentia

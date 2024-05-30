@@ -42,9 +42,19 @@ pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
 position = "after"
 payload = '''
 if G.GAME.modifiers.cry_misprint_min then
-    G.GAME.pack_size = math.max(G.GAME.pack_size, 1)
+    if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name:find('Arcana') then"
+position = "before"
+payload = '''
+if self.ability.extra < 1 then self.ability.extra = 1 end
 '''
 match_indent = true
 
@@ -84,7 +94,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "_size*G.CARD_W,"
 position = "at"
-payload = "math.min(_size,5)*G.CARD_W,"
+payload = "math.max(1,math.min(_size,5))*G.CARD_W,"
 match_indent = true
 
 [[patches]]
@@ -92,7 +102,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "_size*G.CARD_W*1.1,"
 position = "at"
-payload = "math.min(_size,5)*G.CARD_W*1.1,"
+payload = "math.max(1,math.min(_size,5))*G.CARD_W*1.1,"
 match_indent = true
 
 [[patches]]
@@ -100,7 +110,15 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "_size*G.CARD_W*1.1 + 0.5,"
 position = "at"
-payload = "math.min(_size,5)*G.CARD_W*1.1 + 0.5,"
+payload = "math.max(1,math.min(_size,5))*G.CARD_W*1.1 + 0.5,"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "{card_limit = _size, type = 'consumeable', highlight_limit = 1}"
+position = "at"
+payload = "{card_limit = math.max(1,_size), type = 'consumeable', highlight_limit = 1}"
 match_indent = true
 
 # Death
@@ -136,4 +154,13 @@ target = "functions/button_callbacks.lua"
 pattern = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"
 position = "at"
 payload = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play then"
+match_indent = true
+
+# Hieroglyph
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "ease_ante(-center_table.extra)"
+position = "at"
+payload = "ease_ante(math.floor(-center_table.extra))"
 match_indent = true

@@ -173,8 +173,8 @@ local conveyor = {
         text = {
             "Jokers may {C:attention}not{} be moved",
             "At start of round,",
-            "{C:attention}duplicate{} leftmost joker",
-            "and {C:attention}destroy{} rightmost joker"
+            "{C:attention}duplicate{} rightmost joker",
+            "and {C:attention}destroy{} leftmost joker"
         }
     }
 }
@@ -251,8 +251,8 @@ return {name = "Misc. Decks",
             --Misprint Deck patches
             function cry_log_random(seed,min,max)
                 math.randomseed(seed)
-                local lmin = math.log(min)
-                local lmax = math.log(max)
+                local lmin = math.log(min,2.718281828459045)
+                local lmax = math.log(max,2.718281828459045)
                 local poll = math.random()*(lmax-lmin)+lmin
                 return math.exp(poll)
             end

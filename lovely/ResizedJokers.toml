@@ -16,6 +16,12 @@ if center.name == "cry-Wee Fibonacci" and (center.discovered or self.bypass_disc
     self.T.h = H
     self.T.w = W
 end
+if center.name == "cry-Booster Joker" and (center.discovered or self.bypass_discovery_center) then 
+    H = H*1.17
+    W = W*1.17
+    self.T.h = H
+    self.T.w = W
+end
 if center.name == "cry-Cube" and (center.discovered or self.bypass_discovery_center) then 
     H = H*0.1
     W = W*0.1
@@ -50,6 +56,9 @@ payload = '''
 elseif self.config.center.name == "cry-Wee Fibonacci" then 
     self.T.h = H*scale*0.7*scale
     self.T.w = W*scale*0.7*scale
+elseif self.config.center.name == "cry-Booster Joker" then 
+    self.T.h = H*scale*1.17*scale
+    self.T.w = W*scale*1.17*scale
 elseif self.config.center.name == "cry-Cube" then 
     self.T.h = H*scale*0.1*scale
     self.T.w = W*scale*0.1*scale
