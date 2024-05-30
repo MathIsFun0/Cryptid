@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.1
+--- VERSION: 0.3.1a
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -253,8 +253,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if front and G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
   if card.ability.consumeable and not skip_materialize then card:start_materialize() end
 
+  if card.ability.name == "cry-Cube" then card:set_eternal(true) end
   if _type == 'Joker' or G.GAME.modifiers.cry_any_stickers then
-      if G.GAME.modifiers.all_eternal or card.ability.name == "cry-Cube" then
+      if G.GAME.modifiers.all_eternal then
           card:set_eternal(true)
       end
       if (area == G.shop_jokers) or (area == G.pack_cards) then 
@@ -290,6 +291,29 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if cry_misprintize then cry_misprintize(card) end
   return card
 end
+
+
+-- Make tags fit if there's more than 13 of them
+local at = add_tag
+function add_tag(tag)
+    at(tag)
+    if #G.HUD_tags > 13 then
+        for i = 2, #G.HUD_tags do
+            G.HUD_tags[i].config.offset.y = 0.9-0.9*13/#G.HUD_tags
+        end
+    end
+end
+
+local tr = Tag.remove
+function Tag:remove()
+    tr(self)
+    if #G.HUD_tags >= 13 then
+        for i = 2, #G.HUD_tags do
+            G.HUD_tags[i].config.offset.y = 0.9-0.9*13/#G.HUD_tags
+        end
+    end
+end
+
 
 SMODS.Atlas({
     key = "modicon",
