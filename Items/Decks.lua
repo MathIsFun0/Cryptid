@@ -173,8 +173,8 @@ local conveyor = {
         text = {
             "Jokers may {C:attention}not{} be moved",
             "At start of round,",
-            "{C:attention}duplicate{} rightmost joker",
-            "and {C:attention}destroy{} leftmost joker"
+            "{C:attention}duplicate{} rightmost Joker",
+            "and {C:attention}destroy{} leftmost Joker"
         }
     }
 }

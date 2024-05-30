@@ -661,7 +661,7 @@ local compound_interest = {
         name = 'Compound Interest',
         text = {
 			"Earn {C:money}#1#%{} of total money",
-            "at end of round, payout",
+            "at end of round,",
             "increases by {C:money}#2#%{} per",
             "consecutive payout"
         }

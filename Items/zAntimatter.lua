@@ -41,7 +41,8 @@ local antimatter = {
         -- Enhanced Decks
         cry_force_enhancement = 'random',
         cry_force_edition = 'random',
-        cry_force_seal = 'random'
+        cry_force_seal = 'random',
+        cry_boss_blocked = {"The Goad", "The Window", "The Club", "The Head"}
     },
 	pos = {x = 0, y = 0},
 	loc_txt = {

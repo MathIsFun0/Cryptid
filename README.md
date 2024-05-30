@@ -5,6 +5,6 @@ Note: Cryptid requires [Steamodded **1.0.0-Alpha**](https://github.com/Steamopol
 
 Cryptid currently adds:
 - 16 new stakes
-- 22 new decks
-- 18 new jokers
+- 29 new decks
+- 30 new jokers
 - 2 new spectrals
