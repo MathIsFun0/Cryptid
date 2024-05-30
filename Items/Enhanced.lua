@@ -262,82 +262,197 @@ local rental_deck = {object_type = "Back",
             "of {C:attention}Rental Cards{}"
         }
     },
-    
 }
-local Backapply_to_runRef = Back.apply_to_run
-function Back.apply_to_run(self)
-	Backapply_to_runRef(self)
-
-	if self.effect.config.cry_force_enhancement then
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-                    if self.effect.config.cry_force_enhancement == 'random' then
-                        local random_enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed('cry_ant_enhancement'))
-                        G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
-                    else
-                        G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
-                    end
-				end
-
-				return true
-			end
-		}))
-	end
-    if self.effect.config.cry_force_edition then
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-                    local ed_table = {}
-                    if self.effect.config.cry_force_edition == 'random' then
-                        local editions = {"foil", "holo", "polychrome"} --todo: modded edition support
-                        local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
-                        ed_table[random_edition] = true
-                        G.playing_cards[c]:set_edition(ed_table, true, true);
-                    else
-                        ed_table[self.effect.config.cry_force_edition] = true
-                        G.playing_cards[c]:set_edition(ed_table, true, true);
-                    end
-				end
-
-				return true
-			end
-		}))
-	end
-	if self.effect.config.cry_force_seal then
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-                    if self.effect.config.cry_force_seal == 'random' then
-                        local random_seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed('cry_ant_seal'))
-                        G.playing_cards[c]:set_seal(random_seal.key, true);
-                    else
-                        G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true);
-                    end
-				end
-				return true
-			end
-		}))
-	end
-	if self.effect.config.cry_force_sticker then
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-                    G.playing_cards[c].config.center.eternal_compat = true
-                    G.playing_cards[c].config.center.perishable_compat = true
-                    G.playing_cards[c]["set_"..self.effect.config.cry_force_sticker](G.playing_cards[c],true);
-				end
-				return true
-			end
-		}))
-	end
-end
+local world_deck = {object_type = "Back",
+    name = "cry-World Deck",
+    key = "world_deck",
+	config = {cry_force_suit = 'Spades', cry_boss_blocked = {'The Goad'}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = "Deck of The World",
+        text = {
+            "All cards in deck are {C:spade}Spades{}",
+            "and cannot change suits",
+            "{C:attention}The Goad{} cannot appear"
+        }
+    },
+    atlas = "world_deck"
+}
+local star_deck = {object_type = "Back",
+    name = "cry-Star Deck",
+    key = "star_deck",
+	config = {cry_force_suit = 'Diamonds', cry_boss_blocked = {'The Window'}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = "Deck of The Stars",
+        text = {
+            "All cards in deck are {C:diamond}Diamonds{}",
+            "and cannot change suits",
+            "{C:attention}The Window{} cannot appear"
+        }
+    },
+    atlas = "star_deck"
+}
+local sun_deck = {object_type = "Back",
+    name = "cry-Sun Deck",
+    key = "sun_deck",
+	config = {cry_force_suit = 'Hearts', cry_boss_blocked = {'The Head'}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = "Deck of The Sun",
+        text = {
+            "All cards in deck are {C:heart}Hearts{}",
+            "and cannot change suits",
+            "{C:attention}The Head{} cannot appear"
+        }
+    },
+    atlas = "sun_deck"
+}
+local moon_deck = {object_type = "Back",
+    name = "cry-Moon Deck",
+    key = "moon_deck",
+	config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'The Club'}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = "Deck of The Moon",
+        text = {
+            "All cards in deck are {C:club}Clubs{}",
+            "and cannot change suits",
+            "{C:attention}The Club{} cannot appear"
+        }
+    },
+    atlas = "moon_deck"
+}
+local world_sprite = {
+	object_type = "Atlas",
+    key = "world_deck",
+    path = "b_cry_world.png",
+    px = 71,
+    py = 95
+}
+local star_sprite = {
+	object_type = "Atlas",
+    key = "star_deck",
+    path = "b_cry_star.png",
+    px = 71,
+    py = 95
+}
+local sun_sprite = {
+	object_type = "Atlas",
+    key = "sun_deck",
+    path = "b_cry_sun.png",
+    px = 71,
+    py = 95
+}
+local moon_sprite = {
+	object_type = "Atlas",
+    key = "moon_deck",
+    path = "b_cry_moon.png",
+    px = 71,
+    py = 95
+}
 
 return {name = "Enhanced Decks", 
         init = function()
+            local Backapply_to_runRef = Back.apply_to_run
+            function Back.apply_to_run(self)
+                Backapply_to_runRef(self)
+            
+                if self.effect.config.cry_force_enhancement then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            for c = #G.playing_cards, 1, -1 do
+                                if self.effect.config.cry_force_enhancement == 'random' then
+                                    local random_enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed('cry_ant_enhancement'))
+                                    G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
+                                else
+                                    G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
+                                end
+                            end
+            
+                            return true
+                        end
+                    }))
+                end
+                if self.effect.config.cry_force_edition then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            for c = #G.playing_cards, 1, -1 do
+                                local ed_table = {}
+                                if self.effect.config.cry_force_edition == 'random' then
+                                    local editions = {"foil", "holo", "polychrome"} --todo: modded edition support
+                                    local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
+                                    ed_table[random_edition] = true
+                                    G.playing_cards[c]:set_edition(ed_table, true, true);
+                                else
+                                    ed_table[self.effect.config.cry_force_edition] = true
+                                    G.playing_cards[c]:set_edition(ed_table, true, true);
+                                end
+                            end
+            
+                            return true
+                        end
+                    }))
+                end
+                if self.effect.config.cry_force_seal then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            for c = #G.playing_cards, 1, -1 do
+                                if self.effect.config.cry_force_seal == 'random' then
+                                    local random_seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed('cry_ant_seal'))
+                                    G.playing_cards[c]:set_seal(random_seal.key, true);
+                                else
+                                    G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true);
+                                end
+                            end
+                            return true
+                        end
+                    }))
+                end
+                if self.effect.config.cry_force_sticker then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            for c = #G.playing_cards, 1, -1 do
+                                G.playing_cards[c].config.center.eternal_compat = true
+                                G.playing_cards[c].config.center.perishable_compat = true
+                                G.playing_cards[c]["set_"..self.effect.config.cry_force_sticker](G.playing_cards[c],true);
+                            end
+                            return true
+                        end
+                    }))
+                end
+                if self.effect.config.cry_force_suit then
+                    G.GAME.modifiers.cry_force_suit = self.effect.config.cry_force_suit
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            for c = #G.playing_cards, 1, -1 do
+                                G.playing_cards[c]:change_suit(self.effect.config.cry_force_suit)
+                            end
+                            return true
+                        end
+                    }))
+                end
+                if self.effect.config.cry_boss_blocked then
+                    if not G.GAME.bosses_used then 
+                        G.GAME.bosses_used = {}
+                        for k, v in pairs(G.P_BLINDS) do 
+                            if v.boss then G.GAME.bosses_used[k] = 0 end
+                        end
+                        for _, v in pairs(self.effect.config.cry_boss_blocked) do
+                            G.GAME.bosses_used[v] = 1e308
+                        end
+                    end
+                end
+            end
+            --Suit Deck Patches
+            local cs = Card.change_suit
+            function Card:change_suit(new_suit)
+                return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
+            end
         end,
-        items = {trance_sprite, medium_sprite,
+        items = {trance_sprite, medium_sprite, world_sprite, star_sprite, sun_sprite, moon_sprite,
 hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
 foil_deck, holo_deck, poly_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,
-eternal_deck, perishable_deck, rental_deck}}
+eternal_deck, perishable_deck, rental_deck,
+star_deck, moon_deck, sun_deck, world_deck}}

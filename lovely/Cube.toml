@@ -10,6 +10,8 @@ target = "functions/common_events.lua"
 pattern = "elseif v.enhancement_gate then"
 position = "before"
 payload = '''
+elseif v.source_gate then
+    if v.source_gate ~= key_append then add = nil end
 elseif v.joker_gate then
     add = nil
     for kk, vv in pairs(G.jokers.cards) do

@@ -480,6 +480,7 @@ local cube = {
 	discovered = true,
     blueprint_compat = true,
 	atlas = "cube",
+    source_gate = "sho",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.chips}}
     end,

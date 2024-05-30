@@ -287,11 +287,11 @@ return {name = "Misc. Decks",
             end
             function cry_misprintize(card)
                 if G.GAME.modifiers.cry_misprint_min then
-                    cry_misprintize_tbl(card.ability.name, card.ability)
+                    cry_misprintize_tbl(card.config.center_key, card.ability)
                     --cry_misprintize_val(card.config.center.config)
                     card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
                 else
-                    cry_misprintize_tbl(card.ability.name, card.ability, true)
+                    cry_misprintize_tbl(card.config.center_key, card.ability, true)
                 end
             end
             function cry_format(number, str)

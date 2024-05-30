@@ -247,6 +247,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   bypass_discovery_ui = area==G.shop_jokers or area == G.pack_cards or area==G.shop_vouchers or (G.shop_demo and area==G.shop_demo),
   discover = area==G.jokers or area==G.consumeables, 
   bypass_back = G.GAME.selected_back.pos})
+  if front and G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_force_suit) end
   if card.ability.consumeable and not skip_materialize then card:start_materialize() end
 
   if _type == 'Joker' or G.GAME.modifiers.cry_any_stickers then

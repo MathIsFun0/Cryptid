@@ -46,3 +46,14 @@ else
 end
 '''
 match_indent = true
+
+# Created cards match suits of suit deck
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "card.playing_card = G.playing_card"
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_force_suit) end
+'''
+match_indent = true
