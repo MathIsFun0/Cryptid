@@ -50,7 +50,7 @@ local iterum = {
     object_type = "Joker",
 	name = "cry-Iterum",
 	key = "iterum",
-	config = {extra = {x_mult = 1.5, repetitions = 1}},
+	config = {extra = {x_mult = 2, repetitions = 1}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Iterum',
@@ -230,8 +230,8 @@ local redeo = {
         text = {
             "{C:attention}-#1#{} Ante when",
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
-            "{C:inactive,s:0.7}Requirements increase by",
-            "{C:money,s:0.7}$#4#{C:inactive,s:0.7} after each use"
+            "{C:inactive,s:0.8}Requirements increase by",
+            "{C:money,s:0.8}$#4#{C:inactive,s:0.8} after each use"
         }
     },
 	rarity = "cry_exotic",

@@ -301,7 +301,7 @@ local twilight = {object_type = "Stake",
 	loc_txt = {
         name = "Twilight Stake",
         text = {
-        "Jokers can be {C:attention}Banana{}",
+        "Cards can be {C:attention}Banana{}",
         "{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
         "{s:0.8,C:inactive}(Not yet implemented){}",
         }
@@ -481,16 +481,6 @@ return {name = "More Stakes",
                     return false
                 end
                 return cuc(self, any_stake, skip_check)
-            end
-            -- Remove a slot when using Eternal consumables
-            local uc = Card.use_consumeable
-            function Card:use_consumeable(area, copier)
-                if self.ability.eternal and area == G.consumeables then 
-                    G.E_MANAGER:add_event(Event({func = function()
-                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
-                        return true end }))
-                end
-                uc(self, area, copier)
             end
             -- Overriding Steamodded's registering of Incantation/Familiar/Grim
             local function random_destroy(used_tarot)

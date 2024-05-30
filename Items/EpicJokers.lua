@@ -354,6 +354,48 @@ local boredom_sprite = {
     px = 71,
     py = 95
 }
+local number_blocks = {
+    object_type = "Joker",
+	name = "cry-Number Blocks",
+	key = "number_blocks",
+    config = {extra = {money_mod = 1, money = 0}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Number Blocks',
+        text = {
+			"Earn {C:money}$#1#{} at end of round,",
+			"permanently increase payout by",
+			"{C:money}$#2#{} for each {C:attention}#3#{} held in hand,",
+			"rank changes every round"
+        }
+    },
+	rarity = "cry_epic",
+	cost = 12,
+	discovered = true,
+	atlas = "number_blocks",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.money, center.ability.extra.money_mod, localize(G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace", 'ranks')}}
+    end,
+    calculate = function(self, card, context)
+        if context.individual and not context.end_of_round and context.cardarea == G.hand and not context.blueprint and not context.before and not context.after and context.other_card:get_id() == G.GAME.current_round.cry_nb_card.id then
+			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
+			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			return {calculated = true}
+		end
+    end,
+	calc_dollar_bonus = function(self)
+		if self.ability.extra.money > 0 then
+			return self.ability.extra.money
+		end
+	end
+}
+local number_blocks_sprite = {
+	object_type = "Atlas",
+    key = "number_blocks",
+    path = "j_cry_number_blocks.png",
+    px = 71,
+    py = 95
+}
 
 local double_scale = {
     object_type = "Joker",
@@ -365,8 +407,8 @@ local double_scale = {
         text = {
             "Scaling jokers",
             "scale {C:attention}quadratically",
-            "{C:inactive,s:0.7}eg. +1, +3, +6, +10",
-            "{C:inactive,s:0.7}grows by +1, +2, +3"
+            "{C:inactive,s:0.8}eg. +1, +3, +6, +10",
+            "{C:inactive,s:0.8}grows by +1, +2, +3"
         }
     },
     rarity = "cry_epic",
@@ -524,13 +566,17 @@ local double_scale = {
                         dbl_info.offset = dbl_info.offset + scale_amt
                         local new_scale = dbl_info.scaler_base * dbl_info.offset
                         if #dbl_info.base == 2 then
+							if not jkr.ability[dbl_info.base[1]] or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
                             dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]] = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
                         else
+							if not jkr.ability[dbl_info.base[1]] then return end
                             dbl_info.ability[dbl_info.base[1]] = jkr.ability[dbl_info.base[1]]
                         end
                         if #dbl_info.scaler == 2 then
+							if not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] then return end
                             jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = new_scale
                         else
+							if not jkr.ability[dbl_info.scaler[1]] then return end
                             jkr.ability[dbl_info.scaler[1]] = new_scale
                         end
                         card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
@@ -574,7 +620,34 @@ return {name = "Epic Jokers",
 			}
 
 			cry_enable_epics = true
-			G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, m, boredom, double_scale}
+			G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}
+
+			--Number Blocks Patches
+            local gigo = Game.init_game_object;
+            function Game:init_game_object()
+                local g = gigo(self)
+                g.current_round.cry_nb_card = {rank = 'Ace'}
+                return g
+            end
+            local rcc = reset_castle_card;
+            function reset_castle_card()
+                rcc()
+                G.GAME.current_round.cry_nb_card.rank = 'Ace'
+                local valid_castle_cards = {}
+                for k, v in ipairs(G.playing_cards) do
+                    if v.ability.effect ~= 'Stone Card' then
+                        valid_castle_cards[#valid_castle_cards+1] = v
+                    end
+                end
+                if valid_castle_cards[1] then 
+                    local castle_card = pseudorandom_element(valid_castle_cards, pseudoseed('cry_nb'..G.GAME.round_resets.ante))
+                    if not G.GAME.current_round.cry_nb_card then
+                        G.GAME.current_round.cry_nb_card = {}
+                    end
+                    G.GAME.current_round.cry_nb_card.rank = castle_card.base.value
+					G.GAME.current_round.cry_nb_card.id = castle_card.base.id
+                end
+            end
 
             --For Double Scale, modify Green Joker to use one variable
             SMODS.Joker:take_ownership('green_joker', {
@@ -612,4 +685,5 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale}}
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite,
+		googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}}

@@ -152,6 +152,7 @@ local queensgambit = {
     cost = 10,
     discovered = true,
     atlas = "queens_gambit",
+    config = {extra = {type = "Straight Flush"}},
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint then
             if next(context.poker_hands[card.ability.extra.type]) and G.GAME.current_round.current_hand.handname == "Royal Flush" then
