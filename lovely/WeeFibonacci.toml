@@ -16,11 +16,31 @@ if center.name == "cry-Wee Fibonacci" and (center.discovered or self.bypass_disc
     self.T.h = H
     self.T.w = W
 end
+if center.name == "cry-Cube" and (center.discovered or self.bypass_discovery_center) then 
+    H = H*0.1
+    W = W*0.1
+    self.T.h = H
+    self.T.w = W
+end
 '''
 match_indent = true
 
 
 # Wee Fibonacci rendering
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if _center.name == 'Photograph' and (_center.discovered or self.bypass_discovery_center) then"
+position = "before"
+payload = '''
+if _center.name == "cry-Cube" and (_center.discovered or self.bypass_discovery_center) then
+    self.children.center.scale.y = self.children.center.scale.y*0.1
+    self.children.center.scale.x = self.children.center.scale.x*0.1
+end
+'''
+match_indent = true
+
+# Cube rendering
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -30,5 +50,8 @@ payload = '''
 elseif self.config.center.name == "cry-Wee Fibonacci" then 
     self.T.h = H*scale*0.7*scale
     self.T.w = W*scale*0.7*scale
+elseif self.config.center.name == "cry-Cube" then 
+    self.T.h = H*scale*0.1*scale
+    self.T.w = W*scale*0.1*scale
 '''
 match_indent = true

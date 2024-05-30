@@ -316,12 +316,12 @@ local lucky_joker = {
 	discovered = true,
     blueprint_compat = true,
 	atlas = "lucky_joker",
+    enhancement_gate = 'm_lucky',
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.dollars}}
     end,
     calculate = function(self, card, context)
         if context.individual and context.other_card.lucky_trigger then
-            print("hi mom")
             G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
             G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
             return {
@@ -336,6 +336,162 @@ local lucky_joker_sprite = {
     key = "lucky_joker",
     
     path = "j_cry_lucky_joker.png",
+    px = 71,
+    py = 95
+}
+
+local cursor = {
+    object_type = "Joker",
+	name = "cry-Cursor",
+	key = "cursor",
+    config = {extra = {chips = 0, chip_mod = 5}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Cursor',
+        text = {
+            "This Joker gains {C:chips}+#2#{} Chips",
+            "per card {C:attention}purchased{}",
+            "{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
+        }
+    },
+	rarity = 1,
+	cost = 5,
+	discovered = true,
+    blueprint_compat = true,
+	atlas = "cursor",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
+    end,
+    calculate = function(self, card, context)
+        if context.buying_card and not context.blueprint then
+            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
+            return {calculated = true}
+        end
+        if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                chip_mod = card.ability.extra.chips
+            }
+        end
+    end
+}
+local cursor_sprite = {
+    object_type = "Atlas",
+    key = "cursor",
+    path = "j_cry_cursor.png",
+    px = 71,
+    py = 95
+}
+local pickle = {
+    object_type = "Joker",
+	name = "cry-Pickle",
+	key = "pickle",
+    config = {extra = {tags = 3, tags_mod = 1}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Pickle',
+        text = {
+            "When Blind skipped, create",
+            "{C:attention}#1#{} Tags, reduced by",
+            "{C:red}#2#{} when Blind selected"
+        }
+    },
+	rarity = 2,
+	cost = 5,
+	discovered = true,
+    blueprint_compat = true,
+	atlas = "pickle",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.tags, center.ability.extra.tags_mod}}
+    end,
+    calculate = function(self, card, context)
+        if context.skip_blind then
+            for i = 1, card.ability.extra.tags do
+                local tag = Tag(get_next_tag_key("cry_pickle"))
+                if tag.name == 'Orbital Tag' then                 
+                    local _poker_hands = {}
+                    for k, v in pairs(G.GAME.hands) do
+                        if v.visible then _poker_hands[#_poker_hands+1] = k end
+                    end
+                    tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('cry_pickle_orbital'))
+                end
+                add_tag(tag)
+            end
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = "+"..card.ability.extra.tags.." Tag"..(card.ability.extra.tags>1 and "s" or ""), colour = G.C.FILTER})
+            return {calculated = true}
+        end
+        if context.setting_blind and not context.blueprint then
+            card.ability.extra.tags = card.ability.extra.tags - card.ability.extra.tags_mod
+            if card.ability.extra.tags > 0 then
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "-"..card.ability.extra.tags_mod.." Tag"..(card.ability.extra.tags_mod>1 and "s" or ""), colour = G.C.FILTER})
+                return {calculated = true}
+            else
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound('tarot1')
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                            func = function()
+                                    G.jokers:remove_card(card)
+                                    card:remove()
+                                    card = nil
+                                return true; end})) 
+                        return true
+                    end
+                })) 
+                return {
+                    message = localize('k_eaten_ex'),
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    end
+}
+local pickle_sprite = {
+    object_type = "Atlas",
+    key = "pickle",
+    path = "j_cry_pickle.png",
+    px = 71,
+    py = 95
+}
+
+local cube = {
+    object_type = "Joker",
+	name = "cry-Cube",
+	key = "cube",
+    config = {extra = {chips = 6}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Cube',
+        text = {
+            "{C:chips}+#1#{} Chips"
+        }
+    },
+	rarity = 1,
+	cost = -25,
+	discovered = true,
+    blueprint_compat = true,
+	atlas = "cube",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.chips}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                chip_mod = card.ability.extra.chips
+            }
+        end
+    end
+}
+local cube_sprite = {
+    object_type = "Atlas",
+    key = "cube",
+    path = "j_cry_cube.png",
     px = 71,
     py = 95
 }
@@ -388,5 +544,15 @@ return {name = "Misc. Jokers",
                 return ret_value
             end
 
+            --Cube Patches
+            local sc = Card.set_cost
+            function Card:set_cost()
+                sc(self)
+                if self.ability.name == "cry-Cube" then
+                    self.cost = -25
+                end
+            end
+
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, whip, lucky_joker}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, whip, pickle, lucky_joker, cursor, cube}}
