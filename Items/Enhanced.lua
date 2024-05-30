@@ -7,7 +7,8 @@ local hierophant_deck = {object_type = "Back",
         name = "The Hierophant's Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Bonus Cards{}"
+            "of {C:attention}Bonus Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -21,7 +22,8 @@ local empress_deck = {object_type = "Back",
         name = "The Empress's Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Mult Cards{}"
+            "of {C:attention}Mult Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -35,7 +37,8 @@ local lovers_deck = {object_type = "Back",
         name = "The Lovers' Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Wild Cards{}"
+            "of {C:attention}Wild Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -49,7 +52,8 @@ local justice_deck = {object_type = "Back",
         name = "Deck of Justice",
         text = {
             "Start with a deck",
-            "of {C:attention}Glass Cards{}"
+            "of {C:attention}Glass Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -63,7 +67,8 @@ local chariot_deck = {object_type = "Back",
         name = "The Chariot's Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Steel Cards{}"
+            "of {C:attention}Steel Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -77,7 +82,8 @@ local tower_deck = {object_type = "Back",
         name = "Stoner's Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Stone Cards{}"
+            "of {C:attention}Stone Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -91,7 +97,8 @@ local devil_deck = {object_type = "Back",
         name = "The Devil's Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Gold Cards{}"
+            "of {C:attention}Gold Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -105,7 +112,8 @@ local magician_deck = {object_type = "Back",
         name = "The Magician's Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Lucky Cards{}"
+            "of {C:attention}Lucky Cards{}",
+            "Cards cannot change enhancements"
         }
     },
     
@@ -119,7 +127,8 @@ local foil_deck = {object_type = "Back",
         name = "Deck of Chips",
         text = {
             "Start with a deck",
-            "of {C:attention}Foil Cards{}"
+            "of {C:attention}Foil Cards{}",
+            "Cards cannot change editions"
         }
     },
     
@@ -133,7 +142,8 @@ local holo_deck = {object_type = "Back",
         name = "Deck of Mult",
         text = {
             "Start with a deck",
-            "of {C:attention}Holographic Cards{}"
+            "of {C:attention}Holographic Cards{}",
+            "Cards cannot change editions"
         }
     },
     
@@ -147,7 +157,8 @@ local poly_deck = {object_type = "Back",
         name = "Deck of XMult",
         text = {
             "Start with a deck",
-            "of {C:attention}Polychrome Cards{}"
+            "of {C:attention}Polychrome Cards{}",
+            "Cards cannot change editions"
         }
     },
     
@@ -161,7 +172,8 @@ local talisman_deck = {object_type = "Back",
         name = "Talisman Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Gold Seal Cards{}"
+            "of {C:attention}Gold Seal Cards{}",
+            "Cards cannot change seals"
         }
     },
     
@@ -175,7 +187,8 @@ local deja_vu_deck = {object_type = "Back",
         name = "Deja Vu Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Red Seal Cards{}"
+            "of {C:attention}Red Seal Cards{}",
+            "Cards cannot change seals"
         }
     },
     
@@ -189,7 +202,8 @@ local trance_deck = {object_type = "Back",
         name = "Trance Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Blue Seal Cards{}"
+            "of {C:attention}Blue Seal Cards{}",
+            "Cards cannot change seals"
         }
     },
     atlas = "trance"
@@ -210,7 +224,8 @@ local medium_deck = {object_type = "Back",
         name = "Medium Deck",
         text = {
             "Start with a deck",
-            "of {C:attention}Purple Seal Cards{}"
+            "of {C:attention}Purple Seal Cards{}",
+            "Cards cannot change seals"
         }
     },
     atlas = "medium"
@@ -359,6 +374,7 @@ return {name = "Enhanced Decks",
                 Backapply_to_runRef(self)
             
                 if self.effect.config.cry_force_enhancement then
+                    if self.effect.config.cry_force_enhancement ~= 'random' then G.GAME.modifiers.cry_force_enhancement = self.effect.config.cry_force_enhancement end
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             for c = #G.playing_cards, 1, -1 do
@@ -375,6 +391,7 @@ return {name = "Enhanced Decks",
                     }))
                 end
                 if self.effect.config.cry_force_edition then
+                    if self.effect.config.cry_force_edition ~= 'random' then G.GAME.modifiers.cry_force_edition = self.effect.config.cry_force_edition end
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             for c = #G.playing_cards, 1, -1 do
@@ -395,6 +412,7 @@ return {name = "Enhanced Decks",
                     }))
                 end
                 if self.effect.config.cry_force_seal then
+                    if self.effect.config.cry_force_seal ~= 'random' then G.GAME.modifiers.cry_force_seal = self.effect.config.cry_force_seal end
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             for c = #G.playing_cards, 1, -1 do
@@ -444,7 +462,22 @@ return {name = "Enhanced Decks",
                     end
                 end
             end
-            --Suit Deck Patches
+            local sa = Card.set_ability
+            function Card:set_ability(center, y, z)
+                if center.set == "Enhanced" then
+                    return sa(self, G.GAME.modifiers.cry_force_enhancement and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement] or center, y, z)
+                else
+                    return sa(self, center, y, z)
+                end
+            end
+            local se = Card.set_edition
+            function Card:set_edition(edition, y, z)
+                return se(self, G.GAME.modifiers.cry_force_edition and {[G.GAME.modifiers.cry_force_edition]=true} or edition, y, z)
+            end
+            local ss = Card.set_seal
+            function Card:set_seal(seal, y, z)
+                return ss(self, G.GAME.modifiers.cry_force_seal or seal, y, z)
+            end
             local cs = Card.change_suit
             function Card:change_suit(new_suit)
                 return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
