@@ -263,6 +263,9 @@ local redeo_sprite = {
     py = 95
 }
 
+
+G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo}
+
 return {name = "Exotic Jokers", 
         init = function()
             --Universum Patches
@@ -368,7 +371,5 @@ return {name = "Exotic Jokers",
                     end
                 end
             end
-
-            G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo}
         end,
         items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, gateway, iterum, universum, exponentia, speculo, redeo}}

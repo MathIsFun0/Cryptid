@@ -596,6 +596,9 @@ local double_scale_sprite = {
     py = 95
 }
 
+G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}
+
+
 return {name = "Epic Jokers", 
 		init = function()
 			
@@ -620,8 +623,6 @@ return {name = "Epic Jokers",
 			}
 
 			cry_enable_epics = true
-			G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}
-
 			--Number Blocks Patches
             local gigo = Game.init_game_object;
             function Game:init_game_object()
