@@ -647,7 +647,7 @@ return {name = "Epic Jokers",
             local rcc = reset_castle_card;
             function reset_castle_card()
                 rcc()
-                G.GAME.current_round.cry_nb_card.rank = 'Ace'
+                G.GAME.current_round.cry_nb_card = {rank = 'Ace'}
                 local valid_castle_cards = {}
                 for k, v in ipairs(G.playing_cards) do
                     if v.ability.effect ~= 'Stone Card' then

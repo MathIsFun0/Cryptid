@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.1c
+--- VERSION: 0.3.1d
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -288,7 +288,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       end
   end
 
-  if cry_misprintize then cry_misprintize(card) end
+  cry_misprintize(card)
   return card
 end
 
@@ -318,6 +318,66 @@ local nr = new_round
 function new_round()
     G.hand:change_size(0)
     nr()
+end
+
+--Redefine these here because they're always used
+if not Cryptid then Cryptid = {} end
+Cryptid.base_values = {}
+function cry_misprintize_tbl(name, tbl, clear)
+    if tbl then
+        for k, v in pairs(tbl) do
+            if type(tbl[k]) ~= 'table' then
+                if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1) then
+                    if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
+                    if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
+                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+                end
+            else
+                for _k, _v in pairs(tbl[k]) do
+                    if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1) then
+                        if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
+                        if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
+                        if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
+                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format(Cryptid.base_values[name][k][_k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+                    end
+                end
+            end
+        end
+    end
+end
+function cry_misprintize_val(val)
+   if type(val) == 'number' then
+    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
+   end 
+end
+function cry_misprintize(card)
+    if G.GAME.modifiers.cry_misprint_min then
+        --will make this check more advanced later
+        cry_misprintize_tbl(card.config.center_key, card.ability)
+        if card.ability.consumable and not Cryptid.base_values[card.config.center_key.."_c"] then
+            Cryptid.base_values[card.config.center_key.."_c"] = Cryptid.base_values[card.config.center.key].consumeable
+            cry_misprintize_tbl(card.config.center_key.."_c", card.ability.consumeable)
+        end
+        if card.ability.name == "Immolate" then
+            print(tprint(card.ability))
+        end
+        card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
+    else
+        cry_misprintize_tbl(card.config.center_key.."_c", card.ability.consumeable, true)
+        cry_misprintize_tbl(card.config.center_key, card.ability, true)
+    end
+end
+function cry_format(number, str)
+    return tonumber(str:format(Big:new(number):to_number()))
+end
+
+--Cryptid (the spectral) localization
+local il = init_localization
+function init_localization()
+    il()
+    if G.SETTINGS.language == 'en-us' then
+        G.localization.descriptions.Spectral.c_cryptid.text[2] = "{C:attention}#2#{} selected card"
+    end
 end
 
 

@@ -177,3 +177,31 @@ for k, v in pairs(G.P_CENTERS[self.config.center_key].config) do
         self.ability[k] = v --surely nothing will go wrong
     end'''
 match_indent = true
+
+# Get Cryptid to display and work with card selections
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif _c.name == 'Cryptid' then loc_vars = {_c.config.extra}"
+position = "at"
+payload = "elseif _c.name == 'Cryptid' then loc_vars = {_c.config.extra, _c.config.max_highlighted}"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'local _card = copy_card(G.hand.highlighted[1], nil, nil, G.playing_card)'
+position = "at"
+payload = '''
+for q = 1, #G.hand.highlighted do
+local _card = copy_card(G.hand.highlighted[q], nil, nil, G.playing_card)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "new_cards[#new_cards+1] = _card"
+position = "after"
+payload = "end"
+match_indent = true
