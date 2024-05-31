@@ -453,6 +453,13 @@ local double_scale = {
 						dbl_info.offset = 1
 						return
 					end
+					if jkr.ability.name == "cry-Chili Pepper" then
+						dbl_info.base = {"extra", "Xmult"}
+						dbl_info.scaler = {"extra", "Xmult_mod"}
+						dbl_info.scaler_base = jkr.ability.extra.Xmult_mod
+						dbl_info.offset = 1
+						return
+					end
 					if jkr.ability.name == "Yorick" then
 						dbl_info.base = {"x_mult"}
 						dbl_info.scaler = {"extra", "xmult"} --not kidding
@@ -579,7 +586,7 @@ local double_scale = {
 							if not jkr.ability[dbl_info.scaler[1]] then return end
                             jkr.ability[dbl_info.scaler[1]] = new_scale
                         end
-                        card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                        card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
                     end
                 end
             end

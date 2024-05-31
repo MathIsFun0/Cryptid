@@ -655,7 +655,7 @@ local compound_interest = {
     object_type = "Joker",
 	name = "cry-Compound Interest",
 	key = "compound_interest",
-    config = {extra = {percent_mod = 3, percent = 15}},
+    config = {extra = {percent_mod = 2, percent = 10}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Compound Interest',
@@ -666,7 +666,7 @@ local compound_interest = {
             "consecutive payout"
         }
     },
-	rarity = 2,
+	rarity = 3,
 	cost = 8,
 	discovered = true,
 	atlas = "compound_interest",
@@ -787,4 +787,4 @@ return {name = "Misc. Jokers",
 
         end,
         items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, whip, pickle, triplet_rhythm, booster, chili_pepper, compound_interest, lucky_joker, cursor, cube, big_cube}}
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube}}

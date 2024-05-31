@@ -164,3 +164,16 @@ pattern = "ease_ante(-center_table.extra)"
 position = "at"
 payload = "ease_ante(math.floor(-center_table.extra))"
 match_indent = true
+
+# Consumables lying to you
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:use_consumeable(area, copier)"
+position = "after"
+payload = '''
+for k, v in pairs(G.P_CENTERS[self.config.center_key].config) do
+        print(k..": "..(type(v) ~= 'table' and type(v) ~= 'boolean' and v or '<tbl>'))
+        self.ability[k] = v --surely nothing will go wrong
+    end'''
+match_indent = true
