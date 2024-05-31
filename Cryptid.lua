@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.1b
+--- VERSION: 0.3.1c
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -312,6 +312,12 @@ function Tag:remove()
             G.HUD_tags[i].config.offset.y = 0.9-0.9*13/#G.HUD_tags
         end
     end
+end
+
+local nr = new_round
+function new_round()
+    G.hand:change_size(0)
+    nr()
 end
 
 

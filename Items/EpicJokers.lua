@@ -467,6 +467,13 @@ local double_scale = {
 						dbl_info.offset = 1
 						return
 					end
+					if jkr.ability.name == "Hologram" then
+						dbl_info.base = {"x_mult"}
+						dbl_info.scaler = {"extra"}
+						dbl_info.scaler_base = jkr.ability.extra
+						dbl_info.offset = 1
+						return
+					end
 					if jkr.ability.name == "Gift Card" then
 						dbl_info.base = {"extra_value"}
 						dbl_info.scaler = {"extra"}

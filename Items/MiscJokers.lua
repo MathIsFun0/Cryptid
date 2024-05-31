@@ -154,8 +154,9 @@ local queensgambit = {
     atlas = "queens_gambit",
     config = {extra = {type = "Straight Flush"}},
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and context.before and not context.blueprint then
-            if next(context.poker_hands[card.ability.extra.type]) and G.GAME.current_round.current_hand.handname == "Royal Flush" then
+        if context.destroying_card and not context.blueprint then
+            if G.GAME.current_round.current_hand.handname == "Royal Flush" and SMODS.Ranks[context.destroying_card.base.value].key == "Queen" then
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.FILTER})
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
                     func = function()
@@ -169,24 +170,7 @@ local queensgambit = {
                         return true
                     end
                 }))
-
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    func = function()
-                        for i = 1, #context.scoring_hand do
-                            if SMODS.Ranks[context.scoring_hand[i].base.value].key == "Queen" then
-                                local card_to_destroy = context.scoring_hand[i]
-                                card_to_destroy.getting_sliced = true
-                                card_to_destroy:start_dissolve()
-                                return true
-                            end
-                        end
-                    end
-                }))
-                return {
-                    message = localize('k_plus_joker'),
-                    colour = G.C.RED
-                }
+                return true
             end 
         end
     end

@@ -127,7 +127,7 @@ match_indent = true
 target = "card.lua"
 pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
 position = "at"
-payload = "if self.ability.consumeable.mod_num >= #G.hand.highlighted then"
+payload = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= 1 then"
 match_indent = true
 
 # mod_num has no limit

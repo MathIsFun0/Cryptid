@@ -281,7 +281,7 @@ local rental_deck = {object_type = "Back",
 local world_deck = {object_type = "Back",
     name = "cry-World Deck",
     key = "world_deck",
-	config = {cry_force_suit = 'Spades', cry_boss_blocked = {'The Goad'}},
+	config = {cry_force_suit = 'Spades', cry_boss_blocked = {'bl_goad'}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Deck of The World",
@@ -296,7 +296,7 @@ local world_deck = {object_type = "Back",
 local star_deck = {object_type = "Back",
     name = "cry-Star Deck",
     key = "star_deck",
-	config = {cry_force_suit = 'Diamonds', cry_boss_blocked = {'The Window'}},
+	config = {cry_force_suit = 'Diamonds', cry_boss_blocked = {'bl_window'}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Deck of The Stars",
@@ -311,7 +311,7 @@ local star_deck = {object_type = "Back",
 local sun_deck = {object_type = "Back",
     name = "cry-Sun Deck",
     key = "sun_deck",
-	config = {cry_force_suit = 'Hearts', cry_boss_blocked = {'The Head'}},
+	config = {cry_force_suit = 'Hearts', cry_boss_blocked = {'bl_head'}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Deck of The Sun",
@@ -326,7 +326,7 @@ local sun_deck = {object_type = "Back",
 local moon_deck = {object_type = "Back",
     name = "cry-Moon Deck",
     key = "moon_deck",
-	config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'The Club'}},
+	config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'bl_club'}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "Deck of The Moon",
@@ -451,14 +451,8 @@ return {name = "Enhanced Decks",
                     }))
                 end
                 if self.effect.config.cry_boss_blocked then
-                    if not G.GAME.bosses_used then 
-                        G.GAME.bosses_used = {}
-                        for k, v in pairs(G.P_BLINDS) do 
-                            if v.boss then G.GAME.bosses_used[k] = 0 end
-                        end
-                        for _, v in pairs(self.effect.config.cry_boss_blocked) do
-                            G.GAME.bosses_used[v] = 1e308
-                        end
+                    for _, v in pairs(self.effect.config.cry_boss_blocked) do
+                        G.GAME.bosses_used[v] = 1e308
                     end
                 end
             end

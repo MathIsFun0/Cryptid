@@ -42,7 +42,7 @@ local antimatter = {
         cry_force_enhancement = 'random',
         cry_force_edition = 'random',
         cry_force_seal = 'random',
-        cry_boss_blocked = {"The Goad", "The Window", "The Club", "The Head"}
+        cry_boss_blocked = {"bl_goad", "bl_window", "bl_club", "bl_head"}
     },
 	pos = {x = 0, y = 0},
 	loc_txt = {

@@ -102,3 +102,23 @@ pattern = "{card_limit = 500, type = 'discard'})"
 position = "at"
 payload = "{card_limit = 1e308, type = 'discard'})"
 match_indent = true
+
+# Max out hand size at deck size
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "self.config.real_card_limit = (self.config.real_card_limit or self.config.card_limit) + delta"
+position = "at"
+payload = '''
+self.config.realer_card_limit = (self.config.realer_card_limit or self.config.real_card_limit or self.config.card_limit) + delta
+self.config.real_card_limit = self ~= G.hand and self.config.realer_card_limit or math.min((G.deck and G.deck.config.card_limit or 52), self.config.realer_card_limit)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "self.config.card_limit = math.max(0, self.config.real_card_limit)"
+position = "at"
+payload = "self.config.card_limit = math.max(0, self.config.real_card_limit)"
+match_indent = true

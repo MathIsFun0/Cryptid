@@ -287,9 +287,15 @@ return {name = "Misc. Decks",
             end
             function cry_misprintize(card)
                 if G.GAME.modifiers.cry_misprint_min then
+                    --will make this check more advanced later
                     cry_misprintize_tbl(card.config.center_key, card.ability)
+                    cry_misprintize_tbl(card.config.center_key.."_c", card.ability.consumeable)
+                    if card.ability.name == "Immolate" then
+                        print(tprint(card.ability))
+                    end
                     card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
                 else
+                    cry_misprintize_tbl(card.config.center_key.."_c", card.ability.consumeable, true)
                     cry_misprintize_tbl(card.config.center_key, card.ability, true)
                 end
             end
