@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.1e
+--- VERSION: 0.3.1f
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
