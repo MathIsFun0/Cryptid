@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.1d
+--- VERSION: 0.3.1e
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -353,17 +353,14 @@ end
 function cry_misprintize(card)
     if G.GAME.modifiers.cry_misprint_min then
         --will make this check more advanced later
-        cry_misprintize_tbl(card.config.center_key, card.ability)
-        if card.ability.consumable and not Cryptid.base_values[card.config.center_key.."_c"] then
-            Cryptid.base_values[card.config.center_key.."_c"] = Cryptid.base_values[card.config.center.key].consumeable
-            cry_misprintize_tbl(card.config.center_key.."_c", card.ability.consumeable)
-        end
-        if card.ability.name == "Immolate" then
-            print(tprint(card.ability))
+        if card.ability.set == "Joker" then 
+            cry_misprintize_tbl(card.config.center_key, card.ability)
+        else
+            cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config)
         end
         card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
     else
-        cry_misprintize_tbl(card.config.center_key.."_c", card.ability.consumeable, true)
+        cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, true)
         cry_misprintize_tbl(card.config.center_key, card.ability, true)
     end
 end
@@ -377,6 +374,10 @@ function init_localization()
     il()
     if G.SETTINGS.language == 'en-us' then
         G.localization.descriptions.Spectral.c_cryptid.text[2] = "{C:attention}#2#{} selected card"
+        G.localization.descriptions.Spectral.c_talisman.text[2] = "to {C:attention}#1#{} selected"
+        G.localization.descriptions.Spectral.c_trance.text[2] = "to {C:attention}#1#{} selected"
+        G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
+        G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
     end
 end
 
