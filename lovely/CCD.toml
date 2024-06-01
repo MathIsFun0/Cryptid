@@ -1,0 +1,19 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# This is sacrilegious
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.starting_deck_size = #G.playing_cards"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_ccd then
+    for k, v in pairs(G.playing_cards) do
+        v:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_ccd')).key], true, nil)
+    end
+end
+'''
+match_indent = true

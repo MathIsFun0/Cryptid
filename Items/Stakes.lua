@@ -480,7 +480,7 @@ return {name = "More Stakes",
                 if self.ability.perishable and self.ability.perish_tally <= 0 then 
                     return false
                 end
-                return cuc(self, any_stake, skip_check)
+                return cuc(self, any_state, skip_check)
             end
             -- Overriding Steamodded's registering of Incantation/Familiar/Grim
             local function random_destroy(used_tarot)

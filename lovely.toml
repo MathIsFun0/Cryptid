@@ -122,3 +122,12 @@ pattern = "self.config.card_limit = math.max(0, self.config.real_card_limit)"
 position = "at"
 payload = "self.config.card_limit = math.max(0, self.config.real_card_limit)"
 match_indent = true
+
+# Crash fix
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
+position = "at"
+payload = "if not G.SAVED_GAME or not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
+match_indent = true

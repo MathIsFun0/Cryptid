@@ -382,6 +382,14 @@ function init_localization()
 end
 
 
+-- Fix a CCD-related crash
+local cuc = Card.can_use_consumeable
+function Card:can_use_consumeable(any_state, skip_check)
+    if not self.ability.consumeable then return false end
+    return cuc(self, any_state, skip_check)
+end
+
+
 SMODS.Atlas({
     key = "modicon",
     path = "cry_icon.png",

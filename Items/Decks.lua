@@ -185,6 +185,28 @@ local conveyor_sprite = {
     px = 71,
     py = 95
 }
+local CCD = {
+    object_type = "Back",
+    name = "cry-CCD",
+    key = "CCD",
+    config = {cry_ccd = true},
+    pos = {x = 0, y = 0},
+    atlas = "CCD",
+    loc_txt = {
+        name = "CCD Deck",
+        text = {
+            "Every card is also",
+            "a {C:attention}random{} consumable"
+        }
+    }
+}
+local ccd_sprite = {
+    object_type = "Atlas",
+    key = "CCD",
+    path = "b_cry_ccd.png",
+    px = 71,
+    py = 95
+}
 return {name = "Misc. Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
@@ -205,6 +227,9 @@ return {name = "Misc. Decks",
                 end
                 if self.effect.config.cry_highlight_limit then
                     G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
+                end
+                if self.effect.config.cry_ccd then
+                    G.GAME.modifiers.cry_ccd = true
                 end
             end
             --equilibrium deck patches
@@ -257,4 +282,4 @@ return {name = "Misc. Decks",
                 return math.exp(poll)
             end
         end,
-        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, conveyor_sprite, very_fair, equilibrium, misprint, infinite, conveyor}}
+        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, conveyor_sprite, ccd_sprite, very_fair, equilibrium, misprint, infinite, conveyor,CCD}}
