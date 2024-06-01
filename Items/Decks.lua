@@ -152,7 +152,8 @@ local infinite = {
     name = "cry-Infinite",
     key = "infinite",
 	config = {cry_highlight_limit = 1e20},
-	pos = {x = 2, y = 3},
+	pos = {x = 0, y = 0},
+    atlas = "infinite",
 	loc_txt = {
         name = "Infinite Deck",
         text = {
@@ -160,6 +161,13 @@ local infinite = {
             "number of cards"
         }
     },
+}
+local infinite_sprite = {
+    object_type = "Atlas",
+    key = "infinite",
+    path = "b_cry_infinite.png",
+    px = 71,
+    py = 95
 }
 local conveyor = {
     object_type = "Back",
@@ -282,4 +290,5 @@ return {name = "Misc. Decks",
                 return math.exp(poll)
             end
         end,
-        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, conveyor_sprite, ccd_sprite, very_fair, equilibrium, misprint, infinite, conveyor,CCD}}
+        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, infinite_sprite, conveyor_sprite, ccd_sprite, 
+        very_fair, equilibrium, misprint, infinite, conveyor, CCD}}
