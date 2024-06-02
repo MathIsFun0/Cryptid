@@ -658,7 +658,7 @@ local compound_interest = {
         return {vars = {center.ability.extra.percent, center.ability.extra.percent_mod}}
     end,
 	calc_dollar_bonus = function(self)
-		local bonus = math.min(0,math.floor(0.01*self.ability.extra.percent*G.GAME.dollars))
+		local bonus = math.max(0,math.floor(0.01*self.ability.extra.percent*G.GAME.dollars))
         self.ability.extra.percent = self.ability.extra.percent + self.ability.extra.percent_mod
         if bonus > 0 then return bonus end
 	end
