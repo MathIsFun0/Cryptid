@@ -88,7 +88,7 @@ local negative = {
 	loc_txt = {
         name = 'Negative Joker',
         text = {
-			"{C:dark_edition}+#1#{} Joker slots"
+			"{C:dark_edition}+#1#{C:attention} Joker{} slots"
 		}
     },
 	rarity = "cry_epic",
@@ -122,8 +122,8 @@ local canvas = {
 	loc_txt = {
         name = 'Canvas',
         text = {
-			"{C:attention}Retrigger{} all Jokers to the left",
-			"once for {C:attention}every{} non-{C:blue}Common{} Joker",
+			"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
+			"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
 			"to the right of this Joker"
 		}
     },
@@ -270,7 +270,7 @@ local M = {
 	loc_txt = {
         name = 'M',
         text = {
-			"When Blind selected,",
+			"When any Blind is selected,",
 			"create a {C:dark_edition}Negative{}",
 			"{C:attention}Jolly Joker{}"
 		}
@@ -311,8 +311,9 @@ local boredom = {
         name = 'Boredom',
         text = {
 			"{C:green}#1# in #2#{} chance to",
-			"{C:attention}retrigger{} each Joker",
-			"or played card"
+			"{C:attention}retrigger{} each {C:attention}Joker{}",
+			"{C:attention}or played card{}",
+			"{C:inactive,s:0.8}(Excludes itself){}"
 		}
     },
 	rarity = "cry_epic",
@@ -407,8 +408,8 @@ local double_scale = {
         text = {
             "Scaling jokers",
             "scale {C:attention}quadratically",
-            "{C:inactive,s:0.8}eg. +1, +3, +6, +10",
-            "{C:inactive,s:0.8}grows by +1, +2, +3"
+            "{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
+            "{C:inactive,s:0.8}(grows by +1, +2, +3)"
         }
     },
     rarity = "cry_epic",
