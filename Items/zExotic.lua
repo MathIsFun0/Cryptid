@@ -263,8 +263,47 @@ local redeo_sprite = {
     py = 95
 }
 
+local tenebris = {
+	object_type = "Joker",
+	name = "cry-Tenebris",
+	key = "tenebris",
+	pos = {x = 0, y = 0},
+	config = {extra = {slots = 25, money = 25}},
+	loc_txt = {
+      		name = 'Tenebris',
+        	text = {
+			"{C:dark_edition}+#1#{C:attention} Joker{} slots,",
+			"gives {C:money}$#2#{} at end of round"
+		}
+   	},
+	rarity = "cry_exotic",
+	cost = 50,
+	discovered = true,
+	atlas = "tenebris",
+	calc_dollar_bonus = function(self)
+		return self.ability.extra.money
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.slots, center.ability.extra.money}}
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.slots
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
+	end
+}
 
-G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo}
+local tenebris_sprite = {
+	object_type = "Atlas",
+    key = "tenebris",
+    
+    path = "j_placeholder.png",
+    px = 71,
+    py = 95
+}
+
+G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris}
 
 return {name = "Exotic Jokers", 
         init = function()
@@ -372,4 +411,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, gateway, iterum, universum, exponentia, speculo, redeo}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris}}
