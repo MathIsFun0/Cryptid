@@ -312,8 +312,9 @@ local effarcire = {
 	loc_txt = {
         name = 'Effarcire',
         text = {
-			"Sets your hand size",
-			"to the number of {C:green}cards in your deck{}"
+			"Always draw your",
+			"{C:green}entire deck{} to hand",
+			"at start of round"
 		}
     },
 	rarity = 3,
@@ -321,12 +322,11 @@ local effarcire = {
     discovered = true,
 	atlas = 'effarcire',
 	rarity = "cry_exotic",
-    add_to_deck = function(self, card, from_debuff)
-        G.hand:change_size(1e6)
-    end,
-    remove_from_deck = function(self, card, from_debuff)
-        G.hand:change_size(-1e6)
-    end
+	calculate = function(self, card, context)
+        if context.first_hand_drawn and not context.blueprint then
+			G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
+        end
+	end
 }
 
 local effarcire_sprite = {
