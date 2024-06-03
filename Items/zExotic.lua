@@ -268,6 +268,7 @@ local tenebris = {
 	name = "cry-Tenebris",
 	key = "tenebris",
 	pos = {x = 0, y = 0},
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
 	config = {extra = {slots = 25, money = 25}},
 	loc_txt = {
       		name = 'Tenebris',
@@ -297,8 +298,7 @@ local tenebris = {
 local tenebris_sprite = {
 	object_type = "Atlas",
     key = "tenebris",
-    
-    path = "j_placeholder.png",
+    path = "j_cry_tenebris.png",
     px = 71,
     py = 95
 }
