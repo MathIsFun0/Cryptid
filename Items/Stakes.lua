@@ -667,14 +667,6 @@ return {name = "More Stakes",
                     self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost
                 end
             end
-            function cry_apply_ante_tax()
-                if G.GAME.modifiers.cry_ante_tax then
-                    local tax = math.max(0, math.min(G.GAME.modifiers.cry_ante_tax_max, math.floor(G.GAME.modifiers.cry_ante_tax*G.GAME.dollars)))
-                    ease_dollars(-1*tax)
-                    return true
-                end
-                return false
-            end
 
             for _, v in pairs(self.items) do
                 if v.object_type == "Stake" then

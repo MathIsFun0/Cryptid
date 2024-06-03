@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.1h
+--- VERSION: 0.3.2a
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -387,6 +387,16 @@ local cuc = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
     if not self.ability.consumeable then return false end
     return cuc(self, any_state, skip_check)
+end
+
+--make this always active to prevent crashes
+function cry_apply_ante_tax()
+    if G.GAME.modifiers.cry_ante_tax then
+        local tax = math.max(0, math.min(G.GAME.modifiers.cry_ante_tax_max, math.floor(G.GAME.modifiers.cry_ante_tax*G.GAME.dollars)))
+        ease_dollars(-1*tax)
+        return true
+    end
+    return false
 end
 
 
