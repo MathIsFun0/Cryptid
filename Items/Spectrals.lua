@@ -118,8 +118,130 @@ local vacuum_sprite = {
     py = 95
 }
 
+local hammerspace = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Hammerspace",
+    key = "hammerspace",
+    pos = {x=0,y=0},
+	config = {},
+    loc_txt = {
+        name = 'Hammerspace',
+        text = {
+			"Apply random {C:attention}consumables{}",
+			"as if they were {C:dark_edition}Enhancements{}",
+			"to your {C:attention}entire hand{}",
+			"{C:red}-1{} hand size"
+        }
+    },
+    cost = 4,
+    atlas = "hammerspace",
+	discovered = true,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra}}
+    end,
+    can_use = function(self, card)
+        return #G.hand.cards > 0
+    end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        for i=1, #G.hand.cards do
+            local percent = 1.15 - (i-0.999)/(#G.hand.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.cards[i]:flip();play_sound('card1', percent);G.hand.cards[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.2)
+        for i=1, #G.hand.cards do
+			local CARD = G.hand.cards[i]
+            local percent = 0.85 + (i-0.999)/(#G.hand.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_hammerspace')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+        end
+		G.hand:change_size(-1)
+    end
+}
+local hammerspace_sprite = {
+    object_type = "Atlas",
+    key = "hammerspace",
+    
+    path = "s_placeholder.png",
+    px = 71,
+    py = 95
+}
+
+local lock = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Lock",
+    key = "lock",
+    pos = {x=0,y=0},
+	config = {},
+    loc_txt = {
+        name = 'Lock',
+        text = {
+			"Remove {C:red}all{} stickers from {C:red}all {C:attention}Jokers{},",
+			"then apply {C:purple,E:1}Eternal{} to a random {C:attention}Joker{}"
+        }
+    },
+    cost = 4,
+    atlas = "lock",
+	discovered = true,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra}}
+    end,
+    can_use = function(self, card)
+        return #G.jokers.cards > 0
+    end,
+    use = function(self, card, area, copier)
+		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        for i=1, #G.jokers.cards do
+            local percent = 1.15 - (i-0.999)/(#G.jokers.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.jokers.cards[i]:flip();play_sound('card1', percent);G.jokers.cards[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.2)
+        for i=1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+            local percent = 0.85 + (i-0.999)/(#G.jokers.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD.ability.perishable = nil;CARD:set_rental(nil);CARD:set_eternal(nil);play_sound('card1', percent);CARD:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.2)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot2')
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.15, func = function()
+            play_sound('card1', 0.9)
+            target:flip()
+            return true end }))
+        delay(0.2)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+			play_sound('gold_seal', 1.2, 0.4)
+            target:juice_up(0.3, 0.3)
+            return true end }))
+        delay(0.2)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.15, func = function()
+            play_sound('card1',1.1)
+            target:flip()
+			target:set_eternal(true)
+            return true end }))
+    end
+}
+local lock_sprite = {
+    object_type = "Atlas",
+    key = "lock",
+    
+    path = "c_cry_lock.png",
+    px = 71,
+    py = 95
+}
+
 return {name = "Spectrals", 
         init = function()
             
         end,
-        items = {white_hole_sprite, vacuum_sprite, white_hole, vacuum}}
+        items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, white_hole, vacuum, hammerspace, lock}}
