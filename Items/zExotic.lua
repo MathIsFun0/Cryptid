@@ -303,7 +303,42 @@ local tenebris_sprite = {
     py = 95
 }
 
-G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris}
+local effarcire = {
+    object_type = "Joker",
+	name = "cry-Effarcire",
+	key = "effarcire",
+	config = {},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Effarcire',
+        text = {
+			"Sets your hand size",
+			"to the number of {C:green}cards in your deck{}"
+		}
+    },
+	rarity = 3,
+	cost = 50,
+    discovered = true,
+	atlas = 'effarcire',
+	rarity = "cry_exotic",
+    add_to_deck = function(self, card, from_debuff)
+        G.hand:change_size(1e6)
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        G.hand:change_size(-1e6)
+    end
+}
+
+local effarcire_sprite = {
+    object_type = "Atlas",
+    key = "effarcire",
+    
+    path = "j_placeholder.png",
+    px = 71,
+    py = 95
+}
+
+G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris, effarcire}
 
 return {name = "Exotic Jokers", 
         init = function()
@@ -411,4 +446,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, effarcire_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire}}
