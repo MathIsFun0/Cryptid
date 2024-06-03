@@ -56,8 +56,70 @@ local white_hole_sprite = {
     py = 95
 }
 
+local vacuum = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Vacuum",
+    key = "vacuum",
+    pos = {x=0,y=0},
+	config = {extra = 4},
+    loc_txt = {
+        name = 'Vacuum',
+        text = {
+			"Removes {C:red}all {C:green}modifications{}",
+			"from {C:red}all{} cards in your hand,",
+			"Earn {C:money}$#1#{} per {C:green}modification{} removed",
+			"{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)"
+        }
+    },
+    cost = 15,
+    atlas = "vacuum",
+	discovered = true,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra}}
+    end,
+    can_use = function(self, card)
+        return #G.hand.cards > 0
+    end,
+    use = function(self, card, area, copier)
+		local earnings = 0
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        for i=1, #G.hand.cards do
+            local percent = 1.15 - (i-0.999)/(#G.hand.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.cards[i]:flip();play_sound('card1', percent);G.hand.cards[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.2)
+        for i=1, #G.hand.cards do
+			local CARD = G.hand.cards[i]
+			if CARD.config.center ~= G.P_CENTERS.c_base then
+				earnings = earnings + 1
+			end
+			if CARD.edition then
+				earnings = earnings + 1
+			end
+			if CARD.seal then
+				earnings = earnings + 1
+			end
+            local percent = 0.85 + (i-0.999)/(#G.hand.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS.c_base, true, nil);CARD:set_edition(nil, true);CARD:set_seal(nil, true);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+        end
+		ease_dollars(earnings * card.ability.extra)
+    end
+}
+local vacuum_sprite = {
+    object_type = "Atlas",
+    key = "vacuum",
+    
+    path = "c_cry_vacuum.png",
+    px = 71,
+    py = 95
+}
+
 return {name = "Spectrals", 
         init = function()
             
         end,
-        items = {white_hole_sprite, white_hole}}
+        items = {white_hole_sprite, vacuum_sprite, white_hole, vacuum}}
