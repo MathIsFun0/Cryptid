@@ -323,9 +323,13 @@ local effarcire = {
 	atlas = 'effarcire',
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
-        if context.first_hand_drawn and not context.blueprint then
-			G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
-        end
+		if not context.blueprint then
+			if context.first_hand_drawn then
+				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
+			elseif G.hand.config.card_limit < 1 then
+				G.hand.config.card_limit = 1
+			end
+		end
 	end
 }
 
