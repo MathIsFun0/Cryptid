@@ -790,6 +790,42 @@ local nice = {
                     message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips or 0}},
                     chip_mod = card.ability.extra.chips or 0
                 }
+local seal_the_deal = {
+    object_type = "Joker",
+    name = "cry-Seal The Deal",
+    key = "seal_the_deal",
+    config = {extra = {Xchips = 6}},
+    pos = {x = 0, y = 0},
+    loc_txt = {
+        name = 'Seal the Deal',
+        text = {
+            "All scored cards on {C:attention}last hand",
+            "{C:attention}of round{} gain a {C:attention}random seal"
+        }
+    },
+    rarity = 2,
+    cost = 6,
+    discovered = true,
+    atlas = "seal_the_deal",
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            if G.GAME.current_round.hands_left == 0 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local seal_type = pseudorandom(pseudoseed("seal_the_deal"))
+                        if seal_type > 0.75 then context.other_card:set_seal("Red", true)
+                        elseif seal_type > 0.5 then context.other_card:set_seal("Blue", true)
+                        elseif seal_type > 0.25 then context.other_card:set_seal("Gold", true)
+                        else context.other_card:set_seal("Purple", true)
+                        end
+                        card:juice_up(0.3,0.4)
+                        context.other_card:juice_up(0.3,0.3)
+                        play_sound('gold_seal', 1.2, 0.4)
+                        return true
+                    end
+                }))
+                delay(0.5)
+                return true
             end
         end
     end
@@ -802,6 +838,13 @@ local nice_sprite = {
     py = 95
 }
 
+local seal_the_deal_sprite = {
+    object_type = "Atlas",
+    key = "seal_the_deal",
+    path = "j_cry_seal_the_deal.png",
+    px = 71,
+    py = 95
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -863,5 +906,5 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, seal_the_deal_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, seal_the_deal}}
