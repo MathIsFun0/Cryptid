@@ -790,6 +790,10 @@ local nice = {
                     message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips or 0}},
                     chip_mod = card.ability.extra.chips or 0
                 }
+            end
+        end
+    end
+}
 local seal_the_deal = {
     object_type = "Joker",
     name = "cry-Seal The Deal",
