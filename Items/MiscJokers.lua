@@ -753,6 +753,55 @@ local eternalflame_sprite = {
     py = 95
 }
 
+local nice = {
+    object_type = "Joker",
+	name = "cry-Nice",
+	key = "nice",
+    config = {extra = {chips = 420, sixcount = 0, ninecount = 0}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Nice',
+        text = {
+            "{C:chips}+#1#{} Chips if played hand",
+            "contains a {C:attention}6{} and a {C:attention}9"
+        }
+    },
+	rarity = 3,
+	cost = 6,
+	discovered = true,
+	atlas = "nice",
+    blueprint_compat = true,loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.chips}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.before and not context.after then
+            card.ability.extra.sixcount = 0
+            card.ability.extra.ninecount = 0
+            for i, v in pairs (context.full_hand) do
+                if v:get_id() == 6 then
+                    card.ability.extra.sixcount = card.ability.extra.sixcount + 1
+                elseif v:get_id() == 9 then
+                    card.ability.extra.ninecount = card.ability.extra.ninecount + 1
+                end
+            end
+        elseif context.cardarea == G.jokers and not context.before and not context.after then
+            if card.ability.extra.sixcount > 0 and card.ability.extra.ninecount > 0 then
+                return {
+                    message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips or 0}},
+                    chip_mod = card.ability.extra.chips or 0
+                }
+            end
+        end
+    end
+}
+local nice_sprite = {
+	object_type = "Atlas",
+    key = "nice",
+    path = "j_cry_nice.png",
+    px = 71,
+    py = 95
+}
+
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -814,5 +863,5 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice}}
