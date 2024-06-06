@@ -849,6 +849,118 @@ local seal_the_deal_sprite = {
     px = 71,
     py = 95
 }
+
+local chad = {
+	object_type = "Joker",
+	name = "cry-Chad",
+	key = "chad",
+	pos = {x = 0, y = 0},
+	config = {extra = {retriggers = 2}},
+	loc_txt = {
+        name = 'Chad',
+        text = {
+            "Retrigger {C:attention}leftmost{} Joker",
+            "{C:attention}#1#{} additional times"
+		}
+    },
+	rarity = 3,
+	cost = 10,
+	discovered = true,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.retriggers}}
+    end,
+	atlas = "chad",
+	calculate = function(self, card, context)
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if context.other_card == G.jokers.cards[1] then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = card.ability.extra.retriggers,
+					card = card
+				}
+			else return {calculated = true} end
+        end
+	end
+}
+local chad_sprite = {
+	object_type = "Atlas",
+    key = "chad",
+    path = "j_cry_chad.png",
+    px = 71,
+    py = 95
+}
+
+local sus = {
+	object_type = "Joker",
+	name = "cry-SUS",
+	key = "sus",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'SUS',
+        text = {
+            "At end of round, create",
+            "a {C:attention}copy{} of a random",
+            "card {C:attention}held in hand{},",
+            "destroy all others"
+		}
+    },
+	rarity = 3,
+	cost = 9,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "sus",
+	calculate = function(self, card, context)
+        if context.end_of_round and not context.cardarea then
+            if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
+                card.ability.chosen_card = nil
+            end
+            local choosable_cards = {}
+            for i = 1, #G.hand.cards do
+                if not G.hand.cards[i].murdered_by_impostor then
+                    choosable_cards[#choosable_cards+1] = G.hand.cards[i]
+                end
+            end
+            card.ability.chosen_card = card.ability.chosen_card or pseudorandom_element(choosable_cards, pseudoseed('cry_sus'))
+			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
+                card.ability.used_round = G.GAME.round
+                local deletable_cards = {}
+                for k, v in pairs(G.hand.cards) do
+                    if not v.ability.eternal then deletable_cards[#deletable_cards + 1] = v end
+                end
+                local _first_dissolve = nil
+                G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+                    for k, v in pairs(deletable_cards) do
+                        if v ~= card.ability.chosen_card then
+                            v.murdered_by_impostor = true 
+                            v:start_dissolve(nil, _first_dissolve)
+                            _first_dissolve = true
+                        end
+                    end
+                    return true end }))
+            end
+            G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
+                card:juice_up(0.3, 0.4)
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                local _c = copy_card(card.ability.chosen_card, nil, nil, G.playing_card)
+                _c:start_materialize()
+                _c:add_to_deck()
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, _c)
+                G.hand:emplace(_c)
+                playing_card_joker_effects({_c})
+                return true end }))
+            return {message = "Impostor!"}
+        end
+	end
+}
+local sus_sprite = {
+	object_type = "Atlas",
+    key = "sus",
+    path = "j_cry_sus.png",
+    px = 71,
+    py = 95
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -910,5 +1022,5 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, seal_the_deal_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, seal_the_deal}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, seal_the_deal}}
