@@ -176,9 +176,11 @@ target = "card.lua"
 pattern = "function Card:use_consumeable(area, copier)"
 position = "after"
 payload = '''
+if self.ability.set ~= "Gear" then --Ro-Balatro compat, I need a better system for this later
 for k, v in pairs(G.P_CENTERS[self.config.center_key].config) do
         self.ability[k] = v --surely nothing will go wrong
-    end'''
+    end
+end'''
 match_indent = true
 
 # Vouchers lying to you
