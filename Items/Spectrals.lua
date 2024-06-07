@@ -46,6 +46,38 @@ local white_hole = {
         update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(_hand, 'poker_hands'),chips = G.GAME.hands[_hand].chips, mult = G.GAME.hands[_hand].mult, level=G.GAME.hands[_hand].level})
         level_up_hand(card, _hand, false, 3*removed_levels)
         update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    end,
+    --Incantation compat
+    can_stack = true,
+    can_divide = true,
+    can_bulk_use = true,
+    bulk_use = function(self, card, area, copier, number)
+        --Get most played hand type (logic yoinked from Telescope)
+        local _planet, _hand, _tally = nil, nil, -1
+        for k, v in ipairs(G.handlist) do
+            if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+                _hand = v
+                _tally = G.GAME.hands[v].played
+            end
+        end
+        if _hand then
+            for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+                if v.config.hand_type == _hand then
+                    _planet = v.key
+                end
+            end
+        end
+        local removed_levels = 0
+        for k, v in ipairs(G.handlist) do
+            if G.GAME.hands[v].level > 1 then
+                local this_removed_levels = G.GAME.hands[v].level - 1
+                removed_levels = removed_levels + this_removed_levels
+                level_up_hand(card, v, true, -this_removed_levels)
+            end
+        end
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(_hand, 'poker_hands'),chips = G.GAME.hands[_hand].chips, mult = G.GAME.hands[_hand].mult, level=G.GAME.hands[_hand].level})
+        level_up_hand(card, _hand, false, removed_levels*3^number)
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end
 }
 local white_hole_sprite = {

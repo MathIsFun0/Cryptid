@@ -138,7 +138,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = "sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or 'generic1'"
 position = "at"
-payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.Xchip_mod and 'cry_Xchip' or 'generic1'
+payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.Xchip_mod and 'cry_Xchip' or extra.pow_mult_mod and 'cry_^mult' or 'generic1'
 '''
 match_indent = true
 
@@ -149,7 +149,7 @@ target = "functions/common_events.lua"
 pattern = "play_sound(sound, 0.8+percent*0.2, volume)"
 position = "at"
 payload = '''
-if sound ~= "cry_Xchip" then play_sound(sound, 0.8+percent*0.2, volume)
+if sound ~= "cry_Xchip" and sound ~= "cry_^mult" and sound ~= "cry_^^mult" then play_sound(sound, 0.8+percent*0.2, volume)
 else Custom_Play_Sound(sound, false, volume, 0.8+percent*0.2) end
 '''
 match_indent = true

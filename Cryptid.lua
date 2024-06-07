@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2d
+--- VERSION: 0.3.2e
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -401,6 +401,8 @@ end
 
 --register_sound_global doesn't work
 register_sound("cry_Xchip", SMODS.current_mod.path, "MultiplicativeChips.wav")
+register_sound("cry_^mult", SMODS.current_mod.path, "ExponentialMult.wav")
+register_sound("cry_^^mult", SMODS.current_mod.path, "TetrationalMult.wav")
 
 SMODS.Atlas({
     key = "modicon",

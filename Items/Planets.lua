@@ -23,6 +23,9 @@ local timantti = {
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
+    end,
+    bulk_use = function(self, card, area, copier, number)
+        suit_level_up(self, card, area, copier, number)
     end
 }
 local klubi = {
@@ -50,6 +53,9 @@ local klubi = {
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
+    end,
+    bulk_use = function(self, card, area, copier, number)
+        suit_level_up(self, card, area, copier, number)
     end
 }
 local sydan = {
@@ -77,6 +83,9 @@ local sydan = {
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
+    end,
+    bulk_use = function(self, card, area, copier, number)
+        suit_level_up(self, card, area, copier, number)
     end
 }
 local lapio = {
@@ -104,13 +113,16 @@ local lapio = {
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
+    end,
+    bulk_use = function(self, card, area, copier, number)
+        suit_level_up(self, card, area, copier, number)
     end
 }
 
-function suit_level_up(center, card, area, copier)
+function suit_level_up(center, card, area, copier, number)
     for _, v in pairs(card.config.center.config.hand_types) do
         update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(v, 'poker_hands'),chips = G.GAME.hands[v].chips, mult = G.GAME.hands[v].mult, level=G.GAME.hands[v].level})
-        level_up_hand(card, v)
+        level_up_hand(card, v, nil, number)
         update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end
 end
