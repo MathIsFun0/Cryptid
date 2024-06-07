@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2c
+--- VERSION: 0.3.2d
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -399,6 +399,8 @@ function cry_apply_ante_tax()
     return false
 end
 
+--register_sound_global doesn't work
+register_sound("cry_Xchip", SMODS.current_mod.path, "MultiplicativeChips.wav")
 
 SMODS.Atlas({
     key = "modicon",

@@ -131,3 +131,25 @@ pattern = "if not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
 position = "at"
 payload = "if not G.SAVED_GAME or not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
 match_indent = true
+
+# Play sound on XChips
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or 'generic1'"
+position = "at"
+payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.Xchip_mod and 'cry_Xchip' or 'generic1'
+'''
+match_indent = true
+
+# Modded sounds in card_eval_status text
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "play_sound(sound, 0.8+percent*0.2, volume)"
+position = "at"
+payload = '''
+if sound ~= "cry_Xchip" then play_sound(sound, 0.8+percent*0.2, volume)
+else Custom_Play_Sound(sound, false, volume, 0.8+percent*0.2) end
+'''
+match_indent = true
