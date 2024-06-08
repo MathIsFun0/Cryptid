@@ -2,7 +2,7 @@ local cursor = {
     object_type = "Joker",
 	name = "cry-Cursor",
 	key = "cursor",
-    config = {extra = {chips = 0, chip_mod = 5}},
+        config = {extra = {chips = 0, chip_mod = 5}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Cursor',
@@ -34,48 +34,35 @@ local cursor = {
         end
     end
 }
-local jimball = {
+local fspinner = {
 	object_type = "Joker",
-	name = "cry-Jimball",
-	key = "jimball",
+	name = "cry-fspinner",
+	key = "fspinner",
 	pos = {x = 0, y = 0},
-    config = {x_mult = 1, extra = 0.15},
+        config = {extra = {chips = 0, chip_mod = 14}},
 	loc_txt = {
-        name = 'Jimball',
+        name = 'Fidget Spinner',
         text = {
-            "This Joker gains {X:mult,C:white} X#1# {} Mult",
-            "per {C:attention}consecutive{} hand played",
-            "while playing your",
-            "most played {C:attention}poker hand",
-            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+            "This Joker gains {C:chips} X#1# {} chips",
+            "if hand played is",
+            "{C:attention}not{} most played poker hand",
+            "{C:inactive}(Currently {C:chips} X#2# {C:inactive} chips)"
 		}
     },
 	loc_vars = function(self, info_queue, center)
-		return {vars = {center.ability.extra, center.ability.x_mult}}
+		return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
     end,
-	rarity = 3,
-	cost = 10,
+	rarity = 2,
+	cost = 6,
 	discovered = true,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
         if context.before and not context.blueprint then
-            local reset = false
             local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
             for k, v in pairs(G.GAME.hands) do
                 if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-                    reset = true
+                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra_mod
                 end
-            end
-            if reset then
-                if card.ability.x_mult > 1 then
-                    card.ability.x_mult = 1
-                    return {
-                        card = self,
-                        message = localize('k_reset')
-                    }
-                end
-            else
-                card.ability.x_mult = card.ability.x_mult + card.ability.extra
             end
         end
 	end,
