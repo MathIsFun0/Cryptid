@@ -61,7 +61,7 @@ local fspinner = {
             local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
             for k, v in pairs(G.GAME.hands) do
                 if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra_mod
+                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
                 end
             end
         end
