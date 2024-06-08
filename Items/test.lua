@@ -64,14 +64,18 @@ local fspinner = {
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
                 end
             end
-        end
+         if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                chip_mod = card.ability.extra.chips
+	end
 	end,
-	atlas = "jimball",
+	atlas = "fspinner",
 }
-local jimball_sprite = {
+local fspinner_sprite = {
 	object_type = "Atlas",
-    key = "jimball",
-    path = "j_cry_jimball.png",
+    key = "fspinner",
+    path = "j_cry_fspinner.png",
     px = 71,
     py = 95
 }
