@@ -337,7 +337,7 @@ local effarcire_sprite = {
     object_type = "Atlas",
     key = "effarcire",
     
-    path = "j_cry_effarcire.png",
+    path = "j_placeholder.png",
     px = 71,
     py = 95
 }
