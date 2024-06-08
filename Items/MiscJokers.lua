@@ -890,6 +890,60 @@ local chad_sprite = {
     px = 71,
     py = 95
 }
+local jimball = {
+	object_type = "Joker",
+	name = "cry-Jimball",
+	key = "jimball",
+	pos = {x = 0, y = 0},
+    config = {x_mult = 1, extra = 0.15},
+	loc_txt = {
+        name = 'Jimball',
+        text = {
+            "This Joker gains {X:mult,C:white} X#1# {} Mult",
+            "per {C:attention}consecutive{} hand played",
+            "while playing your",
+            "most played {C:attention}poker hand",
+            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra, center.ability.x_mult}}
+    end,
+	rarity = 3,
+	cost = 10,
+	discovered = true,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.before and not context.blueprint then
+            local reset = false
+            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+            for k, v in pairs(G.GAME.hands) do
+                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
+                    reset = true
+                end
+            end
+            if reset then
+                if card.ability.x_mult > 1 then
+                    card.ability.x_mult = 1
+                    return {
+                        card = self,
+                        message = localize('k_reset')
+                    }
+                end
+            else
+                card.ability.x_mult = card.ability.x_mult + card.ability.extra
+            end
+        end
+	end,
+	atlas = "jimball",
+}
+local jimball_sprite = {
+	object_type = "Atlas",
+    key = "jimball",
+    path = "j_cry_jimball.png",
+    px = 71,
+    py = 95
+}
 
 local sus = {
 	object_type = "Joker",
@@ -1022,5 +1076,5 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, seal_the_deal}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite, jimball_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, jimball, seal_the_deal}}

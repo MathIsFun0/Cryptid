@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2e
+--- VERSION: 0.3.2f
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -399,10 +399,37 @@ function cry_apply_ante_tax()
     return false
 end
 
---register_sound_global doesn't work
-register_sound("cry_Xchip", SMODS.current_mod.path, "MultiplicativeChips.wav")
-register_sound("cry_^mult", SMODS.current_mod.path, "ExponentialMult.wav")
-register_sound("cry_^^mult", SMODS.current_mod.path, "TetrationalMult.wav")
+local upd = Game.update
+cry_jimball_dt = 0
+function Game:update(dt)
+    upd(self,dt)
+    cry_jimball_dt = cry_jimball_dt + dt
+    if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
+        cry_jimball_dt = 0
+        local obj = G.P_CENTERS.j_cry_jimball
+        if (obj.pos.x == 5 and obj.pos.y == 6) then
+            obj.pos.x = 0
+            obj.pos.y = 0
+        elseif (obj.pos.x < 8) then obj.pos.x = obj.pos.x + 1
+        elseif (obj.pos.y < 6) then
+            obj.pos.x = 0
+            obj.pos.y = obj.pos.y + 1
+        end
+    end
+end
+
+SMODS.Sound({
+    key = "Xchip",
+    path = "MultiplicativeChips.wav"
+})
+SMODS.Sound({
+    key = "^Mult",
+    path = "ExponentialMult.wav"
+})
+SMODS.Sound({
+    key = "^^Mult",
+    path = "TetrationalMult.wav"
+})
 
 SMODS.Atlas({
     key = "modicon",
