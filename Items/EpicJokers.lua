@@ -380,13 +380,13 @@ local number_blocks = {
     calculate = function(self, card, context)
         if context.individual and not context.end_of_round and context.cardarea == G.hand and not context.blueprint and not context.before and not context.after and context.other_card:get_id() == G.GAME.current_round.cry_nb_card.id then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
-			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
 			return {calculated = true}
 		end
     end,
-	calc_dollar_bonus = function(self)
-		if self.ability.extra.money > 0 then
-			return self.ability.extra.money
+	calc_dollar_bonus = function(self, card)
+		if card.ability.extra.money > 0 then
+			return card.ability.extra.money
 		end
 	end
 }

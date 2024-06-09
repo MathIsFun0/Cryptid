@@ -281,8 +281,8 @@ local tenebris = {
 	cost = 50,
 	discovered = true,
 	atlas = "tenebris",
-	calc_dollar_bonus = function(self)
-		return self.ability.extra.money
+	calc_dollar_bonus = function(self, card)
+		return card.ability.extra.money
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.slots, center.ability.extra.money}}
