@@ -657,9 +657,9 @@ local compound_interest = {
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.percent, center.ability.extra.percent_mod}}
     end,
-	calc_dollar_bonus = function(self)
-		local bonus = math.max(0,math.floor(0.01*self.ability.extra.percent*G.GAME.dollars))
-        self.ability.extra.percent = self.ability.extra.percent + self.ability.extra.percent_mod
+	calc_dollar_bonus = function(self, card)
+		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*G.GAME.dollars))
+        card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
         if bonus > 0 then return bonus end
 	end
 }
@@ -1060,6 +1060,50 @@ local fspinner_sprite = {
     px = 71,
     py = 95
 }
+local waluigi = {
+	object_type = "Joker",
+	name = "cry-Waluigi",
+	key = "waluigi",
+	pos = {x = 0, y = 0},
+    soul_pos = {x = 1, y = 0},
+    config = {extra = {Xmult = 2.5}},
+	loc_txt = {
+        name = 'Waluigi',
+        text = {
+            "All Jokers give",
+            "{X:mult,C:white} X#1# {} Mult"
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.Xmult}}
+    end,
+	rarity = 4,
+	cost = 20,
+	discovered = true,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.ability.set == "Joker" then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    context.other_joker:juice_up(0.5, 0.5)
+                    return true
+                end
+            })) 
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+                Xmult_mod = card.ability.extra.Xmult
+            }
+        end
+	end,
+	atlas = "waluigi",
+}
+local waluigi_sprite = {
+	object_type = "Atlas",
+    key = "waluigi",
+    path = "j_cry_waluigi.png",
+    px = 71,
+    py = 95
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -1120,6 +1164,26 @@ return {name = "Misc. Jokers",
                 end
             end
 
+            --Jimball Patches
+            local upd = Game.update
+            cry_jimball_dt = 0
+            function Game:update(dt)
+                upd(self,dt)
+                cry_jimball_dt = cry_jimball_dt + dt
+                if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
+                    cry_jimball_dt = 0
+                    local obj = G.P_CENTERS.j_cry_jimball
+                    if (obj.pos.x == 5 and obj.pos.y == 6) then
+                        obj.pos.x = 0
+                        obj.pos.y = 0
+                    elseif (obj.pos.x < 8) then obj.pos.x = obj.pos.x + 1
+                    elseif (obj.pos.y < 6) then
+                        obj.pos.x = 0
+                        obj.pos.y = obj.pos.y + 1
+                    end
+                end
+            end
+
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, jimball, seal_the_deal, fspinner,}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, waluigi, jimball, seal_the_deal, fspinner,}}

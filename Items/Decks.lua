@@ -241,8 +241,8 @@ return {name = "Misc. Decks",
             end
             --equilibrium deck patches
             local gcp = get_current_pool
-            function get_current_pool(t, r, l, a)
-                if G.GAME.modifiers.cry_equilibrium and (a == 'sho' or (t == 'Voucher' and not a) or t == 'Booster') then 
+            function get_current_pool(t, r, l, a, override_equilibrium_effect)
+                if G.GAME.modifiers.cry_equilibrium and not override_equilibrium_effect and (a == 'sho' or t == 'Voucher' or t == 'Booster') then 
                     if t ~= "Enhanced" and t ~= "Edition" and t ~= "Back" and t ~= "Tag" and t ~= "Seal" and t ~= "Stake" then
                         if not P_CRY_ITEMS then
                             P_CRY_ITEMS = {}

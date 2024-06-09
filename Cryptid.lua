@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2f
+--- VERSION: 0.3.2k
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -258,6 +258,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       if G.GAME.modifiers.all_eternal then
           card:set_eternal(true)
       end
+      if G.GAME.modifiers.cry_all_perishable then
+          card:set_perishable(true)
+      end
+      if G.GAME.modifiers.cry_all_rental then
+          card:set_rental(true)
+      end
+      if G.GAME.modifiers.cry_all_pinned then
+          card.pinned = true
+      end
       if (area == G.shop_jokers) or (area == G.pack_cards) then 
           local eternal_perishable_poll = pseudorandom('cry_et'..(key_append or '')..G.GAME.round_resets.ante)
           if G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.7 then
@@ -379,6 +388,10 @@ function init_localization()
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
     end
+    G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
+    G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
+    G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
+    G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Bosses are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
 end
 
 
@@ -399,25 +412,6 @@ function cry_apply_ante_tax()
     return false
 end
 
-local upd = Game.update
-cry_jimball_dt = 0
-function Game:update(dt)
-    upd(self,dt)
-    cry_jimball_dt = cry_jimball_dt + dt
-    if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
-        cry_jimball_dt = 0
-        local obj = G.P_CENTERS.j_cry_jimball
-        if (obj.pos.x == 5 and obj.pos.y == 6) then
-            obj.pos.x = 0
-            obj.pos.y = 0
-        elseif (obj.pos.x < 8) then obj.pos.x = obj.pos.x + 1
-        elseif (obj.pos.y < 6) then
-            obj.pos.x = 0
-            obj.pos.y = obj.pos.y + 1
-        end
-    end
-end
-
 SMODS.Sound({
     key = "Xchip",
     path = "MultiplicativeChips.wav"
@@ -429,6 +423,10 @@ SMODS.Sound({
 SMODS.Sound({
     key = "^^Mult",
     path = "TetrationalMult.wav"
+})
+SMODS.Sound({
+    key = "music-Jimball",
+    path = "music-Jimball.wav"
 })
 
 SMODS.Atlas({
