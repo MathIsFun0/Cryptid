@@ -1015,6 +1015,50 @@ local sus_sprite = {
     px = 71,
     py = 95
 }
+local waluigi = {
+	object_type = "Joker",
+	name = "cry-Waluigi",
+	key = "waluigi",
+	pos = {x = 0, y = 0},
+    soul_pos = {x = 1, y = 0},
+    config = {extra = {Xmult = 2.5}},
+	loc_txt = {
+        name = 'Waluigi',
+        text = {
+            "All Jokers give",
+            "{X:mult,C:white} X#1# {} Mult"
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.Xmult}}
+    end,
+	rarity = 4,
+	cost = 20,
+	discovered = true,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.ability.set == "Joker" then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    context.other_joker:juice_up(0.5, 0.5)
+                    return true
+                end
+            })) 
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+                Xmult_mod = card.ability.extra.Xmult
+            }
+        end
+	end,
+	atlas = "waluigi",
+}
+local waluigi_sprite = {
+	object_type = "Atlas",
+    key = "waluigi",
+    path = "j_cry_waluigi.png",
+    px = 71,
+    py = 95
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -1076,5 +1120,5 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite, jimball_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, jimball, seal_the_deal}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite, jimball_sprite, waluigi_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal}}

@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2g
+--- VERSION: 0.3.2h
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -258,6 +258,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       if G.GAME.modifiers.all_eternal then
           card:set_eternal(true)
       end
+      if G.GAME.modifiers.cry_all_perishable then
+          card:set_perishable(true)
+      end
+      if G.GAME.modifiers.cry_all_rental then
+          card:set_rental(true)
+      end
+      if G.GAME.modifiers.cry_all_pinned then
+          card.pinned = true
+      end
       if (area == G.shop_jokers) or (area == G.pack_cards) then 
           local eternal_perishable_poll = pseudorandom('cry_et'..(key_append or '')..G.GAME.round_resets.ante)
           if G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.7 then
@@ -379,6 +388,9 @@ function init_localization()
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
     end
+    G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
+    G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
+    G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
 end
 
 
