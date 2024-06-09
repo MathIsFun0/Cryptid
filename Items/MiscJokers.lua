@@ -1024,10 +1024,10 @@ local fspinner = {
 	loc_txt = {
         name = 'Fidget Spinner',
         text = {
-            "This Joker gains {C:chips} X#1# {} chips",
-            "if hand played is",
-            "{C:attention}not{} most played poker hand",
-            "{C:inactive}(Currently {C:chips} X#2# {C:inactive} chips)"
+            "This Joker gains {C:chips}+#1#{} chips",
+            "if hand played is {C:attention}not{}",
+            "most played poker hand",
+            "{C:inactive}(Currently {C:chips}+#2#{C:inactive} chips)"
 		}
     },
 	loc_vars = function(self, info_queue, center)
@@ -1045,11 +1045,17 @@ local fspinner = {
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
                 end
             end
-         if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+            return {
+                message = localize('k_upgrade_ex'),
+                card = card,
+            }
+        end
+        if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                 chip_mod = card.ability.extra.chips
-	end
+            }
+	    end
 	end,
 	atlas = "fspinner",
 }
