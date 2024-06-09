@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2h
+--- VERSION: 0.3.2i
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -391,6 +391,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
     G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
+    G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Bosses are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
 end
 
 
@@ -409,25 +410,6 @@ function cry_apply_ante_tax()
         return true
     end
     return false
-end
-
-local upd = Game.update
-cry_jimball_dt = 0
-function Game:update(dt)
-    upd(self,dt)
-    cry_jimball_dt = cry_jimball_dt + dt
-    if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
-        cry_jimball_dt = 0
-        local obj = G.P_CENTERS.j_cry_jimball
-        if (obj.pos.x == 5 and obj.pos.y == 6) then
-            obj.pos.x = 0
-            obj.pos.y = 0
-        elseif (obj.pos.x < 8) then obj.pos.x = obj.pos.x + 1
-        elseif (obj.pos.y < 6) then
-            obj.pos.x = 0
-            obj.pos.y = obj.pos.y + 1
-        end
-    end
 end
 
 SMODS.Sound({

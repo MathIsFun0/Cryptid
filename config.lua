@@ -1,1 +1,1 @@
-return {["More Stakes"]=true,["Planets"]=true,["Cryptid"]={["disable_anims"]=false,},["Epic Jokers"]=true,["Challenges"]=true,["Spectrals"]=true,["Antimatter Deck"]=true,["Misc. Decks"]=true,["Exotic Jokers"]=true,["Enhanced Decks"]=true,["Misc. Jokers"]=true,}
+return {["More Stakes"]=true,["Planets"]=true,["Cryptid"]={["disable_anims"]=false,},["Epic Jokers"]=true,["Spectrals"]=true,["Challenges"]=true,["Misc. Jokers"]=true,["Antimatter Deck"]=true,["Misc. Decks"]=true,["Exotic Jokers"]=true,["Enhanced Decks"]=true,["Blinds"]=true,}

@@ -1119,6 +1119,26 @@ return {name = "Misc. Jokers",
                 end
             end
 
+            --Jimball Patches
+            local upd = Game.update
+            cry_jimball_dt = 0
+            function Game:update(dt)
+                upd(self,dt)
+                cry_jimball_dt = cry_jimball_dt + dt
+                if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
+                    cry_jimball_dt = 0
+                    local obj = G.P_CENTERS.j_cry_jimball
+                    if (obj.pos.x == 5 and obj.pos.y == 6) then
+                        obj.pos.x = 0
+                        obj.pos.y = 0
+                    elseif (obj.pos.x < 8) then obj.pos.x = obj.pos.x + 1
+                    elseif (obj.pos.y < 6) then
+                        obj.pos.x = 0
+                        obj.pos.y = obj.pos.y + 1
+                    end
+                end
+            end
+
         end,
         items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite, jimball_sprite, waluigi_sprite,
         dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal}}

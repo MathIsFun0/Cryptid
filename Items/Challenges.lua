@@ -29,9 +29,22 @@ local ballin = {
     deck = {enhancement = 'm_stone'},
 	loc_txt = "Ballin'"
 }
+local rush_hour = {
+    object_type = "Challenge",
+    key = "rush_hour",
+	loc_txt = "Rush Hour",
+    rules = {
+        custom = {
+            {id = 'cry_rush_hour'} --this just explains the rule
+        },
+        modifiers = {}
+    },
+    restrictions = {
+        banned_other = {}
+    }
+}
 
 return {name = "Challenges", 
         init = function()
-            
         end,
-        items = {sticker_sheet, ballin}}
+        items = {sticker_sheet, ballin, rush_hour}}
