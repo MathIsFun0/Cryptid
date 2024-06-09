@@ -1015,6 +1015,51 @@ local sus_sprite = {
     px = 71,
     py = 95
 }
+local fspinner = {
+	object_type = "Joker",
+	name = "cry-fspinner",
+	key = "fspinner",
+	pos = {x = 0, y = 0},
+        config = {extra = {chips = 0, chip_mod = 14}},
+	loc_txt = {
+        name = 'Fidget Spinner',
+        text = {
+            "This Joker gains {C:chips} X#1# {} chips",
+            "if hand played is",
+            "{C:attention}not{} most played poker hand",
+            "{C:inactive}(Currently {C:chips} X#2# {C:inactive} chips)"
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
+    end,
+	rarity = 2,
+	cost = 6,
+	discovered = true,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.before and not context.blueprint then
+            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+            for k, v in pairs(G.GAME.hands) do
+                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
+                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+                end
+            end
+         if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                chip_mod = card.ability.extra.chips
+	end
+	end,
+	atlas = "fspinner",
+}
+local fspinner_sprite = {
+	object_type = "Atlas",
+    key = "fspinner",
+    path = "j_cry_fspinner.png",
+    px = 71,
+    py = 95
+}
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -1140,5 +1185,5 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, seal_the_deal_sprite, jimball_sprite, waluigi_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite,
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, waluigi, jimball, seal_the_deal, fspinner,}}
