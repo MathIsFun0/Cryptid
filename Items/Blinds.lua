@@ -42,6 +42,10 @@ local clock = {
     defeat = function(self, blind, silent)
         G.GAME.boss_dt = nil
         G.P_BLINDS.bl_cry_clock.mult = 0
+    end,
+    disable = function(self, blind, silent)
+        G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
+        G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
     end
 }
 
@@ -69,6 +73,10 @@ local lavender_loop = {
     boss_colour = HEX('ae00ff'),
     defeat = function(self, blind, silent)
         G.GAME.boss_dt = 0
+    end,
+    disable = function(self, blind, silent)
+        G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
+        G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
     end
 }
 
@@ -103,12 +111,12 @@ return {name = "Blinds",
                             chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.P_BLINDS.bl_cry_clock.mult)
                             G.blind_select_opts.boss:recalculate()
                         end
-                    else
+                    elseif not G.GAME.blind.disabled then
                         G.GAME.blind.chips = G.GAME.blind.chips + 0.1*dt/3*get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling
                         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                     end
                 end
-                if G.GAME and G.GAME.blind and G.GAME.blind.name == "cry-Lavender Loop" then
+                if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and G.GAME.blind.name == "cry-Lavender Loop" then
                     if not G.GAME.boss_dt then 
                         G.GAME.boss_dt = true
                     end
