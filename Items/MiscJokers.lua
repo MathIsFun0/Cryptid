@@ -1024,10 +1024,10 @@ local fspinner = {
 	loc_txt = {
         name = 'Fidget Spinner',
         text = {
-            "This Joker gains {C:chips}+#1#{} chips",
+            "This Joker gains {C:chips}+#2#{} Chips",
             "if hand played is {C:attention}not{}",
             "most played poker hand",
-            "{C:inactive}(Currently {C:chips}+#2#{C:inactive} chips)"
+            "{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
 		}
     },
 	loc_vars = function(self, info_queue, center)
@@ -1192,4 +1192,4 @@ return {name = "Misc. Jokers",
 
         end,
         items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite,
-        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, eternalflame, nice, sus, chad, waluigi, jimball, seal_the_deal, fspinner,}}
+        dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner,}}
