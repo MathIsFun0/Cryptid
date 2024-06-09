@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.2f
+--- VERSION: 0.3.2g
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -429,6 +429,10 @@ SMODS.Sound({
 SMODS.Sound({
     key = "^^Mult",
     path = "TetrationalMult.wav"
+})
+local jimballsound = SMODS.Sound({
+    key = "music-Jimball",
+    path = "music-Jimball.wav"
 })
 
 SMODS.Atlas({
