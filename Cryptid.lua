@@ -424,7 +424,7 @@ SMODS.Sound({
     key = "^^Mult",
     path = "TetrationalMult.wav"
 })
-local jimballsound = SMODS.Sound({
+SMODS.Sound({
     key = "music-Jimball",
     path = "music-Jimball.wav"
 })
