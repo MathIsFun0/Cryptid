@@ -40,6 +40,10 @@ local rush_hour = {
         modifiers = {}
     },
     restrictions = {
+        banned_cards = {
+            {id = 'j_luchador'},
+            {id = 'j_chicot'}
+        },
         banned_other = {}
     }
 }
