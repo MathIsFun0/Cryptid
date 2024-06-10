@@ -169,9 +169,6 @@ local hammerspace = {
     cost = 4,
     atlas = "hammerspace",
 	discovered = true,
-    loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra}}
-    end,
     can_use = function(self, card)
         return #G.hand.cards > 0
     end,
@@ -219,9 +216,6 @@ local lock = {
     cost = 4,
     atlas = "lock",
 	discovered = true,
-    loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra}}
-    end,
     can_use = function(self, card)
         return #G.jokers.cards > 0
     end,
