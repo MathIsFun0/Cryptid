@@ -48,7 +48,11 @@ local rush_hour = {
     }
 }
 
+local challenges = {sticker_sheet}
+if Cryptid_config["Misc. Jokers"] then challenges[#challenges+1] = ballin end
+if Cryptid_config["Blinds"] then challenges[#challenges+1] = rush_hour end
+
 return {name = "Challenges", 
         init = function()
         end,
-        items = {sticker_sheet, ballin, rush_hour}}
+        items = challenges}

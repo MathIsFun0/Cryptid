@@ -6,16 +6,16 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.3a
+--- VERSION: 0.3.3b
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
-local config_file = {["Cryptid"]={disable_anims = false}}
+Cryptid_config = {["Cryptid"]={disable_anims = false}}
 if NFS.read(mod_path.."/config.lua") then
-    config_file = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
+    Cryptid_config = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
 end
 
 -- Custom Rarity setup (based on Relic-Jokers)
@@ -131,8 +131,8 @@ for _, file in ipairs(files) do
     local f, err = NFS.load(mod_path.."Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
-      if config_file[curr_obj.name] == nil then config_file[curr_obj.name] = true end
-      if config_file[curr_obj.name] then
+      if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
+      if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
           for _, item in ipairs(curr_obj.items) do
               if SMODS[item.object_type] then
@@ -148,7 +148,7 @@ end
 local G_FUNCS_options_ref = G.FUNCS.options
 G.FUNCS.options = function(e)
   G_FUNCS_options_ref(e)
-  NFS.write(mod_path.."/config.lua", STR_PACK(config_file))
+  NFS.write(mod_path.."/config.lua", STR_PACK(Cryptid_config))
 end
 
 if not SpectralPack then
@@ -190,12 +190,12 @@ if not SpectralPack then
                       }}}
                     left_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
                     right_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
-                    for k, _ in pairs(config_file) do
+                    for k, _ in pairs(Cryptid_config) do
                         if k ~= "Cryptid" then
                             if #right_settings.nodes < #left_settings.nodes then
-                                right_settings.nodes[# right_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+                                right_settings.nodes[# right_settings.nodes+1] = create_toggle({label = k, ref_table = Cryptid_config, ref_value = k})
                             else
-                                left_settings.nodes[#left_settings.nodes+1] = create_toggle({label = k, ref_table = config_file, ref_value = k})
+                                left_settings.nodes[#left_settings.nodes+1] = create_toggle({label = k, ref_table = Cryptid_config, ref_value = k})
                             end
                         end
                     end
@@ -448,6 +448,27 @@ function cry_apply_ante_tax()
     return false
 end
 
+--Stickers and modifiers used by Challenges+Stakes
+SMODS.Atlas({
+    key = "sticker",
+    path = "sticker_cry.png",
+    px = 71,
+    py = 95
+})
+function Card:set_perishable(_perishable) 
+    self.ability.perishable = nil
+    if (self.config.center.perishable_compat or G.GAME.modifiers.cry_any_stickers) and (not self.ability.eternal or G.GAME.modifiers.cry_eternal_perishable_compat) then 
+        self.ability.perishable = true
+        self.ability.perish_tally = G.GAME.perishable_rounds
+    end
+end
+function Card:set_eternal(_eternal)
+    self.ability.eternal = nil
+    if (self.config.center.eternal_compat or G.GAME.modifiers.cry_any_stickers) and (not self.ability.perishable or G.GAME.modifiers.cry_eternal_perishable_compat) then
+        self.ability.eternal = _eternal
+    end
+end
+
 SMODS.Sound({
     key = "Xchip",
     path = "MultiplicativeChips.wav"
@@ -464,7 +485,6 @@ SMODS.Sound({
     key = "music-Jimball",
     path = "music-Jimball.wav"
 })
-
 SMODS.Atlas({
     key = "modicon",
     path = "cry_icon.png",

@@ -434,13 +434,6 @@ local stake_atlas = {object_type = "Atlas",
     px = 29,
     py = 29
 }
-local sticker_atlas = {object_type = "Atlas",
-    key = "sticker",
-    
-    path = "sticker_cry.png",
-    px = 71,
-    py = 95
-}
 return {name = "More Stakes", 
         init = function(self)
             -- Ante scaling changes
@@ -459,19 +452,6 @@ return {name = "More Stakes",
                     amount:normalize()
                     return amount
                 else return gba(ante)
-                end
-            end
-            function Card:set_perishable(_perishable) 
-                self.ability.perishable = nil
-                if (self.config.center.perishable_compat or G.GAME.modifiers.cry_any_stickers) and (not self.ability.eternal or G.GAME.modifiers.cry_eternal_perishable_compat) then 
-                    self.ability.perishable = true
-                    self.ability.perish_tally = G.GAME.perishable_rounds
-                end
-            end
-            function Card:set_eternal(_eternal)
-                self.ability.eternal = nil
-                if (self.config.center.eternal_compat or G.GAME.modifiers.cry_any_stickers) and (not self.ability.perishable or G.GAME.modifiers.cry_eternal_perishable_compat) then
-                    self.ability.eternal = _eternal
                 end
             end
             -- Disallow use of Debuffed Perishable consumables
@@ -687,6 +667,6 @@ return {name = "More Stakes",
                 end
             end
         end,
-        items = {stake_atlas, sticker_atlas, pink, brown, yellow, jade, cyan, gray, crimson, diamond,
+        items = {stake_atlas, pink, brown, yellow, jade, cyan, gray, crimson, diamond,
         amber, bronze, quartz, ruby, glass, sapphire, emerald, platinum,
         twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant}}

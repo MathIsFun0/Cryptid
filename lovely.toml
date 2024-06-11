@@ -150,6 +150,10 @@ target = "game.lua"
 pattern = "set_profile_progress()"
 position = "before"
 payload = '''
+if self.ASSET_ATLAS['cry_sticker'] then
+    self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
+    self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})
+end
 for i = 1, #G.CHALLENGES do
     if G.CHALLENGES[i].id == 'c_cry_rush_hour' and #G.CHALLENGES[i].restrictions.banned_other == 0 then
         for k, v in pairs(G.P_BLINDS) do
@@ -158,10 +162,6 @@ for i = 1, #G.CHALLENGES do
             end
         end
     end
-end
-if self.ASSET_ATLAS['cry_sticker'] then
-    self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
-    self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})
 end
 '''
 match_indent = true
