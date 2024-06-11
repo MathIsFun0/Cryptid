@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.3b
+--- VERSION: 0.3.3c
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -290,7 +290,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if card.ability.consumeable and not skip_materialize then card:start_materialize() end
 
   if card.ability.name == "cry-Cube" then card:set_eternal(true) end
-  if _type == 'Joker' or G.GAME.modifiers.cry_any_stickers then
+  if _type == 'Joker' or (G.GAME.modifiers.cry_any_stickers and not G.GAME.modifiers.cry_sticker_sheet) then
       if G.GAME.modifiers.all_eternal then
           card:set_eternal(true)
       end
