@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.3c
+--- VERSION: 0.3.3d
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -410,7 +410,7 @@ function cry_misprintize(card)
     end
 end
 function cry_format(number, str)
-    return tonumber(str:format(Big:new(number):to_number()))
+    return tonumber(str:format((Big and to_big(number):to_number() or number)))
 end
 
 --Cryptid (the spectral) localization

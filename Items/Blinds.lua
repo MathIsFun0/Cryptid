@@ -111,12 +111,12 @@ return {name = "Blinds",
                             chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.P_BLINDS.bl_cry_clock.mult)
                             G.blind_select_opts.boss:recalculate()
                         end
-                    elseif not G.GAME.blind.disabled and Big:new(G.GAME.chips) < Big:new(G.GAME.blind.chips) then
+                    elseif not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
                         G.GAME.blind.chips = G.GAME.blind.chips + 0.1*dt/3*get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling
                         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                     end
                 end
-                if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and G.GAME.blind.name == "cry-Lavender Loop" and Big:new(G.GAME.chips) < Big:new(G.GAME.blind.chips) then
+                if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and G.GAME.blind.name == "cry-Lavender Loop" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
                     if not G.GAME.boss_dt then 
                         G.GAME.boss_dt = true
                     end

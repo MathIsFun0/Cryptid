@@ -12,8 +12,8 @@ position = "after"
 payload = '''
 if G.GAME.modifiers.cry_misprint_min and not args.savetext then
     for k, v in pairs(G.GAME.hands) do
-        v.chips = Big:new(cry_format(v.chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
-        v.mult = Big:new(cry_format(v.mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.chips = to_big(cry_format(v.chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.mult = to_big(cry_format(v.mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
         v.l_chips = cry_format(v.l_chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
         v.l_mult = cry_format(v.l_mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
         v.s_chips = v.chips
@@ -89,7 +89,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.ante = G.GAME.round_resets.ante + mod"
 position = "after"
-payload = "G.GAME.round_resets.ante = Big:new(G.GAME.round_resets.ante):floor():to_number()"
+payload = "G.GAME.round_resets.ante = Big and (to_big(G.GAME.round_resets.ante):floor():to_number()) or math.floor(G.GAME.round_resets.ante)"
 match_indent = true
 
 # UI Bugs
