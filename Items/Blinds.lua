@@ -48,6 +48,44 @@ local clock = {
         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
     end
 }
+local trick = {
+    object_type = "Blind",
+    name = "cry-Trick",
+    key = "trick",
+    pos = {x = 0, y = 3},
+    boss = {
+        min = 1,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Trick',
+        text = {
+            "After each hand, flip",
+            "all cards held in hand"
+        }
+    },
+    atlas = "blinds",
+    discovered = true,
+    boss_colour = HEX('babd24'),
+    after_play = function(self)
+        --flip and shuffle all cards held in hand
+        for k, v in ipairs(G.hand.cards) do
+            if v.facing == "front" then
+                v:flip()
+            end
+        end
+        --[[if #G.hand.cards > 1 then 
+            G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function() 
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 0.85);return true end })) 
+                delay(0.15)
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1.15);return true end })) 
+                delay(0.15)
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1);return true end })) 
+                delay(0.5)
+            return true end })) 
+        end--]]
+    end
+}
 
 local lavender_loop = {
     object_type = "Blind",
@@ -124,5 +162,11 @@ return {name = "Blinds",
                     G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                 end
             end
+            --Trick Patches
+            local gfep = G.FUNCS.evaluate_play
+            function G.FUNCS.evaluate_play(e)
+                gfep(e)
+                if G.GAME.blind.config.blind.after_play then G.GAME.blind.config.blind:after_play() end
+            end
         end,
-        items = {tax, clock, lavender_loop, blind_sprites}}
+        items = {tax, clock, trick, lavender_loop, blind_sprites}}
