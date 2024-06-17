@@ -1139,7 +1139,6 @@ local krustytheclown = {
             }
         end
 		if context.cardarea == G.play and not context.blueprint then
-			message = localize('k_upgrade_ex')
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 		end
 	end
