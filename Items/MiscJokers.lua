@@ -1138,8 +1138,13 @@ local krustytheclown = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.cardarea == G.play and not context.blueprint then
+		if context.cardarea == G.play and context.individual and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
+			return {
+					extra = {focus = self, message = localize('k_upgrade_ex')},
+					card = card,
+					colour = G.C.MULT
+				}
 		end
 	end
 }
