@@ -610,8 +610,36 @@ local double_scale_sprite = {
     px = 71,
     py = 95
 }
-
-G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}
+local oldcandy = {
+    object_type = "Joker",
+	name = "cry-oldcandy",
+	key = "oldcandy",
+	config = {extra = {h_mod = 1},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Nostalgic Candy',
+        text = {
+            "Increase hand size by {C:attention}#1#{} when sold,",
+			},
+	},
+	rarity = "cry_epic",
+	cost = 6,
+	discovered = true,
+	atlas = 'oldcandy',
+	calculate = function(self, card, context)
+	if context.selling_self and not context.retrigger_joker and not context.blueprint then
+            G.hand:change_size(card.ability.extra.h_mod)
+        end
+end,
+local oldcandy_sprite = {
+    object_type = "Atlas",
+    key = "oldcandy",
+    
+    path = "j_cry_oldcandy.png",
+    px = 71,
+    py = 95
+}
+G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy}
 
 
 return {name = "Epic Jokers", 
@@ -701,5 +729,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite,
-		googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}}
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite, oldcandy_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy}}
