@@ -1140,7 +1140,6 @@ local krustytheclown = {
         end
 		if context.cardarea == G.play and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
-			return {calculated = true}
 		end
 	end
 }
