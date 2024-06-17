@@ -631,10 +631,10 @@ local oldcandy = {
             G.hand:change_size(card.ability.extra.h_mod)
         end
 end
+
 local oldcandy_sprite = {
     object_type = "Atlas",
     key = "oldcandy",
-    
     path = "j_cry_oldcandy.png",
     px = 71,
     py = 95
