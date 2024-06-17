@@ -630,7 +630,7 @@ local oldcandy = {
 	if context.selling_self and not context.retrigger_joker and not context.blueprint then
             G.hand:change_size(card.ability.extra.h_mod)
         end
-end,
+end
 local oldcandy_sprite = {
     object_type = "Atlas",
     key = "oldcandy",
