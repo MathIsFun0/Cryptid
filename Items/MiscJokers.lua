@@ -1120,7 +1120,7 @@ local krustytheclown = {
         name = 'Krusty The Clown',
         text = {
 			"This Joker gains {X:mult,C:white} X#1# {} Mult",
-			"per {C:attention}card{} sold",
+			"per {C:attention}card{} scored",
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
 		}
     },
