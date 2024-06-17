@@ -19,7 +19,7 @@ local krustytheclown = {
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
-	atlas = "eternalflame",
+	atlas = "krustytheclown",
 	calculate = function(self, card, context)
         if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
@@ -27,18 +27,17 @@ local krustytheclown = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.selling_card and not context.blueprint then
+		if context.cardarea == G.play and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
 			return {calculated = true}
 		end
 	end
 }
-local eternalflame_sprite = {
+local krustytheclown_sprite = {
 	object_type = "Atlas",
-    key = "eternalflame",
+    key = "krustytheclown",
     
-    path = "j_cry_eternalflame.png",
+    path = "j_cry_krustytheclown.png",
     px = 71,
     py = 95
 }
