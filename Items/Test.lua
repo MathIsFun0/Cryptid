@@ -1,20 +1,20 @@
  if context.cardarea == G.play then
-local eternalflame = {
+local krustytheclown = {
 	object_type = "Joker",
-	name = "cry-eternalflame",
-	key = "eternalflame",
+	name = "cry-krustytheclown",
+	key = "krustytheclown",
 	pos = {x = 0, y = 0},
-	config = {extra = {extra = 0.1, x_mult = 1}},
+	config = {extra = {extra = 0.02, x_mult = 1}},
 	loc_txt = {
-        name = 'Eternal Flame',
+        name = 'Krusty The Clown',
         text = {
 			"This Joker gains {X:mult,C:white} X#1# {} Mult",
 			"per {C:attention}card{} sold",
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
 		}
     },
-	rarity = 3,
-	cost = 9,
+	rarity = 2,
+	cost = 7,
 	discovered = true,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
