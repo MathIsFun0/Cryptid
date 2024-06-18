@@ -1181,7 +1181,7 @@ local blurred = {
 			return {
 				message = {"+1 hand"}, --localize this in the future
 				ease_hands_played(self.config.extra.hands),
-				delay(0.6)
+				delay(0.6),
 			}
 		end
 	end
