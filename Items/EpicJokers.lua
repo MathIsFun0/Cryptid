@@ -612,26 +612,27 @@ local double_scale_sprite = {
 }
 local oldcandy = {
 	object_type = "Joker",
-	name = "cry-oldcandy",
+	name = "cry_oldcandy",
 	key = "oldcandy",
-	config = {extra = {h_mod = 1}}}
-	pos = {x = 0, y = 0},
-	loc_txt = {
-        name = 'Nostalgic Candy',
-        text = {
-            "Increase hand size by {C:attention}#1#{} when sold"}
+	config = {extra = {h_mod = 0}},
+	pos = {x = 0, y = 0}
+	loc_text = {
+	name = 'Nostalgic Candy'
+	text = {
+			"Increase handsize by {C:attention}#1#{} when sold"
+		}
 	},
 	rarity = "cry_epic",
 	cost = 6,
 	discovered = true,
-	atlas = 'oldcandy',
+	atlas = "oldcandy",
 	calculate = function(self, card, context)
 	if context.selling_self and not context.retrigger_joker and not context.blueprint then
             G.hand:change_size(card.ability.extra.h_mod)
         end
-	end
+end
 }
-
+	
 local oldcandy_sprite = {
     object_type = "Atlas",
     key = "oldcandy",
