@@ -1179,7 +1179,7 @@ local blurred = {
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			return {
-				message = {"+1 hand"}, --localize this in the future
+				extra = {focus = self, message = localize('k_hand')}, --make this less bad in the future
 				ease_hands_played(self.config.extra.hands),
 				delay(0.6),
 			}
