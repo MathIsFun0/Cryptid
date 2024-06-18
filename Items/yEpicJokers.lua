@@ -174,6 +174,7 @@ local error_joker = {
 	cost = 1,
 	discovered = true,
 	blueprint_compat = false,
+	eternal_compat = false,
 	atlas = "error",
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.repetition and not card.ability.extra.active then
@@ -610,8 +611,39 @@ local double_scale_sprite = {
     px = 71,
     py = 95
 }
-
-G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}
+local oldcandy = {
+	object_type = "Joker",
+	name = "cry_oldcandy",
+	key = "oldcandy",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+	name = 'Nostalgic Candy',
+	text = {
+			"Permanently gain",
+			"{C:attention}+3{} hand size",
+			"when sold"
+		}
+	},
+	rarity = "cry_epic",
+	cost = 10,
+	discovered = true,
+	eternal_compat = false,
+	atlas = "oldcandy",
+	calculate = function(self, card, context) --hardcoded, unfortunately
+	if context.selling_self and not context.blueprint then
+            G.hand:change_size(3)
+        end
+end
+}
+	
+local oldcandy_sprite = {
+    object_type = "Atlas",
+    key = "oldcandy",
+    path = "j_cry_oldcandy.png",
+    px = 71,
+    py = 95
+}
+G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy}
 
 
 return {name = "Epic Jokers", 
@@ -701,5 +733,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite,
-		googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks}}
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite, oldcandy_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy}}
