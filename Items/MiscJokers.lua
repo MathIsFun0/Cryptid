@@ -1170,7 +1170,7 @@ local blurred = {
 			"{C:attention}+1{}hand",
 			"when blind is selected"
 		}
-    },
+   	},
 	rarity = "1",
 	cost = 4,
 	discovered = true,
