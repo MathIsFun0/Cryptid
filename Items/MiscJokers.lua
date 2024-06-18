@@ -1178,7 +1178,7 @@ local blurred = {
 	atlas = "blurred",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-			ease_hands_played(self.ability.extra.hands)
+			ease_hands_played(self.config.extra.hands)
 		end
 	end
 }
