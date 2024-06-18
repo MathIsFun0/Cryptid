@@ -1163,6 +1163,7 @@ local blurred = {
 	name = "cry-blurred",
 	key = "blurred",
 	pos = {x = 0, y = 0},
+	config = {extra = {hands = 1}}
 	loc_txt = {
         name = 'Blurred Joker',
         text = {
@@ -1177,7 +1178,7 @@ local blurred = {
 	atlas = "blurred",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-			ease_hands_played(1, false)
+			ease_hands_played(self.ability.extra.hands)
 		end
 	end
 }
