@@ -1178,10 +1178,11 @@ local blurred = {
 	atlas = "blurred",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-		return
+		return {
 			message = {"+1 hand"} --localize this in the future
 			ease_hands_played(self.config.extra.hands)
 			delay(0.6)
+		}
 		end
 	end
 end
