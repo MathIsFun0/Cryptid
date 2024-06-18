@@ -174,7 +174,7 @@ local error_joker = {
 	cost = 1,
 	discovered = true,
 	blueprint_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
 	atlas = "error",
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.repetition and not card.ability.extra.active then
@@ -626,7 +626,7 @@ local oldcandy = {
 	rarity = "cry_epic",
 	cost = 6,
 	discovered = true,
-	eternal_compat = false
+	eternal_compat = false,
 	atlas = "oldcandy",
 	calculate = function(self, card, context) --hardcoded, unfortunately
 	if context.selling_self and not context.blueprint then
