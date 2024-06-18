@@ -1167,18 +1167,21 @@ local blurred = {
 	loc_txt = {
         name = 'Blurred Joker',
         text = {
-			"{C:attention}+1{}hand",
+			"{C:blue}+1{} hand",
 			"when blind is selected"
 		}
    	},
-	rarity = 2,
+	rarity = 1,
 	cost = 4,
 	discovered = true,
 	blueprint_compat = true,
 	atlas = "blurred",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+		return
+			message = {"+1 hand"} --localize this in the future
 			ease_hands_played(self.config.extra.hands)
+			delay(0.6)
 		end
 	end
 }
