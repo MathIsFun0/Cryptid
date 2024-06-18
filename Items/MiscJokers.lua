@@ -1183,8 +1183,8 @@ local blurred = {
 			ease_hands_played(self.config.extra.hands)
 			delay(0.6)
 		end
-		end
 	end
+end
 }
 local blurred_sprite = {
 	object_type = "Atlas",
