@@ -1171,7 +1171,7 @@ local blurred = {
 			"when blind is selected"
 		}
    	},
-	rarity = 1,
+	rarity = 2,
 	cost = 4,
 	discovered = true,
 	blueprint_compat = true,
