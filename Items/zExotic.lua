@@ -315,6 +315,7 @@ local effarcire = {
 	key = "effarcire",
 	config = {},
 	pos = {x = 0, y = 0},
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
 	loc_txt = {
         name = 'Effarcire',
         text = {
@@ -342,8 +343,7 @@ local effarcire = {
 local effarcire_sprite = {
     object_type = "Atlas",
     key = "effarcire",
-    
-    path = "j_placeholder.png",
+    path = "j_cry_effarcire.png",
     px = 71,
     py = 95
 }

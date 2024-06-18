@@ -2,7 +2,8 @@ local hierophant_deck = {object_type = "Back",
     name = "cry-The Hierophant's Deck",
     key = "hierophant_deck",
 	config = {cry_force_enhancement = "m_bonus"},
-	pos = {x = 1, y = 1},
+	pos = {x = 0, y = 0},
+    atlas = "hierophant",
 	loc_txt = {
         name = "The Hierophant's Deck",
         text = {
@@ -11,13 +12,20 @@ local hierophant_deck = {object_type = "Back",
             "Cards cannot change enhancements"
         }
     },
-    
+}
+local hierophant_sprite = {
+	object_type = "Atlas",
+    key = "hierophant",
+    path = "b_cry_hierophant.png",
+    px = 71,
+    py = 95
 }
 local empress_deck = {object_type = "Back",
     name = "cry-The Empress's Deck",
     key = "empress_deck",
 	config = {cry_force_enhancement = "m_mult"},
-	pos = {x = 2, y = 1},
+    atlas = "empress",
+	pos = {x = 0, y = 0},
 	loc_txt = {
         name = "The Empress's Deck",
         text = {
@@ -26,13 +34,20 @@ local empress_deck = {object_type = "Back",
             "Cards cannot change enhancements"
         }
     },
-    
+}
+local empress_sprite = {
+	object_type = "Atlas",
+    key = "empress",
+    path = "b_cry_empress.png",
+    px = 71,
+    py = 95
 }
 local lovers_deck = {object_type = "Back",
     name = "cry-The Lovers' Deck",
     key = "lovers_deck",
 	config = {cry_force_enhancement = "m_wild"},
-	pos = {x = 3, y = 1},
+	pos = {x = 0, y = 0},
+    atlas = "lovers",
 	loc_txt = {
         name = "The Lovers' Deck",
         text = {
@@ -41,13 +56,20 @@ local lovers_deck = {object_type = "Back",
             "Cards cannot change enhancements"
         }
     },
-    
+}
+local lovers_sprite = {
+	object_type = "Atlas",
+    key = "lovers",
+    path = "b_cry_lovers.png",
+    px = 71,
+    py = 95
 }
 local justice_deck = {object_type = "Back",
     name = "cry-Deck of Justice",
     key = "justice_deck",
 	config = {cry_force_enhancement = "m_glass"},
-	pos = {x = 5, y = 1},
+	pos = {x = 0, y = 0},
+    atlas = "justice",
 	loc_txt = {
         name = "Deck of Justice",
         text = {
@@ -56,7 +78,13 @@ local justice_deck = {object_type = "Back",
             "Cards cannot change enhancements"
         }
     },
-    
+}
+local justice_sprite = {
+	object_type = "Atlas",
+    key = "justice",
+    path = "b_cry_justice.png",
+    px = 71,
+    py = 95
 }
 local chariot_deck = {object_type = "Back",
     name = "cry-The Chariot's Deck",
@@ -241,7 +269,8 @@ local eternal_deck = {object_type = "Back",
     name = "cry-Eternal Deck",
     key = "eternal_deck",
 	config = {cry_force_sticker = 'eternal'},
-	pos = {x = 3, y = 3},
+	pos = {x = 0, y = 0},
+    atlas = "eternal",
 	loc_txt = {
         name = "Eternal Deck",
         text = {
@@ -249,13 +278,20 @@ local eternal_deck = {object_type = "Back",
             "of {C:attention}Eternal Cards{}"
         }
     },
-    
+}
+local eternal_sprite = {
+	object_type = "Atlas",
+    key = "eternal",
+    path = "b_cry_eternal.png",
+    px = 71,
+    py = 95
 }
 local perishable_deck = {object_type = "Back",
     name = "cry-Perishable Deck",
     key = "perishable_deck",
 	config = {cry_force_sticker = 'perishable'},
-	pos = {x = 2, y = 2},
+	pos = {x = 0, y = 0},
+    atlas = "perishable",
 	loc_txt = {
         name = "Perishable Deck",
         text = {
@@ -263,13 +299,20 @@ local perishable_deck = {object_type = "Back",
             "of {C:attention}Perishable Cards{}"
         }
     },
-    
+}
+local perishable_sprite = {
+	object_type = "Atlas",
+    key = "perishable",
+    path = "b_cry_perishable.png",
+    px = 71,
+    py = 95
 }
 local rental_deck = {object_type = "Back",
     name = "cry-Rental Deck",
     key = "rental_deck",
 	config = {cry_force_sticker = 'rental'},
-	pos = {x = 1, y = 2},
+	pos = {x = 0, y = 0},
+    atlas = "rental",
 	loc_txt = {
         name = "Rental Deck",
         text = {
@@ -277,6 +320,13 @@ local rental_deck = {object_type = "Back",
             "of {C:attention}Rental Cards{}"
         }
     },
+}
+local rental_sprite = {
+	object_type = "Atlas",
+    key = "rental",
+    path = "b_cry_rental.png",
+    px = 71,
+    py = 95
 }
 local world_deck = {object_type = "Back",
     name = "cry-World Deck",
@@ -477,7 +527,7 @@ return {name = "Enhanced Decks",
                 return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
             end
         end,
-        items = {trance_sprite, medium_sprite, world_sprite, star_sprite, sun_sprite, moon_sprite,
+        items = {trance_sprite, medium_sprite, world_sprite, star_sprite, sun_sprite, moon_sprite, perishable_sprite, eternal_sprite, rental_sprite, lovers_sprite, hierophant_sprite, empress_sprite, justice_sprite,
 hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
 foil_deck, holo_deck, poly_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,

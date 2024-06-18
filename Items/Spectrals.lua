@@ -193,8 +193,7 @@ local hammerspace = {
 local hammerspace_sprite = {
     object_type = "Atlas",
     key = "hammerspace",
-    
-    path = "s_placeholder.png",
+    path = "s_hammerspace.png",
     px = 71,
     py = 95
 }

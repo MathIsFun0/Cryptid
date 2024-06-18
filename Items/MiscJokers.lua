@@ -1177,10 +1177,10 @@ local blurred = {
 	blueprint_compat = true,
 	atlas = "blurred",
 	calculate = function(self, card, context)
-        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+        if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
 			return {
-				extra = {focus = self, message = localize('k_hand')}, --make this actually work in the future
-				ease_hands_played(self.config.extra.hands),
+				extra = {focus = card, message = localize('k_hand')}, --make this actually work in the future
+				ease_hands_played(card.ability.extra.hands),
 				delay(0.6),
 			}
 		end
