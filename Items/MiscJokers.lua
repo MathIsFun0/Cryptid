@@ -1163,7 +1163,7 @@ local blurred = {
 	name = "cry-blurred",
 	key = "blurred",
 	pos = {x = 0, y = 0},
-	config = {extra = {hands = 1}}
+	config = {extra = {hands = 1}},
 	loc_txt = {
         name = 'Blurred Joker',
         text = {
