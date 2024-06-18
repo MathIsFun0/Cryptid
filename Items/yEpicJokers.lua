@@ -619,12 +619,13 @@ local oldcandy = {
 	loc_txt = {
 	name = 'Nostalgic Candy',
 	text = {
-			"Permanently increase handsize",
-			"by {C:attention}3{} when sold"
+			"Permanently gain",
+			"{C:attention}+3{} hand size",
+			"when sold"
 		}
 	},
 	rarity = "cry_epic",
-	cost = 6,
+	cost = 10,
 	discovered = true,
 	eternal_compat = false,
 	atlas = "oldcandy",

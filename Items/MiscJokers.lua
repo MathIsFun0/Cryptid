@@ -1143,7 +1143,7 @@ local krustytheclown = {
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			return {
-					extra = {focus = self, message = localize('k_upgrade_ex')},
+					extra = {focus = card, message = localize('k_upgrade_ex')},
 					card = card,
 					colour = G.C.MULT
 				}
@@ -1167,8 +1167,8 @@ local blurred = {
 	loc_txt = {
         name = 'Blurred Joker',
         text = {
-			"{C:blue}+1{} hand",
-			"when blind is selected"
+			"{C:blue}+1{} hand when",
+			"blind is selected"
 		}
    	},
 	rarity = 1,
