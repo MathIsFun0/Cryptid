@@ -614,13 +614,12 @@ local oldcandy = {
 	object_type = "Joker",
 	name = "cry_oldcandy",
 	key = "oldcandy",
-	config = {extra = {h_mod = 1}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
 	name = 'Nostalgic Candy',
 	text = {
 			"Permanently increase handsize",
-			"by {C:attention}#1#{} when sold"
+			"by {C:attention} 2 {} when sold"
 		}
 	},
 	rarity = "cry_epic",
@@ -629,7 +628,7 @@ local oldcandy = {
 	atlas = "oldcandy",
 	calculate = function(self, card, context)
 	if context.selling_self and not context.retrigger_joker and not context.blueprint then
-            G.hand:change_size(card.ability.extra.h_mod)
+            G.hand:change_size(2)
         end
 end
 }
