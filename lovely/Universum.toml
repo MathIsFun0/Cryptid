@@ -33,6 +33,7 @@ else
     local universum_mod = 1
     for i = 1, #G.jokers.cards do
         local effects = G.jokers.cards[i]:calculate_joker({cry_universum = true})
+        universum_mod = universum_mod * (effects and effects.mod or 1)
         if effects and effects.joker_repetitions then
             rep_list = effects.joker_repetitions
             for z=1, #rep_list do

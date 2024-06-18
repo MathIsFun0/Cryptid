@@ -60,8 +60,8 @@ local trick = {
 	loc_txt = {
         name = 'The Trick',
         text = {
-            "After each hand, flip",
-            "all cards held in hand"
+            "After each hand, flip all",
+            "face-up cards held in hand"
         }
     },
     atlas = "blinds",
@@ -87,6 +87,26 @@ local trick = {
     end
 }
 
+local joke = {
+    object_type = "Blind",
+    name = "cry-Joke",
+    key = "joke",
+    pos = {x = 0, y = 4},
+    boss = {
+        min = 1,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Joke',
+        text = {
+            "If score is >2X requirements,",
+            "set ante to multiple of 8"
+        }
+    },
+    atlas = "blinds",
+    discovered = true,
+    boss_colour = HEX('00ffaa')
+}
 local lavender_loop = {
     object_type = "Blind",
     name = "cry-Lavender Loop",
@@ -169,4 +189,4 @@ return {name = "Blinds",
                 if G.GAME.blind.config.blind.after_play then G.GAME.blind.config.blind:after_play() end
             end
         end,
-        items = {tax, clock, trick, lavender_loop, blind_sprites}}
+        items = {tax, clock, trick, joke, lavender_loop, blind_sprites}}
