@@ -235,8 +235,8 @@ local whip = {
     config = {extra = {Xmult_mod = 0.5, x_mult = 1}},
     loc_txt = {
         name = 'The WHIP',
-        text =  "this Joker gains {X:mult,C:white} X#1# {} Mult",
-	{ "If {C:attention}played hand{} contains a",
+        text = {"This Joker gains {X:mult,C:white} X#1# {} Mult",
+	"If {C:attention}played hand{} contains a",
         "2 and 7 of different suits,",
         "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"}
     },
