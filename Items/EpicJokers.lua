@@ -611,7 +611,7 @@ local double_scale_sprite = {
     py = 95
 }
 local oldcandy = {
-    object_type = "Joker",
+	object_type = "Joker",
 	name = "cry-oldcandy",
 	key = "oldcandy",
 	config = {extra = {h_mod = 1}}
@@ -632,6 +632,7 @@ local oldcandy = {
         end
 end
 }
+
 local oldcandy_sprite = {
     object_type = "Atlas",
     key = "oldcandy",
