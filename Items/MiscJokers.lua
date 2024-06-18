@@ -1158,6 +1158,37 @@ local krustytheclown_sprite = {
     px = 71,
     py = 95
 }
+local blurred = {
+	object_type = "Joker",
+	name = "cry-blurred",
+	key = "blurred",
+	pos = {x = 0, y = 0},
+	config = {extra = {test = 1}},
+	loc_txt = {
+        name = 'Blurred Joker',
+        text = {
+			"{C:attention}+#2#{}hands ",
+			"when blind is selected"
+		}
+    },
+	rarity = "1",
+	cost = 4,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "blurred",
+	calculate = function(self, card, context)
+        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+			ease_hands_played(test, false)
+		end
+	end
+}
+local blurred_sprite = {
+	object_type = "Atlas",
+    key = "blurred",
+    path = "j_cry_blurred.png",
+    px = 71,
+    py = 95
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -1239,4 +1270,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite, krustytheclown_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown,}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite, krustytheclown_sprite, blurred_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred,}}
