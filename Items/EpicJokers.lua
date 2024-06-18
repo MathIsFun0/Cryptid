@@ -631,7 +631,7 @@ local oldcandy = {
             G.hand:change_size(card.ability.extra.h_mod)
         end
 end
-
+}
 local oldcandy_sprite = {
     object_type = "Atlas",
     key = "oldcandy",
