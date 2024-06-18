@@ -1184,7 +1184,7 @@ local blurred = {
 				delay(0.6),
 			}
 		end
-	end
+	end 
 }
 local blurred_sprite = {
 	object_type = "Atlas",
