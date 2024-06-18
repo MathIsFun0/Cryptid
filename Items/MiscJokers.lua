@@ -236,7 +236,7 @@ local whip = {
     loc_txt = {
         name = 'The WHIP',
         text = { "this Joker gains {X:mult,C:white} X#1# {} Mult",
-        "if hand played contains a",
+        "if {C:attention}hand played{} contains a",
         "2 and 7 of different suits",
         "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"}
     },
