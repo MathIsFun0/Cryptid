@@ -620,7 +620,7 @@ local oldcandy = {
 	name = 'Nostalgic Candy',
 	text = {
 			"Permanently Increase handsize by",
-			{C:attention}#2#{} when sold"
+			"{C:attention}#2#{} when sold"
 		}
 	},
 	rarity = "cry_epic",
