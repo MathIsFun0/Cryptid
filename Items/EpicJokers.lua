@@ -619,7 +619,7 @@ local oldcandy = {
 	loc_txt = {
 	name = 'Nostalgic Candy',
 	text = {
-			"Permanently Increase handsize by,
+			"Permanently Increase handsize by",
 			{C:attention}#2#{} when sold"
 		}
 	},
