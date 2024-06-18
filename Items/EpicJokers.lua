@@ -617,7 +617,7 @@ local oldcandy = {
 	config = {extra = {h_mod = 0}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
-	name = 'Nostalgic Candy'
+	name = 'Nostalgic Candy',
 	text = {
 			"Increase handsize by {C:attention}#1#{} when sold"
 		}
