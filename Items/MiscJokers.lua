@@ -384,7 +384,8 @@ local pickle = {
 	rarity = 2,
 	cost = 5,
 	discovered = true,
-    blueprint_compat = true,
+  blueprint_compat = true,
+	eternal_compat = false,
 	atlas = "pickle",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.tags, center.ability.extra.tags_mod}}
@@ -583,7 +584,8 @@ local chili_pepper = {
 	rarity = 2,
 	cost = 6,
 	discovered = true,
-    blueprint_compat = false,
+  blueprint_compat = false,
+	eternal_compat = false,
 	atlas = "chili_pepper",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult, center.ability.extra.Xmult_mod, center.ability.extra.rounds_remaining}}
@@ -767,7 +769,7 @@ local nice = {
         }
     },
 	rarity = 3,
-	cost = 6,
+	cost = 6.9,
 	discovered = true,
 	atlas = "nice",
     blueprint_compat = true,loc_vars = function(self, info_queue, center)
