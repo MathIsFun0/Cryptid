@@ -1214,10 +1214,11 @@ return {name = "Misc. Jokers",
                     self.cost = -25
                 end
                 if self.ability.name == "cry-Big Cube" then
-                    self.cost = 25
+                self.cost = 25
                 end
-		if self.ability.name == "cry-Nice" then
+				if self.ability.name == "cry-Nice" then
 				self.cost = 6.9
+				end
 		
             end
 
