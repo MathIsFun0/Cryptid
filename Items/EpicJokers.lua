@@ -615,7 +615,7 @@ local oldcandy = {
 	name = "cry_oldcandy",
 	key = "oldcandy",
 	config = {extra = {h_mod = 0}},
-	pos = {x = 0, y = 0}
+	pos = {x = 0, y = 0},
 	loc_txt = {
 	name = 'Nostalgic Candy'
 	text = {
