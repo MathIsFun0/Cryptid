@@ -113,10 +113,16 @@ local universum = {
 	rarity = "cry_exotic",
 	cost = 50,
 	discovered = true,
+    blueprint_compat = true,
 	atlas = "universum",
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra}}
+    end,
+    calculate = function(self, card, context)
+        if context.cry_universum then
+            return {mod = card.ability.extra}
+        end
     end
 }
 local universum_sprite = {

@@ -59,9 +59,11 @@ if eval and eval.jokers and eval.jokers.joker_repetitions then
     for z=1, #rep_list do
         if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
             for r=1, rep_list[z].repetitions do
-                reps[#reps+1] = {from_retrigger = rep_list[z]}
-                for k, v in pairs(eval) do
-                    reps[#reps][k] = v
+                for s=1, eval.jokers.repetitions do
+                    reps[#reps+1] = {from_retrigger = rep_list[z]}
+                    for k, v in pairs(eval) do
+                        reps[#reps][k] = v
+                    end
                 end
             end
         end
@@ -130,9 +132,11 @@ if eval and eval.jokers and eval.jokers.repetitions and eval.jokers.joker_repeti
     for z=1, #rep_list do
         if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
             for r=1, rep_list[z].repetitions do
-                reps[#reps+1] = {from_retrigger = rep_list[z]}
-                for k, v in pairs(eval) do
-                    reps[#reps][k] = v
+                for s=1, eval.jokers.repetitions do
+                    reps[#reps+1] = {from_retrigger = rep_list[z]}
+                    for k, v in pairs(eval) do
+                        reps[#reps][k] = v
+                    end
                 end
             end
         end
@@ -185,9 +189,11 @@ if eval and eval.jokers and eval.jokers.repetitions and eval.jokers.joker_repeti
     for z=1, #rep_list do
         if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
             for r=1, rep_list[z].repetitions do
-                reps[#reps+1] = {from_retrigger = rep_list[z]}
-                for k, v in pairs(eval) do
-                    reps[#reps][k] = v
+                for s=1, eval.jokers.repetitions do
+                    reps[#reps+1] = {from_retrigger = rep_list[z]}
+                    for k, v in pairs(eval) do
+                        reps[#reps][k] = v
+                    end
                 end
             end
         end
