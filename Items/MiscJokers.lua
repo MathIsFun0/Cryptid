@@ -1216,10 +1216,9 @@ return {name = "Misc. Jokers",
                 if self.ability.name == "cry-Big Cube" then
                 self.cost = 25
                 end
-				if self.ability.name == "cry-Nice" then
-				self.cost = 6.9
-				end
-		
+		if self.ability.name == "cry-Nice" then
+		self.cost = 6.9
+		end
             end
 
             --Jimball Patches
