@@ -619,8 +619,7 @@ local oldcandy = {
 	loc_txt = {
         name = 'Nostalgic Candy',
         text = {
-            "Increase hand size by {C:attention}#1#{} when sold,",
-			},
+            "Increase hand size by {C:attention}#1#{} when sold"}
 	},
 	rarity = "cry_epic",
 	cost = 6,
@@ -630,7 +629,7 @@ local oldcandy = {
 	if context.selling_self and not context.retrigger_joker and not context.blueprint then
             G.hand:change_size(card.ability.extra.h_mod)
         end
-end
+	end
 }
 
 local oldcandy_sprite = {
