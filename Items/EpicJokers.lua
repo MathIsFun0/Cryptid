@@ -618,6 +618,9 @@ local oldcandy = {
 	pos = {x = 0, y = 0},
 	loc_txt = {
 	name = 'Nostalgic Candy',
+	text = {
+			"Increase handsize by {C:attention}#1#{} when sold"
+		}
 	},
 	rarity = "cry_epic",
 	cost = 6,
