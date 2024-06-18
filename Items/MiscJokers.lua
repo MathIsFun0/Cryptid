@@ -235,9 +235,9 @@ local whip = {
     config = {extra = {Xmult_mod = 0.5, x_mult = 1}},
     loc_txt = {
         name = 'The WHIP',
-        text = { "If {C:attention}played hand{} contains a",
-        "2 and 7 of different suits,",
-        "this Joker gains {X:mult,C:white} X#1# {} Mult",
+        text = { "this Joker gains {X:mult,C:white} X#1# {} Mult",
+        "if hand played contains a",
+        "2 and 7 of different suits",
         "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"}
     },
     rarity = 2,
@@ -1179,7 +1179,7 @@ local blurred = {
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			return {
-				extra = {focus = self, message = localize('k_hand')}, --make this less bad in the future
+				extra = {focus = self, message = localize('k_hand')}, --make this actually work in the future
 				ease_hands_played(self.config.extra.hands),
 				delay(0.6),
 			}
