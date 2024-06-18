@@ -619,7 +619,7 @@ local oldcandy = {
 	name = 'Nostalgic Candy',
 	text = {
 			"Permanently increase handsize",
-			"by {C:attention} 2 {} when sold"
+			"by {C:attention}3{} when sold"
 		}
 	},
 	rarity = "cry_epic",
@@ -627,8 +627,8 @@ local oldcandy = {
 	discovered = true,
 	atlas = "oldcandy",
 	calculate = function(self, card, context)
-	if context.selling_self and not context.retrigger_joker and not context.blueprint then
-            G.hand:change_size(2)
+	if context.selling_self and not context.blueprint then
+            G.hand:change_size(3)
         end
 end
 }
