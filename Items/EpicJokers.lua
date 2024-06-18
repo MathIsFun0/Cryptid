@@ -626,7 +626,7 @@ local oldcandy = {
 	cost = 6,
 	discovered = true,
 	atlas = "oldcandy",
-	calculate = function(self, card, context)
+	calculate = function(self, card, context) --hardcoded, unfortunately
 	if context.selling_self and not context.blueprint then
             G.hand:change_size(3)
         end
