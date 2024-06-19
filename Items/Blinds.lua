@@ -1,3 +1,24 @@
+--extra blind functions for use by bosses
+function Blind:cry_ante_base_mod(dt)
+    if not self.disabled then
+        local obj = self.config.blind
+        if obj.cry_ante_base_mod and type(obj.cry_ante_base_mod) == 'function' then
+            return obj:cry_ante_base_mod(self, dt)
+        end
+    end
+    return 0
+end
+function Blind:cry_cap_score(score)
+    if not self.disabled then
+        local obj = self.config.blind
+        if obj.cry_cap_score and type(obj.cry_cap_score) == 'function' then
+            return obj:cry_cap_score(self, score)
+        end
+    end
+    return score
+end
+--cry_after_play also added
+
 local tax = {
     object_type = "Blind",
     name = "cry-Tax",
@@ -16,7 +37,10 @@ local tax = {
     },
     atlas = "blinds",
     discovered = true,
-    boss_colour = HEX('40ff40')
+    boss_colour = HEX('40ff40'),
+    cry_cap_score = function(self, blind, score)
+        return math.floor(math.min(0.4*blind.chips,score)+0.5)
+    end
 }
 
 local clock = {
@@ -40,12 +64,14 @@ local clock = {
     discovered = true,
     boss_colour = HEX('853455'),
     defeat = function(self, blind, silent)
-        G.GAME.boss_dt = nil
         G.P_BLINDS.bl_cry_clock.mult = 0
     end,
     disable = function(self, blind, silent)
         G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+    end,
+    cry_ante_base_mod = function(self, blind, dt)
+        return 0.1*dt/3
     end
 }
 local trick = {
@@ -67,7 +93,7 @@ local trick = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('babd24'),
-    after_play = function(self)
+    cry_after_play = function(self)
         --flip and shuffle all cards held in hand
         for k, v in ipairs(G.hand.cards) do
             if v.facing == "front" then
@@ -129,12 +155,45 @@ local lavender_loop = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('ae00ff'),
-    defeat = function(self, blind, silent)
-        G.GAME.boss_dt = 0
-    end,
     disable = function(self, blind, silent)
         G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+    end
+}
+local vermillion_virus = {
+    object_type = "Blind",
+    name = "cry-Vermillion Virus",
+    key = "vermillion_virus",
+    pos = {x = 0, y = 5},
+    dollars = 8,
+    boss = {
+        min = 3,
+        max = 10,
+        showdown = true
+    },
+	loc_txt = {
+        name = 'Vermillion Virus',
+        text = {
+            "One random Joker",
+            "replaced every hand"
+        }
+    },
+    atlas = "blinds",
+    discovered = true,
+    boss_colour = HEX('f65d34'),
+    drawn_to_hand = function(self, blind)
+        if G.jokers.cards[1] then
+            local idx = pseudorandom(pseudoseed('cry_vermillion_virus'),1,#G.jokers.cards)
+            if G.jokers.cards[idx] then
+                _card = create_card('Joker', G.jokers, nil, 0, nil, nil, nil, 'cry_vermillion_virus_gen')
+                _card:add_to_deck()
+                _card:start_materialize()
+                G.jokers.cards[idx] = _card
+                _card:set_card_area(G.jokers)
+                G.jokers:set_ranks()
+                G.jokers:align_cards()
+            end
+        end
     end
 }
 
@@ -154,13 +213,13 @@ return {name = "Blinds",
             local upd = Game.update
             function Game:update(dt)
                 upd(self,dt)
-                if G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices and G.GAME.round_resets.blind_choices.Boss and G.GAME.round_resets.blind_choices.Boss == "bl_cry_clock" then
-                    if not G.GAME.boss_dt then 
-                        G.GAME.boss_dt = true
-                        G.P_BLINDS.bl_cry_clock.mult = 0
+                if G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices and G.GAME.round_resets.blind_choices.Boss and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].cry_ante_base_mod then
+                    if G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult ~= 0 and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult_ante ~= G.GAME.round_resets.ante then 
+                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = 0
+                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult_ante = G.GAME.round_resets.ante
                     end
                     if G.GAME.round_resets.blind_states.Boss ~= "Current" then
-                        G.P_BLINDS.bl_cry_clock.mult = G.P_BLINDS.bl_cry_clock.mult + 0.1*dt/3
+                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult + G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss]:cry_ante_base_mod(nil, dt)
                         --Update UI
                         if G.blind_select_opts then
                             local blind_UI = G.blind_select_opts.boss.definition.nodes[1].nodes[1].nodes[1].nodes[1]
@@ -170,14 +229,11 @@ return {name = "Blinds",
                             G.blind_select_opts.boss:recalculate()
                         end
                     elseif not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
-                        G.GAME.blind.chips = G.GAME.blind.chips + 0.1*dt/3*get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling
+                        G.GAME.blind.chips = G.GAME.blind.chips + G.GAME.blind:cry_ante_base_mod(dt)*get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling
                         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                     end
                 end
                 if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and G.GAME.blind.name == "cry-Lavender Loop" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
-                    if not G.GAME.boss_dt then 
-                        G.GAME.boss_dt = true
-                    end
                     G.GAME.blind.chips = G.GAME.blind.chips * 1.25^(dt/1.5)
                     G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                 end
@@ -186,7 +242,7 @@ return {name = "Blinds",
             local gfep = G.FUNCS.evaluate_play
             function G.FUNCS.evaluate_play(e)
                 gfep(e)
-                if G.GAME.blind.config.blind.after_play then G.GAME.blind.config.blind:after_play() end
+                if G.GAME.blind.config.blind.cry_after_play then G.GAME.blind.config.blind:cry_after_play() end
             end
         end,
-        items = {tax, clock, trick, joke, lavender_loop, blind_sprites}}
+        items = {tax, clock, trick, joke, lavender_loop, vermillion_virus, blind_sprites}}
