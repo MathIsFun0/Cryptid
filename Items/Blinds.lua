@@ -714,7 +714,7 @@ return {name = "Blinds",
                    (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"]) and
                    (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"]) and
                    (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"]) and
-                   (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"]) and
+                   (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
                    then
                     G.GAME.defeated_blinds[self.config.blind.key] = true
                 end
