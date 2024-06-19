@@ -43,7 +43,6 @@ position = "after"
 payload = '''
 if G.GAME.modifiers.cry_misprint_min then
     G.GAME.pack_size = self.config.center.config.extra
-    print(G.GAME.pack_size)
     if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), G.GAME.pack_choices)

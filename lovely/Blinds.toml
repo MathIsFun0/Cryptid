@@ -19,3 +19,12 @@ pattern = "ease_to = G.GAME.chips + math.floor(hand_chips*mult),"
 position = "at"
 payload = "ease_to = G.GAME.chips + (G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult)),"
 match_indent = true
+
+# Bunco (Magenta Dagger) and Cryptid (The Tax) compat
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "ease_to = G.GAME.chips + math.floor(hand_chips * mult) * (e and e.antiscore and -1 or 1),"
+position = 'at'
+match_indent = true
+payload = '''ease_to = G.GAME.chips + (G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult)) * (e and e.antiscore and -1 or 1),'''

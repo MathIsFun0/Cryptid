@@ -461,26 +461,34 @@ local obsidian_orb = {
         return new_mult or mult, new_chips or hand_chips, trigger
     end,
     debuff_hand = function(self, blind, cards, hand, handname, check)
+        blind.debuff_boss = nil
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.debuff_hand and s:debuff_hand(blind, cards, hand, handname, check) then return true end
+            if s.debuff_hand and s:debuff_hand(blind, cards, hand, handname, check) then 
+                blind.debuff_boss = s
+                return true
+            end
             if s.debuff then
                 blind.triggered = false
                 if s.debuff.hand and next(hand[s.debuff.hand]) then
                     blind.triggered = true
+                    blind.debuff_boss = s
                     return true
                 end
                 if s.debuff.h_size_ge and #cards < s.debuff.h_size_ge then
                     blind.triggered = true
+                    blind.debuff_boss = s
                     return true
                 end
                 if s.debuff.h_size_le and #cards > s.debuff.h_size_le then
                     blind.triggered = true
+                    blind.debuff_boss = s
                     return true
                 end
                 if s.name == "The Eye" then
                     if blind.hands[handname] then
                         blind.triggered = true
+                        blind.debuff_boss = s
                         return true
                     end
                     if not check then blind.hands[handname] = true end
@@ -488,6 +496,7 @@ local obsidian_orb = {
                 if s.name == "The Mouth" then
                     if s.only_hand and s.only_hand ~= handname then
                         blind.triggered = true
+                        blind.debuff_boss = s
                         return true
                     end
                     if not check then s.only_hand = handname end
@@ -644,6 +653,21 @@ local obsidian_orb = {
             s = G.P_BLINDS[k]
             if s.cry_after_play then s:cry_after_play(blind) end
         end
+    end,
+    get_loc_debuff_text = function(self, blind)
+        if not blind.debuff_boss then return "Applies abilities of all defeated bosses" end
+        local loc_vars = nil
+        if blind.debuff_boss.name == 'The Ox' then
+            loc_vars = {localize(G.GAME.current_round.most_played_poker_hand, 'poker_hands')}
+        end
+        local loc_target = localize{type = 'raw_descriptions', key = blind.debuff_boss.key, set = 'Blind', vars = loc_vars}
+        local loc_debuff_text = ''
+        for k, v in ipairs(loc_target) do
+            loc_debuff_text = loc_debuff_text..v..(k <= #loc_target and ' ' or '')
+        end
+        local disp_text = (blind.debuff_boss.name == 'The Wheel' and G.GAME.probabilities.normal or '')..loc_debuff_text
+        if (blind.debuff_boss.name == 'The Mouth') and blind.only_hand then disp_text = disp_text..' ['..localize(blind.only_hand, 'poker_hands')..']' end
+        return disp_text
     end
 }
 
