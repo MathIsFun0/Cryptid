@@ -17,7 +17,22 @@ function Blind:cry_cap_score(score)
     end
     return score
 end
---cry_after_play also added
+function Blind:cry_after_play()
+    if not self.disabled then
+        local obj = self.config.blind
+        if obj.cry_after_play and type(obj.cry_after_play) == 'function' then
+            return obj:cry_after_play(self)
+        end
+    end
+end
+function Blind:cry_before_play()
+    if not self.disabled then
+        local obj = self.config.blind
+        if obj.cry_before_play and type(obj.cry_before_play) == 'function' then
+            return obj:cry_before_play(self)
+        end
+    end
+end
 
 local tax = {
     object_type = "Blind",
@@ -93,7 +108,7 @@ local trick = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('babd24'),
-    cry_after_play = function(self)
+    cry_after_play = function(self, blind)
         --flip and shuffle all cards held in hand
         for k, v in ipairs(G.hand.cards) do
             if v.facing == "front" then
@@ -197,6 +212,44 @@ local vermillion_virus = {
     end
 }
 
+local sapphire_stamp = {
+    object_type = "Blind",
+    name = "cry-Sapphire Stamp",
+    key = "sapphire_stamp",
+    pos = {x = 0, y = 6},
+    dollars = 8,
+    boss = {
+        min = 3,
+        max = 10,
+        showdown = true
+    },
+	loc_txt = {
+        name = 'Sapphire Stamp',
+        text = {
+            "Select an extra card, deselect",
+            "random card before scoring"
+        }
+    },
+    atlas = "blinds",
+    discovered = true,
+    boss_colour = HEX('4057d6'),
+    cry_before_play = function(self, blind)
+        local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
+        G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+    end,
+    set_blind = function(self, blind, reset, silent)
+        if not reset then
+            G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 1
+        end
+    end,
+    defeat = function(self, blind, silent)
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+    end,
+    disable = function(self, blind, silent)
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+    end,
+}
+
 local blind_sprites = {
     object_type = "Atlas",
     key = "blinds",
@@ -242,7 +295,13 @@ return {name = "Blinds",
             local gfep = G.FUNCS.evaluate_play
             function G.FUNCS.evaluate_play(e)
                 gfep(e)
-                if G.GAME.blind.config.blind.cry_after_play then G.GAME.blind.config.blind:cry_after_play() end
+                G.GAME.blind:cry_after_play()
+            end
+            --Sapphire Stamp Patches
+            local pcfh = G.FUNCS.play_cards_from_highlighted
+            function G.FUNCS.play_cards_from_highlighted(e)
+                G.GAME.blind:cry_before_play()
+                pcfh(e)
             end
         end,
-        items = {tax, clock, trick, joke, lavender_loop, vermillion_virus, blind_sprites}}
+        items = {tax, clock, trick, joke, lavender_loop, vermillion_virus, sapphire_stamp, blind_sprites}}
