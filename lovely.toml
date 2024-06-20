@@ -94,6 +94,77 @@ if effects.Xchip_mod then hand_chips = mod_chips(hand_chips*effects.Xchip_mod);e
 '''
 match_indent = true
 
+# support for Xchips, Emult, etc, for playing card eval - by Jen Walter
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif eval_type == 'dollars' then"
+position = "before"
+payload = '''
+elseif eval_type == 'x_chips' then 
+	sound = 'cry_Xchip'
+	amt = amt
+	text = 'X' .. amt .. ' Chips'
+	colour = G.C.CHIPS
+	config.type = 'fade'
+	config.scale = 0.7
+elseif eval_type == 'pow_mult' then 
+	sound = 'cry_^Mult'
+	amt = amt
+	text = '^' .. amt .. ' Mult'
+	colour = G.C.DARK_EDITION
+	config.type = 'fade'
+	config.scale = 0.7
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if effects[ii].message then"
+position = "before"
+payload = '''
+if effects[ii].x_chips then
+	mod_percent = true
+	chips = mod_chips(chips*effects[ii].x_chips)
+	update_hand_text({delay = 0}, {chips = chips})
+	card_eval_status_text(G.hand.cards[i], 'x_chips', effects[ii].x_chips, percent)
+end
+
+if effects[ii].pow_mult then
+	mod_percent = true
+	mult = mod_mult(mult^effects[ii].pow_mult)
+	update_hand_text({delay = 0}, {mult = mult})
+	card_eval_status_text(G.hand.cards[i], 'pow_mult', effects[ii].pow_mult, percent)
+end
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "--calculate the card edition effects"
+position = "before"
+payload = '''
+if effects[ii].x_chips then
+	mod_percent = true
+	if effects[ii].card then juice_card(effects[ii].card) end
+	chips = mod_chips(mult*effects[ii].x_chips)
+	update_hand_text({delay = 0}, {chips = chips})
+	card_eval_status_text(scoring_hand[i], 'x_chips', effects[ii].x_chips, percent)
+end
+
+if effects[ii].pow_mult then
+	if effects[ii].card then juice_card(effects[ii].card) end
+	mult = mod_mult(mult^effects[ii].pow_mult)
+	update_hand_text({delay = 0}, {mult = mult})
+	card_eval_status_text(scoring_hand[i], 'pow_mult', effects[ii].pow_mult, percent)
+end
+
+'''
+match_indent = true
+
 # Fix not all cards returning to hand on big hands
 [[patches]]
 [patches.pattern]
