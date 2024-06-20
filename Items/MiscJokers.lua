@@ -1397,7 +1397,8 @@ local hunger = {
         name = 'Consume-able',
         text = {
             "Earn {C:money}$#1#{} when",
-            "using a {C:attention}consumable{}"
+            "using a {C:attention}consumable{}",
+	    "{C:mult}CURRENTLY DOES NOT WORK{}"
         }
     	},
 	rarity = 2,
@@ -1408,7 +1409,7 @@ local hunger = {
     	loc_vars = function(self, info_queue, center)
 	return {vars = {center.ability.extra.money}}
     end,
-    calculate = function(self, card, context) --Note, effect curretly does not work and I can't figure out how to fix it
+    calculate = function(self, card, context) --Note, effect curretly does not work and I can't figure out how to fix it, it's mostly likely the context tbh (no source code moment ;-;)
         if context.using_consumeable then 
         	ease_dollars(card.ability.extra.money)
 		return {calculated = true}
