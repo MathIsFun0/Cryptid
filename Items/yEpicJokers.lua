@@ -235,6 +235,7 @@ local m = {
 	rarity = "cry_epic",
 	cost = 13,
 	discovered = true,
+	perishable_compat = false,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
@@ -643,7 +644,79 @@ local oldcandy_sprite = {
     px = 71,
     py = 95
 }
-G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy}
+local caramel = {
+    object_type = "Joker",
+	name = "cry-caramel",
+	key = "caramel",
+	config = {extra = {x_mult = 1.75, rounds_remaining = 11}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Caramel',
+        text = {
+        "All cards scored give {X:mult,C:white}X#1#{} Mult",
+        "for the next {C:attention}#2#{} rounds",
+        }
+    	},
+	rarity = "cry_epic",
+	cost = 11,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = false,
+	atlas = 'caramel',
+    	loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.x_mult, center.ability.extra.rounds_remaining}}
+    	end,
+    	calculate = function(self, card, context)
+        	if context.individual then
+        		if context.cardarea == G.play then
+                	return {
+                    	x_mult = card.ability.extra.x_mult,
+                    	colour = G.C.RED,
+                    	card = card
+                	}
+			end
+		end
+		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition and not context.retrigger_joker then
+            	card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
+            	if card.ability.extra.rounds_remaining > 0 then
+                return {
+                    message = {"-1 Round"},
+                    colour = G.C.FILTER
+                }
+            	else
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound('tarot1')
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                            func = function()
+                                    G.jokers:remove_card(card)
+                                    card:remove()
+                                    card = nil
+                                return true; end})) 
+                        return true
+                    end
+                })) 
+                return {
+                    message = localize('k_eaten_ex'),
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    	end
+}
+local caramel_sprite = {
+    object_type = "Atlas",
+    key = "caramel",
+    
+    path = "j_cry_caramel.png",
+    px = 71,
+    py = 95
+}
+G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel}
 
 
 return {name = "Epic Jokers", 
@@ -733,4 +806,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite, oldcandy_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy}}
+		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite, oldcandy_sprite, caramel_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel}}
