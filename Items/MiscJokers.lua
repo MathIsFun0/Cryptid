@@ -1216,8 +1216,8 @@ local gardenfork = {
     config = {extra = {money = 7}},
     loc_txt = {
         name = 'Garden of Forking Paths',
-        text = { "Earn {C:money}$#1#{} if {C:attention}hand played{}",
-        "contains an {C:attention{}Ace{} and a {C:attention}7{}",
+        text = { "Earn {C:money}$#1#{} if {C:attention}played hand{}",
+        "contains an {C:attention}Ace{} and a {C:attention}7{}",
 	}
     },
     rarity = 3,
@@ -1234,10 +1234,8 @@ local gardenfork = {
                 if SMODS.Ranks[context.full_hand[i].base.value].key == "Ace" then
                     for j = 1, #context.full_hand do
                         if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
-			    message = "+" .. card.ability.extra.money -- I can't get the +$ to appear on the card properly so this needs to be fixed later
-                            ease_dollars(card.ability.extra.money)
-			    delay(0.6)
-                            return {calculated = true}
+			                ease_dollars(card.ability.extra.money)
+                            return {message = "+$" .. card.ability.extra.money, colour = G.C.MONEY}
                         end
                     end
                 end
@@ -1391,14 +1389,13 @@ local hunger = {
     	object_type = "Joker",
 	name = "cry-hunger",
 	key = "hunger",
-    	config = {extra = {money = 1}},
+    	config = {extra = {money = 3}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Consume-able',
         text = {
             "Earn {C:money}$#1#{} when",
             "using a {C:attention}consumable{}",
-	    "{C:mult}CURRENTLY DOES NOT WORK{}"
         }
     	},
 	rarity = 2,
@@ -1409,8 +1406,8 @@ local hunger = {
     	loc_vars = function(self, info_queue, center)
 	return {vars = {center.ability.extra.money}}
     end,
-    calculate = function(self, card, context) --Note, effect curretly does not work and I can't figure out how to fix it, it's mostly likely the context tbh (no source code moment ;-;)
-        if context.using_consumeable then 
+    calculate = function(self, card, context) --This didn't work for Jevonn for some reason but it works for me :joker:
+        if context.using_consumeable then
         	ease_dollars(card.ability.extra.money)
 		return {calculated = true}
         end
