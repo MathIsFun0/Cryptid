@@ -16,7 +16,8 @@ local dropshot = {
 	rarity = 3,
 	cost = 8,
 	discovered = true,
-    blueprint_compat = true,
+    	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "dropshot",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult_mod, localize(G.GAME.current_round.cry_dropshot_card and G.GAME.current_round.cry_dropshot_card.suit or "Spades", 'suits_singular'), center.ability.extra.x_mult, colours = {G.C.SUITS[G.GAME.current_round.cry_dropshot_card and G.GAME.current_round.cry_dropshot_card.suit or "Spades"]}}}
@@ -102,12 +103,13 @@ local potofjokes = {
             "{C:attention}#1#{} hand size,",
             "increases by",
             "{C:blue}#2#{} every round"}
-    },
+    	},
 	rarity = 3,
 	cost = 10,
-    discovered = true,
+    	discovered = true,
+	perishable_compat = false,
 	atlas = 'pot_of_jokes',
-    loc_vars = function(self, info_queue, center)
+    	loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.h_size<0 and center.ability.extra.h_size or "+"..center.ability.extra.h_size,center.ability.extra.h_mod}}
     end,
     calculate = function(self, card, context)
@@ -244,6 +246,7 @@ local whip = {
     cost = 6,
     discovered = true,
     blueprint_compat = true,
+    perishable_compat = false,
     atlas = "whip",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.x_mult}}
@@ -341,7 +344,8 @@ local cursor = {
 	rarity = 1,
 	cost = 5,
 	discovered = true,
-    blueprint_compat = true,
+    	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "cursor",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
@@ -384,7 +388,7 @@ local pickle = {
 	rarity = 2,
 	cost = 5,
 	discovered = true,
-  blueprint_compat = true,
+  	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "pickle",
     loc_vars = function(self, info_queue, center)
@@ -584,8 +588,9 @@ local chili_pepper = {
 	rarity = 2,
 	cost = 6,
 	discovered = true,
-  blueprint_compat = false,
+  	blueprint_compat = false,
 	eternal_compat = false,
+	perishable_compat = false,
 	atlas = "chili_pepper",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult, center.ability.extra.Xmult_mod, center.ability.extra.rounds_remaining}}
@@ -597,7 +602,7 @@ local chili_pepper = {
                 Xmult_mod = card.ability.extra.Xmult
             }
         end
-        if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
+        if context.end_of_round and not context.blueprint and not context.individual and not context.repetition and not context.retrigger_joker then
             card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
             card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
             if card.ability.extra.rounds_remaining > 0 then
@@ -655,6 +660,7 @@ local compound_interest = {
 	rarity = 3,
 	cost = 8,
 	discovered = true,
+	perishable_compat = false,
 	atlas = "compound_interest",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.percent, center.ability.extra.percent_mod}}
@@ -728,6 +734,7 @@ local eternalflame = {
 	rarity = 3,
 	cost = 9,
 	discovered = true,
+	perishable_compat = false,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
@@ -915,6 +922,7 @@ local jimball = {
 	cost = 10,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
         if context.before and not context.blueprint then
             local reset = false
@@ -1039,18 +1047,21 @@ local fspinner = {
 	cost = 6,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
+	atlas = 'fspinner',
 	calculate = function(self, card, context)
         if context.before and not context.blueprint then
             local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
             for k, v in pairs(G.GAME.hands) do
                 if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-                    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
-                end
-            end
-            return {
-                message = localize('k_upgrade_ex'),
-                card = card,
-            }
+		    card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+		    return {
+                    	message = localize('k_upgrade_ex'),
+                        card = card,
+			}
+		end
+	    end
+	
         end
         if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
             return {
@@ -1125,13 +1136,14 @@ local krustytheclown = {
 			"per {C:attention}card{} scored",
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
 		}
-    },
+    	},
 	rarity = 2,
 	cost = 7,
 	discovered = true,
+	perishable_compat = false,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
-    end,
+    	end,
 	atlas = "krustytheclown",
 	calculate = function(self, card, context)
         if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
@@ -1167,7 +1179,7 @@ local blurred = {
 	loc_txt = {
         name = 'Blurred Joker',
         text = {
-			"{C:blue}+1{} hand when",
+			"{C:blue}+#1#{} hand when",
 			"blind is selected"
 		}
    	},
@@ -1175,6 +1187,9 @@ local blurred = {
 	cost = 4,
 	discovered = true,
 	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+	return {vars = {center.ability.extra.hands}}
+	end,
 	atlas = "blurred",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
@@ -1190,6 +1205,221 @@ local blurred_sprite = {
 	object_type = "Atlas",
     key = "blurred",
     path = "j_cry_blurred.png",
+    px = 71,
+    py = 95
+}
+local gardenfork = {
+    object_type = "Joker",
+    name = "cry-gardenfork",
+    key = "gardenfork",
+    pos = {x = 0, y = 0},
+    config = {extra = {money = 7}},
+    loc_txt = {
+        name = 'Garden of Forking Paths',
+        text = { "Earn {C:money}$#1#{} if {C:attention}hand played{}",
+        "contains an {C:attention{}Ace{} and a {C:attention}7{}",
+	}
+    },
+    rarity = 3,
+    cost = 7,
+    discovered = true,
+    blueprint_compat = true,
+    atlas = "gardenfork",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.money}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.before and not context.blueprint then
+            for i = 1, #context.full_hand do
+                if SMODS.Ranks[context.full_hand[i].base.value].key == "Ace" then
+                    for j = 1, #context.full_hand do
+                        if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
+			    message = "+" .. card.ability.extra.money -- I can't get the +$ to appear on the card properly so this needs to be fixed later
+                            ease_dollars(card.ability.extra.money)
+			    delay(0.6)
+                            return {calculated = true}
+                        end
+                    end
+                end
+            end
+        end
+    end
+}
+local gardenfork_sprite = {
+    object_type = "Atlas",
+    key = "gardenfork",
+    path = "j_cry_gardenfork.png",
+    px = 71,
+    py = 95
+}
+local lightupthenight = {
+	object_type = "Joker",
+	name = "cry-lightupthenight",
+	key = "lightupthenight",
+	config = {extra = {xmult = 1.75}},
+	pos = {x = 0, y = 0},
+	atlas = 'lightupthenight',
+	loc_txt = {
+        name = 'Light Up the Night',
+        text = {
+		"Each played {C:attention}7{} and {C:attention}2{}",
+		"gives {X:mult,C:white}X#1#{} Mult when scored",
+    	}
+	},
+	rarity = 3,
+	cost = 7,
+	discovered = true,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.xmult}}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			local rank = SMODS.Ranks[context.other_card.base.value].key
+			if rank == "2" or rank == "7" then
+				return {
+                    		x_mult = card.ability.extra.xmult,
+                    		colour = G.C.RED,
+                    		card = card
+                		}
+			end
+		end
+	end
+}
+local lightupthenight_sprite = {
+    object_type = "Atlas",
+    key = "lightupthenight",
+    path = "j_cry_lightupthenight.png",
+    px = 71,
+    py = 95
+}
+local nosound = {
+    object_type = "Joker",
+    name = "cry-nosound",
+    key = "nosound",
+    config = {extra = {retriggers = 3}},
+    pos = {x = 0, y = 0},
+    atlas = 'nosound',
+    loc_txt = {
+        name = 'No Sound, No Memory',
+        text = {
+            "Retrigger all played {C:attention}7s{}",
+            "{C:attention:}#1#{} additional times",
+        }
+    },
+    rarity = 3,
+    cost = 7,
+    discovered = true,
+    blueprint_compat = true,
+    loc_vars = function(self, info_queue, center)
+        return {vars = { center.ability.extra.retriggers}}
+    end,
+    calculate = function(self, card, context)
+        if context.repetition then
+            if context.cardarea == G.play then
+	    	local rank = SMODS.Ranks[context.other_card.base.value].key
+		if rank == "7" then
+                	return {
+                    	message = localize('k_again_ex'),
+                    	repetitions = card.ability.extra.retriggers,
+                    	card = card
+                	}
+		end
+            end
+	end
+    end
+}
+local nosound_sprite = {
+    object_type = "Atlas",
+    key = "nosound",
+    path = "j_cry_nosound.png",
+    px = 71,
+    py = 95
+}
+local antennastoheaven = {
+    object_type = "Joker",
+    name = "cry-antennastoheaven",
+    key = "antennastoheaven",
+    pos = {x = 0, y = 0},
+    config = {extra = {bonus = 0.1, Xchips = 1}},
+    loc_txt = {
+        name = '...Like Antennas To Heaven',
+        text = {
+            "This Joker gains {X:chips,C:white} X#1# {} Chips",
+            "per {C:attention}7{} or {C:attention}4{} scored",
+            "{C:inactive}(Currently {X:chips,C:white} X#2# {C:inactive} Chips)"
+        }
+    },
+    rarity = 3,
+    cost = 7,
+    discovered = true,
+    perishable_compat = false,
+    blueprint_compat = true,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.bonus, center.ability.extra.Xchips}}
+    end,
+    atlas = "antennastoheaven",
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and (card.ability.extra.Xchips > 1) and not context.before and not context.after then
+            return {
+                message = "X"..card.ability.extra.Xchips,
+                Xchip_mod = card.ability.extra.Xchips,
+                colour = G.C.CHIPS
+            }
+	end
+	if context.cardarea == G.play and context.individual and not context.blueprint then
+            local rank = SMODS.Ranks[context.other_card.base.value].key
+            if rank == "4" or rank == "7" then
+                card.ability.extra.Xchips = card.ability.extra.Xchips + card.ability.extra.bonus
+                return {
+                    extra = {focus = card, message = localize('k_upgrade_ex')},
+                    card = card,
+                    colour = G.C.CHIPS
+                }
+            end
+        end
+    end
+}
+local antennastoheaven_sprite = {
+    object_type = "Atlas",
+    key = "antennastoheaven",
+    path = "j_cry_antennastoheaven.png",
+    px = 71,
+    py = 95
+}
+local hunger = {
+    	object_type = "Joker",
+	name = "cry-hunger",
+	key = "hunger",
+    	config = {extra = {money = 1}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Consume-able',
+        text = {
+            "Earn {C:money}$#1#{} when",
+            "using a {C:attention}consumable{}",
+	    "{C:mult}CURRENTLY DOES NOT WORK{}"
+        }
+    	},
+	rarity = 2,
+	cost = 6,
+	discovered = true,
+    	blueprint_compat = true,
+	atlas = "hunger",
+    	loc_vars = function(self, info_queue, center)
+	return {vars = {center.ability.extra.money}}
+    end,
+    calculate = function(self, card, context) --Note, effect curretly does not work and I can't figure out how to fix it, it's mostly likely the context tbh (no source code moment ;-;)
+        if context.using_consumeable then 
+        	ease_dollars(card.ability.extra.money)
+		return {calculated = true}
+        end
+    end
+}
+local hunger_sprite = {
+    object_type = "Atlas",
+    key = "hunger",
+    path = "j_cry_hunger.png",
     px = 71,
     py = 95
 }
@@ -1274,4 +1504,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite, krustytheclown_sprite, blurred_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred,}}
+        items = {dropshot_sprite, maximized_sprite, potofjokes_sprite, queensgambit_sprite, whip_sprite, lucky_joker_sprite, cursor_sprite, pickle_sprite, cube_sprite, triplet_rhythm_sprite, booster_sprite, chili_pepper_sprite, compound_interest_sprite, big_cube_sprite, eternalflame_sprite, nice_sprite, sus_sprite, chad_sprite, waluigi_sprite, seal_the_deal_sprite, jimball_sprite, fspinner_sprite, krustytheclown_sprite, blurred_sprite, gardenfork_sprite, lightupthenight_sprite, nosound_sprite, antennastoheaven_sprite, hunger_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger,}}

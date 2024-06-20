@@ -151,6 +151,7 @@ local exponentia = {
 	cost = 50,
 	discovered = true,
     blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "exponentia",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
 	calculate = function(self, card, context)
@@ -347,8 +348,65 @@ local effarcire_sprite = {
     px = 71,
     py = 95
 }
+local crustulum = {
+	object_type = "Joker",
+	name = "cry-crustulum",
+	key = "crustulum",
+	config = {extra = {chips = 0, chip_mod = 4,}},
+	pos = {x = 0, y = 0},
+	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+	loc_txt = {
+        name = 'Crustulum',
+        text = {
+            "This Joker gains",
+            "{C:chips}+#2#{} Chips per reroll,",
+            "{C:green}Unlimited rerolls{}",
+            "{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)"
+        }
+    	},
+	rarity = "cry_exotic",
+	cost = 50,
+	discovered = true,
+	atlas = "crustulum",
+	blueprint_compat = true,
+	perishable_compat = false,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
+	end,
+	calculate = function(self, card, context) --Warning, implementation is extremely scuffed ;-;
+    	if context.reroll_shop and not context.blueprint then
+        	card.ability.extra.chips = (card.ability.extra.chips) + card.ability.extra.chip_mod
+        	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
+		G.GAME.current_round.free_rerolls = 1
+		calculate_reroll_cost(true)
+        	return {calculated = true}
+		end
+	if context.end_of_round then 
+		G.GAME.current_round.free_rerolls = 1
+		calculate_reroll_cost(true)
+		end
+	if context.cardarea == G.jokers and (card.ability.extra.chips) > 0 and not context.before and not context.after then
+        return {
+            	message = localize{type='variable', key='a_chips', vars={card.ability.extra.chips}},
+            	chip_mod = card.ability.extra.chips
+        	}
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+        G.GAME.current_round.free_rerolls = 1
+	calculate_reroll_cost(true)
+	end
+}
+local crustulum_sprite = {
+    object_type = "Atlas",
+    key = "crustulum",
+    path = "j_cry_crustulum.png",
+    px = 71,
+    py = 95
+}
+	
 
-G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris, effarcire}
+G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum}
 
 return {name = "Exotic Jokers", 
         init = function()
@@ -456,4 +514,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, effarcire_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, effarcire_sprite, crustulum_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum,}}
