@@ -360,7 +360,7 @@ local crustulum = {
         text = {
             "This Joker gains",
             "{C:chips}+#2#{} Chips per reroll,",
-            "{C:green}Unlimited rerolls{}",
+            "{C:green}all rerolls are free{}",
             "{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)"
         }
     	},
