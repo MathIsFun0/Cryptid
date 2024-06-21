@@ -36,3 +36,12 @@ else
 end
 '''
 match_indent = true
+
+# Prevent counting CCD consumables for pack uses
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if area == G.consumeables then"
+position = "at"
+payload = "if area == G.consumeables or area == G.hand then"
+match_indent = true

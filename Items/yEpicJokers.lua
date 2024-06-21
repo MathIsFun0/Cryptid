@@ -427,7 +427,7 @@ local double_scale = {
         for i = 1, #G.jokers.cards do
             --sort_id is a unique ID for each Joker
             local jkr = G.jokers.cards[i]
-            if jkr.ability then
+            if jkr.ability and type(jkr.ability) == 'table' then
                 if not G.GAME.cry_double_scale[jkr.sort_id] then
                     G.GAME.cry_double_scale[jkr.sort_id] = {ability = {double_scale = true}}
                     for k, v in pairs(jkr.ability) do
