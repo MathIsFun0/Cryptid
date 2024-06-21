@@ -208,11 +208,12 @@ local vermillion_virus = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('f65d34'),
-    drawn_to_hand = function(self, blind)
+    cry_before_play = function(self, blind)
         if G.jokers.cards[1] then
             local idx = pseudorandom(pseudoseed('cry_vermillion_virus'),1,#G.jokers.cards)
             if G.jokers.cards[idx] then
-                _card = create_card('Joker', G.jokers, nil, 0, nil, nil, nil, 'cry_vermillion_virus_gen')
+                _card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'cry_vermillion_virus_gen')
+                G.jokers.cards[idx]:remove_from_deck()
                 _card:add_to_deck()
                 _card:start_materialize()
                 G.jokers.cards[idx] = _card
@@ -255,7 +256,9 @@ local sapphire_stamp = {
         end
     end,
     defeat = function(self, blind, silent)
-        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+        if not self.disabled then
+            G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+        end
     end,
     disable = function(self, blind, silent)
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1

@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.3.3l
+--- VERSION: 0.3.4
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -392,13 +392,28 @@ function cry_misprintize_tbl(name, tbl, clear)
 end
 function cry_misprintize_val(val)
    if type(val) == 'number' then
-    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
+    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
    end 
+   return val
+end
+function cry_deep_copy(obj, seen)
+    if type(obj) ~= 'table' then return obj end
+    if seen and seen[obj] then return seen[obj] end
+    local s = seen or {}
+    local res = setmetatable({}, getmetatable(obj))
+    s[obj] = res
+    for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
+    return res
 end
 function cry_misprintize(card)
     if G.GAME.modifiers.cry_misprint_min then
         --will make this check more advanced later
-        if card.ability.set == "Joker" then 
+        if card.ability.set == "Enhanced" or card.ability.set == "Default" then
+            card.config.center = cry_deep_copy(card.config.center)
+            cry_misprintize_tbl(card.config.center_key.."_conf", card.config.center.config)
+            card:set_ability(card.config.center)
+            card.base.nominal = cry_misprintize_val(card.base.nominal)
+        elseif card.ability.set == "Joker" then 
             cry_misprintize_tbl(card.config.center_key, card.ability)
         else
             cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config)
