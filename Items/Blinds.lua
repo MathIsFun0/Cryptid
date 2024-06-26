@@ -3,7 +3,7 @@ function Blind:cry_ante_base_mod(dt)
     if not self.disabled then
         local obj = self.config.blind
         if obj.cry_ante_base_mod and type(obj.cry_ante_base_mod) == 'function' then
-            return obj:cry_ante_base_mod(dt)
+            return obj:cry_ante_base_mod(self, dt)
         end
     end
     return 0
@@ -12,7 +12,7 @@ function Blind:cry_round_base_mod(dt)
     if not self.disabled then
         local obj = self.config.blind
         if obj.cry_round_base_mod and type(obj.cry_round_base_mod) == 'function' then
-            return obj:cry_round_base_mod(dt)
+            return obj:cry_round_base_mod(self, dt)
         end
     end
     return 1
@@ -21,7 +21,7 @@ function Blind:cry_cap_score(score)
     if not self.disabled then
         local obj = self.config.blind
         if obj.cry_cap_score and type(obj.cry_cap_score) == 'function' then
-            return obj:cry_cap_score(score)
+            return obj:cry_cap_score(self, score)
         end
     end
     return score
@@ -30,7 +30,7 @@ function Blind:cry_after_play()
     if not self.disabled then
         local obj = self.config.blind
         if obj.cry_after_play and type(obj.cry_after_play) == 'function' then
-            return obj:cry_after_play()
+            return obj:cry_after_play(self)
         end
     end
 end
@@ -38,7 +38,7 @@ function Blind:cry_before_play()
     if not self.disabled then
         local obj = self.config.blind
         if obj.cry_before_play and type(obj.cry_before_play) == 'function' then
-            return obj:cry_before_play()
+            return obj:cry_before_play(self)
         end
     end
 end
@@ -62,8 +62,8 @@ local tax = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('40ff40'),
-    cry_cap_score = function(self, score)
-        return math.floor(math.min(0.4*G.GAME.blind.chips,score)+0.5)
+    cry_cap_score = function(self, blind, score)
+        return math.floor(math.min(0.4*blind.chips,score)+0.5)
     end
 }
 
@@ -87,14 +87,14 @@ local clock = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('853455'),
-    defeat = function(self, silent)
+    defeat = function(self, blind, silent)
         G.P_BLINDS.bl_cry_clock.mult = 0
     end,
-    disable = function(self, silent)
+    disable = function(self, blind, silent)
         G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
     end,
-    cry_ante_base_mod = function(self, dt)
+    cry_ante_base_mod = function(self, blind, dt)
         return 0.1*dt/3
     end
 }
@@ -117,7 +117,7 @@ local trick = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('babd24'),
-    cry_after_play = function(self)
+    cry_after_play = function(self, blind)
         --flip and shuffle all cards held in hand
         for k, v in ipairs(G.hand.cards) do
             if v.facing == "front" then
@@ -179,11 +179,11 @@ local lavender_loop = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('ae00ff'),
-    disable = function(self, silent)
+    disable = function(self, blind, silent)
         G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
     end,
-    cry_round_base_mod = function(self, dt)
+    cry_round_base_mod = function(self, blind, dt)
         return 1.25^(dt/1.5)
     end
 }
@@ -208,7 +208,7 @@ local vermillion_virus = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('f65d34'),
-    cry_before_play = function(self)
+    cry_before_play = function(self, blind)
         if G.jokers.cards[1] then
             local idx = pseudorandom(pseudoseed('cry_vermillion_virus'),1,#G.jokers.cards)
             if G.jokers.cards[idx] then
@@ -246,21 +246,21 @@ local sapphire_stamp = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('4057d6'),
-    cry_before_play = function(self)
+    cry_before_play = function(self, blind)
         local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
         G.hand:remove_from_highlighted(G.hand.highlighted[idx])
     end,
-    set_blind = function(self, reset, silent)
+    set_blind = function(self, blind, reset, silent)
         if not reset then
             G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 1
         end
     end,
-    defeat = function(self, silent)
+    defeat = function(self, blind, silent)
         if not self.disabled then
             G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
         end
     end,
-    disable = function(self, silent)
+    disable = function(self, blind, silent)
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
     end,
 }
@@ -286,12 +286,12 @@ local obsidian_orb = {
     atlas = "blinds",
     discovered = true,
     boss_colour = HEX('290759'),
-    set_blind = function(self, reset, silent)
+    set_blind = function(self, blind, reset, silent)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.set_blind then s:set_blind(reset,silent) end
+            if s.set_blind then s:set_blind(blind,reset,silent) end
             if s.name == 'The Eye' and not reset then
-                G.GAME.blind.hands = {
+                blind.hands = {
                     ["Flush Five"] = false,
                     ["Flush House"] = false,
                     ["Five of a Kind"] = false,
@@ -307,18 +307,18 @@ local obsidian_orb = {
                 }
             end
             if s.name == 'The Mouth' and not reset then
-                G.GAME.blind.only_hand = false
+                blind.only_hand = false
             end
             if s.name == 'The Fish' and not reset then 
-                G.GAME.blind.prepped = nil
+                blind.prepped = nil
             end
             if s.name == 'The Water' and not reset then 
-                G.GAME.blind.discards_sub = G.GAME.current_round.discards_left
-                ease_discard(-G.GAME.blind.discards_sub)
+                blind.discards_sub = G.GAME.current_round.discards_left
+                ease_discard(-blind.discards_sub)
             end
             if s.name == 'The Needle' and not reset then 
-                G.GAME.blind.hands_sub = G.GAME.round_resets.hands - 1
-                ease_hands_played(-G.GAME.blind.hands_sub)
+                blind.hands_sub = G.GAME.round_resets.hands - 1
+                ease_hands_played(-blind.hands_sub)
             end
             if s.name == 'The Manacle' and not reset then
                 G.hand:change_size(-1)
@@ -349,20 +349,20 @@ local obsidian_orb = {
             end
         end
     end,
-    defeat = function(self, silent)
+    defeat = function(self, blind, silent)
         for k, _ in pairs(G.GAME.defeated_blinds) do
-            if G.P_BLINDS[k].defeat then G.P_BLINDS[k]:defeat(silent) end
+            if G.P_BLINDS[k].defeat then G.P_BLINDS[k]:defeat(blind, silent) end
             if G.P_BLINDS[k].name == "The Manacle" and not self.disabled then
                 G.hand:change_size(1)
             end
         end
     end,
-    disable = function(self, silent)
+    disable = function(self, blind, silent)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.disable then s:disable(silent) end
+            if s.disable then s:disable(blind, silent) end
             if s.name == 'The Water' then 
-                ease_discard(G.GAME.blind.discards_sub)
+                ease_discard(blind.discards_sub)
             end
             if s.name == 'The Wheel' or s.name == 'The House' or s.name == 'The Mark' or s.name == 'The Fish' then 
                 for i = 1, #G.hand.cards do
@@ -375,11 +375,11 @@ local obsidian_orb = {
                 end
             end
             if s.name == 'The Needle' then 
-                ease_hands_played(G.GAME.blind.hands_sub)
+                ease_hands_played(blind.hands_sub)
             end
             if s.name == 'The Wall' then 
-                G.GAME.blind.chips = G.GAME.blind.chips/2
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                blind.chips = blind.chips/2
+                blind.chip_text = number_format(blind.chips)
             end
             if s.name == 'Cerulean Bell' then 
                 for k, v in ipairs(G.playing_cards) do
@@ -392,15 +392,15 @@ local obsidian_orb = {
                 G.FUNCS.draw_from_deck_to_hand(1)
             end
             if s.name == 'Violet Vessel' then 
-                G.GAME.blind.chips = G.GAME.blind.chips/3
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                blind.chips = blind.chips/3
+                blind.chip_text = number_format(blind.chips)
             end
         end
     end,
-    press_play = function(self)
+    press_play = function(self, blind)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.press_play then s:press_play() end
+            if s.press_play then s:press_play(blind) end
             if s.name == "The Hook" then
                 G.E_MANAGER:add_event(Event({ func = function()
                     local any_selected = nil
@@ -419,17 +419,17 @@ local obsidian_orb = {
                     end
                     if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
                 return true end })) 
-                G.GAME.blind.triggered = true
+                blind.triggered = true
                 delay(0.7)
             end
             if s.name == 'Crimson Heart' then 
                 if G.jokers.cards[1] then
-                    G.GAME.blind.triggered = true
-                    G.GAME.blind.prepped = true
+                    blind.triggered = true
+                    blind.prepped = true
                 end
             end
             if s.name == 'The Fish' then
-                G.GAME.blind.prepped = true
+                blind.prepped = true
             end
             if s.name == "The Tooth" then
                 G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
@@ -439,11 +439,11 @@ local obsidian_orb = {
                     delay(0.23)
                 end
                 return true end })) 
-                G.GAME.blind.triggered = true
+                blind.triggered = true
             end
         end
     end,
-    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+    modify_hand = function(self, blind, cards, poker_hands, text, mult, hand_chips)
         local new_mult = mult
         local new_chips = chips
         local trigger = false
@@ -451,11 +451,11 @@ local obsidian_orb = {
             s = G.P_BLINDS[k]
             if s.modify_hand then
                 local this_trigger = false 
-                new_mult, new_chips, this_trigger = s:modify_hand(cards, poker_hands, text, new_mult, new_chips)
+                new_mult, new_chips, this_trigger = s:modify_hand(blind, cards, poker_hands, text, new_mult, new_chips)
                 trigger = trigger or this_trigger
             end
             if s.name == "The Flint" then
-                G.GAME.blind.triggered = true
+                blind.triggered = true
                 new_mult = math.max(math.floor(new_mult*0.5 + 0.5), 1)
                 new_chips = math.max(math.floor(new_chips*0.5 + 0.5), 0)
                 trigger = true
@@ -463,75 +463,75 @@ local obsidian_orb = {
         end
         return new_mult or mult, new_chips or hand_chips, trigger
     end,
-    debuff_hand = function(self, cards, hand, handname, check)
-        G.GAME.blind.debuff_boss = nil
+    debuff_hand = function(self, blind, cards, hand, handname, check)
+        blind.debuff_boss = nil
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.debuff_hand and s:debuff_hand(cards, hand, handname, check) then 
-                G.GAME.blind.debuff_boss = s
+            if s.debuff_hand and s:debuff_hand(blind, cards, hand, handname, check) then 
+                blind.debuff_boss = s
                 return true
             end
             if s.debuff then
-                G.GAME.blind.triggered = false
+                blind.triggered = false
                 if s.debuff.hand and next(hand[s.debuff.hand]) then
-                    G.GAME.blind.triggered = true
-                    G.GAME.blind.debuff_boss = s
+                    blind.triggered = true
+                    blind.debuff_boss = s
                     return true
                 end
                 if s.debuff.h_size_ge and #cards < s.debuff.h_size_ge then
-                    G.GAME.blind.triggered = true
-                    G.GAME.blind.debuff_boss = s
+                    blind.triggered = true
+                    blind.debuff_boss = s
                     return true
                 end
                 if s.debuff.h_size_le and #cards > s.debuff.h_size_le then
-                    G.GAME.blind.triggered = true
-                    G.GAME.blind.debuff_boss = s
+                    blind.triggered = true
+                    blind.debuff_boss = s
                     return true
                 end
                 if s.name == "The Eye" then
-                    if G.GAME.blind.hands[handname] then
-                        G.GAME.blind.triggered = true
-                        G.GAME.blind.debuff_boss = s
+                    if blind.hands[handname] then
+                        blind.triggered = true
+                        blind.debuff_boss = s
                         return true
                     end
-                    if not check then G.GAME.blind.hands[handname] = true end
+                    if not check then blind.hands[handname] = true end
                 end
                 if s.name == "The Mouth" then
                     if s.only_hand and s.only_hand ~= handname then
-                        G.GAME.blind.triggered = true
-                        G.GAME.blind.debuff_boss = s
+                        blind.triggered = true
+                        blind.debuff_boss = s
                         return true
                     end
                     if not check then s.only_hand = handname end
                 end
             end
             if s.name == 'The Arm' then 
-                G.GAME.blind.triggered = false
+                blind.triggered = false
                 if G.GAME.hands[handname].level > 1 then
-                    G.GAME.blind.triggered = true
+                    blind.triggered = true
                     if not check then
                         level_up_hand(self.children.animatedSprite, handname, nil, -1)
-                        G.GAME.blind:wiggle()
+                        blind:wiggle()
                     end
                 end 
             end
             if s.name == 'The Ox' then 
-                G.GAME.blind.triggered = false
+                blind.triggered = false
                 if handname == G.GAME.current_round.most_played_poker_hand then
-                    G.GAME.blind.triggered = true
+                    blind.triggered = true
                     if not check then
                         ease_dollars(-G.GAME.dollars, true)
-                        G.GAME.blind:wiggle()
+                        blind:wiggle()
                     end
                 end 
             end
         end
         return false
     end,
-    drawn_to_hand = function(self)
+    drawn_to_hand = function(self, blind)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.drawn_to_hand then s:drawn_to_hand() end
+            if s.drawn_to_hand then s:drawn_to_hand(blind) end
             if s.name == 'Cerulean Bell' then
                 local any_forced = nil
                 for k, v in ipairs(G.hand.cards) do
@@ -546,7 +546,7 @@ local obsidian_orb = {
                     G.hand:add_to_highlighted(forced_card)
                 end
             end
-            if s.name == 'Crimson Heart' and G.GAME.blind.prepped and G.jokers.cards[1] then
+            if s.name == 'Crimson Heart' and blind.prepped and G.jokers.cards[1] then
                 local jokers = {}
                 for i = 1, #G.jokers.cards do
                     if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then jokers[#jokers+1] =G.jokers.cards[i] end
@@ -561,10 +561,10 @@ local obsidian_orb = {
             end
         end
     end,
-    stay_flipped = function(self, area, card)
+    stay_flipped = function(self, blind, area, card)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.stay_flipped and s:stay_flipped(area, card) then return true end
+            if s.stay_flipped and s:stay_flipped(blind, area, card) then return true end
             if area == G.hand then
                 if s.name == 'The Wheel' and pseudorandom(pseudoseed('wheel')) < G.GAME.probabilities.normal/7 then
                     return true
@@ -575,17 +575,17 @@ local obsidian_orb = {
                 if s.name == 'The Mark' and card:is_face(true) then
                     return true
                 end
-                if s.name == 'The Fish' and G.GAME.blind.prepped then 
+                if s.name == 'The Fish' and blind.prepped then 
                     return true
                 end
             end
         end
     end,
-    debuff_card = function(self, card, from_blind)
+    debuff_card = function(self, blind, card, from_blind)
         if card and type(card) == 'table' and card.area then
             for k, _ in pairs(G.GAME.defeated_blinds) do
                 s = G.P_BLINDS[k]
-                if s.debuff_card then s:debuff_card(card, from_blind) end
+                if s.debuff_card then s:debuff_card(blind, card, from_blind) end
                 if s.debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
                     --this part is buggy for some reason
                     if s.debuff.suit and Card.is_suit(card, s.debuff.suit, true) then
@@ -616,60 +616,60 @@ local obsidian_orb = {
             end
         end
     end,
-    cry_ante_base_mod = function(self, dt)
+    cry_ante_base_mod = function(self, blind, dt)
         local mod = 0
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
             if s.cry_ante_base_mod then
-                mod = mod + s:cry_ante_base_mod(dt)
+                mod = mod + s:cry_ante_base_mod(blind, dt)
             end
         end
         return mod
     end,
-    cry_round_base_mod = function(self, dt)
+    cry_round_base_mod = function(self, blind, dt)
         local mod = 1
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
             if s.cry_round_base_mod then
-                mod = mod * s:cry_round_base_mod(dt)
+                mod = mod * s:cry_round_base_mod(blind, dt)
             end
         end
         return mod
     end,
-    cry_cap_score = function(self, score)
+    cry_cap_score = function(self, blind, score)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
             if s.cry_cap_score then
-                score = s:cry_cap_score(score)
+                score = s:cry_cap_score(blind, score)
             end
         end
         return score
     end,
-    cry_before_play = function(self)
+    cry_before_play = function(self, blind)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.cry_before_play then s:cry_before_play() end
+            if s.cry_before_play then s:cry_before_play(blind) end
         end
     end,
-    cry_after_play = function(self)
+    cry_after_play = function(self, blind)
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
-            if s.cry_after_play then s:cry_after_play() end
+            if s.cry_after_play then s:cry_after_play(blind) end
         end
     end,
-    get_loc_debuff_text = function(self)
-        if not G.GAME.blind.debuff_boss then return "Applies abilities of all defeated bosses" end
+    get_loc_debuff_text = function(self, blind)
+        if not blind.debuff_boss then return "Applies abilities of all defeated bosses" end
         local loc_vars = nil
-        if G.GAME.blind.debuff_boss.name == 'The Ox' then
+        if blind.debuff_boss.name == 'The Ox' then
             loc_vars = {localize(G.GAME.current_round.most_played_poker_hand, 'poker_hands')}
         end
-        local loc_target = localize{type = 'raw_descriptions', key = G.GAME.blind.debuff_boss.key, set = 'Blind', vars = loc_vars}
+        local loc_target = localize{type = 'raw_descriptions', key = blind.debuff_boss.key, set = 'Blind', vars = loc_vars}
         local loc_debuff_text = ''
         for k, v in ipairs(loc_target) do
             loc_debuff_text = loc_debuff_text..v..(k <= #loc_target and ' ' or '')
         end
-        local disp_text = (G.GAME.blind.debuff_boss.name == 'The Wheel' and G.GAME.probabilities.normal or '')..loc_debuff_text
-        if (G.GAME.blind.debuff_boss.name == 'The Mouth') and G.GAME.blind.only_hand then disp_text = disp_text..' ['..localize(G.GAME.blind.only_hand, 'poker_hands')..']' end
+        local disp_text = (blind.debuff_boss.name == 'The Wheel' and G.GAME.probabilities.normal or '')..loc_debuff_text
+        if (blind.debuff_boss.name == 'The Mouth') and blind.only_hand then disp_text = disp_text..' ['..localize(blind.only_hand, 'poker_hands')..']' end
         return disp_text
     end
 }
@@ -702,7 +702,7 @@ return {name = "Blinds",
                         G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult_ante = G.GAME.round_resets.ante
                     end
                     if G.GAME.round_resets.blind_states.Boss ~= "Current" then
-                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult + (G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].cry_ante_base_mod and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss]:cry_ante_base_mod(dt) or 0)
+                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult + (G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].cry_ante_base_mod and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss]:cry_ante_base_mod(nil, dt) or 0)
                         --Update UI
                         if G.blind_select_opts then
                             local blind_UI = G.blind_select_opts.boss.definition.nodes[1].nodes[1].nodes[1].nodes[1]
