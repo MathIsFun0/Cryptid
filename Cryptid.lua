@@ -487,6 +487,18 @@ function Card:set_eternal(_eternal)
 end
 
 SMODS.Sound({
+    key = "e_mosaic",
+    path = "e_mosaic.wav"
+})
+SMODS.Sound({
+    key = "e_glitched",
+    path = "e_glitched.wav"
+})
+SMODS.Sound({
+    key = "e_oversaturated",
+    path = "e_oversaturated.wav"
+})
+SMODS.Sound({
     key = "Xchip",
     path = "MultiplicativeChips.wav"
 })
