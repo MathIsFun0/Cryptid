@@ -85,7 +85,7 @@ local glitched = {
         label = "Glitched",
         text = {
             "All values are {C:dark_edition}randomized{}",
-			'between {C:blue}x0.1{} to {C:red}x10{}, if possible',
+			'between {C:blue}X0.1{} and {C:red}X10{}, if possible',
         }
     }
 }

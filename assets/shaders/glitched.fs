@@ -109,10 +109,10 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec2 texCoordsB = texture_coords;
     
     float iTime = tan(2. * time);
-    
-    texCoordsR.x += (0.004 * rand(vec2(iTime, texCoordsR.y))) + (POLY_THROWAWAY * 0.0000001);
-    texCoordsG.x += (0.007 * rand(vec2(iTime, texCoordsG.y))) + (POLY_THROWAWAY * 0.0000001);
-    texCoordsB.x += (0.010 * rand(vec2(iTime, texCoordsB.y))) + (POLY_THROWAWAY_2 * 0.0000001);
+
+    texCoordsR.x += (0.004 * rand(vec2(iTime, texCoordsR.y))) - 0.002 + (POLY_THROWAWAY * 0.0000001);
+    texCoordsG.x += (0.007 * rand(vec2(iTime*2, texCoordsG.y*0.9))) - 0.0035 + (POLY_THROWAWAY * 0.0000001);
+    texCoordsB.x += (0.010 * rand(vec2(iTime*3, texCoordsB.y*0.8))) - 0.005 + (POLY_THROWAWAY_2 * 0.0000001);
     
     vec4 texR = Texel(texture, texCoordsR);
     vec4 texG = Texel(texture, texCoordsG);

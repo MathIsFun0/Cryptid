@@ -38,3 +38,12 @@ if G.jokers.cards and G.jokers.cards[i] and G.jokers.cards[i].edition and G.joke
     x_chips = true})
 end
 '''
+
+# Shine on Oversaturated to make it more noticable
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = "if (self.edition and self.edition.negative) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
+position = 'at'
+match_indent = true
+payload = "if (self.edition and (self.edition.negative or self.edition.cry_oversat)) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
