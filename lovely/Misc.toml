@@ -1,0 +1,40 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# XChips Edition Effect (based on Bunco's Glitter)
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = 'if effects[ii].edition then'
+position = 'after'
+match_indent = true
+payload = '''
+if scoring_hand and scoring_hand[i] and scoring_hand[i].edition and scoring_hand[i].edition.cry_mosaic then
+    local xchips = G.P_CENTERS.e_cry_mosaic.config.Xchips
+    hand_chips = mod_chips(hand_chips * xchips)
+    update_hand_text({delay = 0}, {chips = hand_chips})
+    card_eval_status_text(scoring_hand[i], 'extra', nil, percent, nil,
+    {message = 'X'..xchips..' Chips',
+    edition = true,
+    x_chips = true})
+end
+'''
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = 'if edition_effects.jokers.x_mult_mod then'
+position = 'before'
+match_indent = true
+payload = '''
+if G.jokers.cards and G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_mosaic then
+    local xchips = G.P_CENTERS.e_cry_mosaic.config.Xchips
+    hand_chips = mod_chips(hand_chips * xchips)
+    update_hand_text({delay = 0}, {chips = hand_chips})
+    card_eval_status_text(G.jokers.cards[i], 'extra', nil, percent, nil,
+    {message = 'X'..xchips..' Chips',
+    edition = true,
+    x_chips = true})
+end
+'''
