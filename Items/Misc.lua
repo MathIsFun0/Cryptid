@@ -27,7 +27,41 @@ local mosaic = {
         }
     }
 }
+local oversat_shader = {
+    object_type = "Shader",
+    key = 'oversat', 
+    path = 'oversat.fs'
+}
+local oversat = {
+    object_type = "Edition",
+    key = "oversat",
+    weight = 1,
+    shader = "oversat",
+    in_shop = true,
+    extra_cost = 5,
+    get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_txt = {
+        name = "Oversaturated",
+        label = "Oversaturated",
+        text = {
+            "All values are {C:attention}doubled{}"
+        }
+    }
+}
 return {name = "Misc.", 
         init = function()
+            se = Card.set_edition
+            function Card:set_edition(x,y,z)
+                local was_oversat = self.edition and self.edition.cry_oversat
+                se(self,x,y,z)
+                if was_oversat then
+                    cry_misprintize(self,nil,true)
+                end
+                if self.edition and self.edition.cry_oversat then
+                    cry_misprintize(self, {min=2,max=2})
+                end
+            end
         end,
-        items = {mosaic_shader, mosaic}}
+        items = {mosaic_shader, mosaic, oversat_shader, oversat}}

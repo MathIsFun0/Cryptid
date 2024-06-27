@@ -618,22 +618,26 @@ local oldcandy = {
 	name = "cry_oldcandy",
 	key = "oldcandy",
 	pos = {x = 0, y = 0},
+    config = {extra = {hand_size = 3}},
 	loc_txt = {
 	name = 'Nostalgic Candy',
 	text = {
 			"Permanently gain",
-			"{C:attention}+3{} hand size",
+			"{C:attention}+#1#{} hand size",
 			"when sold"
 		}
 	},
+    loc_vars = function(self, info_queue, center)
+    return {vars = {center.ability.extra.hand_size}}
+    end,
 	rarity = "cry_epic",
 	cost = 10,
 	discovered = true,
 	eternal_compat = false,
 	atlas = "oldcandy",
-	calculate = function(self, card, context) --hardcoded, unfortunately
+	calculate = function(self, card, context)
 	if context.selling_self and not context.blueprint then
-            G.hand:change_size(3)
+            G.hand:change_size(card.ability.extra.hand_size)
         end
 end
 }

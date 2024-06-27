@@ -904,7 +904,7 @@ local jimball = {
 	name = "cry-Jimball",
 	key = "jimball",
 	pos = {x = 0, y = 0},
-    config = {x_mult = 1, extra = 0.15},
+    config = {x_mult = 1, extra = 0.15, override_x_mult_check = true},
 	loc_txt = {
         name = 'Jimball',
         text = {
@@ -1758,7 +1758,7 @@ local bubblem = {
     text = {
     	"Create a {C:dark_edition}Foil {C:attention}Jolly Joker{}",
     	"if hand played contains",
-    	"a {C:attention}Four of a kind{}",
+    	"a {C:attention}Four of a Kind{}", --todo: localize this
     	"{C:red}self destructs{}",
     	}
     },

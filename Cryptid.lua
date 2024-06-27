@@ -368,31 +368,31 @@ end
 --Redefine these here because they're always used
 if not Cryptid then Cryptid = {} end
 Cryptid.base_values = {}
-function cry_misprintize_tbl(name, tbl, clear)
+function cry_misprintize_tbl(name, tbl, clear, override)
     if tbl then
         for k, v in pairs(tbl) do
             if type(tbl[k]) ~= 'table' then
-                if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1) then
+                if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) then
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
-                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
-                    if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1) then
+                    if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) then
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
-                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format(Cryptid.base_values[name][k][_k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format(Cryptid.base_values[name][k][_k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                     end
                 end
             end
         end
     end
 end
-function cry_misprintize_val(val)
+function cry_misprintize_val(val, override)
    if type(val) == 'number' then
-    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
    end 
    return val
 end
@@ -405,20 +405,22 @@ function cry_deep_copy(obj, seen)
     for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
     return res
 end
-function cry_misprintize(card)
-    if G.GAME.modifiers.cry_misprint_min then
+function cry_misprintize(card, override, force_reset)
+    if not force_reset and (G.GAME.modifiers.cry_misprint_min or override) then
         --will make this check more advanced later
         if card.ability.set == "Enhanced" or card.ability.set == "Default" then
             card.config.center = cry_deep_copy(card.config.center)
-            cry_misprintize_tbl(card.config.center_key.."_conf", card.config.center.config)
+            cry_misprintize_tbl(card.config.center_key.."_conf", card.config.center.config, nil, override)
             card:set_ability(card.config.center)
-            card.base.nominal = cry_misprintize_val(card.base.nominal)
+            card.base.nominal = cry_misprintize_val(card.base.nominal, override)
         elseif card.ability.set == "Joker" then 
-            cry_misprintize_tbl(card.config.center_key, card.ability)
+            cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
         else
-            cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config)
+            cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, nil, override)
         end
-        card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f")
+        if G.GAME.modifiers.cry_misprint_min then
+            card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+        end
     else
         cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, true)
         cry_misprintize_tbl(card.config.center_key, card.ability, true)
