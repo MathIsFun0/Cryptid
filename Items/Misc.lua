@@ -13,6 +13,11 @@ local mosaic = {
     in_shop = true,
     extra_cost = 6,
     config = {Xchips = 2.5},
+	sound = {
+		sound = 'cry_e_mosaic',
+		per = 1,
+		vol = 0.5
+	},
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
@@ -39,6 +44,11 @@ local oversat = {
     shader = "oversat",
     in_shop = true,
     extra_cost = 5,
+	sound = {
+		sound = 'cry_e_oversaturated',
+		per = 1,
+		vol = 0.5
+	},
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
@@ -62,6 +72,11 @@ local glitched = {
     shader = "glitched",
     in_shop = true,
     extra_cost = 3,
+	sound = {
+		sound = 'cry_e_glitched',
+		per = 1,
+		vol = 0.5
+	},
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
