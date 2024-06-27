@@ -184,7 +184,6 @@ local speculo = {
         text = {
             "Creates a {C:dark_edition}Negative{} copy",
             "of a random {C:attention}Joker{}",
-            "in your possession",
             "at the end of the {C:attention}shop",
         }
     },
@@ -280,8 +279,8 @@ local tenebris = {
 	loc_txt = {
       		name = 'Tenebris',
         	text = {
-			"{C:dark_edition}+#1#{C:attention} Joker{} slots,",
-			"gives {C:money}$#2#{} at end of round"
+			"{C:dark_edition}+#1#{C:attention} Joker{} slots",
+			"Earn {C:money}$#2#{} at end of round"
 		}
    	},
 	rarity = "cry_exotic",
@@ -320,9 +319,8 @@ local effarcire = {
 	loc_txt = {
         name = 'Effarcire',
         text = {
-			"Always draw your",
-			"{C:green}entire deck{} to hand",
-			"at start of round"
+			"Always draw {C:green}full deck{} to hand",
+			"when {C:attention}Blind{} is selected"
 		}
     },
 	rarity = 3,
@@ -358,8 +356,8 @@ local crustulum = {
 	loc_txt = {
         name = 'Crustulum',
         text = {
-            "This Joker gains",
-            "{C:chips}+#2#{} Chips per reroll,",
+            "This Joker gains {C:chips}+#2#{} Chips",
+            "per {C:attention}reroll{} in the shop,",
             "{C:green}all rerolls are free{}",
             "{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)"
         }
