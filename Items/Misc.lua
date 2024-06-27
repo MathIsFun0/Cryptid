@@ -56,7 +56,7 @@ local oversat = {
         name = "Oversaturated",
         label = "Oversaturated",
         text = {
-            "All values are {C:attention}doubled{}"
+            "All values are {C:attention}doubled{}, if possible"
         }
     }
 }
@@ -84,7 +84,8 @@ local glitched = {
         name = "Glitched",
         label = "Glitched",
         text = {
-            "All values are {C:dark_edition}randomized{}"
+            "All values are {C:dark_edition}randomized{}",
+			'between {C:blue}x0.1{} to {C:red}x10{}, if possible',
         }
     }
 }
@@ -94,15 +95,19 @@ return {name = "Misc.",
             function Card:set_edition(x,y,z)
                 local was_oversat = self.edition and (self.edition.cry_oversat or self.edition.cry_glitched)
                 se(self,x,y,z)
-                if was_oversat then
-                    cry_misprintize(self,nil,true)
-                end
-                if self.edition and self.edition.cry_oversat then
-                    cry_misprintize(self, {min=2,max=2})
-                end
-                if self.edition and self.edition.cry_glitched then
-                    cry_misprintize(self, {min=0.1,max=10})
-                end
+		if was_oversat then
+			cry_misprintize(self,nil,true)
+		end
+		if self.edition and self.edition.cry_oversat then
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.001, func = function()
+			cry_misprintize(self, {min=2,max=2})
+			return true end }))
+		end
+		if self.edition and self.edition.cry_glitched then
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.001, func = function()
+				cry_misprintize(self, {min=0.1,max=10})
+			return true end }))
+		end
             end
         end,
         items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched}}
