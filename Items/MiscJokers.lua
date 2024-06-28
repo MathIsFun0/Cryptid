@@ -214,7 +214,7 @@ local wee_fib = {
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
 				
 				return {
-					extra = {focus = self, message = localize('k_upgrade_ex')},
+					extra = {focus = card, message = localize('k_upgrade_ex')},
 					card = card,
 					colour = G.C.MULT
 				}
