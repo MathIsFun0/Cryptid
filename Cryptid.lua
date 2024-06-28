@@ -332,8 +332,10 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           check_for_unlock({type = 'have_edition'})
       end
   end
-
-  cry_misprintize(card)
+    
+	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
+		cry_misprintize(card)
+	end
   return card
 end
 
