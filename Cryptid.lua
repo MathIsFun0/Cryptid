@@ -374,14 +374,14 @@ function cry_misprintize_tbl(name, tbl, clear, override)
     if tbl then
         for k, v in pairs(tbl) do
             if type(tbl[k]) ~= 'table' then
-                if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) then
+                if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
                     tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
-                    if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) then
+                    if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
