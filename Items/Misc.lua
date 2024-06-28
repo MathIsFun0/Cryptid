@@ -99,14 +99,10 @@ return {name = "Misc.",
 			cry_misprintize(self,nil,true)
 		end
 		if self.edition and self.edition.cry_oversat then
-			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.001, func = function()
 			cry_misprintize(self, {min=2,max=2})
-			return true end }))
 		end
 		if self.edition and self.edition.cry_glitched then
-			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.001, func = function()
-				cry_misprintize(self, {min=0.1,max=10})
-			return true end }))
+			cry_misprintize(self, {min=0.1,max=10})
 		end
             end
         end,
