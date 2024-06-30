@@ -89,6 +89,58 @@ local glitched = {
         }
     }
 }
+
+local echo_atlas = {
+    object_type = 'Atlas',
+    key = 'echo_atlas',
+    path = 'm_cry_echo.png',
+    px = 71,
+    py = 95,
+}
+
+local echo = {
+    object_type = 'Enhancement',
+    key = 'echo',
+    loc_txt = {
+        name = 'Echo Card',
+        text = {'{C:green}#2# in #3#{} chance to',
+        '{C:attention}retrigger{} #1# times'}
+    },
+    atlas = 'echo_atlas',
+    config = {retriggers = 2, extra = 2},
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.retriggers,G.GAME.probabilities.normal, self.config.extra}}
+    end
+}
+
+local eclipse_atlas = {
+    object_type = 'Atlas',
+    key = 'eclipse_atlas',
+    path = 'c_cry_eclipse.png',
+    px = 71,
+    py = 95,
+}
+
+local eclipse = {
+    object_type = "Consumable",
+    set = "Tarot",
+    name = "cry-Eclipse",
+    key = "eclipse",
+    pos = {x=0,y=0},
+	config = {mod_conv = 'm_cry_echo', max_highlighted = 1},
+    loc_txt = {
+        name = 'The Eclipse',
+        text = {
+			"Enhances {C:attention}#1#{} selected card",
+			"into an {C:attention}Echo Card"
+        }
+    },
+    atlas = "eclipse_atlas",
+	discovered = true,
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.max_highlighted}}
+    end,
+}
 return {name = "Misc.", 
         init = function()
             se = Card.set_edition
@@ -105,5 +157,20 @@ return {name = "Misc.",
 			cry_misprintize(self, {min=0.1,max=10})
 		end
             end
+            cs = Card.calculate_seal
+        function Card:calculate_seal(context)
+            cs(self,context)
+        if context.repetition then
+		    if self.config.center == G.P_CENTERS.m_cry_echo then
+                if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
+                    return {
+                        message = localize('k_again_ex'),
+                        repetitions = self.ability.retriggers,
+                        card = self
+                    }
+                end
+            end
+        end
+        end
         end,
-        items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched}}
+        items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, echo_atlas, echo, eclipse_atlas, eclipse}}
