@@ -89,6 +89,38 @@ local glitched = {
         }
     }
 }
+local astral_shader = {
+    object_type = "Shader",
+    key = 'astral', 
+    path = 'astral.fs'
+}
+local astral = {
+    object_type = "Edition",
+    key = "astral",
+    weight = 0.3, --very rare
+    shader = "astral",
+    in_shop = true,
+    extra_cost = 3,
+	sound = {
+		sound = 'cry_e_glitched',
+		per = 1,
+		vol = 0.5
+	},
+    get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_txt = {
+        name = "Astral",
+        label = "Astral",
+        text = {
+            "{X:dark_edition,C:white}^#1#{} Mult"
+        }
+    },
+    config = {pow_mult = 1.1},
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.pow_mult}}
+    end
+}
 
 local echo_atlas = {
     object_type = 'Atlas',
@@ -157,6 +189,7 @@ return {name = "Misc.",
 			cry_misprintize(self, {min=0.1,max=10})
 		end
             end
+        --echo card
             cs = Card.calculate_seal
         function Card:calculate_seal(context)
             cs(self,context)
@@ -173,4 +206,5 @@ return {name = "Misc.",
         end
         end
         end,
-        items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, echo_atlas, echo, eclipse_atlas, eclipse}}
+        items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, echo_atlas, echo, eclipse_atlas, eclipse}}
+
