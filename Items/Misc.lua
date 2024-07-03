@@ -102,7 +102,7 @@ local astral = {
     in_shop = true,
     extra_cost = 3,
 	sound = {
-		sound = 'cry_ExponentialMult',
+		sound = 'cry_^Mult',
 		per = 1,
 		vol = 0.5
 	},
