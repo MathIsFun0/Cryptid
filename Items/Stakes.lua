@@ -448,8 +448,12 @@ return {name = "More Stakes",
                     if ante <= 8 then return amounts[ante] end
                     local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
                     local amount = a*(b+(k*c)^d)^c
-                    amount.m = math.floor(10*amount.m)/10
-                    amount:normalize()
+                    if type(amount) == 'table' then
+                      amount.m = math.floor(10*amount.m)/10
+                      amount:normalize()
+                    else
+                      amount = amount - amount%(10^math.floor(math.log10(amount)-1))
+                    end
                     return amount
                 else return gba(ante)
                 end
