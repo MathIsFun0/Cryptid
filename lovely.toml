@@ -236,3 +236,32 @@ for i = 1, #G.CHALLENGES do
 end
 '''
 match_indent = true
+
+# Apply booster pack edition and stickers to contents - by Jen Walter
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "card.T.x = self.T.x"
+position = "before"
+payload = '''
+
+local edi = self.edition or {}
+if edi.type then
+	card:set_edition({[edi.type] = true})
+end
+
+if self.ability.eternal then
+	card.ability.eternal = self.ability.eternal
+end
+if self.ability.perishable then
+	card.ability.perishable = self.ability.perishable
+end
+if self.ability.rental then
+	card.ability.rental = self.ability.rental
+end
+if self.pinned then
+	card.pinned = self.pinned
+end
+
+'''
+match_indent = true
