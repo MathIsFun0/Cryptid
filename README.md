@@ -7,9 +7,9 @@ Cryptid currently adds:
 - 16 new stakes
 - 30 new decks
 - 59 new jokers
+- 2 new joker rarities
 - 4 new planet cards
 - 5 new spectral cards
 - 8 new boss blinds
 - 1 new enhancement and corresponding tarot card
 - 4 new editions
-- 2 new rarities
