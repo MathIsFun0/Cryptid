@@ -1754,7 +1754,7 @@ local meteor = {
     cost = 6,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.edition.foil == true then
+        if context.other_joker and context.other_joker.edition and context.other_joker.edition.foil == true then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -1792,7 +1792,7 @@ local exoplanet = {
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.edition.holo == true then
+        if context.other_joker and context.other_joker.edition and context.other_joker.edition.holo == true then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -1830,7 +1830,7 @@ local stardust = {
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.edition.polychrome == true then
+        if context.other_joker and context.other_joker.edition and context.other_joker.edition.polychrome == true then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
