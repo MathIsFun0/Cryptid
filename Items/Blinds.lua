@@ -151,7 +151,6 @@ local joke = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('00ffaa')
 }
 local lavender_loop = {
