@@ -61,7 +61,6 @@ local iterum = {
     },
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
 	blueprint_compat = true,
 	atlas = 'iterum',
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
@@ -112,7 +111,6 @@ local universum = {
     },
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
     blueprint_compat = true,
 	atlas = "universum",
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
@@ -137,7 +135,7 @@ local exponentia = {
     object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
-	config = {extra = {pow_mult = 1.1, pow_mult_mod = 0.01}},
+	config = {extra = {pow_mult = 1, pow_mult_mod = 0.01}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Exponentia',
@@ -149,7 +147,6 @@ local exponentia = {
     },
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
     blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "exponentia",
@@ -159,7 +156,7 @@ local exponentia = {
             return {
                 message = "^"..card.ability.extra.pow_mult.." Mult",
                 pow_mult_mod = card.ability.extra.pow_mult,
-                colour = G.C.MULT
+                colour = G.C.DARK_EDITION
             }
         end
 	end,
@@ -185,14 +182,17 @@ local speculo = {
             "Creates a {C:dark_edition}Negative{} copy",
             "of a random {C:attention}Joker{}",
             "at the end of the {C:attention}shop",
+	    "{C:inactive,s:0.8}Does not copy other Speculo{}",
         }
     },
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
     blueprint_compat = true,
 	atlas = "speculo",
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+	end,
 	calculate = function(self, card, context)
         if context.ending_shop then
             local eligibleJokers = {}
@@ -208,7 +208,7 @@ local speculo = {
                         G.jokers:emplace(card) 
                         return true
                     end}))
-                card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
                 return {calculated = true}
             end
             return
@@ -242,7 +242,6 @@ local redeo = {
     },
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
 	atlas = "redeo",
 	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
 	calculate = function(self, card, context)
@@ -285,7 +284,6 @@ local tenebris = {
    	},
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
 	atlas = "tenebris",
 	calc_dollar_bonus = function(self, card)
 		return card.ability.extra.money
@@ -319,13 +317,12 @@ local effarcire = {
 	loc_txt = {
         name = 'Effarcire',
         text = {
-			"Always draw {C:green}full deck{} to hand",
+			"Draw {C:green}full deck{} to hand",
 			"when {C:attention}Blind{} is selected"
 		}
     },
 	rarity = 3,
 	cost = 50,
-    discovered = true,
 	atlas = 'effarcire',
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
@@ -364,7 +361,6 @@ local crustulum = {
     	},
 	rarity = "cry_exotic",
 	cost = 50,
-	discovered = true,
 	atlas = "crustulum",
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -402,9 +398,67 @@ local crustulum_sprite = {
     px = 71,
     py = 95
 }
-	
+local primus = {
+    object_type = "Joker",
+    name = "cry-primus",
+    key = "primus",
+    config = {extra = {pow_mult = 1, pow_mult_mod = 0.1}},
+    pos = {x = 0, y = 0},
+    loc_txt = {
+        name = 'Primus',
+        text = {
+            "This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+            "if all cards in played hand are",
+            "{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
+            "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
+        }
+    },
+    rarity = "cry_exotic",
+    cost = 53,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "primus",
+    soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+    calculate = function(self, card, context)
+        local check = true
+        if context.scoring_hand then
+            for i = 1, #context.full_hand do
+                if context.full_hand[i]:get_id() == 4 or context.full_hand[i]:get_id() == 6 or context.full_hand[i]:get_id() == 8 or context.full_hand[i]:get_id() == 9 or context.full_hand[i]:get_id() == 10 or context.full_hand[i]:get_id() == 11 or context.full_hand[i]:get_id() == 12 or context.full_hand[i]:get_id() == 13 then
+                    check = false
+                end
+            end
+        end
+        if context.cardarea == G.jokers and check and context.before and not context.blueprint then
+            card.ability.extra.pow_mult = card.ability.extra.pow_mult + card.ability.extra.pow_mult_mod
+            return {
+                card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Upgrade!",
+                    colour = G.C.DARK_EDITION,
+                })
+            }   
+        end
+        if context.cardarea == G.jokers and (card.ability.extra.pow_mult > 1) and not context.before and not context.after then
+            return {
+                message = "^"..card.ability.extra.pow_mult.." Mult",
+                pow_mult_mod = card.ability.extra.pow_mult,
+                colour = G.C.DARK_EDITION
+            }
+        end
+    end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.pow_mult_mod, center.ability.extra.pow_mult}}
+    end
+}
 
-G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum}
+local primus_sprite = {
+    object_type = "Atlas",
+    key = "primus",
+    path = "j_cry_primus.png",
+    px = 71,
+    py = 95
+}	
+
+G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus}
 
 return {name = "Exotic Jokers", 
         init = function()
@@ -512,4 +566,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, effarcire_sprite, crustulum_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum,}}
+        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, effarcire_sprite, crustulum_sprite, primus_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus,}}

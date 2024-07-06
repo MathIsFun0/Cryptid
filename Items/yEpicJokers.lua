@@ -1,10 +1,58 @@
 cry_enable_epics = false
+local atlasepic = {
+    object_type = "Atlas",
+    key = "atlasepic",
+    path = "atlasepic.png",
+    px = 71,
+    py = 95
+}
+local supercell = {
+    	object_type = "Joker",
+	name = "cry-supercell",
+	key = "supercell",
+    	config = {extra = {stat1 = 15, stat2 = 2, money = 3}},
+	pos = {x = 5, y = 1},
+	loc_txt = {
+        name = 'Supercell',
+        text = {
+            "{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
+	    "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult,",
+	    "Earn {C:money}$#3#{} at",
+	    "end of round"
+        }
+    	},
+	rarity = "cry_epic",
+	cost = 14,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+    	loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.stat1, center.ability.extra.stat2, center.ability.extra.money}}
+    	end,
+    	calculate = function(self, card, context)
+        	if context.cardarea == G.jokers and not context.before and not context.after then
+			if card.ability.extra.stat2 > 1 then --misprint deck moment
+				return {
+				message = "Gaming!",
+				chip_mod = card.ability.extra.stat1,
+				mult_mod = card.ability.extra.stat1,
+				Xchip_mod = card.ability.extra.stat2,
+				Xmult_mod = card.ability.extra.stat2
+				}
+			end
+        	end
+    	end,
+	calc_dollar_bonus = function(self, card)
+		if card.ability.extra.money > 0 then
+			return card.ability.extra.money
+		end
+	end
+}
 local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
 	key = "googol_play",
-	config = {extra = {Xmult = 1e100, odds = 10}},
-	pos = {x = 0, y = 0},
+	config = {extra = {Xmult = 1e100, odds = 8}},
+	pos = {x = 3, y = 0},
 	loc_txt = {
         name = 'Googol Play Card',
         text = {
@@ -14,10 +62,9 @@ local googol_play = {
     },
 	rarity = "cry_epic",
 	cost = 10,
-	discovered = true,
 	blueprint_compat = true,
-	atlas = "googol_play",
-	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+	atlas = "atlasepic",
+	soul_pos = {x = 10, y = 0, extra = {x = 4, y = 0}},
 	loc_vars = function(self, info_queue, center)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 	end,
@@ -32,32 +79,21 @@ local googol_play = {
 		end
 	end,
 }
-local googol_play_sprite = {
-	object_type = "Atlas",
-    key = "googol_play",
-    
-    path = "j_cry_googol_play.png",
-    px = 71,
-    py = 95
-}
 local sync_catalyst = {
 	object_type = "Joker",
 	name = "cry-Sync Catalyst",
 	key = "sync_catalyst",
-	pos = {x = 0, y = 0},
+	pos = {x = 5, y = 2},
 	loc_txt = {
         name = 'Sync Catalyst',
         text = {
-			"Balance {C:blue}Chips{} and",
-			"{C:red}Mult{} when this Joker",
-			"is triggered"
+			"Balances {C:chips}Chips{} and {C:mult}Mult{}",
 		}
     },
 	rarity = "cry_epic",
 	cost = 11,
-	discovered = true,
 	blueprint_compat = true,
-	atlas = "sync_catalyst",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then
 			local tot = hand_chips + mult
@@ -71,20 +107,12 @@ local sync_catalyst = {
 		end
 	end,
 }
-local sync_catalyst_sprite = {
-	object_type = "Atlas",
-    key = "sync_catalyst",
-    
-    path = "j_cry_sync_catalyst.png",
-    px = 71,
-    py = 95
-}
 local negative = {
 	object_type = "Joker",
 	name = "cry-Negative Joker",
 	key = "negative",
 	pos = {x = 0, y = 0},
-	config = {extra = 3},
+	config = {extra = 4},
 	loc_txt = {
         name = 'Negative Joker',
         text = {
@@ -93,7 +121,6 @@ local negative = {
     },
 	rarity = "cry_epic",
 	cost = 12,
-	discovered = true,
 	atlas = "negative",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra}}
@@ -105,7 +132,7 @@ local negative = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra
 	end
 }
-local negative_sprite = {
+local negative_sprite = { --forgot this one
 	object_type = "Atlas",
     key = "negative",
     
@@ -117,7 +144,7 @@ local canvas = {
 	object_type = "Joker",
 	name = "cry-Canvas",
 	key = "canvas",
-	pos = {x = 0, y = 0},
+	pos = {x = 2, y = 1},
 	config = {num_retriggers = 0},
 	loc_txt = {
         name = 'Canvas',
@@ -126,12 +153,11 @@ local canvas = {
 			"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
 			"to the right of this Joker"
 		}
-    },
+    	},
 	rarity = "cry_epic",
-	cost = 15,
-	discovered = true,
+	cost = 18,
 	blueprint_compat = true,
-	atlas = "canvas",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker then
 			self.config.num_retriggers = 0
@@ -150,19 +176,11 @@ local canvas = {
 		end
 	end,
 }
-local canvas_sprite = {
-	object_type = "Atlas",
-    key = "canvas",
-    
-    path = "j_cry_canvas.png",
-    px = 71,
-    py = 95
-}
 local error_joker = {
 	object_type = "Joker",
 	name = "cry-Error",
 	key = "error",
-	pos = {x = 0, y = 0},
+	pos = {x = 4, y = 2},
 	config = {extra = {sell_rounds = 0, active = false}},
 	loc_txt = {
         name = '{C:red}ERR{}{C:dark_edition}O{}{C:red}R{}',
@@ -172,10 +190,9 @@ local error_joker = {
     },
 	rarity = "cry_epic",
 	cost = 1,
-	discovered = true,
 	blueprint_compat = false,
 	eternal_compat = false,
-	atlas = "error",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.repetition and not card.ability.extra.active then
 			if card.ability.extra.sell_rounds == 0 then
@@ -210,19 +227,11 @@ local error_joker = {
 		end
 	end
 }
-local error_sprite = {
-	object_type = "Atlas",
-    key = "error",
-    
-    path = "j_cry_error.png",
-    px = 71,
-    py = 95
-}
 local m = {
 	object_type = "Joker",
 	name = "cry-m",
 	key = "m",
-	pos = {x = 0, y = 0},
+	pos = {x = 3, y = 1},
 	config = {extra = {extra = 13, x_mult = 1}, jolly = {t_mult = 8, type = 'Pair'}},
 	loc_txt = {
         name = 'm',
@@ -234,13 +243,12 @@ local m = {
     },
 	rarity = "cry_epic",
 	cost = 13,
-	discovered = true,
 	perishable_compat = false,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
-	atlas = "m",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
         if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
             return {
@@ -255,14 +263,6 @@ local m = {
 		end
 	end
 }
-local m_sprite = {
-	object_type = "Atlas",
-    key = "m",
-    
-    path = "j_cry_m.png",
-    px = 71,
-    py = 95
-}
 local M = {
 	object_type = "Joker",
 	name = "cry-M",
@@ -272,19 +272,18 @@ local M = {
 	loc_txt = {
         name = 'M',
         text = {
-			"When {C:attention}Blind{} is selected,",
-			"create a {C:dark_edition}Negative{}",
-			"{C:attention}Jolly Joker{}"
+			"Create a {C:dark_edition}Negative{}",
+			"{C:attention}Jolly Joker{}",
+			"when {C:attention}Blind{} is selected"
 		}
     },
 	rarity = "cry_epic",
 	cost = 13,
-	discovered = true,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
 		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
     end,
-	atlas = "M",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
@@ -297,18 +296,206 @@ local M = {
 		end
 	end
 }
-local M_sprite = {
-	object_type = "Atlas",
-    key = "M",
-    path = "j_cry_big_m.png",
-    px = 71,
-    py = 95
+local doodlem = {
+    object_type = "Joker",
+    name = "cry-doodlem",
+    key = "doodlem",
+    atlas = "atlasepic",
+    config = {jolly = {t_mult = 8, type = 'Pair'}},
+    pos = {x = 2, y = 0},
+    loc_txt = {
+        name = 'Doodle M',
+        text = {
+            "Create a {C:dark_edition}Negative{} {C:attention}consumable{}",
+            "for each {C:attention}Jolly Joker{}",
+            "when {C:attention}Blind{} is selected",
+	    "{C:inactive}(Min of 1, Max of 12){}" --This limit is mostly to avoid lag issues from runs with lots of jolly jokers. From testing OUTSIDE of antimatter deck I don't really reach this limit anyway so I think this is good enough
+        }
+    },
+    rarity = "cry_epic",
+    cost = 13,
+    blueprint_compat = true,
+    loc_vars = function(self, info_queue, center)
+	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+	info_queue[#info_queue+1] = G.P_CENTERS.e_negative --replace this with the consumable one later
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+	    local jollycount = 0
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
+            end
+	    if jollycount > 12 then jollycount = 12 end
+            if jollycount > 0 then
+		for i = 1, jollycount do
+                	local consumeable = pseudorandom_element({1, 2, 3}, pseudoseed('doodlem'))
+                	if consumeable == 1 then
+                        	local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	card:set_edition({negative = true})
+                        	card:add_to_deck()
+                        	G.consumeables:emplace(card)
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
+                	elseif consumeable == 2 then
+                    		local card = create_card('Planet', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	card:set_edition({negative = true})
+                        	card:add_to_deck()
+                        	G.consumeables:emplace(card)
+                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_planet'), colour = G.C.SECONDARY_SET.Planet})
+                	elseif consumeable == 3 then
+                    		local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	card:set_edition({negative = true})
+                        	card:add_to_deck()
+                        	G.consumeables:emplace(card)
+                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_spectral'), colour = G.C.SECONDARY_SET.Spectral})
+                	end
+		end
+		return true
+	    else
+		local consumeable = pseudorandom_element({1, 2, 3}, pseudoseed('doodlem'))
+                	if consumeable == 1 then
+                        	local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	card:set_edition({negative = true})
+                        	card:add_to_deck()
+                        	G.consumeables:emplace(card)
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
+                	elseif consumeable == 2 then
+                    		local card = create_card('Planet', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	card:set_edition({negative = true})
+                        	card:add_to_deck()
+                        	G.consumeables:emplace(card)
+                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_planet'), colour = G.C.SECONDARY_SET.Planet})
+                	elseif consumeable == 3 then
+                    		local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	card:set_edition({negative = true})
+                        	card:add_to_deck()
+                        	G.consumeables:emplace(card)
+                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_spectral'), colour = G.C.SECONDARY_SET.Spectral})
+                	end
+		return true
+	    end
+        end
+    end
+}
+--Notes: I've had visual issues when playing with this joker. Dunno what's up with that
+local virgo = {
+	object_type = "Joker",
+	name = "cry-virgo",
+	key = "virgo",
+	pos = {x = 1, y = 2},
+	soul_pos = {x = 10, y = 0, extra = {x = 2, y = 2}},
+	config = {extra = {bonus = 4, type = "Pair"}, jolly = {t_mult = 8, type = 'Pair'}},
+	loc_txt = {
+        name = 'Virgo',
+        text = {
+			"This joker gains {C:money}$#1#{} of {C:attention}sell value{}",
+			"if {C:attention}poker hand{} is a {C:attention}#2#{}",
+			"Sell this card to create a",
+			"{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
+			"every {C:money}$4{} of {C:attention}sell value{}",
+			"{C:inactive}(Min of 1, Max of 15){}" --this max is mostly to avoid issues with lag with things like misprint deck/double scale gift card. I think this limit is reasonable enough xd
+		}
+    },
+	rarity = "cry_epic",
+	cost = 8,
+	eternal_compat = false,
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
+	return {vars = {center.ability.extra.bonus, center.ability.extra.type}}
+    	end,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+        	if context.cardarea == G.jokers and context.before and not context.blueprint then
+				if context.scoring_name == card.ability.extra.type then
+                            			card.ability.extra_value = card.ability.extra_value + card.ability.extra.bonus --this doesn't seem to work with retrigger jokers. Intentional?
+                            			card:set_cost()
+                            			card_eval_status_text(card, 'extra', nil, nil, nil, {
+                               			message = localize('k_upgrade_ex'),
+                                		colour = G.C.MONEY
+                            			})
+				end
+		end
+		if context.selling_self and not context.blueprint and not context.retrigger_joker then
+			local summon = math.floor((card.ability.extra_value + 4)*0.25) -- +4 to account for default sell value (certified no source code moment)
+			if summon < 1 then summon = 1 end --precautionary measure, just in case
+			if summon > 15 then summon = 15 end
+			G.E_MANAGER:add_event(Event({
+			func = (function()
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for i = 1, summon do
+							local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+							card:set_edition({
+								polychrome = true
+							})
+							card:add_to_deck()
+							G.jokers:emplace(card)
+						end
+						return {completed=true}						
+					end})) 
+					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_m_ex'), colour = G.C.DARK_EDITION}) --todo: display a message that won't give an error
+				return true
+			end)}))
+		end
+	end
+	
+}
+local smallestm = {
+    	object_type = "Joker",
+	name = "cry-smallestm",
+	key = "smallestm",
+    	config = {extra = {Xchips = 9, type = "Pair", check = false, text = "Inactive"}},
+	pos = {x = 5, y = 0},
+	loc_txt = {
+        name = 'Tiny',
+        text = {
+            "{X:chips,C:white} X#1# {} Chips until end",
+	    "of round if",
+	    "{C:attention}poker hand{} is a {C:attention}#2#{}",
+	    "{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
+	    "{C:inactive,s:0.8}ok so basically i'm very smol"
+        }
+    	},
+	rarity = "cry_epic",
+	cost = 8,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+    	loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xchips, center.ability.extra.type, center.ability.extra.text}}
+    	end,
+    	calculate = function(self, card, context)
+        	if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
+            	return {
+                	message = "X"..card.ability.extra.Xchips,
+                	Xchip_mod = card.ability.extra.Xchips,
+                	colour = G.C.CHIPS
+            	}
+        	end
+		if context.cardarea == G.jokers and context.before and not context.blueprint then
+			if context.scoring_name == card.ability.extra.type and not card.ability.extra.check then
+				card.ability.extra.check = true
+				card_eval_status_text(card, 'extra', nil, nil, nil, {
+                        	message = localize('k_active_ex'),
+                        	colour = G.C.FILTER
+                        	})
+				card.ability.extra.text = "Active"
+			end
+		end
+		if context.end_of_round and card.ability.extra.check and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
+			card.ability.extra.check = false
+			card.ability.extra.text = "Inactive"
+            		return {
+                    	message = localize('k_reset'),
+                        card = card,
+			}
+		end
+    	end
 }
 local boredom = {
 	object_type = "Joker",
 	name = "cry-Boredom",
 	key = "boredom",
-	pos = {x = 0, y = 0},
+	pos = {x = 1, y = 0},
 	config = {extra = {odds = 2}},
 	loc_txt = {
         name = 'Boredom',
@@ -316,17 +503,16 @@ local boredom = {
 			"{C:green}#1# in #2#{} chance to",
 			"{C:attention}retrigger{} each {C:attention}Joker{}",
 			"or {C:attention}played card{}",
-			"{C:inactive,s:0.8}(Excludes itself){}"
+			"{C:inactive,s:0.8}Does not affect other Boredom{}"
 		}
     },
 	rarity = "cry_epic",
-	cost = 12,
-	discovered = true,
+	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
     end,
-	atlas = "boredom",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
         if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
 			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
@@ -350,33 +536,24 @@ local boredom = {
 		end
 	end
 }
-local boredom_sprite = {
-	object_type = "Atlas",
-    key = "boredom",
-    
-    path = "j_cry_boredom.png",
-    px = 71,
-    py = 95
-}
 local number_blocks = {
     object_type = "Joker",
 	name = "cry-Number Blocks",
 	key = "number_blocks",
     config = {extra = {money_mod = 1, money = 0}},
-	pos = {x = 0, y = 0},
+	pos = {x = 0, y = 2},
 	loc_txt = {
         name = 'Number Blocks',
         text = {
-			"Earn {C:money}$#1#{} at end of round,",
-			"permanently increase payout by",
-			"{C:money}$#2#{} for each {C:attention}#3#{} held in hand,",
+			"Earn {C:money}$#1#{} at end of round",
+			"Increase payout by {C:money}$#2#{}",
+			"for each {C:attention}#3#{} held in hand,",
 			"rank changes every round"
         }
     },
 	rarity = "cry_epic",
-	cost = 12,
-	discovered = true,
-	atlas = "number_blocks",
+	cost = 14,
+	atlas = "atlasepic",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.money, center.ability.extra.money_mod, localize(G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace", 'ranks')}}
     end,
@@ -393,19 +570,11 @@ local number_blocks = {
 		end
 	end
 }
-local number_blocks_sprite = {
-	object_type = "Atlas",
-    key = "number_blocks",
-    path = "j_cry_number_blocks.png",
-    px = 71,
-    py = 95
-}
-
 local double_scale = {
     object_type = "Joker",
     name = "cry-Double Scale",
     key = "Double Scale",
-    pos = {x = 0, y = 0},
+    pos = {x = 0, y = 3},
     loc_txt = {
         name = 'Double Scale',
         text = {
@@ -416,9 +585,8 @@ local double_scale = {
         }
     },
     rarity = "cry_epic",
-    cost = 13,
-    discovered = true,
-    atlas = "double_scale",
+    cost = 18,
+    atlas = "atlasepic",
     --todo: support jokers that scale multiple variables
     calculate = function(self, card, context)
         --initialize tracking object
@@ -605,26 +773,18 @@ local double_scale = {
         return
     end
 }
-
-local double_scale_sprite = {
-    object_type = "Atlas",
-    key = "double_scale",
-    path = "j_cry_double_scale.png",
-    px = 71,
-    py = 95
-}
 local oldcandy = {
 	object_type = "Joker",
 	name = "cry_oldcandy",
 	key = "oldcandy",
-	pos = {x = 0, y = 0},
+	pos = {x = 4, y = 1},
     config = {extra = {hand_size = 3}},
 	loc_txt = {
 	name = 'Nostalgic Candy',
 	text = {
-			"Permanently gain",
+			"Sell this card to",
+			"permanently gain",
 			"{C:attention}+#1#{} hand size",
-			"when sold"
 		}
 	},
     loc_vars = function(self, info_queue, center)
@@ -632,42 +792,33 @@ local oldcandy = {
     end,
 	rarity = "cry_epic",
 	cost = 10,
-	discovered = true,
 	eternal_compat = false,
-	atlas = "oldcandy",
+	atlas = "atlasepic",
 	calculate = function(self, card, context)
 	if context.selling_self and not context.blueprint then
-            G.hand:change_size(card.ability.extra.hand_size)
+            G.hand:change_size(math.floor(card.ability.extra.hand_size))
         end
 end
-}
-	
-local oldcandy_sprite = {
-    object_type = "Atlas",
-    key = "oldcandy",
-    path = "j_cry_oldcandy.png",
-    px = 71,
-    py = 95
-}
+}	
 local caramel = {
     object_type = "Joker",
 	name = "cry-caramel",
 	key = "caramel",
 	config = {extra = {x_mult = 1.75, rounds_remaining = 11}},
-	pos = {x = 0, y = 0},
+	pos = {x = 0, y = 1},
 	loc_txt = {
         name = 'Caramel',
         text = {
-        "All cards scored give {X:mult,C:white}X#1#{} Mult",
+        "Each played card gives",
+	"{X:mult,C:white}X#1#{} Mult when scored",
         "for the next {C:attention}#2#{} rounds",
         }
     	},
 	rarity = "cry_epic",
-	cost = 11,
-	discovered = true,
+	cost = 12,
 	blueprint_compat = true,
 	eternal_compat = false,
-	atlas = 'caramel',
+	atlas = 'atlasepic',
     	loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_mult, center.ability.extra.rounds_remaining}}
     	end,
@@ -713,20 +864,11 @@ local caramel = {
         end
     	end
 }
-local caramel_sprite = {
-    object_type = "Atlas",
-    key = "caramel",
-    
-    path = "j_cry_caramel.png",
-    px = 71,
-    py = 95
-}
-
 local curse = {
     object_type = "Joker",
     name = "cry_curse",
     key = "curse",
-    pos = {x = 0, y = 0},
+    pos = {x = 1, y = 1},
     loc_txt = {
         name = 'Sob',
         text = {
@@ -738,9 +880,8 @@ local curse = {
     },
     rarity = "cry_epic",
     cost = 4,
-    discovered = true,
     perishable_compat = true,
-    atlas = "curse",
+    atlas = "atlasepic",
     calculate = function(self, card, context)
         if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
 	    local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
@@ -927,17 +1068,62 @@ local curse = {
                 }
     end
 }
-
-local curse_sprite = {
-    object_type = "Atlas",
-    key = "curse",
-    path = "j_cry_curse.png",
-    px = 71,
-    py = 95
+local bonusjoker = {
+	object_type = "Joker",
+	name = "cry-bonusjoker",
+	key = "bonusjoker",
+	pos = {x = 3, y = 2},
+	config = {extra = {odds = 15, Xchips = 1.5, check = true}},
+	loc_txt = {
+        name = 'Bonus Joker',
+        text = {
+			"Each played {C:attention}Bonus Card",
+			"gives {X:mult,C:white}X#3#{} Mult when scored",
+			"{C:green}#1# in #2#{} chance for each",
+			"played {C:attention}Bonus Card{} to increase",
+			"{C:attention}joker{} slots by {C:dark_edition}1{} when scored",
+			"{C:red}Works 1 time per turn"
+		}
+    	},
+	rarity = "cry_epic",
+	cost = 12,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xchips}}
+    	end,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+    		if context.individual and context.cardarea == G.play and not context.blueprint then
+        		if context.other_card.ability.effect == "Bonus Card" then
+            			if pseudorandom('bonusjoker') < G.GAME.probabilities.normal / card.ability.extra.odds and card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
+					card.ability.extra.check = false
+                			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+                			return {
+					x_mult = card.ability.extra.Xchips, --Xchips doesn't seem to work so using xmult for now
+					extra = {focus = card, message = localize('k_upgrade_ex')},
+					card = card,
+					colour = G.C.CHIPS
+					}
+				else
+					return {
+                			x_mult = card.ability.extra.Xchips, --Xchips doesn't seem to work so using xmult for now
+                			colour = G.C.CHIPS,
+                			card = card
+            				}
+				end
+            		
+        		end
+    		end
+		if context.end_of_round and not card.ability.extra.check and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
+			card.ability.extra.check = true
+            		return {
+                    	message = localize('k_reset'),
+                        card = card,
+			}
+		end
+	end
 }
-
-
-G.P_JOKER_RARITY_POOLS["cry_epic"] = {googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse}
+G.P_JOKER_RARITY_POOLS["cry_epic"] = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, doodlem, virgo, smallestm, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker}
 
 
 return {name = "Epic Jokers", 
@@ -1027,4 +1213,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {googol_play_sprite, sync_catalyst_sprite, negative_sprite, canvas_sprite, error_sprite, M_sprite, m_sprite, boredom_sprite, double_scale_sprite, number_blocks_sprite, oldcandy_sprite, caramel_sprite, curse_sprite, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse}}
+		items = {atlasepic, negative_sprite, supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, doodlem, virgo, smallestm, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker,}}
