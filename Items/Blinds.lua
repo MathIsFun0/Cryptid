@@ -60,7 +60,6 @@ local tax = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('40ff40'),
     cry_cap_score = function(self, score)
         return math.floor(math.min(0.4*G.GAME.blind.chips,score)+0.5)
@@ -85,7 +84,6 @@ local clock = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('853455'),
     defeat = function(self, silent)
         G.P_BLINDS.bl_cry_clock.mult = 0
@@ -115,7 +113,6 @@ local trick = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('babd24'),
     cry_after_play = function(self)
         --flip and shuffle all cards held in hand
@@ -177,7 +174,6 @@ local lavender_loop = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('ae00ff'),
     disable = function(self, silent)
         G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
@@ -206,7 +202,6 @@ local vermillion_virus = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('f65d34'),
     cry_before_play = function(self)
         if G.jokers.cards[1] then
@@ -244,7 +239,6 @@ local sapphire_stamp = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('4057d6'),
     cry_before_play = function(self)
         local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
@@ -284,7 +278,6 @@ local obsidian_orb = {
         }
     },
     atlas = "blinds",
-    discovered = true,
     boss_colour = HEX('290759'),
     set_blind = function(self, reset, silent)
         for k, _ in pairs(G.GAME.defeated_blinds) do
