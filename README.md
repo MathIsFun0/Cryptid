@@ -12,3 +12,4 @@ Cryptid currently adds:
 - 8 new boss blinds
 - 1 new enhancement and corresponding tarot card
 - 4 new editions
+- 2 new rarities
