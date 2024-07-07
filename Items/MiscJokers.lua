@@ -1768,6 +1768,14 @@ local meteor = {
                 chip_mod = card.ability.extra.chips
             }
         end
+	if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.foil == true then
+				return {
+                			message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+                			chip_mod = card.ability.extra.chips
+            			}
+			end
+	end
     end,
     atlas = "atlastwo",
 }
@@ -2436,7 +2444,7 @@ local loopy = {
     name = "cry-loopy",
     key = "loopy",
     config = {extra = {handsize = 0, text = ""}, jolly = {t_mult = 8, type = 'Pair'}},
-    pos = {x = 4, y = 2},
+    pos = {x = 4, y = 1},
     atlas = 'atlastwo',
     loc_txt = {
         name = 'Loopy',
