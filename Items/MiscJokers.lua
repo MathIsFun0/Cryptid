@@ -1771,9 +1771,10 @@ local meteor = {
 	if context.individual and context.cardarea == G.play then
 			if context.other_card.edition and context.other_card.edition.foil == true then
 				return {
-                			message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-                			chip_mod = card.ability.extra.chips
-            			}
+                    			chips = card.ability.extra.chips,
+                    			colour = G.C.CHIPS,
+                    			card = card
+                			}
 			end
 	end
     end,
@@ -1814,6 +1815,15 @@ local exoplanet = {
 		mult_mod = card.ability.extra.mult, 
             }
         end
+	if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.holo == true then
+            			return {
+                    			mult = card.ability.extra.mult,
+                    			colour = G.C.MULT,
+                    			card = card
+                			}
+			end
+	end
 	end,
 	atlas = "atlastwo",
 }
@@ -1852,6 +1862,15 @@ local stardust = {
                 Xmult_mod = card.ability.extra.xmult
             }
         end
+	if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.polychrome == true then
+            			return {
+                    			x_mult = card.ability.extra.xmult,
+                    			colour = G.C.MULT,
+                    			card = card
+                			}
+			end
+	end
 	end,
 	atlas = "atlastwo",
 }
