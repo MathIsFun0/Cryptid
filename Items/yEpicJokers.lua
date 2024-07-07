@@ -1088,6 +1088,7 @@ local bonusjoker = {
 	rarity = "cry_epic",
 	cost = 12,
 	blueprint_compat = true,
+	enhancement_gate = 'm_bonus',
 	loc_vars = function(self, info_queue, center)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xchips}}
     	end,
