@@ -169,7 +169,7 @@ local eclipse = {
         }
     },
     atlas = "eclipse_atlas",
-    loc_vars = function(self, info_queue) --add infoqueue later
+    loc_vars = function(self, info_queue)
         return {vars = {self.config.max_highlighted}}
     end,
 }
@@ -192,18 +192,19 @@ return {name = "Misc.",
         --echo card
             cs = Card.calculate_seal
         function Card:calculate_seal(context)
-            cs(self,context)
+            local ret = cs(self,context)
         if context.repetition then
 		    if self.config.center == G.P_CENTERS.m_cry_echo then
                 if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
                     return {
                         message = localize('k_again_ex'),
-                        repetitions = self.ability.retriggers,
+                        repetitions = (ret and ret.repetitions or 0) + self.ability.retriggers,
                         card = self
                     }
                 end
             end
         end
+        return ret
         end
         end,
         items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, echo_atlas, echo, eclipse_atlas, eclipse}}
