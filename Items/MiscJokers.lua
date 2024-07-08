@@ -2210,7 +2210,7 @@ local mstack = {
         end
         
         if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
-            if card.ability.extra.sell < card.ability.extra.sell_req then
+            if card.ability.extra.sell >= card.ability.extra.sell_req then
                 if not context.blueprint or context.retrigger_joker then
                     card.ability.extra.retriggers = card.ability.extra.retriggers + 1
                 end
@@ -2225,7 +2225,7 @@ local mstack = {
                 card.ability.extra.sell = card.ability.extra.sell + 1
                 return {
                     card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        message = "1/2",
+                        message = card.ability.extra.sell.."/"..card.ability.extra.sell_req,
                         colour = G.C.FILTER,
                     })
                 }
