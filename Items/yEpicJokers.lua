@@ -309,7 +309,7 @@ local doodlem = {
             "Create a {C:dark_edition}Negative{} {C:attention}consumable{}",
             "for each {C:attention}Jolly Joker{}",
             "when {C:attention}Blind{} is selected",
-	    "{C:inactive}(Min of 1, Max of 12){}" --This limit is mostly to avoid lag issues from runs with lots of jolly jokers. From testing OUTSIDE of antimatter deck I don't really reach this limit anyway so I think this is good enough
+	    "{C:inactive}(Minimum of 1){}"
         }
     },
     rarity = "cry_epic",
@@ -325,54 +325,15 @@ local doodlem = {
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
             end
-	    if jollycount > 12 then jollycount = 12 end
-            if jollycount > 0 then
+			if jollycount < 1 then jollycount = 1 end
 		for i = 1, jollycount do
-                	local consumeable = pseudorandom_element({1, 2, 3}, pseudoseed('doodlem'))
-                	if consumeable == 1 then
-                        	local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'm')
                         	card:set_edition({negative = true})
                         	card:add_to_deck()
                         	G.consumeables:emplace(card)
-				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
-                	elseif consumeable == 2 then
-                    		local card = create_card('Planet', G.consumeables, nil, nil, nil, nil, nil, 'm')
-                        	card:set_edition({negative = true})
-                        	card:add_to_deck()
-                        	G.consumeables:emplace(card)
-                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_planet'), colour = G.C.SECONDARY_SET.Planet})
-                	elseif consumeable == 3 then
-                    		local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'm')
-                        	card:set_edition({negative = true})
-                        	card:add_to_deck()
-                        	G.consumeables:emplace(card)
-                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_spectral'), colour = G.C.SECONDARY_SET.Spectral})
-                	end
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = "+1 Consumeable", colour = G.C.PURPLE})
 		end
 		return true
-	    else
-		local consumeable = pseudorandom_element({1, 2, 3}, pseudoseed('doodlem'))
-                	if consumeable == 1 then
-                        	local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, nil, 'm')
-                        	card:set_edition({negative = true})
-                        	card:add_to_deck()
-                        	G.consumeables:emplace(card)
-				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
-                	elseif consumeable == 2 then
-                    		local card = create_card('Planet', G.consumeables, nil, nil, nil, nil, nil, 'm')
-                        	card:set_edition({negative = true})
-                        	card:add_to_deck()
-                        	G.consumeables:emplace(card)
-                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_planet'), colour = G.C.SECONDARY_SET.Planet})
-                	elseif consumeable == 3 then
-                    		local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'm')
-                        	card:set_edition({negative = true})
-                        	card:add_to_deck()
-                        	G.consumeables:emplace(card)
-                        	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_spectral'), colour = G.C.SECONDARY_SET.Spectral})
-                	end
-		return true
-	    end
         end
     end
 }
@@ -392,7 +353,7 @@ local virgo = {
 			"Sell this card to create a",
 			"{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
 			"every {C:money}$4{} of {C:attention}sell value{}",
-			"{C:inactive}(Min of 1, Max of 15){}" --this max is mostly to avoid issues with lag with things like misprint deck/double scale gift card. I think this limit is reasonable enough xd
+			"{C:inactive}(Minimum of 1){}"
 		}
     },
 	rarity = "cry_epic",
@@ -418,7 +379,6 @@ local virgo = {
 		if context.selling_self and not context.blueprint and not context.retrigger_joker then
 			local summon = math.floor((card.ability.extra_value + 4)*0.25) -- +4 to account for default sell value (certified no source code moment)
 			if summon < 1 then summon = 1 end --precautionary measure, just in case
-			if summon > 15 then summon = 15 end
 			G.E_MANAGER:add_event(Event({
 			func = (function()
 				G.E_MANAGER:add_event(Event({
@@ -430,12 +390,12 @@ local virgo = {
 							})
 							card:add_to_deck()
 							G.jokers:emplace(card)
-						end
-						return {completed=true}						
+						end					
 					end})) 
 					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_m_ex'), colour = G.C.DARK_EDITION}) --todo: display a message that won't give an error
 				return true
 			end)}))
+			return {completed=true}
 		end
 	end
 	
@@ -450,8 +410,8 @@ local smallestm = {
         name = 'Tiny',
         text = {
             "{X:chips,C:white} X#1# {} Chips until end",
-	    "of round if",
-	    "{C:attention}poker hand{} is a {C:attention}#2#{}",
+	    "of round if {C:attention}poker hand{}",
+	    "is a {C:attention}#2#{}",
 	    "{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
 	    "{C:inactive,s:0.8}ok so basically i'm very smol"
         }

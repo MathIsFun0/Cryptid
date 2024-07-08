@@ -1564,8 +1564,8 @@ local mondrian = {
     name = 'Mondrian',
     text = {
                 "This Joker gains {X:mult,C:white} X#1# {} Mult",
-                "If no {C:attention}discards{}",
-		"were used this round",
+                "if no {C:attention}discards{} were",
+		"used this round",
                 "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
            }
     },
@@ -1598,11 +1598,11 @@ local sapling = {
 	name = "cry-sapling",
 	key = "sapling",
 	pos = {x = 3, y = 2},
-	config = {extra = {score = 0}},
+	config = {extra = {score = 0, req = 30}},
 	loc_txt = {
         name = 'Sapling',
         text = {
-			"After scoring {C:attention}30{} {C:inactive}[#1#]{} Enchanced",
+			"After scoring {C:attention}#2#{} {C:inactive}[#1#]{} Enhanced",
 			"cards, sell this card to",
 			"Create an {C:cry_epic}Epic{} {C:attention}Joker{}",
 			"{C:inactive,s:0.8}Will create a {C:red,s:0.8}Rare{} {C:attention,s:0.8}Joker{}",
@@ -1613,14 +1613,14 @@ local sapling = {
 	cost = 6,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return {vars = {center.ability.extra.score}}
+		return {vars = {center.ability.extra.score, center.ability.extra.req}}
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
         	if context.individual and context.cardarea == G.play and not context.blueprint and not context.retrigger_joker then
 			if context.other_card.ability.effect ~= "Base" then
 				card.ability.extra.score = card.ability.extra.score + 1
-				if card.ability.extra.score >= 30 then
+				if card.ability.extra.score >= card.ability.extra.req then
 					local eval = function(card) return not card.REMOVED end
 					juice_card_until(self, eval, true)
 				end
@@ -1644,10 +1644,9 @@ local spaceglobe = {
 	loc_txt = {
         name = 'Celestial Globe',
         text = {
-			"This joker gains",
-			"{X:chips,C:white}X#2#{} Chips if {C:attention}poker hand{}",
-			"is a {C:attention}#3#{}",
-			"Hand changes after increase",
+			"This joker gains {X:chips,C:white}X#2#{} Chips",
+			"if {C:attention}poker hand{} is a {C:attention}#3#{}",
+			"{C:inactive}(Hand changes after increase){}",
 			"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}"
 		}
     	},
@@ -1697,8 +1696,8 @@ local happy = {
     loc_txt = {
         name = ':D',
         text = {
-            "Create a random {C:attention}Joker{}",
-	    "when {C:attention}purchased{}",
+            "Create a random {C:attention}Joker{} when",
+            "{C:attention}purchased{}",
 	    "Sell this card to",
 	    "create a random {C:attention}Joker{}",
 	    "{C:inactive}(Must have room){}"
@@ -1873,7 +1872,6 @@ local stardust = {
 	end,
 	atlas = "atlastwo",
 }
---end of jokers that don't work
 local jollysus = {
     object_type = "Joker",
     name = "cry-jollysus",
@@ -1885,7 +1883,7 @@ local jollysus = {
         text = {
             "Create a {C:attention}Jolly Joker{}",
             "when a joker is {C:attention}sold{}",
-            "{C:red}Works 1 time per round{}",
+            "{C:red}Works once per round{}",
             "{C:inactive}#1##2#{}"
         }
     },
@@ -1951,7 +1949,7 @@ local kidnap = {
 	name = "cry-kidnap",
 	key = "kidnap",
 	pos = {x = 1, y = 2},
-	config = {jolly = {t_mult = 8, type = 'Pair'}},
+	config = {jolly = {t_mult = 8, type = 'Pair'}, zany = {t_mult = 12, type = 'Three of a Kind'}, mad = {t_mult = 10, type = 'Two Pair'}, crazy = {t_mult = 12, type = 'Straight'}, droll = {t_mult = 10, type = 'Flush'}, sly = {t_chips = 50, type = 'Pair'}},
 	loc_txt = {
         name = 'Kidnapping',
         text = {
@@ -1966,6 +1964,11 @@ local kidnap = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_zany', specific_vars = {self.config.zany.t_mult, self.config.zany.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_mad', specific_vars = {self.config.mad.t_mult, self.config.mad.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_crazy', specific_vars = {self.config.crazy.t_mult, self.config.crazy.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_droll', specific_vars = {self.config.droll.t_mult, self.config.droll.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_sly', specific_vars = {self.config.sly.t_chips, self.config.sly.type} }
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context) --I'm sure there is a more elegant way to do this but oh well
@@ -2095,14 +2098,14 @@ local foodm = {
     object_type = "Joker",
     name = "cry-foodm",
     key = "foodm",
-    config = {extra = {mult = 70, rounds_remaining = 2, text = "s"}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {mult = 70, rounds_remaining = 2, text = "s", round_inc = 1}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 4, y = 2},
     loc_txt = {
         name = 'Fast Food M',
         text = {
             "{C:mult}+#1#{} Mult",
-            "{C:red,E:2}self destructs{} in {C:attention}#2#{} round#3#,",
-            "Increase by {C:attention}1{} round when",
+            "{C:red,E:2}self destructs{} in {C:attention}#2#{} round#3#",
+            "Increases by {C:attention}#4#{} round when",
             "{C:attention}Jolly Joker{} is {C:attention}sold{}",
             "{C:inactive,s:0.8}2 McDoubles, 2 McChickens{}",
             "{C:inactive,s:0.8}Large Fries, 20 Piece{}",
@@ -2115,7 +2118,7 @@ local foodm = {
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.mult, center.ability.extra.rounds_remaining, center.ability.extra.text}}
+        return {vars = {center.ability.extra.mult, center.ability.extra.rounds_remaining, center.ability.extra.text, center.ability.extra.round_inc}}
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and (card.ability.extra.mult > 0) and not context.before and not context.after then
@@ -2157,10 +2160,10 @@ local foodm = {
             end
         end
         if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
-            card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + 1
+            card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + center.ability.extra.round_inc
 	    return {
             	    card_eval_status_text(card, 'extra', nil, nil, nil, {
-                    message = "+1 Round",
+                    message = "+"..center.ability.extra.round_inc.." Round",
                     colour = G.C.FILTER,
                 })
             }
@@ -2176,15 +2179,15 @@ local mstack = {
     object_type = "Joker",
     name = "cry-mstack",
     key = "mstack",
-    config = {extra = {sell = 0, retriggers = 0, text = ""}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {sell = 0, sell_req = 2, retriggers = 0, text = ""}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 2, y = 3},
     atlas = 'atlastwo',
     loc_txt = {
         name = 'M Stack',
         text = {
             "Retrigger all cards played",
-            "once for every {C:attention}2 Jolly Jokers{}",
-            "{C:attention}sold{}, up to {C:attention}8 sold{}",
+            "once for every",
+            "{C:attention}#3# Jolly Jokers{} sold",
             "{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers) #2#{}",
         }
     },
@@ -2193,7 +2196,7 @@ local mstack = {
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.retriggers, center.ability.extra.text}}
+        return {vars = {center.ability.extra.retriggers, center.ability.extra.text, center.ability.extra.sell_req}}
     end,
     calculate = function(self, card, context) --note: hardcoded like this intentionally
         if context.repetition then
@@ -2206,8 +2209,8 @@ local mstack = {
             end
         end
         
-        if context.selling_card and context.card.ability.name == "Jolly Joker" and card.ability.extra.retriggers < 4 and not context.blueprint and not context.retrigger_joker then
-            if card.ability.extra.sell == 1 then
+        if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
+            if card.ability.extra.sell < card.ability.extra.sell_req then
                 if not context.blueprint or context.retrigger_joker then
                     card.ability.extra.retriggers = card.ability.extra.retriggers + 1
                 end
@@ -2244,10 +2247,9 @@ local mneon = {
         name = 'Neon M',
         text = {
             "Earn {C:money}$#2#{} at end of round",
-            "Increase payout by {C:money}$#1#{}",
+            "Permanently increase payout by {C:money}$#1#{}",
 	    "for each {C:attention}Jolly Joker{}",
 	    "at end of round",
-	    "{C:inactive}(Max of {C:money}$30{}{C:inactive}){}"
         }
     },
     rarity = 2,
@@ -2265,7 +2267,7 @@ local mneon = {
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
             end
-		if jollycount > 0 and card.ability.extra.money < 30 then
+		if jollycount > 0 then
             		card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus * jollycount
 			return {message = "M!"}
 		end
@@ -2283,15 +2285,15 @@ local notebook = {
     name = "cry-notebook",
     key = "notebook",
     pos = {x = 1, y = 0},
-    config = {extra = {odds = 15, slot = 0, check = true, active = "Active", inactive = ""}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {odds = 15, slot = 0, Xodds = 3, jollies = 3, check = true, active = "Active", inactive = ""}, jolly = {t_mult = 8, type = 'Pair'}},
     loc_txt = {
     name = 'Notebook',
     text = {
     	"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
 	"slot per {C:attention}reroll{} in the shop",
-	"{C:green}Triple odds{} if there are {C:attention}3{}",
+	"{X:green,C:white}X#6#{} odds if there are {C:attention}#7#{}",
 	"or more {C:attention}Jolly Jokers{}",
-	"{C:red}Works 1 time per round{}",
+	"{C:red}Works once per round{}",
 	"{C:inactive}(Currently {C:dark_edition}+#3#{}{C:inactive} and #4##5#){}"
     	}
     },
@@ -2300,7 +2302,7 @@ local notebook = {
     perishable_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-	return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.slot, center.ability.extra.active, center.ability.extra.inactive}}
+	return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.slot, center.ability.extra.active, center.ability.extra.inactive, center.ability.extra.Xodds, center.ability.extra.jollies}}
     end,
     atlas = "atlasone",
     calculate = function(self, card, context) --from testing this is sometimes giving me/displaying xmult when it shouldn't. maybe this is just an issue on my side? I'm not quite sure but this is very strange
@@ -2309,8 +2311,8 @@ local notebook = {
             		for i = 1, #G.jokers.cards do
                 		if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
             		end
-				if jollycount >= 3 then --if there are 3 or more Jolly jokers
-					if pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds * 3 then --Triple odds
+				if jollycount >= card.ability.extra.jollies then --if there are 3 or more Jolly jokers
+					if pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds * card.ability.extra.Xodds then --Triple odds
 						card.ability.extra.slot = card.ability.extra.slot + 1
 						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
 						card.ability.extra.check = false
@@ -2367,8 +2369,7 @@ local bonk = {
 	loc_txt = {
         name = 'Bonk',
         text = {
-            "Each {C:attention}Jolly Joker{}",
-            "gives {C:chips}+#1#{} Chips",
+            "Each {C:attention}Jolly Joker{} gives {C:chips}+#1#{} Chips",
 	    "Increase amount by {C:chips}+#2#{} if",
 	    "{C:attention} poker hand{} is a {C:attention}#3#{}"
 		}
@@ -2412,14 +2413,14 @@ local morse = {
     name = "cry-morse",
     key = "morse",
     pos = {x = 5, y = 1},
-    config = {extra = {bonus = 2, money = 1}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {bonus = 2, money = 1, Xmoney = 2}, jolly = {t_mult = 8, type = 'Pair'}},
     loc_txt = {
         name = 'Morse Code',
         text = {
             "Earn {C:money}$#2#{} at end of round",
-            "Increase payout by {C:money}$#1#{} When a",
+            "Increase payout by {C:money}$#1#{} when a",
 	    "Joker with an {C:attention}Edition{} is {C:attention}sold{}",
-	    "Gain {C:money}double{} if {C:attention}sold{} Joker",
+	    "Gain {X:money,C:white} X#3# {} if {C:attention}sold{} Joker",
 	    "was {C:attention}Jolly Joker"
         }
     },
@@ -2429,12 +2430,12 @@ local morse = {
     blueprint_compat = false,
     loc_vars = function(self, info_queue, center)
 	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.bonus, center.ability.extra.money}}
+        return {vars = {center.ability.extra.bonus, center.ability.extra.money, center.ability.extra.Xmoney}}
     end,
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if context.selling_card and context.card.edition and context.card.ability.name == "Jolly Joker" and not context.blueprint then
-            card.ability.extra.money = card.ability.extra.money + 2*card.ability.extra.bonus
+            card.ability.extra.money = card.ability.extra.money + center.ability.extra.Xmoney*card.ability.extra.bonus
 	    return {
                     card_eval_status_text(card, 'extra', nil, nil, nil, {
                     message = "M!",
@@ -2461,16 +2462,15 @@ local loopy = {
     object_type = "Joker",
     name = "cry-loopy",
     key = "loopy",
-    config = {extra = {handsize = 0, text = ""}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {handsize = 0, handsize_mod = 1}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 4, y = 1},
     atlas = 'atlastwo',
     loc_txt = {
         name = 'Loopy',
         text = {
-            "{C:attention}+1{} handsize for",
-            "each {C:attention}Jolly Joker{}",
-            "{C:attention}sold{}, up to {C:attention}3 sold{}",
-            "{C:inactive}(Currently{}{C:attention:} +#1#{}{C:inactive}) #2#{}",
+            "{C:attention}+#2#{} handsize for",
+            "each {C:attention}Jolly Joker{} sold",
+            "{C:inactive}(Currently{}{C:attention:} +#1#{}{C:inactive}){}",
 	    "{C:inactive,s:0.8}There wasn't enough room...{}"
         }
     },
@@ -2479,21 +2479,18 @@ local loopy = {
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.handsize, center.ability.extra.text}}
+        return {vars = {center.ability.extra.handsize, center.ability.extra.handsize_mod}}
     end,
     calculate = function(self, card, context) --note: hardcoded like this intentionally
-        if context.selling_card and context.card.ability.name == "Jolly Joker" and card.ability.extra.handsize < 3 and not context.blueprint and not context.retrigger_joker then
-                card.ability.extra.handsize = card.ability.extra.handsize + 1
-		G.hand:change_size(1)
+        if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
+                card.ability.extra.handsize = card.ability.extra.handsize + card.ability.extra.handsize_mod
+		G.hand:change_size(card.ability.extra.handsize_mod)
                 return {
                     card_eval_status_text(card, 'extra', nil, nil, nil, {
                         message = "Upgrade!",
                         colour = G.C.FILTER,
                     })
                 }
-        end
-        if card.ability.extra.handsize == 3 then --for display
-            card.ability.extra.text = "(MAX)"
         end
     end,
     remove_from_deck = function(self, card, from_debuff)
@@ -2546,8 +2543,8 @@ local sacrifice = {
         name = 'Sacrifice',
         text = {
 			"Create a {C:attention}Jolly Joker{}",
-			"when a {C:spectral}spectral{} card is used",
-			"{C:red}Works 2 times per round{}",
+			"when a {C:spectral}Spectral{} card is used",
+			"{C:red}Works twice per round{}",
 			"{C:inactive}#1#{}"
 		}
     },
