@@ -1380,25 +1380,25 @@ local magnet = {
     name = "cry-magnet",
     key = "magnet",
     pos = {x = 4, y = 0},
-    config = {extra = {money = 3}},
+    config = {extra = {money = 3, Xmoney = 3, slots = 4}},
     loc_txt = {
         name = 'Fridge Magnet',
         text = {
             "Earn {C:money}$#1#{} at end of round",
-	    "Earn {C:money}Triple{} if there are",
-	    "{C:attention}4{} or fewer {C:attention}Joker{} cards",
+	    "Earn {X:money,C:white} X#2# {} if there are",
+	    "{C:attention}#3#{} or fewer {C:attention}Joker{} cards",
         }
     },
     rarity = 1,
     cost = 5,
     blueprint_compat = false,
     loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.money}}
+        return {vars = {center.ability.extra.money, center.ability.extra.Xmoney, center.ability.extra.slots}}
     end,
     atlas = "atlastwo",
     calc_dollar_bonus = function(self, card)
-        if #G.jokers.cards <= 4 then
-            return card.ability.extra.money * 3
+        if #G.jokers.cards <= card.ability.extra.slots then
+            return card.ability.extra.money * card.ability.extra.Xmoney
 	else
 	    return card.ability.extra.money
 	end
