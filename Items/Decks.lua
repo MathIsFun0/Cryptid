@@ -1,9 +1,16 @@
+local atlasdeck = {
+    object_type = "Atlas",
+    key = "atlasdeck",
+    path = "atlasdeck.png",
+    px = 71,
+    py = 95
+}
 local very_fair = {
     object_type = "Back",
     name = "Very Fair Deck",
     key = "very_fair",
 	config = {hands = -2, discards = -2, cry_no_vouchers = true},
-	pos = {x = 0, y = 0},
+	pos = {x = 4, y = 0},
 	loc_txt = {
         name = "Very Fair Deck",
         text = {
@@ -16,7 +23,7 @@ local very_fair = {
     --[[loc_vars = function(self, info_queue, center)
         return {vars = {center.effect.config.hands, center.effect.config.discards}}
     end,--]] --this doesn't work, will fix later
-    atlas = "very_fair"
+    atlas = "atlasdeck"
 }
 
 -- Thanks to many members of the community for contributing to all of these quips!
@@ -89,21 +96,12 @@ very_fair_quips = {
 }
 very_fair_quip = {}
 
-local very_fair_sprite = {
-    object_type = "Atlas",
-    key = "very_fair",
-    
-    path = "b_cry_very_fair.png",
-    px = 71,
-    py = 95
-}
-
 local equilibrium = {
     object_type = "Back",
     name = "cry-Equilibrium",
     key = "equilibrium",
 	config = {vouchers = {'v_overstock_norm','v_overstock_plus'}, cry_equilibrium = true},
-	pos = {x = 0, y = 0},
+	pos = {x = 0, y = 1},
 	loc_txt = {
         name = "Deck of Equilibrium",
         text = {
@@ -114,21 +112,14 @@ local equilibrium = {
             "{C:attention,T:v_overstock_plus}Overstock Plus"
         }
     },
-    atlas = "equilibrium"
-}
-local equilibrium_sprite = {
-    object_type = "Atlas",
-    key = "equilibrium",
-    path = "b_cry_equilibrium.png",
-    px = 71,
-    py = 95
+    atlas = "atlasdeck"
 }
 local misprint = {
     object_type = "Back",
     name = "cry-Misprint",
     key = "misprint",
 	config = {cry_misprint_min = 0.1, cry_misprint_max = 10},
-	pos = {x = 0, y = 0},
+	pos = {x = 4, y = 2},
 	loc_txt = {
         name = "Misprint Deck",
         text = {
@@ -137,22 +128,15 @@ local misprint = {
             "are {C:attention}randomized"
         }
     },
-    atlas = "misprint"
-}
-local misprint_sprite = {
-    object_type = "Atlas",
-    key = "misprint",
-    path = "b_cry_misprint.png",
-    px = 71,
-    py = 95
+    atlas = "atlasdeck"
 }
 local infinite = {
     object_type = "Back",
     name = "cry-Infinite",
     key = "infinite",
 	config = {cry_highlight_limit = 1e20},
-	pos = {x = 0, y = 0},
-    atlas = "infinite",
+	pos = {x = 3, y = 0},
+        atlas = "atlasdeck",
 	loc_txt = {
         name = "Infinite Deck",
         text = {
@@ -161,20 +145,13 @@ local infinite = {
         }
     },
 }
-local infinite_sprite = {
-    object_type = "Atlas",
-    key = "infinite",
-    path = "b_cry_infinite.png",
-    px = 71,
-    py = 95
-}
 local conveyor = {
     object_type = "Back",
     name = "cry-Conveyor",
     key = "conveyor",
     config = {cry_conveyor = true},
-    pos = {x = 0, y = 0},
-    atlas = "conveyor",
+    pos = {x = 1, y = 1},
+    atlas = "atlasdeck",
     loc_txt = {
         name = "Conveyor Deck",
         text = {
@@ -185,20 +162,13 @@ local conveyor = {
         }
     }
 }
-local conveyor_sprite = {
-    object_type = "Atlas",
-    key = "conveyor",
-    path = "b_cry_conveyor.png",
-    px = 71,
-    py = 95
-}
 local CCD = {
     object_type = "Back",
     name = "cry-CCD",
     key = "CCD",
     config = {cry_ccd = true},
     pos = {x = 0, y = 0},
-    atlas = "CCD",
+    atlas = "atlasdeck",
     loc_txt = {
         name = "CCD Deck",
         text = {
@@ -206,13 +176,6 @@ local CCD = {
             "a {C:attention}random{} consumable"
         }
     }
-}
-local ccd_sprite = {
-    object_type = "Atlas",
-    key = "CCD",
-    path = "b_cry_ccd.png",
-    px = 71,
-    py = 95
 }
 return {name = "Misc. Decks",
         init = function()
@@ -297,5 +260,4 @@ return {name = "Misc. Decks",
                 return math.exp(poll)
             end
         end,
-        items = {very_fair_sprite, equilibrium_sprite, misprint_sprite, infinite_sprite, conveyor_sprite, ccd_sprite, 
-        very_fair, equilibrium, misprint, infinite, conveyor, CCD}}
+        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD}}

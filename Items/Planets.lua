@@ -13,7 +13,6 @@ local timantti = {
         }
     },
     cost = 4,
-    discovered = true,
     atlas = "c_suits",
     can_use = function(self, card)
         return true
@@ -43,7 +42,6 @@ local klubi = {
         }
     },
     cost = 4,
-    discovered = true,
     atlas = "c_suits",
     can_use = function(self, card)
         return true
@@ -73,7 +71,6 @@ local sydan = {
         }
     },
     cost = 4,
-    discovered = true,
     atlas = "c_suits",
     can_use = function(self, card)
         return true
@@ -103,7 +100,6 @@ local lapio = {
         }
     },
     cost = 4,
-    discovered = true,
     atlas = "c_suits",
     can_use = function(self, card)
         return true

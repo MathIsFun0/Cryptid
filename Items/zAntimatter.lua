@@ -3,7 +3,7 @@ local blank = {
     object_type = "Back",
     name = "cry-Blank",
     key = "blank",
-	pos = {x = 0, y = 0},
+	pos = {x = 1, y = 0},
 	loc_txt = {
         name = "Blank Deck",
         text = {
@@ -15,7 +15,7 @@ local blank = {
 local blank_sprite = {
     object_type = "Atlas",
     key = "blank",
-    path = "b_cry_blank.png",
+    path = "atlasdeck.png",
     px = 71,
     py = 95
 }
@@ -44,7 +44,7 @@ local antimatter = {
         cry_force_seal = 'random',
         cry_boss_blocked = {"bl_goad", "bl_window", "bl_club", "bl_head"}
     },
-	pos = {x = 0, y = 0},
+	pos = {x = 2, y = 0},
 	loc_txt = {
         name = "Antimatter Deck",
         text = {
@@ -57,7 +57,7 @@ local antimatter = {
 local antimatter_sprite = {
     object_type = "Atlas",
     key = "antimatter",
-    path = "b_cry_antimatter.png",
+    path = "atlasdeck.png",
     px = 71,
     py = 95
 }

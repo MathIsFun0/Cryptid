@@ -136,7 +136,8 @@ local echo = {
     loc_txt = {
         name = 'Echo Card',
         text = {'{C:green}#2# in #3#{} chance to',
-        '{C:attention}retrigger{} #1# times'}
+        '{C:attention}retrigger{} #1# additional',
+	'times when scored'}
     },
     atlas = 'echo_atlas',
     config = {retriggers = 2, extra = 2},
@@ -168,8 +169,7 @@ local eclipse = {
         }
     },
     atlas = "eclipse_atlas",
-	discovered = true,
-    loc_vars = function(self, info_queue)
+    loc_vars = function(self, info_queue) --add infoqueue later
         return {vars = {self.config.max_highlighted}}
     end,
 }

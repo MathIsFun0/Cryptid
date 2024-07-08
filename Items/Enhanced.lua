@@ -1,9 +1,16 @@
+local atlasenchanced = {
+    object_type = "Atlas",
+    key = "atlasenchanced",
+    path = "atlasdeck.png",
+    px = 71,
+    py = 95
+}
 local hierophant_deck = {object_type = "Back",
     name = "cry-The Hierophant's Deck",
     key = "hierophant_deck",
 	config = {cry_force_enhancement = "m_bonus"},
-	pos = {x = 0, y = 0},
-    atlas = "hierophant",
+	pos = {x = 3, y = 3},
+    atlas = "atlasenchanced",
 	loc_txt = {
         name = "The Hierophant's Deck",
         text = {
@@ -13,19 +20,12 @@ local hierophant_deck = {object_type = "Back",
         }
     },
 }
-local hierophant_sprite = {
-	object_type = "Atlas",
-    key = "hierophant",
-    path = "b_cry_hierophant.png",
-    px = 71,
-    py = 95
-}
 local empress_deck = {object_type = "Back",
     name = "cry-The Empress's Deck",
     key = "empress_deck",
 	config = {cry_force_enhancement = "m_mult"},
-    atlas = "empress",
-	pos = {x = 0, y = 0},
+    atlas = "atlasenchanced",
+	pos = {x = 2, y = 3},
 	loc_txt = {
         name = "The Empress's Deck",
         text = {
@@ -35,19 +35,12 @@ local empress_deck = {object_type = "Back",
         }
     },
 }
-local empress_sprite = {
-	object_type = "Atlas",
-    key = "empress",
-    path = "b_cry_empress.png",
-    px = 71,
-    py = 95
-}
 local lovers_deck = {object_type = "Back",
     name = "cry-The Lovers' Deck",
     key = "lovers_deck",
 	config = {cry_force_enhancement = "m_wild"},
-	pos = {x = 0, y = 0},
-    atlas = "lovers",
+	pos = {x = 5, y = 3},
+    atlas = "atlasenchanced",
 	loc_txt = {
         name = "The Lovers' Deck",
         text = {
@@ -57,19 +50,12 @@ local lovers_deck = {object_type = "Back",
         }
     },
 }
-local lovers_sprite = {
-	object_type = "Atlas",
-    key = "lovers",
-    path = "b_cry_lovers.png",
-    px = 71,
-    py = 95
-}
 local justice_deck = {object_type = "Back",
     name = "cry-Deck of Justice",
     key = "justice_deck",
 	config = {cry_force_enhancement = "m_glass"},
-	pos = {x = 0, y = 0},
-    atlas = "justice",
+	pos = {x = 4, y = 3},
+    atlas = "atlasenchanced",
 	loc_txt = {
         name = "Deck of Justice",
         text = {
@@ -78,13 +64,6 @@ local justice_deck = {object_type = "Back",
             "Cards cannot change enhancements"
         }
     },
-}
-local justice_sprite = {
-	object_type = "Atlas",
-    key = "justice",
-    path = "b_cry_justice.png",
-    px = 71,
-    py = 95
 }
 local chariot_deck = {object_type = "Back",
     name = "cry-The Chariot's Deck",
@@ -225,7 +204,7 @@ local trance_deck = {object_type = "Back",
     name = "cry-Trance Deck",
     key = "trance_deck",
 	config = {cry_force_seal = 'Blue', hide_seal = true},
-	pos = {x = 0, y = 0},
+	pos = {x = 2, y = 2},
 	loc_txt = {
         name = "Trance Deck",
         text = {
@@ -234,20 +213,13 @@ local trance_deck = {object_type = "Back",
             "Cards cannot change seals"
         }
     },
-    atlas = "trance"
-}
-local trance_sprite = {
-	object_type = "Atlas",
-    key = "trance",
-    path = "b_cry_trance.png",
-    px = 71,
-    py = 95
+    atlas = "atlasenchanced"
 }
 local medium_deck = {object_type = "Back",
     name = "cry-Medium Deck",
     key = "medium_deck",
 	config = {cry_force_seal = 'Purple', hide_seal = true},
-	pos = {x = 0, y = 0},
+	pos = {x = 1, y = 2},
 	loc_txt = {
         name = "Medium Deck",
         text = {
@@ -256,21 +228,14 @@ local medium_deck = {object_type = "Back",
             "Cards cannot change seals"
         }
     },
-    atlas = "medium"
-}
-local medium_sprite = {
-	object_type = "Atlas",
-    key = "medium",
-    path = "b_cry_medium.png",
-    px = 71,
-    py = 95
+    atlas = "atlasenchanced"
 }
 local eternal_deck = {object_type = "Back",
     name = "cry-Eternal Deck",
     key = "eternal_deck",
 	config = {cry_force_sticker = 'eternal'},
-	pos = {x = 0, y = 0},
-    atlas = "eternal",
+	pos = {x = 5, y = 2},
+    atlas = "atlasenchanced",
 	loc_txt = {
         name = "Eternal Deck",
         text = {
@@ -279,19 +244,12 @@ local eternal_deck = {object_type = "Back",
         }
     },
 }
-local eternal_sprite = {
-	object_type = "Atlas",
-    key = "eternal",
-    path = "b_cry_eternal.png",
-    px = 71,
-    py = 95
-}
 local perishable_deck = {object_type = "Back",
     name = "cry-Perishable Deck",
     key = "perishable_deck",
 	config = {cry_force_sticker = 'perishable'},
-	pos = {x = 0, y = 0},
-    atlas = "perishable",
+	pos = {x = 0, y = 3},
+    atlas = "atlasenchanced",
 	loc_txt = {
         name = "Perishable Deck",
         text = {
@@ -300,19 +258,12 @@ local perishable_deck = {object_type = "Back",
         }
     },
 }
-local perishable_sprite = {
-	object_type = "Atlas",
-    key = "perishable",
-    path = "b_cry_perishable.png",
-    px = 71,
-    py = 95
-}
 local rental_deck = {object_type = "Back",
     name = "cry-Rental Deck",
     key = "rental_deck",
 	config = {cry_force_sticker = 'rental'},
-	pos = {x = 0, y = 0},
-    atlas = "rental",
+	pos = {x = 1, y = 3},
+    atlas = "atlasenchanced",
 	loc_txt = {
         name = "Rental Deck",
         text = {
@@ -321,18 +272,11 @@ local rental_deck = {object_type = "Back",
         }
     },
 }
-local rental_sprite = {
-	object_type = "Atlas",
-    key = "rental",
-    path = "b_cry_rental.png",
-    px = 71,
-    py = 95
-}
 local world_deck = {object_type = "Back",
     name = "cry-World Deck",
     key = "world_deck",
 	config = {cry_force_suit = 'Spades', cry_boss_blocked = {'bl_goad'}},
-	pos = {x = 0, y = 0},
+	pos = {x = 4, y = 1},
 	loc_txt = {
         name = "Deck of The World",
         text = {
@@ -341,13 +285,13 @@ local world_deck = {object_type = "Back",
             "{C:attention}The Goad{} cannot appear"
         }
     },
-    atlas = "world_deck"
+    atlas = "atlasenchanced"
 }
 local star_deck = {object_type = "Back",
     name = "cry-Star Deck",
     key = "star_deck",
 	config = {cry_force_suit = 'Diamonds', cry_boss_blocked = {'bl_window'}},
-	pos = {x = 0, y = 0},
+	pos = {x = 2, y = 1},
 	loc_txt = {
         name = "Deck of The Stars",
         text = {
@@ -356,13 +300,13 @@ local star_deck = {object_type = "Back",
             "{C:attention}The Window{} cannot appear"
         }
     },
-    atlas = "star_deck"
+    atlas = "atlasenchanced"
 }
 local sun_deck = {object_type = "Back",
     name = "cry-Sun Deck",
     key = "sun_deck",
 	config = {cry_force_suit = 'Hearts', cry_boss_blocked = {'bl_head'}},
-	pos = {x = 0, y = 0},
+	pos = {x = 3, y = 1},
 	loc_txt = {
         name = "Deck of The Sun",
         text = {
@@ -371,13 +315,13 @@ local sun_deck = {object_type = "Back",
             "{C:attention}The Head{} cannot appear"
         }
     },
-    atlas = "sun_deck"
+    atlas = "atlasenchanced"
 }
 local moon_deck = {object_type = "Back",
     name = "cry-Moon Deck",
     key = "moon_deck",
 	config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'bl_club'}},
-	pos = {x = 0, y = 0},
+	pos = {x = 5, y = 1},
 	loc_txt = {
         name = "Deck of The Moon",
         text = {
@@ -386,35 +330,7 @@ local moon_deck = {object_type = "Back",
             "{C:attention}The Club{} cannot appear"
         }
     },
-    atlas = "moon_deck"
-}
-local world_sprite = {
-	object_type = "Atlas",
-    key = "world_deck",
-    path = "b_cry_world.png",
-    px = 71,
-    py = 95
-}
-local star_sprite = {
-	object_type = "Atlas",
-    key = "star_deck",
-    path = "b_cry_star.png",
-    px = 71,
-    py = 95
-}
-local sun_sprite = {
-	object_type = "Atlas",
-    key = "sun_deck",
-    path = "b_cry_sun.png",
-    px = 71,
-    py = 95
-}
-local moon_sprite = {
-	object_type = "Atlas",
-    key = "moon_deck",
-    path = "b_cry_moon.png",
-    px = 71,
-    py = 95
+    atlas = "atlasenchanced"
 }
 
 return {name = "Enhanced Decks", 
@@ -527,7 +443,7 @@ return {name = "Enhanced Decks",
                 return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
             end
         end,
-        items = {trance_sprite, medium_sprite, world_sprite, star_sprite, sun_sprite, moon_sprite, perishable_sprite, eternal_sprite, rental_sprite, lovers_sprite, hierophant_sprite, empress_sprite, justice_sprite,
+        items = {atlasenchanced,
 hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
 foil_deck, holo_deck, poly_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,

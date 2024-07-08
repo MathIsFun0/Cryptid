@@ -13,7 +13,6 @@ local white_hole = {
     },
     cost = 4,
     atlas = "white_hole",
-    discovered = true,
     hidden = true, --default soul_rate of 0.3% in spectral packs is used
     soul_set = "Planet",
     can_use = function(self, card)
@@ -106,7 +105,6 @@ local vacuum = {
     },
     cost = 15,
     atlas = "vacuum",
-	discovered = true,
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra}}
     end,
@@ -168,7 +166,6 @@ local hammerspace = {
     },
     cost = 4,
     atlas = "hammerspace",
-	discovered = true,
     can_use = function(self, card)
         return #G.hand.cards > 0
     end,
@@ -214,7 +211,6 @@ local lock = {
     },
     cost = 4,
     atlas = "lock",
-	discovered = true,
     can_use = function(self, card)
         return #G.jokers.cards > 0
     end,
