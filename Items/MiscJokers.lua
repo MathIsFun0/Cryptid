@@ -1081,7 +1081,7 @@ local lightupthenight = {
 	object_type = "Joker",
 	name = "cry-lightupthenight",
 	key = "lightupthenight",
-	config = {extra = {xmult = 1.75}},
+	config = {extra = {xmult = 1.5}},
 	pos = {x = 1, y = 1},
 	atlas = 'atlasone',
 	loc_txt = {
@@ -1732,7 +1732,6 @@ local happy = {
         end
     end
 }
---Make these three jokers work later
 local meteor = {
     object_type = "Joker",
     name = "cry-meteor",
