@@ -377,12 +377,13 @@ local virgo = {
 				end
 		end
 		if context.selling_self and not context.blueprint and not context.retrigger_joker then
-			local summon = math.floor((card.ability.extra_value + 4)*0.25) -- +4 to account for default sell value (certified no source code moment)
-			if summon < 1 then summon = 1 end --precautionary measure, just in case
 			G.E_MANAGER:add_event(Event({
 			func = (function()
 				G.E_MANAGER:add_event(Event({
 					func = function()
+						local summon = math.floor((card.ability.extra_value + 4)*0.25) -- +4 to account for default sell value (certified no source code moment)
+						if summon < 1 then summon = 1 end --precautionary measure, just in case
+						print(summon)
 						for i = 1, summon do
 							local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
 							card:set_edition({
@@ -390,9 +391,10 @@ local virgo = {
 							})
 							card:add_to_deck()
 							G.jokers:emplace(card)
-						end					
+						end
+						return true					
 					end})) 
-					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_m_ex'), colour = G.C.DARK_EDITION}) --todo: display a message that won't give an error
+					card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
 				return true
 			end)}))
 			return {completed=true}
