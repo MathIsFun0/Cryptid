@@ -327,7 +327,7 @@ local doodlem = {
             end
 			if jollycount < 1 then jollycount = 1 end
 		for i = 1, jollycount do
-                        	local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'm')
+                        	local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'cry_doodlem')
                         	card:set_edition({negative = true})
                         	card:add_to_deck()
                         	G.consumeables:emplace(card)
