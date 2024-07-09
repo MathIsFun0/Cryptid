@@ -1227,11 +1227,11 @@ local weegaming = {
         name = '2D',
         text = {
             "Retrigger each played {C:attention}2{}", --wee gaming
-            "{C:attention:}#1#{} additional time(s) when scored", --wee gaming?
+            "{C:attention:}#1#{} additional time(s)", --wee gaming?
         }
     },
-    rarity = 1,
-    cost = 5,
+    rarity = 2,
+    cost = 7,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         return {vars = { center.ability.extra.retriggers}}
@@ -1420,7 +1420,7 @@ text = {
 "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)"
 }
 },
-rarity = 3,
+rarity = 2,
 cost = 7,
 perishable_compat = false,
     loc_vars = function(self, info_queue, center)
@@ -1465,13 +1465,13 @@ local monkey_dagger = {
 		text = {
 			"When {C:attention}Blind{} is selected,",
 			"destroy Joker to the left",
-			"and permanently add {C:attention}quadruple{}",
+			"and permanently add {C:attention}quintuple{}",
 			"its sell value to this {C:chips}Chips{}",
 			"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
 		}
 	},
-	rarity = 1,
-	cost = 5,
+	rarity = 2,
+	cost = 6,
 	perishable_compat = false,
 	    loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.chips}}
@@ -1494,7 +1494,7 @@ local monkey_dagger = {
             G.GAME.joker_buffer = G.GAME.joker_buffer - 1
             G.E_MANAGER:add_event(Event({func = function()
                 G.GAME.joker_buffer = 0
-                card.ability.extra.chips = card.ability.extra.chips + sliced_card.sell_cost*4
+                card.ability.extra.chips = card.ability.extra.chips + sliced_card.sell_cost*5
                 card:juice_up(0.8, 0.8)
                 sliced_card:start_dissolve({HEX("57ecab")}, nil, 1.6)
                 play_sound('slice1', 0.96+math.random()*0.08)
@@ -1520,7 +1520,7 @@ local pirate_dagger = {
 			"{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)"
 		}
 	},
-	rarity = 3,
+	rarity = 2,
 	cost = 6,
 	perishable_compat = false,
 	    loc_vars = function(self, info_queue, center)
@@ -1604,7 +1604,7 @@ local sapling = {
         text = {
 			"After scoring {C:attention}#2#{} {C:inactive}[#1#]{} Enhanced",
 			"cards, sell this card to",
-			"Create an {C:cry_epic}Epic{} {C:attention}Joker{}",
+			"create an {C:cry_epic}Epic{} {C:attention}Joker{}",
 			"{C:inactive,s:0.8}Will create a {C:red,s:0.8}Rare{} {C:attention,s:0.8}Joker{}",
 			"{C:inactive,s:0.8}if {C:cry_epic,s:0.8}Epic{} {C:inactive,s:0.8}Jokers are disabled{}"
 		}
@@ -1644,7 +1644,7 @@ local spaceglobe = {
 	loc_txt = {
         name = 'Celestial Globe',
         text = {
-			"This joker gains {X:chips,C:white}X#2#{} Chips",
+			"This Joker gains {X:chips,C:white}X#2#{} Chips",
 			"if {C:attention}poker hand{} is a {C:attention}#3#{}",
 			"{C:inactive}(Hand changes after increase){}",
 			"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}"
@@ -1696,8 +1696,8 @@ local happy = {
     loc_txt = {
         name = ':D',
         text = {
-            "Create a random {C:attention}Joker{} when",
-            "{C:attention}purchased{}",
+            "Create a random {C:attention}Joker{}",
+            "when {C:attention}purchased{}",
 	    "Sell this card to",
 	    "create a random {C:attention}Joker{}",
 	    "{C:inactive}(Must have room){}"
@@ -1792,7 +1792,7 @@ local exoplanet = {
 		}
     	},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = G.P_CENTERS.e_holographic
+		info_queue[#info_queue+1] = G.P_CENTERS.e_holo
 		return {vars = {center.ability.extra.mult}}
     	end,
 	rarity = 2,
@@ -2035,12 +2035,12 @@ local bubblem = {
     name = "cry-bubblem",
     key = "bubblem",
     pos = {x = 0, y = 0},
-    config = {extra = {spawn = false, type = "Four of a kind"}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {spawn = false, type = "Four of a Kind"}, jolly = {t_mult = 8, type = 'Pair'}},
     loc_txt = {
     name = 'Bubble M',
     text = {
     	"Create a {C:dark_edition}Foil {C:attention}Jolly Joker{}",
-    	"if hand played contains",
+    	"if played hand contains",
     	"a {C:attention}#1#{}",
     	"{C:red,E:2}self destructs{}",
     	}
@@ -2247,8 +2247,8 @@ local mneon = {
         name = 'Neon M',
         text = {
             "Earn {C:money}$#2#{} at end of round",
-            "Permanently increase payout by {C:money}$#1#{}",
-	    "for each {C:attention}Jolly Joker{}",
+            "Permanently increase payout by",
+	    "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
 	    "at end of round",
         }
     },
@@ -2365,7 +2365,7 @@ local bonk = {
 	name = "cry-bonk",
 	key = "bonk",
 	pos = {x = 2, y = 2},
-    	config = {extra = {chips = 12, bonus = 1, type = "Pair"}},
+    	config = {extra = {chips = 12, bonus = 1, type = "Pair"}, jolly = {t_mult = 8, type = 'Pair'}},
 	loc_txt = {
         name = 'Bonk',
         text = {
@@ -2375,6 +2375,7 @@ local bonk = {
 		}
     	},
 	loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
 		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.type}}
     	end,
 	rarity = 1,
@@ -2468,7 +2469,7 @@ local loopy = {
     loc_txt = {
         name = 'Loopy',
         text = {
-            "{C:attention}+#2#{} handsize for",
+            "{C:attention}+#2#{} hand size for",
             "each {C:attention}Jolly Joker{} sold",
             "{C:inactive}(Currently{}{C:attention:} +#1#{}{C:inactive}){}",
 	    "{C:inactive,s:0.8}There wasn't enough room...{}"

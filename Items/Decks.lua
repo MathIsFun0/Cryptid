@@ -251,13 +251,5 @@ return {name = "Misc. Decks",
                 end
                 return gp(k,t)
             end
-            --Misprint Deck patches
-            function cry_log_random(seed,min,max)
-                math.randomseed(seed)
-                local lmin = math.log(min,2.718281828459045)
-                local lmax = math.log(max,2.718281828459045)
-                local poll = math.random()*(lmax-lmin)+lmin
-                return math.exp(poll)
-            end
         end,
         items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD}}

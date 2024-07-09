@@ -40,7 +40,7 @@ local oversat_shader = {
 local oversat = {
     object_type = "Edition",
     key = "oversat",
-    weight = 1,
+    weight = 3,
     shader = "oversat",
     in_shop = true,
     extra_cost = 5,
@@ -179,15 +179,15 @@ return {name = "Misc.",
             function Card:set_edition(x,y,z)
                 local was_oversat = self.edition and (self.edition.cry_oversat or self.edition.cry_glitched)
                 se(self,x,y,z)
-                if was_oversat then
-                    cry_misprintize(self,nil,true)
-                end
-                if self.edition and self.edition.cry_oversat then
-                    cry_misprintize(self, {min=2,max=2})
-                end
-                if self.edition and self.edition.cry_glitched then
-                    cry_misprintize(self, {min=0.1,max=10})
-                end
+		if was_oversat then
+			cry_misprintize(self,nil,true)
+		end
+		if self.edition and self.edition.cry_oversat then
+			cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+		end
+		if self.edition and self.edition.cry_glitched then
+			cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+		end
             end
             --echo card
             cs = Card.calculate_seal
