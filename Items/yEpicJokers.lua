@@ -654,7 +654,7 @@ local double_scale = {
                             end
                             dbl_info.scaler = best_key
                         end
-                        if type(jkr.ability[k]) == 'table' then
+                        if type(jkr.ability[k]) == 'table' and type(dbl_info.ability) == 'table' and type(dbl_info.ability[k]) == 'table' then
                             for _k, _v in pairs(jkr.ability[k]) do
                                 if dbl_info.ability[k][_k] ~= _v and is_number(_v) and is_number(dbl_info.ability[k][_k]) then
                                     dbl_info.base = {k,_k}
