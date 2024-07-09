@@ -2436,7 +2436,7 @@ local morse = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if context.selling_card and context.card.edition and context.card.ability.name == "Jolly Joker" and not context.blueprint then
-            card.ability.extra.money = card.ability.extra.money + center.ability.extra.Xmoney*card.ability.extra.bonus
+            card.ability.extra.money = card.ability.extra.money + card.ability.extra.Xmoney*card.ability.extra.bonus
 	    return {
                     card_eval_status_text(card, 'extra', nil, nil, nil, {
                     message = "M!",
