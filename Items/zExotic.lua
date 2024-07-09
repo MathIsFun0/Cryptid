@@ -531,8 +531,10 @@ return {name = "Exotic Jokers",
                         end
                         if config.sound and not config.modded then play_sound(config.sound, config.pitch or 1, config.volume or 1) end
                         if config.modded then 
-                            G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
-                            G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
+                            if G.HUD_blind and G.HUD_blind.get_UIE_by_ID then
+                                G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
+                                G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
+                            end
                             G.GAME.blind:juice_up()
                             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
                                 play_sound('tarot2', 0.76, 0.4);return true end}))
