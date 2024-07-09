@@ -13,11 +13,11 @@ local mosaic = {
     in_shop = true,
     extra_cost = 6,
     config = {Xchips = 2.5},
-	sound = {
-		sound = 'cry_e_mosaic',
-		per = 1,
-		vol = 0.4
-	},
+    sound = {
+        sound = 'cry_e_mosaic',
+        per = 1,
+        vol = 0.4
+    },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
@@ -44,11 +44,11 @@ local oversat = {
     shader = "oversat",
     in_shop = true,
     extra_cost = 5,
-	sound = {
-		sound = 'cry_e_oversaturated',
-		per = 1,
-		vol = 0.5
-	},
+    sound = {
+        sound = 'cry_e_oversaturated',
+        per = 1,
+        vol = 0.5
+    },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
@@ -72,11 +72,11 @@ local glitched = {
     shader = "glitched",
     in_shop = true,
     extra_cost = 3,
-	sound = {
-		sound = 'cry_e_glitched',
-		per = 1,
-		vol = 0.5
-	},
+    sound = {
+        sound = 'cry_e_glitched',
+        per = 1,
+        vol = 0.5
+    },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
@@ -85,7 +85,7 @@ local glitched = {
         label = "Glitched",
         text = {
             "All values are {C:dark_edition}randomized{}",
-			'between {C:blue}X0.1{} and {C:red}X10{}, if possible',
+            'between {C:blue}X0.1{} and {C:red}X10{}, if possible',
         }
     }
 }
@@ -101,11 +101,11 @@ local astral = {
     shader = "astral",
     in_shop = true,
     extra_cost = 3,
-	sound = {
-		sound = 'cry_^Mult',
-		per = 1,
-		vol = 1
-	},
+    sound = {
+        sound = 'cry_^Mult',
+        per = 1,
+        vol = 1
+    },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,
@@ -137,7 +137,7 @@ local echo = {
         name = 'Echo Card',
         text = {'{C:green}#2# in #3#{} chance to',
         '{C:attention}retrigger{} #1# additional',
-	'times when scored'}
+    'times when scored'}
     },
     atlas = 'echo_atlas',
     config = {retriggers = 2, extra = 2},
@@ -160,12 +160,12 @@ local eclipse = {
     name = "cry-Eclipse",
     key = "eclipse",
     pos = {x=0,y=0},
-	config = {mod_conv = 'm_cry_echo', max_highlighted = 1},
+    config = {mod_conv = 'm_cry_echo', max_highlighted = 1},
     loc_txt = {
         name = 'The Eclipse',
         text = {
-			"Enhances {C:attention}#1#{} selected card",
-			"into an {C:attention}Echo Card"
+            "Enhances {C:attention}#1#{} selected card",
+            "into an {C:attention}Echo Card"
         }
     },
     atlas = "eclipse_atlas",
@@ -179,33 +179,33 @@ return {name = "Misc.",
             function Card:set_edition(x,y,z)
                 local was_oversat = self.edition and (self.edition.cry_oversat or self.edition.cry_glitched)
                 se(self,x,y,z)
-		if was_oversat then
-			cry_misprintize(self,nil,true)
-		end
-		if self.edition and self.edition.cry_oversat then
-			cry_misprintize(self, {min=2,max=2})
-		end
-		if self.edition and self.edition.cry_glitched then
-			cry_misprintize(self, {min=0.1,max=10})
-		end
-            end
-        --echo card
-            cs = Card.calculate_seal
-        function Card:calculate_seal(context)
-            local ret = cs(self,context)
-        if context.repetition then
-		    if self.config.center == G.P_CENTERS.m_cry_echo then
-                if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
-                    return {
-                        message = localize('k_again_ex'),
-                        repetitions = (ret and ret.repetitions or 0) + self.ability.retriggers,
-                        card = self
-                    }
+                if was_oversat then
+                    cry_misprintize(self,nil,true)
+                end
+                if self.edition and self.edition.cry_oversat then
+                    cry_misprintize(self, {min=2,max=2})
+                end
+                if self.edition and self.edition.cry_glitched then
+                    cry_misprintize(self, {min=0.1,max=10})
                 end
             end
-        end
-        return ret
-        end
+            --echo card
+            cs = Card.calculate_seal
+            function Card:calculate_seal(context)
+                local ret = cs(self,context)
+                if context.repetition then
+                    if self.config.center == G.P_CENTERS.m_cry_echo then
+                        if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
+                            return {
+                                message = localize('k_again_ex'),
+                                repetitions = (ret and ret.repetitions or 0) + self.ability.retriggers,
+                                card = self
+                            }
+                        end
+                    end
+                end
+                return ret
+            end
         end,
         items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, echo_atlas, echo, eclipse_atlas, eclipse}}
 
