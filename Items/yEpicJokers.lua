@@ -16,7 +16,7 @@ local supercell = {
         name = 'Supercell',
         text = {
             "{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
-	    "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult,",
+	    "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
 	    "Earn {C:money}$#3#{} at",
 	    "end of round"
         }
@@ -348,7 +348,7 @@ local virgo = {
 	loc_txt = {
         name = 'Virgo',
         text = {
-			"This joker gains {C:money}$#1#{} of {C:attention}sell value{}",
+			"This Joker gains {C:money}$#1#{} of {C:attention}sell value{}",
 			"if {C:attention}poker hand{} is a {C:attention}#2#{}",
 			"Sell this card to create a",
 			"{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
