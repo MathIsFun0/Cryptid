@@ -1,20 +1,9 @@
-local function dump(o)
-    if type(o) == 'table' then
-        local s = '{ '
-        for k,v in pairs(o) do
-           if type(k) ~= 'number' then k = '"'..k..'"' end
-           s = s .. '['..k..'] = ' .. (type(v) == 'table' and 'table' or tostring(v)) .. ','
-        end
-        return s .. '} '
-     else
-        return tostring(o)
-     end
-end
 
 local azure_seal = {
     object_type = "Seal",
     name = "cry-Azure-Seal",
     key = "azure",
+    badge_colour = HEX("1d4fd7"),
 	config = { planets_amount = 3 },
     loc_txt = {
         -- Badge name
@@ -37,9 +26,7 @@ local azure_seal = {
     pos = {x=0, y=0},
 
     -- Requires latest Steamodded version
-    calculate = function(self, card, context)
-        print("Calculating seal in context " .. dump(context))
-        
+    calculate = function(self, card, context)        
         if context.destroying_card then
             G.E_MANAGER:add_event(Event({
                 trigger = 'before',
@@ -106,7 +93,7 @@ local typhoon = {
         }
     },
     cost = 4,
-    atlas = "typhoon",
+    atlas = "typhoon_atlas",
     pos = {x=0, y=0},
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({
@@ -127,9 +114,10 @@ local typhoon = {
         }))
     end
 }
+
 local typhoon_sprite = {
     object_type = "Atlas",
-    key = "typhoon",
+    key = "typhoon_atlas",
     
     path = "s_cry_typhoon.png",
     px = 71,

@@ -22,7 +22,6 @@ end
 Game:set_globals()
 G.C.RARITY["cry_exotic"] = HEX("708b91");
 G.C.RARITY["cry_epic"] = HEX("571d91");
-G.C.AZURE_SEAL = HEX("1d4fd7");
 local ip = SMODS.insert_pool
 function SMODS.insert_pool(pool, center, replace)
     if pool == nil then pool = {} end
@@ -33,7 +32,7 @@ function get_badge_colour(key)
     local fromRef = get_badge_colourref(key)
     if key == 'cry_exotic' then return G.C.RARITY["cry_exotic"] end
     if key == 'cry_epic' then return G.C.RARITY["cry_epic"] end
-    if key == 's_cry_azure_seal' then return G.C.AZURE_SEAL end
+
     return fromRef
 end
 
