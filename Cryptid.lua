@@ -428,6 +428,13 @@ function cry_misprintize(card, override, force_reset)
         cry_misprintize_tbl(card.config.center_key, card.ability, true)
     end
 end
+function cry_log_random(seed,min,max)
+    math.randomseed(seed)
+    local lmin = math.log(min,2.718281828459045)
+    local lmax = math.log(max,2.718281828459045)
+    local poll = math.random()*(lmax-lmin)+lmin
+    return math.exp(poll)
+end
 function cry_format(number, str)
     return tonumber(str:format((Big and to_big(number):to_number() or number)))
 end
