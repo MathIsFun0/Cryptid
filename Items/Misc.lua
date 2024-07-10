@@ -173,6 +173,8 @@ local eclipse = {
         return {vars = {self.config.max_highlighted}}
     end,
 }
+--note: seal colors are also used in lovely.toml for spectral descriptions
+-- and must be modified in both places
 local azure_seal = {
     object_type = "Seal",
     name = "cry-Azure-Seal",
@@ -199,7 +201,7 @@ local azure_seal = {
     atlas = "azure_atlas",
     pos = {x=0, y=0},
 
-    -- Requires latest Steamodded version
+    -- Requires latest Steamodded version (as of 7/9/24)
     calculate = function(self, card, context)        
         if context.destroying_card then
             G.E_MANAGER:add_event(Event({
