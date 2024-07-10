@@ -32,7 +32,7 @@ function get_badge_colour(key)
     local fromRef = get_badge_colourref(key)
     if key == 'cry_exotic' then return G.C.RARITY["cry_exotic"] end
     if key == 'cry_epic' then return G.C.RARITY["cry_epic"] end
-
+    if key == 'cry_azure' then return HEX("1d4fd7") end
     return fromRef
 end
 
