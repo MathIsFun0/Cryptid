@@ -289,7 +289,7 @@ local foodm = {
             card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + card.ability.extra.round_inc
 	    return {
             	    card_eval_status_text(card, 'extra', nil, nil, nil, {
-                    message = "+"..center.ability.extra.round_inc.." Round",
+                    message = "+"..card.ability.extra.round_inc.." Round",
                     colour = G.C.FILTER,
                 })
             }
