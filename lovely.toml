@@ -29,7 +29,7 @@ match_indent = true
 target = "functions/misc_functions.lua"
 pattern = "legendary = G.C.RARITY[4],"
 position = "after"
-payload = "cry_exotic = G.C.RARITY['cry_exotic'], cry_epic = G.C.RARITY['cry_epic'], heart = G.C.SUITS.Hearts, diamond = G.C.SUITS.Diamonds, spade = G.C.SUITS.Spades, club = G.C.SUITS.Clubs,"
+payload = "cry_exotic = G.C.RARITY['cry_exotic'], cry_epic = G.C.RARITY['cry_epic'], cry_azure = HEX('1d4fd7'), heart = G.C.SUITS.Hearts, diamond = G.C.SUITS.Diamonds, spade = G.C.SUITS.Spades, club = G.C.SUITS.Clubs,"
 match_indent = true
 
 
