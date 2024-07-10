@@ -111,7 +111,7 @@ local negative = {
 	object_type = "Joker",
 	name = "cry-Negative Joker",
 	key = "negative",
-	pos = {x = 0, y = 0},
+	pos = {x = 1, y = 3},
 	config = {extra = 4},
 	loc_txt = {
         name = 'Negative Joker',
@@ -121,7 +121,7 @@ local negative = {
     },
 	rarity = "cry_epic",
 	cost = 12,
-	atlas = "negative",
+	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra}}
 	end,
@@ -131,14 +131,6 @@ local negative = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra
 	end
-}
-local negative_sprite = { --forgot this one
-	object_type = "Atlas",
-    key = "negative",
-    
-    path = "j_cry_negative.png",
-    px = 71,
-    py = 95
 }
 local canvas = {
 	object_type = "Joker",
@@ -309,10 +301,11 @@ local doodlem = {
             "Create a {C:dark_edition}Negative{} {C:attention}consumable{}",
             "for each {C:attention}Jolly Joker{}",
             "when {C:attention}Blind{} is selected",
-	    "{C:inactive}(Minimum of 1){}"
+	    "{C:inactive}(Minimum of 2){}"
         }
     },
     rarity = "cry_epic",
+    joker_gate = "Jolly Joker",
     cost = 13,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
@@ -325,7 +318,7 @@ local doodlem = {
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
             end
-			if jollycount < 1 then jollycount = 1 end
+			if jollycount < 2 then jollycount = 2 end
 		for i = 1, jollycount do
                         	local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'cry_doodlem')
                         	card:set_edition({negative = true})
@@ -1044,7 +1037,7 @@ local bonusjoker = {
 			"{C:green}#1# in #2#{} chance for each",
 			"played {C:attention}Bonus Card{} to increase",
 			"{C:attention}joker{} slots by {C:dark_edition}1{} when scored",
-			"{C:red}Works 1 time per turn"
+			"{C:red}Works once per round"
 		}
     	},
 	rarity = "cry_epic",
@@ -1052,6 +1045,7 @@ local bonusjoker = {
 	blueprint_compat = true,
 	enhancement_gate = 'm_bonus',
 	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_bonus
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xchips}}
     	end,
 	atlas = "atlasepic",
@@ -1176,4 +1170,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             })
 		end,
-		items = {atlasepic, negative_sprite, supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, doodlem, virgo, smallestm, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker,}}
+		items = {atlasepic, supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, doodlem, virgo, smallestm, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker,}}

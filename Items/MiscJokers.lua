@@ -433,7 +433,7 @@ local triplet_rhythm = {
 	name = "cry-Triplet Rhythm",
 	key = "triplet_rhythm",
     config = {extra = {Xmult = 3}},
-	pos = {x = 0, y = 0},
+	pos = {x = 0, y = 4},
 	loc_txt = {
         name = 'Triplet Rhythm',
         text = {
@@ -444,7 +444,7 @@ local triplet_rhythm = {
 	rarity = 1,
 	cost = 6,
     blueprint_compat = true,
-	atlas = "triplet_rhythm",
+	atlas = "atlastwo",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.Xmult}}
     end,
@@ -464,13 +464,6 @@ local triplet_rhythm = {
             end
         end
     end
-}
-local triplet_rhythm_sprite = { --forgot about this one, guess it has its own png for now
-    object_type = "Atlas",
-    key = "triplet_rhythm",
-    path = "j_cry_triplet_rhythm.png",
-    px = 71,
-    py = 95
 }
 local booster = {
     object_type = "Joker",
@@ -1697,7 +1690,7 @@ local happy = {
         name = ':D',
         text = {
             "Create a random {C:attention}Joker{}",
-            "when {C:attention}purchased{}",
+            "when {C:attention}obtained{}",
 	    "Sell this card to",
 	    "create a random {C:attention}Joker{}",
 	    "{C:inactive}(Must have room){}"
@@ -1960,7 +1953,7 @@ local kidnap = {
 		}
     	},
 	rarity = 1,
-	cost = 3,
+	cost = 1,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
@@ -2035,7 +2028,7 @@ local bubblem = {
     name = "cry-bubblem",
     key = "bubblem",
     pos = {x = 0, y = 0},
-    config = {extra = {spawn = false, type = "Four of a Kind"}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {spawn = false, type = "Three of a Kind"}, jolly = {t_mult = 8, type = 'Pair'}}, --Kind is capitalized (see The Trio) so don't change this back pls and ty
     loc_txt = {
     name = 'Bubble M',
     text = {
@@ -2055,11 +2048,7 @@ local bubblem = {
     end,
     atlas = "atlasone",
     calculate = function(self, card, context)
-        if context.scoring_name and (context.scoring_name == 'Five of a Kind' or context.scoring_name == 'Four of a Kind' or context.scoring_name == 'Flush Five') then
-            card.ability.extra.spawn = true
-        end
-	
-        if context.cardarea == G.jokers and card.ability.extra.spawn and context.before and not context.blueprint and not context.retrigger_joker then
+        if context.cardarea == G.jokers and context.before and next(context.poker_hands['Three of a Kind']) and not context.blueprint and not context.retrigger_joker then
             G.E_MANAGER:add_event(Event({
                 func = function()
                     play_sound('tarot1')
@@ -2098,7 +2087,7 @@ local foodm = {
     object_type = "Joker",
     name = "cry-foodm",
     key = "foodm",
-    config = {extra = {mult = 70, rounds_remaining = 2, text = "s", round_inc = 1}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {mult = 50, rounds_remaining = 2, text = "s", round_inc = 1}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 4, y = 2},
     loc_txt = {
         name = 'Fast Food M',
@@ -2112,7 +2101,7 @@ local foodm = {
             "{C:inactive,s:0.8}& Large Cake{}"
         }
     },
-    rarity = 2,
+    rarity = 1,
     cost = 5,
     atlas = "atlasone",
     blueprint_compat = true,
@@ -2179,7 +2168,7 @@ local mstack = {
     object_type = "Joker",
     name = "cry-mstack",
     key = "mstack",
-    config = {extra = {sell = 0, sell_req = 2, retriggers = 0, text = ""}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {sell = 0, sell_req = 2, retriggers = 1, check = false}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 2, y = 3},
     atlas = 'atlastwo',
     loc_txt = {
@@ -2187,16 +2176,16 @@ local mstack = {
         text = {
             "Retrigger all cards played",
             "once for every",
-            "{C:attention}#3# Jolly Jokers{} sold",
-            "{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers) #2#{}",
+            "{C:attention}#2# Jolly Jokers{} sold",
+            "{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
         }
     },
-    rarity = 2,
+    rarity = 3,
     cost = 7,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.retriggers, center.ability.extra.text, center.ability.extra.sell_req}}
+        return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req}}
     end,
     calculate = function(self, card, context) --note: hardcoded like this intentionally
         if context.repetition then
@@ -2210,7 +2199,8 @@ local mstack = {
         end
         
         if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
-            if card.ability.extra.sell >= card.ability.extra.sell_req then
+	    card.ability.extra.check = true
+            if card.ability.extra.sell + 1 >= card.ability.extra.sell_req then
                 if not context.blueprint or context.retrigger_joker then
                     card.ability.extra.retriggers = card.ability.extra.retriggers + 1
                 end
@@ -2231,18 +2221,17 @@ local mstack = {
                 }
             end
         end
-        
-        if card.ability.extra.retriggers == 4 then --for display
-            card.ability.extra.text = "(MAX)"
-        end
     end,
+    add_to_deck = function(self, card, from_debuff) --Force retriggers to be 1 when bought/obtained on misprint deck (no 0.43 retriggers that do nothing)
+	if card.ability.extra.retriggers ~= 1 and not card.ability.extra.check then card.ability.extra.retriggers = 1 end
+    end
 }
 local mneon = {
     object_type = "Joker",
     name = "cry-mneon",
     key = "mneon",
     pos = {x = 4, y = 2},
-    config = {extra = {bonus = 1, money = 2}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {bonus = 1, money = 0}, jolly = {t_mult = 8, type = 'Pair'}},
     loc_txt = {
         name = 'Neon M',
         text = {
@@ -2250,6 +2239,7 @@ local mneon = {
             "Permanently increase payout by",
 	    "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
 	    "at end of round",
+	    "{C:inactive}(Minimum of{} {C:money}$1{}{C:inactive}){}",
         }
     },
     rarity = 2,
@@ -2267,12 +2257,14 @@ local mneon = {
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
             end
-		if jollycount > 0 then
+		if jollycount ~= 0 then
             		card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus * jollycount
 			return {message = "M!"}
+		else 
+			card.ability.extra.money = card.ability.extra.money + 1
+			return {message = "Upgrade!"}
 		end
         end
-	if card.ability.extra.money > 30 then card.ability.extra.money = 30 end --reduce to cap if money ever goes above it 
     end,
     calc_dollar_bonus = function(self, card)
         if card.ability.extra.money > 0 then
@@ -2285,14 +2277,14 @@ local notebook = {
     name = "cry-notebook",
     key = "notebook",
     pos = {x = 1, y = 0},
-    config = {extra = {odds = 15, slot = 0, Xodds = 3, jollies = 3, check = true, active = "Active", inactive = ""}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {odds = 7, slot = 0, jollies = 5, check = true, active = "Active", inactive = ""}, jolly = {t_mult = 8, type = 'Pair'}},
     loc_txt = {
     name = 'Notebook',
     text = {
     	"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
 	"slot per {C:attention}reroll{} in the shop",
-	"{X:green,C:white}X#6#{} odds if there are {C:attention}#7#{}",
-	"or more {C:attention}Jolly Jokers{}",
+	"{C:green}Always triggers{} if there are",
+	"{C:attention}#6#{} or more {C:attention}Jolly Jokers{}",
 	"{C:red}Works once per round{}",
 	"{C:inactive}(Currently {C:dark_edition}+#3#{}{C:inactive} and #4##5#){}"
     	}
@@ -2302,7 +2294,7 @@ local notebook = {
     perishable_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-	return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.slot, center.ability.extra.active, center.ability.extra.inactive, center.ability.extra.Xodds, center.ability.extra.jollies}}
+	return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.slot, center.ability.extra.active, center.ability.extra.inactive, center.ability.extra.jollies}}
     end,
     atlas = "atlasone",
     calculate = function(self, card, context) --from testing this is sometimes giving me/displaying xmult when it shouldn't. maybe this is just an issue on my side? I'm not quite sure but this is very strange
@@ -2311,8 +2303,7 @@ local notebook = {
             		for i = 1, #G.jokers.cards do
                 		if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
             		end
-				if jollycount >= card.ability.extra.jollies then --if there are 3 or more Jolly jokers
-					if pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds * card.ability.extra.Xodds then --Triple odds
+				if jollycount >= card.ability.extra.jollies then --if there are 5 or more jolly jokers
 						card.ability.extra.slot = card.ability.extra.slot + 1
 						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
 						card.ability.extra.check = false
@@ -2324,8 +2315,7 @@ local notebook = {
                         				colour = G.C.DARK_EDITION,
                     				})
                 				}
-					else return {calculated = true} end
-				else --normal odds
+				else --default
 					if pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds then
 						card.ability.extra.slot = card.ability.extra.slot + 1
 						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
@@ -2365,18 +2355,19 @@ local bonk = {
 	name = "cry-bonk",
 	key = "bonk",
 	pos = {x = 2, y = 2},
-    	config = {extra = {chips = 12, bonus = 1, type = "Pair"}, jolly = {t_mult = 8, type = 'Pair'}},
+    	config = {extra = {chips = 6, bonus = 1, xchips = 3, type = "Pair", chipstext = 0}, jolly = {t_mult = 8, type = 'Pair'}},
 	loc_txt = {
         name = 'Bonk',
         text = {
-            "Each {C:attention}Jolly Joker{} gives {C:chips}+#1#{} Chips",
+            "Each {C:attention}Joker{} gives {C:chips}+#1#{} Chips",
 	    "Increase amount by {C:chips}+#2#{} if",
-	    "{C:attention} poker hand{} is a {C:attention}#3#{}"
+	    "{C:attention} poker hand{} is a {C:attention}#4#{}",
+	    "{C:attention{}Jolly Jokers{} give {X:chips,C:white}X#3#{} Chips"
 		}
     	},
 	loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.type}}
+		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.xchips, center.ability.extra.type}}
     	end,
 	rarity = 1,
 	cost = 5,
@@ -2386,13 +2377,14 @@ local bonk = {
 	if context.cardarea == G.jokers and context.before and not context.blueprint then
 				if context.scoring_name == card.ability.extra.type then
                             			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.bonus
+						card.ability.extra.chipstext = card.ability.extra.chips*card.ability.extra.xchips --value used for display
                             			card_eval_status_text(card, 'extra', nil, nil, nil, {
                                			message = localize('k_upgrade_ex'),
                                 		colour = G.C.CHIPS
                             			})
 				end
 	end
-        if context.other_joker and context.other_joker.ability.name == "Jolly Joker" then
+        if context.other_joker and context.other_joker.ability.set == "Joker" and context.other_joker.ability.name ~= "Jolly Joker" then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -2404,6 +2396,19 @@ local bonk = {
             return {
                 message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                 chip_mod = card.ability.extra.chips
+            }
+	elseif context.other_joker and context.other_joker.ability.name == "Jolly Joker" then
+            if not Talisman.config_file.disable_anims then 
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end
+                })) 
+            end
+            return {
+                message = localize{type='variable',key='a_chips',vars={card.ability.extra.chipstext}},
+                chip_mod = card.ability.extra.chips*card.ability.extra.xchips
             }
         end
 	end,
@@ -2463,20 +2468,21 @@ local loopy = {
     object_type = "Joker",
     name = "cry-loopy",
     key = "loopy",
-    config = {extra = {handsize = 0, handsize_mod = 1}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {handsize = 0, handsize_mod = 3}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 4, y = 1},
     atlas = 'atlastwo',
     loc_txt = {
         name = 'Loopy',
         text = {
-            "{C:attention}+#2#{} hand size for",
-            "each {C:attention}Jolly Joker{} sold",
+            "{C:attention}+#2#{} hand size until end of round",
+            "when {C:attention}Jolly Joker{} is sold",
             "{C:inactive}(Currently{}{C:attention:} +#1#{}{C:inactive}){}",
 	    "{C:inactive,s:0.8}There wasn't enough room...{}"
         }
     },
     rarity = 1,
     cost = 4,
+    joker_gate = "Jolly Joker",
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
@@ -2493,6 +2499,14 @@ local loopy = {
                     })
                 }
         end
+	if context.end_of_round and card.ability.extra.handsize ~= 0 and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
+			G.hand:change_size(-card.ability.extra.handsize)
+			card.ability.extra.handsize = 0
+            		return {
+                    	message = localize('k_reset'),
+                        card = card,
+			}
+	end
     end,
     remove_from_deck = function(self, card, from_debuff)
         G.hand:change_size(-card.ability.extra.handsize or 0)
@@ -2502,7 +2516,7 @@ local scrabble = {
 	object_type = "Joker",
 	name = "cry-scrabble",
 	key = "scrabble",
-	config = {extra = {odds = 3}, jolly = {t_mult = 8, type = 'Pair'}},
+	config = {extra = {odds = 4}, jolly = {t_mult = 8, type = 'Pair'}},
 	pos = {x = 0, y = 2},
 	loc_txt = {
         name = 'Scrabble Tile',
@@ -2512,8 +2526,8 @@ local scrabble = {
 			"when hand is played"
 		}
     },
-	rarity = 3,
-	cost = 7,
+	rarity = 1,
+	cost = 5,
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
@@ -2538,14 +2552,14 @@ local sacrifice = {
 	object_type = "Joker",
 	name = "cry-sacrifice",
 	key = "sacrifice",
-	config = {extra = {text = "Active!", spawn = 0}, jolly = {t_mult = 8, type = 'Pair'}},
+	config = {extra = {text = "Active!", spawn = true}, jolly = {t_mult = 8, type = 'Pair'}},
 	pos = {x = 5, y = 2},
 	loc_txt = {
         name = 'Sacrifice',
         text = {
-			"Create a {C:attention}Jolly Joker{}",
+			"Create 4 {C:attention}Jolly Joker{}",
 			"when a {C:spectral}Spectral{} card is used",
-			"{C:red}Works twice per round{}",
+			"{C:red}Works once per round{}",
 			"{C:inactive}#1#{}"
 		}
     },
@@ -2558,33 +2572,32 @@ local sacrifice = {
 		return {vars = {center.ability.extra.text}}
 	end,
 	calculate = function(self, card, context)
-		if context.using_consumeable and card.ability.extra.spawn < 2 and not context.retrigger_joker then
-                    if context.consumeable.ability.set == "Spectral" then
-			if not context.blueprint then card.ability.extra.spawn = card.ability.extra.spawn + 1 end
-			if card.ability.extra.spawn == 2 then card.ability.extra.text = "No triggers left!" end
-                        local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
-            			card:add_to_deck()
-            			G.jokers:emplace(card)
-            			return {
-                    		card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        		message = "M!",
-                        		colour = G.C.SPECTRAL,
-                    		})
-                		}
-                    end
-                end
+		if context.using_consumeable and card.ability.extra.spawn and not context.retrigger_joker then
+            if context.consumeable.ability.set == "Spectral" then
+				if not context.blueprint then card.ability.extra.spawn = false end
+				if not card.ability.extra.spawn then card.ability.extra.text = "No triggers left!" end
+				for i = 1, 4 do
+					local jolly = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+					jolly:add_to_deck()
+					G.jokers:emplace(jolly)
+				end
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.SPECTRAL})
+				return true
+			end
+		end
 		if context.end_of_round and not context.retrigger_joker and not context.blueprint then
-            		if card.ability.extra.spawn ~= 0 then
-                		card.ability.extra.spawn = 0
+			if not card.ability.extra.spawn then
+				card.ability.extra.spawn = true
 				card.ability.extra.text = "Active!"
-                    		return {
-                    		message = localize('k_reset'),
-                        	card = card,
+				return {
+					message = localize('k_reset'),
+					card = card,
 				}
-            		end
-            	end
+			end
+		end
 	end,
 }
+
 local reverse = {
 	object_type = "Joker",
 	name = "cry-reverse",
@@ -2601,7 +2614,7 @@ local reverse = {
 		}
     	},
 	rarity = 2,
-	cost = 3,
+	cost = 4,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
@@ -2727,4 +2740,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {atlasone, atlastwo, triplet_rhythm_sprite, blurred_sprite, jimball_sprite, weegaming_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, jollysus, kidnap, bubblem, foodm, mstack, mneon, notebook, bonk, morse, loopy, scrabble, sacrifice, reverse,}}
+        items = {atlasone, atlastwo, blurred_sprite, jimball_sprite, weegaming_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, jollysus, kidnap, bubblem, foodm, mstack, mneon, notebook, bonk, morse, loopy, scrabble, sacrifice, reverse,}}
