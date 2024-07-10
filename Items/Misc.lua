@@ -201,8 +201,7 @@ local azure_seal = {
     atlas = "azure_atlas",
     pos = {x=0, y=0},
 
-    -- Requires latest Steamodded version (as of 7/9/24)
-    calculate = function(self, card, context)        
+    calculate = function(card, context)        
         if context.destroying_card then
             G.E_MANAGER:add_event(Event({
                 trigger = 'before',
@@ -219,7 +218,7 @@ local azure_seal = {
                         end
                     end
 
-                    for i = 1, self.config.planets_amount do
+                    for i = 1, 3 do
                         local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, 'cry_azure')
 
                         card:set_edition({negative = true}, true)
