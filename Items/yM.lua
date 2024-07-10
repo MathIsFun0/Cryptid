@@ -286,7 +286,7 @@ local foodm = {
             end
         end
         if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
-            card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + center.ability.extra.round_inc
+            card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + card.ability.extra.round_inc
 	    return {
             	    card_eval_status_text(card, 'extra', nil, nil, nil, {
                     message = "+"..center.ability.extra.round_inc.." Round",
