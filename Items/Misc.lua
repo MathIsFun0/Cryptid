@@ -189,7 +189,7 @@ local azure_seal = {
             name = 'Azure Seal',
             text = {
                 'Create {C:attention}#1#{} {C:dark_edition}Negative{}',
-                'planets for played',
+                '{C:planet}Planets{} for played',
                 '{C:attention}poker hand{}, then',
                 '{C:red}destroy{} this card'
             }
