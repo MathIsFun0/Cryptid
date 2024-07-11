@@ -299,6 +299,185 @@ local typhoon_sprite = {
     px = 71,
     py = 95
 }
+local tag_atlas = {
+    object_type = "Atlas",
+    key = "tag_cry",
+    path = "tag_cry.png",
+    px = 34,
+    py = 34
+}
+local cat = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=0, y=2},
+    key = "cat",
+    loc_txt = {
+        name = "Cat Tag",
+        text = {"Meow."}
+    }
+}
+local epic_tag = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=3, y=0},
+    config = {type = 'store_joker_create'},
+    key = "epic",
+    loc_txt = {
+        name = "Epic Tag",
+        text = {
+            "Shop has a half-price",
+            "{C:cry_epic}Epic Joker"
+        }
+    },
+    apply = function(tag, context)
+        if context.type == 'store_joker_create' then
+            local rares_in_posession = {0}
+                for k, v in ipairs(G.jokers.cards) do
+                    if v.config.center.rarity == "cry_epic" and not rares_in_posession[v.config.center.key] then
+                        rares_in_posession[1] = rares_in_posession[1] + 1 
+                        rares_in_posession[v.config.center.key] = true
+                    end
+                end
+
+                if #G.P_JOKER_RARITY_POOLS.cry_epic > rares_in_posession[1] then 
+                    card = create_card('Joker', context.area, nil, 1, nil, nil, nil, 'cry_eta')
+                    create_shop_card_ui(card, 'Joker', context.area)
+                    card.states.visible = false
+                    tag:yep('+', G.C.RARITY.cry_epic,function() 
+                        card:start_materialize()
+                        card.misprint_cost_fac = 0.5
+                        card:set_cost()
+                        return true
+                    end)
+                else
+                    tag:nope()
+                end
+                tag.triggered = true
+                return card
+        end
+    end
+}
+local empowered = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=1, y=0},
+    config = {type = 'new_blind_choice'},
+    key = "empowered",
+    loc_txt = {
+        name = "Empowered Tag",
+        text = {
+            "Gives a free {C:spectral}Spectral Pack",
+            "with {C:legendary,E:1}The Soul{} and {C:cry_exotic,E:1}Gateway{}"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.p_spectral_normal_1
+        info_queue[#info_queue+1] = {set = "Spectral", key = "c_soul"}
+        if G.P_CENTERS.c_cry_gateway then
+            info_queue[#info_queue+1] = {set = "Spectral", key = "c_cry_gateway"}
+        end
+        return {vars = {}}
+    end,
+    apply = function(tag, context)
+        if context.type == 'new_blind_choice' then
+            tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+                local key = 'p_spectral_normal_1'
+                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                card.cost = 0
+                card.from_tag = true
+                card.from_empowered = true
+                G.FUNCS.use_card({config = {ref_table = card}})
+                card:start_materialize()
+                return true
+            end)
+            tag.triggered = true
+            return true
+        end
+    end,
+    in_pool = function()
+        return false
+    end
+}
+local gambler = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=2, y=0},
+    config = {type = 'immediate', odds = 3},
+    key = "gambler",
+    loc_txt = {
+        name = "Gambler's Tag",
+        text = {
+            "{C:green}#1# in #2#{} chance to create",
+            "an {C:cry_exotic,E:1}Empowered Tag"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_empowered"}
+        return {vars = {G.GAME.probabilities.normal or 1, self.config.odds}}
+    end,
+    apply = function(tag, context)
+        if context.type == 'immediate' then
+            if pseudorandom('cry_gambler_tag') < G.GAME.probabilities.normal/tag.config.odds then
+                local lock = tag.ID
+                G.CONTROLLER.locks[lock] = true
+                tag:yep('+', G.C.RARITY.cry_exotic,function()
+                    add_tag(Tag("tag_cry_empowered"))
+                    G.CONTROLLER.locks[lock] = nil
+                    return true
+                end)
+            else
+                tag:nope()
+            end
+            tag.triggered = true
+            return true
+        end
+    end
+}
+local bundle = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=0, y=0},
+    config = {type = 'immediate'},
+    key = "bundle",
+    loc_txt = {
+        name = "Bundle Tag",
+        text = {
+            "Create a {C:attention}Standard Tag{}, {C:tarot}Charm Tag{},",
+            "{C:attention}Buffoon Tag{}, and {C:planet}Meteor Tag"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Tag", key = "tag_standard"}
+        info_queue[#info_queue+1] = {set = "Tag", key = "tag_charm"}
+        info_queue[#info_queue+1] = {set = "Tag", key = "tag_meteor"}
+        info_queue[#info_queue+1] = {set = "Tag", key = "tag_buffoon"}
+        return {vars = {}}
+    end,
+    apply = function(tag, context)
+        if context.type == 'immediate' then
+            local lock = tag.ID
+            G.CONTROLLER.locks[lock] = true
+            tag:yep('+', G.C.ATTENTION,function()
+                add_tag(Tag("tag_standard"))
+                add_tag(Tag("tag_charm"))
+                add_tag(Tag("tag_meteor"))
+                add_tag(Tag("tag_buffoon"))
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            tag.triggered = true
+            return true
+        end
+    end
+}
+local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, 
+echo_atlas, echo, eclipse_atlas, eclipse, 
+typhoon_sprite, azure_seal_sprite, typhoon, azure_seal, 
+tag_atlas, cat, empowered, gambler, bundle}
+if cry_enable_epics then
+    miscitems[#miscitems+1] = epic_tag
+end
 return {name = "Misc.", 
         init = function()
             se = Card.set_edition
@@ -333,5 +512,5 @@ return {name = "Misc.",
                 return ret
             end
         end,
-        items = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, echo_atlas, echo, eclipse_atlas, eclipse, typhoon_sprite, azure_seal_sprite, typhoon, azure_seal}}
+        items = miscitems}
 
