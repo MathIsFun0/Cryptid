@@ -170,6 +170,8 @@ local eclipse = {
     },
     atlas = "eclipse_atlas",
     loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_cry_echo
+
         return {vars = {self.config.max_highlighted}}
     end,
 }
