@@ -9,5 +9,5 @@ priority = 0
 target = "functions/misc_functions.lua"
 pattern = "(G.STATE == G.STATES.SPLASH and '') or"
 position = "after"
-payload = "(next(find_joker('cry-Jimball')) and 'cry_music-Jimball') or"
+payload = "(next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music and 'cry_music-Jimball') or"
 match_indent = true

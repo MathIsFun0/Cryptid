@@ -13,7 +13,7 @@
 
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
-Cryptid_config = {["Cryptid"]={disable_anims = false}}
+Cryptid_config = {["Cryptid"]={jimball_music = true}}
 if NFS.read(mod_path.."/config.lua") then
     Cryptid_config = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
 end
@@ -182,7 +182,7 @@ if not SpectralPack then
         snap_to_nav = true,
         tabs = {
             {
-                label = "Cryptid",
+                label = "Features",
                 chosen = true,
                 tab_definition_function = function()
                     cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
@@ -200,6 +200,31 @@ if not SpectralPack then
                         end
                     end
                     config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={left_settings,right_settings}}
+                    cry_nodes[#cry_nodes+1] = config
+                    return {
+                    n = G.UIT.ROOT,
+                    config = {
+                        emboss = 0.05,
+                        minh = 6,
+                        r = 0.1,
+                        minw = 10,
+                        align = "cm",
+                        padding = 0.2,
+                        colour = G.C.BLACK
+                    },
+                    nodes = cry_nodes
+                }
+                end
+            },
+            {
+                label = "Options",
+                tab_definition_function = function()
+                    cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
+                        --{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+                      }}}
+                    settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
+                    settings.nodes[#settings.nodes+1] = create_toggle({label = "Enable Jimball Music (Copyrighted)", ref_table = Cryptid_config.Cryptid, ref_value = "jimball_music"})
+                    config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={settings}}
                     cry_nodes[#cry_nodes+1] = config
                     return {
                     n = G.UIT.ROOT,

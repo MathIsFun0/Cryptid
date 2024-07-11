@@ -16,7 +16,7 @@ local mosaic = {
     sound = {
         sound = 'cry_e_mosaic',
         per = 1,
-        vol = 0.4
+        vol = 0.2
     },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
@@ -47,7 +47,7 @@ local oversat = {
     sound = {
         sound = 'cry_e_oversaturated',
         per = 1,
-        vol = 0.5
+        vol = 0.25
     },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
@@ -75,7 +75,7 @@ local glitched = {
     sound = {
         sound = 'cry_e_glitched',
         per = 1,
-        vol = 0.5
+        vol = 0.25
     },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
@@ -104,7 +104,7 @@ local astral = {
     sound = {
         sound = 'cry_^Mult',
         per = 1,
-        vol = 1
+        vol = 0.5
     },
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
