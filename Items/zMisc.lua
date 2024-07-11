@@ -440,6 +440,7 @@ local bundle = {
     pos = {x=0, y=0},
     config = {type = 'immediate'},
     key = "bundle",
+    min_ante = 2,
     loc_txt = {
         name = "Bundle Tag",
         text = {
