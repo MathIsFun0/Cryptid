@@ -143,7 +143,8 @@ local echo = {
     config = {retriggers = 2, extra = 2},
     loc_vars = function(self, info_queue)
         return {vars = {self.config.retriggers,G.GAME.probabilities.normal, self.config.extra}}
-    end
+    end,
+    specific_vars = {} -- Required for tooltip to not crash on older versions of Steamodded
 }
 
 local eclipse_atlas = {
