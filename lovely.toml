@@ -265,3 +265,12 @@ end
 
 '''
 match_indent = true
+
+# Prevent Jokers from spitting empty messages
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "text = extra.message or text"
+position = "after"
+payload = "if not text or text == '' then return end"
+match_indent = true

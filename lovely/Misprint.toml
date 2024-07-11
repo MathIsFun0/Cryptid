@@ -233,8 +233,6 @@ payload = '''
 elseif _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then loc_vars = {_c.config.max_highlighted}'''
 match_indent = true
 
-
-
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -264,4 +262,13 @@ target = "card.lua"
 pattern = "if self.ability.name == 'Aura' then"
 position = "before"
 payload = "--]]"
+match_indent = true
+
+# Fractional pricing
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))"
+position = "after"
+payload = "if self.misprint_cost_fac then self.cost = cry_format(self.cost / self.misprint_cost_fac,'%.2f') end"
 match_indent = true

@@ -446,7 +446,9 @@ function cry_misprintize(card, override, force_reset)
             cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, nil, override)
         end
         if G.GAME.modifiers.cry_misprint_min then
-            card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+            --card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+            card.misprint_cost_fac = 1 / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max)
+            card:set_cost()
         end
     else
         cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, true)
