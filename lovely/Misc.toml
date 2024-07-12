@@ -85,7 +85,6 @@ end
 '''
 
 # Empowered Tag
-
 [[patches]]
 [patches.pattern]
 target = 'card.lua'

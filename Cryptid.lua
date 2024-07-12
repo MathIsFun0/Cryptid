@@ -574,5 +574,11 @@ SMODS.Atlas({
     px = 71,
     py = 95
 }):register()
+SMODS.Atlas({
+    key = "tag_cry",
+    path = "tag_cry.png",
+    px = 34,
+    py = 34
+}):register()
 ----------------------------------------------
 ------------MOD CODE END----------------------
