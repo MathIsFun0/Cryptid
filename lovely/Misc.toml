@@ -92,6 +92,7 @@ pattern = '''card = create_card("Spectral", G.pack_cards, nil, nil, true, true, 
 position = 'at'
 match_indent = true
 payload = '''
+card = nil --this line allows Steamodded's Pack API patch to work
 if self.from_empowered then
     if i == 1 then
         card = create_card("Spectral", G.pack_cards, nil, nil, true, true, 'c_soul', 'spe')

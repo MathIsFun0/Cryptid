@@ -216,5 +216,18 @@ return {name = "Vouchers",
                 end
                 return pool, pool_append
             end
+            local tinit = Tag.init
+            function Tag:init(tag, y, z)
+                if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+                    tag = "tag_cry_triple"
+                end
+                if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
+                    tag = "tag_cry_quadruple"
+                end
+                if (tag == "tag_double" or tag == "tag_cry_triple" or tag == "tag_cry_quadruple") and G.GAME.used_vouchers.v_cry_clone_machine then
+                    tag = "tag_cry_quintuple"
+                end
+                return tinit(self,tag,y,z)
+            end
         end,
         items = {copies_atlas, copies, tag_printer_atlas, tag_printer, clone_machine_atlas, clone_machine, triple, quadruple, quintuple}}
