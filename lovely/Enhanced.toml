@@ -23,7 +23,7 @@ if currentBack.effect.config.cry_force_sticker and not currentBack.effect.config
     G["shared_sticker_"..currentBack.effect.config.cry_force_sticker]:draw_shader('dissolve', nil, nil, true, self.children.center)
     G["shared_sticker_"..currentBack.effect.config.cry_force_sticker]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center)
 end
-if currentBack.effect.config.cry_antimatter then
+if currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
     self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
     self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
 end
@@ -38,7 +38,7 @@ pattern = "self.children.back:draw_shader('dissolve')"
 position = "at"
 payload = '''
 local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
-if currentBack and currentBack.effect.config.cry_antimatter then
+if currentBack and currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
     self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader)
     self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader)
 else

@@ -170,6 +170,21 @@ local poly_deck = {object_type = "Back",
     },
     
 }
+local nega_deck = {object_type = "Back",
+    name = "cry-Negative Deck",
+    key = "nega_deck",
+	config = {cry_force_edition = 'negative'},
+	pos = {x = 5, y = 2},
+	loc_txt = {
+        name = "Negative Deck",
+        text = {
+            "Start with a deck",
+            "of {C:attention}Negative Cards{}",
+            "Cards cannot change editions"
+        }
+    },
+    
+}
 local talisman_deck = {object_type = "Back",
     name = "cry-Talisman Deck",
     key = "talisman_deck",
@@ -345,8 +360,17 @@ return {name = "Enhanced Decks",
                         func = function()
                             for c = #G.playing_cards, 1, -1 do
                                 if self.effect.config.cry_force_enhancement == 'random' then
-                                    local random_enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed('cry_ant_enhancement'))
-                                    G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
+                                    local enh = {}
+                                    for i = 1, #G.P_CENTER_POOLS.Enhanced do
+                                        enh[#enh+1] = G.P_CENTER_POOLS.Enhanced[i]
+                                    end
+                                    enh[#enh+1] = "CCD"
+                                    local random_enhancement = pseudorandom_element(enh, pseudoseed('cry_ant_enhancement'))
+                                    if random_enhancement.key and G.P_CENTERS[random_enhancement.key] then
+                                        G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
+                                    else
+                                        G.playing_cards[c]:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_ant_ccd')).key], true, nil)
+                                    end
                                 else
                                     G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
                                 end
@@ -363,7 +387,7 @@ return {name = "Enhanced Decks",
                             for c = #G.playing_cards, 1, -1 do
                                 local ed_table = {}
                                 if self.effect.config.cry_force_edition == 'random' then
-                                    local editions = {"foil", "holo", "polychrome"} --todo: modded edition support
+                                    local editions = {"foil", "holo", "polychrome", "negative"} --todo: modded edition support
                                     local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
                                     ed_table[random_edition] = true
                                     G.playing_cards[c]:set_edition(ed_table, true, true);
@@ -445,7 +469,7 @@ return {name = "Enhanced Decks",
         end,
         items = {atlasenchanced,
 hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
-foil_deck, holo_deck, poly_deck,
+foil_deck, holo_deck, poly_deck, nega_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,
 eternal_deck, perishable_deck, rental_deck,
 star_deck, moon_deck, sun_deck, world_deck}}

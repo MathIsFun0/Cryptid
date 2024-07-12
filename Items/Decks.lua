@@ -178,6 +178,23 @@ local CCD = {
         }
     }
 }
+local wormhole = {
+    object_type = "Back",
+    name = "cry-Wormhole",
+    key = "wormhole",
+    config = {cry_wormhole = true, cry_negative_rate = 5, joker_slot = -3},
+    pos = {x = 3, y = 4},
+    atlas = "atlasdeck",
+    loc_txt = {
+        name = "Wormhole Deck",
+        text = {
+            "Start with an {C:cry_exotic}Exotic{C:attention} Joker",
+            "Jokers are {C:attention}5X{} more",
+            "likely to be {C:dark_edition}Negative",
+            "{C:attention}-3{} Joker slots"
+        }
+    }
+}
 return {name = "Misc. Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
@@ -201,6 +218,22 @@ return {name = "Misc. Decks",
                 end
                 if self.effect.config.cry_ccd then
                     G.GAME.modifiers.cry_ccd = true
+                end
+                if self.effect.config.cry_wormhole then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            if G.jokers then
+                                local card = create_card('Joker', G.jokers, nil, "cry_exotic", nil, nil, nil, 'cry_wormhole')
+                                card:add_to_deck()
+                                card:start_materialize()
+                                G.jokers:emplace(card)
+                                return true
+                            end
+                        end
+                    }))
+                end
+                if self.effect.config.cry_negative_rate then
+                    G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate
                 end
             end
             --equilibrium deck patches
@@ -252,5 +285,11 @@ return {name = "Misc. Decks",
                 end
                 return gp(k,t)
             end
+            --wormhole deck patches
+            SMODS.Edition:take_ownership('negative', {
+                get_weight = function(self)
+                    return self.weight*(G.GAME.modifiers.cry_negative_rate or 1)
+                end,
+            })
         end,
-        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD}}
+        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole}}

@@ -38,6 +38,7 @@ local antimatter = {
         cry_equilibrium = true, --Deck of Equilibrium
         cry_misprint_min = 1, cry_misprint_max = 10, --Misprint Deck
         cry_highlight_limit = 1e20, --Infinite Deck
+        cry_wormhole = true, cry_negative_rate = 5, --Wormhole Deck
         -- Enhanced Decks
         cry_force_enhancement = 'random',
         cry_force_edition = 'random',
