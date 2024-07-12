@@ -961,14 +961,13 @@ local smallestm = {
     	end
 }
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse}
-if cry_enable_epics then
-    for _, jkr in pairs({doodlem, virgo, smallestm}) do
-        ret_items[#ret_items+1] = jkr
-        G.P_JOKER_RARITY_POOLS.cry_epic[#G.P_JOKER_RARITY_POOLS.cry_epic+1] = jkr
-    end
-end
 return {name = "M Jokers", 
         init = function()
-            
+            if cry_enable_epics then
+                for _, jkr in pairs({doodlem, virgo, smallestm}) do
+                    ret_items[#ret_items+1] = jkr
+                    G.P_JOKER_RARITY_POOLS.cry_epic[#G.P_JOKER_RARITY_POOLS.cry_epic+1] = jkr
+                end
+            end
         end,
         items = ret_items}
