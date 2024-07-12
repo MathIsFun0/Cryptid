@@ -225,13 +225,19 @@ match_indent = true
 
 # Get seal spectrals to display and work with card selections
 [[patches]]
-[patches.pattern]
+[patches.regex]
 target = "functions/common_events.lua"
-pattern = "elseif _c.name == 'Immolate' then loc_vars = {_c.config.extra.destroy, _c.config.extra.dollars}"
-position = "after"
+pattern = '''
+(?<indent>[\t ]*)elseif _c\.set == 'Spectral' then '''
+position = 'after'
+# match_indent = true
+line_prepend = '$indent    '
 payload = '''
-elseif _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then loc_vars = {_c.config.max_highlighted}'''
-match_indent = true
+
+if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then 
+    loc_vars = {_c.config.max_highlighted}
+end
+'''
 
 [[patches]]
 [patches.pattern]
