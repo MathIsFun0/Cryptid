@@ -182,16 +182,16 @@ local wormhole = {
     object_type = "Back",
     name = "cry-Wormhole",
     key = "wormhole",
-    config = {cry_wormhole = true, cry_negative_rate = 5, joker_slot = -3},
+    config = {cry_wormhole = true, cry_negative_rate = 20, joker_slot = -2},
     pos = {x = 3, y = 4},
     atlas = "atlasdeck",
     loc_txt = {
         name = "Wormhole Deck",
         text = {
             "Start with an {C:cry_exotic}Exotic{C:attention} Joker",
-            "Jokers are {C:attention}5X{} more",
+            "Jokers are {C:attention}20X{} more",
             "likely to be {C:dark_edition}Negative",
-            "{C:attention}-3{} Joker slots"
+            "{C:attention}-2{} Joker slots"
         }
     }
 }

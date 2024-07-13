@@ -461,7 +461,7 @@ local double_scale = {
 						--extra_value is ignored because it can be scaled by Gift Card
                         if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
                             dbl_info.base = {k}
-                            local predicted_mod = math.abs(v-dbl_info.ability[k])
+                            local predicted_mod = math.abs(to_big(v):to_number()-to_big(dbl_info.ability[k]):to_number())
                             local best_key = {""}
                             local best_coeff = 10^100
                             for l, u in pairs(jkr.ability) do
