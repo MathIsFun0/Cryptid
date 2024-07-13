@@ -465,7 +465,7 @@ return {name = "Exotic Jokers",
             --Universum Patches
             local uht = update_hand_text
             function update_hand_text(config, vals)
-                if next(find_joker("cry-Universum")) then
+                if next(find_joker("cry-Universum")) and not Talisman.config_file.disable_anims then
                     G.E_MANAGER:add_event(Event({--This is the Hand name text for the poker hand
                     trigger = 'before',
                     blockable = not config.immediate,
