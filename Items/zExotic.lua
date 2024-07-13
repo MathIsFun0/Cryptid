@@ -119,7 +119,7 @@ local universum = {
     end,
     calculate = function(self, card, context)
         if context.cry_universum then
-            return {mod = card.ability.extra}
+            return {mod = to_big(card.ability.extra)}
         end
     end
 }
