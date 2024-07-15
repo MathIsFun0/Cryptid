@@ -186,18 +186,21 @@ local oldserpent = {
     loc_txt = {
         name = 'Nostalgic Serpent',
         text = {
-            "Divide Chips and Mult by",
+            "Divide Mult by",
             "level of played poker hand"
         }
     },
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
-    --modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)   I tried :(
-        --if G.GAME.hands[poker_hands].level ~= 1 then
-            --return math.floor(mult / G.GAME.hands[poker_hands].level), math.floor(hand_chips / G.GAME.hands[poker_hands].level), true
-        --end
-        --return mult, hand_chips, false
-    --end
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+        print(tprint(G.GAME.hands[text]))
+        print(text)
+        if G.GAME.hands[text].level > 1 then
+            G.GAME.blind.triggered = true
+            return math.floor(mult / G.GAME.hands[text].level), hand_chips, true
+        end
+        return mult, hand_chips, false
+    end
 }
 local oldpillar = {
     object_type = "Blind",
@@ -272,8 +275,8 @@ local oldmark = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
-    	if handname == ("Pair" or "Two Pair" or "Three of a Kind" or "Full House" or "Four of a Kind" or "Five of a Kind" or "Flush House" or "Flush Five") and not G.GAME.blind.disabled then --needs to be reworked similarly to other cards later
-        	return true --This effect is also not working as expected.. (Debuffs all hands) What is going on here?
+    	if next(hand["Pair"]) then 
+        	return true
     	end
 	return false
     end,
@@ -1088,4 +1091,4 @@ return {name = "Blinds",
                 if not G.GAME.defeated_blinds then G.GAME.defeated_blinds = {} end
             end
         end,
-        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, box, clock, trick, joke, hammer, windmill, pinkbow, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}
+        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, box, clock, trick, joke, hammer, windmill, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}
