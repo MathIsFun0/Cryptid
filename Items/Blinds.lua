@@ -43,6 +43,244 @@ function Blind:cry_before_play()
     end
 end
 
+--IMPORTANT!!! Game CRASHES with Nostalgic ox, fish, and manacle while having universum. my best guess is an issue with modify_hand :)
+
+local oldox = {
+    object_type = "Blind",
+    name = "cry-oldox",
+    key = "oldox",
+    pos = {x = 0, y = 0},
+    boss = {
+        min = 2,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Ox',
+        text = {
+            "All hands start",
+            "with 0 Chips"
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+    	if hand_chips ~= 0 then
+        	return mult, 0, true
+    	end
+    	return mult, 0, false
+    end
+}
+local oldhouse = {
+    object_type = "Blind",
+    name = "cry-oldhouse",
+    key = "oldhouse",
+    pos = {x = 0, y = 2},
+    boss = {
+        min = 3,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic House',
+        text = {
+            "No Full Houses",
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    debuff_hand = function(self, cards, hand, handname, check)
+    	if handname == "Full House" and not G.GAME.blind.disabled then
+        	return true
+    	end
+	return false
+    end,
+    get_loc_debuff_text = function(self)
+    	return "No Full Houses"
+    end
+}
+local oldarm = {
+    object_type = "Blind",
+    name = "cry-oldarm",
+    key = "oldarm",
+    pos = {x = 0, y = 3},
+    boss = {
+        min = 3,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Arm',
+        text = {
+            "Must play 4",
+	    "or fewer cards"
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    debuff_hand = function(self, cards, hand, handname, check)
+    	if #cards > 4 and not G.GAME.blind.disabled then
+        	return true
+    	end
+	return false
+    end,
+    get_loc_debuff_text = function(self)
+    	return "Must play 4 or fewer cards"
+    end
+}
+local oldfish = {
+    object_type = "Blind",
+    name = "cry-oldfish",
+    key = "oldfish",
+    pos = {x = 0, y = 4},
+    boss = {
+        min = 2,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Fish',
+        text = {
+            "All hands start",
+            "with 1 Mult"
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+    	if mult ~= 1 then
+        	return 1, hand_chips, true
+    	end
+    	return 1, hand_chips, false
+    end
+}
+local oldmanacle = {
+    object_type = "Blind",
+    name = "cry-oldmanacle",
+    key = "oldmanacle",
+    pos = {x = 0, y = 5},
+    boss = {
+        min = 1,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Manacle',
+        text = {
+            "Divide Mult by discards",
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    modify_hand = function(self, cards, poker_hands, text, mult, hand_chips) 
+    	if G.GAME.current_round.discards_left > 1 then
+        	return math.floor(mult / G.GAME.current_round.discards_left), hand_chips, true
+    	end
+    	return mult, hand_chips, false
+    end
+}
+local oldserpent = {
+    object_type = "Blind",
+    name = "cry-oldserpent",
+    key = "oldserpent",
+    pos = {x = 0, y = 6},
+    boss = {
+        min = 5,
+        max = 10
+    },
+    loc_txt = {
+        name = 'Nostalgic Serpent',
+        text = {
+            "Divide Chips and Mult by",
+            "level of played poker hand"
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    --modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)   I tried :(
+        --if G.GAME.hands[poker_hands].level ~= 1 then
+            --return math.floor(mult / G.GAME.hands[poker_hands].level), math.floor(hand_chips / G.GAME.hands[poker_hands].level), true
+        --end
+        --return mult, hand_chips, false
+    --end
+}
+local oldpillar = {
+    object_type = "Blind",
+    name = "cry-oldpillar",
+    key = "oldpillar",
+    pos = {x = 0, y = 7},
+    boss = {
+        min = 3,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Pillar',
+        text = {
+            "No Straights",
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    debuff_hand = function(self, cards, hand, handname, check)
+    	if handname == "Straight" and not G.GAME.blind.disabled then
+        	return true
+    	end
+	return false
+    end,
+    get_loc_debuff_text = function(self)
+    	return "No Straights"
+    end
+}
+local oldflint = {
+    object_type = "Blind",
+    name = "cry-oldflint",
+    key = "oldflint",
+    pos = {x = 0, y = 8},
+    boss = {
+        min = 3,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Flint',
+        text = {
+            "No Flushes",
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    debuff_hand = function(self, cards, hand, handname, check)
+    	if handname == "Flush" and not G.GAME.blind.disabled then
+        	return true
+    	end
+	return false
+    end,
+    get_loc_debuff_text = function(self)
+    	return "No Flushes"
+    end
+}
+local oldmark = {
+    object_type = "Blind",
+    name = "cry-oldmark",
+    key = "oldmark",
+    pos = {x = 0, y = 1},
+    boss = {
+        min = 4,
+        max = 10
+    },
+	loc_txt = {
+        name = 'Nostalgic Mark',
+        text = {
+            "No hands containing",
+            "a Pair"
+        }
+    },
+    atlas = "nostalgia",
+    boss_colour = HEX('4f6367'),
+    debuff_hand = function(self, cards, hand, handname, check)
+    	if handname == ("Pair" or "Two Pair" or "Three of a Kind" or "Full House" or "Four of a Kind" or "Five of a Kind" or "Flush House" or "Flush Five") and not G.GAME.blind.disabled then --needs to be reworked similarly to other cards later
+        	return true --This effect is also not working as expected.. (Debuffs all hands) What is going on here?
+    	end
+	return false
+    end,
+    get_loc_debuff_text = function(self)
+    	return "No hands containing a Pair"
+    end
+}
 local tax = {
     object_type = "Blind",
     name = "cry-Tax",
@@ -65,7 +303,31 @@ local tax = {
         return math.floor(math.min(0.4*G.GAME.blind.chips,score)+0.5)
     end
 }
-
+local box = {
+    object_type = "Blind",
+    name = "cry-box",
+    key = "box",
+    pos = {x = 0, y = 8},
+    boss = {
+        min = 1,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Box',
+        text = {
+            "All Common Jokers",
+            "are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('883a3b'),
+    debuff_card = function(self, card, from_blind)
+    if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 1 then
+        return true
+    end
+    return false
+end
+}
 local clock = {
     object_type = "Blind",
     name = "cry-Clock",
@@ -152,6 +414,79 @@ local joke = {
     },
     atlas = "blinds",
     boss_colour = HEX('00ffaa')
+}
+local hammer = {
+    object_type = "Blind",
+    name = "cry-hammer",
+    key = "hammer",
+    pos = {x = 0, y = 9},
+    boss = {
+        min = 2,
+        max = 10
+    },
+    loc_txt = {
+        name = 'The Hammer',
+        text = {
+            "All cards with odd",
+            "rank are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('ffabd6'),
+    debuff_card = function(self, card, from_blind)
+        if card.area ~= G.jokers and not G.GAME.blind.disabled then
+            if card.ability.effect ~= 'Stone Card' and (card.base.value == '3' or card.base.value == '5' or card.base.value == '7' or card.base.value == '9' or card.base.value == 'Ace') then
+                return true
+            end
+            return false
+        end
+    end
+}
+local windmill = {
+    object_type = "Blind",
+    name = "cry-windmill",
+    key = "windmill",
+    pos = {x = 0, y = 10},
+    boss = {
+        min = 4,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Windmill',
+        text = {
+            "All Uncommon Jokers",
+            "are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('f70000'),
+    debuff_card = function(self, card, from_blind)
+    if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 2 then
+        return true
+    end
+    return false
+end
+}
+local pinkbow = { --Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
+    object_type = "Blind",
+    name = "cry-pinkbow",
+    key = "pinkbow",
+    pos = {x = 0, y = 11},
+    dollars = 8,
+    boss = {
+        min = 3,
+        max = 10,
+        showdown = true
+    },
+    loc_txt = {
+        name = 'Pink Bow',
+        text = {
+            "Randomize rank of cards",
+            "held in hand on play"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('ff00cc'),
 }
 local lavender_loop = {
     object_type = "Blind",
@@ -675,6 +1010,15 @@ local blind_sprites = {
     py = 34,
     frames = 21
 }
+local nostalgia_sprites = {
+    object_type = "Atlas",
+    key = "nostalgia",
+    atlas_table = "ANIMATION_ATLAS",
+    path = "bl_nostalgia.png",
+    px = 34,
+    py = 34,
+    frames = 21
+}
 
 return {name = "Blinds", 
         init = function()
@@ -744,4 +1088,4 @@ return {name = "Blinds",
                 if not G.GAME.defeated_blinds then G.GAME.defeated_blinds = {} end
             end
         end,
-        items = {tax, clock, trick, joke, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites}}
+        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, box, clock, trick, joke, hammer, windmill, pinkbow, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}
