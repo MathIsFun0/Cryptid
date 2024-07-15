@@ -135,6 +135,7 @@ for _, file in ipairs(files) do
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
           for _, item in ipairs(curr_obj.items) do
+              item.discovered = true
               if SMODS[item.object_type] then
                 SMODS[item.object_type](item)
               else
@@ -399,14 +400,14 @@ function cry_misprintize_tbl(name, tbl, clear, override)
     if tbl then
         for k, v in pairs(tbl) do
             if type(tbl[k]) ~= 'table' then
-                if type(tbl[k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
+                if type(tbl[k]) == 'number' and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
                     tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
-                    if type(tbl[k][_k]) == 'number' and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
+                    if type(tbl[k][_k]) == 'number' and not (_k == 'id') and not (_k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
@@ -464,6 +465,20 @@ function cry_log_random(seed,min,max)
 end
 function cry_format(number, str)
     return tonumber(str:format((Big and to_big(number):to_number() or number)))
+end
+--use ID to work with glitched/misprint
+function Card:get_nominal(mod)
+	local mult = 1
+	local rank_mult = 1
+	if mod == 'suit' then mult = 10000 end
+	if self.ability.effect == 'Stone Card' or (self.config.center.no_suit and self.config.center.no_rank) then 
+		mult = -10000
+	elseif self.config.center.no_suit then
+		mult = 0
+	elseif self.config.center.no_rank then
+		rank_mult = 0
+	end
+	return 10*self.base.id*rank_mult + self.base.suit_nominal*mult + (self.base.suit_nominal_original or 0)*0.0001*mult + 10*self.base.face_nominal*rank_mult + 0.000001*self.unique_val
 end
 
 --Cryptid (the spectral) localization

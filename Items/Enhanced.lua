@@ -185,6 +185,68 @@ local nega_deck = {object_type = "Back",
     },
     
 }
+
+local astral_deck = {object_type = "Back",
+    name = "cry-Astral Deck",
+    key = "astral_deck",
+	config = {cry_force_edition = 'cry_astral'},
+	pos = {x = 5, y = 2},
+	loc_txt = {
+        name = "Astral Deck",
+        text = {
+            "Start with a deck",
+            "of {C:attention}Astral Cards{}",
+            "Cards cannot change editions"
+        }
+    },
+}
+
+local mosaic_deck = {object_type = "Back",
+    name = "cry-Mosaic Deck",
+    key = "mosaic_deck",
+	config = {cry_force_edition = 'cry_mosaic'},
+	pos = {x = 5, y = 2},
+	loc_txt = {
+        name = "Mosaic Deck",
+        text = {
+            "Start with a deck",
+            "of {C:attention}Mosaic Cards{}",
+            "Cards cannot change editions"
+        }
+    },
+}
+
+local oversat_deck = {object_type = "Back",
+    name = "cry-Oversaturated Deck",
+    key = "oversat_deck",
+	config = {cry_force_edition = 'cry_oversat'},
+	pos = {x = 5, y = 2},
+	loc_txt = {
+        name = "Oversaturated Deck",
+        text = {
+            "Start with a deck",
+            "of {C:attention}Oversaturated Cards{}",
+            "Cards cannot change editions"
+        }
+    },
+}
+
+local glitched_deck = {object_type = "Back",
+    name = "cry-Glitched Deck",
+    key = "glitched_deck",
+	config = {cry_force_edition = 'cry_glitched'},
+	pos = {x = 5, y = 2},
+	loc_txt = {
+        name = "Glitched Deck",
+        text = {
+            "Start with a deck",
+            "of {C:attention}Glitched Cards{}",
+            "Cards cannot change editions",
+			"{s:0.6}isn't this just misprint deck{}"
+        }
+    },
+}
+
 local talisman_deck = {object_type = "Back",
     name = "cry-Talisman Deck",
     key = "talisman_deck",
@@ -388,6 +450,12 @@ return {name = "Enhanced Decks",
                                 local ed_table = {}
                                 if self.effect.config.cry_force_edition == 'random' then
                                     local editions = {"foil", "holo", "polychrome", "negative"} --todo: modded edition support
+                                    if Cryptid_config["Misc."] then
+                                        editions[#editions+1] = "cry_astral"
+                                        editions[#editions+1] = "cry_mosaic"
+                                        editions[#editions+1] = "cry_oversat"
+                                        editions[#editions+1] = "cry_glitched"
+                                    end
                                     local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
                                     ed_table[random_edition] = true
                                     G.playing_cards[c]:set_edition(ed_table, true, true);
@@ -469,7 +537,7 @@ return {name = "Enhanced Decks",
         end,
         items = {atlasenchanced,
 hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
-foil_deck, holo_deck, poly_deck, nega_deck,
+foil_deck, holo_deck, poly_deck, nega_deck, astral_deck, mosaic_deck, oversat_deck, glitched_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,
 eternal_deck, perishable_deck, rental_deck,
 star_deck, moon_deck, sun_deck, world_deck}}
