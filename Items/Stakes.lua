@@ -449,8 +449,11 @@ return {name = "More Stakes",
                     local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
                     local amount = a*(b+(k*c)^d)^c
                     if type(amount) == 'table' then
-                      amount.m = math.floor(10*amount.m)/10
-                      amount:normalize()
+                        if (amount:lt(R.MAX_SAFE_INTEGER)) then
+                            local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+                            amount = math.floor(amount / exponent):to_number() * exponent
+                        end
+                        amount:normalize()
                     else
                       amount = amount - amount%(10^math.floor(math.log10(amount)-1))
                     end
