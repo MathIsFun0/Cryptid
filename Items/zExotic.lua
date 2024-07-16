@@ -458,8 +458,6 @@ local primus_sprite = {
     py = 95
 }	
 
-G.P_JOKER_RARITY_POOLS["cry_exotic"] = {iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus}
-
 return {name = "Exotic Jokers", 
         init = function()
             --Universum Patches

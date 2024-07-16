@@ -915,8 +915,6 @@ local bonusjoker = {
 		end
 	end
 }
-G.P_JOKER_RARITY_POOLS["cry_epic"] = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker}
-
 
 return {name = "Epic Jokers", 
 		init = function()
