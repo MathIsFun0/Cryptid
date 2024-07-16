@@ -186,6 +186,9 @@ position = "before"
 payload = '''
 if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
     self.GAME.round_resets.blind_choices.Big = get_new_boss()
+elseif G.GAME.modifiers.cry_rush_hour_ii then
+    self.GAME.round_resets.blind_choices.Small = get_new_boss()
+    self.GAME.round_resets.blind_choices.Big = get_new_boss()
 else
     self.GAME.round_resets.blind_choices.Big = 'bl_big'
 end
@@ -201,6 +204,9 @@ pattern = "G.GAME.round_resets.blind_choices.Boss = get_new_boss()"
 position = "before"
 payload = '''
 if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
+    G.GAME.round_resets.blind_choices.Big = get_new_boss()
+elseif G.GAME.modifiers.cry_rush_hour_ii then
+    G.GAME.round_resets.blind_choices.Small = get_new_boss()
     G.GAME.round_resets.blind_choices.Big = get_new_boss()
 else
     G.GAME.round_resets.blind_choices.Big = 'bl_big'
@@ -218,6 +224,24 @@ position = "at"
 payload = "if G.GAME.blind_on_deck == 'Boss' then"
 match_indent = true
 
+# Ruby Stake - smaller showdown blinds don't win
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
+position = "at"
+payload = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then"
+match_indent = true
+
+
+# Rush Hour - mark small blind as defeated
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then"
+position = "at"
+payload = "if G.GAME.blind_on_deck == 'Small' then"
+match_indent = true
 
 # Ruby Stake - mark big blind as defeated
 [[patches]]

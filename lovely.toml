@@ -226,7 +226,7 @@ if self.ASSET_ATLAS['cry_sticker'] then
     self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})
 end
 for i = 1, #G.CHALLENGES do
-    if G.CHALLENGES[i].id == 'c_cry_rush_hour' and #G.CHALLENGES[i].restrictions.banned_other == 0 then
+    if (G.CHALLENGES[i].id == 'c_cry_rush_hour' or G.CHALLENGES[i].id == 'c_cry_rush_hour_ii' or G.CHALLENGES[i].id == 'c_cry_rush_hour_iii') and #G.CHALLENGES[i].restrictions.banned_other == 0 then
         for k, v in pairs(G.P_BLINDS) do
             if k ~= "bl_cry_clock" and k ~= "bl_cry_lavender_loop" and v.boss then
                 G.CHALLENGES[i].restrictions.banned_other[#G.CHALLENGES[i].restrictions.banned_other+1] = {id = k, type = 'blind'}

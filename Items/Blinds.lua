@@ -1029,35 +1029,40 @@ return {name = "Blinds",
             local upd = Game.update
             function Game:update(dt)
                 upd(self,dt)
-                if G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices and G.GAME.round_resets.blind_choices.Boss and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].cry_ante_base_mod then
-                    if G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult ~= 0 and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult_ante ~= G.GAME.round_resets.ante then 
-                        if G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].name == "cry-Obsidian Orb" then
-                            for i = 1, #G.GAME.defeated_blinds do
-                                G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult * G.P_BLINDS[G.GAME.defeated_blinds[i]]/2
+                local choices = {"Small", "Big", "Boss"}
+                G.CRY_BLINDS = G.CRY_BLINDS or {}
+                for _, c in pairs(choices) do
+                    if G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices and G.GAME.round_resets.blind_choices[c] and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod then
+                        if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult ~= 0 and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante ~= G.GAME.round_resets.ante then 
+                            if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].name == "cry-Obsidian Orb" then
+                                for i = 1, #G.GAME.defeated_blinds do
+                                    G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult * G.P_BLINDS[G.GAME.defeated_blinds[i]]/2
+                                end
+                            else
+                                G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = 0
                             end
-                        else
-                            G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = 0
+                            G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante = G.GAME.round_resets.ante
                         end
-                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult_ante = G.GAME.round_resets.ante
+                        if G.GAME.round_resets.blind_states[c] ~= "Current" and G.GAME.round_resets.blind_states[c] ~= "Defeated" then
+                            G.CRY_BLINDS[c] = (G.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult) + (G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(dt*(G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)) or 0)
+                            --Update UI
+                            --todo: in blinds screen, too
+                            if G.blind_select_opts then
+                                local blind_UI = G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
+                                local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
+                                chip_text_node.config.text = number_format(get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.CRY_BLINDS[c])
+                                chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.CRY_BLINDS[c])
+                                G.blind_select_opts[string.lower(c)]:recalculate()
+                            end
+                        elseif not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+                            G.GAME.blind.chips = G.GAME.blind.chips + G.GAME.blind:cry_ante_base_mod(dt*(G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))*get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
+                            G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                        end
                     end
-                    if G.GAME.round_resets.blind_states.Boss ~= "Current" then
-                        G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].mult + (G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].cry_ante_base_mod and G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss]:cry_ante_base_mod(dt) or 0)
-                        --Update UI
-                        if G.blind_select_opts then
-                            local blind_UI = G.blind_select_opts.boss.definition.nodes[1].nodes[1].nodes[1].nodes[1]
-                            local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-                            chip_text_node.config.text = number_format(get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.P_BLINDS.bl_cry_clock.mult)
-                            chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.P_BLINDS.bl_cry_clock.mult)
-                            G.blind_select_opts.boss:recalculate()
-                        end
-                    elseif not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
-                        G.GAME.blind.chips = G.GAME.blind.chips + G.GAME.blind:cry_ante_base_mod(dt)*get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
+                    if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+                        G.GAME.blind.chips = G.GAME.blind.chips * G.GAME.blind:cry_round_base_mod(dt*(G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
                         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                     end
-                end
-                if G.GAME and G.GAME.blind and not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
-                    G.GAME.blind.chips = G.GAME.blind.chips * G.GAME.blind:cry_round_base_mod(dt)
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                 end
             end
             --Trick Patches
@@ -1090,5 +1095,19 @@ return {name = "Blinds",
                 sr(self, args)
                 if not G.GAME.defeated_blinds then G.GAME.defeated_blinds = {} end
             end
+            --patch for multiple Clocks to tick separately and load separately
+            local bsb = Blind.set_blind
+            function Blind:set_blind(blind, y, z)
+                local c = "Boss"
+                if string.sub(G.GAME.subhash or '', -1) == 'S' then c = "Small" end
+                if string.sub(G.GAME.subhash or '', -1) == 'B' then c = "Big" end
+                if G.CRY_BLINDS and G.CRY_BLINDS[c] and not y and blind and blind.mult then blind.mult = G.CRY_BLINDS[c] end
+                bsb(self, blind, y, z)
+            end
+            local rb = reset_blinds
+            function reset_blinds()
+                G.CRY_BLINDS = {}
+                rb()
+            end
         end,
-        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, box, clock, trick, joke, hammer, windmill, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}
+        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, clock, trick, joke, hammer, box, windmill, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}

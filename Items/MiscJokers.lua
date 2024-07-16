@@ -159,7 +159,7 @@ local wee_fib = {
 	config = {extra = {mult = 0, mult_mod = 3}},
 	pos = {x = 1, y = 5},
 	loc_txt = {
-        name = 'Wee Fibonacci',
+        name = 'Weebonacci',
         text = {
 		"This Joker gains",
 		"{C:mult}+#2#{} Mult when each played",
