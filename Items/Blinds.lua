@@ -65,6 +65,7 @@ local oldox = {
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
     	if hand_chips ~= 0 then
+		G.GAME.blind.triggered = true
         	return mult, 0, true
     	end
     	return mult, 0, false
@@ -89,6 +90,7 @@ local oldhouse = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if handname == "Full House" and not G.GAME.blind.disabled then
+		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -117,6 +119,7 @@ local oldarm = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if #cards > 4 and not G.GAME.blind.disabled then
+		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -145,6 +148,7 @@ local oldfish = {
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
     	if mult ~= 1 then
+		G.GAME.blind.triggered = true
         	return 1, hand_chips, true
     	end
     	return 1, hand_chips, false
@@ -169,6 +173,7 @@ local oldmanacle = {
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips) 
     	if G.GAME.current_round.discards_left > 1 then
+		G.GAME.blind.triggered = true
         	return math.floor(mult / G.GAME.current_round.discards_left), hand_chips, true
     	end
     	return mult, hand_chips, false
@@ -221,6 +226,7 @@ local oldpillar = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if handname == "Straight" and not G.GAME.blind.disabled then
+		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -248,6 +254,7 @@ local oldflint = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if handname == "Flush" and not G.GAME.blind.disabled then
+		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -275,7 +282,8 @@ local oldmark = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
-    	if next(hand["Pair"]) then 
+    	if next(hand["Pair"]) then
+		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
