@@ -478,7 +478,7 @@ function Card:get_nominal(mod)
 	elseif self.config.center.no_rank then
 		rank_mult = 0
 	end
-	return 10*self.base.id*rank_mult + self.base.suit_nominal*mult + (self.base.suit_nominal_original or 0)*0.0001*mult + 10*self.base.face_nominal*rank_mult + 0.000001*self.unique_val
+	return 10*(self.base.id or 0)*rank_mult + self.base.suit_nominal*mult + (self.base.suit_nominal_original or 0)*0.0001*mult + 10*self.base.face_nominal*rank_mult + 0.000001*self.unique_val
 end
 
 --Cryptid (the spectral) localization
