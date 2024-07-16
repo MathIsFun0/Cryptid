@@ -1054,7 +1054,7 @@ return {name = "Blinds",
                                 chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.CRY_BLINDS[c])
                                 G.blind_select_opts[string.lower(c)]:recalculate()
                             end
-                        elseif not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+                        elseif G.GAME.round_resets.blind_states[c] ~= "Defeated" and not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
                             G.GAME.blind.chips = G.GAME.blind.chips + G.GAME.blind:cry_ante_base_mod(dt*(G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))*get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
                             G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                         end
@@ -1107,8 +1107,10 @@ return {name = "Blinds",
             end
             local rb = reset_blinds
             function reset_blinds()
-                G.CRY_BLINDS = {}
-                G.P_BLINDS.bl_cry_clock.mult = 0
+                if G.GAME.round_resets.blind_states.Boss == 'Defeated' then
+                    G.CRY_BLINDS = {}
+                    G.P_BLINDS.bl_cry_clock.mult = 0
+                end
                 rb()
             end
         end,
