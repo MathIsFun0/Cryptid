@@ -119,6 +119,15 @@ function Card:calculate_joker(context)
             else
                 ret.joker_repetitions[i] = 0
             end
+            if G.jokers.cards[i] == self and self.edition and self.edition.retriggers then
+                local old_repetitions = ret.joker_repetitions[i] ~= 0 and ret.joker_repetitions[i].repetitions or 0
+                local check = calculate_blurred(self)
+                if check and check.repetitions then
+                    check.repetitions = check.repetitions + old_repetitions
+                    ret.joker_repetitions[i] = check
+                end
+            end
+
         end
     end
     return ret
