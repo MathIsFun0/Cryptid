@@ -64,11 +64,10 @@ local oldox = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-    	if hand_chips ~= 0 then
-		G.GAME.blind.triggered = true
-        	return mult, 0, true
+    	if to_big(hand_chips) ~= to_big(0) then
+        	return mult, to_big(0), true
     	end
-    	return mult, 0, false
+    	return mult, to_big(0), false
     end
 }
 local oldhouse = {
@@ -90,7 +89,6 @@ local oldhouse = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if handname == "Full House" and not G.GAME.blind.disabled then
-		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -105,7 +103,7 @@ local oldarm = {
     key = "oldarm",
     pos = {x = 0, y = 3},
     boss = {
-        min = 1,
+        min = 3,
         max = 10
     },
 	loc_txt = {
@@ -119,7 +117,6 @@ local oldarm = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if #cards > 4 and not G.GAME.blind.disabled then
-		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -147,11 +144,10 @@ local oldfish = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-    	if mult ~= 1 then
-		G.GAME.blind.triggered = true
-        	return 1, hand_chips, true
+    	if to_big(mult) ~= to_big(1) then
+        	return to_big(1), hand_chips, true
     	end
-    	return 1, hand_chips, false
+    	return to_big(1), hand_chips, false
     end
 }
 local oldmanacle = {
@@ -173,7 +169,6 @@ local oldmanacle = {
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips) 
     	if G.GAME.current_round.discards_left > 1 then
-		G.GAME.blind.triggered = true
         	return math.floor(mult / G.GAME.current_round.discards_left), hand_chips, true
     	end
     	return mult, hand_chips, false
@@ -191,15 +186,13 @@ local oldserpent = {
     loc_txt = {
         name = 'Nostalgic Serpent',
         text = {
-            "Divide Mult by level",
-            "of played poker hand"
+            "Divide Mult by",
+            "level of played poker hand"
         }
     },
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-        print(tprint(G.GAME.hands[text]))
-        print(text)
         if G.GAME.hands[text].level > 1 then
             G.GAME.blind.triggered = true
             return math.floor(mult / G.GAME.hands[text].level), hand_chips, true
@@ -226,7 +219,6 @@ local oldpillar = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if handname == "Straight" and not G.GAME.blind.disabled then
-		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -254,7 +246,6 @@ local oldflint = {
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
     	if handname == "Flush" and not G.GAME.blind.disabled then
-		G.GAME.blind.triggered = true
         	return true
     	end
 	return false
@@ -275,15 +266,14 @@ local oldmark = {
 	loc_txt = {
         name = 'Nostalgic Mark',
         text = {
-            "No hands that",
-            "contain a Pair"
+            "No hands containing",
+            "a Pair"
         }
     },
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
-    	if next(hand["Pair"]) then
-		G.GAME.blind.triggered = true
+    	if next(hand["Pair"]) then 
         	return true
     	end
 	return false
