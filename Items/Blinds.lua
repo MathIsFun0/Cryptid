@@ -838,7 +838,7 @@ local obsidian_orb = {
                 if G.GAME.hands[handname].level > 1 then
                     G.GAME.blind.triggered = true
                     if not check then
-                        level_up_hand(self.children.animatedSprite, handname, nil, -1)
+                        level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
                         G.GAME.blind:wiggle()
                     end
                 end 
