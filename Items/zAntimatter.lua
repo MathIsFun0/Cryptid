@@ -39,6 +39,7 @@ local antimatter = {
         cry_misprint_min = 1, cry_misprint_max = 10, --Misprint Deck
         cry_highlight_limit = 1e20, --Infinite Deck
         cry_wormhole = true, cry_negative_rate = 20, --Wormhole Deck
+        cry_redeemed = true, --Redeemed Deck
         -- Enhanced Decks
         cry_force_enhancement = 'random',
         cry_force_edition = 'random',

@@ -64,10 +64,10 @@ local oldox = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-    	if hand_chips ~= 0 then
-        	return mult, 0, true
+    	if to_big(hand_chips) ~= to_big(0) then
+        	return mult, to_big(0), true
     	end
-    	return mult, 0, false
+    	return mult, to_big(0), false
     end
 }
 local oldhouse = {
@@ -144,10 +144,10 @@ local oldfish = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-    	if mult ~= 1 then
-        	return 1, hand_chips, true
+    	if to_big(mult) ~= to_big(1) then
+        	return to_big(1), hand_chips, true
     	end
-    	return 1, hand_chips, false
+    	return to_big(1), hand_chips, false
     end
 }
 local oldmanacle = {
@@ -193,8 +193,6 @@ local oldserpent = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-        print(tprint(G.GAME.hands[text]))
-        print(text)
         if G.GAME.hands[text].level > 1 then
             G.GAME.blind.triggered = true
             return math.floor(mult / G.GAME.hands[text].level), hand_chips, true
