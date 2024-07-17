@@ -275,8 +275,8 @@ local oldmark = {
 	loc_txt = {
         name = 'Nostalgic Mark',
         text = {
-            "No hands containing",
-            "a Pair"
+            "No hands that",
+            "contain a Pair"
         }
     },
     atlas = "nostalgia",
