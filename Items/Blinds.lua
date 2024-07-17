@@ -105,7 +105,7 @@ local oldarm = {
     key = "oldarm",
     pos = {x = 0, y = 3},
     boss = {
-        min = 3,
+        min = 1,
         max = 10
     },
 	loc_txt = {
@@ -191,8 +191,8 @@ local oldserpent = {
     loc_txt = {
         name = 'Nostalgic Serpent',
         text = {
-            "Divide Mult by",
-            "level of played poker hand"
+            "Divide Mult by level",
+            "of played poker hand"
         }
     },
     atlas = "nostalgia",
