@@ -308,7 +308,7 @@ return {name = "Misc. Decks",
                 get_weight = function(self)
                     return self.weight*(G.GAME.modifiers.cry_negative_rate or 1)
                 end,
-            })
+            },true)
             --redeemed deck patches
             local cr = Card.redeem
             function Card:redeem()
