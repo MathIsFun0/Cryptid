@@ -201,6 +201,21 @@ local astral_deck = {object_type = "Back",
     },
 }
 
+local blurred_deck = {object_type = "Back",
+    name = "cry-Blurred Deck",
+    key = "blurred_deck",
+	config = {cry_force_edition = 'cry_blur'},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = "Blurred Deck",
+        text = {
+            "Start with a deck",
+            "of {C:attention}Blurred Cards{}",
+            "Cards cannot change editions"
+        }
+    },
+}
+
 local mosaic_deck = {object_type = "Back",
     name = "cry-Mosaic Deck",
     key = "mosaic_deck",
@@ -455,6 +470,7 @@ return {name = "Enhanced Decks",
                                         editions[#editions+1] = "cry_mosaic"
                                         editions[#editions+1] = "cry_oversat"
                                         editions[#editions+1] = "cry_glitched"
+                                        editions[#editions+1] = "cry_blur"
                                     end
                                     local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
                                     ed_table[random_edition] = true
@@ -537,7 +553,7 @@ return {name = "Enhanced Decks",
         end,
         items = {atlasenchanced,
 hierophant_deck, empress_deck, lovers_deck, justice_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
-foil_deck, holo_deck, poly_deck, nega_deck, astral_deck, mosaic_deck, oversat_deck, glitched_deck,
+foil_deck, holo_deck, poly_deck, nega_deck, astral_deck, mosaic_deck, oversat_deck, glitched_deck, blurred_deck,
 talisman_deck, deja_vu_deck, trance_deck, medium_deck,
 eternal_deck, perishable_deck, rental_deck,
 star_deck, moon_deck, sun_deck, world_deck}}

@@ -302,6 +302,9 @@ local tax = {
     boss_colour = HEX('40ff40'),
     cry_cap_score = function(self, score)
         return math.floor(math.min(0.4*G.GAME.blind.chips,score)+0.5)
+    end,
+    in_pool = function()
+        return G.GAME.round_resets.hands >= 3
     end
 }
 local box = {
