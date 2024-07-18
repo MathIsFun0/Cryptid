@@ -210,6 +210,56 @@ local redeemed = {
         }
     }
 }
+local critical = {
+    object_type = "Back",
+    name = "cry-Critical",
+    key = "critical",
+    config = {cry_crit_rate = 0.25, cry_crit_miss_rate = 0.125},
+    pos = {x = 5, y = 0},
+    atlas = "atlasdeck",
+    loc_txt = {
+        name = "Critical Deck",
+        text = {
+            "After each hand played,",
+            "{C:green}#1# in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+            "{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+        }
+    },
+    loc_vars = function(self, info_queue, center)
+        return {vars = {G.GAME.probabilities.normal or 1}}
+    end,
+    trigger_effect = function(self, args)
+        if args.context == "final_scoring_step" then
+            local crit_poll = pseudorandom(pseudoseed("cry_critical"))
+            crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
+            if crit_poll < self.config.cry_crit_rate then
+                args.mult = args.mult^2
+                update_hand_text({delay = 0}, {mult = args.mult, chips = args.chips})
+                G.E_MANAGER:add_event(Event({
+                    func = (function()
+                play_sound("cry_^Mult", 1)
+                attention_text({
+                    scale = 1.4, text = "Critical Hit!", hold = 2, align = 'cm', offset = {x = 0,y = -2.7},major = G.play
+                })
+                return true
+                end)}))
+            elseif crit_poll < self.config.cry_crit_rate + self.config.cry_crit_miss_rate then
+                args.mult = args.mult^0.5
+                update_hand_text({delay = 0}, {mult = args.mult, chips = args.chips})
+                G.E_MANAGER:add_event(Event({
+                    func = (function()
+                play_sound("timpani", 1)
+                attention_text({
+                    scale = 1.4, text = "Critical Miss!", hold = 2, align = 'cm', offset = {x = 0,y = -2.7},major = G.play
+                })
+                return true
+                end)}))
+            end
+            delay(0.6)
+            return args.chips, args.mult
+        end
+    end
+}
 return {name = "Misc. Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
@@ -352,4 +402,4 @@ return {name = "Misc. Decks",
                 end
             end
         end,
-        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, redeemed}}
+        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, redeemed, critical}}

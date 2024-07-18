@@ -1080,6 +1080,8 @@ return {name = "Blinds",
             function Blind:defeat(s)
                 dft(self, s)
                 if self.name ~= "cry-Obsidian Orb" and 
+                   (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"]) and
+                   (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"]) and
                    (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"]) and
                    (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"]) and
                    (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"]) and
