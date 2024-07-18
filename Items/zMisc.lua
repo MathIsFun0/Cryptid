@@ -389,11 +389,12 @@ local epic_tag = {
         end
     end
 }
+--Bug: this still doesn't trigger immediately
 local empowered = {
     object_type = "Tag",
     atlas = "tag_cry",
     pos = {x=1, y=0},
-    config = {type = 'new_blind_choice'},
+    config = {type = 'immediate'},
     key = "empowered",
     loc_txt = {
         name = "Empowered Tag",
@@ -411,7 +412,7 @@ local empowered = {
         return {vars = {}}
     end,
     apply = function(tag, context)
-        if context.type == 'new_blind_choice' then
+        if context.type == 'immediate' then
             tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
                 local key = 'p_spectral_normal_1'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
@@ -541,6 +542,9 @@ local memory = {
             tag.triggered = true
         end
         return true
+    end,
+    in_pool = function()
+        return G.GAME.cry_last_tag_used and true
     end
 }
 local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, blurred_shader, blurred,
