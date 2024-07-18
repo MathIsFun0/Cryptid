@@ -147,10 +147,11 @@ local blurred = {
         name = "Blurred",
         label = "Blurred",
         text = {
-            "{C:green}#1# in #2#{} chance to", "{C:attention}retrigger{} this card", "{C:attention}#3#{} additional times"
+            "{C:attention}Retrigger{} card",
+            "{C:green}#1# in #2#{} chance", "to retrigger {C:attention}#3#{}", "additional time"
         }
     },
-    config = {retrigger_chance = 2, retriggers = 2},
+    config = {retrigger_chance = 2, retriggers = 1},
     loc_vars = function(self, info_queue, center)
         local chance = center and center.edition.retrigger_chance or self.config.retrigger_chance
         local retriggers = center and center.edition.retriggers or self.config.retriggers
@@ -558,17 +559,17 @@ return {name = "Misc.",
         init = function()
 
 function calculate_blurred(card)
+    local retriggers = 1
+
     if card.edition.retrigger_chance then
         local chance = card.edition.retrigger_chance
         chance = G.GAME.probabilities.normal / chance
 
-        if pseudorandom("blurred") > chance then
-            return
+        if pseudorandom("blurred") <= chance then
+            retriggers = retriggers + card.edition.retriggers
         end
-
     end
     
-    local retriggers = card.edition.retriggers
     return {
         message = 'Again?',
         repetitions = retriggers,
