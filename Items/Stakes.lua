@@ -298,12 +298,14 @@ local twilight = {object_type = "Stake",
 	pos = {x = 1, y = 3},
     atlas = "stake",
     applied_stakes = {"cry_platinum"},
+    modifiers = function()
+        G.GAME.modifiers.enable_banana = true
+    end,
 	loc_txt = {
         name = "Twilight Stake",
         text = {
         "Cards can be {C:attention}Banana{}",
         "{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -315,12 +317,14 @@ local verdant = {object_type = "Stake",
 	pos = {x = 2, y = 3},
     atlas = "stake",
     applied_stakes = {"cry_twilight"},
+    modifiers = function()
+        G.GAME.modifiers.scaling = 5
+    end,
 	loc_txt = {
         name = "Verdant Stake",
         text = {
         "Required score scales",
         "faster for each {C:attention}Ante",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -332,11 +336,13 @@ local ember = {object_type = "Stake",
 	pos = {x = 3, y = 3},
     atlas = "stake",
     applied_stakes = {"cry_verdant"},
+    modifiers = function()
+        G.GAME.modifiers.cry_no_sell_value = true
+    end,
 	loc_txt = {
         name = "Ember Stake",
         text = {
         "All items have no sell value",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -348,13 +354,15 @@ local dawn = {object_type = "Stake",
 	pos = {x = 4, y = 3},
     atlas = "stake",
     applied_stakes = {"cry_ember"},
+    modifiers = function()
+        G.GAME.modifiers.cry_consumable_reduce = true
+    end,
 	loc_txt = {
         name = "Dawn Stake",
         text = {
         "Tarots and Spectrals target {C:attention}1",
         "fewer card",
-        "{s:0.8,C:inactive}(Minimum of 1){}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "{s:0.8,C:inactive}(Minimum of 1){}"
         }
     },
     shiny = true,
@@ -366,12 +374,14 @@ local horizon = {object_type = "Stake",
 	pos = {x = 0, y = 4},
     atlas = "stake",
     applied_stakes = {"cry_dawn"},
+    modifiers = function()
+        G.GAME.modifiers.cry_card_each_round = true
+    end,
 	loc_txt = {
         name = "Horizon Stake",
         text = {
         "When blind selected, add a",
         "{C:attention}random card{} to deck",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
         }
     },
     shiny = true,
@@ -383,12 +393,14 @@ local blossom = {object_type = "Stake",
 	pos = {x = 1, y = 4},
     atlas = "stake",
     applied_stakes = {"cry_horizon"},
+    modifiers = function()
+        G.GAME.modifiers.cry_big_showdown = true
+    end,
 	loc_txt = {
         name = "Blossom Stake",
         text = {
         "{C:attention}Final{} Boss Blinds can appear",
-        "after Ante 1",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "in {C:attention}any{} Ante"
         }
     },
     shiny = true,
@@ -417,11 +429,13 @@ local ascendant = {object_type = "Stake",
 	pos = {x = 3, y = 4},
     atlas = "stake",
     applied_stakes = {"cry_azure"},
+    modifiers = function()
+        change_shop_size(-1)
+    end,
 	loc_txt = {
         name = "Ascendant Stake",
         text = {
-        "{C:attention}-1{} Joker slot",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "{C:attention}-1{} Shop slot",
         }
     },
     shiny = true,
@@ -458,12 +472,33 @@ return {name = "More Stakes",
                       amount = amount - amount%(10^math.floor(math.log10(amount)-1))
                     end
                     return amount
+                elseif G.GAME.modifiers.scaling == 5 then
+                    local amounts = {
+                        to_big(300),  to_big(1500), to_big(5000),  to_big(14000),  to_big(35000),  to_big(150000),  to_big(260000),  to_big(400000)
+                    }
+                    if ante < 1 then return to_big(100) end
+                    if ante <= 8 then return amounts[ante] end
+                    local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+                    local amount = a*(b+(k*c)^d)^c
+                    if type(amount) == 'table' then
+                        if (amount:lt(R.MAX_SAFE_INTEGER)) then
+                            local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+                            amount = math.floor(amount / exponent):to_number() * exponent
+                        end
+                        amount:normalize()
+                    else
+                      amount = amount - amount%(10^math.floor(math.log10(amount)-1))
+                    end
+                    return amount
                 else return gba(ante)
                 end
             end
             -- Disallow use of Debuffed Perishable consumables
             local cuc = Card.can_use_consumeable
             function Card:can_use_consumeable(any_state, skip_check)
+                if self.ability.perish_tally == nil then
+                    self.ability.perish_tally = G.GAME.perishable_rounds or 5
+                end
                 if self.ability.perishable and self.ability.perish_tally <= 0 then 
                     return false
                 end
@@ -652,6 +687,9 @@ return {name = "More Stakes",
                     self.sell_cost = math.max(1, math.floor(self.cost/2)) + (self.ability.extra_value or 0)
                     if self.area and self.ability.couponed and (self.area == G.shop_jokers or self.area == G.shop_booster) then self.cost = 0 end
                     self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost
+                end
+                if G.GAME.modifiers.cry_no_sell_value then
+                    self.sell_cost = 0
                 end
             end
 

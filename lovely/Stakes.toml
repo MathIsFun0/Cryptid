@@ -11,13 +11,20 @@ target = "functions/state_events.lua"
 pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
 position = "before"
 payload = '''
-for i = 1, #G.consumeables.cards do
+local i = 1
+while i <= #G.jokers.cards do
+    local gone = G.jokers.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
+end
+i = 1
+while i <= #G.consumeables.cards do
     G.consumeables.cards[i]:calculate_rental()
     G.consumeables.cards[i]:calculate_perishable()
+    local gone = G.consumeables.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
 end
 '''
 match_indent = true
-
 
 # Yellow Stake - perishable and rental effects on cards held in hand
 [[patches]]
@@ -38,6 +45,11 @@ target = "functions/state_events.lua"
 pattern = "G.FUNCS.draw_from_hand_to_discard()"
 position = "before"
 payload = '''
+local i = 1
+while i <= #G.hand.cards do
+    local gone = G.hand.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
+end
 for i = 1, #G.discard.cards do
     G.discard.cards[i]:calculate_perishable()
 end
@@ -161,7 +173,7 @@ payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(
 match_indent = true
 
 
-# Quartz Stake - render pinned sticker
+# Quartz Stake - render pinned and banana sticker
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -172,6 +184,11 @@ if self.pinned then
     G.shared_stickers['pinned'].role.draw_major = self
     G.shared_stickers['pinned']:draw_shader('dissolve', nil, nil, nil, self.children.center)
     G.shared_stickers['pinned']:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+end
+if self.ability.banana then
+    G.shared_sticker_banana.role.draw_major = self
+    G.shared_sticker_banana:draw_shader('dissolve', nil, nil, nil, self.children.center)
+    G.shared_sticker_banana:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
 end
 '''
 match_indent = true
@@ -328,4 +345,61 @@ target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
 position = "at"
 payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
+match_indent = true
+
+# Dawn Stake - change maximum allowed highlights
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''local cfg = (card and card.ability) or _c['config']'''
+position = "after"
+payload = '''if cfg and G.GAME.modifiers.cry_consumable_reduce and cfg.max_highlighted and (cfg.max_highlighted > 1) then
+    local new_table = {}
+    for i0, j0 in pairs(cfg) do
+        new_table[i0] = j0
+    end
+    new_table.max_highlighted = new_table.max_highlighted - 1
+    cfg = new_table
+end'''
+match_indent = true
+
+# Horizon Stake - create random card at start of blind
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.GAME.blind:set_blind(G.GAME.round_resets.blind)'''
+position = "after"
+payload = '''if G.GAME.modifiers.cry_card_each_round then
+    G.E_MANAGER:add_event(Event({
+        func = function() 
+            local front = pseudorandom_element(G.P_CARDS, pseudoseed('cry_horizon'))
+            G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+            local edition = G.P_CENTERS.c_base
+            local card = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
+            card:start_materialize()
+            if G.GAME.selected_back.effect.config.cry_force_edition then
+                local edition = {}
+                edition[G.GAME.selected_back.effect.config.cry_force_edition] = true
+                card:set_edition(edition, true, true);
+            end
+            G.play:emplace(card)
+            table.insert(G.playing_cards, card)
+            return true
+        end}))
+    G.E_MANAGER:add_event(Event({
+        func = function() 
+            G.deck.config.card_limit = G.deck.config.card_limit + 1
+            return true
+        end}))
+    draw_card(G.play,G.deck, 90,'up', nil) 
+end'''
+match_indent = true
+
+# Blossom Stake - showdown blinds before the winning ante
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
+position = "at"
+payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
 match_indent = true

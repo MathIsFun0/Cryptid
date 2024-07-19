@@ -357,6 +357,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           if G.GAME.modifiers.cry_enable_pinned_in_shop and pseudorandom('cry_pin'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
               card.pinned = true
           end
+          if not G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_banana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) and (eternal_perishable_poll <= 0.7) then
+              card.ability.banana = true
+          end
+          if G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_banana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
+              card.ability.banana = true
+          end
           if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
               card.cry_flipped = true
           end
@@ -500,6 +506,7 @@ function init_localization()
         G.localization.descriptions.Spectral.c_trance.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+        G.localization.misc.labels.banana = "Banana"
     end
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
@@ -508,6 +515,16 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
+end
+
+function SMODS.current_mod.process_loc_text()
+    G.localization.descriptions.Other.banana = {
+        name = "Banana",
+        text = {
+            "{C:green}#1# in #2#{} chance of being",
+            "destroyed each round."
+        },
+    }
 end
 
 
@@ -533,13 +550,31 @@ SMODS.Atlas({
     key = "sticker",
     path = "sticker_cry.png",
     px = 71,
-    py = 95
+    py = 95,
+    inject = function(self)
+        local file_path = type(self.path) == 'table' and
+            (self.path[G.SETTINGS.language] or self.path['default'] or self.path['en-us']) or self.path
+        if file_path == 'DEFAULT' then return end
+        -- language specific sprites override fully defined sprites only if that language is set
+        if self.language and not (G.SETTINGS.language == self.language) then return end
+        if not self.language and self.obj_table[('%s_%s'):format(self.key, G.SETTINGS.language)] then return end
+        self.full_path = (self.mod and self.mod.path or SMODS.path) ..
+            'assets/' .. G.SETTINGS.GRAPHICS.texture_scaling .. 'x/' .. file_path
+        local file_data = assert(NFS.newFileData(self.full_path),
+            ('Failed to collect file data for Atlas %s'):format(self.key))
+        self.image_data = assert(love.image.newImageData(file_data),
+            ('Failed to initialize image data for Atlas %s'):format(self.key))
+        self.image = love.graphics.newImage(self.image_data,
+            { mipmaps = true, dpiscale = G.SETTINGS.GRAPHICS.texture_scaling })
+        G[self.atlas_table][self.key_noloc or self.key] = self
+        G.shared_sticker_banana = Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], {x = 5,y = 2})
+    end
 })
 function Card:set_perishable(_perishable) 
     self.ability.perishable = nil
     if (self.config.center.perishable_compat or G.GAME.modifiers.cry_any_stickers) and (not self.ability.eternal or G.GAME.modifiers.cry_eternal_perishable_compat) then 
         self.ability.perishable = true
-        self.ability.perish_tally = G.GAME.perishable_rounds
+        self.ability.perish_tally = G.GAME.perishable_rounds or 5
     end
 end
 function Card:set_eternal(_eternal)

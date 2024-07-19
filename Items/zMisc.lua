@@ -547,6 +547,7 @@ local memory = {
         return G.GAME.cry_last_tag_used and true
     end
 }
+
 local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, blurred_shader, blurred,
 echo_atlas, echo, eclipse_atlas, eclipse, 
 typhoon_sprite, azure_seal_sprite, typhoon, azure_seal, 
@@ -631,6 +632,36 @@ function Tag:apply_to_run(x)
         G.GAME.cry_last_tag_used = self.key
     end
     return ret
+end
+
+function Card:calculate_banana()
+    if not self.ability.extinct then
+        if self.ability.banana and (pseudorandom('banana') < G.GAME.probabilities.normal/10) then 
+            self.ability.extinct = true
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    self.T.r = -0.2
+                    self:juice_up(0.3, 0.4)
+                    self.states.drag.is = true
+                    self.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                        func = function()
+                                self.area:remove_card(self)
+                                self:remove()
+                                self = nil
+                            return true; end})) 
+                    return true
+                end
+            }))
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
+            return true
+        elseif self.ability.banana then
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_safe_ex'), delay = 0.1})
+            return false
+        end
+    end
+    return false
 end
         end,
         items = miscitems}
