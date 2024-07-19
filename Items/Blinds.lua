@@ -116,7 +116,7 @@ local oldarm = {
     atlas = "nostalgia",
     boss_colour = HEX('4f6367'),
     debuff_hand = function(self, cards, hand, handname, check)
-    	if #cards > 4 and not G.GAME.blind.disabled then\
+    	if #cards > 4 and not G.GAME.blind.disabled then
 		G.GAME.blind.triggered = true
         	return true
     	end
