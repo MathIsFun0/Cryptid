@@ -195,6 +195,71 @@ local wormhole = {
         }
     }
 }
+local redeemed = {
+    object_type = "Back",
+    name = "cry-Redeemed",
+    key = "redeemed",
+    config = {cry_redeemed = true},
+    pos = {x = 4, y = 4},
+    atlas = "atlasdeck",
+    loc_txt = {
+        name = "Redeemed Deck",
+        text = {
+            "When a {C:attention}Voucher{} is purchased,",
+            "gain its {C:attention}extra tiers"
+        }
+    }
+}
+local critical = {
+    object_type = "Back",
+    name = "cry-Critical",
+    key = "critical",
+    config = {cry_crit_rate = 0.25, cry_crit_miss_rate = 0.125},
+    pos = {x = 5, y = 0},
+    atlas = "atlasdeck",
+    loc_txt = {
+        name = "Critical Deck",
+        text = {
+            "After each hand played,",
+            "{C:green}#1# in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+            "{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+        }
+    },
+    loc_vars = function(self, info_queue, center)
+        return {vars = {G.GAME.probabilities.normal or 1}}
+    end,
+    trigger_effect = function(self, args)
+        if args.context == "final_scoring_step" then
+            local crit_poll = pseudorandom(pseudoseed("cry_critical"))
+            crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
+            if crit_poll < self.config.cry_crit_rate then
+                args.mult = args.mult^2
+                update_hand_text({delay = 0}, {mult = args.mult, chips = args.chips})
+                G.E_MANAGER:add_event(Event({
+                    func = (function()
+                play_sound("cry_^Mult", 1)
+                attention_text({
+                    scale = 1.4, text = "Critical Hit!", hold = 2, align = 'cm', offset = {x = 0,y = -2.7},major = G.play
+                })
+                return true
+                end)}))
+            elseif crit_poll < self.config.cry_crit_rate + self.config.cry_crit_miss_rate then
+                args.mult = args.mult^0.5
+                update_hand_text({delay = 0}, {mult = args.mult, chips = args.chips})
+                G.E_MANAGER:add_event(Event({
+                    func = (function()
+                play_sound("timpani", 1)
+                attention_text({
+                    scale = 1.4, text = "Critical Miss!", hold = 2, align = 'cm', offset = {x = 0,y = -2.7},major = G.play
+                })
+                return true
+                end)}))
+            end
+            delay(0.6)
+            return args.chips, args.mult
+        end
+    end
+}
 return {name = "Misc. Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
@@ -234,6 +299,9 @@ return {name = "Misc. Decks",
                 end
                 if self.effect.config.cry_negative_rate then
                     G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate
+                end
+                if self.effect.config.cry_redeemed then 
+                    G.GAME.modifiers.cry_redeemed = true
                 end
             end
             --equilibrium deck patches
@@ -290,6 +358,48 @@ return {name = "Misc. Decks",
                 get_weight = function(self)
                     return self.weight*(G.GAME.modifiers.cry_negative_rate or 1)
                 end,
-            })
+            },true)
+            --redeemed deck patches
+            local cr = Card.redeem
+            function Card:redeem()
+                cr(self)
+                if G.GAME.modifiers.cry_redeemed then
+                    for k, v in pairs(G.P_CENTER_POOLS["Voucher"]) do
+                        if v.requires and not G.GAME.used_vouchers[v] then
+                            for _, vv in pairs(v.requires) do
+                                if vv == self.config.center.key then
+                                    --redeem extra voucher code based on Betmma's Vouchers
+                                    local area
+                                    if G.STATE == G.STATES.HAND_PLAYED then
+                                        if not G.redeemed_vouchers_during_hand then
+                                            G.redeemed_vouchers_during_hand = CardArea(
+                                                G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, 
+                                                {type = 'play', card_limit = 5})
+                                        end
+                                        area = G.redeemed_vouchers_during_hand
+                                    else
+                                        area = G.play
+                                    end
+                                    local card = create_card('Voucher', area, nil, nil, nil, nil, v.key)
+                                    card:start_materialize()
+                                    area:emplace(card)
+                                    card.cost=0
+                                    card.shop_voucher=false
+                                    local current_round_voucher=G.GAME.current_round.voucher
+                                    card:redeem()
+                                    G.GAME.current_round.voucher=current_round_voucher
+                                    G.E_MANAGER:add_event(Event({
+                                        trigger = 'after',
+                                        delay =  0,
+                                        func = function() 
+                                            card:start_dissolve()
+                                            return true
+                                        end}))  
+                                end
+                            end
+                        end
+                    end
+                end
+            end
         end,
-        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole}}
+        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, redeemed, critical}}

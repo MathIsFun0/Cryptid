@@ -398,11 +398,12 @@ local crustulum_sprite = {
     px = 71,
     py = 95
 }
+--todo: make the pow_mult always prime
 local primus = {
     object_type = "Joker",
     name = "cry-primus",
     key = "primus",
-    config = {extra = {pow_mult = 1, pow_mult_mod = 0.1}},
+    config = {extra = {pow_mult = 1.01, pow_mult_mod = 0.17}},
     pos = {x = 0, y = 0},
     loc_txt = {
         name = 'Primus',

@@ -130,7 +130,7 @@ match_indent = true
 target = "card.lua"
 pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
 position = "at"
-payload = "if self.ability.consumeable.mod_num >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then"
+payload = "if (self.ability.consumeable.mod_num - (G.GAME.modifiers.cry_consumable_reduce and (self.ability.consumeable.mod_num > 1) and 1 or 0)) >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then"
 match_indent = true
 
 # mod_num has no limit

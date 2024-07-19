@@ -178,6 +178,21 @@ local error_joker = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	atlas = "atlasepic",
+	add_to_deck = function(self, card, from_debuff)
+		if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_edition_from_deck then
+			G.GAME.modifiers.cry_force_edition_from_deck = G.GAME.modifiers.cry_force_edition
+		elseif not G.GAME.modifiers.cry_force_edition_from_deck then
+			G.GAME.modifiers.cry_force_edition = 'cry_glitched'
+			G.GAME.modifiers.cry_force_edition_from_deck = "Nope!"
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if G.GAME.modifiers.cry_force_edition_from_deck ~= "Nope!" then
+			G.GAME.modifiers.cry_force_edition = G.GAME.modifiers.cry_force_edition_from_deck
+		else
+			G.GAME.modifiers.cry_force_edition = nil
+		end
+	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.repetition and not card.ability.extra.active then
 			if card.ability.extra.sell_rounds == 0 then
@@ -1001,6 +1016,6 @@ return {name = "Epic Jokers",
                     end
                 end,
                 loc_txt = {}
-            })
+            },true)
 		end,
 		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker,}}

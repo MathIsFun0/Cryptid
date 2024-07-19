@@ -103,3 +103,33 @@ else
     card = create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, 'spe')
 end
 '''
+
+# Banana Tag
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''if self.ability.rental then badges[#badges + 1] = 'rental' end'''
+position = 'after'
+match_indent = true
+payload = '''
+if self.ability.banana then badges[#badges + 1] = 'banana' end
+'''
+
+# Banana Tag
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''if v == 'rental' then info_queue[#info_queue+1] = {key = 'rental', set = 'Other', vars = {G.GAME.rental_rate or 1}} end'''
+position = 'after'
+match_indent = true
+payload = '''
+if v == 'banana' then info_queue[#info_queue+1] = {key = 'banana', set = 'Other', vars = {G.GAME.probabilities.normal or 1, 10}} end
+'''
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''pinned_left = G.C.ORANGE,'''
+position = 'after'
+payload = '''banana = HEX("e8c500"),'''
+match_indent = true

@@ -63,7 +63,7 @@ local oldox = {
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
     	if to_big(hand_chips) ~= to_big(0) then
-		G.GAME.blind.triggered = true
+		      G.GAME.blind.triggered = true
         	return mult, to_big(0), true
     	end
     	return mult, to_big(0), false
@@ -146,7 +146,7 @@ local oldfish = {
     boss_colour = HEX('4f6367'),
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
     	if to_big(mult) ~= to_big(1) then
-		G.GAME.blind.triggered = true
+		      G.GAME.blind.triggered = true
         	return to_big(1), hand_chips, true
     	end
     	return to_big(1), hand_chips, false
@@ -308,6 +308,9 @@ local tax = {
     boss_colour = HEX('40ff40'),
     cry_cap_score = function(self, score)
         return math.floor(math.min(0.4*G.GAME.blind.chips,score)+0.5)
+    end,
+    in_pool = function()
+        return G.GAME.round_resets.hands >= 3
     end
 }
 local box = {
@@ -779,7 +782,7 @@ local obsidian_orb = {
     end,
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
         local new_mult = mult
-        local new_chips = chips
+        local new_chips = hand_chips
         local trigger = false
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
@@ -844,7 +847,7 @@ local obsidian_orb = {
                 if G.GAME.hands[handname].level > 1 then
                     G.GAME.blind.triggered = true
                     if not check then
-                        level_up_hand(self.children.animatedSprite, handname, nil, -1)
+                        level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
                         G.GAME.blind:wiggle()
                     end
                 end 
@@ -1034,7 +1037,7 @@ return {name = "Blinds",
             function Game:update(dt)
                 upd(self,dt)
                 local choices = {"Small", "Big", "Boss"}
-                G.CRY_BLINDS = G.CRY_BLINDS or {}
+                G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
                 for _, c in pairs(choices) do
                     if G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_choices and G.GAME.round_resets.blind_choices[c] and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod then
                         if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult ~= 0 and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante ~= G.GAME.round_resets.ante then 
@@ -1048,14 +1051,14 @@ return {name = "Blinds",
                             G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante = G.GAME.round_resets.ante
                         end
                         if G.GAME.round_resets.blind_states[c] ~= "Current" and G.GAME.round_resets.blind_states[c] ~= "Defeated" then
-                            G.CRY_BLINDS[c] = (G.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult) + (G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(dt*(G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)) or 0)
+                            G.GAME.CRY_BLINDS[c] = (G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult) + (G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(dt*(G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)) or 0)
                             --Update UI
                             --todo: in blinds screen, too
                             if G.blind_select_opts then
                                 local blind_UI = G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
                                 local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-                                chip_text_node.config.text = number_format(get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.CRY_BLINDS[c])
-                                chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.CRY_BLINDS[c])
+                                chip_text_node.config.text = number_format(get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.GAME.CRY_BLINDS[c])
+                                chip_text_node.config.scale = score_number_scale(0.9, get_blind_amount(G.GAME.round_resets.blind_ante)*G.GAME.starting_params.ante_scaling*G.GAME.CRY_BLINDS[c])
                                 G.blind_select_opts[string.lower(c)]:recalculate()
                             end
                         elseif G.GAME.round_resets.blind_states[c] ~= "Defeated" and not G.GAME.blind.disabled and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
@@ -1086,6 +1089,8 @@ return {name = "Blinds",
             function Blind:defeat(s)
                 dft(self, s)
                 if self.name ~= "cry-Obsidian Orb" and 
+                   (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"]) and
+                   (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"]) and
                    (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"]) and
                    (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"]) and
                    (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"]) and
@@ -1106,13 +1111,13 @@ return {name = "Blinds",
                 local c = "Boss"
                 if string.sub(G.GAME.subhash or '', -1) == 'S' then c = "Small" end
                 if string.sub(G.GAME.subhash or '', -1) == 'B' then c = "Big" end
-                if G.CRY_BLINDS and G.CRY_BLINDS[c] and not y and blind and blind.mult then blind.mult = G.CRY_BLINDS[c] end
+                if G.GAME.CRY_BLINDS and G.GAME.CRY_BLINDS[c] and not y and blind and blind.mult then blind.mult = G.GAME.CRY_BLINDS[c] end
                 bsb(self, blind, y, z)
             end
             local rb = reset_blinds
             function reset_blinds()
                 if G.GAME.round_resets.blind_states.Boss == 'Defeated' then
-                    G.CRY_BLINDS = {}
+                    G.GAME.CRY_BLINDS = {}
                     G.P_BLINDS.bl_cry_clock.mult = 0
                 end
                 rb()

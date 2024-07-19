@@ -56,7 +56,7 @@ local oversat = {
         name = "Oversaturated",
         label = "Oversaturated",
         text = {
-            "All values are {C:attention}doubled{}, if possible"
+            "All values are {C:attention}doubled{},", "if possible"
         }
     }
 }
@@ -84,8 +84,9 @@ local glitched = {
         name = "Glitched",
         label = "Glitched",
         text = {
-            "All values are {C:dark_edition}randomized{}",
-            'between {C:blue}X0.1{} and {C:red}X10{}, if possible',
+            'All values are {C:dark_edition}randomized{}',
+            'between {C:blue}X0.1{} and {C:red}X10{},',
+            ' if possible',
         }
     }
 }
@@ -122,6 +123,43 @@ local astral = {
     end
 }
 
+local blurred_shader = {
+    object_type = "Shader",
+    key = 'blur', 
+    path = 'blur.fs'
+}
+local blurred = {
+    object_type = "Edition",
+    key = "blur",
+    weight = 0.1, --very rare
+    shader = "blur",
+    in_shop = true,
+    extra_cost = 3,
+    sound = {
+        sound = 'cry_^Mult',
+        per = 1,
+        vol = 0.5
+    },
+    get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+    loc_txt = {
+        name = "Blurred",
+        label = "Blurred",
+        text = {
+            "{C:attention}Retrigger{} card",
+            "{C:green}#1# in #2#{} chance", "to retrigger {C:attention}#3#{}", "additional time"
+        }
+    },
+    config = {retrigger_chance = 2, retriggers = 1},
+    loc_vars = function(self, info_queue, center)
+        local chance = center and center.edition.retrigger_chance or self.config.retrigger_chance
+        local retriggers = center and center.edition.retriggers or self.config.retriggers
+
+        return {vars = {G.GAME.probabilities.normal, chance, retriggers}}
+    end
+}
+
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -144,7 +182,6 @@ local echo = {
     loc_vars = function(self, info_queue)
         return {vars = {self.config.retriggers,G.GAME.probabilities.normal, self.config.extra}}
     end,
-    specific_vars = {} -- Required for tooltip to not crash on older versions of Steamodded
 }
 
 local eclipse_atlas = {
@@ -353,11 +390,12 @@ local epic_tag = {
         end
     end
 }
+--Bug: this still doesn't trigger immediately
 local empowered = {
     object_type = "Tag",
     atlas = "tag_cry",
     pos = {x=1, y=0},
-    config = {type = 'new_blind_choice'},
+    config = {type = 'immediate'},
     key = "empowered",
     loc_txt = {
         name = "Empowered Tag",
@@ -375,7 +413,7 @@ local empowered = {
         return {vars = {}}
     end,
     apply = function(tag, context)
-        if context.type == 'new_blind_choice' then
+        if context.type == 'immediate' then
             tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
                 local key = 'p_spectral_normal_1'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
@@ -505,9 +543,13 @@ local memory = {
             tag.triggered = true
         end
         return true
+    end,
+    in_pool = function()
+        return G.GAME.cry_last_tag_used and true
     end
 }
-local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, 
+
+local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, blurred_shader, blurred,
 echo_atlas, echo, eclipse_atlas, eclipse, 
 typhoon_sprite, azure_seal_sprite, typhoon, azure_seal, 
 cat, empowered, gambler, bundle, memory}
@@ -516,48 +558,112 @@ cat, empowered, gambler, bundle, memory}
 end--]] --disabled due to bug
 return {name = "Misc.", 
         init = function()
-            se = Card.set_edition
-            function Card:set_edition(x,y,z)
-                local was_oversat = self.edition and (self.edition.cry_oversat or self.edition.cry_glitched)
-                se(self,x,y,z)
-		if was_oversat then
-			cry_misprintize(self,nil,true)
-		end
-		if self.edition and self.edition.cry_oversat then
-			cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
-		end
-		if self.edition and self.edition.cry_glitched then
-			cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
-		end
-            end
-            --echo card
-            cs = Card.calculate_seal
-            function Card:calculate_seal(context)
-                local ret = cs(self,context)
-                if context.repetition then
-                    if self.config.center == G.P_CENTERS.m_cry_echo then
-                        if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
-                            return {
-                                message = localize('k_again_ex'),
-                                repetitions = (ret and ret.repetitions or 0) + self.ability.retriggers,
-                                card = self
-                            }
-                        end
-                    end
-                end
-                return ret
-            end
 
-            --Memory Tag Patches - store last tag used
-            local tapr = Tag.apply_to_run
-            function Tag:apply_to_run(x)
-                local ret = tapr(self,x)
-                if self.triggered and self.key ~= "tag_double" and self.key ~= "tag_cry_memory" and 
-                self.key ~= "tag_cry_triple" and self.key ~= "tag_cry_quadruple" and self.key ~= "tag_cry_quintuple" then
-                    G.GAME.cry_last_tag_used = self.key
-                end
-                return ret
+function calculate_blurred(card)
+    local retriggers = 1
+
+    if card.edition.retrigger_chance then
+        local chance = card.edition.retrigger_chance
+        chance = G.GAME.probabilities.normal / chance
+
+        if pseudorandom("blurred") <= chance then
+            retriggers = retriggers + card.edition.retriggers
+        end
+    end
+    
+    return {
+        message = 'Again?',
+        repetitions = retriggers,
+        card = card
+    }
+end
+
+se = Card.set_edition
+function Card:set_edition(x,y,z)
+    local was_oversat = self.edition and (self.edition.cry_oversat or self.edition.cry_glitched)
+    se(self,x,y,z)
+    if was_oversat then
+        cry_misprintize(self,nil,true)
+    end
+    if self.edition and self.edition.cry_oversat then
+        cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+    end
+    if self.edition and self.edition.cry_glitched then
+        cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+    end
+end
+--echo card
+cs = Card.calculate_seal
+function Card:calculate_seal(context)
+    local ret = cs(self,context)
+    if context.repetition then
+        local total_repetitions = ret and ret.repetitions or 0
+
+        if self.config.center == G.P_CENTERS.m_cry_echo then
+            if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
+                total_repetitions = total_repetitions + self.ability.retriggers
+                sendDebugMessage("echo retrigger, total " .. tostring(total_repetitions))
             end
+        end
+        if self.edition and self.edition.cry_blur and not context.other_card then
+            local check = calculate_blurred(self)
+            
+            if check and check.repetitions then
+                total_repetitions = total_repetitions + check.repetitions
+                sendDebugMessage("blur retrigger, total " .. tostring(total_repetitions) .. "rank: " .. (self.base.value or 'nil') .. " suit: " .. (self.base.suit or 'nil'))
+            end
+        end
+
+        if total_repetitions > 0 then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = total_repetitions,
+                card = self
+            }
+        end
+    end
+    return ret
+end
+--Memory Tag Patches - store last tag used
+local tapr = Tag.apply_to_run
+function Tag:apply_to_run(x)
+    local ret = tapr(self,x)
+    if self.triggered and self.key ~= "tag_double" and self.key ~= "tag_cry_memory" and 
+    self.key ~= "tag_cry_triple" and self.key ~= "tag_cry_quadruple" and self.key ~= "tag_cry_quintuple" then
+        G.GAME.cry_last_tag_used = self.key
+    end
+    return ret
+end
+
+function Card:calculate_banana()
+    if not self.ability.extinct then
+        if self.ability.banana and (pseudorandom('banana') < G.GAME.probabilities.normal/10) then 
+            self.ability.extinct = true
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    self.T.r = -0.2
+                    self:juice_up(0.3, 0.4)
+                    self.states.drag.is = true
+                    self.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                        func = function()
+                                self.area:remove_card(self)
+                                self:remove()
+                                self = nil
+                            return true; end})) 
+                    return true
+                end
+            }))
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
+            return true
+        elseif self.ability.banana then
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_safe_ex'), delay = 0.1})
+            return false
+        end
+    end
+    return false
+end
         end,
         items = miscitems}
 
