@@ -1591,6 +1591,7 @@ local sapling = {
 	rarity = 2,
 	cost = 6,
 	blueprint_compat = true,
+	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.score, center.ability.extra.req}}
     	end,

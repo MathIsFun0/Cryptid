@@ -17,6 +17,7 @@ local jollysus = {
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
+    eternal_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.active, center.ability.extra.inactive}}
@@ -242,6 +243,7 @@ local foodm = {
     cost = 5,
     atlas = "atlasone",
     blueprint_compat = true,
+    eternal_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.mult, center.ability.extra.rounds_remaining, center.ability.extra.text, center.ability.extra.round_inc}}
@@ -321,6 +323,7 @@ local mstack = {
     rarity = 3,
     cost = 7,
     blueprint_compat = true,
+    perishable_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req}}
@@ -757,6 +760,7 @@ local reverse = {
     	},
 	rarity = 2,
 	cost = 4,
+	eternal_compat = false,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
