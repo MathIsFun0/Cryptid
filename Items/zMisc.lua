@@ -136,7 +136,7 @@ local blurred = {
     in_shop = true,
     extra_cost = 3,
     sound = {
-        sound = 'cry_^Mult',
+        sound = 'cry_e_blur',
         per = 1,
         vol = 0.5
     },
