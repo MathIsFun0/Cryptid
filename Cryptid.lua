@@ -612,6 +612,32 @@ function SMODS.injectItems()
     return m
 end
 
+--Gradients based on Balatrostuck code
+local upd = Game.update
+Cryptid.C = {
+    EXOTIC = {HEX("708b91"),HEX("1e9eba")},
+    TWILIGHT = {HEX("0800ff"),HEX("aa00ff")},
+    VERDANT = {HEX("00ff22"),HEX("f4ff57")},
+    EMBER = {HEX("ff0000"),HEX("ffae00")},
+    DAWN = {HEX("00aaff"),HEX("ff00e3")},
+    HORIZON = {HEX("c8fd09"),HEX("1ee7d9")},
+    BLOSSOM = {HEX("ff09da"),HEX("ffd121")},
+    AZURE = {HEX("0409ff"),HEX("63dcff")},
+    ASCENDANT = {HEX("2e00f5"),HEX("e5001d")},
+}
+function Game:update(dt)
+    upd(self,dt)
+    local anim_timer = self.TIMERS.REAL*1.5
+    local p = 0.5*(math.sin(anim_timer)+1)
+    for k, c in pairs(Cryptid.C) do
+        if not G.C["CRY_"..k] then G.C["CRY_"..k] = {0,0,0,0} end
+        for i = 1, 4 do
+            G.C["CRY_"..k][i] = c[1][i] * p + c[2][i] * (1-p)
+        end
+    end
+    G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
+end
+
 SMODS.Sound({
     key = "e_mosaic",
     path = "e_mosaic.wav"

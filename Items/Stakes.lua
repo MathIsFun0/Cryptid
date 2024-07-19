@@ -14,7 +14,7 @@ local pink = {object_type = "Stake",
     modifiers = function()
         G.GAME.modifiers.scaling = math.max(G.GAME.modifiers.scaling or 0, 4)
     end,
-    color = HEX("ff5ee6")
+    colour = HEX("ff5ee6")
 }
 local brown = {object_type = "Stake",
 	name = "cry-Brown Stake",
@@ -32,7 +32,7 @@ local brown = {object_type = "Stake",
         "with each other"
         }
     },
-    color = HEX("883200")
+    colour = HEX("883200")
 }
 local yellow = {object_type = "Stake",
 	name = "cry-Yellow Stake",
@@ -50,7 +50,7 @@ local yellow = {object_type = "Stake",
         "all purchasable items"
         }
     },
-    color = HEX("f7ff1f")
+    colour = HEX("f7ff1f")
 }
 local jade = {object_type = "Stake",
 	name = "cry-Jade Stake",
@@ -68,7 +68,7 @@ local jade = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("78953c")
+    colour = HEX("78953c")
 }
 local cyan = {object_type = "Stake",
 	name = "cry-Cyan Stake",
@@ -86,7 +86,7 @@ local cyan = {object_type = "Stake",
         "less likely to appear",
         }
     },
-    color = HEX("39ffcc")
+    colour = HEX("39ffcc")
 }
 local gray = {object_type = "Stake",
 	name = "cry-Gray Stake",
@@ -103,7 +103,7 @@ local gray = {object_type = "Stake",
         "Rerolls increase by {C:attention}$2{} each"
         }
     },
-    color = HEX("999999")
+    colour = HEX("999999")
 }
 local crimson = {object_type = "Stake",
 	name = "cry-Crimson Stake",
@@ -120,7 +120,7 @@ local crimson = {object_type = "Stake",
         "Vouchers restock on {C:attention}even{} Antes",
         }
     },
-    color = HEX("800000")
+    colour = HEX("800000")
 }
 local diamond = {object_type = "Stake",
 	name = "cry-Diamond Stake",
@@ -138,7 +138,7 @@ local diamond = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("88e5d9")
+    colour = HEX("88e5d9")
 }
 local amber = {object_type = "Stake",
 	name = "cry-Amber Stake",
@@ -156,7 +156,7 @@ local amber = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("feb900")
+    colour = HEX("feb900")
 }
 local bronze = {object_type = "Stake",
 	name = "cry-Bronze Stake",
@@ -174,7 +174,7 @@ local bronze = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("d27c37")
+    colour = HEX("d27c37")
 }
 local quartz = {object_type = "Stake",
 	name = "cry-Quartz Stake",
@@ -193,7 +193,7 @@ local quartz = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("e8e8e8")
+    colour = HEX("e8e8e8")
 }
 local ruby = {object_type = "Stake",
 	name = "cry-Ruby Stake",
@@ -212,7 +212,7 @@ local ruby = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("fc5f55")
+    colour = HEX("fc5f55")
 }
 local glass = {object_type = "Stake",
 	name = "cry-Glass Stake",
@@ -230,7 +230,7 @@ local glass = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff")
+    colour = HEX("ffffff8f")
 }
 local sapphire = {object_type = "Stake",
 	name = "cry-Sapphire Stake",
@@ -251,7 +251,7 @@ local sapphire = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("3551fc")
+    colour = HEX("3551fc")
 }
 local emerald = {object_type = "Stake",
 	name = "cry-Emerald Stake",
@@ -271,7 +271,7 @@ local emerald = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("06fc2c")
+    colour = HEX("06fc2c")
 }
 local platinum = {object_type = "Stake",
 	name = "cry-Platinum Stake",
@@ -290,8 +290,17 @@ local platinum = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("b0f6ff")
+    colour = HEX("b0f6ff")
 }
+--init colors so they have references 
+G.C.CRY_TWILIGHT = {0,0,0,0}
+G.C.CRY_VERDANT = {0,0,0,0}
+G.C.CRY_EMBER = {0,0,0,0}
+G.C.CRY_DAWN = {0,0,0,0}
+G.C.CRY_HORIZON = {0,0,0,0}
+G.C.CRY_BLOSSOM = {0,0,0,0}
+G.C.CRY_AZURE = {0,0,0,0}
+G.C.CRY_ASCENDANT = {0,0,0,0}
 local twilight = {object_type = "Stake",
 	name = "cry-Twilight Stake",
 	key = "twilight",
@@ -309,7 +318,7 @@ local twilight = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_TWILIGHT
 }
 local verdant = {object_type = "Stake",
 	name = "cry-Verdant Stake",
@@ -328,7 +337,7 @@ local verdant = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_VERDANT
 }
 local ember = {object_type = "Stake",
 	name = "cry-Ember Stake",
@@ -346,7 +355,7 @@ local ember = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_EMBER
 }
 local dawn = {object_type = "Stake",
 	name = "cry-Dawn Stake",
@@ -366,7 +375,7 @@ local dawn = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_DAWN
 }
 local horizon = {object_type = "Stake",
 	name = "cry-Horizon Stake",
@@ -385,7 +394,7 @@ local horizon = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_HORIZON
 }
 local blossom = {object_type = "Stake",
 	name = "cry-Blossom Stake",
@@ -404,7 +413,7 @@ local blossom = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_BLOSSOM
 }
 local azure = {object_type = "Stake",
 	name = "cry-Azure Stake",
@@ -423,7 +432,7 @@ local azure = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_AZURE
 }
 local ascendant = {object_type = "Stake",
 	name = "cry-Ascendant Stake",
@@ -441,7 +450,7 @@ local ascendant = {object_type = "Stake",
         }
     },
     shiny = true,
-    color = HEX("ffffff") --temporary before gradients
+    colour = G.C.CRY_ASCENDANT
 }
 local stake_atlas = {object_type = "Atlas",
     key = "stake",
