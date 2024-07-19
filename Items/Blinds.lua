@@ -776,7 +776,7 @@ local obsidian_orb = {
     end,
     modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
         local new_mult = mult
-        local new_chips = chips
+        local new_chips = hand_chips
         local trigger = false
         for k, _ in pairs(G.GAME.defeated_blinds) do
             s = G.P_BLINDS[k]
