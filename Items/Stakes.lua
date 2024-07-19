@@ -412,12 +412,14 @@ local azure = {object_type = "Stake",
 	pos = {x = 2, y = 4},
     atlas = "stake",
     applied_stakes = {"cry_blossom"},
+    modifiers = function()
+        G.GAME.modifiers.cry_jkr_misprint_mod = 0.8
+    end,
 	loc_txt = {
         name = "Azure Stake",
         text = {
         "Values on Jokers are reduced",
-        "by {C:attention}20%{}",
-        "{s:0.8,C:inactive}(Not yet implemented){}",
+        "by {C:attention}20%{}"
         }
     },
     shiny = true,

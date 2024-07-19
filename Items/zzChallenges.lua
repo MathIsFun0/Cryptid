@@ -7,6 +7,7 @@ local sticker_sheet = {
             {id = 'cry_all_perishable'},
             {id = 'cry_all_rental'},
             {id = 'cry_all_pinned'},
+            {id = 'cry_all_banana'},
             {id = 'cry_eternal_perishable_compat'},
             {id = 'cry_any_stickers'},
             {id = 'cry_sticker_sheet'},

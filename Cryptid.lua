@@ -338,6 +338,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       if G.GAME.modifiers.cry_all_pinned then
           card.pinned = true
       end
+      if G.GAME.modifiers.cry_all_banana then
+          card.ability.banana = true
+      end
       if (area == G.shop_jokers) or (area == G.pack_cards) then 
           local eternal_perishable_poll = pseudorandom('cry_et'..(key_append or '')..G.GAME.round_resets.ante)
           if G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.7 then
@@ -449,15 +452,24 @@ function cry_deep_copy(obj, seen)
     return res
 end
 function cry_misprintize(card, override, force_reset)
-    if not force_reset and (G.GAME.modifiers.cry_misprint_min or override) then
-        --will make this check more advanced later
+    if (not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod) and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker") then
         if card.ability.set == "Enhanced" or card.ability.set == "Default" then
+            --apparently there's a better way to do this with newer APIs, will look at it later
             card.config.center = cry_deep_copy(card.config.center)
             cry_misprintize_tbl(card.config.center_key.."_conf", card.config.center.config, nil, override)
             card:set_ability(card.config.center)
             card.base.nominal = cry_misprintize_val(card.base.nominal, override)
         elseif card.ability.set == "Joker" then 
-            cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
+            if G.GAME.modifiers.cry_jkr_misprint_mod then
+                if not override then override = {} end
+                override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
+                override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
+                override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
+                override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
+            end
+            if G.GAME.modifiers.cry_misprint_min or override and override.min then
+                cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
+            end
         else
             cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, nil, override)
         end
@@ -511,6 +523,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
     G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
+    G.localization.misc.v_text.ch_c_cry_all_banana = {"All Jokers are {C:eternal}Banana{}"}
     G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
@@ -522,7 +535,7 @@ function SMODS.current_mod.process_loc_text()
         name = "Banana",
         text = {
             "{C:green}#1# in #2#{} chance of being",
-            "destroyed each round."
+            "destroyed each round"
         },
     }
 end

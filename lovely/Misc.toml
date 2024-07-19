@@ -131,5 +131,5 @@ if v == 'banana' then info_queue[#info_queue+1] = {key = 'banana', set = 'Other'
 target = 'functions/UI_definitions.lua'
 pattern = '''pinned_left = G.C.ORANGE,'''
 position = 'after'
-payload = '''banana = G.C.YELLOW,'''
+payload = '''banana = HEX("e8c500"),'''
 match_indent = true
