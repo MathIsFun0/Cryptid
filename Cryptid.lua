@@ -651,6 +651,10 @@ SMODS.Sound({
     path = "e_oversaturated.wav"
 })
 SMODS.Sound({
+    key = "e_blur",
+    path = "e_blur.wav"
+})
+SMODS.Sound({
     key = "Xchip",
     path = "MultiplicativeChips.wav"
 })
