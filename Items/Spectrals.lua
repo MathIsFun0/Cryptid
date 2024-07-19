@@ -374,7 +374,62 @@ local trade_sprite = {
     px = 71,
     py = 95
 }
-
+local analog = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Analog",
+    key = "analog",
+    pos = {x=0,y=0},
+	config = {copies = 2, ante = 1},
+    loc_txt = {
+        name = 'Analog',
+        text = {
+			"Create {C:attention}#1#{} copies of a",
+            "random {C:attention}Joker{}, destroy",
+            "all other Jokers, {C:attention}+#2#{} Ante"
+        }
+    },
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.copies,center.ability.ante}}
+    end,
+    cost = 4,
+    atlas = "analog",
+    can_use = function(self, card)
+        return #G.jokers.cards > 0
+    end,
+    use = function(self, card, area, copier)
+        local deletable_jokers = {}
+        for k, v in pairs(G.jokers.cards) do
+            if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
+        end
+        local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed('cry_analog_choice'))
+        local _first_dissolve = nil
+        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+            for k, v in pairs(deletable_jokers) do
+                if v ~= chosen_joker then 
+                    v:start_dissolve(nil, _first_dissolve)
+                    _first_dissolve = true
+                end
+            end
+            return true end }))
+        for i = 1, card.ability.copies do
+            G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
+                local card = copy_card(chosen_joker)
+                card:start_materialize()
+                card:add_to_deck()
+                G.jokers:emplace(card)
+                return true end }))
+        end
+        ease_ante(card.ability.ante)
+    end
+}
+local analog_sprite = {
+    object_type = "Atlas",
+    key = "analog",
+    path = "c_cry_analog.png",
+    px = 71,
+    py = 95
+}
 return {name = "Spectrals", 
         init = function()
             --Trade - undo redeeming vouchers
@@ -533,4 +588,4 @@ return {name = "Spectrals",
                 end
             end
         end,
-        items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, trade_sprite, white_hole, vacuum, hammerspace, lock, trade}}
+        items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, trade_sprite, analog_sprite, white_hole, vacuum, hammerspace, lock, trade, analog}}
