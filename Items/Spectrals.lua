@@ -430,6 +430,56 @@ local analog_sprite = {
     px = 71,
     py = 95
 }
+local replica = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Replica",
+    key = "replica",
+    pos = {x=0,y=0},
+	config = {},
+    loc_txt = {
+        name = 'Replica',
+        text = {
+			"Convert all cards in hand to a",
+            "{C:attention}random{} card held in hand"
+        }
+    },
+    cost = 4,
+    atlas = "replica",
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed('cry_replica_choice'))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        for i=1, #G.hand.cards do
+            local percent = 1.15 - (i-0.999)/(#G.hand.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.cards[i]:flip();play_sound('card1', percent);G.hand.cards[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        for i=1, #G.hand.cards do
+            if not G.hand.cards[i].ability.eternal then
+                G.E_MANAGER:add_event(Event({func = function()
+                    copy_card(chosen_card, G.hand.cards[i])
+                return true end }))
+            end
+        end 
+        for i=1, #G.hand.cards do
+            local percent = 0.85 + (i-0.999)/(#G.hand.cards-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.cards[i]:flip();play_sound('tarot2', percent, 0.6);G.hand.cards[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.5)
+    end
+}
+local replica_sprite = {
+    object_type = "Atlas",
+    key = "replica",
+    path = "c_cry_replica.png",
+    px = 71,
+    py = 95
+}
 return {name = "Spectrals", 
         init = function()
             --Trade - undo redeeming vouchers
@@ -588,4 +638,4 @@ return {name = "Spectrals",
                 end
             end
         end,
-        items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, trade_sprite, analog_sprite, white_hole, vacuum, hammerspace, lock, trade, analog}}
+        items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, trade_sprite, analog_sprite, replica_sprite, white_hole, vacuum, hammerspace, lock, trade, analog, replica}}
