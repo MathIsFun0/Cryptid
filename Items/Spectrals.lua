@@ -349,7 +349,7 @@ local trade = {
                 it = it + 1
                 center = pseudorandom_element(_pool, pseudoseed('cry_trade_redeem_resample'..it))
             end
-            local card = create_card('Joker', area, nil, nil, nil, nil, center)
+            local card = create_card('Voucher', area, nil, nil, nil, nil, center)
             card:start_materialize()
             area:emplace(card)
             card.cost=0
