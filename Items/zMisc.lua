@@ -147,7 +147,7 @@ local blurred = {
         name = "Blurred",
         label = "Blurred",
         text = {
-            "{C:attention}Retrigger{} card",
+            "{C:attention}Retrigger{} this card",
             "{C:green}#1# in #2#{} chance", "to retrigger {C:attention}#3#{}", "additional time"
         }
     },
