@@ -457,6 +457,7 @@ local gambler = {
                 G.CONTROLLER.locks[lock] = true
                 tag:yep('+', G.C.RARITY.cry_exotic,function()
                     add_tag(Tag("tag_cry_empowered"))
+                    G.GAME.tags[#G.GAME.tags]:apply_to_run({type = 'immediate'})
                     G.CONTROLLER.locks[lock] = nil
                     return true
                 end)
