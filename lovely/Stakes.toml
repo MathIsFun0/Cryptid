@@ -377,7 +377,7 @@ payload = '''if G.GAME.modifiers.cry_card_each_round then
             local edition = G.P_CENTERS.c_base
             local card = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
             card:start_materialize()
-            if G.GAME.selected_back.effect.config.cry_force_edition then
+            if G.GAME.selected_back.effect.config.cry_force_edition and G.GAME.selected_back.effect.config.cry_force_edition ~= "random" then
                 local edition = {}
                 edition[G.GAME.selected_back.effect.config.cry_force_edition] = true
                 card:set_edition(edition, true, true);

@@ -530,7 +530,7 @@ return {name = "Exotic Jokers",
                         end
                         if config.sound and not config.modded then play_sound(config.sound, config.pitch or 1, config.volume or 1) end
                         if config.modded then 
-                            if G.HUD_blind and G.HUD_blind.get_UIE_by_ID then
+                            if G.HUD_blind and G.HUD_blind.get_UIE_by_ID and G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1') and G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2') then
                                 G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
                                 G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
                             end
