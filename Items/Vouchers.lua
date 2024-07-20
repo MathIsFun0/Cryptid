@@ -199,8 +199,8 @@ return {name = "Vouchers",
         init = function()
             --Copies and upgrades
             local gcp = get_current_pool
-            function get_current_pool(type, rarity, legendary, append)
-                pool, pool_append = gcp(type, rarity, legendary, append)
+            function get_current_pool(type, rarity, legendary, append, z)
+                pool, pool_append = gcp(type, rarity, legendary, append, z)
                 if type == 'Tag' then
                     for i = 1, #pool do
                         if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_copies then

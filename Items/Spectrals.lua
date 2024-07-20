@@ -279,7 +279,7 @@ local trade = {
     atlas = "trade",
     can_use = function(self, card)
         for _, v in pairs(G.GAME.used_vouchers) do
-            return true
+            if v then return true end
         end
         return false
     end,
@@ -342,14 +342,14 @@ local trade = {
             else
                 area = G.play
             end
-            local _pool = get_current_pool('Voucher')
+            local _pool = get_current_pool('Voucher', nil, nil, nil, true)
             local center = pseudorandom_element(_pool, pseudoseed('cry_trade_redeem'))
             local it = 1
             while center == 'UNAVAILABLE' do
                 it = it + 1
                 center = pseudorandom_element(_pool, pseudoseed('cry_trade_redeem_resample'..it))
             end
-            local card = create_card('Voucher', area, nil, nil, nil, nil, center.key)
+            local card = create_card('Joker', area, nil, nil, nil, nil, center)
             card:start_materialize()
             area:emplace(card)
             card.cost=0
