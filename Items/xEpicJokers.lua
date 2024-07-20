@@ -88,7 +88,7 @@ local sync_catalyst = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.cardarea == G.jokers and context.joker_main then
 			local tot = hand_chips + mult
 			hand_chips = mod_chips(math.floor(tot/2))
 			mult = mod_mult(math.floor(tot/2))
