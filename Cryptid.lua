@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.4.3
+--- VERSION: 0.4.3a
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -472,6 +472,10 @@ function cry_misprintize(card, override, force_reset)
             end
         else
             cry_misprintize_tbl(card.config.center_key.."_conf", G.P_CENTERS[card.config.center_key].config, nil, override)
+            cry_misprintize_tbl(card.config.center_key, card.ability, true)
+            for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
+                card.ability[k] = cry_deep_copy(v)
+            end
         end
         if G.GAME.modifiers.cry_misprint_min then
             --card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
