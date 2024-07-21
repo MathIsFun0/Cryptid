@@ -1,7 +1,7 @@
 local code = {
     object_type = "ConsumableType",
     key = "Code",
-    primary_colour = HEX("04200c"),
+    primary_colour = HEX("14b341"),
     secondary_colour = HEX("12f254"),
     collection_rows = {4,4}, -- 4 pages for all code cards
     loc_txt = {
@@ -29,7 +29,7 @@ local crash = {
     loc_txt = {
         name = '://CRASH',
         text = {
-			"{C:cry_exotic,E:1}Don't."
+			"{C:cry_code,E:1}Don't."
         }
     },
     cost = 4,
@@ -54,7 +54,7 @@ local payload = {
         name = '://PAYLOAD',
         text = {
 			"Next defeated Blind",
-            "gives {C:attention}X#1#{} interest"
+            "gives {C:cry_code}X#1#{} interest"
         }
     },
     loc_vars = function(self, info_queue, center)
@@ -67,6 +67,47 @@ local payload = {
     end,
     use = function(self, card, area, copier)
         G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
+    end
+}
+local reboot = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Reboot",
+    key = "reboot",
+    pos = {x=2,y=0},
+	config = {},
+    loc_txt = {
+        name = '://REBOOT',
+        text = {
+			"Replenish {C:blue}Hands{} and {C:red}Discards{},",
+            "return {C:cry_code}all{} cards to deck",
+            "and draw a {C:cry_code}new{} hand"
+        }
+    },
+    cost = 4,
+    atlas = "code",
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SELECTING_HAND
+    end,
+    use = function(self, card, area, copier)
+        G.FUNCS.draw_from_hand_to_discard()
+        G.FUNCS.draw_from_discard_to_deck()
+        ease_discard(math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards)-G.GAME.current_round.discards_left)
+        ease_hands_played(math.max(1, G.GAME.round_resets.hands + G.GAME.round_bonus.next_hands)-G.GAME.current_round.hands_left)
+        for k, v in pairs(G.playing_cards) do
+            v.ability.wheel_flipped = nil
+        end
+        G.E_MANAGER:add_event(Event({
+            trigger = 'immediate',
+            func = function()
+                G.STATE = G.STATES.DRAW_TO_HAND
+                G.deck:shuffle('cry_reboot'..G.GAME.round_resets.ante)
+                G.deck:hard_set_T()
+                G.STATE_COMPLETE = false
+                return true
+            end
+        }))
+        
     end
 }
 
@@ -439,7 +480,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, payload, crash}
+local code_cards = {code, code_atlas, payload, reboot, crash}
 return {name = "Code Cards", 
         init = function()
         end,
