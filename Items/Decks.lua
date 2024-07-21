@@ -237,7 +237,7 @@ local critical = {
                 update_hand_text({delay = 0}, {mult = args.mult, chips = args.chips})
                 G.E_MANAGER:add_event(Event({
                     func = (function()
-                play_sound("cry_^Mult", 1)
+                play_sound("talisman_emult", 1)
                 attention_text({
                     scale = 1.4, text = "Critical Hit!", hold = 2, align = 'cm', offset = {x = 0,y = -2.7},major = G.play
                 })
