@@ -917,7 +917,7 @@ local smallestm = {
     	object_type = "Joker",
 	name = "cry-smallestm",
 	key = "smallestm",
-    	config = {extra = {Xchips = 9, type = "Pair", check = false, text = "Inactive"}},
+    	config = {extra = {x_chips = 9, type = "Pair", check = false, text = "Inactive"}},
 	pos = {x = 5, y = 0},
 	loc_txt = {
         name = 'Tiny',
@@ -934,13 +934,13 @@ local smallestm = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
     	loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.Xchips, center.ability.extra.type, center.ability.extra.text}}
+        return {vars = {center.ability.extra.x_chips, center.ability.extra.type, center.ability.extra.text}}
     	end,
     	calculate = function(self, card, context)
         	if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
             	return {
-                	message = "X"..card.ability.extra.Xchips,
-                	Xchip_mod = card.ability.extra.Xchips,
+                	message = "X"..card.ability.extra.x_chips,
+                	Xchip_mod = card.ability.extra.x_chips,
                 	colour = G.C.CHIPS
             	}
         	end
