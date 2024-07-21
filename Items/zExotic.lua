@@ -135,7 +135,7 @@ local exponentia = {
     object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
-	config = {extra = {pow_mult = 1, pow_mult_mod = 0.01}},
+	config = {extra = {Emult = 1, Emult_mod = 0.01}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Exponentia',
@@ -152,16 +152,16 @@ local exponentia = {
 	atlas = "exponentia",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
 	calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.pow_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (card.ability.extra.Emult > 1) and not context.before and not context.after then
             return {
-                message = "^"..card.ability.extra.pow_mult.." Mult",
-                pow_mult_mod = card.ability.extra.pow_mult,
+                message = "^"..card.ability.extra.Emult.." Mult",
+                Emult_mod = card.ability.extra.Emult,
                 colour = G.C.DARK_EDITION
             }
         end
 	end,
     loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.pow_mult_mod, center.ability.extra.pow_mult}}
+        return {vars = {center.ability.extra.Emult_mod, center.ability.extra.Emult}}
     end
 }
 local exponentia_sprite = {
@@ -398,12 +398,12 @@ local crustulum_sprite = {
     px = 71,
     py = 95
 }
---todo: make the pow_mult always prime
+--todo: make the Emult always prime
 local primus = {
     object_type = "Joker",
     name = "cry-primus",
     key = "primus",
-    config = {extra = {pow_mult = 1.01, pow_mult_mod = 0.17}},
+    config = {extra = {Emult = 1.01, Emult_mod = 0.17}},
     pos = {x = 0, y = 0},
     loc_txt = {
         name = 'Primus',
@@ -430,7 +430,7 @@ local primus = {
             end
         end
         if context.cardarea == G.jokers and check and context.before and not context.blueprint then
-            card.ability.extra.pow_mult = card.ability.extra.pow_mult + card.ability.extra.pow_mult_mod
+            card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
             return {
                 card_eval_status_text(card, 'extra', nil, nil, nil, {
                     message = "Upgrade!",
@@ -438,16 +438,16 @@ local primus = {
                 })
             }   
         end
-        if context.cardarea == G.jokers and (card.ability.extra.pow_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (card.ability.extra.Emult > 1) and not context.before and not context.after then
             return {
-                message = "^"..card.ability.extra.pow_mult.." Mult",
-                pow_mult_mod = card.ability.extra.pow_mult,
+                message = "^"..card.ability.extra.Emult.." Mult",
+                Emult_mod = card.ability.extra.Emult,
                 colour = G.C.DARK_EDITION
             }
         end
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.pow_mult_mod, center.ability.extra.pow_mult}}
+        return {vars = {center.ability.extra.Emult_mod, center.ability.extra.Emult}}
     end
 }
 
