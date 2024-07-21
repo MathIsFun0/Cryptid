@@ -43,6 +43,33 @@ local crash = {
     end
 }
 
+local payload = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Payload",
+    key = "payload",
+    pos = {x=1,y=0},
+	config = {interest_mult = 3},
+    loc_txt = {
+        name = '://PAYLOAD',
+        text = {
+			"Next defeated Blind",
+            "gives {C:attention}X#1#{} interest"
+        }
+    },
+    loc_vars = function(self, info_queue, center)
+        return {vars = {self.config.interest_mult}}
+    end,
+    cost = 4,
+    atlas = "code",
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
+    end
+}
+
 crash_functions = {
     function()
         --instantly quit the game, no error log
@@ -410,7 +437,9 @@ crash_functions = {
 --for testing
 --crash_functions = {crash_functions[#crash_functions]}
 
-local code_cards = {code, code_atlas, crash}
+
+
+local code_cards = {code, code_atlas, payload, crash}
 return {name = "Code Cards", 
         init = function()
         end,
