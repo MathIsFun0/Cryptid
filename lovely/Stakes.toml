@@ -272,6 +272,7 @@ match_indent = true
 
 # Sapphire Stake - ante tax
 # The Joke boss effect
+# Save game state for Revert
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"

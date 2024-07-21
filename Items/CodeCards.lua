@@ -111,6 +111,38 @@ local reboot = {
     end
 }
 
+local revert = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Revert",
+    key = "revert",
+    pos = {x=3,y=0},
+	config = {},
+    loc_txt = {
+        name = '://REVERT',
+        text = {
+			"Set {C:cry_code}game state{} to",
+            "start of {C:cry_code}this Ante{}"
+        }
+    },
+    cost = 4,
+    atlas = "code",
+    can_use = function(self, card)
+        return G.GAME.cry_revert
+    end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 4,
+            func = function()
+                G:delete_run()
+                G:start_run({
+                    savetext = STR_UNPACK(G.GAME.cry_revert),
+                })
+            end
+        }),"other")
+    end
+}
 crash_functions = {
     function()
         --instantly quit the game, no error log
@@ -480,8 +512,20 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, payload, reboot, crash}
+local code_cards = {code, code_atlas, payload, reboot, revert, crash}
 return {name = "Code Cards", 
         init = function()
+            --Revert
+            local sr = save_run
+            function save_run()
+                if G.GAME.round_resets.ante ~= G.GAME.cry_revert_ante then
+                    G.GAME.cry_revert_ante = G.GAME.round_resets.ante
+                    G.GAME.cry_revert = nil
+                    sr()
+                    G.GAME.cry_revert = STR_PACK(G.culled_table)
+                    sr()
+                end
+                sr()
+            end
         end,
         items = code_cards}

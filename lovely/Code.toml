@@ -40,6 +40,15 @@ if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest and G.GAME.cry_paylo
 elseif G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then'''
 match_indent = true
 
+# Revert - fix a crash
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if area and area.cards[1] then"
+position = "at"
+payload = "if area and area.cards and area.cards[1] then"
+match_indent = true
+
 # Crash - use glitched shader
 [[patches]]
 [patches.pattern]
