@@ -10,7 +10,7 @@ local code = {
         label = "Code"
     },
     shop_rate = 0.0,
-    default = 'c_cry_crash', --todo
+    default = 'c_cry_crash',
 }
 local code_atlas = {
     object_type = "Atlas",
@@ -18,6 +18,125 @@ local code_atlas = {
     path = "c_cry_code.png",
     px = 71,
     py = 95
+}
+local pack_atlas = {
+    object_type = "Atlas",
+    key = "pack",
+    path = "pack_cry.png",
+    px = 71,
+    py = 95
+}
+local pack1 = {
+    object_type = "Booster",
+    key = "p_code_normal_1",
+    kind = "Code",
+    atlas = "pack",
+    pos = {x=0,y=0},
+    config = {extra = 2, choose = 1},
+    cost = 4,
+    weight = 1.2,
+    create_card = function(self, card)
+        return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
+        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = {card.config.center.config.choose, card.ability.extra} }
+	end,
+    loc_txt = {
+        name = "Program Pack",
+        text = {
+            "Choose {C:attention}#1#{} of up to",
+            "{C:attention}#2#{C:cry_code} Code{} cards"
+        }
+    },
+    group_key = "k_cry_program_pack"
+}
+local pack2 = {
+    object_type = "Booster",
+    key = "p_code_normal_2",
+    kind = "Code",
+    atlas = "pack",
+    pos = {x=1,y=0},
+    config = {extra = 2, choose = 1},
+    cost = 4,
+    weight = 1.2,
+    create_card = function(self, card)
+        return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
+        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = {card.config.center.config.choose, card.ability.extra} }
+	end,
+    loc_txt = {
+        name = "Program Pack",
+        text = {
+            "Choose {C:attention}#1#{} of up to",
+            "{C:attention}#2#{C:cry_code} Code{} cards"
+        }
+    },
+    group_key = "k_cry_program_pack"
+}
+local packJ = {
+    object_type = "Booster",
+    key = "p_code_jumbo_1",
+    kind = "Code",
+    atlas = "pack",
+    pos = {x=2,y=0},
+    config = {extra = 4, choose = 1},
+    cost = 4,
+    weight = 0.6,
+    create_card = function(self, card)
+        return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
+        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = {card.config.center.config.choose, card.ability.extra} }
+	end,
+    loc_txt = {
+        name = "Jumbo Program Pack",
+        text = {
+            "Choose {C:attention}#1#{} of up to",
+            "{C:attention}#2#{C:cry_code} Code{} cards"
+        }
+    },
+    group_key = "k_cry_program_pack"
+}
+local packM = {
+    object_type = "Booster",
+    key = "p_code_mega_1",
+    kind = "Code",
+    atlas = "pack",
+    pos = {x=3,y=0},
+    config = {extra = 4, choose = 2},
+    cost = 4,
+    weight = 0.15,
+    create_card = function(self, card)
+        return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
+        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = {card.config.center.config.choose, card.ability.extra} }
+	end,
+    loc_txt = {
+        name = "Mega Program Pack",
+        text = {
+            "Choose {C:attention}#1#{} of up to",
+            "{C:attention}#2#{C:cry_code} Code{} cards"
+        }
+    },
+    group_key = "k_cry_program_pack"
 }
 local crash = {
     object_type = "Consumable",
@@ -512,9 +631,64 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, payload, reboot, revert, crash}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash}
 return {name = "Code Cards", 
         init = function()
+            --allow Program Packs to let you keep the cards
+            local G_UIDEF_use_and_sell_buttons_ref=G.UIDEF.use_and_sell_buttons
+            function G.UIDEF.use_and_sell_buttons(card)
+                if (card.area == G.pack_cards and G.pack_cards) and card.ability.consumeable then --Add a use button
+                    if card.ability.set == "Code" then
+                        return {
+                            n=G.UIT.ROOT, config = {padding = -0.1,  colour = G.C.CLEAR}, nodes={
+                            {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, minh = 0.7*card.T.h, maxw = 0.7*card.T.w - 0.15, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'use_card', func = 'can_reserve_card'}, nodes={
+                                {n=G.UIT.T, config={text = "RESERVE",colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.1*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'Do you know that this parameter does nothing?', func = 'can_use_consumeable'}, nodes={
+                                {n=G.UIT.T, config={text = localize('b_use'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config = {align = "bm", w=7.7*card.T.w}},
+                            {n=G.UIT.R, config = {align = "bm", w=7.7*card.T.w}},
+                            {n=G.UIT.R, config = {align = "bm", w=7.7*card.T.w}},
+                            {n=G.UIT.R, config = {align = "bm", w=7.7*card.T.w}},
+                            -- Betmma can't explain it, neither can I
+                        }}
+                    end
+                end
+                return G_UIDEF_use_and_sell_buttons_ref(card)
+            end
+            --Code from Betmma's Vouchers
+            G.FUNCS.can_reserve_card = function(e)
+                if #G.consumeables.cards < G.consumeables.config.card_limit then 
+                    e.config.colour = G.C.GREEN
+                    e.config.button = 'reserve_card'
+                else
+                  e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+                  e.config.button = nil
+                end
+            end
+            G.FUNCS.reserve_card = function(e)
+                local c1 = e.config.ref_table
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.1,
+                    func = function()
+                    c1.area:remove_card(c1)
+                    c1:add_to_deck()
+                    if c1.children.price then c1.children.price:remove() end
+                    c1.children.price = nil
+                    if c1.children.buy_button then c1.children.buy_button:remove() end
+                    c1.children.buy_button = nil
+                    remove_nils(c1.children)
+                    G.consumeables:emplace(c1)
+                    G.GAME.pack_choices = G.GAME.pack_choices - 1
+                    if G.GAME.pack_choices <= 0 then
+                        G.FUNCS.end_consumeable(nil, delay_fac)
+                    end
+                    return true
+                    end
+                }))
+            end
             --Revert
             local sr = save_run
             function save_run()

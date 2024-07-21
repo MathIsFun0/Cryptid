@@ -532,6 +532,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
+    G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
 end
 
 function SMODS.current_mod.process_loc_text()
