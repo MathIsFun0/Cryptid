@@ -88,7 +88,7 @@ local sync_catalyst = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.joker_main then
+		if context.cardarea == G.jokers and not context.before and not context.after then
 			local tot = hand_chips + mult
 			hand_chips = mod_chips(math.floor(tot/2))
 			mult = mod_mult(math.floor(tot/2))
@@ -417,9 +417,9 @@ local double_scale = {
                 elseif not G.GAME.cry_double_scale[jkr.sort_id].scaler then
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
 					if jkr.ability.name == "cry-Exponentia" then
-						dbl_info.base = {"extra", "pow_mult"}
-						dbl_info.scaler = {"extra", "pow_mult_mod"}
-						dbl_info.scaler_base = jkr.ability.extra.pow_mult_mod
+						dbl_info.base = {"extra", "Emult"}
+						dbl_info.scaler = {"extra", "Emult_mod"}
+						dbl_info.scaler_base = jkr.ability.extra.Emult_mod
 						dbl_info.offset = 1
 						return
 					end
@@ -878,7 +878,7 @@ local bonusjoker = {
 	name = "cry-bonusjoker",
 	key = "bonusjoker",
 	pos = {x = 3, y = 2},
-	config = {extra = {odds = 15, Xchips = 1.5, check = true}},
+	config = {extra = {odds = 15, x_chips = 1.5, check = true}},
 	loc_txt = {
         name = 'Bonus Joker',
         text = {
@@ -896,7 +896,7 @@ local bonusjoker = {
 	enhancement_gate = 'm_bonus',
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.m_bonus
-		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xchips}}
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.x_chips}}
     	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -906,14 +906,14 @@ local bonusjoker = {
 					card.ability.extra.check = false
                 			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
                 			return {
-					x_mult = card.ability.extra.Xchips, --Xchips doesn't seem to work so using xmult for now
+					x_chips = card.ability.extra.x_chips,
 					extra = {focus = card, message = localize('k_upgrade_ex')},
 					card = card,
 					colour = G.C.CHIPS
 					}
 				else
 					return {
-                			x_mult = card.ability.extra.Xchips, --Xchips doesn't seem to work so using xmult for now
+                			x_chips = card.ability.extra.x_chips,
                 			colour = G.C.CHIPS,
                 			card = card
             				}

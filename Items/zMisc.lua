@@ -12,7 +12,7 @@ local mosaic = {
     shader = "mosaic",
     in_shop = true,
     extra_cost = 6,
-    config = {Xchips = 2.5},
+    config = {x_chips = 2.5},
     sound = {
         sound = 'cry_e_mosaic',
         per = 1,
@@ -22,7 +22,7 @@ local mosaic = {
         return G.GAME.edition_rate * self.weight
     end,
     loc_vars = function(self, info_queue)
-        return {vars = {self.config.Xchips}}
+        return {vars = {self.config.x_chips}}
     end,
     loc_txt = {
         name = "Mosaic",
@@ -103,7 +103,7 @@ local astral = {
     in_shop = true,
     extra_cost = 3,
     sound = {
-        sound = 'cry_^Mult',
+        sound = 'talisman_emult',
         per = 1,
         vol = 0.5
     },
@@ -117,9 +117,9 @@ local astral = {
             "{X:dark_edition,C:white}^#1#{} Mult"
         }
     },
-    config = {pow_mult = 1.1},
+    config = {e_mult = 1.1},
     loc_vars = function(self, info_queue)
-        return {vars = {self.config.pow_mult}}
+        return {vars = {self.config.e_mult}}
     end
 }
 

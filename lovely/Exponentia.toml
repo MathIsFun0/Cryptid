@@ -12,8 +12,8 @@ position = "after"
 payload = '''
 if effects.jokers.Xmult_mod and effects.jokers.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
-        v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
     end
 end
 '''
@@ -29,8 +29,8 @@ position = "after"
 payload = '''
 if effects.Xmult_mod and next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
-        v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
     end
 end
 '''
@@ -46,8 +46,8 @@ position = "after"
 payload = '''
 if next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
-        v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
     end
 end
 '''
@@ -63,8 +63,8 @@ position = "after"
 payload = '''
 if next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
-        v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
     end
 end
 '''
@@ -80,8 +80,8 @@ position = "after"
 payload = '''
 if (effects and effects[ii] and effects[ii].edition and effects[ii].edition.x_mult_mod or edition_effects and edition_effects.jokers and edition_effects.jokers.x_mult_mod) and next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
-        v.ability.extra.pow_mult = v.ability.extra.pow_mult + v.ability.extra.pow_mult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.pow_mult.." Mult"})
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
     end
 end
 '''

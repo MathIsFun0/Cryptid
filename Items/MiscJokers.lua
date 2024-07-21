@@ -576,7 +576,7 @@ local big_cube = {
 	name = "cry-Big Cube",
 	key = "big_cube",
     joker_gate = "cry-Cube",
-    config = {extra = {Xchips = 6}},
+    config = {extra = {x_chips = 6}},
 	pos = {x = 4, y = 4},
 	loc_txt = {
         name = 'Big Cube',
@@ -588,13 +588,13 @@ local big_cube = {
 	cost = 25,
 	atlas = "atlasone",
     loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.Xchips}}
+        return {vars = {center.ability.extra.x_chips}}
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and not context.before and not context.after then
             return {
-                message = "X"..card.ability.extra.Xchips,
-                Xchip_mod = card.ability.extra.Xchips,
+                message = "X"..card.ability.extra.x_chips,
+                Xchip_mod = card.ability.extra.x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -679,7 +679,7 @@ local seal_the_deal = {
     object_type = "Joker",
     name = "cry-Seal The Deal",
     key = "seal_the_deal",
-    config = {extra = {Xchips = 6}},
+    config = {extra = {x_chips = 6}},
     pos = {x = 2, y = 4},
     loc_txt = {
         name = 'Seal the Deal',
@@ -1129,7 +1129,7 @@ local antennastoheaven = {
     name = "cry-antennastoheaven",
     key = "antennastoheaven",
     pos = {x = 3, y = 1},
-    config = {extra = {bonus = 0.1, Xchips = 1}},
+    config = {extra = {bonus = 0.1, x_chips = 1}},
     loc_txt = {
         name = '...Like Antennas to Heaven',
         text = {
@@ -1144,21 +1144,21 @@ local antennastoheaven = {
     perishable_compat = false,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.bonus, center.ability.extra.Xchips}}
+        return {vars = {center.ability.extra.bonus, center.ability.extra.x_chips}}
     end,
     atlas = "atlasone",
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.Xchips > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (card.ability.extra.x_chips > 1) and not context.before and not context.after then
             return {
-                message = "X"..card.ability.extra.Xchips,
-                Xchip_mod = card.ability.extra.Xchips,
+                message = "X"..card.ability.extra.x_chips,
+                Xchip_mod = card.ability.extra.x_chips,
                 colour = G.C.CHIPS
             }
 	end
 	if context.cardarea == G.play and context.individual and not context.blueprint then
             local rank = SMODS.Ranks[context.other_card.base.value].key
             if rank == "4" or rank == "7" then
-                card.ability.extra.Xchips = card.ability.extra.Xchips + card.ability.extra.bonus
+                card.ability.extra.x_chips = card.ability.extra.x_chips + card.ability.extra.bonus
                 return {
                     extra = {focus = card, message = localize('k_upgrade_ex')},
                     card = card,
@@ -1488,7 +1488,7 @@ local pirate_dagger = {
 	name = "cry-Pirate Dagger",
 	key = "pirate_dagger",
 	pos = {x = 3, y = 3},
-	config = {extra = {Xchips = 1}},
+	config = {extra = {x_chips = 1}},
 	loc_txt = {
 		name = 'Pirate Dagger',
 		text = {
@@ -1503,14 +1503,14 @@ local pirate_dagger = {
 	cost = 6,
 	perishable_compat = false,
 	    loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.Xchips}}
+        return {vars = {center.ability.extra.x_chips}}
     end,
 	atlas = "atlastwo",
 		calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.Xchips > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (card.ability.extra.x_chips > 1) and not context.before and not context.after then
             return {
-                message = localize{type='variable',key='a_xchips',vars={card.ability.extra.Xchips}},
-                Xchip_mod = card.ability.extra.Xchips
+                message = localize{type='variable',key='a_xchips',vars={card.ability.extra.x_chips}},
+                Xchip_mod = card.ability.extra.x_chips
             }
         end
             local my_pos = nil
@@ -1523,12 +1523,12 @@ local pirate_dagger = {
             G.GAME.joker_buffer = G.GAME.joker_buffer - 1
             G.E_MANAGER:add_event(Event({func = function()
                 G.GAME.joker_buffer = 0
-                card.ability.extra.Xchips = card.ability.extra.Xchips + sliced_card.sell_cost*0.25
+                card.ability.extra.x_chips = card.ability.extra.x_chips + sliced_card.sell_cost*0.25
                 card:juice_up(0.8, 0.8)
                 sliced_card:start_dissolve({HEX("57ecab")}, nil, 1.6)
                 play_sound('slice1', 0.96+math.random()*0.08)
             return true end }))
-            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xchips', vars = {card.ability.extra.Xchips+0.25*sliced_card.sell_cost}}, colour = G.C.CHIPS, no_juice = true})
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xchips', vars = {card.ability.extra.x_chips+0.25*sliced_card.sell_cost}}, colour = G.C.CHIPS, no_juice = true})
 			return {calculated = true}
         end
     end
@@ -1620,7 +1620,7 @@ local spaceglobe = {
 	name = "cry-spaceglobe",
 	key = "spaceglobe",
 	pos = {x = 1, y = 4},
-	config = {extra = {Xchips = 1, Xchipmod = 0.2, type = "High Card"}},
+	config = {extra = {x_chips = 1, Xchipmod = 0.2, type = "High Card"}},
 	loc_txt = {
         name = 'Celestial Globe',
         text = {
@@ -1635,7 +1635,7 @@ local spaceglobe = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return {vars = {center.ability.extra.Xchips, center.ability.extra.Xchipmod, center.ability.extra.type}}
+		return {vars = {center.ability.extra.x_chips, center.ability.extra.Xchipmod, center.ability.extra.type}}
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -1651,17 +1651,17 @@ local spaceglobe = {
                             	return true
                         	end
                     	}))
-			card.ability.extra.Xchips = card.ability.extra.Xchips + card.ability.extra.Xchipmod
+			card.ability.extra.x_chips = card.ability.extra.x_chips + card.ability.extra.Xchipmod
                     	return {
                     	message = localize('k_upgrade_ex'),
                         card = card,
 			}
                 	end
 		end
-		if context.cardarea == G.jokers and (card.ability.extra.Xchips > 1) and not context.before and not context.after then
+		if context.cardarea == G.jokers and (card.ability.extra.x_chips > 1) and not context.before and not context.after then
             		return {
-                		message = "X"..card.ability.extra.Xchips,
-                		Xchip_mod = card.ability.extra.Xchips,
+                		message = "X"..card.ability.extra.x_chips,
+                		Xchip_mod = card.ability.extra.x_chips,
                 		colour = G.C.CHIPS
             		}
 		end
