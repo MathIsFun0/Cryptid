@@ -659,18 +659,6 @@ SMODS.Sound({
     path = "e_blur.wav"
 })
 SMODS.Sound({
-    key = "Xchip",
-    path = "MultiplicativeChips.wav"
-})
-SMODS.Sound({
-    key = "^Mult",
-    path = "ExponentialMult.wav"
-})
-SMODS.Sound({
-    key = "^^Mult",
-    path = "TetrationalMult.wav"
-})
-SMODS.Sound({
     key = "music-Jimball",
     path = "music-Jimball.wav"
 })
