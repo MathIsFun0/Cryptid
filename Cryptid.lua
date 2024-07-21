@@ -475,7 +475,6 @@ function cry_misprintize(card, override, force_reset)
             for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
                 card.ability[k] = cry_deep_copy(v)
             end
-            card.ability = cry_deep_copy(card.ability)
         end
         if G.GAME.modifiers.cry_misprint_min then
             --card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
@@ -490,7 +489,6 @@ function cry_misprintize(card, override, force_reset)
             for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
                 card.ability[k] = cry_deep_copy(v)
             end
-            card.ability = cry_deep_copy(card.ability)
         end
     end
 end
