@@ -14,6 +14,14 @@ payload = '''(next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball
 (G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code' and 'musicProg') or'''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "(G.shop and not G.shop.REMOVED and 'music4') or"
+position = "before"
+payload = '''(cry_has_exotic() and 'musicExotic') or'''
+match_indent = true
+
 # Add our music as an override to Steamodded's things
 [[patches]]
 [patches.pattern] 
@@ -22,7 +30,7 @@ pattern = 'G.ARGS.push.ambient_control = G.SETTINGS.ambient_control'
 match_indent = true
 position = 'after'
 payload = '''
-local music_codes = { 'music1', 'music2', 'music3', 'music4', 'music5', 'musicProg' }
+local music_codes = { 'music1', 'music2', 'music3', 'music4', 'music5', 'musicProg', 'musicExotic' }
 for _, sound_code in ipairs(music_codes) do
 	if not (sound_code == desired_track) then
 		local replace_sound = SMODS.Sound.replace_sounds[sound_code]

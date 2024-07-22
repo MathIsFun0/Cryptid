@@ -3,6 +3,24 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
+# Show Glitched Edition to confirm Cryptid is Active
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "replace_card.states.visible = false"
+position = "before"
+payload = "replace_card:set_edition('e_cry_glitched',true,true)"
+match_indent = true
+
+# Patch related crash
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not initial then G.GAME.blind:debuff_card(self) end"
+position = "at"
+payload = "if not initial and G.GAME and G.GAME.blind then G.GAME.blind:debuff_card(self) end"
+match_indent = true
+
 # Display Epic/Exotic name in rarity
 [[patches]]
 [patches.pattern]

@@ -550,6 +550,16 @@ function SMODS.current_mod.process_loc_text()
     }
 end
 
+--Used to check to play the exotic music
+function cry_has_exotic()
+    if G.jokers then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].config.center.rarity == "cry_exotic" then
+                return true
+            end
+        end
+    end
+end
 
 -- Fix a CCD-related crash
 local cuc = Card.can_use_consumeable
@@ -666,7 +676,7 @@ SMODS.Sound({
 })
 SMODS.Sound({
     key = "music-Jimball",
-    path = "music-Jimball.ogg"
+    path = "Jimball.ogg"
 })
 SMODS.Atlas({
     key = "modicon",
