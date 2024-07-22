@@ -268,6 +268,41 @@ local revert = {
         }),"other")
     end
 }
+
+local semicolon = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Semicolon",
+    key = "semicolon",
+    pos = {
+        x = 0,
+        y = 1
+    },
+    config = {},
+    loc_txt = {
+        name = ';//',
+        text = {"Ends current non-Boss {C:cry_code}Blind{},", "Blind gives {C:cry_code}no{} reward money"}
+    },
+    cost = 4,
+    atlas = "code",
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SELECTING_HAND and not G.GAME.blind.boss
+    end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'immediate',
+            func = function()
+                if G.STATE ~= G.STATES.SELECTING_HAND then return false end
+                G.GAME.current_round.semicolon = true
+                G.STATE = G.STATES.HAND_PLAYED
+                G.STATE_COMPLETE = true
+                end_round()
+                return true
+            end
+        }), "other")
+    end
+}
+
 crash_functions = {
     function()
         --instantly quit the game, no error log
@@ -637,7 +672,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon}
 return {name = "Code Cards", 
         init = function()
             --allow Program Packs to let you keep the cards
