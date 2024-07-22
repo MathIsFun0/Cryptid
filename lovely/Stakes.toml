@@ -242,12 +242,13 @@ payload = "if G.GAME.blind_on_deck == 'Boss' then"
 match_indent = true
 
 # Ruby Stake - smaller showdown blinds don't win
+# Win on any ante above win_ante
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
 pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
 position = "at"
-payload = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then"
+payload = "if G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then"
 match_indent = true
 
 
