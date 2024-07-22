@@ -11,6 +11,8 @@ local code = {
     },
     shop_rate = 0.0,
     default = 'c_cry_crash',
+    can_stack = true,
+    can_divide = true
 }
 local code_atlas = {
     object_type = "Atlas",
@@ -184,8 +186,12 @@ local payload = {
     can_use = function(self, card)
         return true
     end,
+    can_bulk_use = true,
     use = function(self, card, area, copier)
         G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
+    end,
+    bulk_use = function(self, card, area, copier, number)
+        G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult^number
     end
 }
 local reboot = {
