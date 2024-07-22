@@ -17,3 +17,5 @@ Cryptid currently adds:
 - 2 new joker rarities
 - 1 new enhancement and corresponding tarot card
 - 1 new seal
+
+### [Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
