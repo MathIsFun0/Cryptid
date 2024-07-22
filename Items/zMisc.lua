@@ -601,7 +601,7 @@ function Card:calculate_seal(context)
         local total_repetitions = ret and ret.repetitions or 0
 
         if self.config.center == G.P_CENTERS.m_cry_echo then
-            if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
+            if pseudorandom('echo') < G.GAME.probabilities.normal/(self.ability.extra or 2) then --hacky crash fix
                 total_repetitions = total_repetitions + self.ability.retriggers
                 sendDebugMessage("echo retrigger, total " .. tostring(total_repetitions))
             end
