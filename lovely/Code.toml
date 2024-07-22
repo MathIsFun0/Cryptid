@@ -57,3 +57,40 @@ pattern = "G.SHADERS['CRT']:send('glitch_intensity', 0)--0.1*G.SETTINGS.GRAPHICS
 position = "at"
 payload = "G.SHADERS['CRT']:send('glitch_intensity', glitched_intensity or 0)"
 match_indent = true
+
+# Semicolon - don't lose
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '''(?<indent>[\t ]*)if G.GAME.chips - G.GAME.blind.chips >= 0 then
+[\t ]*game_over = false
+[\t ]*end'''
+position = 'after'
+# match_indent = true
+line_prepend = '$indent'
+payload = '''
+if G.GAME.current_round.semicolon and game_over then
+    game_over = false
+end
+'''
+
+# Semicolon - end screen text
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''localize\('ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
+position = 'at'
+# match_indent = true
+line_prepend = ''
+payload = '''(G.GAME.current_round.semicolon and ";" or localize('ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
+
+# Semicolon - reset value at start of round
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.blind:set_blind(G.GAME.round_resets.blind)"
+position = "after"
+payload = '''
+G.GAME.current_round.semicolon = false
+'''
+match_indent = true
