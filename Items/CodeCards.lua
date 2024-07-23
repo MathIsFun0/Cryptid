@@ -381,6 +381,83 @@ local seed = {
     end
 }
 
+local variable = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'variable',
+    name = 'cry-Variable',
+    atlas = 'code',
+    pos = {
+        x = 2,
+        y = 1,
+    },
+    cost = 4,
+    config = {max_highlighted = 1, extra = {enteredrank = ""}},
+    loc_txt = {
+        name = '://VARIABLE',
+        text = {
+            'Convert #1# selected card',
+            'to a rank {C:code}of your choosing'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return {vars = {self.config.max_highlighted}}
+	end,
+    use = function(self, card, area, copier)
+        G.CHOOSE_RANK = UIBox{
+            definition = create_UIBox_variable(card),
+            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+        }
+    end
+}
+
+G.ENTERED_RANK = ""
+
+function create_UIBox_variable(card)
+    G.E_MANAGER:add_event(Event({
+        blockable = false,
+        func = function()
+          G.REFRESH_ALERTS = true
+        return true
+        end
+      }))
+    local t = create_UIBox_generic_options({no_back = true,contents = {
+        {n=G.UIT.R, nodes = {create_text_input({
+            w = 4.5, h = 1, max_length = 1, prompt_text = "ENTER RANK",
+            ref_table = G, ref_value = 'ENTERED_RANK', keyboard_offset = 1
+          })}},
+        {n=G.UIT.R, nodes = {UIBox_button({button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+    }})
+    return t
+end
+
+G.FUNCS.variable_apply = function()
+    if  G.ENTERED_RANK == "2" or G.ENTERED_RANK == "3" or G.ENTERED_RANK == "4" or G.ENTERED_RANK == "5" or G.ENTERED_RANK == "6" or G.ENTERED_RANK == "7" or G.ENTERED_RANK == "8" or G.ENTERED_RANK == "9" or G.ENTERED_RANK == "T" or G.ENTERED_RANK == "J" or G.ENTERED_RANK == "Q" or G.ENTERED_RANK == "K" or G.ENTERED_RANK == "A" then
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            return true end }))
+        for i=1, #G.hand.highlighted do
+            local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.2)
+        for i=1, #G.hand.highlighted do
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+                local card = G.hand.highlighted[i]
+                local suit_prefix = string.sub(card.base.suit, 1, 1)..'_'
+                local rank_suffix = G.ENTERED_RANK
+                card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
+                return true end }))
+        end  
+        for i=1, #G.hand.highlighted do
+            local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('tarot2', percent, 0.6);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+        delay(0.5)
+        G.CHOOSE_RANK:remove()
+    end
+end
 
 crash_functions = {
     function()
