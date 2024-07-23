@@ -398,7 +398,7 @@ local cube = {
         }
     	},
 	rarity = 1,
-	cost = -25,
+	cost = -27,
     	blueprint_compat = true,
 	atlas = "atlasone",
     source_gate = "sho",
@@ -585,7 +585,7 @@ local big_cube = {
         }
     },
 	rarity = 1,
-	cost = 25,
+	cost = 27,
 	atlas = "atlasone",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_chips}}

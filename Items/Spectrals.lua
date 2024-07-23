@@ -228,7 +228,7 @@ local lock = {
         for i=1, #G.jokers.cards do
 			local CARD = G.jokers.cards[i]
             local percent = 0.85 + (i-0.999)/(#G.jokers.cards-0.998)*0.3
-            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD.ability.perishable = nil;CARD.pinned = nil;CARD:set_rental(nil);CARD:set_eternal(nil);play_sound('card1', percent);CARD:juice_up(0.3, 0.3);return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD.ability.perishable = nil;CARD.pinned = nil;CARD:set_rental(nil);CARD:set_eternal(nil);CARD.ability.banana = nil;play_sound('card1', percent);CARD:juice_up(0.3, 0.3);return true end }))
         end
         delay(0.2)
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
