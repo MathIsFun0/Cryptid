@@ -1352,6 +1352,41 @@ local maze = {
         G.GAME.current_round.discards_used = 0
     end
 }
+
+local panopticon = {
+    object_type = "Joker",
+    name = "cry-panopticon",
+    key = "panopticon",
+    pos = {x = 1, y = 4},
+	config = {
+		extra = {hands_backup = 0, discards_backup = 0}
+	},
+    loc_txt = {
+        name = 'Panopticon',
+        text = {
+            "All hands are considered the",
+            "{C:attention}last hand{} of each round"
+        }
+    },
+    rarity = 1,
+    cost = 3,
+    atlas = "atlastwo",
+    calculate = function(self, card, context)
+        if (context.before) and not context.blueprint and not context.retrigger_joker then
+			card.ability.extra.hands_backup = G.GAME.current_round.hands_left
+            G.GAME.current_round.hands_left = 0
+        end
+		
+        if (context.after) and not context.blueprint and not context.retrigger_joker then
+            G.GAME.current_round.hands_left = card.ability.extra.hands_backup
+        end
+
+    end,
+    add_to_deck = function(self, card, from_debuff)
+		G.GAME.current_round.hands_backup = 0
+    end
+}
+
 --Notes from my testing
 -- I've found that DNA and Burnt Joker work SOMEWHAT but can be jank at times (ESPECIALLY so with retrigger jokers). i can only assume other modded jokers will behave in a similar way. Trading card and sixth sense work without any issues tho so yey
 local magnet = {
@@ -1931,4 +1966,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {blurred_sprite, jimball_sprite, weegaming_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust,}}
+        items = {blurred_sprite, jimball_sprite, weegaming_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, panopticon,}}
