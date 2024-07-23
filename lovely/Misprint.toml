@@ -42,10 +42,10 @@ pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
 position = "after"
 payload = '''
 if G.GAME.modifiers.cry_misprint_min then
-    G.GAME.pack_size = self.config.center.config.extra
+    G.GAME.pack_size = self.ability.extra
     if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
-    G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), G.GAME.pack_choices)
+    G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
     --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
 end
 '''

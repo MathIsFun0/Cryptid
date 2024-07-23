@@ -61,3 +61,18 @@ pattern = '''pinned_left = G.C.ORANGE,'''
 position = 'after'
 payload = '''banana = HEX("e8c500"),'''
 match_indent = true
+
+# Detect if edition comes from copy_card
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''new_card:set_edition(other.edition or {}, nil, true)'''
+position = 'at'
+payload = '''
+if type(other) == "table" then
+    if not other.edition then other.edition = {} end
+    other.edition.from_copy = true
+end
+new_card:set_edition(other.edition, nil, true)
+'''
+match_indent = true

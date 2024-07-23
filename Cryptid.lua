@@ -453,28 +453,15 @@ function cry_deep_copy(obj, seen)
 end
 function cry_misprintize(card, override, force_reset)
     if (not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod) and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker") then
-        if card.ability.set == "Enhanced" or card.ability.set == "Default" then
-            --apparently there's a better way to do this with newer APIs, will look at it later
-            card.config.center = cry_deep_copy(card.config.center)
-            cry_misprintize_tbl(card.config.center_key.."_conf", card.config.center.config, nil, override)
-            card:set_ability(card.config.center)
-            card.base.nominal = cry_misprintize_val(card.base.nominal, override)
-        elseif card.ability.set == "Joker" then 
-            if G.GAME.modifiers.cry_jkr_misprint_mod then
-                if not override then override = {} end
-                override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
-                override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
-                override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
-                override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
-            end
-            if G.GAME.modifiers.cry_misprint_min or override and override.min then
-                cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
-            end
-        else
-            cry_misprintize_tbl(card.config.center_key, G.P_CENTERS[card.config.center_key].config, nil, override)
-            for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
-                card.ability[k] = cry_deep_copy(v)
-            end
+        if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
+            if not override then override = {} end
+            override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
+            override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
+            override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
+            override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
+        end
+        if G.GAME.modifiers.cry_misprint_min or override and override.min then
+            cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
         end
         if G.GAME.modifiers.cry_misprint_min then
             --card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
@@ -482,14 +469,7 @@ function cry_misprintize(card, override, force_reset)
             card:set_cost()
         end
     else
-        if card.ability.set == "Joker" then
-            cry_misprintize_tbl(card.config.center_key, card.ability, true)
-        else
-            cry_misprintize_tbl(card.config.center_key, G.P_CENTERS[card.config.center_key].config, true)
-            for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
-                card.ability[k] = cry_deep_copy(v)
-            end
-        end
+        cry_misprintize_tbl(card.config.center_key, card.ability, true)
     end
 end
 function cry_log_random(seed,min,max)
