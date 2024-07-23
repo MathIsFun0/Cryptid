@@ -278,7 +278,7 @@ match_indent = true
 target = "functions/state_events.lua"
 pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 position = "at"
-payload = "delay(0.4); ease_ante(G.GAME.blind and (G.GAME.blind.name == 'cry-Joke' or (G.GAME.blind.name == 'cry-Obsidian Orb' and G.GAME.defeated_blinds.bl_cry_joke)) and to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 and 8-G.GAME.round_resets.ante%8 or 1); cry_apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+payload = "delay(0.4); ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1); cry_apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 match_indent = true
 
 

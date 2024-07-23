@@ -42,6 +42,15 @@ function Blind:cry_before_play()
         end
     end
 end
+function Blind:cry_calc_ante_gain()
+    if not self.disabled then
+        local obj = self.config.blind
+        if obj.cry_calc_ante_gain and type(obj.cry_calc_ante_gain) == 'function' then
+            return obj:cry_calc_ante_gain()
+        end
+    end
+    return 1
+end
 
 local oldox = {
     object_type = "Blind",
@@ -419,11 +428,20 @@ local joke = {
         name = 'The Joke',
         text = {
             "If score is >2X requirements,",
-            "set ante to multiple of 8"
+            "set ante to multiple of #1#"
         }
     },
     atlas = "blinds",
-    boss_colour = HEX('00ffaa')
+    boss_colour = HEX('00ffaa'),
+    loc_vars = function(self, info_queue, card)
+		return { vars = {G.GAME.win_ante} }
+	end,
+    cry_calc_ante_gain = function(self)
+        if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
+            return G.GAME.win_ante-G.GAME.round_resets.ante%G.GAME.win_ante
+        end
+        return 1
+    end
 }
 local hammer = {
     object_type = "Blind",
@@ -981,6 +999,16 @@ local obsidian_orb = {
             end
         end
         return score
+    end,
+    cry_calc_ante_gain = function(self)
+        local ante = 1
+        for k, _ in pairs(G.GAME.defeated_blinds) do
+            s = G.P_BLINDS[k]
+            if s.cry_calc_ante_gain then
+                ante = math.max(ante,s:cry_calc_ante_gain())
+            end
+        end
+        return ante
     end,
     cry_before_play = function(self)
         for k, _ in pairs(G.GAME.defeated_blinds) do
