@@ -59,13 +59,12 @@ end
 '''
 match_indent = true
 
-
 # Yellow Stake - Hanged Man can't be used on Eternal cards, Death can't remove Eternal
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
-position = "after"
+pattern = "if self.ability.name == 'The Hermit' or self.ability.consumeable.hand_type or self.ability.name == 'Temperance' or self.ability.name == 'Black Hole' then"
+position = "before"
 payload = '''
 if self.ability.name == "The Hanged Man" then
     for i = 1, #G.hand.highlighted do
@@ -73,9 +72,9 @@ if self.ability.name == "The Hanged Man" then
     end
 end
 if self.ability.name == "Death" then
-    local leftmost = G.hand.highlighted[1]
-    for i=1, #G.hand.highlighted do if G.hand.highlighted[i].T.x < leftmost.T.x then leftmost = G.hand.highlighted[i] end end
-    if leftmost and leftmost.ability.eternal then return false end
+    local rightmost = G.hand.highlighted[1]
+    for i=1, #G.hand.highlighted-1 do if G.hand.highlighted[i].T.x > rightmost.T.x then rightmost = G.hand.highlighted[i] end end
+    for i=1, #G.hand.highlighted do if G.hand.highlighted[i].ability.eternal and rightmost ~= G.hand.highlighted[i] then return false end end
 end
 '''
 match_indent = true
