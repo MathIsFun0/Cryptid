@@ -596,7 +596,7 @@ return {name = "Spectrals",
                 end
                 if center_table.name == 'Seed Money' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.interest_cap = center_table.extra
+                        G.GAME.interest_cap = 25 --note: does not account for potential deck effects
                         return true end }))
                 end
                 if center_table.name == 'Money Tree' then
