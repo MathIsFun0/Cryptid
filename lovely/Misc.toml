@@ -32,7 +32,7 @@ else
 end
 '''
 
-# Banana Tag
+# Banana Tag + other sticker-like effects
 [[patches]]
 [patches.pattern]
 target = 'card.lua'
@@ -41,6 +41,7 @@ position = 'after'
 match_indent = true
 payload = '''
 if self.ability.banana then badges[#badges + 1] = 'banana' end
+if self.ability.cry_rigged then badges[#badges + 1] = 'cry_rigged' end
 '''
 
 # Banana Tag
@@ -52,6 +53,7 @@ position = 'after'
 match_indent = true
 payload = '''
 if v == 'banana' then info_queue[#info_queue+1] = {key = 'banana', set = 'Other', vars = {G.GAME.probabilities.normal or 1, 10}} end
+if v == 'cry_rigged' then info_queue[#info_queue+1] = {key = 'cry_rigged', set = 'Other', vars = {}} end
 '''
 
 [[patches]]
@@ -59,7 +61,7 @@ if v == 'banana' then info_queue[#info_queue+1] = {key = 'banana', set = 'Other'
 target = 'functions/UI_definitions.lua'
 pattern = '''pinned_left = G.C.ORANGE,'''
 position = 'after'
-payload = '''banana = HEX("e8c500"),'''
+payload = '''banana = HEX("e8c500"), cry_rigged = HEX("14b341")'''
 match_indent = true
 
 # Detect if edition comes from copy_card

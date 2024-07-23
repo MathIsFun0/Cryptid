@@ -57,9 +57,28 @@ function Card:set_sprites(_center, _front)
     end
 end
 
+local ec = eval_card
+function eval_card(card, context)
+    local ggpn = G.GAME.probabilities.normal
+    if card.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
+    local ret = ec(card, context)
+    if card.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
+    return ret
+end
 local cj = Card.calculate_joker
 function Card:calculate_joker(context)
+    local ggpn = G.GAME.probabilities.normal
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
     local ret = cj(self, context)
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
     --Make every Joker return a value when triggered
     if not ret then
         if context.selling_self then
@@ -507,7 +526,6 @@ function init_localization()
         G.localization.descriptions.Spectral.c_trance.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
-        G.localization.misc.labels.banana = "Banana"
     end
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
@@ -518,6 +536,8 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
     G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
+    G.localization.misc.labels.banana = "Banana"
+    G.localization.misc.labels.cry_rigged = "Rigged"
 end
 
 function SMODS.current_mod.process_loc_text()
@@ -526,6 +546,13 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{C:green}#1# in #2#{} chance of being",
             "destroyed each round"
+        },
+    }
+    G.localization.descriptions.Other.cry_rigged = {
+        name = "Rigged",
+        text = {
+            "All {C:cry_code}probabilities",
+            "are {C:cry_code}guaranteed"
         },
     }
 end

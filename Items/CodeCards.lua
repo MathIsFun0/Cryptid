@@ -345,6 +345,43 @@ local malware = {
     end
 }
 
+local seed = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Seed",
+    key = "seed",
+    pos = {
+        x = 2,
+        y = 1
+    },
+    config = {},
+    loc_txt = {
+        name = '://SEED',
+        text = {
+            "Select a Joker",
+            "or playing card",
+            "to become {C:cry_code}Rigged"
+        }
+    },
+    cost = 4,
+    atlas = "code",
+    can_use = function(self, card)
+        return #G.jokers.highlighted + #G.hand.highlighted == 1
+    end,
+    loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {key = 'cry_rigged', set = 'Other', vars = {}}
+	end,
+    use = function(self, card, area, copier)
+        if G.jokers.highlighted[1] then
+            G.jokers.highlighted[1].ability.cry_rigged = true
+        end
+        if G.hand.highlighted[1] then
+            G.hand.highlighted[1].ability.cry_rigged = true
+        end
+    end
+}
+
+
 crash_functions = {
     function()
         --instantly quit the game, no error log
@@ -726,7 +763,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware, seed}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
