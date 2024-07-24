@@ -617,7 +617,6 @@ function Card:calculate_seal(context)
             
             if check and check.repetitions then
                 total_repetitions = total_repetitions + check.repetitions
-                sendDebugMessage("blur retrigger, total " .. tostring(total_repetitions) .. "rank: " .. (self.base.value or 'nil') .. " suit: " .. (self.base.suit or 'nil'))
             end
         end
 

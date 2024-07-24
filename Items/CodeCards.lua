@@ -547,46 +547,57 @@ G.FUNCS.variable_apply = function()
         {'J', 'Jack'},
         {'Q', 'Queen'},
         {'K', 'King'},
-        {'A', 'Ace'},
+        {'1', 'Ace', 'A'},
         {'M'},
         {'nil'},
     }
 
     local rank_suffix = nil
 
-    for i, v in pairs (rank_table) do
-        for j, k in pairs (v) do
-            if string.lower(G.ENTERED_RANK) == string.lower(k) then
-                rank_suffix = i
+    for rank, possible_values in pairs (rank_table) do
+        for _, value in pairs (possible_values) do
+            if string.lower(G.ENTERED_RANK) == string.lower(value) then
+                rank_suffix = rank
             end
         end
     end
 
-    if rank_suffix then
-        G.GAME.USING_CODE = false
-        if rank_suffix == 15 then
-            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
-            card:add_to_deck()
-            G.jokers:emplace(card)
-        elseif rank_suffix == 16 then
-            local card = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_crash')
-            card:add_to_deck()
-            G.consumeables:emplace(card)
-        elseif rank_suffix == 17 then
-            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
-                play_sound('tarot1')
-                return true end }))
-            for i=1, #G.hand.highlighted do
-                local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
-                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
-            end
-            delay(0.2)
-            for i=1, #G.hand.highlighted do
-                local CARD = G.hand.highlighted[i]
-                local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
-                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_variable')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
-            end
-        else
+    if not rank_suffix then
+        return
+    end
+
+    G.GAME.USING_CODE = false
+    if rank_suffix == 15 then
+        local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+        card:add_to_deck()
+        G.jokers:emplace(card)
+    elseif rank_suffix == 16 then
+        local card = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_crash')
+        card:add_to_deck()
+        G.consumeables:emplace(card)
+    elseif rank_suffix == 17 then
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            return true end }))
+        for i=1, #G.hand.highlighted do
+            local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        delay(0.2)
+        for i=1, #G.hand.highlighted do
+            local CARD = G.hand.highlighted[i]
+            local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_variable')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+        end
+    else
+        if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
+        elseif rank_suffix == 10 then rank_suffix = 'T'
+        elseif rank_suffix == 11 then rank_suffix = 'J'
+        elseif rank_suffix == 12 then rank_suffix = 'Q'
+        elseif rank_suffix == 13 then rank_suffix = 'K'
+        elseif rank_suffix == 14 then rank_suffix = 'A'
+        end
+        
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot1')
             return true end }))
@@ -599,13 +610,6 @@ G.FUNCS.variable_apply = function()
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
                 local card = G.hand.highlighted[i]
                 local suit_prefix = string.sub(card.base.suit, 1, 1)..'_'
-                if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
-                elseif rank_suffix == 10 then rank_suffix = 'T'
-                elseif rank_suffix == 11 then rank_suffix = 'J'
-                elseif rank_suffix == 12 then rank_suffix = 'Q'
-                elseif rank_suffix == 13 then rank_suffix = 'K'
-                elseif rank_suffix == 14 then rank_suffix = 'A'
-                end
                 card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
                 return true end }))
         end  
@@ -615,10 +619,10 @@ G.FUNCS.variable_apply = function()
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
         delay(0.5)
-        end
-        G.CHOOSE_RANK:remove()
     end
+    G.CHOOSE_RANK:remove()
 end
+
 --todo: mod support
 G.FUNCS.class_apply = function()
     local enh_table = {
