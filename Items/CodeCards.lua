@@ -351,7 +351,7 @@ local seed = {
     name = "cry-Seed",
     key = "seed",
     pos = {
-        x = 2,
+        x = 3,
         y = 1
     },
     config = {},
@@ -381,6 +381,38 @@ local seed = {
     end
 }
 
+local variable = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'variable',
+    name = 'cry-Variable',
+    atlas = 'code',
+    pos = {
+        x = 2,
+        y = 1,
+    },
+    cost = 4,
+    config = {max_highlighted = 1, extra = {enteredrank = ""}},
+    loc_txt = {
+        name = '://VARIABLE',
+        text = {
+            'Convert {C:cry_code}#1#{} selected card',
+            'to a {C:cry_code}chosen{} rank'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return {vars = {self.config.max_highlighted}}
+	end,
+    use = function(self, card, area, copier)
+        G.GAME.USING_CODE = true
+        G.ENTERED_RANK = ""
+        G.CHOOSE_RANK = UIBox{
+            definition = create_UIBox_variable(card),
+            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+        }
+    end
+}
+
 function create_UIBox_variable(card)
     G.E_MANAGER:add_event(Event({
         blockable = false,
@@ -389,12 +421,17 @@ function create_UIBox_variable(card)
         return true
         end
       }))
-    local t = create_UIBox_generic_options({no_back = true,contents = {
+    local t = create_UIBox_generic_options({no_back = true,
+    colour = HEX("04200c"),
+    outline_colour = G.C.SECONDARY_SET.Code,
+    contents = {
         {n=G.UIT.R, nodes = {create_text_input({
+            colour = G.C.SET.Code,
+            hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
             w = 4.5, h = 1, max_length = 16, prompt_text = "ENTER RANK",
             ref_table = G, ref_value = 'ENTERED_RANK', keyboard_offset = 1
           })}},
-        {n=G.UIT.R, nodes = {UIBox_button({button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -410,7 +447,7 @@ G.FUNCS.variable_apply = function()
         {'7', 'Seven', 'VII'},
         {'8', 'Eight', 'VIII'},
         {'9', 'Nine', 'IX'},
-        {'10', 'Ten', 'X', 'T'},
+        {'10', '1O', 'Ten', 'X', 'T'},
         {'J', 'Jack'},
         {'Q', 'Queen'},
         {'K', 'King'},
@@ -431,6 +468,7 @@ G.FUNCS.variable_apply = function()
     end
 
     if rank_suffix then
+        G.GAME.USING_CODE = false
         if rank_suffix == 15 then
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
             card:add_to_deck()
@@ -867,7 +905,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware, seed}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware, seed, variable}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards

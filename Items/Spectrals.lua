@@ -447,7 +447,7 @@ local replica = {
     cost = 4,
     atlas = "replica",
     can_use = function(self, card)
-        return true
+        return #G.hand.cards > 0
     end,
     use = function(self, card, area, copier)
         local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed('cry_replica_choice'))
