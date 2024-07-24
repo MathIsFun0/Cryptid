@@ -594,7 +594,8 @@ G.FUNCS.class_apply = function()
         m_gold = {"gold"},
         m_lucky = {"lucky"},
         m_cry_echo = {"echo"},
-        ccd = {"ccd"}
+        ccd = {"ccd"},
+        null = {"nil"},
     }
 
     local enh_suffix = nil
@@ -623,6 +624,17 @@ G.FUNCS.class_apply = function()
                 local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
                 G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_class')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
             end
+        elseif enh_suffix == "null" then
+            for i=#G.hand.highlighted, 1, -1 do
+                local card = G.hand.highlighted[i]
+                if card.ability.name == 'Glass Card' then 
+                    card:shatter()
+                else
+                    card:start_dissolve(nil, i == #G.hand.highlighted)
+                end
+            end
+            G.CHOOSE_ENH:remove()
+            return
         else
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 play_sound('tarot1')
