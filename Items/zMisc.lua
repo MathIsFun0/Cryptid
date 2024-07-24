@@ -581,16 +581,22 @@ end
 
 se = Card.set_edition
 function Card:set_edition(x,y,z)
-    local was_oversat = self.edition and (self.edition.cry_oversat or self.edition.cry_glitched)
+    local from_copy = false
+    if type(x) == "table" then
+    if x.from_copy then from_copy = true end
+    x.from_copy = nil
+    if x == {} then x = nil end
+    end
     se(self,x,y,z)
-    if was_oversat then
-        cry_misprintize(self,nil,true)
-    end
-    if self.edition and self.edition.cry_oversat then
-        cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
-    end
-    if self.edition and self.edition.cry_glitched then
-        cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+    if not from_copy then
+        if self.edition and self.edition.cry_oversat then
+            cry_misprintize(self,nil,true)
+            cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end
+        if self.edition and self.edition.cry_glitched then
+            cry_misprintize(self,nil,true)
+            cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end
     end
 end
 --echo card
@@ -601,7 +607,7 @@ function Card:calculate_seal(context)
         local total_repetitions = ret and ret.repetitions or 0
 
         if self.config.center == G.P_CENTERS.m_cry_echo then
-            if pseudorandom('echo') < G.GAME.probabilities.normal/self.ability.extra then
+            if pseudorandom('echo') < G.GAME.probabilities.normal/(self.ability.extra or 2) then --hacky crash fix
                 total_repetitions = total_repetitions + self.ability.retriggers
                 sendDebugMessage("echo retrigger, total " .. tostring(total_repetitions))
             end
@@ -675,4 +681,3 @@ function Card:set_pinned(_pinned)
 end
         end,
         items = miscitems}
-

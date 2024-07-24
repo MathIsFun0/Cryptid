@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.4.3b
+--- VERSION: 0.4.3c
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -57,9 +57,40 @@ function Card:set_sprites(_center, _front)
     end
 end
 
+local ec = eval_card
+function eval_card(card, context)
+    local ggpn = G.GAME.probabilities.normal
+    if card.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
+    local ret = ec(card, context)
+    if card.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
+    return ret
+end
+local uc = Card.use_consumeable
+function Card:use_consumeable(area,copier)
+    local ggpn = G.GAME.probabilities.normal
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
+    local ret = uc(self, area, copier)
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
+    return ret
+end
 local cj = Card.calculate_joker
 function Card:calculate_joker(context)
+    local ggpn = G.GAME.probabilities.normal
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
     local ret = cj(self, context)
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
     --Make every Joker return a value when triggered
     if not ret then
         if context.selling_self then
@@ -453,28 +484,15 @@ function cry_deep_copy(obj, seen)
 end
 function cry_misprintize(card, override, force_reset)
     if (not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod) and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker") then
-        if card.ability.set == "Enhanced" or card.ability.set == "Default" then
-            --apparently there's a better way to do this with newer APIs, will look at it later
-            card.config.center = cry_deep_copy(card.config.center)
-            cry_misprintize_tbl(card.config.center_key.."_conf", card.config.center.config, nil, override)
-            card:set_ability(card.config.center)
-            card.base.nominal = cry_misprintize_val(card.base.nominal, override)
-        elseif card.ability.set == "Joker" then 
-            if G.GAME.modifiers.cry_jkr_misprint_mod then
-                if not override then override = {} end
-                override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
-                override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
-                override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
-                override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
-            end
-            if G.GAME.modifiers.cry_misprint_min or override and override.min then
-                cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
-            end
-        else
-            cry_misprintize_tbl(card.config.center_key, G.P_CENTERS[card.config.center_key].config, nil, override)
-            for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
-                card.ability[k] = cry_deep_copy(v)
-            end
+        if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
+            if not override then override = {} end
+            override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
+            override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
+            override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
+            override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
+        end
+        if G.GAME.modifiers.cry_misprint_min or override and override.min then
+            cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
         end
         if G.GAME.modifiers.cry_misprint_min then
             --card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
@@ -482,14 +500,7 @@ function cry_misprintize(card, override, force_reset)
             card:set_cost()
         end
     else
-        if card.ability.set == "Joker" then
-            cry_misprintize_tbl(card.config.center_key, card.ability, true)
-        else
-            cry_misprintize_tbl(card.config.center_key, G.P_CENTERS[card.config.center_key].config, true)
-            for k, v in pairs(G.P_CENTERS[card.config.center_key].config) do
-                card.ability[k] = cry_deep_copy(v)
-            end
-        end
+        cry_misprintize_tbl(card.config.center_key, card.ability, true)
     end
 end
 function cry_log_random(seed,min,max)
@@ -527,7 +538,6 @@ function init_localization()
         G.localization.descriptions.Spectral.c_trance.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
-        G.localization.misc.labels.banana = "Banana"
     end
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
@@ -536,10 +546,10 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
-    G.localization.misc.v_text.ch_c_cry_rush_hour_iv = {"Time is counted {C:attention}quadratically{}."}
-    G.localization.misc.v_text.ch_c_cry_rush_hour_v = {"Time is counted {C:attention}exponentially{}."}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
     G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
+    G.localization.misc.labels.banana = "Banana"
+    G.localization.misc.labels.cry_rigged = "Rigged"
 end
 
 function SMODS.current_mod.process_loc_text()
@@ -548,6 +558,13 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{C:green}#1# in #2#{} chance of being",
             "destroyed each round"
+        },
+    }
+    G.localization.descriptions.Other.cry_rigged = {
+        name = "Rigged",
+        text = {
+            "All {C:cry_code}probabilities",
+            "are {C:cry_code}guaranteed"
         },
     }
 end
@@ -679,7 +696,10 @@ SMODS.Sound({
 })
 SMODS.Sound({
     key = "music-Jimball",
-    path = "Jimball.ogg"
+    path = "Jimball.ogg",
+    select_music_track = function()
+        return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music
+    end
 })
 SMODS.Atlas({
     key = "modicon",
