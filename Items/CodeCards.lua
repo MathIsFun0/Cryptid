@@ -448,6 +448,43 @@ local class = {
         }
     end
 }
+local automaton = {
+    object_type = "Consumable",
+    set = "Tarot",
+    name = "cry-Automaton",
+    key = "automaton",
+    pos = {x=5,y=1},
+    config = {create = 1},
+    loc_txt = {
+        name = 'The Automaton',
+        text = {
+            "Creates up to {C:attention}#1#",
+            "random {C:cry_code}Code{} card",
+            "{C:inactive}(Must have room)"
+        }
+    },
+    atlas = "code",
+    loc_vars = function(self, info_queue, card)
+		return {vars = {self.config.create}}
+	end,
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        for i = 1, math.min(card.ability.consumeable.create, G.consumeables.config.card_limit - #G.consumeables.cards) do
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                if G.consumeables.config.card_limit > #G.consumeables.cards then
+                    play_sound('timpani')
+                    local _card = create_card('Code', G.consumeables, nil, nil, nil, nil, nil, 'cry_automaton')
+                    _card:add_to_deck()
+                    G.consumeables:emplace(_card)
+                    card:juice_up(0.3, 0.5)
+                end
+                return true end }))
+        end
+        delay(0.6)
+    end
+}
 
 function create_UIBox_variable(card)
     G.E_MANAGER:add_event(Event({
@@ -1038,7 +1075,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware, seed, variable, class}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
