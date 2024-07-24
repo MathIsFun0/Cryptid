@@ -69,6 +69,18 @@ function eval_card(card, context)
     end
     return ret
 end
+local uc = Card.use_consumeable
+function Card:use_consumeable(area,copier)
+    local ggpn = G.GAME.probabilities.normal
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
+    local ret = uc(self, area, copier)
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
+    return ret
+end
 local cj = Card.calculate_joker
 function Card:calculate_joker(context)
     local ggpn = G.GAME.probabilities.normal

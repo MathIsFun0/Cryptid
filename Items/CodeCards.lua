@@ -366,17 +366,22 @@ local seed = {
     cost = 4,
     atlas = "code",
     can_use = function(self, card)
-        return #G.jokers.highlighted + #G.hand.highlighted == 1
+        --the card itself and one other card
+        return #G.jokers.highlighted + #G.hand.highlighted + #G.consumeables.highlighted == 2
     end,
     loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {key = 'cry_rigged', set = 'Other', vars = {}}
 	end,
     use = function(self, card, area, copier)
+        area:remove_from_highlighted(card)
         if G.jokers.highlighted[1] then
             G.jokers.highlighted[1].ability.cry_rigged = true
         end
         if G.hand.highlighted[1] then
             G.hand.highlighted[1].ability.cry_rigged = true
+        end
+        if G.consumeables.highlighted[1] then
+            G.consumeables.highlighted[1].ability.cry_rigged = true
         end
     end
 }
