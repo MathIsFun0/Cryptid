@@ -417,6 +417,37 @@ local variable = {
         }
     end
 }
+local class = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'class',
+    name = 'cry-Class',
+    atlas = 'code',
+    pos = {
+        x = 4,
+        y = 1,
+    },
+    cost = 4,
+    config = {max_highlighted = 1, extra = {enteredrank = ""}},
+    loc_txt = {
+        name = '://CLASS',
+        text = {
+            'Convert {C:cry_code}#1#{} selected card',
+            'to a {C:cry_code}chosen{} enhancement'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return {vars = {self.config.max_highlighted}}
+	end,
+    use = function(self, card, area, copier)
+        G.GAME.USING_CODE = true
+        G.ENTERED_ENH = ""
+        G.CHOOSE_ENH = UIBox{
+            definition = create_UIBox_class(card),
+            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+        }
+    end
+}
 
 function create_UIBox_variable(card)
     G.E_MANAGER:add_event(Event({
@@ -441,6 +472,29 @@ function create_UIBox_variable(card)
     return t
 end
 
+function create_UIBox_class(card)
+    G.E_MANAGER:add_event(Event({
+        blockable = false,
+        func = function()
+          G.REFRESH_ALERTS = true
+        return true
+        end
+      }))
+    local t = create_UIBox_generic_options({no_back = true,
+    colour = HEX("04200c"),
+    outline_colour = G.C.SECONDARY_SET.Code,
+    contents = {
+        {n=G.UIT.R, nodes = {create_text_input({
+            colour = G.C.SET.Code,
+            hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+            w = 4.5, h = 1, max_length = 16, prompt_text = "ENTER ENHANCEMENT",
+            ref_table = G, ref_value = 'ENTERED_ENH', keyboard_offset = 1
+          })}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'class_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+    }})
+    return t
+end
+
 G.FUNCS.variable_apply = function()
     local rank_table = {
         {},
@@ -459,7 +513,6 @@ G.FUNCS.variable_apply = function()
         {'A', 'Ace'},
         {'M'},
         {'nil'},
-        {'CCDO'},
     }
 
     local rank_suffix = nil
@@ -527,6 +580,69 @@ G.FUNCS.variable_apply = function()
         delay(0.5)
         end
         G.CHOOSE_RANK:remove()
+    end
+end
+--todo: mod support
+G.FUNCS.class_apply = function()
+    local enh_table = {
+        m_bonus = {"bonus", "chip", "chips"},
+        m_mult = {"mult"},
+        m_wild = {"wild"},
+        m_glass = {"glass"},
+        m_steel = {"steel"},
+        m_stone = {"stone"},
+        m_gold = {"gold"},
+        m_lucky = {"lucky"},
+        m_cry_echo = {"echo"},
+        ccd = {"ccd"}
+    }
+
+    local enh_suffix = nil
+
+    for i, v in pairs (enh_table) do
+        for j, k in pairs (v) do
+            if string.lower(G.ENTERED_ENH) == string.lower(k) then
+                enh_suffix = i
+            end
+        end
+    end
+
+    if enh_suffix then
+        G.GAME.USING_CODE = false
+        if enh_suffix == "ccd" then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('tarot1')
+                return true end }))
+            for i=1, #G.hand.highlighted do
+                local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+            end
+            delay(0.2)
+            for i=1, #G.hand.highlighted do
+                local CARD = G.hand.highlighted[i]
+                local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_class')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+            end
+        else
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('tarot1')
+                return true end }))
+            for i=1, #G.hand.highlighted do
+                local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+            end
+            delay(0.2)
+            for i=1, #G.hand.highlighted do
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() G.hand.highlighted[i]:set_ability(G.P_CENTERS[enh_suffix]);return true end }))
+            end 
+            for i=1, #G.hand.highlighted do
+                local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('tarot2', percent, 0.6);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+            end
+        end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+        delay(0.5)
+        G.CHOOSE_ENH:remove()
     end
 end
 crash_functions = {
@@ -910,7 +1026,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware, seed, variable}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, payload, reboot, revert, crash, semicolon, malware, seed, variable, class}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards

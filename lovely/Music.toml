@@ -9,7 +9,7 @@ priority = 0
 target = "functions/misc_functions.lua"
 pattern = "(G.STATE == G.STATES.SPLASH and '') or"
 position = "after"
-payload = '''((G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code') or (G.GAME and G.GAME.USING_CODE) and 'musicProg') or'''
+payload = '''(((G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code') or (G.GAME and G.GAME.USING_CODE)) and 'musicProg') or'''
 match_indent = true
 
 [[patches]]
