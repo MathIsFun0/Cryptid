@@ -381,38 +381,6 @@ local seed = {
     end
 }
 
-local variable = {
-    object_type = 'Consumable',
-    set = 'Code',
-    key = 'variable',
-    name = 'cry-Variable',
-    atlas = 'code',
-    pos = {
-        x = 2,
-        y = 1,
-    },
-    cost = 4,
-    config = {max_highlighted = 1, extra = {enteredrank = ""}},
-    loc_txt = {
-        name = '://VARIABLE',
-        text = {
-            'Convert #1# selected card',
-            'to a rank {C:code}of your choosing'
-        }
-    },
-    loc_vars = function(self, info_queue, card)
-		return {vars = {self.config.max_highlighted}}
-	end,
-    use = function(self, card, area, copier)
-        G.CHOOSE_RANK = UIBox{
-            definition = create_UIBox_variable(card),
-            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
-        }
-    end
-}
-
-G.ENTERED_RANK = ""
-
 function create_UIBox_variable(card)
     G.E_MANAGER:add_event(Event({
         blockable = false,
@@ -423,7 +391,7 @@ function create_UIBox_variable(card)
       }))
     local t = create_UIBox_generic_options({no_back = true,contents = {
         {n=G.UIT.R, nodes = {create_text_input({
-            w = 4.5, h = 1, max_length = 1, prompt_text = "ENTER RANK",
+            w = 4.5, h = 1, max_length = 16, prompt_text = "ENTER RANK",
             ref_table = G, ref_value = 'ENTERED_RANK', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
@@ -432,7 +400,60 @@ function create_UIBox_variable(card)
 end
 
 G.FUNCS.variable_apply = function()
-    if  G.ENTERED_RANK == "2" or G.ENTERED_RANK == "3" or G.ENTERED_RANK == "4" or G.ENTERED_RANK == "5" or G.ENTERED_RANK == "6" or G.ENTERED_RANK == "7" or G.ENTERED_RANK == "8" or G.ENTERED_RANK == "9" or G.ENTERED_RANK == "T" or G.ENTERED_RANK == "J" or G.ENTERED_RANK == "Q" or G.ENTERED_RANK == "K" or G.ENTERED_RANK == "A" then
+    local rank_table = {
+        {},
+        {'2', 'Two', 'II'},
+        {'3', 'Three', 'III'},
+        {'4', 'Four', 'IV'},
+        {'5', 'Five', 'V'},
+        {'6', 'Six', 'VI'},
+        {'7', 'Seven', 'VII'},
+        {'8', 'Eight', 'VIII'},
+        {'9', 'Nine', 'IX'},
+        {'10', 'Ten', 'X', 'T'},
+        {'J', 'Jack'},
+        {'Q', 'Queen'},
+        {'K', 'King'},
+        {'A', 'Ace'},
+        {'M'},
+        {'nil'},
+        {'CCDO'},
+    }
+
+    local rank_suffix = nil
+
+    for i, v in pairs (rank_table) do
+        for j, k in pairs (v) do
+            if string.lower(G.ENTERED_RANK) == string.lower(k) then
+                rank_suffix = i
+            end
+        end
+    end
+
+    if rank_suffix then
+        if rank_suffix == 15 then
+            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+            card:add_to_deck()
+            G.jokers:emplace(card)
+        elseif rank_suffix == 16 then
+            local card = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_crash')
+            card:add_to_deck()
+            G.consumeables:emplace(card)
+        elseif rank_suffix == 17 then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('tarot1')
+                return true end }))
+            for i=1, #G.hand.highlighted do
+                local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+            end
+            delay(0.2)
+            for i=1, #G.hand.highlighted do
+                local CARD = G.hand.highlighted[i]
+                local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_variable')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+            end
+        else
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot1')
             return true end }))
@@ -445,7 +466,13 @@ G.FUNCS.variable_apply = function()
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
                 local card = G.hand.highlighted[i]
                 local suit_prefix = string.sub(card.base.suit, 1, 1)..'_'
-                local rank_suffix = G.ENTERED_RANK
+                if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
+                elseif rank_suffix == 10 then rank_suffix = 'T'
+                elseif rank_suffix == 11 then rank_suffix = 'J'
+                elseif rank_suffix == 12 then rank_suffix = 'Q'
+                elseif rank_suffix == 13 then rank_suffix = 'K'
+                elseif rank_suffix == 14 then rank_suffix = 'A'
+                end
                 card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
                 return true end }))
         end  
@@ -455,10 +482,10 @@ G.FUNCS.variable_apply = function()
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
         delay(0.5)
+        end
         G.CHOOSE_RANK:remove()
     end
 end
-
 crash_functions = {
     function()
         --instantly quit the game, no error log
