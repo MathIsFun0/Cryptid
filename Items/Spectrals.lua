@@ -278,10 +278,14 @@ local trade = {
     cost = 4,
     atlas = "trade",
     can_use = function(self, card)
+	local usable_count = 0
         for _, v in pairs(G.GAME.used_vouchers) do
-            if v then return true end
+            if v then usable_count = usable_count + 1 end
         end
-        return false
+	for _, v in pairs(G.GAME.voucher_sticker_index.eternal) do
+            if v then usable_count = usable_count - 1 end
+        end
+	if usable_count > 0 then return true else return false end
     end,
     use = function(self, card, area, copier)
         local usable_vouchers = {}
@@ -297,6 +301,9 @@ local trade = {
                         end
                     end
                 end
+		if G.GAME.voucher_sticker_index.eternal[v.name] then
+		    can_use = false
+		end
             end
             if can_use then
                 usable_vouchers[#usable_vouchers+1] = k
@@ -316,6 +323,44 @@ local trade = {
             area = G.play
         end
         local card = create_card('Voucher', area, nil, nil, nil, nil, unredeemed_voucher)
+
+	if G.GAME.voucher_edition_index[card.ability.name] then		-- this is REALLY REALLY dumb pt. 2
+		local edition = {}
+		if G.GAME.voucher_edition_index[card.ability.name] == 'negative' then edition = {negative = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'polychrome' then edition = {polychrome = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'holo' then edition = {holo = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'foil' then edition = {foil = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_blur' then edition = {cry_blur = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_astral' then edition = {cry_astral = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_mosaic' then edition = {cry_mosaic = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_glitched' then edition = {cry_glitched = true}
+		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_oversat' then edition = {cry_oversat = true}
+		end
+		card:set_edition(edition, true, true)
+	end
+	if G.GAME.voucher_sticker_index.eternal[card.ability.name] then
+	    card:set_eternal(true)
+	    card.ability.eternal = true
+	end
+	if G.GAME.voucher_sticker_index.perishable[card.ability.name] then
+	    card:set_perishable(true)
+	    card.ability.perish_tally = G.GAME.voucher_sticker_index.perishable[card.ability.name]
+	    card.ability.perishable = true
+	    if G.GAME.voucher_sticker_index.perishable[card.ability.name] == 0 then
+		card.debuff = true
+	    end
+	end
+	if G.GAME.voucher_sticker_index.rental[card.ability.name] then
+	    card:set_rental(true)
+	    card.ability.rental = true
+	end
+	if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
+	    card.pinned = true
+	end
+	if G.GAME.voucher_sticker_index.banana[card.ability.name] then
+	    card.ability.banana = true
+	end
+
         card:start_materialize()
         area:emplace(card)
         card.cost=0
@@ -542,6 +587,20 @@ return {name = "Spectrals",
                     obj:unredeem(self)
                     return
                 end
+		local is_debuffed = false
+		if G.GAME.voucher_sticker_index.perishable[center_table.name] and G.GAME.voucher_sticker_index.perishable[center_table.name] == 0 then is_debuffed = true end
+		if G.GAME.voucher_sticker_index.eternal[center_table.name] then
+		    G.GAME.voucher_sticker_index.eternal[center_table.name] = nil
+		end
+		if G.GAME.voucher_sticker_index.perishable[center_table.name] then
+		    G.GAME.voucher_sticker_index.perishable[center_table.name] = nil
+		end
+		if G.GAME.voucher_sticker_index.rental[center_table.name] then
+		    G.GAME.voucher_sticker_index.rental[center_table.name] = nil
+		end
+
+		if is_debuffed == false then
+
                 if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
                     G.E_MANAGER:add_event(Event({func = function()
                         change_shop_size(-1)
@@ -636,6 +695,9 @@ return {name = "Spectrals",
                         ease_discard(center_table.extra)
                     end
                 end
+
+		end
+
             end
         end,
         items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, trade_sprite, analog_sprite, replica_sprite, white_hole, vacuum, hammerspace, lock, trade, analog, replica}}

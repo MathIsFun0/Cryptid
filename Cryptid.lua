@@ -57,6 +57,122 @@ function Card:set_sprites(_center, _front)
     end
 end
 
+function cry_debuff_voucher(center)	-- sorry for all the mess here... 
+                local center_table = {
+                    name = center and center.name,
+                    extra = center and center.config.extra
+                }
+                local obj = center or self.config.center
+                if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        change_shop_size(-1)
+                        return true end }))
+                end
+                if center_table.name == 'Tarot Merchant' or center_table.name == 'Tarot Tycoon' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.tarot_rate = G.GAME.tarot_rate / center_table.extra
+                        return true end }))
+                end
+                if center_table.name == 'Planet Merchant' or center_table.name == 'Planet Tycoon' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.planet_rate = G.GAME.planet_rate / center_table.extra
+                        return true end }))
+                end
+                if center_table.name == 'Hone' or center_table.name == 'Glow Up' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.edition_rate = G.GAME.edition_rate / center_table.extra
+                        return true end }))
+                end
+                if center_table.name == 'Magic Trick' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.playing_card_rate = 0
+                        return true end }))
+                end
+                if center_table.name == 'Crystal Ball' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+                        return true end }))
+                end
+                if center_table.name == 'Clearance Sale' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.discount_percent = 0
+                        for k, v in pairs(G.I.CARD) do
+                            if v.set_cost then v:set_cost() end
+                        end
+                        return true end }))
+                end
+                if center_table.name == 'Liquidation' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
+                        for k, v in pairs(G.I.CARD) do
+                            if v.set_cost then v:set_cost() end
+                        end
+                        return true end }))
+                end
+                if center_table.name == 'Reroll Surplus' or center_table.name == 'Reroll Glut' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra
+                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra)
+                        return true end }))
+                end
+                if center_table.name == 'Seed Money' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.interest_cap = 25 --note: does not account for potential deck effects
+                        return true end }))
+                end
+                if center_table.name == 'Money Tree' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        G.GAME.interest_cap = G.P_CENTERS.v_seed_money.extra
+                        return true end }))
+                end
+                if center_table.name == 'Grabber' or center_table.name == 'Nacho Tong' then
+                    G.GAME.round_resets.hands = G.GAME.round_resets.hands - center_table.extra
+                    ease_hands_played(-center_table.extra)
+                end
+                if center_table.name == 'Paint Brush' or center_table.name == 'Palette' then
+                    G.hand:change_size(-1)
+                end
+                if center_table.name == 'Wasteful' or center_table.name == 'Recyclomancy' then
+                    G.GAME.round_resets.discards = G.GAME.round_resets.discards - center_table.extra
+                    ease_discard(-center_table.extra)
+                end
+                if center_table.name == 'Antimatter' then
+                    G.E_MANAGER:add_event(Event({func = function()
+                        if G.jokers then 
+                            G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                        end
+                        return true end }))
+                end
+                if center_table.name == 'Hieroglyph' or center_table.name == 'Petroglyph' then
+                    ease_ante(center_table.extra)
+                    G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
+                    G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante+center_table.extra
+            
+                    if center_table.name == 'Hieroglyph' then
+                        G.GAME.round_resets.hands = G.GAME.round_resets.hands + center_table.extra
+                        ease_hands_played(center_table.extra)
+                    end
+                    if center_table.name == 'Petroglyph' then
+                        G.GAME.round_resets.discards = G.GAME.round_resets.discards + center_table.extra
+                        ease_discard(center_table.extra)
+                    end
+                end
+end
+
+function cry_poll_random_edition()
+	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
+	if Cryptid_config["Misc."] then
+		editions[#editions+1] = {cry_astral = true}
+		editions[#editions+1] = {cry_mosaic = true}
+		editions[#editions+1] = {cry_oversat = true}
+		editions[#editions+1] = {cry_glitched = true}
+ 		editions[#editions+1] = {cry_blur = true}
+	end
+	local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
+	return random_edition
+end
+
+
 local ec = eval_card
 function eval_card(card, context)
     local ggpn = G.GAME.probabilities.normal
@@ -355,6 +471,25 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if front and G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
   if card.ability.consumeable and not skip_materialize then card:start_materialize() end
 
+  if G.GAME.modifiers.cry_force_sticker == 'eternal' then
+      card:set_eternal(true)
+      card.ability.eternal = true
+  end
+  if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+      card:set_perishable(true)
+      card.ability.perishable = true
+  end
+  if G.GAME.modifiers.cry_force_sticker == 'rental' then
+      card:set_rental(true)
+      card.ability.rental = true
+  end
+  if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+      card.pinned = true
+  end
+  if G.GAME.modifiers.cry_force_sticker == 'banana' then
+      card.ability.banana = true
+  end
+
   if card.ability.name == "cry-Cube" then card:set_eternal(true) end
   if _type == 'Joker' or (G.GAME.modifiers.cry_any_stickers and not G.GAME.modifiers.cry_sticker_sheet) then
       if G.GAME.modifiers.all_eternal then
@@ -401,13 +536,19 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
               card.cry_flipped = true
           end
       end
-      if _type == 'Joker' then
+      if _type == 'Joker' and not G.GAME.modifiers.cry_force_edition == 'random' then
           local edition = poll_edition('edi'..(key_append or '')..G.GAME.round_resets.ante)
           card:set_edition(edition)
           check_for_unlock({type = 'have_edition'})
       end
   end
-    
+  if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+      card:set_edition(nil, true)
+  end
+  if G.GAME.modifiers.cry_force_random_edition then
+      local edition = cry_poll_random_edition()
+      card:set_edition(edition, true)
+  end
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		cry_misprintize(card)
 	end
