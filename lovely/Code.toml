@@ -87,6 +87,33 @@ position = 'at'
 line_prepend = ''
 payload = '''(G.GAME.current_round.semicolon and ";" or localize('ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
 
+# Semicolon - polished UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''{n=G.UIT.T, config={text = localize('b_cash_out')..": ", scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true}},'''
+position = "at"
+payload = '''{n=G.UIT.T, config={text = G.GAME.current_round.semicolon and 'End Blind' or (localize('b_cash_out')..": "), scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true}},'''
+match_indent = true
+
+# Semicolon - polished UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''{n=G.UIT.T, config={text = localize('$')..config.dollars, scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+position = "at"
+payload = '''{n=G.UIT.T, config={text = not G.GAME.current_round.semicolon and localize('$')..config.dollars or ';', scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+match_indent = true
+
+# Semicolon - polished UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''{n=G.UIT.R, config={id = 'cash_out_button', align = "cm", padding = 0.1, minw = 7, r = 0.15, colour = G.C.ORANGE, shadow = true, hover = true, one_press = true, button = 'cash_out', focus_args = {snap_to = true}}, nodes={'''
+position = "at"
+payload = '''{n=G.UIT.R, config={id = 'cash_out_button', align = "cm", padding = 0.1, minw = 7, r = 0.15, colour = G.GAME.current_round.semicolon and G.C.SET.Code or G.C.ORANGE, shadow = true, hover = true, one_press = true, button = 'cash_out', focus_args = {snap_to = true}}, nodes={'''
+match_indent = true
+
 # Semicolon - reset value at start of round
 [[patches]]
 [patches.pattern]
