@@ -1058,6 +1058,13 @@ local nostalgia_sprites = {
     frames = 21
 }
 
+local items_togo = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, trick, joke, hammer, box, windmill, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}
+
+if Cryptid_config["Timer Mechanics"] then
+	table.insert(items_togo, clock)
+	table.insert(items_togo, lavender_loop)
+end
+
 return {name = "Blinds", 
         init = function()
             --Clock Patches
@@ -1151,4 +1158,4 @@ return {name = "Blinds",
                 rb()
             end
         end,
-        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, clock, trick, joke, hammer, box, windmill, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}
+        items = items_togo}
