@@ -397,11 +397,11 @@ local variable = {
         y = 1,
     },
     cost = 4,
-    config = {max_highlighted = 1, extra = {enteredrank = ""}},
+    config = {max_highlighted = 2, extra = {enteredrank = ""}},
     loc_txt = {
         name = '://VARIABLE',
         text = {
-            'Convert {C:cry_code}#1#{} selected card',
+            'Convert {C:cry_code}#1#{} selected cards',
             'to a {C:cry_code}chosen{} rank'
         }
     },
@@ -599,14 +599,15 @@ G.FUNCS.variable_apply = function()
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
                 local card = G.hand.highlighted[i]
                 local suit_prefix = string.sub(card.base.suit, 1, 1)..'_'
-                if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
-                elseif rank_suffix == 10 then rank_suffix = 'T'
-                elseif rank_suffix == 11 then rank_suffix = 'J'
-                elseif rank_suffix == 12 then rank_suffix = 'Q'
-                elseif rank_suffix == 13 then rank_suffix = 'K'
-                elseif rank_suffix == 14 then rank_suffix = 'A'
+                local r2suffix = nil
+                if rank_suffix < 10 then r2suffix = tostring(rank_suffix)
+                elseif rank_suffix == 10 then r2suffix = 'T'
+                elseif rank_suffix == 11 then r2suffix = 'J'
+                elseif rank_suffix == 12 then r2suffix = 'Q'
+                elseif rank_suffix == 13 then r2suffix = 'K'
+                elseif rank_suffix == 14 then r2suffix = 'A'
                 end
-                card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
+                card:set_base(G.P_CARDS[suit_prefix..r2suffix])
                 return true end }))
         end  
         for i=1, #G.hand.highlighted do

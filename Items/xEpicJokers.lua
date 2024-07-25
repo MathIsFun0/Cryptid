@@ -537,7 +537,7 @@ local double_scale = {
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
                     local current_val, last_val, scale = 0, 0, 0
                     if #dbl_info.base == 2 then
-						if not jkr.ability[dbl_info.base[1]] or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
+						if type(jkr.ability) ~= "table" or not jkr.ability[dbl_info.base[1]] or type(jkr.ability[dbl_info.base[1]]) ~= "table" or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
                         current_val = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
                         last_val = dbl_info.ability[dbl_info.base[1]] and dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]] or 1
                     else
