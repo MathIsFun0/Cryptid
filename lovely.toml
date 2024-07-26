@@ -411,33 +411,3 @@ pattern = "text = extra.message or text"
 position = "after"
 payload = "if not text or text == '' then return end"
 match_indent = true
-
-# Sound Manager Injection
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "self.SOUND_MANAGER.thread:start(1)"
-position = "at"
-payload = '''
---Based on Djynasty's MusicMod
-lovely = require('lovely')
-nativefs = require('nativefs')
-function initSoundManager()
-    Mod = {}
-    Mod.NAME = "Cryptid"
-	local full_path = lovely.mod_dir .. "/".. Mod.NAME .. "/sound_manager.lua"
-    local file_data = assert(nativefs.newFileData(full_path), ("Failed to collect file data for sound_manager"))
-	SOUND_MANAGER = {
-		thread = love.thread.newThread(file_data),
-		channel = love.thread.getChannel("sound_request"),
-		load_channel = love.thread.getChannel("load_channel"),
-	}
-    Mod.DIR = lovely.mod_dir
-	print(Mod.DIR.."/"..Mod.NAME)
-	SOUND_MANAGER.thread:start(Mod.DIR.."/"..Mod.NAME)
-	return SOUND_MANAGER
-end
-self.SOUND_MANAGER = initSoundManager()
-'''
-match_indent = true
-overwrite = true
