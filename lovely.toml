@@ -157,7 +157,7 @@ position = "before"
 payload = '''
 
 local edi = self.edition or {}
-if edi.type then
+if edi.type and not (G.GAME.modifiers.cry_force_edition or G.GAME.modifiers.cry_force_random_edition) then
 	card:set_edition({[edi.type] = true})
 end
 
@@ -173,7 +173,233 @@ end
 if self.pinned then
 	card.pinned = self.pinned
 end
+if self.ability.banana then
+	card.ability.banana = self.ability.banana
+end
+'''
+match_indent = true
 
+# Edition + sticker forcing on vouchers (editions are just funny cost increases)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.shop_vouchers:emplace(card)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+	card:set_edition(nil, true) 	-- this technically works???????? whole set_edition being affected and all
+elseif G.GAME.modifiers.cry_force_random_edition then
+	local edition = cry_poll_random_edition()
+	card:set_edition(edition, true)
+end
+
+if G.GAME.modifiers.cry_force_sticker == 'eternal' then		-- this is dumb but i'm not sure how to call functions from a string
+	card:set_eternal(true)
+	card.ability.eternal = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+	card:set_perishable(true)
+	card.ability.perishable = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'rental' then
+	card:set_rental(true)
+	card.ability.rental = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+	card.pinned = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'banana' then
+	card.ability.banana = true
+end
+'''
+match_indent = true
+
+# don't forget voucher tags
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = "G.shop_vouchers:emplace(card)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+	card:set_edition(nil, true)
+elseif G.GAME.modifiers.cry_force_random_edition then
+	local edition = cry_poll_random_edition()
+	card:set_edition(edition, true)
+end
+
+if G.GAME.modifiers.cry_force_sticker == 'eternal' then
+	card:set_eternal(true)
+	card.ability.eternal = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+	card:set_perishable(true)
+	card.ability.perishable = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'rental' then
+	card:set_rental(true)
+	card.ability.rental = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+	card.pinned = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'banana' then
+	card.ability.banana = true
+end
+'''
+match_indent = true
+
+# show in voucher menu
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "voucher_areas[#voucher_areas]:emplace(card)"
+position = "before"
+payload = '''
+if G.GAME.voucher_edition_index[card.ability.name] then		-- this is REALLY REALLY dumb please change this i just don't know what the fuck you're supposed to do here?????????
+	local edition = {}
+	if G.GAME.voucher_edition_index[card.ability.name] == 'negative' then edition = {negative = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'polychrome' then edition = {polychrome = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'holo' then edition = {holo = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'foil' then edition = {foil = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_blur' then edition = {cry_blur = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_astral' then edition = {cry_astral = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_mosaic' then edition = {cry_mosaic = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_glitched' then edition = {cry_glitched = true}
+	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_oversat' then edition = {cry_oversat = true}
+	end
+	card:set_edition(edition, true, true)
+end
+
+if G.GAME.voucher_sticker_index.eternal[card.ability.name] then
+	card:set_eternal(true)
+	card.ability.eternal = true
+end
+if G.GAME.voucher_sticker_index.perishable[card.ability.name] then
+	card:set_perishable(true)
+	card.ability.perish_tally = G.GAME.voucher_sticker_index.perishable[card.ability.name]
+	card.ability.perishable = true
+	if G.GAME.voucher_sticker_index.perishable[card.ability.name] == 0 then
+		card.debuff = true
+	end
+end
+if G.GAME.voucher_sticker_index.rental[card.ability.name] then
+	card:set_rental(true)
+	card.ability.rental = true
+end
+if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
+	card.pinned = true
+end
+if G.GAME.voucher_sticker_index.banana[card.ability.name] then
+	card.ability.banana = true
+end
+'''
+match_indent = true
+
+# sticker tagging
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then"
+position = "before"
+payload = '''
+if not G.GAME.voucher_edition_index then G.GAME.voucher_edition_index = {} end
+if self and self.edition then
+	G.GAME.voucher_edition_index[center_table.name] = self.edition.type
+end
+if not G.GAME.voucher_sticker_index then G.GAME.voucher_sticker_index = {eternal = {}, perishable = {}, rental = {}, pinned = {}, banana = {}} end
+if self and self.ability.eternal and self.ability.eternal == true then
+ 	G.GAME.voucher_sticker_index.eternal[center_table.name] = true
+end
+if self and self.ability.perishable and self.ability.perishable == true then
+ 	G.GAME.voucher_sticker_index.perishable[center_table.name] = 5
+end
+if self and self.ability.rental and self.ability.rental == true then
+ 	G.GAME.voucher_sticker_index.rental[center_table.name] = true
+end
+if self and self.ability.pinned and self.ability.pinned == true then
+ 	G.GAME.voucher_sticker_index.pinned[center_table.name] = true
+end
+if self and self.ability.banana and self.ability.banana == true then
+ 	G.GAME.voucher_sticker_index.banana[center_table.name] = true
+end
+'''
+match_indent = true
+
+# apply end of round stuff
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
+position = "before"
+payload = '''
+if G.GAME.voucher_sticker_index then
+	if G.GAME.voucher_sticker_index.perishable then
+		for k, v in pairs(G.GAME.voucher_sticker_index.perishable) do
+			if v > 1 then
+				G.GAME.voucher_sticker_index.perishable[k] = v - 1
+			end
+			if v == 1 then
+				G.GAME.voucher_sticker_index.perishable[k] = v - 1	
+				for kk, vv in pairs(G.P_CENTERS) do
+					if k == vv.name then
+						cry_debuff_voucher(vv)		-- needs to be an exception made for director's cut + retcon, but lazy
+						break
+					end
+				end
+			end
+		end
+	end
+	if G.GAME.voucher_sticker_index.rental then
+		local cumulative_rental = 0
+		for k, v in pairs(G.GAME.voucher_sticker_index.rental) do
+			cumulative_rental = cumulative_rental + 3
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'immediate',
+			blocking = false,
+			blockable = false,
+			func = (function()
+				ease_dollars(-cumulative_rental)
+			return true
+		end)}))
+	end
+end
+'''
+match_indent = true
+
+# Affect booster packs
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.shop_booster:emplace(card)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+	card:set_edition(nil, true)
+elseif G.GAME.modifiers.cry_force_random_edition then
+	local edition = cry_poll_random_edition()
+	card:set_edition(edition, true)
+end
+
+if G.GAME.modifiers.cry_force_sticker == 'eternal' then	
+	card:set_eternal(true)
+	card.ability.eternal = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+	card:set_perishable(true)
+	card.ability.perishable = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'rental' then
+	card:set_rental(true)
+	card.ability.rental = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+	card.pinned = true
+end
+if G.GAME.modifiers.cry_force_sticker == 'banana' then
+	card.ability.banana = true
+end
 '''
 match_indent = true
 

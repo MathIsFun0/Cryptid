@@ -517,7 +517,7 @@ return {name = "Enhanced Decks",
                     }))
                 end
                 if self.effect.config.cry_force_edition then
-                    if self.effect.config.cry_force_edition ~= 'random' then G.GAME.modifiers.cry_force_edition = self.effect.config.cry_force_edition end
+                    if self.effect.config.cry_force_edition ~= 'random' then G.GAME.modifiers.cry_force_edition = self.effect.config.cry_force_edition else G.GAME.modifiers.cry_force_random_edition = true end
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             for c = #G.playing_cards, 1, -1 do
@@ -561,6 +561,7 @@ return {name = "Enhanced Decks",
                     }))
                 end
                 if self.effect.config.cry_force_sticker then
+                    G.GAME.modifiers.cry_force_sticker = self.effect.config.cry_force_sticker
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             for c = #G.playing_cards, 1, -1 do
