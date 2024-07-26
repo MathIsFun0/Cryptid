@@ -1058,6 +1058,13 @@ local nostalgia_sprites = {
     frames = 21
 }
 
+local items_togo = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, trick, joke, hammer, box, windmill, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}
+
+if Cryptid_config["Timer Mechanics"] then
+	table.insert(items_togo, clock)
+	table.insert(items_togo, lavender_loop)
+end
+
 return {name = "Blinds", 
         init = function()
             --Clock Patches
@@ -1130,7 +1137,9 @@ return {name = "Blinds",
             local sr = Game.start_run
             function Game:start_run(args)
                 sr(self, args)
-                G.P_BLINDS.bl_cry_clock.mult = 0
+				if Cryptid_config["Timer Mechanics"] then
+					G.P_BLINDS.bl_cry_clock.mult = 0
+				end
                 if not G.GAME.defeated_blinds then G.GAME.defeated_blinds = {} end
             end
             --patch for multiple Clocks to tick separately and load separately
@@ -1146,9 +1155,11 @@ return {name = "Blinds",
             function reset_blinds()
                 if G.GAME.round_resets.blind_states.Boss == 'Defeated' then
                     G.GAME.CRY_BLINDS = {}
-                    G.P_BLINDS.bl_cry_clock.mult = 0
+					if Cryptid_config["Timer Mechanics"] then
+						G.P_BLINDS.bl_cry_clock.mult = 0
+					end
                 end
                 rb()
             end
         end,
-        items = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, clock, trick, joke, hammer, box, windmill, lavender_loop, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}}
+        items = items_togo}

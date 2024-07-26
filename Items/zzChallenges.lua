@@ -103,7 +103,7 @@ local rush_hour_iii = {
 
 local challenges = {sticker_sheet}
 if Cryptid_config["Misc. Jokers"] then challenges[#challenges+1] = ballin end
-if Cryptid_config["Blinds"] then 
+if Cryptid_config["Blinds"] and Cryptid_config["Timer Mechanics"] then 
     challenges[#challenges+1] = rush_hour
     challenges[#challenges+1] = rush_hour_ii
     challenges[#challenges+1] = rush_hour_iii
