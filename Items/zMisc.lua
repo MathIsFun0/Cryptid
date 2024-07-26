@@ -438,6 +438,7 @@ local gambler = {
     atlas = "tag_cry",
     pos = {x=2, y=0},
     config = {type = 'new_blind_choice', odds = 4},
+    min_ante = 2,
     key = "gambler",
     loc_txt = {
         name = "Gambler's Tag",

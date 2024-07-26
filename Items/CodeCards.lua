@@ -30,13 +30,13 @@ local pack_atlas = {
 }
 local pack1 = {
     object_type = "Booster",
-    key = "p_code_normal_1",
+    key = "code_normal_1",
     kind = "Code",
     atlas = "pack",
     pos = {x=0,y=0},
     config = {extra = 2, choose = 1},
     cost = 4,
-    weight = 1.2,
+    weight = 0.96,
     create_card = function(self, card)
         return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
     end,
@@ -58,13 +58,13 @@ local pack1 = {
 }
 local pack2 = {
     object_type = "Booster",
-    key = "p_code_normal_2",
+    key = "code_normal_2",
     kind = "Code",
     atlas = "pack",
     pos = {x=1,y=0},
     config = {extra = 2, choose = 1},
     cost = 4,
-    weight = 1.2,
+    weight = 0.96,
     create_card = function(self, card)
         return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
     end,
@@ -86,13 +86,13 @@ local pack2 = {
 }
 local packJ = {
     object_type = "Booster",
-    key = "p_code_jumbo_1",
+    key = "code_jumbo_1",
     kind = "Code",
     atlas = "pack",
     pos = {x=2,y=0},
     config = {extra = 4, choose = 1},
-    cost = 4,
-    weight = 0.6,
+    cost = 6,
+    weight = 0.48,
     create_card = function(self, card)
         return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
     end,
@@ -114,13 +114,13 @@ local packJ = {
 }
 local packM = {
     object_type = "Booster",
-    key = "p_code_mega_1",
+    key = "code_mega_1",
     kind = "Code",
     atlas = "pack",
     pos = {x=3,y=0},
     config = {extra = 4, choose = 2},
-    cost = 4,
-    weight = 0.15,
+    cost = 8,
+    weight = 0.12,
     create_card = function(self, card)
         return create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'cry_program')
     end,
@@ -139,6 +139,41 @@ local packM = {
         }
     },
     group_key = "k_cry_program_pack"
+}
+local console = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=3, y=2},
+    config = {type = 'new_blind_choice'},
+    key = "console",
+    min_ante = 2,
+    loc_txt = {
+        name = "Console Tag",
+        text = {
+            "Gives a free",
+            "{C:cry_code}Program Pack"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Other", key = "p_cry_code_normal_1", specific_vars = {1,2}}
+        return {vars = {}}
+    end,
+    apply = function(tag, context)
+        if context.type == 'new_blind_choice' then
+            tag:yep('+', G.C.SECONDARY_SET.Code,function() 
+                local key = 'p_cry_code_normal_'..math.random(1,2)
+                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                card.cost = 0
+                card.from_tag = true
+                G.FUNCS.use_card({config = {ref_table = card}})
+                card:start_materialize()
+                return true
+            end)
+            tag.triggered = true
+            return true
+        end
+    end,
 }
 local crash = {
     object_type = "Consumable",
@@ -1076,7 +1111,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
