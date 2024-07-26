@@ -529,6 +529,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       if G.GAME.modifiers.cry_all_banana then
           card.ability.banana = true
       end
+      if G.GAME.modifiers.cry_sticker_sheet then
+        for k, v in pairs(SMODS.Stickers) do
+            v:set_sticker(card, true)
+        end
+      end
       if (area == G.shop_jokers) or (area == G.pack_cards) then 
           local eternal_perishable_poll = pseudorandom('cry_et'..(key_append or '')..G.GAME.round_resets.ante)
           if G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.7 then
