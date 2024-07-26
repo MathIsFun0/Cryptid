@@ -198,8 +198,8 @@ local oldserpent = {
     loc_txt = {
         name = 'Nostalgic Serpent',
         text = {
-            "Divide Mult by",
-            "level of played poker hand"
+            "Divide Mult by level",
+            "of played poker hand"
         }
     },
     atlas = "nostalgia",
@@ -280,8 +280,8 @@ local oldmark = {
 	loc_txt = {
         name = 'Nostalgic Mark',
         text = {
-            "No hands containing",
-            "a Pair"
+            "No hands that",
+            "contain a Pair"
         }
     },
     atlas = "nostalgia",

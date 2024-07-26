@@ -56,7 +56,10 @@ local oversat = {
         name = "Oversaturated",
         label = "Oversaturated",
         text = {
-            "All values are {C:attention}doubled{},", "if possible"
+            "All values",
+	    "on this card",
+	    "are {C:attention}doubled{}",
+	    "{C:inactive}(If possible)"
         }
     }
 }
@@ -84,9 +87,10 @@ local glitched = {
         name = "Glitched",
         label = "Glitched",
         text = {
-            'All values are {C:dark_edition}randomized{}',
-            'between {C:blue}X0.1{} and {C:red}X10{},',
-            ' if possible',
+            'All values on this card',
+	    'are {C:dark_edition}randomized{}',
+            'between {C:blue}X0.1{} and {C:red}X10{}',
+            '{C:inactive}(If possible){}',
         }
     }
 }
@@ -131,7 +135,7 @@ local blurred_shader = {
 local blurred = {
     object_type = "Edition",
     key = "blur",
-    weight = 0.5, --very rare
+    weight = 0.6, --very rare
     shader = "blur",
     in_shop = true,
     extra_cost = 3,
@@ -147,7 +151,7 @@ local blurred = {
         name = "Blurred",
         label = "Blurred",
         text = {
-            "{C:attention}Retrigger{} this card",
+            "{C:attention}Retrigger{} this", "card {C:attention}1{} time",
             "{C:green}#1# in #2#{} chance", "to retrigger {C:attention}#3#{}", "additional time"
         }
     },
