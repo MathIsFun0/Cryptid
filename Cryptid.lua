@@ -174,14 +174,18 @@ for _, file in ipairs(files) do
       if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
-          for _, item in ipairs(curr_obj.items) do
-              item.discovered = true
-              if SMODS[item.object_type] then
-                SMODS[item.object_type](item)
-              else
-                print("Error loading item "..item.key.." of unknown type "..item.object_type)
-              end
-          end
+          if not curr_obj.items then
+            print("Warning: "..file.." has no items")
+          else
+            for _, item in ipairs(curr_obj.items) do
+                item.discovered = true
+                if SMODS[item.object_type] then
+                    SMODS[item.object_type](item)
+                else
+                    print("Error loading item "..item.key.." of unknown type "..item.object_type)
+                end
+            end
+         end
       end
     end
 end
