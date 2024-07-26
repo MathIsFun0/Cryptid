@@ -53,8 +53,11 @@ end
 for i = 1, #G.discard.cards do
     G.discard.cards[i]:calculate_perishable()
 end
-for i = 1, #G.deck.cards do
+i = 1
+while i <= #G.deck.cards do
     G.deck.cards[i]:calculate_perishable()
+    local gone = G.deck.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
 end
 '''
 match_indent = true

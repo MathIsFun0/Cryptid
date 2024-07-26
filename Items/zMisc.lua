@@ -669,6 +669,13 @@ function Card:calculate_banana()
     end
     return false
 end
+
+function Card:set_banana(_banana)
+    self.ability.banana = _banana
+end
+
+function Card:set_pinned(_pinned)
+    self.pinned = _pinned
+end
         end,
         items = miscitems}
-

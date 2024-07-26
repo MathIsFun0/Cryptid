@@ -620,6 +620,7 @@ SMODS.Atlas({
             { mipmaps = true, dpiscale = G.SETTINGS.GRAPHICS.texture_scaling })
         G[self.atlas_table][self.key_noloc or self.key] = self
         G.shared_sticker_banana = Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], {x = 5,y = 2})
+        G.shared_sticker_pinned = Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], {x = 5,y = 0})
     end
 })
 function Card:set_perishable(_perishable) 
