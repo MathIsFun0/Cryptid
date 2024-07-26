@@ -20,6 +20,22 @@ local sticker_sheet = {
     },
 	loc_txt = "Sticker Sheet"
 }
+local sticker_sheet_plus = {
+    object_type = "Challenge",
+    key = "sticker_sheet_plus",
+	rules = {
+        custom = {
+            {id = 'cry_sticker_sheet_plus'},
+            {id = 'cry_eternal_perishable_compat'},
+        },
+        modifiers = {}
+    },
+    restrictions = {
+        banned_cards = {},
+        banned_other = {}
+    },
+	loc_txt = "Sticker Sheet+"
+}
 local ballin = {
     object_type = "Challenge",
     key = "ballin",
@@ -101,9 +117,9 @@ local rush_hour_iii = {
     }
 }
 
-local challenges = {sticker_sheet}
+local challenges = {sticker_sheet, sticker_sheet_plus}
 if Cryptid_config["Misc. Jokers"] then challenges[#challenges+1] = ballin end
-if Cryptid_config["Blinds"] and Cryptid_config["Timer Mechanics"] then 
+if Cryptid_config["Blinds"] and Cryptid_config["Timer Mechanics"] then
     challenges[#challenges+1] = rush_hour
     challenges[#challenges+1] = rush_hour_ii
     challenges[#challenges+1] = rush_hour_iii
@@ -113,6 +129,7 @@ for k, v in pairs(G.P_CENTERS) do
     if v.set == "Joker" then
         if not v.perishable_compat or not v.eternal_compat then
             sticker_sheet.restrictions.banned_cards[#sticker_sheet.restrictions.banned_cards+1] = {id = k}
+            sticker_sheet_plus.restrictions.banned_cards[#sticker_sheet_plus.restrictions.banned_cards+1] = {id = k}
         end
     end
 end

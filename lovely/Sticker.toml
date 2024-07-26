@@ -1,0 +1,359 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# back on my bullshit
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.seal then badges[#badges + 1] = string.lower(self.seal)..'_seal' end"
+position = "after"
+payload = '''
+if self.ability.eternal then
+	if self.ability.set == 'Booster' then
+		badges[#badges + 1] = 'cry_eternal_booster'
+	elseif self.ability.set == 'Voucher' then
+		badges[#badges + 1] = 'cry_eternal_voucher'
+	else
+		badges[#badges + 1] = 'eternal'
+	end
+end
+if self.ability.perishable then
+	if self.ability.set == 'Booster' then
+		badges[#badges + 1] = 'cry_perishable_booster'
+	elseif self.ability.set == 'Voucher' then
+		loc_vars = loc_vars or {}; loc_vars.perish_tally=self.ability.perish_tally
+		badges[#badges + 1] = 'cry_perishable_voucher'
+	elseif self.ability.consumeable then
+		badges[#badges + 1] = 'cry_perishable_consumeable'
+	else
+		loc_vars = loc_vars or {}; loc_vars.perish_tally=self.ability.perish_tally
+		badges[#badges + 1] = 'perishable'
+	end
+end
+if self.ability.rental then
+	if self.ability.set == 'Booster' then
+		badges[#badges + 1] = 'cry_rental_booster'
+	elseif self.ability.set == 'Voucher' then
+		badges[#badges + 1] = 'cry_rental_voucher'
+	elseif self.ability.consumeable then
+		badges[#badges + 1] = 'cry_rental_consumeable'
+	else
+		badges[#badges + 1] = 'rental'
+	end
+end
+if self.pinned then
+	if self.ability.set == 'Booster' then
+		badges[#badges + 1] = 'cry_pinned_booster'
+	elseif self.ability.set == 'Voucher' then
+		badges[#badges + 1] = 'cry_pinned_voucher'
+	elseif self.ability.consumeable then
+		badges[#badges + 1] = 'cry_pinned_consumeable'
+	else
+		badges[#badges + 1] = 'pinned_left'
+	end
+end
+if self.ability.banana then
+	if self.ability.set == 'Booster' then
+		badges[#badges + 1] = 'cry_banana_booster'
+	elseif self.ability.set == 'Voucher' then
+		badges[#badges + 1] = 'cry_banana_voucher'
+	elseif self.ability.consumeable then
+		badges[#badges + 1] = 'cry_banana_consumeable'
+	else
+		badges[#badges + 1] = 'banana'
+	end
+end
+if fehiwuojiowfb_disable_this_code_because_my_regex_didnt_work_120u889 then
+'''
+match_indent = true
+
+# sigh
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.sticker then loc_vars = loc_vars or {}; loc_vars.sticker=self.sticker end"
+position = "before"
+payload = '''
+end
+'''
+match_indent = true
+
+# STILL back on my bullshit
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if v == 'negative_consumable' then v = 'negative' end"
+position = "after"
+payload = '''
+if v == 'cry_eternal_booster' then v = 'eternal'
+elseif v == 'cry_eternal_voucher' then v = 'eternal'
+elseif v == 'cry_perishable_booster' then v = 'perishable'
+elseif v == 'cry_perishable_voucher' then v = 'perishable'
+elseif v == 'cry_perishable_consumeable' then v = 'perishable'
+elseif v == 'cry_rental_booster' then v = 'rental'
+elseif v == 'cry_rental_voucher' then v = 'rental'
+elseif v == 'cry_rental_consumeable' then v = 'rental'
+elseif v == 'cry_pinned_booster' then v = 'pinned_left'
+elseif v == 'cry_pinned_voucher' then v = 'pinned_left'
+elseif v == 'cry_pinned_consumeable' then v = 'pinned_left'
+elseif v == 'cry_banana_booster' then v = 'banana'
+elseif v == 'cry_banana_voucher' then v = 'banana'
+elseif v == 'cry_banana_consumeable' then v = 'banana'
+end
+'''
+match_indent = true
+
+# fucking hell
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if v == 'negative_consumable' then info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}} end"
+position = "after"
+payload = '''
+if v == 'cry_eternal_booster' then info_queue[#info_queue+1] = {key = 'cry_eternal_booster', set = 'Other'} end
+if v == 'cry_eternal_voucher' then info_queue[#info_queue+1] = {key = 'cry_eternal_voucher', set = 'Other'} end
+if v == 'cry_perishable_booster' then info_queue[#info_queue+1] = {key = 'cry_perishable_booster', set = 'Other'} end
+if v == 'cry_perishable_voucher' then info_queue[#info_queue+1] = {key = 'cry_perishable_voucher', set = 'Other', vars = {G.GAME.cry_voucher_perishable_rounds or 1, specific_vars.perish_tally or G.GAME.cry_voucher_perishable_rounds}} end
+if v == 'cry_perishable_consumeable' then info_queue[#info_queue+1] = {key = 'cry_perishable_consumeable', set = 'Other'} end
+if v == 'cry_rental_booster' then info_queue[#info_queue+1] = {key = 'cry_rental_booster', set = 'Other'} end
+if v == 'cry_rental_voucher' then info_queue[#info_queue+1] = {key = 'cry_rental_voucher', set = 'Other', vars = {G.GAME.cry_voucher_rental_rate or 1}} end
+if v == 'cry_rental_consumeable' then info_queue[#info_queue+1] = {key = 'cry_rental_consumeable', set = 'Other', vars = {G.GAME.cry_consumeable_rental_rate or 1}} end
+if v == 'cry_pinned_booster' then info_queue[#info_queue+1] = {key = 'cry_pinned_booster', set = 'Other'} end
+if v == 'cry_pinned_voucher' then info_queue[#info_queue+1] = {key = 'cry_pinned_voucher', set = 'Other'} end
+if v == 'cry_pinned_consumeable' then info_queue[#info_queue+1] = {key = 'cry_pinned_consumeable', set = 'Other'} end
+if v == 'cry_banana_booster' then info_queue[#info_queue+1] = {key = 'cry_banana_booster', set = 'Other'} end
+if v == 'cry_banana_voucher' then info_queue[#info_queue+1] = {key = 'cry_banana_voucher', set = 'Other', vars = {G.GAME.probabilities.normal or 1, G.GAME.cry_voucher_banana_odds or 12}} end
+if v == 'cry_banana_consumeable' then info_queue[#info_queue+1] = {key = 'cry_banana_consumeable', set = 'Other', vars = {G.GAME.probabilities.normal or 1, G.GAME.cry_consumeable_banana_odds or 4}} end
+'''
+match_indent = true
+
+# initiate variables
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "rental_rate = 3,"
+position = "after"
+payload = '''
+cry_voucher_perishable_rounds = 8,
+cry_voucher_rental_rate = 2,
+cry_consumeable_rental_rate = 2,
+cry_voucher_banana_odds = 12,
+cry_consumeable_banana_odds = 4,
+cry_pinned_consumeables = 0,
+'''
+match_indent = true
+
+# do more than just get voucher key
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()"
+position = "after"
+payload = '''
+self.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition()
+self.GAME.current_round.cry_voucher_stickers = cry_get_next_voucher_stickers()
+'''
+match_indent = true
+
+# again, also check for pinned
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.current_round.voucher = get_next_voucher_key()"
+position = "at"
+payload = '''
+if G.GAME.current_round.cry_voucher_stickers.pinned == false then
+	G.GAME.current_round.voucher = get_next_voucher_key()
+	G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition()
+	G.GAME.current_round.cry_voucher_stickers = cry_get_next_voucher_stickers()
+end
+'''
+match_indent = true
+
+# remove stickers if voucher is redeemed
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self:apply_to_run()"
+position = "before"
+payload = '''
+G.GAME.current_round.cry_voucher_edition = nil
+G.GAME.current_round.cry_voucher_stickers = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
+'''
+match_indent = true
+
+# pinned vouchers do not unlock upgrades in shop pool (unused)
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not G.GAME.used_vouchers[vv] then"
+position = "at"
+payload = '''
+if not G.GAME.used_vouchers[vv] then
+-- if ((not G.GAME.used_vouchers[vv]) or (cry_voucher_pinned(vv.name))) then	-- issue here
+'''
+match_indent = true
+
+# consumeable sticker checking
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "local used_tarot = copier or self"
+position = "after"
+payload = '''
+if self.ability.rental then
+	G.E_MANAGER:add_event(Event({
+		trigger = 'immediate',
+		blocking = false,
+		blockable = false,
+		func = (function()
+			ease_dollars(-G.GAME.cry_consumeable_rental_rate)
+		return true
+	end)}))
+end
+local gone = false
+if self.ability.banana then
+    if not self.ability.extinct then
+        if (pseudorandom('oops_it_banana') < G.GAME.probabilities.normal/G.GAME.cry_consumeable_banana_odds) then
+	    local gone = true
+            self.ability.extinct = true
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    self.T.r = -0.2
+                    self:juice_up(0.3, 0.4)
+                    self.states.drag.is = true
+                    self.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                        func = function()
+                                self.area:remove_card(self)
+                                self:remove()
+                                self = nil
+                            return true; end})) 
+                    return true
+                end
+            }))
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
+            return true
+        end
+    end
+end
+if gone == false then
+'''
+match_indent = true
+
+# end the wrap
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:can_use_consumeable(any_state, skip_check)"
+position = "before"
+payload = '''
+end
+'''
+match_indent = true
+
+# check for pinned
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT or any_state then"
+position = "before"
+payload = '''
+if G.GAME.cry_pinned_consumeables > 0 and not self.pinned then
+	return false
+end
+'''
+match_indent = true
+
+# pinned consumeable remove, counterpart is in cryptid's create_card
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.queue_negative_removal then"
+position = "before"
+payload = '''
+if self.ability.consumeable and self.pinned then
+	G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables - 1
+end
+'''
+match_indent = true
+
+# voucher debuffing exceptions: telescope
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.GAME.used_vouchers.v_telescope and i == 1 then"
+position = "at"
+payload = '''
+if (G.GAME.used_vouchers.v_telescope and cry_voucher_debuffed('Telescope') ~= true) and i == 1 then
+'''
+match_indent = true
+
+# voucher debuffing exceptions: observatory (might cause conflicts? this feels like a bad overwrite)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.GAME.used_vouchers.v_observatory and self.ability.consumeable.hand_type == context.scoring_name then"
+position = "at"
+payload = '''
+if (G.GAME.used_vouchers.v_observatory and cry_voucher_debuffed('Observatory') ~= true) and self.ability.consumeable.hand_type == context.scoring_name then
+'''
+match_indent = true
+
+# voucher debuffing exceptions: omen globe
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if G.GAME.used_vouchers.v_omen_globe and pseudorandom('omen_globe') > 0.8 then'''
+position = "at"
+payload = '''
+if (G.GAME.used_vouchers.v_omen_globe and cry_voucher_debuffed('Omen Globe') ~= true) and pseudorandom('omen_globe') > 0.8 then
+'''
+match_indent = true
+
+# voucher debuffing exceptions: retcon func
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.GAME.used_vouchers["v_retcon"]'''
+position = "at"
+payload = '''
+(G.GAME.used_vouchers["v_retcon"] and cry_voucher_debuffed('Retcon') ~= true)
+'''
+match_indent = true
+
+# voucher debuffing exceptions: director's cut func
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.GAME.used_vouchers["v_retcon"]'''
+position = "at"
+payload = '''
+((G.GAME.used_vouchers["v_directors_cut"] and cry_voucher_debuffed('Director's Cut') ~= true) and not G.GAME.round_resets.boss_rerolled)) then 
+'''
+match_indent = true
+
+# voucher debuffing exceptions: illusion pt. 1
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''{type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(pseudoseed('illusion')) > 0.6) and 'Enhanced' or 'Base', val = G.GAME.playing_card_rate},'''
+position = "at"
+payload = '''
+{type = ((G.GAME.used_vouchers["v_illusion"] and cry_voucher_debuffed('Illusion') ~= true) and pseudorandom(pseudoseed('illusion')) > 0.6) and 'Enhanced' or 'Base', val = G.GAME.playing_card_rate},
+'''
+match_indent = true
+
+# voucher debuffing exceptions: illusion pt. 2
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = ''' if (v.type == 'Base' or v.type == 'Enhanced') and G.GAME.used_vouchers["v_illusion"] and pseudorandom(pseudoseed('illusion')) > 0.8 then'''
+position = "at"
+payload = '''
+ if (v.type == 'Base' or v.type == 'Enhanced') and (G.GAME.used_vouchers["v_illusion"] and cry_voucher_debuffed('Illusion') ~= true) and pseudorandom(pseudoseed('illusion')) > 0.8 then
+'''
+match_indent = true

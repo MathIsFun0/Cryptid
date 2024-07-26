@@ -1,3 +1,4 @@
+
 --Edition code based on Bunco's Glitter Edition
 
 local mosaic_shader = {

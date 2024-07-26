@@ -1,3 +1,4 @@
+
 local atlasenchanced = {
     object_type = "Atlas",
     key = "atlasenchanced",

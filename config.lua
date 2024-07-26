@@ -1,0 +1,1 @@
+return {["More Stakes"]=true,["M Jokers"]=true,["Misc."]=true,["Challenges"]=true,["Spectrals"]=true,["Vouchers"]=true,["Timer Mechanics"]=true,["Planets"]=true,["Cryptid"]={["jimball_music"]=true,},["Epic Jokers"]=true,["Enhanced Decks"]=true,["Antimatter Deck"]=true,["Code Cards"]=true,["Misc. Decks"]=true,["Exotic Jokers"]=true,["Misc. Jokers"]=true,["Blinds"]=true,}
