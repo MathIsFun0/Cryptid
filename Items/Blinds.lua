@@ -1137,7 +1137,7 @@ return {name = "Blinds",
             local sr = Game.start_run
             function Game:start_run(args)
                 sr(self, args)
-				if Cryptid_config["Timer Mechanics"] then
+				if G.P_BLINDS.bl_cry_clock then
 					G.P_BLINDS.bl_cry_clock.mult = 0
 				end
                 if not G.GAME.defeated_blinds then G.GAME.defeated_blinds = {} end
@@ -1155,7 +1155,7 @@ return {name = "Blinds",
             function reset_blinds()
                 if G.GAME.round_resets.blind_states.Boss == 'Defeated' then
                     G.GAME.CRY_BLINDS = {}
-					if Cryptid_config["Timer Mechanics"] then
+					if G.P_BLINDS.bl_cry_clock then
 						G.P_BLINDS.bl_cry_clock.mult = 0
 					end
                 end

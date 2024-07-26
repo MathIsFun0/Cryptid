@@ -412,6 +412,22 @@ if not SpectralPack then
     }
   end
 
+SMODS.current_mod.config_tab = function()
+    return {
+        n = G.UIT.ROOT,
+        config = {
+            emboss = 0.05,
+            minh = 6,
+            r = 0.1,
+            minw = 10,
+            align = "cm",
+            padding = 0.2,
+            colour = G.C.BLACK
+        },
+        nodes = {UIBox_button{ label = {"Open Cryptid Config"}, button = "cryptidMenu", colour = G.C.DARK_EDITION, minw = 5, minh = 0.7, scale = 0.6}}
+    }
+end
+
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
