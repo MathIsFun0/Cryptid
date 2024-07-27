@@ -670,6 +670,11 @@ function cry_misprintize(card, override, force_reset)
     else
         cry_misprintize_tbl(card.config.center_key, card.ability, true)
     end
+    if card.ability.consumeable then
+        for k, v in pairs(card.ability.consumeable) do
+            card.ability.consumeable[k] = cry_deep_copy(card.ability[k])
+        end
+    end
 end
 function cry_log_random(seed,min,max)
     math.randomseed(seed)
