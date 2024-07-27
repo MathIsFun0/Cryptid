@@ -55,6 +55,49 @@ local dropshot = {
         end
     end
 }
+local happyhouse = {
+    object_type = "Joker",
+    name = "cry-happyhouse",
+    key = "happyhouse",
+    pos = {x = 2, y = 4},
+    config = {extra = {mult = 4, check = 0}},
+    loc_txt = {
+        name = 'Happy House',
+        text = { "{X:dark_edition,C:white}^#1#{} Mult only after",
+        "playing {C:attention}114{} hands{}",
+	"{C:inactive}(Currently #2#/114){}",
+	"{C:inactive,s:0.8}There is no place like home!{}"
+	}
+    },
+    rarity = 2,
+    cost = 2,
+    blueprint_compat = true,
+    atlas = "atlastwo",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.mult, center.ability.extra.check}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and context.before and not context.blueprint and not context.retrigger_joker then
+            card.ability.extra.check = card.ability.extra.check + 1
+			if card.ability.extra.check < 114 then --Hardcoded, dont want misprint to mess with this hehe
+				return {
+                    			card_eval_status_text(card, 'extra', nil, nil, nil, {
+                        			message = card.ability.extra.check.."/114",
+                        			colour = G.C.DARK_EDITION,
+                    			})
+                			}
+			end
+        end
+	if context.cardarea == G.jokers and (card.ability.extra.mult > 1) and card.ability.extra.check > 113 and not context.before and not context.after then
+	    return {
+                message = "^"..card.ability.extra.mult.." Mult",
+                Emult_mod = card.ability.extra.mult,
+                colour = G.C.DARK_EDITION,
+		card = card
+            }
+	end
+    end
+}
 local maximized = {
     object_type = "Joker",
 	name = "cry-Maximized",
@@ -70,7 +113,7 @@ local maximized = {
         }
     },
 	rarity = 3,
-	cost = 10,
+	cost = 11,
 	atlas = "atlastwo"
 }
 local potofjokes = {
@@ -168,7 +211,7 @@ local wee_fib = {
 		"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"}
     	},
 	rarity = 3,
-	cost = 12,
+	cost = 9,
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -210,7 +253,7 @@ local whip = {
         "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"}
     },
     rarity = 2,
-    cost = 6,
+    cost = 8,
     blueprint_compat = true,
     perishable_compat = false,
     atlas = "atlasone",
@@ -258,7 +301,7 @@ local lucky_joker = {
         }
     },
 	rarity = 1,
-	cost = 5,
+	cost = 4,
     blueprint_compat = true,
 	atlas = "atlasone",
     enhancement_gate = 'm_lucky',
@@ -328,7 +371,7 @@ local pickle = {
         }
     	},
 	rarity = 2,
-	cost = 5,
+	cost = 6,
   	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasone",
@@ -464,7 +507,7 @@ local booster = {
         }
     },
 	rarity = 2,
-	cost = 7,
+	cost = 6,
     blueprint_compat = false,
 	atlas = "atlastwo",
     loc_vars = function(self, info_queue, center)
@@ -559,7 +602,7 @@ local compound_interest = {
         }
     },
 	rarity = 3,
-	cost = 8,
+	cost = 10,
 	perishable_compat = false,
 	atlas = "atlastwo",
     loc_vars = function(self, info_queue, center)
@@ -645,7 +688,8 @@ local nice = {
         name = 'Nice',
         text = {
             "{C:chips}+#1#{} Chips if played hand",
-            "contains a {C:attention}6{} and a {C:attention}9"
+            "contains a {C:attention}6{} and a {C:attention}9",
+	    "{C:inactive,s:0.8}Nice.{}"
         }
     },
 	rarity = 3,
@@ -684,12 +728,12 @@ local seal_the_deal = {
     loc_txt = {
         name = 'Seal the Deal',
         text = {
-            "Add a {C:attention}random seal{} to all",
-            "cards scored on {C:attention}last hand{} played"
+            "Add a {C:attention}random seal{} to each card",
+            "scored on {C:attention}final hand{} of round"
         }
     },
     rarity = 2,
-    cost = 6,
+    cost = 5,
     atlas = "atlasone",
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
@@ -766,7 +810,7 @@ local jimball = {
 		return {vars = {center.ability.extra, center.ability.x_mult}}
     end,
 	rarity = 3,
-	cost = 10,
+	cost = 9,
 	blueprint_compat = true,
 	perishable_compat = false,
 	calculate = function(self, card, context)
@@ -815,7 +859,7 @@ local sus = {
 		}
     },
 	rarity = 3,
-	cost = 9,
+	cost = 7,
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -1047,7 +1091,7 @@ local gardenfork = {
                 if SMODS.Ranks[context.full_hand[i].base.value].key == "Ace" then
                     for j = 1, #context.full_hand do
                         if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
-			                ease_dollars(card.ability.extra.money)
+			    ease_dollars(card.ability.extra.money)
                             return {message = "$" .. card.ability.extra.money, colour = G.C.MONEY}
                         end
                     end
@@ -1134,9 +1178,9 @@ local antennastoheaven = {
         name = '...Like Antennas to Heaven',
         text = {
             "This Joker gains",
-	    "{X:chips,C:white} X#1# {} Chips when each played",
-            "{C:attention}7{} or {C:attention}4{} is scored",
-            "{C:inactive}(Currently {X:chips,C:white} X#2# {C:inactive} Chips)"
+	    "{X:chips,C:white} X#1# {} Chips when each",
+            "played {C:attention}7{} or {C:attention}4{} is scored",
+            "{C:inactive}(Currently {X:chips,C:white}X#2# {C:inactive} Chips)"
         }
     },
     rarity = 3,
@@ -1189,9 +1233,12 @@ local hunger = {
 	return {vars = {center.ability.extra.money}}
     end,
     calculate = function(self, card, context) --This didn't work for Jevonn for some reason but it works for me :joker:
-        if context.using_consumeable then
-        	ease_dollars(card.ability.extra.money)
-		return {calculated = true}
+        if context.using_consumeable then --shush
+		return {
+		ease_dollars(card.ability.extra.money),
+		message = "$" .. card.ability.extra.money, colour = G.C.MONEY, --this isn't displaying a message for some reason ugh
+		card = card
+		}
         end
     end
 }
@@ -1200,17 +1247,18 @@ local weegaming = {
     name = "cry-weegaming",
     key = "weegaming",
     config = {extra = {retriggers = 2}},
-    pos = {x = 0, y = 0},
-    atlas = 'weegaming',
+    pos = {x = 3, y = 4},
+    atlas = 'atlastwo',
     loc_txt = {
         name = '2D',
         text = {
             "Retrigger each played {C:attention}2{}", --wee gaming
             "{C:attention:}#1#{} additional time(s)", --wee gaming?
+	    "{C:inactive,s:0.8}Wee Gaming?{}"
         }
     },
     rarity = 2,
-    cost = 7,
+    cost = 6,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
         return {vars = { center.ability.extra.retriggers}}
@@ -1230,13 +1278,6 @@ local weegaming = {
 	end
     end
 }
-local weegaming_sprite = { --placeholder, remember to replace this later
-    object_type = "Atlas",
-    key = "weegaming",
-    path = "j_placeholder.png",
-    px = 71,
-    py = 95
-}
 local redbloon = {
     object_type = "Joker",
     name = "cry-redbloon",
@@ -1251,7 +1292,7 @@ local redbloon = {
         }
     },
     rarity = 1,
-    cost = 2,
+    cost = 4,
     blueprint_compat = false,
     eternal_compat = false,
     perishable_compat = false,
@@ -1293,7 +1334,7 @@ local redbloon = {
             end
         end
 	if card.ability.extra.rounds_remaining == 1 then
-			card.ability.extra.text = ""
+		card.ability.extra.text = ""
 	end
     end
 }
@@ -1339,12 +1380,24 @@ local maze = {
         }
     },
     rarity = 1,
-    cost = 3,
+    cost = 1,
     atlas = "atlastwo",
     calculate = function(self, card, context)
-        if (context.before or context.after or context.pre_discard or context.discard or context.cardarea == G.hand) and not context.blueprint and not context.retrigger_joker then
-            G.GAME.current_round.hands_played = 0
-            G.GAME.current_round.discards_used = 0
+        if context.after and not context.blueprint and not context.retrigger_joker then
+	    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                func = function()
+                       G.GAME.current_round.hands_played = 0
+            	       G.GAME.current_round.discards_used = 0
+                return true; end})) 
+            return true
+        end
+	if context.discard and not context.blueprint and not context.retrigger_joker then
+	    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                func = function()
+                       G.GAME.current_round.hands_played = 0
+            	       G.GAME.current_round.discards_used = 0
+                return true; end})) 
+            return true
         end
     end,
     add_to_deck = function(self, card, from_debuff)
@@ -1352,7 +1405,8 @@ local maze = {
         G.GAME.current_round.discards_used = 0
     end
 }
-
+--Fixed Jank for the most part. Other modded jokers may still be jank depending on how they are implemented
+--funny side effect of this fix causes trading card and dna to juice up like craaazy lol
 local panopticon = {
     object_type = "Joker",
     name = "cry-panopticon",
@@ -1365,18 +1419,19 @@ local panopticon = {
         name = 'Panopticon',
         text = {
             "All hands are considered the",
-            "{C:attention}last hand{} of each round"
+            "{C:attention}last hand{} of each round",
+	    "{C:red}WARNING:{} Multiple copies of this",
+	    "Joker will cause a {C:red,E:2}game over{}" --Todo: find a fix to this
         }
     },
     rarity = 1,
-    cost = 3,
+    cost = 1,
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if (context.before) and not context.blueprint and not context.retrigger_joker then
-			card.ability.extra.hands_backup = G.GAME.current_round.hands_left
+	    card.ability.extra.hands_backup = G.GAME.current_round.hands_left
             G.GAME.current_round.hands_left = 0
         end
-		
         if (context.after) and not context.blueprint and not context.retrigger_joker then
             G.GAME.current_round.hands_left = card.ability.extra.hands_backup
         end
@@ -1386,25 +1441,22 @@ local panopticon = {
 		G.GAME.current_round.hands_backup = 0
     end
 }
-
---Notes from my testing
--- I've found that DNA and Burnt Joker work SOMEWHAT but can be jank at times (ESPECIALLY so with retrigger jokers). i can only assume other modded jokers will behave in a similar way. Trading card and sixth sense work without any issues tho so yey
 local magnet = {
     object_type = "Joker",
     name = "cry-magnet",
     key = "magnet",
     pos = {x = 4, y = 0},
-    config = {extra = {money = 3, Xmoney = 3, slots = 4}},
+    config = {extra = {money = 2, Xmoney = 5, slots = 4}},
     loc_txt = {
         name = 'Fridge Magnet',
         text = {
             "Earn {C:money}$#1#{} at end of round",
-	    "Earn {X:money,C:white} X#2# {} if there are",
+	    "This earns {X:money,C:white} X#2# {} if there are",
 	    "{C:attention}#3#{} or fewer {C:attention}Joker{} cards",
         }
     },
     rarity = 1,
-    cost = 5,
+    cost = 6,
     blueprint_compat = false,
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.money, center.ability.extra.Xmoney, center.ability.extra.slots}}
@@ -1435,7 +1487,7 @@ text = {
 }
 },
 rarity = 2,
-cost = 7,
+cost = 8,
 perishable_compat = false,
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_mult}}
@@ -1479,7 +1531,7 @@ local monkey_dagger = {
 		text = {
 			"When {C:attention}Blind{} is selected,",
 			"destroy Joker to the left",
-			"and permanently add {C:attention}quintuple{}",
+			"and permanently add {C:attention}ten times{}",
 			"its sell value to this {C:chips}Chips{}",
 			"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
 		}
@@ -1508,12 +1560,12 @@ local monkey_dagger = {
             G.GAME.joker_buffer = G.GAME.joker_buffer - 1
             G.E_MANAGER:add_event(Event({func = function()
                 G.GAME.joker_buffer = 0
-                card.ability.extra.chips = card.ability.extra.chips + sliced_card.sell_cost*5
+                card.ability.extra.chips = card.ability.extra.chips + sliced_card.sell_cost*10
                 card:juice_up(0.8, 0.8)
                 sliced_card:start_dissolve({HEX("57ecab")}, nil, 1.6)
                 play_sound('slice1', 0.96+math.random()*0.08)
             return true end }))
-            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips+4*sliced_card.sell_cost}}, colour = G.C.CHIPS, no_juice = true})
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips+10*sliced_card.sell_cost}}, colour = G.C.CHIPS, no_juice = true})
 			return {calculated = true}
         end
     end
@@ -1535,7 +1587,7 @@ local pirate_dagger = {
 		}
 	},
 	rarity = 2,
-	cost = 6,
+	cost = 8,
 	perishable_compat = false,
 	    loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_chips}}
@@ -1666,7 +1718,7 @@ local spaceglobe = {
 		}
     	},
 	rarity = 3,
-	cost = 6,
+	cost = 8,
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -1708,40 +1760,48 @@ local happy = {
     name = "cry-happy",
     key = "happy",
     pos = {x = 2, y = 1},
+    config = {extra = {check = 0}},
     loc_txt = {
         name = ':D',
         text = {
             "Create a random {C:attention}Joker{}",
-            "when {C:attention}obtained{}",
+            "at end of round",
 	    "Sell this card to",
 	    "create a random {C:attention}Joker{}",
 	    "{C:inactive}(Must have room){}"
         }
     },
     rarity = 1,
-    cost = 6,
+    cost = 2,
     blueprint_compat = true,
     eternal_compat = false,
     atlas = "atlastwo",
     calculate = function(self, card, context)
-        if context.selling_self and not context.retrigger_joker then
-		local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-		local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {completed=true}
+        if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker then
+		local othercreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+		G.GAME.joker_buffer = G.GAME.joker_buffer + othercreatejoker
+		G.E_MANAGER:add_event(Event({
+                	func = function()
+				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				G.GAME.joker_buffer = 0
+				return true
+                        end}))
         end
-    end,
-    add_to_deck = function(self, card, from_debuff)
+	if context.end_of_round and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
 		local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 		G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-		local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {completed=true}
+		G.E_MANAGER:add_event(Event({
+                	func = function()
+				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				G.GAME.joker_buffer = 0
+				return true
+                        end}))
+	--this makes more jokers than expected but i'm tired i'll fix this later ig
+        end
     end
 }
 local meteor = {
@@ -1753,8 +1813,8 @@ local meteor = {
     loc_txt = {
         name = 'Meteor Shower',
         text = {
-            "{C:dark_edition}Foil{} cards",
-            "each give {C:chips}+#1#{} Chips"
+            "{C:dark_edition}Foil{} cards each",
+            "give {C:chips}+#1#{} Chips"
         }
     },
     loc_vars = function(self, info_queue, center)
@@ -1762,7 +1822,7 @@ local meteor = {
         return {vars = {center.ability.extra.chips}}
     end,
     rarity = 2,
-    cost = 6,
+    cost = 5,
     blueprint_compat = true,
     calculate = function(self, card, context)
         if context.other_joker and context.other_joker.edition and context.other_joker.edition.foil == true then
@@ -1788,6 +1848,19 @@ local meteor = {
                 			}
 			end
 	end
+	if context.individual and context.cardarea == G.hand and context.other_card.edition and context.other_card.edition.foil == true and not context.end_of_round then
+            if context.other_card.debuff then
+                return {
+                    message = localize('k_debuffed'),
+                    colour = G.C.RED,
+                    card = card
+                }
+            else
+                return {
+                    	chips = card.ability.extra.chips, --this doesn't exist :pensive: if only...
+                	}
+            end
+        end
     end,
     atlas = "atlastwo",
 }
@@ -1809,7 +1882,7 @@ local exoplanet = {
 		return {vars = {center.ability.extra.mult}}
     	end,
 	rarity = 2,
-	cost = 6,
+	cost = 5,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
         if context.other_joker and context.other_joker.edition and context.other_joker.edition.holo == true then
@@ -1835,6 +1908,19 @@ local exoplanet = {
                 			}
 			end
 	end
+	if context.individual and context.cardarea == G.hand and context.other_card.edition and context.other_card.edition.holo == true and not context.end_of_round then
+            if context.other_card.debuff then
+                return {
+                    message = localize('k_debuffed'),
+                    colour = G.C.RED,
+                    card = card
+                }
+            else
+                return {
+                    	h_mult = card.ability.extra.mult,
+                	}
+            end
+        end
 	end,
 	atlas = "atlastwo",
 }
@@ -1882,6 +1968,19 @@ local stardust = {
                 			}
 			end
 	end
+	if context.individual and context.cardarea == G.hand and context.other_card.edition and context.other_card.edition.polychrome == true and not context.end_of_round then
+            if context.other_card.debuff then
+                return {
+                    message = localize('k_debuffed'),
+                    colour = G.C.RED,
+                    card = card
+                }
+            else
+                return {
+                    	x_mult = card.ability.extra.xmult,
+                	}
+            end
+        end
 	end,
 	atlas = "atlastwo",
 }
@@ -1941,7 +2040,7 @@ return {name = "Misc. Jokers",
                     self.cost = -25
                 end
                 if self.ability.name == "cry-Big Cube" then
-                    self.cost = 25
+                    self.cost = 27
                 end
             end
 
@@ -1966,4 +2065,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {blurred_sprite, jimball_sprite, weegaming_sprite, dropshot, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, panopticon,}}
+        items = {blurred_sprite, jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust,}}

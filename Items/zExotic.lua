@@ -236,8 +236,8 @@ local redeo = {
         text = {
             "{C:attention}-#1#{} Ante when",
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
-            "{C:inactive,s:0.8}Requirements increase by",
-            "{C:money,s:0.8}$#4#{C:inactive,s:0.8} after each use"
+            "{s:0.8}Requirements increase by",
+            "{s:0.8}$#4#{C:inactive,s:0.8} after each use"
         }
     },
 	rarity = "cry_exotic",
@@ -317,10 +317,12 @@ local effarcire = {
 	loc_txt = {
         name = 'Effarcire',
         text = {
-			"Draw {C:green}full deck{} to hand",
-			"when {C:attention}Blind{} is selected"
-		}
-    },
+    		'Draw {C:green}full deck{} to hand',
+    		'when {C:attention}Blind{} is selected',
+    		'{C:inactive,s:0.8}"If you can\'t handle me at my 1x"',
+    		'{C:inactive,s:0.8}"you don\'t deserve me at my 2x"'
+	}
+	},
 	rarity = 3,
 	cost = 50,
 	atlas = 'effarcire',

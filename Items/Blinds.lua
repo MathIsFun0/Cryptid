@@ -1,3 +1,4 @@
+
 --extra blind functions for use by bosses
 function Blind:cry_ante_base_mod(dt)
     if not self.disabled then
@@ -198,8 +199,8 @@ local oldserpent = {
     loc_txt = {
         name = 'Nostalgic Serpent',
         text = {
-            "Divide Mult by",
-            "level of played poker hand"
+            "Divide Mult by level",
+            "of played poker hand"
         }
     },
     atlas = "nostalgia",
@@ -280,8 +281,8 @@ local oldmark = {
 	loc_txt = {
         name = 'Nostalgic Mark',
         text = {
-            "No hands containing",
-            "a Pair"
+            "No hands that",
+            "contain a Pair"
         }
     },
     atlas = "nostalgia",
