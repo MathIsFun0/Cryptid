@@ -1213,6 +1213,40 @@ local multjoker = {
     		end
 	end
 }
+if JokerDisplay then
+	multjoker.joker_display_definition = {
+		text = {
+            { text = "+" },
+            { ref_table = "card.joker_display_values", ref_value = "count" },
+        },
+        text_config = { colour = G.C.SECONDARY_SET.Spectral },
+        extra = {
+            {
+                { text = "(" },
+                { ref_table = "card.joker_display_values",                     ref_value = "odds" },
+                { text = " in " },
+                { ref_table = "card.ability.extra",                     ref_value = "odds" },
+                { text = ")" },
+            }
+        },
+        extra_config = { colour = G.C.GREEN, scale = 0.3 },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
+				for _, scoring_card in pairs(scoring_hand) do
+					if scoring_card.ability.effect and scoring_card.ability.effect == "Mult Card" then
+						count = count +
+							JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					end
+				end
+			end
+            card.joker_display_values.count = count
+            card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+        end
+	}
+end
 return {name = "Epic Jokers", 
 		init = function()
 			

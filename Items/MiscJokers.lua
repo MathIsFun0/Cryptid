@@ -130,6 +130,27 @@ local happyhouse = {
 	end
     end
 }
+if JokerDisplay then
+    happyhouse.joker_display_definition = {
+        text = {  
+            {
+                border_nodes = {
+                    { text = "^" },
+                    { ref_table = "card.joker_display_values", ref_value = "e_mult" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+        reminder_text = {
+            { text = '('},
+            { ref_table = "card.ability.extra", ref_value = "check" },
+            { text = '/114)'},
+        },
+        calc_function = function(card)
+            card.joker_display_values.e_mult = card.ability.extra.check >= 114 and card.ability.extra.mult or 1
+        end
+    }
+end
 local maximized = {
     object_type = "Joker",
 	name = "cry-Maximized",
