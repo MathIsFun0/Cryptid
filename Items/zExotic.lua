@@ -424,21 +424,23 @@ local primus = {
     soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
     calculate = function(self, card, context)
         local check = true
-        if context.scoring_hand then
-            for i = 1, #context.full_hand do
-                if context.full_hand[i]:get_id() == 4 or context.full_hand[i]:get_id() == 6 or context.full_hand[i]:get_id() == 8 or context.full_hand[i]:get_id() == 9 or context.full_hand[i]:get_id() == 10 or context.full_hand[i]:get_id() == 11 or context.full_hand[i]:get_id() == 12 or context.full_hand[i]:get_id() == 13 then
-                    check = false
-                end
-            end
-        end
-        if context.cardarea == G.jokers and check and context.before and not context.blueprint then
-            card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
-            return {
-                card_eval_status_text(card, 'extra', nil, nil, nil, {
-                    message = "Upgrade!",
-                    colour = G.C.DARK_EDITION,
-                })
-            }   
+        if context.cardarea == G.jokers and context.before and not context.blueprint then
+			if context.scoring_hand then
+				for k, v in ipairs(context.full_hand) do
+					if v:get_id() == 4 or v:get_id() == 6 or v:get_id() == 8 or v:get_id() == 9 or v:get_id() == 10 or v:get_id() == 11 or v:get_id() == 12 or v:get_id() == 13 then
+						check = false
+					end
+				end
+			end
+			if check then
+				card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+				return {
+					card_eval_status_text(card, 'extra', nil, nil, nil, {
+						message = "Upgrade!",
+						colour = G.C.DARK_EDITION,
+					})
+				}   
+			end
         end
         if context.cardarea == G.jokers and (card.ability.extra.Emult > 1) and not context.before and not context.after then
             return {
