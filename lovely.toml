@@ -155,12 +155,10 @@ target = "card.lua"
 pattern = "card.T.x = self.T.x"
 position = "before"
 payload = '''
-
 local edi = self.edition or {}
-if edi.type and not (G.GAME.modifiers.cry_force_edition or G.GAME.modifiers.cry_force_random_edition) then
+if edi.type and not self.ability.name:find('Standard') then
 	card:set_edition({[edi.type] = true})
 end
-
 if self.ability.eternal then
 	card.ability.eternal = self.ability.eternal
 end
@@ -179,6 +177,23 @@ end
 '''
 match_indent = true
 
+# catch edition code in standard pack to avoid reapplying edition (HORRIBLE)
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''local edition \= poll_edition\('standard_edition'\.\.G.GAME\.round_resets\.ante, edition_rate, true\)\n\s+card\:set_edition\(edition\)'''
+position = "at"
+payload = '''
+local edi = self.edition or {}
+if edi.type and not (G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition ~= 'random') then
+	card:set_edition({[edi.type] = true})
+elseif not G.GAME.modifiers.cry_force_random_edition then
+	local edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, edition_rate, true)
+	card:set_edition(edition)
+end
+'''
+match_indent = true
+
 # Edition + sticker forcing on vouchers (editions are just funny cost increases)
 [[patches]]
 [patches.pattern]
@@ -186,30 +201,27 @@ target = "game.lua"
 pattern = "G.shop_vouchers:emplace(card)"
 position = "before"
 payload = '''
-if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-	card:set_edition(nil, true) 	-- this technically works???????? whole set_edition being affected and all
-elseif G.GAME.modifiers.cry_force_random_edition then
-	local edition = cry_poll_random_edition()
-	card:set_edition(edition, true)
+if G.GAME.current_round.cry_voucher_edition then
+	card:set_edition(G.GAME.current_round.cry_voucher_edition, true)
 end
-
-if G.GAME.modifiers.cry_force_sticker == 'eternal' then		-- this is dumb but i'm not sure how to call functions from a string
-	card:set_eternal(true)
-	card.ability.eternal = true
-end
-if G.GAME.modifiers.cry_force_sticker == 'perishable' then
-	card:set_perishable(true)
-	card.ability.perishable = true
-end
-if G.GAME.modifiers.cry_force_sticker == 'rental' then
-	card:set_rental(true)
-	card.ability.rental = true
-end
-if G.GAME.modifiers.cry_force_sticker == 'pinned' then
-	card.pinned = true
-end
-if G.GAME.modifiers.cry_force_sticker == 'banana' then
-	card.ability.banana = true
+if G.GAME.current_round.cry_voucher_stickers then
+	if G.GAME.current_round.cry_voucher_stickers.eternal == true then		-- this is dumb but i'm not sure how to call functions from a string
+		card:set_eternal(true)
+		card.ability.eternal = true
+	end
+	if G.GAME.current_round.cry_voucher_stickers.perishable == true then
+		card.ability.perishable = true
+	end
+	if G.GAME.current_round.cry_voucher_stickers.rental == true then
+		card:set_rental(true)
+		card.ability.rental = true
+	end
+	if G.GAME.current_round.cry_voucher_stickers.pinned == true then
+		card.pinned = true
+	end
+	if G.GAME.current_round.cry_voucher_stickers.banana == true then
+		card.ability.banana = true
+	end
 end
 '''
 match_indent = true
@@ -228,23 +240,30 @@ elseif G.GAME.modifiers.cry_force_random_edition then
 	card:set_edition(edition, true)
 end
 
-if G.GAME.modifiers.cry_force_sticker == 'eternal' then
+if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card:set_eternal(true)
 	card.ability.eternal = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+if G.GAME.modifiers.cry_force_sticker == 'perishable' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card:set_perishable(true)
 	card.ability.perishable = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'rental' then
+if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card:set_rental(true)
 	card.ability.rental = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card.pinned = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'banana' then
+if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card.ability.banana = true
+end
+if G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.cry_sticker_sheet then
+		for k, v in pairs(SMODS.Stickers) do
+			v:set_sticker(card, true)
+		end
+	end
 end
 '''
 match_indent = true
@@ -256,19 +275,11 @@ target = "functions/UI_definitions.lua"
 pattern = "voucher_areas[#voucher_areas]:emplace(card)"
 position = "before"
 payload = '''
-if G.GAME.voucher_edition_index[card.ability.name] then		-- this is REALLY REALLY dumb please change this i just don't know what the fuck you're supposed to do here?????????
-	local edition = {}
-	if G.GAME.voucher_edition_index[card.ability.name] == 'negative' then edition = {negative = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'polychrome' then edition = {polychrome = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'holo' then edition = {holo = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'foil' then edition = {foil = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_blur' then edition = {cry_blur = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_astral' then edition = {cry_astral = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_mosaic' then edition = {cry_mosaic = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_glitched' then edition = {cry_glitched = true}
-	elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_oversat' then edition = {cry_oversat = true}
+if G.GAME.voucher_edition_index[card.ability.name] then		-- i just made it a function so i can look at it less
+	local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
+	if edition then
+		card:set_edition(edition, true, true)
 	end
-	card:set_edition(edition, true, true)
 end
 
 if G.GAME.voucher_sticker_index.eternal[card.ability.name] then
@@ -287,7 +298,7 @@ if G.GAME.voucher_sticker_index.rental[card.ability.name] then
 	card:set_rental(true)
 	card.ability.rental = true
 end
-if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
+if G.GAME.voucher_sticker_index.pinned[card.ability.name] == true then
 	card.pinned = true
 end
 if G.GAME.voucher_sticker_index.banana[card.ability.name] then
@@ -312,12 +323,12 @@ if self and self.ability.eternal and self.ability.eternal == true then
  	G.GAME.voucher_sticker_index.eternal[center_table.name] = true
 end
 if self and self.ability.perishable and self.ability.perishable == true then
- 	G.GAME.voucher_sticker_index.perishable[center_table.name] = 5
+ 	G.GAME.voucher_sticker_index.perishable[center_table.name] = G.GAME.cry_voucher_perishable_rounds
 end
 if self and self.ability.rental and self.ability.rental == true then
  	G.GAME.voucher_sticker_index.rental[center_table.name] = true
 end
-if self and self.ability.pinned and self.ability.pinned == true then
+if self and self.pinned and self.pinned == true then
  	G.GAME.voucher_sticker_index.pinned[center_table.name] = true
 end
 if self and self.ability.banana and self.ability.banana == true then
@@ -353,16 +364,79 @@ if G.GAME.voucher_sticker_index then
 	if G.GAME.voucher_sticker_index.rental then
 		local cumulative_rental = 0
 		for k, v in pairs(G.GAME.voucher_sticker_index.rental) do
-			cumulative_rental = cumulative_rental + 3
+			cumulative_rental = cumulative_rental + G.GAME.cry_voucher_rental_rate
 		end
-		G.E_MANAGER:add_event(Event({
-			trigger = 'immediate',
-			blocking = false,
-			blockable = false,
-			func = (function()
-				ease_dollars(-cumulative_rental)
-			return true
-		end)}))
+		if cumulative_rental > 0 then
+			G.E_MANAGER:add_event(Event({
+				trigger = 'immediate',
+				blocking = false,
+				blockable = false,
+				func = (function()
+					ease_dollars(-cumulative_rental)
+				return true
+			end)}))
+		end
+	end
+	if G.GAME.voucher_sticker_index.banana then		-- i'm pretty sure unredeem breaks if spectrals are disabled? unsure though
+		local voucher_queue = {}
+		local current_round_voucher=G.GAME.current_round.voucher
+		for k, v in pairs(G.GAME.voucher_sticker_index.banana) do
+			if (pseudorandom('byebyevoucher') < G.GAME.probabilities.normal/G.GAME.cry_voucher_banana_odds) then
+				area = G.play
+				local unredeemed_voucher = ''
+				for kk, vv in pairs(G.P_CENTERS) do
+					if k == vv.name then
+						unredeemed_voucher = kk
+						break
+					end
+				end
+			        local card = create_card('Voucher', area, nil, nil, nil, nil, unredeemed_voucher)
+				if G.GAME.voucher_edition_index[card.ability.name] then		-- i made this bullshit a function
+					local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
+					if edition then
+						card:set_edition(edition, true, true)
+					end
+				end
+				if G.GAME.voucher_sticker_index.eternal[card.ability.name] then
+	    				card:set_eternal(true)
+	    				card.ability.eternal = true
+				end
+				if G.GAME.voucher_sticker_index.perishable[card.ability.name] then
+	    				card:set_perishable(true)
+	    				card.ability.perish_tally = G.GAME.voucher_sticker_index.perishable[card.ability.name]
+	    				card.ability.perishable = true
+	    				if G.GAME.voucher_sticker_index.perishable[card.ability.name] == 0 then
+						card.debuff = true
+					end
+				end
+				if G.GAME.voucher_sticker_index.rental[card.ability.name] then
+	   				card:set_rental(true)
+	  				card.ability.rental = true
+				end
+				if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
+					card.pinned = true
+				end
+				if G.GAME.voucher_sticker_index.banana[card.ability.name] then
+					card.ability.banana = true
+				end
+        			card:start_materialize()
+        			area:emplace(card)
+        			card.cost=0
+        			card.shop_voucher=false
+				voucher_queue[#voucher_queue+1] = card
+			end
+		end
+		for k, v in pairs(voucher_queue) do
+			v:unredeem()
+        		G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay =  0,
+				func = function() 
+					v:start_dissolve()
+				return true
+			end}))
+		end
+		G.GAME.current_round.voucher=current_round_voucher
 	end
 end
 '''
@@ -382,23 +456,29 @@ elseif G.GAME.modifiers.cry_force_random_edition then
 	card:set_edition(edition, true)
 end
 
-if G.GAME.modifiers.cry_force_sticker == 'eternal' then	
+if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then	
 	card:set_eternal(true)
 	card.ability.eternal = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+if G.GAME.modifiers.cry_force_sticker == 'perishable' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card:set_perishable(true)
 	card.ability.perishable = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'rental' then
-	card:set_rental(true)
-	card.ability.rental = true
+if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	card.ability.rental = true	-- do not set_rental here to prevent cost from decreasing
 end
-if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card.pinned = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'banana' then
+if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card.ability.banana = true
+end
+if G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.cry_sticker_sheet then
+		for k, v in pairs(SMODS.Stickers) do
+			v:set_sticker(card, true)
+		end
+	end
 end
 '''
 match_indent = true
