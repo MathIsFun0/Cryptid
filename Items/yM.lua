@@ -829,21 +829,23 @@ local doodlem = {
 	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
     end,
     calculate = function(self, card, context)
-        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-	    local jollycount = 2
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
+    if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+        local jollycount = 2
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == 'Jolly Joker' then
+                jollycount = jollycount + 1
             end
-	    for i = 1, jollycount do
-            	local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'cry_doodlem')
-                	card:set_edition({negative = true})
-                	card:add_to_deck()
-                	G.consumeables:emplace(card)
-		end
-		return true
-	    card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
         end
+        for i = 1, jollycount do
+            local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'cry_doodlem')
+            card:set_edition({negative = true})
+            card:add_to_deck()
+            G.consumeables:emplace(card)
+        end
+        card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
+        return true
     end
+end
 }
 --Todo: Fix doodlem giving jimbos when all consumeables are obtained (I have no idea what i'm doing wrong here)
 --replace the negative infoqueue with the one used for consumables
