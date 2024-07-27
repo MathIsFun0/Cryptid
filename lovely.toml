@@ -155,12 +155,10 @@ target = "card.lua"
 pattern = "card.T.x = self.T.x"
 position = "before"
 payload = '''
-
 local edi = self.edition or {}
-if edi.type then
+if edi.type and not self.ability.name:find('Standard') then
 	card:set_edition({[edi.type] = true})
 end
-
 if self.ability.eternal then
 	card.ability.eternal = self.ability.eternal
 end
@@ -175,6 +173,23 @@ if self.pinned then
 end
 if self.ability.banana then
 	card.ability.banana = self.ability.banana
+end
+'''
+match_indent = true
+
+# catch edition code in standard pack to avoid reapplying edition (HORRIBLE)
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''local edition \= poll_edition\('standard_edition'\.\.G.GAME\.round_resets\.ante, edition_rate, true\)\n\s+card\:set_edition\(edition\)'''
+position = "at"
+payload = '''
+local edi = self.edition or {}
+if edi.type and not (G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition ~= 'random') then
+	card:set_edition({[edi.type] = true})
+elseif not G.GAME.modifiers.cry_force_random_edition then
+	local edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, edition_rate, true)
+	card:set_edition(edition)
 end
 '''
 match_indent = true
