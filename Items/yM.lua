@@ -72,7 +72,19 @@ local jollysus = {
         end
     end
 }
-
+if JokerDisplay then
+    jollysus.joker_display_definition = {
+        reminder_text = {
+            { text = '(', },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+            { text = ')', },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = card.ability.extra.spawn and localize("k_active_ex") or
+                "No triggers left!"
+        end
+    }
+end
 local kidnap = {
 	object_type = "Joker",
 	name = "cry-kidnap",
@@ -303,7 +315,23 @@ local foodm = {
 	end
     end
 }
-
+if JokerDisplay then
+    foodm.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.ability.extra", ref_value = "mult" }
+        },
+        text_config = { colour = G.C.MULT },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.rounds_remaining = localize { type = 'variable', key = 'loyalty_inactive', vars = { card.ability.extra.rounds_remaining or 2 } }
+        end,
+    }
+end
 local mstack = {
     object_type = "Joker",
     name = "cry-mstack",
@@ -367,7 +395,19 @@ local mstack = {
 	if card.ability.extra.retriggers ~= 1 and not card.ability.extra.check then card.ability.extra.retriggers = 1 end
     end
 }
-
+if JokerDisplay then
+    mstack.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.ability.extra", ref_value = "retriggers", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+            if held_in_hand then return 0 end
+            return joker_card.ability.extra.retriggers or 0
+        end
+    }
+end
 local mneon = {
     object_type = "Joker",
     name = "cry-mneon",
@@ -414,7 +454,21 @@ local mneon = {
         end
     end
 }
-
+if JokerDisplay then
+    mneon.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local notebook = {
     object_type = "Joker",
     name = "cry-notebook",
@@ -493,7 +547,31 @@ local notebook = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slot
     end
 }
-
+if JokerDisplay then
+    notebook.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.ability.extra",        ref_value = "slot" },
+            { text = ") " },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        extra = {
+            {
+                { text = "(" },
+                { ref_table = "card.joker_display_values", ref_value = "odds" },
+                { text = " in " },
+                { ref_table = "card.ability.extra",        ref_value = "odds" },
+                { text = ")" },
+            }
+        },
+        extra_config = { colour = G.C.GREEN, scale = 0.3 },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" ..
+                (card.ability.extra.check and localize("k_active_ex") or "Inactive") .. ")"
+            card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+        end
+    }
+end
 local bonk = {
 	object_type = "Joker",
 	name = "cry-bonk",
@@ -558,7 +636,17 @@ local bonk = {
 	end,
 	atlas = "atlasone",
 }
-
+if JokerDisplay then
+    bonk.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            local chips_mod = mod_joker.ability.extra.chips
+            if card.ability.name == "Jolly Joker" then
+                chips_mod = chips_mod * mod_joker.ability.extra.xchips
+            end
+            return { chips = chips_mod or nil }
+        end
+    }
+end
 local morse = {
     object_type = "Joker",
     name = "cry-morse",
@@ -609,7 +697,21 @@ local morse = {
         end
     end
 }
-
+if JokerDisplay then
+    morse.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local loopy = {
     object_type = "Joker",
     name = "cry-loopy",
@@ -658,6 +760,15 @@ local loopy = {
         G.hand:change_size(-card.ability.extra.handsize or 0)
     end
 }
+if JokerDisplay then
+    loopy.joker_display_definition = {
+        reminder_text = {
+            { text = "(+" },
+            { ref_table = "card.ability.extra", ref_value = "handsize", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+    }
+end
 local scrabble = {
 	object_type = "Joker",
 	name = "cry-scrabble",
@@ -743,6 +854,15 @@ local sacrifice = {
 		end
 	end,
 }
+if JokerDisplay then
+    sacrifice.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.ability.extra", ref_value = "text" },
+            { text = ")" },
+        },
+    }
+end
 local reverse = {
 	object_type = "Joker",
 	name = "cry-reverse",
@@ -913,6 +1033,22 @@ local virgo = {
 	end
 	
 }
+if JokerDisplay then
+    virgo.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { text = "$",                              colour = G.C.GOLD },
+            { ref_table = "card",                      ref_value = "sell_cost",      colour = G.C.GOLD },
+            { text = ") (" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        reminder_text_config = { scale = 0.35 },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = localize(card.ability.extra.type, 'poker_hands')
+        end
+    }
+end
 local smallestm = {
     	object_type = "Joker",
 	name = "cry-smallestm",
@@ -964,6 +1100,28 @@ local smallestm = {
 		end
     	end
 }
+if JokerDisplay then
+    smallestm.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_chips" }
+                },
+                border_colour = G.C.CHIPS
+            }
+        },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.x_chips = card.ability.extra.check and card.ability.extra.x_chips or 1
+            card.joker_display_values.localized_text = localize(card.ability.extra.type, 'poker_hands')
+        end
+    }
+end
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse}
 return {name = "M Jokers", 
         init = function()

@@ -87,6 +87,34 @@ local iterum = {
         end
     end
 }
+if JokerDisplay then
+    iterum.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                }
+            }
+        },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    count = count +
+                        JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                end
+            end
+            card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.x_mult ^ count)))
+        end,
+        retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+            if held_in_hand then return 0 end
+            return joker_card.ability.extra.repetitions or 0
+        end
+    }
+end
 local iterum_sprite = {
     object_type = "Atlas",
     key = "iterum",
@@ -164,6 +192,19 @@ local exponentia = {
         return {vars = {center.ability.extra.Emult_mod, center.ability.extra.Emult}}
     end
 }
+if JokerDisplay then
+    exponentia.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "^" },
+                    { ref_table = "card.ability.extra", ref_value = "Emult" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+    }
+end
 local exponentia_sprite = {
     object_type = "Atlas",
     key = "exponentia",
@@ -260,6 +301,17 @@ local redeo = {
         end
 	end
 }
+if JokerDisplay then
+    redeo.joker_display_definition = {
+        reminder_text = {
+            { text = "($" },
+            { ref_table = "card.ability.extra", ref_value = "money_remaining" },
+            { text = "/$" },
+            { ref_table = "card.ability.extra", ref_value = "money_req" },
+            { text = ")" },
+        },
+    }
+end
 local redeo_sprite = {
     object_type = "Atlas",
     key = "redeo",
@@ -298,7 +350,21 @@ local tenebris = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
 	end
 }
-
+if JokerDisplay then
+    tenebris.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local tenebris_sprite = {
 	object_type = "Atlas",
     key = "tenebris",
@@ -391,6 +457,15 @@ local crustulum = {
 	calculate_reroll_cost(true)
 	end
 }
+if JokerDisplay then
+    crustulum.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.ability.extra", ref_value = "chips" }
+        },
+        text_config = { colour = G.C.CHIPS },
+    }
+end
 local crustulum_sprite = {
     object_type = "Atlas",
     key = "crustulum",
@@ -450,7 +525,25 @@ local primus = {
         return {vars = {center.ability.extra.Emult_mod, center.ability.extra.Emult}}
     end
 }
-
+if JokerDisplay then
+    primus.joker_display_definition = {
+        text = {  
+            {
+                border_nodes = {
+                    { text = "^" },
+                    { ref_table = "card.ability.extra", ref_value = "Emult" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("Ace", "ranks") .. ",2,3,5,7)"
+        end
+    }
+end
 local primus_sprite = {
     object_type = "Atlas",
     key = "primus",
