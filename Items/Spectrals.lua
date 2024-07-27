@@ -282,9 +282,11 @@ local trade = {
         for _, v in pairs(G.GAME.used_vouchers) do
             if v then usable_count = usable_count + 1 end
         end
-	for _, v in pairs(G.GAME.voucher_sticker_index.eternal) do
-            if v then usable_count = usable_count - 1 end
-        end
+	if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.eternal then
+	    for _, v in pairs(G.GAME.voucher_sticker_index.eternal) do
+                if v then usable_count = usable_count - 1 end
+            end
+	end
 	if usable_count > 0 then return true else return false end
     end,
     use = function(self, card, area, copier)
@@ -301,7 +303,7 @@ local trade = {
                         end
                     end
                 end
-		if G.GAME.voucher_sticker_index.eternal[v.name] then
+		if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.eternal and G.GAME.voucher_sticker_index.eternal[v.name] then
 		    can_use = false
 		end
             end
