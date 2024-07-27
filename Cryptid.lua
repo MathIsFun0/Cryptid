@@ -35,6 +35,24 @@ function get_badge_colour(key)
     return fromRef
 end
 
+SMODS.Achievements = {}
+SMODS.Achievement = SMODS.GameObject:extend{
+    obj_table = SMODS.Achievements,
+    obj_buffer = {},
+    required_params = {
+        'key',
+    },
+    class_prefix = "ach",
+    atlas = "cry_achievements",
+    pos = {x=1, y=0},
+    tier = 1,
+    process_loc_text = function(self)
+        SMODS.process_loc_text(G.localization.misc.achievement_names, self.key, self.loc_txt, "name")
+        SMODS.process_loc_text(G.localization.misc.achievement_descriptions, self.key, self.loc_txt, "description")
+    end,
+    inject = function(self) end,
+}
+
 -- Midground sprites
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
@@ -398,6 +416,12 @@ if not SpectralPack then
             nodes = cry_nodes
         }
         end
+    },
+    {
+        label = "Achievements",
+        tab_definition_function = function()
+            return create_UIBox_your_collection_achievements()
+        end,
     },
 }
   G.FUNCS.cryptidMenu = function(e)

@@ -1,0 +1,77 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+## Achievement API
+
+# fetch_achievements()
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''(?<indent>[\t ]*)if G\.F_NO_ACHIEVEMENTS then return end\n\n[\s\S]{4}--\|FROM LOCAL SETTINGS FILE'''
+position = 'before'
+# match_indent = true
+line_prepend = '$indent'
+payload = '''
+G.SETTINGS.ACHIEVEMENTS_EARNED = G.SETTINGS.ACHIEVEMENTS_EARNED or {}
+    -- TODO: Allow removal of Steamodded achievements from the settings.jkr file
+    -- In case people want to re-earn them again
+for i, v in ipairs(SMODS.Achievement.obj_buffer) do
+    print(v)
+    G.ACHIEVEMENTS[v] = SMODS.Achievements[v]
+    G.ACHIEVEMENTS[v].order = 31 + i
+end
+for k, v in pairs(G.ACHIEVEMENTS) do
+    if not v.key then v.key = k end
+    for kk, vv in pairs(G.SETTINGS.ACHIEVEMENTS_EARNED) do 
+        if G.ACHIEVEMENTS[kk] and G.ACHIEVEMENTS[kk].mod then
+            G.ACHIEVEMENTS[kk].earned = true
+        end
+    end
+end
+'''
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if not G.STEAM then --|set this to false if you get this information from elsewhere'''
+position = "at"
+payload = '''if not G.STEAM or G.ACHIEVEMENTS[achievement_name].mod then --|set this to false if you get this information from elsewhere'''
+match_indent = true
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if G.STEAM and not G.STEAM.initial_fetch then'''
+position = "at"
+payload = '''if G.STEAM and not G.STEAM.initial_fetch and not G.ACHIEVEMENTS[achievement_name].mod then '''
+match_indent = true
+
+# check_for_unlock
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if G.GAME.challenge then return end'''
+position = "after"
+payload = '''
+if args.type == 'steamodded' then
+    fetch_achievements() -- Refreshes achievements
+    local obj = SMODS.Achievements[args.key]
+    if obj and obj.unlock_condition and type(obj.unlock_condition) == 'function' then obj:unlock_condition(args) end
+end
+'''
+match_indent = true
+
+
+## Cryptid Achievements
+# Earn ://CRASH Achievement on startup
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "check_for_unlock({type = 'blind_discoveries'})"
+position = "after"
+payload = '''
+if change_context ~= "splash" then 
+    print("if change_context == \"splash\" then")
+    check_for_unlock({type = 'steamodded', key = 'ach_cry_used_crash'}) 
+end'''
+match_indent = true
