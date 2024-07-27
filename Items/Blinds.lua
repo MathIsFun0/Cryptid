@@ -1,3 +1,4 @@
+
 --extra blind functions for use by bosses
 function Blind:cry_ante_base_mod(dt)
     if not self.disabled then

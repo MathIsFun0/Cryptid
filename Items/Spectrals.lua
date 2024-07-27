@@ -282,9 +282,11 @@ local trade = {
         for _, v in pairs(G.GAME.used_vouchers) do
             if v then usable_count = usable_count + 1 end
         end
-	for _, v in pairs(G.GAME.voucher_sticker_index.eternal) do
-            if v then usable_count = usable_count - 1 end
-        end
+	if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.eternal then
+	    for _, v in pairs(G.GAME.voucher_sticker_index.eternal) do
+                if v then usable_count = usable_count - 1 end
+            end
+	end
 	if usable_count > 0 then return true else return false end
     end,
     use = function(self, card, area, copier)
@@ -301,7 +303,7 @@ local trade = {
                         end
                     end
                 end
-		if G.GAME.voucher_sticker_index.eternal[v.name] then
+		if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.eternal and G.GAME.voucher_sticker_index.eternal[v.name] then
 		    can_use = false
 		end
             end
@@ -324,19 +326,11 @@ local trade = {
         end
         local card = create_card('Voucher', area, nil, nil, nil, nil, unredeemed_voucher)
 
-	if G.GAME.voucher_edition_index[card.ability.name] then		-- this is REALLY REALLY dumb pt. 2
-		local edition = {}
-		if G.GAME.voucher_edition_index[card.ability.name] == 'negative' then edition = {negative = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'polychrome' then edition = {polychrome = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'holo' then edition = {holo = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'foil' then edition = {foil = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_blur' then edition = {cry_blur = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_astral' then edition = {cry_astral = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_mosaic' then edition = {cry_mosaic = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_glitched' then edition = {cry_glitched = true}
-		elseif G.GAME.voucher_edition_index[card.ability.name] == 'cry_oversat' then edition = {cry_oversat = true}
-		end
+	if G.GAME.voucher_edition_index[card.ability.name] then
+	    local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
+	    if edition then
 		card:set_edition(edition, true, true)
+	    end
 	end
 	if G.GAME.voucher_sticker_index.eternal[card.ability.name] then
 	    card:set_eternal(true)
@@ -597,6 +591,12 @@ return {name = "Spectrals",
 		end
 		if G.GAME.voucher_sticker_index.rental[center_table.name] then
 		    G.GAME.voucher_sticker_index.rental[center_table.name] = nil
+		end
+		if G.GAME.voucher_sticker_index.pinned[center_table.name] then
+		    G.GAME.voucher_sticker_index.pinned[center_table.name] = nil
+		end
+		if G.GAME.voucher_sticker_index.banana[center_table.name] then
+		    G.GAME.voucher_sticker_index.banana[center_table.name] = nil
 		end
 
 		if is_debuffed == false then

@@ -159,6 +159,19 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
 end
 
+function cry_edition_to_table(edition)
+	if edition == 'negative' then return {negative = true}
+	elseif edition == 'polychrome' then return {polychrome = true}
+	elseif edition == 'holo' then return {holo = true}
+	elseif edition == 'foil' then return {foil = true}
+	elseif edition == 'cry_blur' then return {cry_blur = true}
+	elseif edition == 'cry_astral' then return {cry_astral = true}
+	elseif edition == 'cry_mosaic' then return {cry_mosaic = true}
+	elseif edition == 'cry_glitched' then return {cry_glitched = true}
+	elseif edition == 'cry_oversat' then return {cry_oversat = true}
+	end
+end
+
 function cry_poll_random_edition()
 	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
 	if Cryptid_config["Misc."] then
@@ -172,6 +185,65 @@ function cry_poll_random_edition()
 	return random_edition
 end
 
+function cry_voucher_debuffed(name)	-- simple function but idk
+	if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.perishable[name] then
+		if G.GAME.voucher_sticker_index.perishable[name] == 0 then
+			return true
+		end
+	end
+	return false
+end
+
+function cry_voucher_pinned(name)
+	if G.GAME.voucher_sticker_index then
+		if G.GAME.voucher_sticker_index.pinned[name] then
+			return true
+		end
+	end
+	return false
+end
+
+function cry_get_next_voucher_edition()	-- currently only for editions + sticker decks, can be modified if voucher stickering/editioning becomes more important
+	if G.GAME.modifiers.cry_force_edition then
+		return cry_edition_to_table(G.GAME.modifiers.cry_force_edition)
+	elseif G.GAME.modifiers.cry_force_random_edition then
+		return cry_poll_random_edition()
+	end
+end
+function cry_get_next_voucher_stickers()
+	local ret = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
+	if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.eternal = true
+	end
+	if G.GAME.modifiers.cry_force_sticker == 'perishable' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.perishable = true
+	end
+	if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.rental = true
+	end
+	if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.pinned = true
+	end
+	if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.banana = true
+	end
+	return ret
+end
+
+function Card:cry_calculate_consumeable_rental()
+	if self.ability.rental then
+		ease_dollars(-G.GAME.cry_consumeable_rental_rate)
+		card_eval_status_text(self, 'dollars', -G.GAME.cry_consumeable_rental_rate)
+	end
+end
+
+function Card:cry_calculate_consumeable_perishable()
+	if self.ability.perishable and self.ability.perish_tally > 0 then
+		self.ability.perish_tally = 0
+		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
+		self:set_debuff()
+	end
+end
 
 local ec = eval_card
 function eval_card(card, context)
@@ -493,24 +565,31 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if front and G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
   if card.ability.consumeable and not skip_materialize then card:start_materialize() end
 
-  if G.GAME.modifiers.cry_force_sticker == 'eternal' then
+  if G.GAME.modifiers.cry_force_sticker == 'eternal' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then	-- wow that is long
       card:set_eternal(true)
       card.ability.eternal = true
   end
-  if G.GAME.modifiers.cry_force_sticker == 'perishable' then
+  if G.GAME.modifiers.cry_force_sticker == 'perishable' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
       card:set_perishable(true)
       card.ability.perishable = true
   end
-  if G.GAME.modifiers.cry_force_sticker == 'rental' then
+  if G.GAME.modifiers.cry_force_sticker == 'rental' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
       card:set_rental(true)
       card.ability.rental = true
   end
-  if G.GAME.modifiers.cry_force_sticker == 'pinned' then
+  if G.GAME.modifiers.cry_force_sticker == 'pinned' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
       card.pinned = true
   end
-  if G.GAME.modifiers.cry_force_sticker == 'banana' then
+  if G.GAME.modifiers.cry_force_sticker == 'banana' or 
+(G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
       card.ability.banana = true
   end
+  if G.GAME.modifiers.cry_sticker_sheet_plus and not (_type=='Base' or _type=='Enhanced') then
+      for k, v in pairs(SMODS.Stickers) do
+          v:set_sticker(card, true)
+      end
+  end
+
 
   if card.ability.name == "cry-Cube" then card:set_eternal(true) end
   if _type == 'Joker' or (G.GAME.modifiers.cry_any_stickers and not G.GAME.modifiers.cry_sticker_sheet) then
@@ -528,11 +607,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       end
       if G.GAME.modifiers.cry_all_banana then
           card.ability.banana = true
-      end
-      if G.GAME.modifiers.cry_sticker_sheet then
-        for k, v in pairs(SMODS.Stickers) do
-            v:set_sticker(card, true)
-        end
       end
       if (area == G.shop_jokers) or (area == G.pack_cards) then 
           local eternal_perishable_poll = pseudorandom('cry_et'..(key_append or '')..G.GAME.round_resets.ante)
@@ -559,6 +633,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           if G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_banana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
               card.ability.banana = true
           end
+	  if G.GAME.modifiers.cry_sticker_sheet then
+              for k, v in pairs(SMODS.Stickers) do
+                  v:set_sticker(card, true)
+              end
+          end
           if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
               card.cry_flipped = true
           end
@@ -569,16 +648,19 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           check_for_unlock({type = 'have_edition'})
       end
   end
-  if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+  if G.GAME.modifiers.cry_force_edition and (not G.GAME.modifiers.cry_force_random_edition) and area ~= G.pack_cards then
       card:set_edition(nil, true)
   end
-  if G.GAME.modifiers.cry_force_random_edition then
+  if G.GAME.modifiers.cry_force_random_edition and area ~= G.pack_cards then
       local edition = cry_poll_random_edition()
       card:set_edition(edition, true)
   end
-	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
-		cry_misprintize(card)
-	end
+  if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
+      cry_misprintize(card)
+  end
+  if card.ability.consumeable and card.pinned then	-- counterpart is in Sticker.toml
+      G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+  end
   return card
 end
 
@@ -716,6 +798,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
     G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
     G.localization.misc.v_text.ch_c_cry_all_banana = {"All Jokers are {C:eternal}Banana{}"}
+    G.localization.misc.v_text.ch_c_cry_sticker_sheet_plus = {"All purchasable items have all stickers"}
     G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
@@ -738,6 +821,105 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "All {C:cry_code}probabilities",
             "are {C:cry_code}guaranteed"
+        },
+    }
+								-- i am so sorry for this
+    G.localization.descriptions.Other.cry_eternal_booster = {
+        name = "Eternal",
+        text = {
+            "All cards in pack",
+            "are {C:attention}Eternal{}"
+        },
+    }
+    G.localization.descriptions.Other.cry_perishable_booster = {
+        name = "Perishable",
+        text = {
+            "All cards in pack",
+            "are {C:attention}Perishable{}"
+        },
+    }
+    G.localization.descriptions.Other.cry_rental_booster = {
+        name = "Rental",
+        text = {
+            "All cards in pack",
+            "are {C:attention}Rental{}"
+        },
+    }
+    G.localization.descriptions.Other.cry_pinned_booster = {
+        name = "Pinned",
+        text = {
+            "All cards in pack",
+            "are {C:attention}Pinned{}"
+        },
+    }
+    G.localization.descriptions.Other.cry_banana_booster = {
+        name = "Banana",
+        text = {
+            "All cards in pack",
+            "are {C:attention}Banana{}"
+        },
+    }
+    G.localization.descriptions.Other.cry_eternal_voucher = {
+        name = "Eternal",
+        text = {
+            "Can't be traded"
+        },
+    }
+    G.localization.descriptions.Other.cry_perishable_voucher = {
+        name = "Perishable",
+        text = {
+            "Debuffed after",
+            "{C:attention}#1#{} rounds",
+	    "{C:inactive}({C:attention}#2#{C:inactive} remaining)"
+        },
+    }
+    G.localization.descriptions.Other.cry_rental_voucher = {
+        name = "Rental",
+        text = {
+            "Lose {C:money}$#1#{} at",
+            "end of round"
+        },
+    }
+    G.localization.descriptions.Other.cry_pinned_voucher = {
+        name = "Pinned",
+        text = {
+            "Remains in shop",
+	    "until redeemed",
+        },
+    }
+    G.localization.descriptions.Other.cry_banana_voucher = {
+        name = "Banana",
+        text = {
+            "{C:green}#1# in #2#{} chance of being",
+            "unredeemed each round"
+        },
+    }
+    G.localization.descriptions.Other.cry_perishable_consumeable = {
+        name = "Perishable",
+        text = {
+            "Debuffed at",
+            "end of round"
+        },
+    }
+    G.localization.descriptions.Other.cry_rental_consumeable = {
+        name = "Rental",
+        text = {
+            "Lose {C:money}$#1#{} at end of",
+            "round, and on use"
+        },
+    }
+    G.localization.descriptions.Other.cry_pinned_consumeable = {
+        name = "Pinned",
+        text = {
+            "Can't use other",
+            "non-{C:attention}Pinned{} consumables"
+        },
+    }
+    G.localization.descriptions.Other.cry_banana_consumeable = {
+        name = "Banana",
+        text = {
+            "{C:green}#1# in #2#{} chance to do",
+            "nothing on use"
         },
     }
 end
@@ -793,7 +975,7 @@ SMODS.Atlas({
             { mipmaps = true, dpiscale = G.SETTINGS.GRAPHICS.texture_scaling })
         G[self.atlas_table][self.key_noloc or self.key] = self
         G.shared_sticker_banana = Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], {x = 5,y = 2})
-        G.shared_sticker_pinned = Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], {x = 5,y = 0})
+	G.shared_sticker_pinned = Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], {x = 5,y = 0})
     end
 })
 function Card:set_perishable(_perishable) 
