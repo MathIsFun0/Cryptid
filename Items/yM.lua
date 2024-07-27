@@ -842,7 +842,7 @@ local doodlem = {
             card:add_to_deck()
             G.consumeables:emplace(card)
         end
-        card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
+        card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
         return true
     end
 end
