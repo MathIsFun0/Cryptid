@@ -40,6 +40,42 @@ local supercell = {
 		end
 	end
 }
+if JokerDisplay then
+	supercell.joker_display_definition = {
+		text = {
+			{ text = "+",                       colour = G.C.CHIPS },
+			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS },
+			{ text = " +",                      colour = G.C.MULT },
+			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT },
+		},
+		extra = {
+			{
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "stat2" }
+					},
+					border_colour = G.C.CHIPS
+				},
+				{ text = " " },
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "stat2" }
+					}
+				}
+			},
+			{
+				{ text = "+$",                             colour = G.C.GOLD },
+				{ ref_table = "card.ability.extra",        ref_value = "money",          colour = G.C.GOLD },
+				{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.UI.TEXT_INACTIVE, scale = 0.3 }
+			}
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+		end
+	}
+end
 local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
@@ -72,6 +108,31 @@ local googol_play = {
 		end
 	end,
 }
+if JokerDisplay then
+	googol_play.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult" }
+				}
+			}
+		},
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = " in " },
+				{ ref_table = "card.ability.extra",        ref_value = "odds" },
+				{ text = ")" },
+			}
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+		end
+	}
+end
 local sync_catalyst = {
 	object_type = "Joker",
 	name = "cry-Sync Catalyst",
@@ -81,10 +142,11 @@ local sync_catalyst = {
         name = 'Sync Catalyst',
         text = {
 			"Balances {C:chips}Chips{} and {C:mult}Mult{}",
+			"{C:inactive,s:0.8}Hey! I\'ve seen this one before!"
 		}
     },
 	rarity = "cry_epic",
-	cost = 11,
+	cost = 12,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -113,7 +175,7 @@ local negative = {
 		}
     },
 	rarity = "cry_epic",
-	cost = 12,
+	cost = 10,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra}}
@@ -161,6 +223,25 @@ local canvas = {
 		end
 	end,
 }
+if JokerDisplay then
+	canvas.joker_display_definition = {
+		text = {
+			{ text = "x" },
+			{ ref_table = "card.joker_display_values", ref_value = "num_retriggers" },
+		},
+		calc_function = function(card)
+			local num_retriggers = 0
+			if G.jokers then
+				for i = 1, #G.jokers.cards do
+					if card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2 and G.jokers.cards[i].config.center.rarity ~= 1 then
+						num_retriggers = num_retriggers + 1
+					end
+				end
+			end
+			card.joker_display_values.num_retriggers = num_retriggers
+		end
+	}
+end
 local error_joker = {
 	object_type = "Joker",
 	name = "cry-Error",
@@ -227,6 +308,37 @@ local error_joker = {
 		end
 	end
 }
+if JokerDisplay then
+	error_joker.joker_display_definition = {
+		text = {
+			{
+				dynatext = {
+					-- Maybe this can be defined before so we don't have to hard code the value
+					string = {"+","-","X","/","^","=",">","<","m"},
+					colours = { G.C.DARK_EDITION, },
+					pop_in_rate = 9999999,
+					silent = true,
+					random_element = true,
+					pop_delay = 0.30,
+					scale = 0.4,
+					min_cycle_time = 0
+				}
+			},
+			{
+				dynatext = {
+					string = {"0","1","2","3","4","5","6","7","8","9","10","69","404","420","-1","0.5","m","nan","inf","nil","pi","1e9","???"},
+					colours = { G.C.DARK_EDITION, },
+					pop_in_rate = 9999999,
+					silent = true,
+					random_element = true,
+					pop_delay = 0.33,
+					scale = 0.4,
+					min_cycle_time = 0
+				}
+			},
+		},
+	}
+end
 local m = {
 	object_type = "Joker",
 	name = "cry-m",
@@ -263,6 +375,18 @@ local m = {
 		end
 	end
 }
+if JokerDisplay then
+	m.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "x_mult" }
+				}
+			}
+		},
+	}
+end
 local M = {
 	object_type = "Joker",
 	name = "cry-M",
@@ -273,8 +397,8 @@ local M = {
         name = 'M',
         text = {
 			"Create a {C:dark_edition}Negative{}",
-			"{C:attention}Jolly Joker{}",
-			"when {C:attention}Blind{} is selected"
+			"{C:attention}Jolly Joker{} when",
+			"{C:attention}Blind{} is selected"
 		}
     },
 	rarity = "cry_epic",
@@ -341,40 +465,85 @@ local boredom = {
 		end
 	end
 }
+if JokerDisplay then
+	boredom.joker_display_definition = {
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = " in " },
+				{ ref_table = "card.ability.extra",        ref_value = "odds" },
+				{ text = ")" },
+			}
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+		end
+	}
+end
 local number_blocks = {
     object_type = "Joker",
-	name = "cry-Number Blocks",
-	key = "number_blocks",
+    name = "cry-Number Blocks",
+    key = "number_blocks",
     config = {extra = {money_mod = 1, money = 0}},
-	pos = {x = 0, y = 2},
-	loc_txt = {
+    pos = {x = 0, y = 2},
+    loc_txt = {
         name = 'Number Blocks',
         text = {
-			"Earn {C:money}$#1#{} at end of round",
-			"Increase payout by {C:money}$#2#{}",
-			"for each {C:attention}#3#{} held in hand,",
-			"rank changes every round"
+            "Earn {C:money}$#1#{} at end of round",
+            "Increase payout by {C:money}$#2#{}",
+            "for each {C:attention}#3#{} held in hand,",
+            "rank changes every round"
         }
     },
-	rarity = "cry_epic",
-	cost = 14,
-	atlas = "atlasepic",
+    rarity = "cry_epic",
+    cost = 14,
+    atlas = "atlasepic",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.money, center.ability.extra.money_mod, localize(G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace", 'ranks')}}
     end,
     calculate = function(self, card, context)
         if context.individual and not context.end_of_round and context.cardarea == G.hand and not context.blueprint and not context.before and not context.after and context.other_card:get_id() == G.GAME.current_round.cry_nb_card.id then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
-			return {calculated = true}
-		end
+            if context.other_card.debuff then
+                return {
+                    message = localize('k_debuffed'),
+                    colour = G.C.RED,
+                    card = card
+                }
+            else
+                card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                return {calculated = true}
+            end
+        end
     end,
-	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			return card.ability.extra.money
-		end
-	end
+    calc_dollar_bonus = function(self, card)
+        if card.ability.extra.money > 0 then
+            return card.ability.extra.money
+        end
+    end
 }
+if JokerDisplay then
+	number_blocks.joker_display_definition = {
+		text = {
+			{ text = "+$" },
+			{ ref_table = "card.ability.extra", ref_value = "money" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text_rank" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text_round" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text_rank = "(" ..
+				localize(G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace", 'ranks') ..
+				") "
+			card.joker_display_values.localized_text_round = "(" .. localize("k_round") .. ")"
+		end
+	}
+end
+
 local double_scale = {
     object_type = "Joker",
     name = "cry-Double Scale",
@@ -416,6 +585,13 @@ local double_scale = {
                     end
                 elseif not G.GAME.cry_double_scale[jkr.sort_id].scaler then
                     dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+					if jkr.ability.name == "cry-Number Blocks" then
+						dbl_info.base = {"extra", "money"}
+						dbl_info.scaler = {"extra", "money_mod"}
+						dbl_info.scaler_base = jkr.ability.extra.money_mod
+						dbl_info.offset = 1
+						return
+					end
 					if jkr.ability.name == "cry-Exponentia" then
 						dbl_info.base = {"extra", "Emult"}
 						dbl_info.scaler = {"extra", "Emult_mod"}
@@ -596,7 +772,7 @@ local oldcandy = {
     return {vars = {center.ability.extra.hand_size}}
     end,
 	rarity = "cry_epic",
-	cost = 10,
+	cost = 9,
 	eternal_compat = false,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -669,6 +845,38 @@ local caramel = {
         end
     	end
 }
+if JokerDisplay then
+	caramel.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "x_mult" }
+				}
+			}
+		},
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local count = 0
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= 'Unknown' then
+				for _, scoring_card in pairs(scoring_hand) do
+					count = count +
+						JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+				end
+			end
+			card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.x_mult ^ count)))
+	
+			card.joker_display_values.start_round = card.joker_display_values.start_round or
+				card.ability.extra.rounds_remaining
+			card.joker_display_values.rounds_remaining = "(" .. card.ability.extra.rounds_remaining ..
+				"/" .. card.joker_display_values.start_round .. ")"
+		end,
+	}
+end
 local curse = {
     object_type = "Joker",
     name = "cry_curse",
@@ -684,7 +892,7 @@ local curse = {
         }
     },
     rarity = "cry_epic",
-    cost = 4,
+    cost = 9,
     perishable_compat = true,
     atlas = "atlasepic",
     calculate = function(self, card, context)
@@ -744,7 +952,7 @@ local curse = {
                     })
                 }
         end
-	if context.destroying_card and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
+	if context.open_booster and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
 	    local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 	    G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_obelisk')
@@ -800,7 +1008,7 @@ local curse = {
                     })
                 }
         end
-	if context.using_consumable and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
+	if context.using_consumeable and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
 	    local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 	    G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_obelisk')
@@ -878,51 +1086,48 @@ local bonusjoker = {
 	name = "cry-bonusjoker",
 	key = "bonusjoker",
 	pos = {x = 3, y = 2},
-	config = {extra = {odds = 15, x_chips = 1.5, check = true}},
+	config = {extra = {odds = 8, check = 0}},
 	loc_txt = {
         name = 'Bonus Joker',
         text = {
-			"Each played {C:attention}Bonus Card",
-			"gives {X:mult,C:white}X#3#{} Mult when scored",
 			"{C:green}#1# in #2#{} chance for each",
 			"played {C:attention}Bonus Card{} to increase",
-			"{C:attention}joker{} slots by {C:dark_edition}1{} when scored",
-			"{C:red}Works once per round"
+			"{C:attention}Joker{} or {C:attention}Consumable slots",
+			"by {C:dark_edition}1{} when scored",
+			"{C:red}Works twice per round",
+			"{C:inactive,s:0.8}(Equal chance for each){}"
 		}
     	},
 	rarity = "cry_epic",
-	cost = 12,
+	cost = 11,
 	blueprint_compat = true,
 	enhancement_gate = 'm_bonus',
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.m_bonus
-		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.x_chips}}
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
     	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-    		if context.individual and context.cardarea == G.play and not context.blueprint then
+    		if context.individual and context.cardarea == G.play then
         		if context.other_card.ability.effect == "Bonus Card" then
-            			if pseudorandom('bonusjoker') < G.GAME.probabilities.normal / card.ability.extra.odds and card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
-					card.ability.extra.check = false
-                			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+            			if pseudorandom('bonusjoker') < G.GAME.probabilities.normal / card.ability.extra.odds and card.ability.extra.check < 2 and not context.retrigger_joker then
+					if not context.blueprint then card.ability.extra.check = card.ability.extra.check + 1 end
+					local option = pseudorandom_element({1, 2}, pseudoseed('bonusjoker'))
+					if option == 1 then
+                				G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+					else
+						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+					end
                 			return {
-					x_chips = card.ability.extra.x_chips,
-					extra = {focus = card, message = localize('k_upgrade_ex')},
+					message = localize('k_upgrade_ex'),
 					card = card,
 					colour = G.C.CHIPS
 					}
-				else
-					return {
-                			x_chips = card.ability.extra.x_chips,
-                			colour = G.C.CHIPS,
-                			card = card
-            				}
 				end
-            		
         		end
     		end
-		if context.end_of_round and not card.ability.extra.check and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
-			card.ability.extra.check = true
+		if context.end_of_round and not card.ability.extra.check ~= 0 and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
+			card.ability.extra.check = 0
             		return {
                     	message = localize('k_reset'),
                         card = card,
@@ -930,7 +1135,118 @@ local bonusjoker = {
 		end
 	end
 }
-
+if JokerDisplay then
+	bonusjoker.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "x_chips" }
+				},
+				border_colour = G.C.CHIPS
+			}
+		},
+		reminder_text = {
+			{ text = '(', },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ')', },
+		},
+		calc_function = function(card)
+			local count = 0
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= 'Unknown' then
+				for _, scoring_card in pairs(scoring_hand) do
+					if scoring_card.ability.effect and scoring_card.ability.effect == "Bonus Card" then
+						count = count +
+							JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					end
+				end
+			end
+			card.joker_display_values.count = count
+			card.joker_display_values.x_chips = tonumber(string.format("%.2f", (card.ability.extra.x_chips ^ count)))
+			card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Enhanced', key = "m_bonus" }
+		end
+	}
+end
+local multjoker = {
+	object_type = "Joker",
+	name = "cry-multjoker",
+	key = "multjoker",
+	pos = {x = 2, y = 3},
+	config = {extra = {odds = 4}},
+	loc_txt = {
+        name = 'Mult Joker',
+        text = {
+			"{C:green}#1# in #2#{} chance for each",
+			"played {C:attention}Mult Card{} to create",
+			"a {C:spectral}Cryptid{} card when scored",
+			"{C:inactive}(Must Have room)"
+		}
+    	},
+	rarity = "cry_epic",
+	cost = 11,
+	blueprint_compat = true,
+	enhancement_gate = 'm_mult',
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_mult
+		info_queue[#info_queue+1] = G.P_CENTERS.c_cryptid
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
+    	end,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+    		if context.individual and context.cardarea == G.play then
+        		if context.other_card.ability.effect == "Mult Card" and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            			if pseudorandom('multjoker') < G.GAME.probabilities.normal / card.ability.extra.odds then
+					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+					G.E_MANAGER:add_event(Event({
+                                        	func = function() 
+                                            	local new_card = create_card('Spectral',G.consumeables, nil, nil, nil, nil, 'c_cryptid', 'multjoker')
+                                            	new_card:add_to_deck()
+                                            	G.consumeables:emplace(new_card)
+                                            	G.GAME.consumeable_buffer = 0
+                                            	return true
+                                        	end}))   
+                                    	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = ('+1 Cryptid'), colour = G.C.SECONDARY_SET.Spectral})                
+				end
+        		end
+    		end
+	end
+}
+if JokerDisplay then
+	multjoker.joker_display_definition = {
+		text = {
+            { text = "+" },
+            { ref_table = "card.joker_display_values", ref_value = "count" },
+        },
+        text_config = { colour = G.C.SECONDARY_SET.Spectral },
+        extra = {
+            {
+                { text = "(" },
+                { ref_table = "card.joker_display_values",                     ref_value = "odds" },
+                { text = " in " },
+                { ref_table = "card.ability.extra",                     ref_value = "odds" },
+                { text = ")" },
+            }
+        },
+        extra_config = { colour = G.C.GREEN, scale = 0.3 },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
+				for _, scoring_card in pairs(scoring_hand) do
+					if scoring_card.ability.effect and scoring_card.ability.effect == "Mult Card" then
+						count = count +
+							JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					end
+				end
+			end
+            card.joker_display_values.count = count
+            card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+        end
+	}
+end
 return {name = "Epic Jokers", 
 		init = function()
 			
@@ -1018,4 +1334,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker,}}
+		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,}}

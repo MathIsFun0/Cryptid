@@ -18,9 +18,9 @@ while i <= #G.jokers.cards do
 end
 i = 1
 while i <= #G.consumeables.cards do
-    G.consumeables.cards[i]:calculate_rental()
-    G.consumeables.cards[i]:calculate_perishable()
-    local gone = G.consumeables.cards[i]:calculate_banana()
+    G.consumeables.cards[i]:cry_calculate_consumeable_rental()
+    G.consumeables.cards[i]:cry_calculate_consumeable_perishable()
+    local gone = nil
     if not gone then i = i + 1 end
 end
 '''
