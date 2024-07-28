@@ -265,7 +265,7 @@ return {name = "Achievements",
             function create_UIBox_cryptid_achievements(args)
                 args = args or {}
                 fetch_achievements()
-                local achievements_per_row = 3
+                local achievements_per_row = 4
                 local achievements_pool = {}
                 for k, v in pairs(G.ACHIEVEMENTS) do
                     if v.mod and v.mod.id == "Cryptid" then achievements_pool[#achievements_pool+1] = v end
@@ -376,7 +376,7 @@ return {name = "Achievements",
                                 }},
                             },
                         })
-                        if #G.CRYPTID_ACHIEVEMENTS_MATRIX[row] > achievements_per_row then 
+                        if #G.CRYPTID_ACHIEVEMENTS_MATRIX[row] == achievements_per_row then 
                             row = row + 1
                             G.CRYPTID_ACHIEVEMENTS_MATRIX[row] = {}
                         end
@@ -419,7 +419,7 @@ return {name = "Achievements",
                 G.CRYPTID_ACHIEVEMENTS_MATRIX = {{},{}}
                 
                 fetch_achievements()
-                local achievements_per_row = 3
+                local achievements_per_row = 4
                 local achievements_pool = {}
                 for k, v in pairs(G.ACHIEVEMENTS) do
                     if v.mod and v.mod.id == "Cryptid" then achievements_pool[#achievements_pool+1] = v end
@@ -530,18 +530,12 @@ return {name = "Achievements",
                             }},
                         },
                     })
-                    if #G.CRYPTID_ACHIEVEMENTS_MATRIX[row] > achievements_per_row then 
+                    if #G.CRYPTID_ACHIEVEMENTS_MATRIX[row] == achievements_per_row then 
                         row = row + 1
                         G.CRYPTID_ACHIEVEMENTS_MATRIX[row] = {}
                     end
                 end
-                local asdf2 = G.OVERLAY_MENU.definition.nodes[1].nodes[1].nodes[1].nodes[1].nodes[1].nodes[2].nodes[1].config
-                --print(tprint(G.OVERLAY_MENU.definition.nodes[1].nodes[1].nodes[1].nodes[1].nodes[1].nodes[2].nodes[1].config))
-                --print("object: "..tostring(asdf2.object))
-               -- local achievements_page_obj = G.OVERLAY_MENU.definition.nodes[1].nodes[1].nodes[1].nodes[1].nodes[1].nodes[2].nodes[1].config.object
-                --local achievements_page_rows = achievements_page_obj.definition.nodes[1].nodes[1].nodes[1]
-                --achievements_page_rows[1] = {n=G.UIT.R, config={align = "cm"}, nodes=G.CRYPTID_ACHIEVEMENTS_MATRIX[1]}
-                --achievements_page_rows[2] = {n=G.UIT.R, config={align = "cm"}, nodes=G.CRYPTID_ACHIEVEMENTS_MATRIX[2]}
+                
                 local tab_contents = G.OVERLAY_MENU:get_UIE_by_ID('tab_contents')
                 tab_contents.config.object:remove()
                 tab_contents.config.object = UIBox{
