@@ -2670,6 +2670,7 @@ return {name = "Misc. Jokers",
             local rcc = reset_castle_card;
             function reset_castle_card()
                 rcc()
+                if not G.GAME.current_round.cry_dropshot_card then G.GAME.current_round.cry_dropshot_card = {} end
                 G.GAME.current_round.cry_dropshot_card.suit = 'Spades'
                 local valid_castle_cards = {}
                 for k, v in ipairs(G.playing_cards) do

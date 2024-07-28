@@ -6,16 +6,17 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.4.3d
+--- VERSION: 0.4.3e
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
-Cryptid_config = {["Cryptid"]={jimball_music = true}}
-if NFS.read(mod_path.."/config.lua") then
-    Cryptid_config = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
+Cryptid_config = {["Cryptid"]={jimball_music = true, code_music = true, big_music = true, exotic_music = true}}
+local read_config = SMODS.load_file("config.lua")
+if read_config then
+    Cryptid_config = read_config()
 end
 
 -- Custom Rarity setup (based on Relic-Jokers)
@@ -377,7 +378,7 @@ end
 local files = NFS.getDirectoryItems(mod_path.."Items")
 for _, file in ipairs(files) do
     print("Loading file "..file)
-    local f, err = NFS.load(mod_path.."Items/"..file)
+    local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
@@ -472,7 +473,7 @@ if not SpectralPack then
         end
     },
     {
-        label = "Options",
+        label = "Music",
         tab_definition_function = function()
             -- TODO: Add a button here to reset all Cryptid achievements. 
             -- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
@@ -486,7 +487,10 @@ if not SpectralPack then
                 --{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
               }}}
             settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
-            settings.nodes[#settings.nodes+1] = create_toggle({label = "Enable Jimball Music (Copyrighted)", ref_table = Cryptid_config.Cryptid, ref_value = "jimball_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "Jimball (Funkytown by Lipps Inc. - Copyrighted)", ref_table = Cryptid_config.Cryptid, ref_value = "jimball_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)", ref_table = Cryptid_config.Cryptid, ref_value = "code_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "Exotic Jokers (Amen Balatro by AlexZGreat)", ref_table = Cryptid_config.Cryptid, ref_value = "exotic_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "High Score (BalAAAAAAtro by AlexZGreat)", ref_table = Cryptid_config.Cryptid, ref_value = "big_music"})
             config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={settings}}
             cry_nodes[#cry_nodes+1] = config
             return {
@@ -840,7 +844,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_all_banana = {"All Jokers are {C:eternal}Banana{}"}
     G.localization.misc.v_text.ch_c_cry_sticker_sheet_plus = {"All purchasable items have all stickers"}
     G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
-    G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
+    G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}Boss Blinds{}"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
     G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
@@ -1092,10 +1096,34 @@ SMODS.Sound({
     path = "e_blur.ogg"
 })
 SMODS.Sound({
-    key = "music-Jimball",
-    path = "Jimball.ogg",
+    key = "music_jimball",
+    path = "music_jimball.ogg",
+    no_sync = true,
+    pitch = 1,
     select_music_track = function()
-        return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music
+        return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music and 1.57e308
+    end
+})
+SMODS.Sound({
+    key = "music_code",
+    path = "music_code.ogg",
+    select_music_track = function()
+        return Cryptid_config.Cryptid.code_music and ((G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code') or (G.GAME and G.GAME.USING_CODE))
+    end
+})
+SMODS.Sound({
+    key = "music_big",
+    path = "music_big.ogg",
+    select_music_track = function()
+        return Cryptid_config.Cryptid.big_music and to_big(G.GAME.round_scores['hand'].amt) > to_big(10)^1000000
+    end
+})
+SMODS.Sound({
+    key = "music_exotic",
+    path = "music_exotic.ogg",
+    volume = 0.4,
+    select_music_track = function()
+        return Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
     end
 })
 SMODS.Atlas({
