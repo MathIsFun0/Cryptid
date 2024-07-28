@@ -390,6 +390,10 @@ for _, file in ipairs(files) do
                 item.discovered = true
                 if SMODS[item.object_type] then
                     SMODS[item.object_type](item)
+                    -- JokerDisplay mod support
+                    if JokerDisplay and item.joker_display_definition then
+                        JokerDisplay.Definitions[item.key] = item.joker_display_definition
+                    end
                 else
                     print("Error loading item "..item.key.." of unknown type "..item.object_type)
                 end
