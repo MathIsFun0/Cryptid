@@ -45,3 +45,13 @@ pattern = "if area == G.consumeables then"
 position = "at"
 payload = "if area == G.consumeables or area == G.hand then"
 match_indent = true
+
+# Fix bugs from removing CCD
+# This really shouldn't be in the card drawing code, but it doesn't really matter since that's where it crashes anyway lol
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not self.config.center.discovered and (self.ability.consumeable or self.config.center.unlocked) and not self.config.center.demo and not self.bypass_discovery_center then"
+position = "before"
+payload = "if self.ability.set == 'Enhanced' then self.ability.consumeable = nil end"
+match_indent = true
