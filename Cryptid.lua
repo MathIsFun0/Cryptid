@@ -502,8 +502,8 @@ if not SpectralPack then
     },
     {
         label = "Achievements",
-        tab_definition_function = function()
-            return create_UIBox_your_collection_achievements()
+        tab_definition_function = function(args)
+            return create_UIBox_cryptid_achievements(args)
         end,
     },
 }
