@@ -65,6 +65,7 @@ if self.ability.banana then
 		badges[#badges + 1] = 'banana'
 	end
 end
+if self.ability.cry_rigged then badges[#badges + 1] = 'cry_rigged' end
 if fehiwuojiowfb_disable_this_code_because_my_regex_didnt_work_120u889 then
 '''
 match_indent = true
@@ -80,30 +81,56 @@ end
 '''
 match_indent = true
 
-# STILL back on my bullshit
+# dumb "fix", if you can even call it that (mod badges will appear in the wrong positions)
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
-pattern = "if v == 'negative_consumable' then v = 'negative' end"
-position = "after"
+pattern = "if AUT.badges then"
+position = "before"
 payload = '''
-if v == 'cry_eternal_booster' then v = 'eternal'
-elseif v == 'cry_eternal_voucher' then v = 'eternal'
-elseif v == 'cry_perishable_booster' then v = 'perishable'
-elseif v == 'cry_perishable_voucher' then v = 'perishable'
-elseif v == 'cry_perishable_consumeable' then v = 'perishable'
-elseif v == 'cry_rental_booster' then v = 'rental'
-elseif v == 'cry_rental_voucher' then v = 'rental'
-elseif v == 'cry_rental_consumeable' then v = 'rental'
-elseif v == 'cry_pinned_booster' then v = 'pinned_left'
-elseif v == 'cry_pinned_voucher' then v = 'pinned_left'
-elseif v == 'cry_pinned_consumeable' then v = 'pinned_left'
-elseif v == 'cry_banana_booster' then v = 'banana'
-elseif v == 'cry_banana_voucher' then v = 'banana'
-elseif v == 'cry_banana_consumeable' then v = 'banana'
+local function is_bad_badge(string)
+	local bad_badges = {'cry_eternal_booster', 'cry_eternal_voucher', 'cry_perishable_booster', 'cry_perishable_voucher', 'cry_perishable_consumeable', 'cry_rental_booster', 'cry_rental_voucher', 'cry_rental_consumeable', 'cry_pinned_booster', 'cry_pinned_voucher', 'cry_pinned_consumeable', 'cry_banana_booster', 'cry_banana_voucher', 'cry_banana_consumeable'}
+	for i = 1, #bad_badges do
+		if string == bad_badges[i] then return true end
+	end
+	return false
+end
+
+'''
+match_indent = true
+
+# lmao wtf is this shit
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v))'''
+position = "at"
+payload = '''
+if not is_bad_badge(v) then badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v)) end
+'''
+match_indent = true
+
+# part 3 of the dumbest fix known to man
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''if AUT.info then'''
+position = "before"
+payload = '''
+if AUT.badges then
+	for k, v in ipairs(AUT.badges) do
+		local replaced = false
+		if v == 'cry_eternal_booster' or v == 'cry_eternal_voucher' then replaced = true; v = 'eternal' end
+		if v == 'cry_perishable_booster' or v == 'cry_perishable_voucher' or v == 'cry_perishable_consumeable' then replaced = true; v = 'perishable' end
+		if v == 'cry_rental_booster' or v == 'cry_rental_voucher' or v == 'cry_rental_consumeable' then replaced = true; v = 'rental' end
+		if v == 'cry_pinned_booster' or v == 'cry_pinned_voucher' or v == 'cry_pinned_consumeable' then replaced = true; v = 'pinned_left' end
+		if v == 'cry_banana_booster' or v == 'cry_banana_voucher' or v == 'cry_banana_consumeable' then replaced = true; v = 'banana' end
+		if replaced == true then badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v)) end
+	end
 end
 '''
 match_indent = true
+
 
 # fucking hell
 [[patches]]
