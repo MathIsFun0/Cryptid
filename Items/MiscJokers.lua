@@ -55,6 +55,38 @@ local dropshot = {
         end
     end
 }
+if JokerDisplay then
+    dropshot.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                }
+            }
+        },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "dropshot_card_suit" },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            local dropshot_suit = G.GAME and G.GAME.current_round.cry_dropshot_card and
+                G.GAME.current_round.cry_dropshot_card.suit
+            card.joker_display_values.dropshot_card_suit = dropshot_suit and
+                localize(G.GAME.current_round.cry_dropshot_card.suit, 'suits_plural') or "-"
+        end,
+        style_function = function(card, text, reminder_text, extra)
+            if reminder_text and reminder_text.children[2] then
+                local dropshot_suit = G.GAME and G.GAME.current_round.cry_dropshot_card and
+                    G.GAME.current_round.cry_dropshot_card.suit
+                reminder_text.children[2].config.colour = dropshot_suit and
+                    lighten(G.C.SUITS[G.GAME.current_round.cry_dropshot_card.suit], 0.35) or G.C.ORANGE
+            end
+            return false
+        end
+    }
+end
 local happyhouse = {
     object_type = "Joker",
     name = "cry-happyhouse",
@@ -98,6 +130,27 @@ local happyhouse = {
 	end
     end
 }
+if JokerDisplay then
+    happyhouse.joker_display_definition = {
+        text = {  
+            {
+                border_nodes = {
+                    { text = "^" },
+                    { ref_table = "card.joker_display_values", ref_value = "e_mult" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+        reminder_text = {
+            { text = '('},
+            { ref_table = "card.ability.extra", ref_value = "check" },
+            { text = '/114)'},
+        },
+        calc_function = function(card)
+            card.joker_display_values.e_mult = card.ability.extra.check >= 114 and card.ability.extra.mult or 1
+        end
+    }
+end
 local maximized = {
     object_type = "Joker",
 	name = "cry-Maximized",
@@ -154,6 +207,18 @@ local potofjokes = {
         G.hand:change_size(-card.ability.extra.h_size)
     end
 }
+if JokerDisplay then
+    potofjokes.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "h_size", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.h_size = (card.ability.extra.h_size >= 0 and "+" or "") .. card.ability.extra.h_size
+        end,
+    }
+end
 local queensgambit = {
     object_type = "Joker",
     name = "cry-Queen's Gambit",
@@ -239,6 +304,21 @@ local wee_fib = {
 		end
 	end,
 }
+if JokerDisplay then
+    wee_fib.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.ability.extra", ref_value = "mult" }
+        },
+        text_config = { colour = G.C.MULT },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("Ace", "ranks") .. ",2,3,5,8)"
+        end
+    }
+end
 local whip = {
     object_type = "Joker",
     name = "cry-The WHIP",
@@ -286,6 +366,21 @@ local whip = {
         end
     end
 }
+if JokerDisplay then
+    whip.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                }
+            }
+        },
+        reminder_text = {
+            { text = "(2,7)" },
+        },
+    }
+end
 local lucky_joker = {
     object_type = "Joker",
 	name = "cry-Lucky Joker",
@@ -320,6 +415,36 @@ local lucky_joker = {
         end
     end
 }
+if JokerDisplay then
+    lucky_joker.joker_display_definition = {
+        text = {
+            { ref_table = "card.joker_display_values", ref_value = "count" },
+            { text = "x",                              scale = 0.35 },
+            { text = "$",                              colour = G.C.GOLD },
+            { ref_table = "card.ability.extra",        ref_value = "dollars", colour = G.C.GOLD },
+        },
+        reminder_text = {
+            { text = '(', },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ')', },
+        },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card.ability.effect and scoring_card.ability.effect == "Lucky Card" then
+                        count = count +
+                            JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                    end
+                end
+            end
+            card.joker_display_values.count = count
+            card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Enhanced', key = "m_lucky" }
+        end
+    }
+end
 local cursor = {
     object_type = "Joker",
 	name = "cry-Cursor",
@@ -356,6 +481,15 @@ local cursor = {
         end
     end
 }
+if JokerDisplay then
+    cursor.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.ability.extra", ref_value = "chips" }
+        },
+        text_config = { colour = G.C.CHIPS },
+    }
+end
 local pickle = {
     object_type = "Joker",
 	name = "cry-Pickle",
@@ -428,6 +562,18 @@ local pickle = {
         end
     end
 }
+if JokerDisplay then
+    pickle.joker_display_definition = {
+        reminder_text = {
+            { text = '(', },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ')', },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "+" .. card.ability.extra.tags .. " " .. localize("b_tags")
+        end
+    }
+end
 local cube = {
     object_type = "Joker",
 	name = "cry-Cube",
@@ -457,6 +603,15 @@ local cube = {
         end
     end
 }
+if JokerDisplay then
+    cube.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.ability.extra", ref_value = "chips" }
+        },
+        text_config = { colour = G.C.CHIPS },
+    }
+end
 local triplet_rhythm = {
     object_type = "Joker",
 	name = "cry-Triplet Rhythm",
@@ -494,6 +649,31 @@ local triplet_rhythm = {
         end
     end
 }
+if JokerDisplay then
+    triplet_rhythm.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                }
+            }
+        },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' and #scoring_hand == 3 then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card:get_id() and scoring_card:get_id() == 3 then
+                        count = count + 1
+                    end
+                end
+            end
+            card.joker_display_values.x_mult = count == 3 and card.ability.extra.Xmult or 1
+        end,
+    }
+end
 local booster = {
     object_type = "Joker",
 	name = "cry-Booster Joker",
@@ -586,6 +766,27 @@ local chili_pepper = {
         end
     end
 }
+if JokerDisplay then
+    chili_pepper.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "Xmult" }
+                }
+            }
+        },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.start_round = card.joker_display_values.start_round or
+                card.ability.extra.rounds_remaining
+            card.joker_display_values.rounds_remaining = "(" .. card.ability.extra.rounds_remaining ..
+                "/" .. card.joker_display_values.start_round .. ")"
+        end,
+    }
+end
 local compound_interest = {
     object_type = "Joker",
 	name = "cry-Compound Interest",
@@ -614,6 +815,23 @@ local compound_interest = {
         if bonus > 0 then return bonus end
 	end
 }
+if JokerDisplay then
+    compound_interest.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.joker_display_values", ref_value = "dollars" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * G.GAME.dollars))
+            card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local big_cube = {
     object_type = "Joker",
 	name = "cry-Big Cube",
@@ -643,6 +861,19 @@ local big_cube = {
         end
     end
 }
+if JokerDisplay then
+    big_cube.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                },
+                border_colour = G.C.CHIPS
+            }
+        },
+    }
+end
 local eternalflame = {
 	object_type = "Joker",
 	name = "cry-eternalflame",
@@ -678,6 +909,18 @@ local eternalflame = {
 		end
 	end
 }
+if JokerDisplay then
+    eternalflame.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                }
+            }
+        },
+    }
+end
 local nice = {
     object_type = "Joker",
 	name = "cry-Nice",
@@ -719,6 +962,34 @@ local nice = {
         end
     end
 }
+if JokerDisplay then
+    nice.joker_display_definition = {
+        text = {
+            { text = "+", },
+            { ref_table = "card.joker_display_values", ref_value = "chips" },
+        },
+        text_config = { colour = G.C.CHIPS },
+        reminder_text = {
+            { text = '(6+9)', },
+        },
+        extra_config = { colour = G.C.GREEN, scale = 0.3 },
+        calc_function = function(card)
+            local six_count = 0
+            local nine_count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            for _, played_card in pairs(hand) do
+                if played_card:get_id() then
+                    if played_card:get_id() == 6 then
+                        six_count = six_count + 1
+                    elseif played_card:get_id() == 9 then
+                        nine_count = nine_count + 1
+                    end
+                end
+            end
+            card.joker_display_values.chips = six_count > 0 and nine_count > 0 and card.ability.extra.chips or 0
+        end
+    }
+end
 local seal_the_deal = {
     object_type = "Joker",
     name = "cry-Seal The Deal",
@@ -790,6 +1061,21 @@ local chad = {
         end
 	end
 }
+if JokerDisplay then
+    chad.joker_display_definition = {
+        reminder_text = {
+            { text = '(', },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ')', },
+        },
+        calc_function = function(card)
+            local leftmost_joker_key = G.jokers and G.jokers.cards[1] and G.jokers.cards[1] ~= card and
+                G.jokers.cards[1].config.center.key
+            card.joker_display_values.localized_text = leftmost_joker_key and
+                localize { type = 'name_text', key = leftmost_joker_key, set = 'Joker' } or "-"
+        end
+    }
+end
 local jimball = {
 	object_type = "Joker",
 	name = "cry-Jimball",
@@ -837,6 +1123,32 @@ local jimball = {
 	end,
 	atlas = "jimball",
 }
+if JokerDisplay then
+    jimball.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                }
+            }
+        },
+        calc_function = function(card)
+            local hand = G.hand.highlighted
+            local text, _, _ = JokerDisplay.evaluate_hand(hand)
+            local play_more_than = 0
+            local hand_exists = text ~= 'Unknown' and G.GAME and G.GAME.hands and G.GAME.hands[text]
+            if hand_exists then
+                for k, v in pairs(G.GAME.hands) do
+                    if text ~= k and v.played and v.played >= play_more_than and v.visible then
+                        play_more_than = v.played
+                    end
+                end
+            end
+            card.joker_display_values.x_mult = (hand_exists and (G.GAME.hands[text].played < play_more_than and 1 or card.ability.x_mult + card.ability.extra) or card.ability.x_mult)
+        end
+    }
+end
 local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 	object_type = "Atlas",
     key = "jimball",
@@ -952,6 +1264,29 @@ local fspinner = {
 	end,
 	atlas = "atlasone",
 }
+if JokerDisplay then
+    fspinner.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.joker_display_values", ref_value = "chips" }
+        },
+        text_config = { colour = G.C.CHIPS },
+        calc_function = function(card)
+            local hand = G.hand.highlighted
+            local text, _, _ = JokerDisplay.evaluate_hand(hand)
+            local play_more_than = 0
+            local hand_exists = text ~= 'Unknown' and G.GAME and G.GAME.hands and G.GAME.hands[text]
+            if hand_exists then
+                for k, v in pairs(G.GAME.hands) do
+                    if v.played and v.played >= play_more_than and v.visible then
+                        play_more_than = v.played
+                    end
+                end
+            end
+            card.joker_display_values.chips = (hand_exists and (G.GAME.hands[text].played < play_more_than and card.ability.extra.chips + card.ability.extra.chip_mod) or card.ability.extra.chips)
+        end
+    }
+end
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -990,6 +1325,13 @@ local waluigi = {
 	end,
 	atlas = "atlastwo",
 }
+if JokerDisplay then
+    waluigi.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            return { x_mult = mod_joker.ability.extra.Xmult }
+        end
+    }
+end
 local krustytheclown = {
 	object_type = "Joker",
 	name = "cry-krustytheclown",
@@ -1029,6 +1371,18 @@ local krustytheclown = {
 		end
 	end
 }
+if JokerDisplay then
+    krustytheclown.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                }
+            }
+        },
+    }
+end
 local blurred = {
 	object_type = "Joker",
 	name = "cry-blurred",
@@ -1100,6 +1454,37 @@ local gardenfork = {
         end
     end
 }
+if JokerDisplay then
+    gardenfork.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.joker_display_values", ref_value = "dollars" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            local ace_count = 0
+            local seven_count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card:get_id() then
+                        if scoring_card:get_id() == 14 then
+                            ace_count = ace_count + 1
+                        elseif scoring_card:get_id() == 7 then
+                            seven_count = seven_count + 1
+                        end
+                    end
+                end
+            end
+            card.joker_display_values.dollars = ace_count > 0 and seven_count > 0 and card.ability.extra.money or 0
+            card.joker_display_values.localized_text = "(" .. localize("Ace", "ranks") .. "+7)"
+        end
+    }
+end
 local lightupthenight = {
 	object_type = "Joker",
 	name = "cry-lightupthenight",
@@ -1133,6 +1518,35 @@ local lightupthenight = {
 		end
 	end
 }
+if JokerDisplay then
+    lightupthenight.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                }
+            }
+        },
+        reminder_text = {
+            { text = "(7,2)" },
+        },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card:get_id() and (scoring_card:get_id() == 2 or scoring_card:get_id() == 7) then
+                        count = count +
+                            JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                    end
+                end
+            end
+            card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.xmult ^ count)))
+        end,
+    }
+end
 local nosound = {
     object_type = "Joker",
     name = "cry-nosound",
@@ -1168,6 +1582,14 @@ local nosound = {
 	end
     end
 }
+if JokerDisplay then
+    nosound.joker_display_definition = {
+        retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+            if held_in_hand then return 0 end
+            return playing_card:get_id() and playing_card:get_id() == 7 and joker_card.ability.extra.retriggers or 0
+        end
+    }
+end
 local antennastoheaven = {
     object_type = "Joker",
     name = "cry-antennastoheaven",
@@ -1212,6 +1634,22 @@ local antennastoheaven = {
         end
     end
 }
+if JokerDisplay then
+    antennastoheaven.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                },
+                border_colour = G.C.CHIPS
+            }
+        },
+        reminder_text = {
+            { text = "(7,4)" },
+        },
+    }
+end
 local hunger = {
     	object_type = "Joker",
 	name = "cry-hunger",
@@ -1278,6 +1716,14 @@ local weegaming = {
 	end
     end
 }
+if JokerDisplay then
+    weegaming.joker_display_definition = {
+        retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+            if held_in_hand then return 0 end
+            return playing_card:get_id() and playing_card:get_id() == 2 and joker_card.ability.extra.retriggers or 0
+        end
+    }
+end
 local redbloon = {
     object_type = "Joker",
     name = "cry-redbloon",
@@ -1338,6 +1784,29 @@ local redbloon = {
 	end
     end
 }
+if JokerDisplay then
+    redbloon.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.joker_display_values", ref_value = "dollars" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+            { ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.dollars = card.ability.extra.rounds_remaining and
+                card.ability.extra.rounds_remaining <= 1 and card.ability.extra.money or 0
+    
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+            card.joker_display_values.start_round = card.joker_display_values.start_round or
+                card.ability.extra.rounds_remaining
+            card.joker_display_values.rounds_remaining = " (" .. card.ability.extra.rounds_remaining ..
+                "/" .. card.joker_display_values.start_round .. ")"
+        end
+    }
+end
 local apjoker = {
     object_type = "Joker",
     name = "cry-apjoker",
@@ -1365,6 +1834,23 @@ local apjoker = {
         end
     end
 }
+if JokerDisplay then
+    apjoker.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                }
+            }
+        },
+        calc_function = function(card)
+            local is_boss = G.GAME and G.GAME.blind and G.GAME.blind.get_type and
+                G.GAME.blind:get_type() == 'Boss'
+            card.joker_display_values.x_mult = is_boss and card.ability.extra.x_mult or 1
+        end,
+    }
+end
 local maze = {
     object_type = "Joker",
     name = "cry-maze",
@@ -1470,6 +1956,24 @@ local magnet = {
 	end
     end
 }
+if JokerDisplay then
+    magnet.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.joker_display_values", ref_value = "dollars" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.dollars = G.jokers and #G.jokers.cards <= card.ability.extra.slots and
+                card.ability.extra.money * card.ability.extra.Xmoney or card.ability.extra.money
+    
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local unjust_dagger = {
 object_type = "Joker",
 name = "cry-Unjust Dagger",
@@ -1520,6 +2024,18 @@ return {calculated = true}
         end
     end
 }
+if JokerDisplay then
+    unjust_dagger.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                }
+            }
+        },
+    }
+end
 local monkey_dagger = {
 	object_type = "Joker",
 	name = "cry-Monkey Dagger",
@@ -1570,6 +2086,15 @@ local monkey_dagger = {
         end
     end
 }
+if JokerDisplay then
+    monkey_dagger.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.ability.extra", ref_value = "chips" }
+        },
+        text_config = { colour = G.C.CHIPS },
+    }
+end
 local pirate_dagger = {
 	object_type = "Joker",
 	name = "cry-Pirate Dagger",
@@ -1620,6 +2145,19 @@ local pirate_dagger = {
         end
     end
 }
+if JokerDisplay then
+    pirate_dagger.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                },
+                border_colour = G.C.CHIPS
+            }
+        },
+    }
+end
 local mondrian = {
     object_type = "Joker",
     name = "cry-mondrian",
@@ -1659,6 +2197,18 @@ local mondrian = {
         end
     end
 }
+if JokerDisplay then
+    mondrian.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                }
+            }
+        },
+    }
+end
 local sapling = {
 	object_type = "Joker",
 	name = "cry-sapling",
@@ -1702,6 +2252,18 @@ local sapling = {
 		end
 	end
 }
+if JokerDisplay then
+    sapling.joker_display_definition = {
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            local is_active = card.ability.extra.score >= card.ability.extra.req
+            card.joker_display_values.localized_text = "(" ..
+                (is_active and localize("k_active_ex") or (card.ability.extra.score .. "/" .. card.ability.extra.req)) .. ")"
+        end
+    }
+end
 local spaceglobe = {
 	object_type = "Joker",
 	name = "cry-spaceglobe",
@@ -1755,6 +2317,27 @@ local spaceglobe = {
 		
         end
 }
+if JokerDisplay then
+    spaceglobe.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                },
+                border_colour = G.C.CHIPS
+            }
+        },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = localize(card.ability.extra.type, 'poker_hands')
+        end
+    }
+end
 local happy = {
     object_type = "Joker",
     name = "cry-happy",
@@ -1864,6 +2447,36 @@ local meteor = {
     end,
     atlas = "atlastwo",
 }
+if JokerDisplay then
+    meteor.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.joker_display_values", ref_value = "chips" }
+        },
+        text_config = { colour = G.C.CHIPS },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            local chips = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card.edition and scoring_card.edition.foil == true then
+                        chips = chips +
+                            card.ability.extra.chips *
+                            JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                    end
+                end
+            end
+            card.joker_display_values.chips = chips
+            card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Edition', key = "e_foil" }
+        end
+    }
+end
 local exoplanet = {
 	object_type = "Joker",
 	name = "cry-exoplanet",
@@ -1924,6 +2537,36 @@ local exoplanet = {
 	end,
 	atlas = "atlastwo",
 }
+if JokerDisplay then
+    exoplanet.joker_display_definition = {
+        text = {
+            { text = "+" },
+            { ref_table = "card.joker_display_values", ref_value = "mult" }
+        },
+        text_config = { colour = G.C.MULT },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            local mult = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card.edition and scoring_card.edition.holo == true then
+                        mult = mult +
+                            card.ability.extra.mult *
+                            JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                    end
+                end
+            end
+            card.joker_display_values.mult = mult
+            card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Edition', key = "e_holo" }
+        end
+    }
+end
 local stardust = {
 	object_type = "Joker",
 	name = "cry-stardust",
@@ -1984,6 +2627,37 @@ local stardust = {
 	end,
 	atlas = "atlastwo",
 }
+if JokerDisplay then
+    stardust.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                }
+            }
+        },
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+            if text ~= 'Unknown' then
+                for _, scoring_card in pairs(scoring_hand) do
+                    if scoring_card.edition and scoring_card.edition.polychrome == true then
+                        count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+                    end
+                end
+            end
+            card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.xmult ^ count)))
+            card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Edition', key = "e_polychrome" }
+        end
+    }
+end
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
