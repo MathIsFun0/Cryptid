@@ -18,6 +18,9 @@ local sticker_sheet = {
         banned_cards = {},
         banned_other = {}
     },
+    deck = {
+        type = 'Challenge Deck',
+    },
 	loc_txt = "Sticker Sheet"
 }
 local sticker_sheet_plus = {
@@ -34,6 +37,9 @@ local sticker_sheet_plus = {
         banned_cards = {},
         banned_other = {}
     },
+    deck = {
+        type = 'Challenge Deck',
+    },
 	loc_txt = "Sticker Sheet+"
 }
 local ballin = {
@@ -48,7 +54,8 @@ local ballin = {
     jokers = {
         {id = 'j_cry_jimball',eternal=true}
     },
-    deck = {enhancement = 'm_stone'},
+    deck = {
+        type = 'Challenge Deck',enhancement = 'm_stone'},
 	loc_txt = "Ballin'"
 }
 local rush_hour = {
@@ -60,6 +67,9 @@ local rush_hour = {
             {id = 'cry_rush_hour'} --this just explains the rule
         },
         modifiers = {}
+    },
+    deck = {
+        type = 'Challenge Deck',
     },
     restrictions = {
         banned_cards = {
@@ -75,15 +85,27 @@ local rush_hour_ii = {
 	loc_txt = "Rush Hour II",
     rules = {
         custom = {
+            {id = 'cry_rush_hour'},
             {id = 'cry_rush_hour_ii'},
             {id = 'cry_no_tags'}
         },
         modifiers = {}
     },
+    deck = {
+        type = 'Challenge Deck',
+    },
     restrictions = {
         banned_cards = {
             {id = 'j_luchador'},
-            {id = 'j_chicot'}
+            {id = 'j_chicot'},
+            {id = 'j_throwback'},
+            {id = 'j_cry_pickle'},
+            {id = 'j_diet_cola'},
+            {id = 'v_directors_cut'},
+            {id = 'v_retcon'},
+            {id = 'v_cry_copies'},
+            {id = 'v_cry_tag_printer'},
+            {id = 'v_cry_clone_machine'},
         },
         banned_other = {}
     }
@@ -95,6 +117,7 @@ local rush_hour_iii = {
 	loc_txt = "Rush Hour III",
     rules = {
         custom = {
+            {id = 'cry_rush_hour'},
             {id = 'cry_rush_hour_ii'},
             {id = 'cry_rush_hour_iii'},
             {id = 'cry_no_tags'}
@@ -111,14 +134,58 @@ local rush_hour_iii = {
     restrictions = {
         banned_cards = {
             {id = 'j_luchador'},
-            {id = 'j_chicot'}
+            {id = 'j_chicot'},
+            {id = 'j_throwback'},
+            {id = 'j_cry_pickle'},
+            {id = 'j_diet_cola'},
+            {id = 'v_directors_cut'},
+            {id = 'v_retcon'},
+            {id = 'v_cry_copies'},
+            {id = 'v_cry_tag_printer'},
+            {id = 'v_cry_clone_machine'},
+        },
+        banned_other = {}
+    }
+}
+local boss_rush = {
+    object_type = "Challenge",
+    key = "boss_rush",
+	loc_txt = "Enter the Gungeon",
+    rules = {
+        custom = {
+            {id = 'cry_rush_hour_ii'},
+            {id = 'cry_no_tags'}
+        },
+        modifiers = {}
+    },
+    jokers = {
+        {id = 'j_cry_apjoker',eternal=true}
+    },
+    deck = {
+        type = 'Challenge Deck',
+    },
+    restrictions = {
+        banned_cards = {
+            {id = 'j_luchador'},
+            {id = 'j_chicot'},
+            {id = 'j_throwback'},
+            {id = 'j_cry_pickle'},
+            {id = 'j_diet_cola'},
+            {id = 'v_directors_cut'},
+            {id = 'v_retcon'},
+            {id = 'v_cry_copies'},
+            {id = 'v_cry_tag_printer'},
+            {id = 'v_cry_clone_machine'},
         },
         banned_other = {}
     }
 }
 
 local challenges = {sticker_sheet, sticker_sheet_plus}
-if Cryptid_config["Misc. Jokers"] then challenges[#challenges+1] = ballin end
+if Cryptid_config["Misc. Jokers"] then 
+    challenges[#challenges+1] = ballin 
+    challenges[#challenges+1] = boss_rush
+end
 if Cryptid_config["Blinds"] and Cryptid_config["Timer Mechanics"] then
     challenges[#challenges+1] = rush_hour
     challenges[#challenges+1] = rush_hour_ii
