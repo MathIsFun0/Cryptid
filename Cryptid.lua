@@ -1054,10 +1054,31 @@ SMODS.Sound({
     path = "e_blur.ogg"
 })
 SMODS.Sound({
-    key = "music-Jimball",
-    path = "Jimball.ogg",
+    key = "music_jimball",
+    path = "music_jimball.ogg",
     select_music_track = function()
         return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music
+    end
+})
+SMODS.Sound({
+    key = "music_code",
+    path = "music_code.ogg",
+    select_music_track = function()
+        return ((G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code') or (G.GAME and G.GAME.USING_CODE))
+    end
+})
+SMODS.Sound({
+    key = "music_big",
+    path = "music_big.ogg",
+    select_music_track = function()
+        return to_big(G.GAME.round_scores['hand'].amt) > to_big(10)^1000000
+    end
+})
+SMODS.Sound({
+    key = "music_exotic",
+    path = "music_exotic.ogg",
+    select_music_track = function()
+        return cry_has_exotic()
     end
 })
 SMODS.Atlas({
