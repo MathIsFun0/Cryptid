@@ -14,8 +14,9 @@
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
 Cryptid_config = {["Cryptid"]={jimball_music = true, code_music = true, big_music = true, exotic_music = true}}
-if NFS.read(mod_path.."/config.lua") then
-    Cryptid_config = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
+local read_config = SMODS.load_file("config.lua")
+if read_config then
+    Cryptid_config = read_config()
 end
 
 -- Custom Rarity setup (based on Relic-Jokers)
@@ -356,7 +357,7 @@ end
 local files = NFS.getDirectoryItems(mod_path.."Items")
 for _, file in ipairs(files) do
     print("Loading file "..file)
-    local f, err = NFS.load(mod_path.."Items/"..file)
+    local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
