@@ -507,6 +507,7 @@ if not SpectralPack then
     {
         label = "Achievements",
         tab_definition_function = function(args)
+            G.CRYPTID_ACHIEVEMENTS_MATRIX = nil
             return create_UIBox_cryptid_achievements(args)
         end,
     },
