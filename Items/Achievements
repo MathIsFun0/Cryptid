@@ -131,7 +131,7 @@ local ult_full_skip = {
     key = "ult_full_skip",
     loc_txt = {
         name = "Ultimate Full Skip",
-        description = "Win in one round",
+        description = "Win in 1 round",
     },
     bypass_all_unlocked = true,
     unlock_condition = function(self, args)
@@ -144,10 +144,6 @@ local ult_full_skip = {
 -- TODO Achievement API Additions
 -- "Reset Achievements" button (deletes them from G.SETTINGS.ACHIEVEMENTS_EARNED)
   -- Note that you may still end up unlocking some achievements immediately afterwards because their checks are dependant on a stat that isn't wiped (like "We Told You Not To")
--- Better UI 
-  -- Hidden Achievements
-  -- Add Pages
--- Platinum Trophies (for the true ~~bullshit~~ hard achievements)
 
 -- TODO: Add new Achievements. 
 -- Current Ideas (Normal): 
