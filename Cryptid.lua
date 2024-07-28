@@ -1056,8 +1056,10 @@ SMODS.Sound({
 SMODS.Sound({
     key = "music_jimball",
     path = "music_jimball.ogg",
+    no_sync = true,
+    pitch = 1,
     select_music_track = function()
-        return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music
+        return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music and 1.57e308
     end
 })
 SMODS.Sound({
@@ -1077,6 +1079,7 @@ SMODS.Sound({
 SMODS.Sound({
     key = "music_exotic",
     path = "music_exotic.ogg",
+    volume = 0.4,
     select_music_track = function()
         return cry_has_exotic()
     end
