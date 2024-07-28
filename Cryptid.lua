@@ -13,7 +13,7 @@
 
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
-Cryptid_config = {["Cryptid"]={jimball_music = true}}
+Cryptid_config = {["Cryptid"]={jimball_music = true, code_music = true, big_music = true, exotic_music = true}}
 if NFS.read(mod_path.."/config.lua") then
     Cryptid_config = STR_UNPACK(NFS.read(mod_path.."/config.lua"))
 end
@@ -451,13 +451,16 @@ if not SpectralPack then
         end
     },
     {
-        label = "Options",
+        label = "Music",
         tab_definition_function = function()
             cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
                 --{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
               }}}
             settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
-            settings.nodes[#settings.nodes+1] = create_toggle({label = "Enable Jimball Music (Copyrighted)", ref_table = Cryptid_config.Cryptid, ref_value = "jimball_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "Jimball (Funkytown by Lipps Inc. - Copyrighted)", ref_table = Cryptid_config.Cryptid, ref_value = "jimball_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)", ref_table = Cryptid_config.Cryptid, ref_value = "code_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "Exotic Jokers (Amen Balatro by AlexZGreat)", ref_table = Cryptid_config.Cryptid, ref_value = "exotic_music"})
+            settings.nodes[#settings.nodes+1] = create_toggle({label = "High Score (BalAAAAAAtro by AlexZGreat)", ref_table = Cryptid_config.Cryptid, ref_value = "big_music"})
             config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={settings}}
             cry_nodes[#cry_nodes+1] = config
             return {
@@ -1066,14 +1069,14 @@ SMODS.Sound({
     key = "music_code",
     path = "music_code.ogg",
     select_music_track = function()
-        return ((G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code') or (G.GAME and G.GAME.USING_CODE))
+        return Cryptid_config.Cryptid.code_music and ((G.pack_cards and G.pack_cards.cards and G.pack_cards.cards[1] and G.pack_cards.cards[1].ability.set == 'Code') or (G.GAME and G.GAME.USING_CODE))
     end
 })
 SMODS.Sound({
     key = "music_big",
     path = "music_big.ogg",
     select_music_track = function()
-        return to_big(G.GAME.round_scores['hand'].amt) > to_big(10)^1000000
+        return Cryptid_config.Cryptid.big_music and to_big(G.GAME.round_scores['hand'].amt) > to_big(10)^1000000
     end
 })
 SMODS.Sound({
@@ -1081,7 +1084,7 @@ SMODS.Sound({
     path = "music_exotic.ogg",
     volume = 0.4,
     select_music_track = function()
-        return cry_has_exotic()
+        return Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
     end
 })
 SMODS.Atlas({
