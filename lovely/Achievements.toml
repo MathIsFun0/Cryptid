@@ -18,7 +18,6 @@ G.SETTINGS.ACHIEVEMENTS_EARNED = G.SETTINGS.ACHIEVEMENTS_EARNED or {}
     -- TODO: Allow removal of Steamodded achievements from the settings.jkr file
     -- In case people want to re-earn them again
 for i, v in ipairs(SMODS.Achievement.obj_buffer) do
-    print(v)
     G.ACHIEVEMENTS[v] = SMODS.Achievements[v]
     G.ACHIEVEMENTS[v].order = 31 + i
 end
@@ -53,25 +52,35 @@ target = "functions/common_events.lua"
 pattern = '''if G.GAME.challenge then return end'''
 position = "after"
 payload = '''
-if args.type == 'steamodded' then
-    fetch_achievements() -- Refreshes achievements
-    local obj = SMODS.Achievements[args.key]
-    if obj and obj.unlock_condition and type(obj.unlock_condition) == 'function' then obj:unlock_condition(args) end
+fetch_achievements() -- Refreshes achievements
+for k, v in pairs(G.ACHIEVEMENTS) do
+    if (not v.earned) and v.unlock_condition and type(v.unlock_condition) == 'function' then
+        v:unlock_condition(args) 
+    end
 end
 '''
 match_indent = true
 
 
 ## Cryptid Achievements
-# Earn ://CRASH Achievement on startup
+# Earn ://CRASH and Traffic Jam achievements on startup if conditions met
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "check_for_unlock({type = 'blind_discoveries'})"
+pattern = '''check_for_unlock({type = 'blind_discoveries'})'''
 position = "after"
 payload = '''
 if change_context ~= "splash" then 
-    print("if change_context == \"splash\" then")
-    check_for_unlock({type = 'steamodded', key = 'ach_cry_used_crash'}) 
+    if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_used_crash'] and G.ACHIEVEMENTS['ach_cry_used_crash'].earned) then check_for_unlock({type = 'ach_cry_used_crash'}) end
+    if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_traffic_jam'] and G.ACHIEVEMENTS['ach_cry_traffic_jam'].earned) then check_for_unlock({type = 'win_challenge', fake = true}) end
 end'''
+match_indent = true
+
+# Stop unlock of Rule Bender from Traffic Jam startup check
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''unlock_achievement('rule_bender')'''
+position = "at"
+payload = '''if not args.fake then unlock_achievement('rule_bender') end'''
 match_indent = true

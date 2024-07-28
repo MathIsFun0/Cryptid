@@ -195,7 +195,7 @@ local crash = {
     end,
     use = function(self, card, area, copier)
         if not G.PROFILES[G.SETTINGS.profile].consumeable_usage["c_cry_crash"] then set_consumeable_usage(card) end
-        -- I'm being VERY safe here, okay? Game gets really weird and sometimes does and doesn't have ://CRASH use
+        -- I'm being VERY safe here, game gets really weird and sometimes does and doesn't save ://CRASH use
         G:save_settings()
         G:save_progress()
         local f = pseudorandom_element(crash_functions, pseudoseed("cry_crash"))
@@ -415,6 +415,13 @@ local seed = {
         area:remove_from_highlighted(card)
         if G.jokers.highlighted[1] then
             G.jokers.highlighted[1].ability.cry_rigged = true
+            print(G.jokers.highlighted[1].config.center.key.." rigged")
+            if G.jokers.highlighted[1].config.center.key == "j_cry_googol_play" then 
+                print('ach_cry_googol_play_pass unlocked')
+                check_for_unlock({type = 'googol_play_rigged'})
+            else
+                print(G.jokers.highlighted[1].config.center.key.." ~= j_cry_googol_play")
+            end
         end
         if G.hand.highlighted[1] then
             G.hand.highlighted[1].ability.cry_rigged = true
@@ -604,14 +611,17 @@ G.FUNCS.variable_apply = function()
     if rank_suffix then
         G.GAME.USING_CODE = false
         if rank_suffix == 15 then
+            check_for_unlock({type = 'cheat_used'})
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
             card:add_to_deck()
             G.jokers:emplace(card)
         elseif rank_suffix == 16 then
+            check_for_unlock({type = 'cheat_used'})
             local card = create_card('Code', G.consumeables, nil, nil, nil, nil, 'c_cry_crash')
             card:add_to_deck()
             G.consumeables:emplace(card)
         elseif rank_suffix == 17 then
+            check_for_unlock({type = 'cheat_used'})
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 play_sound('tarot1')
                 return true end }))
@@ -688,6 +698,7 @@ G.FUNCS.class_apply = function()
     if enh_suffix then
         G.GAME.USING_CODE = false
         if enh_suffix == "ccd" then
+            check_for_unlock({type = 'cheat_used'})
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 play_sound('tarot1')
                 return true end }))
@@ -702,6 +713,7 @@ G.FUNCS.class_apply = function()
                 G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_class')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
             end
         elseif enh_suffix == "null" then
+            check_for_unlock({type = 'cheat_used'})
             for i=#G.hand.highlighted, 1, -1 do
                 local card = G.hand.highlighted[i]
                 if card.ability.name == 'Glass Card' then 
