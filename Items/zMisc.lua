@@ -188,21 +188,12 @@ local echo = {
         return {vars = {self.config.retriggers,G.GAME.probabilities.normal, self.config.extra}}
     end,
 }
-
-local eclipse_atlas = {
-    object_type = 'Atlas',
-    key = 'eclipse_atlas',
-    path = 'c_cry_eclipse.png',
-    px = 71,
-    py = 95,
-}
-
 local eclipse = {
     object_type = "Consumable",
     set = "Tarot",
     name = "cry-Eclipse",
     key = "eclipse",
-    pos = {x=0,y=0},
+    pos = {x=1,y=0},
     config = {mod_conv = 'm_cry_echo', max_highlighted = 1},
     loc_txt = {
         name = 'The Eclipse',
@@ -211,7 +202,7 @@ local eclipse = {
             "into an {C:attention}Echo Card"
         }
     },
-    atlas = "eclipse_atlas",
+    atlas = "atlasnotjokers",
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.m_cry_echo
 
@@ -314,8 +305,8 @@ local typhoon = {
         }
     },
     cost = 4,
-    atlas = "typhoon_atlas",
-    pos = {x=0, y=0},
+    atlas = "atlasnotjokers",
+    pos = {x=0, y=4},
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
@@ -334,15 +325,6 @@ local typhoon = {
             end
         }))
     end
-}
-
-local typhoon_sprite = {
-    object_type = "Atlas",
-    key = "typhoon_atlas",
-    
-    path = "s_cry_typhoon.png",
-    px = 71,
-    py = 95
 }
 local cat = {
     object_type = "Tag",
@@ -557,7 +539,7 @@ local memory = {
 }
 
 local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, blurred_shader, blurred,
-echo_atlas, echo, eclipse_atlas, eclipse, 
+echo_atlas, echo, eclipse, 
 typhoon_sprite, azure_seal_sprite, typhoon, azure_seal, 
 cat, empowered, gambler, bundle, memory}
 --[[if cry_enable_epics then
