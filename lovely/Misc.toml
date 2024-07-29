@@ -32,18 +32,6 @@ else
 end
 '''
 
-# Banana Tag + other sticker-like effects
-[[patches]]
-[patches.pattern]
-target = 'card.lua'
-pattern = '''if self.ability.rental then badges[#badges + 1] = 'rental' end'''
-position = 'after'
-match_indent = true
-payload = '''
-if self.ability.banana then badges[#badges + 1] = 'banana' end
-if self.ability.cry_rigged then badges[#badges + 1] = 'cry_rigged' end
-'''
-
 # Banana Tag
 [[patches]]
 [patches.pattern]
