@@ -11,7 +11,7 @@ local gateway = {
         'all other Jokers' }
     },
     cost = 4,
-    atlas = "atlasnotjokers",
+    atlas = "gateway",
     hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
     can_use = function(self, card)
         return true
@@ -37,6 +37,13 @@ local gateway = {
             return true end }))
         delay(0.6)
     end
+}
+local gateway_sprite = {
+    object_type = "Atlas",
+    key = "gateway",
+    path = "c_cry_gateway.png",
+    px = 71,
+    py = 95
 }
 local iterum = {
     object_type = "Joker",
@@ -587,4 +594,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus,}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus,}}
