@@ -491,3 +491,12 @@ pattern = "text = extra.message or text"
 position = "after"
 payload = "if not text or text == '' then return end"
 match_indent = true
+
+# Add default pool value for Consumeables
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'else _pool[#_pool + 1] = "j_joker"'
+position = "before"
+payload = '''elseif _type == 'Consumeables' then _pool[#_pool + 1] = "c_cry_crash"'''
+match_indent = true
