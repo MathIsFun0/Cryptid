@@ -202,7 +202,7 @@ pattern = "G.shop_vouchers:emplace(card)"
 position = "before"
 payload = '''
 if G.GAME.current_round.cry_voucher_edition then
-	card:set_edition(G.GAME.current_round.cry_voucher_edition, true)
+	card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
 end
 if G.GAME.current_round.cry_voucher_stickers then
 	if G.GAME.current_round.cry_voucher_stickers.eternal == true then		-- this is dumb but i'm not sure how to call functions from a string
@@ -450,10 +450,10 @@ pattern = "G.shop_booster:emplace(card)"
 position = "before"
 payload = '''
 if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-	card:set_edition(nil, true)
+	card:set_edition(nil, true, true)
 elseif G.GAME.modifiers.cry_force_random_edition then
 	local edition = cry_poll_random_edition()
-	card:set_edition(edition, true)
+	card:set_edition(edition, true, true)
 end
 
 if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then	
@@ -490,4 +490,13 @@ target = "functions/common_events.lua"
 pattern = "text = extra.message or text"
 position = "after"
 payload = "if not text or text == '' then return end"
+match_indent = true
+
+# Add default pool value for Consumeables
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'else _pool[#_pool + 1] = "j_joker"'
+position = "before"
+payload = '''elseif _type == 'Consumeables' then _pool[#_pool + 1] = "c_cry_crash"'''
 match_indent = true
