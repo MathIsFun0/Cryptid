@@ -12,7 +12,7 @@ local white_hole = {
         }
     },
     cost = 4,
-    atlas = "white_hole",
+    atlas = "atlasnotjokers",
     hidden = true, --default soul_rate of 0.3% in spectral packs is used
     soul_set = "Planet",
     can_use = function(self, card)
