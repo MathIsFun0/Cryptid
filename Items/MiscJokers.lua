@@ -2243,7 +2243,7 @@ local sapling = {
 				end
 			end
 		end
-		if context.selling_self and card.ability.extra.score >= 30 and not context.blueprint and not context.retrigger_joker then
+		if context.selling_self and card.ability.extra.score >= card.ability.extra.req and not context.blueprint and not context.retrigger_joker then
 			local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
                         card:add_to_deck()
                         G.jokers:emplace(card)
