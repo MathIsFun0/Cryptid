@@ -339,7 +339,8 @@ local mstack = {
         end
     end,
     add_to_deck = function(self, card, from_debuff) --Force retriggers to be 1 when bought/obtained on misprint deck (no 0.43 retriggers that do nothing)
-	if card.ability.extra.retriggers ~= 1 and not card.ability.extra.check then card.ability.extra.retriggers = 1 end
+	card.ability.extra.retriggers = math.floor(card.ability.extra.retriggers)
+	if card.ability.extra.retriggers < 1 and not card.ability.extra.check then card.ability.extra.retriggers = 1 end
     end
 }
 if JokerDisplay then
@@ -946,8 +947,7 @@ local doodlem = {
     end
 end
 }
---Todo: Fix doodlem giving jimbos when all consumeables are obtained (I have no idea what i'm doing wrong here)
---replace the negative infoqueue with the one used for consumables
+--TODO: Replace the negative infoqueue with the one used for consumables
 local virgo = {
 	object_type = "Joker",
 	name = "cry-virgo",
