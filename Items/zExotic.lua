@@ -3,7 +3,7 @@ local gateway = {
     set = "Spectral",
     name = "cry-Gateway",
     key = "gateway",
-    pos = {x=0,y=0},
+    pos = {x=2,y=0},
     loc_txt = {
         name = 'Gateway',
         text = { "Create a random",
@@ -11,7 +11,7 @@ local gateway = {
         'all other Jokers' }
     },
     cost = 4,
-    atlas = "gateway",
+    atlas = "atlasnotjokers",
     hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
     can_use = function(self, card)
         return true
@@ -38,20 +38,12 @@ local gateway = {
         delay(0.6)
     end
 }
-local gateway_sprite = {
-    object_type = "Atlas",
-    key = "gateway",
-    
-    path = "c_cry_gateway.png",
-    px = 71,
-    py = 95
-}
 local iterum = {
     object_type = "Joker",
 	name = "cry-Iterum",
 	key = "iterum",
 	config = {extra = {x_mult = 2, repetitions = 1}},
-	pos = {x = 0, y = 0},
+	pos = {x = 0, y = 1},
 	loc_txt = {
         name = 'Iterum',
         text = {
@@ -62,8 +54,8 @@ local iterum = {
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
-	atlas = 'iterum',
-	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	atlas = 'atlasexotic',
+	soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_mult,center.ability.extra.repetitions}}
     end,
@@ -115,20 +107,12 @@ if JokerDisplay then
         end
     }
 end
-local iterum_sprite = {
-    object_type = "Atlas",
-    key = "iterum",
-    
-    path = "j_cry_iterum.png",
-    px = 71,
-    py = 95
-}
 local universum = {
     object_type = "Joker",
 	name = "cry-Universum",
 	key = "universum",
 	config = {extra = 2},
-	pos = {x = 0, y = 0},
+	pos = {x = 3, y = 3},
 	loc_txt = {
         name = 'Universum',
         text = {
@@ -140,8 +124,8 @@ local universum = {
 	rarity = "cry_exotic",
 	cost = 50,
     blueprint_compat = true,
-	atlas = "universum",
-	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	atlas = "atlasexotic",
+	soul_pos = {x = 4, y = 3, extra = {x = 5, y = 3}},
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra}}
     end,
@@ -150,14 +134,6 @@ local universum = {
             return {mod = to_big(card.ability.extra)}
         end
     end
-}
-local universum_sprite = {
-    object_type = "Atlas",
-    key = "universum",
-    
-    path = "j_cry_universum.png",
-    px = 71,
-    py = 95
 }
 local exponentia = {
     object_type = "Joker",
@@ -177,7 +153,7 @@ local exponentia = {
 	cost = 50,
     blueprint_compat = true,
 	perishable_compat = false,
-	atlas = "exponentia",
+	atlas = "atlasexotic",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
 	calculate = function(self, card, context)
         if context.cardarea == G.jokers and (card.ability.extra.Emult > 1) and not context.before and not context.after then
@@ -205,18 +181,11 @@ if JokerDisplay then
         },
     }
 end
-local exponentia_sprite = {
-    object_type = "Atlas",
-    key = "exponentia",
-    path = "j_cry_exponentia.png",
-    px = 71,
-    py = 95
-}
 local speculo = {
     object_type = "Joker",
 	name = "cry-Speculo",
 	key = "speculo",
-	pos = {x = 0, y = 0},
+	pos = {x = 3, y = 1},
 	loc_txt = {
         name = 'Speculo',
         text = {
@@ -229,8 +198,8 @@ local speculo = {
 	rarity = "cry_exotic",
 	cost = 50,
     blueprint_compat = true,
-	atlas = "speculo",
-	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	atlas = "atlasexotic",
+	soul_pos = {x = 4, y = 1, extra = {x = 5, y = 1}},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
 	end,
@@ -256,13 +225,6 @@ local speculo = {
         end
 	end
 }
-local speculo_sprite = {
-    object_type = "Atlas",
-    key = "speculo",
-    path = "j_cry_speculo.png",
-    px = 71,
-    py = 95
-}
 local redeo = {
     object_type = "Joker",
 	name = "cry-Redeo",
@@ -271,20 +233,20 @@ local redeo = {
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.ante_reduction, center.ability.extra.money_req, center.ability.extra.money_remaining, center.ability.extra.money_mod}}
     end,
-	pos = {x = 0, y = 0},
+	pos = {x = 3, y = 0},
 	loc_txt = {
         name = 'Redeo',
         text = {
             "{C:attention}-#1#{} Ante when",
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
             "{s:0.8}Requirements increase by",
-            "{s:0.8}$#4#{C:inactive,s:0.8} after each use"
+            "{C:money,s:0.8}$#4#{s:0.8} after each use"
         }
     },
 	rarity = "cry_exotic",
 	cost = 50,
-	atlas = "redeo",
-	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	atlas = "atlasexotic",
+	soul_pos = {x = 4, y = 0, extra = {x = 5, y = 0}},
 	calculate = function(self, card, context)
         if context.cry_ease_dollars and context.cry_ease_dollars < 0 and not context.blueprint then
             card.ability.extra.money_remaining = card.ability.extra.money_remaining - context.cry_ease_dollars
@@ -312,20 +274,12 @@ if JokerDisplay then
         },
     }
 end
-local redeo_sprite = {
-    object_type = "Atlas",
-    key = "redeo",
-    path = "j_cry_redeo.png",
-    px = 71,
-    py = 95
-}
-
 local tenebris = {
 	object_type = "Joker",
 	name = "cry-Tenebris",
 	key = "tenebris",
-	pos = {x = 0, y = 0},
-	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	pos = {x = 3, y = 2},
+	soul_pos = {x = 4, y = 2, extra = {x = 5, y = 2}},
 	config = {extra = {slots = 25, money = 25}},
 	loc_txt = {
       		name = 'Tenebris',
@@ -336,7 +290,7 @@ local tenebris = {
    	},
 	rarity = "cry_exotic",
 	cost = 50,
-	atlas = "tenebris",
+	atlas = "atlasexotic",
 	calc_dollar_bonus = function(self, card)
 		return card.ability.extra.money
 	end,
@@ -365,21 +319,13 @@ if JokerDisplay then
         end
     }
 end
-local tenebris_sprite = {
-	object_type = "Atlas",
-    key = "tenebris",
-    path = "j_cry_tenebris.png",
-    px = 71,
-    py = 95
-}
-
 local effarcire = {
     object_type = "Joker",
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
-	pos = {x = 0, y = 0},
-	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
+	pos = {x = 0, y = 3},
+	soul_pos = {x = 1, y = 3, extra = {x = 2, y = 3}},
 	loc_txt = {
         name = 'Effarcire',
         text = {
@@ -391,7 +337,7 @@ local effarcire = {
 	},
 	rarity = 3,
 	cost = 50,
-	atlas = 'effarcire',
+	atlas = 'atlasexotic',
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
 		if not context.blueprint then
@@ -403,21 +349,13 @@ local effarcire = {
 		end
 	end
 }
-
-local effarcire_sprite = {
-    object_type = "Atlas",
-    key = "effarcire",
-    path = "j_cry_effarcire.png",
-    px = 71,
-    py = 95
-}
 local crustulum = {
 	object_type = "Joker",
 	name = "cry-crustulum",
 	key = "crustulum",
 	config = {extra = {chips = 0, chip_mod = 4,}},
-	pos = {x = 0, y = 0},
-	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+	pos = {x = 0, y = 2},
+	soul_pos = {x = 2, y = 2, extra = {x = 1, y = 2}},
 	loc_txt = {
         name = 'Crustulum',
         text = {
@@ -429,7 +367,7 @@ local crustulum = {
     	},
 	rarity = "cry_exotic",
 	cost = 50,
-	atlas = "crustulum",
+	atlas = "atlasexotic",
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -468,20 +406,13 @@ if JokerDisplay then
         text_config = { colour = G.C.CHIPS },
     }
 end
-local crustulum_sprite = {
-    object_type = "Atlas",
-    key = "crustulum",
-    path = "j_cry_crustulum.png",
-    px = 71,
-    py = 95
-}
 --todo: make the Emult always prime
 local primus = {
     object_type = "Joker",
     name = "cry-primus",
     key = "primus",
     config = {extra = {Emult = 1.01, Emult_mod = 0.17}},
-    pos = {x = 0, y = 0},
+    pos = {x = 0, y = 4},
     loc_txt = {
         name = 'Primus',
         text = {
@@ -495,8 +426,8 @@ local primus = {
     cost = 53,
     blueprint_compat = true,
     perishable_compat = false,
-    atlas = "primus",
-    soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+    atlas = "atlasexotic",
+    soul_pos = {x = 2, y = 4, extra = {x = 1, y = 4}},
     calculate = function(self, card, context)
         local check = true
         if context.cardarea == G.jokers and context.before and not context.blueprint then
@@ -548,14 +479,6 @@ if JokerDisplay then
         end
     }
 end
-local primus_sprite = {
-    object_type = "Atlas",
-    key = "primus",
-    path = "j_cry_primus.png",
-    px = 71,
-    py = 95
-}	
-
 return {name = "Exotic Jokers", 
         init = function()
             --Universum Patches
@@ -664,4 +587,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, iterum_sprite, universum_sprite, exponentia_sprite, speculo_sprite, redeo_sprite, tenebris_sprite, effarcire_sprite, crustulum_sprite, primus_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus,}}
+        items = {gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus,}}
