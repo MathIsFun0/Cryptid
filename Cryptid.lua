@@ -38,43 +38,6 @@ function get_badge_colour(key)
     return fromRef
 end
 
-SMODS.Achievements = {}
-SMODS.Achievement = SMODS.GameObject:extend{
-    obj_table = SMODS.Achievements,
-    obj_buffer = {},
-    required_params = {
-        'key',
-        'unlock_condition',
-    },
-    class_prefix = "ach",
-    atlas = "cry_achievements",
-    pos = {x=1, y=0},
-    hidden_pos = {x=0, y=0},
-    bypass_all_unlocked = false,
-    hidden_name = true,
-    inject_class = function(self)
-        fetch_achievements()
-        SMODS.GameObject.inject_class(self)
-        if Cryptid_config['Reset Achievements'] then
-            print("achievement_startup_reset = true")
-            fetch_achievements()
-            for k, v in pairs(SMODS.Achievements) do
-                G.SETTINGS.ACHIEVEMENTS_EARNED[k] = nil
-                G.ACHIEVEMENTS[k].earned = nil
-            end
-            fetch_achievements()
-        end
-    end,
-    inject = function(self)
-        G.ACHIEVEMENTS[self.key] = self
-        G.ACHIEVEMENTS[self.key].order = self.order or #G.ACHIEVEMENTS + 1
-    end,
-    process_loc_text = function(self)
-        SMODS.process_loc_text(G.localization.misc.achievement_names, self.key, self.loc_txt, "name")
-        SMODS.process_loc_text(G.localization.misc.achievement_descriptions, self.key, self.loc_txt, "description")
-    end,
-}
-
 -- Midground sprites
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
@@ -525,13 +488,6 @@ if not SpectralPack then
             nodes = cry_nodes
         }
         end
-    },
-    {
-        label = "Achievements",
-        tab_definition_function = function(args)
-            G.CRYPTID_ACHIEVEMENTS_MATRIX = nil
-            return create_UIBox_cryptid_achievements(args)
-        end,
     },
 }
   G.FUNCS.cryptidMenu = function(e)
