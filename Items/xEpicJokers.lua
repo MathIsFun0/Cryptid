@@ -1119,7 +1119,7 @@ local bonusjoker = {
 						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
 					end
                 			return {
-					message = localize('k_upgrade_ex'),
+					message = localize('k_upgrade_ex'), --Something is making this not display it's text, I could have sworn this was working properly when i tested it...
 					card = card,
 					colour = G.C.CHIPS
 					}
