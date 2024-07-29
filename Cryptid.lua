@@ -18,6 +18,8 @@ local read_config = SMODS.load_file("config.lua")
 if read_config then
     Cryptid_config = read_config()
 end
+--Cryptid_config['Reset Achievements'] = Cryptid_config['Reset Achievements'] or true
+--Uncomment this if you want to reset achievements. Idk how to get it to save properly
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
@@ -47,14 +49,30 @@ SMODS.Achievement = SMODS.GameObject:extend{
     class_prefix = "ach",
     atlas = "cry_achievements",
     pos = {x=1, y=0},
-    tier = 1,
-    bypass_all_unlocks = false,
+    hidden_pos = {x=0, y=0},
+    bypass_all_unlocked = false,
     hidden_name = true,
+    inject_class = function(self)
+        fetch_achievements()
+        SMODS.GameObject.inject_class(self)
+        if Cryptid_config['Reset Achievements'] then
+            print("achievement_startup_reset = true")
+            fetch_achievements()
+            for k, v in pairs(SMODS.Achievements) do
+                G.SETTINGS.ACHIEVEMENTS_EARNED[k] = nil
+                G.ACHIEVEMENTS[k].earned = nil
+            end
+            fetch_achievements()
+        end
+    end,
+    inject = function(self)
+        G.ACHIEVEMENTS[self.key] = self
+        G.ACHIEVEMENTS[self.key].order = self.order or #G.ACHIEVEMENTS + 1
+    end,
     process_loc_text = function(self)
         SMODS.process_loc_text(G.localization.misc.achievement_names, self.key, self.loc_txt, "name")
         SMODS.process_loc_text(G.localization.misc.achievement_descriptions, self.key, self.loc_txt, "description")
     end,
-    inject = function(self) end,
 }
 
 -- Midground sprites
@@ -968,6 +986,10 @@ function SMODS.current_mod.process_loc_text()
     }
     SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
     SMODS.process_loc_text(G.localization.misc.achievement_descriptions, "hidden_achievement", "Play more to find out!")
+end
+
+function SMODS.current_mod.reset_game_globals(run_start)
+    G.GAME.cry_ach_conditions = G.GAME.cry_ach_conditions or {}
 end
 
 --Used to check to play the exotic music
