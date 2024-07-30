@@ -36,6 +36,21 @@ function get_badge_colour(key)
     return fromRef
 end
 
+--Localization colors
+local lc = loc_colour
+function loc_colour(_c, _default)
+    if not G.ARGS.LOC_COLOURS then lc() end
+    G.ARGS.LOC_COLOURS.cry_exotic = G.C.RARITY['cry_exotic']
+    G.ARGS.LOC_COLOURS.cry_epic = G.C.RARITY['cry_epic']
+    G.ARGS.LOC_COLOURS.cry_azure = HEX('1d4fd7')
+    G.ARGS.LOC_COLOURS.cry_code = G.C.SET.Code
+    G.ARGS.LOC_COLOURS.heart = G.C.SUITS.Hearts
+    G.ARGS.LOC_COLOURS.diamond = G.C.SUITS.Diamonds
+    G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
+    G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
+    return lc(_c, _default)
+end
+
 -- Midground sprites
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
