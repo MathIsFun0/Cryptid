@@ -497,6 +497,58 @@ local class = {
         }
     end
 }
+local commit = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'commit',
+    name = 'cry-Commit',
+    atlas = 'code',
+    pos = {
+        x = 1,
+        y = 2,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://COMMIT',
+        text = {
+            'Destroy a {C:cry_code}selected{} Joker,',
+            'create a {C:cry_code}new{} Joker',
+            'of the {C:cry_code}same rarity'
+        }
+    },
+    can_use = function(self, card)
+        return #G.jokers.highlighted == 1
+    end,
+    use = function(self, card, area, copier)
+        local rarity = G.jokers.highlighted[1].config.center.rarity
+        local legendary = nil
+        --please someone add a rarity api to steamodded
+        if rarity == 1 then
+            rarity = 0
+        elseif rarity == 2 then
+            rarity = 0.9
+        elseif rarity == 3 then
+            rarity = 0.99
+        elseif rarity == 4 then
+            rarity = nil
+            legendary = true
+        elseif rarity == 'cry_epic' then
+            rarity = 1
+        end
+        local _first_dissolve = nil
+        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+            G.jokers.highlighted[1]:start_dissolve(nil, _first_dissolve)
+                _first_dissolve = true
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('timpani')
+            local card = create_card('Joker', G.jokers, legendary, rarity, nil, nil, nil, 'cry_commit')
+            card:add_to_deck()
+            G.jokers:emplace(card)
+            card:juice_up(0.3, 0.5)
+            return true end }))
+    end
+}
 local automaton = {
     object_type = "Consumable",
     set = "Tarot",
@@ -1140,7 +1192,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
