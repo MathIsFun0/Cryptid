@@ -718,14 +718,14 @@ end
 --Redefine these here because they're always used
 if not Cryptid then Cryptid = {} end
 Cryptid.base_values = {}
-function cry_misprintize_tbl(name, tbl, clear, override)
+function cry_misprintize_tbl(name, tbl, clear, override, stack)
     if tbl then
         for k, v in pairs(tbl) do
             if type(tbl[k]) ~= 'table' then
                 if type(tbl[k]) == 'number' and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
-                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format(Cryptid.base_values[name][k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format((stack and tbl[k] or Cryptid.base_values[name][k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
@@ -733,7 +733,7 @@ function cry_misprintize_tbl(name, tbl, clear, override)
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
-                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format(Cryptid.base_values[name][k][_k] * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format((stack and tbl[k][_k] or Cryptid.base_values[name][k][_k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                     end
                 end
             end
@@ -755,7 +755,7 @@ function cry_deep_copy(obj, seen)
     for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
     return res
 end
-function cry_misprintize(card, override, force_reset)
+function cry_misprintize(card, override, force_reset, stack)
     if (not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod) and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker") then
         if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
             if not override then override = {} end
@@ -765,7 +765,7 @@ function cry_misprintize(card, override, force_reset)
             override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
         end
         if G.GAME.modifiers.cry_misprint_min or override and override.min then
-            cry_misprintize_tbl(card.config.center_key, card.ability, nil, override)
+            cry_misprintize_tbl(card.config.center_key, card.ability, nil, override, stack)
         end
         if G.GAME.modifiers.cry_misprint_min then
             --card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")

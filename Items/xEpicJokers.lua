@@ -86,7 +86,7 @@ local googol_play = {
         name = 'Googol Play Card',
         text = {
 			"{C:green}#1# in #2#{} chance for",
-			"{X:red,C:white} X1e100 {} Mult"
+			"{X:red,C:white} X#3# {} Mult"
 		}
     },
 	rarity = "cry_epic",
@@ -95,7 +95,7 @@ local googol_play = {
 	atlas = "atlasepic",
 	soul_pos = {x = 10, y = 0, extra = {x = 4, y = 0}},
 	loc_vars = function(self, info_queue, center)
-		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xmult}}
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then

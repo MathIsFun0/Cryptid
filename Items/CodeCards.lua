@@ -591,6 +591,75 @@ local merge = {
         return true end }))
     end
 }
+local multiply = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'multiply',
+    name = 'cry-Multiply',
+    atlas = 'code',
+    pos = {
+        x = 3,
+        y = 2,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://MULTIPLY',
+        text = {
+            '{C:cry_code}Double{} all values of',
+            'a selected {C:cry_code}Joker{} until',
+            'end of round'
+        }
+    },
+    can_use = function(self, card)
+        return #G.jokers.highlighted == 1
+    end,
+    use = function(self, card, area, copier)
+        if not G.jokers.highlighted[1].cry_multiply then
+            G.jokers.highlighted[1].cry_multiply = 1
+        end
+        G.jokers.highlighted[1].cry_multiply = G.jokers.highlighted[1].cry_multiply * 2
+        cry_misprintize(G.jokers.highlighted[1],{min=2,max=2},nil,true)
+    end
+}
+local divide = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'divide',
+    name = 'cry-Divide',
+    atlas = 'code',
+    pos = {
+        x = 2,
+        y = 2,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://DIVIDE',
+        text = {
+            '{C:cry_code}Halve{} all listed prices',
+            'in current shop'
+        }
+    },
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SHOP
+    end,
+    use = function(self, card, area, copier)
+        for i = 1, #G.shop_jokers.cards do
+            local c = G.shop_jokers.cards[i]
+            c.misprint_cost_fac = (c.misprint_cost_fac or 1) * 0.5
+            c:set_cost()
+        end
+        for i = 1, #G.shop_booster.cards do
+            local c = G.shop_booster.cards[i]
+            c.misprint_cost_fac = (c.misprint_cost_fac or 1) * 0.5
+            c:set_cost()
+        end
+        for i = 1, #G.shop_vouchers.cards do
+            local c = G.shop_vouchers.cards[i]
+            c.misprint_cost_fac = (c.misprint_cost_fac or 1) * 0.5
+            c:set_cost()
+        end
+    end
+}
 local automaton = {
     object_type = "Consumable",
     set = "Tarot",
@@ -1219,7 +1288,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
@@ -1306,6 +1375,18 @@ return {name = "Code Cards",
                     add_round_eval_row({name = 'bottom', dollars = 0})
                 else
                     return gfer()
+                end
+            end
+            --Multiply - reset Jokers at end of round
+            local er = end_round
+            function end_round()
+                er()
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i].cry_multiply then
+                        m = G.jokers.cards[i].cry_multiply
+                        cry_misprintize(G.jokers.cards[i],{min=1/m,max=1/m},nil,true)
+                        G.jokers.cards[i].cry_multiply = nil
+                    end
                 end
             end
         end,
