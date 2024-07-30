@@ -293,7 +293,7 @@ local revert = {
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
-            delay = 4,
+            delay = G.SETTINGS.GAMESPEED,
             func = function()
                 G:delete_run()
                 G:start_run({
