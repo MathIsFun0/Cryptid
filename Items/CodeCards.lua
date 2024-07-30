@@ -557,7 +557,16 @@ local merge = {
         }
     },
     can_use = function(self, card)
-        return #G.hand.highlighted + #G.consumeables.highlighted - (card.area == G.consumeables and card.highlighted and 1 or 0) == 2
+        if #G.hand.highlighted ~= 1 + (card.area == G.hand and 1 or 0) then
+            return false
+        end
+        if #G.consumeables.highlighted ~= 1 + (card.area == G.consumeables and 1 or 0) then
+            return false
+        end
+        local n = 1
+        if G.hand.highlighted[1] == card then n = 2 end
+        if G.hand.highlighted[n].ability.consumeable then return false end
+        return true
     end,
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({trigger = 'immediate', func = function()
