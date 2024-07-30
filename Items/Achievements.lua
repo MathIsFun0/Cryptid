@@ -11,14 +11,14 @@ local break_infinity = {
     key = "break_infinity",
     loc_txt = {
         name = "Break Infinity",
-        description = "Score 1.57e308 Chips in a single hand",
+        description = "Score 1.79e308 Chips in a single hand",
     },
     order = 1,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
     --reset_on_startup = true,
     unlock_condition = function(self, args)
-        if args.type == "chip_score" and to_big(args.chips) >= to_big(1.57e308) then
+        if args.type == "chip_score" and to_big(args.chips) >= to_big(2)^to_big(1024) then
             return true
         end
     end,
