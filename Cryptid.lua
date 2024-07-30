@@ -254,6 +254,7 @@ function Card:cry_calculate_consumeable_rental()
 end
 
 function Card:cry_calculate_consumeable_perishable()
+	if not self.ability.perish_tally then self.ability.perish_tally = 1 end
 	if self.ability.perishable and self.ability.perish_tally > 0 then
 		self.ability.perish_tally = 0
 		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
