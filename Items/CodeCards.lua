@@ -702,6 +702,54 @@ local delete = {
         c:start_dissolve()
     end
 }
+local spaghetti = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'spaghetti',
+    name = 'cry-Spaghetti',
+    atlas = 'code',
+    pos = {
+        x = 5,
+        y = 2,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://SPAGHETTI',
+        text = {
+            'Create a {C:cry_code}Glitched',
+            'Food Joker'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_cry_glitched
+        info_queue[#info_queue+1] = {set = "Other", key = "food_jokers"}
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        local jokers = {
+            "j_gros_michel",
+            "j_egg",
+            "j_ice_cream",
+            "j_cavendish",
+            "j_turtle_bean",
+            "j_diet_cola",
+            "j_popcorn",
+            "j_ramen",
+            "j_selzer",
+        }
+        if G.P_CENTERS.j_cry_pickle then jokers[#jokers+1] = "j_cry_pickle" end
+        if G.P_CENTERS.j_cry_chili_pepper then jokers[#jokers+1] = "j_cry_chili_pepper" end
+        if G.P_CENTERS.j_cry_caramel then jokers[#jokers+1] = "j_cry_caramel" end
+        local card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(jokers,pseudoseed("cry_spaghetti")))
+        card:set_edition({
+            cry_glitched = true
+        })
+        card:add_to_deck()
+        G.jokers:emplace(card)
+    end
+}
 local automaton = {
     object_type = "Consumable",
     set = "Tarot",
@@ -1331,6 +1379,7 @@ crash_functions = {
 
 
 local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete}
+if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
