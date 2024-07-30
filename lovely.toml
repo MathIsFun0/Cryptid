@@ -489,3 +489,16 @@ pattern = 'else _pool[#_pool + 1] = "j_joker"'
 position = "before"
 payload = '''elseif _type == 'Consumeables' then _pool[#_pool + 1] = "c_cry_crash"'''
 match_indent = true
+
+# make the cat tag meow (can probably do this without injecting?)
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)'''
+position = "before"
+payload = '''if self.key == 'tag_cry_cat' then
+local rand = math.random(4)
+play_sound('cry_meow'..rand, 1.26, 0.4)
+end
+'''
+match_indent = true

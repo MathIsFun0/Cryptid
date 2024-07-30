@@ -1065,7 +1065,22 @@ function Game:update(dt)
     end
     G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
 end
-
+SMODS.Sound({
+    key = "meow1",
+    path = "meow1.ogg"
+})
+SMODS.Sound({
+    key = "meow2",
+    path = "meow2.ogg"
+})
+SMODS.Sound({
+    key = "meow3",
+    path = "meow3.ogg"
+})
+SMODS.Sound({
+    key = "meow4",
+    path = "meow4.ogg"
+})
 SMODS.Sound({
     key = "e_mosaic",
     path = "e_mosaic.ogg"
