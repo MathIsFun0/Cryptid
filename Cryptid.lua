@@ -1128,6 +1128,18 @@ SMODS.Atlas({
     py = 95
 }):register()
 SMODS.Atlas({
+    key = "atlasexotic",
+    path = "atlasexotic.png",
+    px = 71,
+    py = 95
+}):register()
+SMODS.Atlas({
+    key = "atlasnotjokers", --this is easier to spell then consumables
+    path = "atlasnotjokers.png",
+    px = 71,
+    py = 95
+}):register()
+SMODS.Atlas({
     key = "tag_cry",
     path = "tag_cry.png",
     px = 34,

@@ -365,6 +365,11 @@ local clock = {
             "3 seconds spent this ante"
         }
     },
+    config = {
+        tw_bl = {
+            ignore = true
+        }
+    },
     atlas = "blinds",
     boss_colour = HEX('853455'),
     defeat = function(self, silent)
