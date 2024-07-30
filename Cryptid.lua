@@ -18,8 +18,6 @@ local read_config = SMODS.load_file("config.lua")
 if read_config then
     Cryptid_config = read_config()
 end
---Cryptid_config['Reset Achievements'] = Cryptid_config['Reset Achievements'] or true
---Uncomment this if you want to reset achievements. Idk how to get it to save properly
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()

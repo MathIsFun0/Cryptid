@@ -444,9 +444,7 @@ local joke = {
 	end,
     cry_calc_ante_gain = function(self)
         if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
-            print(G.GAME.round_resets.ante)
             if G.GAME.round_resets.ante == 1 then 
-                print("The Joke's On You conditions met")
                 G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true 
             end
             return G.GAME.win_ante-G.GAME.round_resets.ante%G.GAME.win_ante
@@ -561,7 +559,6 @@ local lavender_loop = {
         if G.GAME.cry_ach_conditions.patience_virtue_timer > 0 and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true then
             G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer - dt*(G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
         elseif G.GAME.current_round.hands_played == 0 then
-            print("Patience is a Virtue can be earned")
             G.GAME.cry_ach_conditions.patience_virtue_earnable = true
         end
         return 1.25^(dt/1.5)

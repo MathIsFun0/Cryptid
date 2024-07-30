@@ -111,23 +111,26 @@ local happyhouse = {
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint and not context.retrigger_joker then
             card.ability.extra.check = card.ability.extra.check + 1
+            if card.ability.extra.check == 114 and G.GAME.round_resets.ante < 8 and not (G.GAME.selected_back.effect.center.key == 'antimatter' or G.GAME.selected_back.effect.center.key == 'equilibrium') then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3. 
+                check_for_unlock({type = "home_realtor"})
+            end
 			if card.ability.extra.check < 114 then --Hardcoded, dont want misprint to mess with this hehe
 				return {
-                    			card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        			message = card.ability.extra.check.."/114",
-                        			colour = G.C.DARK_EDITION,
-                    			})
-                			}
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {
+                        message = card.ability.extra.check.."/114",
+                        colour = G.C.DARK_EDITION,
+                    })
+                }
 			end
         end
-	if context.cardarea == G.jokers and (card.ability.extra.mult > 1) and card.ability.extra.check > 113 and not context.before and not context.after then
-	    return {
+        if context.cardarea == G.jokers and (card.ability.extra.mult > 1) and card.ability.extra.check > 113 and not context.before and not context.after then
+            return {
                 message = "^"..card.ability.extra.mult.." Mult",
                 Emult_mod = card.ability.extra.mult,
                 colour = G.C.DARK_EDITION,
-		card = card
+                card = card
             }
-	end
+        end
     end
 }
 if JokerDisplay then
@@ -2004,6 +2007,7 @@ end
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced and my_pos and G.jokers.cards[my_pos-1] and not G.jokers.cards[my_pos-1].ability.eternal and not G.jokers.cards[my_pos-1].getting_sliced then 
             local sliced_card = G.jokers.cards[my_pos-1]
             sliced_card.getting_sliced = true
+            if sliced_card.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end
             G.GAME.joker_buffer = G.GAME.joker_buffer - 1
             G.E_MANAGER:add_event(Event({func = function()
                 G.GAME.joker_buffer = 0
@@ -2066,6 +2070,7 @@ local monkey_dagger = {
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced and my_pos and G.jokers.cards[my_pos-1] and not G.jokers.cards[my_pos-1].ability.eternal and not G.jokers.cards[my_pos-1].getting_sliced then 
             local sliced_card = G.jokers.cards[my_pos-1]
             sliced_card.getting_sliced = true
+            if sliced_card.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end
             G.GAME.joker_buffer = G.GAME.joker_buffer - 1
             G.E_MANAGER:add_event(Event({func = function()
                 G.GAME.joker_buffer = 0
@@ -2125,6 +2130,7 @@ local pirate_dagger = {
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced and my_pos and G.jokers.cards[my_pos+1] and not G.jokers.cards[my_pos+1].ability.eternal and not G.jokers.cards[my_pos+1].getting_sliced then 
             local sliced_card = G.jokers.cards[my_pos+1]
             sliced_card.getting_sliced = true
+            if sliced_card.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end
             G.GAME.joker_buffer = G.GAME.joker_buffer - 1
             G.E_MANAGER:add_event(Event({func = function()
                 G.GAME.joker_buffer = 0

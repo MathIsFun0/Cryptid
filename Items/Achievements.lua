@@ -16,6 +16,7 @@ local break_infinity = {
     order = 1,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "chip_score" and to_big(args.chips) >= to_big(1.57e308) then
             return true
@@ -33,6 +34,7 @@ local used_crash = {
     order = 2,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "ach_cry_used_crash" and G.PROFILES[G.SETTINGS.profile].consumeable_usage["c_cry_crash"] and G.PROFILES[G.SETTINGS.profile].consumeable_usage["c_cry_crash"].count > 0 then 
             return true
@@ -50,6 +52,7 @@ local haxxor = {
     order = 3,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "cheat_used" then
             return true
@@ -67,6 +70,7 @@ local googol_play_pass = {
     order = 4,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "googol_play_rigged" then
             return true
@@ -84,6 +88,7 @@ local bullet_hell = {
     order = 5,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "modify_jokers" then
             local ap_joker_count = 0
@@ -99,6 +104,42 @@ local bullet_hell = {
     end,
 }
 
+local what_have_you_done = {
+    object_type = "Achievement",
+    key = "what_have_you_done",
+    loc_txt = {
+        name = "WHAT HAVE YOU DONE?!",
+        description = "Delete or Sacrifice an Exotic Joker",
+    },
+    order = 6,
+    bypass_all_unlocked = true,
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == "what_have_you_done" then
+            return true
+        end
+    end,
+}
+
+local cryptid_the_cryptid = {
+    object_type = "Achievement",
+    key = "cryptid_the_cryptid",
+    loc_txt = {
+        name = "Cryptid the Cryptid",
+        description = "Use Cryptid on Cryptid",
+    },
+    order = 7,
+    bypass_all_unlocked = true,
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == "cryptid_the_cryptid" then
+            return true
+        end
+    end,
+}
+
 local niw_uoy = {
     object_type = "Achievement",
     key = "niw_uoy",
@@ -106,9 +147,10 @@ local niw_uoy = {
         name = "!niW uoY",
         description = "Reach Ante -8",
     },
-    order = 6,
+    order = 8,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "ante_up" and args.ante <= -8 then
             return true
@@ -123,9 +165,10 @@ local jokes_on_you = {
         name = "Joke's on You, Pal!",
         description = "Trigger The Joke's effect on Ante 1 and win the run",
     },
-    order = 7,
+    order = 9,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args) --NOTE: Might be buggy due to G.GAME saving
         if args.type == 'win' and G.GAME.cry_ach_conditions.the_jokes_on_you_triggered == true then
             return true
@@ -140,9 +183,10 @@ local freak_house = {
         name = "Freak House",
         description = "Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice",
     },
-    order = 8,
+    order = 10,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args) -- NOTE: I hate doing checks like this. Unscuff later
         if args.type == 'hand' then
             -- Do you have Nice
@@ -173,9 +217,10 @@ local ult_full_skip = {
         name = "Ultimate Full Skip",
         description = "Win in 1 round",
     },
-    order = 9,
+    order = 11,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "win" and G.GAME.round == 1 then
             return true
@@ -190,11 +235,12 @@ local patience_virtue = {
         name = "Patience is a Virtue",
         description = "Wait out Lavender Loop for 2 minutes before playing first hand and beat the blind",
     },
-    order = 10,
+    order = 12,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "round_win" then
             if G.GAME.blind.config.blind.key == 'bl_cry_lavender_loop' and G.GAME.cry_ach_conditions.patience_virtue_earnable == true then
@@ -206,6 +252,47 @@ local patience_virtue = {
     end,
 }
 
+local pull_request = {
+    object_type = "Achievement",
+    key = "pull_request",
+    loc_txt = {
+        name = "Pull Request",
+        description = "Have ://COMMIT spawn the same Joker that it destroyed",
+    },
+    order = 13,
+    bypass_all_unlocked = true,
+    hidden_text = true,
+    pos = {x=2, y=0},
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == "pr_unlock" then
+            return true
+        end
+    end,
+}
+
+
+local home_realtor = {
+    object_type = "Achievement",
+    key = "home_realtor",
+    loc_txt = {
+        name = "Home Realtor",
+        description = "Activate Happy House before Ante 8 (without DoE/Antimatter)",
+    },
+    order = 14,
+    bypass_all_unlocked = true,
+    hidden_text = true,
+    pos = {x=2, y=0},
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == "home_realtor" then
+            return true
+        end
+    end,
+}
+
 local traffic_jam = {
     object_type = "Achievement",
     key = "traffic_jam",
@@ -213,13 +300,14 @@ local traffic_jam = {
         name = "Traffic Jam",
         description = "Beat all Rush Hour challenges",
     },
-    order = 11,
+    order = 15,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
     atlas = "cry_achievements",
-    unlock_condition = function(self, args) --Untested, mostly because I don't want to go through the hassle of hacking in Rush Hour wins. Also feels wrong, even for testing purposes
-        if args.type == "win_challenge" then
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == "win_challenge" or args.type == "win_challenge_startup" then
             local rush_hours_beaten = 0
 
             if G.PROFILES[G.SETTINGS.profile].challenge_progress.completed["c_cry_rush_hour"] then rush_hours_beaten = rush_hours_beaten + 1 end
@@ -238,14 +326,14 @@ local perfectly_balanced = {
         name = "Perfectly Balanced",
         description = "Beat Very Fair Deck on Ascendant Stake",
     },
-    order = 12,
+    order = 16,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
     atlas = "cry_achievements",
+    --reset_on_startup = true,
     unlock_condition = function(self, args)
         if args.type == "win_stake" or args.type == "win_stake_startup" then
-            print(get_deck_win_stake('b_cry_very_fair'))
             if (G.GAME.selected_back.effect.center.key == 'b_cry_very_fair' and G.GAME.stake == 32) or get_deck_win_stake('b_cry_very_fair') == 32 then return true end
         end
     end,
@@ -255,18 +343,18 @@ local perfectly_balanced = {
 -- Current Ideas (Normal): 
 -- ???: Obtain a Blurred Blurred Joker
 -- ???: Obtain Canvas
--- WHAT HAVE YOU DONE: Sacrifice an Exotic Joker to a dagger
+-- WHAT HAVE YOU DONE: Delete or Sacrifice an Exotic Joker
 -- Cry: Win a run with only Sob and Obelisk
 -- Overtuned: Have any Glitched item give either 100x or 0.01x its original values
 -- Exodia: Have 5 Exotic Jokers
 -- Current Ideas (Platinum): 
--- ???: Activate Happy House before Ante 8 (without DoE/Antimatter)
 
 -- Implemented (Normal)
 -- Break Infinity: Score more than 1.57e308 in one hand
 -- H4xx0r: Use a cheat code
 -- We Told You Not To: Use ://CRASH
 -- Googol Play Pass: Rig a Googol Play Card
+-- Pull Request: Have ://COMMIT spawn the same Joker that it destroyed
 -- Bullet Hell: Have 15 copies of AP Joker
 -- !niW uoY: Reach Ante -8
 -- Joke's on You, Pal!: Trigger The Joke's effect on Ante 1 and win the run
@@ -274,10 +362,11 @@ local perfectly_balanced = {
 -- Ultimate Full Skip: Win in 1 round
 -- Implemented (Platinum)
 -- Patience is a Virtue: Wait out Lavender Loop for 2 minutes before playing first hand and beat it
+-- Home Realtor: Activate Happy House before Ante 8 (without DoE/Antimatter)
 -- Traffic Jam: Win all Rush Hour challenges
 -- Perfectly Balanced: Beat Very Fair Deck on Ascendant Stake
 
-local achievement_objects = {achievement_atlas, break_infinity, bullet_hell, used_crash, haxxor, googol_play_pass, niw_uoy, jokes_on_you, freak_house, ult_full_skip, patience_virtue, traffic_jam, perfectly_balanced}
+local achievement_objects = {achievement_atlas, break_infinity, bullet_hell, cryptid_the_cryptid, what_have_you_done, used_crash, haxxor, googol_play_pass, pull_request, niw_uoy, jokes_on_you, freak_house, ult_full_skip, patience_virtue, home_realtor, traffic_jam, perfectly_balanced}
 return {name = "Achievements",
         init = function()
         end,

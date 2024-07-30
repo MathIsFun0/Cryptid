@@ -520,6 +520,7 @@ local commit = {
         return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
     end,
     use = function(self, card, area, copier)
+        local deleted_joker_key = G.jokers.highlighted[1].config.center.key
         local rarity = G.jokers.highlighted[1].config.center.rarity
         local legendary = nil
         --please someone add a rarity api to steamodded
@@ -546,6 +547,7 @@ local commit = {
             card:add_to_deck()
             G.jokers:emplace(card)
             card:juice_up(0.3, 0.5)
+            if card.config.center.key == deleted_joker_key then check_for_unlock({type = "pr_unlock"}) end
             return true end }))
     end
 }
@@ -709,6 +711,7 @@ local delete = {
             a = G.shop_vouchers
             c = G.shop_vouchers.highlighted[1]
         end
+        if c.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end
         G.GAME.cry_delete[c.config.center.key] = true
         c:start_dissolve()
     end
