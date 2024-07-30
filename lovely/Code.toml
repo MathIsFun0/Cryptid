@@ -125,6 +125,15 @@ G.GAME.current_round.semicolon = false
 '''
 match_indent = true
 
+# Delete - check if deleted
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if v.no_pool_flag and G.GAME.pool_flags[v.no_pool_flag] then add = nil end"
+position = "after"
+payload = "if G.GAME.cry_delete and G.GAME.cry_delete[v.key] then add = nil end"
+match_indent = true
+
 # Increase highlight limit for consumables
 [[patches]]
 [patches.pattern]

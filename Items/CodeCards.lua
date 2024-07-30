@@ -506,7 +506,7 @@ local commit = {
         }
     },
     can_use = function(self, card)
-        return #G.jokers.highlighted == 1
+        return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
     end,
     use = function(self, card, area, copier)
         local rarity = G.jokers.highlighted[1].config.center.rarity
@@ -658,6 +658,48 @@ local divide = {
             c.misprint_cost_fac = (c.misprint_cost_fac or 1) * 0.5
             c:set_cost()
         end
+    end
+}
+local delete = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'delete',
+    name = 'cry-Delete',
+    atlas = 'code',
+    pos = {
+        x = 4,
+        y = 2,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://DELETE',
+        text = {
+            '{C:cry_code}Permanently{} remove a',
+            '{C:cry_code}selected{} shop item',
+            '{C:inactive,s:0.8}Item cannot appear again this run'
+        }
+    },
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SHOP and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
+    end,
+    use = function(self, card, area, copier)
+        if not G.GAME.cry_delete then G.GAME.cry_delete = {} end
+        local a = nil
+        local c = nil
+        if G.shop_jokers.highlighted[1] then
+            a = G.shop_jokers
+            c = G.shop_jokers.highlighted[1]
+        end
+        if G.shop_booster.highlighted[1] then
+            a = G.shop_booster
+            c = G.shop_booster.highlighted[1]
+        end
+        if G.shop_vouchers.highlighted[1] then
+            a = G.shop_vouchers
+            c = G.shop_vouchers.highlighted[1]
+        end
+        G.GAME.cry_delete[c.config.center.key] = true
+        c:start_dissolve()
     end
 }
 local automaton = {
@@ -1288,7 +1330,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete}
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
