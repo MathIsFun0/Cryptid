@@ -1387,7 +1387,7 @@ local blurred = {
 	object_type = "Joker",
 	name = "cry-blurred",
 	key = "blurred",
-	pos = {x = 0, y = 0},
+	pos = {x = 4, y = 4},
 	config = {extra = {hands = 1}},
 	loc_txt = {
         name = 'Blurred Joker',
@@ -1402,7 +1402,7 @@ local blurred = {
 	loc_vars = function(self, info_queue, center)
 	return {vars = {center.ability.extra.hands}}
 	end,
-	atlas = "blurred",
+	atlas = "atlastwo",
 	calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
 			return {
@@ -1412,13 +1412,6 @@ local blurred = {
 			}
 		end
 	end 
-}
-local blurred_sprite = { --left this on it's own atlas because i can't tell when this thing starts and ends
-	object_type = "Atlas",
-    key = "blurred",
-    path = "j_cry_blurred.png",
-    px = 71,
-    py = 95
 }
 local gardenfork = {
     object_type = "Joker",
@@ -2243,7 +2236,7 @@ local sapling = {
 				end
 			end
 		end
-		if context.selling_self and card.ability.extra.score >= 30 and not context.blueprint and not context.retrigger_joker then
+		if context.selling_self and card.ability.extra.score >= card.ability.extra.req and not context.blueprint and not context.retrigger_joker then
 			local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
                         card:add_to_deck()
                         G.jokers:emplace(card)
@@ -2740,4 +2733,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {blurred_sprite, jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust,}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust,}}

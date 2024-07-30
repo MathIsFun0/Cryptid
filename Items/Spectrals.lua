@@ -3,7 +3,7 @@ local white_hole = {
     set = "Spectral",
     name = "cry-White Hole",
     key = "white_hole",
-    pos = {x=0,y=0},
+    pos = {x=1,y=4},
     loc_txt = {
         name = 'White Hole',
         text = { "{C:attention}Remove{} all hand levels,",
@@ -12,7 +12,7 @@ local white_hole = {
         }
     },
     cost = 4,
-    atlas = "white_hole",
+    atlas = "atlasnotjokers",
     hidden = true, --default soul_rate of 0.3% in spectral packs is used
     soul_set = "Planet",
     can_use = function(self, card)
@@ -79,20 +79,12 @@ local white_hole = {
         update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end
 }
-local white_hole_sprite = {
-	object_type = "Atlas",
-    key = "white_hole",
-    path = "c_cry_white_hole.png",
-    px = 71,
-    py = 95
-}
-
 local vacuum = {
     object_type = "Consumable",
     set = "Spectral",
     name = "cry-Vacuum",
     key = "vacuum",
-    pos = {x=0,y=0},
+    pos = {x=3,y=1},
 	config = {extra = 4},
     loc_txt = {
         name = 'Vacuum',
@@ -103,8 +95,8 @@ local vacuum = {
 			"{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)"
         }
     },
-    cost = 15,
-    atlas = "vacuum",
+    cost = 4,
+    atlas = "atlasnotjokers",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra}}
     end,
@@ -139,21 +131,12 @@ local vacuum = {
 		ease_dollars(earnings * card.ability.extra)
     end
 }
-local vacuum_sprite = {
-    object_type = "Atlas",
-    key = "vacuum",
-    
-    path = "c_cry_vacuum.png",
-    px = 71,
-    py = 95
-}
-
 local hammerspace = {
     object_type = "Consumable",
     set = "Spectral",
     name = "cry-Hammerspace",
     key = "hammerspace",
-    pos = {x=0,y=0},
+    pos = {x=4,y=3},
 	config = {},
     loc_txt = {
         name = 'Hammerspace',
@@ -165,7 +148,7 @@ local hammerspace = {
         }
     },
     cost = 4,
-    atlas = "hammerspace",
+    atlas = "atlasnotjokers",
     can_use = function(self, card)
         return #G.hand.cards > 0
     end,
@@ -187,20 +170,12 @@ local hammerspace = {
 		G.hand:change_size(-1)
     end
 }
-local hammerspace_sprite = {
-    object_type = "Atlas",
-    key = "hammerspace",
-    path = "s_hammerspace.png",
-    px = 71,
-    py = 95
-}
-
 local lock = {
     object_type = "Consumable",
     set = "Spectral",
     name = "cry-Lock",
     key = "lock",
-    pos = {x=0,y=0},
+    pos = {x=0,y=1},
 	config = {},
     loc_txt = {
         name = 'Lock',
@@ -210,7 +185,7 @@ local lock = {
         }
     },
     cost = 4,
-    atlas = "lock",
+    atlas = "atlasnotjokers",
     can_use = function(self, card)
         return #G.jokers.cards > 0
     end,
@@ -252,21 +227,12 @@ local lock = {
             return true end }))
     end
 }
-local lock_sprite = {
-    object_type = "Atlas",
-    key = "lock",
-    
-    path = "c_cry_lock.png",
-    px = 71,
-    py = 95
-}
-
 local trade = {
     object_type = "Consumable",
     set = "Spectral",
     name = "cry-Trade",
     key = "trade",
-    pos = {x=0,y=0},
+    pos = {x=2,y=1},
 	config = {},
     loc_txt = {
         name = 'Trade',
@@ -276,7 +242,7 @@ local trade = {
         }
     },
     cost = 4,
-    atlas = "trade",
+    atlas = "atlasnotjokers",
     can_use = function(self, card)
 	local usable_count = 0
         for _, v in pairs(G.GAME.used_vouchers) do
@@ -406,13 +372,6 @@ local trade = {
         end
     end
 }
-local trade_sprite = {
-    object_type = "Atlas",
-    key = "trade",
-    path = "c_cry_trade.png",
-    px = 71,
-    py = 95
-}
 local analog = {
     object_type = "Consumable",
     set = "Spectral",
@@ -432,7 +391,7 @@ local analog = {
         return {vars = {center.ability.copies,center.ability.ante}}
     end,
     cost = 4,
-    atlas = "analog",
+    atlas = "atlasnotjokers",
     can_use = function(self, card)
         return #G.jokers.cards > 0
     end,
@@ -462,19 +421,12 @@ local analog = {
         ease_ante(card.ability.ante)
     end
 }
-local analog_sprite = {
-    object_type = "Atlas",
-    key = "analog",
-    path = "c_cry_analog.png",
-    px = 71,
-    py = 95
-}
 local replica = {
     object_type = "Consumable",
     set = "Spectral",
     name = "cry-Replica",
     key = "replica",
-    pos = {x=0,y=0},
+    pos = {x=1,y=1},
 	config = {},
     loc_txt = {
         name = 'Replica',
@@ -484,7 +436,7 @@ local replica = {
         }
     },
     cost = 4,
-    atlas = "replica",
+    atlas = "atlasnotjokers",
     can_use = function(self, card)
         return #G.hand.cards > 0
     end,
@@ -511,13 +463,6 @@ local replica = {
         end
         delay(0.5)
     end
-}
-local replica_sprite = {
-    object_type = "Atlas",
-    key = "replica",
-    path = "c_cry_replica.png",
-    px = 71,
-    py = 95
 }
 return {name = "Spectrals", 
         init = function()
@@ -700,4 +645,4 @@ return {name = "Spectrals",
 
             end
         end,
-        items = {white_hole_sprite, vacuum_sprite, hammerspace_sprite, lock_sprite, trade_sprite, analog_sprite, replica_sprite, white_hole, vacuum, hammerspace, lock, trade, analog, replica}}
+        items = {white_hole, vacuum, hammerspace, lock, trade, analog, replica}}
