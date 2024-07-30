@@ -402,7 +402,7 @@ local seed = {
     atlas = "code",
     can_use = function(self, card)
         --the card itself and one other card
-        return #G.jokers.highlighted + #G.hand.highlighted + #G.consumeables.highlighted == 2
+        return #G.jokers.highlighted + #G.hand.highlighted + #G.consumeables.highlighted + #G.pack_cards.highlighted == 2
     end,
     loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {key = 'cry_rigged', set = 'Other', vars = {}}
@@ -417,6 +417,9 @@ local seed = {
         end
         if G.consumeables.highlighted[1] then
             G.consumeables.highlighted[1].ability.cry_rigged = true
+        end
+        if G.pack_cards.highlighted[1] then
+            G.pack_cards.highlighted[1].ability.cry_rigged = true
         end
     end
 }
@@ -1122,7 +1125,7 @@ return {name = "Code Cards",
                         return {
                             n=G.UIT.ROOT, config = {padding = -0.1,  colour = G.C.CLEAR}, nodes={
                             {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, minh = 0.7*card.T.h, maxw = 0.7*card.T.w - 0.15, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'use_card', func = 'can_reserve_card'}, nodes={
-                                {n=G.UIT.T, config={text = "RESERVE",colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
+                                {n=G.UIT.T, config={text = "PULL",colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
                             }},
                             {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.1*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'Do you know that this parameter does nothing?', func = 'can_use_consumeable'}, nodes={
                                 {n=G.UIT.T, config={text = localize('b_use'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
