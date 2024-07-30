@@ -524,8 +524,11 @@ local memory = {
             local lock = tag.ID
             G.CONTROLLER.locks[lock] = true
             tag:yep('+', G.C.ATTENTION,function()
-                add_tag(Tag(G.GAME.cry_last_tag_used))
-                add_tag(Tag(G.GAME.cry_last_tag_used))
+                for i = 1, 2 do
+                    local t = Tag(G.GAME.cry_last_tag_used)
+                    t.ability.orbital_hand = G.GAME.cry_memory_orbital
+                    add_tag(t)
+                end
                 G.CONTROLLER.locks[lock] = nil
                 return true
             end)
@@ -624,6 +627,7 @@ function Tag:apply_to_run(x)
     if self.triggered and self.key ~= "tag_double" and self.key ~= "tag_cry_memory" and 
     self.key ~= "tag_cry_triple" and self.key ~= "tag_cry_quadruple" and self.key ~= "tag_cry_quintuple" then
         G.GAME.cry_last_tag_used = self.key
+        G.GAME.cry_memory_orbital = self.ability.orbital_hand
     end
     return ret
 end
