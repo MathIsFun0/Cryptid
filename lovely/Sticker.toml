@@ -5,10 +5,10 @@ priority = 0
 
 # back on my bullshit
 [[patches]]
-[patches.pattern]
+[patches.regex]
 target = "card.lua"
-pattern = "if self.seal then badges[#badges + 1] = string.lower(self.seal)..'_seal' end"
-position = "after"
+pattern = '''if self\.ability\.eternal then badges\[#badges \+ 1\] \= 'eternal' end\n\s+if self\.ability\.perishable then\n\s+loc_vars = loc_vars or \{\}; loc_vars\.perish_tally=self\.ability\.perish_tally\n\s+badges\[#badges \+ 1\] \= 'perishable'\n\s+end\n\s+if self\.ability\.rental then badges\[\#badges \+ 1\] \= 'rental' end\n\s+if self\.pinned then badges\[\#badges \+ 1\] \= 'pinned_left' end'''
+position = "at"
 payload = '''
 if self.ability.eternal then
 	if self.ability.set == 'Booster' then
@@ -66,20 +66,7 @@ if self.ability.banana then
 	end
 end
 if self.ability.cry_rigged then badges[#badges + 1] = 'cry_rigged' end
-if fehiwuojiowfb_disable_this_code_because_my_regex_didnt_work_120u889 then
 '''
-match_indent = true
-
-# sigh
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.sticker then loc_vars = loc_vars or {}; loc_vars.sticker=self.sticker end"
-position = "before"
-payload = '''
-end
-'''
-match_indent = true
 
 # dumb "fix", if you can even call it that (mod badges will appear in the wrong positions)
 [[patches]]
@@ -255,7 +242,7 @@ if self.ability.banana then
                     self.children.center.pinch.x = true
                     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
                         func = function()
-                                self.area:remove_card(self)
+                                if self.area then self.area:remove_card(self) end
                                 self:remove()
                                 self = nil
                             return true; end})) 

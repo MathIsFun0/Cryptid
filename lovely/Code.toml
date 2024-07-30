@@ -125,14 +125,13 @@ G.GAME.current_round.semicolon = false
 '''
 match_indent = true
 
-# Delete - check if deleted
+# Delete - placeholder booster, in the case that all are deleted
 [[patches]]
-[patches.pattern]
+[patches.regex]
 target = "functions/common_events.lua"
-pattern = "if v.no_pool_flag and G.GAME.pool_flags[v.no_pool_flag] then add = nil end"
-position = "after"
-payload = "if G.GAME.cry_delete and G.GAME.cry_delete[v.key] then add = nil end"
-match_indent = true
+pattern = '''return center\nend\n\nfunction get_current_pool\(_type, _rarity, _legendary, _append\)'''
+position = "before"
+payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end'''
 
 # Increase highlight limit for consumables
 [[patches]]

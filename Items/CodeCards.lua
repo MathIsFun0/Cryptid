@@ -683,7 +683,7 @@ local delete = {
         return G.STATE == G.STATES.SHOP and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
     end,
     use = function(self, card, area, copier)
-        if not G.GAME.cry_delete then G.GAME.cry_delete = {} end
+        if not G.GAME.banned_keys then G.GAME.banned_keys = {} end	-- i have no idea if this is always initialised already tbh
         local a = nil
         local c = nil
         if G.shop_jokers.highlighted[1] then
@@ -698,7 +698,7 @@ local delete = {
             a = G.shop_vouchers
             c = G.shop_vouchers.highlighted[1]
         end
-        G.GAME.cry_delete[c.config.center.key] = true
+        G.GAME.banned_keys[c.config.center.key] = true
         c:start_dissolve()
     end
 }

@@ -254,6 +254,7 @@ function Card:cry_calculate_consumeable_rental()
 end
 
 function Card:cry_calculate_consumeable_perishable()
+	if not self.ability.perish_tally then self.ability.perish_tally = 1 end
 	if self.ability.perishable and self.ability.perish_tally > 0 then
 		self.ability.perish_tally = 0
 		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
@@ -1064,7 +1065,22 @@ function Game:update(dt)
     end
     G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
 end
-
+SMODS.Sound({
+    key = "meow1",
+    path = "meow1.ogg"
+})
+SMODS.Sound({
+    key = "meow2",
+    path = "meow2.ogg"
+})
+SMODS.Sound({
+    key = "meow3",
+    path = "meow3.ogg"
+})
+SMODS.Sound({
+    key = "meow4",
+    path = "meow4.ogg"
+})
 SMODS.Sound({
     key = "e_mosaic",
     path = "e_mosaic.ogg"
