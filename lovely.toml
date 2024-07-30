@@ -182,7 +182,6 @@ elseif not G.GAME.modifiers.cry_force_random_edition then
 	card:set_edition(edition)
 end
 '''
-match_indent = true
 
 # Edition + sticker forcing on vouchers (editions are just funny cost increases)
 [[patches]]
