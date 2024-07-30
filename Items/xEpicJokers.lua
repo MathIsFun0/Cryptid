@@ -1119,7 +1119,7 @@ local bonusjoker = {
 						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
 					end
                 			return {
-					message = localize('k_upgrade_ex'),
+					message = localize('k_upgrade_ex'), --Something is making this not display it's text, I could have sworn this was working properly when i tested it...
 					card = card,
 					colour = G.C.CHIPS
 					}
@@ -1138,24 +1138,25 @@ local bonusjoker = {
 if JokerDisplay then
 	bonusjoker.joker_display_definition = {
 		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_chips" }
-				},
-				border_colour = G.C.CHIPS
-			}
-		},
-		reminder_text = {
-			{ text = '(', },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ')', },
-		},
-		calc_function = function(card)
-			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
-			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= 'Unknown' then
+            		{ text = "+" },
+            		{ ref_table = "card.joker_display_values", ref_value = "count" },
+        	},
+        	text_config = { colour = G.C.DARK_EDITION },
+        	extra = {
+            	{
+                { text = "(" },
+                { ref_table = "card.joker_display_values",                     ref_value = "odds" },
+                { text = " in " },
+                { ref_table = "card.ability.extra",                     ref_value = "odds" },
+                { text = ")" },
+            	}
+        },
+        extra_config = { colour = G.C.GREEN, scale = 0.3 },
+        calc_function = function(card)
+            local count = 0
+            local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+            local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
 				for _, scoring_card in pairs(scoring_hand) do
 					if scoring_card.ability.effect and scoring_card.ability.effect == "Bonus Card" then
 						count = count +
@@ -1163,9 +1164,8 @@ if JokerDisplay then
 					end
 				end
 			end
-			card.joker_display_values.count = count
-			card.joker_display_values.x_chips = tonumber(string.format("%.2f", (card.ability.extra.x_chips ^ count)))
-			card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Enhanced', key = "m_bonus" }
+            card.joker_display_values.count = count
+            card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
 		end
 	}
 end
@@ -1181,7 +1181,7 @@ local multjoker = {
 			"{C:green}#1# in #2#{} chance for each",
 			"played {C:attention}Mult Card{} to create",
 			"a {C:spectral}Cryptid{} card when scored",
-			"{C:inactive}(Must Have room)"
+			"{C:inactive}(Must have room)"
 		}
     	},
 	rarity = "cry_epic",
