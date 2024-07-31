@@ -2372,7 +2372,7 @@ local happy = {
     		local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
     		local roundcheck = false
    		G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker --This is actually making me go insane why is this creating more than one joker
-    		G.E_MANAGER:add_event(Event({
+    		G.E_MANAGER:add_event(Event({ --asdfghaskjklashdhdeflihkdhj
         		func = function()
             		if not roundcheck and roundcreatejoker > 0 then
                 		local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
