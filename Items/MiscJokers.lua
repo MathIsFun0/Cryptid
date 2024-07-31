@@ -2374,7 +2374,7 @@ local happy = {
                 G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker
                 G.E_MANAGER:add_event(Event({
                     func = function() 
-                        for i = 1, roundcreatejoker do
+                        for i = 1, 1 do
                             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
                             card:add_to_deck()
                             G.jokers:emplace(card)
