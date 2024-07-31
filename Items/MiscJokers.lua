@@ -2267,8 +2267,8 @@ local spaceglobe = {
         name = 'Celestial Globe',
         text = {
 			"This Joker gains {X:chips,C:white}X#2#{} Chips",
-			"if {C:attention}poker hand{} is a {C:attention}#3#{}",
-			"{C:inactive}(Hand changes after increase){}",
+			"if {C:attention}poker hand{} is a {C:attention}#3#{},",
+			"Hand changes after increase{}",
 			"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}"
 		}
     	},
@@ -2376,7 +2376,7 @@ local happy = {
 				G.GAME.joker_buffer = 0
 				return true
                         end}))
-	--this makes more jokers than expected but i'm tired i'll fix this later ig
+		return true
         end
     end
 }
