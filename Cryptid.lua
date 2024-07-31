@@ -254,6 +254,7 @@ function Card:cry_calculate_consumeable_rental()
 end
 
 function Card:cry_calculate_consumeable_perishable()
+	if not self.ability.perish_tally then self.ability.perish_tally = 1 end
 	if self.ability.perishable and self.ability.perish_tally > 0 then
 		self.ability.perish_tally = 0
 		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
@@ -679,6 +680,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           check_for_unlock({type = 'have_edition'})
       end
   end
+  if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
+    card:set_edition({negative = true})
+    end
   if G.GAME.modifiers.cry_force_edition and (not G.GAME.modifiers.cry_force_random_edition) and area ~= G.pack_cards then
       card:set_edition(nil, true)
   end
@@ -692,6 +696,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if card.ability.consumeable and card.pinned then	-- counterpart is in Sticker.toml
       G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
   end
+
   return card
 end
 
@@ -837,6 +842,7 @@ function init_localization()
     G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
     G.localization.misc.labels.banana = "Banana"
     G.localization.misc.labels.cry_rigged = "Rigged"
+    G.localization.misc.labels.food_jokers = "Food Jokers"
 end
 
 function SMODS.current_mod.process_loc_text()
@@ -852,6 +858,14 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "All {C:cry_code}probabilities",
             "are {C:cry_code}guaranteed"
+        },
+    }
+    G.localization.descriptions.Other.food_jokers = {
+        name = "Food Jokers",
+        text = {
+            "{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
+            "{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
+            "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel"
         },
     }
 								-- i am so sorry for this
@@ -1069,7 +1083,22 @@ function Game:update(dt)
     end
     G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
 end
-
+SMODS.Sound({
+    key = "meow1",
+    path = "meow1.ogg"
+})
+SMODS.Sound({
+    key = "meow2",
+    path = "meow2.ogg"
+})
+SMODS.Sound({
+    key = "meow3",
+    path = "meow3.ogg"
+})
+SMODS.Sound({
+    key = "meow4",
+    path = "meow4.ogg"
+})
 SMODS.Sound({
     key = "e_mosaic",
     path = "e_mosaic.ogg"
@@ -1089,7 +1118,7 @@ SMODS.Sound({
 SMODS.Sound({
     key = "music_jimball",
     path = "music_jimball.ogg",
-    no_sync = true,
+    sync = false,
     pitch = 1,
     select_music_track = function()
         return next(find_joker('cry-Jimball')) and Cryptid_config.Cryptid.jimball_music and 1.57e308

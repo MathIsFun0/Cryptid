@@ -1167,7 +1167,7 @@ return {name = "Blinds",
                 local c = "Boss"
                 if string.sub(G.GAME.subhash or '', -1) == 'S' then c = "Small" end
                 if string.sub(G.GAME.subhash or '', -1) == 'B' then c = "Big" end
-                if G.GAME.CRY_BLINDS and G.GAME.CRY_BLINDS[c] and not y and blind and blind.mult then blind.mult = G.GAME.CRY_BLINDS[c] end
+                if G.GAME.CRY_BLINDS and G.GAME.CRY_BLINDS[c] and not y and blind and blind.mult and blind.cry_ante_base_mod then blind.mult = G.GAME.CRY_BLINDS[c] end
                 bsb(self, blind, y, z)
             end
             local rb = reset_blinds

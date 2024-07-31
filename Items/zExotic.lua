@@ -3,7 +3,7 @@ local gateway = {
     set = "Spectral",
     name = "cry-Gateway",
     key = "gateway",
-    pos = {x=2,y=0},
+    pos = {x=0,y=0},
     loc_txt = {
         name = 'Gateway',
         text = { "Create a random",
