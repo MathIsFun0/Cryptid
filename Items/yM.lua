@@ -936,6 +936,7 @@ local doodlem = {
                 jollycount = jollycount + 1
             end
         end
+	if jollycount > 50 then jollycount = 50 end --reduce excessive consumeable spam (Lag)
         for i = 1, jollycount do
             local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'cry_doodlem')
             card:set_edition({negative = true})
