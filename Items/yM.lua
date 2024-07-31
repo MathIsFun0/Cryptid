@@ -988,8 +988,9 @@ local virgo = {
 			func = (function()
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local summon = math.floor((card.ability.sell_value)*0.25) -- +4 to account for default sell value (certified no source code moment)
+						local summon = math.floor((card.ability.extra_value)*0.25)
 						if summon < 1 then summon = 1 end --precautionary measure, just in case
+						if summon > 500 then summon = 500 end --another precautionary measure
 						print(summon)
 						for i = 1, summon do
 							local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
