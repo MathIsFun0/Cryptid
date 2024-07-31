@@ -2353,7 +2353,7 @@ local happy = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker then
-		local sellcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+		local sellcreatejoker = 1
                 G.GAME.joker_buffer = G.GAME.joker_buffer + sellcreatejoker
                 G.E_MANAGER:add_event(Event({
                     func = function() 
