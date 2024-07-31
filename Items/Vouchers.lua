@@ -75,6 +75,82 @@ local clone_machine = {
     end,
     requires = {"v_cry_tag_printer"}
 }
+local command_prompt_atlas = {
+    object_type = "Atlas",
+    key = "cry_command_prompt",
+    path = "v_commandprompt.png",
+    px = 71,
+    py = 95
+}
+local command_prompt = {
+    object_type = "Voucher",
+	key = "command_prompt",
+    atlas = "cry_command_prompt",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Command Prompt',
+        text = {
+			"{C:attention}Code Cards{} can appear",
+            "in {C:attention}shop{}"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {}}
+    end,
+    redeem = function(self)
+        G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.code_rate = 4
+        return true end }))
+    end
+}
+local satellite_uplink_atlas = {
+    object_type = "Atlas",
+    key = "cry_satellite_uplink",
+    path = "v_satelliteuplink.png",
+    px = 71,
+    py = 95
+}
+local satellite_uplink = {
+    object_type = "Voucher",
+	key = "satellite_uplink",
+    atlas = "cry_satellite_uplink",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Satellite Uplink',
+        text = {
+			"{C:attention}Code Cards{} count as",
+            "in {C:planet}Planet Cards{}"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {}}
+    end,
+    requires = {"v_cry_command_prompt"}
+}
+local quantum_computing_atlas = {
+    object_type = "Atlas",
+    key = "cry_quantum_computing",
+    path = "v_quantumcomputing.png",
+    px = 71,
+    py = 95
+}
+local quantum_computing = {
+    object_type = "Voucher",
+	key = "quantum_computing",
+    atlas = "cry_quantum_computing",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Quantum Computing',
+        text = {
+			"All {C:attention}Code Cards{}",
+            "spawn as {C:dark_edition}Negative{}"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {}}
+    end,
+    requires = {"v_cry_satellite_uplink"}
+}
 local triple = {
     object_type = "Tag",
     atlas = "tag_cry",
@@ -213,6 +289,16 @@ return {name = "Vouchers",
                             pool[i] = "tag_cry_quintuple"
                         end
                     end
+                elseif type == 'Planet' and G.GAME.used_vouchers.v_cry_satellite_uplink then
+                    local new_pool = {}
+                    for i, j in ipairs(pool) do
+                        table.insert(new_pool, j)
+                    end
+                    local code_pool, q = gcp('Code', rarity, legendary, append, z)
+                    for i, j in ipairs(code_pool) do
+                        table.insert(new_pool, j)
+                    end
+                    pool = new_pool
                 end
                 return pool, pool_append
             end
@@ -230,4 +316,4 @@ return {name = "Vouchers",
                 return tinit(self,tag,y,z)
             end
         end,
-        items = {copies_atlas, copies, tag_printer_atlas, tag_printer, clone_machine_atlas, clone_machine, triple, quadruple, quintuple}}
+        items = {copies_atlas, copies, tag_printer_atlas, tag_printer, clone_machine_atlas, clone_machine, triple, quadruple, quintuple, command_prompt_atlas, command_prompt, satellite_uplink_atlas, satellite_uplink, quantum_computing_atlas, quantum_computing}}
