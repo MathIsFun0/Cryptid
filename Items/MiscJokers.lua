@@ -2371,7 +2371,7 @@ local happy = {
 	if context.end_of_round and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
     		local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
     		local roundcheck = false
-   		G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker
+   		G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker --This is actually making me go insane why is this creating more than one joker
     		G.E_MANAGER:add_event(Event({
         		func = function()
             		if not roundcheck and roundcreatejoker > 0 then
@@ -2383,11 +2383,9 @@ local happy = {
                 		roundcheck = true
             		end
             		return true
-        end
-    }))
-
-    card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
-end
+        	end}))
+    		card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+	end
     end
 }
 local meteor = {
