@@ -341,7 +341,7 @@ local box = {
     },
     atlas = "blinds",
     boss_colour = HEX('883a3b'),
-    debuff_card = function(self, card, from_blind)
+    recalc_debuff = function(self, card, from_blind)
     if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 1 then
         return true
     end
@@ -467,7 +467,7 @@ local hammer = {
     },
     atlas = "blinds",
     boss_colour = HEX('ffabd6'),
-    debuff_card = function(self, card, from_blind)
+    recalc_debuff = function(self, card, from_blind)
         if card.area ~= G.jokers and not G.GAME.blind.disabled then
             if card.ability.effect ~= 'Stone Card' and (card.base.value == '3' or card.base.value == '5' or card.base.value == '7' or card.base.value == '9' or card.base.value == 'Ace') then
                 return true
@@ -494,7 +494,7 @@ local windmill = {
     },
     atlas = "blinds",
     boss_colour = HEX('f70000'),
-    debuff_card = function(self, card, from_blind)
+    recalc_debuff = function(self, card, from_blind)
     if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 2 then
         return true
     end
