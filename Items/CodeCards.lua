@@ -750,7 +750,9 @@ local spaghetti = {
         }
         if G.P_CENTERS.j_cry_pickle then jokers[#jokers+1] = "j_cry_pickle" end
         if G.P_CENTERS.j_cry_chili_pepper then jokers[#jokers+1] = "j_cry_chili_pepper" end
+	if G.P_CENTERS.j_cry_oldcandy then jokers[#jokers+1] = "j_cry_oldcandy" end
         if G.P_CENTERS.j_cry_caramel then jokers[#jokers+1] = "j_cry_caramel" end
+	if G.P_CENTERS.j_cry_foodm then jokers[#jokers+1] = "j_cry_foodm" end
         local card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(jokers,pseudoseed("cry_spaghetti")))
         card:set_edition({
             cry_glitched = true
@@ -858,7 +860,7 @@ G.FUNCS.variable_apply = function()
         {'J', 'Jack'},
         {'Q', 'Queen'},
         {'K', 'King'},
-        {'A', 'Ace'},
+        {'A', 'Ace', 'One'},
         {'M'},
         {'nil'},
     }
@@ -934,15 +936,15 @@ end
 --todo: mod support
 G.FUNCS.class_apply = function()
     local enh_table = {
-        m_bonus = {"bonus", "chip", "chips"},
-        m_mult = {"mult"},
-        m_wild = {"wild"},
-        m_glass = {"glass"},
-        m_steel = {"steel"},
-        m_stone = {"stone"},
-        m_gold = {"gold"},
-        m_lucky = {"lucky"},
-        m_cry_echo = {"echo"},
+        m_bonus = {"bonus"},
+        m_mult = {"mult", "red"},
+        m_wild = {"wild", "suit"},
+        m_glass = {"glass", "xmult"},
+        m_steel = {"steel", "metal", "grey"},
+        m_stone = {"stone", "chip", "chips"},
+        m_gold = {"gold", "money", "yellow"},
+        m_lucky = {"lucky", "rng"},
+        m_cry_echo = {"echo", "retrigger", "retriggers"},
         ccd = {"ccd"},
         null = {"nil"},
     }
