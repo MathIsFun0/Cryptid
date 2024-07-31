@@ -104,7 +104,7 @@ local kidnap = {
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context) --I'm sure there is a more elegant way to do this but oh well
-		if context.selling_card and (context.card.ability.name == "Crazy Joker" or context.card.ability.name == "Zany Joker" or context.card.ability.name == "Mad Joker" or context.card.ability.name == "Droll Joker") and not context.blueprint then
+		if context.selling_card and (context.card.ability.name == "Crazy Joker" or context.card.ability.name == "Zany Joker" or context.card.ability.name == "Mad Joker" or context.card.ability.name == "Droll Joker") then
 			ease_dollars(card.ability.extra.money)
 			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
                 	card:add_to_deck()
