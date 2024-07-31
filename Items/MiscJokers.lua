@@ -2379,8 +2379,8 @@ local happy = {
                             card:add_to_deck()
                             G.jokers:emplace(card)
                             card:start_materialize()
-                            G.GAME.joker_buffer = 0
                         end
+			G.GAME.joker_buffer = 0
                         return true
                     end}))   
                     card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
