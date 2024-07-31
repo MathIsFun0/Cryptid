@@ -2354,29 +2354,36 @@ local happy = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker then
-		local othercreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + othercreatejoker
-		G.E_MANAGER:add_event(Event({
-                	func = function()
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				G.GAME.joker_buffer = 0
-				return true
-                        end}))
+		local sellcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+                G.GAME.joker_buffer = G.GAME.joker_buffer + sellcreatejoker
+                G.E_MANAGER:add_event(Event({
+                    func = function() 
+                        for i = 1, sellcreatejoker do
+                            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+                            card:add_to_deck()
+                            G.jokers:emplace(card)
+                            card:start_materialize()
+                            G.GAME.joker_buffer = 0
+                        end
+                        return true
+                    end}))   
+                    card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
         end
 	if context.end_of_round and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
-		local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-		G.E_MANAGER:add_event(Event({
-                	func = function()
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				G.GAME.joker_buffer = 0
-				return true
-                        end}))
-		return true
+		local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+                G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker
+                G.E_MANAGER:add_event(Event({
+                    func = function() 
+                        for i = 1, roundcreatejoker do
+                            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+                            card:add_to_deck()
+                            G.jokers:emplace(card)
+                            card:start_materialize()
+                            G.GAME.joker_buffer = 0
+                        end
+                        return true
+                    end}))   
+                    card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
         end
     end
 }
