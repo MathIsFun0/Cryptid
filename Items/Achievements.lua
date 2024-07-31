@@ -195,7 +195,7 @@ local freak_house = {
                 if G.jokers.cards[i].config.center.key == 'j_cry_nice' then has_nice = true end
             end
 
-            --Is it a hearts flush
+            --Is it a hearts flush house
             local total_6s = 0
             local total_9s = 0
             local total_hearts = 0
@@ -272,6 +272,25 @@ local pull_request = {
     end,
 }
 
+local ace_through_crash = {
+    object_type = "Achievement",
+    key = "ace_through_crash",
+    loc_txt = {
+        name = "We Told You... Wait Hold On",
+        description = "Use ACE through ://CRASH",
+    },
+    order = 14,
+    bypass_all_unlocked = true,
+    hidden_text = true,
+    pos = {x=2, y=0},
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == "ace_through_crash" then
+            return true
+        end
+    end,
+}
 
 local home_realtor = {
     object_type = "Achievement",
@@ -280,7 +299,7 @@ local home_realtor = {
         name = "Home Realtor",
         description = "Activate Happy House before Ante 8 (without DoE/Antimatter)",
     },
-    order = 14,
+    order = 15,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -300,7 +319,7 @@ local traffic_jam = {
         name = "Traffic Jam",
         description = "Beat all Rush Hour challenges",
     },
-    order = 15,
+    order = 16,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -326,7 +345,7 @@ local perfectly_balanced = {
         name = "Perfectly Balanced",
         description = "Beat Very Fair Deck on Ascendant Stake",
     },
-    order = 16,
+    order = 17,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -354,7 +373,6 @@ local perfectly_balanced = {
 -- H4xx0r: Use a cheat code
 -- We Told You Not To: Use ://CRASH
 -- Googol Play Pass: Rig a Googol Play Card
--- Pull Request: Have ://COMMIT spawn the same Joker that it destroyed
 -- Bullet Hell: Have 15 copies of AP Joker
 -- !niW uoY: Reach Ante -8
 -- Joke's on You, Pal!: Trigger The Joke's effect on Ante 1 and win the run
@@ -362,11 +380,13 @@ local perfectly_balanced = {
 -- Ultimate Full Skip: Win in 1 round
 -- Implemented (Platinum)
 -- Patience is a Virtue: Wait out Lavender Loop for 2 minutes before playing first hand and beat it
+-- Pull Request: Have ://COMMIT spawn the same Joker that it destroyed
+-- We Told You... Wait Hold On: Use ACE through ://CRASH
 -- Home Realtor: Activate Happy House before Ante 8 (without DoE/Antimatter)
 -- Traffic Jam: Win all Rush Hour challenges
 -- Perfectly Balanced: Beat Very Fair Deck on Ascendant Stake
 
-local achievement_objects = {achievement_atlas, break_infinity, bullet_hell, cryptid_the_cryptid, what_have_you_done, used_crash, haxxor, googol_play_pass, pull_request, niw_uoy, jokes_on_you, freak_house, ult_full_skip, patience_virtue, home_realtor, traffic_jam, perfectly_balanced}
+local achievement_objects = {achievement_atlas, break_infinity, bullet_hell, cryptid_the_cryptid, what_have_you_done, used_crash, haxxor, googol_play_pass, pull_request, niw_uoy, jokes_on_you, freak_house, ult_full_skip, patience_virtue, ace_through_crash, home_realtor, traffic_jam, perfectly_balanced}
 return {name = "Achievements",
         init = function()
         end,

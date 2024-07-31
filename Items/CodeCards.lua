@@ -1053,6 +1053,8 @@ G.FUNCS.crash_apply = function()
     loadstring(G.ENTERED_ACE)() --Scary!
     glitched_intensity = 0
     G.SETTINGS.GRAPHICS.crt = 0
+    check_for_unlock({type = "ace_through_crash"})
+    check_for_unlock({type = 'ach_cry_used_crash'})
     G.CHOOSE_ACE:remove()
     G.ENTERED_ACE = nil
 end
@@ -1414,8 +1416,7 @@ crash_functions = {
 
     end,
     function()
-        G:save_settings()
-        G:save_progress()
+        check_for_unlock({type = 'ach_cry_used_crash'})
         --fills screen with Crash cards
         glitched_intensity = 100
         G.SETTINGS.GRAPHICS.crt = 101
