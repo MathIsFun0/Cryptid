@@ -291,7 +291,7 @@ local mstack = {
         text = {
             "Retrigger all cards played",
             "once for every",
-            "{C:attention}#2# Jolly Jokers{} sold",
+            "{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Jokers{} sold",
             "{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
         }
     },
@@ -301,7 +301,7 @@ local mstack = {
     perishable_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req}}
+        return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req, center.ability.extra.sell}}
     end,
     calculate = function(self, card, context) --note: hardcoded like this intentionally
         if context.repetition then
@@ -519,7 +519,7 @@ if JokerDisplay then
             card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
         end
     }
-end--TODO: Fix double scale interaction
+end --TODO: Fix double scale interaction
 local bonk = {
 	object_type = "Joker",
 	name = "cry-bonk",
@@ -988,7 +988,7 @@ local virgo = {
 			func = (function()
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local summon = math.floor((card.ability.extra_value + 4)*0.25) -- +4 to account for default sell value (certified no source code moment)
+						local summon = math.floor((card.ability.value)*0.25) -- +4 to account for default sell value (certified no source code moment)
 						if summon < 1 then summon = 1 end --precautionary measure, just in case
 						print(summon)
 						for i = 1, summon do
