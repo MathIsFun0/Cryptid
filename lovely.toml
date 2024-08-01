@@ -472,6 +472,22 @@ end
 '''
 match_indent = true
 
+# world's first actually good multi-patch
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = "card:start_materialize()"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+	card:set_edition(nil, true, true)
+elseif G.GAME.modifiers.cry_force_random_edition then
+	local edition = cry_poll_random_edition()
+	card:set_edition(edition, true, true)
+end
+'''
+match_indent = true
+
 # Prevent Jokers from spitting empty messages
 [[patches]]
 [patches.pattern]
