@@ -407,3 +407,21 @@ pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_an
 position = "at"
 payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
 match_indent = true
+
+# inject into vanilla calculate_perishable to prevent nil index bug (i don't know where it fails so i'm just patching every part of it...)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable and self.ability.perish_tally > 0 then'''
+position = "before"
+payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
+match_indent = true
+
+# again in set_debuff
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable and self.ability.perish_tally <= 0 then'''
+position = "before"
+payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
+match_indent = true
