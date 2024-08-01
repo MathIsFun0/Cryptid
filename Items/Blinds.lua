@@ -917,7 +917,7 @@ local obsidian_orb = {
                 if _card then
                     _card:set_debuff(true)
                     _card:juice_up()
-                    self:wiggle()
+                    G.GAME.blind:wiggle()
                 end
             end
         end
