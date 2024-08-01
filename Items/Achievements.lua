@@ -277,7 +277,7 @@ local ace_through_crash = {
     key = "ace_through_crash",
     loc_txt = {
         name = "Pocket ACE",
-        description = "unlock_achievement(\"ace_through_crash\")",
+        description = "unlock_achievement(\"ach_cry_ace_through_crash\")",
     },
     order = 14,
     bypass_all_unlocked = true,
