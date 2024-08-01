@@ -176,6 +176,70 @@ local jokes_on_you = {
     end,
 }
 
+local now_the_fun_begins = {
+    object_type = "Achievement",
+    key = "now_the_fun_begins",
+    loc_txt = {
+        name = "Now the Fun Begins", --Possible rename to "Art is My Passion"?
+        description = "Obtain Canvas",
+    },
+    order = 10,
+    bypass_all_unlocked = true,
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == 'modify_jokers' then
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].config.center.key == 'j_cry_canvas' then return true end
+            end
+        end
+    end,
+}
+
+local blurred_blurred_joker = {
+    object_type = "Achievement",
+    key = "blurred_blurred_joker",
+    loc_txt = {
+        name = "Legally Blind", --Rename. Maybe "20/50 Vision"?
+        description = "Obtain Blurred Blurred Joker",
+    },
+    order = 11,
+    bypass_all_unlocked = true,
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == 'modify_jokers' then
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].config.center.key == 'j_cry_blurred' and (G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_blur) then return true end
+            end
+        end
+    end,
+}
+
+local exodia = {
+    object_type = "Achievement",
+    key = "exodia",
+    loc_txt = {
+        name = "Exodia", 
+        description = "Have 5 Exotic Jokers",
+    },
+    order = 12,
+    bypass_all_unlocked = true,
+    atlas = "cry_achievements",
+    --reset_on_startup = true,
+    unlock_condition = function(self, args)
+        if args.type == 'modify_jokers' then
+            local exotic_count = 0
+
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].config.center.rarity == 'cry_exotic' then exotic_count = exotic_count + 1 end
+            end
+
+            if exotic_count >= 5 then return true end
+        end
+    end,
+}
+
 local freak_house = {
     object_type = "Achievement",
     key = "freak_house",
@@ -183,7 +247,7 @@ local freak_house = {
         name = "Freak House",
         description = "Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice",
     },
-    order = 10,
+    order = 13,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
     --reset_on_startup = true,
@@ -217,7 +281,7 @@ local ult_full_skip = {
         name = "Ultimate Full Skip",
         description = "Win in 1 round",
     },
-    order = 11,
+    order = 14,
     bypass_all_unlocked = true,
     atlas = "cry_achievements",
     --reset_on_startup = true,
@@ -235,7 +299,7 @@ local patience_virtue = {
         name = "Patience is a Virtue",
         description = "Wait out Lavender Loop for 2 minutes before playing first hand and beat the blind",
     },
-    order = 12,
+    order = 15,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -259,7 +323,7 @@ local pull_request = {
         name = "Pull Request",
         description = "Have ://COMMIT spawn the same Joker that it destroyed",
     },
-    order = 13,
+    order = 16,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -274,18 +338,18 @@ local pull_request = {
 
 local ace_through_crash = {
     object_type = "Achievement",
-    key = "ace_through_crash",
+    key = "ace_in_crash",
     loc_txt = {
         name = "Pocket ACE",
-        description = "unlock_achievement(\"ach_cry_ace_through_crash\")",
+        description = "check_for_unlock({type = \"ace_in_crash\"})",
     },
-    order = 14,
+    order = 17,
     bypass_all_unlocked = true,
     pos = {x=2, y=0},
     atlas = "cry_achievements",
     --reset_on_startup = true,
     unlock_condition = function(self, args)
-        if args.type == "ace_through_crash" then
+        if args.type == "ace_in_crash" then
             return true
         end
     end,
@@ -298,7 +362,7 @@ local home_realtor = {
         name = "Home Realtor",
         description = "Activate Happy House before Ante 8 (without DoE/Antimatter)",
     },
-    order = 15,
+    order = 18,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -318,7 +382,7 @@ local traffic_jam = {
         name = "Traffic Jam",
         description = "Beat all Rush Hour challenges",
     },
-    order = 16,
+    order = 19,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -344,7 +408,7 @@ local perfectly_balanced = {
         name = "Perfectly Balanced",
         description = "Beat Very Fair Deck on Ascendant Stake",
     },
-    order = 17,
+    order = 20,
     bypass_all_unlocked = true,
     hidden_text = true,
     pos = {x=2, y=0},
@@ -360,11 +424,8 @@ local perfectly_balanced = {
 -- TODO: Add new Achievements. 
 -- Current Ideas (Normal): 
 -- ???: Obtain a Blurred Blurred Joker
--- ???: Obtain Canvas
--- WHAT HAVE YOU DONE: Delete or Sacrifice an Exotic Joker
 -- Cry: Win a run with only Sob and Obelisk
 -- Overtuned: Have any Glitched item give either 100x or 0.01x its original values
--- Exodia: Have 5 Exotic Jokers
 -- Current Ideas (Platinum): 
 
 -- Implemented (Normal)
@@ -374,18 +435,21 @@ local perfectly_balanced = {
 -- Googol Play Pass: Rig a Googol Play Card
 -- Bullet Hell: Have 15 copies of AP Joker
 -- !niW uoY: Reach Ante -8
+-- Now the Fun Begins: Obtain Canvas
+-- Exodia: Have 5 Exotic Jokers
+-- WHAT HAVE YOU DONE: Delete or Sacrifice an Exotic Joker
 -- Joke's on You, Pal!: Trigger The Joke's effect on Ante 1 and win the run
 -- Freak House: Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice
 -- Ultimate Full Skip: Win in 1 round
 -- Implemented (Platinum)
 -- Patience is a Virtue: Wait out Lavender Loop for 2 minutes before playing first hand and beat it
 -- Pull Request: Have ://COMMIT spawn the same Joker that it destroyed
--- We Told You... Wait Hold On: Use ACE through ://CRASH
+-- Pocket ACE: Only unlockable through using ACE to unlock
 -- Home Realtor: Activate Happy House before Ante 8 (without DoE/Antimatter)
 -- Traffic Jam: Win all Rush Hour challenges
 -- Perfectly Balanced: Beat Very Fair Deck on Ascendant Stake
 
-local achievement_objects = {achievement_atlas, break_infinity, bullet_hell, cryptid_the_cryptid, what_have_you_done, used_crash, haxxor, googol_play_pass, pull_request, niw_uoy, jokes_on_you, freak_house, ult_full_skip, patience_virtue, ace_through_crash, home_realtor, traffic_jam, perfectly_balanced}
+local achievement_objects = {achievement_atlas, break_infinity, bullet_hell, cryptid_the_cryptid, now_the_fun_begins, blurred_blurred_joker, exodia, what_have_you_done, used_crash, haxxor, googol_play_pass, pull_request, niw_uoy, jokes_on_you, freak_house, ult_full_skip, patience_virtue, ace_through_crash, home_realtor, traffic_jam, perfectly_balanced}
 return {name = "Achievements",
         init = function()
         end,
