@@ -2385,8 +2385,9 @@ local happy = {
             			end
             			return {roundcheck = true}
         		end}))
+			roundcheck = true
     			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
-		else ease_dollars(123456789) end
+		else roundcheck = true end
 	end
     end
 }
