@@ -474,7 +474,8 @@ return {name = "Spectrals",
                     end
             
                     self.states.hover.can = false
-                    G.GAME.used_vouchers[self.config.center_key] = nil
+                    if G.GAME.used_vouchers[self.config.center_key] then G.GAME.used_vouchers[self.config.center_key] = nil end
+                    G.GAME.cry_owned_vouchers[self.config.center_key] = nil
                     local top_dynatext = nil
                     local bot_dynatext = nil
                     

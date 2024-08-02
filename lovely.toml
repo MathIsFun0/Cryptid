@@ -257,6 +257,17 @@ end
 '''
 match_indent = true
 
+# show owned vouchers
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if G.GAME.used_vouchers[v.key] then"
+position = "at"
+payload = '''
+if G.GAME.cry_owned_vouchers[v.key] then
+'''
+match_indent = true
+
 # show in voucher menu
 [[patches]]
 [patches.pattern]
@@ -344,6 +355,8 @@ if G.GAME.voucher_sticker_index then
 				for kk, vv in pairs(G.P_CENTERS) do
 					if k == vv.name then
 						cry_debuff_voucher(vv)		-- needs to be an exception made for director's cut + retcon, but lazy
+						G.GAME.used_vouchers.vv = nil
+						G.GAME.used_vouchers[kk] = nil
 						break
 					end
 				end

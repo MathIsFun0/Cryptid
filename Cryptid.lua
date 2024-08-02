@@ -73,7 +73,7 @@ function Card:set_sprites(_center, _front)
     end
 end
 
-function cry_debuff_voucher(center)	-- sorry for all the mess here... 
+function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 local center_table = {
                     name = center and center.name,
                     extra = center and center.config.extra
@@ -127,8 +127,8 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Reroll Surplus' or center_table.name == 'Reroll Glut' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra
-                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra)
+                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + center_table.extra
+                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Seed Money' then
