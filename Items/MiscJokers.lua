@@ -2365,11 +2365,9 @@ local happy = {
                         return true
                     end}))   
                     card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+                return {calculated = true}
         end
-	if context.end_of_round and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
-		local roundcheck = false
-		if not context.individual and not roundcheck then
-			roundcheck = true
+	if context.end_of_round and not context.individual and not context.repetition and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
     			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
    			G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker 
     			G.E_MANAGER:add_event(Event({ 
@@ -2381,11 +2379,10 @@ local happy = {
                 			card:start_materialize()
                				G.GAME.joker_buffer = 0
             			end
-            			return {roundcheck = true}
+            			return true
         		end}))
-			roundcheck = true
     			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
-		else roundcheck = true end
+                return {calculated = true}
 	end
     end
 }

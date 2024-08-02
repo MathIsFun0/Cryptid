@@ -408,7 +408,7 @@ local seed = {
 		info_queue[#info_queue+1] = {key = 'cry_rigged', set = 'Other', vars = {}}
 	end,
     use = function(self, card, area, copier)
-        area:remove_from_highlighted(card)
+        if area then area:remove_from_highlighted(card) end
         if G.jokers.highlighted[1] then
             G.jokers.highlighted[1].ability.cry_rigged = true
         end
@@ -570,11 +570,12 @@ local merge = {
     end,
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({trigger = 'immediate', func = function()
-        if not G.redeemed_vouchers_during_hand then
-            G.redeemed_vouchers_during_hand = CardArea(
+        G.cry_mergearea1 = CardArea(
                 G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, 
                 {type = 'play', card_limit = 5})
-        end
+        G.cry_mergearea2 = CardArea(
+                G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, 
+                {type = 'play', card_limit = 5})
         area:remove_from_highlighted(card)
         local key = G.consumeables.highlighted[1].config.center.key
         local c = G.consumeables.highlighted[1]
@@ -582,10 +583,10 @@ local merge = {
         card:start_dissolve()
         play_sound('card1');
         G.consumeables:remove_from_highlighted(c)
-        CARD.area = G.play;
-        c.area = G.redeemed_vouchers_during_hand
-        draw_card(G.hand, G.play, 1, 'up', true, CARD)
-        draw_card(G.consumeables,G.redeemed_vouchers_during_hand,1,'up',true,c)
+        CARD.area = G.cry_mergearea1;
+        c.area = G.cry_mergearea2
+        draw_card(G.hand, G.cry_mergearea1, 1, 'up', true, CARD)
+        draw_card(G.consumeables,G.cry_mergearea2,1,'up',true,c)
         delay(0.2)
         CARD:flip()
         c:flip();
@@ -594,9 +595,14 @@ local merge = {
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function() 
             play_sound("timpani");c:start_dissolve(nil,nil,0);CARD:flip();CARD:set_ability(G.P_CENTERS[key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
         delay(0.5)
-        draw_card(G.play,G.hand,1,'up',true,CARD)
+        draw_card(G.cry_mergearea1,G.hand,1,'up',true,CARD)
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.5,func = function() 
-            G.redeemed_vouchers_during_hand:remove(c);return true end }))
+            G.cry_mergearea2:remove_card(c);
+            G.cry_mergearea2:remove();
+            G.cry_mergearea1:remove();
+            G.cry_mergearea1=nil;
+            G.cry_mergearea2=nil;
+            return true end }))
         return true end }))
     end
 }
@@ -689,7 +695,7 @@ local delete = {
         }
     },
     can_use = function(self, card)
-        return G.STATE == G.STATES.SHOP and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
+        return G.STATE == G.STATES.SHOP and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1 and G.shop_jokers.highlighted[1] ~= self and G.shop_booster.highlighted[1] ~= self and G.shop_vouchers.highlighted[1] ~= self
     end,
     use = function(self, card, area, copier)
         if not G.GAME.banned_keys then G.GAME.banned_keys = {} end	-- i have no idea if this is always initialised already tbh

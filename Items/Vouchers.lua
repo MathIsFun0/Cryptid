@@ -91,7 +91,7 @@ local command_prompt = {
         name = 'Command Prompt',
         text = {
 			"{C:attention}Code Cards{} can appear",
-            "in {C:attention}shop{}"
+            "in the {C:attention}shop{}"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -118,8 +118,9 @@ local satellite_uplink = {
 	loc_txt = {
         name = 'Satellite Uplink',
         text = {
-			"{C:attention}Code Cards{} count as",
-            "in {C:planet}Planet Cards{}"
+			"{C:cry_code}Code{} cards may",
+            "appear in any of"
+            "the {C:attention}Celestial Packs{}"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -142,8 +143,8 @@ local quantum_computing = {
 	loc_txt = {
         name = 'Quantum Computing',
         text = {
-			"All {C:attention}Code Cards{}",
-            "spawn as {C:dark_edition}Negative{}"
+			"{C:attention}Code Cards{} can",
+            "spawn with {C:dark_edition}Negative{} edition"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -289,16 +290,6 @@ return {name = "Vouchers",
                             pool[i] = "tag_cry_quintuple"
                         end
                     end
-                elseif type == 'Planet' and G.GAME.used_vouchers.v_cry_satellite_uplink then
-                    local new_pool = {}
-                    for i, j in ipairs(pool) do
-                        table.insert(new_pool, j)
-                    end
-                    local code_pool, q = gcp('Code', rarity, legendary, append, z)
-                    for i, j in ipairs(code_pool) do
-                        table.insert(new_pool, j)
-                    end
-                    pool = new_pool
                 end
                 return pool, pool_append
             end

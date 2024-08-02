@@ -150,7 +150,7 @@ local foil_deck = {object_type = "Back",
 	loc_txt = {
         name = "Deck of Chips",
         text = {
-            "All cards are {C:dark_edition} Foil{}",
+            "All cards are {C:dark_edition}Foil{}",
             "Cards cannot change editions"
         }
     },
@@ -261,10 +261,11 @@ local glitched_deck = {object_type = "Back",
 	config = {cry_force_edition = 'cry_glitched'},
 	pos = {x = 5, y = 2},
 	loc_txt = {
-        name = "Misprint Deck 2",
+        name = "Glitched Deck",
         text = {
             "All cards are {C:dark_edition}Glitched{}",
             "Cards cannot change editions",
+            "{s:0.8,C:inactive}Wait, isn't this just Misprint Deck?"
         }
     },
 }
@@ -277,7 +278,7 @@ local talisman_deck = {object_type = "Back",
 	loc_txt = {
         name = "Talisman Deck",
         text = {
-            "All cards have a {C:attention}Gold seal{}",
+            "All cards have a {C:attention}Gold Seal{}",
             "Cards cannot change seals"
         }
     },
@@ -291,7 +292,7 @@ local deja_vu_deck = {object_type = "Back",
 	loc_txt = {
         name = "Deja Vu Deck",
         text = {
-            "All cards have a {C:attention}Red seal{}",
+            "All cards have a {C:red}Red Seal{}",
             "Cards cannot change seals"
         }
     },
@@ -305,7 +306,7 @@ local trance_deck = {object_type = "Back",
 	loc_txt = {
         name = "Trance Deck",
         text = {
-            "All cards have a {C:attention}Blue seal{}",
+            "All cards have a {C:blue}Blue Seal{}",
             "Cards cannot change seals"
         }
     },
@@ -319,7 +320,7 @@ local medium_deck = {object_type = "Back",
 	loc_txt = {
         name = "Medium Deck",
         text = {
-            "All cards have a {C:attention}Purple seal{}",
+            "All cards have a {C:purple}Purple Seal{}",
             "Cards cannot change seals"
         }
     },
@@ -333,7 +334,7 @@ local typhoon_deck = {object_type = "Back",
 	loc_txt = {
         name = "Typhoon Deck",
         text = {
-            "All cards have an {C:attention}Azure seal{}",
+            "All cards have an {C:cry_azure}Azure Seal{}",
             "Cards cannot change seals"
         }
     },

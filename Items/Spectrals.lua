@@ -320,7 +320,6 @@ local trade = {
 	if G.GAME.voucher_sticker_index.banana[card.ability.name] then
 	    card.ability.banana = true
 	end
-
         card:start_materialize()
         area:emplace(card)
         card.cost=0

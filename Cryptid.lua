@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.4.3e
+--- VERSION: 0.4.3f
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -673,7 +673,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           check_for_unlock({type = 'have_edition'})
       end
   end
-  if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
+  if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing and pseudorandom('cry_quantum_computing') > 0.7 then
     card:set_edition({negative = true})
     end
   if G.GAME.modifiers.cry_force_edition and (not G.GAME.modifiers.cry_force_random_edition) and area ~= G.pack_cards then
