@@ -298,12 +298,14 @@ if G.GAME.voucher_sticker_index.rental[card.ability.name] then
 	card:set_rental(true)
 	card.ability.rental = true
 end
-if G.GAME.voucher_sticker_index.pinned[card.ability.name] == true then
+if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
 	card.pinned = true
 end
 if G.GAME.voucher_sticker_index.banana[card.ability.name] then
 	card.ability.banana = true
 end
+card.ability.extra = G.GAME.cry_voucher_centers[card.config.center_key].config.extra
+if card.ability.extra_disp then card.ability.extra_disp = G.GAME.cry_voucher_centers[card.config.center_key].config.extra_disp end
 '''
 match_indent = true
 

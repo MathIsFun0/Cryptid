@@ -242,7 +242,7 @@ cry_owned_vouchers = {},
 '''
 match_indent = true
 
-# for deck starting vouchers
+# for challenge starting vouchers
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -250,6 +250,28 @@ pattern = "G.GAME.used_vouchers[v.id] = true"
 position = "after"
 payload = '''
 G.GAME.cry_owned_vouchers[v.id] = true
+'''
+match_indent = true
+
+# for deck starting vouchers (no idea why there's a space here?)
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "G.GAME.used_vouchers[v ] = true"
+position = "after"
+payload = '''
+G.GAME.cry_owned_vouchers[v ] = true
+'''
+match_indent = true
+
+# for deck starting vouchers pt.2 apparently (is this part of the code even used? seems redundant)
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "G.GAME.used_vouchers[self.effect.config.voucher] = true"
+position = "after"
+payload = '''
+G.GAME.cry_owned_vouchers[self.effect.config.voucher] = true
 '''
 match_indent = true
 
