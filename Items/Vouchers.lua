@@ -143,8 +143,8 @@ local quantum_computing = {
 	loc_txt = {
         name = 'Quantum Computing',
         text = {
-			"{C:attention}Code Cards{} can",
-            "spawn with {C:dark_edition}Negative{} edition"
+			"{C:attention}Code Cards{} can spawn",
+            "with {C:dark_edition}Negative{} edition"
 		}
     },
     loc_vars = function(self, info_queue)
