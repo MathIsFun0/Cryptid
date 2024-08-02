@@ -90,7 +90,7 @@ local command_prompt = {
 	loc_txt = {
         name = 'Command Prompt',
         text = {
-			"{C:attention}Code Cards{} can appear",
+			"{C:cry_code}Code{} cards can appear",
             "in the {C:attention}shop{}"
 		}
     },
@@ -143,7 +143,7 @@ local quantum_computing = {
 	loc_txt = {
         name = 'Quantum Computing',
         text = {
-			"{C:attention}Code Cards{} can spawn",
+			"{C:cry_code}Code{} cards can spawn",
             "with {C:dark_edition}Negative{} edition"
 		}
     },
