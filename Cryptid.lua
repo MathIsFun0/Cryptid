@@ -73,7 +73,7 @@ function Card:set_sprites(_center, _front)
     end
 end
 
-function cry_debuff_voucher(center)	-- sorry for all the mess here... 
+function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 local center_table = {
                     name = center and center.name,
                     extra = center and center.config.extra
@@ -81,7 +81,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 local obj = center or self.config.center
                 if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        change_shop_size(-1)
+                        change_shop_size(-center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Tarot Merchant' or center_table.name == 'Tarot Tycoon' then
@@ -106,7 +106,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Crystal Ball' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - center_table.extra
                         return true end }))
                 end
                 if center_table.name == 'Clearance Sale' then
@@ -127,8 +127,8 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Reroll Surplus' or center_table.name == 'Reroll Glut' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra
-                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra)
+                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + center_table.extra
+                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Seed Money' then
@@ -146,7 +146,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                     ease_hands_played(-center_table.extra)
                 end
                 if center_table.name == 'Paint Brush' or center_table.name == 'Palette' then
-                    G.hand:change_size(-1)
+                    G.hand:change_size(-center_table.extra)
                 end
                 if center_table.name == 'Wasteful' or center_table.name == 'Recyclomancy' then
                     G.GAME.round_resets.discards = G.GAME.round_resets.discards - center_table.extra
@@ -155,7 +155,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 if center_table.name == 'Antimatter' then
                     G.E_MANAGER:add_event(Event({func = function()
                         if G.jokers then 
-                            G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                            G.jokers.config.card_limit = G.jokers.config.card_limit - center_table.extra
                         end
                         return true end }))
                 end
@@ -175,7 +175,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
 end
 
-function cry_edition_to_table(edition)
+function cry_edition_to_table(edition)		-- need help, how do i do this
 	if edition == 'negative' then return {negative = true}
 	elseif edition == 'polychrome' then return {polychrome = true}
 	elseif edition == 'holo' then return {holo = true}
@@ -187,6 +187,25 @@ function cry_edition_to_table(edition)
 	elseif edition == 'cry_oversat' then return {cry_oversat = true}
 	end
 end
+
+function cry_cheapest_boss_reroll()
+	local dcut = G.GAME.cry_voucher_centers['v_directors_cut'].config.extra or 1e308
+	local retc = G.GAME.cry_voucher_centers['v_retcon'].config.extra or 1e308
+	if dcut < retc then
+		return dcut
+	else
+		return retc
+	end
+end
+
+-- more sensible voucher variables for hardcoded ones
+
+G.P_CENTERS.v_overstock_norm.config = {extra = 1}
+G.P_CENTERS.v_overstock_plus.config = {extra = 1}
+G.P_CENTERS.v_crystal_ball.config.extra = 1
+G.P_CENTERS.v_omen_globe.config.extra = 20
+G.P_CENTERS.v_antimatter.config.extra = 1
+
 
 function cry_poll_random_edition()
 	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
@@ -822,6 +841,12 @@ function init_localization()
         G.localization.descriptions.Spectral.c_trance.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+	G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+	G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+	G.localization.descriptions.Voucher.v_antimatter.text[1] = "{C:dark_edition}+#1#{} Joker Slot"
+	G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
+	G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
+	G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
     end
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
