@@ -1892,15 +1892,13 @@ local panopticon = {
     key = "panopticon",
     pos = {x = 1, y = 4},
 	config = {
-		extra = {hands_backup = 0, discards_backup = 0}
+		extra = {}
 	},
     loc_txt = {
         name = 'Panopticon',
         text = {
             "All hands are considered the",
-            "{C:attention}last hand{} of each round",
-	    "{C:red}WARNING:{} Multiple copies of this",
-	    "Joker will cause a {C:red,E:2}game over{}" --Todo: find a fix to this
+            "{C:attention}last hand{} of each round" -- +$4
         }
     },
     rarity = 1,
@@ -1908,16 +1906,16 @@ local panopticon = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if (context.before) and not context.blueprint and not context.retrigger_joker then
-	    card.ability.extra.hands_backup = G.GAME.current_round.hands_left
+	    if not G.GAME.cry_panop_juggle then G.GAME.cry_panop_juggle = G.GAME.current_round.hands_left end
             G.GAME.current_round.hands_left = 0
         end
         if (context.after) and not context.blueprint and not context.retrigger_joker then
-            G.GAME.current_round.hands_left = card.ability.extra.hands_backup
+            if G.GAME.cry_panop_juggle then
+                G.GAME.current_round.hands_left = G.GAME.cry_panop_juggle
+                G.GAME.cry_panop_juggle = nil
+	    end
         end
 
-    end,
-    add_to_deck = function(self, card, from_debuff)
-		G.GAME.current_round.hands_backup = 0
     end
 }
 local magnet = {

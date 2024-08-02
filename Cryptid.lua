@@ -595,6 +595,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   end
   if G.GAME.modifiers.cry_force_sticker == 'perishable' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
       card:set_perishable(true)
+      card.ability.perish_tally = G.GAME.perishable_rounds	-- set_perishable should be doing this? whatever
       card.ability.perishable = true
   end
   if G.GAME.modifiers.cry_force_sticker == 'rental' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then

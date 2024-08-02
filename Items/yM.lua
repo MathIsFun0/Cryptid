@@ -391,7 +391,7 @@ local mneon = {
             		card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus * jollycount
 			return {message = "M!"}
 		else 
-			card.ability.extra.money = card.ability.extra.money + 1
+			card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus
 			return {message = "Upgrade!"}
 		end
         end
