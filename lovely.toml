@@ -257,6 +257,17 @@ end
 '''
 match_indent = true
 
+# show owned vouchers
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if G.GAME.used_vouchers[v.key] then"
+position = "at"
+payload = '''
+if G.GAME.cry_owned_vouchers[v.key] then
+'''
+match_indent = true
+
 # show in voucher menu
 [[patches]]
 [patches.pattern]
@@ -287,12 +298,14 @@ if G.GAME.voucher_sticker_index.rental[card.ability.name] then
 	card:set_rental(true)
 	card.ability.rental = true
 end
-if G.GAME.voucher_sticker_index.pinned[card.ability.name] == true then
+if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
 	card.pinned = true
 end
 if G.GAME.voucher_sticker_index.banana[card.ability.name] then
 	card.ability.banana = true
 end
+card.ability.extra = G.GAME.cry_voucher_centers[card.config.center_key].config.extra
+if card.ability.extra_disp then card.ability.extra_disp = G.GAME.cry_voucher_centers[card.config.center_key].config.extra_disp end
 '''
 match_indent = true
 
@@ -344,6 +357,8 @@ if G.GAME.voucher_sticker_index then
 				for kk, vv in pairs(G.P_CENTERS) do
 					if k == vv.name then
 						cry_debuff_voucher(vv)		-- needs to be an exception made for director's cut + retcon, but lazy
+						G.GAME.used_vouchers.vv = nil
+						G.GAME.used_vouchers[kk] = nil
 						break
 					end
 				end
