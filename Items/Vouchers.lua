@@ -119,7 +119,7 @@ local satellite_uplink = {
         name = 'Satellite Uplink',
         text = {
 			"{C:cry_code}Code{} cards may",
-            "appear in any of"
+            "appear in any of",
             "the {C:attention}Celestial Packs{}"
 		}
     },
