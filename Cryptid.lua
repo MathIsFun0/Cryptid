@@ -146,7 +146,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                     ease_hands_played(-center_table.extra)
                 end
                 if center_table.name == 'Paint Brush' or center_table.name == 'Palette' then
-                    G.hand:change_size(-1)
+                    G.hand:change_size(-center_table.extra)
                 end
                 if center_table.name == 'Wasteful' or center_table.name == 'Recyclomancy' then
                     G.GAME.round_resets.discards = G.GAME.round_resets.discards - center_table.extra
