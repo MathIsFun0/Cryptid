@@ -2265,8 +2265,8 @@ local spaceglobe = {
         name = 'Celestial Globe',
         text = {
 			"This Joker gains {X:chips,C:white}X#2#{} Chips",
-			"if {C:attention}poker hand{} is a {C:attention}#3#{}",
-			"{C:inactive}(Hand changes after increase){}",
+			"if {C:attention}poker hand{} is a {C:attention}#3#{},",
+			"Hand changes after increase{}",
 			"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}"
 		}
     	},
@@ -2334,7 +2334,6 @@ local happy = {
     name = "cry-happy",
     key = "happy",
     pos = {x = 2, y = 1},
-    config = {extra = {check = 0}},
     loc_txt = {
         name = ':D',
         text = {
@@ -2352,30 +2351,42 @@ local happy = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker then
-		local othercreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + othercreatejoker
-		G.E_MANAGER:add_event(Event({
-                	func = function()
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				G.GAME.joker_buffer = 0
-				return true
-                        end}))
+		local sellcreatejoker = 1
+                G.GAME.joker_buffer = G.GAME.joker_buffer + sellcreatejoker
+                G.E_MANAGER:add_event(Event({
+                    func = function() 
+                        for i = 1, sellcreatejoker do
+                            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+                            card:add_to_deck()
+                            G.jokers:emplace(card)
+                            card:start_materialize()
+                            G.GAME.joker_buffer = 0
+                        end
+                        return true
+                    end}))   
+                    card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
         end
 	if context.end_of_round and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
-		local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-		G.E_MANAGER:add_event(Event({
-                	func = function()
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				G.GAME.joker_buffer = 0
-				return true
-                        end}))
-	--this makes more jokers than expected but i'm tired i'll fix this later ig
-        end
+		local roundcheck = false
+		if not context.individual and not roundcheck then
+			roundcheck = true
+    			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+   			G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker 
+    			G.E_MANAGER:add_event(Event({ 
+        			func = function()
+            			if roundcreatejoker > 0 then
+                			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+                			card:add_to_deck()
+                			G.jokers:emplace(card)
+                			card:start_materialize()
+               				G.GAME.joker_buffer = 0
+            			end
+            			return {roundcheck = true}
+        		end}))
+			roundcheck = true
+    			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+		else roundcheck = true end
+	end
     end
 }
 local meteor = {

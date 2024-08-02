@@ -858,7 +858,8 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
             "{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
-            "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel"
+            "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
+	    "{s:0.8}Nostalgic Candy, Fast Food M"
         },
     }
 								-- i am so sorry for this

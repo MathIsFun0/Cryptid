@@ -300,7 +300,7 @@ local typhoon = {
         name = 'Typhoon',
         text = {
             "Add an {C:cry_azure}Azure Seal{}",
-            "to {C:attention}1{} selected",
+            "to {C:attention}#1#{} selected",
             "card in your hand"
         }
     },

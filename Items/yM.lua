@@ -104,7 +104,7 @@ local kidnap = {
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context) --I'm sure there is a more elegant way to do this but oh well
-		if context.selling_card and (context.card.ability.name == "Crazy Joker" or context.card.ability.name == "Zany Joker" or context.card.ability.name == "Mad Joker" or context.card.ability.name == "Droll Joker") and not context.blueprint then
+		if context.selling_card and (context.card.ability.name == "Crazy Joker" or context.card.ability.name == "Zany Joker" or context.card.ability.name == "Mad Joker" or context.card.ability.name == "Droll Joker") then
 			ease_dollars(card.ability.extra.money)
 			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
                 	card:add_to_deck()
@@ -291,7 +291,7 @@ local mstack = {
         text = {
             "Retrigger all cards played",
             "once for every",
-            "{C:attention}#2# Jolly Jokers{} sold",
+            "{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Jokers{} sold",
             "{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
         }
     },
@@ -301,7 +301,7 @@ local mstack = {
     perishable_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req}}
+        return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req, center.ability.extra.sell}}
     end,
     calculate = function(self, card, context) --note: hardcoded like this intentionally
         if context.repetition then
@@ -519,7 +519,7 @@ if JokerDisplay then
             card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
         end
     }
-end--TODO: Fix double scale interaction
+end --TODO: Fix double scale interaction
 local bonk = {
 	object_type = "Joker",
 	name = "cry-bonk",
@@ -936,6 +936,7 @@ local doodlem = {
                 jollycount = jollycount + 1
             end
         end
+	if jollycount > 50 then jollycount = 50 end --reduce excessive consumeable spam (Lag)
         for i = 1, jollycount do
             local card = create_card('Consumeables', G.consumeables, nil, nil, nil, nil, nil, 'cry_doodlem')
             card:set_edition({negative = true})
@@ -988,8 +989,9 @@ local virgo = {
 			func = (function()
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local summon = math.floor((card.ability.extra_value + 4)*0.25) -- +4 to account for default sell value (certified no source code moment)
+						local summon = math.floor((card.ability.extra_value)*0.25)
 						if summon < 1 then summon = 1 end --precautionary measure, just in case
+						if summon > 500 then summon = 500 end --another precautionary measure
 						print(summon)
 						for i = 1, summon do
 							local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')

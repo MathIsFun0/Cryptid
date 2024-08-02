@@ -341,7 +341,7 @@ local box = {
     },
     atlas = "blinds",
     boss_colour = HEX('883a3b'),
-    debuff_card = function(self, card, from_blind)
+    recalc_debuff = function(self, card, from_blind)
     if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 1 then
         return true
     end
@@ -467,7 +467,7 @@ local hammer = {
     },
     atlas = "blinds",
     boss_colour = HEX('ffabd6'),
-    debuff_card = function(self, card, from_blind)
+    recalc_debuff = function(self, card, from_blind)
         if card.area ~= G.jokers and not G.GAME.blind.disabled then
             if card.ability.effect ~= 'Stone Card' and (card.base.value == '3' or card.base.value == '5' or card.base.value == '7' or card.base.value == '9' or card.base.value == 'Ace') then
                 return true
@@ -494,7 +494,7 @@ local windmill = {
     },
     atlas = "blinds",
     boss_colour = HEX('f70000'),
-    debuff_card = function(self, card, from_blind)
+    recalc_debuff = function(self, card, from_blind)
     if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 2 then
         return true
     end
@@ -771,7 +771,7 @@ local obsidian_orb = {
                     end
                     for i = 1, 2 do
                         if G.hand.cards[i] then 
-                            local selected_card, card_key = pseudorandom_element(_cards, pseudoseed('hook'))
+                            local selected_card, card_key = pseudorandom_element(_cards, pseudoseed('ObsidianOrb'))
                             G.hand:add_to_highlighted(selected_card, true)
                             table.remove(_cards, card_key)
                             any_selected = true
@@ -902,7 +902,7 @@ local obsidian_orb = {
                 end
                 if not any_forced then 
                     G.hand:unhighlight_all()
-                    local forced_card = pseudorandom_element(G.hand.cards, pseudoseed('cerulean_bell'))
+                    local forced_card = pseudorandom_element(G.hand.cards, pseudoseed('ObsidianOrb'))
                     forced_card.ability.forced_selection = true
                     G.hand:add_to_highlighted(forced_card)
                 end
@@ -913,11 +913,11 @@ local obsidian_orb = {
                     if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then jokers[#jokers+1] =G.jokers.cards[i] end
                     G.jokers.cards[i]:set_debuff(false)
                 end 
-                local _card = pseudorandom_element(jokers, pseudoseed('crimson_heart'))
+                local _card = pseudorandom_element(jokers, pseudoseed('ObsidianOrb'))
                 if _card then
                     _card:set_debuff(true)
                     _card:juice_up()
-                    self:wiggle()
+                    G.GAME.blind:wiggle()
                 end
             end
         end
@@ -927,7 +927,7 @@ local obsidian_orb = {
             s = G.P_BLINDS[k]
             if s.stay_flipped and s:stay_flipped(area, card) then return true end
             if area == G.hand then
-                if s.name == 'The Wheel' and pseudorandom(pseudoseed('wheel')) < G.GAME.probabilities.normal/7 then
+                if s.name == 'The Wheel' and pseudorandom(pseudoseed('ObsidianOrb')) < G.GAME.probabilities.normal/7 then
                     return true
                 end
                 if s.name == 'The House' and G.GAME.current_round.hands_played == 0 and G.GAME.current_round.discards_used == 0 then
