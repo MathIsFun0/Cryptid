@@ -81,7 +81,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 local obj = center or self.config.center
                 if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        change_shop_size(-1)
+                        change_shop_size(-center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Tarot Merchant' or center_table.name == 'Tarot Tycoon' then
@@ -106,7 +106,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Crystal Ball' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - center_table.extra
                         return true end }))
                 end
                 if center_table.name == 'Clearance Sale' then
@@ -155,7 +155,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 if center_table.name == 'Antimatter' then
                     G.E_MANAGER:add_event(Event({func = function()
                         if G.jokers then 
-                            G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                            G.jokers.config.card_limit = G.jokers.config.card_limit - center_table.extra
                         end
                         return true end }))
                 end
