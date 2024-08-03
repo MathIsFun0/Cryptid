@@ -131,7 +131,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = '''return center\nend\n\nfunction get_current_pool\(_type, _rarity, _legendary, _append\)'''
 position = "before"
-payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end'''
+payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end '''
 
 # Increase highlight limit for consumables
 [[patches]]
