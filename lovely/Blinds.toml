@@ -28,3 +28,12 @@ pattern = "ease_to = G.GAME.chips + math.floor(hand_chips * mult) * (e and e.ant
 position = 'at'
 match_indent = true
 payload = '''ease_to = G.GAME.chips + (G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult)) * (e and e.antiscore and -1 or 1),'''
+
+# Fix a crash related to undebuffing Jokers at end of round
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not G.P_CENTERS['e_'..(self.edition.type)].discovered then"
+position = "at"
+payload = "if self.edition.type and G.P_CENTERS['e_'..(self.edition.type)] and not G.P_CENTERS['e_'..(self.edition.type)].discovered then"
+match_indent = true

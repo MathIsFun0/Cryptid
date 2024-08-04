@@ -764,7 +764,7 @@ local scrabble = {
 			end
 			if pseudorandom('scrabbleother') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				check = true
-				local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, "scrabbletile")
+				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
             			card:add_to_deck()
             			G.jokers:emplace(card)
 			end
