@@ -613,6 +613,13 @@ local double_scale = {
 						dbl_info.offset = 1
 						return
 					end
+					if jkr.ability.name == "cry-Scalae" then
+						dbl_info.base = {"extra", "shadow_scale"}
+						dbl_info.scaler = {"extra", "shadow_scale_mod"}
+						dbl_info.scaler_base = jkr.ability.extra.scale_mod
+						dbl_info.offset = 1
+						return
+					end
 					if jkr.ability.name == "Yorick" then
 						dbl_info.base = {"x_mult"}
 						dbl_info.scaler = {"extra", "xmult"} --not kidding
