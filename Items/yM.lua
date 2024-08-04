@@ -806,7 +806,7 @@ local sacrifice = {
 					jolly:add_to_deck()
 					G.jokers:emplace(jolly)
 				end
-				local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, "sacrifice")
+				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "sacrifice")
                         	card:add_to_deck()
 	                        G.jokers:emplace(card)
                         	card:start_materialize()
