@@ -586,7 +586,8 @@ return {name = "Spectrals",
                 end
                 if center_table.name == 'Liquidation' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
+                        G.GAME.discount_percent = 25	-- no idea why the below returns nil, so it's hardcoded now
+			-- G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
                         for k, v in pairs(G.I.CARD) do
                             if v.set_cost then v:set_cost() end
                         end
