@@ -468,7 +468,7 @@ local cursor = {
         return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
     end,
     calculate = function(self, card, context)
-        if context.buying_card and (not context.blueprint) and (not context.card == card) then
+        if context.buying_card and (not context.blueprint) and not (context.card == card) then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
             return {calculated = true}
