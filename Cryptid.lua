@@ -74,11 +74,11 @@ function Card:set_sprites(_center, _front)
 end
 
 function cry_debuff_voucher(center)	-- sorry for all the mess here...
+		local new_center = G.GAME.cry_voucher_centers[center]
                 local center_table = {
-                    name = center and center.name,
-                    extra = center and center.config.extra
+                    name = new_center and new_center.name,
+                    extra = new_center and new_center.config.extra
                 }
-                local obj = center or self.config.center
                 if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
                     G.E_MANAGER:add_event(Event({func = function()
                         change_shop_size(-center_table.extra)
@@ -119,7 +119,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Liquidation' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
+                        G.GAME.discount_percent = 25
                         for k, v in pairs(G.I.CARD) do
                             if v.set_cost then v:set_cost() end
                         end
@@ -246,20 +246,35 @@ function cry_get_next_voucher_edition()	-- currently only for editions + sticker
 	end
 end
 function cry_get_next_voucher_stickers()
+	local eternal_perishable_poll = pseudorandom('cry_vet'..(key_append or '')..G.GAME.round_resets.ante)
 	local ret = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
-	if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if (G.GAME.modifiers.cry_force_sticker == 'eternal') or (G.GAME.modifiers.cry_sticker_sheet_plus) or (G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.8) then
 		ret.eternal = true
 	end
-	if G.GAME.modifiers.cry_force_sticker == 'perishable' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.enable_perishables_in_shop then	-- bloated as shit
+		if not G.GAME.modifiers.cry_eternal_perishable_compat and ((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7)) then
+			ret.perishable = true
+		end
+		if G.GAME.modifiers.cry_eternal_perishable_compat and pseudorandom('cry_vper'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
+			ret.perishable = true
+		end
+	end
+	if (G.GAME.modifiers.cry_force_sticker == 'perishable') or (G.GAME.modifiers.cry_sticker_sheet_plus) then
 		ret.perishable = true
 	end
-	if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus or (G.GAME.modifiers.enable_rentals_in_shop and pseudorandom('cry_vssjr'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
 		ret.rental = true
 	end
-	if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus or (G.GAME.modifiers.cry_enable_pinned_in_shop and pseudorandom('cry_vpin'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
 		ret.pinned = true
 	end
 	if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.banana = true
+	end
+	if not G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_bpbanana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) and (eternal_perishable_poll <= 0.7) then
+		ret.banana = true
+	end
+	if G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_bpbanana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
 		ret.banana = true
 	end
 	return ret

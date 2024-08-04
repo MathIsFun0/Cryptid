@@ -460,28 +460,43 @@ elseif G.GAME.modifiers.cry_force_random_edition then
 	card:set_edition(edition, true, true)
 end
 
-if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then	
+local eternal_perishable_poll = pseudorandom('cry_bpet'..(key_append or '')..G.GAME.round_resets.ante)
+if (G.GAME.modifiers.cry_force_sticker == 'eternal') or (G.GAME.modifiers.cry_sticker_sheet_plus) or (G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.8) then	
 	card:set_eternal(true)
 	card.ability.eternal = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'perishable' or G.GAME.modifiers.cry_sticker_sheet_plus then
+if G.GAME.modifiers.enable_perishables_in_shop then	-- i don't feel like messing with this, whatever
+	if not G.GAME.modifiers.cry_eternal_perishable_compat and ((eternal_perishable_poll > 0.6) and (eternal_perishable_poll <= 0.8)) then
+		card:set_perishable(true)
+		card.ability.perishable = true
+	end
+	if G.GAME.modifiers.cry_eternal_perishable_compat and pseudorandom('cry_bpper'..(key_append or '')..G.GAME.round_resets.ante) > 0.8 then
+		card:set_perishable(true)
+		card.ability.perishable = true
+	end
+end
+if (G.GAME.modifiers.cry_force_sticker == 'perishable') or (G.GAME.modifiers.cry_sticker_sheet_plus) then
 	card:set_perishable(true)
 	card.ability.perishable = true
 end
-if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus then
+if (G.GAME.modifiers.cry_force_sticker == 'rental') or (G.GAME.modifiers.cry_sticker_sheet_plus) or (G.GAME.modifiers.enable_rentals_in_shop and pseudorandom('cry_bpssjr'..(key_append or '')..G.GAME.round_resets.ante) > 0.8) then	-- i should really just make this a function? so messy
 	card.ability.rental = true	-- do not set_rental here to prevent cost from decreasing
 end
-if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus then
+if (G.GAME.modifiers.cry_force_sticker == 'pinned') or (G.GAME.modifiers.cry_sticker_sheet_plus) or (G.GAME.modifiers.cry_enable_pinned_in_shop and pseudorandom('cry_bppin'..(key_append or '')..G.GAME.round_resets.ante) > 0.8) then
 	card.pinned = true
 end
 if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticker_sheet_plus then
 	card.ability.banana = true
 end
+if not G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_bpbanana'..(key_append or '')..G.GAME.round_resets.ante) > 0.8) and (eternal_perishable_poll <= 0.8) then
+	card.ability.banana = true
+end
+if G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_bpbanana'..(key_append or '')..G.GAME.round_resets.ante) > 0.8) then
+	card.ability.banana = true
+end
 if G.GAME.modifiers.cry_sticker_sheet_plus then
-	if G.GAME.modifiers.cry_sticker_sheet then
-		for k, v in pairs(SMODS.Stickers) do
-			v:set_sticker(card, true)
-		end
+	for k, v in pairs(SMODS.Stickers) do
+		v:set_sticker(card, true)
 	end
 end
 '''
