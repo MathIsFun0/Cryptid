@@ -701,7 +701,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
               card.cry_flipped = true
           end
       end
-      if _type == 'Joker' and not G.GAME.modifiers.cry_force_edition == 'random' then
+      if _type == 'Joker' and not (G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == 'random') then
           local edition = poll_edition('edi'..(key_append or '')..G.GAME.round_resets.ante)
           card:set_edition(edition)
           check_for_unlock({type = 'have_edition'})
@@ -710,7 +710,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing and pseudorandom('cry_quantum_computing') > 0.7 then
     card:set_edition({negative = true})
     end
-  if G.GAME.modifiers.cry_force_edition and (not G.GAME.modifiers.cry_force_random_edition) and area ~= G.pack_cards then
+  if G.GAME.modifiers.cry_force_edition and not (G.GAME.modifiers.cry_force_random_edition) and area ~= G.pack_cards then
       card:set_edition(nil, true)
   end
   if G.GAME.modifiers.cry_force_random_edition and area ~= G.pack_cards then
