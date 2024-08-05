@@ -354,7 +354,7 @@ target = "card.lua"
 pattern = "if self.ability.queue_negative_removal then"
 position = "before"
 payload = '''
-if self.ability.consumeable and self.pinned then
+if self.ability.consumeable and self.pinned and (G.GAME.cry_pinned_consumeables > 0) then
 	G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables - 1
 end
 '''
