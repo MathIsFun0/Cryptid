@@ -725,6 +725,11 @@ local delete = {
         if G.shop_vouchers.highlighted[1] then
             a = G.shop_vouchers
             c = G.shop_vouchers.highlighted[1]
+	    if c.shop_voucher then 
+                G.GAME.current_round.voucher = nil
+                G.GAME.current_round.cry_voucher_edition = nil
+                G.GAME.current_round.cry_voucher_stickers = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
+            end
         end
         if c.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end
         G.GAME.cry_delete[c.config.center.key] = true

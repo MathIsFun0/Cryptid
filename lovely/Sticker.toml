@@ -354,8 +354,19 @@ target = "card.lua"
 pattern = "if self.ability.queue_negative_removal then"
 position = "before"
 payload = '''
-if self.ability.consumeable and self.pinned then
+if self.ability.consumeable and self.pinned and (G.GAME.cry_pinned_consumeables > 0) then
 	G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables - 1
 end
+'''
+match_indent = true
+
+# rental jank
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.rental then self.cost = 1 end"
+position = "at"
+payload = '''
+if self.ability.rental and (not (self.ability.set == "Planet" and #find_joker('Astronomer') > 0) and self.ability.set ~= "Booster") then self.cost = 1 end
 '''
 match_indent = true
