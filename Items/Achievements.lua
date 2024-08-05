@@ -423,7 +423,6 @@ local perfectly_balanced = {
 
 -- TODO: Add new Achievements. 
 -- Current Ideas (Normal): 
--- ???: Obtain a Blurred Blurred Joker
 -- Cry: Win a run with only Sob and Obelisk
 -- Overtuned: Have any Glitched item give either 100x or 0.01x its original values
 -- Current Ideas (Platinum): 
@@ -441,6 +440,8 @@ local perfectly_balanced = {
 -- Joke's on You, Pal!: Trigger The Joke's effect on Ante 1 and win the run
 -- Freak House: Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice
 -- Ultimate Full Skip: Win in 1 round
+-- Legally Blind: Obtain a Blurred Blurred Joker
+-- Cryptid the Cryptid: Use Cryptid on Cryptid
 -- Implemented (Platinum)
 -- Patience is a Virtue: Wait out Lavender Loop for 2 minutes before playing first hand and beat it
 -- Pull Request: Have ://COMMIT spawn the same Joker that it destroyed
