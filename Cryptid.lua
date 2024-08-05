@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman]
---- VERSION: 0.4.3e
+--- VERSION: 0.4.3f
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -73,15 +73,15 @@ function Card:set_sprites(_center, _front)
     end
 end
 
-function cry_debuff_voucher(center)	-- sorry for all the mess here... 
+function cry_debuff_voucher(center)	-- sorry for all the mess here...
+		local new_center = G.GAME.cry_voucher_centers[center]
                 local center_table = {
-                    name = center and center.name,
-                    extra = center and center.config.extra
+                    name = new_center and new_center.name,
+                    extra = new_center and new_center.config.extra
                 }
-                local obj = center or self.config.center
                 if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        change_shop_size(-1)
+                        change_shop_size(-center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Tarot Merchant' or center_table.name == 'Tarot Tycoon' then
@@ -106,7 +106,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Crystal Ball' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - center_table.extra
                         return true end }))
                 end
                 if center_table.name == 'Clearance Sale' then
@@ -119,7 +119,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Liquidation' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
+                        G.GAME.discount_percent = 25
                         for k, v in pairs(G.I.CARD) do
                             if v.set_cost then v:set_cost() end
                         end
@@ -127,8 +127,8 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
                 if center_table.name == 'Reroll Surplus' or center_table.name == 'Reroll Glut' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra
-                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra)
+                        G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + center_table.extra
+                        G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Seed Money' then
@@ -146,7 +146,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                     ease_hands_played(-center_table.extra)
                 end
                 if center_table.name == 'Paint Brush' or center_table.name == 'Palette' then
-                    G.hand:change_size(-1)
+                    G.hand:change_size(-center_table.extra)
                 end
                 if center_table.name == 'Wasteful' or center_table.name == 'Recyclomancy' then
                     G.GAME.round_resets.discards = G.GAME.round_resets.discards - center_table.extra
@@ -155,7 +155,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 if center_table.name == 'Antimatter' then
                     G.E_MANAGER:add_event(Event({func = function()
                         if G.jokers then 
-                            G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                            G.jokers.config.card_limit = G.jokers.config.card_limit - center_table.extra
                         end
                         return true end }))
                 end
@@ -175,7 +175,7 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
 end
 
-function cry_edition_to_table(edition)
+function cry_edition_to_table(edition)		-- need help, how do i do this
 	if edition == 'negative' then return {negative = true}
 	elseif edition == 'polychrome' then return {polychrome = true}
 	elseif edition == 'holo' then return {holo = true}
@@ -187,6 +187,25 @@ function cry_edition_to_table(edition)
 	elseif edition == 'cry_oversat' then return {cry_oversat = true}
 	end
 end
+
+function cry_cheapest_boss_reroll()
+	local dcut = G.GAME.cry_voucher_centers['v_directors_cut'].config.extra or 1e308
+	local retc = G.GAME.cry_voucher_centers['v_retcon'].config.extra or 1e308
+	if dcut < retc then
+		return dcut
+	else
+		return retc
+	end
+end
+
+-- more sensible voucher variables for hardcoded ones
+
+G.P_CENTERS.v_overstock_norm.config = {extra = 1}
+G.P_CENTERS.v_overstock_plus.config = {extra = 1}
+G.P_CENTERS.v_crystal_ball.config.extra = 1
+G.P_CENTERS.v_omen_globe.config.extra = 20
+G.P_CENTERS.v_antimatter.config.extra = 1
+
 
 function cry_poll_random_edition()
 	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
@@ -227,20 +246,35 @@ function cry_get_next_voucher_edition()	-- currently only for editions + sticker
 	end
 end
 function cry_get_next_voucher_stickers()
+	local eternal_perishable_poll = pseudorandom('cry_vet'..(key_append or '')..G.GAME.round_resets.ante)
 	local ret = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
-	if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if (G.GAME.modifiers.cry_force_sticker == 'eternal') or (G.GAME.modifiers.cry_sticker_sheet_plus) or (G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.8) then
 		ret.eternal = true
 	end
-	if G.GAME.modifiers.cry_force_sticker == 'perishable' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.enable_perishables_in_shop then	-- bloated as shit
+		if not G.GAME.modifiers.cry_eternal_perishable_compat and ((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7)) then
+			ret.perishable = true
+		end
+		if G.GAME.modifiers.cry_eternal_perishable_compat and pseudorandom('cry_vper'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
+			ret.perishable = true
+		end
+	end
+	if (G.GAME.modifiers.cry_force_sticker == 'perishable') or (G.GAME.modifiers.cry_sticker_sheet_plus) then
 		ret.perishable = true
 	end
-	if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.cry_force_sticker == 'rental' or G.GAME.modifiers.cry_sticker_sheet_plus or (G.GAME.modifiers.enable_rentals_in_shop and pseudorandom('cry_vssjr'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
 		ret.rental = true
 	end
-	if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus then
+	if G.GAME.modifiers.cry_force_sticker == 'pinned' or G.GAME.modifiers.cry_sticker_sheet_plus or (G.GAME.modifiers.cry_enable_pinned_in_shop and pseudorandom('cry_vpin'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
 		ret.pinned = true
 	end
 	if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticker_sheet_plus then
+		ret.banana = true
+	end
+	if not G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_bpbanana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) and (eternal_perishable_poll <= 0.7) then
+		ret.banana = true
+	end
+	if G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_banana and (pseudorandom('cry_bpbanana'..(key_append or '')..G.GAME.round_resets.ante) > 0.7) then
 		ret.banana = true
 	end
 	return ret
@@ -603,6 +637,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   end
   if G.GAME.modifiers.cry_force_sticker == 'perishable' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
       card:set_perishable(true)
+      card.ability.perish_tally = G.GAME.perishable_rounds	-- set_perishable should be doing this? whatever
       card.ability.perishable = true
   end
   if G.GAME.modifiers.cry_force_sticker == 'rental' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then
@@ -680,7 +715,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           check_for_unlock({type = 'have_edition'})
       end
   end
-  if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
+  if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing and pseudorandom('cry_quantum_computing') > 0.7 then
     card:set_edition({negative = true})
     end
   if G.GAME.modifiers.cry_force_edition and (not G.GAME.modifiers.cry_force_random_edition) and area ~= G.pack_cards then
@@ -829,6 +864,12 @@ function init_localization()
         G.localization.descriptions.Spectral.c_trance.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
         G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+	G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+	G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+	G.localization.descriptions.Voucher.v_antimatter.text[1] = "{C:dark_edition}+#1#{} Joker Slot"
+	G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
+	G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
+	G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
     end
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
@@ -865,7 +906,8 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
             "{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
-            "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel"
+            "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
+	    "{s:0.8}Nostalgic Candy, Fast Food M"
         },
     }
 								-- i am so sorry for this

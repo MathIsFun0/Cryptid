@@ -471,7 +471,7 @@ local cursor = {
         return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
     end,
     calculate = function(self, card, context)
-        if context.buying_card and (not context.blueprint) and (not context.card == card) then
+        if context.buying_card and (not context.blueprint) and not (context.card == card) then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
             return {calculated = true}
@@ -1895,15 +1895,13 @@ local panopticon = {
     key = "panopticon",
     pos = {x = 1, y = 4},
 	config = {
-		extra = {hands_backup = 0, discards_backup = 0}
+		extra = {}
 	},
     loc_txt = {
         name = 'Panopticon',
         text = {
             "All hands are considered the",
-            "{C:attention}last hand{} of each round",
-	    "{C:red}WARNING:{} Multiple copies of this",
-	    "Joker will cause a {C:red,E:2}game over{}" --Todo: find a fix to this
+            "{C:attention}last hand{} of each round" -- +$4
         }
     },
     rarity = 1,
@@ -1911,16 +1909,16 @@ local panopticon = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if (context.before) and not context.blueprint and not context.retrigger_joker then
-	    card.ability.extra.hands_backup = G.GAME.current_round.hands_left
+	    if not G.GAME.cry_panop_juggle then G.GAME.cry_panop_juggle = G.GAME.current_round.hands_left end
             G.GAME.current_round.hands_left = 0
         end
         if (context.after) and not context.blueprint and not context.retrigger_joker then
-            G.GAME.current_round.hands_left = card.ability.extra.hands_backup
+            if G.GAME.cry_panop_juggle then
+                G.GAME.current_round.hands_left = G.GAME.cry_panop_juggle
+                G.GAME.cry_panop_juggle = nil
+	    end
         end
 
-    end,
-    add_to_deck = function(self, card, from_debuff)
-		G.GAME.current_round.hands_backup = 0
     end
 }
 local magnet = {
@@ -2273,8 +2271,8 @@ local spaceglobe = {
         name = 'Celestial Globe',
         text = {
 			"This Joker gains {X:chips,C:white}X#2#{} Chips",
-			"if {C:attention}poker hand{} is a {C:attention}#3#{}",
-			"{C:inactive}(Hand changes after increase){}",
+			"if {C:attention}poker hand{} is a {C:attention}#3#{},",
+			"Hand changes after increase{}",
 			"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}"
 		}
     	},
@@ -2342,7 +2340,6 @@ local happy = {
     name = "cry-happy",
     key = "happy",
     pos = {x = 2, y = 1},
-    config = {extra = {check = 0}},
     loc_txt = {
         name = ':D',
         text = {
@@ -2360,30 +2357,39 @@ local happy = {
     atlas = "atlastwo",
     calculate = function(self, card, context)
         if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker then
-		local othercreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + othercreatejoker
-		G.E_MANAGER:add_event(Event({
-                	func = function()
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				G.GAME.joker_buffer = 0
-				return true
-                        end}))
+		local sellcreatejoker = 1
+                G.GAME.joker_buffer = G.GAME.joker_buffer + sellcreatejoker
+                G.E_MANAGER:add_event(Event({
+                    func = function() 
+                        for i = 1, sellcreatejoker do
+                            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+                            card:add_to_deck()
+                            G.jokers:emplace(card)
+                            card:start_materialize()
+                            G.GAME.joker_buffer = 0
+                        end
+                        return true
+                    end}))   
+                    card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+                return {calculated = true}
         end
-	if context.end_of_round and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
-		local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-		G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-		G.E_MANAGER:add_event(Event({
-                	func = function()
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				G.GAME.joker_buffer = 0
-				return true
-                        end}))
-	--this makes more jokers than expected but i'm tired i'll fix this later ig
-        end
+	if context.end_of_round and not context.individual and not context.repetition and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
+    			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+   			G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker 
+    			G.E_MANAGER:add_event(Event({ 
+        			func = function()
+            			if roundcreatejoker > 0 then
+                			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, nil, 'happy')
+                			card:add_to_deck()
+                			G.jokers:emplace(card)
+                			card:start_materialize()
+               				G.GAME.joker_buffer = 0
+            			end
+            			return true
+        		end}))
+    			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+                return {calculated = true}
+	end
     end
 }
 local meteor = {

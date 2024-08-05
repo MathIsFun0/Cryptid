@@ -320,7 +320,6 @@ local trade = {
 	if G.GAME.voucher_sticker_index.banana[card.ability.name] then
 	    card.ability.banana = true
 	end
-
         card:start_materialize()
         area:emplace(card)
         card.cost=0
@@ -475,7 +474,8 @@ return {name = "Spectrals",
                     end
             
                     self.states.hover.can = false
-                    G.GAME.used_vouchers[self.config.center_key] = nil
+                    if G.GAME.used_vouchers[self.config.center_key] then G.GAME.used_vouchers[self.config.center_key] = nil end
+                    G.GAME.cry_owned_vouchers[self.config.center_key] = nil
                     local top_dynatext = nil
                     local bot_dynatext = nil
                     
@@ -519,7 +519,7 @@ return {name = "Spectrals",
             function Card:unapply_to_run(center)
                 local center_table = {
                     name = center and center.name or self and self.ability.name,
-                    extra = center and center.config.extra or self and self.ability.extra
+                    extra = self and G.GAME.cry_voucher_centers[self.config.center_key].config.extra
                 }
                 local obj = center or self.config.center
                 if obj.unredeem and type(obj.unredeem) == 'function' then
@@ -548,7 +548,7 @@ return {name = "Spectrals",
 
                 if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        change_shop_size(-1)
+                        change_shop_size(-center_table.extra)
                         return true end }))
                 end
                 if center_table.name == 'Tarot Merchant' or center_table.name == 'Tarot Tycoon' then
@@ -573,7 +573,7 @@ return {name = "Spectrals",
                 end
                 if center_table.name == 'Crystal Ball' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+                        G.consumeables.config.card_limit = G.consumeables.config.card_limit - center_table.extra
                         return true end }))
                 end
                 if center_table.name == 'Clearance Sale' then
@@ -586,7 +586,8 @@ return {name = "Spectrals",
                 end
                 if center_table.name == 'Liquidation' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
+                        G.GAME.discount_percent = 25	-- no idea why the below returns nil, so it's hardcoded now
+			-- G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
                         for k, v in pairs(G.I.CARD) do
                             if v.set_cost then v:set_cost() end
                         end
@@ -613,7 +614,7 @@ return {name = "Spectrals",
                     ease_hands_played(-center_table.extra)
                 end
                 if center_table.name == 'Paint Brush' or center_table.name == 'Palette' then
-                    G.hand:change_size(-1)
+                    G.hand:change_size(-center_table.extra)
                 end
                 if center_table.name == 'Wasteful' or center_table.name == 'Recyclomancy' then
                     G.GAME.round_resets.discards = G.GAME.round_resets.discards - center_table.extra
@@ -622,7 +623,7 @@ return {name = "Spectrals",
                 if center_table.name == 'Antimatter' then
                     G.E_MANAGER:add_event(Event({func = function()
                         if G.jokers then 
-                            G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+                            G.jokers.config.card_limit = G.jokers.config.card_limit - center_table.extra
                         end
                         return true end }))
                 end

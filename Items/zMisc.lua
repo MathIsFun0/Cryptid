@@ -300,7 +300,7 @@ local typhoon = {
         name = 'Typhoon',
         text = {
             "Add an {C:cry_azure}Azure Seal{}",
-            "to {C:attention}1{} selected",
+            "to {C:attention}#1#{} selected",
             "card in your hand"
         }
     },
@@ -645,7 +645,7 @@ function Card:calculate_banana()
                     self.children.center.pinch.x = true
                     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
                         func = function()
-                                self.area:remove_card(self)
+                                if self.area then self.area:remove_card(self) end
                                 self:remove()
                                 self = nil
                             return true; end})) 

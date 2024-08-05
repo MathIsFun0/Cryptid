@@ -486,6 +486,237 @@ if JokerDisplay then
         end
     }
 end
+local scalae = {
+    object_type = "Joker",
+    name = "cry-Scalae",
+    key = "Scalae",
+    pos = {x = 3, y = 4},
+    soul_pos = {x = 5, y = 4, extra = {x = 4, y = 4}},
+    loc_txt = {
+        name = 'Scalae',
+        text = {
+            "Scaling {C:attention}Jokers{} scale",
+            "as a degree-{C:attention}#1#{} polynomial",
+            "raise degree by {C:attention}#2#{}",
+			"at end of round",
+            "{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)"
+        }
+    },
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "atlasexotic",
+	config = {extra = {scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1}},
+    --todo: support jokers that scale multiple variables
+    calculate = function(self, card, context)
+        --initialize tracking object
+        if not G.GAME.cry_double_scale then
+            G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
+        end
+		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+			card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
+			card.ability.extra.shadow_scale = card.ability.extra.scale
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+		end
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name ~= "cry-Scalae" then
+                --sort_id is a unique ID for each Joker
+                local jkr = G.jokers.cards[i]
+                if jkr.ability and type(jkr.ability) == 'table' then
+                    if not G.GAME.cry_double_scale[jkr.sort_id] then
+                        G.GAME.cry_double_scale[jkr.sort_id] = {ability = {double_scale = true}}
+                        for k, v in pairs(jkr.ability) do
+                            if type(jkr.ability[k]) ~= 'table' then
+                                G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+                            else
+                                G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+                                for _k, _v in pairs(jkr.ability[k]) do
+                                    G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+                                end
+                            end
+                        end
+                    elseif not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+                        dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+                        if jkr.ability.name == "cry-Number Blocks" then
+                            dbl_info.base = {"extra", "money"}
+                            dbl_info.scaler = {"extra", "money_mod"}
+                            dbl_info.scaler_base = jkr.ability.extra.money_mod
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "cry-Exponentia" then
+                            dbl_info.base = {"extra", "Emult"}
+                            dbl_info.scaler = {"extra", "Emult_mod"}
+                            dbl_info.scaler_base = jkr.ability.extra.Emult_mod
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "cry-Redeo" then
+                            dbl_info.base = {"extra", "money_req"}
+                            dbl_info.scaler = {"extra", "money_mod"}
+                            dbl_info.scaler_base = jkr.ability.extra.money_mod
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "cry-Chili Pepper" then
+                            dbl_info.base = {"extra", "Xmult"}
+                            dbl_info.scaler = {"extra", "Xmult_mod"}
+                            dbl_info.scaler_base = jkr.ability.extra.Xmult_mod
+                            dbl_info.offset = 1
+                            return
+                        end
+                        -- if jkr.ability.name == "cry-Scalae" then
+                        -- 	dbl_info.base = {"extra", "shadow_scale"}
+                        -- 	dbl_info.scaler = {"extra", "shadow_scale_mod"}
+                        -- 	dbl_info.scaler_base = jkr.ability.extra.scale_mod
+                        -- 	dbl_info.offset = 1
+                        -- 	return
+                        -- end
+                        if jkr.ability.name == "Yorick" then
+                            dbl_info.base = {"x_mult"}
+                            dbl_info.scaler = {"extra", "xmult"} --not kidding
+                            dbl_info.scaler_base = 1
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "Hologram" then
+                            dbl_info.base = {"x_mult"}
+                            dbl_info.scaler = {"extra"}
+                            dbl_info.scaler_base = jkr.ability.extra
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "Gift Card" then
+                            dbl_info.base = {"extra_value"}
+                            dbl_info.scaler = {"extra"}
+                            dbl_info.scaler_base = jkr.ability.extra
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "Throwback" then
+                            dbl_info.base = {"x_mult"}
+                            dbl_info.scaler = {"extra"}
+                            dbl_info.scaler_base = jkr.ability.x_mult or 1
+                            dbl_info.offset = 1
+                            return
+                        end
+                        if jkr.ability.name == "Egg" then
+                            dbl_info.base = {"extra_value"}
+                            dbl_info.scaler = {"extra"}
+                            dbl_info.scaler_base = jkr.ability.extra
+                            dbl_info.offset = 1
+                            return
+                        end
+                        for k, v in pairs(jkr.ability) do
+                            --extra_value is ignored because it can be scaled by Gift Card
+                            if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
+                                dbl_info.base = {k}
+                                local predicted_mod = math.abs(to_big(v):to_number()-to_big(dbl_info.ability[k]):to_number())
+                                local best_key = {""}
+                                local best_coeff = 10^100
+                                for l, u in pairs(jkr.ability) do
+                                    if l ~= k and is_number(u) then
+                                        if predicted_mod/u >= 0.999 and predicted_mod/u < best_coeff then
+                                            best_coeff = predicted_mod/u
+                                            best_key = {l}
+                                        end
+                                    end
+                                    if type(jkr.ability[l]) == 'table' then
+                                        for _l, _u in pairs(jkr.ability[l]) do 
+                                            if is_number(_u) and predicted_mod/_u >= 0.999 and predicted_mod/_u < best_coeff then
+                                                best_coeff = predicted_mod/_u
+                                                best_key = {l,_l}
+                                            end
+                                        end
+                                    end
+                                end
+                                dbl_info.scaler = best_key
+                            end
+                            if type(jkr.ability[k]) == 'table' and type(dbl_info.ability) == 'table' and type(dbl_info.ability[k]) == 'table' then
+                                for _k, _v in pairs(jkr.ability[k]) do
+                                    if dbl_info.ability[k][_k] ~= _v and is_number(_v) and is_number(dbl_info.ability[k][_k]) then
+                                        dbl_info.base = {k,_k}
+                                        local predicted_mod = math.abs(_v-dbl_info.ability[k][_k])
+                                        local best_key = {""}
+                                        local best_coeff = 10^100
+                                        for l, u in pairs(jkr.ability) do
+                                            if is_number(u) and predicted_mod/u >= 0.999 then
+                                                if predicted_mod/u < best_coeff then
+                                                    best_coeff = predicted_mod/u
+                                                    best_key = {l}
+                                                end
+                                            end
+                                            if type(jkr.ability[l]) == 'table' then
+                                                for _l, _u in pairs(jkr.ability[l]) do 
+                                                    if (l ~= k or _l ~= _k) and is_number(_u) and predicted_mod/_u >= 0.999 then
+                                                        if predicted_mod/_u < best_coeff then
+                                                            best_coeff = predicted_mod/_u
+                                                            best_key = {l,_l}
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                        end
+                                        dbl_info.scaler = best_key
+                                    end
+                                end
+                            end
+                        end
+                        if dbl_info.scaler then
+                            dbl_info.scaler_base = #dbl_info.scaler == 2 and dbl_info.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] or dbl_info.ability[dbl_info.scaler[1]]
+                            dbl_info.offset = 1
+                        end
+                    end
+                    if G.GAME.cry_double_scale[jkr.sort_id] and G.GAME.cry_double_scale[jkr.sort_id].scaler then
+                        --update scaling metadata
+                        dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+                        local current_val, last_val, scale = 0, 0, 0
+                        if #dbl_info.base == 2 then
+                            if type(jkr.ability) ~= "table" or not jkr.ability[dbl_info.base[1]] or type(jkr.ability[dbl_info.base[1]]) ~= "table" or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
+                            current_val = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
+                            last_val = dbl_info.ability[dbl_info.base[1]] and dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]] or 1
+                        else
+                            if not jkr.ability[dbl_info.base[1]] then return end
+                            current_val = jkr.ability[dbl_info.base[1]]
+                            last_val = dbl_info.ability[dbl_info.base[1]] or 1
+                        end
+                        if #dbl_info.scaler == 2 then
+                            if not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] then return end
+                            scale = jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+                        else
+                            if not jkr.ability[dbl_info.scaler[1]] then return end
+                            scale = jkr.ability[dbl_info.scaler[1]]
+                        end
+                        scale_amt = math.abs((current_val-last_val)/scale)
+                        if scale_amt > 0 then
+                            local new_scale = dbl_info.scaler_base * ((1 + math.floor((scale/dbl_info.scaler_base)^(1/card.ability.extra.scale)))^card.ability.extra.scale)
+                            if #dbl_info.base == 2 then
+                                if not jkr.ability[dbl_info.base[1]] or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
+                                dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]] = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
+                            else
+                                if not jkr.ability[dbl_info.base[1]] then return end
+                                dbl_info.ability[dbl_info.base[1]] = jkr.ability[dbl_info.base[1]]
+                            end
+                            if #dbl_info.scaler == 2 then
+                                if not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] then return end
+                                jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = new_scale
+                            else
+                                if not jkr.ability[dbl_info.scaler[1]] then return end
+                                jkr.ability[dbl_info.scaler[1]] = new_scale
+                            end
+                            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                        end
+                    end
+                end
+            end
+        end
+		card.ability.extra.scale = card.ability.extra.shadow_scale
+		card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
+        return
+    end,
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.scale + 1, card.ability.extra.scale_mod}}
+	end
+}
 return {name = "Exotic Jokers", 
         init = function()
             --Universum Patches
@@ -594,4 +825,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus,}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus, scalae,}}

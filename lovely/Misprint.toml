@@ -130,7 +130,7 @@ match_indent = true
 target = "card.lua"
 pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
 position = "at"
-payload = "if (self.ability.consumeable.mod_num - (G.GAME.modifiers.cry_consumable_reduce and (self.ability.consumeable.mod_num > 1) and 1 or 0)) >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then"
+payload = "if (self.ability.consumeable.mod_num - ((G.GAME.modifiers.cry_consumable_reduce and (self.ability.name ~= 'Death')) and (self.ability.consumeable.mod_num > 1) and 1 or 0)) >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then"
 match_indent = true
 
 # mod_num has no limit
@@ -180,18 +180,6 @@ for k, v in pairs(G.P_CENTERS[self.config.center_key].config) do
         self.ability[k] = v --surely nothing will go wrong
     end
 end'''
-match_indent = true
-
-# Vouchers lying to you
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = 'if self.ability.set == "Voucher" then'
-position = "after"
-payload = '''
-for k, v in pairs(G.P_CENTERS[self.config.center_key].config) do
-        self.ability[k] = v --surely nothing will go wrong
-    end'''
 match_indent = true
 
 # Get Cryptid to display and work with card selections
@@ -278,4 +266,198 @@ pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost 
 position = "after"
 payload = '''if self.misprint_cost_fac then self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f') 
 if not G.GAME.modifiers.cry_misprint_min then self.cost = math.floor(self.cost) end end'''
+match_indent = true
+
+# welcome to hell, enjoy your stay (initialise center copy)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.GAME.chips_text = ''"
+position = "after"
+payload = '''
+G.GAME.cry_voucher_centers = {}
+for k, v in pairs(G.P_CENTERS) do
+	if v.set == 'Voucher' then
+		G.GAME.cry_voucher_centers[k] = v
+	end
+end
+'''
+match_indent = true
+
+# when voucher is redeemed, save ability to center copy
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.shop_voucher then G.GAME.current_round.voucher = nil end"
+position = "after"
+payload = '''
+G.GAME.cry_voucher_centers[self.config.center_key].config.extra = self.ability.extra
+if self.ability.extra_disp then G.GAME.cry_voucher_centers[self.config.center_key].config.extra_disp = self.ability.extra_disp end
+'''
+match_indent = true
+
+# extra override
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "extra = center and center.config.extra or self and self.ability.extra"
+position = "at"
+payload = '''
+extra = self and G.GAME.cry_voucher_centers[self.config.center_key].config.extra
+'''
+match_indent = true
+
+# the d in disp stands for disparity (match internal values to display values)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then"
+position = "before"
+payload = '''
+if not center_table.extra then center_table.extra = center and center.config.extra end	-- catch
+if self and self.ability.extra_disp then
+	local up = false
+	if center_table.name == 'Tarot Tycoon' or center_table.name == 'Planet Tycoon' then
+		up = true
+	end
+	local og_extra = 9.6/4
+	local og_disp = 2
+	if up == true then
+		og_extra = 32/4
+		og_disp = 4
+	end
+	local misprint_diff = self.ability.extra_disp / og_disp
+	G.GAME.cry_voucher_centers[self.config.center_key].config.extra = og_extra*misprint_diff
+	center_table.extra = og_extra*misprint_diff
+end
+'''
+match_indent = true
+
+# I LOVE HARDCODING
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.hand:change_size(1)"
+position = "at"
+payload = '''
+G.hand:change_size(center_table.extra)
+'''
+match_indent = true
+
+# YOU LOVE HARDCODING
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "change_shop_size(1)"
+position = "at"
+payload = '''
+change_shop_size(center_table.extra)
+'''
+match_indent = true
+
+# WE ALL LOVE HARDCODING
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''if center_table\.name \=\= 'Antimatter' then\n\s+G\.E_MANAGER\:add_event\(Event\(\{func = function\(\)\n\s+if G\.jokers then \n\s+G\.jokers\.config\.card_limit \= G\.jokers\.config\.card_limit \+ 1\n\s+end\n\s+return true end \}\)\)\n\s+end'''
+position = "at"
+payload = '''
+    if center_table.name == 'Antimatter' then
+        G.E_MANAGER:add_event(Event({func = function()
+            if G.jokers then 
+                G.jokers.config.card_limit = G.jokers.config.card_limit + center_table.extra
+            end
+            return true end }))
+    end
+'''
+
+# AAAA
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''if center_table\.name \=\= 'Crystal Ball' then\n\s+G\.E_MANAGER:add_event\(Event\(\{func \= function\(\)\n\s+G\.consumeables\.config\.card_limit \= G.consumeables\.config\.card_limit \+ 1\n\s+return true end }\)\)\n\s+end'''
+position = "at"
+payload = '''
+    if center_table.name == 'Crystal Ball' then
+        G.E_MANAGER:add_event(Event({func = function()
+            G.consumeables.config.card_limit = G.consumeables.config.card_limit + center_table.extra
+            return true end }))
+    end
+'''
+
+# anyway how's your day going?
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == "Clearance Sale" or _c.name == "Liquidation" then loc_vars = {_c.config.extra}'''
+position = "after"
+payload = '''
+elseif _c.name == "Crystal Ball" or _c.name == "Omen Globe" then loc_vars = {_c.config.extra}
+'''
+match_indent = true
+
+# doing pretty good myself
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if _c.name == "Overstock" or _c.name == 'Overstock Plus' then'''
+position = "at"
+payload = '''
+if _c.name == "Overstock" or _c.name == "Overstock Plus" then loc_vars = {_c.config.extra}
+'''
+match_indent = true
+
+# spent the whole day reviving misprinted vouchers
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == "Blank" or _c.name == "Antimatter" then'''
+position = "at"
+payload = '''
+elseif _c.name == "Blank" or _c.name == "Antimatter" then loc_vars = {_c.config.extra}
+'''
+match_indent = true
+
+# tbf, more like half
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''message = localize\{type = 'variable', key = 'a_xmult', vars = \{G.P_CENTERS.v_observatory.config.extra}},\n\s+Xmult_mod = G.P_CENTERS.v_observatory.config.extra'''
+position = "at"
+payload = '''
+                    message = localize{type = 'variable', key = 'a_xmult', vars = {G.GAME.cry_voucher_centers['v_observatory'].config.extra}},
+                    Xmult_mod = G.GAME.cry_voucher_centers['v_observatory'].config.extra
+'''
+
+# but whatever, not like i was doing anything anyway
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''UIBox_button({label = {localize('b_reroll_boss'), localize('$')..'10'}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil'''
+position = "at"
+payload = '''
+UIBox_button({label = {localize('b_reroll_boss'), localize('$')..cry_cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+'''
+match_indent = true
+
+# worth it in the end ig, it was bugging me
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and'''
+position = "at"
+payload = '''
+if ((G.GAME.dollars-G.GAME.bankrupt_at) - cry_cheapest_boss_reroll() >= 0) and
+'''
+match_indent = true
+
+# see you around
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if not G.from_boss_tag then ease_dollars(-10) end'''
+position = "at"
+payload = '''
+if not G.from_boss_tag then ease_dollars(-cry_cheapest_boss_reroll()) end
+'''
 match_indent = true

@@ -131,7 +131,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = '''return center\nend\n\nfunction get_current_pool\(_type, _rarity, _legendary, _append\)'''
 position = "before"
-payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end'''
+payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end '''
 
 # Increase highlight limit for consumables
 [[patches]]
@@ -140,4 +140,19 @@ target = "game.lua"
 pattern = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1})"
 position = "at"
 payload = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1e100})"
+match_indent = true
+
+# Satellite Uplink
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''card = create_card("Planet", G.pack_cards, nil, nil, true, true, nil, 'pl1')'''
+position = "at"
+payload = '''
+if G.GAME.used_vouchers.v_cry_satellite_uplink and pseudorandom('cry_satellite_uplink') > 0.8 then
+    card = create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'pl2')
+else
+    card = create_card("Planet", G.pack_cards, nil, nil, true, true, nil, 'pl1')
+end
+'''
 match_indent = true

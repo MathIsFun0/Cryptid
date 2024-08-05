@@ -351,7 +351,52 @@ position = "at"
 payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
 match_indent = true
 
-# Dawn Stake - change maximum allowed highlights
+# Ember Stake - grant no money on sell
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
+position = "at"
+payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
+match_indent = true
+
+# Ember Stake - give no money for selling
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''ease_dollars(self.sell_cost)'''
+position = "at"
+payload = '''if not G.GAME.modifiers.cry_no_sell_value then ease_dollars(self.sell_cost) end'''
+match_indent = true
+
+# Ember Stake - don't play coin sound
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''play_sound('coin2')'''
+position = "at"
+payload = '''if not G.GAME.modifiers.cry_no_sell_value then play_sound('coin2') end'''
+match_indent = true
+
+# Ember Stake - red dissolve for swag points
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self:start_dissolve({G.C.GOLD})'''
+position = "at"
+payload = '''if G.GAME.modifiers.cry_no_sell_value then self:start_dissolve({G.C.RED}) else self:start_dissolve({G.C.GOLD}) end'''
+match_indent = true
+
+# Ember Stake - remove sell price visually
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost'''
+position = "at"
+payload = '''self.sell_cost_label = (self.facing == 'back' and '?') or (G.GAME.modifiers.cry_no_sell_value and 0) or self.sell_cost'''
+match_indent = true
+
+# Dawn Stake - change maximum allowed highlights (i have no idea what this code is meant to be doing?? whatever it is, it doesn't seem to be working -toneblock)
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -406,4 +451,22 @@ target = "functions/common_events.lua"
 pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
 position = "at"
 payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
+match_indent = true
+
+# inject into vanilla calculate_perishable to prevent nil index bug (i don't know where it fails so i'm just patching every part of it...)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable and self.ability.perish_tally > 0 then'''
+position = "before"
+payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
+match_indent = true
+
+# again in set_debuff
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable and self.ability.perish_tally <= 0 then'''
+position = "before"
+payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
 match_indent = true
