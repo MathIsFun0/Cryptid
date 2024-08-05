@@ -712,6 +712,7 @@ local delete = {
         if G.shop_vouchers.highlighted[1] then
             a = G.shop_vouchers
             c = G.shop_vouchers.highlighted[1]
+	    if c.shop_voucher then G.GAME.current_round.voucher = nil end
         end
         G.GAME.banned_keys[c.config.center.key] = true
         c:start_dissolve()
