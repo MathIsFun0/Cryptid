@@ -732,7 +732,7 @@ local delete = {
             end
         end
         if c.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end
-        G.GAME.cry_delete[c.config.center.key] = true
+        G.GAME.banned_keys[c.config.center.key] = true
         c:start_dissolve()
     end
 }
