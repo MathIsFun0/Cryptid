@@ -47,7 +47,7 @@ local dropshot = {
                 return {calculated = true}
             end
         end
-        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_mult) > to_big(1)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
                 Xmult_mod = card.ability.extra.x_mult
@@ -120,9 +120,9 @@ local happyhouse = {
                 			}
 			end
         end
-	if context.cardarea == G.jokers and (card.ability.extra.mult > 1) and card.ability.extra.check > 113 and not context.before and not context.after then
+	if context.cardarea == G.jokers and (to_big(card.ability.extra.mult) > to_big(1)) and card.ability.extra.check > 113 and not context.before and not context.after then
 	    return {
-                message = "^"..card.ability.extra.mult.." Mult",
+                message = "^"..number_format(card.ability.extra.mult).." Mult",
                 Emult_mod = card.ability.extra.mult,
                 colour = G.C.DARK_EDITION,
 		card = card
@@ -295,7 +295,7 @@ local wee_fib = {
 				}
 			end
 		end
-		if context.cardarea == G.jokers and (card.ability.extra.mult > 0) and not context.before and not context.after then
+		if context.cardarea == G.jokers and (to_big(card.ability.extra.mult) > to_big(0)) and not context.before and not context.after then
 			return {
 				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
 				mult_mod = card.ability.extra.mult, 
@@ -358,7 +358,7 @@ local whip = {
                 end
             end
         end
-        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_mult) > to_big(1)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
                 Xmult_mod = card.ability.extra.x_mult
@@ -473,7 +473,7 @@ local cursor = {
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
             return {calculated = true}
         end
-        if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.chips) > to_big(0)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                 chip_mod = card.ability.extra.chips
@@ -727,7 +727,7 @@ local chili_pepper = {
         return {vars = {center.ability.extra.Xmult, center.ability.extra.Xmult_mod, center.ability.extra.rounds_remaining}}
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and not context.before and not context.after and card.ability.extra.Xmult > 1 then
+        if context.cardarea == G.jokers and not context.before and not context.after and to_big(card.ability.extra.Xmult) > to_big(1) then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
                 Xmult_mod = card.ability.extra.Xmult
@@ -854,7 +854,7 @@ local big_cube = {
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and not context.before and not context.after then
             return {
-                message = "X"..card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.x_chips),
                 Xchip_mod = card.ability.extra.x_chips,
                 colour = G.C.CHIPS
             }
@@ -896,7 +896,7 @@ local eternalflame = {
     end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_mult) > to_big(1)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
                 Xmult_mod = card.ability.extra.x_mult
@@ -1109,7 +1109,7 @@ local jimball = {
                 end
             end
             if reset then
-                if card.ability.x_mult > 1 then
+                if to_big(card.ability.x_mult) > to_big(1) then
                     card.ability.x_mult = 1
                     return {
                         card = self,
@@ -1255,7 +1255,7 @@ local fspinner = {
 	    end
 	
         end
-        if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.chips) > to_big(0)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                 chip_mod = card.ability.extra.chips
@@ -1355,7 +1355,7 @@ local krustytheclown = {
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_mult) > to_big(1)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
                 Xmult_mod = card.ability.extra.x_mult
@@ -1607,9 +1607,9 @@ local antennastoheaven = {
     end,
     atlas = "atlasone",
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.x_chips > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_chips) > to_big(1)) and not context.before and not context.after then
             return {
-                message = "X"..card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.x_chips),
                 Xchip_mod = card.ability.extra.x_chips,
                 colour = G.C.CHIPS
             }
@@ -2051,7 +2051,7 @@ local monkey_dagger = {
     end,
 	atlas = "atlastwo",
 		calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.chips) > to_big(0)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                 chip_mod = card.ability.extra.chips
@@ -2173,7 +2173,7 @@ local mondrian = {
     end,
     atlas = "atlastwo",
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_mult) > to_big(1)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
                 Xmult_mod = card.ability.extra.x_mult
@@ -2298,9 +2298,9 @@ local spaceglobe = {
 			}
                 	end
 		end
-		if context.cardarea == G.jokers and (card.ability.extra.x_chips > 1) and not context.before and not context.after then
+		if context.cardarea == G.jokers and (to_big(card.ability.extra.x_chips) > to_big(1)) and not context.before and not context.after then
             		return {
-                		message = "X"..card.ability.extra.x_chips,
+                		message = "X"..number_format(card.ability.extra.x_chips),
                 		Xchip_mod = card.ability.extra.x_chips,
                 		colour = G.C.CHIPS
             		}

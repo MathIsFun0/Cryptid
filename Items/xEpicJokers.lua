@@ -362,7 +362,7 @@ local m = {
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.x_mult) > to_big(1)) and not context.before and not context.after then
             return {
                 message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
                 Xmult_mod = card.ability.extra.x_mult
@@ -736,7 +736,7 @@ local double_scale = {
                         scale = jkr.ability[dbl_info.scaler[1]]
                     end
                     scale_amt = math.abs((current_val-last_val)/scale)
-                    if scale_amt > 0 then
+                    if to_big(scale_amt) > to_big(0) then
                         dbl_info.offset = dbl_info.offset + scale_amt
                         local new_scale = dbl_info.scaler_base * dbl_info.offset
                         if #dbl_info.base == 2 then
