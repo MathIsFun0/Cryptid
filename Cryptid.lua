@@ -504,6 +504,14 @@ if not SpectralPack then
     {
         label = "Music",
         tab_definition_function = function()
+            -- TODO: Add a button here to reset all Cryptid achievements. 
+            -- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
+            --[[fetch_achievements()
+            for k, v in pairs(SMODS.Achievements) do
+                G.SETTINGS.ACHIEVEMENTS_EARNED[k] = nil
+                G.ACHIEVEMENTS[k].earned = nil
+            end
+            fetch_achievements()]]
             cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
                 --{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
               }}}
@@ -1001,6 +1009,12 @@ function SMODS.current_mod.process_loc_text()
             "nothing on use"
         },
     }
+    SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
+    SMODS.process_loc_text(G.localization.misc.achievement_descriptions, "hidden_achievement", "Play more to find out!")
+end
+
+function SMODS.current_mod.reset_game_globals(run_start)
+    G.GAME.cry_ach_conditions = G.GAME.cry_ach_conditions or {}
 end
 
 --Used to check to play the exotic music
