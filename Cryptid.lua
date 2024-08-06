@@ -297,12 +297,12 @@ function Card:cry_calculate_consumeable_perishable()
 end
 
 local ec = eval_card
-function eval_card(card, context)
+function eval_card(card, context, callback)
     local ggpn = G.GAME.probabilities.normal
     if card.ability.cry_rigged then
         G.GAME.probabilities.normal = 1e300
     end
-    local ret = ec(card, context)
+    local ret = ec(card, context, callback)
     if card.ability.cry_rigged then
         G.GAME.probabilities.normal = ggpn
     end
@@ -321,86 +321,16 @@ function Card:use_consumeable(area,copier)
     return ret
 end
 local cj = Card.calculate_joker
-function Card:calculate_joker(context)
+function Card:calculate_joker(context, callback)
     local ggpn = G.GAME.probabilities.normal
     if self.ability.cry_rigged then
         G.GAME.probabilities.normal = 1e300
     end
-    local ret = cj(self, context)
+    local ret, triggered = cj(self, context, callback)
     if self.ability.cry_rigged then
         G.GAME.probabilities.normal = ggpn
     end
-    --Make every Joker return a value when triggered
-    if not ret then
-        if context.selling_self then
-            if self.ability.name == "Luchador" then ret = {calculated = true} end
-            if self.ability.name == "Diet Cola" then ret = {calculated = true} end
-            if self.ability.name == 'Invisible Joker' and (self.ability.invis_rounds >= self.ability.extra) and not context.blueprint then ret = {calculated = true} end
-        end
-        if context.selling_card and self.ability.name == 'Campfire' and not context.blueprint then ret = {calculated = true} end
-        if context.reroll_shop and self.ability.name == 'Flash Card' and not context.blueprint then ret = {calculated = true} end
-        if context.ending_shop and self.ability.name == 'Perkeo' then ret = {calculated = true} end
-        if context.skip_blind and self.ability.name == 'Throwback' and not context.blueprint then ret = {calculated = true} end
-        if context.skipping_booster and self.ability.name == 'Red Card' and not context.blueprint then ret = {calculated = true} end
-        if context.playing_card_added and not self.getting_sliced and self.ability.name == 'Hologram' and (not context.blueprint) and context.cards and context.cards[1] then ret = {calculated = true} end
-        if context.first_hand_drawn and self.ability.name == 'Certificate' then ret = {calculated = true} end
-        if context.setting_blind and not self.getting_sliced then
-            if self.ability.name == 'Chicot' and not context.blueprint and context.blind.boss and not self.getting_sliced then ret = {calculated = true} end
-            if self.ability.name == 'Madness' and not context.blueprint and not context.blind.boss then ret = {calculated = true} end
-            if self.ability.name == 'Burglar' and not (context.blueprint_card or self).getting_sliced then ret = {calculated = true} end
-            if self.ability.name == 'Riff-raff' and not (context.blueprint_card or self).getting_sliced and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then ret = {calculated = true} end
-            if self.ability.name == 'Cartomancer' and not (context.blueprint_card or self).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then ret = {calculated = true} end
-            if self.ability.name == 'Ceremonial Dagger' and not context.blueprint then ret = {calculated = true} end
-            if self.ability.name == 'Marble Joker' and not (context.blueprint_card or self).getting_sliced then ret = {calculated = true} end
-        end
-        if context.destroying_card and not context.blueprint and self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then ret = {calculated = true} end
-        if context.cards_destroyed then
-            if self.ability.name == 'Caino' and not context.blueprint then ret = {calculated = true} end
-            --todo: Glass Joker
-        end
-        if context.remove_playing_cards then
-            if self.ability.name == 'Caino' and not context.blueprint then ret = {calculated = true} end
-            --todo: Glass Joker
-        end
-        if context.using_consumeable then
-            --todo: Glass Joker
-            if self.ability.name == 'Fortune Teller' and not context.blueprint and (context.consumeable.ability.set == "Tarot") then ret = {calculated = true} end
-            if self.ability.name == 'Constellation' and not context.blueprint and context.consumeable.ability.set == 'Planet' then ret = {calculated = true} end
-        end
-        if context.pre_discard and self.ability.name == 'Burnt Joker' and G.GAME.current_round.discards_used <= 0 and not context.hook then ret = {calculated = true} end
-        if self.ability.name == 'Faceless Joker' and context.full_hand and context.other_card == context.full_hand[#context.full_hand] then
-            local face_cards = 0
-            for k, v in ipairs(context.full_hand) do
-                if v:is_face() then face_cards = face_cards + 1 end
-            end
-            if face_cards >= self.ability.extra.faces then
-                ret = {calculated = true}
-            end
-        end
-    end
-    --Check for retrggering jokers
-    if ret and not context.retrigger_joker and not context.retrigger_joker_check then
-        if type(ret) ~= 'table' then ret = {joker_repetitions = {0}} end
-        ret.joker_repetitions = {0}
-        for i = 1, #G.jokers.cards do
-            local check = G.jokers.cards[i]:calculate_joker{retrigger_joker_check = true, other_card = self}
-            if type(check) == 'table' then 
-                ret.joker_repetitions[i] = check and check.repetitions and check or 0
-            else
-                ret.joker_repetitions[i] = 0
-            end
-            if G.jokers.cards[i] == self and self.edition and self.edition.retriggers then
-                local old_repetitions = ret.joker_repetitions[i] ~= 0 and ret.joker_repetitions[i].repetitions or 0
-                local check = calculate_blurred(self)
-                if check and check.repetitions then
-                    check.repetitions = check.repetitions + old_repetitions
-                    ret.joker_repetitions[i] = check
-                end
-            end
-
-        end
-    end
-    return ret
+    return ret, triggered
 end
 
 -- File loading based on Relic-Jokers
