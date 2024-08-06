@@ -66,7 +66,7 @@ end
 new_card:set_edition(other.edition, nil, true)
 '''
 match_indent = true
-
+# Joker BigNum value support
 [[patches]]
 [patches.pattern]
 target = "card.lua"
