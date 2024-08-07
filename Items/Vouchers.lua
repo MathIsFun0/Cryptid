@@ -52,7 +52,7 @@ local tag_printer = {
 local clone_machine_atlas = {
     object_type = "Atlas",
     key = "cry_clone_machine",
-    path = "v_placeholder_t3.png",
+    path = "v_cry_clone_machine.png",
     px = 71,
     py = 95
 }
