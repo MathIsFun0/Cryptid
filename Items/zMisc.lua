@@ -620,6 +620,9 @@ function Card:calculate_seal(context)
     end
     return ret
 end
+function Card:calculate_joker_retriggers()
+    return calculate_blurred(self)
+end
 --Memory Tag Patches - store last tag used
 local tapr = Tag.apply_to_run
 function Tag:apply_to_run(x)
