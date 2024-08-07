@@ -1,5 +1,5 @@
 local cj = Card.calculate_joker
-function Card:calculate_joker(context, callback)
+function Card:calculate_joker(context, callback, retrigger, no_retrigger_anim)
     local ret, triggered = cj(self, context)
     --Check for retrggering jokers
     if (ret or triggered) and context and not context.retrigger_joker and not context.retrigger_joker_check then
@@ -22,19 +22,19 @@ function Card:calculate_joker(context, callback)
             end
         end
         --do the retriggers
-        context.retrigger_joker = true
         for z = 1, #ret.joker_repetitions do
             if type(ret.joker_repetitions[z]) == 'table' and ret.joker_repetitions[z].repetitions then
                 for r = 1, ret.joker_repetitions[z].repetitions do
                 if percent then percent = percent+percent_delta end
-                self:calculate_joker(context, callback)
-                card_eval_status_text(ret.joker_repetitions[z].card, 'jokers', nil, nil, nil, ret.joker_repetitions[z])
+                context.retrigger_joker = ret.joker_repetitions[z].card
+                local _ret, _triggered = self:calculate_joker(context, callback, ret.joker_repetitions[z])
+                if (_ret or _triggered) and not no_retrigger_anim then card_eval_status_text(ret.joker_repetitions[z].card, 'jokers', nil, nil, nil, ret.joker_repetitions[z]) end
                 end
             end
         end
     end
-    if callback and type(callback) == 'function' then callback(ret) end
-    return ret
+    if callback and type(callback) == 'function' then callback(ret, retrigger) end
+    return ret, triggered
 end
 function Card:calculate_joker_retriggers()
     return calculate_blurred(self)

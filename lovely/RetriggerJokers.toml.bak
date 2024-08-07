@@ -3,7 +3,7 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-# main joker retriggering
+# main joker retriggering - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -54,7 +54,7 @@ end
 match_indent = true
 
 
-# End of round retriggering from jokers
+# End of round retriggering from jokers - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -80,7 +80,7 @@ end
 match_indent = true
 
 
-# Destroying cards
+# Destroying cards - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -103,7 +103,7 @@ end
 '''
 match_indent = true
 
-
+# PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -127,7 +127,7 @@ end
 match_indent = true
 
 
-# Retrigger retriggering jokers
+# Retrigger retriggering jokers - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -154,7 +154,7 @@ if eval and eval.jokers and not eval.jokers.repetitions then eval.jokers = nil e
 match_indent = true
 
 
-# Pre-round effects
+# Pre-round effects - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -184,7 +184,7 @@ end
 match_indent = true
 
 
-# Retrigger retriggering jokers
+# Retrigger retriggering jokers - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -211,7 +211,7 @@ if eval and eval.jokers and not eval.jokers.repetitions then eval.jokers = nil e
 match_indent = true
 
 
-# Debuffed cards
+# Debuffed cards - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -240,7 +240,7 @@ end
 match_indent = true
 
 
-# Post-round effects
+# Post-round effects - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -269,7 +269,7 @@ end
 match_indent = true
 
 
-# removing cards from a consumable
+# removing cards from a consumable - PORTED
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -293,7 +293,7 @@ end
 match_indent = true
 
 
-# selling self
+# selling self - PORTED
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -317,7 +317,7 @@ end
 match_indent = true
 
 
-# opening packs
+# opening packs - PORTED
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -341,7 +341,7 @@ end
 match_indent = true
 
 
-# buying card
+# buying card - PORTED
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -365,7 +365,7 @@ end
 match_indent = true
 
 
-# first hand drawn
+# first hand drawn - PORTED
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -389,7 +389,7 @@ end
 match_indent = true
 
 
-# using a consumable
+# using a consumable - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -413,7 +413,7 @@ end
 match_indent = true
 
 
-# selling a card
+# selling a card - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -437,7 +437,7 @@ end
 match_indent = true
 
 
-# buying itself
+# buying itself - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -463,7 +463,7 @@ return true end}))
 match_indent = true
 
 
-# buying a card
+# buying a card - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -487,7 +487,7 @@ end
 match_indent = true
 
 
-# ending shop
+# ending shop - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -511,7 +511,7 @@ end
 match_indent = true
 
 
-# skipping booster
+# skipping booster - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -535,7 +535,7 @@ end
 match_indent = true
 
 
-# skipping blind
+# skipping blind - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -559,7 +559,7 @@ end
 match_indent = true
 
 
-# rerolling shop
+# rerolling shop - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -583,7 +583,7 @@ end
 match_indent = true
 
 
-# playing card added
+# playing card added - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/misc_functions.lua"
@@ -607,7 +607,7 @@ end
 match_indent = true
 
 
-# end of round
+# end of round - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -636,7 +636,7 @@ end
 match_indent = true
 
 
-# end of round
+# end of round - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -661,7 +661,7 @@ end
 match_indent = true
 
 
-# setting blind
+# setting blind - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -685,7 +685,7 @@ end
 match_indent = true
 
 
-# on pre-discard
+# on pre-discard - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -709,7 +709,7 @@ end
 match_indent = true
 
 
-# on discard
+# on discard - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -736,7 +736,7 @@ end
 match_indent = true
 
 
-# more hand effects
+# more hand effects - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -762,8 +762,7 @@ end
 match_indent = true
 
 
-# retrigger effect
-
+# retrigger effect - TODO
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -777,7 +776,7 @@ end
 match_indent = true
 
 
-# more hand effects
+# more hand effects - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -803,7 +802,7 @@ end
 match_indent = true
 
 
-# joker on joker effects
+# joker on joker effects - PORTED
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -851,54 +850,7 @@ end
 match_indent = true
 
 
-# more card destroying
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "local effect = v:calculate_joker{full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_joker = _card}"
-position = "after"
-payload = '''
-if effect and effect.joker_repetitions then
-    rep_list = effect.joker_repetitions
-    for z=1, #rep_list do
-        if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
-            for r=1, rep_list[z].repetitions do
-                card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
-                if percent then percent = percent+percent_delta end
-                local ef = v:calculate_joker{full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_joker = _card, retrigger_joker = true}
-                if ef then
-                    local extras = {mult = false, hand_chips = false}
-                    if ef.mult_mod then mult = mod_mult(mult + ef.mult_mod);extras.mult = true end
-                    if ef.chip_mod then hand_chips = mod_chips(hand_chips + ef.chip_mod);extras.hand_chips = true end
-                    if ef.Xmult_mod then mult = mod_mult(mult*ef.Xmult_mod);extras.mult = true  end
-                    if ef.Emult_mod then mult = mod_mult(mult^ef.Emult_mod);extras.mult = true  end
-                    if ef.EEmult_mod then mult = mod_mult(mult:arrow(2, ef.EEmult_mod));extras.mult = true  end
-                    if ef.EEEmult_mod then mult = mod_mult(mult:arrow(3, ef.EEEmult_mod));extras.mult = true  end
-                    if ef.Hmult_mod and type(ef.Hmult) == 'table' then mult = mod_mult(mult:arrow(ef.Hmult_mod[1], ef.Hmult_mod[2]));extras.mult = true  end
-                    if ef.Xchip_mod then hand_chips = mod_chips(hand_chips*ef.Xchip_mod);extras.hand_chips = true  end
-                    if ef.Echip_mod then hand_chips = mod_chips(hand_chips^ef.Echip_mod);extras.hand_chips = true  end
-                    if ef.EEchip_mod then hand_chips = mod_chips(hand_chips:arrow(2, ef.EEchip_mod));extras.hand_chips = true  end
-                    if ef.EEEchip_mod then hand_chips = mod_chips(hand_chips:arrow(3, ef.EEEchip_mod));extras.hand_chips = true  end
-                    if ef.Hchip_mod and type(ef.Hchip_mod) == 'table' then hand_chips = mod_chips(hand_chips:arrow(ef.Hchip_mod[1], ef.Hchip_mod[2]));extras.hand_chips = true  end
-                    if extras.mult or extras.hand_chips then update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult}) end
-                    if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, ef) end
-                    --Exponentia
-                    if ef.Xmult_mod and next(find_joker("cry-Exponentia")) then
-                        for _, v in pairs(find_joker("cry-Exponentia")) do
-                            v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
-                        end
-                    end
-                    percent = percent+percent_delta
-                end
-            end
-        end
-    end
-end
-'''
-match_indent = true
-
-
+# more card destroying - TODO
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
