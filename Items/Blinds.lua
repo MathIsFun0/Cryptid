@@ -444,6 +444,9 @@ local joke = {
 	end,
     cry_calc_ante_gain = function(self)
         if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
+            if G.GAME.round_resets.ante == 1 then 
+                G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true 
+            end
             return G.GAME.win_ante-G.GAME.round_resets.ante%G.GAME.win_ante
         end
         return 1
@@ -543,11 +546,21 @@ local lavender_loop = {
     },
     atlas = "blinds",
     boss_colour = HEX('ae00ff'),
+    set_blind = function(self, reset, silent)
+        G.GAME.cry_ach_conditions.patience_virtue_timer = 120
+    end,
     disable = function(self, silent)
         G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling*2
         G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+        G.GAME.cry_ach_conditions.patience_virtue_earnable = false
+        G.GAME.cry_ach_conditions.patience_virtue_earnable = nil
     end,
     cry_round_base_mod = function(self, dt)
+        if G.GAME.cry_ach_conditions.patience_virtue_timer > 0 and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true then
+            G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer - dt*(G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
+        elseif G.GAME.current_round.hands_played == 0 then
+            G.GAME.cry_ach_conditions.patience_virtue_earnable = true
+        end
         return 1.25^(dt/1.5)
     end
 }
@@ -618,7 +631,7 @@ local sapphire_stamp = {
         end
     end,
     defeat = function(self, silent)
-        if not self.disabled then
+        if not G.GAME.blind.disabled then
             G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
         end
     end,

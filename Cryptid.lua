@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta3, Steamodded>=1.0.0-ALPHA-0805d]
---- VERSION: 0.4.3g
+--- VERSION: 0.4.3h
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -504,6 +504,14 @@ if not SpectralPack then
     {
         label = "Music",
         tab_definition_function = function()
+            -- TODO: Add a button here to reset all Cryptid achievements. 
+            -- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
+            --[[fetch_achievements()
+            for k, v in pairs(SMODS.Achievements) do
+                G.SETTINGS.ACHIEVEMENTS_EARNED[k] = nil
+                G.ACHIEVEMENTS[k].earned = nil
+            end
+            fetch_achievements()]]
             cry_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
                 --{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
               }}}
@@ -701,7 +709,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
               card.cry_flipped = true
           end
       end
-      if _type == 'Joker' and not (G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == 'random') then
+      if _type == 'Joker' and not G.GAME.modifiers.cry_force_edition then
           local edition = poll_edition('edi'..(key_append or '')..G.GAME.round_resets.ante)
           card:set_edition(edition)
           check_for_unlock({type = 'have_edition'})
@@ -1001,6 +1009,12 @@ function SMODS.current_mod.process_loc_text()
             "nothing on use"
         },
     }
+    SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
+    SMODS.process_loc_text(G.localization.misc.achievement_descriptions, "hidden_achievement", "Play more to find out!")
+end
+
+function SMODS.current_mod.reset_game_globals(run_start)
+    G.GAME.cry_ach_conditions = G.GAME.cry_ach_conditions or {}
 end
 
 --Used to check to play the exotic music
