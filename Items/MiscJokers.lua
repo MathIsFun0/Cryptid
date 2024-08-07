@@ -44,7 +44,7 @@ local dropshot = {
             if cards > 0 then 
                 card.ability.extra.x_mult = card.ability.extra.x_mult + cards * card.ability.extra.Xmult_mod
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-                return {calculated = true}
+                return nil, true
             end
         end
         if context.cardarea == G.jokers and (card.ability.extra.x_mult > 1) and not context.before and not context.after then
@@ -355,7 +355,7 @@ local whip = {
                             end
                             card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
                             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-                            return {calculated = true}
+                            return nil, true
                         end
                     end
                 end
@@ -474,7 +474,7 @@ local cursor = {
         if context.buying_card and (not context.blueprint) and not (context.card == card) then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
-            return {calculated = true}
+            return nil, true
         end
         if context.cardarea == G.jokers and (card.ability.extra.chips > 0) and not context.before and not context.after then
             return {
@@ -533,13 +533,13 @@ local pickle = {
                 end
             end
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = "+"..card.ability.extra.tags.." Tag"..(card.ability.extra.tags>1 and "s" or ""), colour = G.C.FILTER})
-            return {calculated = true}
+            return nil, true
         end
         if context.setting_blind and not context.blueprint then
             card.ability.extra.tags = card.ability.extra.tags - card.ability.extra.tags_mod
             if card.ability.extra.tags > 0 then
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "-"..card.ability.extra.tags_mod.." Tag"..(card.ability.extra.tags_mod>1 and "s" or ""), colour = G.C.FILTER})
-                return {calculated = true}
+                return nil, true
             else
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -908,7 +908,7 @@ local eternalflame = {
 		if context.selling_card and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-			return {calculated = true}
+			return nil, true
 		end
 	end
 }
@@ -1060,7 +1060,7 @@ local chad = {
 					repetitions = card.ability.extra.retriggers,
 					card = card
 				}
-			else return {calculated = true} end
+			else return nil, true end
         end
 	end
 }
@@ -2015,7 +2015,7 @@ end
                 play_sound('slice1', 0.96+math.random()*0.08)
             return true end }))
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult+0.2*sliced_card.sell_cost}}, colour = G.C.RED, no_juice = true})
-return {calculated = true}
+return nil, true
         end
     end
 }
@@ -2078,7 +2078,7 @@ local monkey_dagger = {
                 play_sound('slice1', 0.96+math.random()*0.08)
             return true end }))
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips+10*sliced_card.sell_cost}}, colour = G.C.CHIPS, no_juice = true})
-			return {calculated = true}
+			return nil, true
         end
     end
 }
@@ -2138,7 +2138,7 @@ local pirate_dagger = {
                 play_sound('slice1', 0.96+math.random()*0.08)
             return true end }))
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xchips', vars = {card.ability.extra.x_chips+0.25*sliced_card.sell_cost}}, colour = G.C.CHIPS, no_juice = true})
-			return {calculated = true}
+			return nil, true
         end
     end
 }
@@ -2371,7 +2371,7 @@ local happy = {
                         return true
                     end}))   
                     card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
-                return {calculated = true}
+                return nil, true
         end
 	if context.end_of_round and not context.individual and not context.repetition and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit and not context.retrigger_joker then
     			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
@@ -2388,7 +2388,7 @@ local happy = {
             			return true
         		end}))
     			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
-                return {calculated = true}
+                return nil, true
 	end
     end
 }

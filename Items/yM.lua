@@ -473,7 +473,7 @@ local notebook = {
                         				colour = G.C.DARK_EDITION,
                     				})
                 				}
-					else return {calculated = true} end
+					else return nil, true end
 				end
 	    end
 	    if context.end_of_round and not context.retrigger_joker and not context.blueprint then

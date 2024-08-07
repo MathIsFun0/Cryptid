@@ -104,7 +104,7 @@ local googol_play = {
 					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
 					Xmult_mod = card.ability.extra.Xmult
 				}
-			else return {calculated = true} end
+			else return nil, true end
 		end
 	end,
 }
@@ -371,7 +371,7 @@ local m = {
 		if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-			return {calculated = true}
+			return nil, true
 		end
 	end
 }
@@ -450,7 +450,7 @@ local boredom = {
 					repetitions = 1,
 					card = card
 				}
-			else return {calculated = true} end
+			else return nil, true end
         end
 		if context.repetition and context.cardarea == G.play then
 			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
@@ -460,7 +460,7 @@ local boredom = {
 					card = card
 				}
 			else
-				return {calculated = true}
+				return nil, true
 			end
 		end
 	end
@@ -514,7 +514,7 @@ local number_blocks = {
             else
                 card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
-                return {calculated = true}
+                return nil, true
             end
         end
     end,

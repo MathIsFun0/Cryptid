@@ -226,7 +226,7 @@ local speculo = {
                         return true
                     end}))
                 card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                return {calculated = true}
+                return nil, true
             end
             return
         end
@@ -266,7 +266,7 @@ local redeo = {
             if ante_mod < 0 then
                 ease_ante(ante_mod)
             end
-            return {calculated = true}
+            return nil, true
         end
 	end
 }
@@ -386,7 +386,7 @@ local crustulum = {
         	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
 		G.GAME.current_round.free_rerolls = 1
 		calculate_reroll_cost(true)
-        	return {calculated = true}
+        	return nil, true
 		end
 	if context.end_of_round then 
 		G.GAME.current_round.free_rerolls = 1
