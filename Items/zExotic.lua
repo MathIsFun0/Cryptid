@@ -163,9 +163,9 @@ local exponentia = {
 	atlas = "atlasexotic",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
 	calculate = function(self, card, context)
-        if context.cardarea == G.jokers and (card.ability.extra.Emult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
             return {
-                message = "^"..card.ability.extra.Emult.." Mult",
+                message = "^"..number_format(card.ability.extra.Emult).." Mult",
                 Emult_mod = card.ability.extra.Emult,
                 colour = G.C.DARK_EDITION
             }
@@ -342,7 +342,6 @@ local effarcire = {
     		'{C:inactive,s:0.8}"you don\'t deserve me at my 2x"'
 	}
 	},
-	rarity = 3,
 	cost = 50,
 	atlas = 'atlasexotic',
 	rarity = "cry_exotic",
@@ -392,7 +391,7 @@ local crustulum = {
 		G.GAME.current_round.free_rerolls = 1
 		calculate_reroll_cost(true)
 		end
-	if context.cardarea == G.jokers and (card.ability.extra.chips) > 0 and not context.before and not context.after then
+	if context.cardarea == G.jokers and to_big(card.ability.extra.chips) > to_big(0) and not context.before and not context.after then
         return {
             	message = localize{type='variable', key='a_chips', vars={card.ability.extra.chips}},
             	chip_mod = card.ability.extra.chips
@@ -455,9 +454,9 @@ local primus = {
 				}   
 			end
         end
-        if context.cardarea == G.jokers and (card.ability.extra.Emult > 1) and not context.before and not context.after then
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
             return {
-                message = "^"..card.ability.extra.Emult.." Mult",
+                message = "^"..number_format(card.ability.extra.Emult).." Mult",
                 Emult_mod = card.ability.extra.Emult,
                 colour = G.C.DARK_EDITION
             }
@@ -486,6 +485,52 @@ if JokerDisplay then
         end
     }
 end
+local big_num_whitelist = {
+    j_ride_the_bus = true,
+    j_egg = true,
+    j_runner = true,
+    j_ice_cream = true,
+    j_constellation = true,
+    j_green_joker = true,
+    j_red_card = true,
+    j_madness = true,
+    j_square = true,
+    j_vampire = true,
+    j_hologram = true,
+    j_obelisk = true,
+    j_turtle_bean = true,
+    j_lucky_cat = true,
+    j_flash = true,
+    j_popcorn = true,
+    j_trousers = true,
+    j_ramen = true,
+    j_castle = true,
+    j_campfire = true,
+    j_throwback = true,
+    j_glass = true,
+    j_wee = true,
+    j_hit_the_road = true,
+    j_caino = true,
+    j_yorick = true,
+    j_cry_dropshot = true,
+    j_cry_wee_fib = true,
+    j_cry_whip = true,
+    j_cry_pickle = true,
+    j_cry_chili_pepper = true,
+    j_cry_cursor = true,
+    j_cry_jimball = true,
+    j_cry_eternalflame = true,
+    j_cry_fspinner = true,
+    j_cry_krustytheclown = true,
+    j_cry_antennastoheaven = true,
+    j_cry_mondrian = true,
+    j_cry_spaceglobe = true,
+    j_cry_m = true,
+    -- j_cry_bonk = true,
+    j_cry_exponentia = true,
+    j_cry_crustulum = true,
+    j_cry_primus = true
+}
 local scalae = {
     object_type = "Joker",
     name = "cry-Scalae",
@@ -686,9 +731,12 @@ local scalae = {
                             if not jkr.ability[dbl_info.scaler[1]] then return end
                             scale = jkr.ability[dbl_info.scaler[1]]
                         end
-                        scale_amt = math.abs((current_val-last_val)/scale)
-                        if scale_amt > 0 then
-                            local new_scale = dbl_info.scaler_base * ((1 + math.floor((scale/dbl_info.scaler_base)^(1/card.ability.extra.scale)))^card.ability.extra.scale)
+                        scale_amt = math.abs((current_val-last_val))
+                        local new_scale = (to_big(dbl_info.scaler_base) * ((1 + ((to_big(scale)/to_big(dbl_info.scaler_base))^(to_big(1)/to_big(card.ability.extra.scale))))^card.ability.extra.scale))
+                        if (new_scale < to_big(1e100)) or not ((jkr.config and jkr.config.center and jkr.config.center.key and big_num_whitelist[jkr.config.center.key]) or (jkr.ability and jkr.ability.big_num_scaler)) then
+                            new_scale = new_scale:to_number()
+                        end
+                        if to_big(scale_amt) > to_big(0) then
                             if #dbl_info.base == 2 then
                                 if not jkr.ability[dbl_info.base[1]] or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]] then return end 
                                 dbl_info.ability[dbl_info.base[1]][dbl_info.base[2]] = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
@@ -714,7 +762,7 @@ local scalae = {
         return
     end,
 	loc_vars = function(self, info_queue, card)
-		return {vars = {card.ability.extra.scale + 1, card.ability.extra.scale_mod}}
+		return {vars = {number_format(card.ability.extra.scale + 1), number_format(card.ability.extra.scale_mod)}}
 	end
 }
 return {name = "Exotic Jokers", 

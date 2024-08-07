@@ -1053,7 +1053,7 @@ local smallestm = {
     	calculate = function(self, card, context)
         	if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
             	return {
-                	message = "X"..card.ability.extra.x_chips,
+                	message = "X"..number_format(card.ability.extra.x_chips),
                 	Xchip_mod = card.ability.extra.x_chips,
                 	colour = G.C.CHIPS
             	}
