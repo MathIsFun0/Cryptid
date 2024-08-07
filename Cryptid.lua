@@ -321,12 +321,12 @@ function Card:use_consumeable(area,copier)
     return ret
 end
 local cj = Card.calculate_joker
-function Card:calculate_joker(context, callback, retrigger, no_retrigger_anim)
+function Card:calculate_joker(context)
     local ggpn = G.GAME.probabilities.normal
     if self.ability.cry_rigged then
         G.GAME.probabilities.normal = 1e300
     end
-    local ret, triggered = cj(self, context, callback, retrigger, no_retrigger_anim)
+    local ret, triggered = cj(self, context)
     if self.ability.cry_rigged then
         G.GAME.probabilities.normal = ggpn
     end
