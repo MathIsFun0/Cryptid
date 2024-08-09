@@ -133,6 +133,40 @@ pattern = '''return center\nend\n\nfunction get_current_pool\(_type, _rarity, _l
 position = "before"
 payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end '''
 
+# Run - don't clear shop
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.shop then self.shop:remove(); self.shop = nil end'''
+position = "at"
+payload = '''if self.shop and not G.GAME.USING_CODE then self.shop:remove(); self.shop = nil end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ease_background_colour_blind(G.STATES.SHOP)'''
+position = "at"
+payload = '''if not G.GAME.USING_RUN then ease_background_colour_blind(G.STATES.SHOP) end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.STATE == self.STATES.SELECTING_HAND then'''
+position = "before"
+payload = '''if G.GAME.USING_RUN then self.STATE = self.STATES.SHOP end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''G.shop.alignment.offset.y = -5.3'''
+position = "at"
+payload = '''if not G.shop then return true end
+G.shop.alignment.offset.y = -5.3'''
+match_indent = true
+
 # Increase highlight limit for consumables
 [[patches]]
 [patches.pattern]

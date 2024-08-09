@@ -811,6 +811,49 @@ local machinecode = {
         G.consumeables:emplace(card)
     end
 }
+local run = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Run",
+    key = "run",
+    pos = {x=5, y=0},
+    loc_txt = {
+        name = "://RUN",
+        text = {
+            "Visit a {C:cry_code}shop",
+            "during a {C:cry_code}Blind"
+        }
+    },
+    cost = 3,
+    atlas = "code",
+    can_use = function(self, card)
+        return G.GAME.blind and G.GAME.blind.in_blind
+    end,
+    can_bulk_use = true,
+    use = function(self, card, area, copier)
+        G.cry_runarea = CardArea(
+                G.discard.T.x, G.discard.T.y, G.discard.T.w, G.discard.T.h, 
+                {type = 'discard', card_limit = 1e100})
+        local hand_count = #G.hand.cards
+        for i=1, hand_count do
+            draw_card(G.hand,G.cry_runarea, i*100/hand_count,'down', nil, nil, 0.07)
+        end
+        G.E_MANAGER:add_event(Event({
+            trigger = 'immediate',
+            func = function()
+                G.GAME.current_round.jokers_purchased = 0
+                G.STATE = G.STATES.SHOP
+                G.GAME.USING_CODE = true
+                G.GAME.USING_RUN = true
+                G.GAME.RUN_STATE_COMPLETE = 0
+                G.GAME.shop_free = nil
+                G.GAME.shop_d6ed = nil
+                G.STATE_COMPLETE = false
+              return true
+            end
+          }))
+    end
+}
 
 local automaton = {
     object_type = "Consumable",
@@ -1497,7 +1540,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete, machinecode}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete, machinecode, run}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
@@ -1705,6 +1748,63 @@ return {name = "Code Cards",
             codechars10 = {"Æ","æ","Œ","œ"}
             function randomchar(arr)
                 return {n=G.UIT.O, config={object = DynaText({string = arr, colours = {G.C.BLACK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.05, scale = 0.25, min_cycle_time = 0})}}
+            end
+
+            --Run - don't open packs in shop
+            local gfco = G.FUNCS.can_open
+            G.FUNCS.can_open = function(e)
+                if G.GAME.USING_RUN then
+                    e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+                    e.config.button = nil
+                else
+                    gfco(e)
+                end
+            end
+            local gfts = G.FUNCS.toggle_shop
+            G.FUNCS.toggle_shop = function(e)
+                gfts(e)
+                if G.GAME.USING_RUN then
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.5,
+                        func = function()
+                            G.GAME.USING_RUN = false
+                            G.GAME.USING_CODE = false
+                            return true 
+                        end
+                    }))
+                    local hand_count = #G.cry_runarea.cards
+                    for i=1, hand_count do
+                        draw_card(G.cry_runarea,G.hand, i*100/hand_count,'up', true)
+                    end
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.5,
+                        func = function()
+                            G.cry_runarea:remove()
+                            G.cry_runarea = nil
+                            G.STATE = G.STATES.SELECTING_HAND
+                            return true 
+                        end
+                    }))
+                end
+            end
+            local gus = Game.update_shop
+            function Game:update_shop(dt)
+                gus(self,dt)
+                if G.GAME.USING_RUN and G.STATE_COMPLETE and G.GAME.RUN_STATE_COMPLETE < 60 then G.shop.alignment.offset.y = -5.3; G.GAME.RUN_STATE_COMPLETE = G.GAME.RUN_STATE_COMPLETE + 1; end
+            end
+            local guis = G.UIDEF.shop
+            function G.UIDEF.shop()
+                local ret = guis()
+                if G.GAME.USING_RUN then
+                    G.SHOP_SIGN:remove()
+                    G.SHOP_SIGN = {
+                        remove = function() return true end,
+                        alignment = {offset = {y = 0}}
+                    }
+                end
+                return ret
             end
         end,
         items = code_cards}
