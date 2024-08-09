@@ -786,6 +786,32 @@ local spaghetti = {
         G.jokers:emplace(card)
     end
 }
+local machinecode = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Machine Code",
+    key = "machinecode",
+    pos = {x=0, y=3},
+    loc_txt = {
+        name = "://MACHINECODE",
+        text = {
+            ""
+        }
+    },
+    cost = 3,
+    atlas = "code",
+    can_use = function(self, card)
+        return true
+    end,
+    can_bulk_use = true,
+    use = function(self, card, area, copier)
+        local card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'cry_machinecode')
+        card:set_edition({cry_glitched = true})
+        card:add_to_deck()
+        G.consumeables:emplace(card)
+    end
+}
+
 local automaton = {
     object_type = "Consumable",
     set = "Tarot",
@@ -1471,7 +1497,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete, machinecode}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
@@ -1666,6 +1692,19 @@ return {name = "Code Cards",
                   }
                   TRANSPOSE_TEXT_INPUT(1)
                 end
-              end            
+              end
+              
+            --Machine Code rendering
+            codechars2 = {"!","'",",",".",":",";","i","l","|","¡","¦","ì","í","ı"}
+            codechars4 = {" ","(",")","[","]","j","î","ī","ĭ"}
+            codechars5 = {"\"","*","<",">","{","}","¨","°","º","×"}
+            codechars6 = {"$","%","+","-","/","0","1","2","3","4","5","6","7","8","9","=","?","A","B","C","D","E","F","G","H","I","J","K","L","N","O","P","R","S","T","U","V","Y","Z","\\","^","_","a","b","c","d","e","f","g","h","k","n","o","p","q","r","s","t","u","v","y","z","~","¢","¥","§","¬","±","¿","À","Á","Â","Ã","Ä","Å","Ç","È","É","Ê","Ë","Ì","Í","Î","Ï","Ñ","Ò","Ó","Ô","Õ","Ö","Ù","Ú","Û","Ü","Ý","Þ","à","á","â","ã","ä","å","ç","è","é","ê","ë","ï","ñ","ò","ó","ô","õ","ö","÷","ù","ú","û","ü","ý","þ","ÿ","Ā","ā","Ă","ă","Ć","ć","Ē","ē","Ĕ","ĕ","Ğ","ğ","Ī","Ĭ","İ","ł","Ń","ń","Ō","ō","Ŏ","ŏ","Ś","ś","Ş","ş","Ū","ū","Ŭ","ŭ","Ÿ","Ź","ź","Ż","ż","Ǔ","ǔ","μ"}
+            codechars7 = {"#","Q","X","x","£","ß","Ą","ą","Đ","đ","Ę","ę"}
+            codechars8 = {"M","W","m","w","¤","¶","Ø","ø","Ł"}
+            codechars9 = {"&","@","©","«","®","»"}
+            codechars10 = {"Æ","æ","Œ","œ"}
+            function randomchar(arr)
+                return {n=G.UIT.O, config={object = DynaText({string = arr, colours = {G.C.BLACK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.05, scale = 0.25, min_cycle_time = 0})}}
+            end
         end,
         items = code_cards}

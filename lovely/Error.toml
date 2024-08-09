@@ -20,3 +20,51 @@ elseif self.ability.name == 'cry-Error' then
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "local main_start, main_end = nil,nil"
+position = "after"
+payload = '''
+if self.ability.name == 'cry-Machine Code' then
+    --"Create a random // glitched consumable"
+    main_start = {
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar({" "}),
+        randomchar(codechars6),
+        randomchar({" "}),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+    }
+    main_end = {
+        randomchar(codechars6),
+        randomchar(codechars2),
+        randomchar(codechars2),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar({" "}),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+        randomchar(codechars6),
+    }
+end
+'''
+match_indent = true
