@@ -64,6 +64,7 @@ if self.ability.name == 'cry-Machine Code' then
         randomchar(codechars6),
         randomchar(codechars6),
         randomchar(codechars6),
+        randomchar(codechars6),
     }
 end
 '''
