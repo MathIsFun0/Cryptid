@@ -875,6 +875,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
     G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
     G.localization.misc.v_text.ch_c_cry_all_banana = {"All Jokers are {C:eternal}Banana{}"}
+    G.localization.misc.v_text.ch_c_all_rnj = {"All Jokers are {C:attention}RNJoker{}"}
     G.localization.misc.v_text.ch_c_cry_sticker_sheet_plus = {"All purchasable items have all stickers"}
     G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}Boss Blinds{}"}
@@ -887,6 +888,7 @@ function init_localization()
 end
 
 function SMODS.current_mod.process_loc_text()
+    G.localization.misc.v_dictionary.a_xchips = "X#1# Chips"
     G.localization.descriptions.Other.banana = {
         name = "Banana",
         text = {
