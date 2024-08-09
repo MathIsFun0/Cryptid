@@ -572,6 +572,10 @@ SMODS.current_mod.extra_tabs = function() return cryptidTabs end
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
   local center = G.P_CENTERS.b_red
+
+  if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+    forced_key = "j_cry_rnjoker"
+  end
       
 
   --should pool be skipped with a forced key
