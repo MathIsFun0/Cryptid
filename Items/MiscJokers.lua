@@ -2664,6 +2664,1059 @@ if JokerDisplay then
         end
     }
 end
+
+local rnj_loc_txts = {
+    stats = {
+        plus_mult = {"{C:red}+#2#{} Mult"},
+        plus_chips = {"{C:blue}+#2#{} Chips"},
+        x_mult = {"{X:red,C:white} X#2#{} Mult"},
+        x_chips = {"{X:blue,C:white} X#2#{} Chips"},
+        h_size = {"{C:attention}+#2#{} Hand Size"},
+        money = {"{C:money}+$#2#{} at payout"}
+    },
+    stats_inactive = {
+        plus_mult = {"{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)"},
+        plus_chips = {"{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chips)"},
+        x_mult = {"{C:inactive}(Currently {X:red,C:white} X#1# {C:inactive} Mult)"},
+        x_chips = {"{C:inactive}(Currently {X:blue,C:white} X#1# {C:inactive} Chips)"},
+        h_size = {"{C:inactive}(Currently {C:attention}+#1#{C:inactive} Hand Size)"},
+        money = {"{C:inactive}(Currently {C:money}+$#1#{C:inactive})"},
+    },
+    actions = {
+        make_joker = {"Create {C:attention}#2# Joker{}"},
+        make_tarot = {"Create {C:attention}#2#{C:tarot} Tarot{} card"},
+        make_planet = {"Create {C:attention}#2#{C:planet} Planet{} card"},
+        make_spectral = {"Create {C:attention}#2#{C:spectral} Spectral{} card"},
+    },
+    contexts = {
+        open_booster = {"when a {C:attention}Booster{} is opened"},
+        buying_card = {"when a card is bought"},
+        selling_self = {"when this card is sold"},
+        selling_card = {"when a card is sold"},
+        reroll_shop = {"on reroll"},
+        ending_shop = {"at the end of the {C:attention}shop{}"},
+        skip_blind = {"when a {C:attention}blind{} is skipped"},
+        skipping_booster = {"when any {C:attention}Booster Pack{} is skipped"},
+        playing_card_added = {"every time a {C:attention}playing card{} is added to your deck"},
+        first_hand_drawn = {"when round begins"},
+        setting_blind = {"when {C:attention}Blind{} is selected"},
+        remove_playing_cards = {"when a card is destroyed"},
+        using_consumeable = {"when a {C:attention}consumable{} card is used"},
+        debuffed_hand = {"if played {C:attention}hand{} is not allowed"},
+        pre_discard = {"before each discard"},
+        discard = {"for each discarded card"},
+        end_of_round = {"at end of {C:attention}round{}"},
+        individual_play = {"for each card scored"},
+        individual_hand = {"for each card held in hand"},
+        repetition_play = {"Retrigger played cards"},
+        repetition_hand = {"Retrigger held in hand cards"},
+        other_joker = {"per {C:attention}Joker{}"},
+        before = {"before each {C:attention}hand{}"},
+        after = {"after each {C:attention}hand{}"},
+        joker_main = {},
+    },
+    conds = {
+        buy_common = {"if it is a {C:blue}Common{} {C:attention}Joker{}"},
+        buy_uncommon = {"if it is a {C:green}Uncommon{} {C:attention}Joker{}"},
+        tarot = {"if card is a {C:tarot}Tarot{} card"},
+        planet = {"if card is a {C:planet}Planet{} card"},
+        spectral = {"if card is a {C:spectral}Spectral{} card"},
+        joker = {"if card is a {C:attention}Joker{}"},
+        heart = {"if card is a {C:hearts}Heart{}"},
+        diamond = {"if card is a {C:diamonds}Diamond{}"},
+        spade = {"if card is a {C:spades}Spade{}"},
+        club = {"if card is a {C:clubs}Club{}"},
+        face = {"if card is a {C:attention}face{} card"},
+        boss = {"if {C:attention}blind{} is a {C:attention}Boss Blind{}"},
+        non_boss = {"if {C:attention}blind{} is a {C:attention}Non-Boss Blind{}"},
+        small = {"if {C:attention}blind{} is a {C:attention}Small Blind{}"},
+        big = {"if {C:attention}blind{} is a {C:attention}Big Blind{}"},
+        first = {"if it's the {C:attention}first hand{}"},
+        last = {"if it's the {C:attention}last hand{}"},
+        common = {"if it is a {C:blue}Common{} {C:attention}Joker{}"},
+        uncommon = {"if it is an {C:green}Uncommon{} {C:attention}Joker{}"},
+        rare = {"if it is a {C:red}Rare{} {C:attention}Joker{}"},
+        poker_hand = {"if hand is a {C:attention}#3#{}"},
+        or_more = {"if hand contains #3# or more cards"},
+        or_less = {"if hand contains #3# or less cards"},
+        hands_left = {"if #3# {C:blue}hands{} remaining at end of round"},
+        discards_left = {"if #3# {C:red}discards{} remaining at end of round"},
+        first_discard = {"if it's the {C:attention}first discard{}"},
+        last_discard = {"if it's the {C:attention}last discard{}"},
+        odds = {"with a {C:green}#4# in #3#{} chance"}
+    }
+}
+function rnjoker_randomize(card)
+    card.ability.abilities = {}
+    card.ability.extra = {}
+    card.ability.extra.value = {}
+    card.ability.extra.value_mod = {}
+    card.ability.extra.cond_value = {}
+    local values = {}
+    local contexts = {
+        "open_booster", 
+        "buying_card", 
+        "selling_self", 
+        "selling_card", 
+        "reroll_shop", 
+        "ending_shop", 
+        "skip_blind", 
+        "skipping_booster", 
+        "playing_card_added", 
+        "first_hand_drawn", 
+        "setting_blind",
+        "remove_playing_cards", 
+        "using_consumeable", 
+        "debuffed_hand", 
+        "pre_discard", 
+        "discard", 
+        "end_of_round", 
+        "individual_play", 
+        "individual_hand", 
+        "repetition_play", 
+        "repetition_hand", 
+        "other_joker", 
+        "before", 
+        "after", 
+        "joker_main"
+    }
+    local stats = {
+        plus_mult = 2 + pseudorandom('rnj_mult1') * 28,
+        plus_chips = 4 + pseudorandom('rnj_chips1') * 196,
+        x_mult = 1 + pseudorandom('rnj_mult2') * 3,
+        x_chips = 1 + pseudorandom('rnj_chips2') * 3,
+        h_size = 1 + math.floor(pseudorandom('rnj_h_size') * 3),
+        money = 1 + math.floor(pseudorandom('rnj_money') * 5)
+    }
+    local actions = {
+        make_joker = 1,
+        make_tarot = math.floor(pseudorandom('rnj_tarot') * 3),
+        make_planet = math.floor(pseudorandom('rnj_planet') * 3),
+        make_spectral = 1,
+    }
+    local context = pseudorandom_element(contexts, pseudoseed('rnj_context'))
+    values.context = context
+    if context == "other_joker" or context == "joker_main" then
+        stats.h_size = nil
+        stats.money = nil
+    end
+    local stat_val, stat = pseudorandom_element(stats, pseudoseed('rnj_stat'))
+    local act_val, act = pseudorandom_element(actions, pseudoseed('rnj_stat'))
+    local scale = (pseudorandom('rnj_scale') > 0.5)
+    local is_stat = (pseudorandom('rnj_stat') > 0.5)
+    if context == "other_joker" or context == "joker_main" then
+        is_stat = true
+        scale = false
+    end
+    if ((stat == "h_size") or (stat == "money")) and (context == "individual_play" or context == "individual_hand") and is_stat then
+        scale = true
+    end
+    if context == "selling_self" then
+        is_stat = false
+        scale = false
+    end
+    if is_stat then
+        values.value = stat_val or 0
+        values.stat = stat
+        if scale or ((context ~= "joker_main") and (context ~= "other_joker") and (context ~= "individual_play") and (context ~= "individual_hand")) then
+            values.value = ((stat == "x_mult") or (stat == "x_chips")) and 1 or 0
+            scale = true
+            if stat == "plus_mult" then
+                values.scale_value = pseudorandom('rnj_scaling') * 5
+            elseif stat == "plus_chips" then
+                values.scale_value = pseudorandom('rnj_scaling') * 25
+            elseif stat == "h_size" then
+                values.scale_value = 1
+            elseif stat == "money" then
+                values.scale_value = pseudorandom('rnj_scaling') * 4
+            else
+                values.scale_value = pseudorandom('rnj_scaling')
+            end
+        end
+    else
+        scale = false
+        values.value = act_val
+        values.act = act
+    end
+    if (pseudorandom('rnj_stat') < 0.8) then
+        local conds = {}
+        if context == "buying_card" then
+            conds = {
+                "buy_common",
+                "buy_uncommon",
+                "tarot",
+                "planet",
+                "spectral",
+                "odds"
+            }
+        elseif context == "selling_card" then
+            conds = {
+                "tarot",
+                "planet",
+                "spectral",
+                "joker",
+                "odds"
+            }
+        elseif context == "playing_card_added" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "setting_blind" then
+            conds = {
+                "boss",
+                "non_boss",
+                "small",
+                "big",
+                "odds"
+            }
+        elseif context == "remove_playing_cards" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "using_consumeable" then
+            conds = {
+                "tarot",
+                "planet",
+                "spectral",
+                "odds"
+            }
+        elseif context == "pre_discard" then
+            conds = {
+                "first_discard",
+                "last_discard",
+                "odds"
+            }
+        elseif context == "discard" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "individual_play" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "individual_hand" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "repetition_play" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "repetition_hand" then
+            conds = {
+                "heart",
+                "spade",
+                "club",
+                "diamond",
+                "face",
+                "odds"
+            }
+        elseif context == "other_joker" then
+            conds = {
+                "uncommon",
+                "rare",
+                "odds"
+            }
+        elseif context == "before" then
+            conds = {
+                "first",
+                "last",
+                "poker_hand",
+                "odds"
+            }
+        elseif context == "after" then
+            conds = {
+                "first",
+                "last",
+                "poker_hand",
+                "odds"
+            }
+        elseif context == "joker_main" then
+            conds = {
+                "first",
+                "last",
+                "poker_hand",
+                "or_more",
+                "or_less",
+                "odds"
+            }
+        elseif context == "cry_payout" then
+            conds = {
+                "hands_left",
+                "discards_left"
+            }
+        end
+        if #conds > 0 then
+            local cond = pseudorandom_element(conds, pseudoseed('rnj_stat'))
+            values.cond = cond
+            if cond == "poker_hand" then
+                local none, key = pseudorandom_element(G.GAME.hands, pseudoseed('rnj_poker-hand'))
+                values.cond_value = localize(key, 'poker_hands')
+                values.poker_hand = key
+            end
+            if (cond == "or_more") or (cond == "or_less") then
+                values.cond_value = math.min(5, math.floor(pseudorandom('rnj_cards') * 6))
+            end
+            if (cond == "hands_left") or (cond == "discards_left") then
+                values.cond_value = math.min(3, math.floor(pseudorandom('rnj_cards') * 4))
+            end
+            if (cond == "odds") then
+                values.cond_value = 2 + math.min(3, math.floor(pseudorandom('rnj_cards') * 4))
+            end
+        end
+    end
+    local loc_txt = ""
+    local extra_lines = {""}
+    if (context ~= "repetition_play") and (context ~= "repetition_hand") then
+        if values.stat then
+            for i, j in ipairs(rnj_loc_txts.stats[values.stat]) do
+                if scale and (i == 1)then
+                    loc_txt = loc_txt .. "Gains "
+                end
+                loc_txt = loc_txt .. j
+            end
+        end
+        if values.act then
+            for i, j in ipairs(rnj_loc_txts.actions[values.act]) do
+                loc_txt = loc_txt .. j
+            end
+        end
+    else
+        scale = false
+        values.stat = nil
+        values.act = nil
+        values.value = nil
+        values.scale_value = nil
+    end
+    loc_txt = loc_txt .. " "
+    if values.context then
+        for i, j in ipairs(rnj_loc_txts.contexts[values.context]) do
+            loc_txt = loc_txt .. j
+        end
+    end
+    loc_txt = loc_txt .. " "
+    if values.cond then
+        for i, j in ipairs(rnj_loc_txts.conds[values.cond]) do
+            loc_txt = loc_txt .. j
+        end
+    end
+    if scale then
+        for i, j in ipairs(rnj_loc_txts.stats_inactive[values.stat]) do
+            table.insert(extra_lines, j)
+        end
+    end
+    if values.act then
+        table.insert(extra_lines, "{C:inactive}(Must have room){}")
+    end
+    local accum = 0
+    local lines = {"Randomize abilities each {C:attention}Ante{}"}
+    local in_brace = false
+    local cuur_str = ""
+    for i = 1, string.len(loc_txt) do
+        local char = string.sub(loc_txt, i, i)
+        if char == "{" then
+            in_brace = true
+            cuur_str = cuur_str .. char
+        elseif char == "}" then
+            in_brace = false
+            cuur_str = cuur_str .. char
+        elseif char == " " and (accum >= 25) then
+            table.insert(lines, cuur_str)
+            cuur_str = ""
+            accum = 0
+        else
+            if not in_brace then
+                accum = accum + 1
+            end
+            cuur_str = cuur_str .. char
+        end
+    end
+    if string.len(cuur_str) > 0 then
+        table.insert(lines, cuur_str)
+    end
+    if #extra_lines > 0 then
+        for i, j in ipairs(extra_lines) do
+            table.insert(lines, j)
+        end
+    end
+    values.loc_txt = lines
+    card.ability.extra = {}
+    if values.value then
+        values.value = math.floor(values.value * 100) / 100
+        card.ability.extra.value = values.value
+    end
+    if values.scale_value then
+        values.scale_value = math.floor(values.scale_value * 100) / 100
+        card.ability.extra.value_mod = values.scale_value
+    end
+    if values.cond_value then
+        card.ability.extra.cond_value = values.cond_value
+    end
+    local text_parsed = {}
+    for _, line in ipairs(values.loc_txt) do
+        text_parsed[#text_parsed+1] = loc_parse_string(line)
+    end
+    values.text_parsed = text_parsed
+    card.ability.abilities = {values}
+end
+function localalize_with_direct(loc_target, args, misc_cat)
+    if loc_target then 
+        for _, lines in ipairs(args.type == 'unlocks' and loc_target.unlock_parsed or args.type == 'name' and loc_target.name_parsed or (args.type == 'text' or args.type == 'tutorial' or args.type == 'quips') and loc_target or loc_target.text_parsed) do
+          local final_line = {}
+          for _, part in ipairs(lines) do
+            local assembled_string = ''
+            for _, subpart in ipairs(part.strings) do
+              assembled_string = assembled_string..(type(subpart) == 'string' and subpart or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+            end
+            local desc_scale = G.LANG.font.DESCSCALE
+            if G.F_MOBILE_UI then desc_scale = desc_scale*1.5 end
+            if args.type == 'name' then
+              final_line[#final_line+1] = {n=G.UIT.O, config={
+                object = DynaText({string = {assembled_string},
+                  colours = {(part.control.V and args.vars.colours[tonumber(part.control.V)]) or (part.control.C and loc_colour(part.control.C)) or G.C.UI.TEXT_LIGHT},
+                  bump = true,
+                  silent = true,
+                  pop_in = 0,
+                  pop_in_rate = 4,
+                  maxw = 5,
+                  shadow = true,
+                  y_offset = -0.6,
+                  spacing = math.max(0, 0.32*(17 - #assembled_string)),
+                  scale =  (0.55 - 0.004*#assembled_string)*(part.control.s and tonumber(part.control.s) or 1)
+                })
+              }}
+            elseif part.control.E then
+              local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil
+              if part.control.E == '1' then
+                _float = true; _silent = true; _pop_in = 0
+              elseif part.control.E == '2' then
+                _bump = true; _spacing = 1
+              end
+              final_line[#final_line+1] = {n=G.UIT.O, config={
+                object = DynaText({string = {assembled_string}, colours = {part.control.V and args.vars.colours[tonumber(part.control.V)] or loc_colour(part.control.C or nil)},
+                float = _float,
+                silent = _silent,
+                pop_in = _pop_in,
+                bump = _bump,
+                spacing = _spacing,
+                scale = 0.32*(part.control.s and tonumber(part.control.s) or 1)*desc_scale})
+              }}
+            elseif part.control.X then
+              final_line[#final_line+1] = {n=G.UIT.C, config={align = "m", colour = loc_colour(part.control.X), r = 0.05, padding = 0.03, res = 0.15}, nodes={
+                  {n=G.UIT.T, config={
+                    text = assembled_string,
+                    colour = loc_colour(part.control.C or nil),
+                    scale = 0.32*(part.control.s and tonumber(part.control.s) or 1)*desc_scale}},
+              }}
+            else
+              final_line[#final_line+1] = {n=G.UIT.T, config={
+              detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,
+              text = assembled_string,
+              shadow = args.shadow,
+              colour = part.control.V and args.vars.colours[tonumber(part.control.V)] or loc_colour(part.control.C or nil, args.default_col),
+              scale = 0.32*(part.control.s and tonumber(part.control.s) or 1)*desc_scale},}
+            end
+          end
+            if args.type == 'name' or args.type == 'text' then return final_line end
+            args.nodes[#args.nodes+1] = final_line
+        end
+    end
+end
+local rnjoker = {
+	object_type = "Joker",
+	name = "cry-rnjoker",
+	key = "rnjoker",
+	pos = {x = 5, y = 4},
+    config = {},
+	loc_txt = {
+        name = 'RNJoker',
+        text = {
+            "Randomize abilities each {C:attention}Ante{}"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {
+            (card.ability.extra and card.ability.extra.value_mod and card.ability.extra.value) or 0,
+            (card.ability.extra and card.ability.extra.value and card.ability.extra.value_mod) or (card.ability.extra and card.ability.extra.value) or 0,
+            card.ability.extra and card.ability.extra.cond_value or 0,
+            G.GAME and G.GAME.probabilities.normal or 1
+        }}
+    end,
+	rarity = 3,
+	cost = 6,
+	blueprint_compat = true,
+    set_ability = function(self, card, initial, delay_sprites)
+        card.ability.abilities = {}
+        rnjoker_randomize(card)
+    end,
+	calculate = function(self, card, context)
+        if card.ability and card.ability.abilities then
+            for i, j in ipairs(card.ability.abilities) do
+                local j_context = j.context
+                if j_context ~= "cry_payout" then
+                    local valid_context = not not context[j.context]
+                    if j.scale_value and context.blueprint then
+                        valid_context = false
+                    end
+                    if (j_context == "playing_card_added") and card.getting_sliced then
+                        valid_context = false
+                    end
+                    if (j_context == "setting_blind") and card.getting_sliced then
+                        valid_context = false
+                    end
+                    if (j_context == "setting_blind") and card.getting_sliced then
+                        valid_context = false
+                    end
+                    if (j_context == "before") and (card.area ~= G.jokers) then
+                        valid_context = false
+                    end
+                    if (j_context == "after") and (card.area ~= G.jokers) then
+                        valid_context = false
+                    end
+                    if (j_context == "joker_main") and (card.area ~= G.jokers) then
+                        valid_context = false
+                    end
+                    if (j_context == "end_of_round") and (context.repetition or context.individual) then
+                        valid_context = false
+                    end
+                    if (j_context == "individual_play") and context.individual and not context.repetition and (context.cardarea == G.play) then
+                        valid_context = true
+                    end
+                    if (j_context == "individual_hand") and context.individual and not context.repetition and (context.cardarea == G.hand) then
+                        valid_context = true
+                    end
+                    if (j_context == "repetition_play") and context.repetition and (context.cardarea == G.play) then
+                        valid_context = true
+                    end
+                    if (j_context == "repetition_hand") and context.repetition and (context.cardarea == G.hand) then
+                        valid_context = true
+                    end
+                    if valid_context then
+                        local cond_passed = false
+                        local times_passed = 1
+                        if j.cond then
+                            if j.cond == "buy_common" then
+                                if context.card and context.card.ability and (context.card.ability.set == "Joker") and (context.card.config.center.rarity == 1) then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "buy_uncommon" then
+                                if context.card and context.card.ability and (context.card.ability.set == "Joker") and (context.card.config.center.rarity == 2) then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "tarot" then
+                                local card = context.card or context.consumeable
+                                if card and card.ability and (card.ability.set == "Tarot") then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "planet" then
+                                local card = context.card or context.consumeable
+                                if card and card.ability and (card.ability.set == "Planet") then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "spectral" then
+                                local card = context.card or context.consumeable
+                                if card and card.ability and (card.ability.set == "Spectral") then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "joker" then
+                                if context.card and context.card.ability and (context.card.ability.set == "Joker") then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "heart" then
+                                times_passed = 0
+                                local cards = context.cards or context.removed or {context.other_card}
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_suit("Hearts") then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "diamond" then
+                                times_passed = 0
+                                local cards = context.cards or context.removed or {context.other_card}
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_suit("Diamonds") then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "spade" then
+                                times_passed = 0
+                                local cards = context.cards or context.removed or {context.other_card}
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_suit("Spades") then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "club" then
+                                times_passed = 0
+                                local cards = context.cards or context.removed or {context.other_card}
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_suit("Clubs") then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "face" then
+                                times_passed = 0
+                                local cards = context.cards or context.removed or {context.other_card}
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_face() then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "boss" then
+                                if context.blind.boss and not (context.blind.config and  context.blind.config.bonus) then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "non_boss" then
+                                if context.blind and not G.GAME.blind.boss then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "small" then
+                                if context.blind == G.P_BLINDS.bl_small then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "big" then
+                                if context.blind == G.P_BLINDS.bl_big then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "first" then
+                                if G.GAME.current_round.hands_played == 0 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "last" then
+                                if G.GAME.current_round.hands_left == 0 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "common" then
+                                if context.other_joker.config.center.rarity == 1 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "uncommon" then
+                                if context.other_joker.config.center.rarity == 2 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "rare" then
+                                if context.other_joker.config.center.rarity == 3 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "poker_hand" then
+                                if (next(context.poker_hands[j.poker_hand])) then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "or_more" then
+                                if #context.full_hand >= j.cond_value then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "or_less" then
+                                if #context.full_hand <= j.cond_value then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "hands_left" then
+                                if G.GAME.current_round.hands_left == j.cond_value then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "discards_left" then
+                                if G.GAME.current_round.discards_left == j.cond_value then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "first_discard" then
+                                if G.GAME.current_round.discards_used <= 0 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "last_discard" then
+                                if G.GAME.current_round.discards_left <= 1 then
+                                    cond_passed = true
+                                end
+                            elseif j.cond == "odds" then
+                                if pseudorandom("rnj") < ((G.GAME and G.GAME.probabilities.normal or 1)/card.ability.extra.cond_value) then
+                                    cond_passed = true
+                                end
+                            end
+                        else
+                            cond_passed = true
+                        end
+                        if cond_passed then
+                            if j.context == "other_joker" then
+                                local stats = {
+                                    plus_mult = "a_mult",
+                                    plus_chips = "a_chips",
+                                    x_mult = "a_xmult",
+                                    x_chips = "a_xchips",
+                                }
+                                local mods = {
+                                    plus_chips = "chip_mod",
+                                    plus_mult = "mult_mod",
+                                    x_mult = "Xmult_mod",
+                                    x_chips = "Xchip_mod",
+                                }
+                                local table = {}
+                                table.message = localize{type='variable',key=stats[j.stat],vars={card.ability.extra.value}}
+                                table[mods[j.stat]] = card.ability.extra.value
+                                table.card = card
+                                G.E_MANAGER:add_event(Event({
+                                    func = function()
+                                        context.other_joker:juice_up(0.5, 0.5)
+                                        return true
+                                    end
+                                })) 
+                                return table
+                            elseif (j.context == "repetition_play") or (j.context == "repetition_hand") then
+                                return {
+                                    message = localize('k_again_ex'),
+                                    repetitions = 1,
+                                    card = card
+                                }
+                            elseif j.scale_value then
+                                card.ability.extra.value = card.ability.extra.value + (card.ability.extra.value_mod * times_passed)
+                                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                                if j.stat == "h_size" then
+                                    G.hand:change_size(card.ability.extra.value_mod)
+                                end
+                            elseif j.act then
+                                local j_mod = 0
+                                if j.context == "selling_self" and (card.ability.set == "Joker") then
+                                    j_mod = 1
+                                end
+                                if j.context == "selling_card" and (context.card.ability.set == "Joker") then
+                                    j_mod = 1
+                                end
+                                local c_mod = 0
+                                if j.context == "selling_self" and (card.ability.consumeable) then
+                                    c_mod = 1
+                                end
+                                if j.context == "selling_card" and (card.ability.consumeable) then
+                                    c_mod = 1
+                                end
+                                if j.act == "make_joker" then
+                                    local amount = card.ability.extra.value * times_passed
+                                    if (G.jokers.config.card_limit + j_mod - #G.jokers.cards - G.GAME.joker_buffer) < amount then
+                                        amount = G.jokers.config.card_limit + j_mod - #G.jokers.cards - G.GAME.joker_buffer
+                                    end
+                                    if amount > 0 then
+                                        G.GAME.joker_buffer = G.GAME.joker_buffer + amount
+                                        G.E_MANAGER:add_event(Event({
+                                            trigger = 'before',
+                                            delay = 0.0,
+                                            func = (function()
+                                                for i = 1, amount do
+                                                    if G.jokers.config.card_limit + j_mod > #G.jokers.cards then
+                                                        local card = create_card('Joker',G.jokers, nil, nil, nil, nil, nil, 'rnj')
+                                                        card:add_to_deck()
+                                                        G.jokers:emplace(card)
+                                                    else
+                                                        break
+                                                    end
+                                                end
+                                                G.GAME.joker_buffer = 0
+                                            return true
+                                        end)}))
+                                    end
+                                elseif j.act == "make_tarot" then
+                                    local amount = card.ability.extra.value * times_passed
+                                    if (G.consumeables.config.card_limit + c_mod - #G.consumeables.cards - G.GAME.consumeable_buffer) < amount then
+                                        amount = G.consumeables.config.card_limit + c_mod - #G.consumeables.cards - G.GAME.consumeable_buffer
+                                    end
+                                    if amount > 0 then
+                                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + amount
+                                        G.E_MANAGER:add_event(Event({
+                                            trigger = 'before',
+                                            delay = 0.0,
+                                            func = (function()
+                                                for i = 1, amount do
+                                                    if G.consumeables.config.card_limit + c_mod > #G.consumeables.cards then
+                                                        local card = create_card('Tarot',G.consumeables, nil, nil, nil, nil, nil, 'rnj')
+                                                        card:add_to_deck()
+                                                        G.consumeables:emplace(card)
+                                                    else
+                                                        break
+                                                    end
+                                                end
+                                                G.GAME.consumeable_buffer = 0
+                                            return true
+                                        end)}))
+                                    end
+                                elseif j.act == "make_planet" then
+                                    local amount = card.ability.extra.value * times_passed
+                                    if (G.consumeables.config.card_limit + c_mod - #G.consumeables.cards - G.GAME.consumeable_buffer) < amount then
+                                        amount = G.consumeables.config.card_limit + c_mod - #G.consumeables.cards - G.GAME.consumeable_buffer
+                                    end
+                                    if amount > 0 then
+                                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + amount
+                                        G.E_MANAGER:add_event(Event({
+                                            trigger = 'before',
+                                            delay = 0.0,
+                                            func = (function()
+                                                for i = 1, amount do
+                                                    if G.consumeables.config.card_limit + c_mod > #G.consumeables.cards then
+                                                        local card = create_card('Planet',G.consumeables, nil, nil, nil, nil, nil, 'rnj')
+                                                        card:add_to_deck()
+                                                        G.consumeables:emplace(card)
+                                                    else
+                                                        break
+                                                    end
+                                                end
+                                                G.GAME.consumeable_buffer = 0
+                                            return true
+                                        end)}))
+                                    end
+                                elseif j.act == "make_spectral" then
+                                    local amount = card.ability.extra.value * times_passed
+                                    if (G.consumeables.config.card_limit + c_mod - #G.consumeables.cards - G.GAME.consumeable_buffer) < amount then
+                                        amount = G.consumeables.config.card_limit + c_mod - #G.consumeables.cards - G.GAME.consumeable_buffer
+                                    end
+                                    if amount > 0 then
+                                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + amount
+                                        G.E_MANAGER:add_event(Event({
+                                            trigger = 'before',
+                                            delay = 0.0,
+                                            func = (function()
+                                                for i = 1, amount do
+                                                    if G.consumeables.config.card_limit + c_mod > #G.consumeables.cards then
+                                                        local card = create_card('Spectral',G.consumeables, nil, nil, nil, nil, nil, 'rnj')
+                                                        card:add_to_deck()
+                                                        G.consumeables:emplace(card)
+                                                    else
+                                                        break
+                                                    end
+                                                end
+                                                G.GAME.consumeable_buffer = 0
+                                            return true
+                                        end)}))
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    if j.stat and context.individual and (((j_context == "individual_play") and (context.cardarea == G.play)) or ((j_context == "individual_hand") and (context.cardarea == G.hand))) then
+                        local cond_passed = false
+                        if j.cond == "heart" then
+                            if context.other_card:is_suit("Hearts") then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "diamond" then
+                            if context.other_card:is_suit("Diamonds") then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "spade" then
+                            if context.other_card:is_suit("Spades") then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "club" then
+                            if context.other_card:is_suit("Clubs") then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "face" then
+                            if context.other_card:is_face() then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "odds" then
+                            if pseudorandom("rnj") < ((G.GAME and G.GAME.probabilities.normal or 1)/card.ability.extra.cond_value) then
+                                cond_passed = true
+                            end
+                        end
+                        if not j.cond then
+                            cond_passed = true
+                        end
+                        if cond_passed then
+                            if j.scale_value then
+                                card.ability.extra.value = card.ability.extra.value + card.ability.extra.value_mod
+                                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                                if j.stat == "h_size" then
+                                    G.hand:change_size(card.ability.extra.value_mod)
+                                end
+                            else
+                                local stats = {
+                                    plus_mult = "mult",
+                                    plus_chips = "chips",
+                                }
+                                local stat = stats[j.stat] or j.stat
+                                local colors = {
+                                    plus_mult = G.C.RED,
+                                    plus_chips = G.C.BLUE,
+                                    x_mult = G.C.RED,
+                                    x_chips = G.C.BLUE,
+                                }
+                                local table =  {
+                                    card = card
+                                }
+                                table.colour = colors[j.stat]
+                                table[stat] = card.ability.extra.value
+                                return table
+                            end
+                        end
+                    end
+                    if context.joker_main and j.stat and (j.stat ~= "h_size") and (j.stat ~= "money") then
+                        local cond_passed = false
+                        if (j_context ~= "joker_main") then
+                            cond_passed = true
+                        end
+                        if j.cond == "first" then
+                            if G.GAME.current_round.hands_played == 0 then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "last" then
+                            if G.GAME.current_round.hands_left == 0 then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "poker_hand" then
+                            if (next(context.poker_hands[j.poker_hand])) then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "or_more" then
+                            if #context.full_hand >= j.cond_value then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "or_less" then
+                            if #context.full_hand <= j.cond_value then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "odds" then
+                            if pseudorandom("rnj") < ((G.GAME and G.GAME.probabilities.normal or 1)/card.ability.extra.cond_value) then
+                                cond_passed = true
+                            end
+                        end
+                        if not j.cond then
+                            cond_passed = true
+                        end
+                        if cond_passed then
+                            local stats = {
+                                plus_mult = "a_mult",
+                                plus_chips = "a_chips",
+                                x_mult = "a_xmult",
+                                x_chips = "a_xchips",
+                            }
+                            local mods = {
+                                plus_mult = "mult_mod",
+                                plus_chips = "chip_mod",
+                                x_mult = "Xmult_mod",
+                                x_chips = "Xchip_mod",
+                            }
+                            local table = {}
+                            table.message = localize{type='variable',key=stats[j.stat],vars={card.ability.extra.value}}
+                            table[mods[j.stat]] = card.ability.extra.value
+                            return table
+                        end
+                    end
+                end
+            end
+        end
+        if not context.individual and not context.repetition and not card.debuff and context.end_of_round and not context.blueprint and G.GAME.blind.boss and not (G.GAME.blind.config and  G.GAME.blind.config.bonus) then
+            local hand_size = 0
+            if card.ability and card.ability.abilities then
+                for i, j in ipairs(card.ability.abilities) do
+                    if j.stat == "h_size" then
+                        hand_size = hand_size + card.ability.extra.value
+                    end
+                end
+            end
+            G.hand:change_size(-hand_size)
+            rnjoker_randomize(card)
+            return {
+                message = localize('k_reset'),
+                colour = G.C.RED
+            }
+        end
+	end,
+    add_to_deck = function(self, card, from_debuff)
+        local hand_size = 0
+        if card.ability and card.ability.abilities then
+            for i, j in ipairs(card.ability.abilities) do
+                if j.stat == "h_size" then
+                    hand_size = hand_size + card.ability.extra.value
+                end
+            end
+        end
+        G.hand:change_size(hand_size)
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        local hand_size = 0
+        if card.ability and card.ability.abilities then
+            for i, j in ipairs(card.ability.abilities) do
+                if j.stat == "h_size" then
+                    hand_size = hand_size + card.ability.extra.value
+                end
+            end
+        end
+        G.hand:change_size(-hand_size)
+    end,
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        local len = (card.ability and card.ability.abilities and card.ability.abilities[1].loc_txt and #card.ability.abilities[1].loc_txt) or 0
+        local target = {
+            type = 'descriptions',
+            key = self.key,
+            set = self.set,
+            nodes = desc_nodes,
+            vars =
+                specific_vars or {}
+        }
+        if self.loc_vars and type(self.loc_vars) == 'function' then
+            res = self:loc_vars(info_queue, card) or {}
+            target.vars = res.vars or target.vars
+            target.key = res.key or target.key
+        end
+        local new_loc = { text = {}}
+        if (card.ability and card.ability.abilities and card.ability.abilities[1].loc_txt and #card.ability.abilities[1].loc_txt) then
+            for i, j in ipairs(card.ability.abilities[1].loc_txt) do
+                table.insert(new_loc.text, j)
+            end
+            new_loc.text_parsed = card.ability.abilities[1].text_parsed
+        end
+        if not full_UI_table.name then
+            full_UI_table.name = localize { type = 'name', set = self.set, key = target.key or self.key, nodes = full_UI_table.name }
+        end
+        if specific_vars and specific_vars.debuffed then
+            target = { type = 'other', key = 'debuffed_' ..
+            (specific_vars.playing_card and 'playing_card' or 'default'), nodes = desc_nodes }
+        end
+        localalize_with_direct(new_loc, target)
+    end,
+    calc_dollar_bonus = function(self, card)
+        if card.ability and card.ability.abilities then
+            for i, j in ipairs(card.ability.abilities) do
+                if j.stat == "money" then
+                    if card.ability.extra.value > 0 then
+                        return card.ability.extra.value
+                    end
+                end
+            end
+        end
+    end,
+    atlas = "atlastwo"
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -2746,4 +3799,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust,}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker,}}

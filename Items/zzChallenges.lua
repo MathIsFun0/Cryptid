@@ -180,11 +180,33 @@ local boss_rush = {
         banned_other = {}
     }
 }
+local rng = {
+    object_type = "Challenge",
+    key = "rng",
+	loc_txt = "RNG",
+    rules = {
+        custom = {
+            {id = 'all_rnj'}
+        },
+        modifiers = {}
+    },
+    jokers = {
+    },
+    deck = {
+        type = 'Challenge Deck',
+    },
+    restrictions = {
+        banned_cards = {
+        },
+        banned_other = {}
+    }
+}
 
 local challenges = {sticker_sheet, sticker_sheet_plus}
 if Cryptid_config["Misc. Jokers"] then 
     challenges[#challenges+1] = ballin 
     challenges[#challenges+1] = boss_rush
+    challenges[#challenges+1] = rng
 end
 if Cryptid_config["Blinds"] and Cryptid_config["Timer Mechanics"] then
     challenges[#challenges+1] = rush_hour

@@ -572,6 +572,10 @@ SMODS.current_mod.extra_tabs = function() return cryptidTabs end
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
   local center = G.P_CENTERS.b_red
+
+  if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+    forced_key = "j_cry_rnjoker"
+  end
       
 
   --should pool be skipped with a forced key
@@ -875,6 +879,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
     G.localization.misc.v_text.ch_c_cry_all_pinned = {"All Jokers are {C:eternal}Pinned{}"}
     G.localization.misc.v_text.ch_c_cry_all_banana = {"All Jokers are {C:eternal}Banana{}"}
+    G.localization.misc.v_text.ch_c_all_rnj = {"All Jokers are {C:attention}RNJoker{}"}
     G.localization.misc.v_text.ch_c_cry_sticker_sheet_plus = {"All purchasable items have all stickers"}
     G.localization.misc.v_text.ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"}
     G.localization.misc.v_text.ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}Boss Blinds{}"}
@@ -887,6 +892,7 @@ function init_localization()
 end
 
 function SMODS.current_mod.process_loc_text()
+    G.localization.misc.v_dictionary.a_xchips = "X#1# Chips"
     G.localization.descriptions.Other.banana = {
         name = "Banana",
         text = {
