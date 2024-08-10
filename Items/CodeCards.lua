@@ -871,7 +871,9 @@ local exploit = {
         text = {
             'The {C:cry_code}next{} hand played',
             'is calculated as a',
-            '{C:cry_code}chosen{} poker hand'
+            '{C:cry_code}chosen{} poker hand',
+            '{C:inactive,s:0.8}Secret hands must be',
+            '{C:inactive,s:0.8}discovered to be valid'
         }
     },
     can_use = function(self, card)
@@ -1124,6 +1126,11 @@ G.FUNCS.exploit_apply = function()
 		['Flush Five'] = {"flush five", "fish"},
 	}
 	local current_hand = nil
+	for k, v in pairs(SMODS.PokerHands) do
+		local index = v.key
+		local current_name = G.localization.misc.poker_hands[index]
+		if not hand_table[v.key] then hand_table[v.key] = {current_name} end
+	end
 	for i, v in pairs(hand_table) do
 		for j, k in pairs(v) do
 			if string.lower(G.ENTERED_HAND) == string.lower(k) then
@@ -1131,13 +1138,11 @@ G.FUNCS.exploit_apply = function()
 			end
 		end
 	end
-	if current_hand == nil then	-- could probably do basic smods compat with custom hands here, not sure how it works though
-	end
-	if current_hand then 
+	if current_hand and G.GAME.hands[current_hand].visible then 
 		G.GAME.cry_exploit_override = current_hand 
 		G.CHOOSE_HAND:remove()
 		G.GAME.USING_CODE = false
-		return 
+		return
 	end
 end
 G.FUNCS.exploit_info = function()

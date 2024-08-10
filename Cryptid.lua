@@ -874,6 +874,7 @@ function init_localization()
 	G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
 	G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
 	G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
+        G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a"		-- damnit seance
     end
     G.localization.misc.v_text.ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"}
     G.localization.misc.v_text.ch_c_cry_all_rental = {"All Jokers are {C:eternal}Rental{}"}
