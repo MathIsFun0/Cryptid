@@ -809,19 +809,7 @@ return {name = "Exotic Jokers",
             function ease_dollars(mod, x)
                 ed(mod,x)
                 for i = 1, #G.jokers.cards do
-                    local effects = G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod})
-                    if effects and effects.joker_repetitions then
-                        rep_list = effects.joker_repetitions
-                        for z=1, #rep_list do
-                            if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
-                                for r=1, rep_list[z].repetitions do
-                                    card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
-                                    if percent then percent = percent+percent_delta end
-                                    G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod, retrigger_joker = true})
-                                end
-                            end
-                        end
-                    end
+                    G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod})
                 end
             end
         end,

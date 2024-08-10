@@ -30,23 +30,11 @@ position = "at"
 payload = '''
 G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount, 1)
 else
-    local universum_mod = 1
+    universum_mod = 1
     for i = 1, #G.jokers.cards do
-        local effects = G.jokers.cards[i]:calculate_joker({cry_universum = true})
-        universum_mod = universum_mod * (effects and effects.mod or 1)
-        if effects and effects.joker_repetitions then
-            rep_list = effects.joker_repetitions
-            for z=1, #rep_list do
-                if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
-                    for r=1, rep_list[z].repetitions do
-                        card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
-                        if percent then percent = percent+percent_delta end
-                        local ef = G.jokers.cards[i]:calculate_joker({cry_universum = true})
-                        universum_mod = universum_mod * (ef and ef.mod or 1)
-                    end
-                end
-            end
-        end
+        local effects = G.jokers.cards[i]:calculate_joker({cry_universum = true, callback = function(ef)
+            universum_mod = universum_mod * (ef and ef.mod or 1)
+        end})
     end
     G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
     G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * (universum_mod)^amount, 1)
