@@ -634,7 +634,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if front and G.GAME.modifiers.cry_force_edition then card:set_edition({[G.GAME.modifiers.cry_force_edition]=true},true,true) end
   if front and G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
   if card.ability.consumeable and not skip_materialize then card:start_materialize() end
-
+  for k, v in ipairs(SMODS.Sticker.obj_buffer) do
+    local sticker = SMODS.Stickers[v]
+    if sticker.should_apply and type(sticker.should_apply) == 'function' and sticker:should_apply(card, center, area) then
+        sticker:apply(card, true)
+    end
+  end
   if G.GAME.modifiers.cry_force_sticker == 'eternal' or (G.GAME.modifiers.cry_sticker_sheet_plus and not ((_type=='Base' or _type=='Enhanced') and not ((area == G.shop_jokers) or (area == G.pack_cards)))) then	-- wow that is long
       card:set_eternal(true)
       card.ability.eternal = true
@@ -1237,5 +1242,15 @@ SMODS.Atlas({
     px = 34,
     py = 34
 }):register()
+SMODS.Sticker:take_ownership('perishable', {
+    atlas = "sticker",
+    pos = {x = 4, y = 4},
+    prefix_config = {key = false}
+})
+SMODS.Sticker:take_ownership('pinned', {
+    atlas = "sticker",
+    pos = {x = 5, y = 0},
+    prefix_config = {key = false}
+})
 ----------------------------------------------
 ------------MOD CODE END----------------------
