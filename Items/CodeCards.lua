@@ -854,6 +854,40 @@ local run = {
           }))
     end
 }
+local exploit = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'exploit',
+    name = 'cry-Exploit',
+    atlas = 'code',
+    pos = {
+        x = 1,
+        y = 3,
+    },
+    cost = 4,
+    config = {extra = {enteredhand = ""}},	-- i don't think this ever uses config...?
+    loc_txt = {
+        name = '://EXPLOIT',
+        text = {
+            'The {C:cry_code}next{} hand played',
+            'is calculated as a',
+            '{C:cry_code}chosen{} poker hand',
+            '{C:inactive,s:0.8}Secret hands must be',
+            '{C:inactive,s:0.8}discovered to be valid'
+        }
+    },
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        G.GAME.USING_CODE = true
+        G.ENTERED_HAND = ""
+        G.CHOOSE_HAND = UIBox{
+            definition = create_UIBox_exploit(card),
+            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+        }
+    end
+}
 
 local automaton = {
     object_type = "Consumable",
@@ -935,6 +969,29 @@ function create_UIBox_class(card)
             ref_table = G, ref_value = 'ENTERED_ENH', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'class_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+    }})
+    return t
+end
+
+function create_UIBox_exploit(card)
+    G.E_MANAGER:add_event(Event({
+        blockable = false,
+        func = function()
+          G.REFRESH_ALERTS = true
+        return true
+        end
+      }))
+    local t = create_UIBox_generic_options({no_back = true,
+    colour = HEX("04200c"),
+    outline_colour = G.C.SECONDARY_SET.Code,
+    contents = {
+        {n=G.UIT.R, nodes = {create_text_input({
+            colour = G.C.SET.Code,
+            hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+            w = 4.5, h = 1, max_length = 24, extended_corpus = true, prompt_text = "ENTER POKER HAND",
+            ref_table = G, ref_value = 'ENTERED_HAND', keyboard_offset = 1
+          })}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'exploit_apply', label = {'EXPLOIT'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1052,6 +1109,47 @@ G.FUNCS.variable_apply = function()
         end
         G.CHOOSE_RANK:remove()
     end
+end
+G.FUNCS.exploit_apply = function()
+	local hand_table = {
+        	['High Card'] = {"high card", "high"},
+        	['Pair'] = {"pair", "2oak"},
+		['Two Pair'] = {"two pair", "2 pair"},
+		['Three of a Kind'] = {"three of a kind", "3oak", "trips"},
+		['Straight'] = {"straight"},
+		['Flush'] = {"flush"},
+		['Full House'] = {"full house", "full"},
+		['Four of a Kind'] = {"four of a kind", "4oak"},
+		['Straight Flush'] = {"straight flush", "slush", "slushie", "slushy"},
+		['Five of a Kind'] = {"five of a kind", "5oak"},
+		['Flush House'] = {"flush house", "flouse"},
+		['Flush Five'] = {"flush five", "fish"},
+	}
+	local current_hand = nil
+	for k, v in pairs(SMODS.PokerHands) do
+		local index = v.key
+		local current_name = G.localization.misc.poker_hands[index]
+		if not hand_table[v.key] then hand_table[v.key] = {current_name} end
+	end
+	for i, v in pairs(hand_table) do
+		for j, k in pairs(v) do
+			if string.lower(G.ENTERED_HAND) == string.lower(k) then
+				current_hand = i
+			end
+		end
+	end
+	if current_hand and G.GAME.hands[current_hand].visible then 
+		G.GAME.cry_exploit_override = current_hand 
+		G.CHOOSE_HAND:remove()
+		G.GAME.USING_CODE = false
+		return
+	end
+end
+G.FUNCS.exploit_info = function()
+	local text = G.GAME.cry_exploit_override
+	local disp_text = text
+	local loc_disp_text = localize(disp_text, 'poker_hands')
+	return text, loc_disp_text, disp_text
 end
 --todo: mod support
 G.FUNCS.class_apply = function()
@@ -1540,7 +1638,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete, machinecode, run}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
