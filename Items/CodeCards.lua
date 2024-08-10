@@ -434,6 +434,22 @@ local seed = {
         end
     end
 }
+local rigged = {
+    object_type = "Sticker",
+    pos = {x = 10, y = 10}, --add texture later
+    loc_txt = {
+        name = "Rigged",
+        label = "Rigged",
+        text = {
+            "All {C:cry_code}listed{} probabilities",
+            "are {C:cry_code}guaranteed"
+        },
+    },
+    key = "cry_rigged",
+    no_sticker_sheet = true,
+    prefix_config = {key = false},
+    badge_colour = HEX("14b341")
+}
 
 local variable = {
     object_type = 'Consumable',
@@ -1638,7 +1654,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()

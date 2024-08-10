@@ -662,7 +662,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   end
   if G.GAME.modifiers.cry_sticker_sheet_plus and not (_type=='Base' or _type=='Enhanced') then
       for k, v in pairs(SMODS.Stickers) do
-          v:set_sticker(card, true)
+          if v.apply and not v.no_sticker_sheet then v:apply(card, true) end
       end
   end
 
@@ -711,7 +711,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
           end
 	  if G.GAME.modifiers.cry_sticker_sheet then
               for k, v in pairs(SMODS.Stickers) do
-                  v:set_sticker(card, true)
+                if v.apply and not v.no_sticker_sheet then v:apply(card, true) end
               end
           end
           if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip'..(key_append or '')..G.GAME.round_resets.ante) > 0.7 then
@@ -892,9 +892,8 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
     G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
-    G.localization.misc.labels.banana = "Banana"
-    G.localization.misc.labels.cry_rigged = "Rigged"
     G.localization.misc.labels.food_jokers = "Food Jokers"
+    G.localization.misc.labels.banana = "Banana"
 end
 
 function SMODS.current_mod.process_loc_text()
@@ -904,13 +903,6 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{C:green}#1# in #2#{} chance of being",
             "destroyed each round"
-        },
-    }
-    G.localization.descriptions.Other.cry_rigged = {
-        name = "Rigged",
-        text = {
-            "All {C:cry_code}probabilities",
-            "are {C:cry_code}guaranteed"
         },
     }
     G.localization.descriptions.Other.food_jokers = {

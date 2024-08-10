@@ -320,6 +320,18 @@ local twilight = {object_type = "Stake",
     shiny = true,
     colour = G.C.CRY_TWILIGHT
 }
+local banana = {
+    object_type = "Sticker",
+    badge_colour = HEX("e8c500"),
+    prefix_config = {key = false},
+    key = "banana",
+    atlas = "sticker",
+    pos = {x = 5, y = 2},
+    should_apply = false,
+    loc_vars = function(self, info_queue, card)
+        return {vars = {G.GAME.probabilities.normal or 1, 10}}
+    end
+}
 local verdant = {object_type = "Stake",
 	name = "cry-Verdant Stake",
 	key = "verdant",
@@ -722,4 +734,5 @@ return {name = "More Stakes",
         end,
         items = {stake_atlas, pink, brown, yellow, jade, cyan, gray, crimson, diamond,
         amber, bronze, quartz, ruby, glass, sapphire, emerald, platinum,
-        twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant}}
+        twilight, verdant, ember, dawn, horizon, blossom, azure, ascendant,
+        banana}}
