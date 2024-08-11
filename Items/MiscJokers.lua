@@ -3717,6 +3717,253 @@ local rnjoker = {
     end,
     atlas = "atlastwo"
 }
+local duos = {
+    object_type = "Joker",
+	name = "cry-duos",
+	key = "duos",
+	pos = {x = 0, y = 0},
+    config = {Xmult = 2.5, type = 'Two Pair'},
+	loc_txt = {
+        name = 'The Duos',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and (to_big(card.ability.x_mult) > to_big(1)) and not context.before and not context.after then
+            if (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House'])) then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                    colour = G.C.RED,
+                    Xmult_mod = card.ability.x_mult
+                }
+            end
+        end
+    end
+}
+local home = {
+    object_type = "Joker",
+	name = "cry-home",
+	key = "home",
+	pos = {x = 1, y = 0},
+    config = {Xmult = 3.5, type = 'Full House'},
+	loc_txt = {
+        name = 'The Home',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and (to_big(card.ability.x_mult) > to_big(1)) and not context.before and not context.after then
+            if next(context.poker_hands['Full House']) then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                    colour = G.C.RED,
+                    Xmult_mod = card.ability.x_mult
+                }
+            end
+        end
+    end
+}
+local nuts = {
+    object_type = "Joker",
+	name = "cry-nuts",
+	key = "nuts",
+	pos = {x = 2, y = 0},
+    config = {Xmult = 5, type = 'Straight Flush'},
+	loc_txt = {
+        name = 'The Nuts',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and (to_big(card.ability.x_mult) > to_big(1)) and not context.before and not context.after then
+            if next(context.poker_hands['Straight Flush']) then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                    colour = G.C.RED,
+                    Xmult_mod = card.ability.x_mult
+                }
+            end
+        end
+    end
+}
+local quintet = {
+    object_type = "Joker",
+	name = "cry-quintet",
+	key = "quintet",
+	pos = {x = 3, y = 0},
+    config = {Xmult = 5, type = 'Five of a Kind'},
+	loc_txt = {
+        name = 'The Quintet',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and (to_big(card.ability.x_mult) > to_big(1)) and not context.before and not context.after then
+            if next(context.poker_hands['Five of a Kind']) then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                    colour = G.C.RED,
+                    Xmult_mod = card.ability.x_mult
+                }
+            end
+        end
+    end,
+    in_pool = function(self)
+        if G.GAME.hands["Five of a Kind"].played > 0 then
+            return true
+        end
+        return false
+    end
+}
+local unity = {
+    object_type = "Joker",
+	name = "cry-unity",
+	key = "unity",
+	pos = {x = 4, y = 0},
+    config = {Xmult = 7, type = 'Flush House'},
+	loc_txt = {
+        name = 'The Unity',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and (to_big(card.ability.x_mult) > to_big(1)) and not context.before and not context.after then
+            if next(context.poker_hands['Flush House']) then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                    colour = G.C.RED,
+                    Xmult_mod = card.ability.x_mult
+                }
+            end
+        end
+    end,
+    in_pool = function(self)
+        if G.GAME.hands["Flush House"].played > 0 then
+            return true
+        end
+        return false
+    end
+}
+local swarm = {
+    object_type = "Joker",
+	name = "cry-swarm",
+	key = "swarm",
+	pos = {x = 5, y = 0},
+    config = {Xmult = 9, type = 'Flush Five'},
+	loc_txt = {
+        name = 'The Swarm',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and (to_big(card.ability.x_mult) > to_big(1)) and not context.before and not context.after then
+            if next(context.poker_hands['Flush Five']) then
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                    colour = G.C.RED,
+                    Xmult_mod = card.ability.x_mult
+                }
+            end
+        end
+    end,
+    in_pool = function(self)
+        if G.GAME.hands["Flush Five"].played > 0 then
+            return true
+        end
+        return false
+    end
+}
+local filler = {
+    object_type = "Joker",
+	name = "cry-filler",
+	key = "filler",
+	pos = {x = 0, y = 1},
+    config = {Xmult = 1, type = 'High Card'},
+	loc_txt = {
+        name = 'The Filler',
+        text = {
+            "{X:mult,C:white} X#1# {} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#"
+		}
+    },
+	loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
+    end,
+    atlas = "atlasthree",
+	rarity = 1,
+	cost = 1,
+	blueprint_compat = true,
+    calaculate = function(self, card, context)
+        if context.cardarea == G.jokers and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.x_mult}},
+                colour = G.C.RED,
+                Xmult_mod = card.ability.x_mult
+            }
+        end
+    end
+}
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
@@ -3799,4 +4046,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker,}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm}}
