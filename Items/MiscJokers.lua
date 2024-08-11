@@ -3754,7 +3754,7 @@ local home = {
     object_type = "Joker",
 	name = "cry-home",
 	key = "home",
-	pos = {x = 1, y = 0},
+	pos = {x = 2, y = 0},
     config = {Xmult = 3.5, type = 'Full House'},
 	loc_txt = {
         name = 'The Home',
@@ -3787,7 +3787,7 @@ local nuts = {
     object_type = "Joker",
 	name = "cry-nuts",
 	key = "nuts",
-	pos = {x = 2, y = 0},
+	pos = {x = 1, y = 0},
     config = {Xmult = 5, type = 'Straight Flush'},
 	loc_txt = {
         name = 'The Nuts',
