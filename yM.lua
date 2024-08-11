@@ -1129,7 +1129,7 @@ atlas = "atlasepic",
             return {
                 message = "X"..number_format(card.ability.extra.x_mult),
                 Xchip_mod = card.ability.extra.x_mult,
-                colour = G.C.CHIPS
+                colour = G.C.MULT
             }
         end
     if context.cardarea == G.jokers and context.before and not context.blueprint then
