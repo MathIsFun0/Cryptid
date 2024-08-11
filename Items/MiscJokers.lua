@@ -3938,7 +3938,7 @@ local filler = {
 	name = "cry-filler",
 	key = "filler",
 	pos = {x = 0, y = 1},
-    config = {Xmult = 1, type = 'High Card'},
+    config = {Xmult = 1.000000001, type = 'High Card'},
 	loc_txt = {
         name = 'The Filler',
         text = {
@@ -3951,7 +3951,7 @@ local filler = {
         return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
     end,
     atlas = "atlasthree",
-	rarity = 1,
+	rarity = 3,
 	cost = 1,
 	blueprint_compat = true,
     calaculate = function(self, card, context)
