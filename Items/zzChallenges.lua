@@ -197,6 +197,7 @@ local rng = {
     },
     restrictions = {
         banned_cards = {
+            {id = 'c_cry_delete'},	
         },
         banned_other = {}
     }
