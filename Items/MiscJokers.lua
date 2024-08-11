@@ -3418,7 +3418,7 @@ local rnjoker = {
                                 if j.context == "selling_self" and (card.ability.consumeable) then
                                     c_mod = 1
                                 end
-                                if j.context == "selling_card" and (card.ability.consumeable) then
+                                if j.context == "selling_card" and (context.card.ability.consumeable) then
                                     c_mod = 1
                                 end
                                 if j.act == "make_joker" then

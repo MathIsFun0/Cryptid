@@ -114,18 +114,13 @@ position = "at"
 payload = "if not G.SAVED_GAME or not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
 match_indent = true
 
-# New perishable texture
-# Quartz Stake - register pinned sticker
+# Register banned bosses for rush hour
 [[patches]]
 [patches.pattern]
 target = "game.lua"
 pattern = "set_profile_progress()"
 position = "before"
 payload = '''
-if self.ASSET_ATLAS['cry_sticker'] then
-    self.shared_sticker_perishable = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS["cry_sticker"], {x = 4,y = 4})
-    self.shared_stickers['pinned'] = Sprite(0, 0, self.CARD_W, self.CARD_H, self.ASSET_ATLAS['cry_sticker'], {x=5, y=0})
-end
 for i = 1, #G.CHALLENGES do
     if (G.CHALLENGES[i].id == 'c_cry_rush_hour' or G.CHALLENGES[i].id == 'c_cry_rush_hour_ii' or G.CHALLENGES[i].id == 'c_cry_rush_hour_iii') and #G.CHALLENGES[i].restrictions.banned_other == 0 then
         for k, v in pairs(G.P_BLINDS) do
@@ -547,4 +542,13 @@ local rand = math.random(4)
 play_sound('cry_meow'..rand, 1.26, 0.4)
 end
 '''
+match_indent = true
+
+# don't draw old perishable texture
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable then'''
+position = "at"
+payload = '''if self.ability.perishable and not layer then'''
 match_indent = true

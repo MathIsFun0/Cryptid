@@ -175,7 +175,7 @@ payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(
 match_indent = true
 
 
-# Quartz Stake - render pinned and banana sticker
+# Quartz Stake - render pinned sticker
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -186,11 +186,6 @@ if self.pinned then
     G.shared_stickers['pinned'].role.draw_major = self
     G.shared_stickers['pinned']:draw_shader('dissolve', nil, nil, nil, self.children.center)
     G.shared_stickers['pinned']:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
-end
-if self.ability.banana then
-    G.shared_sticker_banana.role.draw_major = self
-    G.shared_sticker_banana:draw_shader('dissolve', nil, nil, nil, self.children.center)
-    G.shared_sticker_banana:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
 end
 '''
 match_indent = true
