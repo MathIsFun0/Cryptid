@@ -794,7 +794,6 @@ local spaghetti = {
 	if G.P_CENTERS.j_cry_oldcandy then jokers[#jokers+1] = "j_cry_oldcandy" end
         if G.P_CENTERS.j_cry_caramel then jokers[#jokers+1] = "j_cry_caramel" end
 	if G.P_CENTERS.j_cry_foodm then jokers[#jokers+1] = "j_cry_foodm" end
-	if G.P_CENTERS.j_cry_crustulum then jokers[#jokers+1] = "j_cry_crustulum" end
 	if G.P_CENTERS.j_jank_cut_the_cheese then jokers[#jokers+1] = "j_jank_cut_the_cheese" end
 	if G.P_CENTERS.j_cafeg then jokers[#jokers+1] = "j_cafeg" end
 	if G.P_CENTERS.j_cherry then jokers[#jokers+1] = "j_cherry" end
