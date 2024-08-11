@@ -911,7 +911,15 @@ function SMODS.current_mod.process_loc_text()
             "{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
             "{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
             "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
-	    "{s:0.8}Nostalgic Candy, Fast Food M"
+	    "{s:0.8}Nostalgic Candy, Fast Food M, Crustulum,",
+            "{s:0.8}Cut The Cheese, Café Gourmand, Cheery,"
+            "{s:0.8}Full-Sugar Cola, Starfruit, Fondue,"
+            "{s:0.8}Fortune Cookie, Swiss Joker, Taliaferro,"
+            "{s:0.8}Royal Gala, Fine Wine, Mystery Soda,"
+            "{s:0.8}Popcorn Bag, Turkey Dinner, Coffee,"
+            "{s:0.8}Candle Service, Burning Melon,"
+            "{s:0.8}Burning Cherry, Soft Taco, Crispy Taco,"
+            "{s:0.8}Nachos, Ghost Cola, Burger, Pizza"
         },
     }
 								-- i am so sorry for this
