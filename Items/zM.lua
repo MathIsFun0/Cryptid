@@ -1127,8 +1127,8 @@ atlas = "atlasepic",
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
             return {
-                message = "X"..number_format(card.ability.extra.x_mult),
-                Xchip_mod = card.ability.extra.x_mult,
+                message = "X"..number_format(card.ability.extra.x_mult).." Mult",	-- why is it like this?
+                Xmult_mod = card.ability.extra.x_mult,
                 colour = G.C.MULT
             }
         end

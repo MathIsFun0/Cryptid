@@ -461,3 +461,44 @@ payload = '''
 if not G.from_boss_tag then ease_dollars(-cry_cheapest_boss_reroll()) end
 '''
 match_indent = true
+
+# hi i'm back and i'm fixing this thing that breaks sometimes for no reason (it really shouldn't)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_overstock_norm =  {order = 1,     discovered = false, unlocked = true , available = true, cost = 10, name = "Overstock", pos = {x=0,y=0}, set = "Voucher", config = {}},'''
+position = "at"
+payload = '''
+v_overstock_norm =  {order = 1,     discovered = false, unlocked = true , available = true, cost = 10, name = "Overstock", pos = {x=0,y=0}, set = "Voucher", config = {extra = 1}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_crystal_ball=     {order = 9,    discovered = false, unlocked = true , available = true, cost = 10, name = "Crystal Ball", pos = {x=2,y=2}, set = "Voucher", config = {extra = 3}},'''
+position = "at"
+payload = '''
+v_crystal_ball=     {order = 9,    discovered = false, unlocked = true , available = true, cost = 10, name = "Crystal Ball", pos = {x=2,y=2}, set = "Voucher", config = {extra = 1}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_overstock_plus=   {order = 2,     discovered = false, unlocked = false, available = true, cost = 10, name = "Overstock Plus", pos = {x=0,y=1}, set = "Voucher", config = {}, requires = {'v_overstock_norm'},unlock_condition = {type = 'c_shop_dollars_spent', extra = 2500}},'''
+position = "at"
+payload = '''
+v_overstock_plus=   {order = 2,     discovered = false, unlocked = false, available = true, cost = 10, name = "Overstock Plus", pos = {x=0,y=1}, set = "Voucher", config = {extra = 1}, requires = {'v_overstock_norm'},unlock_condition = {type = 'c_shop_dollars_spent', extra = 2500}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_antimatter=       {order = 24,    discovered = false, unlocked = false, available = true, cost = 10, name = "Antimatter", pos = {x=7,y=1}, set = "Voucher", config = {extra = 15}, requires = {'v_blank'},unlock_condition = {type = 'blank_redeems', extra = 10}},'''
+position = "at"
+payload = '''
+v_antimatter=       {order = 24,    discovered = false, unlocked = false, available = true, cost = 10, name = "Antimatter", pos = {x=7,y=1}, set = "Voucher", config = {extra = 1}, requires = {'v_blank'},unlock_condition = {type = 'blank_redeems', extra = 10}},
+'''
+match_indent = true
