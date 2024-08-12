@@ -228,3 +228,20 @@ if args.vars then
 end
 '''
 match_indent = true
+
+# Compat UI for Old Blueprint
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.ability.name == 'Blueprint' then"
+position = "at"
+payload = "elseif self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
+position = "at"
+payload = "if self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' or self.ability.name == 'Brainstorm' then"
+match_indent = true

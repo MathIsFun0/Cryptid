@@ -692,15 +692,6 @@ return {name = "More Stakes",
                 end,
             },true)
             
-            -- This is short enough that I'm fine overriding it
-            function calculate_reroll_cost(skip_increment)
-                if G.GAME.current_round.free_rerolls < 0 then G.GAME.current_round.free_rerolls = 0 end
-                if G.GAME.current_round.free_rerolls > 0 then G.GAME.current_round.reroll_cost = 0; return end
-                G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
-                if not skip_increment then G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase + (G.GAME.modifiers.cry_reroll_scaling or 1) end
-                G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost) + G.GAME.current_round.reroll_cost_increase
-            end
-            
             local sc = Card.set_cost
             function Card:set_cost()
                 sc(self)

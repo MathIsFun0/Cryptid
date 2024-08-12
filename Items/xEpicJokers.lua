@@ -568,6 +568,9 @@ local double_scale = {
             G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
         end
         for i = 1, #G.jokers.cards do
+		if G.jokers.cards[i].ability.name ~= "cry-happyhouse"
+	    or G.jokers.cards[i].ability.name ~= "cry-sapling"
+	    or G.jokers.cards[i].ability.name ~= "cry-mstack" then
             --sort_id is a unique ID for each Joker
             local jkr = G.jokers.cards[i]
             if jkr.ability and type(jkr.ability) == 'table' then
@@ -760,6 +763,7 @@ local double_scale = {
         end
         return
     end
+	end
 }
 local oldcandy = {
 	object_type = "Joker",
@@ -1098,7 +1102,7 @@ local bonusjoker = {
         name = 'Bonus Joker',
         text = {
 			"{C:green}#1# in #2#{} chance for each",
-			"played {C:attention}Bonus Card{} to increase",
+			"played {C:attention}Bonus{} card to increase",
 			"{C:attention}Joker{} or {C:attention}Consumable slots",
 			"by {C:dark_edition}1{} when scored",
 			"{C:red}Works twice per round",
@@ -1118,22 +1122,23 @@ local bonusjoker = {
     		if context.individual and context.cardarea == G.play then
         		if context.other_card.ability.effect == "Bonus Card" then
             			if pseudorandom('bonusjoker') < G.GAME.probabilities.normal / card.ability.extra.odds and card.ability.extra.check < 2 and not context.retrigger_joker then
-					if not context.blueprint then card.ability.extra.check = card.ability.extra.check + 1 end
 					local option = pseudorandom_element({1, 2}, pseudoseed('bonusjoker'))
 					if option == 1 then
+						if not context.blueprint then card.ability.extra.check = card.ability.extra.check + 1 end
                 				G.jokers.config.card_limit = G.jokers.config.card_limit + 1
 					else
+						if not context.blueprint then card.ability.extra.check = card.ability.extra.check + 1 end
 						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
 					end
-                			return {
-					message = localize('k_upgrade_ex'), --Something is making this not display it's text, I could have sworn this was working properly when i tested it...
-					card = card,
-					colour = G.C.CHIPS
+					return {
+						extra = {focus = card, message = localize('k_upgrade_ex')},
+						card = card,
+						colour = G.C.MONEY
 					}
 				end
         		end
     		end
-		if context.end_of_round and not card.ability.extra.check ~= 0 and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
+		if context.end_of_round and card.ability.extra.check ~= 0 and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
 			card.ability.extra.check = 0
             		return {
                     	message = localize('k_reset'),
@@ -1186,7 +1191,7 @@ local multjoker = {
         name = 'Mult Joker',
         text = {
 			"{C:green}#1# in #2#{} chance for each",
-			"played {C:attention}Mult Card{} to create",
+			"played {C:attention}Mult{} card to create",
 			"a {C:spectral}Cryptid{} card when scored",
 			"{C:inactive}(Must have room)"
 		}
@@ -1253,6 +1258,129 @@ if JokerDisplay then
             card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
         end
 	}
+end
+
+local goldjoker = {
+    object_type = "Joker",
+	name = "cry-goldjoker",
+	key = "goldjoker",
+    	config = {extra = {percent_mod = 1, percent = 0}},
+	pos = {x = 0, y = 4},
+	loc_txt = {
+        name = 'Gold Joker',
+        text = {
+		"Earn {C:money}#1#%{} of total",
+            	"money at end of round",
+            	"Payout increases by {C:money}#2#%{}",
+            	"when each played {C:attention}Gold{}",
+		"card is scored"
+        }
+    },
+	rarity = "cry_epic",
+	cost = 14,
+	enhancement_gate = 'm_gold',
+	perishable_compat = false,
+	atlas = "atlasepic",
+    	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_gold
+        	return {vars = {center.ability.extra.percent, center.ability.extra.percent_mod}}
+    	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual and not context.blueprint then
+			if context.other_card.ability.effect == "Gold Card" then
+				card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+				return {
+					extra = {focus = card, message = localize('k_upgrade_ex')},
+					card = card,
+					colour = G.C.MONEY
+					}
+			end
+		end
+		if context.individual and context.cardarea == G.play then
+        		if context.other_card.ability.effect == "Gold Card" then
+				card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+                		return {
+				message = localize('k_upgrade_ex'),
+				card = card,
+				colour = G.C.CHIPS
+				}
+        		end
+    		end
+	end,
+	calc_dollar_bonus = function(self, card)
+		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*G.GAME.dollars))
+        if bonus > 0 then return bonus end
+	end
+}
+if JokerDisplay then
+    goldjoker.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.joker_display_values", ref_value = "dollars" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * G.GAME.dollars))
+            card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
+local altgoogol = {
+	object_type = "Joker",
+	name = "cry-altgoogol",
+	key = "altgoogol",
+	pos = {x = 4, y = 3},
+	loc_txt = {
+        name = 'Nostalgic Googol Play Card',
+        text = {
+			"Sell this card to create",
+			"{C:attention}2{} copies of the leftmost {C:attention}Joker{}",
+			"{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}"
+		}
+    },
+	rarity = "cry_epic",
+	cost = 10,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+	soul_pos = {x = 10, y = 0, extra = {x = 5, y = 3}},
+	calculate = function(self, card, context)
+		if context.selling_self and not context.retrigger_joker then
+			local spawn = {}
+			if G.jokers.cards[1].ability.name ~= card.ability.name then spawn[#spawn+1] = G.jokers.cards[1] end
+			if #spawn ~= 0 then
+					 G.E_MANAGER:add_event(Event({
+                    				func = function() 
+							for i = 1, 2 do
+                        					local card = copy_card(pseudorandom_element(spawn, pseudoseed('cry_speculo')), nil) --borrowed code moment
+                        					card:add_to_deck()
+                        					G.jokers:emplace(card) 
+							end
+                        				return true
+                    				end}))
+                				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                				return {calculated = true}
+			else return {calculated = true} end
+        	end
+	end
+}
+if JokerDisplay then
+    altgoogol.joker_display_definition = {
+        reminder_text = {
+            { text = '(', },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ')', },
+        },
+        calc_function = function(card)
+            local leftmost_joker_key = G.jokers and G.jokers.cards[1] and G.jokers.cards[1] ~= card and
+                G.jokers.cards[1].config.center.key
+            card.joker_display_values.localized_text = leftmost_joker_key and
+                localize { type = 'name_text', key = leftmost_joker_key, set = 'Joker' } or "-"
+        end
+    }
 end
 return {name = "Epic Jokers", 
 		init = function()
@@ -1341,4 +1469,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,}}
+		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol}}

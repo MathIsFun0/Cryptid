@@ -1174,6 +1174,108 @@ biggestm.joker_display_definition = {
     end
 }
 end
+local hugem = {
+	object_type = "Joker",
+	name = "cry-hugem",
+	key = "hugem",
+	pos = {x = 0, y = 5},
+	soul_pos = {x = 2, y = 5, extra = {x = 1, y = 5}},
+	config = {extra = {mult = 1.05, bonus = 0.04, check = true}, jolly = {t_mult = 8, type = 'Pair'}},
+	loc_txt = {
+		name = 'Tredecim',
+		text = {
+            "Create up to 4 {C:attention}Jolly Jokers{} when obtained",
+			"Each {C:attention}Jolly Joker{} gives {X:dark_edition,C:white}^#1#{} Mult",
+			"Increase amount by {X:dark_edition,C:white}^#2#{} and",
+			"create an {C:legendary}M Joker{} {C:red}once per round",
+			"when a {C:attention}Jolly Joker{} is {C:attention}sold",
+            "{C:inactive,s:0.8}(Tredecim excluded)"
+		}
+	},
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		return {vars = {center.ability.extra.mult, center.ability.extra.bonus}}
+	end,
+	rarity = "cry_exotic",
+	cost = 50,
+	blueprint_compat = true,
+	atlas = "atlasexotic",
+	perishable_compat = false,
+	calculate = function(self, card, context)
+		if context.selling_card and context.card.ability.name == "Jolly Joker" then
+			if not context.blueprint then card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.bonus end
+			if card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
+				card.ability.extra.check = false
+				local loyalservants = {
+            				"j_cry_jollysus",
+           				"j_cry_kidnap",
+            				"j_cry_bubblem",
+            				"j_cry_foodm",
+            				"j_cry_mneon",
+            				"j_cry_mstack",
+            				"j_cry_notebook",
+            				"j_cry_reverse",
+            				"j_cry_loopy",
+					"j_cry_morse",
+					"j_cry_bonk",
+					"j_cry_sacrifice",
+					"j_cry_scrabble",
+        				}
+        				if G.P_CENTERS.j_cry_m then loyalservants[#loyalservants+1] = "j_cry_m" end
+        				if G.P_CENTERS.j_cry_M then loyalservants[#loyalservants+1] = "j_cry_M" end
+					if G.P_CENTERS.j_cry_virgo then loyalservants[#loyalservants+1] = "j_cry_virgo" end
+        				if G.P_CENTERS.j_cry_doodlem then loyalservants[#loyalservants+1] = "j_cry_doodlem" end
+					if G.P_CENTERS.j_cry_smallestm then loyalservants[#loyalservants+1] = "j_cry_smallestm" end
+                    if G.P_CENTERS.j_cry_biggestm then loyalservants[#loyalservants+1] = "j_cry_biggestm" end
+        				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(loyalservants,pseudoseed("cry_biggestm")))
+        				card:add_to_deck()
+					card:start_materialize()
+        				G.jokers:emplace(card)
+			end
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
+		end
+		if context.other_joker then
+			if context.other_joker and context.other_joker.ability.name == "Jolly Joker" then
+				if not Talisman.config_file.disable_anims then 
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							context.other_joker:juice_up(0.5, 0.5)
+							return true
+						end
+					})) 
+				end
+				return {
+                			message = "^"..card.ability.extra.mult.." Mult",
+                			Emult_mod = card.ability.extra.mult,
+                			colour = G.C.DARK_EDITION,
+                			card = card
+            			}
+			end
+		end
+		if context.end_of_round and not card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
+		card.ability.extra.check = true end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		local jollycount = 4 --Create up to 4 jollies if there are none to help start off fresh from the gateway
+		for i = 1, #G.jokers.cards do
+                	if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount - 1 end
+            	end
+		for i = 1, math.max(0, jollycount) do
+			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+				card:add_to_deck()
+				G.jokers:emplace(card)
+		end
+	end,
+}
+if JokerDisplay then
+    --[[hugem.joker_display_definition = {
+        --todo: show if active
+        mod_function = function(card, mod_joker)
+            return { pow_mult = (card.ability.name == "Jolly Joker" and mod_joker.ability.extra.mult) }
+        end
+    }--]]
+    --pow_mult doesn't work yet here :(
+end
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse}
 return {name = "M Jokers", 
         init = function()
@@ -1187,6 +1289,11 @@ return {name = "M Jokers",
             end
             if cry_enable_epics then
                 for _, jkr in pairs({doodlem, virgo, smallestm, biggestm}) do
+                    ret_items[#ret_items+1] = jkr
+                end
+            end
+            if cry_enable_exotics then
+                for _, jkr in pairs({hugem}) do
                     ret_items[#ret_items+1] = jkr
                 end
             end
