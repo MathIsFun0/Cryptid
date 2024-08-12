@@ -1100,6 +1100,80 @@ if JokerDisplay then
         end
     }
 end
+
+local biggestm = {
+    object_type = "Joker",
+name = "cry-biggestm",
+key = "biggestm",
+    config = {extra = {x_mult = 7, type = "Pair", check = false, text = "Inactive"}},
+pos = {x = 3, y = 3},
+loc_txt = {
+    name = 'Huge',
+    text = {
+        "{X:mult,C:white} X#1# {} Mult until end",
+    "of round if {C:attention}poker hand{}",
+    "is a {C:attention}#2#{}",
+    "{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
+    "{C:inactive,s:0.8}not fat, just big boned."
+    }
+    },
+rarity = "cry_epic",
+cost = 12,
+blueprint_compat = true,
+atlas = "atlasepic",
+    loc_vars = function(self, info_queue, center)
+    return {vars = {center.ability.extra.x_mult, center.ability.extra.type, center.ability.extra.text}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
+            return {
+                message = "X"..number_format(card.ability.extra.x_mult),
+                Xchip_mod = card.ability.extra.x_mult,
+                colour = G.C.MULT
+            }
+        end
+    if context.cardarea == G.jokers and context.before and not context.blueprint then
+        if context.scoring_name == card.ability.extra.type and not card.ability.extra.check then
+            card.ability.extra.check = true
+            card_eval_status_text(card, 'extra', nil, nil, nil, {
+                        message = localize('k_active_ex'),
+                        colour = G.C.FILTER
+                        })
+            card.ability.extra.text = "Active"
+        end
+    end
+    if context.end_of_round and card.ability.extra.check and not context.blueprint and not context.retrigger_joker and not context.individual and not context.repetition then
+        card.ability.extra.check = false
+        card.ability.extra.text = "Inactive"
+                return {
+                    message = localize('k_reset'),
+                    card = card,
+        }
+    end
+    end
+}
+if JokerDisplay then
+biggestm.joker_display_definition = {
+    text = {
+        {
+            border_nodes = {
+                { text = "X" },
+                { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+            },
+            border_colour = G.C.MULT
+        }
+    },
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+        { text = ")" },
+    },
+    calc_function = function(card)
+        card.joker_display_values.x_mult = card.ability.extra.check and card.ability.extra.x_mult or 1
+        card.joker_display_values.localized_text = localize(card.ability.extra.type, 'poker_hands')
+    end
+}
+end
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse}
 return {name = "M Jokers", 
         init = function()
@@ -1112,7 +1186,7 @@ return {name = "M Jokers",
                 end
             end
             if cry_enable_epics then
-                for _, jkr in pairs({doodlem, virgo, smallestm}) do
+                for _, jkr in pairs({doodlem, virgo, smallestm, biggestm}) do
                     ret_items[#ret_items+1] = jkr
                 end
             end
