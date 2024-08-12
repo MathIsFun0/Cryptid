@@ -1382,6 +1382,47 @@ if JokerDisplay then
         end
     }
 end
+
+local soccer = {
+	object_type = "Joker",
+	name = "cry-soccer",
+	key = "soccer",
+	pos = {x = 9999, y = 9999},
+	config = {extra = {holygrail = 1}},
+	loc_txt = {
+        name = 'One for All', --changed the name from latin because this isn't exotic
+        text = {
+			"{C:attention}+#1#{} Joker slot",
+			"{C:attention}+#1#{} Booster Pack slot",
+			"{C:attention}+#1#{} hand size",
+			"{C:attention}+#1#{} consumable slot",
+			"{C:attention}+#1#{} card in shop",
+		}
+    },
+	rarity = "cry_epic",
+	cost = 20,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.holygrail}}
+	end,
+	add_to_deck = function(self, card, from_debuff) --TODO: Card in booster packs, Voucher slots
+		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
+		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.holygrail
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.holygrail
+		G.hand:change_size((card.ability.extra.holygrail))
+		if not G.GAME.modifiers.cry_booster_packs then G.GAME.modifiers.cry_booster_packs = 2 end
+        	G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + card.ability.extra.holygrail
+		change_shop_size(card.ability.extra.holygrail)
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.holygrail
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.holygrail
+		G.hand:change_size((-card.ability.extra.holygrail))
+		if not G.GAME.modifiers.cry_booster_packs then G.GAME.modifiers.cry_booster_packs = 2 end
+        	G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.holygrail
+		change_shop_size(card.ability.extra.holygrail * -1)
+	end
+} 
 return {name = "Epic Jokers", 
 		init = function()
 			
@@ -1469,4 +1510,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol}}
+		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}
