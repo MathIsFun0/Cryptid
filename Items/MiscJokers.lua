@@ -3717,6 +3717,30 @@ local rnjoker = {
     end,
     atlas = "atlastwo"
 }
+local hand_xmult_jd = {
+    text = {
+        {
+            border_nodes = {
+                { text = "X" },
+                { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+            }
+        }
+    },
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+        { text = ")" },
+    },
+    calc_function = function(card)
+        local x_mult = 1
+        local _, poker_hands, _ = JokerDisplay.evaluate_hand()
+        if poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
+            x_mult = card.ability.x_mult
+        end
+        card.joker_display_values.x_mult = x_mult
+        card.joker_display_values.localized_text = localize(card.ability.type, 'poker_hands')
+    end
+}
 local duos = {
     object_type = "Joker",
 	name = "cry-duos",
@@ -3964,6 +3988,15 @@ local filler = {
         end
     end
 }
+if JokerDisplay then
+    duos.joker_display_definition = hand_xmult_jd
+    home.joker_display_definition = hand_xmult_jd
+    nuts.joker_display_definition = hand_xmult_jd
+    quintet.joker_display_definition = hand_xmult_jd
+    unity.joker_display_definition = hand_xmult_jd
+    swarm.joker_display_definition = hand_xmult_jd
+    filler.joker_display_definition = hand_xmult_jd
+end
 return {name = "Misc. Jokers", 
         init = function()
             --Dropshot Patches
