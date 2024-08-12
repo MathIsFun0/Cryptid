@@ -12,7 +12,7 @@ local pink = {object_type = "Stake",
         }
     },
     modifiers = function()
-        G.GAME.modifiers.scaling = math.max(G.GAME.modifiers.scaling or 0, 4)
+        G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 0) + 1
     end,
     colour = HEX("ff5ee6")
 }
@@ -339,7 +339,7 @@ local verdant = {object_type = "Stake",
     atlas = "stake",
     applied_stakes = {"cry_twilight"},
     modifiers = function()
-        G.GAME.modifiers.scaling = 5
+        G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 0) + 1
     end,
 	loc_txt = {
         name = "Verdant Stake",
@@ -473,49 +473,6 @@ local stake_atlas = {object_type = "Atlas",
 }
 return {name = "More Stakes", 
         init = function(self)
-            -- Ante scaling changes
-            local gba = get_blind_amount
-            function get_blind_amount(ante)
-                local k = to_big(0.7)
-                if G.GAME.modifiers.scaling == 4 then
-                    local amounts = {
-                        to_big(300),  to_big(1200), to_big(4000),  to_big(11000),  to_big(30000),  to_big(100000),  to_big(180000),  to_big(300000)
-                    }
-                    if ante < 1 then return to_big(100) end
-                    if ante <= 8 then return amounts[ante] end
-                    local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
-                    local amount = a*(b+(k*c)^d)^c
-                    if type(amount) == 'table' then
-                        if (amount:lt(R.MAX_SAFE_INTEGER)) then
-                            local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
-                            amount = math.floor(amount / exponent):to_number() * exponent
-                        end
-                        amount:normalize()
-                    else
-                      amount = amount - amount%(10^math.floor(math.log10(amount)-1))
-                    end
-                    return amount
-                elseif G.GAME.modifiers.scaling == 5 then
-                    local amounts = {
-                        to_big(300),  to_big(1500), to_big(5000),  to_big(14000),  to_big(35000),  to_big(150000),  to_big(260000),  to_big(400000)
-                    }
-                    if ante < 1 then return to_big(100) end
-                    if ante <= 8 then return amounts[ante] end
-                    local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
-                    local amount = a*(b+(k*c)^d)^c
-                    if type(amount) == 'table' then
-                        if (amount:lt(R.MAX_SAFE_INTEGER)) then
-                            local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
-                            amount = math.floor(amount / exponent):to_number() * exponent
-                        end
-                        amount:normalize()
-                    else
-                      amount = amount - amount%(10^math.floor(math.log10(amount)-1))
-                    end
-                    return amount
-                else return gba(ante)
-                end
-            end
             -- Disallow use of Debuffed Perishable consumables
             local cuc = Card.can_use_consumeable
             function Card:can_use_consumeable(any_state, skip_check)
