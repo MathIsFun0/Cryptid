@@ -4393,10 +4393,10 @@ local soccer = {
 	loc_txt = {
         name = 'One for All', --changed the name from latin because this isn't exotic
         text = {
-			"{C:attention}+#1#{} Joker slots",
-			"{C:attention}+#1#{} Booster pack slot",
-			"{C:attention}+#1#{} handsize",
-			"{C:attention}+#1#{} Consumable slots",
+			"{C:attention}+#1#{} Joker slot",
+			"{C:attention}+#1#{} Booster Pack slot",
+			"{C:attention}+#1#{} hand size",
+			"{C:attention}+#1#{} consumable slot",
 			"{C:attention}+#1#{} card in shop",
 		}
     },
