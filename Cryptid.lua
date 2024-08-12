@@ -198,15 +198,6 @@ function cry_cheapest_boss_reroll()
 	end
 end
 
--- more sensible voucher variables for hardcoded ones
-
-G.P_CENTERS.v_overstock_norm.config = {extra = 1}
-G.P_CENTERS.v_overstock_plus.config = {extra = 1}
-G.P_CENTERS.v_crystal_ball.config.extra = 1
-G.P_CENTERS.v_omen_globe.config.extra = 20
-G.P_CENTERS.v_antimatter.config.extra = 1
-
-
 function cry_poll_random_edition()
 	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
 	if Cryptid_config["Misc."] then

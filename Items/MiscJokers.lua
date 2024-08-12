@@ -4095,7 +4095,7 @@ local coin = {
 		if context.selling_card and context.card.ability.set == 'Joker' then
 			local option = pseudorandom(pseudoseed('coin'),card.ability.extra.money,card.ability.extra.money*10)
 			ease_dollars(option)
-			card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('$')..self.ability.extra.money,colour = G.C.MONEY, delay = 0.45})
+			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('$')..option,colour = G.C.MONEY, delay = 0.45})
             return {calculated = true}, true --yep, I'm preparing in advance for the retrigger API merge
 		end
 	end
@@ -4110,13 +4110,13 @@ local wheelhope = {
         name = 'Wheel of Hope',
         text = {
 			"This Joker gains",
-			"{X:mult,C:white} X#1# {} Mult when using",
-			"{C:attention}The Wheel of Fortune{}",
+			"{X:mult,C:white} X#1# {} Mult when failing",
+			"a {C:attention}Wheel of Fortune{}",
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
 		}
     	},
-	rarity = 3,
-	cost = 7,
+	rarity = 2,
+	cost = 5,
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -4131,7 +4131,7 @@ local wheelhope = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.using_consumeable and context.consumeable.ability.name == 'The Wheel of Fortune' and not context.blueprint then
+		if context.cry_wheel_fail and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
 			return {calculated = true}
