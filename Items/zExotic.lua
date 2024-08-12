@@ -56,7 +56,7 @@ local iterum = {
         name = 'Iterum',
         text = {
         "Retrigger all cards played",
-	"{C:attention}#2#{} time(s),"
+	"{C:attention}#2#{} time(s),",
         "each played card gives",
         "{X:mult,C:white} X#1# {} Mult when scored"}
     },
