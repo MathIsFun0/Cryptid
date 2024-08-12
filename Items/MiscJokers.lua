@@ -4095,7 +4095,7 @@ local coin = {
 		if context.selling_card and context.card.ability.set == 'Joker' then
 			local option = pseudorandom(pseudoseed('coin'),card.ability.extra.money,card.ability.extra.money*10)
 			ease_dollars(option)
-			card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('$')..self.ability.extra.money,colour = G.C.MONEY, delay = 0.45})
+			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('$')..option,colour = G.C.MONEY, delay = 0.45})
             return {calculated = true}, true --yep, I'm preparing in advance for the retrigger API merge
 		end
 	end
