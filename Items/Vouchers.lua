@@ -226,7 +226,7 @@ local dexterity = {
 	loc_txt = {
         name = 'Dexterity',
         text = {
-	    "Permnently",
+	    "Permanently",
             "gain {C:blue}+#1#{} hand(s)",
 	    "each round"
 		}
@@ -251,7 +251,7 @@ local threers = {
 	loc_txt = {
         name = 'The 3 Rs',
         text = {
-	    "Permnently",
+	    "Permanently",
             "gain {C:red}+#1#{} discard(s)",
 	    "each round"
 		}
