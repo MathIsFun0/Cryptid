@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta3, Steamodded>=1.0.0-ALPHA-0805d]
---- VERSION: 0.4.3h
+--- VERSION: 0.4.3i
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -197,15 +197,6 @@ function cry_cheapest_boss_reroll()
 		return retc
 	end
 end
-
--- more sensible voucher variables for hardcoded ones
-
-G.P_CENTERS.v_overstock_norm.config = {extra = 1}
-G.P_CENTERS.v_overstock_plus.config = {extra = 1}
-G.P_CENTERS.v_crystal_ball.config.extra = 1
-G.P_CENTERS.v_omen_globe.config.extra = 20
-G.P_CENTERS.v_antimatter.config.extra = 1
-
 
 function cry_poll_random_edition()
 	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
@@ -568,6 +559,16 @@ if not SpectralPack then
 end--]]
 SMODS.current_mod.extra_tabs = function() return cryptidTabs end
 
+-- This is short enough that I'm fine overriding it
+function calculate_reroll_cost(skip_increment)
+	if G.GAME.current_round.free_rerolls < 0 then G.GAME.current_round.free_rerolls = 0 end
+        if G.GAME.current_round.free_rerolls > 0 then G.GAME.current_round.reroll_cost = 0; return end                
+	G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
+        if not skip_increment then G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase + (G.GAME.modifiers.cry_reroll_scaling or 1) end
+        G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost) + G.GAME.current_round.reroll_cost_increase
+	if G.GAME.used_vouchers.v_cry_rerollexchange then G.GAME.current_round.reroll_cost = 2 end
+        end
+
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
@@ -911,7 +912,15 @@ function SMODS.current_mod.process_loc_text()
             "{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
             "{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
             "{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
-	    "{s:0.8}Nostalgic Candy, Fast Food M"
+	        "{s:0.8}Nostalgic Candy, Fast Food M,",
+            "{s:0.8}Cut The Cheese, Café Gourmand, Cherry,",
+            "{s:0.8}Full-Sugar Cola, Starfruit, Fondue,",
+            "{s:0.8}Fortune Cookie, Swiss Joker, Taliaferro,",
+            "{s:0.8}Royal Gala, Fine Wine, Mystery Soda,",
+            "{s:0.8}Popcorn Bag, Turkey Dinner, Coffee,",
+            "{s:0.8}Candle Service, Burning Melon,",
+            "{s:0.8}Burning Cherry, Soft Taco, Crispy Taco,",
+            "{s:0.8}Nachos, Ghost Cola, Burger, Pizza"
         },
     }
 								-- i am so sorry for this
@@ -1213,6 +1222,12 @@ SMODS.Atlas({
 SMODS.Atlas({
     key = "atlastwo",
     path = "atlastwo.png",
+    px = 71,
+    py = 95
+}):register()
+SMODS.Atlas({
+    key = "atlasthree",
+    path = "atlasthree.png",
     px = 71,
     py = 95
 }):register()

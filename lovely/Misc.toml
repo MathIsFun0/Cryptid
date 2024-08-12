@@ -228,3 +228,30 @@ if args.vars then
 end
 '''
 match_indent = true
+
+# Compat UI for Old Blueprint
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.ability.name == 'Blueprint' then"
+position = "at"
+payload = "elseif self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
+position = "at"
+payload = "if self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' or self.ability.name == 'Brainstorm' then"
+match_indent = true
+
+# calculate wheel fail (for Wheel of Hope)
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''play_sound\('tarot2', 1, 0.4\)\n\s+used_tarot:juice_up\(0.3, 0.5\)\n\s+return true end \}\)\)'''
+position = "after"
+payload = '''for i = 1, #G.jokers.cards do
+	G.jokers.cards[i]:calculate_joker({cry_wheel_fail = true})
+end'''

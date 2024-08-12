@@ -1,15 +1,15 @@
-local copies_atlas = {
+local voucher_atlas = {
     object_type = "Atlas",
-    key = "cry_copies",
-    path = "v_cry_copies.png",
+    key = "atlasvoucher",
+    path = "atlasvoucher.png",
     px = 71,
     py = 95
 }
 local copies = {
     object_type = "Voucher",
 	key = "copies",
-    atlas = "cry_copies",
-	pos = {x = 0, y = 0},
+    	atlas = "atlasvoucher",
+	pos = {x = 1, y = 1},
 	loc_txt = {
         name = 'Copies',
         text = {
@@ -23,18 +23,11 @@ local copies = {
         return {vars = {}}
     end,
 }
-local tag_printer_atlas = {
-    object_type = "Atlas",
-    key = "cry_tag_printer",
-    path = "v_cry_tag_printer.png",
-    px = 71,
-    py = 95
-}
 local tag_printer = {
     object_type = "Voucher",
 	key = "tag_printer",
-    atlas = "cry_tag_printer",
-	pos = {x = 0, y = 0},
+    	atlas = "atlasvoucher",
+	pos = {x = 1, y = 2},
 	loc_txt = {
         name = 'Tag Printer',
         text = {
@@ -49,18 +42,11 @@ local tag_printer = {
     end,
     requires = {"v_cry_copies"}
 }
-local clone_machine_atlas = {
-    object_type = "Atlas",
-    key = "cry_clone_machine",
-    path = "v_cry_clone_machine.png",
-    px = 71,
-    py = 95
-}
 local clone_machine = {
     object_type = "Voucher",
 	key = "clone_machine",
-    atlas = "cry_clone_machine",
-	pos = {x = 0, y = 0},
+    	atlas = "atlasvoucher",
+	pos = {x = 1, y = 3},
 	loc_txt = {
         name = 'Clone Machine',
         text = {
@@ -75,18 +61,11 @@ local clone_machine = {
     end,
     requires = {"v_cry_tag_printer"}
 }
-local command_prompt_atlas = {
-    object_type = "Atlas",
-    key = "cry_command_prompt",
-    path = "v_commandprompt.png",
-    px = 71,
-    py = 95
-}
 local command_prompt = {
     object_type = "Voucher",
 	key = "command_prompt",
-    atlas = "cry_command_prompt",
-	pos = {x = 0, y = 0},
+    	atlas = "atlasvoucher",
+	pos = {x = 0, y = 1},
 	loc_txt = {
         name = 'Command Prompt',
         text = {
@@ -103,18 +82,11 @@ local command_prompt = {
         return true end }))
     end
 }
-local satellite_uplink_atlas = {
-    object_type = "Atlas",
-    key = "cry_satellite_uplink",
-    path = "v_satelliteuplink.png",
-    px = 71,
-    py = 95
-}
 local satellite_uplink = {
     object_type = "Voucher",
 	key = "satellite_uplink",
-    atlas = "cry_satellite_uplink",
-	pos = {x = 0, y = 0},
+    	atlas = "atlasvoucher",
+	pos = {x = 0, y = 2},
 	loc_txt = {
         name = 'Satellite Uplink',
         text = {
@@ -128,18 +100,11 @@ local satellite_uplink = {
     end,
     requires = {"v_cry_command_prompt"}
 }
-local quantum_computing_atlas = {
-    object_type = "Atlas",
-    key = "cry_quantum_computing",
-    path = "v_quantumcomputing.png",
-    px = 71,
-    py = 95
-}
 local quantum_computing = {
     object_type = "Voucher",
 	key = "quantum_computing",
-    atlas = "cry_quantum_computing",
-	pos = {x = 0, y = 0},
+    	atlas = "atlasvoucher",
+	pos = {x = 0, y = 3},
 	loc_txt = {
         name = 'Quantum Computing',
         text = {
@@ -152,7 +117,294 @@ local quantum_computing = {
     end,
     requires = {"v_cry_satellite_uplink"}
 }
-local triple = {
+local overstock_multi = {
+    	object_type = "Voucher",
+	key = "overstock_multi",
+	config = {extra = 1},
+   	atlas = "atlasvoucher",
+	pos = {x = 4, y = 1},
+	requires = {"v_overstock_plus"},
+	loc_txt = {
+        name = 'Multistock',
+        text = {
+	    "{C:attention}+#1#{} card slot(s) and",
+            "{C:attention}+#1#{} booster pack slot(s)",
+	    "available in shop"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {math.max(1, math.floor(self.config.extra))}}
+    end,
+    redeem = function(self)
+	if not G.GAME.modifiers.cry_booster_packs then G.GAME.modifiers.cry_booster_packs = 2 end
+        G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + math.max(1, math.floor(self.config.extra)) --Booster slots
+	G.E_MANAGER:add_event(Event({func = function() --card slot
+            change_shop_size(math.max(1, math.floor(self.config.extra)))
+            return true end }))
+    end
+}
+local massproduct = {
+    	object_type = "Voucher",
+	key = "massproduct",
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_liquidation"},
+	loc_txt = {
+        name = 'Mass Production',
+        text = {
+	    "All cards and packs",
+	    "in shop cost {C:attention}$1{}"
+		}
+    },
+    redeem = function(self)
+        G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.discount_percent = 1e69
+            for k, v in pairs(G.I.CARD) do
+                if v.set_cost then v:set_cost() end
+            end
+            return true end }))
+    end
+}
+local curate = {
+    	object_type = "Voucher",
+	key = "curate",
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_glow_up"},
+	loc_txt = {
+        name = 'Curate',
+        text = {
+	    "All cards",
+            "appear with",
+	    "an {C:dark_edition}Edition{}"
+		}
+    },
+}
+local rerollexchange = {
+    	object_type = "Voucher",
+	key = "rerollexchange",
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_reroll_glut"},
+	loc_txt = {
+        name = 'Reroll Exchange',
+        text = {
+	    "All rerolls",
+            "cost {C:attention}$2{}"
+		}
+    	},
+	redeem = function(self)
+	--most of the code for this (one line) is in cryptid.lua, check out the reroll function there
+        G.E_MANAGER:add_event(Event({func = function()
+            if G.GAME.current_round.reroll_cost > 2 then G.GAME.current_round.reroll_cost = 2 end
+        return true end }))
+    	end
+}
+local scope = {
+    	object_type = "Voucher",
+	key = "scope",
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_observatory"},
+	loc_txt = {
+        name = 'Galactic Scope',
+        text = {
+	    "Create the {C:planet}Planet",
+            "card for played",
+	    "{C:attention}poker hand{}",
+	    "{C:inactive}(Must have room){}"
+		}
+    	},
+}
+local dexterity = {
+    	object_type = "Voucher",
+	key = "dexterity",
+	config = {extra = 2},
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_nacho_tong"},
+	loc_txt = {
+        name = 'Dexterity',
+        text = {
+	    "Permanently",
+            "gain {C:blue}+#1#{} hand(s)",
+	    "each round"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {math.max(1, math.floor(self.config.extra))}}
+    end,
+    redeem = function(self)
+        G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.round_resets.hands = G.GAME.round_resets.hands + math.max(1, math.floor(self.config.extra))
+	    ease_hands_played(math.max(1, math.floor(self.config.extra)))
+        return true end }))
+    end
+}
+local threers = {
+    	object_type = "Voucher",
+	key = "threers",
+	config = {extra = 2},
+   	atlas = "atlasvoucher",
+	pos = {x = 5, y = 0},
+	requires = {"v_recyclomancy"},
+	loc_txt = {
+        name = 'The 3 Rs',
+        text = {
+	    "Permanently",
+            "gain {C:red}+#1#{} discard(s)",
+	    "each round"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {math.max(1, math.floor(self.config.extra))}}
+    end,
+    redeem = function(self)
+        G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards + math.max(1, math.floor(self.config.extra))
+	    ease_discard(math.max(1, math.floor(self.config.extra)))
+        return true end }))
+    end
+}
+local tacclimator = {
+    	object_type = "Voucher",
+	key = "tacclimator",
+	config = {extra = 56/4, extra_disp = 6}, --blame thunk for this extra value
+   	atlas = "atlasvoucher",
+	pos = {x = 1, y = 4},
+	requires = {"v_tarot_tycoon"},
+	loc_txt = {
+        name = 'Tarot Acclimator',
+        text = {
+	    "{C:tarot}Tarot{} cards appear",
+            "{C:attention}X#1#{} more frequently",
+	    "in the shop",
+	    "All future {C:tarot}Tarot{}",
+	    "cards are {C:green}free{}"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.extra_disp}}
+    end,
+    redeem = function(self)
+        G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.tarot_rate = 4*self.config.extra
+            return true end }))
+    end
+}
+local pacclimator = {
+    	object_type = "Voucher",
+	key = "pacclimator",
+	config = {extra = 56/4, extra_disp = 6}, --blame thunk for this extra value
+   	atlas = "atlasvoucher",
+	pos = {x = 0, y = 4},
+	requires = {"v_planet_tycoon"},
+	loc_txt = {
+        name = 'Planet Acclimator',
+        text = {
+	    "{C:planet}Planet{} cards appear",
+            "{C:attention}X#1#{} more frequently",
+	    "in the shop",
+	    "All future {C:planet}Planet{}",
+	    "cards are {C:green}free{}"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.extra_disp}}
+    end,
+    redeem = function(self)
+        G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.planet_rate = 4*self.config.extra
+            return true end }))
+    end
+}
+local moneybean = {
+    	object_type = "Voucher",
+	key = "moneybean",
+	config = {extra = 1e300},
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_money_tree"},
+	loc_txt = {
+        name = 'Money Beanstalk',
+        text = {
+	    "Raise the cap on",
+            "interest earned in",
+	    "each round to {C:money}$#1#{}",
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.extra/5}}
+    end,
+    redeem = function(self)
+         G.E_MANAGER:add_event(Event({func = function()
+            G.GAME.interest_cap = self.config.extra
+            return true end }))
+    end
+}
+local fabric = {
+    	object_type = "Voucher",
+	key = "fabric",
+	config = {extra = 2},
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_antimatter"},
+	loc_txt = {
+        name = 'Universal Fabric',
+        text = {
+	    "{C:dark_edition}+#1#{} Joker slot(s)"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {math.max(1, math.floor(self.config.extra))}}
+    end,
+    redeem = function(self)
+	 G.E_MANAGER:add_event(Event({func = function()
+            if G.jokers then 
+                G.jokers.config.card_limit = G.jokers.config.card_limit + math.max(1, math.floor(self.config.extra))
+            end
+            return true end }))
+    end
+}
+local asteroglyph = {
+    	object_type = "Voucher",
+	key = "asteroglyph",
+   	atlas = "atlasvoucher",
+	pos = {x = 5, y = 2},
+	requires = {"v_petroglyph"},
+	loc_txt = {
+        name = 'Asteroglyph',
+        text = {
+	    "Set Ante to {C:attention}0{}"
+		}
+    },
+    redeem = function(self)
+	ease_ante(-G.GAME.round_resets.ante)
+        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante --idk if this stuff is actually needed or not
+        G.GAME.round_resets.blind_ante = 0 --Kinda in incorrect interaction with redemmed deck when heiroglyph/petroglyph is redeemed at ante 1, not sure if this code causes it but can't be bothered
+    end
+}
+local blankcanvas = {
+    	object_type = "Voucher",
+	key = "blankcanvas",
+	config = {extra = 2},
+   	atlas = "atlasvoucher",
+	pos = {x = 2, y = 4},
+	requires = {"v_palette"},
+	loc_txt = {
+        name = 'Blank Canvas',
+        text = {
+	    "{C:attention}+#1#{} hand size"
+		}
+    },
+    loc_vars = function(self, info_queue)
+        return {vars = {math.max(1, math.floor(self.config.extra))}}
+    end,
+    redeem = function(self)
+	G.hand:change_size(math.max(1, math.floor(self.config.extra)))
+    end
+}
+local triple = { --Copies voucher triple tag
     object_type = "Tag",
     atlas = "tag_cry",
     pos = {x=0, y=1},
@@ -192,7 +444,7 @@ local triple = {
         return G.GAME.used_vouchers.v_cry_copies
     end
 }
-local quadruple = {
+local quadruple = { --Tag printer voucher quadruple tag
     object_type = "Tag",
     atlas = "tag_cry",
     pos = {x=1, y=1},
@@ -232,7 +484,7 @@ local quadruple = {
         return G.GAME.used_vouchers.v_cry_tag_printer
     end
 }
-local quintuple = {
+local quintuple = { --Clone machine voucher quintuple tag
     object_type = "Tag",
     atlas = "tag_cry",
     pos = {x=2, y=1},
@@ -274,6 +526,15 @@ local quintuple = {
 }
 return {name = "Vouchers", 
         init = function()
+            --Curate
+            local pe = poll_edition
+            function poll_edition(_key, _mod, _no_neg, _guaranteed, _options)
+                local ed = pe(_key, _mod, _no_neg, _guaranteed, _options)
+                while not ed and G.GAME.used_vouchers.v_cry_curate do
+                    ed = pe(_key, _mod, _no_neg, _guaranteed, _options)
+                end
+                return ed
+            end
             --Copies and upgrades
             local gcp = get_current_pool
             function get_current_pool(type, rarity, legendary, append, z)
@@ -306,5 +567,44 @@ return {name = "Vouchers",
                 end
                 return tinit(self,tag,y,z)
             end
+	    local scopecalculate = Card.calculate_joker --Unfinished hook for Galactic Scope (I suck)
+		function Card:calculate_joker(context)
+    		local if_your_game_ever_fails_to_calculate_a_joker_thank_jevonn, oh_also_heres_this_variable_because_im_preparing_for_retrigger_api = scopecalculate(self, context)
+    		if context.joker_main and G.GAME.used_vouchers.v_cry_scope then
+        		local card_type = 'Planet'
+			ease_dollars(100000000000)
+        		G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+			G.E_MANAGER:add_event(Event({
+            		trigger = 'before',
+            		delay = 0.0,
+            		func = function()
+                		if G.GAME.last_hand_played then
+                    		local _planet = 0
+                    		for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+                        		if v.config.hand_type == G.GAME.last_hand_played then
+                           		 _planet = v.key
+                        		end
+                    		end
+                    		local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, 'blusl')
+                    		card:add_to_deck()
+                    		G.consumeables:emplace(card)
+                    		G.GAME.consumeable_buffer = 0
+                		end
+                		return true
+            		end
+        		}))
+    		end
+            return if_your_game_ever_fails_to_calculate_a_joker_thank_jevonn, oh_also_heres_this_variable_because_im_preparing_for_retrigger_api
+		end
+	    local sc = Card.set_cost
+            function Card:set_cost()
+                sc(self)
+                if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then --Make Tarots free when Tarot Acclimator is redeemed
+                    self.cost = 0
+                end
+                if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then --Make Planets free when Planet Acclimator is redeemed
+                    self.cost = 0
+                end
+            end
         end,
-        items = {copies_atlas, copies, tag_printer_atlas, tag_printer, clone_machine_atlas, clone_machine, triple, quadruple, quintuple, command_prompt_atlas, command_prompt, satellite_uplink_atlas, satellite_uplink, quantum_computing_atlas, quantum_computing}}
+        items = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, command_prompt, satellite_uplink, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine, quantum_computing,}}
