@@ -1196,6 +1196,7 @@ local sus = {
                 for k, v in pairs(G.hand.cards) do
                     if not v.ability.eternal then deletable_cards[#deletable_cards + 1] = v end
                 end
+		if #deletable_cards ~= 0 then
                 local _first_dissolve = nil
                 G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
                     for k, v in pairs(deletable_cards) do
@@ -1206,6 +1207,7 @@ local sus = {
                         end
                     end
                     return true end }))
+		end
             end
             G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
                 card:juice_up(0.3, 0.4)
