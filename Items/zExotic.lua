@@ -55,7 +55,8 @@ local iterum = {
 	loc_txt = {
         name = 'Iterum',
         text = {
-        "Retrigger all cards played {C:attention}#2#{} time(s),",
+        "Retrigger all cards played",
+	"{C:attention}#2#{} time(s),"
         "each played card gives",
         "{X:mult,C:white} X#1# {} Mult when scored"}
     },
@@ -367,8 +368,8 @@ local crustulum = {
         name = 'Crustulum',
         text = {
             "This Joker gains {C:chips}+#2#{} Chips",
-            "per {C:attention}reroll{} in the shop,",
-            "{C:green}all rerolls are free{}",
+            "per {C:attention}reroll{} in the shop",
+            "{C:green}All rerolls are free{}",
             "{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)"
         }
     	},
@@ -564,7 +565,11 @@ local scalae = {
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
 		end
         for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i].ability.name ~= "cry-Scalae" then
+            if G.jokers.cards[i].ability.name ~= "cry-Scalae"
+	    or G.jokers.cards[i].ability.name ~= "cry-happyhouse"
+	    or G.jokers.cards[i].ability.name ~= "cry-sapling"
+	    or G.jokers.cards[i].ability.name ~= "cry-mstack"
+	    or G.jokers.cards[i].ability.name ~= "cry-notebook" then
                 --sort_id is a unique ID for each Joker
                 local jkr = G.jokers.cards[i]
                 if jkr.ability and type(jkr.ability) == 'table' then
