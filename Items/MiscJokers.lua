@@ -1209,6 +1209,7 @@ local sus = {
                     return true end }))
 		end
             end
+	    if card.ability.chosen_card ~= nil then
             G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
                 card:juice_up(0.3, 0.4)
                 G.playing_card = (G.playing_card and G.playing_card + 1) or 1
@@ -1221,6 +1222,7 @@ local sus = {
                 playing_card_joker_effects({_c})
                 return true end }))
             return {message = "Impostor!"}
+	    end
         end
 	end
 }
