@@ -1387,7 +1387,7 @@ local soccer = {
 	object_type = "Joker",
 	name = "cry-soccer",
 	key = "soccer",
-	pos = {x = 9999, y = 9999},
+	pos = {x = 1, y = 4},
 	config = {extra = {holygrail = 1}},
 	loc_txt = {
         name = 'One for All', --changed the name from latin because this isn't exotic
@@ -1401,7 +1401,7 @@ local soccer = {
     },
 	rarity = "cry_epic",
 	cost = 20,
-	atlas = "atlastwo",
+	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.holygrail}}
 	end,

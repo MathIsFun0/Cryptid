@@ -4075,7 +4075,7 @@ local coin = {
 	object_type = "Joker",
 	name = "cry-coin",
 	key = "coin",
-	pos = {x = 999, y = 999}, --no placeholder sprite yet so I think it's funny to make them invis,
+	pos = {x = 0, y = 2},
 	config = {extra = {money = 1}},
 	loc_txt = {
         name = 'Crypto Coin',
@@ -4090,7 +4090,7 @@ local coin = {
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.money, center.ability.extra.money*10}}
     end,
-	atlas = "atlastwo",
+	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == 'Joker' then
 			local option = pseudorandom(pseudoseed('coin'),card.ability.extra.money,card.ability.extra.money*10)
