@@ -401,6 +401,7 @@ local empowered = {
     end,
     apply = function(tag, context)
         if context.type == 'new_blind_choice' then
+            G.GAME.PACK_INTERRUPT = G.STATE
             tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
                 local key = 'p_spectral_normal_1'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
@@ -424,7 +425,7 @@ local gambler = {
     object_type = "Tag",
     atlas = "tag_cry",
     pos = {x=2, y=0},
-    config = {type = 'new_blind_choice', odds = 4},
+    config = {type = 'immediate', odds = 4},
     min_ante = 2,
     key = "gambler",
     loc_txt = {
@@ -439,13 +440,15 @@ local gambler = {
         return {vars = {G.GAME.probabilities.normal or 1, self.config.odds}}
     end,
     apply = function(tag, context)
-        if context.type == 'new_blind_choice' then
+        if context.type == 'immediate' then
             if pseudorandom('cry_gambler_tag') < G.GAME.probabilities.normal/tag.config.odds then
                 local lock = tag.ID
                 G.CONTROLLER.locks[lock] = true
                 tag:yep('+', G.C.RARITY.cry_exotic,function()
                     add_tag(Tag("tag_cry_empowered"))
-                    G.GAME.tags[#G.GAME.tags]:apply_to_run({type = 'new_blind_choice'})
+                    if not G.GAME.PACK_INTERRUPT then
+                        G.GAME.tags[#G.GAME.tags]:apply_to_run({type = 'new_blind_choice'})
+                    end
                     G.CONTROLLER.locks[lock] = nil
                     return true
                 end)
