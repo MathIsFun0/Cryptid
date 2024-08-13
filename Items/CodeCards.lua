@@ -483,8 +483,11 @@ local variable = {
         G.ENTERED_RANK = ""
         G.CHOOSE_RANK = UIBox{
             definition = create_UIBox_variable(card),
-            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+            config = {align="cm", offset = {x=0,y=10},major = G.ROOM_ATTACH, bond = 'Weak', instance_type = "POPUP"}
         }
+        G.CHOOSE_RANK.alignment.offset.y = 0
+        G.ROOM.jiggle = G.ROOM.jiggle + 1
+        G.CHOOSE_RANK:align_to_major()
     end
 }
 local class = {
@@ -514,8 +517,11 @@ local class = {
         G.ENTERED_ENH = ""
         G.CHOOSE_ENH = UIBox{
             definition = create_UIBox_class(card),
-            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+            config = {align="cm", offset = {x=0,y=10},major = G.ROOM_ATTACH, bond = 'Weak', instance_type = "POPUP"}
         }
+        G.CHOOSE_ENH.alignment.offset.y = 0
+        G.ROOM.jiggle = G.ROOM.jiggle + 1
+        G.CHOOSE_ENH:align_to_major()
     end
 }
 local commit = {
@@ -929,8 +935,11 @@ local exploit = {
         G.ENTERED_HAND = ""
         G.CHOOSE_HAND = UIBox{
             definition = create_UIBox_exploit(card),
-            config = {align="bmi", offset = {x=0,y=G.ROOM.T.y + 29},major = G.jokers, bond = 'Weak', instance_type = "POPUP"}
+            config = {align="cm", offset = {x=0,y=10},major = G.ROOM_ATTACH, bond = 'Weak', instance_type = "POPUP"}
         }
+        G.CHOOSE_HAND.alignment.offset.y = 0
+        G.ROOM.jiggle = G.ROOM.jiggle + 1
+        G.CHOOSE_HAND:align_to_major()
     end
 }
 local oboe = {
@@ -1088,6 +1097,39 @@ local automaton = {
         delay(0.6)
     end
 }
+local pointer = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Pointer",
+    key = "pointer",
+    pos = {x=4,y=3},
+    hidden = true,
+    soul_set = "Code",
+    loc_txt = {
+        name = 'POINTER://',
+        text = {
+            "Create a card",
+            "of {C:cry_code}your choice",
+            "{C:inactive,s:0.8}(Exotic Jokers excluded)"
+        }
+    },
+    atlas = "code",
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        G.GAME.USING_CODE = true
+        G.GAME.USING_POINTER = true
+        G.ENTERED_CARD = ""
+        G.CHOOSE_CARD = UIBox{
+            definition = create_UIBox_pointer(card),
+            config = {align="cm", offset = {x=0,y=10},major = G.ROOM_ATTACH, bond = 'Weak', instance_type = "POPUP"}
+        }
+        G.CHOOSE_CARD.alignment.offset.y = 0
+        G.ROOM.jiggle = G.ROOM.jiggle + 1
+        G.CHOOSE_CARD:align_to_major()
+    end
+}
 
 function create_UIBox_variable(card)
     G.E_MANAGER:add_event(Event({
@@ -1177,6 +1219,30 @@ function create_UIBox_crash(card)
             ref_table = G, ref_value = 'ENTERED_ACE', keyboard_offset = 1
           })}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'crash_apply', label = {'EXECUTE'}, minw = 4.5, focus_args = {snap_to = true}})}},
+    }})
+    return t
+end
+
+function create_UIBox_pointer(card)
+    G.E_MANAGER:add_event(Event({
+        blockable = false,
+        func = function()
+          G.REFRESH_ALERTS = true
+        return true
+        end
+      }))
+    local t = create_UIBox_generic_options({no_back = true,
+    colour = HEX("04200c"),
+    outline_colour = G.C.SECONDARY_SET.Code,
+    contents = {
+        {n=G.UIT.R, nodes = {create_text_input({
+            colour = G.C.SET.Code,
+            hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+            w = 4.5, h = 1, max_length = 100, extended_corpus = true, prompt_text = "ENTER A CARD",
+            ref_table = G, ref_value = 'ENTERED_CARD', keyboard_offset = 1
+          })}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'pointer_apply', label = {'CREATE'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'your_collection', label = {'COLLECTION'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1398,6 +1464,184 @@ G.FUNCS.crash_apply = function()
     check_for_unlock({type = 'ach_cry_used_crash'})
     G.CHOOSE_ACE:remove()
     G.ENTERED_ACE = nil
+end
+G.FUNCS.pointer_apply = function()
+    local function apply_lower(str)
+        --this weirdness allows you to get m and M separately
+        if string.len(str) == 1 then return str end
+        return string.lower(str)
+    end
+	local aliases = { --todo
+        
+	}
+	local current_card
+    local entered_card = G.ENTERED_CARD
+    if aliases[apply_lower(entered_card)] then entered_card = aliases[apply_lower(entered_card)] end
+	for i, v in pairs(G.P_CENTERS) do
+        if v.name and apply_lower(entered_card) == apply_lower(v.name) then
+            current_card = i
+        end
+        if apply_lower(entered_card) == apply_lower(i) then
+            current_card = i
+        end
+        if apply_lower(entered_card) == apply_lower(localize{type = "name_text", set = v.set, key = i}) then
+            current_card = i
+        end
+	end
+	if current_card then
+        local created = false
+        if G.P_CENTERS[current_card].set == "Joker" and G.P_CENTERS[current_card].rarity ~= "cry_exotic" and (type(G.P_CENTERS[current_card].rarity) ~= "number" or G.P_CENTERS[current_card].rarity < 5) then
+            local card = create_card('Joker', G.jokers, nil, nil, nil, nil, current_card)
+            card:add_to_deck()
+            G.jokers:emplace(card)
+            created = true
+        end
+        if G.P_CENTERS[current_card].consumeable then
+            local card = create_card('Consumeable', G.consumeables, nil, nil, nil, nil, current_card)
+            card:add_to_deck()
+            G.consumeables:emplace(card)
+            created = true
+        end
+        if G.P_CENTERS[current_card].set == "Voucher" then
+            local area
+            if G.STATE == G.STATES.HAND_PLAYED then
+                if not G.redeemed_vouchers_during_hand then
+                    G.redeemed_vouchers_during_hand = CardArea(
+                        G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, 
+                        {type = 'play', card_limit = 5})
+                end
+                area = G.redeemed_vouchers_during_hand
+            else
+                area = G.play
+            end
+            local card = create_card('Voucher', area, nil, nil, nil, nil, current_card)
+            card:start_materialize()
+            area:emplace(card)
+            card.cost=0
+            card.shop_voucher=false
+            local current_round_voucher=G.GAME.current_round.voucher
+            card:redeem()
+            G.GAME.current_round.voucher=current_round_voucher
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay =  0,
+                func = function() 
+                    card:start_dissolve()
+                    return true
+                end})) 
+            created = true
+        end
+        if G.P_CENTERS[current_card].set == "Booster" and G.STATE ~= G.STATES.TAROT_PACK and G.STATE ~= G.STATES.SPECTRAL_PACK and G.STATE ~= G.STATES.STANDARD_PACK and G.STATE ~= G.STATES.BUFFOON_PACK and G.STATE ~= G.STATES.PLANET_PACK and G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED then
+            local card = create_card('Booster', G.hand, nil, nil, nil, nil, current_card)
+            card.cost = 0
+            card.from_tag = true
+            G.FUNCS.use_card({config = {ref_table = card}})
+            card:start_materialize()
+            created = true
+        end
+		if created then
+            G.CHOOSE_CARD:remove()
+            G.GAME.USING_CODE = false
+            G.GAME.USING_POINTER = false
+            return
+        end
+	end
+    for i, v in pairs(G.P_TAGS) do
+        if v.name and apply_lower(entered_card) == apply_lower(v.name) then
+            current_card = i
+        end
+        if apply_lower(entered_card) == apply_lower(i) then
+            current_card = i
+        end
+        if apply_lower(entered_card) == apply_lower(localize{type = "name_text", set = v.set, key = i}) then
+            current_card = i
+        end
+	end
+	if current_card then
+        local created = false
+        local t = Tag(current_card, nil, 'Big')
+        add_tag(t)
+        if current_card == "tag_orbital" then
+            local _poker_hands = {}
+            for k, v in pairs(G.GAME.hands) do
+                if v.visible then _poker_hands[#_poker_hands+1] = k end
+            end
+            t.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('cry_pointer_orbital'))
+        end
+        if current_card == "tag_cry_rework" then
+            --tbh this is the most unbalanced part of the card
+            t.ability.rework_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_pointer_edition')).key
+            t.ability.rework_key = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed('cry_pointer_joker')).key
+        end
+        G.CHOOSE_CARD:remove()
+        G.GAME.USING_CODE = false
+        G.GAME.USING_POINTER = false
+        return
+	end
+    for i, v in pairs(G.P_BLINDS) do
+        if v.name and apply_lower(entered_card) == apply_lower(v.name) then
+            current_card = i
+        end
+        if apply_lower(entered_card) == apply_lower(i) then
+            current_card = i
+        end
+        if apply_lower(entered_card) == apply_lower(localize{type = "name_text", set = "Blind", key = i}) then
+            current_card = i
+        end
+	end
+	if current_card then
+        local created = false
+        if not G.GAME.blind or (G.GAME.blind.name == '' or not G.GAME.blind.blind_set) then
+            --from debugplus
+            local par = G.blind_select_opts.boss.parent
+            G.GAME.round_resets.blind_choices.Boss = current_card
+
+            G.blind_select_opts.boss:remove()
+            G.blind_select_opts.boss = UIBox {
+                T = {par.T.x, 0, 0, 0},
+                definition = {
+                    n = G.UIT.ROOT,
+                    config = {
+                        align = "cm",
+                        colour = G.C.CLEAR
+                    },
+                    nodes = {UIBox_dyn_container({create_UIBox_blind_choice('Boss')}, false,
+                        get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))}
+                },
+                config = {
+                    align = "bmi",
+                    offset = {
+                        x = 0,
+                        y = G.ROOM.T.y + 9
+                    },
+                    major = par,
+                    xy_bond = 'Weak'
+                }
+            }
+            par.config.object = G.blind_select_opts.boss
+            par.config.object:recalculate()
+            G.blind_select_opts.boss.parent = par
+            G.blind_select_opts.boss.alignment.offset.y = 0
+
+            for i = 1, #G.GAME.tags do
+                if G.GAME.tags[i]:apply_to_run({
+                    type = 'new_blind_choice'
+                }) then
+                    break
+                end
+            end
+            created = true
+        else
+            G.GAME.blind:set_blind(G.P_BLINDS[current_card])
+            ease_background_colour_blind(G.STATE)
+            created = true
+        end
+        if created then
+            G.CHOOSE_CARD:remove()
+            G.GAME.USING_CODE = false
+            G.GAME.USING_POINTER = false
+        end
+	end
 end
 crash_functions = {
     function()
@@ -1800,7 +2044,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, pointer, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
@@ -2065,6 +2309,32 @@ return {name = "Code Cards",
                     }
                 end
                 return ret
+            end
+            --Pointer Patches
+            local upd = Game.update
+            cry_pointer_dt = 0
+            function Game:update(dt)
+                upd(self,dt)
+                cry_pointer_dt = cry_pointer_dt + dt
+                if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
+                    cry_pointer_dt = 0
+                    local obj = G.P_CENTERS.c_cry_pointer
+                    obj.pos.x = (obj.pos.x == 4) and 5 or 4
+                end
+                if not G.OVERLAY_MENU and not G.CHOOSE_CARD and G.GAME.USING_POINTER then   
+                    G.CHOOSE_CARD = UIBox{
+                        definition = create_UIBox_pointer(card),
+                        config = {align="cm", offset = {x=0,y=10},major = G.ROOM_ATTACH, bond = 'Weak', instance_type = "POPUP"}
+                    }
+                    G.CHOOSE_CARD.alignment.offset.y = 0
+                    G.ROOM.jiggle = G.ROOM.jiggle + 1
+                    G.CHOOSE_CARD:align_to_major()
+                end
+            end
+            local yc = G.FUNCS.your_collection
+            G.FUNCS.your_collection = function(e)
+                if G.CHOOSE_CARD then G.CHOOSE_CARD:remove(); G.CHOOSE_CARD=nil end
+                yc(e)
             end
         end,
         items = code_cards}
