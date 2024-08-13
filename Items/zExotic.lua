@@ -380,17 +380,11 @@ local crustulum = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
 	end,
-	calculate = function(self, card, context) --Warning, implementation is extremely scuffed ;-;
+	calculate = function(self, card, context)
     	if context.reroll_shop and not context.blueprint then
         	card.ability.extra.chips = (card.ability.extra.chips) + card.ability.extra.chip_mod
         	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
-		G.GAME.current_round.free_rerolls = 1
-		calculate_reroll_cost(true)
-        	return {calculated = true}
-		end
-	if context.end_of_round then 
-		G.GAME.current_round.free_rerolls = 1
-		calculate_reroll_cost(true)
+		return {calculated = true}
 		end
 	if context.cardarea == G.jokers and to_big(card.ability.extra.chips) > to_big(0) and not context.before and not context.after then
         return {
@@ -399,9 +393,8 @@ local crustulum = {
         	}
 		end
 	end,
-	add_to_deck = function(self, card, from_debuff)
-        G.GAME.current_round.free_rerolls = 1
-	calculate_reroll_cost(true)
+    add_to_deck = function(self, card, from_debuff)
+	    calculate_reroll_cost(true)
 	end
 }
 if JokerDisplay then

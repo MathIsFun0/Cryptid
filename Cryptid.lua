@@ -561,6 +561,9 @@ SMODS.current_mod.extra_tabs = function() return cryptidTabs end
 
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
+    if next(find_joker("cry-crustulum")) then
+        G.GAME.current_round.reroll_cost = 0; return
+    end
 	if G.GAME.current_round.free_rerolls < 0 then G.GAME.current_round.free_rerolls = 0 end
         if G.GAME.current_round.free_rerolls > 0 then G.GAME.current_round.reroll_cost = 0; return end                
 	G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
