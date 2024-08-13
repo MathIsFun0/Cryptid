@@ -358,9 +358,9 @@ local epic_tag = {
                         rares_in_posession[v.config.center.key] = true
                     end
                 end
-
+                local card
                 if #G.P_JOKER_RARITY_POOLS.cry_epic > rares_in_posession[1] then 
-                    local card = create_card('Joker', context.area, nil, 1, nil, nil, nil, 'cry_eta')
+                    card = create_card('Joker', context.area, nil, 1, nil, nil, nil, 'cry_eta')
                     create_shop_card_ui(card, 'Joker', context.area)
                     card.states.visible = false
                     tag:yep('+', G.C.RARITY.cry_epic,function() 
@@ -545,9 +545,9 @@ local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shad
 echo_atlas, echo, eclipse, 
 azure_seal_sprite, typhoon, azure_seal, 
 cat, empowered, gambler, bundle, memory}
---[[if cry_enable_epics then
+if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
-end--]] --disabled due to bug
+end
 return {name = "Misc.", 
         init = function()
 
