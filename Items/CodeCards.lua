@@ -1025,8 +1025,8 @@ local rework_tag = {
     loc_txt = {
         name = "Rework Tag",
         text = {
-            "Shop has a",
-            "{C:dark_edition}#1# {C:attention}#2#"
+            "Shop has a(n)",
+            "{C:dark_edition}#1# {C:cry_code}#2#"
         }
     },
     apply = function(tag, context)

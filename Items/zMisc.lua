@@ -541,7 +541,8 @@ local memory = {
     end
 }
 
-local miscitems = {mosaic_shader, mosaic, oversat_shader, oversat, glitched_shader, glitched, astral_shader, astral, blurred_shader, blurred,
+local miscitems = {mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
+glitched, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, 
 azure_seal_sprite, typhoon, azure_seal, 
 cat, empowered, gambler, bundle, memory}
