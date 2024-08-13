@@ -1004,8 +1004,9 @@ local rework = {
         found_index = found_index + 1
         if found_index > #G.P_CENTER_POOLS.Edition then found_index = found_index - #G.P_CENTER_POOLS.Edition end
         local tag = Tag("tag_cry_rework")
-        tag.config.rework_key = jkr.config.center.key
-        tag.config.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
+        if not tag.ability then tag.ability = {} end
+        tag.ability.rework_key = jkr.config.center.key
+        tag.ability.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
         add_tag(tag)
         --SMODS.Tags.tag_cry_rework.apply(tag, {type = "store_joker_create"})
         G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
@@ -1016,34 +1017,32 @@ local rework = {
 local rework_tag = {
     object_type = "Tag",
     atlas = "tag_cry",
-    pos = {x=0, y=0},
+    name = "cry-Rework Tag",
+    pos = {x=0, y=3},
     config = {type = 'store_joker_create'},
     key = "rework",
-    config = {rework_edition = "[edition]", rework_key = "[joker]"},
+    ability = {rework_edition = "[edition]", rework_key = "[joker]"},
     loc_txt = {
         name = "Rework Tag",
         text = {
-            "Shop has a {C:dark_edition}#1#",
-            "{C:attention}#2#"
+            "Shop has a",
+            "{C:dark_edition}#1# {C:attention}#2#"
         }
     },
-    loc_vars = function(self, info_queue)
-		return {vars = {
-            self.config and self.config.rework_edition and localize{type = "name", set = "Edition", key = self.config.rework_edition} or "[edition]",
-            self.config and self.config.rework_key and localize{type = "name", set = "Joker", key = self.config.rework_key} or "[joker]",
-        }}
-	end,
     apply = function(tag, context)
         if context.type == 'store_joker_create' then
-            local card = create_card('Joker', context.area, nil, nil, nil, nil, tag.config.rework_key)
+            local card = create_card('Joker', context.area, nil, nil, nil, nil, tag.ability.rework_key)
             create_shop_card_ui(card, 'Joker', context.area)
-            card:set_edition(tag.config.rework_edition)
+            card:set_edition(tag.ability.rework_edition)
             card.states.visible = false
             tag:yep('+', G.C.FILTER,function() 
                 card:start_materialize()
                 return true
             end)
             tag.triggered = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+                save_run() --fixes savescum bugs hopefully?
+                return true end }))
             return card
         end
     end,
@@ -1801,7 +1800,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, --[[rework, rework_tag--]]}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
