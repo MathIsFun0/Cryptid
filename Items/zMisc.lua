@@ -401,7 +401,9 @@ local empowered = {
     end,
     apply = function(tag, context)
         if context.type == 'new_blind_choice' then
-            G.GAME.PACK_INTERRUPT = G.STATE
+            if G.STATE ~= G.STATES.SPECTRAL_PACK then
+                G.GAME.PACK_INTERRUPT = G.STATE
+            end
             tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
                 local key = 'p_spectral_normal_1'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
