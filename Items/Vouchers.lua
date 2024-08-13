@@ -18,8 +18,8 @@ local copies = {
 		}
     },
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-        info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
+        --info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+        --info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
         return {vars = {}}
     end,
 }
@@ -36,8 +36,8 @@ local tag_printer = {
 		}
     },
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-        info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
+        --info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+        --info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
         return {vars = {}}
     end,
     requires = {"v_cry_copies"}
@@ -55,8 +55,8 @@ local clone_machine = {
 		}
     },
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-        info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
+        --info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+        --info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
         return {vars = {}}
     end,
     requires = {"v_cry_tag_printer"}

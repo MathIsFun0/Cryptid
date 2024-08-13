@@ -933,6 +933,123 @@ local exploit = {
         }
     end
 }
+local oboe = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'oboe',
+    name = 'cry-oboe',
+    atlas = 'code',
+    config = {extra = {choices = 1}},
+    pos = {
+        x = 2,
+        y = 3,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://OFFBYONE',
+        text = {
+            'Next {C:cry_code}Booster Pack{} has',
+            '{C:cry_code}#1#{} extra card and',
+            '{C:cry_code}#1#{} extra choice'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.choices}}
+	end,
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + card.ability.extra.choices
+    end
+}
+local rework = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'rework',
+    name = 'cry-Rework',
+    atlas = 'code',
+    pos = {
+        x = 3,
+        y = 3,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://REWORK',
+        text = {
+            'Destroy a {C:cry_code}selected{} Joker,',
+            'create a {C:cry_code}Rework Tag{} with',
+            'an {C:cry_code}upgraded{} edition',
+            '{C:inactive,s:0.8}Upgrades using order in the Collection'
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_rework", specific_vars = {"[edition]", "[joker]"}}
+        return {vars = {}}
+    end,
+    can_use = function(self, card)
+        return #G.jokers.highlighted == 1
+    end,
+    use = function(self, card, area, copier)
+        local jkr = G.jokers.highlighted[1]
+        local found_index = 1
+        if jkr.edition then
+            for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
+                if v.key == jkr.edition.key then
+                    found_index = i
+                    break
+                end
+            end
+        end
+        found_index = found_index + 1
+        if found_index > #G.P_CENTER_POOLS.Edition then found_index = found_index - #G.P_CENTER_POOLS.Edition end
+        local tag = Tag("tag_cry_rework")
+        if not tag.ability then tag.ability = {} end
+        tag.ability.rework_key = jkr.config.center.key
+        tag.ability.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
+        add_tag(tag)
+        --SMODS.Tags.tag_cry_rework.apply(tag, {type = "store_joker_create"})
+        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+            jkr:start_dissolve()
+            return true end }))
+    end
+}
+local rework_tag = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    name = "cry-Rework Tag",
+    pos = {x=0, y=3},
+    config = {type = 'store_joker_create'},
+    key = "rework",
+    ability = {rework_edition = "[edition]", rework_key = "[joker]"},
+    loc_txt = {
+        name = "Rework Tag",
+        text = {
+            "Shop has a(n)",
+            "{C:dark_edition}#1# {C:cry_code}#2#"
+        }
+    },
+    apply = function(tag, context)
+        if context.type == 'store_joker_create' then
+            local card = create_card('Joker', context.area, nil, nil, nil, nil, tag.ability.rework_key)
+            create_shop_card_ui(card, 'Joker', context.area)
+            card:set_edition(tag.ability.rework_edition)
+            card.states.visible = false
+            tag:yep('+', G.C.FILTER,function() 
+                card:start_materialize()
+                return true
+            end)
+            tag.triggered = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+                save_run() --fixes savescum bugs hopefully?
+                return true end }))
+            return card
+        end
+    end,
+    in_pool = function()
+        return false
+    end
+}
 
 local automaton = {
     object_type = "Consumable",
@@ -1683,7 +1800,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()

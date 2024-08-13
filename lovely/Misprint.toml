@@ -35,6 +35,7 @@ cry_misprintize(card)
 match_indent = true
 
 # Prevent pack softlocks
+# Off by One Error effect
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -47,6 +48,12 @@ if G.GAME.modifiers.cry_misprint_min then
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
     --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
+end
+if G.GAME.cry_oboe then
+    self.ability.extra = self.ability.extra + G.GAME.cry_oboe
+    G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
+    G.GAME.cry_oboe = nil
+    G.GAME.pack_size = self.ability.extra
 end
 '''
 match_indent = true
