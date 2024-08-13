@@ -933,6 +933,36 @@ local exploit = {
         }
     end
 }
+local oboe = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'oboe',
+    name = 'cry-oboe',
+    atlas = 'code',
+    config = {extra = {choices = 1}},
+    pos = {
+        x = 2,
+        y = 3,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://OFFBYONE',
+        text = {
+            'Next {C:cry_code}Booster Pack{} has',
+            '{C:cry_code}#1#{} extra card and',
+            '{C:cry_code}#1#{} extra choice'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.choices}}
+	end,
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + card.ability.extra.choices
+    end
+}
 
 local automaton = {
     object_type = "Consumable",
@@ -1683,7 +1713,7 @@ crash_functions = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 return {name = "Code Cards",
         init = function()
