@@ -523,7 +523,8 @@ local big_num_whitelist = {
     -- j_cry_bonk = true,
     j_cry_exponentia = true,
     j_cry_crustulum = true,
-    j_cry_primus = true
+    j_cry_primus = true,
+    j_cry_stella_mortis = true
 }
 local scalae = {
     object_type = "Joker",
@@ -795,7 +796,7 @@ local stella_mortis = {
                     card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
-                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..(card.ability.extra.Emult + card.ability.extra.Emult_mod).." Mult"})
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod)).." Mult"})
                 end
                 return {calculated = true}, true
             end
