@@ -1196,6 +1196,7 @@ local sus = {
                 for k, v in pairs(G.hand.cards) do
                     if not v.ability.eternal then deletable_cards[#deletable_cards + 1] = v end
                 end
+		if #deletable_cards ~= 0 then
                 local _first_dissolve = nil
                 G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
                     for k, v in pairs(deletable_cards) do
@@ -1206,7 +1207,9 @@ local sus = {
                         end
                     end
                     return true end }))
+		end
             end
+	    if card.ability.chosen_card ~= nil then
             G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.4, func = function()
                 card:juice_up(0.3, 0.4)
                 G.playing_card = (G.playing_card and G.playing_card + 1) or 1
@@ -1219,6 +1222,7 @@ local sus = {
                 playing_card_joker_effects({_c})
                 return true end }))
             return {message = "Impostor!"}
+	    end
         end
 	end
 }

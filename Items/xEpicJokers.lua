@@ -570,7 +570,8 @@ local double_scale = {
         for i = 1, #G.jokers.cards do
 		if G.jokers.cards[i].ability.name ~= "cry-happyhouse"
 	    or G.jokers.cards[i].ability.name ~= "cry-sapling"
-	    or G.jokers.cards[i].ability.name ~= "cry-mstack" then
+	    or G.jokers.cards[i].ability.name ~= "cry-mstack"
+	    or G.jokers.cards[i].ability.name ~= "cry-notebook" then
             --sort_id is a unique ID for each Joker
             local jkr = G.jokers.cards[i]
             if jkr.ability and type(jkr.ability) == 'table' then

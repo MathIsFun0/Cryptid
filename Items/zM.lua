@@ -391,7 +391,7 @@ local mneon = {
             		card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus * jollycount
 			return {message = "M!"}
 		else 
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus
+			card.ability.extra.money = card.ability.extra.money + math.max(1, card.ability.extra.bonus)
 			return {message = "Upgrade!"}
 		end
         end
@@ -519,25 +519,25 @@ if JokerDisplay then
             card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
         end
     }
-end --TODO: Fix double scale interaction
+end
 local bonk = {
 	object_type = "Joker",
 	name = "cry-bonk",
 	key = "bonk",
 	pos = {x = 2, y = 2},
-	config = {extra = {chips = 6, bonus = 1, xchips = 3, type = "Pair", chipstext = 18}, jolly = {t_mult = 8, type = 'Pair'}},
+	config = {extra = {chips = 6, bonus = 1, xchips = 3, type = "Pair"}, jolly = {t_mult = 8, type = 'Pair'}},
 	loc_txt = {
 		name = 'Bonk',
 		text = {
 			"Each {C:attention}Joker{} gives {C:chips}+#1#{} Chips",
 			"Increase amount by {C:chips}+#2#{} if",
-			"{C:attention} poker hand{} is a {C:attention}#4#{}",
-			"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#3#{} {C:inactive,s:0.8}Chips instead{}"
+			"{C:attention} poker hand{} is a {C:attention}#3#{}",
+			"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chips instead{}"
 		}
 	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.chipstext, center.ability.extra.type}}
+		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.type, (center.ability.extra.chips * center.ability.extra.xchips)}}
 	end,
 	rarity = 2,
 	cost = 5,
@@ -548,7 +548,6 @@ local bonk = {
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
 				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.bonus
-				card.ability.extra.chipstext = card.ability.extra.chips * card.ability.extra.xchips --value used for display
 				card_eval_status_text(card, 'extra', nil, nil, nil, {
 					message = localize('k_upgrade_ex'),
 					colour = G.C.CHIPS
@@ -579,16 +578,81 @@ local bonk = {
 					})) 
 				end
 				return {
-					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chipstext}},
+					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips * card.ability.extra.xchips}},
 					chip_mod = card.ability.extra.chips * card.ability.extra.xchips,
 				}
 			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if card.ability.extra.xchips ~= 3 then card.ability.extra.xchips = 3 end --avoid text displaying an incorrect value on misprint deck
-		card.ability.chipstext = card.ability.extra.chips * card.ability.extra.xchips
+		card.ability.extra.xchips = math.floor(card.ability.extra.xchips + 0.5) --lua moment
     	end
+}
+if JokerDisplay then
+    bonk.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            local chips_mod = mod_joker.ability.extra.chips
+            if card.ability.name == "Jolly Joker" then
+                chips_mod = chips_mod * mod_joker.ability.extra.xchips
+            end
+            return { chips = chips_mod or nil }
+        end
+    }
+end
+local morse = {
+    object_type = "Joker",
+    name = "cry-morse",
+    key = "morse",
+    pos = {x = 5, y = 1},
+    config = {extra = {bonus = 2, money = 0, active = "Active!", check = true}, jolly = {t_mult = 8, type = 'Pair'}},
+    loc_txt = {
+        name = 'Morse Code',
+        text = {
+            "Earn {C:money}$#2#{} at end of round",
+            "Increase payout by {C:money}$#1#{} when",
+	    "a Joker with an {C:attention}Edition{}",
+	    "or {C:attention}Jolly Joker{} is sold",
+	    "{C:red}Works once per round{}",
+	    "{C:inactive}#3#{}"
+        }
+    },
+    rarity = 1,
+    cost = 5,
+    perishable_compat = false,
+    blueprint_compat = false,
+    loc_vars = function(self, info_queue, center)
+	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        return {vars = {center.ability.extra.bonus, center.ability.extra.money, center.ability.extra.active}}
+    end,
+    atlas = "atlastwo",
+    calculate = function(self, card, context)
+        if context.selling_card and ((context.card.ability.set == 'Joker' and context.card.edition) or context.card.ability.name == "Jolly Joker") and card.ability.extra.check and not context.blueprint then
+            card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus
+	    card.ability.extra.check = false
+	    card.ability.extra.active = "No triggers left!"
+	    return {
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Upgrade!",
+                    colour = G.C.MONEY,
+                    })
+            }
+	end
+	if context.end_of_round and not context.retrigger_joker and not context.blueprint then
+            if not card.ability.extra.check then
+                card.ability.extra.active = "Active!"
+                card.ability.extra.check = true
+                return {
+                    	message = localize('k_reset'),
+                        card = card,
+			}
+            end
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        if card.ability.extra.money > 0 then
+            return card.ability.extra.money
+        end
+    end
 }
 if JokerDisplay then
     bonk.joker_display_definition = {

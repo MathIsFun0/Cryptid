@@ -323,7 +323,7 @@ local moneybean = {
 	key = "moneybean",
 	config = {extra = 1e300},
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 5, y = 1},
 	requires = {"v_money_tree"},
 	loc_txt = {
         name = 'Money Beanstalk',
