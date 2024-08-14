@@ -41,7 +41,7 @@ if effects.jokers.joker_repetitions then
                     if ef.jokers.Xmult_mod and ef.jokers.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
                         for _, v in pairs(find_joker("cry-Exponentia")) do
                             v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
+                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
                         end
                     end
                     if percent then percent = percent+percent_delta end
@@ -838,7 +838,7 @@ if effect and effect.joker_repetitions then
                     if ef.Xmult_mod and next(find_joker("cry-Exponentia")) then
                         for _, v in pairs(find_joker("cry-Exponentia")) do
                             v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
+                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
                         end
                     end
                     percent = percent+percent_delta
@@ -886,7 +886,7 @@ if effect and effect.joker_repetitions then
                     if ef.Xmult_mod and next(find_joker("cry-Exponentia")) then
                         for _, v in pairs(find_joker("cry-Exponentia")) do
                             v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..v.ability.extra.Emult.." Mult"})
+                            card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
                         end
                     end
                     percent = percent+percent_delta

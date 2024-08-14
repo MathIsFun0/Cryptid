@@ -381,17 +381,11 @@ local crustulum = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.chips, center.ability.extra.chip_mod}}
 	end,
-	calculate = function(self, card, context) --Warning, implementation is extremely scuffed ;-;
+	calculate = function(self, card, context)
     	if context.reroll_shop and not context.blueprint then
         	card.ability.extra.chips = (card.ability.extra.chips) + card.ability.extra.chip_mod
         	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
-		G.GAME.current_round.free_rerolls = 1
-		calculate_reroll_cost(true)
-        	return {calculated = true}
-		end
-	if context.end_of_round then 
-		G.GAME.current_round.free_rerolls = 1
-		calculate_reroll_cost(true)
+		return {calculated = true}
 		end
 	if context.cardarea == G.jokers and to_big(card.ability.extra.chips) > to_big(0) and not context.before and not context.after then
         return {
@@ -400,9 +394,8 @@ local crustulum = {
         	}
 		end
 	end,
-	add_to_deck = function(self, card, from_debuff)
-        G.GAME.current_round.free_rerolls = 1
-	calculate_reroll_cost(true)
+    add_to_deck = function(self, card, from_debuff)
+	    calculate_reroll_cost(true)
 	end
 }
 if JokerDisplay then
@@ -531,7 +524,8 @@ local big_num_whitelist = {
     -- j_cry_bonk = true,
     j_cry_exponentia = true,
     j_cry_crustulum = true,
-    j_cry_primus = true
+    j_cry_primus = true,
+    j_cry_stella_mortis = true
 }
 local scalae = {
     object_type = "Joker",
@@ -771,6 +765,72 @@ local scalae = {
 		return {vars = {number_format(card.ability.extra.scale + 1), number_format(card.ability.extra.scale_mod)}}
 	end
 }
+local stella_mortis = {
+    object_type = "Joker",
+	name = "cry-Stella Mortis",
+	key = "stella_mortis",
+	config = {extra = {Emult = 1, Emult_mod = 0.4}},
+	pos = {x = 3, y = 5},
+	loc_txt = {
+        name = 'Stella Mortis',
+        text = {
+			"This Joker destroys a random {C:planet}Planet{} card",
+			"at the end of {C:attention}shop{}, and gains {X:dark_edition,C:white} ^#1# {} Mult",
+			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
+        }
+    },
+	rarity = "cry_exotic",
+	cost = 50,
+    blueprint_compat = true,
+	perishable_compat = false,
+	atlas = "atlasexotic",
+	soul_pos = {x = 5, y = 5, extra = {x = 4, y = 5}},
+	calculate = function(self, card, context)
+        if context.ending_shop then
+            local destructable_planet = {}
+            for i = 1, #G.consumeables.cards do
+                if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced then destructable_planet[#destructable_planet+1] = G.consumeables.cards[i] end
+            end
+            local planet_to_destroy = #destructable_planet > 0 and pseudorandom_element(destructable_planet, pseudoseed('stella_mortis')) or nil
+
+            if planet_to_destroy then 
+                planet_to_destroy.getting_sliced = true
+                G.E_MANAGER:add_event(Event({func = function()
+                    (context.blueprint_card or card):juice_up(0.8, 0.8)
+                    planet_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
+                    card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+                return true end }))
+                if not (context.blueprint_card or self).getting_sliced then
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod)).." Mult"})
+                end
+                return {calculated = true}, true
+            end
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
+            return {
+                message = "^"..number_format(card.ability.extra.Emult).." Mult",
+                Emult_mod = card.ability.extra.Emult,
+                colour = G.C.DARK_EDITION
+            }
+        end
+	end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Emult_mod, center.ability.extra.Emult}}
+    end
+}
+if JokerDisplay then
+    stella_mortis.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "^" },
+                    { ref_table = "card.ability.extra", ref_value = "Emult" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+    }
+end
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -880,4 +940,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus, scalae,}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus, scalae, stella_mortis}}
