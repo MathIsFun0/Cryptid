@@ -198,7 +198,7 @@ local crash = {
         -- I'm being VERY safe here, game gets really weird and sometimes does and doesn't save ://CRASH use
         G:save_settings()
         G:save_progress()
-        local f = pseudorandom_element(crash_functions, pseudoseed("cry_crash"))
+        local f = pseudorandom_element(crashes, pseudoseed("cry_crash"))
         f(self, card, area, copier)
     end
 }
@@ -1218,7 +1218,7 @@ function create_UIBox_crash(card)
             w = 4.5, h = 1, max_length = 2500, extended_corpus = true, prompt_text = "???",
             ref_table = G, ref_value = 'ENTERED_ACE', keyboard_offset = 1
           })}},
-        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'crash_apply', label = {'EXECUTE'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'ca', label = {'EXECUTE'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1456,7 +1456,7 @@ G.FUNCS.class_apply = function()
         G.CHOOSE_ENH:remove()
     end
 end
-G.FUNCS.crash_apply = function()
+G.FUNCS.ca = function()
     G.GAME.USING_CODE = false
     loadstring(G.ENTERED_ACE)() --Scary!
     glitched_intensity = 0
@@ -1830,7 +1830,7 @@ G.FUNCS.pointer_apply = function()
         end
 	end
 end
-crash_functions = {
+crashes = {
     function()
         G:save_settings()
         G:save_progress()
@@ -2226,8 +2226,8 @@ crash_functions = {
 }
 
 --for testing
--- crash_functions = {crash_functions[#crash_functions]}
--- crash_functions[1]()
+-- crashes = {crashes[#crashes]}
+-- crashes[1]()
 
 
 
