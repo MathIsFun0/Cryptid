@@ -199,15 +199,14 @@ local encoded = {
     object_type = "Back",
     name = "cry-Encoded",
     key = "encoded",
-    config = {cry_encoded = true, consumable_slot = -1},
+    config = {cry_encoded = true},
     pos = {x = 2, y = 5},
     atlas = "atlasdeck",
     loc_txt = {
         name = "Encoded Deck",
         text = {
             "Start with a {C:code}Code Joker{}",
-            "and a {C:code}CTRL+V{} {C:Joker}Joker{}",
-            "{C:attention}-1{} Consumable Slots"
+            "and a {C:code}CTRL+V{} {C:Joker}Joker{}"
         }
     }
 }
