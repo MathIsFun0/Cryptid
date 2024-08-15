@@ -1208,7 +1208,9 @@ local hugem = {
 				card.ability.extra.check = false
 				local loyalservants = {}
                 for k, _ in pairs(Cryptid.M_jokers) do
-                    loyalservants[#loyalservants+1] = k
+                    if G.P_CENTERS[k] then
+                        loyalservants[#loyalservants+1] = k
+                    end
                 end
         	    local _card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(loyalservants,pseudoseed("cry_biggestm")))
         		_card:add_to_deck()
