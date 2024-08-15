@@ -453,6 +453,74 @@ local CodeJoker = {
 	end
 }
 
+local ctrlv = {
+	object_type = "Joker",
+	name = "cry-CTRL+V",
+	key = "CTRL+V",
+	pos = {x = 3, y = 4},
+	config = {extra = {odds = 2, ckt = 0}},
+	loc_txt = {
+        name = 'CTRL+V',
+        text = {
+			"When a {C:code}Code{} card is used,",
+                "{C:green}#1# in #2#{} chance to add a copy",
+                "to your consumable area",
+                "{C:inactive}(Must have room)"
+		}
+    },
+	rarity = "cry_epic",
+	cost = 11,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
+    end,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+				if pseudorandom("cry_CTRL+V_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
+					if G.GAME.probabilities.normal >= card.ability.extra.odds and context.consumeable.from_ctrlv then
+						card.ability.extra.ckt = card.ability.extra.ckt + 1
+					else
+						card.ability.extra.ckt = 0
+					end
+					G.E_MANAGER:add_event(Event({
+                        func = function() 
+                            local cards = copy_card(context.consumeable)
+                            if card.ability.extra.ckt >= 10 then 
+                                cards.beginning_end = true
+                                card.ability.extra.ckt = 0
+                            else
+                                cards.from_from_ctrlv = true
+                            end
+                            cards:add_to_deck()
+                            G.consumeables:emplace(cards) 
+                            return true
+                        end}))
+                    card_eval_status_text(context.blueprint_cards or card, 'extra', nil, nil, nil, {message = localize('k_copied_ex')})
+                end
+            end
+        end
+	end
+}
+if JokerDisplay then
+	ctrlv.joker_display_definition = {
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = " in " },
+				{ ref_table = "card.ability.extra",        ref_value = "odds" },
+				{ text = ")" },
+			}
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+		end
+	}
+end
+
 local boredom = {
 	object_type = "Joker",
 	name = "cry-Boredom",
@@ -1544,4 +1612,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, CodeJoker, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}
+		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, CodeJoker, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer,ctrlv}}
