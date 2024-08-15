@@ -1,5 +1,8 @@
 if not Cryptid then Cryptid = {} end
-Cryptid.M_jokers = {}   -- Global table for M Jokers
+Cryptid.M_jokers = {
+    j_cry_m = true,
+    j_cry_M = true,
+}   -- Global table for M Jokers
 
 local jollysus = {
     object_type = "Joker",
@@ -1285,11 +1288,17 @@ local macabre = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint or context.retrigger_joker) and not card.getting_sliced then
-            local triggered = false
-            for _, v in pairs(G.jokers.cards) do
-                if v ~= card
-                and v.config.center.key ~= "j_jolly"
-                and not (v.ability.eternal or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
+            G.E_MANAGER:add_event(Event({func = function()
+                local triggered = false
+                local destroyed_jokers = {}
+                for _, v in pairs(G.jokers.cards) do
+                    if v ~= card
+                    and v.config.center.key ~= "j_jolly"
+                    and not (v.ability.eternal or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
+                        destroyed_jokers[#destroyed_jokers+1] = v
+                    end
+                end
+                for _, v in pairs(destroyed_jokers) do
                     triggered = true
                     v.getting_sliced = true
                     v:start_dissolve({HEX("57ecab")}, nil, 1.6)
@@ -1297,17 +1306,18 @@ local macabre = {
                     jolly_card:add_to_deck()
                     G.jokers:emplace(jolly_card)
                 end
-            end
-            if triggered then
-                card:juice_up(0.8, 0.8)
-                play_sound('slice1', 0.96+math.random()*0.08)
-            end
+                if triggered then
+                    card:juice_up(0.8, 0.8)
+                    play_sound('slice1', 0.96+math.random()*0.08)
+                end
+                return true
+            end}))
         end
 	end,
 }
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse,macabre}
 for _, v in pairs(ret_items) do
-    Cryptid.M_jokers["j_cry_" .. v.key] = v
+    Cryptid.M_jokers["j_cry_" .. v.key] = true
 end
 return {name = "M Jokers", 
         init = function()
@@ -1321,13 +1331,13 @@ return {name = "M Jokers",
             end
             if cry_enable_epics then
                 for _, jkr in pairs({doodlem, virgo, smallestm, biggestm}) do
-                    Cryptid.M_jokers["j_cry_" .. jkr.key] = jkr
+                    Cryptid.M_jokers["j_cry_" .. jkr.key] = true
                     ret_items[#ret_items+1] = jkr
                 end
             end
             if cry_enable_exotics then
                 for _, jkr in pairs({hugem}) do
-                    Cryptid.M_jokers["j_cry_" .. jkr.key] = jkr
+                    Cryptid.M_jokers["j_cry_" .. jkr.key] = true
                     ret_items[#ret_items+1] = jkr
                 end
             end
