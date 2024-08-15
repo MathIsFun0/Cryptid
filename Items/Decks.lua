@@ -320,7 +320,7 @@ return {name = "Misc. Decks",
                                 card:add_to_deck()
                                 card:start_materialize()
                                 G.jokers:emplace(card)
-                                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_cry_CTRL+V')
+                                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_cry_copypaste')
                                 card:add_to_deck()
                                 card:start_materialize()
                                 G.jokers:emplace(card)
