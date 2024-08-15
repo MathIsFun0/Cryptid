@@ -1,3 +1,5 @@
+if not Cryptid then Cryptid = {} end
+Cryptid.M_jokers = {}   -- Global table for M Jokers
 
 local jollysus = {
     object_type = "Joker",
@@ -655,72 +657,6 @@ local morse = {
     end
 }
 if JokerDisplay then
-    bonk.joker_display_definition = {
-        mod_function = function(card, mod_joker)
-            local chips_mod = mod_joker.ability.extra.chips
-            if card.ability.name == "Jolly Joker" then
-                chips_mod = chips_mod * mod_joker.ability.extra.xchips
-            end
-            return { chips = chips_mod or nil }
-        end
-    }
-end
-local morse = {
-    object_type = "Joker",
-    name = "cry-morse",
-    key = "morse",
-    pos = {x = 5, y = 1},
-    config = {extra = {bonus = 2, money = 0, active = "Active!", check = true}, jolly = {t_mult = 8, type = 'Pair'}},
-    loc_txt = {
-        name = 'Morse Code',
-        text = {
-            "Earn {C:money}$#2#{} at end of round",
-            "Increase payout by {C:money}$#1#{} when",
-	    "a Joker with an {C:attention}Edition{}",
-	    "or {C:attention}Jolly Joker{} is sold",
-	    "{C:red}Works once per round{}",
-	    "{C:inactive}#3#{}"
-        }
-    },
-    rarity = 1,
-    cost = 5,
-    perishable_compat = false,
-    blueprint_compat = false,
-    loc_vars = function(self, info_queue, center)
-	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.bonus, center.ability.extra.money, center.ability.extra.active}}
-    end,
-    atlas = "atlastwo",
-    calculate = function(self, card, context)
-        if context.selling_card and ((context.card.ability.set == 'Joker' and context.card.edition) or context.card.ability.name == "Jolly Joker") and card.ability.extra.check and not context.blueprint then
-            card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus
-	    card.ability.extra.check = false
-	    card.ability.extra.active = "No triggers left!"
-	    return {
-                    card_eval_status_text(card, 'extra', nil, nil, nil, {
-                    message = "Upgrade!",
-                    colour = G.C.MONEY,
-                    })
-            }
-	end
-	if context.end_of_round and not context.retrigger_joker and not context.blueprint then
-            if not card.ability.extra.check then
-                card.ability.extra.active = "Active!"
-                card.ability.extra.check = true
-                return {
-                    	message = localize('k_reset'),
-                        card = card,
-			}
-            end
-        end
-    end,
-    calc_dollar_bonus = function(self, card)
-        if card.ability.extra.money > 0 then
-            return card.ability.extra.money
-        end
-    end
-}
-if JokerDisplay then
     morse.joker_display_definition = {
         text = {
             { text = "+$" },
@@ -1270,31 +1206,14 @@ local hugem = {
 			if not context.blueprint then card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.bonus end
 			if card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
 				card.ability.extra.check = false
-				local loyalservants = {
-            				"j_cry_jollysus",
-           				"j_cry_kidnap",
-            				"j_cry_bubblem",
-            				"j_cry_foodm",
-            				"j_cry_mneon",
-            				"j_cry_mstack",
-            				"j_cry_notebook",
-            				"j_cry_reverse",
-            				"j_cry_loopy",
-					"j_cry_morse",
-					"j_cry_bonk",
-					"j_cry_sacrifice",
-					"j_cry_scrabble",
-        				}
-        				if G.P_CENTERS.j_cry_m then loyalservants[#loyalservants+1] = "j_cry_m" end
-        				if G.P_CENTERS.j_cry_M then loyalservants[#loyalservants+1] = "j_cry_M" end
-					if G.P_CENTERS.j_cry_virgo then loyalservants[#loyalservants+1] = "j_cry_virgo" end
-        				if G.P_CENTERS.j_cry_doodlem then loyalservants[#loyalservants+1] = "j_cry_doodlem" end
-					if G.P_CENTERS.j_cry_smallestm then loyalservants[#loyalservants+1] = "j_cry_smallestm" end
-                    if G.P_CENTERS.j_cry_biggestm then loyalservants[#loyalservants+1] = "j_cry_biggestm" end
-        				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(loyalservants,pseudoseed("cry_biggestm")))
-        				card:add_to_deck()
-					card:start_materialize()
-        				G.jokers:emplace(card)
+				local loyalservants = {}
+                for k, _ in pairs(Cryptid.M_jokers) do
+                    loyalservants[#loyalservants+1] = k
+                end
+        	    local _card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(loyalservants,pseudoseed("cry_biggestm")))
+        		_card:add_to_deck()
+				_card:start_materialize()
+        		G.jokers:emplace(_card)
 			end
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
 		end
@@ -1340,7 +1259,54 @@ if JokerDisplay then
     }--]]
     --pow_mult doesn't work yet here :(
 end
-local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse}
+local macabre = {
+    object_type = "Joker",
+	name = "cry-macabre",
+	key = "macabre",
+    pos = {x = 1, y = 2},
+	config = {jolly = {t_mult = 8, type = 'Pair'}},
+	loc_txt = {
+		name = 'Macabre Joker',
+		text = {
+            "When {C:attention}Blind{} is selected,",
+            "destroys each {C:attention}Joker{} except",
+			"{C:legendary}M-Jokers{} and {C:attention}Jolly Jokers{},",
+            "creates a {C:attention}Jolly Joker{} for",
+            "each destroyed card",
+		}
+	},
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+	end,
+	rarity = 3,
+	cost = 8,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.setting_blind and not (context.blueprint or context.retrigger_joker) and not card.getting_sliced then
+            local triggered = false
+            for _, v in pairs(G.jokers.cards) do
+                if v ~= card
+                and v.config.center.key ~= "j_jolly"
+                and not (v.ability.eternal or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
+                    triggered = true
+                    v.getting_sliced = true
+                    v:start_dissolve({HEX("57ecab")}, nil, 1.6)
+                    local jolly_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+                    jolly_card:add_to_deck()
+                    G.jokers:emplace(jolly_card)
+                end
+            end
+            if triggered then
+                card:juice_up(0.8, 0.8)
+                play_sound('slice1', 0.96+math.random()*0.08)
+            end
+        end
+	end,
+}
+local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,morse,loopy,scrabble,sacrifice,reverse,macabre}
+for _, v in pairs(ret_items) do
+    Cryptid.M_jokers["j_cry_" .. v.key] = v
+end
 return {name = "M Jokers", 
         init = function()
 	    --Make Kidnapping always cost 1$ regardless of edition
@@ -1353,11 +1319,13 @@ return {name = "M Jokers",
             end
             if cry_enable_epics then
                 for _, jkr in pairs({doodlem, virgo, smallestm, biggestm}) do
+                    Cryptid.M_jokers["j_cry_" .. jkr.key] = jkr
                     ret_items[#ret_items+1] = jkr
                 end
             end
             if cry_enable_exotics then
                 for _, jkr in pairs({hugem}) do
+                    Cryptid.M_jokers["j_cry_" .. jkr.key] = jkr
                     ret_items[#ret_items+1] = jkr
                 end
             end
