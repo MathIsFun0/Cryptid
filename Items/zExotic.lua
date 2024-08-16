@@ -333,8 +333,8 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
-	pos = {x = 0, y = 3},
-	soul_pos = {x = 1, y = 3, extra = {x = 2, y = 3}},
+	pos = {x = 0, y = 0},
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
 	loc_txt = {
         name = 'Effarcire',
         text = {
@@ -784,7 +784,7 @@ local stella_mortis = {
 			"This Joker destroys a",
 			"random {C:planet}Planet{} card",
 			"and gains {X:dark_edition,C:white} ^#1# {} Mult",
-			"at the end of the {C:attention}shop{},",
+			"at the end of the {C:attention}shop{}",
 			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
         }
     },
