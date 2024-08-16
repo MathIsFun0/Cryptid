@@ -579,11 +579,8 @@ end
 se = Card.set_edition
 function Card:set_edition(x,y,z)
     local from_copy = false
-    if type(x) == "table" then
-    if x.from_copy then from_copy = true end
-    x.from_copy = nil
-    if x == {} then x = nil end
-    end
+    if self.from_copy then from_copy = true end
+    self.from_copy = nil
     se(self,x,y,z)
     if not from_copy then
         if self.edition and self.edition.cry_oversat then
@@ -596,6 +593,7 @@ function Card:set_edition(x,y,z)
         end
     end
 end
+
 --echo card
 cs = Card.calculate_seal
 function Card:calculate_seal(context)
