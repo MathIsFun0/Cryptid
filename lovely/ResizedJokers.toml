@@ -85,7 +85,7 @@ target = "card.lua"
 pattern = 'elseif self.config.center.name == "Wee Joker" then'
 position = "before"
 payload = '''
-elseif self.config.center.name == "cry-Wee Fibonacci" or center.name == "cry-reverse" then 
+elseif self.config.center.name == "cry-Wee Fibonacci" or self.config.center.name == "cry-reverse" then 
     self.T.h = H*scale*0.7*scale
     self.T.w = W*scale*0.7*scale
 elseif self.config.center.name == "cry-biggestm" then 
