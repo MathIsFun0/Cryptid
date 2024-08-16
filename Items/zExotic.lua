@@ -781,7 +781,7 @@ local stella_mortis = {
     },
 	rarity = "cry_exotic",
 	cost = 50,
-    blueprint_compat = true,
+    	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
 	soul_pos = {x = 5, y = 5, extra = {x = 4, y = 5}},
