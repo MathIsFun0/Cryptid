@@ -784,7 +784,7 @@ local stella_mortis = {
 			"This Joker destroys a",
 			"random {C:planet}Planet{} card",
 			"and gains {X:dark_edition,C:white} ^#1# {} Mult",
-			"at the end of the {C:attention}shop{},"
+			"at the end of the {C:attention}shop{},",
 			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
         }
     },
