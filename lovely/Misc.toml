@@ -37,15 +37,12 @@ end
 [patches.pattern]
 target = 'functions/common_events.lua'
 pattern = '''new_card:set_edition(other.edition or {}, nil, true)'''
-position = 'at'
+position = 'before'
 payload = '''
-if type(other) == "table" then
-    if not other.edition then other.edition = {} end
-    other.edition.from_copy = true
-end
-new_card:set_edition(other.edition, nil, true)
+new_card.from_copy = true
 '''
 match_indent = true
+
 # Joker BigNum value support
 [[patches]]
 [patches.pattern]
