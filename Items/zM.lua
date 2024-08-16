@@ -1233,7 +1233,7 @@ local hugem = {
 					})) 
 				end
 				return {
-                			message = "^"..card.ability.extra.mult.." Mult",
+                			message = "^"..number_format(card.ability.extra.mult).." Mult",
                 			Emult_mod = card.ability.extra.mult,
                 			colour = G.C.DARK_EDITION,
                 			card = card
