@@ -333,19 +333,19 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
-	pos = {x = 0, y = 3},
-	soul_pos = {x = 1, y = 3, extra = {x = 2, y = 3}},
+	pos = {x = 0, y = 0},
+	soul_pos = {x = 1, y = 0, extra = {x = 2, y = 0}},
 	loc_txt = {
         name = 'Effarcire',
         text = {
     		'Draw {C:green}full deck{} to hand',
     		'when {C:attention}Blind{} is selected',
-    		'{C:inactive,s:0.8}"If you can\'t handle me at my 1x"',
-    		'{C:inactive,s:0.8}"you don\'t deserve me at my 2x"'
+    		'{C:inactive,s:0.8}"If you can\'t handle me at my 1x,',
+    		'{C:inactive,s:0.8}you don\'t deserve me at my 2x"'
 	}
 	},
 	cost = 50,
-	atlas = 'atlasexotic',
+	atlas = 'effarcire',
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
 		if not context.blueprint then
@@ -356,6 +356,13 @@ local effarcire = {
 			end
 		end
 	end
+}
+local effarcire_sprite = {
+    object_type = "Atlas",
+    key = "effarcire",
+    path = "goofy.png",
+    px = 71,
+    py = 95
 }
 local crustulum = {
 	object_type = "Joker",
@@ -525,7 +532,8 @@ local big_num_whitelist = {
     j_cry_exponentia = true,
     j_cry_crustulum = true,
     j_cry_primus = true,
-    j_cry_stella_mortis = true
+    j_cry_stella_mortis = true,
+    j_cry_hugem = true
 }
 local scalae = {
     object_type = "Joker",
@@ -774,14 +782,16 @@ local stella_mortis = {
 	loc_txt = {
         name = 'Stella Mortis',
         text = {
-			"This Joker destroys a random {C:planet}Planet{} card",
-			"at the end of {C:attention}shop{}, and gains {X:dark_edition,C:white} ^#1# {} Mult",
+			"This Joker destroys a",
+			"random {C:planet}Planet{} card",
+			"and gains {X:dark_edition,C:white} ^#1# {} Mult",
+			"at the end of the {C:attention}shop{}",
 			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)"
         }
     },
 	rarity = "cry_exotic",
 	cost = 50,
-    blueprint_compat = true,
+    	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
 	soul_pos = {x = 5, y = 5, extra = {x = 4, y = 5}},
@@ -789,7 +799,7 @@ local stella_mortis = {
         if context.ending_shop then
             local destructable_planet = {}
             for i = 1, #G.consumeables.cards do
-                if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced then destructable_planet[#destructable_planet+1] = G.consumeables.cards[i] end
+                if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_planet[#destructable_planet+1] = G.consumeables.cards[i] end
             end
             local planet_to_destroy = #destructable_planet > 0 and pseudorandom_element(destructable_planet, pseudoseed('stella_mortis')) or nil
 
@@ -940,4 +950,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, crustulum, primus, scalae, stella_mortis}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis}}

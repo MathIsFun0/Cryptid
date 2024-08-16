@@ -1447,6 +1447,7 @@ local altgoogol = {
 	rarity = "cry_epic",
 	cost = 10,
 	blueprint_compat = true,
+	eternal_compat = false,
 	atlas = "atlasepic",
 	soul_pos = {x = 10, y = 0, extra = {x = 5, y = 3}},
 	calculate = function(self, card, context)
