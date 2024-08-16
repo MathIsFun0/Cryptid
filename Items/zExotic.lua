@@ -532,7 +532,8 @@ local big_num_whitelist = {
     j_cry_exponentia = true,
     j_cry_crustulum = true,
     j_cry_primus = true,
-    j_cry_stella_mortis = true
+    j_cry_stella_mortis = true,
+    j_cry_hugem = true
 }
 local scalae = {
     object_type = "Joker",
