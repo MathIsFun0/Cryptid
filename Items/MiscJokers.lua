@@ -4350,7 +4350,7 @@ local night = {
             if card.ability.extra.mult > 1 then
                 return {
                     message = "^"..card.ability.extra.mult.." Mult",
-                    Xmult_mod = card.ability.extra.mult,
+                    Emult_mod = card.ability.extra.mult,
                     colour = G.C.DARK_EDITION
                 }
             end
