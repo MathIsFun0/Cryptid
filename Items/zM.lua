@@ -1266,13 +1266,19 @@ local hugem = {
 	end,
 }
 if JokerDisplay then
-    --[[hugem.joker_display_definition = {
+    hugem.joker_display_definition = {
         --todo: show if active
         mod_function = function(card, mod_joker)
-            return { pow_mult = (card.ability.name == "Jolly Joker" and mod_joker.ability.extra.mult) }
+            if card.ability.name ~= "Jolly Joker" then return {} end
+            local e_mult = mod_joker.ability.extra.mult
+            local triggers = JokerDisplay.calculate_joker_triggers(mod_joker)
+            if triggers == 0 then return {} end
+            for i=1, triggers-1 do
+                e_mult = e_mult ^ mod_joker.ability.extra.mult
+            end
+            return { e_mult = e_mult }
         end
-    }--]]
-    --pow_mult doesn't work yet here :(
+    }
 end
 local macabre = {
     object_type = "Joker",
