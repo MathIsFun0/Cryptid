@@ -271,7 +271,7 @@ if JokerDisplay then
     foodm.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.ability.extra", ref_value = "mult" }
+            { ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.MULT },
         reminder_text = {
@@ -352,12 +352,12 @@ if JokerDisplay then
     mstack.joker_display_definition = {
         reminder_text = {
             { text = "(" },
-            { ref_table = "card.ability.extra", ref_value = "retriggers", colour = G.C.ORANGE },
+            { ref_table = "card.ability.extra", ref_value = "retriggers", colour = G.C.ORANGE, retrigger_type = "mult" },
             { text = ")" },
         },
         retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
             if held_in_hand then return 0 end
-            return joker_card.ability.extra.retriggers or 0
+            return (joker_card.ability.extra.retriggers * JokerDisplay.calculate_joker_triggers(joker_card)) or 0
         end
     }
 end
@@ -600,7 +600,7 @@ if JokerDisplay then
             if card.ability.name == "Jolly Joker" then
                 chips_mod = chips_mod * mod_joker.ability.extra.xchips
             end
-            return { chips = chips_mod or nil }
+            return { chips = chips_mod * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
         end
     }
 end
@@ -732,6 +732,17 @@ local loopy = { --this may or may not need further balancing
         end
     end
 }
+if JokerDisplay then
+	loopy.joker_display_definition = {
+		text = {
+			{ text = "x" },
+			{ ref_table = "card.ability.extra", ref_value = "retrigger" },
+		},
+		retrigger_joker_function = function (card, retrigger_joker)
+			return retrigger_joker.ability.extra.retrigger or 0
+		end
+	}
+end
 local scrabble = {
 	object_type = "Joker",
 	name = "cry-scrabble",
@@ -1087,7 +1098,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_chips" }
+                    { ref_table = "card.joker_display_values", ref_value = "x_chips", retrigger_type = "exp" }
                 },
                 border_colour = G.C.CHIPS
             }
@@ -1161,9 +1172,8 @@ biggestm.joker_display_definition = {
         {
             border_nodes = {
                 { text = "X" },
-                { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
             },
-            border_colour = G.C.MULT
         }
     },
     reminder_text = {

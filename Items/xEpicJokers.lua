@@ -44,16 +44,16 @@ if JokerDisplay then
 	supercell.joker_display_definition = {
 		text = {
 			{ text = "+",                       colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS },
+			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
 			{ text = " +",                      colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT },
+			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
 		},
 		extra = {
 			{
 				{
 					border_nodes = {
 						{ text = "X" },
-						{ ref_table = "card.ability.extra", ref_value = "stat2" }
+						{ ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" }
 					},
 					border_colour = G.C.CHIPS
 				},
@@ -61,7 +61,7 @@ if JokerDisplay then
 				{
 					border_nodes = {
 						{ text = "X" },
-						{ ref_table = "card.ability.extra", ref_value = "stat2" }
+						{ ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" }
 					}
 				}
 			},
@@ -114,7 +114,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult" }
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
 				}
 			}
 		},
@@ -239,6 +239,9 @@ if JokerDisplay then
 				end
 			end
 			card.joker_display_values.num_retriggers = num_retriggers
+		end,
+		retrigger_joker_function = function (card, retrigger_joker)
+			return card.T.x + card.T.w / 2 < retrigger_joker.T.x + retrigger_joker.T.w / 2 and retrigger_joker.joker_display_values.num_retriggers or 0
 		end
 	}
 end
@@ -381,7 +384,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "x_mult" }
+					{ ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
 				}
 			}
 		},
@@ -964,7 +967,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_mult" }
+					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
 				}
 			}
 		},
@@ -981,7 +984,7 @@ if JokerDisplay then
 						JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
 				end
 			end
-			card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.x_mult ^ count)))
+			card.joker_display_values.x_mult = card.ability.extra.x_mult ^ count
 	
 			card.joker_display_values.start_round = card.joker_display_values.start_round or
 				card.ability.extra.rounds_remaining
@@ -1278,7 +1281,7 @@ if JokerDisplay then
 					end
 				end
 			end
-            card.joker_display_values.count = count
+            card.joker_display_values.count = math.min(count, 2-card.ability.extra.check)
             card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
 		end
 	}
@@ -1331,7 +1334,7 @@ if JokerDisplay then
 	multjoker.joker_display_definition = {
 		text = {
             { text = "+" },
-            { ref_table = "card.joker_display_values", ref_value = "count" },
+            { ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" },
         },
         text_config = { colour = G.C.SECONDARY_SET.Spectral },
         extra = {
