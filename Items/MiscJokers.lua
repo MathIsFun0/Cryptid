@@ -2995,7 +2995,7 @@ function rnjoker_randomize(card)
             if cond == "rank" then
                 local rank = pseudorandom_element(SMODS.Ranks, pseudoseed('rnj_rank'))
                 values.cond_value = localize(rank.key, 'ranks')
-                values.rank = rank.key
+                values.rank = rank.id
             end
             if (cond == "or_more") or (cond == "or_less") then
                 values.cond_value = math.min(5, math.floor(pseudorandom('rnj_cards') * 6))
