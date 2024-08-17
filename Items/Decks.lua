@@ -199,14 +199,15 @@ local encoded = {
     object_type = "Back",
     name = "cry-Encoded",
     key = "encoded",
-    config = {cry_encoded = true},
+    config = {cry_encoded = true, cry_encoded_downside = true},
     pos = {x = 2, y = 5},
     atlas = "atlasdeck",
     loc_txt = {
         name = "Encoded Deck",
         text = {
-            "Start with a {C:code}Code Joker{}",
-            "and a {C:code}Copy/Paste{}"
+            "Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+            "and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+            "Only {C:cry_code}Code Cards{} appear in shop"
         }
     }
 }
@@ -328,6 +329,12 @@ return {name = "Misc. Decks",
                             end
                         end
                     }))
+                end
+                if self.effect.config.cry_encoded_downside then
+                    G.GAME.joker_rate = 0
+                    G.GAME.planet_rate = 0
+                    G.GAME.tarot_rate = 0
+                    G.GAME.code_rate = 1e100
                 end
                 if self.effect.config.cry_negative_rate then
                     G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate

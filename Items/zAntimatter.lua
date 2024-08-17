@@ -41,6 +41,7 @@ local antimatter = {
         cry_wormhole = true, cry_negative_rate = 20, --Wormhole Deck
         cry_redeemed = true, --Redeemed Deck
         cry_crit_rate = 0.25, --Critical Deck
+        cry_encoded = true, --Encoded Deck
         -- Enhanced Decks
         cry_force_enhancement = 'random',
         cry_force_edition = 'random',

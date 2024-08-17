@@ -430,7 +430,7 @@ local CodeJoker = {
         name = 'Code Joker',
         text = {
 			"Create a {C:dark_edition}Negative{}",
-			"{C:code}Code Card{} when",
+			"{C:cry_code}Code Card{} when",
 			"{C:attention}Blind{} is selected"
 		}
     },
@@ -462,7 +462,7 @@ local copypaste = {
 	loc_txt = {
         name = 'Copy/Paste',
         text = {
-			"When a {C:code}Code{} card is used,",
+			"When a {C:cry_code}Code{} card is used,",
                 "{C:green}#1# in #2#{} chance to add a copy",
                 "to your consumable area",
                 "{C:inactive}(Must have room)"
@@ -472,7 +472,7 @@ local copypaste = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2)}}
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
