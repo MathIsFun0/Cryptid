@@ -1084,6 +1084,17 @@ if Cryptid_config["Timer Mechanics"] then
 	table.insert(items_togo, lavender_loop)
 end
 
+--Fix an issue with adding bosses mid-run 
+local gnb = get_new_boss
+function get_new_boss()
+    for k, v in pairs(G.P_BLINDS) do
+        if not G.GAME.bosses_used[k] then
+            G.GAME.bosses_used[k] = 0
+        end
+    end
+    return gnb()
+end
+
 return {name = "Blinds", 
         init = function()
             --Clock Patches

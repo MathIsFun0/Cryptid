@@ -396,6 +396,14 @@ end
 
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
+--for first boot, make sure config is defined properly beforehand
+for _, file in ipairs(files) do
+    local f, err = SMODS.load_file("Items/"..file)
+    if not err then
+        local curr_obj = f()
+        if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
+    end
+end
 for _, file in ipairs(files) do
     print("Loading file "..file)
     local f, err = SMODS.load_file("Items/"..file)
