@@ -16,7 +16,7 @@ local hierophant_deck = {object_type = "Back",
         name = "The Hierophant's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Bonus Cards{}",
+            "are {C:attention,T:m_bonus}Bonus Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -31,7 +31,7 @@ local empress_deck = {object_type = "Back",
         name = "The Empress's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Mult Cards{}",
+            "are {C:attention,T:m_mult}Mult Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -46,7 +46,7 @@ local lovers_deck = {object_type = "Back",
         name = "The Lovers' Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Wild Cards{}",
+            "are {C:attention,T:m_wild}Wild Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -61,7 +61,7 @@ local justice_deck = {object_type = "Back",
         name = "Deck of Justice",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Glass Cards{}",
+            "are {C:attention,T:m_glass}Glass Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -76,7 +76,7 @@ local eclipse_deck = {object_type = "Back",
         name = "The Eclipse's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Echo Cards{}",
+            "are {C:attention,T:m_cry_echo}Echo Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -91,7 +91,7 @@ local chariot_deck = {object_type = "Back",
         name = "The Chariot's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Steel Cards{}",
+            "are {C:attention,T:m_steel}Steel Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -106,7 +106,7 @@ local tower_deck = {object_type = "Back",
         name = "Stoner's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Stone Cards{}",
+            "are {C:attention,T:m_stone}Stone Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -121,7 +121,7 @@ local devil_deck = {object_type = "Back",
         name = "The Devil's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Gold Cards{}",
+            "are {C:attention,T:m_gold}Gold Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -136,7 +136,7 @@ local magician_deck = {object_type = "Back",
         name = "The Magician's Deck",
         text = {
             "All {C:attention}playing cards{}",
-            "are {C:attention}Lucky Cards{}",
+            "are {C:attention,T:m_lucky}Lucky Cards{}",
             "Cards cannot change enhancements"
         }
     },
@@ -150,7 +150,7 @@ local foil_deck = {object_type = "Back",
 	loc_txt = {
         name = "Deck of Chips",
         text = {
-            "All cards are {C:dark_edition}Foil{}",
+            "All cards are {C:dark_edition,T:e_foil}Foil{}",
             "Cards cannot change editions"
         }
     },
@@ -164,7 +164,7 @@ local holo_deck = {object_type = "Back",
 	loc_txt = {
         name = "Deck of Mult",
         text = {
-            "All cards are {C:dark_edition}Holographic{}",
+            "All cards are {C:dark_edition,T:e_holo}Holographic{}",
             "Cards cannot change editions"
         }
     },
@@ -178,7 +178,7 @@ local poly_deck = {object_type = "Back",
 	loc_txt = {
         name = "Deck of XMult",
         text = {
-            "All cards are {C:dark_edition}Polychrome{}",
+            "All cards are {C:dark_edition,T:e_polychrome}Polychrome{}",
             "Cards cannot change editions"
         }
     },
@@ -192,7 +192,7 @@ local nega_deck = {object_type = "Back",
 	loc_txt = {
         name = "Negative Deck",
         text = {
-            "All cards are {C:dark_edition}Negative{}",
+            "All cards are {C:dark_edition,T:e_negative}Negative{}",
             "Cards cannot change editions"
         }
     },
@@ -207,7 +207,7 @@ local astral_deck = {object_type = "Back",
 	loc_txt = {
         name = "Astral Deck",
         text = {
-            "All cards are {C:dark_edition}Astral",
+            "All cards are {C:dark_edition,T:e_cry_astral}Astral",
             "Cards cannot change editions"
         }
     },
@@ -221,7 +221,7 @@ local blurred_deck = {object_type = "Back",
 	loc_txt = {
         name = "Blurred Deck",
         text = {
-            "All cards are {C:dark_edition}Blurred{}",
+            "All cards are {C:dark_edition,T:e_cry_blur}Blurred{}",
             "Cards cannot change editions"
         }
     },
@@ -235,7 +235,7 @@ local mosaic_deck = {object_type = "Back",
 	loc_txt = {
         name = "Mosaic Deck",
         text = {
-            "All cards are {C:dark_edition}Mosaic{}",
+            "All cards are {C:dark_edition,T:e_cry_mosaic}Mosaic{}",
             "Cards cannot change editions"
         }
     },
@@ -249,7 +249,7 @@ local oversat_deck = {object_type = "Back",
 	loc_txt = {
         name = "Oversaturated Deck",
         text = {
-            "All cards are {C:dark_edition}Oversaturated{}",
+            "All cards are {C:dark_edition,T:e_cry_oversat}Oversaturated{}",
             "Cards cannot change editions"
         }
     },
@@ -263,7 +263,7 @@ local glitched_deck = {object_type = "Back",
 	loc_txt = {
         name = "Glitched Deck",
         text = {
-            "All cards are {C:dark_edition}Glitched{}",
+            "All cards are {C:dark_edition,T:e_cry_glitched}Glitched{}",
             "Cards cannot change editions",
             "{s:0.8,C:inactive}Wait, isn't this just Misprint Deck?"
         }
