@@ -2211,6 +2211,73 @@ if JokerDisplay then
         },
     }
 end
+
+local cut = {
+    object_type = "Joker",
+    name = "cry-cut",
+    key = "cut",
+    config = {extra = {Xmult = 1, Xmult_mod = 0.5}},
+    pos = {x = 2, y = 2},
+    loc_txt = {
+        name = 'Cut',
+        text = {
+            "This Joker destroys a random {C:cry_code}Code{} card",
+            "at the end of {C:attention}shop{}, and gains {X:mult,C:white} X#1# {} Mult",
+            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+        }
+    },
+    rarity = 3,
+    cost = 9,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.ending_shop then
+            local destructable_codecard = {}
+            for i = 1, #G.consumeables.cards do
+                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
+            end
+            local codecard_to_destroy = #destructable_codecard > 0 and pseudorandom_element(destructable_codecard, pseudoseed('cut')) or nil
+
+            if codecard_to_destroy then 
+                codecard_to_destroy.getting_sliced = true
+                G.E_MANAGER:add_event(Event({func = function()
+                    (context.blueprint_card or card):juice_up(0.8, 0.8)
+                    codecard_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
+                    card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+                return true end }))
+                if not (context.blueprint_card or self).getting_sliced then
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "X"..number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)).." Mult"})
+                end
+                return {calculated = true}, true
+            end
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
+            return {
+                message = "X"..number_format(card.ability.extra.Xmult).." Mult",
+                Xmult_mod = card.ability.extra.Xmult,
+                colour = G.C.DARK_EDITION
+            }
+        end
+    end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.Xmult}}
+    end
+}
+if JokerDisplay then
+    cut.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "Xmult" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+    }
+end
+
 local sapling = {
 	object_type = "Joker",
 	name = "cry-sapling",
@@ -4283,7 +4350,7 @@ local night = {
             if card.ability.extra.mult > 1 then
                 return {
                     message = "^"..card.ability.extra.mult.." Mult",
-                    Emult_mod = card.ability.extra.mult,
+                    Xmult_mod = card.ability.extra.mult,
                     colour = G.C.DARK_EDITION
                 }
             end
@@ -4470,4 +4537,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
