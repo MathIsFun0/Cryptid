@@ -1080,7 +1080,7 @@ local automaton = {
 		return {vars = {self.config.create}}
 	end,
     can_use = function(self, card)
-        return true
+        return #G.consumeables.cards < G.consumeables.config.card_limit or self.area == G.consumeables
     end,
     use = function(self, card, area, copier)
         for i = 1, math.min(card.ability.consumeable.create, G.consumeables.config.card_limit - #G.consumeables.cards) do
