@@ -997,7 +997,7 @@ local rework = {
         return {vars = {}}
     end,
     can_use = function(self, card)
-        return #G.jokers.highlighted == 1
+        return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
     end,
     use = function(self, card, area, copier)
         local jkr = G.jokers.highlighted[1]
