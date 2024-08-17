@@ -2438,7 +2438,7 @@ return {name = "Code Cards",
             codechars9 = {"&","@","©","«","®","»"}
             codechars10 = {"Æ","æ","Œ","œ"}
             function randomchar(arr)
-                return {n=G.UIT.O, config={object = DynaText({string = arr, colours = {G.C.BLACK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.05, scale = 0.25, min_cycle_time = 0})}}
+                return {n=G.UIT.O, config={object = DynaText({string = arr, colours = {G.C.BLACK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.1, scale = 0.4, min_cycle_time = 0})}}
             end
 
             --Run - don't open packs in shop
