@@ -13,11 +13,7 @@
 
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
-Cryptid_config = {["Cryptid"]={jimball_music = true, code_music = true, big_music = true, exotic_music = true}}
-local read_config = SMODS.load_file("config.lua")
-if read_config then
-    Cryptid_config = read_config()
-end
+Cryptid_config = SMODS.current_mod.config
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
