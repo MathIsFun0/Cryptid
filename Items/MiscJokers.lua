@@ -61,7 +61,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -140,7 +140,17 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "^" },
-                    { ref_table = "card.joker_display_values", ref_value = "e_mult" }
+                    { 
+                        ref_table = "card.joker_display_values",
+                        ref_value = "e_mult",
+                        retrigger_type = function (number, triggers)
+                            local num = number
+                            for i=1, triggers-1 do
+                                num = num ^ number
+                            end
+                            return num
+                        end
+                    }
                 },
                 border_colour = G.C.DARK_EDITION
             }
@@ -312,7 +322,7 @@ if JokerDisplay then
     wee_fib.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.ability.extra", ref_value = "mult" }
+            { ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.MULT },
         reminder_text = {
@@ -376,7 +386,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -422,7 +432,7 @@ local lucky_joker = {
 if JokerDisplay then
     lucky_joker.joker_display_definition = {
         text = {
-            { ref_table = "card.joker_display_values", ref_value = "count" },
+            { ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" },
             { text = "x",                              scale = 0.35 },
             { text = "$",                              colour = G.C.GOLD },
             { ref_table = "card.ability.extra",        ref_value = "dollars", colour = G.C.GOLD },
@@ -489,7 +499,7 @@ if JokerDisplay then
     cursor.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.ability.extra", ref_value = "chips" }
+            { ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.CHIPS },
     }
@@ -570,11 +580,13 @@ if JokerDisplay then
     pickle.joker_display_definition = {
         reminder_text = {
             { text = '(', },
+            { text = '+', colour = G.C.ORANGE },
+            { ref_table = "card.ability.extra", ref_value = "tags", colour = G.C.ORANGE, retrigger_type = "mult" },
             { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
             { text = ')', },
         },
         calc_function = function(card)
-            card.joker_display_values.localized_text = "+" .. card.ability.extra.tags .. " " .. localize("b_tags")
+            card.joker_display_values.localized_text = " " .. localize("b_tags")
         end
     }
 end
@@ -611,7 +623,7 @@ if JokerDisplay then
     cube.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.ability.extra", ref_value = "chips" }
+            { ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.CHIPS },
     }
@@ -659,7 +671,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -776,7 +788,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "Xmult" }
+                    { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
                 }
             }
         },
@@ -871,7 +883,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                    { ref_table = "card.ability.extra", ref_value = "x_chips", retrigger_type = "exp" }
                 },
                 border_colour = G.C.CHIPS
             }
@@ -919,7 +931,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -970,7 +982,7 @@ if JokerDisplay then
     nice.joker_display_definition = {
         text = {
             { text = "+", },
-            { ref_table = "card.joker_display_values", ref_value = "chips" },
+            { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "mult" },
         },
         text_config = { colour = G.C.CHIPS },
         reminder_text = {
@@ -1077,7 +1089,10 @@ if JokerDisplay then
                 G.jokers.cards[1].config.center.key
             card.joker_display_values.localized_text = leftmost_joker_key and
                 localize { type = 'name_text', key = leftmost_joker_key, set = 'Joker' } or "-"
-        end
+        end,
+        retrigger_joker_function = function (card, retrigger_joker)
+			return card ~= retrigger_joker and G.jokers.cards[1] == card and retrigger_joker.ability.extra.retriggers or 0
+		end
     }
 end
 local jimball = {
@@ -1133,7 +1148,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -1276,7 +1291,7 @@ if JokerDisplay then
     fspinner.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.joker_display_values", ref_value = "chips" }
+            { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.CHIPS },
         calc_function = function(card)
@@ -1336,7 +1351,7 @@ local waluigi = {
 if JokerDisplay then
     waluigi.joker_display_definition = {
         mod_function = function(card, mod_joker)
-            return { x_mult = mod_joker.ability.extra.Xmult }
+            return { x_mult = mod_joker.ability.extra.Xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) }
         end
     }
 end
@@ -1385,7 +1400,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -1459,7 +1474,7 @@ if JokerDisplay then
     gardenfork.joker_display_definition = {
         text = {
             { text = "+$" },
-            { ref_table = "card.joker_display_values", ref_value = "dollars" },
+            { ref_table = "card.joker_display_values", ref_value = "dollars", retrigger_type = "mult" },
         },
         text_config = { colour = G.C.GOLD },
         reminder_text = {
@@ -1525,7 +1540,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -1544,7 +1559,7 @@ if JokerDisplay then
                     end
                 end
             end
-            card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.xmult ^ count)))
+            card.joker_display_values.x_mult = card.ability.extra.xmult ^ count
         end,
     }
 end
@@ -1587,7 +1602,8 @@ if JokerDisplay then
     nosound.joker_display_definition = {
         retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
             if held_in_hand then return 0 end
-            return playing_card:get_id() and playing_card:get_id() == 7 and joker_card.ability.extra.retriggers or 0
+            return playing_card:get_id() and playing_card:get_id() == 7 and
+                joker_card.ability.extra.retriggers * JokerDisplay.calculate_joker_triggers(joker_card) or 0
         end
     }
 end
@@ -1641,7 +1657,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                    { ref_table = "card.ability.extra", ref_value = "x_chips", retrigger_type = "exp" }
                 },
                 border_colour = G.C.CHIPS
             }
@@ -1721,7 +1737,8 @@ if JokerDisplay then
     weegaming.joker_display_definition = {
         retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
             if held_in_hand then return 0 end
-            return playing_card:get_id() and playing_card:get_id() == 2 and joker_card.ability.extra.retriggers or 0
+            return playing_card:get_id() and playing_card:get_id() == 2 and 
+                joker_card.ability.extra.retriggers * JokerDisplay.calculate_joker_triggers(joker_card) or 0
         end
     }
 end
@@ -1841,7 +1858,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -2030,7 +2047,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -2091,7 +2108,7 @@ if JokerDisplay then
     monkey_dagger.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.ability.extra", ref_value = "chips" }
+            { ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.CHIPS },
     }
@@ -2153,7 +2170,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                    { ref_table = "card.ability.extra", ref_value = "x_chips", retrigger_type = "exp" }
                 },
                 border_colour = G.C.CHIPS
             }
@@ -2205,7 +2222,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -2270,7 +2287,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "Xmult" }
+                    { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
                 },
                 border_colour = G.C.DARK_EDITION
             }
@@ -2392,7 +2409,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_chips" }
+                    { ref_table = "card.ability.extra", ref_value = "x_chips", retrigger_type = "exp" }
                 },
                 border_colour = G.C.CHIPS
             }
@@ -2528,7 +2545,7 @@ if JokerDisplay then
     meteor.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.joker_display_values", ref_value = "chips" }
+            { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.CHIPS },
         reminder_text = {
@@ -2618,7 +2635,7 @@ if JokerDisplay then
     exoplanet.joker_display_definition = {
         text = {
             { text = "+" },
-            { ref_table = "card.joker_display_values", ref_value = "mult" }
+            { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
         },
         text_config = { colour = G.C.MULT },
         reminder_text = {
@@ -2710,7 +2727,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -2730,7 +2747,7 @@ if JokerDisplay then
                     end
                 end
             end
-            card.joker_display_values.x_mult = tonumber(string.format("%.2f", (card.ability.extra.xmult ^ count)))
+            card.joker_display_values.x_mult = card.ability.extra.xmult ^ count
             card.joker_display_values.localized_text = localize { type = 'name_text', set = 'Edition', key = "e_polychrome" }
         end
     }
@@ -3832,7 +3849,7 @@ local hand_xmult_jd = {
         {
             border_nodes = {
                 { text = "X" },
-                { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+                { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
             }
         }
     },
@@ -3843,8 +3860,8 @@ local hand_xmult_jd = {
     },
     calc_function = function(card)
         local x_mult = 1
-        local _, poker_hands, _ = JokerDisplay.evaluate_hand()
-        if poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
+        local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+        if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
             x_mult = card.ability.x_mult
         end
         card.joker_display_values.x_mult = x_mult
@@ -4180,7 +4197,7 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "X" },
-                    { ref_table = "card.ability.extra", ref_value = "x_mult" }
+                    { ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" }
                 }
             }
         },
@@ -4279,11 +4296,17 @@ if JokerDisplay then
         },
         extra_config = { colour = G.C.GREEN, scale = 0.3 },
         calc_function = function(card)
-            card.ability.name = "Blueprint" --funny workaround
             local copied_joker, copied_debuff = JokerDisplay.calculate_blueprint_copy(card)
-            card.ability.name = "cry-oldblueprint"
             card.joker_display_values.blueprint_compat = localize('k_incompatible')
             JokerDisplay.copy_display(card, copied_joker, copied_debuff)
+        end,
+        get_blueprint_joker = function (card)
+            for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					return G.jokers.cards[i + 1]
+				end
+			end
+            return nil
         end
     }
 end
@@ -4355,7 +4378,17 @@ if JokerDisplay then
             {
                 border_nodes = {
                     { text = "^" },
-                    { ref_table = "card.joker_display_values", ref_value = "e_mult" }
+                    { 
+                        ref_table = "card.joker_display_values",
+                        ref_value = "e_mult",
+                        retrigger_type = function (number, triggers)
+                            local num = number
+                            for i=1, triggers-1 do
+                                num = num ^ number
+                            end
+                            return num
+                        end
+                    }
                 },
                 border_colour = G.C.DARK_EDITION
             }
