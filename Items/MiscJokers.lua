@@ -1302,7 +1302,7 @@ local luigi = {
 	key = "luigi",
 	pos = {x = 3, y = 2},
     soul_pos = {x = 4, y = 2},
-    config = {extra = {x_chips = 5}},
+    config = {extra = {x_chips = 3}},
 	loc_txt = {
         name = 'Luigi',
         text = {
