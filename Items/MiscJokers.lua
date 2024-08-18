@@ -1310,6 +1310,53 @@ if JokerDisplay then
         end
     }
 end
+
+local luigi = {
+	object_type = "Joker",
+	name = "cry-luigi",
+	key = "luigi",
+	pos = {x = 3, y = 2},
+    soul_pos = {x = 4, y = 2},
+    config = {extra = {x_chips = 3}},
+	loc_txt = {
+        name = 'Luigi',
+        text = {
+            "All Jokers give",
+            "{X:chips,C:white} X#1# {} Chips"
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.x_chips}}
+    end,
+	rarity = 4,
+	cost = 20,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.ability.set == "Joker" then
+            if not Talisman.config_file.disable_anims then 
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end
+                })) 
+            end
+            return {
+                message = localize{type='variable',key='a_xchips',vars={card.ability.extra.x_chips}}, colour = G.C.CHIPS,
+                Xchip_mod = card.ability.extra.x_chips
+            }
+        end
+	end,
+	atlas = "atlasthree",
+}
+if JokerDisplay then
+    luigi.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            return { x_chips = mod_joker.ability.extra.x_chips }
+        end
+    }
+end
+
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -2812,8 +2859,10 @@ local rnj_loc_txts = {
         planet = {"if card is a {C:planet}Planet{} card"},
         spectral = {"if card is a {C:spectral}Spectral{} card"},
         joker = {"if card is a {C:attention}Joker{}"},
-        suit = {"if card is a {V:1}#3#{}"},
-        rank = {"if card is rank {C:attention}#3#{}"},
+        heart = {"if card is a {C:hearts}Heart{}"},
+        diamond = {"if card is a {C:diamonds}Diamond{}"},
+        spade = {"if card is a {C:spades}Spade{}"},
+        club = {"if card is a {C:clubs}Club{}"},
         face = {"if card is a {C:attention}face{} card"},
         boss = {"if {C:attention}blind{} is a {C:attention}Boss {C:attention}Blind{}"},
         non_boss = {"if {C:attention}blind{} is a {C:attention}Non-Boss {C:attention}Blind{}"},
@@ -2912,9 +2961,9 @@ function rnjoker_randomize(card)
             values.value = ((stat == "x_mult") or (stat == "x_chips")) and 1 or 0
             scale = true
             if stat == "plus_mult" then
-                values.scale_value = pseudorandom('rnj_scaling') * 10
+                values.scale_value = pseudorandom('rnj_scaling') * 5
             elseif stat == "plus_chips" then
-                values.scale_value = pseudorandom('rnj_scaling') * 50
+                values.scale_value = pseudorandom('rnj_scaling') * 25
             elseif stat == "h_size" then
                 values.scale_value = 1
             elseif stat == "money" then
@@ -2949,8 +2998,10 @@ function rnjoker_randomize(card)
             }
         elseif context == "playing_card_added" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
@@ -2964,8 +3015,10 @@ function rnjoker_randomize(card)
             }
         elseif context == "remove_playing_cards" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
@@ -2984,43 +3037,55 @@ function rnjoker_randomize(card)
             }
         elseif context == "discard" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
         elseif context == "individual_play" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
         elseif context == "individual_hand_score" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
         elseif context == "individual_hand_end" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
         elseif context == "repetition_play" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
         elseif context == "repetition_hand" then
             conds = {
-                "suit",
-                "rank",
+                "heart",
+                "spade",
+                "club",
+                "diamond",
                 "face",
                 "odds"
             }
@@ -3066,20 +3131,6 @@ function rnjoker_randomize(card)
                 local none, key = pseudorandom_element(G.GAME.hands, pseudoseed('rnj_poker-hand'))
                 values.cond_value = localize(key, 'poker_hands')
                 values.poker_hand = key
-            end
-            if cond == "suit" then
-                local suit = pseudorandom_element(SMODS.Suits, pseudoseed('rnj_suit'))
-                values.cond_value = localize(suit.key, 'suits_singular')
-                values.suit = suit.key
-                values.color = G.C.SUITS[suit.key]
-                if values.color == nil then
-                    values.color = G.C.IMPORTANT
-                end
-            end
-            if cond == "rank" then
-                local rank = pseudorandom_element(SMODS.Ranks, pseudoseed('rnj_rank'))
-                values.cond_value = localize(rank.key, 'ranks')
-                values.rank = rank.id
             end
             if (cond == "or_more") or (cond == "or_less") then
                 values.cond_value = math.min(5, math.floor(pseudorandom('rnj_cards') * 6))
@@ -3181,9 +3232,6 @@ function rnjoker_randomize(card)
     if values.cond_value then
         card.ability.extra.cond_value = values.cond_value
     end
-    if values.color then
-        card.ability.extra.color = values.color
-    end
     local text_parsed = {}
     for _, line in ipairs(values.loc_txt) do
         text_parsed[#text_parsed+1] = loc_parse_string(line)
@@ -3267,16 +3315,12 @@ local rnjoker = {
 		}
     },
 	loc_vars = function(self, info_queue, card)
-        local vars = {vars = {
+        return {vars = {
             (card.ability.extra and card.ability.extra.value_mod and card.ability.extra.value) or 0,
             (card.ability.extra and card.ability.extra.value and card.ability.extra.value_mod) or (card.ability.extra and card.ability.extra.value) or 0,
             card.ability.extra and card.ability.extra.cond_value or 0,
             G.GAME and G.GAME.probabilities.normal or 1
         }}
-        if card.ability.extra and card.ability.extra.color then
-            vars.vars.colours = {card.ability.extra.color}
-        end
-        return vars
     end,
 	rarity = 3,
 	cost = 6,
@@ -3365,7 +3409,7 @@ local rnjoker = {
                                 if context.card and context.card.ability and (context.card.ability.set == "Joker") then
                                     cond_passed = true
                                 end
-                            elseif j.cond == "suit" then
+                            elseif j.cond == "heart" then
                                 times_passed = 0
                                 local cards = context.cards
                                 if cards == nil then
@@ -3375,12 +3419,12 @@ local rnjoker = {
                                     cards = {context.other_card}
                                 end
                                 for i2, j2 in ipairs(cards) do
-                                    if j2:is_suit(j.suit) then
+                                    if j2:is_suit("Hearts") then
                                         cond_passed = true
                                         times_passed = times_passed + 1
                                     end
                                 end
-                            elseif j.cond == "rank" then
+                            elseif j.cond == "diamond" then
                                 times_passed = 0
                                 local cards = context.cards
                                 if cards == nil then
@@ -3390,7 +3434,37 @@ local rnjoker = {
                                     cards = {context.other_card}
                                 end
                                 for i2, j2 in ipairs(cards) do
-                                    if j2:get_id() == j.rank then
+                                    if j2:is_suit("Diamonds") then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "spade" then
+                                times_passed = 0
+                                local cards = context.cards
+                                if cards == nil then
+                                    cards = context.removed
+                                end
+                                if cards == nil then
+                                    cards = {context.other_card}
+                                end
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_suit("Spades") then
+                                        cond_passed = true
+                                        times_passed = times_passed + 1
+                                    end
+                                end
+                            elseif j.cond == "club" then
+                                times_passed = 0
+                                local cards = context.cards
+                                if cards == nil then
+                                    cards = context.removed
+                                end
+                                if cards == nil then
+                                    cards = {context.other_card}
+                                end
+                                for i2, j2 in ipairs(cards) do
+                                    if j2:is_suit("Clubs") then
                                         cond_passed = true
                                         times_passed = times_passed + 1
                                     end
@@ -3643,12 +3717,20 @@ local rnjoker = {
                     end
                     if j.stat and context.individual and indiv then
                         local cond_passed = false
-                        if j.cond == "suit" then
-                            if context.other_card:is_suit(j.suit) then
+                        if j.cond == "heart" then
+                            if context.other_card:is_suit("Hearts") then
                                 cond_passed = true
                             end
-                        elseif j.cond == "rank" then
-                            if context.other_card:get_id() == j.rank then
+                        elseif j.cond == "diamond" then
+                            if context.other_card:is_suit("Diamonds") then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "spade" then
+                            if context.other_card:is_suit("Spades") then
+                                cond_passed = true
+                            end
+                        elseif j.cond == "club" then
+                            if context.other_card:is_suit("Clubs") then
                                 cond_passed = true
                             end
                         elseif j.cond == "face" then
@@ -4535,4 +4617,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
