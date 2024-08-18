@@ -18,7 +18,7 @@ local gateway = {
         return true
     end,
     use = function(self, card, area, copier)
-	if #SMODS.find_card('j_jen_saint') + #SMODS.find_card('j_jen_saint_attuned') <= 0 then
+	if (#SMODS.find_card('j_jen_saint') + #SMODS.find_card('j_jen_saint_attuned')) <= 0 then
 	        local deletable_jokers = {}
 	        for k, v in pairs(G.jokers.cards) do
 	            if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
