@@ -1310,6 +1310,53 @@ if JokerDisplay then
         end
     }
 end
+
+local luigi = {
+	object_type = "Joker",
+	name = "cry-luigi",
+	key = "luigi",
+	pos = {x = 3, y = 2},
+    soul_pos = {x = 4, y = 2},
+    config = {extra = {x_chips = 3}},
+	loc_txt = {
+        name = 'Luigi',
+        text = {
+            "All Jokers give",
+            "{X:chips,C:white} X#1# {} Chips"
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.x_chips}}
+    end,
+	rarity = 4,
+	cost = 20,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.ability.set == "Joker" then
+            if not Talisman.config_file.disable_anims then 
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end
+                })) 
+            end
+            return {
+                message = localize{type='variable',key='a_xchips',vars={card.ability.extra.x_chips}}, colour = G.C.CHIPS,
+                Xchip_mod = card.ability.extra.x_chips
+            }
+        end
+	end,
+	atlas = "atlasthree",
+}
+if JokerDisplay then
+    luigi.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            return { x_chips = mod_joker.ability.extra.x_chips }
+        end
+    }
+end
+
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -4535,4 +4582,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
