@@ -316,7 +316,7 @@ local typhoon = {
                     local highlighted = G.hand.highlighted[i]
 		    G.E_MANAGER:add_event(Event({func = function()
             		play_sound('tarot1')
-            		used_tarot:juice_up(0.3, 0.5)
+            		highlighted:juice_up(0.3, 0.5)
             		return true end }))
                     if highlighted then
                         highlighted:set_seal('s_cry_azure')
