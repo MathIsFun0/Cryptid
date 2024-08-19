@@ -307,8 +307,8 @@ local typhoon = {
     cost = 4,
     atlas = "atlasnotjokers",
     pos = {x=0, y=4},
-    use = function(self, card, area, copier)
-	for i = 1, card.ability.max_highlighted do
+    use = function(self, card, area, copier) --Good enough
+	for i = 1, #G.hand.highlighted do
 	local highlighted = G.hand.highlighted[i]
 	G.E_MANAGER:add_event(Event({func = function()
             	play_sound('tarot1')
