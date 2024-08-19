@@ -748,7 +748,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if card.ability.consumeable and card.pinned then	-- counterpart is in Sticker.toml
       G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
   end
-
+  if card.ability.name == "cry-meteor" then 
+	card:set_edition('e_foil', true)
+  end
+  if card.ability.name == "cry-exoplanet" then 
+	card:set_edition('e_holo', true)
+  end
+  if card.ability.name == "cry-stardust" then 
+	card:set_edition('e_polychrome', true)
+  end
   return card
 end
 
