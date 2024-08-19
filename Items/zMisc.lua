@@ -320,8 +320,6 @@ local typhoon = {
             func = function()
                     if highlighted then
                         highlighted:set_seal('s_cry_azure')
-                    else
-                        break
                     end
                 return true
             end
