@@ -2303,8 +2303,8 @@ local blender = {
     loc_txt = {
         name = 'Blender',
         text = {
-            "When a {C:cry_code}Code{} card is used",
-            "create a {C:attention}random{} consumable"
+            "Create a {C:attention}random{} consumable",
+            "when a {C:cry_code}Code{} card is used",
         }
     },
     rarity = 3,
@@ -2332,8 +2332,8 @@ local python = {
     loc_txt = {
         name = 'Python',
         text = {
-            "When a {C:cry_code}Code{} card is used",
-            "this {C:joker}Joker{} gains {X:mult,C:white} X#1# {} Mult",
+            "This Joker gains {X:mult,C:white} X#1# {} Mult",
+            "when a {C:cry_code}Code{} card is used",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
         }
     },
