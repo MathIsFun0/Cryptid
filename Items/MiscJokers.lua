@@ -2491,18 +2491,21 @@ local meteor = {
         name = 'Meteor Shower',
         text = {
             "{C:dark_edition}Foil{} cards each",
-            "give {C:chips}+#1#{} Chips"
+            "give {C:chips}+#1#{} Chips",
+	    "{C:inactive,s:0.8}Effect does not trigger",
+            "{C:inactive,s:0.8}on Meteor Shower"
         }
     },
     loc_vars = function(self, info_queue, center)
 	info_queue[#info_queue+1] = G.P_CENTERS.e_foil
         return {vars = {center.ability.extra.chips}}
     end,
-    rarity = 2,
-    cost = 5,
+    rarity = 1,
+    cost = 4,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.edition and context.other_joker.edition.foil == true then
+        if context.other_joker and context.other_joker.edition 
+	and context.other_joker.edition.foil == true and context.other_joker.ability.name ~= "cry-meteor" then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -2581,18 +2584,21 @@ local exoplanet = {
         name = 'Exoplanet',
         text = {
             "{C:dark_edition}Holographic{} cards",
-            "each give {C:mult}+#1#{} Mult"
+            "each give {C:mult}+#1#{} Mult",
+	    "{C:inactive,s:0.8}Effect does not trigger",
+            "{C:inactive,s:0.8}on Exoplanet"
 		}
     	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.e_holo
 		return {vars = {center.ability.extra.mult}}
     	end,
-	rarity = 2,
-	cost = 5,
+	rarity = 1,
+	cost = 3,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.edition and context.other_joker.edition.holo == true then
+        if context.other_joker and context.other_joker.edition
+	and context.other_joker.edition.holo == true and context.other_joker.ability.name ~= "cry-exoplanet" then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -2607,12 +2613,12 @@ local exoplanet = {
             }
         end
 	if context.individual and context.cardarea == G.play then
-			if context.other_card.edition and context.other_card.edition.holo == true then
-            			return {
-                    			mult = card.ability.extra.mult,
-                    			colour = G.C.MULT,
-                    			card = card
-                			}
+		if context.other_card.edition and context.other_card.edition.holo == true then
+            		return {
+				mult = card.ability.extra.mult,
+            			colour = G.C.MULT,
+                    		card = card
+                		}
 			end
 	end
 	if context.individual and context.cardarea == G.hand and context.other_card.edition and context.other_card.edition.holo == true and not context.end_of_round then
@@ -2671,18 +2677,21 @@ local stardust = {
         name = 'Stardust',
         text = {
             "{C:dark_edition}Polychrome{} cards",
-            "each give {X:mult,C:white}X#1#{} Mult"
+            "each give {X:mult,C:white}X#1#{} Mult",
+	    "{C:inactive,s:0.8}Effect does not trigger",
+            "{C:inactive,s:0.8}on Stardust"
 		}
     	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
 		return {vars = {center.ability.extra.xmult}}
     	end,
-	rarity = 2,
-	cost = 6,
+	rarity = 1,
+	cost = 2,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.edition and context.other_joker.edition.polychrome == true then
+        if context.other_joker and context.other_joker.edition 
+	and context.other_joker.edition.polychrome == true and context.other_joker.ability.name ~= "cry-stardust" then
             if not Talisman.config_file.disable_anims then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -4507,7 +4516,7 @@ return {name = "Misc. Jokers",
             function Card:set_cost()
                 sc(self)
                 if self.ability.name == "cry-Cube" then
-                    self.cost = -25
+                    self.cost = -27
                 end
                 if self.ability.name == "cry-Big Cube" then
                     self.cost = 27
