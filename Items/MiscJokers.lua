@@ -2295,6 +2295,80 @@ if JokerDisplay then
     }
 end
 
+local blender = {
+    object_type = "Joker",
+    name = "cry-blender",
+    key = "blender",
+    pos = {x = 3, y = 2},
+    loc_txt = {
+        name = 'Blender',
+        text = {
+            "When a {C:cry_code}Code{} card is used",
+            "create a {C:attention}random{} consumable"
+        }
+    },
+    rarity = 3,
+    cost = 8,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                 local card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'cry_blender')
+                 card:add_to_deck()
+                 G.consumeables:emplace(card)
+            end
+        end
+    end
+}
+
+local python = {
+    object_type = "Joker",
+    name = "cry-python",
+    key = "python",
+    config = {extra = {Xmult = 1, Xmult_mod = 0.15}},
+    pos = {x = 4, y = 2},
+    loc_txt = {
+        name = 'Python',
+        text = {
+            "When a {C:cry_code}Code{} card is used",
+            "this {C:joker}Joker{} gains {X:mult,C:white} X#1# {} Mult",
+            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+        }
+    },
+    rarity = 2,
+    cost = 7,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "atlasthree",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.Xmult}}
+    end,
+    calculate = function(self, card, context)
+           if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+            card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+            G.E_MANAGER:add_event(Event({
+                func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}}}); return true
+                end}))
+            return
+        end
+    end
+}
+if JokerDisplay then
+    python.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+    }
+end
+
 local sapling = {
 	object_type = "Joker",
 	name = "cry-sapling",
@@ -4535,4 +4609,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, cut, blender, python, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
