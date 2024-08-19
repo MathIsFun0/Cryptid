@@ -1097,6 +1097,103 @@ local automaton = {
         delay(0.6)
     end
 }
+
+local green_seal = {
+    object_type = "Seal",
+    name = "cry-Green-Seal",
+    key = "green",
+    badge_colour = HEX("12f254"), --same as code cards
+    loc_txt = {
+        -- Badge name
+        label = 'Green Seal',
+        -- Tooltip description
+        description = {
+            name = 'Green Seal',
+            text = {
+                'Creates a {C:cry_code}Code{} card',
+                'when played and unscoring',
+                '{C:inactive}(Must have room)'
+            }
+        },
+    },
+    atlas = "green_atlas",
+    pos = {x=0, y=0},
+
+    calculate = function(self, card, context)        
+        if context.unscoring then
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                func = function()
+                    if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        local c = create_card('Code', G.consumeables, nil, nil, nil, nil, nil, 'cry_green_seal')
+                        c:add_to_deck()
+                        G.consumeables:emplace(c)
+                        card:juice_up()
+                    end
+                    return true
+                end
+            }))
+            return true
+        end
+    end,
+}
+
+local green_seal_sprite = {
+    object_type = "Atlas",
+    key = "green_atlas",
+    path = "s_cry_green_seal.png",
+    px = 71,
+    py = 95
+}
+local source = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Source",
+    key = "source",
+	config = { 
+        -- This will add a tooltip.
+        mod_conv = 's_cry_green_seal',
+        -- Tooltip args
+        max_highlighted = 1,
+    },
+    loc_vars = function(self, info_queue, center)
+        -- Handle creating a tooltip with set args.
+        info_queue[#info_queue+1] = { set = 'Other', key = 's_cry_green_seal' }
+        return {vars = {center.ability.max_highlighted}}
+    end,
+    loc_txt = {
+        name = 'Source',
+        text = {
+            "Add an {C:cry_code}Green Seal{}",
+            "to {C:attention}#1#{} selected",
+            "card in your hand"
+        }
+    },
+    cost = 4,
+    atlas = "atlasnotjokers",
+    pos = {x=2, y=4},
+    use = function(self, card, area, copier) --Good enough
+	for i = 1, #G.hand.highlighted do
+	local highlighted = G.hand.highlighted[i]
+	G.E_MANAGER:add_event(Event({func = function()
+            	play_sound('tarot1')
+            	highlighted:juice_up(0.3, 0.5)
+            	return true end }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                    if highlighted then
+                        highlighted:set_seal('s_cry_green')
+                    end
+                return true
+            end
+        }))
+	delay(0.5)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+	end
+    end
+}
 local pointer = {
     object_type = "Consumable",
     set = "Spectral",
@@ -1130,6 +1227,281 @@ local pointer = {
         G.CHOOSE_CARD:align_to_major()
     end
 }
+
+local encoded = {
+    object_type = "Back",
+    name = "cry-Encoded",
+    key = "encoded",
+    config = {cry_encoded = true, cry_encoded_downside = true},
+    pos = {x = 2, y = 5},
+    atlas = "atlasdeck",
+    loc_txt = {
+        name = "Encoded Deck",
+        text = {
+            "Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+            "and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+            "Only {C:cry_code}Code Cards{} appear in shop"
+        }
+    }
+}
+
+local source_deck = {object_type = "Back",
+    name = "cry-Source Deck",
+    key = "source_deck",
+	config = {cry_force_seal = 's_cry_green'},
+	pos = {x = 3, y = 5},
+	loc_txt = {
+        name = "Source Deck",
+        text = {
+            "All cards have a {C:cry_code}Green Seal{}",
+            "Cards cannot change seals"
+        }
+    },
+    atlas = "atlasenchanced"
+}
+
+
+local CodeJoker = {
+	object_type = "Joker",
+	name = "cry-CodeJoker",
+	key = "CodeJoker",
+	pos = {x = 2, y = 4},
+	loc_txt = {
+        name = 'Code Joker',
+        text = {
+			"Create a {C:dark_edition}Negative{}",
+			"{C:cry_code}Code Card{} when",
+			"{C:attention}Blind{} is selected"
+		}
+    },
+	rarity = "cry_epic",
+	cost = 11,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+			play_sound('timpani')
+			local card = create_card('Code', G.consumables, nil, nil, nil, nil)
+			card:set_edition({
+				negative = true
+			})
+			card:add_to_deck()
+			G.consumeables:emplace(card)
+			card:juice_up(0.3, 0.5)
+			return {completed=true}
+		end
+	end
+}
+
+local copypaste = {
+	object_type = "Joker",
+	name = "cry-copypaste",
+	key = "copypaste",
+	pos = {x = 3, y = 4},
+	config = {extra = {odds = 2, ckt = 0}},
+	loc_txt = {
+        name = 'Copy/Paste',
+        text = {
+			"When a {C:cry_code}Code{} card is used,",
+                "{C:green}#1# in #2#{} chance to add a copy",
+                "to your consumable area",
+                "{C:inactive}(Must have room)"
+		}
+    },
+	rarity = "cry_epic",
+	cost = 14,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2)}}
+    end,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
+					if G.GAME.probabilities.normal >= card.ability.extra.odds and context.consumeable.from_copypaste then
+						card.ability.extra.ckt = card.ability.extra.ckt + 1
+					else
+						card.ability.extra.ckt = 0
+					end
+					G.E_MANAGER:add_event(Event({
+                        func = function() 
+                            local cards = copy_card(context.consumeable)
+                            if card.ability.extra.ckt >= 10 then 
+                                cards.beginning_end = true
+                                card.ability.extra.ckt = 0
+                            else
+                                cards.from_from_copypaste = true
+                            end
+                            cards:add_to_deck()
+                            G.consumeables:emplace(cards) 
+                            return true
+                        end}))
+                    card_eval_status_text(context.blueprint_cards or card, 'extra', nil, nil, nil, {message = localize('k_copied_ex')})
+                end
+            end
+        end
+	end
+}
+if JokerDisplay then
+	copypaste.joker_display_definition = {
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = " in " },
+				{ ref_table = "card.ability.extra",        ref_value = "odds" },
+				{ text = ")" },
+			}
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+		end
+	}
+end
+
+
+
+local cut = {
+    object_type = "Joker",
+    name = "cry-cut",
+    key = "cut",
+    config = {extra = {Xmult = 1, Xmult_mod = 0.5}},
+    pos = {x = 2, y = 2},
+    loc_txt = {
+        name = 'Cut',
+        text = {
+            "This Joker destroys a random {C:cry_code}Code{} card",
+            "at the end of {C:attention}shop{}, and gains {X:mult,C:white} X#1# {} Mult",
+            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+        }
+    },
+    rarity = 3,
+    cost = 9,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.ending_shop then
+            local destructable_codecard = {}
+            for i = 1, #G.consumeables.cards do
+                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
+            end
+            local codecard_to_destroy = #destructable_codecard > 0 and pseudorandom_element(destructable_codecard, pseudoseed('cut')) or nil
+
+            if codecard_to_destroy then 
+                codecard_to_destroy.getting_sliced = true
+                G.E_MANAGER:add_event(Event({func = function()
+                    (context.blueprint_card or card):juice_up(0.8, 0.8)
+                    codecard_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
+                    card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+                return true end }))
+                if not (context.blueprint_card or self).getting_sliced then
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "X"..number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)).." Mult"})
+                end
+                return {calculated = true}, true
+            end
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
+            return {
+                message = "X"..number_format(card.ability.extra.Xmult).." Mult",
+                Xmult_mod = card.ability.extra.Xmult,
+                colour = G.C.DARK_EDITION
+            }
+        end
+    end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.Xmult}}
+    end
+}
+if JokerDisplay then
+    cut.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+    }
+end
+
+local blender = {
+    object_type = "Joker",
+    name = "cry-blender",
+    key = "blender",
+    pos = {x = 3, y = 2},
+    loc_txt = {
+        name = 'Blender',
+        text = {
+            "Create a {C:attention}random{} consumable",
+            "when a {C:cry_code}Code{} card is used",
+        }
+    },
+    rarity = 3,
+    cost = 8,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                 local card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'cry_blender')
+                 card:add_to_deck()
+                 G.consumeables:emplace(card)
+            end
+        end
+    end
+}
+
+local python = {
+    object_type = "Joker",
+    name = "cry-python",
+    key = "python",
+    config = {extra = {Xmult = 1, Xmult_mod = 0.15}},
+    pos = {x = 4, y = 2},
+    loc_txt = {
+        name = 'Python',
+        text = {
+            "This Joker gains {X:mult,C:white} X#1# {} Mult",
+            "when a {C:cry_code}Code{} card is used",
+            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+        }
+    },
+    rarity = 2,
+    cost = 7,
+    blueprint_compat = true,
+    perishable_compat = false,
+    atlas = "atlasthree",
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.Xmult}}
+    end,
+    calculate = function(self, card, context)
+           if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+            card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+            G.E_MANAGER:add_event(Event({
+                func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}}}); return true
+                end}))
+            return
+        end
+    end
+}
+if JokerDisplay then
+    python.joker_display_definition = {
+        text = {
+            {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
+                },
+                border_colour = G.C.DARK_EDITION
+            }
+        },
+    }
+end
 
 function create_UIBox_variable(card)
     G.E_MANAGER:add_event(Event({
@@ -2231,8 +2603,14 @@ crashes = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, pointer, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
+if Cryptid_config["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
+if Cryptid_config["Epic Jokers"] then
+    code_cards[#code_cards+1] = encoded
+    code_cards[#code_cards+1] = CodeJoker
+    code_cards[#code_cards+1] = copypaste
+end
 return {name = "Code Cards",
         init = function()
             --allow Program Packs to let you keep the cards
@@ -2522,6 +2900,34 @@ return {name = "Code Cards",
             G.FUNCS.your_collection = function(e)
                 if G.CHOOSE_CARD then G.CHOOSE_CARD:remove(); G.CHOOSE_CARD=nil end
                 yc(e)
+            end
+            --Encoded Deck patches
+            local Backapply_to_runRef = Back.apply_to_run
+            function Back.apply_to_run(self)
+                Backapply_to_runRef(self)
+                if self.effect.config.cry_encoded then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            if G.jokers then
+                                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_cry_CodeJoker')
+                                card:add_to_deck()
+                                card:start_materialize()
+                                G.jokers:emplace(card)
+                                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_cry_copypaste')
+                                card:add_to_deck()
+                                card:start_materialize()
+                                G.jokers:emplace(card)
+                                return true
+                            end
+                        end
+                    }))
+                end
+                if self.effect.config.cry_encoded_downside then
+                    G.GAME.joker_rate = 0
+                    G.GAME.planet_rate = 0
+                    G.GAME.tarot_rate = 0
+                    G.GAME.code_rate = 1e100
+                end
             end
         end,
         items = code_cards}

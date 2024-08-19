@@ -195,22 +195,6 @@ local wormhole = {
         }
     }
 }
-local encoded = {
-    object_type = "Back",
-    name = "cry-Encoded",
-    key = "encoded",
-    config = {cry_encoded = true, cry_encoded_downside = true},
-    pos = {x = 2, y = 5},
-    atlas = "atlasdeck",
-    loc_txt = {
-        name = "Encoded Deck",
-        text = {
-            "Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
-            "and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
-            "Only {C:cry_code}Code Cards{} appear in shop"
-        }
-    }
-}
 local redeemed = {
     object_type = "Back",
     name = "cry-Redeemed",
@@ -312,29 +296,6 @@ return {name = "Misc. Decks",
                             end
                         end
                     }))
-                end
-                if self.effect.config.cry_encoded then
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            if G.jokers then
-                                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_cry_CodeJoker')
-                                card:add_to_deck()
-                                card:start_materialize()
-                                G.jokers:emplace(card)
-                                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_cry_copypaste')
-                                card:add_to_deck()
-                                card:start_materialize()
-                                G.jokers:emplace(card)
-                                return true
-                            end
-                        end
-                    }))
-                end
-                if self.effect.config.cry_encoded_downside then
-                    G.GAME.joker_rate = 0
-                    G.GAME.planet_rate = 0
-                    G.GAME.tarot_rate = 0
-                    G.GAME.code_rate = 1e100
                 end
                 if self.effect.config.cry_negative_rate then
                     G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate

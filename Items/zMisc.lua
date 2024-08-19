@@ -552,7 +552,7 @@ local memory = {
 local miscitems = {mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
 glitched, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, 
-azure_seal_sprite, typhoon, azure_seal, 
+azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
 if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
