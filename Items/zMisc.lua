@@ -308,16 +308,16 @@ local typhoon = {
     atlas = "atlasnotjokers",
     pos = {x=0, y=4},
     use = function(self, card, area, copier)
+	G.E_MANAGER:add_event(Event({func = function()
+            	play_sound('tarot1')
+            	highlighted:juice_up(0.3, 0.5)
+            	return true end }))
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
             delay = 0.1,
             func = function()
                 for i = 1, card.ability.max_highlighted do
                     local highlighted = G.hand.highlighted[i]
-		    G.E_MANAGER:add_event(Event({func = function()
-            		play_sound('tarot1')
-            		highlighted:juice_up(0.3, 0.5)
-            		return true end }))
                     if highlighted then
                         highlighted:set_seal('s_cry_azure')
                     else
