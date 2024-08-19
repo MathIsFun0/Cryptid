@@ -428,12 +428,6 @@ for _, file in ipairs(files) do
     end
 end
 
-local G_FUNCS_options_ref = G.FUNCS.options
-G.FUNCS.options = function(e)
-  G_FUNCS_options_ref(e)
-  NFS.write(mod_path.."/config.lua", STR_PACK(Cryptid_config))
-end
-
 if not SpectralPack then
     SpectralPack = {}
     local ct = create_tabs
