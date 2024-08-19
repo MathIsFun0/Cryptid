@@ -314,7 +314,10 @@ local typhoon = {
             func = function()
                 for i = 1, card.ability.max_highlighted do
                     local highlighted = G.hand.highlighted[i]
-
+		    G.E_MANAGER:add_event(Event({func = function()
+            		play_sound('tarot1')
+            		used_tarot:juice_up(0.3, 0.5)
+            		return true end }))
                     if highlighted then
                         highlighted:set_seal('s_cry_azure')
                     else
@@ -324,6 +327,8 @@ local typhoon = {
                 return true
             end
         }))
+	delay(0.5)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
     end
 }
 local cat = {
