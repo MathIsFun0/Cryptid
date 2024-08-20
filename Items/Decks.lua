@@ -402,4 +402,4 @@ return {name = "Misc. Decks",
                 end
             end
         end,
-        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, encoded, redeemed, critical}}
+        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, redeemed, critical}}
