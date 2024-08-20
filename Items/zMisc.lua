@@ -451,10 +451,17 @@ local gambler = {
                 G.CONTROLLER.locks[lock] = true
                 tag:yep('+', G.C.RARITY.cry_exotic,function()
                     add_tag(Tag("tag_cry_empowered"))
-                    if not G.GAME.PACK_INTERRUPT then
-                        G.GAME.tags[#G.GAME.tags]:apply_to_run({type = 'new_blind_choice'})
-                    end
-                    G.CONTROLLER.locks[lock] = nil
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        delay = 0.3,
+                        func = function()
+                            if not G.GAME.PACK_INTERRUPT then
+                                G.GAME.tags[#G.GAME.tags]:apply_to_run({type = 'new_blind_choice'})
+                            end
+                            G.CONTROLLER.locks[lock] = nil
+                            return true
+                        end
+                    }))
                     return true
                 end)
             else
