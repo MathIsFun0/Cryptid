@@ -1039,6 +1039,19 @@ function SMODS.current_mod.reset_game_globals(run_start)
     G.GAME.cry_ach_conditions = G.GAME.cry_ach_conditions or {}
 end
 
+--Fix a corrupted game state
+function Controller:queue_L_cursor_press(x, y)
+    if self.locks.frame then return end
+    if G.STATE == G.STATES.SPLASH then
+        if not G.HUD then 
+            self:key_press('escape')
+        else
+            G.STATE = G.STATES.BLIND_SELECT
+        end
+    end
+    self.L_cursor_queue = {x = x, y = y}
+end
+
 --Used to check to play the exotic music
 function cry_has_exotic()
     if G.jokers then
