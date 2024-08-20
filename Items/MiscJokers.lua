@@ -1400,6 +1400,91 @@ if JokerDisplay then
         end
     }
 end
+
+local mario = {
+    object_type = "Joker",
+    name = "cry-mario",
+    key = "mario",
+    config = {extra = {retriggers = 1}},
+    pos = {x = 4, y = 3},
+    soul_pos = {x = 5, y = 3},
+    loc_txt = {
+        name = 'Mario',
+        text = {
+            "All Jokers",
+            "retrigger {C:attention}#1#{} additional time"
+            }
+        },
+    rarity = 4,
+    cost = 20,
+    blueprint_compat = true,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.retriggers}}
+    end,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra.retriggers,
+                    card = card
+                }
+        end
+    end
+}
+if JokerDisplay then
+    mario.joker_display_definition = {
+        reminder_text = {
+            { text = '(', },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ')', },
+        },
+
+        retrigger_joker_function = function (card, retrigger_joker)
+            return card ~= retrigger_joker == card and retrigger_joker.ability.extra.retrigger or 0
+        end
+    }
+end
+
+local wario = {
+	object_type = "Joker",
+	name = "cry-wario",
+	key = "wario",
+	pos = {x = 2, y = 3},
+    soul_pos = {x = 3, y = 3 },
+    config = {extra = {money = 3}},
+    
+	loc_txt = {
+        name = 'Wario',
+        text = {
+            "All Jokers give",
+            "{C:money}$#1#{} at end of round",
+		}
+    },
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.money}}
+    end,
+
+calc_dollar_bonus = function(self, card)
+  if G.jokers and G.jokers.cards then
+    return #G.jokers.cards * card.ability.extra.money
+  end
+end,
+
+	rarity = 4,
+	cost = 20,
+
+	atlas = "atlasthree",
+}
+if JokerDisplay then
+    wario.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            return { card.ability.extra.money }  
+        end
+    }
+end
+
+
 local krustytheclown = {
 	object_type = "Joker",
 	name = "cry-krustytheclown",
@@ -2273,6 +2358,8 @@ if JokerDisplay then
         },
     }
 end
+
+
 
 local sapling = {
 	object_type = "Joker",
@@ -4523,4 +4610,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
