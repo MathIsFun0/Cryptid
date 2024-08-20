@@ -221,14 +221,12 @@ local azure_seal = {
         -- Badge name
         label = 'Azure Seal',
         -- Tooltip description
-        description = {
-            name = 'Azure Seal',
-            text = {
-                'Create {C:attention}#1#{} {C:dark_edition}Negative{}',
-                '{C:planet}Planets{} for played',
-                '{C:attention}poker hand{}, then',
-                '{C:red}destroy{} this card'
-            }
+        name = 'Azure Seal',
+        text = {
+            'Create {C:attention}#1#{} {C:dark_edition}Negative{}',
+            '{C:planet}Planets{} for played',
+            '{C:attention}poker hand{}, then',
+            '{C:red}destroy{} this card'
         },
     },
     loc_vars = function(self, info_queue)

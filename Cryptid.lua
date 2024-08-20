@@ -1261,12 +1261,41 @@ SMODS.Atlas({
 SMODS.Sticker:take_ownership('perishable', {
     atlas = "sticker",
     pos = {x = 4, y = 4},
-    prefix_config = {key = false}
+    prefix_config = {key = false},
+    loc_vars = function(self, info_queue, card)
+        if card.ability.consumeable then return {key = 'cry_perishable_consumeable'}
+	elseif card.ability.set == 'Voucher' then return {key = 'cry_perishable_voucher', vars = {G.GAME.cry_voucher_perishable_rounds or 1, card.ability.perish_tally or G.GAME.cry_voucher_perishable_rounds}}
+	elseif card.ability.set == 'Booster' then return {key = 'cry_perishable_booster'}
+	else return {vars = {G.GAME.perishable_rounds or 1, card.ability.perish_tally or G.GAME.perishable_rounds}}
+	end
+    end
 })
 SMODS.Sticker:take_ownership('pinned', {
     atlas = "sticker",
     pos = {x = 5, y = 0},
-    prefix_config = {key = false}
+    prefix_config = {key = false},
+    loc_vars = function(self, info_queue, card)
+        if card.ability.consumeable then return {key = 'cry_pinned_consumeable'}		-- this doesn't work. i want this to work :(
+	elseif card.ability.set == 'Voucher' then return {key = 'cry_pinned_voucher'}
+	elseif card.ability.set == 'Booster' then return {key = 'cry_pinned_booster'}
+	end
+    end
+})
+SMODS.Sticker:take_ownership('eternal', {
+    loc_vars = function(self, info_queue, card)
+	if card.ability.set == 'Voucher' then return {key = 'cry_eternal_voucher'}
+	elseif card.ability.set == 'Booster' then return {key = 'cry_eternal_booster'}
+	end
+    end
+})
+SMODS.Sticker:take_ownership('rental', {
+    loc_vars = function(self, info_queue, card)
+        if card.ability.consumeable then return {key = 'cry_rental_consumeable', vars = {G.GAME.cry_consumeable_rental_rate or 1}}
+	elseif card.ability.set == 'Voucher' then return {key = 'cry_rental_voucher', vars = {G.GAME.cry_voucher_rental_rate or 1}}
+	elseif card.ability.set == 'Booster' then return {key = 'cry_rental_booster'}
+	else return {vars = {G.GAME.rental_rate or 1}}
+	end
+    end
 })
 ----------------------------------------------
 ------------MOD CODE END----------------------
