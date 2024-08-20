@@ -243,10 +243,8 @@ if G.GAME.modifiers.cry_force_sticker == 'banana' or G.GAME.modifiers.cry_sticke
 	card.ability.banana = true
 end
 if G.GAME.modifiers.cry_sticker_sheet_plus then
-	if G.GAME.modifiers.cry_sticker_sheet then
-		for k, v in pairs(SMODS.Stickers) do
-			v:set_sticker(card, true)
-		end
+	for k, v in pairs(SMODS.Stickers) do
+		if v.apply and not v.no_sticker_sheet then v:apply(card, true) end
 	end
 end
 '''
@@ -351,7 +349,7 @@ if G.GAME.voucher_sticker_index then
 				G.GAME.voucher_sticker_index.perishable[k] = v - 1	
 				for kk, vv in pairs(G.P_CENTERS) do
 					if k == vv.name then
-						cry_debuff_voucher(vv)		-- needs to be an exception made for director's cut + retcon, but lazy
+						cry_debuff_voucher(kk)
 						G.GAME.used_vouchers.vv = nil
 						G.GAME.used_vouchers[kk] = nil
 						break
@@ -491,7 +489,7 @@ if G.GAME.modifiers.cry_eternal_perishable_compat and G.GAME.modifiers.enable_ba
 end
 if G.GAME.modifiers.cry_sticker_sheet_plus then
 	for k, v in pairs(SMODS.Stickers) do
-		v:set_sticker(card, true)
+		if v.apply and not v.no_sticker_sheet then v:apply(card, true) end
 	end
 end
 '''

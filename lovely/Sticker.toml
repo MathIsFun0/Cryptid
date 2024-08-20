@@ -3,46 +3,13 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-# back on my bullshit
+# ok it seems i still have to use the dumb fix for pinned, smods please overwrite
 [[patches]]
 [patches.regex]
 target = "card.lua"
-pattern = '''if self\.ability\.eternal then badges\[#badges \+ 1\] \= 'eternal' end\n\s+if self\.ability\.perishable then\n\s+loc_vars = loc_vars or \{\}; loc_vars\.perish_tally=self\.ability\.perish_tally\n\s+badges\[#badges \+ 1\] \= 'perishable'\n\s+end\n\s+if self\.ability\.rental then badges\[\#badges \+ 1\] \= 'rental' end\n\s+if self\.pinned then badges\[\#badges \+ 1\] \= 'pinned_left' end'''
+pattern = '''if self\.pinned then badges\[\#badges \+ 1\] \= 'pinned_left' end'''
 position = "at"
 payload = '''
-if self.ability.eternal then
-	if self.ability.set == 'Booster' then
-		badges[#badges + 1] = 'cry_eternal_booster'
-	elseif self.ability.set == 'Voucher' then
-		badges[#badges + 1] = 'cry_eternal_voucher'
-	else
-		badges[#badges + 1] = 'eternal'
-	end
-end
-if self.ability.perishable then
-	if self.ability.set == 'Booster' then
-		badges[#badges + 1] = 'cry_perishable_booster'
-	elseif self.ability.set == 'Voucher' then
-		loc_vars = loc_vars or {}; loc_vars.perish_tally=self.ability.perish_tally
-		badges[#badges + 1] = 'cry_perishable_voucher'
-	elseif self.ability.consumeable then
-		badges[#badges + 1] = 'cry_perishable_consumeable'
-	else
-		loc_vars = loc_vars or {}; loc_vars.perish_tally=self.ability.perish_tally
-		badges[#badges + 1] = 'perishable'
-	end
-end
-if self.ability.rental then
-	if self.ability.set == 'Booster' then
-		badges[#badges + 1] = 'cry_rental_booster'
-	elseif self.ability.set == 'Voucher' then
-		badges[#badges + 1] = 'cry_rental_voucher'
-	elseif self.ability.consumeable then
-		badges[#badges + 1] = 'cry_rental_consumeable'
-	else
-		badges[#badges + 1] = 'rental'
-	end
-end
 if self.pinned then
 	if self.ability.set == 'Booster' then
 		badges[#badges + 1] = 'cry_pinned_booster'
@@ -54,21 +21,9 @@ if self.pinned then
 		badges[#badges + 1] = 'pinned_left'
 	end
 end
-if self.ability.banana then
-	if self.ability.set == 'Booster' then
-		badges[#badges + 1] = 'cry_banana_booster'
-	elseif self.ability.set == 'Voucher' then
-		badges[#badges + 1] = 'cry_banana_voucher'
-	elseif self.ability.consumeable then
-		badges[#badges + 1] = 'cry_banana_consumeable'
-	else
-		badges[#badges + 1] = 'banana'
-	end
-end
-if self.ability.cry_rigged then badges[#badges + 1] = 'cry_rigged' end
 '''
 
-# dumb "fix", if you can even call it that (mod badges will appear in the wrong positions)
+# sigh
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
@@ -76,13 +31,12 @@ pattern = "if AUT.badges then"
 position = "before"
 payload = '''
 local function is_bad_badge(string)
-	local bad_badges = {'cry_eternal_booster', 'cry_eternal_voucher', 'cry_perishable_booster', 'cry_perishable_voucher', 'cry_perishable_consumeable', 'cry_rental_booster', 'cry_rental_voucher', 'cry_rental_consumeable', 'cry_pinned_booster', 'cry_pinned_voucher', 'cry_pinned_consumeable', 'cry_banana_booster', 'cry_banana_voucher', 'cry_banana_consumeable'}
+	local bad_badges = {'cry_pinned_booster', 'cry_pinned_voucher', 'cry_pinned_consumeable'}
 	for i = 1, #bad_badges do
 		if string == bad_badges[i] then return true end
 	end
 	return false
 end
-
 '''
 match_indent = true
 
@@ -97,27 +51,23 @@ if not is_bad_badge(v) then badges[#badges + 1] = create_badge(localize(v, "labe
 '''
 match_indent = true
 
-# part 3 of the dumbest fix known to man
+# this no longer just moves mod badges... it DUPES them, so now it's commented out (fml...)
+# pinned badges should now no longer exist for non-jokers due to whatever the fuck is happening here
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = '''if AUT.info then'''
 position = "before"
 payload = '''
-if AUT.badges then
-	for k, v in ipairs(AUT.badges) do
-		local replaced = false
-		if v == 'cry_eternal_booster' or v == 'cry_eternal_voucher' then replaced = true; v = 'eternal' end
-		if v == 'cry_perishable_booster' or v == 'cry_perishable_voucher' or v == 'cry_perishable_consumeable' then replaced = true; v = 'perishable' end
-		if v == 'cry_rental_booster' or v == 'cry_rental_voucher' or v == 'cry_rental_consumeable' then replaced = true; v = 'rental' end
-		if v == 'cry_pinned_booster' or v == 'cry_pinned_voucher' or v == 'cry_pinned_consumeable' then replaced = true; v = 'pinned_left' end
-		if v == 'cry_banana_booster' or v == 'cry_banana_voucher' or v == 'cry_banana_consumeable' then replaced = true; v = 'banana' end
-		if replaced == true then badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v)) end
-	end
-end
+-- if AUT.badges then
+--	for k, v in ipairs(AUT.badges) do
+--		local replaced = false
+--		if v == 'cry_pinned_booster' or v == 'cry_pinned_voucher' or v == 'cry_pinned_consumeable' then replaced = true; v = 'pinned_left' end
+--		if replaced == true then badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v)) end
+--	end
+--end
 '''
 match_indent = true
-
 
 # fucking hell
 [[patches]]
@@ -126,20 +76,9 @@ target = "functions/common_events.lua"
 pattern = "if v == 'negative_consumable' then info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}} end"
 position = "after"
 payload = '''
-if v == 'cry_eternal_booster' then info_queue[#info_queue+1] = {key = 'cry_eternal_booster', set = 'Other'} end
-if v == 'cry_eternal_voucher' then info_queue[#info_queue+1] = {key = 'cry_eternal_voucher', set = 'Other'} end
-if v == 'cry_perishable_booster' then info_queue[#info_queue+1] = {key = 'cry_perishable_booster', set = 'Other'} end
-if v == 'cry_perishable_voucher' then info_queue[#info_queue+1] = {key = 'cry_perishable_voucher', set = 'Other', vars = {G.GAME.cry_voucher_perishable_rounds or 1, specific_vars.perish_tally or G.GAME.cry_voucher_perishable_rounds}} end
-if v == 'cry_perishable_consumeable' then info_queue[#info_queue+1] = {key = 'cry_perishable_consumeable', set = 'Other'} end
-if v == 'cry_rental_booster' then info_queue[#info_queue+1] = {key = 'cry_rental_booster', set = 'Other'} end
-if v == 'cry_rental_voucher' then info_queue[#info_queue+1] = {key = 'cry_rental_voucher', set = 'Other', vars = {G.GAME.cry_voucher_rental_rate or 1}} end
-if v == 'cry_rental_consumeable' then info_queue[#info_queue+1] = {key = 'cry_rental_consumeable', set = 'Other', vars = {G.GAME.cry_consumeable_rental_rate or 1}} end
 if v == 'cry_pinned_booster' then info_queue[#info_queue+1] = {key = 'cry_pinned_booster', set = 'Other'} end
 if v == 'cry_pinned_voucher' then info_queue[#info_queue+1] = {key = 'cry_pinned_voucher', set = 'Other'} end
 if v == 'cry_pinned_consumeable' then info_queue[#info_queue+1] = {key = 'cry_pinned_consumeable', set = 'Other'} end
-if v == 'cry_banana_booster' then info_queue[#info_queue+1] = {key = 'cry_banana_booster', set = 'Other'} end
-if v == 'cry_banana_voucher' then info_queue[#info_queue+1] = {key = 'cry_banana_voucher', set = 'Other', vars = {G.GAME.probabilities.normal or 1, G.GAME.cry_voucher_banana_odds or 12}} end
-if v == 'cry_banana_consumeable' then info_queue[#info_queue+1] = {key = 'cry_banana_consumeable', set = 'Other', vars = {G.GAME.probabilities.normal or 1, G.GAME.cry_consumeable_banana_odds or 4}} end
 '''
 match_indent = true
 

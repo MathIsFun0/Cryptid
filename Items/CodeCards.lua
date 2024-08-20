@@ -1107,13 +1107,11 @@ local green_seal = {
         -- Badge name
         label = 'Green Seal',
         -- Tooltip description
-        description = {
-            name = 'Green Seal',
-            text = {
-                'Creates a {C:cry_code}Code{} card',
-                'when played and unscoring',
-                '{C:inactive}(Must have room)'
-            }
+        name = 'Green Seal',
+        text = {
+            'Creates a {C:cry_code}Code{} card',
+            'when played and unscoring',
+            '{C:inactive}(Must have room)'
         },
     },
     atlas = "green_atlas",

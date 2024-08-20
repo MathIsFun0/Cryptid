@@ -329,7 +329,11 @@ local banana = {
     pos = {x = 5, y = 2},
     should_apply = false,
     loc_vars = function(self, info_queue, card)
-        return {vars = {G.GAME.probabilities.normal or 1, 10}}
+	if card.ability.consumeable then return {key = 'cry_banana_consumeable', vars = {G.GAME.probabilities.normal or 1, 4}}
+	elseif card.ability.set == 'Voucher' then return {key = 'cry_banana_voucher', vars = {G.GAME.probabilities.normal or 1, 12}}
+	elseif card.ability.set == 'Booster' then return {key = 'cry_banana_booster'}
+        else return {vars = {G.GAME.probabilities.normal or 1, 10}}
+	end
     end
 }
 local verdant = {object_type = "Stake",
