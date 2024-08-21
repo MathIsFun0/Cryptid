@@ -1353,13 +1353,6 @@ local luigi = {
 	end,
 	atlas = "atlasthree",
 }
-if JokerDisplay then
-    luigi.joker_display_definition = {
-        mod_function = function(card, mod_joker)
-            return { x_chips = mod_joker.ability.extra.x_chips }
-        end
-    }
-end
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -1438,20 +1431,6 @@ local mario = {
         end
     end
 }
-if JokerDisplay then
-    mario.joker_display_definition = {
-        reminder_text = {
-            { text = '(', },
-            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-            { text = ')', },
-        },
-
-        retrigger_joker_function = function (card, retrigger_joker)
-            return card ~= retrigger_joker == card and retrigger_joker.ability.extra.retrigger or 0
-        end
-    }
-end
-
 local wario = {
 	object_type = "Joker",
 	name = "cry-wario",
@@ -1482,13 +1461,6 @@ end,
 
 	atlas = "atlasthree",
 }
-if JokerDisplay then
-    wario.joker_display_definition = {
-        mod_function = function(card, mod_joker)
-            return { card.ability.extra.money }  
-        end
-    }
-end
 
 
 local krustytheclown = {
