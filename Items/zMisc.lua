@@ -77,8 +77,8 @@ local meme1 = {
         return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_meme')
     end,
     ease_background_colour = function(self)
-        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code) --reused Code Pack code so this can be changed later with a diff colour
-        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
     end,
     loc_vars = function(self, info_queue, card)
 	return { vars = {card.config.center.config.choose, card.ability.extra} }
@@ -87,9 +87,14 @@ local meme1 = {
         name = "Meme Pack",
         text = {
             "Choose {C:attention}#1#{} of",
-            "up to {C:attention}#2# Memes{}"
+            "up to {C:attention}#2# Meme Jokers{}"
         }
     },
+    update_pack = function(self, dt)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+        SMODS.Booster.update_pack(self, dt)
+    end,
     group_key = "k_cry_meme_pack"
 }
 local meme2 = {
@@ -105,8 +110,8 @@ local meme2 = {
         return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memetwo')
     end,
     ease_background_colour = function(self)
-        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code) --reused Code Pack code so this can be changed later with a diff colour
-        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
     end,
     loc_vars = function(self, info_queue, card)
 	return { vars = {card.config.center.config.choose, card.ability.extra} }
@@ -115,9 +120,14 @@ local meme2 = {
         name = "Meme Pack",
         text = {
             "Choose {C:attention}#1#{} of",
-            "up to {C:attention}#2# Memes{}"
+            "up to {C:attention}#2# Meme Jokers{}"
         }
     },
+    update_pack = function(self, dt)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+        SMODS.Booster.update_pack(self, dt)
+    end,
     group_key = "k_cry_meme_pack"
 }
 local meme3 = {
@@ -133,8 +143,8 @@ local meme3 = {
         return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memethree')
     end,
     ease_background_colour = function(self)
-        ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code) --reused Code Pack code so this can be changed later with a diff colour
-        ease_background_colour{new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2}
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
     end,
     loc_vars = function(self, info_queue, card)
 	return { vars = {card.config.center.config.choose, card.ability.extra} }
@@ -143,9 +153,14 @@ local meme3 = {
         name = "Meme Pack",
         text = {
             "Choose {C:attention}#1#{} of",
-            "up to {C:attention}#2# Memes{}"
+            "up to {C:attention}#2# Meme Jokers{}"
         }
     },
+    update_pack = function(self, dt)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+        SMODS.Booster.update_pack(self, dt)
+    end,
     group_key = "k_cry_meme_pack"
 }
 

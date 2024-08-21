@@ -902,6 +902,7 @@ function init_localization()
     G.localization.misc.v_text.ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"}
     G.localization.misc.v_text.ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
     G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
+    G.localization.misc.dictionary.k_cry_meme_pack = "Meme Pack"
     G.localization.misc.labels.food_jokers = "Food Jokers"
     G.localization.misc.labels.banana = "Banana"
 end
