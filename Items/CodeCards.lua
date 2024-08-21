@@ -606,6 +606,9 @@ local merge = {
         local n = 1
         if G.hand.highlighted[1] == card then n = 2 end
         if G.hand.highlighted[n].ability.consumeable then return false end
+        local m = 1
+        if G.consumeables.highlighted[1] == card then m = 2 end
+        if G.consumeables.highlighted[m].ability.eternal then return false end
         return true
     end,
     use = function(self, card, area, copier)
