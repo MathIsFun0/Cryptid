@@ -1,3 +1,168 @@
+if not Cryptid then Cryptid = {} end
+Cryptid.memepack = { --This is used for the Cryptid memepack pool
+    "j_jolly",
+    "j_obelisk",
+    "j_space", --Nobody takes this thing seriously so i'm putting it here
+    "j_mr_bones", --sans undertale
+}
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_cube" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_happyhouse" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_nice" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_sus" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_chad" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_jimball" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_krustytheclown" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_blurred" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_filler" end
+if cry_minvasion then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_reverse" end --uno reverse
+if cry_minvasion then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_bonk" end
+if cry_enable_epics then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_boredom" end
+if cry_enable_epics then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_curse" end
+if cry_enable_epics then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_m" end
+
+function memepackpool(_type, _rarity, legendary, key_append)
+    G.ARGS.TEMP_POOL = EMPTY(G.ARGS.TEMP_POOL)
+    local _pool, _starting_pool, _pool_key, _pool_size = G.ARGS.TEMP_POOL, {}, 'meme', 0
+
+    for k, v in pairs(Cryptid.memepack) do
+        if v then 
+            _starting_pool[#_starting_pool+1] = G.P_CENTERS[v]
+        end
+    end
+
+    for k, v in ipairs(_starting_pool) do
+        local add = true
+        
+        if G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) then
+            add = false
+        end
+
+        if add and not G.GAME.banned_keys[v.key] then
+            _pool[#_pool+1] = v.key
+            _pool_size = _pool_size + 1
+        end
+
+        if _pool_size == 0 then
+            _pool = EMPTY(G.ARGS.TEMP_POOL)
+            _pool[#_pool + 1] = "j_mr_bones"
+        end
+    end
+
+    return _pool, _pool_key .. G.GAME.round_resets.ante
+end
+
+local memepackgetcurrentpool = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append)
+    if _type == "meme" then return memepackpool(_type, _rarity, _legendary, _append) end
+    return memepackgetcurrentpool(_type, _rarity, _legendary, _append)
+end
+
+local memepack_atlas = {
+    object_type = "Atlas",
+    key = "memepack",
+    path = "pack_cry.png",
+    px = 71,
+    py = 95
+}
+local meme1 = {
+    object_type = "Booster",
+    key = "meme_1",
+    kind = "meme",
+    atlas = "memepack",
+    pos = {x=0,y=1},
+    config = {extra = 5, choose = 2},
+    cost = 14,
+    weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
+    create_card = function(self, card)
+        return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_meme')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+	return { vars = {card.config.center.config.choose, card.ability.extra} }
+    end,
+    loc_txt = {
+        name = "Meme Pack",
+        text = {
+            "Choose {C:attention}#1#{} of",
+            "up to {C:attention}#2# Meme Jokers{}"
+        }
+    },
+    update_pack = function(self, dt)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+        SMODS.Booster.update_pack(self, dt)
+    end,
+    group_key = "k_cry_meme_pack"
+}
+local meme2 = {
+    object_type = "Booster",
+    key = "meme_two",
+    kind = "meme",
+    atlas = "memepack",
+    pos = {x=1,y=1},
+    config = {extra = 5, choose = 2},
+    cost = 14,
+    weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
+    create_card = function(self, card)
+        return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memetwo')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+	return { vars = {card.config.center.config.choose, card.ability.extra} }
+    end,
+    loc_txt = {
+        name = "Meme Pack",
+        text = {
+            "Choose {C:attention}#1#{} of",
+            "up to {C:attention}#2# Meme Jokers{}"
+        }
+    },
+    update_pack = function(self, dt)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+        SMODS.Booster.update_pack(self, dt)
+    end,
+    group_key = "k_cry_meme_pack"
+}
+local meme3 = {
+    object_type = "Booster",
+    key = "meme_three",
+    kind = "meme",
+    atlas = "memepack",
+    pos = {x=2,y=1},
+    config = {extra = 5, choose = 2},
+    cost = 14,
+    weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
+    create_card = function(self, card)
+        return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memethree')
+    end,
+    ease_background_colour = function(self)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+    end,
+    loc_vars = function(self, info_queue, card)
+	return { vars = {card.config.center.config.choose, card.ability.extra} }
+    end,
+    loc_txt = {
+        name = "Meme Pack",
+        text = {
+            "Choose {C:attention}#1#{} of",
+            "up to {C:attention}#2# Meme Jokers{}"
+        }
+    },
+    update_pack = function(self, dt)
+        ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
+        ease_background_colour{new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2}
+        SMODS.Booster.update_pack(self, dt)
+    end,
+    group_key = "k_cry_meme_pack"
+}
 
 --Edition code based on Bunco's Glitter Edition
 
@@ -554,7 +719,8 @@ local memory = {
     end
 }
 
-local miscitems = {mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
+local miscitems = {memepack_atlas, meme1, meme2, meme3,
+mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
 glitched, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, 
 azure_seal_sprite, typhoon, azure_seal,

@@ -1,3 +1,4 @@
+cry_enable_jokers = false
 local dropshot = {
     object_type = "Joker",
 	name = "cry-Dropshot",
@@ -4536,6 +4537,7 @@ if JokerDisplay then
 end
 return {name = "Misc. Jokers", 
         init = function()
+	    cry_enable_jokers = true
             --Dropshot Patches
             local gigo = Game.init_game_object;
             function Game:init_game_object()
