@@ -1418,6 +1418,7 @@ local mario = {
     rarity = 4,
     cost = 20,
     blueprint_compat = true,
+	immune_to_chemach = true,
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.retriggers}}
     end,
@@ -1451,6 +1452,7 @@ local wario = {
 	name = "cry-wario",
 	key = "wario",
 	pos = {x = 2, y = 3},
+	immune_to_chemach = true,
     soul_pos = {x = 3, y = 3 },
     config = {extra = {money = 3}},
     
