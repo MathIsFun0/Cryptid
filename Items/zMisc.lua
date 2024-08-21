@@ -497,9 +497,10 @@ local cat = {
     atlas = "tag_cry",
     pos = {x=0, y=2},
     key = "cat",
+    name = "cry-Cat Tag",
     loc_txt = {
         name = "Cat Tag",
-        text = {"Meow."}
+        text = {"Meow.", "{C:inactive}Level {C:dark_edition}#1#"}
     }
 }
 local epic_tag = {
