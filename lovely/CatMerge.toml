@@ -94,7 +94,7 @@ end
 '''
 match_indent = true
 
-# Rework Tag - UI
+# copied from rework patch
 [[patches]]
 [patches.pattern]
 target = "tag.lua"
