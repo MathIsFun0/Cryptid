@@ -255,6 +255,7 @@ local redeo = {
         return {vars = {center.ability.extra.ante_reduction, center.ability.extra.money_req, center.ability.extra.money_remaining, center.ability.extra.money_mod}}
     end,
 	pos = {x = 3, y = 0},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Redeo',
         text = {
@@ -563,6 +564,7 @@ local scalae = {
     key = "Scalae",
     pos = {x = 3, y = 4},
     soul_pos = {x = 5, y = 4, extra = {x = 4, y = 4}},
+	immune_to_chemach = true,
     loc_txt = {
         name = 'Scalae',
         text = {

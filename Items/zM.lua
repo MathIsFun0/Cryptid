@@ -428,6 +428,7 @@ local notebook = {
     key = "notebook",
     pos = {x = 1, y = 0},
     config = {extra = {odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = ""}, jolly = {t_mult = 8, type = 'Pair'}},
+	immune_to_chemach = true,
     loc_txt = {
     name = 'Notebook',
     text = {
@@ -681,6 +682,7 @@ local loopy = { --this may or may not need further balancing
     config = {extra = {retrigger = 0, text = "s"}, jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 4, y = 1},
     atlas = 'atlastwo',
+	immune_to_chemach = true,
     loc_txt = {
         name = 'Loopy',
         text = {
@@ -749,6 +751,7 @@ local scrabble = {
 	key = "scrabble",
 	config = {extra = {odds = 4}, jolly = {t_mult = 8, type = 'Pair'}},
 	pos = {x = 0, y = 2},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Scrabble Tile',
         text = {
@@ -792,6 +795,7 @@ local sacrifice = {
 	key = "sacrifice",
 	config = {extra = {text = "Active!", spawn = true}, jolly = {t_mult = 8, type = 'Pair'}},
 	pos = {x = 5, y = 2},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Sacrifice',
         text = {
@@ -863,6 +867,7 @@ local reverse = {
 			"with {C:dark_edition}Holographic{} {C:attention}Jolly Jokers{} if",
 			"{C:attention}discarded poker hand{} is a {C:attention}#1#{}",
 			"{C:red,E:2}self destructs{}",
+			"{C:inactive}(Max of 100){}",
 			"{C:inactive,s:0.8}The ULTIMATE comeback{}"
 		}
     	},
@@ -925,6 +930,7 @@ local doodlem = {
     atlas = "atlasepic",
     config = {jolly = {t_mult = 8, type = 'Pair'}},
     pos = {x = 2, y = 0},
+	immune_to_chemach = true,
     loc_txt = {
         name = 'Doodle M',
         text = {

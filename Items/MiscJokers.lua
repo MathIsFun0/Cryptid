@@ -93,6 +93,7 @@ local happyhouse = {
     key = "happyhouse",
     pos = {x = 2, y = 4},
     config = {extra = {mult = 4, check = 0}},
+	immune_to_chemach = true,
     loc_txt = {
         name = 'Happy House',
         text = { "{X:dark_edition,C:white}^#1#{} Mult only after",
@@ -189,6 +190,7 @@ local potofjokes = {
 	key = "pot_of_jokes",
 	config = {extra = {h_size = -2, h_mod = 1}},
 	pos = {x = 5, y = 0},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Pot of Jokes',
         text = {
@@ -510,6 +512,7 @@ local pickle = {
 	key = "pickle",
     	config = {extra = {tags = 3, tags_mod = 1}},
 	pos = {x = 3, y = 3},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Pickle',
         text = {
@@ -696,6 +699,7 @@ local booster = {
 	key = "booster",
     config = {extra = {booster_slots = 1}},
 	pos = {x = 2, y = 0},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Booster Joker',
         text = {
@@ -1051,6 +1055,7 @@ local chad = {
 	key = "chad",
 	pos = {x = 0, y = 3},
 	config = {extra = {retriggers = 2}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Chad',
         text = {
@@ -1452,7 +1457,6 @@ local wario = {
 	name = "cry-wario",
 	key = "wario",
 	pos = {x = 2, y = 3},
-	immune_to_chemach = true,
     soul_pos = {x = 3, y = 3 },
     config = {extra = {money = 3}},
     
@@ -1880,6 +1884,7 @@ local redbloon = {
     key = "redbloon",
     config = {extra = {money = 20, rounds_remaining = 2, text = "s"}},
     pos = {x = 5, y = 1},
+	immune_to_chemach = true,
     loc_txt = {
         name = 'Red Bloon',
         text = {
@@ -2369,6 +2374,7 @@ local sapling = {
 	key = "sapling",
 	pos = {x = 3, y = 2},
 	config = {extra = {score = 0, req = 30}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Sapling',
         text = {
@@ -4486,6 +4492,7 @@ local busdriver = {
     key = "busdriver",
     config = {extra = {mult = 50, odds = 4}},
     pos = {x = 5, y = 1},
+	immune_to_chemach = true,
     loc_txt = {
         name = 'Bus Driver',
         text = {

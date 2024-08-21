@@ -82,6 +82,7 @@ local googol_play = {
 	key = "googol_play",
 	config = {extra = {Xmult = 1e100, odds = 8}},
 	pos = {x = 3, y = 0},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Googol Play Card',
         text = {
@@ -261,6 +262,7 @@ local error_joker = {
 	key = "error",
 	pos = {x = 4, y = 2},
 	config = {extra = {sell_rounds = 0, active = false}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = '{C:red}ERR{}{C:dark_edition}O{}{C:red}R{}',
         text = {
@@ -440,6 +442,7 @@ local boredom = {
 	key = "boredom",
 	pos = {x = 1, y = 0},
 	config = {extra = {odds = 2}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Boredom',
         text = {
@@ -1113,6 +1116,7 @@ local bonusjoker = {
 	key = "bonusjoker",
 	pos = {x = 3, y = 2},
 	config = {extra = {odds = 8, check = 0}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Bonus Joker',
         text = {
@@ -1202,6 +1206,7 @@ local multjoker = {
 	key = "multjoker",
 	pos = {x = 2, y = 3},
 	config = {extra = {odds = 4}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Mult Joker',
         text = {
@@ -1349,6 +1354,7 @@ local altgoogol = {
 	name = "cry-altgoogol",
 	key = "altgoogol",
 	pos = {x = 4, y = 3},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'Nostalgic Googol Play Card',
         text = {
@@ -1405,6 +1411,7 @@ local soccer = {
 	key = "soccer",
 	pos = {x = 1, y = 4},
 	config = {extra = {holygrail = 1}},
+	immune_to_chemach = true,
 	loc_txt = {
         name = 'One for All', --changed the name from latin because this isn't exotic
         text = {
