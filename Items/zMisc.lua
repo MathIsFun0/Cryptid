@@ -71,7 +71,7 @@ local meme1 = {
     pos = {x=0,y=1},
     config = {extra = 5, choose = 2},
     cost = 14,
-    weight = 0.11/3, --0.11 base ÷ 3 since there are 3 identical packs
+    weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
     create_card = function(self, card)
         return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_meme')
     end,
@@ -99,7 +99,7 @@ local meme2 = {
     pos = {x=1,y=1},
     config = {extra = 5, choose = 2},
     cost = 14,
-    weight = 0.11/3, --0.11 base ÷ 3 since there are 3 identical packs
+    weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
     create_card = function(self, card)
         return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memetwo')
     end,
@@ -127,7 +127,7 @@ local meme3 = {
     pos = {x=2,y=1},
     config = {extra = 5, choose = 2},
     cost = 14,
-    weight = 0.11/3, --0.11 base ÷ 3 since there are 3 identical packs
+    weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
     create_card = function(self, card)
         return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memethree')
     end,
