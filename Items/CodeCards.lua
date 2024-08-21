@@ -1162,7 +1162,7 @@ local source = {
     loc_txt = {
         name = 'Source',
         text = {
-            "Add an {C:cry_code}Green Seal{}",
+            "Add a {C:cry_code}Green Seal{}",
             "to {C:attention}#1#{} selected",
             "card in your hand"
         }
