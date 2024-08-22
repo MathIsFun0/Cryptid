@@ -1,3 +1,4 @@
+cry_minvasion = false
 if not Cryptid then Cryptid = {} end
 Cryptid.M_jokers = {
     j_cry_m = true,
@@ -1343,6 +1344,7 @@ for _, v in pairs(ret_items) do
 end
 return {name = "M Jokers", 
         init = function()
+	cry_minvasion = true
 	    --Make Kidnapping always cost 1$ regardless of edition
 	    local sc = Card.set_cost
             function Card:set_cost()

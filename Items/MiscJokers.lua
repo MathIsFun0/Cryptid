@@ -1,3 +1,4 @@
+cry_enable_jokers = false
 local dropshot = {
     object_type = "Joker",
 	name = "cry-Dropshot",
@@ -1353,6 +1354,13 @@ local luigi = {
 	end,
 	atlas = "atlasthree",
 }
+if JokerDisplay then
+    luigi.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            return { x_chips = mod_joker.ability.extra.x_chips ^ JokerDisplay.calculate_joker_triggers(mod_joker) }
+        end
+    }
+end
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -1431,6 +1439,13 @@ local mario = {
         end
     end
 }
+if JokerDisplay then
+    mario.joker_display_definition = {
+        retrigger_joker_function = function (card, retrigger_joker)
+            return card ~= retrigger_joker and retrigger_joker.ability.extra.retriggers or 0
+        end
+    }
+end
 local wario = {
 	object_type = "Joker",
 	name = "cry-wario",
@@ -1461,8 +1476,13 @@ end,
 
 	atlas = "atlasthree",
 }
-
-
+if JokerDisplay then
+    wario.joker_display_definition = {
+        mod_function = function(card, mod_joker)
+            return { dollars = mod_joker.ability.extra.money }
+        end
+    }
+end
 local krustytheclown = {
 	object_type = "Joker",
 	name = "cry-krustytheclown",
@@ -2543,7 +2563,9 @@ local meteor = {
         }
     },
     loc_vars = function(self, info_queue, center)
-	info_queue[#info_queue+1] = G.P_CENTERS.e_foil
+        if not center.edition or (center.edition and not center.edition.foil) then
+            info_queue[#info_queue+1] = G.P_CENTERS.e_foil
+        end
         return {vars = {center.ability.extra.chips}}
     end,
     rarity = 1,
@@ -2636,7 +2658,9 @@ local exoplanet = {
 		}
     	},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = G.P_CENTERS.e_holo
+        if not center.edition or (center.edition and not center.edition.holo) then
+            info_queue[#info_queue+1] = G.P_CENTERS.e_holo
+        end
 		return {vars = {center.ability.extra.mult}}
     	end,
 	rarity = 1,
@@ -2729,7 +2753,9 @@ local stardust = {
 		}
     	},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
+		if not center.edition or (center.edition and not center.edition.polychrome) then
+            info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
+        end
 		return {vars = {center.ability.extra.xmult}}
     	end,
 	rarity = 1,
@@ -4511,6 +4537,7 @@ if JokerDisplay then
 end
 return {name = "Misc. Jokers", 
         init = function()
+	    cry_enable_jokers = true
             --Dropshot Patches
             local gigo = Game.init_game_object;
             function Game:init_game_object()

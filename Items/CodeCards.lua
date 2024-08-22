@@ -606,6 +606,9 @@ local merge = {
         local n = 1
         if G.hand.highlighted[1] == card then n = 2 end
         if G.hand.highlighted[n].ability.consumeable then return false end
+        local m = 1
+        if G.consumeables.highlighted[1] == card then m = 2 end
+        if G.consumeables.highlighted[m].ability.eternal then return false end
         return true
     end,
     use = function(self, card, area, copier)
@@ -2114,7 +2117,7 @@ G.FUNCS.pointer_apply = function()
             current_card = i
         end
 	end
-	if current_card then
+	if current_card and not G.P_CENTERS[current_card] then
         local created = false
         local t = Tag(current_card, nil, 'Big')
         add_tag(t)
@@ -2146,7 +2149,7 @@ G.FUNCS.pointer_apply = function()
             current_card = i
         end
 	end
-	if current_card then
+	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] then
         local created = false
         if not G.GAME.blind or (G.GAME.blind.name == '' or not G.GAME.blind.blind_set) then
             --from debugplus
