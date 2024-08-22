@@ -875,6 +875,52 @@ if JokerDisplay then
         },
     }
 end
+local circulus_pistoris = {
+    	object_type = "Joker",
+	name = "cry-Circulus Pistoris",
+	key = "circulus_pistoris",
+    	config = {extra = {Emult =math.pi, Echips =math.pi}},
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Circulus Pistoris',
+        text = {
+	    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#2#{} Mult",
+	    "every hand played"
+        }
+    	},
+	rarity = "cry_exotic",
+	cost = 50,
+	blueprint_compat = true,
+	atlas = "atlasexotictwo",
+	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+	loc_vars = function(self, info_queue, center)
+        return {vars = {"pi", "pi"}}
+    	end,
+    calculate = function(self, card, context)
+			return {
+			Echip_mod = math.pi,
+			Emult_mod = math.pi
+			}
+    end,
+}
+if JokerDisplay then
+	circulus_pistoris.joker_display_definition = {
+		text = {
+			{ text = "^",                       colour = G.C.CHIPS },
+			{ ref_table = "card.ability.extra", ref_value = "Echips", colour = G.C.CHIPS },
+			{ text = "^",                       colour = G.C.MULT },
+			{ ref_table = "card.ability.extra", ref_value = "Emult", colour = G.C.MULT },
+		},
+		extra = {
+			
+		
+				{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.UI.TEXT_INACTIVE, scale = 0.3 }
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+		end
+	}
+end
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
