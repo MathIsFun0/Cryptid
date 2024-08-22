@@ -551,6 +551,7 @@ local commit = {
         local rarity = G.jokers.highlighted[1].config.center.rarity
         local legendary = nil
         --please someone add a rarity api to steamodded
+        --I did but too lazy to fix, signed Flowwey
         if rarity == 1 then
             rarity = 0
         elseif rarity == 2 then
@@ -561,7 +562,8 @@ local commit = {
             rarity = nil
             legendary = true
         elseif rarity == 'cry_epic' then
-            rarity = 1
+            --ok I'll do one
+            rarity = 'cry_epic'
         end
         local _first_dissolve = nil
         G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()

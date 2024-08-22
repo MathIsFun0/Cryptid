@@ -26,19 +26,3 @@ if self.ability.name == 'cry-Gateway' and (self.config.center.discovered or self
 end
 '''
 match_indent = true
-
-
-# Exotic/Epic spawn logic and Cyan Stake rate modifiers
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "rarity = (_legendary and 4) or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1"
-position = "at"
-payload = '''
-if not G.GAME.modifiers.cry_rarer_jokers then
-    rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (cry_enable_epics and rarity > 0.993 and 'cry_epic') or (rarity > 0.95 and 3) or (rarity > 0.7 and 2) or 1
-else
-    rarity = (type(rarity) == 'string' and rarity) or (_legendary and 4) or (cry_enable_epics and rarity > 0.993 and 'cry_epic') or (rarity > 0.97 and 3) or (rarity > 0.82 and 2) or 1
-end
-'''
-match_indent = true

@@ -103,6 +103,7 @@ local happyhouse = {
 	"{C:inactive,s:0.8}There is no place like home!{}"
 	}
     },
+    pools = {"Meme"},
     rarity = 2,
     cost = 2,
     blueprint_compat = true,
@@ -610,6 +611,7 @@ local cube = {
 	cost = -27,
     	blueprint_compat = true,
 	atlas = "atlasone",
+    pools = {"Meme"},
     source_gate = "sho",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.chips}}
@@ -956,6 +958,7 @@ local nice = {
 	    "{C:inactive,s:0.8}Nice.{}"
         }
     },
+    pools = {"Meme"},
 	rarity = 3,
 	cost = 6.9,
 	atlas = "atlasone",
@@ -1064,6 +1067,7 @@ local chad = {
             "{C:attention}#1#{} additional time(s)"
 		}
     },
+    pools = {"Meme"},
 	rarity = 3,
 	cost = 10,
 	blueprint_compat = true,
@@ -1120,6 +1124,7 @@ local jimball = {
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra, center.ability.x_mult}}
     end,
+    pools = {"Meme"},
 	rarity = 3,
 	cost = 9,
 	blueprint_compat = true,
@@ -1195,6 +1200,7 @@ local sus = {
             "destroy all others"
 		}
     },
+    pools = {"Meme"},
 	rarity = 3,
 	cost = 7,
 	blueprint_compat = true,
@@ -1498,6 +1504,7 @@ local krustytheclown = {
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
 		}
     	},
+    pools = {"Meme"},
 	rarity = 2,
 	cost = 7,
 	perishable_compat = false,
@@ -1547,6 +1554,7 @@ local blurred = {
 			"{C:attention}Blind{} is selected"
 		}
    	},
+    pools = {"Meme"},
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -4179,6 +4187,7 @@ local filler = {
             "a {C:attention}#2#"
 		}
     },
+    pools = {"Meme"},
 	loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.x_mult, localize(card.ability.type, 'poker_hands')}}
     end,
