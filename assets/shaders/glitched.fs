@@ -100,6 +100,7 @@ float rand(vec2 co){
 }
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
+    vec2 uv =  (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
 
     float POLY_THROWAWAY = (.5 + .5* cos( (glitched.x) * 2.612 + ( 0.2 + -.5 ) *3.14));
     float POLY_THROWAWAY_2 = POLY_THROWAWAY + glitched.y * 0.04;
@@ -110,21 +111,15 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     
     float iTime = tan(2. * time);
 
-    texCoordsR.x += (0.004 * rand(vec2(iTime, texCoordsR.y))) - 0.002 + (POLY_THROWAWAY * 0.0000001);
-    texCoordsG.x += (0.007 * rand(vec2(iTime*2, texCoordsG.y*0.9))) - 0.0035 + (POLY_THROWAWAY * 0.0000001);
-    texCoordsB.x += (0.010 * rand(vec2(iTime*3, texCoordsB.y*0.8))) - 0.005 + (POLY_THROWAWAY_2 * 0.0000001);
+    texCoordsR.x += (0.004 * rand(vec2(iTime, uv.y))) - 0.002 + (POLY_THROWAWAY * 0.0000001);
+    texCoordsG.x += (0.007 * rand(vec2(iTime*2, uv.y*0.9))) - 0.0035 + (POLY_THROWAWAY * 0.0000001);
+    texCoordsB.x += (0.010 * rand(vec2(iTime*3, uv.y*0.8))) - 0.005 + (POLY_THROWAWAY_2 * 0.0000001);
     
     vec4 texR = Texel(texture, texCoordsR);
     vec4 texG = Texel(texture, texCoordsG);
     vec4 texB = Texel(texture, texCoordsB);
     
-    vec2 uvr = (((texCoordsR)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-    vec2 uvg = (((texCoordsG)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-    vec2 uvb = (((texCoordsB)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-    vec2 uv =  (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-    
     vec4 tex = vec4(texR.r, texG.g, texB.b, texR.a);
-    
     
     return dissolve_mask(tex*colour, texture_coords, uv);
 }
