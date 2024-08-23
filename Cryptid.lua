@@ -1160,6 +1160,11 @@ function Game:update(dt)
         end
     end
     G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
+    if Incantation and not CryptidIncanCompat then
+        AllowStacking("Code")
+        AllowDividing("Code")
+        CryptidIncanCompat = true
+    end
 end
 SMODS.Sound({
     key = "meow1",
