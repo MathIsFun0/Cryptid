@@ -1134,10 +1134,10 @@ biggestm.joker_display_definition = {
     end
 }
 end
-local hugem = {
+local mprime = {
 	object_type = "Joker",
-	name = "cry-hugem",
-	key = "hugem",
+	name = "cry-mprime",
+	key = "mprime",
 	pos = {x = 0, y = 5},
 	soul_pos = {x = 2, y = 5, extra = {x = 1, y = 5}},
 	config = {extra = {mult = 1.05, bonus = 0.04, check = true}, jolly = {t_mult = 8, type = 'Pair'}},
@@ -1213,7 +1213,7 @@ local hugem = {
 	end,
 }
 if JokerDisplay then
-    hugem.joker_display_definition = {
+    mprime.joker_display_definition = {
         --todo: show if active
         mod_function = function(card, mod_joker)
             if card.ability.name ~= "Jolly Joker" then return {} end
@@ -1257,7 +1257,7 @@ local macabre = {
                 for _, v in pairs(G.jokers.cards) do
                     if v ~= card
                     and v.config.center.key ~= "j_jolly"
-		    and v.config.center.key ~= "j_cry_hugem"
+		    and v.config.center.key ~= "j_cry_mprime"
                     and not (v.ability.eternal or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
                         destroyed_jokers[#destroyed_jokers+1] = v
                     end
@@ -1301,7 +1301,7 @@ return {name = "M Jokers",
                 end
             end
             if cry_enable_exotics then
-                for _, jkr in pairs({hugem}) do
+                for _, jkr in pairs({mprime}) do
                     ret_items[#ret_items+1] = jkr
                 end
             end
