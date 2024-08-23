@@ -195,16 +195,12 @@ function cry_cheapest_boss_reroll()
 end
 
 function cry_poll_random_edition()
-	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
-	if Cryptid_config["Misc."] then
-		editions[#editions+1] = {cry_astral = true}
-		editions[#editions+1] = {cry_mosaic = true}
-		editions[#editions+1] = {cry_oversat = true}
-		editions[#editions+1] = {cry_glitched = true}
- 		editions[#editions+1] = {cry_blur = true}
-	end
-	local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
-	return random_edition
+    local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_ant_edition'))
+    while (random_edition.key == "e_base") do
+        random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_ant_edition'))
+    end
+    ed_table = {[random_edition.key:sub(3)] = true}
+	return ed_table
 end
 
 function cry_voucher_debuffed(name)	-- simple function but idk
