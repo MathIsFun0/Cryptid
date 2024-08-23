@@ -740,7 +740,7 @@ local chili_pepper = {
     },
 	rarity = 2,
 	cost = 6,
-  	blueprint_compat = false,
+  	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	atlas = "atlastwo",
@@ -867,6 +867,7 @@ local big_cube = {
         }
     },
 	rarity = 1,
+	blueprint_compat = true,
 	cost = 27,
 	atlas = "atlasone",
     loc_vars = function(self, info_queue, center)
