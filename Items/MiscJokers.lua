@@ -3360,7 +3360,7 @@ local rnjoker = {
         end
         return vars
     end,
-	rarity = 3,
+	rarity = 2,
 	cost = 6,
 	blueprint_compat = true,
     set_ability = function(self, card, initial, delay_sprites)
