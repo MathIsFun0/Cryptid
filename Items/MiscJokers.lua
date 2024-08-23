@@ -867,8 +867,8 @@ local big_cube = {
         }
     },
 	rarity = 1,
-	blueprint_compat = true,
 	cost = 27,
+	blueprint_compat = true,
 	atlas = "atlasone",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_chips}}
@@ -4285,7 +4285,7 @@ if JokerDisplay then
         },
     }
 end
-local oldblueprint = { --unfinished, needs more work done later
+local oldblueprint = {
     object_type = "Joker",
     name = "cry-oldblueprint",
     key = "oldblueprint",
@@ -4536,6 +4536,79 @@ if JokerDisplay then
 		},
     }
 end
+local morse = {
+    object_type = "Joker",
+    name = "cry-morse",
+    key = "morse",
+    pos = {x = 5, y = 1},
+    config = {extra = {bonus = 2, money = 1, active = "Active!", check = true}, jolly = {t_mult = 8, type = 'Pair'}},
+    loc_txt = {
+        name = 'Morse Code',
+        text = {
+            "Earn {C:money}$#2#{} at end of round",
+            "Increase payout by {C:money}$#1#{} when",
+	    "a card with an {C:attention}Edition{} is sold",
+	    "{C:red}Works once per round{}",
+	    "{C:inactive}#3#{}"
+        }
+    },
+    rarity = 1,
+    cost = 5,
+    perishable_compat = false,
+    blueprint_compat = false,
+    loc_vars = function(self, info_queue, center)
+	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        return {vars = {center.ability.extra.bonus, center.ability.extra.money, center.ability.extra.active}}
+    end,
+    atlas = "atlastwo",
+    calculate = function(self, card, context)
+        if context.selling_card and context.card.edition
+	and card.ability.extra.check and not context.blueprint then
+            card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus
+	    card.ability.extra.check = false
+	    card.ability.extra.active = "No triggers left!"
+	    return {
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Upgrade!",
+                    colour = G.C.MONEY,
+                    })
+            }
+	end
+	if context.end_of_round and not context.retrigger_joker and not context.blueprint then
+            if not card.ability.extra.check then
+                card.ability.extra.active = "Active!"
+                card.ability.extra.check = true
+                return {
+                    	message = localize('k_reset'),
+                        card = card,
+			}
+            end
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        if card.ability.extra.money > 0 then
+            return card.ability.extra.money
+        end
+    end
+}
+if JokerDisplay then
+    morse.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+	    { text = "(" },
+            { ref_table = "card.ability.extra", ref_value = "active" },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4619,4 +4692,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse}}
