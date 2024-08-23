@@ -158,7 +158,7 @@ local massproduct = {
     },
     redeem = function(self)
         G.E_MANAGER:add_event(Event({func = function()
-            G.GAME.discount_percent = 1e69
+            G.GAME.discount_percent = 100
             for k, v in pairs(G.I.CARD) do
                 if v.set_cost then v:set_cost() end
             end
