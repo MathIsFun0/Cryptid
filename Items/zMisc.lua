@@ -481,7 +481,7 @@ local epic_tag = {
                 end
                 local card
                 if #G.P_JOKER_RARITY_POOLS.cry_epic > rares_in_posession[1] then 
-                    card = create_card('Joker', context.area, nil, 1, nil, nil, nil, 'cry_eta')
+                    card = create_card('Joker', context.area, nil, 'cry_epic', nil, nil, nil, 'cry_eta')
                     create_shop_card_ui(card, 'Joker', context.area)
                     card.states.visible = false
                     tag:yep('+', G.C.RARITY.cry_epic,function() 
