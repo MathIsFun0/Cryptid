@@ -79,6 +79,15 @@ local jollysus = {
         end
     end
 }
+if JokerDisplay then
+    jollysus.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.ability.extra", ref_value = "active" },
+            { text = ")" },
+        },
+    }
+end
 --TODO
 --Fix Incompatiblity with Brainstorm (the joker not the mod)
 --Make Blueprints create copies when this is sold to the right of Blueprint
@@ -125,7 +134,15 @@ local kidnap = {
 		end
 	end
 }
-
+if JokerDisplay then
+    kidnap.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+    }
+end
 local bubblem = {
     object_type = "Joker",
     name = "cry-bubblem",
