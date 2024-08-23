@@ -22,12 +22,12 @@ pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Nod
 position = "after"
 payload = '''
 tag_sprite.click = function(_self)
-        if self.HUD_tag then
+        if self.key == 'tag_cry_cat' and self.HUD_tag then
 		for i = 1, #G.GAME.tags do
 			local other_cat = G.GAME.tags[i]
 			if other_cat.key == 'tag_cry_cat' then
 				if not self.ability.level then self.ability.level = 1 end
-				if not other_cat.ability.level then other_cat.ability.level = 1 end
+				if not other_cat.ability.level then other_cat.ability.level = 1 end	-- setting ability just doesn't seem to be working... so you get this
 				if (self.ability.level == other_cat.ability.level) and (other_cat ~= self) then
 					local perc = (other_cat.ability.level + 1)/10
 					if perc > 1 then perc = 1 end
