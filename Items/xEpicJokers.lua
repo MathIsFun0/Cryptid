@@ -368,7 +368,7 @@ local m = {
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
 		}
     },
-	pools = {"Meme"},
+	pools = {["Meme"] = true},
 	rarity = "cry_epic",
 	cost = 13,
 	perishable_compat = false,
@@ -453,7 +453,7 @@ local boredom = {
 			"{C:inactive,s:0.8}Does not affect other Boredom{}"
 		}
     },
-	pools = {"Meme"},
+	pools = {["Meme"] = true},
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
@@ -922,7 +922,7 @@ local curse = {
 	    "{C:inactive}(Must have room){}"
         }
     },
-	pools = {"Meme"},
+	pools = {["Meme"] = true},
     rarity = "cry_epic",
     cost = 9,
     perishable_compat = true,

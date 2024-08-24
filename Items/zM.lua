@@ -542,7 +542,7 @@ local bonk = {
 			"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chips instead{}"
 		}
 	},
-    pools = {"Meme"},
+    pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
 		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.type, (center.ability.extra.chips * center.ability.extra.xchips)}}
@@ -873,7 +873,7 @@ local reverse = {
 			"{C:inactive,s:0.8}The ULTIMATE comeback{}"
 		}
     	},
-    pools = {"Meme"},
+    pools = {["Meme"] = true},
 	rarity = 2,
 	cost = 4,
 	eternal_compat = false,
