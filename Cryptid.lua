@@ -44,6 +44,7 @@ function loc_colour(_c, _default)
     G.ARGS.LOC_COLOURS.diamond = G.C.SUITS.Diamonds
     G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
     G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
+    G.ARGS.LOC_COLOURS.cry_ascendant = G.C.CRY_ASCENDANT
     return lc(_c, _default)
 end
 

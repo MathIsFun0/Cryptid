@@ -714,9 +714,9 @@ local curse = {
     loc_txt = {
         name = 'Sob',
         text = {
-            "{C:edition,E:1}you cannot{} {C:dark_edition,E:1}run...{}",
-            "{C:edition,E:1}you cannot{} {C:dark_edition,E:1}hide...{}",
-            "{C:edition,E:1}you cannot{} {C:dark_edition,E:1}escape...{}",
+            "{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}run...{}",
+            "{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}hide...{}",
+            "{C:dark_edition,E:1}you cannot escape...{}",
 	    "{C:inactive}(Must have room){}"
         }
     },
@@ -910,6 +910,14 @@ local curse = {
                 }
     end
 }
+if JokerDisplay then
+	curse.joker_display_definition = {
+		text = {
+			{ text = "Help me..." },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
+	}
+end
 local bonusjoker = {
 	object_type = "Joker",
 	name = "cry-bonusjoker",
