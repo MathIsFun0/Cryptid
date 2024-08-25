@@ -316,7 +316,9 @@ function Card:calculate_joker(context)
     local orig_ability = {}
     if self.ability then
         for i, j in pairs(self.ability) do
-            if type(j) == "table" then
+            if (type(j) == "table") and is_number(j) then
+                orig_ability[i] = to_big(j)
+            elseif type(j) == "table" then
                 orig_ability[i] = {}
                 for i2, j2 in pairs(j) do
                     orig_ability[i][i2] = j2
@@ -1076,7 +1078,7 @@ Cryptid.base_values = {}
 function cry_misprintize_tbl(name, tbl, clear, override, stack)
     if tbl then
         for k, v in pairs(tbl) do
-            if type(tbl[k]) ~= 'table' then
+            if (type(tbl[k]) ~= 'table') or is_number(tbl[k]) then
                 if is_number(tbl[k]) and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
