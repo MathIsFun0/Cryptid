@@ -589,7 +589,12 @@ local scalae = {
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
 			card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
 			card.ability.extra.shadow_scale = card.ability.extra.scale
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			card.ability.extra.scale = card.ability.extra.shadow_scale
+			card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
+			return {
+		                message = localize('k_upgrade_ex'),
+		                colour = G.C.DARK_EDITION
+		            }
 		end
 		card.ability.extra.scale = card.ability.extra.shadow_scale
 		card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
@@ -598,7 +603,7 @@ local scalae = {
     cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
         if joker.ability.name ~= "cry-Scalae" then
             local new_scale = (to_big(true_base) * ((1 + ((to_big(orig_scale_scale)/to_big(true_base))^(to_big(1)/to_big(card.ability.extra.scale))))^card.ability.extra.scale))
-            if (new_scale < to_big(1e100)) or not ((joker.config and jkr.config.center and joker.config.center.key and big_num_whitelist[joker.config.center.key]) or (joker.ability and joker.ability.big_num_scaler)) then
+            if (new_scale < to_big(1e100)) or not ((joker.config and joker.config.center and joker.config.center.key and big_num_whitelist[joker.config.center.key]) or (joker.ability and joker.ability.big_num_scaler)) then
                 new_scale = new_scale:to_number()
             end
             return new_scale
