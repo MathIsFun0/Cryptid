@@ -433,15 +433,15 @@ function Card:calculate_joker(context)
                         local best_coeff = 10^100
                         for l, u in pairs(jkr.ability) do
                             if l ~= k and is_number(u) then
-                                if predicted_mod/u >= 0.999 and predicted_mod/u < best_coeff then
-                                    best_coeff = predicted_mod/u
+                                if to_big(predicted_mod/u) >= to_big(0.999) and to_big(predicted_mod/u) < to_big(best_coeff) then
+                                    best_coeff = to_big(predicted_mod/u)
                                     best_key = {l}
                                 end
                             end
                             if type(jkr.ability[l]) == 'table' then
                                 for _l, _u in pairs(jkr.ability[l]) do 
-                                    if is_number(_u) and predicted_mod/_u >= 0.999 and predicted_mod/_u < best_coeff then
-                                        best_coeff = predicted_mod/_u
+                                    if is_number(_u) and to_big(predicted_mod/_u) >= to_big(0.999) and to_big(predicted_mod/_u) < to_big(best_coeff) then
+                                        best_coeff = to_big(predicted_mod/_u)
                                         best_key = {l,_l}
                                     end
                                 end
@@ -457,17 +457,17 @@ function Card:calculate_joker(context)
                                 local best_key = {""}
                                 local best_coeff = 10^100
                                 for l, u in pairs(jkr.ability) do
-                                    if is_number(u) and predicted_mod/u >= 0.999 then
-                                        if predicted_mod/u < best_coeff then
-                                            best_coeff = predicted_mod/u
+                                    if is_number(u) and to_big(predicted_mod/u) >= to_big(0.999) then
+                                        if to_big(predicted_mod/u) < to_big(best_coeff) then
+                                            best_coeff = to_big(predicted_mod/u)
                                             best_key = {l}
                                         end
                                     end
                                     if type(jkr.ability[l]) == 'table' then
                                         for _l, _u in pairs(jkr.ability[l]) do 
-                                            if (l ~= k or _l ~= _k) and is_number(_u) and predicted_mod/_u >= 0.999 then
-                                                if predicted_mod/_u < best_coeff then
-                                                    best_coeff = predicted_mod/_u
+                                            if (l ~= k or _l ~= _k) and is_number(_u) and to_big(predicted_mod/_u) >= to_big(0.999) then
+                                                if to_big(predicted_mod/_u) < to_big(best_coeff) then
+                                                    best_coeff = to_big(predicted_mod/_u)
                                                     best_key = {l,_l}
                                                 end
                                             end
