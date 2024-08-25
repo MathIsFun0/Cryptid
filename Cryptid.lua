@@ -1273,12 +1273,6 @@ SMODS.Atlas({
     px = 34,
     py = 34
 }):register()
-SMODS.Atlas({
-    key = "atlasexotictwo",
-    path = "atlasexotictwo.png",
-    px = 71,
-    py = 95
-}):register()
 SMODS.Sticker:take_ownership('perishable', {
     atlas = "sticker",
     pos = {x = 4, y = 4},
