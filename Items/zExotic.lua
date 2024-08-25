@@ -589,7 +589,12 @@ local scalae = {
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
 			card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
 			card.ability.extra.shadow_scale = card.ability.extra.scale
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			card.ability.extra.scale = card.ability.extra.shadow_scale
+			card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
+			return {
+		                message = localize('k_upgrade_ex'),
+		                colour = G.C.DARK_EDITION
+		            }
 		end
 		card.ability.extra.scale = card.ability.extra.shadow_scale
 		card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
