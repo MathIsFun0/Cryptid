@@ -1373,13 +1373,15 @@ local cut = {
     loc_txt = {
         name = 'Cut',
         text = {
-            "This Joker destroys a random {C:cry_code}Code{} card",
-            "at the end of {C:attention}shop{}, and gains {X:mult,C:white} X#1# {} Mult",
+            "This Joker destroys",
+	    "a random {C:cry_code}Code{} card",
+            "and gains {X:mult,C:white} X#1# {} Mult",
+	    "at the end of the {C:attention}shop{}",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
         }
     },
     rarity = 3,
-    cost = 9,
+    cost = 7,
     blueprint_compat = true,
     perishable_compat = false,
     atlas = "atlasthree",
@@ -1387,7 +1389,7 @@ local cut = {
         if context.ending_shop then
             local destructable_codecard = {}
             for i = 1, #G.consumeables.cards do
-                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
+                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
             end
             local codecard_to_destroy = #destructable_codecard > 0 and pseudorandom_element(destructable_codecard, pseudoseed('cut')) or nil
 
@@ -1408,7 +1410,7 @@ local cut = {
             return {
                 message = "X"..number_format(card.ability.extra.Xmult).." Mult",
                 Xmult_mod = card.ability.extra.Xmult,
-                colour = G.C.DARK_EDITION
+                colour = G.C.MULT
             }
         end
     end,
@@ -1424,7 +1426,7 @@ if JokerDisplay then
                     { text = "X" },
                     { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
                 },
-                border_colour = G.C.DARK_EDITION
+                border_colour = G.C.MULT
             }
         },
     }
@@ -1438,18 +1440,19 @@ local blender = {
     loc_txt = {
         name = 'Blender',
         text = {
-            "Create a {C:attention}random{} consumable",
-            "when a {C:cry_code}Code{} card is used",
+            "Create a {C:attention}random{}",
+	    "consumable when a",
+            "{C:cry_code}Code{} card is used",
+	    "{C:inactive}(Must have room){}",
         }
     },
-    rarity = 3,
-    cost = 8,
+    rarity = 1,
+    cost = 5,
     blueprint_compat = true,
-    perishable_compat = false,
     atlas = "atlasthree",
     calculate = function(self, card, context)
         if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
-			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+		 if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                  local card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'cry_blender')
                  card:add_to_deck()
                  G.consumeables:emplace(card)
@@ -1467,8 +1470,9 @@ local python = {
     loc_txt = {
         name = 'Python',
         text = {
-            "This Joker gains {X:mult,C:white} X#1# {} Mult",
-            "when a {C:cry_code}Code{} card is used",
+            "This Joker gains",
+	    "{X:mult,C:white} X#1# {} Mult when a",
+            "{C:cry_code}Code{} card is used",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
         }
     },
@@ -1487,7 +1491,14 @@ local python = {
                 func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}}}); return true
                 end}))
             return
-        end
+            end
+	    if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
+            return {
+                message = "X"..number_format(card.ability.extra.Xmult).." Mult",
+                Xmult_mod = card.ability.extra.Xmult,
+                colour = G.C.MULT
+            }
+            end
     end
 }
 if JokerDisplay then

@@ -13,8 +13,9 @@ local copies = {
 	loc_txt = {
         name = 'Copies',
         text = {
-			"Double Tags become {C:attention}Triple Tags{}",
-            "and are {C:attention}2X{} as common"
+	    "Double Tags become",
+	    "{C:attention}Triple Tags{} and are",
+            "{C:attention}2X{} as common"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -31,8 +32,9 @@ local tag_printer = {
 	loc_txt = {
         name = 'Tag Printer',
         text = {
-			"Double Tags become {C:attention}Quadruple Tags{}",
-            "and are {C:attention}3X{} as common"
+	    "Double Tags become",
+	    "{C:attention}Quadruple Tags{} and",
+            "are {C:attention}3X{} as common"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -50,8 +52,9 @@ local clone_machine = {
 	loc_txt = {
         name = 'Clone Machine',
         text = {
-			"Double Tags become {C:attention}Quintuple Tags{}",
-            "and are {C:attention}4X{} as common"
+	    "Double Tags become",
+	    "{C:attention}Quintuple Tags{} and",
+            "are {C:attention}4X{} as common"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -69,7 +72,8 @@ local command_prompt = {
 	loc_txt = {
         name = 'Command Prompt',
         text = {
-			"{C:cry_code}Code{} cards can appear",
+	    "{C:cry_code}Code{} cards",
+	    "can appear",
             "in the {C:attention}shop{}"
 		}
     },
@@ -169,7 +173,7 @@ local curate = {
     	object_type = "Voucher",
 	key = "curate",
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 1},
 	requires = {"v_glow_up"},
 	loc_txt = {
         name = 'Curate',
