@@ -1279,7 +1279,42 @@ local macabre = {
         end
 	end,
 }
-local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,loopy,scrabble,sacrifice,reverse,macabre}
+local megg = {
+    object_type = "Joker",
+    name = "cry-megg",
+    key = "Megg",
+    pos = {x = 0, y = 4},
+	config = {extra = {amount = 1, amount_mod = 1}, jolly = {t_mult = 8, type = 'Pair'}},
+	loc_txt = {
+        name = 'Megg',
+        text = {
+            "Sell this card to create",
+            "{C:attention}#2#{} Jolly #3#, increase",
+            "by {C:attention}#1#{} at end of round",
+        }
+    },
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        return {vars = {center.ability.extra.amount_mod, center.ability.extra.amount, (center.ability.extra.amount > 1 and "Jokers") or "Joker"}}
+    end,
+    rarity = 1,
+    cost = 4,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
+            card.ability.extra.amount = card.ability.extra.amount + card.ability.extra.amount_mod
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = {"Jolly Up!"}, colour = G.C.FILTER})
+        end
+        if context.selling_self and not (context.blueprint or context.retrigger_joker_check or context.retrigger_joker) and card.ability.extra.amount > 0 then
+            for i = 1, card.ability.extra.amount do
+                local jolly_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+                jolly_card:add_to_deck()
+                G.jokers:emplace(jolly_card)
+            end
+        end
+    end,
+}
+local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,loopy,scrabble,sacrifice,reverse,macabre,megg}
 for _, v in pairs(ret_items) do
     Cryptid.M_jokers["j_cry_" .. v.key] = true
 end
