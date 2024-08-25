@@ -598,7 +598,7 @@ local oldcandy = {
 		}
 	},
     loc_vars = function(self, info_queue, center)
-    return {vars = {center.ability.extra.hand_size}}
+    return {vars = {math.max(1, math.floor(center.ability.extra.hand_size))}}
     end,
 	rarity = "cry_epic",
 	cost = 9,
@@ -606,10 +606,19 @@ local oldcandy = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 	if context.selling_self and not context.blueprint then
-            G.hand:change_size(math.floor(card.ability.extra.hand_size))
+            G.hand:change_size(math.max(1, math.floor(card.ability.extra.hand_size)))
         end
-end
-}	
+	end
+}
+if JokerDisplay then
+	oldcandy.joker_display_definition = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "hand_size" },
+		},
+		text_config = { colour = G.C.ATTENTION },
+	}
+end	
 local caramel = {
     object_type = "Joker",
 	name = "cry-caramel",
