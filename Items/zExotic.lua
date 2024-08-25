@@ -879,28 +879,37 @@ local circulus_pistoris = {
     	object_type = "Joker",
 	name = "cry-Circulus Pistoris",
 	key = "circulus_pistoris",
-    	config = {extra = {Emult =math.pi, Echips =math.pi}},
+    	config = {extra = {Emult =math.pi, Echips =math.pi, hands_remaining = 3}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
         name = 'Circulus Pistoris',
         text = {
-	    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#2#{} Mult",
-	    "every hand played"
+	    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#1#{} Mult",
+	    "if {C:attention}exactly{} #2#",
+        "hands remaining"
         }
     	},
 	rarity = "cry_exotic",
-	cost = 50,
+	cost = 10*math.pi,
 	blueprint_compat = true,
 	atlas = "atlasexotictwo",
 	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
 	loc_vars = function(self, info_queue, center)
-        return {vars = {"pi", "pi"}}
+        return {vars = {center.edition and center.edition.cry_oversat and "tau" or "pi", center.ability.extra.hands_remaining}}
     	end,
     calculate = function(self, card, context)
-			return {
-			Echip_mod = math.pi,
-			Emult_mod = math.pi
-			}
+            if context.joker_main and (G.GAME.current_round.hands_left >= card.ability.extra.hands_remaining and G.GAME.current_round.hands_left < card.ability.extra.hands_remaining + 1) then
+                local pi = math.pi
+                if card.edition and card.edition.cry_oversat then
+                    pi = 2 * pi
+                end
+                return {
+                    Echip_mod = pi,
+                    Emult_mod = pi,
+                    message = "^"..(card.edition and card.edition.cry_oversat and "tau" or "pi").." Mult+Chips",
+                    colour = {0.8, 0.45, 0.85, 1} --plasma colors
+                }
+            end
     end,
 }
 if JokerDisplay then
@@ -1030,4 +1039,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris}}
