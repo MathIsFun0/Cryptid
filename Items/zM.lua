@@ -1212,6 +1212,23 @@ local mprime = {
 		end
 	end,
 }
+
+
+
+
+SMODS.Shader {
+    key = 'm',
+    path = 'm.fs'
+}
+
+SMODS.Edition {
+    key = "m",
+    shader = "m",
+    disable_base_shader = true,
+    disable_shadow = true,
+}
+
+
 if JokerDisplay then
     mprime.joker_display_definition = {
         --todo: show if active
