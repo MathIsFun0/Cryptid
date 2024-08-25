@@ -616,7 +616,7 @@ if JokerDisplay then
 			{ text = "+" },
 			{ ref_table = "card.ability.extra", ref_value = "hand_size" },
 		},
-		text_config = { colour = G.C.ATTENTION },
+		text_config = { colour = G.C.ORANGE },
 	}
 end	
 local caramel = {
