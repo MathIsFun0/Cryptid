@@ -505,16 +505,11 @@ return {name = "Enhanced Decks",
                             for c = #G.playing_cards, 1, -1 do
                                 local ed_table = {}
                                 if self.effect.config.cry_force_edition == 'random' then
-                                    local editions = {"foil", "holo", "polychrome", "negative"} --todo: modded edition support
-                                    if Cryptid_config["Misc."] then
-                                        editions[#editions+1] = "cry_astral"
-                                        editions[#editions+1] = "cry_mosaic"
-                                        editions[#editions+1] = "cry_oversat"
-                                        editions[#editions+1] = "cry_glitched"
-                                        editions[#editions+1] = "cry_blur"
+                                    local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_ant_edition'))
+                                    while (random_edition.key == "e_base") do
+                                        random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_ant_edition'))
                                     end
-                                    local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
-                                    ed_table[random_edition] = true
+                                    ed_table[random_edition.key:sub(3)] = true
                                     G.playing_cards[c]:set_edition(ed_table, true, true);
                                 else
                                     ed_table[self.effect.config.cry_force_edition] = true
