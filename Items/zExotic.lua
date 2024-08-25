@@ -687,7 +687,7 @@ local circulus_pistoris = {
 	name = "cry-Circulus Pistoris",
 	key = "circulus_pistoris",
     	config = {extra = {Emult =math.pi, Echips =math.pi, hands_remaining = 3}},
-	pos = {x = 0, y = 0},
+	pos = {x = 0, y = 3},
 	loc_txt = {
         name = 'Circulus Pistoris',
         text = {
@@ -699,8 +699,8 @@ local circulus_pistoris = {
 	rarity = "cry_exotic",
 	cost = 10*math.pi,
 	blueprint_compat = true,
-	atlas = "atlasexotictwo",
-	soul_pos = {x = 2, y = 0, extra = {x = 1, y = 0}},
+	atlas = "atlasexotic",
+	soul_pos = {x = 2, y = 3, extra = {x = 1, y = 3}},
 	loc_vars = function(self, info_queue, center)
         return {vars = {center.edition and center.edition.cry_oversat and "tau" or "pi", center.ability.extra.hands_remaining}}
     	end,
