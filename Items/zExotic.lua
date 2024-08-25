@@ -582,6 +582,10 @@ local scalae = {
     --todo: support jokers that scale multiple variables
     calculate = function(self, card, context)
         --initialize tracking object
+        	card.ability.extra.scale = to_big(card.ability.extra.scale)
+        	card.ability.extra.scale_mod = to_big(card.ability.extra.scale_mod)
+        	card.ability.extra.shadow_scale = to_big(card.ability.extra.shadow_scale)
+        	card.ability.extra.shadow_scale_mod = to_big(card.ability.extra.shadow_scale_mod)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
 			card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
 			card.ability.extra.shadow_scale = card.ability.extra.scale
