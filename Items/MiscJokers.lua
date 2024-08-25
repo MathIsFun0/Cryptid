@@ -4541,7 +4541,7 @@ local morse = {
     name = "cry-morse",
     key = "morse",
     pos = {x = 5, y = 1},
-    config = {extra = {bonus = 2, money = 1, active = "Active!", check = true}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {bonus = 2, money = 1, active = "Active!", check = true}},
     loc_txt = {
         name = 'Morse Code',
         text = {
@@ -4557,7 +4557,6 @@ local morse = {
     perishable_compat = false,
     blueprint_compat = false,
     loc_vars = function(self, info_queue, center)
-	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.bonus, center.ability.extra.money, center.ability.extra.active}}
     end,
     atlas = "atlastwo",
