@@ -4536,6 +4536,51 @@ if JokerDisplay then
 		},
     }
 end
+local translucent = {
+    object_type = "Joker",
+    name = "cry-translucent",
+    key = "translucent",
+    pos = {x = 5, y = 2},
+    loc_txt = {
+        name = 'Translucent Joker',
+        text = {
+            "Sell this card to create",
+            "a {C:attention}Banana Perishable{} copy",
+            "of a random {C:attention}Joker{}",
+            "{s:0.8,C:inactive}(Copy bypasses perish compat)"
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    eternal_compat = false,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.selling_self and not (context.retrigger_joker or context.blueprint) then
+            local jokers = {}
+                for i=1, #G.jokers.cards do 
+                    if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff then
+                        jokers[#jokers+1] = G.jokers.cards[i]
+                    end
+                end
+            if #jokers > 0 then
+                if #G.jokers.cards <= G.jokers.config.card_limit then 
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                    local chosen_joker = pseudorandom_element(jokers, pseudoseed('trans'))
+                    local _card = copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
+                    _card:add_to_deck()
+                    _card:set_banana(true)
+                    _card.ability.perishable = true -- Done manually to bypass perish compat
+                    _card.ability.perish_tally = G.GAME.perishable_rounds
+                    G.jokers:emplace(_card)
+                else
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_no_room_ex')})
+                end
+            else
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_no_other_jokers')})
+            end
+        end
+    end
+}
 local morse = {
     object_type = "Joker",
     name = "cry-morse",
@@ -4691,4 +4736,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent}}

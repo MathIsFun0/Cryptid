@@ -1485,20 +1485,19 @@ local python = {
         return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.Xmult}}
     end,
     calculate = function(self, card, context)
-           if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+        if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
             card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
             G.E_MANAGER:add_event(Event({
                 func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}}}); return true
                 end}))
             return
-            end
-	    if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
             return {
-                message = "X"..number_format(card.ability.extra.Xmult).." Mult",
-                Xmult_mod = card.ability.extra.Xmult,
-                colour = G.C.MULT
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+                Xmult_mod = card.ability.extra.Xmult
             }
-            end
+        end
     end
 }
 if JokerDisplay then
