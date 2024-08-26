@@ -832,7 +832,9 @@ local compound_interest = {
     end,
 	calc_dollar_bonus = function(self, card)
 		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*G.GAME.dollars))
+        local old = card.ability.extra.percent
         card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+        compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
         if bonus > 0 then return bonus end
 	end
 }

@@ -1395,10 +1395,10 @@ local cut = {
 
             if codecard_to_destroy then 
                 codecard_to_destroy.getting_sliced = true
+                card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
                 G.E_MANAGER:add_event(Event({func = function()
                     (context.blueprint_card or card):juice_up(0.8, 0.8)
                     codecard_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
-                    card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
                     card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "X"..number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)).." Mult"})
