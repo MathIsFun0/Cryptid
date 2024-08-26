@@ -1216,16 +1216,26 @@ local mprime = {
 
 
 
-SMODS.Shader {
+local mhader = {
+    object_type = "Shader",
     key = 'm',
     path = 'm.fs'
 }
 
-SMODS.Edition {
+local mdition = {
+    object_type = "edition",
     key = "m",
     shader = "m",
     disable_base_shader = true,
     disable_shadow = true,
+    loc_txt = {
+        name = "m",
+        label = "m",
+        text = {
+            "m",
+            "{C:inactive}Not yet implemented"
+        }
+    },
 }
 
 
