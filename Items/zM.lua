@@ -10,12 +10,12 @@ local jollysus = {
     name = "cry-jollysus",
     key = "jollysus",
     pos = {x = 3, y = 1},
-    config = {extra = {spawn = true, active = "Active!"}, jolly = {t_mult = 8, type = 'Pair'}},
+    config = {extra = {spawn = true, active = "Active!"}},
     loc_txt = {
         name = 'Jolly Joker?',
         text = {
-            "Create a {C:attention}Jolly Joker{}",
-            "when a joker is {C:attention}sold{}",
+            "Create a {C:dark_edition}Jolly{} Joker",
+            "when a Joker is {C:attention}sold{}",
             "{C:red}Works once per round{}",
             "{C:inactive}#1#{}",
 	    "{C:inactive,s:0.8}Seems legit...{}"
@@ -26,7 +26,6 @@ local jollysus = {
     blueprint_compat = true,
     eternal_compat = false,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
         return {vars = {center.ability.extra.active}}
     end,
     atlas = "atlastwo",
@@ -47,7 +46,8 @@ local jollysus = {
                     card.ability.extra.active = "No triggers left!"
                     card.ability.extra.spawn = false
                 end
-                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+                local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
+		card:set_edition({cry_m = true})
                 card:add_to_deck()
                 G.jokers:emplace(card)
                 return {
@@ -63,7 +63,8 @@ local jollysus = {
                     card.ability.extra.active = "No triggers left!"
                     card.ability.extra.spawn = false
                 end
-                local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+                local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
+		card:set_edition({cry_m = true})
                 card:add_to_deck()
                 G.jokers:emplace(card)
                 return {
@@ -266,7 +267,8 @@ local foodm = {
                 }
             end
         end
-        if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
+        if context.selling_card and not context.blueprint and not context.retrigger_joker
+	and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m")) then
             card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + card.ability.extra.round_inc
 	    return {
             	    card_eval_status_text(card, 'extra', nil, nil, nil, {
@@ -334,7 +336,8 @@ local mstack = {
             end
         end
         
-        if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
+        if context.selling_card and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m"))
+	and not context.blueprint and not context.retrigger_joker then
 	    card.ability.extra.check = true
             if card.ability.extra.sell + 1 >= card.ability.extra.sell_req then
                 if not context.blueprint or context.retrigger_joker then
@@ -405,7 +408,9 @@ local mneon = {
         if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
             local jollycount = 0
             for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
+                if G.jokers.cards[i].ability.name == 'Jolly Joker'
+		or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
+		then jollycount = jollycount + 1 end
             end
 		if (card.ability.extra.bonus * jollycount) > 1 then
             		card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus * jollycount
@@ -467,7 +472,9 @@ local notebook = {
     	    if context.reroll_shop and card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
 			local jollycount = 0
             		for i = 1, #G.jokers.cards do
-                		if G.jokers.cards[i].ability.name == 'Jolly Joker' then jollycount = jollycount + 1 end
+                		if G.jokers.cards[i].ability.name == 'Jolly Joker'
+				or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
+				then jollycount = jollycount + 1 end
             		end
 				if jollycount >= card.ability.extra.jollies then --if there are 5 or more jolly jokers
 						card.ability.extra.slot = card.ability.extra.slot + 1
@@ -572,21 +579,8 @@ local bonk = {
 				})
 			end
 		end
-		if context.other_joker then
-			if context.other_joker.ability.set == "Joker" and context.other_joker.ability.name ~= "Jolly Joker" then
-				if not Talisman.config_file.disable_anims then 
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end
-					})) 
-				end
-				return {
-					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-					chip_mod = card.ability.extra.chips,
-				}
-			elseif context.other_joker and context.other_joker.ability.name == "Jolly Joker" then
+		if context.other_joker and context.other_joker.ability.set == "Joker" then
+			if (context.other_joker.ability.name == "Jolly Joker" or (context.other_joker.edition and context.other_joker.edition.key == "e_cry_m")) then
 				if not Talisman.config_file.disable_anims then 
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -599,6 +593,19 @@ local bonk = {
 					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips * card.ability.extra.xchips}},
 					chip_mod = card.ability.extra.chips * card.ability.extra.xchips,
 				}
+			else
+				if not Talisman.config_file.disable_anims then 
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							context.other_joker:juice_up(0.5, 0.5)
+							return true
+						end
+					})) 
+				end
+				return {
+					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+					chip_mod = card.ability.extra.chips,
+				}
 			end
 		end
 	end,
@@ -610,7 +617,8 @@ if JokerDisplay then
     bonk.joker_display_definition = {
         mod_function = function(card, mod_joker)
             local chips_mod = mod_joker.ability.extra.chips
-            if card.ability.name == "Jolly Joker" then
+            if card.ability.name == "Jolly Joker"
+	    or (card.edition and card.edition.key == "e_cry_m") then
                 chips_mod = chips_mod * mod_joker.ability.extra.xchips
             end
             return { chips = chips_mod * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
@@ -644,7 +652,8 @@ local loopy = { --this may or may not need further balancing
         return {vars = {center.ability.extra.retrigger, center.ability.extra.text}}
     end,
     calculate = function(self, card, context)
-        if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint and not context.retrigger_joker then
+        if context.selling_card and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m"))
+	and not context.blueprint and not context.retrigger_joker then
                 card.ability.extra.retrigger = card.ability.extra.retrigger + 1
 		if card.ability.extra.retrigger == 1 then 
 			card.ability.extra.text = ""
@@ -893,9 +902,9 @@ local doodlem = {
     if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
         local jollycount = 2
         for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i].ability.name == 'Jolly Joker' then
-                jollycount = jollycount + 1
-            end
+                if G.jokers.cards[i].ability.name == 'Jolly Joker'
+		or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
+		then jollycount = jollycount + 1 end
         end
 	if jollycount > 50 then jollycount = 50 end --reduce excessive consumeable spam (Lag)
         for i = 1, jollycount do
@@ -1162,7 +1171,7 @@ local mprime = {
 	atlas = "atlasexotic",
 	perishable_compat = false,
 	calculate = function(self, card, context)
-		if context.selling_card and context.card.ability.name == "Jolly Joker" then
+		if context.selling_card and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m")) then
 			if not context.blueprint then card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.bonus end
 			if card.ability.extra.check and not context.blueprint and not context.retrigger_joker then
 				card.ability.extra.check = false
@@ -1180,7 +1189,7 @@ local mprime = {
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
 		end
 		if context.other_joker then
-			if context.other_joker and context.other_joker.ability.name == "Jolly Joker" then
+			if context.other_joker and (context.other_joker.ability.name == "Jolly Joker" or (context.other_joker.edition and context.other_joker.edition.key == "e_cry_m")) then
 				if not Talisman.config_file.disable_anims then 
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -1212,38 +1221,11 @@ local mprime = {
 		end
 	end,
 }
-
-
-
-
-local mhader = {
-    object_type = "Shader",
-    key = 'm',
-    path = 'm.fs'
-}
-
-local mdition = {
-    object_type = "edition",
-    key = "m",
-    shader = "m",
-    disable_base_shader = true,
-    disable_shadow = true,
-    loc_txt = {
-        name = "m",
-        label = "m",
-        text = {
-            "m",
-            "{C:inactive}Not yet implemented"
-        }
-    },
-}
-
-
-if JokerDisplay then
+if JokerDisplay then --needs to be tweaked later
     mprime.joker_display_definition = {
         --todo: show if active
         mod_function = function(card, mod_joker)
-            if card.ability.name ~= "Jolly Joker" then return {} end
+            if (card.ability.name ~= "Jolly Joker" or (card.edition and card.edition.key ~= "e_cry_m")) then return {} end
             local e_mult = mod_joker.ability.extra.mult
             local triggers = JokerDisplay.calculate_joker_triggers(mod_joker)
             if triggers == 0 then return {} end
@@ -1266,7 +1248,7 @@ local macabre = {
             "When {C:attention}Blind{} is selected,",
             "destroys each {C:attention}Joker{} except",
 	    "{C:legendary}M-Jokers{} and {C:attention}Jolly Jokers{}",
-            "and create a {C:attention}Jolly Joker{}",
+            "and create 1 {C:attention}Jolly Joker{}",
             "for each destroyed card",
 		}
 	},
@@ -1285,6 +1267,7 @@ local macabre = {
                     if v ~= card
                     and v.config.center.key ~= "j_jolly"
 		    and v.config.center.key ~= "j_cry_mprime"
+		    and (v.edition and v.edition.key ~= "e_cry_m")
                     and not (v.ability.eternal or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
                         destroyed_jokers[#destroyed_jokers+1] = v
                     end

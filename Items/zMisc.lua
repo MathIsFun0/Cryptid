@@ -292,7 +292,6 @@ local astral = {
         return {vars = {self.config.e_mult}}
     end
 }
-
 local blurred_shader = {
     object_type = "Shader",
     key = 'blur', 
@@ -329,7 +328,36 @@ local blurred = {
         return {vars = {G.GAME.probabilities.normal, chance, retriggers}}
     end
 }
-
+local jollyeditionshader = {
+    object_type = "Shader",
+    key = 'm',
+    path = 'm.fs'
+}
+local jollyedition = {
+    object_type = "Edition",
+    in_shop = false,
+    weight = 0,
+    name = "cry-jollyedition",
+    extra_cost = 0,
+    config = {mult = 3},
+    apply_to_float = true,
+    key = "m",
+    shader = "m",
+    disable_base_shader = true,
+    disable_shadow = true,
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.mult}}
+    end,
+    loc_txt = {
+        name = "Jolly",
+        label = "Jolly",
+        text = {
+            "{C:mult}+#1#{} Mult",
+	    "This card is feeling",
+	    "rather {C:attention}jolly{}"	
+        }
+    }
+}
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -728,6 +756,10 @@ azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
 if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
+end
+if cry_minvasion then 
+    miscitems[#miscitems+1] = jollyeditionshader
+    miscitems[#miscitems+1] = jollyedition
 end
 return {name = "Misc.", 
         init = function()
