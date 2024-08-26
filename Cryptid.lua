@@ -680,6 +680,117 @@ function Card:calculate_joker(context)
     return ret
 end
 
+function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+    local jkr = self
+    local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+    if jkr.ability and type(jkr.ability) == 'table' then
+        if not G.GAME.cry_double_scale[jkr.sort_id] then
+            G.GAME.cry_double_scale[jkr.sort_id] = {ability = {double_scale = true}}
+            for k, v in pairs(jkr.ability) do
+                if type(jkr.ability[k]) ~= 'table' then
+                    G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+                else
+                    G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+                    for _k, _v in pairs(jkr.ability[k]) do
+                        G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+                    end
+                end
+            end
+        end
+        if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+            dbl_info.base = {"extra", "Emult"}
+            dbl_info.scaler = {"extra", "Emult_mod"}
+            dbl_info.scaler_base = jkr.ability.extra.Emult_mod
+            dbl_info.offset = 1
+            if dbl_info.scaler then
+                dbl_info.scaler_base = #dbl_info.scaler == 2 and dbl_info.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] or dbl_info.ability[dbl_info.scaler[1]]
+                dbl_info.offset = 1
+            end
+        end
+    end
+    local true_base = dbl_info.scaler_base
+    if true_base and (to_big(math.abs(new_scale_base - orig_scale_base)) > to_big(0)) then
+        for i = 1, #G.jokers.cards do
+            local obj = G.jokers.cards[i].config.center
+            if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                if G.jokers.cards[i].ability.cry_rigged then
+                    G.GAME.probabilities.normal = 1e300
+                end
+                local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                if G.jokers.cards[i].ability.cry_rigged then
+                    G.GAME.probabilities.normal = ggpn
+                end
+                if o then
+                    if #dbl_info.scaler == 2 then
+                        if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                            jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                            orig_scale_scale = o
+                        end 
+                    else
+                        if jkr.ability[dbl_info.scaler[1]] then
+                            jkr.ability[dbl_info.scaler[1]] = o
+                            orig_scale_scale = o
+                        end
+                    end
+                    card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                end
+                local reps = {}
+                for i2=1, #G.jokers.cards do
+                    local _card = G.jokers.cards[i2]
+                    if _card.ability.cry_rigged then
+                        G.GAME.probabilities.normal = 1e300
+                    end
+                    local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
+                    if _card.ability.cry_rigged then
+                        G.GAME.probabilities.normal = ggpn
+                    end
+                    if type(check) == 'table' then 
+                        reps[i2] = check and check.repetitions and check or 0
+                    else
+                        reps[i2] = 0
+                    end
+                    if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
+                        local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+                        local check = calculate_blurred(G.jokers.cards[i])
+                        if check and check.repetitions then
+                            check.repetitions = check.repetitions + old_repetitions
+                            reps[i] = check
+                        end
+                    end
+                end
+                for i0, j in ipairs(reps) do
+                    if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
+                        for r = 1, j.repetitions do
+                            card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                            if G.jokers.cards[i].ability.cry_rigged then
+                                G.GAME.probabilities.normal = 1e300
+                            end
+                            local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                            if G.jokers.cards[i].ability.cry_rigged then
+                                G.GAME.probabilities.normal = ggpn
+                            end
+                            if o then
+                                if #dbl_info.scaler == 2 then
+                                    if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                                        jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                                        orig_scale_scale = o
+                                    end 
+                                else
+                                    if jkr.ability[dbl_info.scaler[1]] then
+                                        jkr.ability[dbl_info.scaler[1]] = o
+                                        orig_scale_scale = o
+                                    end
+                                end
+                                card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}) 
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
 --for first boot, make sure config is defined properly beforehand
