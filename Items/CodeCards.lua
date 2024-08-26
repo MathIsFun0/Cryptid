@@ -1529,10 +1529,11 @@ function create_UIBox_variable(card)
         {n=G.UIT.R, nodes = {create_text_input({
             colour = G.C.SET.Code,
             hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
-            w = 4.5, h = 1, max_length = 16, prompt_text = "ENTER RANK",
+            w = 4.5, h = 1, max_length = 16, extended_corpus = true, prompt_text = "ENTER RANK",
             ref_table = G, ref_value = 'ENTERED_RANK', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'variable_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1556,6 +1557,7 @@ function create_UIBox_class(card)
             ref_table = G, ref_value = 'ENTERED_ENH', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'class_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+	{n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'class_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1579,6 +1581,7 @@ function create_UIBox_exploit(card)
             ref_table = G, ref_value = 'ENTERED_HAND', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'exploit_apply', label = {'EXPLOIT'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'exploit_apply_previous', label = {'EXPLOIT PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1626,10 +1629,15 @@ function create_UIBox_pointer(card)
           })}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'pointer_apply', label = {'CREATE'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'your_collection', label = {'COLLECTION'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.RED, button = 'pointer_apply_previous', label = {'CREATE PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+
     }})
     return t
 end
-
+G.FUNCS.variable_apply_previous = function()
+	if G.PREVIOUS_ENTERED_RANK then G.ENTERED_RANK = G.PREVIOUS_ENTERED_RANK or "" end
+	G.FUNCS.variable_apply()
+end
 G.FUNCS.variable_apply = function()
     local rank_table = {
         {},
@@ -1661,6 +1669,7 @@ G.FUNCS.variable_apply = function()
     end
 
     if rank_suffix then
+        G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
         G.GAME.USING_CODE = false
         if rank_suffix == 15 then
             check_for_unlock({type = 'cheat_used'})
@@ -1721,6 +1730,10 @@ G.FUNCS.variable_apply = function()
         G.CHOOSE_RANK:remove()
     end
 end
+G.FUNCS.exploit_apply_previous = function()
+	if G.PREVIOUS_ENTERED_HAND then G.ENTERED_HAND = G.PREVIOUS_ENTERED_HAND or "" end
+	G.FUNCS.exploit_apply()
+end
 G.FUNCS.exploit_apply = function()
 	local hand_table = {
         	['High Card'] = {"high card", "high"},
@@ -1749,7 +1762,8 @@ G.FUNCS.exploit_apply = function()
 			end
 		end
 	end
-	if current_hand and G.GAME.hands[current_hand].visible then 
+	if current_hand and G.GAME.hands[current_hand].visible then
+		G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
 		G.GAME.cry_exploit_override = current_hand 
 		G.CHOOSE_HAND:remove()
 		G.GAME.USING_CODE = false
@@ -1761,6 +1775,10 @@ G.FUNCS.exploit_info = function()
 	local disp_text = text
 	local loc_disp_text = localize(disp_text, 'poker_hands')
 	return text, loc_disp_text, disp_text
+end
+G.FUNCS.class_apply_previous = function()
+	if G.PREVIOUS_ENTERED_ENH then G.ENTERED_ENH = G.PREVIOUS_ENTERED_ENH or "" end
+	G.FUNCS.class_apply()
 end
 --todo: mod support
 G.FUNCS.class_apply = function()
@@ -1789,6 +1807,7 @@ G.FUNCS.class_apply = function()
     end
 
     if enh_suffix then
+        G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
         G.GAME.USING_CODE = false
         if enh_suffix == "ccd" then
             check_for_unlock({type = 'cheat_used'})
@@ -1847,6 +1866,10 @@ G.FUNCS.ca = function()
     check_for_unlock({type = 'ach_cry_used_crash'})
     G.CHOOSE_ACE:remove()
     G.ENTERED_ACE = nil
+end
+G.FUNCS.pointer_apply_previous = function()
+	if G.PREVIOUS_ENTERED_CARD then G.ENTERED_CARD = G.PREVIOUS_ENTERED_CARD or "" end
+	G.FUNCS.pointer_apply()
 end
 G.FUNCS.pointer_apply = function()
     local function apply_lower(str)
@@ -2046,6 +2069,7 @@ G.FUNCS.pointer_apply = function()
 	}
 	local current_card
     local entered_card = G.ENTERED_CARD
+    G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
     if aliases[apply_lower(entered_card)] then entered_card = aliases[apply_lower(entered_card)] end
 	for i, v in pairs(G.P_CENTERS) do
         if v.name and apply_lower(entered_card) == apply_lower(v.name) then
