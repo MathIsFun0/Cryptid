@@ -388,6 +388,13 @@ function Card:calculate_joker(context)
                     dbl_info.scaler_base = jkr.ability.extra.scale_mod
                     dbl_info.offset = 1
                     
+                end		
+                if jkr.ability.name == "cry-mprime" then
+                    dbl_info.base = {"extra", "mult"}
+                    dbl_info.scaler = {"extra", "bonus"}
+                    dbl_info.scaler_base = jkr.ability.extra.bonus
+                    dbl_info.offset = 1
+                    
                 end
                 if jkr.ability.name == "Yorick" then
                     dbl_info.base = {"x_mult"}
