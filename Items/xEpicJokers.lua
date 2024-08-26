@@ -383,7 +383,8 @@ local m = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.selling_card and context.card.ability.name == "Jolly Joker" and not context.blueprint then
+		if context.selling_card and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m")) 
+		and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
 			return {calculated = true}
