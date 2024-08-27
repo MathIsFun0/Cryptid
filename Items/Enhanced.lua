@@ -22,7 +22,7 @@ local typed_decks = {
 --		
 	-- Vanilla	
 	{'',			'Enhancement',	"The Hierophant's Deck",	'Bonus',				'bonus',			nil,				'atlasenhanced',	3,		3,		''},
-	{'',			'Enhancement',	"The Empress's Deck",		'Mult',					'mult',				nil,				'atlasenhanced',	2,		3,		''},
+	{'',			'Enhancement',	"The Empress' Deck",		'Mult',					'mult',				nil,				'atlasenhanced',	2,		3,		''},
 	{'',			'Enhancement',	"The Lovers' Deck",			'Wild',					'wild',				nil,				'atlasenhanced',	5,		3,		''},
 	{'',			'Enhancement',	"Deck of Justice",			'Glass',				'glass',			nil,				'atlasenhanced',	4,		3,		''},
 	{'',			'Enhancement',	"The Chariot's Deck",		'Steel',				'steel',			nil,				nil,				6,		1,		''},
