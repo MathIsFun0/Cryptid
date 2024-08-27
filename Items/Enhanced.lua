@@ -1,470 +1,269 @@
 
-local atlasenchanced = {
+local atlasenhanced = {
     object_type = "Atlas",
-    key = "atlasenchanced",
+    key = "atlasenhanced",
     path = "atlasdeck.png",
     px = 71,
     py = 95
 }
-local hierophant_deck = {object_type = "Back",
-    name = "cry-The Hierophant's Deck",
-    key = "hierophant_deck",
-	config = {cry_force_enhancement = "m_bonus"},
-	pos = {x = 3, y = 3},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "The Hierophant's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_bonus}Bonus Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-}
-local empress_deck = {object_type = "Back",
-    name = "cry-The Empress' Deck",
-    key = "empress_deck",
-	config = {cry_force_enhancement = "m_mult"},
-    atlas = "atlasenchanced",
-	pos = {x = 2, y = 3},
-	loc_txt = {
-        name = "The Empress's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_mult}Mult Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-}
-local lovers_deck = {object_type = "Back",
-    name = "cry-The Lovers' Deck",
-    key = "lovers_deck",
-	config = {cry_force_enhancement = "m_wild"},
-	pos = {x = 5, y = 3},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "The Lovers' Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_wild}Wild Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-}
-local justice_deck = {object_type = "Back",
-    name = "cry-Deck of Justice",
-    key = "justice_deck",
-	config = {cry_force_enhancement = "m_glass"},
-	pos = {x = 4, y = 3},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "Deck of Justice",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_glass}Glass Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-}
-local eclipse_deck = {object_type = "Back",
-    name = "cry-The Eclipse's Deck",
-    key = "eclipse_deck",
-	config = {cry_force_enhancement = "m_cry_echo"},
-	pos = {x = 1, y = 5},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "The Eclipse's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_cry_echo}Echo Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-    
-}
-local chariot_deck = {object_type = "Back",
-    name = "cry-The Chariot's Deck",
-    key = "chariot_deck",
-	config = {cry_force_enhancement = "m_steel"},
-	pos = {x = 6, y = 1},
-	loc_txt = {
-        name = "The Chariot's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_steel}Steel Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-    
-}
-local tower_deck = {object_type = "Back",
-    name = "cry-Stoner's Deck",
-    key = "tower_deck",
-	config = {cry_force_enhancement = "m_stone"},
-	pos = {x = 5, y = 0},
-	loc_txt = {
-        name = "Stoner's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_stone}Stone Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-    
-}
-local devil_deck = {object_type = "Back",
-    name = "cry-The Devil's Deck",
-    key = "devil_deck",
-	config = {cry_force_enhancement = "m_gold"},
-	pos = {x = 6, y = 0},
-	loc_txt = {
-        name = "The Devil's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_gold}Gold Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-    
-}
-local magician_deck = {object_type = "Back",
-    name = "cry-The Magician's Deck",
-    key = "magician_deck",
-	config = {cry_force_enhancement = "m_lucky"},
-	pos = {x = 4, y = 1},
-	loc_txt = {
-        name = "The Magician's Deck",
-        text = {
-            "All {C:attention}playing cards{}",
-            "are {C:attention,T:m_lucky}Lucky Cards{}",
-            "Cards cannot change enhancements"
-        }
-    },
-    
-}
-local foil_deck = {object_type = "Back",
-    name = "cry-Deck of Chips",
-    key = "foil_deck",
-	config = {cry_force_edition = 'foil'},
-	pos = {x = 0, y = 2},
-	loc_txt = {
-        name = "Deck of Chips",
-        text = {
-            "All cards are {C:dark_edition,T:e_foil}Foil{}",
-            "Cards cannot change editions"
-        }
-    },
-    
-}
-local holo_deck = {object_type = "Back",
-    name = "cry-Deck of Mult",
-    key = "holo_deck",
-	config = {cry_force_edition = 'holo'},
-	pos = {x = 0, y = 0},
-	loc_txt = {
-        name = "Deck of Mult",
-        text = {
-            "All cards are {C:dark_edition,T:e_holo}Holographic{}",
-            "Cards cannot change editions"
-        }
-    },
-    
-}
-local poly_deck = {object_type = "Back",
-    name = "cry-Deck of XMult",
-    key = "poly_deck",
-	config = {cry_force_edition = 'polychrome'},
-	pos = {x = 5, y = 2},
-	loc_txt = {
-        name = "Deck of XMult",
-        text = {
-            "All cards are {C:dark_edition,T:e_polychrome}Polychrome{}",
-            "Cards cannot change editions"
-        }
-    },
-    
-}
-local nega_deck = {object_type = "Back",
-    name = "cry-Negative Deck",
-    key = "nega_deck",
-	config = {cry_force_edition = 'negative'},
-	pos = {x = 5, y = 2},
-	loc_txt = {
-        name = "Negative Deck",
-        text = {
-            "All cards are {C:dark_edition,T:e_negative}Negative{}",
-            "Cards cannot change editions"
-        }
-    },
-    
+
+packs_to_add = {atlasenhanced}
+
+local typed_decks = {
+--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text'},
+--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath
+--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text
+--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default
+--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+--   				Suit                                   								on Suit decks
+--																						For stickers ONLY,
+--																						prefix must be included
+--																						if you use one
+--		
+	-- Vanilla	
+	{'',			'Enhancement',	"The Hierophant's Deck",	'Bonus',				'bonus',			nil,				'atlasenhanced',	3,		3,		''},
+	{'',			'Enhancement',	"The Empress' Deck",		'Mult',					'mult',				nil,				'atlasenhanced',	2,		3,		''},
+	{'',			'Enhancement',	"The Lovers' Deck",			'Wild',					'wild',				nil,				'atlasenhanced',	5,		3,		''},
+	{'',			'Enhancement',	"Deck of Justice",			'Glass',				'glass',			nil,				'atlasenhanced',	4,		3,		''},
+	{'',			'Enhancement',	"The Chariot's Deck",		'Steel',				'steel',			nil,				nil,				6,		1,		''},
+	{'',			'Enhancement',	"Stoner's Deck",			'Stone',				'stone',			nil,				nil,				5,		0,		''},
+	{'',			'Enhancement',	"The Devil's Deck",			'Gold',					'gold',				nil,				nil,				6,		0,		''},
+	{'',			'Enhancement',	"The Magician's Deck",		'Lucky',				'lucky',			nil,				nil,				4,		1,		''},
+	
+	{'',			'Edition',		"Deck of Chips",			'Foil',					'foil',				nil,				nil,				0,		2,		''},
+	{'',			'Edition',		"Deck of Mult",				'Holographic',			'holo',				nil,				nil,				0,		0,		''},
+	{'',			'Edition',		"Deck of XMult",			'Polychrome',			'polychrome',		nil,				nil,				5,		2,		''},
+	{'',			'Edition',		nil,						'Negative',				'negative',			nil,				nil,				5,		2,		''},
+	
+	{'',			'Seal',			'Talisman Deck',			'Gold',					'Gold',				nil,				nil,				1,		2,		''},
+	{'',			'Seal',			'Déja Vu Deck',				'Red',					'Red',				nil,				nil,				0,		0,		''},
+	{'',			'Seal',			'Trance Deck',				'Blue',					'Blue',				nil,				"atlasenhanced",	2,		2,		''},
+	{'',			'Seal',			'Medium Deck',				'Purple',				'Purple',			nil,				"atlasenhanced",	1,		2,		''},
+
+	{'',			'Sticker',		nil,						'Eternal',				'eternal',			nil,				"atlasenhanced",	5,		2,		''},
+	{'',			'Sticker',		nil,						'Perishable',			'perishable',		nil,				"atlasenhanced",	0,		3,		''},
+	{'',			'Sticker',		nil,						'Rental',				'rental',			nil,				"atlasenhanced",	1,		3,		''},
+	{'',			'Sticker',		nil,						'Pinned',				'pinned',			nil,				"atlasenhanced",	0,		5,		''},
+	
+	{'',			'Suit',			'Deck of the Stars',		'Diamonds',				'window',			nil,				"atlasenhanced",	2,		1,		''},
+	{'',			'Suit',			'Deck of the Sun',			'Hearts',				'head',				nil,				"atlasenhanced",	3,		1,		''},
+	{'',			'Suit',			'Deck of the World',		'Spades',				'goad',				nil,				"atlasenhanced",	4,		1,		''},
+	{'',			'Suit',			'Deck of the Moon',			'Clubs',				'club',				nil,				"atlasenhanced",	5,		1,		''},
+	
+	-- Cryptid
+	
+	{'cry',			'Enhancement',	"The Eclipse's Deck",		'Echo',					'echo',				nil,				"atlasenhanced",	1,		5,		''},
+	
+	{'cry',			'Edition',		nil,						'Astral',				'astral',			nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Blurred',				'blur',				nil,				nil,				0,		0,		''},
+	{'cry',			'Edition',		nil,						'Mosaic',				'mosaic',			nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Oversaturated',		'oversat',			nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Glitched',				'glitched',			nil,				nil,				5,		2,		"Wait, isn't this just Misprint Deck?"},
+	
+	{'cry',			'Seal',			'Typhoon Deck',				'Azure',				'azure',			nil,				nil,				0,		2,		''},
+	
+	{'cry',			'Sticker',		nil,						'Banana',				'banana',			nil,				"atlasenhanced",	5,		4,		''},
+	
 }
 
-local astral_deck = {object_type = "Back",
-    name = "cry-Astral Deck",
-    key = "astral_deck",
-	config = {cry_force_edition = 'cry_astral'},
-	pos = {x = 5, y = 2},
-	loc_txt = {
-        name = "Astral Deck",
-        text = {
-            "All cards are {C:dark_edition,T:e_cry_astral}Astral",
-            "Cards cannot change editions"
-        }
-    },
-}
+if SMODS.Mods["jen"] then
 
-local blurred_deck = {object_type = "Back",
-    name = "cry-Blurred Deck",
-    key = "blurred_deck",
-	config = {cry_force_edition = 'cry_blur'},
-	pos = {x = 0, y = 0},
-	loc_txt = {
-        name = "Blurred Deck",
-        text = {
-            "All cards are {C:dark_edition,T:e_cry_blur}Blurred{}",
-            "Cards cannot change editions"
-        }
-    },
-}
+	local jen_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
 
-local mosaic_deck = {object_type = "Back",
-    name = "cry-Mosaic Deck",
-    key = "mosaic_deck",
-	config = {cry_force_edition = 'cry_mosaic'},
-	pos = {x = 5, y = 2},
-	loc_txt = {
-        name = "Mosaic Deck",
-        text = {
-            "All cards are {C:dark_edition,T:e_cry_mosaic}Mosaic{}",
-            "Cards cannot change editions"
-        }
-    },
-}
+		{'jen',				'Edition',		nil,						'Prismatic',			'prismatic',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Ionised', 				'ionized',			nil,				nil,				5,		2,		''},	-- ionised vs ionized, jen why
+		{'jen',				'Edition',		nil,						'Misprint', 			'misprint',			nil,				nil,				5,		2,		'(No, not that one)'},
+		{'jen',				'Edition',		nil,						'Wee', 					'wee',				nil,				nil,				5,		2,		''},	-- Works, but shader does nothing in pack menu
+		{'jen',				'Edition',		nil,						'Blaze', 				'blaze',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Wavy', 				'wavy',				nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Encoded', 				'encoded',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Diplopia', 			'diplopia',			nil,				nil,				5,		2,		''},	-- Works, but shader does nothing in pack menu
+		{'jen',				'Edition',		nil,						'Sequin', 				'sequin',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Laminated', 			'laminated',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Crystal', 				'crystal',			'laminated',		nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Sepia', 				'sepia',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Ink', 					'ink',				nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Polygloss', 			'polygloss',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Gilded', 				'gilded',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Chromatic', 			'chromatic',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Watercoloured', 		'watered',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Dithered', 			'dithered',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Sharpened', 			'sharpened',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Reversed', 			'reversed',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Missing Textures',		'missingtexture',	nil,				nil,				5,		2,		'Alright, who forgot to install Counter-Strike: Source?'},
+		{'jen',				'Edition',		nil,						'Bloodfoil', 			'bloodfoil',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Blood', 				'blood',			'cosmic',			nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Moire', 				'moire',			nil,				nil,				5,		2,		''},
 
-local oversat_deck = {object_type = "Back",
-    name = "cry-Oversaturated Deck",
-    key = "oversat_deck",
-	config = {cry_force_edition = 'cry_oversat'},
-	pos = {x = 5, y = 2},
-	loc_txt = {
-        name = "Oversaturated Deck",
-        text = {
-            "All cards are {C:dark_edition,T:e_cry_oversat}Oversaturated{}",
-            "Cards cannot change editions"
-        }
-    },
-}
+		{'jen', 			'Enhancement',	nil,						'Astro',				'astro',			nil,				nil,				5,		2,		''},
+--		{'jen', 			'Enhancement',	nil,						'Multichip',			'xchip',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
+--		{'jen', 			'Enhancement',	nil,						'Powerchip',			'echip',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
+--		{'jen', 			'Enhancement',	nil,						'Multimult',			'xmult',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
+--		{'jen', 			'Enhancement',	nil,						'Powermult',			'emult',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
+--		{'jen', 			'Enhancement',	nil,						'Supercharged',			'power',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
+		{'jen', 			'Enhancement',	nil,						'Surreal',				'surreal',			nil,				nil,				5,		2,		'Wait, isn\'t this just Infinite Deck?'},
+		{'jen', 			'Enhancement',	nil,						'Fortune',				'fortune',			nil,				nil,				5,		2,		''},
+		{'jen', 			'Enhancement',	nil,						'Osmium',				'osmium',			nil,				nil,				5,		2,		''},
+		{'jen', 			'Enhancement',	nil,						'Fizzy',				'fizzy',			nil,				nil,				5,		2,		''},
+		{'jen', 			'Enhancement',	nil,						'Blue',					'blue',				nil,				nil,				5,		2,		''},
+		{'jen', 			'Enhancement',	nil,						'Handy',				'handy',			nil,				nil,				5,		2,		''},
+		{'jen', 			'Enhancement',	nil,						'Tossy',				'tossy',			nil,				nil,				5,		2,		''},
 
-local glitched_deck = {object_type = "Back",
-    name = "cry-Glitched Deck",
-    key = "glitched_deck",
-	config = {cry_force_edition = 'cry_glitched'},
-	pos = {x = 5, y = 2},
-	loc_txt = {
-        name = "Glitched Deck",
-        text = {
-            "All cards are {C:dark_edition,T:e_cry_glitched}Glitched{}",
-            "Cards cannot change editions",
-            "{s:0.8,C:inactive}Wait, isn't this just Misprint Deck?"
-        }
-    },
-}
+--		{'jen', 			'Enhancement',	nil,						'Canio\'s',				'canios',			nil,				nil,				5,		2,		''},	-- Not yet implemented
+--		{'jen', 			'Enhancement',	nil,						'Triboulet\'s',			'triboulets',		nil,				nil,				5,		2,		''},	-- Not yet implemented
+	}
 
-local talisman_deck = {object_type = "Back",
-    name = "cry-Talisman Deck",
-    key = "talisman_deck",
-	config = {cry_force_seal = 'Gold'},
-	pos = {x = 1, y = 2},
-	loc_txt = {
-        name = "Talisman Deck",
-        text = {
-            "All cards have a {C:attention}Gold Seal{}",
-            "Cards cannot change seals"
-        }
-    },
-    
-}
-local deja_vu_deck = {object_type = "Back",
-    name = "cry-Deja Vu Deck",
-    key = "deja_vu_deck",
-	config = {cry_force_seal = 'Red'},
-	pos = {x = 0, y = 0},
-	loc_txt = {
-        name = "Deja Vu Deck",
-        text = {
-            "All cards have a {C:red}Red Seal{}",
-            "Cards cannot change seals"
-        }
-    },
-    
-}
-local trance_deck = {object_type = "Back",
-    name = "cry-Trance Deck",
-    key = "trance_deck",
-	config = {cry_force_seal = 'Blue', hide_seal = true},
-	pos = {x = 2, y = 2},
-	loc_txt = {
-        name = "Trance Deck",
-        text = {
-            "All cards have a {C:blue}Blue Seal{}",
-            "Cards cannot change seals"
-        }
-    },
-    atlas = "atlasenchanced"
-}
-local medium_deck = {object_type = "Back",
-    name = "cry-Medium Deck",
-    key = "medium_deck",
-	config = {cry_force_seal = 'Purple', hide_seal = true},
-	pos = {x = 1, y = 2},
-	loc_txt = {
-        name = "Medium Deck",
-        text = {
-            "All cards have a {C:purple}Purple Seal{}",
-            "Cards cannot change seals"
-        }
-    },
-    atlas = "atlasenchanced"
-}
-local typhoon_deck = {object_type = "Back",
-    name = "cry-Typhoon Deck",
-    key = "typhoon_deck",
-	config = {cry_force_seal = 's_cry_azure'},
-	pos = {x = 0, y = 2},
-	loc_txt = {
-        name = "Typhoon Deck",
-        text = {
-            "All cards have an {C:cry_azure}Azure Seal{}",
-            "Cards cannot change seals"
-        }
-    },
-    
-}
-local eternal_deck = {object_type = "Back",
-    name = "cry-Eternal Deck",
-    key = "eternal_deck",
-	config = {cry_force_sticker = 'eternal'},
-	pos = {x = 5, y = 2},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "Eternal Deck",
-        text = {
-            "All cards are {C:attention}Eternal{}"
-        }
-    },
-}
-local perishable_deck = {object_type = "Back",
-    name = "cry-Perishable Deck",
-    key = "perishable_deck",
-	config = {cry_force_sticker = 'perishable'},
-	pos = {x = 0, y = 3},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "Perishable Deck",
-        text = {
-            "All cards are {C:attention}Perishable{}"
-        }
-    },
-}
-local rental_deck = {object_type = "Back",
-    name = "cry-Rental Deck",
-    key = "rental_deck",
-	config = {cry_force_sticker = 'rental'},
-	pos = {x = 1, y = 3},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "Rental Deck",
-        text = {
-            "All cards are {C:attention}Rental{}"
-        }
-    },
-}
-local banana_deck = {object_type = "Back",
-    name = "cry-Banana Deck",
-    key = "banana_deck",
-	config = {cry_force_sticker = 'banana'},
-	pos = {x = 5, y = 4},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "Banana Deck",
-        text = {
-            "All cards are {C:attention}Banana{}"
-        }
-    },
-}
-local pinned_deck = {object_type = "Back",
-    name = "cry-Pinned Deck",
-    key = "pinned_deck",
-	config = {cry_force_sticker = 'pinned'},
-	pos = {x = 0, y = 5},
-    atlas = "atlasenchanced",
-	loc_txt = {
-        name = "Pinned Deck",
-        text = {
-            "All cards are {C:attention}Pinned{}"
-        }
-    },
-}
-local world_deck = {object_type = "Back",
-    name = "cry-World Deck",
-    key = "world_deck",
-	config = {cry_force_suit = 'Spades', cry_boss_blocked = {'bl_goad'}},
-	pos = {x = 4, y = 1},
-	loc_txt = {
-        name = "Deck of The World",
-        text = {
-            "All playing cards are {C:spade}Spades{}",
-            "and cannot change suits",
-            "{C:attention}The Goad{} cannot appear"
-        }
-    },
-    atlas = "atlasenchanced"
-}
-local star_deck = {object_type = "Back",
-    name = "cry-Star Deck",
-    key = "star_deck",
-	config = {cry_force_suit = 'Diamonds', cry_boss_blocked = {'bl_window'}},
-	pos = {x = 2, y = 1},
-	loc_txt = {
-        name = "Deck of The Stars",
-        text = {
-            "All playing cards are {C:diamond}Diamonds{}",
-            "and cannot change suits",
-            "{C:attention}The Window{} cannot appear"
-        }
-    },
-    atlas = "atlasenchanced"
-}
-local sun_deck = {object_type = "Back",
-    name = "cry-Sun Deck",
-    key = "sun_deck",
-	config = {cry_force_suit = 'Hearts', cry_boss_blocked = {'bl_head'}},
-	pos = {x = 3, y = 1},
-	loc_txt = {
-        name = "Deck of The Sun",
-        text = {
-            "All playing cards are {C:heart}Hearts{}",
-            "and cannot change suits",
-            "{C:attention}The Head{} cannot appear"
-        }
-    },
-    atlas = "atlasenchanced"
-}
-local moon_deck = {object_type = "Back",
-    name = "cry-Moon Deck",
-    key = "moon_deck",
-	config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'bl_club'}},
-	pos = {x = 5, y = 1},
-	loc_txt = {
-        name = "Deck of The Moon",
-        text = {
-            "All playing cards are {C:club}Clubs{}",
-            "and cannot change suits",
-            "{C:attention}The Club{} cannot appear"
-        }
-    },
-    atlas = "atlasenchanced"
-}
+	for i = 1, #jen_additions do
+		typed_decks[#typed_decks + 1] = jen_additions[i]
+	end
+end
+
+
+for i = 1, #typed_decks do
+	local deck = typed_decks[i]
+	
+	local shader = nil
+	if deck[6] then
+		shader = deck[1] .. '_' .. deck[6]
+	end
+	
+	local deck_name = deck[3]
+	if not deck_name then
+		deck_name = deck[4] .. ' Deck'
+	end
+	
+	local deck_internal_name = ''
+	if deck[1] == 'cry' then 	-- don't register eg. 'cry-cry-Typhoon Deck'
+		deck_internal_name = 'cry-' .. deck_name
+	else						-- eg. 'cry-jen-Blood Deck'
+		deck_internal_name = 'cry-' .. deck[1] .. '-' .. deck_name
+	end
+	
+	local deck_key = ''
+	if deck[1] == 'cry' then
+		deck_key = 'cry' .. deck[5] .. '_deck'
+	else
+		deck_key = 'cry' .. deck[1] .. '-' .. deck[5] .. '_deck'
+	end
+	
+	local object_key = ''
+	if deck[1] == '' then -- vanilla doesn't have a prefix, don't add the _
+		object_key = deck[5]
+	else
+		object_key = deck[1] .. '_' .. deck[5]
+	end
+
+	if deck[2] == 'Edition' then
+		local obj = {object_type = "Back",
+			name = deck_internal_name,
+			key = deck_key,
+			config = {cry_force_edition = object_key, cry_force_edition_shader = shader},
+			pos = {x = deck[8], y = deck[9]},
+			loc_txt = {
+				name = deck_name,
+				text = {
+					"All cards are {C:dark_edition,T:" .. object_key .. "}" .. deck[4] .. " Cards{}",
+					"Cards cannot change editions",
+					"{s:0.8,C:inactive}" .. deck[10]
+				}
+			},
+		}
+		if deck[7] then obj.atlas = deck[7] end
+		packs_to_add[#packs_to_add + 1] = obj
+		
+	elseif deck[2] == 'Enhancement' then
+		local obj = {object_type = "Back",
+			name = deck_internal_name,
+			key = deck_key,
+			config = {cry_force_enhancement = "m_" .. object_key},
+			pos = {x = deck[8], y = deck[9]},
+			loc_txt = {
+				name = deck_name,
+				text = {
+					"All {C:attention}playing cards{}",
+					"are {C:attention,T:m_" .. object_key .. "}" .. deck[4] .. " Cards{}",
+					"Cards cannot change enhancements",
+					"{s:0.8,C:inactive}" .. deck[10]
+				}
+			},
+			
+		}
+		if deck[7] ~= nil then obj.atlas = deck[7] end
+		packs_to_add[#packs_to_add + 1] = obj
+		
+	elseif deck[2] == 'Seal' then
+
+		if deck[1] ~= '' then -- add prefix only if non-vanilla seal because this is a distinction we have to make apparently
+			object_key = "s_" .. object_key
+		end
+	
+		local obj = {object_type = "Back",
+			name = deck_internal_name,
+			key = deck_key,
+			config = {cry_force_seal = object_key},
+			pos = {x = deck[8], y = deck[9]},
+			loc_txt = {
+				name = deck_name,
+				text = {
+					"All cards have a {C:dark_edition}" .. deck[4] .. " Seal{}",
+					"Cards cannot change seals",
+					"{s:0.8,C:inactive}" .. deck[10]
+				}
+			},
+			
+		}
+		if deck[7] ~= nil then obj.atlas = deck[7] end
+		packs_to_add[#packs_to_add + 1] = obj
+		
+	elseif deck[2] == 'Sticker' then
+	
+		local obj = {object_type = "Back",
+			name = deck_internal_name,
+			key = deck_key,
+			config = {cry_force_sticker = deck[5]}, -- stickers DON'T use object_key for SOME reason
+			pos = {x = deck[8], y = deck[9]},
+			loc_txt = {
+				name = deck_name,
+				text = {
+					"All cards are {C:attention}" .. deck[4] .. "{}",
+					"{s:0.8,C:inactive}" .. deck[10]
+				}
+			},
+		}
+	
+		if deck[7] ~= nil then obj.atlas = deck[7] end
+		packs_to_add[#packs_to_add + 1] = obj
+	
+	elseif deck[2] == 'Suit' then
+
+		local obj = {object_type = "Back",
+			name = deck_internal_name,
+			key = deck_key,
+			config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'bl_' .. deck[5]}},
+			pos = {x = deck[8], y = deck[9]},
+			loc_txt = {
+				name = deck_name,
+				text = {
+					"All playing cards are {C:dark_edition}" .. deck[4] .. "{}",
+					"and cannot change suits",
+					"{C:attention}The " .. string.upper(string.sub(deck[5], 1, 1)) .. string.sub(deck[5], 2) .. "{} cannot appear", -- UGLY hack
+					"{s:0.8,C:inactive}" .. deck[10]
+				}
+			},
+		}
+
+		if deck[7] ~= nil then obj.atlas = deck[7] end
+		packs_to_add[#packs_to_add + 1] = obj
+			
+	end
+end
+
 
 return {name = "Enhanced Decks", 
         init = function()
@@ -588,9 +387,4 @@ return {name = "Enhanced Decks",
                 return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
             end
         end,
-        items = {atlasenchanced,
-hierophant_deck, empress_deck, lovers_deck, justice_deck, eclipse_deck, chariot_deck, tower_deck, devil_deck, magician_deck,
-foil_deck, holo_deck, poly_deck, nega_deck, astral_deck, mosaic_deck, oversat_deck, glitched_deck, blurred_deck,
-talisman_deck, deja_vu_deck, trance_deck, medium_deck, typhoon_deck,
-eternal_deck, perishable_deck, rental_deck, banana_deck, pinned_deck,
-star_deck, moon_deck, sun_deck, world_deck}}
+        items = packs_to_add}
