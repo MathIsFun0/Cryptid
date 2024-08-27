@@ -339,7 +339,7 @@ local jollyedition = {
     weight = 0,
     name = "cry-jollyedition",
     extra_cost = 0,
-    config = {mult = 3},
+    config = {mult = 8},
     apply_to_float = true,
     key = "m",
     shader = "m",

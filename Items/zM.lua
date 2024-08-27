@@ -26,6 +26,7 @@ local jollysus = {
     blueprint_compat = true,
     eternal_compat = false,
     loc_vars = function(self, info_queue, center)
+	--Add Jolly Edition to infoqueue later
         return {vars = {center.ability.extra.active}}
     end,
     atlas = "atlastwo",
@@ -700,17 +701,15 @@ local scrabble = {
 	object_type = "Joker",
 	name = "cry-scrabble",
 	key = "scrabble",
-	config = {extra = {odds = 4}, jolly = {t_mult = 8, type = 'Pair'}},
+	config = {extra = {odds = 4}},
 	pos = {x = 0, y = 2},
 	immune_to_chemach = true,
 	loc_txt = {
         name = 'Scrabble Tile',
         text = {
 			"{C:green}#1# in #2#{} chance to create",
-			"an {C:green}Uncommon{} Joker",
-			"or {C:attention}Jolly Joker{}",
-			"when hand is played",
-			"{C:inactive,s:0.8}(Individual chance for each)"
+			"a {C:dark_edition}Jolly {C:green}Uncommon{} Joker",
+			"when hand is played"
 		}
     },
 	rarity = 2,
@@ -718,21 +717,22 @@ local scrabble = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		--Add Jolly Edition to infoqueue later
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
-			if pseudorandom('scrabble') < G.GAME.probabilities.normal/card.ability.extra.odds then
-				check = true
-				local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
-            			card:add_to_deck()
-            			G.jokers:emplace(card)
-			end
+			--if pseudorandom('scrabble') < G.GAME.probabilities.normal/card.ability.extra.odds then
+				--check = true
+				--local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
+            			--card:add_to_deck()
+            			--G.jokers:emplace(card)
+			--end
 			if pseudorandom('scrabbleother') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
+				card:set_edition({cry_m = true})
             			card:add_to_deck()
             			G.jokers:emplace(card)
 			end
@@ -740,6 +740,23 @@ local scrabble = {
 		end
 	end,
 }
+if JokerDisplay then
+	scrabble.joker_display_definition = {
+        extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = " in " },
+				{ ref_table = "card.ability.extra",        ref_value = "odds" },
+				{ text = ")" },
+			}
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+		end
+	}
+end
 local sacrifice = {
 	object_type = "Joker",
 	name = "cry-sacrifice",
@@ -814,11 +831,10 @@ local reverse = {
 	loc_txt = {
         name = 'Reverse Card',
         text = {
-			"Fill all empty Joker slots",
+			"Fill all empty Joker slots {C:inactive}(Max 100){}",
 			"with {C:dark_edition}Holographic{} {C:attention}Jolly Jokers{} if",
 			"{C:attention}discarded poker hand{} is a {C:attention}#1#{}",
 			"{C:red,E:2}self destructs{}",
-			"{C:inactive}(Max of 100){}",
 			"{C:inactive,s:0.8}The ULTIMATE comeback{}"
 		}
     	},
@@ -896,6 +912,7 @@ local doodlem = {
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
 	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+	--TODO: Replace the negative infoqueue with the one used for consumables
 	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
     end,
     calculate = function(self, card, context)
@@ -918,7 +935,6 @@ local doodlem = {
     end
 end
 }
---TODO: Replace the negative infoqueue with the one used for consumables
 local virgo = {
 	object_type = "Joker",
 	name = "cry-virgo",
@@ -941,7 +957,9 @@ local virgo = {
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
+		if not center.edition or (center.edition and not center.edition.polychrome) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
+        	end
 	return {vars = {center.ability.extra.bonus, center.ability.extra.type}}
     	end,
 	atlas = "atlasepic",
@@ -959,11 +977,10 @@ local virgo = {
 			func = (function()
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local summon = math.floor((card.ability.extra_value)*0.25)
+						local summon = math.floor((card.ability.extra_value)/4)
 						if summon < 1 then summon = 1 end --precautionary measure, just in case
-						if summon > 500 then summon = 500 end --another precautionary measure
 						print(summon)
-						for i = 1, summon do
+						for i = 1, math.min(200, summon) do --another precautionary measure
 							local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
 							card:set_edition({
 								polychrome = true
@@ -1294,7 +1311,7 @@ local megg = {
     name = "cry-megg",
     key = "Megg",
     pos = {x = 0, y = 4},
-	config = {extra = {amount = 1, amount_mod = 1}, jolly = {t_mult = 8, type = 'Pair'}},
+	config = {extra = {amount = 0, amount_mod = 1}, jolly = {t_mult = 8, type = 'Pair'}},
 	loc_txt = {
         name = 'Megg',
         text = {
@@ -1305,18 +1322,19 @@ local megg = {
     },
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-        return {vars = {center.ability.extra.amount_mod, center.ability.extra.amount, (center.ability.extra.amount > 1 and "Jokers") or "Joker"}}
+        return {vars = {math.max(1, center.ability.extra.amount_mod), math.min(200, math.floor(center.ability.extra.amount)), (center.ability.extra.amount > 1 and "Jokers") or "Joker"}}
     end,
     rarity = 1,
     cost = 4,
     atlas = "atlasthree",
     calculate = function(self, card, context)
-        if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
-            card.ability.extra.amount = card.ability.extra.amount + card.ability.extra.amount_mod
+        if context.end_of_round and card.ability.extra.amount < 200 and not (context.individual or context.repetition or context.blueprint) then
+            card.ability.extra.amount = card.ability.extra.amount + math.max(1, card.ability.extra.amount_mod)
+	    if card.ability.extra.amount > 200 then card.ability.extra.amount = 200 end
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = {"Jolly Up!"}, colour = G.C.FILTER})
         end
         if context.selling_self and not (context.blueprint or context.retrigger_joker_check or context.retrigger_joker) and card.ability.extra.amount > 0 then
-            for i = 1, card.ability.extra.amount do
+            for i = 1, math.min(200, math.floor(card.ability.extra.amount)) do
                 local jolly_card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
                 jolly_card:add_to_deck()
                 G.jokers:emplace(jolly_card)
@@ -1324,6 +1342,21 @@ local megg = {
         end
     end,
 }
+if JokerDisplay then
+	megg.joker_display_definition = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "amount" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+            		{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        	},
+		calc_function = function(card)
+            		card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        	end
+	}
+end	
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,loopy,scrabble,sacrifice,reverse,macabre,megg}
 for _, v in pairs(ret_items) do
     Cryptid.M_jokers["j_cry_" .. v.key] = true
