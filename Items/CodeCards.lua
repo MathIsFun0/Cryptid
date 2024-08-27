@@ -1258,7 +1258,7 @@ local source_deck = {object_type = "Back",
             "Cards cannot change seals"
         }
     },
-    atlas = "atlasenchanced"
+    atlas = "atlasenhanced"
 }
 
 
