@@ -10,7 +10,7 @@ local atlasenhanced = {
 packs_to_add = {atlasenhanced}
 
 local typed_decks = {
---	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text'},
+--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',},
 --	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath
 --   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text
 --	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default
@@ -78,7 +78,7 @@ if SMODS.Mods["jen"] then
 
 		{'jen',				'Edition',		nil,						'Prismatic',			'prismatic',		nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Ionised', 				'ionized',			nil,				nil,				5,		2,		''},	-- ionised vs ionized, jen why
-		{'jen',				'Edition',		nil,						'Misprint', 			'misprint',			nil,				nil,				5,		2,		'(No, not that one)'},
+		{'jen',				'Edition',		'Misprint Deck*',			'Misprint', 			'misprint',			nil,				nil,				5,		2,		'*no, not that one'},
 		{'jen',				'Edition',		nil,						'Wee', 					'wee',				nil,				nil,				5,		2,		''},	-- Works, but shader does nothing in pack menu
 		{'jen',				'Edition',		nil,						'Blaze', 				'blaze',			nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Wavy', 				'wavy',				nil,				nil,				5,		2,		''},
@@ -101,19 +101,19 @@ if SMODS.Mods["jen"] then
 		{'jen',				'Edition',		nil,						'Blood', 				'blood',			'cosmic',			nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Moire', 				'moire',			nil,				nil,				5,		2,		''},
 
-		{'jen', 			'Enhancement',	nil,						'Astro',				'astro',			nil,				nil,				5,		2,		''},
---		{'jen', 			'Enhancement',	nil,						'Multichip',			'xchip',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
---		{'jen', 			'Enhancement',	nil,						'Powerchip',			'echip',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
---		{'jen', 			'Enhancement',	nil,						'Multimult',			'xmult',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
---		{'jen', 			'Enhancement',	nil,						'Powermult',			'emult',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
---		{'jen', 			'Enhancement',	nil,						'Supercharged',			'power',			nil,				nil,				5,		2,		''},	-- Crashes the game on hover
-		{'jen', 			'Enhancement',	nil,						'Surreal',				'surreal',			nil,				nil,				5,		2,		'Wait, isn\'t this just Infinite Deck?'},
-		{'jen', 			'Enhancement',	nil,						'Fortune',				'fortune',			nil,				nil,				5,		2,		''},
-		{'jen', 			'Enhancement',	nil,						'Osmium',				'osmium',			nil,				nil,				5,		2,		''},
-		{'jen', 			'Enhancement',	nil,						'Fizzy',				'fizzy',			nil,				nil,				5,		2,		''},
-		{'jen', 			'Enhancement',	nil,						'Blue',					'blue',				nil,				nil,				5,		2,		''},
-		{'jen', 			'Enhancement',	nil,						'Handy',				'handy',			nil,				nil,				5,		2,		''},
-		{'jen', 			'Enhancement',	nil,						'Tossy',				'tossy',			nil,				nil,				5,		2,		''},
+		{'jen', 			'Enhancement',	nil,						'Astro',				'astro',			nil,				'jen_jenenhance',	0,		0,		''},
+--		{'jen', 			'Enhancement',	nil,						'Multichip',			'xchip',			nil,				'jen_jenenhance',	1,		0,		''},
+--		{'jen', 			'Enhancement',	nil,						'Powerchip',			'echip',			nil,				'jen_jenenhance',	2,		0,		''},
+--		{'jen', 			'Enhancement',	nil,						'Multimult',			'xmult',			nil,				'jen_jenenhance',	3,		0,		''},
+--		{'jen', 			'Enhancement',	nil,						'Powermult',			'emult',			nil,				'jen_jenenhance',	5,		0,		''},
+--		{'jen', 			'Enhancement',	nil,						'Supercharged',			'power',			nil,				'jen_jenenhance',	4,		0,		''},
+		{'jen', 			'Enhancement',	nil,						'Surreal',				'surreal',			nil,				'jen_jenenhance',	6,		1,		'Wait, isn\'t this just Infinite Deck?'},
+		{'jen', 			'Enhancement',	nil,						'Fortune',				'fortune',			nil,				'jen_jenenhance',	6,		0,		''},
+		{'jen', 			'Enhancement',	nil,						'Osmium',				'osmium',			nil,				'jen_jenenhance',	8,		0,		''},
+		{'jen', 			'Enhancement',	nil,						'Fizzy',				'fizzy',			nil,				'jen_jenenhance',	8,		1,		''},
+		{'jen', 			'Enhancement',	nil,						'Blue',					'blue',				nil,				'jen_jenenhance',	9,		0,		''},
+		{'jen', 			'Enhancement',	nil,						'Handy',				'handy',			nil,				'jen_jenenhance',	1,		1,		''},
+		{'jen', 			'Enhancement',	nil,						'Tossy',				'tossy',			nil,				'jen_jenenhance',	3,		1,		''},
 
 --		{'jen', 			'Enhancement',	nil,						'Canio\'s',				'canios',			nil,				nil,				5,		2,		''},	-- Not yet implemented
 --		{'jen', 			'Enhancement',	nil,						'Triboulet\'s',			'triboulets',		nil,				nil,				5,		2,		''},	-- Not yet implemented
@@ -174,7 +174,12 @@ for i = 1, #typed_decks do
 				}
 			},
 		}
-		if deck[7] then obj.atlas = deck[7] end
+		if deck[7] then 
+			obj.atlas = deck[7]
+			if string.find(deck[7], "_") then
+				obj.prefix_config = {atlas = false}
+			end
+		end
 		packs_to_add[#packs_to_add + 1] = obj
 		
 	elseif deck[2] == 'Enhancement' then
@@ -194,7 +199,13 @@ for i = 1, #typed_decks do
 			},
 			
 		}
-		if deck[7] ~= nil then obj.atlas = deck[7] end
+		
+		if deck[7] then 
+			obj.atlas = deck[7]
+			if string.find(deck[7], "_") then
+				obj.prefix_config = {atlas = false}
+			end
+		end
 		packs_to_add[#packs_to_add + 1] = obj
 		
 	elseif deck[2] == 'Seal' then
@@ -218,7 +229,13 @@ for i = 1, #typed_decks do
 			},
 			
 		}
-		if deck[7] ~= nil then obj.atlas = deck[7] end
+		
+		if deck[7] then 
+			obj.atlas = deck[7]
+			if string.find(deck[7], "_") then
+				obj.prefix_config = {atlas = false}
+			end
+		end
 		packs_to_add[#packs_to_add + 1] = obj
 		
 	elseif deck[2] == 'Sticker' then
@@ -237,7 +254,13 @@ for i = 1, #typed_decks do
 			},
 		}
 	
-		if deck[7] ~= nil then obj.atlas = deck[7] end
+		
+		if deck[7] then 
+			obj.atlas = deck[7]
+			if string.find(deck[7], "_") then
+				obj.prefix_config = {atlas = false}
+			end
+		end
 		packs_to_add[#packs_to_add + 1] = obj
 	
 	elseif deck[2] == 'Suit' then
@@ -258,7 +281,13 @@ for i = 1, #typed_decks do
 			},
 		}
 
-		if deck[7] ~= nil then obj.atlas = deck[7] end
+		
+		if deck[7] then 
+			obj.atlas = deck[7]
+			if string.find(deck[7], "_") then
+				obj.prefix_config = {atlas = false}
+			end
+		end
 		packs_to_add[#packs_to_add + 1] = obj
 			
 	end
