@@ -1153,13 +1153,13 @@ local source = {
     key = "source",
 	config = { 
         -- This will add a tooltip.
-        mod_conv = 's_cry_green_seal',
+        mod_conv = 'cry_green_seal',
         -- Tooltip args
         max_highlighted = 1,
     },
     loc_vars = function(self, info_queue, center)
         -- Handle creating a tooltip with set args.
-        info_queue[#info_queue+1] = { set = 'Other', key = 's_cry_green_seal' }
+        info_queue[#info_queue+1] = { set = 'Other', key = 'cry_green_seal' }
         return {vars = {center.ability.max_highlighted}}
     end,
     loc_txt = {
@@ -1185,7 +1185,7 @@ local source = {
             delay = 0.1,
             func = function()
                     if highlighted then
-                        highlighted:set_seal('s_cry_green')
+                        highlighted:set_seal('cry_green')
                     end
                 return true
             end
@@ -1249,7 +1249,7 @@ local encoded = {
 local source_deck = {object_type = "Back",
     name = "cry-Source Deck",
     key = "source_deck",
-	config = {cry_force_seal = 's_cry_green'},
+	config = {cry_force_seal = 'cry_green'},
 	pos = {x = 3, y = 5},
 	loc_txt = {
         name = "Source Deck",
