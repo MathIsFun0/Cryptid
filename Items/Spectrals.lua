@@ -143,8 +143,7 @@ local hammerspace = {
         text = {
 			"Apply random {C:attention}consumables{}",
 			"as if they were {C:dark_edition}Enhancements{}",
-			"to your {C:attention}entire hand{}",
-			"{C:red}-1{} hand size"
+			"to your {C:attention}entire hand{}"
         }
     },
     cost = 4,
@@ -165,9 +164,8 @@ local hammerspace = {
         for i=1, #G.hand.cards do
 			local CARD = G.hand.cards[i]
             local percent = 0.85 + (i-0.999)/(#G.hand.cards-0.998)*0.3
-            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_hammerspace')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(get_random_consumable('cry_hammerspace'), true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
         end
-		G.hand:change_size(-1)
     end
 }
 local lock = {
