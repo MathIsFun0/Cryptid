@@ -1195,7 +1195,8 @@ local sus = {
             "At end of round, create",
             "a {C:attention}copy{} of a random",
             "card {C:attention}held in hand{},",
-            "destroy all others"
+            "destroy all others",
+            "{C:attention,s:0.8}Kings{s:0.8} of {C:hearts,s:0.8}Hearts{s:0.8} are prioritized"
 		}
     },
 	rarity = 3,
@@ -1203,14 +1204,27 @@ local sus = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
+        local function is_impostor(card)
+            return SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
+        end
         if context.end_of_round and not context.cardarea then
             if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
                 card.ability.chosen_card = nil
             end
             local choosable_cards = {}
+            local has_impostor = false
             for i = 1, #G.hand.cards do
                 if not G.hand.cards[i].murdered_by_impostor then
                     choosable_cards[#choosable_cards+1] = G.hand.cards[i]
+                    if is_impostor(G.hand.cards[i]) then has_impostor = true end
+                end
+            end
+            if has_impostor then
+                choosable_cards = {}
+                for i = 1, #G.hand.cards do
+                    if not G.hand.cards[i].murdered_by_impostor and is_impostor(G.hand.cards[i]) then
+                        choosable_cards[#choosable_cards+1] = G.hand.cards[i]
+                    end
                 end
             end
             card.ability.chosen_card = card.ability.chosen_card or pseudorandom_element(choosable_cards, pseudoseed('cry_sus'))
@@ -1218,7 +1232,7 @@ local sus = {
                 card.ability.used_round = G.GAME.round
                 local deletable_cards = {}
                 for k, v in pairs(G.hand.cards) do
-                    if not v.ability.eternal then deletable_cards[#deletable_cards + 1] = v end
+                    if not v.ability.eternal and not is_impostor(v) then deletable_cards[#deletable_cards + 1] = v end
                 end
 		if #deletable_cards ~= 0 then
                 local _first_dissolve = nil
