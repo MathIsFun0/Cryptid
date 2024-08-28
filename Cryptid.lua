@@ -222,6 +222,26 @@ function cry_voucher_pinned(name)
 	return false
 end
 
+function get_random_consumable(seed, excluded_flags)
+    excluded_flags = excluded_flags or {'hidden', 'no_doe', 'no_grc'}
+    local selection = 'n/a'
+    local passes = 0
+    local tries = 500
+    while true do
+        tries = tries - 1
+        passes = 0
+        selection = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or 'grc')).key]
+        for k, v in pairs(excluded_flags) do
+            if not selection[v] then
+                passes = passes + 1
+            end
+        end
+        if passes >= #excluded_flags or tries <= 0 then
+            return selection
+        end
+    end
+end
+
 function cry_get_next_voucher_edition()	-- currently only for editions + sticker decks, can be modified if voucher stickering/editioning becomes more important
 	if G.GAME.modifiers.cry_force_edition then
 		return cry_edition_to_table(G.GAME.modifiers.cry_force_edition)
