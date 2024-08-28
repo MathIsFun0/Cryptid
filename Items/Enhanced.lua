@@ -10,10 +10,10 @@ local atlasenhanced = {
 packs_to_add = {atlasenhanced}
 
 local typed_decks = {
---	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',},
---	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath
---   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text
---	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default
+--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
 --	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
 --   				Suit                                   								on Suit decks
 --																						For stickers ONLY,
@@ -69,10 +69,10 @@ local typed_decks = {
 if SMODS.Mods["jen"] then
 
 	local jen_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
 		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
 		--   				Suit                                   								on Suit decks
 
@@ -85,12 +85,12 @@ if SMODS.Mods["jen"] then
 		{'jen',				'Edition',		nil,						'Encoded', 				'encoded',			nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Diplopia', 			'diplopia',			nil,				nil,				5,		2,		''},	-- Works, but shader does nothing in pack menu
 		{'jen',				'Edition',		nil,						'Sequin', 				'sequin',			nil,				nil,				5,		2,		''},
-		{'jen',				'Edition',		nil,						'Laminated', 			'laminated',		nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Laminated', 			'laminated',		nil,				nil,				5,		2,		'', true},
 		{'jen',				'Edition',		nil,						'Crystal', 				'crystal',			'laminated',		nil,				5,		2,		''},
-		{'jen',				'Edition',		nil,						'Sepia', 				'sepia',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Sepia', 				'sepia',			nil,				nil,				5,		2,		'', true},
 		{'jen',				'Edition',		nil,						'Ink', 					'ink',				nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Polygloss', 			'polygloss',		nil,				nil,				5,		2,		''},
-		{'jen',				'Edition',		nil,						'Gilded', 				'gilded',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		nil,						'Gilded', 				'gilded',			nil,				nil,				5,		2,		'', true},
 		{'jen',				'Edition',		nil,						'Chromatic', 			'chromatic',		nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Watercoloured', 		'watered',			nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Dithered', 			'dithered',			nil,				nil,				5,		2,		''},
@@ -179,6 +179,9 @@ for i = 1, #typed_decks do
 			if string.find(deck[7], "_") then
 				obj.prefix_config = {atlas = false}
 			end
+		end
+		if not deck[11] then
+			obj.config.cry_no_edition_price = true
 		end
 		packs_to_add[#packs_to_add + 1] = obj
 		
@@ -390,6 +393,9 @@ return {name = "Enhanced Decks",
                         G.GAME.bosses_used[v] = 1e308
                     end
                 end
+				if self.effect.config.cry_no_edition_price then
+					G.GAME.modifiers.cry_no_edition_price = true
+				end
             end
             local sa = Card.set_ability
             function Card:set_ability(center, y, z)
@@ -411,5 +417,16 @@ return {name = "Enhanced Decks",
             function Card:change_suit(new_suit)
                 return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
             end
+			local sc = Card.set_cost
+			function Card:set_cost()
+				if self.edition and G.GAME.modifiers.cry_no_edition_price then
+					local m = cry_deep_copy(self.edition)
+					self.edition = nil
+					sc(self)
+					self.edition = m
+				else
+					sc(self)
+				end
+			end
         end,
         items = packs_to_add}

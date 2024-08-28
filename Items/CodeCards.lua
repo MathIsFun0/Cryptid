@@ -2067,6 +2067,11 @@ G.FUNCS.pointer_apply = function()
         box = "the box",
         windmill = "the windmill",
         clock = "the clock",
+        code = "code joker",
+        copypaste = "copy/paste",
+        translucent = "translucent joker",
+        circulus = "circulus pistoris",
+        macabre = "macabre joker",
         -- Jen's Almanac aliases
         freddy = "freddy snowshoe",
         paupovlin = "paupovlin revere",
