@@ -336,7 +336,7 @@ function joker_scaling_context(joker, context)
         if (name == 'Red Card') and context.skipping_booster then
             return true
         end
-        if (name == 'Madness') and context.setting_blind and not self.getting_sliced and not context.blind.boss then
+        if (name == 'Madness') and context.setting_blind and not joker.getting_sliced and not context.blind.boss then
             return true
         end
         if (context.cardarea == G.jokers) and (name == 'Square Joker') and context.before and (#context.full_hand == 4) then
@@ -354,7 +354,7 @@ function joker_scaling_context(joker, context)
                 return true
             end
         end
-        if (name == 'Hologram') and context.playing_card_added and not self.getting_sliced and context.cards and context.cards[1] then
+        if (name == 'Hologram') and context.playing_card_added and not joker.getting_sliced and context.cards and context.cards[1] then
             return true
         end
         if (name == "Rocket") and context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not (G.GAME.blind.config and G.GAME.blind.config.bonus) then
@@ -460,7 +460,7 @@ function joker_scaling_context(joker, context)
                 return true
             end
         end
-        if (name == 'Yorick') and context.discard and not context.pre_discard and (self.ability.yorick_discards <= 1) then
+        if (name == 'Yorick') and context.discard and not context.pre_discard and (joker.ability.yorick_discards <= 1) then
             return true
         end
         if (name == 'cry-cut') and context.ending_shop then
