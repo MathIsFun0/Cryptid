@@ -1457,11 +1457,15 @@ local mario = {
     end
 }
 if JokerDisplay then
-    mario.joker_display_definition = {
-        retrigger_joker_function = function (card, retrigger_joker)
-            return card ~= retrigger_joker and retrigger_joker.ability.extra.retriggers or 0
-        end
-    }
+	mario.joker_display_definition = {
+		text = {
+			{ text = "x" },
+			{ ref_table = "card.ability.extra", ref_value = "retriggers" },
+		},
+		retrigger_joker_function = function (card, retrigger_joker)
+			return retrigger_joker.ability.extra.retriggers or 0
+		end
+	}
 end
 local wario = {
 	object_type = "Joker",
@@ -1842,6 +1846,15 @@ local hunger = {
         end
     end
 }
+if JokerDisplay then
+    hunger.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+    }
+end
 local weegaming = {
     object_type = "Joker",
     name = "cry-weegaming",
@@ -2564,6 +2577,16 @@ local happy = {
 	end
     end
 }
+if JokerDisplay then
+    happy.joker_display_definition = {
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local meteor = {
     object_type = "Joker",
     name = "cry-meteor",
@@ -4251,6 +4274,20 @@ local coin = {
 		end
 	end
 }
+if JokerDisplay then
+    coin.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+	    { text = "-" },
+	    { ref_table = "card.joker_display_values", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+	calc_function = function(card)
+            card.joker_display_values.money = (card.ability.extra.money * 10)
+        end,
+    }
+end
 local wheelhope = {
 	object_type = "Joker",
 	name = "cry-wheelhope",

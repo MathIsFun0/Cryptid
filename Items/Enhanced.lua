@@ -210,10 +210,6 @@ for i = 1, #typed_decks do
 		
 	elseif deck[2] == 'Seal' then
 
-		if deck[1] ~= '' then -- add prefix only if non-vanilla seal because this is a distinction we have to make apparently
-			object_key = "s_" .. object_key
-		end
-	
 		local obj = {object_type = "Back",
 			name = deck_internal_name,
 			key = deck_key,

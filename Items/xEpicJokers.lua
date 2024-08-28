@@ -38,6 +38,9 @@ local supercell = {
 		if card.ability.extra.money > 0 then
 			return card.ability.extra.money
 		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		play_sound('cry_studiofromhelsinki')
 	end
 }
 if JokerDisplay then
