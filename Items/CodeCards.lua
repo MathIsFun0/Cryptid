@@ -1873,6 +1873,8 @@ G.FUNCS.pointer_apply_previous = function()
 end
 G.FUNCS.pointer_apply = function()
     local function apply_lower(str)
+        -- Remove content within {} and any remaining spaces
+        str = str:gsub("%b{}", ""):gsub("%s+", "")
         --this weirdness allows you to get m and M separately
         if string.len(str) == 1 then return str end
         return string.lower(str)
