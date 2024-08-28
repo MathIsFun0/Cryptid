@@ -5,8 +5,8 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0820b]
---- VERSION: 0.5.0-pre
+--- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0828b]
+--- VERSION: 0.5.0~pre2
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -48,6 +48,7 @@ function loc_colour(_c, _default)
     G.ARGS.LOC_COLOURS.diamond = G.C.SUITS.Diamonds
     G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
     G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
+    G.ARGS.LOC_COLOURS.cry_ascendant = G.C.CRY_ASCENDANT
     return lc(_c, _default)
 end
 
@@ -199,16 +200,12 @@ function cry_cheapest_boss_reroll()
 end
 
 function cry_poll_random_edition()
-	local editions = {{foil = true}, {holo = true}, {polychrome = true}, {negative = true}} -- still todo: modded edition support
-	if Cryptid_config["Misc."] then
-		editions[#editions+1] = {cry_astral = true}
-		editions[#editions+1] = {cry_mosaic = true}
-		editions[#editions+1] = {cry_oversat = true}
-		editions[#editions+1] = {cry_glitched = true}
- 		editions[#editions+1] = {cry_blur = true}
-	end
-	local random_edition = pseudorandom_element(editions, pseudoseed('cry_ant_edition'))
-	return random_edition
+    local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_ant_edition'))
+    while (random_edition.key == "e_base") do
+        random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_ant_edition'))
+    end
+    ed_table = {[random_edition.key:sub(3)] = true}
+	return ed_table
 end
 
 function cry_voucher_debuffed(name)	-- simple function but idk
@@ -311,15 +308,657 @@ function Card:use_consumeable(area,copier)
     end
     return ret
 end
+
+function joker_scaling_context(joker, context)
+    local name = joker.ability.name
+    if not context.blueprint and (joker.ability.set == "Joker") and not joker.debuff then
+        if (context.cardarea == G.jokers) and (name == 'Ride the Bus') and context.before then
+            local faces = false
+            for i = 1, #context.scoring_hand do
+                if context.scoring_hand[i]:is_face() then 
+                    faces = true 
+                    break
+                end
+            end
+            if not faces then
+                return true
+            end
+        end
+        if (name == "Egg") and context.end_of_round and not context.individual and not context.repetition then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Runner') and context.before and context.poker_hands and next(context.poker_hands['Straight']) then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Ice Cream') and not context.before and context.after then
+            return true
+        end
+        if (name == 'Constellation') and context.using_consumeable and (context.consumeable.ability.set == 'Planet') then
+            return true
+        end
+        -- Green Joker
+        if (name == 'Red Card') and context.skipping_booster then
+            return true
+        end
+        if (name == 'Madness') and context.setting_blind and not joker.getting_sliced and not context.blind.boss then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Square Joker') and context.before and (#context.full_hand == 4) then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Vampire') and context.before then
+            local enhanced = false
+            for k, v in ipairs(context.scoring_hand) do
+                if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then 
+                    enhanced = true
+                    break
+                end
+            end
+            if enhanced then
+                return true
+            end
+        end
+        if (name == 'Hologram') and context.playing_card_added and not joker.getting_sliced and context.cards and context.cards[1] then
+            return true
+        end
+        if (name == "Rocket") and context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not (G.GAME.blind.config and G.GAME.blind.config.bonus) then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Obelisk') and context.before then
+            local reset = true
+            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+            for k, v in pairs(G.GAME.hands) do
+                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
+                    reset = false
+                    break
+                end
+            end
+            if not reset then
+                return true
+            end
+        end
+        if (name == "Turtle Bean") and context.end_of_round and not context.individual and not context.repetition then
+            return true
+        end
+        if (name == "Lucky Cat") and not context.end_of_round and context.individual and (context.cardarea == G.play) and context.other_card.lucky_trigger then
+            return true
+        end
+        if (name == 'Flash Card') and context.reroll_shop then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Popcorn') and not context.before and context.after then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'Spare Trousers') and context.before and context.poker_hands and (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House'])) then
+            return true
+        end
+        if (name == 'Ramen') and context.discard and not context.pre_discard then
+            return true
+        end
+        if (name == 'Castle') and context.discard and not context.pre_discard and context.other_card and not context.other_card.debuff and context.other_card:is_suit(G.GAME.current_round.castle_card.suit) then
+            return true
+        end
+        if (name == 'Campfire') and context.selling_card then
+            return true
+        end
+        if (name == 'Glass Joker') and context.cards_destroyed then
+            local glasses = false
+            for k, v in ipairs(context.glass_shattered) do
+                if v.shattered then
+                    glasses = true
+                    break
+                end
+            end
+            if glasses then
+                return true
+            end
+        end
+        if (name == 'Glass Joker') and context.remove_playing_cards then
+            local glasses = false
+            for k, v in ipairs(context.removed) do
+                if v.shattered then
+                    glasses = true
+                    break
+                end
+            end
+            if glasses then
+                return true
+            end
+        end
+        if (name == 'Glass Joker') and context.using_consumeable and context.consumeable and context.consumeable.ability.name == 'The Hanged Man' then
+            local shattered_glass = false
+            for k, val in ipairs(G.hand.highlighted) do
+                if val.ability.name == 'Glass Card' then shattered_glass = true end
+            end
+            if shattered_glass then
+                return true
+            end
+        end
+        if (name == "Wee Joker") and not context.end_of_round and context.individual and (context.cardarea == G.play) and (context.other_card:get_id() == 2) then
+            return true
+        end
+        if (name == 'Hit the Road') and context.discard and not context.pre_discard and context.other_card and not context.other_card.debuff and (context.other_card:get_id() == 11) then
+            return true
+        end
+        if (name == 'Caino') and context.cards_destroyed then
+            local faces = false
+            for k, v in ipairs(context.glass_shattered) do
+                if v:is_face() then
+                    faces = true
+                    break
+                end
+            end
+            if faces then
+                return true
+            end
+        end
+        if (name == 'Caino') and context.remove_playing_cards then
+            local faces = false
+            for k, v in ipairs(context.removed) do
+                if v:is_face() then
+                    faces = true
+                    break
+                end
+            end
+            if faces then
+                return true
+            end
+        end
+        if (name == 'Yorick') and context.discard and not context.pre_discard and (joker.ability.yorick_discards <= 1) then
+            return true
+        end
+        if (name == 'cry-cut') and context.ending_shop then
+            local destructable_codecard = false
+            for i = 1, #G.consumeables.cards do
+                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then 
+                    destructable_codecard = true
+                    break
+                end
+            end
+            if destructable_codecard then
+                return true
+            end
+        end
+        if (name == 'cry-python') and context.using_consumeable and (context.consumeable.ability.set == 'Code') and not context.consumeable.beginning_end then
+            return true
+        end
+        if (name == 'cry-Dropshot') and (context.cardarea == G.jokers) and context.before then
+            cards = false
+            for k, v in ipairs(context.scoring_hand) do
+                v.cry_dropshot_incompat = true
+            end
+            for k, v in ipairs(context.full_hand) do
+                if not v.cry_dropshot_incompat and v:is_suit(G.GAME.current_round.cry_dropshot_card.suit)then
+                    cards = true
+                    break
+                end
+            end
+            for k, v in ipairs(context.scoring_hand) do
+                v.cry_dropshot_incompat = nil
+            end
+            if cards then
+                return true
+            end
+        end
+        if (name == "cry-Pot of Jokes") and context.end_of_round and not context.individual and not context.repetition then
+            return true
+        end
+        if (name == "cry-Wee Fibonacci") and not context.end_of_round and context.individual and (context.cardarea == G.play) then
+            local rank = SMODS.Ranks[context.other_card.base.value].key
+			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
+                return true
+            end
+        end
+        if (context.cardarea == G.jokers) and (name == 'cry-The WHIP') and context.before and context.full_hand then
+            for i = 1, #context.full_hand do
+                if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
+                    for j = 1, #context.full_hand do
+                        if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
+                            --Different suits
+                            local suit_fail = false
+                            for k, v in pairs(SMODS.Suits) do
+                                if context.full_hand[i]:is_suit(k, nil, true) and context.full_hand[j]:is_suit(k, nil, true) then suit_fail = true end
+                            end
+                            if not suit_fail then
+                                return true
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if (name == "cry-Pickle") and context.setting_blind then
+            return true
+        end
+        if (name == "cry-Chili Pepper") and context.end_of_round and not context.individual and not context.repetition and not context.retrigger_joker then
+            return true
+        end
+        if (name == "cry-Cursor") and context.buying_card and not (context.card == card) then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'cry-Jimball') and context.before then
+            local reset = false
+            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+            for k, v in pairs(G.GAME.hands) do
+                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
+                    reset = true
+                    break
+                end
+            end
+            if not reset then
+                return true
+            end
+        end
+        if (name == 'cry-eternalflame') and context.selling_card then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'cry-fspinner') and context.before then
+            local reset = true
+            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+            for k, v in pairs(G.GAME.hands) do
+                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
+                    reset = false
+                    break
+                end
+            end
+            if not reset then
+                return true
+            end
+        end
+        if (name == "cry-krustytheclown") and not context.end_of_round and context.individual and (context.cardarea == G.play) then
+            return true
+        end
+        if (name == "cry-antennastoheaven") and not context.end_of_round and context.individual and (context.cardarea == G.play) then
+            local rank = SMODS.Ranks[context.other_card.base.value].key
+            if rank == "4" or rank == "7" then
+                return true
+            end
+        end
+        if (name == "cry-mondrian") and context.end_of_round and not context.individual and not context.repetition and (G.GAME.current_round.discards_used == 0) then
+            return true
+        end
+        if (name == 'cry-spaceglobe') and (context.cardarea == G.jokers) and context.before and joker.ability.extra and (context.scoring_name == joker.ability.extra.type) then
+            return true
+        end
+        if (name == 'cry-wheelhope') and context.cry_wheel_fail then
+            return true
+        end
+        if (name == 'cry-morse') and context.selling_card and context.card and context.card.edition and joker.ability.extra and joker.ability.extra.check then
+            return true
+        end
+        if (name == 'cry-m') and context.selling_card and (context.card.ability.name == "Jolly Joker") then
+            return true
+        end
+        if (name == 'cry-Number Blocks') and context.individual and not context.end_of_round and (context.cardarea == G.hand) and not context.before and not context.after and (context.other_card:get_id() == G.GAME.current_round.cry_nb_card.id) then
+            return true
+        end
+        if (name == "cry-goldjoker") and not context.end_of_round and context.individual and (context.cardarea == G.play) and (context.other_card.ability.effect == "Gold Card") then
+            return true
+        end
+        if (name == "cry-Redeo") and context.cry_ease_dollars and context.cry_ease_dollars < 0 then
+            if (joker.ability.extra.money_remaining - context.cry_ease_dollars) >= joker.ability.extra.money_req then
+                return true
+            end
+        end
+        if (name == 'cry-crustulum') and context.reroll_shop then
+            return true
+        end
+        if (context.cardarea == G.jokers) and (name == 'cry-primus') and context.before and context.full_hand then
+            local check = true
+            if context.scoring_hand then
+				for k, v in ipairs(context.full_hand) do
+					if v:get_id() == 4 or v:get_id() == 6 or v:get_id() == 8 or v:get_id() == 9 or v:get_id() == 10 or v:get_id() == 11 or v:get_id() == 12 or v:get_id() == 13 then
+						check = false
+					end
+				end
+			end
+            if check then
+                return true
+            end
+        end
+        if (name == "cry-Scalae") and context.end_of_round and not context.individual and not context.repetition then
+            return true
+        end
+        if (name == 'cry-Stella Mortis') and context.ending_shop then
+            local destructable_planet = false
+            for i = 1, #G.consumeables.cards do
+                if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then 
+                    destructable_planet = true
+                    break
+                end
+            end
+            if destructable_planet then
+                return true
+            end
+        end
+        if (name == 'cry-mneon') and context.end_of_round and not context.individual and not context.repetition then
+            local jolly = false
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.name == 'Jolly Joker' then 
+                    jolly = true
+                    break
+                end
+            end
+            if jolly then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 local cj = Card.calculate_joker
 function Card:calculate_joker(context)
     local ggpn = G.GAME.probabilities.normal
+    if not G.GAME.cry_double_scale then
+        G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
+    end
     if self.ability.cry_rigged then
         G.GAME.probabilities.normal = 1e300
     end
+    local orig_ability = {}
+    if self.ability then
+        for i, j in pairs(self.ability) do
+            if (type(j) == "table") and is_number(j) then
+                orig_ability[i] = to_big(j)
+            elseif type(j) == "table" then
+                orig_ability[i] = {}
+                for i2, j2 in pairs(j) do
+                    orig_ability[i][i2] = j2
+                end
+            else
+                orig_ability[i] = j
+            end
+        end
+    end
+    local in_context_scaling = joker_scaling_context(self, context)
     local ret = cj(self, context)
     if self.ability.cry_rigged then
         G.GAME.probabilities.normal = ggpn
+    end
+
+    
+    if self.ability.name ~= "cry-happyhouse"
+	    and self.ability.name ~= "cry-sapling"
+	    and self.ability.name ~= "cry-mstack"
+	    and self.ability.name ~= "cry-notebook" then
+        local jkr = self
+        if jkr.ability and type(jkr.ability) == 'table' then
+            if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
+                if not G.GAME.cry_double_scale[jkr.sort_id] then
+                    G.GAME.cry_double_scale[jkr.sort_id] = {ability = {double_scale = true}}
+                end
+                for k, v in pairs(jkr.ability) do
+                    if (type(jkr.ability[k]) ~= 'table') then
+                        G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+                    else
+                        G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+                        for _k, _v in pairs(jkr.ability[k]) do
+                            G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+                        end
+                    end
+                end
+            end
+            if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+                local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+                if jkr.ability.name == "cry-Number Blocks" then
+                    dbl_info.base = {"extra", "money"}
+                    dbl_info.scaler = {"extra", "money_mod"}
+                    dbl_info.scaler_base = jkr.ability.extra.money_mod
+                    dbl_info.offset = 1
+                end
+                if jkr.ability.name == "cry-Exponentia" then
+                    dbl_info.base = {"extra", "Emult"}
+                    dbl_info.scaler = {"extra", "Emult_mod"}
+                    dbl_info.scaler_base = jkr.ability.extra.Emult_mod
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "cry-Redeo" then
+                    dbl_info.base = {"extra", "money_req"}
+                    dbl_info.scaler = {"extra", "money_mod"}
+                    dbl_info.scaler_base = jkr.ability.extra.money_mod
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "cry-Chili Pepper" then
+                    dbl_info.base = {"extra", "Xmult"}
+                    dbl_info.scaler = {"extra", "Xmult_mod"}
+                    dbl_info.scaler_base = jkr.ability.extra.Xmult_mod
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "cry-Scalae" then
+                    dbl_info.base = {"extra", "shadow_scale"}
+                    dbl_info.scaler = {"extra", "shadow_scale_mod"}
+                    dbl_info.scaler_base = jkr.ability.extra.scale_mod
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "cry-mprime" then
+                    dbl_info.base = {"extra", "mult"}
+                    dbl_info.scaler = {"extra", "bonus"}
+                    dbl_info.scaler_base = jkr.ability.extra.bonus
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "Yorick" then
+                    dbl_info.base = {"x_mult"}
+                    dbl_info.scaler = {"extra", "xmult"} --not kidding
+                    dbl_info.scaler_base = 1
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "Hologram" then
+                    dbl_info.base = {"x_mult"}
+                    dbl_info.scaler = {"extra"}
+                    dbl_info.scaler_base = jkr.ability.extra
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "Gift Card" then
+                    dbl_info.base = {"extra_value"}
+                    dbl_info.scaler = {"extra"}
+                    dbl_info.scaler_base = jkr.ability.extra
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "Throwback" then
+                    dbl_info.base = {"x_mult"}
+                    dbl_info.scaler = {"extra"}
+                    dbl_info.scaler_base = jkr.ability.x_mult or 1
+                    dbl_info.offset = 1
+                    
+                end
+                if jkr.ability.name == "Egg" then
+                    dbl_info.base = {"extra_value"}
+                    dbl_info.scaler = {"extra"}
+                    dbl_info.scaler_base = jkr.ability.extra
+                    dbl_info.offset = 1
+                    
+                end
+                for k, v in pairs(jkr.ability) do
+                    --extra_value is ignored because it can be scaled by Gift Card
+                    if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
+                        dbl_info.base = {k}
+                        local predicted_mod = math.abs(to_big(v):to_number()-to_big(dbl_info.ability[k]):to_number())
+                        local best_key = {""}
+                        local best_coeff = 10^100
+                        for l, u in pairs(jkr.ability) do
+                            if l ~= k and is_number(u) then
+                                if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
+                                    best_coeff = to_big(predicted_mod/u):to_number()
+                                    best_key = {l}
+                                end
+                            end
+                            if type(jkr.ability[l]) == 'table' then
+                                for _l, _u in pairs(jkr.ability[l]) do 
+                                    if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
+                                        best_coeff = to_big(predicted_mod/_u):to_number()
+                                        best_key = {l,_l}
+                                    end
+                                end
+                            end
+                        end
+                        dbl_info.scaler = best_key
+                    end
+                    if type(jkr.ability[k]) == 'table' and type(dbl_info.ability) == 'table' and type(dbl_info.ability[k]) == 'table' then
+                        for _k, _v in pairs(jkr.ability[k]) do
+                            if dbl_info.ability[k][_k] ~= _v and is_number(_v) and is_number(dbl_info.ability[k][_k]) then
+                                dbl_info.base = {k,_k}
+                                local predicted_mod = math.abs(_v-dbl_info.ability[k][_k])
+                                local best_key = {""}
+                                local best_coeff = 10^100
+                                for l, u in pairs(jkr.ability) do
+                                    if is_number(u) and to_big(predicted_mod/u):to_number() >= 0.999 then
+                                        if to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
+                                            best_coeff = to_big(predicted_mod/u):to_number()
+                                            best_key = {l}
+                                        end
+                                    end
+                                    if type(jkr.ability[l]) == 'table' then
+                                        for _l, _u in pairs(jkr.ability[l]) do 
+                                            if (l ~= k or _l ~= _k) and is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 then
+                                                if to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
+                                                    best_coeff = to_big(predicted_mod/_u):to_number()
+                                                    best_key = {l,_l}
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                                dbl_info.scaler = best_key
+                            end
+                        end
+                    end
+                end
+                if dbl_info.scaler then
+                    dbl_info.scaler_base = #dbl_info.scaler == 2 and orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]] or orig_ability[dbl_info.scaler[1]]
+                    dbl_info.offset = 1
+                end
+            end
+        end
+    end
+    local orig_scale_base = nil
+    local orig_scale_scale = nil
+    if G.GAME.cry_double_scale[self.sort_id] and G.GAME.cry_double_scale[self.sort_id].scaler then
+        local jkr = self
+        local dbl_info = G.GAME.cry_double_scale[self.sort_id]
+        if #dbl_info.base == 2 then
+            if not (type(jkr.ability) ~= "table" or not orig_ability[dbl_info.base[1]] or type(orig_ability[dbl_info.base[1]]) ~= "table" or not orig_ability[dbl_info.base[1]][dbl_info.base[2]]) then
+                orig_scale_base = orig_ability[dbl_info.base[1]][dbl_info.base[2]]
+            end 
+        else
+            if jkr.ability[dbl_info.base[1]] then
+                orig_scale_base = orig_ability[dbl_info.base[1]] 
+            end
+        end
+        if #dbl_info.scaler == 2 then
+            if not (not orig_ability[dbl_info.scaler[1]] or not orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                orig_scale_scale = orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+            end 
+        else
+            if orig_ability[dbl_info.scaler[1]] then
+                orig_scale_scale = orig_ability[dbl_info.scaler[1]] 
+            end
+        end
+    end
+
+    if orig_scale_base and orig_scale_scale then
+        local new_scale_base = nil
+        local true_base = nil
+        local jkr = self
+        local dbl_info = G.GAME.cry_double_scale[self.sort_id]
+        if #dbl_info.base == 2 then
+            if not (type(jkr.ability) ~= "table" or not jkr.ability[dbl_info.base[1]] or type(jkr.ability[dbl_info.base[1]]) ~= "table" or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]]) then
+                new_scale_base = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
+            end 
+        else
+            if jkr.ability[dbl_info.base[1]] then
+                new_scale_base = jkr.ability[dbl_info.base[1]] 
+            end
+        end
+        true_base = dbl_info.scaler_base
+        if new_scale_base and ((to_big(math.abs(new_scale_base - orig_scale_base)) > to_big(0)) or in_context_scaling) then
+            for i = 1, #G.jokers.cards do
+                local obj = G.jokers.cards[i].config.center
+                if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                    if G.jokers.cards[i].ability.cry_rigged then
+                        G.GAME.probabilities.normal = 1e300
+                    end
+                    local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                    if G.jokers.cards[i].ability.cry_rigged then
+                        G.GAME.probabilities.normal = ggpn
+                    end
+                    if o then
+                        if #dbl_info.scaler == 2 then
+                            if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                                jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                                orig_scale_scale = o
+                            end 
+                        else
+                            if jkr.ability[dbl_info.scaler[1]] then
+                                jkr.ability[dbl_info.scaler[1]] = o
+                                orig_scale_scale = o
+                            end
+                        end
+                        card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                    end
+                    local reps = {}
+                    for i2=1, #G.jokers.cards do
+                        local _card = G.jokers.cards[i2]
+                        if _card.ability.cry_rigged then
+                            G.GAME.probabilities.normal = 1e300
+                        end
+                        local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
+                        if _card.ability.cry_rigged then
+                            G.GAME.probabilities.normal = ggpn
+                        end
+                        if type(check) == 'table' then 
+                            reps[i2] = check and check.repetitions and check or 0
+                        else
+                            reps[i2] = 0
+                        end
+                        if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
+                            local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+                            local check = calculate_blurred(G.jokers.cards[i])
+                            if check and check.repetitions then
+                                check.repetitions = check.repetitions + old_repetitions
+                                reps[i] = check
+                            end
+                        end
+                    end
+                    for i0, j in ipairs(reps) do
+                        if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
+                            for r = 1, j.repetitions do
+                                card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                                if G.jokers.cards[i].ability.cry_rigged then
+                                    G.GAME.probabilities.normal = 1e300
+                                end
+                                local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                                if G.jokers.cards[i].ability.cry_rigged then
+                                    G.GAME.probabilities.normal = ggpn
+                                end
+                                if o then
+                                    if #dbl_info.scaler == 2 then
+                                        if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                                            jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                                            orig_scale_scale = o
+                                        end 
+                                    else
+                                        if jkr.ability[dbl_info.scaler[1]] then
+                                            jkr.ability[dbl_info.scaler[1]] = o
+                                            orig_scale_scale = o
+                                        end
+                                    end
+                                    card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}) 
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
     end
     --Make every Joker return a value when triggered
     if not ret then
@@ -392,6 +1031,224 @@ function Card:calculate_joker(context)
         end
     end
     return ret
+end
+
+function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+    local jkr = self
+    local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+    if jkr.ability and type(jkr.ability) == 'table' then
+        if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
+            if not G.GAME.cry_double_scale[jkr.sort_id] then
+                G.GAME.cry_double_scale[jkr.sort_id] = {ability = {double_scale = true}}
+            end
+            for k, v in pairs(jkr.ability) do
+                if type(jkr.ability[k]) ~= 'table' then
+                    G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+                else
+                    G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+                    for _k, _v in pairs(jkr.ability[k]) do
+                        G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+                    end
+                end
+            end
+        end
+        if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+            dbl_info.base = {"extra", "Emult"}
+            dbl_info.scaler = {"extra", "Emult_mod"}
+            dbl_info.scaler_base = jkr.ability.extra.Emult_mod
+            dbl_info.offset = 1
+        end
+    end
+    local true_base = dbl_info.scaler_base
+    if true_base then
+        for i = 1, #G.jokers.cards do
+            local obj = G.jokers.cards[i].config.center
+            if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                if G.jokers.cards[i].ability.cry_rigged then
+                    G.GAME.probabilities.normal = 1e300
+                end
+                local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                if G.jokers.cards[i].ability.cry_rigged then
+                    G.GAME.probabilities.normal = ggpn
+                end
+                if o then
+                    if #dbl_info.scaler == 2 then
+                        if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                            jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                            orig_scale_scale = o
+                        end 
+                    else
+                        if jkr.ability[dbl_info.scaler[1]] then
+                            jkr.ability[dbl_info.scaler[1]] = o
+                            orig_scale_scale = o
+                        end
+                    end
+                    card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                end
+                local reps = {}
+                for i2=1, #G.jokers.cards do
+                    local _card = G.jokers.cards[i2]
+                    if _card.ability.cry_rigged then
+                        G.GAME.probabilities.normal = 1e300
+                    end
+                    local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
+                    if _card.ability.cry_rigged then
+                        G.GAME.probabilities.normal = ggpn
+                    end
+                    if type(check) == 'table' then 
+                        reps[i2] = check and check.repetitions and check or 0
+                    else
+                        reps[i2] = 0
+                    end
+                    if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
+                        local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+                        local check = calculate_blurred(G.jokers.cards[i])
+                        if check and check.repetitions then
+                            check.repetitions = check.repetitions + old_repetitions
+                            reps[i] = check
+                        end
+                    end
+                end
+                for i0, j in ipairs(reps) do
+                    if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
+                        for r = 1, j.repetitions do
+                            card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                            if G.jokers.cards[i].ability.cry_rigged then
+                                G.GAME.probabilities.normal = 1e300
+                            end
+                            local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                            if G.jokers.cards[i].ability.cry_rigged then
+                                G.GAME.probabilities.normal = ggpn
+                            end
+                            if o then
+                                if #dbl_info.scaler == 2 then
+                                    if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                                        jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                                        orig_scale_scale = o
+                                    end 
+                                else
+                                    if jkr.ability[dbl_info.scaler[1]] then
+                                        jkr.ability[dbl_info.scaler[1]] = o
+                                        orig_scale_scale = o
+                                    end
+                                end
+                                card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}) 
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+    local jkr = self
+    local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+    if jkr.ability and type(jkr.ability) == 'table' then
+        if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
+            if not G.GAME.cry_double_scale[jkr.sort_id] then
+                G.GAME.cry_double_scale[jkr.sort_id] = {ability = {double_scale = true}}
+            end
+            for k, v in pairs(jkr.ability) do
+                if type(jkr.ability[k]) ~= 'table' then
+                    G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+                else
+                    G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+                    for _k, _v in pairs(jkr.ability[k]) do
+                        G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+                    end
+                end
+            end
+        end
+        if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+            dbl_info.base = {"extra", "percent"}
+            dbl_info.scaler = {"extra", "percent_mod"}
+            dbl_info.scaler_base = jkr.ability.extra.percent_mod
+            dbl_info.offset = 1
+        end
+    end
+    local true_base = dbl_info.scaler_base
+    if true_base then
+        for i = 1, #G.jokers.cards do
+            local obj = G.jokers.cards[i].config.center
+            if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                if G.jokers.cards[i].ability.cry_rigged then
+                    G.GAME.probabilities.normal = 1e300
+                end
+                local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                if G.jokers.cards[i].ability.cry_rigged then
+                    G.GAME.probabilities.normal = ggpn
+                end
+                if o then
+                    if #dbl_info.scaler == 2 then
+                        if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                            jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                            orig_scale_scale = o
+                        end 
+                    else
+                        if jkr.ability[dbl_info.scaler[1]] then
+                            jkr.ability[dbl_info.scaler[1]] = o
+                            orig_scale_scale = o
+                        end
+                    end
+                    card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+                end
+                local reps = {}
+                for i2=1, #G.jokers.cards do
+                    local _card = G.jokers.cards[i2]
+                    if _card.ability.cry_rigged then
+                        G.GAME.probabilities.normal = 1e300
+                    end
+                    local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
+                    if _card.ability.cry_rigged then
+                        G.GAME.probabilities.normal = ggpn
+                    end
+                    if type(check) == 'table' then 
+                        reps[i2] = check and check.repetitions and check or 0
+                    else
+                        reps[i2] = 0
+                    end
+                    if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
+                        local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+                        local check = calculate_blurred(G.jokers.cards[i])
+                        if check and check.repetitions then
+                            check.repetitions = check.repetitions + old_repetitions
+                            reps[i] = check
+                        end
+                    end
+                end
+                for i0, j in ipairs(reps) do
+                    if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
+                        for r = 1, j.repetitions do
+                            card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                            if G.jokers.cards[i].ability.cry_rigged then
+                                G.GAME.probabilities.normal = 1e300
+                            end
+                            local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+                            if G.jokers.cards[i].ability.cry_rigged then
+                                G.GAME.probabilities.normal = ggpn
+                            end
+                            if o then
+                                if #dbl_info.scaler == 2 then
+                                    if not (not jkr.ability[dbl_info.scaler[1]] or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]) then
+                                        jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+                                        orig_scale_scale = o
+                                    end 
+                                else
+                                    if jkr.ability[dbl_info.scaler[1]] then
+                                        jkr.ability[dbl_info.scaler[1]] = o
+                                        orig_scale_scale = o
+                                    end
+                                end
+                                card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}) 
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 
 -- File loading based on Relic-Jokers
@@ -792,15 +1649,15 @@ Cryptid.base_values = {}
 function cry_misprintize_tbl(name, tbl, clear, override, stack)
     if tbl then
         for k, v in pairs(tbl) do
-            if type(tbl[k]) ~= 'table' then
-                if type(tbl[k]) == 'number' and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
+            if (type(tbl[k]) ~= 'table') or is_number(tbl[k]) then
+                if is_number(tbl[k]) and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
                     tbl[k] = clear and Cryptid.base_values[name][k] or cry_format((stack and tbl[k] or Cryptid.base_values[name][k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
-                    if type(tbl[k][_k]) == 'number' and not (_k == 'id') and not (_k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
+                    if is_number(tbl[k][_k]) and not (_k == 'id') and not (_k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
@@ -812,7 +1669,7 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
     end
 end
 function cry_misprintize_val(val, override)
-   if type(val) == 'number' then
+   if is_number(val) then
     val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
    end 
    return val
@@ -1186,6 +2043,10 @@ SMODS.Sound({
 SMODS.Sound({
     key = "e_blur",
     path = "e_blur.ogg"
+})
+SMODS.Sound({
+    key = "studiofromhelsinki",
+    path = "studiofromhelsinki.ogg"
 })
 SMODS.Sound({
     key = "music_jimball",

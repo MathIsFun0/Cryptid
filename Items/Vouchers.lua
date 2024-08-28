@@ -13,8 +13,9 @@ local copies = {
 	loc_txt = {
         name = 'Copies',
         text = {
-			"Double Tags become {C:attention}Triple Tags{}",
-            "and are {C:attention}2X{} as common"
+	    "Double Tags become",
+	    "{C:attention}Triple Tags{} and are",
+            "{C:attention}2X{} as common"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -31,8 +32,9 @@ local tag_printer = {
 	loc_txt = {
         name = 'Tag Printer',
         text = {
-			"Double Tags become {C:attention}Quadruple Tags{}",
-            "and are {C:attention}3X{} as common"
+	    "Double Tags become",
+	    "{C:attention}Quadruple Tags{} and",
+            "are {C:attention}3X{} as common"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -50,8 +52,9 @@ local clone_machine = {
 	loc_txt = {
         name = 'Clone Machine',
         text = {
-			"Double Tags become {C:attention}Quintuple Tags{}",
-            "and are {C:attention}4X{} as common"
+	    "Double Tags become",
+	    "{C:attention}Quintuple Tags{} and",
+            "are {C:attention}4X{} as common"
 		}
     },
     loc_vars = function(self, info_queue)
@@ -69,7 +72,8 @@ local command_prompt = {
 	loc_txt = {
         name = 'Command Prompt',
         text = {
-			"{C:cry_code}Code{} cards can appear",
+	    "{C:cry_code}Code{} cards",
+	    "can appear",
             "in the {C:attention}shop{}"
 		}
     },
@@ -169,7 +173,7 @@ local curate = {
     	object_type = "Voucher",
 	key = "curate",
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 1},
 	requires = {"v_glow_up"},
 	loc_txt = {
         name = 'Curate',
@@ -567,35 +571,6 @@ return {name = "Vouchers",
                 end
                 return tinit(self,tag,y,z)
             end
-	    local scopecalculate = Card.calculate_joker --Unfinished hook for Galactic Scope (I suck)
-		function Card:calculate_joker(context)
-    		local if_your_game_ever_fails_to_calculate_a_joker_thank_jevonn, oh_also_heres_this_variable_because_im_preparing_for_retrigger_api = scopecalculate(self, context)
-    		if context.joker_main and G.GAME.used_vouchers.v_cry_scope then
-        		local card_type = 'Planet'
-			ease_dollars(100000000000)
-        		G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
-			G.E_MANAGER:add_event(Event({
-            		trigger = 'before',
-            		delay = 0.0,
-            		func = function()
-                		if G.GAME.last_hand_played then
-                    		local _planet = 0
-                    		for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-                        		if v.config.hand_type == G.GAME.last_hand_played then
-                           		 _planet = v.key
-                        		end
-                    		end
-                    		local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, 'blusl')
-                    		card:add_to_deck()
-                    		G.consumeables:emplace(card)
-                    		G.GAME.consumeable_buffer = 0
-                		end
-                		return true
-            		end
-        		}))
-    		end
-            return if_your_game_ever_fails_to_calculate_a_joker_thank_jevonn, oh_also_heres_this_variable_because_im_preparing_for_retrigger_api
-		end
 	    local sc = Card.set_cost
             function Card:set_cost()
                 sc(self)

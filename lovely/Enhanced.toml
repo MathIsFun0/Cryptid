@@ -12,7 +12,11 @@ position = "after"
 payload = '''
 local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
 if currentBack.effect.config.cry_force_edition and not currentBack.effect.config.cry_antimatter then
-    self.children.back:draw_shader(currentBack.effect.config.cry_force_edition , nil, self.ARGS.send_to_shader, true)
+	if currentBack.effect.config.cry_force_edition_shader then
+		self.children.back:draw_shader(currentBack.effect.config.cry_force_edition_shader , nil, self.ARGS.send_to_shader, true)
+	else
+		self.children.back:draw_shader(currentBack.effect.config.cry_force_edition , nil, self.ARGS.send_to_shader, true)
+	end
 end
 if currentBack.effect.config.cry_force_seal and not currentBack.effect.config.hide_seal and not currentBack.effect.config.cry_antimatter then
     G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader('dissolve', nil, nil, true, self.children.center)

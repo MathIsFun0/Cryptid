@@ -246,7 +246,6 @@ local astral = {
         return {vars = {self.config.e_mult}}
     end
 }
-
 local blurred_shader = {
     object_type = "Shader",
     key = 'blur', 
@@ -275,7 +274,7 @@ local blurred = {
             "{C:green}#1# in #2#{} chance", "to retrigger {C:attention}#3#{}", "additional time"
         }
     },
-    config = {retrigger_chance = 2, retriggers = 1},
+    config = {retrigger_chance = 2, retriggers = 1, extra_retriggers = 1},
     loc_vars = function(self, info_queue, center)
         local chance = center and center.edition.retrigger_chance or self.config.retrigger_chance
         local retriggers = center and center.edition.retriggers or self.config.retriggers
@@ -283,7 +282,36 @@ local blurred = {
         return {vars = {G.GAME.probabilities.normal, chance, retriggers}}
     end
 }
-
+local jollyeditionshader = {
+    object_type = "Shader",
+    key = 'm',
+    path = 'm.fs'
+}
+local jollyedition = {
+    object_type = "Edition",
+    in_shop = false,
+    weight = 0,
+    name = "cry-jollyedition",
+    extra_cost = 0,
+    config = {mult = 8},
+    apply_to_float = true,
+    key = "m",
+    shader = "m",
+    disable_base_shader = true,
+    disable_shadow = true,
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.mult}}
+    end,
+    loc_txt = {
+        name = "Jolly",
+        label = "Jolly",
+        text = {
+            "{C:mult}+#1#{} Mult",
+	    "This card is feeling",
+	    "rather {C:attention}jolly{}"	
+        }
+    }
+}
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -403,14 +431,14 @@ local typhoon = {
     key = "typhoon",
 	config = { 
         -- This will add a tooltip.
-        mod_conv = 's_cry_azure_seal',
+        mod_conv = 'cry_azure_seal',
         -- Tooltip args
         seal = { planets_amount = 3 },
         max_highlighted = 1,
     },
     loc_vars = function(self, info_queue, center)
         -- Handle creating a tooltip with set args.
-        info_queue[#info_queue+1] = { set = 'Other', key = 's_cry_azure_seal', specific_vars = { self.config.seal.planets_amount } }
+        info_queue[#info_queue+1] = { set = 'Other', key = 'cry_azure_seal', specific_vars = { self.config.seal.planets_amount } }
         return {vars = {center.ability.max_highlighted}}
     end,
     loc_txt = {
@@ -436,7 +464,7 @@ local typhoon = {
             delay = 0.1,
             func = function()
                     if highlighted then
-                        highlighted:set_seal('s_cry_azure')
+                        highlighted:set_seal('cry_azure')
                     end
                 return true
             end
@@ -683,18 +711,22 @@ cat, empowered, gambler, bundle, memory}
 if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
 end
+if cry_minvasion then 
+    miscitems[#miscitems+1] = jollyeditionshader
+    miscitems[#miscitems+1] = jollyedition
+end
 return {name = "Misc.", 
         init = function()
 
 function calculate_blurred(card)
-    local retriggers = 1
+    local retriggers = card.edition.retriggers
 
     if card.edition.retrigger_chance then
         local chance = card.edition.retrigger_chance
         chance = G.GAME.probabilities.normal / chance
 
         if pseudorandom("blurred") <= chance then
-            retriggers = retriggers + card.edition.retriggers
+            retriggers = retriggers + card.edition.extra_retriggers
         end
     end
     

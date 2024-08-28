@@ -544,7 +544,7 @@ local commit = {
         }
     },
     can_use = function(self, card)
-        return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
+        return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal and not (type(G.jokers.highlighted[1].config.center.rarity) == "number" and G.jokers.highlighted[1].config.center.rarity >= 5)
     end,
     use = function(self, card, area, copier)
         local deleted_joker_key = G.jokers.highlighted[1].config.center.key
@@ -1155,13 +1155,13 @@ local source = {
     key = "source",
 	config = { 
         -- This will add a tooltip.
-        mod_conv = 's_cry_green_seal',
+        mod_conv = 'cry_green_seal',
         -- Tooltip args
         max_highlighted = 1,
     },
     loc_vars = function(self, info_queue, center)
         -- Handle creating a tooltip with set args.
-        info_queue[#info_queue+1] = { set = 'Other', key = 's_cry_green_seal' }
+        info_queue[#info_queue+1] = { set = 'Other', key = 'cry_green_seal' }
         return {vars = {center.ability.max_highlighted}}
     end,
     loc_txt = {
@@ -1187,7 +1187,7 @@ local source = {
             delay = 0.1,
             func = function()
                     if highlighted then
-                        highlighted:set_seal('s_cry_green')
+                        highlighted:set_seal('cry_green')
                     end
                 return true
             end
@@ -1251,7 +1251,7 @@ local encoded = {
 local source_deck = {object_type = "Back",
     name = "cry-Source Deck",
     key = "source_deck",
-	config = {cry_force_seal = 's_cry_green'},
+	config = {cry_force_seal = 'cry_green'},
 	pos = {x = 3, y = 5},
 	loc_txt = {
         name = "Source Deck",
@@ -1260,7 +1260,7 @@ local source_deck = {object_type = "Back",
             "Cards cannot change seals"
         }
     },
-    atlas = "atlasenchanced"
+    atlas = "atlasenhanced"
 }
 
 
@@ -1375,13 +1375,15 @@ local cut = {
     loc_txt = {
         name = 'Cut',
         text = {
-            "This Joker destroys a random {C:cry_code}Code{} card",
-            "at the end of {C:attention}shop{}, and gains {X:mult,C:white} X#1# {} Mult",
+            "This Joker destroys",
+	    "a random {C:cry_code}Code{} card",
+            "and gains {X:mult,C:white} X#1# {} Mult",
+	    "at the end of the {C:attention}shop{}",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
         }
     },
     rarity = 3,
-    cost = 9,
+    cost = 7,
     blueprint_compat = true,
     perishable_compat = false,
     atlas = "atlasthree",
@@ -1389,16 +1391,16 @@ local cut = {
         if context.ending_shop then
             local destructable_codecard = {}
             for i = 1, #G.consumeables.cards do
-                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
+                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
             end
             local codecard_to_destroy = #destructable_codecard > 0 and pseudorandom_element(destructable_codecard, pseudoseed('cut')) or nil
 
             if codecard_to_destroy then 
                 codecard_to_destroy.getting_sliced = true
+                card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
                 G.E_MANAGER:add_event(Event({func = function()
                     (context.blueprint_card or card):juice_up(0.8, 0.8)
                     codecard_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
-                    card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
                     card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "X"..number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)).." Mult"})
@@ -1410,7 +1412,7 @@ local cut = {
             return {
                 message = "X"..number_format(card.ability.extra.Xmult).." Mult",
                 Xmult_mod = card.ability.extra.Xmult,
-                colour = G.C.DARK_EDITION
+                colour = G.C.MULT
             }
         end
     end,
@@ -1426,7 +1428,7 @@ if JokerDisplay then
                     { text = "X" },
                     { ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" }
                 },
-                border_colour = G.C.DARK_EDITION
+                border_colour = G.C.MULT
             }
         },
     }
@@ -1440,18 +1442,19 @@ local blender = {
     loc_txt = {
         name = 'Blender',
         text = {
-            "Create a {C:attention}random{} consumable",
-            "when a {C:cry_code}Code{} card is used",
+            "Create a {C:attention}random{}",
+	    "consumable when a",
+            "{C:cry_code}Code{} card is used",
+	    "{C:inactive}(Must have room){}",
         }
     },
-    rarity = 3,
-    cost = 8,
+    rarity = 1,
+    cost = 5,
     blueprint_compat = true,
-    perishable_compat = false,
     atlas = "atlasthree",
     calculate = function(self, card, context)
         if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
-			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+		 if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                  local card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'cry_blender')
                  card:add_to_deck()
                  G.consumeables:emplace(card)
@@ -1469,8 +1472,9 @@ local python = {
     loc_txt = {
         name = 'Python',
         text = {
-            "This Joker gains {X:mult,C:white} X#1# {} Mult",
-            "when a {C:cry_code}Code{} card is used",
+            "This Joker gains",
+	    "{X:mult,C:white} X#1# {} Mult when a",
+            "{C:cry_code}Code{} card is used",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
         }
     },
@@ -1483,12 +1487,18 @@ local python = {
         return {vars = {center.ability.extra.Xmult_mod, center.ability.extra.Xmult}}
     end,
     calculate = function(self, card, context)
-           if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
+        if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
             card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
             G.E_MANAGER:add_event(Event({
                 func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}}}); return true
                 end}))
             return
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
+            return {
+                message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+                Xmult_mod = card.ability.extra.Xmult
+            }
         end
     end
 }
@@ -1521,10 +1531,11 @@ function create_UIBox_variable(card)
         {n=G.UIT.R, nodes = {create_text_input({
             colour = G.C.SET.Code,
             hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
-            w = 4.5, h = 1, max_length = 16, prompt_text = "ENTER RANK",
+            w = 4.5, h = 1, max_length = 16, extended_corpus = true, prompt_text = "ENTER RANK",
             ref_table = G, ref_value = 'ENTERED_RANK', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'variable_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1548,6 +1559,7 @@ function create_UIBox_class(card)
             ref_table = G, ref_value = 'ENTERED_ENH', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'class_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
+	{n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'class_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1571,6 +1583,7 @@ function create_UIBox_exploit(card)
             ref_table = G, ref_value = 'ENTERED_HAND', keyboard_offset = 1
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'exploit_apply', label = {'EXPLOIT'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'exploit_apply_previous', label = {'EXPLOIT PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1618,10 +1631,15 @@ function create_UIBox_pointer(card)
           })}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'pointer_apply', label = {'CREATE'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'your_collection', label = {'COLLECTION'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.RED, button = 'pointer_apply_previous', label = {'CREATE PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+
     }})
     return t
 end
-
+G.FUNCS.variable_apply_previous = function()
+	if G.PREVIOUS_ENTERED_RANK then G.ENTERED_RANK = G.PREVIOUS_ENTERED_RANK or "" end
+	G.FUNCS.variable_apply()
+end
 G.FUNCS.variable_apply = function()
     local rank_table = {
         {},
@@ -1653,6 +1671,7 @@ G.FUNCS.variable_apply = function()
     end
 
     if rank_suffix then
+        G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
         G.GAME.USING_CODE = false
         if rank_suffix == 15 then
             check_for_unlock({type = 'cheat_used'})
@@ -1713,6 +1732,10 @@ G.FUNCS.variable_apply = function()
         G.CHOOSE_RANK:remove()
     end
 end
+G.FUNCS.exploit_apply_previous = function()
+	if G.PREVIOUS_ENTERED_HAND then G.ENTERED_HAND = G.PREVIOUS_ENTERED_HAND or "" end
+	G.FUNCS.exploit_apply()
+end
 G.FUNCS.exploit_apply = function()
 	local hand_table = {
         	['High Card'] = {"high card", "high"},
@@ -1741,7 +1764,8 @@ G.FUNCS.exploit_apply = function()
 			end
 		end
 	end
-	if current_hand and G.GAME.hands[current_hand].visible then 
+	if current_hand and G.GAME.hands[current_hand].visible then
+		G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
 		G.GAME.cry_exploit_override = current_hand 
 		G.CHOOSE_HAND:remove()
 		G.GAME.USING_CODE = false
@@ -1753,6 +1777,10 @@ G.FUNCS.exploit_info = function()
 	local disp_text = text
 	local loc_disp_text = localize(disp_text, 'poker_hands')
 	return text, loc_disp_text, disp_text
+end
+G.FUNCS.class_apply_previous = function()
+	if G.PREVIOUS_ENTERED_ENH then G.ENTERED_ENH = G.PREVIOUS_ENTERED_ENH or "" end
+	G.FUNCS.class_apply()
 end
 --todo: mod support
 G.FUNCS.class_apply = function()
@@ -1781,6 +1809,7 @@ G.FUNCS.class_apply = function()
     end
 
     if enh_suffix then
+        G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
         G.GAME.USING_CODE = false
         if enh_suffix == "ccd" then
             check_for_unlock({type = 'cheat_used'})
@@ -1839,6 +1868,10 @@ G.FUNCS.ca = function()
     check_for_unlock({type = 'ach_cry_used_crash'})
     G.CHOOSE_ACE:remove()
     G.ENTERED_ACE = nil
+end
+G.FUNCS.pointer_apply_previous = function()
+	if G.PREVIOUS_ENTERED_CARD then G.ENTERED_CARD = G.PREVIOUS_ENTERED_CARD or "" end
+	G.FUNCS.pointer_apply()
 end
 G.FUNCS.pointer_apply = function()
     local function apply_lower(str)
@@ -2038,6 +2071,7 @@ G.FUNCS.pointer_apply = function()
 	}
 	local current_card
     local entered_card = G.ENTERED_CARD
+    G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
     if aliases[apply_lower(entered_card)] then entered_card = aliases[apply_lower(entered_card)] end
 	for i, v in pairs(G.P_CENTERS) do
         if v.name and apply_lower(entered_card) == apply_lower(v.name) then

@@ -742,7 +742,7 @@ local chili_pepper = {
     },
 	rarity = 2,
 	cost = 6,
-  	blueprint_compat = false,
+  	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
 	atlas = "atlastwo",
@@ -834,7 +834,9 @@ local compound_interest = {
     end,
 	calc_dollar_bonus = function(self, card)
 		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*G.GAME.dollars))
+        local old = card.ability.extra.percent
         card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+        compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
         if bonus > 0 then return bonus end
 	end
 }
@@ -870,6 +872,7 @@ local big_cube = {
     },
 	rarity = 1,
 	cost = 27,
+	blueprint_compat = true,
 	atlas = "atlasone",
     loc_vars = function(self, info_queue, center)
         return {vars = {center.ability.extra.x_chips}}
@@ -1197,7 +1200,8 @@ local sus = {
             "At end of round, create",
             "a {C:attention}copy{} of a random",
             "card {C:attention}held in hand{},",
-            "destroy all others"
+            "destroy all others",
+            "{C:attention,s:0.8}Kings{s:0.8} of {C:hearts,s:0.8}Hearts{s:0.8} are prioritized"
 		}
     },
     pools = {["Meme"] = true},
@@ -1206,14 +1210,27 @@ local sus = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
+        local function is_impostor(card)
+            return SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
+        end
         if context.end_of_round and not context.cardarea then
             if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
                 card.ability.chosen_card = nil
             end
             local choosable_cards = {}
+            local has_impostor = false
             for i = 1, #G.hand.cards do
                 if not G.hand.cards[i].murdered_by_impostor then
                     choosable_cards[#choosable_cards+1] = G.hand.cards[i]
+                    if is_impostor(G.hand.cards[i]) then has_impostor = true end
+                end
+            end
+            if has_impostor then
+                choosable_cards = {}
+                for i = 1, #G.hand.cards do
+                    if not G.hand.cards[i].murdered_by_impostor and is_impostor(G.hand.cards[i]) then
+                        choosable_cards[#choosable_cards+1] = G.hand.cards[i]
+                    end
                 end
             end
             card.ability.chosen_card = card.ability.chosen_card or pseudorandom_element(choosable_cards, pseudoseed('cry_sus'))
@@ -1221,7 +1238,7 @@ local sus = {
                 card.ability.used_round = G.GAME.round
                 local deletable_cards = {}
                 for k, v in pairs(G.hand.cards) do
-                    if not v.ability.eternal then deletable_cards[#deletable_cards + 1] = v end
+                    if not v.ability.eternal and not is_impostor(v) then deletable_cards[#deletable_cards + 1] = v end
                 end
 		if #deletable_cards ~= 0 then
                 local _first_dissolve = nil
@@ -1446,11 +1463,15 @@ local mario = {
     end
 }
 if JokerDisplay then
-    mario.joker_display_definition = {
-        retrigger_joker_function = function (card, retrigger_joker)
-            return card ~= retrigger_joker and retrigger_joker.ability.extra.retriggers or 0
-        end
-    }
+	mario.joker_display_definition = {
+		text = {
+			{ text = "x" },
+			{ ref_table = "card.ability.extra", ref_value = "retriggers" },
+		},
+		retrigger_joker_function = function (card, retrigger_joker)
+			return retrigger_joker.ability.extra.retriggers or 0
+		end
+	}
 end
 local wario = {
 	object_type = "Joker",
@@ -1833,6 +1854,15 @@ local hunger = {
         end
     end
 }
+if JokerDisplay then
+    hunger.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+    }
+end
 local weegaming = {
     object_type = "Joker",
     name = "cry-weegaming",
@@ -2555,6 +2585,16 @@ local happy = {
 	end
     end
 }
+if JokerDisplay then
+    happy.joker_display_definition = {
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 local meteor = {
     object_type = "Joker",
     name = "cry-meteor",
@@ -3367,7 +3407,7 @@ local rnjoker = {
         end
         return vars
     end,
-	rarity = 3,
+	rarity = 2,
 	cost = 6,
 	blueprint_compat = true,
     set_ability = function(self, card, initial, delay_sprites)
@@ -4243,6 +4283,20 @@ local coin = {
 		end
 	end
 }
+if JokerDisplay then
+    coin.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+	    { text = "-" },
+	    { ref_table = "card.joker_display_values", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+	calc_function = function(card)
+            card.joker_display_values.money = (card.ability.extra.money * 10)
+        end,
+    }
+end
 local wheelhope = {
 	object_type = "Joker",
 	name = "cry-wheelhope",
@@ -4293,7 +4347,7 @@ if JokerDisplay then
         },
     }
 end
-local oldblueprint = { --unfinished, needs more work done later
+local oldblueprint = {
     object_type = "Joker",
     name = "cry-oldblueprint",
     key = "oldblueprint",
@@ -4544,6 +4598,123 @@ if JokerDisplay then
 		},
     }
 end
+local translucent = {
+    object_type = "Joker",
+    name = "cry-translucent",
+    key = "translucent",
+    pos = {x = 5, y = 2},
+    loc_txt = {
+        name = 'Translucent Joker',
+        text = {
+            "Sell this card to create",
+            "a {C:attention}Banana Perishable{} copy",
+            "of a random {C:attention}Joker{}",
+            "{s:0.8,C:inactive}(Copy bypasses perish compat)"
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    eternal_compat = false,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.selling_self and not (context.retrigger_joker or context.blueprint) then
+            local jokers = {}
+                for i=1, #G.jokers.cards do 
+                    if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff then
+                        jokers[#jokers+1] = G.jokers.cards[i]
+                    end
+                end
+            if #jokers > 0 then
+                if #G.jokers.cards <= G.jokers.config.card_limit then 
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                    local chosen_joker = pseudorandom_element(jokers, pseudoseed('trans'))
+                    local _card = copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
+                    _card:add_to_deck()
+                    _card:set_banana(true)
+                    _card.ability.perishable = true -- Done manually to bypass perish compat
+                    _card.ability.perish_tally = G.GAME.perishable_rounds
+                    G.jokers:emplace(_card)
+                else
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_no_room_ex')})
+                end
+            else
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_no_other_jokers')})
+            end
+        end
+    end
+}
+local morse = {
+    object_type = "Joker",
+    name = "cry-morse",
+    key = "morse",
+    pos = {x = 5, y = 1},
+    config = {extra = {bonus = 2, money = 1, active = "Active!", check = true}},
+    loc_txt = {
+        name = 'Morse Code',
+        text = {
+            "Earn {C:money}$#2#{} at end of round",
+            "Increase payout by {C:money}$#1#{} when",
+	    "a card with an {C:attention}Edition{} is sold",
+	    "{C:red}Works once per round{}",
+	    "{C:inactive}#3#{}"
+        }
+    },
+    rarity = 1,
+    cost = 5,
+    perishable_compat = false,
+    blueprint_compat = false,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {center.ability.extra.bonus, center.ability.extra.money, center.ability.extra.active}}
+    end,
+    atlas = "atlastwo",
+    calculate = function(self, card, context)
+        if context.selling_card and context.card.edition
+	and card.ability.extra.check and not context.blueprint then
+            card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus
+	    card.ability.extra.check = false
+	    card.ability.extra.active = "No triggers left!"
+	    return {
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = "Upgrade!",
+                    colour = G.C.MONEY,
+                    })
+            }
+	end
+	if context.end_of_round and not context.retrigger_joker and not context.blueprint then
+            if not card.ability.extra.check then
+                card.ability.extra.active = "Active!"
+                card.ability.extra.check = true
+                return {
+                    	message = localize('k_reset'),
+                        card = card,
+			}
+            end
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        if card.ability.extra.money > 0 then
+            return card.ability.extra.money
+        end
+    end
+}
+if JokerDisplay then
+    morse.joker_display_definition = {
+        text = {
+            { text = "+$" },
+            { ref_table = "card.ability.extra", ref_value = "money" },
+        },
+        text_config = { colour = G.C.GOLD },
+        reminder_text = {
+            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+	    { text = "(" },
+            { ref_table = "card.ability.extra", ref_value = "active" },
+            { text = ")" },
+        },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+        end
+    }
+end
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4627,4 +4798,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent}}
