@@ -167,7 +167,7 @@ local bubblem = {
     end,
     atlas = "atlasone",
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and context.before and next(context.poker_hands['Three of a Kind']) and not context.blueprint and not context.retrigger_joker then
+        if context.cardarea == G.jokers and context.before and next(context.poker_hands[card.ability.extra.type]) and not context.blueprint and not context.retrigger_joker then
             G.E_MANAGER:add_event(Event({
                 func = function()
                     play_sound('tarot1')
@@ -202,7 +202,19 @@ local bubblem = {
         end 
     end
 }
-
+if JokerDisplay then
+    bubblem.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        reminder_text_config = { scale = 0.35 },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = localize(card.ability.extra.type, 'poker_hands')
+        end
+    }
+end
 local foodm = {
     object_type = "Joker",
     name = "cry-foodm",
@@ -849,7 +861,7 @@ local reverse = {
 	end,
 	calculate = function(self, card, context)
 		if context.pre_discard and not context.retrigger_joker and not context.blueprint then
-			if G.FUNCS.get_poker_hand_info(G.hand.highlighted) == "Pair" and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit then
+			if G.FUNCS.get_poker_hand_info(G.hand.highlighted) == card.ability.extra.type and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit then
 				G.E_MANAGER:add_event(Event({ --self destruct
                 			func = function()
                     			play_sound('tarot1')
@@ -889,7 +901,19 @@ local reverse = {
                 end
 	end,
 }
-
+if JokerDisplay then
+    reverse.joker_display_definition = {
+        reminder_text = {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+            { text = ")" },
+        },
+        reminder_text_config = { scale = 0.35 },
+        calc_function = function(card)
+            card.joker_display_values.localized_text = localize(card.ability.extra.type, 'poker_hands')
+        end
+    }
+end
 local doodlem = {
     object_type = "Joker",
     name = "cry-doodlem",
