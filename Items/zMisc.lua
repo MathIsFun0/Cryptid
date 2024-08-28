@@ -477,14 +477,14 @@ local typhoon = {
     key = "typhoon",
 	config = { 
         -- This will add a tooltip.
-        mod_conv = 's_cry_azure_seal',
+        mod_conv = 'cry_azure_seal',
         -- Tooltip args
         seal = { planets_amount = 3 },
         max_highlighted = 1,
     },
     loc_vars = function(self, info_queue, center)
         -- Handle creating a tooltip with set args.
-        info_queue[#info_queue+1] = { set = 'Other', key = 's_cry_azure_seal', specific_vars = { self.config.seal.planets_amount } }
+        info_queue[#info_queue+1] = { set = 'Other', key = 'cry_azure_seal', specific_vars = { self.config.seal.planets_amount } }
         return {vars = {center.ability.max_highlighted}}
     end,
     loc_txt = {
@@ -510,7 +510,7 @@ local typhoon = {
             delay = 0.1,
             func = function()
                     if highlighted then
-                        highlighted:set_seal('s_cry_azure')
+                        highlighted:set_seal('cry_azure')
                     end
                 return true
             end
