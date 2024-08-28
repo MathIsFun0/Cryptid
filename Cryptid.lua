@@ -2056,6 +2056,10 @@ SMODS.Sound({
     path = "e_blur.ogg"
 })
 SMODS.Sound({
+    key = "studiofromhelsinki",
+    path = "studiofromhelsinki.ogg"
+})
+SMODS.Sound({
     key = "music_jimball",
     path = "music_jimball.ogg",
     sync = false,
