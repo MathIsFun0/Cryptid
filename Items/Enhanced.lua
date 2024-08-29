@@ -59,6 +59,7 @@ local typed_decks = {
 	{'cry',			'Edition',		nil,						'Mosaic',				'mosaic',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Oversaturated',		'oversat',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Glitched',				'glitched',			nil,				nil,				5,		2,		"Wait, isn't this just Misprint Deck?"},
+	{'cry',			'Edition',		'Meck',						'Jolly',				'm',				nil,				nil,				5,		2,		''},
 	
 	{'cry',			'Seal',			'Typhoon Deck',				'Azure',				'azure',			nil,				nil,				0,		2,		''},
 	
@@ -123,6 +124,62 @@ if SMODS.Mods["jen"] then
 		typed_decks[#typed_decks + 1] = jen_additions[i]
 	end
 end
+if SMODS.Mods["SnowMods"] then
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'snow',			'Enhancement',	nil,						'Platinum',				'platinum_card',	nil,				'snow_Enhancers',	0,		0,		''},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
+if SMODS.Mods["BetmmaVouchers"] then
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'betm_vouchers',	'Edition',		nil,						'Phantom',				'phantom',			nil,			nil,				5,		2,		'', no_prefix = true},
+		{'betm_vouchers',	'Edition',		nil,						'Tentacle',				'tentacle',			nil,			nil,				5,		2,		'', no_prefix = true},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
+if SMODS.Mods["Bunco"] then
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'bunc',			'Edition',		nil,						'Glitter',				'glitter',			nil,				nil,				5,		2,		''},
+		{'bunc',			'Edition',		nil,						'Fluorescent',			'fluorescent',		nil,				nil,				5,		2,		''},
+		{'bunc',			'Sticker',		nil,						'Scattering',			'scattering',		nil,				nil,				5,		2,		''},
+		{'bunc',			'Sticker',		nil,						'Hindered',				'hindered',			nil,				nil,				5,		2,		''},
+		{'bunc',			'Sticker',		nil,						'Reactive',				'reactive',			nil,				nil,				5,		2,		''},
+		{'bunc',			'Suit',			'Deck of the Sky',			'Fleurons',				nil,				nil,				'bunc_bunco_tarots',0,		0,		''},
+		{'bunc',			'Suit',			'Deck of the Abyss',		'Halberds',				nil,				nil,				'bunc_bunco_tarots',1,		0,		''},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
+--todo
+-- Cruel Blinds - Wash Sticker, Overpriced Sticker
+-- Ceres, suit mods
+-- When released: Familiar, Ortalab
 
 
 for i = 1, #typed_decks do
@@ -131,6 +188,9 @@ for i = 1, #typed_decks do
 	local shader = nil
 	if deck[6] then
 		shader = deck[1] .. '_' .. deck[6]
+		if deck.no_prefix then
+			shader = deck[6]
+		end
 	end
 	
 	local deck_name = deck[3]
@@ -147,16 +207,23 @@ for i = 1, #typed_decks do
 	
 	local deck_key = ''
 	if deck[1] == 'cry' then
-		deck_key = 'cry' .. deck[5] .. '_deck'
+		deck_key = 'cry' .. (deck[5] or deck[4]) .. '_deck'
 	else
-		deck_key = 'cry' .. deck[1] .. '-' .. deck[5] .. '_deck'
+		deck_key = 'cry' .. deck[1] .. '-' .. (deck[5] or deck[4]) .. '_deck'
 	end
 	
 	local object_key = ''
-	if deck[1] == '' then -- vanilla doesn't have a prefix, don't add the _
-		object_key = deck[5]
+	if deck[1] == '' or deck.no_prefix then -- vanilla doesn't have a prefix, don't add the _
+		object_key = deck[5] or deck[4]
 	else
-		object_key = deck[1] .. '_' .. deck[5]
+		object_key = deck[1] .. '_' .. (deck[5] or deck[4])
+	end
+	
+	local suit_key = ''
+	if deck[1] == '' or deck.no_prefix then
+		suit_key = deck[4]
+	else
+		suit_key = deck[1] .. '_' .. (deck[4])
 	end
 
 	if deck[2] == 'Edition' then
@@ -242,7 +309,7 @@ for i = 1, #typed_decks do
 		local obj = {object_type = "Back",
 			name = deck_internal_name,
 			key = deck_key,
-			config = {cry_force_sticker = deck[5]}, -- stickers DON'T use object_key for SOME reason
+			config = {cry_force_sticker = object_key}, -- stickers DON'T use object_key for SOME reason
 			pos = {x = deck[8], y = deck[9]},
 			loc_txt = {
 				name = deck_name,
@@ -267,15 +334,15 @@ for i = 1, #typed_decks do
 		local obj = {object_type = "Back",
 			name = deck_internal_name,
 			key = deck_key,
-			config = {cry_force_suit = 'Clubs', cry_boss_blocked = {'bl_' .. deck[5]}},
+			config = {cry_force_suit = suit_key, cry_boss_blocked = deck[5] and {'bl_' .. deck[5]}},
 			pos = {x = deck[8], y = deck[9]},
 			loc_txt = {
 				name = deck_name,
 				text = {
 					"All playing cards are {C:dark_edition}" .. deck[4] .. "{}",
 					"and cannot change suits",
-					"{C:attention}The " .. string.upper(string.sub(deck[5], 1, 1)) .. string.sub(deck[5], 2) .. "{} cannot appear", -- UGLY hack
-					"{s:0.8,C:inactive}" .. deck[10]
+					deck[10] or "{s:0}",
+					deck[5] and "{C:attention}The " .. string.upper(string.sub(deck[5], 1, 1)) .. string.sub(deck[5], 2) .. "{} cannot appear", -- UGLY hack
 				}
 			},
 		}
@@ -291,7 +358,6 @@ for i = 1, #typed_decks do
 			
 	end
 end
-
 
 return {name = "Enhanced Decks", 
         init = function()
@@ -371,7 +437,11 @@ return {name = "Enhanced Decks",
                             for c = #G.playing_cards, 1, -1 do
                                 G.playing_cards[c].config.center.eternal_compat = true
                                 G.playing_cards[c].config.center.perishable_compat = true
-                                G.playing_cards[c]["set_"..self.effect.config.cry_force_sticker](G.playing_cards[c],true);
+								if SMODS.Stickers[self.effect.config.cry_force_sticker].apply then
+									SMODS.Stickers[self.effect.config.cry_force_sticker]:apply(G.playing_cards[c],true);
+								else
+                               		G.playing_cards[c]["set_"..self.effect.config.cry_force_sticker](G.playing_cards[c],true);
+								end
                             end
                             return true
                         end
