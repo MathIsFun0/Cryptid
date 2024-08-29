@@ -173,17 +173,8 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
 end
 
-function cry_edition_to_table(edition)		-- need help, how do i do this
-	if edition == 'negative' then return {negative = true}
-	elseif edition == 'polychrome' then return {polychrome = true}
-	elseif edition == 'holo' then return {holo = true}
-	elseif edition == 'foil' then return {foil = true}
-	elseif edition == 'cry_blur' then return {cry_blur = true}
-	elseif edition == 'cry_astral' then return {cry_astral = true}
-	elseif edition == 'cry_mosaic' then return {cry_mosaic = true}
-	elseif edition == 'cry_glitched' then return {cry_glitched = true}
-	elseif edition == 'cry_oversat' then return {cry_oversat = true}
-	end
+function cry_edition_to_table(edition)		-- look mom i figured it out (this does NOT need to be a function)
+	if edition then return {[edition] = true} end
 end
 
 function cry_cheapest_boss_reroll()
