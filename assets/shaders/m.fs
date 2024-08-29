@@ -34,38 +34,47 @@ float sdParabola(vec2 pos, float wi, float he)
 
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
-	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.zw)/texture_details.zw;
+    vec2 uv = (((texture_coords) * (image_details)) - texture_details.xy * texture_details.zw) / texture_details.zw;
     vec2 origin_uv = uv.xy;
     vec4 pixel = Texel(texture, texture_coords);
 
-    uv.y = 1. - uv.y;
+    // Flip the y-coordinate
+    uv.y = 1.0 - uv.y;
 
+    // Distort the x-coordinate
     if (uv.x > 0.5) {
         if (uv.x > 0.75) {
             uv.x = 0.1 - uv.x;
-        } else{
-	        uv.x = 1.4 - uv.x;
+        } else {
+            uv.x = 1.4 - uv.x;
         }
     } else {
         if (uv.x > 0.25) {
-            uv.x = .4 + uv.x;
-        } else if (uv.x > 0.) {
-	        uv.x = 0.9 - uv.x;
+            uv.x = 0.4 + uv.x;
+        } else if (uv.x > 0.0) {
+            uv.x = 0.9 - uv.x;
         }
     }
-    
-    uv.y = uv.y * .65 + m.x * 0.000000000001;
-    
+
+    uv.y = uv.y * 0.58 + m.x * 0.000000000001;
+
+    // Compute opacity based on a parabola shape
     float opacity = sdParabola(uv, 0.53, 0.55);
     if (!(opacity < 0.4 && opacity > 0.3)) {
-        opacity = 0.;
+        opacity = 0.0;
     } else {
-        opacity = 1.;
+        opacity = 1.0;
     }
 
     opacity = min(pixel.a, opacity);
-    
-	return dissolve_mask(vec4(pixel.rgb, opacity), texture_coords, origin_uv);
+
+    // Darken the original texture by reducing its brightness
+    vec4 darkened_pixel = pixel * 0.5;  // Adjust the factor (0.5) to control the darkness
+
+    // Blend the darkened texture with the outline
+    vec4 final_color = mix(darkened_pixel, vec4(pixel.rgb, opacity), opacity);
+
+    return dissolve_mask(final_color, texture_coords, origin_uv);
 }
 
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv)
