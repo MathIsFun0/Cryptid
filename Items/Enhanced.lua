@@ -204,10 +204,41 @@ if SMODS.Mods["ceres"] then
 		typed_decks[#typed_decks + 1] = mod_additions[i]
 	end
 end
+if SMODS.Mods["SixSuits"] then
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'six',				'Suit',			'Deck of The Star?',		'Stars',				'eclipse',			nil,				'six_Tarot',		2,		1,		''},
+		{'six',				'Suit',			'Deck of The Moon?',		'Moons',				'void',				nil,				'six_Tarot',		1,		1,		''},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
+if SMODS.Mods["InkAndColor"] then
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'ink',				'Suit',			'Deck of The Blob',			'Inks',					'bleach',			nil,				'ink_Consumables',	1,		0,		''},
+		{'ink',				'Suit',			'Deck of The Paint',		'Colors',				'drain',			nil,				'ink_Consumables',	0,		0,		''},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
 --todo
 -- Cruel Blinds - Wash Sticker, Overpriced Sticker
--- suit mods
--- When released: Familiar, Ortalab
+-- When released: Familiar, Ortalab, Sigil
 
 
 for i = 1, #typed_decks do
