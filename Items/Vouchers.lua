@@ -151,7 +151,7 @@ local massproduct = {
     	object_type = "Voucher",
 	key = "massproduct",
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 4},
 	requires = {"v_liquidation"},
 	loc_txt = {
         name = 'Mass Production',
