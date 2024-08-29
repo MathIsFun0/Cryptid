@@ -698,7 +698,8 @@ function Card:calculate_joker(context)
     if self.ability.name ~= "cry-happyhouse"
 	    and self.ability.name ~= "cry-sapling"
 	    and self.ability.name ~= "cry-mstack"
-	    and self.ability.name ~= "cry-notebook" then
+	    and self.ability.name ~= "cry-notebook"
+	    and self.ability.name ~= "Invisible Joker" then
         local jkr = self
         if jkr.ability and type(jkr.ability) == 'table' then
             if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
@@ -794,6 +795,18 @@ function Card:calculate_joker(context)
                     dbl_info.offset = 1
                     
                 end
+                local default_modifiers = {
+                    mult = 0,
+                    h_mult = 0,
+                    h_x_mult = 0,
+                    h_dollars = 0,
+                    p_dollars = 0,
+                    t_mult = 0,
+                    t_chips = 0,
+                    x_mult = 1,
+                    h_size = 0,
+                    d_size = 0
+                }
                 for k, v in pairs(jkr.ability) do
                     --extra_value is ignored because it can be scaled by Gift Card
                     if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
@@ -802,17 +815,19 @@ function Card:calculate_joker(context)
                         local best_key = {""}
                         local best_coeff = 10^100
                         for l, u in pairs(jkr.ability) do
-                            if l ~= k and is_number(u) then
-                                if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
-                                    best_coeff = to_big(predicted_mod/u):to_number()
-                                    best_key = {l}
+                            if not (default_modifiers[l] and default_modifiers[l] == u) then
+                                if l ~= k and is_number(u) then
+                                    if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
+                                        best_coeff = to_big(predicted_mod/u):to_number()
+                                        best_key = {l}
+                                    end
                                 end
-                            end
-                            if type(jkr.ability[l]) == 'table' then
-                                for _l, _u in pairs(jkr.ability[l]) do 
-                                    if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
-                                        best_coeff = to_big(predicted_mod/_u):to_number()
-                                        best_key = {l,_l}
+                                if type(jkr.ability[l]) == 'table' then
+                                    for _l, _u in pairs(jkr.ability[l]) do 
+                                        if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
+                                            best_coeff = to_big(predicted_mod/_u):to_number()
+                                            best_key = {l,_l}
+                                        end
                                     end
                                 end
                             end
