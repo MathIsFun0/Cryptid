@@ -83,7 +83,7 @@ if SMODS.Mods["jen"] then
 		{'jen',				'Edition',		nil,						'Wee', 					'wee',				nil,				nil,				5,		2,		''},	-- Works, but shader does nothing in pack menu
 		{'jen',				'Edition',		nil,						'Blaze', 				'blaze',			nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Wavy', 				'wavy',				nil,				nil,				5,		2,		''},
-		{'jen',				'Edition',		nil,						'Encoded', 				'encoded',			nil,				nil,				5,		2,		''},
+		{'jen',				'Edition',		'Encoded Deck*',			'Encoded', 				'encoded',			nil,				nil,				5,		2,		'*no, not that one'},
 		{'jen',				'Edition',		nil,						'Diplopia', 			'diplopia',			nil,				nil,				5,		2,		''},	-- Works, but shader does nothing in pack menu
 		{'jen',				'Edition',		nil,						'Sequin', 				'sequin',			nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Laminated', 			'laminated',		nil,				nil,				5,		2,		'', true},
