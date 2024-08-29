@@ -140,6 +140,7 @@ if SMODS.Mods["SnowMods"] then
 	end
 end
 if SMODS.Mods["BetmmaVouchers"] then
+	--todo: check if editions are enabled
 	local mod_additions = {
 		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
 		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
@@ -176,9 +177,36 @@ if SMODS.Mods["Bunco"] then
 		typed_decks[#typed_decks + 1] = mod_additions[i]
 	end
 end
+if SMODS.Mods["ceres"] then
+	local mod_additions = {}
+	if Ceres.SETTINGS.card_effects.enhancements.enabled and Ceres.SETTINGS.card_effects.enhancements.illusion.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Enhancement',	nil,						'Illusion',				'illusion',			nil,				'cere_enhancement_atlas',	0,		0,		''}
+	end
+	if Ceres.SETTINGS.card_effects.enhancements.enabled and Ceres.SETTINGS.card_effects.enhancements.cobalt.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Enhancement',	nil,						'Cobalt',				'cobalt',			nil,				'cere_enhancement_atlas',	1,		0,		''}
+	end
+	if Ceres.SETTINGS.card_effects.editions.enabled and Ceres.SETTINGS.card_effects.editions.colourblind.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Edition',		nil,						'Colourblind',			'colourblind',		nil,				nil,				5,		2,		''}
+	end
+	if Ceres.SETTINGS.card_effects.editions.enabled and Ceres.SETTINGS.card_effects.editions.sneaky.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Edition',		nil,						'Sneaky',				'sneaky',			nil,				nil,				5,		2,		''}
+	end
+	if Ceres.SETTINGS.suits.enabled and Ceres.SETTINGS.suits.leaves.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Suit',			'Deck of the Reversed Sun',	'Leaves',				'fall',				nil,				'cere_reversed_tarots',		9,		1,		''}
+	end
+	if Ceres.SETTINGS.suits.enabled and Ceres.SETTINGS.suits.crowns.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Suit',			'Deck of the Reversed World','Crowns',				'french',			nil,				'cere_reversed_tarots',		1,		2,		''}
+	end
+	if Ceres.SETTINGS.suits.enabled and Ceres.SETTINGS.suits.coins.enabled then
+		mod_additions[#mod_additions+1] = {'cere',			'Suit',			'Deck of the Reversed Star','Coins',				'bill',				nil,				'cere_reversed_tarots',		7,		1,		''}
+	end
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
 --todo
 -- Cruel Blinds - Wash Sticker, Overpriced Sticker
--- Ceres, suit mods
+-- suit mods
 -- When released: Familiar, Ortalab
 
 
@@ -334,7 +362,7 @@ for i = 1, #typed_decks do
 		local obj = {object_type = "Back",
 			name = deck_internal_name,
 			key = deck_key,
-			config = {cry_force_suit = suit_key, cry_boss_blocked = deck[5] and {'bl_' .. deck[5]}},
+			config = {cry_force_suit = suit_key, cry_boss_blocked = deck[5] and {'bl_' .. object_key}},
 			pos = {x = deck[8], y = deck[9]},
 			loc_txt = {
 				name = deck_name,
