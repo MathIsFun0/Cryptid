@@ -1822,7 +1822,7 @@ G.FUNCS.class_apply = function()
             for i=1, #G.hand.highlighted do
                 local CARD = G.hand.highlighted[i]
                 local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
-                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_class')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(get_random_consumable('cry_class'), true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
             end
         elseif enh_suffix == "null" then
             check_for_unlock({type = 'cheat_used'})
