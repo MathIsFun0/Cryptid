@@ -4,7 +4,7 @@
 	#define PRECISION mediump
 #endif
 
-extern PRECISION vec2 glass;
+extern PRECISION vec2 gold;
 
 extern PRECISION number dissolve;
 extern PRECISION number time;
@@ -14,13 +14,13 @@ extern bool shadow;
 extern PRECISION vec4 burn_colour_1;
 extern PRECISION vec4 burn_colour_2;
 
-vec4 gold = vec4(231., 164., 25., 0.) / 255.;
+vec4 gold_color = vec4(231., 164., 25., 0.) / 255.;
 
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
 
 bool line(vec2 uv, float offset, float width) {
-    offset = offset + 0.35 * sin(glass.x);
-    width = width + 0.005 * sin(glass.x);
+    offset = offset + 0.35 * sin(gold.x);
+    width = width + 0.005 * sin(gold.x);
 
     float min_y = -uv.x + offset;
     float max_y = -uv.x + offset + width;
@@ -42,7 +42,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     }
     
     float avg = (pixel.r + pixel.g + pixel.b) / 3.;
-    pixel = vec4(gold.rgb * avg + tex.rgb * tex.a, origin.a)
+    pixel = vec4(gold_color.rgb * avg + tex.rgb * tex.a, pixel.a);
 
 	return dissolve_mask(pixel, texture_coords, uv);
 }

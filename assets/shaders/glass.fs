@@ -31,13 +31,13 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.zw)/texture_details.zw;
     vec4 pixel = Texel(texture, texture_coords);
 
-    vec4 tex = vec4(1., 1., 1., 0.1);
+    vec4 tex = vec4(1., 1., 1., 0.2);
 
     if (line(uv, 0.4, 0.1) || line(uv, 0.55, 0.1) || line(uv, 1.3, 0.05) || line(uv, 1.8, 0.1) || line(uv, 0.01, 0.07)) {
         tex.a = tex.a * 2.;
     }
 
-    pixel = vec4(pixel.rgb * 0.4 + tex.rgb * tex.a, pixel.a * 0.5);
+    pixel = vec4(pixel.rgb * 0.66 + tex.rgb * tex.a, pixel.a * 0.66);
 
 	return dissolve_mask(pixel, texture_coords, uv);
 }

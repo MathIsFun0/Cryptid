@@ -364,7 +364,6 @@ local glass_shader = {
     key = 'glass',
     path = 'glass.fs'
 }
-
 local glass_edition = {
     object_type = "Edition",
     key = "glass",
@@ -378,13 +377,11 @@ local gold_shader = {
     key = 'gold',
     path = 'gold.fs'
 }
-
-local glass_edition = {
+local gold_edition = {
     object_type = "Edition",
     key = "gold",
     shader = "gold",
 }
-
 
 
 
@@ -779,8 +776,8 @@ local memory = {
 }
 
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
-mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
-glitched, mosaic, oversat, blurred, astral,
+mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
+glitched, mosaic, oversat, blurred, astral, glass_edition, gold_edition,
 echo_atlas, echo, eclipse, 
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
