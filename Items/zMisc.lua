@@ -358,6 +358,36 @@ local jollyedition = {
         }
     }
 }
+
+local glass_shader = {
+    object_type = "Shader",
+    key = 'glass',
+    path = 'glass.fs'
+}
+
+local glass_edition = {
+    object_type = "Edition",
+    key = "glass",
+    shader = "glass",
+    disable_base_shader = true,
+    disable_shadow = true,
+}
+
+local gold_shader = {
+    object_type = "Shader",
+    key = 'gold',
+    path = 'gold.fs'
+}
+
+local glass_edition = {
+    object_type = "Edition",
+    key = "gold",
+    shader = "gold",
+}
+
+
+
+
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
