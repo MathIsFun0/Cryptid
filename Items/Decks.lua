@@ -364,6 +364,9 @@ return {name = "Misc. Decks",
             function Card:redeem()
                 cr(self)
                 if G.GAME.modifiers.cry_redeemed then
+                    if #G.play.cards == 0 and (not G.redeemed_vouchers_during_hand or #G.redeemed_vouchers_during_hand.cards == 0) then
+                        G.cry_redeemed_buffer = {}
+                    end
                     for k, v in pairs(G.P_CENTER_POOLS["Voucher"]) do
                         if v.requires and not G.GAME.used_vouchers[v] then
                             for _, vv in pairs(v.requires) do
@@ -380,21 +383,24 @@ return {name = "Misc. Decks",
                                     else
                                         area = G.play
                                     end
-                                    local card = create_card('Voucher', area, nil, nil, nil, nil, v.key)
-                                    card:start_materialize()
-                                    area:emplace(card)
-                                    card.cost=0
-                                    card.shop_voucher=false
-                                    local current_round_voucher=G.GAME.current_round.voucher
-                                    card:redeem()
-                                    G.GAME.current_round.voucher=current_round_voucher
-                                    G.E_MANAGER:add_event(Event({
-                                        trigger = 'after',
-                                        delay =  0,
-                                        func = function() 
-                                            card:start_dissolve()
-                                            return true
-                                        end}))  
+                                    if not G.cry_redeemed_buffer[v.key] then
+                                        local card = create_card('Voucher', area, nil, nil, nil, nil, v.key)
+                                        G.cry_redeemed_buffer[v.key] = true
+                                        card:start_materialize()
+                                        area:emplace(card)
+                                        card.cost=0
+                                        card.shop_voucher=false
+                                        local current_round_voucher=G.GAME.current_round.voucher
+                                        card:redeem()
+                                        G.GAME.current_round.voucher=current_round_voucher
+                                        G.E_MANAGER:add_event(Event({
+                                            trigger = 'after',
+                                            delay =  0,
+                                            func = function() 
+                                                card:start_dissolve()
+                                                return true
+                                            end}))  
+                                    end
                                 end
                             end
                         end
