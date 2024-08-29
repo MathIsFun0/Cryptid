@@ -530,7 +530,7 @@ local quintuple = { --Clone machine voucher quintuple tag
 }
 
 -- If Tier 3 Vouchers is loaded, make Cryptid function as Tier 4 Vouchers
-if SMODS.findModByID("Tier3Sub") then
+if SMODS.Mods["Tier3Sub"] then
     overstock_multi.requires[#overstock_multi.requires+1] = "v_overstock_three"
     massproduct.requires[#massproduct.requires+1] = "v_money_mint"
     curate.requires[#curate.requires+1] = "v_glow_in_dark"
