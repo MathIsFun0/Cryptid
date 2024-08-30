@@ -40,7 +40,9 @@ local supercell = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff then
 		play_sound('cry_studiofromhelsinki')
+		end
 	end
 }
 if JokerDisplay then
