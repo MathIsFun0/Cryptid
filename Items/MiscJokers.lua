@@ -1488,13 +1488,13 @@ local wario = {
     calculate = function(self, card, context)
         if context.post_trigger then
             ease_dollars(card.ability.extra.money)
-            card_eval_status_text(context.blueprint_card or context.other_joker, 'extra', nil, nil, nil, {message = localize('$')..card.ability.extra.money, colour = G.C.MONEY})
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    card:juice_up(0.5, 0.5)
+                    (context.blueprint_card or card):juice_up(0.5, 0.5)
                     return true
                 end
-            })) 
+            }))
+            card_eval_status_text(context.other_context.blueprint_card or context.other_joker, 'extra', nil, nil, nil, {message = localize('$')..card.ability.extra.money, colour = G.C.MONEY}) 
         end
     end,
 
