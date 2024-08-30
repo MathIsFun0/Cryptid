@@ -4,7 +4,7 @@
 	#define PRECISION mediump
 #endif
 
-extern PRECISION vec2 m;
+extern PRECISION vec2 gold;
 
 extern PRECISION number dissolve;
 extern PRECISION number time;
@@ -14,67 +14,37 @@ extern bool shadow;
 extern PRECISION vec4 burn_colour_1;
 extern PRECISION vec4 burn_colour_2;
 
+vec4 gold_color = vec4(231., 164., 25., 0.) / 255.;
+
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
 
-float sdParabola(vec2 pos, float wi, float he)
-{
-    pos.x = abs(pos.x);
-    float ik = wi*wi/he;
-    float p = ik*(he-pos.y-0.5*ik)/3.0;
-    float q = pos.x*ik*ik*0.25;
-    float h = q*q - p*p*p;
-    float r = sqrt(abs(h));
-    float x = (h>0.0) ? 
-        pow(q+r,1.0/3.0) - pow(abs(q-r),1.0/3.0)*sign(r-q) :
-        2.0*cos(atan(r/q)/3.0)*sqrt(p);
-    x = min(x,wi);
-    return length(pos-vec2(x,he-x*x/ik)) * 
-           sign(ik*(pos.y-he)+pos.x*pos.x);
+bool line(vec2 uv, float offset, float width) {
+    offset = offset + 0.35 * sin(gold.x);
+    width = width + 0.005 * sin(gold.x);
+
+    float min_y = -uv.x + offset;
+    float max_y = -uv.x + offset + width;
+
+    return uv.y > min_y && uv.y < max_y;
 }
 
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
-    vec2 uv = (((texture_coords) * (image_details)) - texture_details.xy * texture_details.zw) / texture_details.zw;
-    vec2 origin_uv = uv.xy;
+	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.zw)/texture_details.zw;
     vec4 pixel = Texel(texture, texture_coords);
 
-    // Flip the y-coordinate
-    uv.y = 1.0 - uv.y;
+    vec4 tex = vec4(1., 1., 1., 0.1);
 
-    // Distort the x-coordinate
-    if (uv.x > 0.5) {
-        if (uv.x > 0.75) {
-            uv.x = 0.1 - uv.x;
-        } else {
-            uv.x = 1.4 - uv.x;
-        }
+    if (line(uv, 0.4, 0.1) || line(uv, 0.55, 0.1) || line(uv, 1.3, 0.05) || line(uv, 1.8, 0.1) || line(uv, 0.01, 0.07)) {
+        tex.a = tex.a * 2.;
     } else {
-        if (uv.x > 0.25) {
-            uv.x = 0.4 + uv.x;
-        } else if (uv.x > 0.0) {
-            uv.x = 0.9 - uv.x;
-        }
+        tex.a = 0.05;
     }
+    
+    float avg = (pixel.r + pixel.g + pixel.b) / 3.;
+    pixel = vec4(gold_color.rgb * avg + tex.rgb * tex.a, pixel.a);
 
-    uv.y = uv.y * 0.58 + m.x * 0.000000000001;
-
-    // Compute opacity based on a parabola shape
-    float opacity = sdParabola(uv, 0.53, 0.55);
-    if (!(opacity < 0.4 && opacity > 0.3)) {
-        opacity = 0.0;
-    } else {
-        opacity = 1.0;
-    }
-
-    opacity = min(pixel.a, opacity);
-
-    // Darken the original texture by reducing its brightness
-    vec4 darkened_pixel = pixel * 0.5;  // Adjust the factor (0.5) to control the darkness
-
-    // Blend the darkened texture with the outline
-    vec4 final_color = mix(darkened_pixel, vec4(pixel.rgb, opacity), opacity);
-
-    return dissolve_mask(final_color, texture_coords, origin_uv);
+	return dissolve_mask(pixel, texture_coords, uv);
 }
 
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv)

@@ -358,6 +358,33 @@ local jollyedition = {
         }
     }
 }
+
+local glass_shader = {
+    object_type = "Shader",
+    key = 'glass',
+    path = 'glass.fs'
+}
+local glass_edition = {
+    object_type = "Edition",
+    key = "glass",
+    shader = "glass",
+    disable_base_shader = true,
+    disable_shadow = true,
+}
+
+local gold_shader = {
+    object_type = "Shader",
+    key = 'gold',
+    path = 'gold.fs'
+}
+local gold_edition = {
+    object_type = "Edition",
+    key = "gold",
+    shader = "gold",
+}
+
+
+
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -749,8 +776,8 @@ local memory = {
 }
 
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
-mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
-glitched, mosaic, oversat, blurred, astral,
+mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
+glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
 echo_atlas, echo, eclipse, 
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
@@ -863,5 +890,53 @@ end
 function Card:set_pinned(_pinned)
     self.pinned = _pinned
 end
+
+--Change name of cards with Jolly edition
+local gcui = generate_card_ui
+function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+    local full_UI_table = gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+    if card and card.edition and card.edition.cry_m and (not card.ability or card.ability.set ~= "Edition") and full_UI_table and full_UI_table.name and full_UI_table.name[1] and full_UI_table.name[1].config and full_UI_table.name[1].config.object and full_UI_table.name[1].config.object.config then
+        local conf = full_UI_table.name[1].config.object.config
+        if conf.string and #conf.string > 0 then
+            local function m_ify_word(text)
+                -- Define a pattern for vowels
+                local vowels = "AEIOUaeiou"
+            
+                -- Use gsub to replace the first consonant of each word with 'M'
+                local result = text:gsub("(%a)(%w*)", function(first, rest)
+                    if vowels:find(first) then
+                        -- If the first character is a vowel, add an M
+                        if (not rest[1]) or (rest:lower()[1] == rest[1]) then --this check doesn't work properly
+                            return "M" .. first:lower() .. rest
+                        else
+                            return "M" .. first:upper() .. rest
+                        end
+                    elseif first:lower() == "m" then
+                        -- If the word already starts with 'M', keep it unchanged
+                        return first .. rest
+                    else
+                        -- Replace the first consonant with 'M'
+                        return "M" .. rest
+                    end
+                end)
+            
+                return result
+            end
+            function m_ify(text)
+                -- Use gsub to apply the m_ify_word function to each word
+                local result = text:gsub("(%S+)", function(word)
+                    return m_ify_word(word)
+                end)
+            
+                return result
+            end
+            conf.string[1] = m_ify(conf.string[1])
+            full_UI_table.name[1].config.object:remove()
+            full_UI_table.name[1].config.object = DynaText(conf)
+        end
+    end
+    return full_UI_table
+end
+
         end,
         items = miscitems}

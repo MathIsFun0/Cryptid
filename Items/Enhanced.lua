@@ -51,6 +51,7 @@ local typed_decks = {
 	{'',			'Suit',			'Deck of the Moon',			'Clubs',				'club',				nil,				"atlasenhanced",	5,		1,		''},
 	
 	-- Cryptid
+	-- todo: work with mod config better here
 	
 	{'cry',			'Enhancement',	"The Eclipse's Deck",		'Echo',					'echo',				nil,				"atlasenhanced",	1,		5,		''},
 	
@@ -236,9 +237,46 @@ if SMODS.Mods["InkAndColor"] then
 		typed_decks[#typed_decks + 1] = mod_additions[i]
 	end
 end
+if SMODS.Mods["familiar"] then
+	--note: Familiar added their Edition decks already
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'fam',				'Enhancement',	"The Bishop's Deck",		'Penalty',				'penalty',			nil,				'fam_Consumables',	5,		0,		''},
+		{'fam',				'Enhancement',	"The Queen's Deck",			'Div',					'div',				nil,				'fam_Consumables',	3,		0,		''},
+		{'fam',				'Enhancement',	"Humanity's Deck",			'Gilded',				'gilded',			nil,				'fam_Consumables',	5,		1,		''},
+		{'fam',				'Seal',			"Playback Deck",			'Maroon',				'maroon_seal',		nil,				'fam_Consumables',	1,		5,		''},
+		{'fam',				'Seal',			"Mesmer Deck",				'Sapphire',				'sapphire_seal',	nil,				'fam_Consumables',	3,		5,		''},
+		{'fam',				'Seal',			"Forge Deck",				'Gilded',				'gilded_seal',		nil,				'fam_Consumables',	3,		4,		''},
+		{'fam',				'Seal',			"Oracle Deck",				'Familiar',				'familiar_seal',	nil,				'fam_Consumables',	4,		5,		''},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
+if SMODS.Mods["CBL"] then
+	local mod_additions = {
+		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
+		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
+		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
+		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
+		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
+		--   				Suit                                   								on Suit decks
+
+		{'cruel',			'Sticker',		"Washed Deck",				'Wash',					'wash',				nil,				nil,				5,		2,		''},
+		{'cruel',			'Sticker',		"Overpriced Deck",			'Overpriced',			'overpriced',		nil,				nil,				5,		2,		''},
+	}
+	for i = 1, #mod_additions do
+		typed_decks[#typed_decks + 1] = mod_additions[i]
+	end
+end
 --todo
--- Cruel Blinds - Wash Sticker, Overpriced Sticker
--- When released: Familiar, Ortalab, Sigil
+-- When released: Ortalab, Sigil
 
 
 for i = 1, #typed_decks do

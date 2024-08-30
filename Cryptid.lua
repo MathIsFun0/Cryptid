@@ -1063,12 +1063,20 @@ function calculate_reroll_cost(skip_increment)
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
   local center = G.P_CENTERS.b_red
-
   if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
     forced_key = "j_cry_rnjoker"
   end
-      
-
+  if _type == "Joker" then
+        local aeqactive = nil
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
+                if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then G.jokers.cards[i].ability.extra.num = 1 end
+                aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
+                G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+            end
+        end
+        if aeqactive then forced_key = G.P_CENTER_POOLS["Joker"][aeqactive].key end
+  end
   --should pool be skipped with a forced key
   if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
       for _, v in ipairs(SMODS.Consumable.legendaries) do
