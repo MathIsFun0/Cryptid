@@ -1,4 +1,7 @@
 cry_enable_exotics = false
+--TIP!!! for coding exotics, make sure you know which layer corresponds to which value!
+--The Normal pos correponds to the background. use this for the layer that goes all the way in the back!
+--The soul_pos = {blahblahblah, extra = {blahblahblah}} correspomds to the other two layers. the value in the extra table is for the layer that goes in the middle, and the other value is the one that goes all the way in the front
 local gateway = {
     object_type = "Consumable",
     set = "Spectral",
@@ -752,6 +755,47 @@ if JokerDisplay then
 		end
 	}
 end
+local aequilibrium = {
+	object_type = "Joker",
+	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
+        key = 'equilib',
+        loc_txt = {
+            name = "Ace Aequilibrium",
+            text = {
+                "Jokers appear using the",
+		"order from the {C:attention}Collection{}",
+                "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
+		"when hand is played",
+            }
+        },
+        config = {extra = {jokers = 2, num = 1}},
+        rarity = "cry_exotic",
+        pos = {x = 7, y = 0},
+        soul_pos = {x = 6, y = 0, extra = {x = 8, y = 0}},
+        atlas = 'atlasexotic',
+        cost = 50,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true,
+	immune_to_chemach = true,
+        eternal_compat = true,
+        perishable_compat = true,
+        loc_vars = function(self, info_queue, center)
+            info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+            return {vars = {center.ability.extra.jokers,}}
+        end,
+        calculate = function(self, card, context)
+            if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
+                for i = 1, math.min(200, card.ability.extra.jokers) do
+                    local newcard = create_card('Joker', G.jokers, nil, nil, nil, nil, nil)
+                    newcard:add_to_deck()
+                    G.jokers:emplace(newcard)
+                    newcard:set_edition({negative = true}, true)
+                end
+                --return {}
+            end
+        end,
+    }
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -861,4 +905,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium}}
