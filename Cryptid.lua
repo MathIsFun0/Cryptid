@@ -317,353 +317,8 @@ function Card:use_consumeable(area,copier)
     return ret
 end
 
-function joker_scaling_context(joker, context)
-    local name = joker.ability.name
-    if not context.blueprint and (joker.ability.set == "Joker") and not joker.debuff then
-        if (context.cardarea == G.jokers) and (name == 'Ride the Bus') and context.before then
-            local faces = false
-            for i = 1, #context.scoring_hand do
-                if context.scoring_hand[i]:is_face() then 
-                    faces = true 
-                    break
-                end
-            end
-            if not faces then
-                return true
-            end
-        end
-        if (name == "Egg") and context.end_of_round and not context.individual and not context.repetition then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Runner') and context.before and context.poker_hands and next(context.poker_hands['Straight']) then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Ice Cream') and not context.before and context.after then
-            return true
-        end
-        if (name == 'Constellation') and context.using_consumeable and (context.consumeable.ability.set == 'Planet') then
-            return true
-        end
-        -- Green Joker
-        if (name == 'Red Card') and context.skipping_booster then
-            return true
-        end
-        if (name == 'Madness') and context.setting_blind and not joker.getting_sliced and not context.blind.boss then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Square Joker') and context.before and (#context.full_hand == 4) then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Vampire') and context.before then
-            local enhanced = false
-            for k, v in ipairs(context.scoring_hand) do
-                if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then 
-                    enhanced = true
-                    break
-                end
-            end
-            if enhanced then
-                return true
-            end
-        end
-        if (name == 'Hologram') and context.playing_card_added and not joker.getting_sliced and context.cards and context.cards[1] then
-            return true
-        end
-        if (name == "Rocket") and context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not (G.GAME.blind.config and G.GAME.blind.config.bonus) then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Obelisk') and context.before then
-            local reset = true
-            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
-            for k, v in pairs(G.GAME.hands) do
-                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-                    reset = false
-                    break
-                end
-            end
-            if not reset then
-                return true
-            end
-        end
-        if (name == "Turtle Bean") and context.end_of_round and not context.individual and not context.repetition then
-            return true
-        end
-        if (name == "Lucky Cat") and not context.end_of_round and context.individual and (context.cardarea == G.play) and context.other_card.lucky_trigger then
-            return true
-        end
-        if (name == 'Flash Card') and context.reroll_shop then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Popcorn') and not context.before and context.after then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'Spare Trousers') and context.before and context.poker_hands and (next(context.poker_hands['Two Pair']) or next(context.poker_hands['Full House'])) then
-            return true
-        end
-        if (name == 'Ramen') and context.discard and not context.pre_discard then
-            return true
-        end
-        if (name == 'Castle') and context.discard and not context.pre_discard and context.other_card and not context.other_card.debuff and context.other_card:is_suit(G.GAME.current_round.castle_card.suit) then
-            return true
-        end
-        if (name == 'Campfire') and context.selling_card then
-            return true
-        end
-        if (name == 'Glass Joker') and context.cards_destroyed then
-            local glasses = false
-            for k, v in ipairs(context.glass_shattered) do
-                if v.shattered then
-                    glasses = true
-                    break
-                end
-            end
-            if glasses then
-                return true
-            end
-        end
-        if (name == 'Glass Joker') and context.remove_playing_cards then
-            local glasses = false
-            for k, v in ipairs(context.removed) do
-                if v.shattered then
-                    glasses = true
-                    break
-                end
-            end
-            if glasses then
-                return true
-            end
-        end
-        if (name == 'Glass Joker') and context.using_consumeable and context.consumeable and context.consumeable.ability.name == 'The Hanged Man' then
-            local shattered_glass = false
-            for k, val in ipairs(G.hand.highlighted) do
-                if val.ability.name == 'Glass Card' then shattered_glass = true end
-            end
-            if shattered_glass then
-                return true
-            end
-        end
-        if (name == "Wee Joker") and not context.end_of_round and context.individual and (context.cardarea == G.play) and (context.other_card:get_id() == 2) then
-            return true
-        end
-        if (name == 'Hit the Road') and context.discard and not context.pre_discard and context.other_card and not context.other_card.debuff and (context.other_card:get_id() == 11) then
-            return true
-        end
-        if (name == 'Caino') and context.cards_destroyed then
-            local faces = false
-            for k, v in ipairs(context.glass_shattered) do
-                if v:is_face() then
-                    faces = true
-                    break
-                end
-            end
-            if faces then
-                return true
-            end
-        end
-        if (name == 'Caino') and context.remove_playing_cards then
-            local faces = false
-            for k, v in ipairs(context.removed) do
-                if v:is_face() then
-                    faces = true
-                    break
-                end
-            end
-            if faces then
-                return true
-            end
-        end
-        if (name == 'Yorick') and context.discard and not context.pre_discard and (joker.ability.yorick_discards <= 1) then
-            return true
-        end
-        if (name == 'cry-cut') and context.ending_shop then
-            local destructable_codecard = false
-            for i = 1, #G.consumeables.cards do
-                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then 
-                    destructable_codecard = true
-                    break
-                end
-            end
-            if destructable_codecard then
-                return true
-            end
-        end
-        if (name == 'cry-python') and context.using_consumeable and (context.consumeable.ability.set == 'Code') and not context.consumeable.beginning_end then
-            return true
-        end
-        if (name == 'cry-Dropshot') and (context.cardarea == G.jokers) and context.before then
-            cards = false
-            for k, v in ipairs(context.scoring_hand) do
-                v.cry_dropshot_incompat = true
-            end
-            for k, v in ipairs(context.full_hand) do
-                if not v.cry_dropshot_incompat and v:is_suit(G.GAME.current_round.cry_dropshot_card.suit)then
-                    cards = true
-                    break
-                end
-            end
-            for k, v in ipairs(context.scoring_hand) do
-                v.cry_dropshot_incompat = nil
-            end
-            if cards then
-                return true
-            end
-        end
-        if (name == "cry-Pot of Jokes") and context.end_of_round and not context.individual and not context.repetition then
-            return true
-        end
-        if (name == "cry-Wee Fibonacci") and not context.end_of_round and context.individual and (context.cardarea == G.play) then
-            local rank = SMODS.Ranks[context.other_card.base.value].key
-			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
-                return true
-            end
-        end
-        if (context.cardarea == G.jokers) and (name == 'cry-The WHIP') and context.before and context.full_hand then
-            for i = 1, #context.full_hand do
-                if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
-                    for j = 1, #context.full_hand do
-                        if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
-                            --Different suits
-                            local suit_fail = false
-                            for k, v in pairs(SMODS.Suits) do
-                                if context.full_hand[i]:is_suit(k, nil, true) and context.full_hand[j]:is_suit(k, nil, true) then suit_fail = true end
-                            end
-                            if not suit_fail then
-                                return true
-                            end
-                        end
-                    end
-                end
-            end
-        end
-        if (name == "cry-Pickle") and context.setting_blind then
-            return true
-        end
-        if (name == "cry-Chili Pepper") and context.end_of_round and not context.individual and not context.repetition and not context.retrigger_joker then
-            return true
-        end
-        if (name == "cry-Cursor") and context.buying_card and not (context.card == card) then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'cry-Jimball') and context.before then
-            local reset = false
-            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
-            for k, v in pairs(G.GAME.hands) do
-                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-                    reset = true
-                    break
-                end
-            end
-            if not reset then
-                return true
-            end
-        end
-        if (name == 'cry-eternalflame') and context.selling_card then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'cry-fspinner') and context.before then
-            local reset = true
-            local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
-            for k, v in pairs(G.GAME.hands) do
-                if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-                    reset = false
-                    break
-                end
-            end
-            if not reset then
-                return true
-            end
-        end
-        if (name == "cry-krustytheclown") and not context.end_of_round and context.individual and (context.cardarea == G.play) then
-            return true
-        end
-        if (name == "cry-antennastoheaven") and not context.end_of_round and context.individual and (context.cardarea == G.play) then
-            local rank = SMODS.Ranks[context.other_card.base.value].key
-            if rank == "4" or rank == "7" then
-                return true
-            end
-        end
-        if (name == "cry-mondrian") and context.end_of_round and not context.individual and not context.repetition and (G.GAME.current_round.discards_used == 0) then
-            return true
-        end
-        if (name == 'cry-spaceglobe') and (context.cardarea == G.jokers) and context.before and joker.ability.extra and (context.scoring_name == joker.ability.extra.type) then
-            return true
-        end
-        if (name == 'cry-wheelhope') and context.cry_wheel_fail then
-            return true
-        end
-        if (name == 'cry-morse') and context.selling_card and context.card and context.card.edition and joker.ability.extra and joker.ability.extra.check then
-            return true
-        end
-        if (name == 'cry-m') and context.selling_card and (context.card.ability.name == "Jolly Joker") then
-            return true
-        end
-        if (name == 'cry-Number Blocks') and context.individual and not context.end_of_round and (context.cardarea == G.hand) and not context.before and not context.after and (context.other_card:get_id() == G.GAME.current_round.cry_nb_card.id) then
-            return true
-        end
-        if (name == "cry-goldjoker") and not context.end_of_round and context.individual and (context.cardarea == G.play) and (context.other_card.ability.effect == "Gold Card") then
-            return true
-        end
-        if (name == "cry-Redeo") and context.cry_ease_dollars and context.cry_ease_dollars < 0 then
-            if (joker.ability.extra.money_remaining - context.cry_ease_dollars) >= joker.ability.extra.money_req then
-                return true
-            end
-        end
-        if (name == 'cry-crustulum') and context.reroll_shop then
-            return true
-        end
-        if (context.cardarea == G.jokers) and (name == 'cry-primus') and context.before and context.full_hand then
-            local check = true
-            if context.scoring_hand then
-				for k, v in ipairs(context.full_hand) do
-					if v:get_id() == 4 or v:get_id() == 6 or v:get_id() == 8 or v:get_id() == 9 or v:get_id() == 10 or v:get_id() == 11 or v:get_id() == 12 or v:get_id() == 13 then
-						check = false
-					end
-				end
-			end
-            if check then
-                return true
-            end
-        end
-        if (name == "cry-Scalae") and context.end_of_round and not context.individual and not context.repetition then
-            return true
-        end
-        if (name == 'cry-Stella Mortis') and context.ending_shop then
-            local destructable_planet = false
-            for i = 1, #G.consumeables.cards do
-                if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then 
-                    destructable_planet = true
-                    break
-                end
-            end
-            if destructable_planet then
-                return true
-            end
-        end
-        if (name == 'cry-mneon') and context.end_of_round and not context.individual and not context.repetition then
-            local jolly = false
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].ability.name == 'Jolly Joker' then 
-                    jolly = true
-                    break
-                end
-            end
-            if jolly then
-                return true
-            end
-        end
-    end
-    return false
-end
-
-local cj = Card.calculate_joker
-function Card:calculate_joker(context)
-    local ggpn = G.GAME.probabilities.normal
-    if not G.GAME.cry_double_scale then
-        G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
-    end
-    if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
-    end
+--some functions to minimize the load on calculate_joker itself
+function Card:cry_copy_ability()
     local orig_ability = {}
     if self.ability then
         for i, j in pairs(self.ability) do
@@ -679,13 +334,10 @@ function Card:calculate_joker(context)
             end
         end
     end
-    local in_context_scaling = joker_scaling_context(self, context)
-    local ret = cj(self, context)
-    if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = ggpn
-    end
+    return orig_ability
+end
 
-    
+function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
     if self.ability.name ~= "cry-happyhouse"
 	    and self.ability.name ~= "cry-sapling"
 	    and self.ability.name ~= "cry-mstack"
@@ -983,77 +635,30 @@ function Card:calculate_joker(context)
             end
         end
     end
-    --Make every Joker return a value when triggered
-    if not ret then
-        if context.selling_self then
-            if self.ability.name == "Luchador" then ret = {calculated = true} end
-            if self.ability.name == "Diet Cola" then ret = {calculated = true} end
-            if self.ability.name == 'Invisible Joker' and (self.ability.invis_rounds >= self.ability.extra) and not context.blueprint then ret = {calculated = true} end
-        end
-        if context.selling_card and self.ability.name == 'Campfire' and not context.blueprint then ret = {calculated = true} end
-        if context.reroll_shop and self.ability.name == 'Flash Card' and not context.blueprint then ret = {calculated = true} end
-        if context.ending_shop and self.ability.name == 'Perkeo' then ret = {calculated = true} end
-        if context.skip_blind and self.ability.name == 'Throwback' and not context.blueprint then ret = {calculated = true} end
-        if context.skipping_booster and self.ability.name == 'Red Card' and not context.blueprint then ret = {calculated = true} end
-        if context.playing_card_added and not self.getting_sliced and self.ability.name == 'Hologram' and (not context.blueprint) and context.cards and context.cards[1] then ret = {calculated = true} end
-        if context.first_hand_drawn and self.ability.name == 'Certificate' then ret = {calculated = true} end
-        if context.setting_blind and not self.getting_sliced then
-            if self.ability.name == 'Chicot' and not context.blueprint and context.blind.boss and not self.getting_sliced then ret = {calculated = true} end
-            if self.ability.name == 'Madness' and not context.blueprint and not context.blind.boss then ret = {calculated = true} end
-            if self.ability.name == 'Burglar' and not (context.blueprint_card or self).getting_sliced then ret = {calculated = true} end
-            if self.ability.name == 'Riff-raff' and not (context.blueprint_card or self).getting_sliced and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then ret = {calculated = true} end
-            if self.ability.name == 'Cartomancer' and not (context.blueprint_card or self).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then ret = {calculated = true} end
-            if self.ability.name == 'Ceremonial Dagger' and not context.blueprint then ret = {calculated = true} end
-            if self.ability.name == 'Marble Joker' and not (context.blueprint_card or self).getting_sliced then ret = {calculated = true} end
-        end
-        if context.destroying_card and not context.blueprint and self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then ret = {calculated = true} end
-        if context.cards_destroyed then
-            if self.ability.name == 'Caino' and not context.blueprint then ret = {calculated = true} end
-            --todo: Glass Joker
-        end
-        if context.remove_playing_cards then
-            if self.ability.name == 'Caino' and not context.blueprint then ret = {calculated = true} end
-            --todo: Glass Joker
-        end
-        if context.using_consumeable then
-            --todo: Glass Joker
-            if self.ability.name == 'Fortune Teller' and not context.blueprint and (context.consumeable.ability.set == "Tarot") then ret = {calculated = true} end
-            if self.ability.name == 'Constellation' and not context.blueprint and context.consumeable.ability.set == 'Planet' then ret = {calculated = true} end
-        end
-        if context.pre_discard and self.ability.name == 'Burnt Joker' and G.GAME.current_round.discards_used <= 0 and not context.hook then ret = {calculated = true} end
-        if self.ability.name == 'Faceless Joker' and context.full_hand and context.other_card == context.full_hand[#context.full_hand] then
-            local face_cards = 0
-            for k, v in ipairs(context.full_hand) do
-                if v:is_face() then face_cards = face_cards + 1 end
-            end
-            if face_cards >= self.ability.extra.faces then
-                ret = {calculated = true}
-            end
-        end
-    end
-    --Check for retrggering jokers
-    if ret and not context.retrigger_joker and not context.retrigger_joker_check then
-        if type(ret) ~= 'table' then ret = {joker_repetitions = {0}} end
-        ret.joker_repetitions = {0}
-        for i = 1, #G.jokers.cards do
-            local check = G.jokers.cards[i]:calculate_joker{retrigger_joker_check = true, other_card = self}
-            if type(check) == 'table' then 
-                ret.joker_repetitions[i] = check and check.repetitions and check or 0
-            else
-                ret.joker_repetitions[i] = 0
-            end
-            if G.jokers.cards[i] == self and self.edition and self.edition.retriggers then
-                local old_repetitions = ret.joker_repetitions[i] ~= 0 and ret.joker_repetitions[i].repetitions or 0
-                local check = calculate_blurred(self)
-                if check and check.repetitions then
-                    check.repetitions = check.repetitions + old_repetitions
-                    ret.joker_repetitions[i] = check
-                end
-            end
+end
 
+local cj = Card.calculate_joker
+function Card:calculate_joker(context)
+    local ggpn = G.GAME.probabilities.normal
+    if not G.GAME.cry_double_scale then
+        G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
+    end
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = 1e300
+    end
+    local orig_ability = self:cry_copy_ability()
+    local in_context_scaling = false
+    local ret, trig = cj(self, context)
+    if not context.blueprint and (self.ability.set == "Joker") and not self.debuff then
+        if ret or trig then
+            in_context_scaling = true
         end
     end
-    return ret
+    if self.ability.cry_rigged then
+        G.GAME.probabilities.normal = ggpn
+    end
+    self:cry_double_scale_calc(orig_ability, in_context_scaling)
+    return ret, trig
 end
 
 function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
