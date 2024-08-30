@@ -382,9 +382,6 @@ local gold_edition = {
     key = "gold",
     shader = "gold",
 }
-
-
-
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -392,7 +389,6 @@ local echo_atlas = {
     px = 71,
     py = 95,
 }
-
 local echo = {
     object_type = 'Enhancement',
     key = 'echo',
@@ -428,6 +424,39 @@ local eclipse = {
 
         return {vars = {self.config.max_highlighted}}
     end,
+}
+local blessing = {
+    object_type = "Consumable",
+    set = "Tarot",
+    name = "cry-theblessing",
+    key = "theblessing",
+    pos = {x=2, y=3},
+    loc_txt = {
+        name = "The Blessing",
+        text = {
+		"Creates {C:attention}1{}",
+		"random {C:attention}consumable{}",
+		"{C:inactive}(Must have room){}",
+        }
+    },
+    cost = 3,
+    atlas = "atlasnotjokers",
+    can_use = function(self, card)
+        return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
+    end,
+    can_bulk_use = true,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                if G.consumeables.config.card_limit > #G.consumeables.cards then
+                    play_sound('timpani')
+                    local _card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'blessing')
+                    _card:add_to_deck()
+                    G.consumeables:emplace(_card)
+                    card:juice_up(0.3, 0.5)
+                end
+                return true end }))
+        delay(0.6)
+    end
 }
 --note: seal colors are also used in lovely.toml for spectral descriptions
 -- and must be modified in both places
@@ -778,7 +807,7 @@ local memory = {
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
 mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
 glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
-echo_atlas, echo, eclipse, 
+echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
 if cry_enable_epics then
