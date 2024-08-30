@@ -294,6 +294,7 @@ end
 
 local ec = eval_card
 function eval_card(card, context)
+    if card.will_shatter then return end
     local ggpn = G.GAME.probabilities.normal
     if card.ability.cry_rigged then
         G.GAME.probabilities.normal = 1e300
@@ -639,6 +640,7 @@ end
 
 local cj = Card.calculate_joker
 function Card:calculate_joker(context)
+    if self.will_shatter then return end
     local ggpn = G.GAME.probabilities.normal
     if not G.GAME.cry_double_scale then
         G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something

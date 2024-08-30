@@ -370,6 +370,38 @@ local glass_edition = {
     shader = "glass",
     disable_base_shader = true,
     disable_shadow = true,
+    weight = 7,
+    extra_cost = 2,
+    config = {retriggers = 1, shatter_chance = 20},
+    loc_vars = function(self, info_queue)
+        return {vars = {G.GAME.probabilities.normal or 1, self.config.shatter_chance}}
+    end,
+    loc_txt = {
+        name = "Fragile",
+        label = "Fragile",
+        text = {
+            "{C:attention}Retrigger{} this card",
+            "{C:green}#1# in #2#{} chance this",
+            "card is {C:red}destroyed",
+            "when triggered"	
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_triggered or (context.from_playing_card and context.cardarea and context.cardarea == G.play and not context.repetition) then
+            if pseudorandom("cry_fragile") < G.GAME.probabilities.normal/self.config.shatter_chance then
+                card.will_shatter = true
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    func = function()
+                        if not card.shattered then
+                            card:shatter()
+                        end
+                    return true
+                    end
+                }))
+            end
+        end
+    end
 }
 
 local gold_shader = {
@@ -381,6 +413,26 @@ local gold_edition = {
     object_type = "Edition",
     key = "gold",
     shader = "gold",
+    weight = 7,
+    extra_cost = 2,
+    config = {dollars = 2},
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.dollars}}
+    end,
+    loc_txt = {
+        name = "Golden",
+        label = "Golden",
+        text = {
+            "{C:money}+$#1#{} when used",
+            "or triggered"	
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_triggered or context.from_consumable or (context.from_playing_card and context.cardarea and context.cardarea == G.play and not context.repetition) then
+            ease_dollars(self.config.dollars)
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('$')..self.config.dollars, colour = G.C.MONEY})
+        end
+    end
 }
 
 
@@ -777,7 +829,7 @@ local memory = {
 
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
 mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
-glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
+glitched, mosaic, oversat, blurred, astral, glass_edition, gold_edition,
 echo_atlas, echo, eclipse, 
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}

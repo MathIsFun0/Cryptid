@@ -1289,7 +1289,7 @@ local CodeJoker = {
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			card:juice_up(0.3, 0.5)
-			return {completed=true}
+			return nil, true
 		end
 	end
 }
@@ -1403,7 +1403,7 @@ local cut = {
                 if not (context.blueprint_card or self).getting_sliced then
                     card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "X"..number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)).." Mult"})
                 end
-                return {calculated = true}, true
+                return nil, true
             end
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then

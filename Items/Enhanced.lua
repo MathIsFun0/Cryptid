@@ -61,6 +61,8 @@ local typed_decks = {
 	{'cry',			'Edition',		nil,						'Oversaturated',		'oversat',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Glitched',				'glitched',			nil,				nil,				5,		2,		"Wait, isn't this just Misprint Deck?"},
 	{'cry',			'Edition',		'Meck',						'Jolly',				'm',				nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Golden',				'gold',				nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Fragile',				'glass',			nil,				nil,				5,		2,		''},
 	
 	{'cry',			'Seal',			'Typhoon Deck',				'Azure',				'azure',			nil,				nil,				0,		2,		''},
 	
