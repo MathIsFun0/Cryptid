@@ -1479,22 +1479,28 @@ local wario = {
         name = 'Wario',
         text = {
             "All Jokers give",
-            "{C:money}$#1#{} at end of round",
+            "{C:money}$#1#{} when triggered",
 		}
     },
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.money}}
     end,
-
-calc_dollar_bonus = function(self, card)
-  if G.jokers and G.jokers.cards then
-    return #G.jokers.cards * card.ability.extra.money
-  end
-end,
+    calculate = function(self, card, context)
+        if context.post_trigger then
+            ease_dollars(card.ability.extra.money)
+            card_eval_status_text(context.blueprint_card or context.other_joker, 'extra', nil, nil, nil, {message = localize('$')..card.ability.extra.money, colour = G.C.MONEY})
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    card:juice_up(0.5, 0.5)
+                    return true
+                end
+            })) 
+        end
+    end,
 
 	rarity = 4,
 	cost = 20,
-
+    blueprint_compat = true,
 	atlas = "atlasthree",
 }
 if JokerDisplay then
@@ -4404,10 +4410,14 @@ local oldblueprint = {
         
         if context.blueprint > #G.jokers.cards + 1 then return end
         
-        local other_joker_ret = other_joker:calculate_joker(context)
-        if other_joker_ret then
+        local other_joker_ret, trig = other_joker:calculate_joker(context)
+        if other_joker_ret or trig then
+            if not other_joker_ret then
+                other_joker_ret = {}
+            end
             other_joker_ret.card = context.blueprint_card or card
             other_joker_ret.colour = G.C.BLUE
+            other_joker_ret.no_callback = true
             return other_joker_ret
         end
     end
