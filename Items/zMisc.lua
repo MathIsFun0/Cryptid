@@ -796,7 +796,7 @@ function Card:calculate_seal(context)
         end
         --this part might be good to go into steamodded? doesn't stack well with other things though
         --in all honesty there should probably be other calculate effects for enhancements and editions
-        if self.edition and self.edition.cry_blur and not context.other_card then
+        if self.edition and not context.other_card then
             local check = self:calculate_retriggers()
             
             if check and check.repetitions then
