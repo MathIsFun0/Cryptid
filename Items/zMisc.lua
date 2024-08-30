@@ -338,6 +338,11 @@ local jollyedition = {
     in_shop = false,
     weight = 0,
     name = "cry-jollyedition",
+    sound = {
+        sound = 'cry_e_jolly',
+        per = 1,
+        vol = 0.3
+    },
     extra_cost = 0,
     config = {mult = 8},
     apply_to_float = true,
