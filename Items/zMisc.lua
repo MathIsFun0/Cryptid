@@ -908,7 +908,7 @@ end
 local gcui = generate_card_ui
 function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
     local full_UI_table = gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
-    if card and card.edition and card.edition.cry_m and (not card.ability or card.ability.set ~= "Edition") and full_UI_table and full_UI_table.name and full_UI_table.name[1] and full_UI_table.name[1].config and full_UI_table.name[1].config.object and full_UI_table.name[1].config.object.config then
+    if card and card.edition and card.edition.cry_m and (not card.ability or card.ability.set ~= "Edition") and full_UI_table and full_UI_table.name and type(full_UI_table.name) == 'table' and full_UI_table.name[1] and full_UI_table.name[1].config and full_UI_table.name[1].config.object and full_UI_table.name[1].config.object.config then
         local conf = full_UI_table.name[1].config.object.config
         if conf.string and #conf.string > 0 then
             local function m_ify_word(text)
