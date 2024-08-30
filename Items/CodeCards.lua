@@ -1063,6 +1063,45 @@ local rework_tag = {
     end
 }
 
+local pullrequest = {
+    object_type = 'Consumable',
+    set = 'Code',
+    key = 'pullrequest',
+    name = 'cry-Pull Request',
+    atlas = 'code',
+    pos = {
+        x = 0,
+        y = 4,
+    },
+    cost = 4,
+    loc_txt = {
+        name = '://PULLREQUEST',
+        text = {
+            '{C:red}Destroy{} a random',
+            '{C:cry_code}Code{} card, create a random {C:spectral}Spectral{} card'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+		return {vars = {self.config.create}}
+	end,
+    can_use = function(self, card)
+        return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
+    end,
+        use = function(self, card, area, copier)
+            local destructable_codecard = {}
+            for i = 1, #G.consumeables.cards do
+                if G.consumeables.cards[i].ability.set == 'Code' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_codecard[#destructable_codecard+1] = G.consumeables.cards[i] end
+            end
+            local codecard_to_destroy = #destructable_codecard > 0 and pseudorandom_element(destructable_codecard, pseudoseed('pullrequest')) or nil
+            if codecard_to_destroy then
+                codecard_to_destroy:start_dissolve()
+                local newcard = create_card('Spectral',G.consumeables, nil, nil, nil, nil, nil, 'pullrequest')
+                newcard:add_to_deck()
+                G.consumeables:emplace(newcard)
+            end
+        end
+}
+
 local automaton = {
     object_type = "Consumable",
     set = "Tarot",
@@ -2674,7 +2713,7 @@ crashes = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag, pullrequest}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 if Cryptid_config["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
 if Cryptid_config["Epic Jokers"] then
