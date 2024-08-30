@@ -596,7 +596,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                         end
                         if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
                             local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
-                            local check = calculate_blurred(G.jokers.cards[i])
+                            local check = G.jokers.cards[i]:calculate_retriggers()
                             if check and check.repetitions then
                                 check.repetitions = check.repetitions + old_repetitions
                                 reps[i] = check
@@ -730,7 +730,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                     end
                     if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
                         local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
-                        local check = calculate_blurred(G.jokers.cards[i])
+                        local check = G.jokers.cards[i]:calculate_retriggers()
                         if check and check.repetitions then
                             check.repetitions = check.repetitions + old_repetitions
                             reps[i] = check
@@ -839,7 +839,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                     end
                     if G.jokers.cards[i2] == G.jokers.cards[i] and G.jokers.cards[i].edition and G.jokers.cards[i].edition.retriggers then
                         local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
-                        local check = calculate_blurred(G.jokers.cards[i])
+                        local check = G.jokers.cards[i]:calculate_retriggers()
                         if check and check.repetitions then
                             check.repetitions = check.repetitions + old_repetitions
                             reps[i] = check

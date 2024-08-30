@@ -764,25 +764,6 @@ end
 return {name = "Misc.", 
         init = function()
 
-function calculate_blurred(card)
-    local retriggers = card.edition.retriggers
-
-    if card.edition.retrigger_chance then
-        local chance = card.edition.retrigger_chance
-        chance = G.GAME.probabilities.normal / chance
-
-        if pseudorandom("blurred") <= chance then
-            retriggers = retriggers + card.edition.extra_retriggers
-        end
-    end
-    
-    return {
-        message = 'Again?',
-        repetitions = retriggers,
-        card = card
-    }
-end
-
 se = Card.set_edition
 function Card:set_edition(x,y,z)
     local from_copy = false
@@ -813,8 +794,10 @@ function Card:calculate_seal(context)
                 total_repetitions = total_repetitions + self.ability.retriggers
             end
         end
+        --this part might be good to go into steamodded? doesn't stack well with other things though
+        --in all honesty there should probably be other calculate effects for enhancements and editions
         if self.edition and self.edition.cry_blur and not context.other_card then
-            local check = calculate_blurred(self)
+            local check = self:calculate_retriggers()
             
             if check and check.repetitions then
                 total_repetitions = total_repetitions + check.repetitions
