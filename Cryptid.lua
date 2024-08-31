@@ -296,7 +296,7 @@ local ec = eval_card
 function eval_card(card, context)
     local ggpn = G.GAME.probabilities.normal
     if card.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local ret = ec(card, context)
     if card.ability.cry_rigged then
@@ -308,7 +308,7 @@ local uc = Card.use_consumeable
 function Card:use_consumeable(area,copier)
     local ggpn = G.GAME.probabilities.normal
     if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local ret = uc(self, area, copier)
     if self.ability.cry_rigged then
