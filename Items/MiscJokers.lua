@@ -272,7 +272,7 @@ local queensgambit = {
                         return true
                     end
                 }))
-                return nio, true
+                return nil, true
             end
         end
     end
