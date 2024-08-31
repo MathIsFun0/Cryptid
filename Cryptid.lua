@@ -2170,6 +2170,12 @@ SMODS.Atlas({
     py = 32
 }):register()
 SMODS.Atlas({
+    key = "placeholders",
+    path = "placeholders.png",
+    px = 71,
+    py = 95
+}):register()
+SMODS.Atlas({
     key = "atlasepic",
     path = "atlasepic.png",
     px = 71,
