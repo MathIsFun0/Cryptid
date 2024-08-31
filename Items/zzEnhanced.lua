@@ -572,7 +572,7 @@ return {name = "Enhanced Decks",
             end
             local sa = Card.set_ability
             function Card:set_ability(center, y, z)
-                if center.set == "Enhanced" then
+                if center and center.set == "Enhanced" then
                     return sa(self, G.GAME.modifiers.cry_force_enhancement and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement] or center, y, z)
                 else
                     return sa(self, center, y, z)
