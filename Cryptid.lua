@@ -662,7 +662,7 @@ function Card:calculate_joker(context)
         G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
     end
     if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local orig_ability = {}
     if self.ability then
@@ -907,7 +907,7 @@ function Card:calculate_joker(context)
                 local obj = G.jokers.cards[i].config.center
                 if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                     if G.jokers.cards[i].ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                     if G.jokers.cards[i].ability.cry_rigged then
@@ -931,7 +931,7 @@ function Card:calculate_joker(context)
                     for i2=1, #G.jokers.cards do
                         local _card = G.jokers.cards[i2]
                         if _card.ability.cry_rigged then
-                            G.GAME.probabilities.normal = 1e300
+                            G.GAME.probabilities.normal = 1e9
                         end
                         local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                         if _card.ability.cry_rigged then
@@ -956,7 +956,7 @@ function Card:calculate_joker(context)
                             for r = 1, j.repetitions do
                                 card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                                 if G.jokers.cards[i].ability.cry_rigged then
-                                    G.GAME.probabilities.normal = 1e300
+                                    G.GAME.probabilities.normal = 1e9
                                 end
                                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                                 if G.jokers.cards[i].ability.cry_rigged then
@@ -1088,7 +1088,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                 if G.jokers.cards[i].ability.cry_rigged then
-                    G.GAME.probabilities.normal = 1e300
+                    G.GAME.probabilities.normal = 1e9
                 end
                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                 if G.jokers.cards[i].ability.cry_rigged then
@@ -1112,7 +1112,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
                     if _card.ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                     if _card.ability.cry_rigged then
@@ -1137,7 +1137,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                             if G.jokers.cards[i].ability.cry_rigged then
-                                G.GAME.probabilities.normal = 1e300
+                                G.GAME.probabilities.normal = 1e9
                             end
                             local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                             if G.jokers.cards[i].ability.cry_rigged then
@@ -1197,7 +1197,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                 if G.jokers.cards[i].ability.cry_rigged then
-                    G.GAME.probabilities.normal = 1e300
+                    G.GAME.probabilities.normal = 1e9
                 end
                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                 if G.jokers.cards[i].ability.cry_rigged then
@@ -1221,7 +1221,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
                     if _card.ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                     if _card.ability.cry_rigged then
@@ -1246,7 +1246,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                             if G.jokers.cards[i].ability.cry_rigged then
-                                G.GAME.probabilities.normal = 1e300
+                                G.GAME.probabilities.normal = 1e9
                             end
                             local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                             if G.jokers.cards[i].ability.cry_rigged then
