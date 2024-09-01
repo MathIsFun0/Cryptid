@@ -326,6 +326,82 @@ local blurred = {
         local retriggers = center and center.edition.retriggers or self.config.retriggers
 
         return {vars = {G.GAME.probabilities.normal, chance, retriggers}}
+    end,
+    calculate = function(self, card, context)
+        if context.retrigger_edition_check then
+            if pseudorandom("cry_blurred") <= G.GAME.probabilities.normal / self.config.retrigger_chance then
+                return {
+                    message = "Again?",
+                    repetitions = self.config.extra_retriggers,
+                    card = card
+                }
+            end
+        end
+    end
+}
+local noisy_shader = {
+    object_type = "Shader",
+    key = 'noisy', 
+    path = 'noisy.fs'
+}
+local noisy = {
+    object_type = "Edition",
+    key = "noisy",
+    weight = 3,
+    shader = "noisy",
+    in_shop = true,
+    extra_cost = 4,
+    config = {min_mult = 0, max_mult = 30, min_chips = 0, max_chips = 150},
+    sound = {
+        sound = 'cry_e_oversaturated',
+        per = 1,
+        vol = 0.25
+    },
+    loc_txt = {
+        name = "Noisy",
+        label = "Noisy",
+        text = {
+            "???"
+        }
+    },
+    calculate = function(self, card, context)
+        if context.edition_main then
+            context.edition_val.mult_mod = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult)
+            context.edition_val.chip_mod = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
+        end
+    end,
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        if not full_UI_table.name then
+            full_UI_table.name = localize { type = 'name', set = self.set, key = self.key, nodes = full_UI_table.name }
+        end
+        local r_mults = {}
+        for i = self.config.min_mult, self.config.max_mult do
+            r_mults[#r_mults+1] = tostring(i)
+        end
+        local loc_mult = ' '..(localize('k_mult'))..' '
+        local r_chips = {}
+        for i = self.config.min_chips, self.config.max_chips do
+            r_chips[#r_chips+1] = tostring(i)
+        end
+        local loc_chips = ' Chips '
+        mult_ui = {
+            {n=G.UIT.T, config={text = '  +',colour = G.C.MULT, scale = 0.32}},
+            {n=G.UIT.O, config={object = DynaText({string = r_mults, colours = {G.C.MULT},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0})}},
+            {n=G.UIT.O, config={object = DynaText({string = {
+                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
+                loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult},
+            colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.2011, scale = 0.32, min_cycle_time = 0})}},
+        }
+        chip_ui = {
+            {n=G.UIT.T, config={text = '  +',colour = G.C.CHIPS, scale = 0.32}},
+            {n=G.UIT.O, config={object = DynaText({string = r_chips, colours = {G.C.CHIPS},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0})}},
+            {n=G.UIT.O, config={object = DynaText({string = {
+                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "@#"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(2,2) or 'm')..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 7), colour = G.C.BLUE},
+                loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips},
+            colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.2011, scale = 0.32, min_cycle_time = 0})}},
+        }
+        desc_nodes[#desc_nodes+1] = mult_ui
+        desc_nodes[#desc_nodes+1] = chip_ui
     end
 }
 local jollyeditionshader = {
@@ -862,8 +938,8 @@ local memory = {
 }
 
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
-mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
-glass_edition, gold_edition, glitched, mosaic, oversat, blurred, astral,
+mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader, noisy_shader,
+glass_edition, gold_edition, glitched, noisy, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
@@ -909,13 +985,13 @@ function Card:calculate_seal(context)
         end
         --this part might be good to go into steamodded? doesn't stack well with other things though
         --in all honesty there should probably be other calculate effects for enhancements and editions
-        if self.edition and not context.other_card then
+        --[[if self.edition and not context.other_card then
             local check = self:calculate_retriggers()
             
             if check and check.repetitions then
                 total_repetitions = total_repetitions + check.repetitions
             end
-        end
+        end--]]
 
         if total_repetitions > 0 then
             return {
