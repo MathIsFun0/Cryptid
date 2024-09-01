@@ -338,6 +338,11 @@ local jollyedition = {
     in_shop = false,
     weight = 0,
     name = "cry-jollyedition",
+    sound = {
+        sound = 'cry_e_jolly',
+        per = 1,
+        vol = 0.3
+    },
     extra_cost = 0,
     config = {mult = 8},
     apply_to_float = true,
@@ -434,9 +439,6 @@ local gold_edition = {
         end
     end
 }
-
-
-
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -444,7 +446,6 @@ local echo_atlas = {
     px = 71,
     py = 95,
 }
-
 local echo = {
     object_type = 'Enhancement',
     key = 'echo',
@@ -480,6 +481,39 @@ local eclipse = {
 
         return {vars = {self.config.max_highlighted}}
     end,
+}
+local blessing = {
+    object_type = "Consumable",
+    set = "Tarot",
+    name = "cry-theblessing",
+    key = "theblessing",
+    pos = {x=2, y=3},
+    loc_txt = {
+        name = "The Blessing",
+        text = {
+		"Creates {C:attention}1{}",
+		"random {C:attention}consumable{}",
+		"{C:inactive}(Must have room){}",
+        }
+    },
+    cost = 3,
+    atlas = "atlasnotjokers",
+    can_use = function(self, card)
+        return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
+    end,
+    can_bulk_use = true,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                if G.consumeables.config.card_limit > #G.consumeables.cards then
+                    play_sound('timpani')
+                    local _card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'blessing')
+                    _card:add_to_deck()
+                    G.consumeables:emplace(_card)
+                    card:juice_up(0.3, 0.5)
+                end
+                return true end }))
+        delay(0.6)
+    end
 }
 --note: seal colors are also used in lovely.toml for spectral descriptions
 -- and must be modified in both places
@@ -830,7 +864,7 @@ local memory = {
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
 mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
 glass_edition, gold_edition, glitched, mosaic, oversat, blurred, astral,
-echo_atlas, echo, eclipse, 
+echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory}
 if cry_enable_epics then
@@ -904,50 +938,12 @@ function Tag:apply_to_run(x)
     end
     return ret
 end
-
-function Card:calculate_banana()
-    if not self.ability.extinct then
-        if self.ability.banana and (pseudorandom('banana') < G.GAME.probabilities.normal/10) then 
-            self.ability.extinct = true
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    play_sound('tarot1')
-                    self.T.r = -0.2
-                    self:juice_up(0.3, 0.4)
-                    self.states.drag.is = true
-                    self.children.center.pinch.x = true
-                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                        func = function()
-                                if self.area then self.area:remove_card(self) end
-                                self:remove()
-                                self = nil
-                            return true; end})) 
-                    return true
-                end
-            }))
-            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
-            return true
-        elseif self.ability.banana then
-            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_safe_ex'), delay = 0.1})
-            return false
-        end
-    end
-    return false
-end
-
-function Card:set_banana(_banana)
-    self.ability.banana = _banana
-end
-
-function Card:set_pinned(_pinned)
-    self.pinned = _pinned
-end
-
+		
 --Change name of cards with Jolly edition
 local gcui = generate_card_ui
 function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
     local full_UI_table = gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
-    if card and card.edition and card.edition.cry_m and (not card.ability or card.ability.set ~= "Edition") and full_UI_table and full_UI_table.name and full_UI_table.name[1] and full_UI_table.name[1].config and full_UI_table.name[1].config.object and full_UI_table.name[1].config.object.config then
+    if card and card.edition and card.edition.cry_m and (not card.ability or card.ability.set ~= "Edition") and full_UI_table and full_UI_table.name and type(full_UI_table.name) == 'table' and full_UI_table.name[1] and full_UI_table.name[1].config and full_UI_table.name[1].config.object and full_UI_table.name[1].config.object.config then
         local conf = full_UI_table.name[1].config.object.config
         if conf.string and #conf.string > 0 then
             local function m_ify_word(text)

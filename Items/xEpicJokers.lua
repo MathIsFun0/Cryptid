@@ -509,7 +509,7 @@ local number_blocks = {
     object_type = "Joker",
     name = "cry-Number Blocks",
     key = "number_blocks",
-    config = {extra = {money_mod = 1, money = 0}},
+    config = {extra = {money_mod = 1, money = 1}},
     pos = {x = 0, y = 2},
     loc_txt = {
         name = 'Number Blocks',

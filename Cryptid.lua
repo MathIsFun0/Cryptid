@@ -297,7 +297,7 @@ function eval_card(card, context)
     if card.will_shatter then return end
     local ggpn = G.GAME.probabilities.normal
     if card.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local ret = ec(card, context)
     if card.ability.cry_rigged then
@@ -309,7 +309,7 @@ local uc = Card.use_consumeable
 function Card:use_consumeable(area,copier)
     local ggpn = G.GAME.probabilities.normal
     if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local ret = uc(self, area, copier)
     if self.ability.cry_rigged then
@@ -560,7 +560,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                 local obj = G.jokers.cards[i].config.center
                 if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                     if G.jokers.cards[i].ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                     if G.jokers.cards[i].ability.cry_rigged then
@@ -584,7 +584,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                     for i2=1, #G.jokers.cards do
                         local _card = G.jokers.cards[i2]
                         if _card.ability.cry_rigged then
-                            G.GAME.probabilities.normal = 1e300
+                            G.GAME.probabilities.normal = 1e9
                         end
                         local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                         if _card.ability.cry_rigged then
@@ -609,7 +609,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                             for r = 1, j.repetitions do
                                 card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                                 if G.jokers.cards[i].ability.cry_rigged then
-                                    G.GAME.probabilities.normal = 1e300
+                                    G.GAME.probabilities.normal = 1e9
                                 end
                                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                                 if G.jokers.cards[i].ability.cry_rigged then
@@ -695,7 +695,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                 if G.jokers.cards[i].ability.cry_rigged then
-                    G.GAME.probabilities.normal = 1e300
+                    G.GAME.probabilities.normal = 1e9
                 end
                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                 if G.jokers.cards[i].ability.cry_rigged then
@@ -719,7 +719,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
                     if _card.ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                     if _card.ability.cry_rigged then
@@ -744,7 +744,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                             if G.jokers.cards[i].ability.cry_rigged then
-                                G.GAME.probabilities.normal = 1e300
+                                G.GAME.probabilities.normal = 1e9
                             end
                             local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                             if G.jokers.cards[i].ability.cry_rigged then
@@ -804,7 +804,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                 if G.jokers.cards[i].ability.cry_rigged then
-                    G.GAME.probabilities.normal = 1e300
+                    G.GAME.probabilities.normal = 1e9
                 end
                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                 if G.jokers.cards[i].ability.cry_rigged then
@@ -828,7 +828,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
                     if _card.ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                     if _card.ability.cry_rigged then
@@ -853,7 +853,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                             if G.jokers.cards[i].ability.cry_rigged then
-                                G.GAME.probabilities.normal = 1e300
+                                G.GAME.probabilities.normal = 1e9
                             end
                             local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                             if G.jokers.cards[i].ability.cry_rigged then
@@ -1619,7 +1619,41 @@ function Card:set_eternal(_eternal)
         self.ability.eternal = _eternal
     end
 end
-
+function Card:calculate_banana()
+    if not self.ability.extinct then
+        if self.ability.banana and (pseudorandom('banana') < G.GAME.probabilities.normal/10) then 
+            self.ability.extinct = true
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    self.T.r = -0.2
+                    self:juice_up(0.3, 0.4)
+                    self.states.drag.is = true
+                    self.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                        func = function()
+                                if self.area then self.area:remove_card(self) end
+                                self:remove()
+                                self = nil
+                            return true; end})) 
+                    return true
+                end
+            }))
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
+            return true
+        elseif self.ability.banana then
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_safe_ex'), delay = 0.1})
+            return false
+        end
+    end
+    return false
+end
+function Card:set_banana(_banana)
+    self.ability.banana = _banana
+end
+function Card:set_pinned(_pinned)
+    self.pinned = _pinned
+end
 --Register custom rarity pools
 local is = SMODS.injectItems
 function SMODS.injectItems()
@@ -1698,6 +1732,10 @@ SMODS.Sound({
     path = "e_blur.ogg"
 })
 SMODS.Sound({
+    key = "e_jolly",
+    path = "e_jolly.ogg"
+})
+SMODS.Sound({
     key = "studiofromhelsinki",
     path = "studiofromhelsinki.ogg"
 })
@@ -1737,6 +1775,12 @@ SMODS.Atlas({
     path = "cry_icon.png",
     px = 32,
     py = 32
+}):register()
+SMODS.Atlas({
+    key = "placeholders",
+    path = "placeholders.png",
+    px = 71,
+    py = 95
 }):register()
 SMODS.Atlas({
     key = "atlasepic",

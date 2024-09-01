@@ -90,7 +90,7 @@ local vacuum = {
         name = 'Vacuum',
         text = {
 			"Removes {C:red}all {C:green}modifications{}",
-			"from {C:red}all{} cards in your hand,",
+			"from {C:red}all{} cards held in hand,",
 			"Earn {C:money}$#1#{} per {C:green}modification{} removed",
 			"{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)"
         }
@@ -143,7 +143,7 @@ local hammerspace = {
         text = {
 			"Apply random {C:attention}consumables{}",
 			"as if they were {C:dark_edition}Enhancements{}",
-			"to your {C:attention}entire hand{}"
+			"to cards held in hand"
         }
     },
     cost = 4,
@@ -178,8 +178,10 @@ local lock = {
     loc_txt = {
         name = 'Lock',
         text = {
-			"Remove {C:red}all{} stickers from {C:red}all {C:attention}Jokers{},",
-			"then apply {C:purple,E:1}Eternal{} to a random {C:attention}Joker{}"
+			"Remove {C:red}all{} stickers",
+			"from {C:red}all{} Jokers,",
+			"then apply {C:purple,E:1}Eternal{}",
+			"to a random {C:attention}Joker{}"
         }
     },
     cost = 4,
@@ -428,8 +430,10 @@ local replica = {
     loc_txt = {
         name = 'Replica',
         text = {
-			"Convert all cards in hand to a",
-            "{C:attention}random{} card held in hand"
+	    "Convert all cards",
+	    "held in hand",
+            "to a {C:attention}random{}",
+	    "card held in hand"
         }
     },
     cost = 4,
