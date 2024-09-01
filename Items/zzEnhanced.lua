@@ -131,6 +131,7 @@ if (SMODS.Mods["jen"] or {}).can_load then
 		typed_decks[#typed_decks + 1] = jen_additions[i]
 	end
 end
+--[[
 if (SMODS.Mods["SnowMods"] or {}).can_load then
 	local mod_additions = {
 		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
@@ -281,6 +282,7 @@ if (SMODS.Mods["CBL"] or {}).can_load then
 		typed_decks[#typed_decks + 1] = mod_additions[i]
 	end
 end
+--]]
 --todo
 -- When released: Ortalab, Sigil
 
