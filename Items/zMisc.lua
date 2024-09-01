@@ -453,23 +453,23 @@ local glass_edition = {
     disable_shadow = true,
     weight = 7,
     extra_cost = 2,
-    config = {retriggers = 1, shatter_chance = 20},
+    config = {x_mult = 3, shatter_chance = 8},
     loc_vars = function(self, info_queue)
-        return {vars = {G.GAME.probabilities.normal or 1, self.config.shatter_chance}}
+        return {vars = {(G.GAME.probabilities.normal or 1)*(self.config.shatter_chance-1), self.config.shatter_chance, self.config.x_mult}}
     end,
     loc_txt = {
         name = "Fragile",
         label = "Fragile",
         text = {
-            "{C:attention}Retrigger{} this card",
+            "{C:white,X:mult} X#3# {} Mult",
             "{C:green}#1# in #2#{} chance this",
-            "card is {C:red}destroyed",
+            "card isn't {C:red}destroyed",
             "when triggered"	
         }
     },
     calculate = function(self, card, context)
         if context.joker_triggered or (context.from_playing_card and context.cardarea and context.cardarea == G.play and not context.repetition) then
-            if pseudorandom("cry_fragile") < G.GAME.probabilities.normal/self.config.shatter_chance then
+            if pseudorandom("cry_fragile") > G.GAME.probabilities.normal*(self.config.shatter_chance-1)/self.config.shatter_chance then
                 card.will_shatter = true
                 G.E_MANAGER:add_event(Event({
                     trigger = 'after',
