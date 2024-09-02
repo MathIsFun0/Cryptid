@@ -12,8 +12,6 @@
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
-local https = require("https")
-
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
 Cryptid_config = SMODS.current_mod.config
@@ -292,15 +290,6 @@ function Card:cry_calculate_consumeable_perishable()
 		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
 		self:set_debuff()
 	end
-end
-
-local filename = mod_path.."thread/thread.lua"
-local file = io.open(filename, "r")
-if file then
-    print("File exists")
-    file:close()
-else
-    print("File does not exist")
 end
 
 function update_cry_member_count()
