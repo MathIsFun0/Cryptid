@@ -550,12 +550,24 @@ pattern = '''if G.FILE_HANDLER and G.FILE_HANDLER and G.FILE_HANDLER.update_queu
 position = "before"
 payload = '''
 if not GLOBAL_cry_member_count_delay then GLOBAL_cry_member_count_delay = 0 end
-if (GLOBAL_cry_member_count_delay > 5) or not GLOBAL_cry_member_count then
+if (GLOBAL_cry_member_count_delay > 5) or not GLOBAL_cry_member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
 	update_cry_member_count()
 	GLOBAL_cry_member_count_delay = 0
 else
 	GLOBAL_cry_member_count_delay = GLOBAL_cry_member_count_delay + dt
 end
+'''
+match_indent = true
+
+# call update_cry_member_count() whenever the collection is opened to ensure it updates properly on title collection if it can (better than running it on loc_vars)
+# it's not computationally intense at all, so whatever
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.FUNCS.your_collection = function(e)'''
+position = "after"
+payload = '''
+update_cry_member_count()
 '''
 match_indent = true
 

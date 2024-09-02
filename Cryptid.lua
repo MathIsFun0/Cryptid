@@ -298,14 +298,14 @@ function update_cry_member_count()
 		GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 		GLOBAL_cry_member_update_thread:start()
 	end
-	local old_member_count = GLOBAL_cry_member_count or nil
+	local old = GLOBAL_cry_member_count or 2000
 	GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
-	if not GLOBAL_cry_member_count then GLOBAL_cry_member_count = old_member_count or nil end	-- this is so dumb but my brain is fried
 	if not GLOBAL_cry_member_count then
+		GLOBAL_cry_member_count = old
 		GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
 		if GLOBAL_cry_member_error >= 15 then
 			local error = love.thread.getChannel('member_error'):pop()
-			sendDebugMessage(error)
+			if error then sendDebugMessage(error) end
 			GLOBAL_cry_member_error = 0
 		end
 	end

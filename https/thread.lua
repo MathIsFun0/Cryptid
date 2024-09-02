@@ -10,8 +10,10 @@ package.cpath = script_dir .. "?.so;" .. package.cpath
 
 local https = require("https")
 local last_update_time = 0
+local initial = true
 while true do
-	if os.time() - last_update_time >= 10 then
+	if (os.time() - last_update_time >= 60) or initial then
+		initial = nil
 		last_update_time = os.time()
 		local resp, txt = https.request("https://gist.githubusercontent.com/Toneblock/7478d96bcf04e3b470b23d85c98e6a8c/raw/text.txt".."?v=" .. tostring(os.time()))
 		if resp == 200 then

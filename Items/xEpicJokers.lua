@@ -1289,12 +1289,11 @@ local membershipcard = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
     	loc_vars = function(self, info_queue, card)
-		if not GLOBAL_cry_member_count then update_cry_member_count(); GLOBAL_cry_member_count = 2000 end
+		update_cry_member_count()	-- calling the function here ensures that it pulls the first time it's hovered in collection
         	return {vars = {card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}}
     	end,
     	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then
-			if not GLOBAL_cry_member_count then update_cry_member_count(); GLOBAL_cry_member_count = 2000 end
 			return {
 				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}},
 				Xmult_mod = card.ability.extra.Xmult_mod*GLOBAL_cry_member_count
