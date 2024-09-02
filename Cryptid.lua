@@ -292,6 +292,29 @@ function Card:cry_calculate_consumeable_perishable()
 	end
 end
 
+function update_cry_member_count()
+	if Cryptid_config["HTTPS Module"] == true then
+		if not GLOBAL_cry_member_update_thread then
+			local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
+			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
+			GLOBAL_cry_member_update_thread:start()
+		end
+		local old = GLOBAL_cry_member_count or 2000
+		GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
+		if not GLOBAL_cry_member_count then
+			GLOBAL_cry_member_count = old
+			GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
+			if GLOBAL_cry_member_error >= 15 then
+				local error = love.thread.getChannel('member_error'):pop()
+				if error then sendDebugMessage(error) end
+				GLOBAL_cry_member_error = 0
+			end
+		end
+	else
+		GLOBAL_cry_member_count = 2000
+	end
+end
+
 local ec = eval_card
 function eval_card(card, context)
     local ggpn = G.GAME.probabilities.normal
@@ -1289,6 +1312,7 @@ for _, file in ipairs(files) do
     local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
+      if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
       if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
@@ -1922,6 +1946,12 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{C:green}#1# in #2#{} chance to do",
             "nothing on use"
+        },
+    }
+    G.localization.descriptions.Other.cry_https_disabled = {
+        name = "M",
+        text = {
+            "{C:attention,s:0.7}Updating{s:0.7} is disabled by default ({C:attention,s:0.7}HTTPS Module{s:0.7})",
         },
     }
     SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
