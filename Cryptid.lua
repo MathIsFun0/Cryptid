@@ -1304,6 +1304,7 @@ for _, file in ipairs(files) do
     local f, err = SMODS.load_file("Items/"..file)
     if not err then
         local curr_obj = f()
+        if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
         if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
     end
 end
