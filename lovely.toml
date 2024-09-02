@@ -314,19 +314,19 @@ if self and self.edition then
 	G.GAME.voucher_edition_index[center_table.name] = self.edition.type
 end
 if not G.GAME.voucher_sticker_index then G.GAME.voucher_sticker_index = {eternal = {}, perishable = {}, rental = {}, pinned = {}, banana = {}} end
-if self and self.ability.eternal and self.ability.eternal == true then
+if self and self.ability and self.ability.eternal and self.ability.eternal == true then
  	G.GAME.voucher_sticker_index.eternal[center_table.name] = true
 end
-if self and self.ability.perishable and self.ability.perishable == true then
+if self and self.ability and self.ability.perishable and self.ability.perishable == true then
  	G.GAME.voucher_sticker_index.perishable[center_table.name] = G.GAME.cry_voucher_perishable_rounds
 end
-if self and self.ability.rental and self.ability.rental == true then
+if self and self.ability and self.ability.rental and self.ability.rental == true then
  	G.GAME.voucher_sticker_index.rental[center_table.name] = true
 end
 if self and self.pinned and self.pinned == true then
  	G.GAME.voucher_sticker_index.pinned[center_table.name] = true
 end
-if self and self.ability.banana and self.ability.banana == true then
+if self and self.ability and self.ability.banana and self.ability.banana == true then
  	G.GAME.voucher_sticker_index.banana[center_table.name] = true
 end
 '''
