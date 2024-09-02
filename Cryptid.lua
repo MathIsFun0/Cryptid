@@ -12,6 +12,8 @@
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
+local https = require("https")
+
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
 Cryptid_config = SMODS.current_mod.config
@@ -292,28 +294,19 @@ function Card:cry_calculate_consumeable_perishable()
 	end
 end
 
-local member_update_thread = [[
-	require "love.system"
-	local https = require("https")
-	local last_update_time = 0
-	while true do
-		if os.time() - last_update_time >= 10 then
-			last_update_time = os.time()
-			local resp, txt = https.request("https://gist.githubusercontent.com/Toneblock/7478d96bcf04e3b470b23d85c98e6a8c/raw/text.txt".."?v=" .. tostring(os.time()))
-			if resp == 200 then
-				love.thread.getChannel('member_count'):push(tonumber(txt))
-			else
-				if not txt then txt = 2000 end		-- placeholder value, if you see this it means something's gone wrong (or you're just not connected)
-				love.thread.getChannel('member_error'):push("Failed to index gist: "..resp)
-				love.thread.getChannel('member_count'):push(tonumber(txt))
-			end
-		end
-	end
-]]
+local filename = mod_path.."thread/thread.lua"
+local file = io.open(filename, "r")
+if file then
+    print("File exists")
+    file:close()
+else
+    print("File does not exist")
+end
 
 function update_cry_member_count()
 	if not GLOBAL_cry_member_update_thread then 
-		GLOBAL_cry_member_update_thread = love.thread.newThread(member_update_thread)
+		local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
+		GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 		GLOBAL_cry_member_update_thread:start()
 	end
 	local old_member_count = GLOBAL_cry_member_count or nil
