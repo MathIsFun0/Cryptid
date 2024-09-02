@@ -1227,7 +1227,6 @@ if JokerDisplay then
         end
     }
 end
-
 local soccer = {
 	object_type = "Joker",
 	name = "cry-soccer",
@@ -1281,7 +1280,7 @@ local membershipcard = {
             "{X:mult,C:white}X#1#{} Mult for each member",
 	    "in the {C:attention}Cryptid Discord{}",
 	    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
-            "{C:inactive,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
+            "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
         }
     	},
 	rarity = "cry_epic",
@@ -1292,7 +1291,8 @@ local membershipcard = {
         	return {vars = {card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}}
     	end,
     	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.cardarea == G.jokers and not context.before and not context.after
+		and card.ability.extra.Xmult_mod*GLOBAL_cry_member_count > 1 then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}},
 				Xmult_mod = card.ability.extra.Xmult_mod*GLOBAL_cry_member_count
@@ -1300,6 +1300,21 @@ local membershipcard = {
 		end
     	end
 }
+if JokerDisplay then
+	membershipcard.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "exp" }
+				}
+			}
+		},
+		calc_function = function(card)
+            		card.joker_display_values.stat = math.max(1, (card.ability.extra.Xmult_mod * (GLOBAL_cry_member_count or 1)))
+        	end,
+	}
+end
 return {name = "Epic Jokers", 
 		init = function()
 			
