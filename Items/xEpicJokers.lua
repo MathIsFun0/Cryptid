@@ -1289,7 +1289,6 @@ local membershipcard = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
     	loc_vars = function(self, info_queue, card)
-		update_cry_member_count()	-- calling the function here ensures that it pulls the first time it's hovered in collection
         	return {vars = {card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}}
     	end,
     	calculate = function(self, card, context)
