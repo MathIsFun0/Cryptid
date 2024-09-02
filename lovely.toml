@@ -571,6 +571,25 @@ update_cry_member_count()
 '''
 match_indent = true
 
+# notice if https is disabled (by default)
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if _c.set == 'Other' then"
+position = "before"
+payload = '''
+if _c.name == 'cry-membershipcard' then
+	if not Cryptid_config["HTTPS Module"] then
+		if G.localization.descriptions.Other.cry_https_disabled then 
+			main_end = {}
+			localize{type = 'other', key = 'cry_https_disabled', nodes = main_end, vars = {}}
+			main_end = main_end[1]
+		end
+	end
+end
+'''
+match_indent = true
+
 # don't draw old perishable texture
 [[patches]]
 [patches.pattern]
