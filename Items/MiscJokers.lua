@@ -4554,7 +4554,7 @@ local busdriver = {
 	    "for {C:mult}-#2#{} Mult"
         }
     },
-    rarity = 3,
+    rarity = 2,
     cost = 7,
     atlas = "atlasthree",
     blueprint_compat = true,
@@ -4571,7 +4571,7 @@ local busdriver = {
             	}
 	    else
 		return {
-                	message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult * -1}},
+                	message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra.mult}},
                 	mult_mod = (card.ability.extra.mult * -1), 
                 	colour = G.C.MULT
             	}
