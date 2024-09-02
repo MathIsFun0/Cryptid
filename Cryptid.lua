@@ -7,7 +7,7 @@
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0828b]
 --- VERSION: 0.5.0~pre2
---- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+--- PRIORITY: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -289,6 +289,42 @@ function Card:cry_calculate_consumeable_perishable()
 		self.ability.perish_tally = 0
 		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
 		self:set_debuff()
+	end
+end
+
+local member_update_thread = [[
+	local https = require("https")
+	local last_update_time = 0
+	while true do
+		if os.time() - last_update_time >= 10 then
+			last_update_time = os.time()
+			local resp, txt = https.request("https://gist.githubusercontent.com/Toneblock/7478d96bcf04e3b470b23d85c98e6a8c/raw/text.txt".."?v=" .. tostring(os.time()))
+			if resp == 200 then
+				love.thread.getChannel('member_count'):push(tonumber(txt))
+			else
+				if not txt then txt = 2000 end		-- placeholder value, if you see this it means something's gone wrong (or you're just not connected)
+				love.thread.getChannel('member_error'):push("Failed to index gist: "..resp)
+				love.thread.getChannel('member_count'):push(tonumber(txt))
+			end
+		end
+	end
+]]
+
+function update_cry_member_count()
+	if not GLOBAL_cry_member_update_thread then 
+		GLOBAL_cry_member_update_thread = love.thread.newThread(member_update_thread)
+		GLOBAL_cry_member_update_thread:start()
+	end
+	local old_member_count = GLOBAL_cry_member_count or nil
+	GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
+	if not GLOBAL_cry_member_count then GLOBAL_cry_member_count = old_member_count or nil end	-- this is so dumb but my brain is fried
+	if not GLOBAL_cry_member_count then
+		GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
+		if GLOBAL_cry_member_error >= 15 then
+			local error = love.thread.getChannel('member_error'):pop()
+			sendDebugMessage(error) end
+			GLOBAL_cry_member_error = 0
+		end
 	end
 end
 

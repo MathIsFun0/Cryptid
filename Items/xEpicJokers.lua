@@ -1268,7 +1268,40 @@ local soccer = {
         	G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.holygrail
 		change_shop_size(card.ability.extra.holygrail * -1)
 	end
-} 
+}
+local membershipcard = {
+    	object_type = "Joker",
+	name = "cry-membershipcard",
+	key = "membershipcard",
+    	config = {extra = {Xmult_mod = 0.1}},
+	pos = {x = 4, y = 4},
+	loc_txt = {
+        name = 'Membership Card',
+        text = {
+            "{X:mult,C:white}X#1#{} Mult for each member",
+	    "in the {C:attention}Cryptid Discord{}",
+	    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+            "{C:inactive,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
+        }
+    	},
+	rarity = "cry_epic",
+	cost = 13,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+    	loc_vars = function(self, info_queue, card)
+		if not GLOBAL_cry_member_count then update_cry_member_count(); GLOBAL_cry_member_count = 2000 end
+        	return {vars = {card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}}
+    	end,
+    	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			if not GLOBAL_cry_member_count then update_cry_member_count(); GLOBAL_cry_member_count = 2000 end
+			return {
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}},
+				Xmult_mod = card.ability.extra.Xmult_mod*GLOBAL_cry_member_count
+			}
+		end
+    	end
+}
 return {name = "Epic Jokers", 
 		init = function()
 			
@@ -1356,4 +1389,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}
+		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer,membershipcard}}
