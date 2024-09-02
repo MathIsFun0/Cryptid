@@ -322,7 +322,7 @@ function update_cry_member_count()
 		GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
 		if GLOBAL_cry_member_error >= 15 then
 			local error = love.thread.getChannel('member_error'):pop()
-			sendDebugMessage(error) end
+			sendDebugMessage(error)
 			GLOBAL_cry_member_error = 0
 		end
 	end
