@@ -293,6 +293,7 @@ function Card:cry_calculate_consumeable_perishable()
 end
 
 local member_update_thread = [[
+	require "love.system"
 	local https = require("https")
 	local last_update_time = 0
 	while true do
