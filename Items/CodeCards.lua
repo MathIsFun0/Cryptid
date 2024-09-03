@@ -3054,6 +3054,7 @@ return {name = "Code Cards",
                         if G.jokers.cards[i].sort_id == self.ability.hook_id then
                             card_eval_status_text(self, 'extra', nil, nil, nil, {message = "Hooked!",colour = G.C.SET.Code})
                             local _ret, _trig = G.jokers.cards[i]:calculate_joker(context)
+                            --known issue: the callback on this function call appears to behave weird - sometimes wrong joker gets the status text
                         end
                     end
                     context.cry_hook = nil
