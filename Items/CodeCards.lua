@@ -1919,6 +1919,7 @@ G.FUNCS.pointer_apply = function()
         wee = "wee joker",
         oopsall6s = "oops! all 6s",
         all6s = "oops! all 6s",
+        oa6 = "oops! all 6s",
         idol = "the idol",
         duo = "the duo",
         trio = "the trio",
