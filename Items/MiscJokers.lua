@@ -705,6 +705,8 @@ local booster = {
         name = 'Booster Joker',
         text = {
             "{C:attention}+#1#{} Booster Pack slot",
+	    "available in shop",
+	
         }
     },
 	rarity = 2,
@@ -1434,8 +1436,8 @@ local mario = {
     loc_txt = {
         name = 'Mario',
         text = {
-            "All Jokers",
-            "retrigger {C:attention}#1#{} additional time"
+            "Retrigger all Jokers",
+            "{C:attention}#1#{} additional time"
             }
         },
     rarity = 4,
@@ -4706,6 +4708,53 @@ if JokerDisplay then
         end
     }
 end
+local membershipcard = {
+    	object_type = "Joker",
+	name = "cry-membershipcard",
+	key = "membershipcard",
+    	config = {extra = {Xmult_mod = 0.1}},
+	pos = {x = 3, y = 4},
+	loc_txt = {
+        name = 'Membership Card',
+        text = {
+            "{X:mult,C:white}X#1#{} Mult for each member",
+	    "in the {C:attention}Cryptid Discord{}",
+	    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+            "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
+        }
+    	},
+	rarity = 4,
+	cost = 20,
+	blueprint_compat = true,
+	atlas = "atlasthree",
+    	loc_vars = function(self, info_queue, card)
+        	return {vars = {card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}}
+    	end,
+    	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after
+		and card.ability.extra.Xmult_mod*GLOBAL_cry_member_count > 1 then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}},
+				Xmult_mod = card.ability.extra.Xmult_mod*GLOBAL_cry_member_count
+			}
+		end
+    	end
+}
+if JokerDisplay then
+	membershipcard.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "exp" }
+				}
+			}
+		},
+		calc_function = function(card)
+            		card.joker_display_values.stat = math.max(1, (card.ability.extra.Xmult_mod * (GLOBAL_cry_member_count or 1)))
+        	end,
+	}
+end
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4789,4 +4838,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard}}
