@@ -415,13 +415,9 @@ local seed = {
         if area then area:remove_from_highlighted(card) end
         if G.jokers.highlighted[1] then
             G.jokers.highlighted[1].ability.cry_rigged = true
-            print(G.jokers.highlighted[1].config.center.key.." rigged")
             if G.jokers.highlighted[1].config.center.key == "j_cry_googol_play" then 
-                print('ach_cry_googol_play_pass unlocked')
                 check_for_unlock({type = 'googol_play_rigged'})
-            else
-                print(G.jokers.highlighted[1].config.center.key.." ~= j_cry_googol_play")
-            end
+	    end
         end
         if G.hand.highlighted[1] then
             G.hand.highlighted[1].ability.cry_rigged = true
