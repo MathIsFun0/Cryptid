@@ -625,7 +625,88 @@ if JokerDisplay then
 		},
 		text_config = { colour = G.C.ORANGE },
 	}
-end	
+end
+local circus = {
+	object_type = "Joker",
+	name = "cry-circus",
+	key = "circus",
+	pos = {x = 4, y = 4},
+    	config = {extra = {Xmult = 1}},
+	atlas = "atlasepic",
+	loc_txt = {
+        name = 'Circus',
+        text = {
+            "{C:red}Rare{} Jokers each give {X:mult,C:white} X#1# {} Mult",
+	    "{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
+	    "{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
+	    "{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
+	}
+    	},
+	loc_vars = function(self, info_queue, center)
+		return {vars = {(math.max(1, center.ability.extra.Xmult) * 2), (math.max(1, center.ability.extra.Xmult) * 3), (math.max(1, center.ability.extra.Xmult) * 4), (math.max(1, center.ability.extra.Xmult) * 20)}}
+    	end,
+	rarity = 'cry_epic',
+	cost = 16,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+        if context.other_joker and card ~= context.other_joker then
+	    if context.other_joker.config.center.rarity == 3 then --Rare
+		if not Talisman.config_file.disable_anims then 
+                	G.E_MANAGER:add_event(Event({
+                    	func = function()
+                        	context.other_joker:juice_up(0.5, 0.5)
+                        	return true
+                    	end
+                	})) 
+            	end
+            	return {
+                	message = localize{type='variable',key='a_xmult',vars={(math.max(1, card.ability.extra.Xmult) * 2)}},
+                	Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 2)
+            	}
+	    elseif context.other_joker.config.center.rarity == 4 then --Legendary
+		if not Talisman.config_file.disable_anims then 
+                	G.E_MANAGER:add_event(Event({
+                    	func = function()
+                        	context.other_joker:juice_up(0.5, 0.5)
+                        	return true
+                    	end
+                	})) 
+            	end
+            	return {
+                	message = localize{type='variable',key='a_xmult',vars={(math.max(1, card.ability.extra.Xmult) * 4)}},
+                	Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 4)
+            	}
+	    elseif context.other_joker.config.center.rarity == 'cry_epic' then --Epic
+		if not Talisman.config_file.disable_anims then 
+                	G.E_MANAGER:add_event(Event({
+                    	func = function()
+                        	context.other_joker:juice_up(0.5, 0.5)
+                        	return true
+                    	end
+                	})) 
+            	end
+            	return {
+                	message = localize{type='variable',key='a_xmult',vars={(math.max(1, card.ability.extra.Xmult) * 3)}},
+                	Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 3)
+            	}
+	    elseif context.other_joker.config.center.rarity == 'cry_exotic' then --Exotic
+		if not Talisman.config_file.disable_anims then 
+                	G.E_MANAGER:add_event(Event({
+                    	func = function()
+                        	context.other_joker:juice_up(0.5, 0.5)
+                        	return true
+                    	end
+                	})) 
+            	end
+            	return {
+                	message = localize{type='variable',key='a_xmult',vars={(math.max(1, card.ability.extra.Xmult) * 20)}},
+                	Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 20)
+            	}
+            end
+	end
+	end
+}
+--jokerdisplay soon tm
 local caramel = {
     object_type = "Joker",
 	name = "cry-caramel",
@@ -1229,7 +1310,6 @@ if JokerDisplay then
         end
     }
 end
-
 local soccer = {
 	object_type = "Joker",
 	name = "cry-soccer",
@@ -1270,7 +1350,7 @@ local soccer = {
         	G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.holygrail
 		change_shop_size(card.ability.extra.holygrail * -1)
 	end
-} 
+}
 return {name = "Epic Jokers", 
 		init = function()
 			
@@ -1358,4 +1438,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}
+		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, circus, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}

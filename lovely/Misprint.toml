@@ -310,7 +310,7 @@ target = "card.lua"
 pattern = "extra = center and center.config.extra or self and self.ability.extra"
 position = "at"
 payload = '''
-extra = self and G.GAME.cry_voucher_centers[self.config.center_key].config.extra
+extra = self and self.config and self.config.center_key and G.GAME and G.GAME.cry_voucher_centers and G.GAME.cry_voucher_centers[self.config.center_key] and G.GAME.cry_voucher_centers[self.config.center_key].config.extra
 '''
 match_indent = true
 
@@ -322,7 +322,7 @@ pattern = "if center_table.name == 'Overstock' or center_table.name == 'Overstoc
 position = "before"
 payload = '''
 if not center_table.extra then center_table.extra = center and center.config.extra end	-- catch
-if self and self.ability.extra_disp then
+if self and self.ability and self.ability.extra_disp then
 	local up = false
 	if center_table.name == 'Tarot Tycoon' or center_table.name == 'Planet Tycoon' then
 		up = true

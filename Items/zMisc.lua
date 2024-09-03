@@ -227,7 +227,19 @@ local oversat = {
 	    "are {C:attention}doubled{}",
 	    "{C:inactive}(If possible)"
         }
-    }
+    },
+    on_apply = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end)
+    end,
+    on_remove = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card)
+        end)
+    end
 }
 local glitched_shader = {
     object_type = "Shader",
@@ -258,7 +270,19 @@ local glitched = {
             'between {C:attention}X0.1{} and {C:attention}X10{}',
             '{C:inactive}(If possible){}',
         }
-    }
+    },
+    on_apply = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end)
+    end,
+    on_remove = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card)
+        end)
+    end
 }
 local astral_shader = {
     object_type = "Shader",
@@ -952,24 +976,6 @@ if cry_minvasion then
 end
 return {name = "Misc.", 
         init = function()
-
-se = Card.set_edition
-function Card:set_edition(x,y,z)
-    local from_copy = false
-    if self.from_copy then from_copy = true end
-    self.from_copy = nil
-    se(self,x,y,z)
-    if not from_copy then
-        if self.edition and self.edition.cry_oversat then
-            cry_misprintize(self,nil,true)
-            cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
-        end
-        if self.edition and self.edition.cry_glitched then
-            cry_misprintize(self,nil,true)
-            cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
-        end
-    end
-end
 
 --echo card
 cs = Card.calculate_seal

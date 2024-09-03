@@ -7,7 +7,7 @@
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0828b]
 --- VERSION: 0.5.0~pre2
---- PRIORITY: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+--- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -289,6 +289,29 @@ function Card:cry_calculate_consumeable_perishable()
 		self.ability.perish_tally = 0
 		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
 		self:set_debuff()
+	end
+end
+
+function update_cry_member_count()
+	if Cryptid_config["HTTPS Module"] == true then
+		if not GLOBAL_cry_member_update_thread then
+			local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
+			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
+			GLOBAL_cry_member_update_thread:start()
+		end
+		local old = GLOBAL_cry_member_count or 2119
+		GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
+		if not GLOBAL_cry_member_count then
+			GLOBAL_cry_member_count = old
+			GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
+			if GLOBAL_cry_member_error >= 15 then
+				local error = love.thread.getChannel('member_error'):pop()
+				if error then sendDebugMessage(error) end
+				GLOBAL_cry_member_error = 0
+			end
+		end
+	else
+		GLOBAL_cry_member_count = 2119
 	end
 end
 
@@ -881,6 +904,17 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
     end
 end
 
+function cry_with_deck_effects(card, func)
+    if not card.added_to_deck then
+        return func(card)
+    else
+        card:remove_from_deck(true)
+        local ret = func(card)
+        card:add_to_deck(true)
+        return ret
+    end
+end
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
 --for first boot, make sure config is defined properly beforehand
@@ -888,6 +922,7 @@ for _, file in ipairs(files) do
     local f, err = SMODS.load_file("Items/"..file)
     if not err then
         local curr_obj = f()
+        if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
         if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
     end
 end
@@ -896,6 +931,7 @@ for _, file in ipairs(files) do
     local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
+      if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
       if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
@@ -1529,6 +1565,12 @@ function SMODS.current_mod.process_loc_text()
         text = {
             "{C:green}#1# in #2#{} chance to do",
             "nothing on use"
+        },
+    }
+    G.localization.descriptions.Other.cry_https_disabled = {
+        name = "M",
+        text = {
+            "{C:attention,s:0.7}Updating{s:0.7} is disabled by default ({C:attention,s:0.7}HTTPS Module{s:0.7})",
         },
     }
     SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")

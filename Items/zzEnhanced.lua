@@ -90,7 +90,6 @@ if (SMODS.Mods["jen"] or {}).can_load then
 		{'jen',				'Edition',		nil,						'Prismatic',			'prismatic',		nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Ionised', 				'ionized',			nil,				nil,				5,		2,		''},	-- ionised vs ionized, jen why
 		{'jen',				'Edition',		'Misprint Deck*',			'Misprint', 			'misprint',			nil,				nil,				5,		2,		'*no, not that one'},
---		{'jen',				'Edition',		nil,						'Wee', 					'wee',				nil,				nil,				5,		2,		''},	-- causes a crash, want to re-add after reworking this file again
 		{'jen',				'Edition',		nil,						'Blaze', 				'blaze',			nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		nil,						'Wavy', 				'wavy',				nil,				nil,				5,		2,		''},
 		{'jen',				'Edition',		'Encoded Deck*',			'Encoded', 				'encoded',			nil,				nil,				5,		2,		'*no, not that one'},
@@ -134,6 +133,7 @@ if (SMODS.Mods["jen"] or {}).can_load then
 		typed_decks[#typed_decks + 1] = jen_additions[i]
 	end
 end
+--[[
 if (SMODS.Mods["SnowMods"] or {}).can_load then
 	local mod_additions = {
 		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
@@ -284,6 +284,7 @@ if (SMODS.Mods["CBL"] or {}).can_load then
 		typed_decks[#typed_decks + 1] = mod_additions[i]
 	end
 end
+--]]
 --todo
 -- When released: Ortalab, Sigil
 

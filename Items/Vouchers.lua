@@ -546,7 +546,12 @@ if SMODS.Mods["Tier3Sub"] then
     tacclimator.config.extra = tacclimator.config.extra * 8
     pacclimator.config.extra = pacclimator.config.extra * 8
 end
-
+local voucheritems = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine,}
+if Cryptid_config["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
+    voucheritems[#voucheritems+1] = command_prompt
+    voucheritems[#voucheritems+1] = satellite_uplink
+    voucheritems[#voucheritems+1] = quantum_computing
+end
 return {name = "Vouchers", 
         init = function()
             --Curate
@@ -601,4 +606,4 @@ return {name = "Vouchers",
                 end
             end
         end,
-        items = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, command_prompt, satellite_uplink, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine, quantum_computing,}}
+        items = voucheritems}

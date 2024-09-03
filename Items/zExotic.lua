@@ -606,7 +606,6 @@ local scalae = {
         return
     end,
     cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-        print(tprint(G.GAME.cry_double_scale))
         if joker.ability.name ~= "cry-Scalae" then
             local new_scale = (to_big(true_base) * ((1 + ((to_big(orig_scale_scale)/to_big(true_base))^(to_big(1)/to_big(card.ability.extra.scale))))^card.ability.extra.scale))
             if (new_scale < to_big(1e100)) or not ((joker.config and joker.config.center and joker.config.center.key and big_num_whitelist[joker.config.center.key]) or (joker.ability and joker.ability.big_num_scaler)) then
