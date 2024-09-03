@@ -795,6 +795,49 @@ local aequilibrium = {
             end
         end,
     }
+local facile = {
+    object_type = "Joker",
+    name = "cry-facile",
+    key = "facile",
+    config = {extra = {Emult = 3, check = 10, check2 = 0}},
+    pos = { x = 0, y = 1 },
+    soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    loc_txt = {
+        name = 'Facile',
+        text = {
+            "{X:dark_edition,C:white}^#1#{} Mult if",
+            "{C:attention}#2#{} or fewer",
+            "cards are scored"
+        }
+    },
+    rarity = "cry_exotic",
+    cost = 50,
+    blueprint_compat = true,
+    atlas = "placeholders",
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {center.ability.extra.Emult, center.ability.extra.check}
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual then
+            if context.cardarea == G.play then
+                card.ability.extra.check2 = card.ability.extra.check2 + 1
+            end
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
+            if card.ability.extra.check2 <= card.ability.extra.check then
+                return {
+                    message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+                    Emult_mod = card.ability.extra.Emult,
+                    colour = G.C.DARK_EDITION
+                }
+            else
+                card.ability.extra.check2 = 0
+            end
+        end
+    end
+}
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -904,4 +947,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile}}
