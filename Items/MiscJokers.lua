@@ -705,6 +705,8 @@ local booster = {
         name = 'Booster Joker',
         text = {
             "{C:attention}+#1#{} Booster Pack slot",
+	    "available in shop",
+	
         }
     },
 	rarity = 2,
@@ -1434,8 +1436,8 @@ local mario = {
     loc_txt = {
         name = 'Mario',
         text = {
-            "All Jokers",
-            "retrigger {C:attention}#1#{} additional time"
+            "Retrigger all Jokers",
+            "{C:attention}#1#{} additional time"
             }
         },
     rarity = 4,
