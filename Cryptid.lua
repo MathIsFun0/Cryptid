@@ -1297,6 +1297,17 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
     end
 end
 
+function cry_with_deck_effects(card, func)
+    if not card.added_to_deck then
+        return func(card)
+    else
+        card:remove_from_deck(true)
+        local ret = func(card)
+        card:add_to_deck(true)
+        return ret
+    end
+end
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
 --for first boot, make sure config is defined properly beforehand

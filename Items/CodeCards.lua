@@ -676,7 +676,9 @@ local multiply = {
             G.jokers.highlighted[1].cry_multiply = 1
         end
         G.jokers.highlighted[1].cry_multiply = G.jokers.highlighted[1].cry_multiply * 2
-        cry_misprintize(G.jokers.highlighted[1],{min=2,max=2},nil,true)
+        cry_with_deck_effects(G.jokers.highlighted[1], function(card)
+            cry_misprintize(card,{min=2,max=2},nil,true)
+        end)
     end
 }
 local divide = {
@@ -2777,7 +2779,9 @@ return {name = "Code Cards",
                 for i = 1, #G.jokers.cards do
                     if G.jokers.cards[i].cry_multiply then
                         m = G.jokers.cards[i].cry_multiply
-                        cry_misprintize(G.jokers.cards[i],{min=1/m,max=1/m},nil,true)
+                        cry_with_deck_effects(G.jokers.cards[i], function(card)
+                            cry_misprintize(card,{min=1/m,max=1/m},nil,true)
+                        end)
                         G.jokers.cards[i].cry_multiply = nil
                     end
                 end

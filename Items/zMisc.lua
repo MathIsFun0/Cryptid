@@ -229,12 +229,16 @@ local oversat = {
         }
     },
     on_apply = function(card)
-        cry_misprintize(card,nil,true)
-        cry_misprintize(card, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end)
     end,
     on_remove = function(card)
-        cry_misprintize(card,nil,true)
-        cry_misprintize(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card)
+        end)
     end
 }
 local glitched_shader = {
@@ -268,12 +272,16 @@ local glitched = {
         }
     },
     on_apply = function(card)
-        cry_misprintize(card,nil,true)
-        cry_misprintize(card, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end)
     end,
     on_remove = function(card)
-        cry_misprintize(card,nil,true)
-        cry_misprintize(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card)
+        end)
     end
 }
 local astral_shader = {
