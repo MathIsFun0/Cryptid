@@ -801,46 +801,51 @@ local aequilibrium = {
                 end
             end,
             add_to_deck = function(self, card, from_debuff)
-                card.ability.extra.card = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, G.P_CARDS.S_A, G.P_CENTERS.c_base)
-                --G.hand:emplace(card.ability.extra.card)
-                --card.ability.extra.card:set_card_area(G.hand)
-                card.ability.extra.card:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
-                card.ability.extra.card:set_seal('Gold', true, true)
-                card.ability.extra.card:set_edition({cry_glitched = true}, true)
-                --card.ability.extra.card.T.x = card.T.x
-    
-    
-                if card.ability.extra.card and (G.P_CENTERS.j_blueprint.unlocked) then
-                    local viable_unlockables = {}
-                    for k, v in ipairs(G.P_LOCKED) do
-                        if (v.set == 'Voucher' or v.set == 'Joker') and not v.demo then 
-                            viable_unlockables[#viable_unlockables+1] = v
+                if not from_debuff then
+                    if card.ability.extra.card then
+                        card.ability.extra.card = nil
+                    end
+                    card.ability.extra.card = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, G.P_CARDS.S_A, G.P_CENTERS.c_base)
+                    --G.hand:emplace(card.ability.extra.card)
+                    --card.ability.extra.card:set_card_area(G.hand)
+                    card.ability.extra.card:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
+                    card.ability.extra.card:set_seal('Gold', true, true)
+                    card.ability.extra.card:set_edition({cry_glitched = true}, true)
+                    --card.ability.extra.card.T.x = card.T.x
+        
+        
+                    if card.ability.extra.card and (G.P_CENTERS.j_blueprint.unlocked) then
+                        local viable_unlockables = {}
+                        for k, v in ipairs(G.P_LOCKED) do
+                            if (v.set == 'Voucher' or v.set == 'Joker') and not v.demo then 
+                                viable_unlockables[#viable_unlockables+1] = v
+                            end
+                        end
+                        if #viable_unlockables > 0 then 
+                            local card2 = card.ability.extra.card
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 4.04,
+                                func = (function()
+                                    card2 = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, nil, pseudorandom_element(viable_unlockables) or self.P_CENTERS.j_joker)
+                                    card2.no_ui = #viable_unlockables == 0
+                                    card2.states.visible = false
+                                    card.ability.extra.card.parent = nil
+                                    card.ability.extra.card:start_dissolve({G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD})
+                                    return true
+                            end)}))
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 1.04,
+                                func = (function()
+                                    card2:start_materialize()
+                                    --G.:emplace(card)
+                                    return true
+                            end)}))
                         end
                     end
-                    if #viable_unlockables > 0 then 
-                        local card2
-                        G.E_MANAGER:add_event(Event({
-                            trigger = 'after',
-                            delay = 4.04,
-                            func = (function()
-                                card2 = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, nil, pseudorandom_element(viable_unlockables) or self.P_CENTERS.j_joker)
-                                card2.no_ui = #viable_unlockables == 0
-                                card2.states.visible = false
-                                card.ability.extra.card.parent = nil
-                                card.ability.extra.card:start_dissolve({G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD})
-                                return true
-                        end)}))
-                        G.E_MANAGER:add_event(Event({
-                            trigger = 'after',
-                            delay = 1.04,
-                            func = (function()
-                                card2:start_materialize()
-                                --G.:emplace(card)
-                                return true
-                        end)}))
-                    end
                 end
-    
+        
             end,
             --Known bug: card does not reappear after save reopened
             update = function(self,card,front)
@@ -852,6 +857,17 @@ local aequilibrium = {
                 end
             end,
         }
+local cc = copy_card
+function copy_card(card,a,b,c,d)
+    local m
+    if card and card.ability and card.ability.extra and card.ability.extra.card then
+        m = card.ability.extra.card
+        card.ability.extra.card = nil
+    end
+    local ret = cc(card,a,b,c,d)
+    card.ability.extra.card = m
+    return ret
+end
 local facile = {
     object_type = "Joker",
     name = "cry-facile",
