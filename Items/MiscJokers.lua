@@ -1430,14 +1430,14 @@ local mario = {
     object_type = "Joker",
     name = "cry-mario",
     key = "mario",
-    config = {extra = {retriggers = 1}},
+    config = {extra = {retriggers = 3}},
     pos = {x = 4, y = 3},
     soul_pos = {x = 5, y = 3},
     loc_txt = {
         name = 'Mario',
         text = {
             "Retrigger all Jokers",
-            "{C:attention}#1#{} additional time"
+            "{C:attention}#1#{} additional times"
             }
         },
     rarity = 4,
