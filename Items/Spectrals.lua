@@ -446,7 +446,7 @@ local summoning = {
         local _first_dissolve = nil
         G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
             for k, v in pairs(deletable_jokers) do
-                if v ~= chosen_joker then 
+                if v == chosen_joker then 
                     v:start_dissolve(nil, _first_dissolve)
                     _first_dissolve = true
                 end
