@@ -3050,7 +3050,18 @@ return {name = "Code Cards",
                     for i = 1, #G.jokers.cards do
                         if G.jokers.cards[i].sort_id == self.ability.hook_id then
                             card_eval_status_text(self, 'extra', nil, nil, nil, {message = "Hooked!",colour = G.C.SET.Code})
+                            local cc = context.callback
+                            if context.callback then
+                                --this doesn't work for some reason, even though it does change the color
+                                context.callback = function(card, ret, triggered)
+                                    if type(ret) == 'table' then
+                                        ret.colour = G.C.SET.Code
+                                    end
+                                    return cc(card, ret, triggered)
+                                end
+                            end
                             local _ret, _trig = G.jokers.cards[i]:calculate_joker(context)
+                            context.callback = cc
                         end
                     end
                     context.cry_hook = nil
