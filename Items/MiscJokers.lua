@@ -552,7 +552,7 @@ local pickle = {
         end
         if context.setting_blind and not context.blueprint then
             card.ability.extra.tags = card.ability.extra.tags - card.ability.extra.tags_mod
-            if card.ability.extra.tags > 0 then
+            if to_big(card.ability.extra.tags) > to_big(0) then
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "-"..card.ability.extra.tags_mod.." Tag"..(card.ability.extra.tags_mod>1 and "s" or ""), colour = G.C.FILTER})
                 return {calculated = true}
             else
