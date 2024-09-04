@@ -17,6 +17,8 @@ extern PRECISION vec4 burn_colour_2;
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
 
 bool line(vec2 uv, float offset, float width) {
+    uv.x = uv.x * texture_details.z / texture_details.w;
+
     offset = offset + 0.35 * sin(glass.x);
     width = width + 0.005 * sin(glass.x);
 
