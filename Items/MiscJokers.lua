@@ -4755,6 +4755,40 @@ if JokerDisplay then
         	end,
 	}
 end
+local kscope = {
+    object_type = "Joker",
+    name = "cry-kscope",
+    key = "kscope",
+    pos = {x = 5, y = 4},
+    loc_txt = {
+        name = 'Kaleidoscope',
+        text = {
+            "Add {C:dark_edition}Polychrome{} to",
+	    "a random {C:attention}Joker{} when",
+	    "{C:attention}Boss Blind{} is defeated",
+        }
+    },
+    rarity = 3,
+    cost = 7,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.end_of_round and G.GAME.blind.boss then
+        	local eligiblejokers = {}
+        	for k, v in pairs(G.jokers.cards) do
+                    if v.ability.set == 'Joker' and (not v.edition) and v ~= card then
+                        table.insert(eligiblejokers, v)
+                    end
+                end
+                if #eligiblejokers > 0 then
+                    local over = false --From wof code??? Does this even do anything???
+                    local eligible_card = pseudorandom_element(eligiblejokers, pseudoseed("nevergonnagiveyouupnevergonnaletyoudown"))
+                    local edition = {polychrome = true}
+                    eligible_card:set_edition(edition, true)
+                    check_for_unlock({type = 'have_edition'})
+                end
+        end
+    end
+}
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4838,4 +4872,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard, kscope}}
