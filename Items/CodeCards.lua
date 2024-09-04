@@ -1532,6 +1532,7 @@ function create_UIBox_variable(card)
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'variable_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'variable_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1556,6 +1557,7 @@ function create_UIBox_class(card)
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'class_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
 	{n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'class_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+	{n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'class_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1580,6 +1582,7 @@ function create_UIBox_exploit(card)
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'exploit_apply', label = {'EXPLOIT'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'exploit_apply_previous', label = {'EXPLOIT PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'exploit_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1628,14 +1631,24 @@ function create_UIBox_pointer(card)
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'pointer_apply', label = {'CREATE'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'your_collection', label = {'COLLECTION'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.RED, button = 'pointer_apply_previous', label = {'CREATE PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.RED, button = 'pointer_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
 
     }})
     return t
 end
+
+G.FUNCS.pointer_cancel = function ()
+    
+    G.CHOOSE_CARD:remove()
+    G.GAME.USING_CODE = false
+    G.GAME.USING_POINTER = false
+end
+
 G.FUNCS.variable_apply_previous = function()
 	if G.PREVIOUS_ENTERED_RANK then G.ENTERED_RANK = G.PREVIOUS_ENTERED_RANK or "" end
 	G.FUNCS.variable_apply()
 end
+
 G.FUNCS.variable_apply = function()
     local rank_table = {
         {},
@@ -1728,6 +1741,12 @@ G.FUNCS.variable_apply = function()
         G.CHOOSE_RANK:remove()
     end
 end
+
+G.FUNCS.variable_cancel = function ()
+    G.CHOOSE_RANK:remove()
+    G.GAME.USING_CODE = false
+end
+
 G.FUNCS.exploit_apply_previous = function()
 	if G.PREVIOUS_ENTERED_HAND then G.ENTERED_HAND = G.PREVIOUS_ENTERED_HAND or "" end
 	G.FUNCS.exploit_apply()
@@ -1763,11 +1782,16 @@ G.FUNCS.exploit_apply = function()
 	if current_hand and G.GAME.hands[current_hand].visible then
 		G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
 		G.GAME.cry_exploit_override = current_hand 
-		G.CHOOSE_HAND:remove()
-		G.GAME.USING_CODE = false
+		G.FUNCS.exploit_cancel()
 		return
 	end
 end
+
+G.FUNCS.exploit_cancel = function()
+    G.CHOOSE_HAND:remove()
+    G.GAME.USING_CODE = false
+end
+
 G.FUNCS.exploit_info = function()
 	local text = G.GAME.cry_exploit_override
 	local disp_text = text
@@ -1856,6 +1880,12 @@ G.FUNCS.class_apply = function()
         G.CHOOSE_ENH:remove()
     end
 end
+
+G.FUNCS.class_cancel = function ()
+    G.GAME.USING_CODE = false
+    G.CHOOSE_ENH:remove()
+end
+
 G.FUNCS.ca = function()
     G.GAME.USING_CODE = false
     loadstring(G.ENTERED_ACE)() --Scary!
