@@ -860,12 +860,14 @@ local aequilibrium = {
 local cc = copy_card
 function copy_card(card,a,b,c,d)
     local m
-    if card and card.ability and card.ability.extra and card.ability.extra.card then
+    if card and card.ability and card.ability.extra and type(card.ability.extra) == 'table' and card.ability.extra.card then
         m = card.ability.extra.card
         card.ability.extra.card = nil
     end
     local ret = cc(card,a,b,c,d)
-    card.ability.extra.card = m
+    if card and card.ability and card.ability.extra and type(card.ability.extra) == 'table' and card.ability.extra.card and m then
+        card.ability.extra.card = m
+    end
     return ret
 end
 local facile = {

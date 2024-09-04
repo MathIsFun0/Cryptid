@@ -214,8 +214,8 @@ function cry_voucher_pinned(name)
 	return false
 end
 
-function get_random_consumable(seed, excluded_flags)
-    excluded_flags = excluded_flags or {'hidden', 'no_doe', 'no_grc'}
+function get_random_consumable(seed, excluded_flags, unbalanced)
+    excluded_flags = excluded_flags or unbalanced and {'no_doe', 'no_grc'} or {'hidden', 'no_doe', 'no_grc'}
     local selection = 'n/a'
     local passes = 0
     local tries = 500

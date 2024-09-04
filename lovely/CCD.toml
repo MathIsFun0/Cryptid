@@ -12,7 +12,7 @@ position = "before"
 payload = '''
 if G.GAME.modifiers.cry_ccd then
     for k, v in pairs(G.playing_cards) do
-        v:set_ability(get_random_consumable('cry_ccd'), true, nil)
+        v:set_ability(get_random_consumable('cry_ccd', nil, true), true, nil)
     end
 end
 '''

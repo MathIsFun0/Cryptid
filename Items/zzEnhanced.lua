@@ -484,7 +484,7 @@ return {name = "Enhanced Decks",
                                     if random_enhancement.key and G.P_CENTERS[random_enhancement.key] then
                                         G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
                                     else
-                                        G.playing_cards[c]:set_ability(get_random_consumable('cry_ant_ccd'))
+                                        G.playing_cards[c]:set_ability(get_random_consumable('cry_ant_ccd', nil, true))
                                     end
                                 else
                                     G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
