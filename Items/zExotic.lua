@@ -765,7 +765,7 @@ local aequilibrium = {
     "order from the {C:attention}Collection{}",
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
     "when hand is played",
-                    "{C:legendary,s:0.8}Legendary {C:inactive,s:0.8}or better Jokers cannot appear",
+                    "{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
                     "{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#"
                 }
             },
