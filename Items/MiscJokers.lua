@@ -4352,7 +4352,7 @@ local oldblueprint = {
     object_type = "Joker",
     name = "cry-oldblueprint",
     key = "oldblueprint",
-    pos = {x = 2, y = 1},
+    pos = {x = 4, y = 4},
     config = {extra = {odds = 4}},
     loc_txt = {
         name = 'Old Blueprint',

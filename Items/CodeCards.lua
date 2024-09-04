@@ -415,13 +415,9 @@ local seed = {
         if area then area:remove_from_highlighted(card) end
         if G.jokers.highlighted[1] then
             G.jokers.highlighted[1].ability.cry_rigged = true
-            print(G.jokers.highlighted[1].config.center.key.." rigged")
             if G.jokers.highlighted[1].config.center.key == "j_cry_googol_play" then 
-                print('ach_cry_googol_play_pass unlocked')
                 check_for_unlock({type = 'googol_play_rigged'})
-            else
-                print(G.jokers.highlighted[1].config.center.key.." ~= j_cry_googol_play")
-            end
+	    end
         end
         if G.hand.highlighted[1] then
             G.hand.highlighted[1].ability.cry_rigged = true
@@ -1991,6 +1987,7 @@ G.FUNCS.pointer_apply = function()
         wee = "wee joker",
         oopsall6s = "oops! all 6s",
         all6s = "oops! all 6s",
+        oa6 = "oops! all 6s",
         idol = "the idol",
         duo = "the duo",
         trio = "the trio",
@@ -2014,7 +2011,7 @@ G.FUNCS.pointer_apply = function()
         lutn = "light up the night",
         nsnm = "no sound, no memory",
         nosoundnomemory = "no sound, no memory",
-        latn = "...like antennas to heaven",
+        lath = "...like antennas to heaven",
         likeantennastoheaven = "...like antennas to heaven",
         consumeable = "consume-able",
         error = "j_cry_error",

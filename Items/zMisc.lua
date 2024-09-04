@@ -785,6 +785,39 @@ local epic_tag = {
         end
     end
 }
+local schematic = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=1, y=2},
+    config = {type = 'store_joker_create'},
+    key = "schematic",
+    loc_txt = {
+        name = "Schematic Tag",
+        text = {
+            "Shop has a",
+            "{C:attention}Brainstorm"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_brainstorm'} 
+        return {vars = {}}
+    end,
+    apply = function(tag, context)
+        if context.type == 'store_joker_create' then
+                local card
+                    card = create_card('Joker', context.area, nil, nil, nil, nil, "j_brainstorm")
+                    create_shop_card_ui(card, 'Joker', context.area)
+                    card.states.visible = false
+                    tag:yep('+', G.C.RARITY.cry_epic,function() 
+                        card:start_materialize()
+                        card:set_cost()
+                        return true
+                    end)
+                tag.triggered = true
+                return card
+        end
+    end
+}
 --Bug: this still doesn't trigger immediately
 local empowered = {
     object_type = "Tag",
@@ -966,7 +999,7 @@ mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, g
 glass_edition, gold_edition, glitched, noisy, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
-cat, empowered, gambler, bundle, memory}
+cat, empowered, gambler, bundle, memory, schematic}
 if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
 end
