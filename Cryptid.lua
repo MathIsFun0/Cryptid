@@ -1500,7 +1500,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   local function aeqviable(card)
     return not card.no_doe and not card.no_aeq and not (card.rarity == 6 or card.rarity == 'cry_exotic')
   end
-  if _type == "Joker" and not _rarity and not forced_key then
+  if _type == "Joker" and not _rarity then
         local aeqactive = nil
         for i = 1, #G.jokers.cards do
             if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
