@@ -4789,6 +4789,48 @@ local kscope = {
         end
     end
 }
+local cryptidmoment = {
+	object_type = "Joker",
+	name = "cry_cryptidmoment",
+	key = "cryptidmoment",
+	pos = {x = 6, y = 0},
+    	config = {extra = {money = 1}},
+	loc_txt = {
+	name = 'M Chain',
+	text = {
+			"Sell this card to",
+			"add {C:money}$#1#{} of {C:attention}sell value{}",
+			"to every {C:attention}Joker{} card",
+		}
+	},
+    	loc_vars = function(self, info_queue, center)
+    		return {vars = {math.max(1, math.floor(center.ability.extra.money))}}
+    	end,
+	rarity = 1,
+	cost = 4,
+	eternal_compat = false,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+           	    for k, v in ipairs(G.jokers.cards) do
+                        if v.set_cost then 
+                            v.ability.extra_value = (v.ability.extra_value or 0) + math.max(1, math.floor(card.ability.extra.money))
+                            v:set_cost()
+                        end
+                    end
+		    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_val_up'), colour = G.C.MONEY})
+            	end
+	end
+}
+if JokerDisplay then
+	cryptidmoment.joker_display_definition = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "money" },
+		},
+		text_config = { colour = G.C.ORANGE },
+	}
+end
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4872,4 +4914,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard, kscope}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard, kscope, cryptidmoment}}
