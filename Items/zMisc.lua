@@ -886,7 +886,7 @@ local memory = {
 
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
 mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
-glitched, mosaic, oversat, blurred, astral, glass_edition, gold_edition, --disable for now; want to do on-trigger effects
+glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
 echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory, schematic}
