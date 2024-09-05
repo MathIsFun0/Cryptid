@@ -214,8 +214,8 @@ function cry_voucher_pinned(name)
 	return false
 end
 
-function get_random_consumable(seed, excluded_flags)
-    excluded_flags = excluded_flags or {'hidden', 'no_doe', 'no_grc'}
+function get_random_consumable(seed, excluded_flags, unbalanced)
+    excluded_flags = excluded_flags or unbalanced and {'no_doe', 'no_grc'} or {'hidden', 'no_doe', 'no_grc'}
     local selection = 'n/a'
     local passes = 0
     local tries = 500
@@ -1104,13 +1104,18 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
     forced_key = "j_cry_rnjoker"
   end
-  if _type == "Joker" then
+  local function aeqviable(card)
+    return not card.no_doe and not card.no_aeq and not (card.rarity == 6 or card.rarity == 'cry_exotic')
+  end
+  if _type == "Joker" and not _rarity then
         local aeqactive = nil
         for i = 1, #G.jokers.cards do
             if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
-                if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then G.jokers.cards[i].ability.extra.num = 1 end
-                aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
-                G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+                while (not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive])) do
+                    if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then G.jokers.cards[i].ability.extra.num = 1 end
+                    aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
+                    G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+                end
             end
         end
         if aeqactive then forced_key = G.P_CENTER_POOLS["Joker"][aeqactive].key end

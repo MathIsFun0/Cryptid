@@ -552,7 +552,7 @@ local pickle = {
         end
         if context.setting_blind and not context.blueprint then
             card.ability.extra.tags = card.ability.extra.tags - card.ability.extra.tags_mod
-            if card.ability.extra.tags > 0 then
+            if to_big(card.ability.extra.tags) > to_big(0) then
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "-"..card.ability.extra.tags_mod.." Tag"..(card.ability.extra.tags_mod>1 and "s" or ""), colour = G.C.FILTER})
                 return nil, true
             else
@@ -1431,14 +1431,14 @@ local mario = {
     object_type = "Joker",
     name = "cry-mario",
     key = "mario",
-    config = {extra = {retriggers = 1}},
+    config = {extra = {retriggers = 2}},
     pos = {x = 4, y = 3},
     soul_pos = {x = 5, y = 3},
     loc_txt = {
         name = 'Mario',
         text = {
             "Retrigger all Jokers",
-            "{C:attention}#1#{} additional time"
+            "{C:attention}#1#{} additional time(s)"
             }
         },
     rarity = 4,
@@ -4768,6 +4768,82 @@ if JokerDisplay then
         	end,
 	}
 end
+local kscope = {
+    object_type = "Joker",
+    name = "cry-kscope",
+    key = "kscope",
+    pos = {x = 5, y = 4},
+    loc_txt = {
+        name = 'Kaleidoscope',
+        text = {
+            "Add {C:dark_edition}Polychrome{} to",
+	    "a random {C:attention}Joker{} when",
+	    "{C:attention}Boss Blind{} is defeated",
+        }
+    },
+    rarity = 3,
+    cost = 7,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.end_of_round and G.GAME.blind.boss then
+        	local eligiblejokers = {}
+        	for k, v in pairs(G.jokers.cards) do
+                    if v.ability.set == 'Joker' and (not v.edition) and v ~= card then
+                        table.insert(eligiblejokers, v)
+                    end
+                end
+                if #eligiblejokers > 0 then
+                    local over = false --From wof code??? Does this even do anything???
+                    local eligible_card = pseudorandom_element(eligiblejokers, pseudoseed("nevergonnagiveyouupnevergonnaletyoudown"))
+                    local edition = {polychrome = true}
+                    eligible_card:set_edition(edition, true)
+                    check_for_unlock({type = 'have_edition'})
+                end
+        end
+    end
+}
+local cryptidmoment = {
+	object_type = "Joker",
+	name = "cry_cryptidmoment",
+	key = "cryptidmoment",
+	pos = {x = 6, y = 0},
+    	config = {extra = {money = 1}},
+	loc_txt = {
+	name = 'M Chain',
+	text = {
+			"Sell this card to",
+			"add {C:money}$#1#{} of {C:attention}sell value{}",
+			"to every {C:attention}Joker{} card",
+		}
+	},
+    	loc_vars = function(self, info_queue, center)
+    		return {vars = {math.max(1, math.floor(center.ability.extra.money))}}
+    	end,
+	rarity = 1,
+	cost = 4,
+	eternal_compat = false,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+           	    for k, v in ipairs(G.jokers.cards) do
+                        if v.set_cost then 
+                            v.ability.extra_value = (v.ability.extra_value or 0) + math.max(1, math.floor(card.ability.extra.money))
+                            v:set_cost()
+                        end
+                    end
+		    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_val_up'), colour = G.C.MONEY})
+            	end
+	end
+}
+if JokerDisplay then
+	cryptidmoment.joker_display_definition = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "money" },
+		},
+		text_config = { colour = G.C.ORANGE },
+	}
+end
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4851,4 +4927,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard, kscope, cryptidmoment}}

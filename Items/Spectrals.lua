@@ -420,6 +420,48 @@ local analog = {
         ease_ante(card.ability.ante)
     end
 }
+local summoning = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Summoning",
+    key = "summoning",
+    pos = {x=3,y=4},
+    loc_txt = {
+        name = 'Summoning',
+        text = { "Create a random",
+        "{C:cry_epic}Epic{} {C:joker}Joker{}, destroy",
+        'one random {C:joker}Joker{}' }
+    },
+    cost = 4,
+    atlas = "atlasnotjokers",
+    can_use = function(self, card)
+        return #G.jokers.cards > 0
+    end,
+    use = function(self, card, area, copier)
+        local deletable_jokers = {}
+        for k, v in pairs(G.jokers.cards) do
+            if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
+        end
+        local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed('cry_summoning'))
+        local _first_dissolve = nil
+        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+            for k, v in pairs(deletable_jokers) do
+                if v == chosen_joker then 
+                    v:start_dissolve(nil, _first_dissolve)
+                    _first_dissolve = true
+                end
+            end
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('timpani')
+            local card = create_card('Joker', G.jokers, nil, "cry_epic", nil, nil, nil, 'cry_summoning')
+            card:add_to_deck()
+            G.jokers:emplace(card)
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        delay(0.6)
+    end
+}
 local replica = {
     object_type = "Consumable",
     set = "Spectral",
@@ -648,4 +690,4 @@ return {name = "Spectrals",
 
             end
         end,
-        items = {white_hole, vacuum, hammerspace, lock, trade, analog, replica}}
+        items = {white_hole, vacuum, hammerspace, lock, trade, analog, summoning, replica}}
