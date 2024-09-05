@@ -223,7 +223,7 @@ local planetlua = {
                 return true end }))
 	end
     end,
-	bulk_use = function(self, card, area, copier, number)
+    bulk_use = function(self, card, area, copier, number)
 	local quota = 0
 	for i = 1, number do
 		quota = quota + (pseudorandom('planetlua') < G.GAME.probabilities.normal/card.ability.extra.odds and 1 or 0)
@@ -271,12 +271,92 @@ local planetlua = {
                 return true end }))
 	end
     end,
-    calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for x1.5 Mult
+    calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for (G.P_CENTERS.v_observatory.config.extra) Mult
 	if G.GAME.used_vouchers.v_observatory and (pseudorandom('nstar') < G.GAME.probabilities.normal/card.ability.extra.odds) then
 		local value = G.P_CENTERS.v_observatory.config.extra
                 return {
                     message = localize{type = 'variable', key = 'a_xmult', vars = {value}},
                     Xmult_mod = value
+                }
+	end
+    end
+}
+local nstar = {
+    object_type = "Consumable",
+    set = "Planet",
+    name = "cry-nstar",
+    key = "nstar",
+    pos = {x=4,y=1},
+    loc_txt = {
+        name = 'Neutron Star',
+        text = {
+            "Upgrade a random",
+	    "poker hand by",
+	    "{C:attention}1{} level for each",
+	    "{C:attention}Neutron Star{} used",
+	    "in this run",
+	    "{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
+        }
+    },
+    cost = 4,
+    aurinko = true,
+    atlas = "atlasnotjokers",
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {(G.GAME and G.GAME.neutronstarsusedinthisrun or 0)}}
+    end,
+    use = function(self, card, area, copier)
+	--Get amount of Neutron stars use this run or set to 0 if nil
+        G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
+		
+	--Add +1 to amount of neutron stars used this run
+        G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1 
+	local neutronhand = neutronstarrandomhand() --Random poker hand
+	update_hand_text(
+		{sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3},
+		{handname = localize(neutronhand, 'poker_hands'),
+		chips = G.GAME.hands[neutronhand].chips,
+		mult = G.GAME.hands[neutronhand].mult,
+		level=G.GAME.hands[neutronhand].level}
+	)
+	--level up once for each neutron star used this run
+	level_up_hand(card, neutronhand, nil, G.GAME.neutronstarsusedinthisrun)
+	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    end,
+    bulk_use = function(self, card, area, copier, number)
+	--Get amount of Neutron stars used this run or set to 0 if nil
+        G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
+
+	--Save this amount to use for later
+	local neutronstarsusedminimum = G.GAME.neutronstarsusedinthisrun + 1
+
+	--increase amount of neutron stars used this run by the stack
+        G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + (1 * number)
+
+	--The follwing is just a formula to calculate the amound of levels that a random poker hand should be increased by
+	local neutronstarsusedextra = G.GAME.neutronstarsusedinthisrun - neutronstarsusedminimum + 1
+	local neutronstarsusedfinal = (neutronstarsusedextra / 2) * (neutronstarsusedminimum + G.GAME.neutronstarsusedinthisrun)
+
+	--Continues normally from here
+	local neutronhand = neutronstarrandomhand() --Random poker hand (WE LOVE GAMBLING IT ALL ON ONE HAND!!!)
+	update_hand_text(
+		{sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3},
+		{handname = localize(neutronhand, 'poker_hands'),
+		chips = G.GAME.hands[neutronhand].chips,
+		mult = G.GAME.hands[neutronhand].mult,
+		level=G.GAME.hands[neutronhand].level}
+	)
+	--level up using the amount calculated with the formula
+	level_up_hand(card, neutronhand, nil, neutronstarsusedfinal)
+	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    end,
+    calculate = function(self, card, context) --Observatory effect: X0.04 mult for each neutron star used this run
+	if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil then
+                return {
+                    message = localize{type = 'variable', key = 'a_xmult', vars = {1 + (0.04 * G.GAME.neutronstarsusedinthisrun)}},
+                    Xmult_mod = 1 + (0.04 * G.GAME.neutronstarsusedinthisrun)
                 }
 	end
     end
@@ -288,9 +368,26 @@ function suit_level_up(center, card, area, copier, number)
 	end
 	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 end
-local planet_cards = {sydan, klubi, lapio, timantti}
+function neutronstarrandomhand(ignore, seed, allowhidden)
+	--From JenLib's get_random_hand
+	local chosen_hand
+	ignore = ignore or {}
+	seed = seed or 'randomhand'
+	if type(ignore) ~= 'table' then ignore = {ignore} end
+	while true do
+		chosen_hand = pseudorandom_element(G.handlist, pseudoseed(seed))
+		if G.GAME.hands[chosen_hand].visible or allowhidden then
+			local safe = true
+			for _, v in pairs(ignore) do
+				if v == chosen_hand then safe = false end
+			end
+			if safe then break end
+		end
+	end
+	return chosen_hand
+end
+local planet_cards = {sydan, klubi, lapio, timantti, planetlua, nstar}
 if not (SMODS.Mods["jen"] or {}).can_load then
-    planet_cards[#planet_cards+1] = planetlua
 end
 return {name = "Planets", 
         init = function()
