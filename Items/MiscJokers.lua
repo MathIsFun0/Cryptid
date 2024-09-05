@@ -2468,7 +2468,7 @@ local spaceglobe = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return {vars = {center.ability.extra.x_chips, center.ability.extra.Xchipmod, center.ability.extra.type}}
+		return {vars = {center.ability.extra.x_chips, center.ability.extra.Xchipmod, localize(center.ability.extra.type, 'poker_hands')}}
     	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
