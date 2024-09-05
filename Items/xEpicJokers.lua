@@ -947,7 +947,7 @@ local curse = {
                     })
                 }
         end
-	if context.selling_card and context.card.ability.name ~= "Obelisk" and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
+	if context.selling_card and context.card.ability.name ~= "Obelisk" and #G.jokers.cards + G.GAME.joker_buffer - (context.card.ability.set == 'Joker' and 1 or 0) < G.jokers.config.card_limit and not context.retrigger_joker and not context.blueprint then
 	    local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 	    G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_obelisk')
