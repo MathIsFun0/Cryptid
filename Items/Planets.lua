@@ -173,10 +173,6 @@ local planetlua = {
     cost = 4,
     aurinko = true,
     atlas = "atlasnotjokers",
-    in_pool = function(self)
-        if (SMODS.Mods["jen"] or {}).can_load then return false
-	else return true end
-    end,
     loc_vars = function(self, info_queue, center)
         return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
     end,
@@ -184,9 +180,7 @@ local planetlua = {
         return true
     end,
     use = function(self, card, area, copier)
-	--planets are used 1 by 1 with incantation, while somewhat sastisfying there needs to be better support for this in the future (ideally not "1 in 4 chance to get a bunch of levels, else do nothing and lose all you planets")
-	--Preventing this from appearing if Jen's almanac is present for now since the jokers there produce wayyyyyy to much planets for 1 by 1 use to ever go through
-	if pseudorandom('nstar') < G.GAME.probabilities.normal/card.ability.extra.odds then --Code "borrowed" from black hole
+	if pseudorandom('planetlua') < G.GAME.probabilities.normal/card.ability.extra.odds then --Code "borrowed" from black hole
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('k_all_hands'),chips = '...', mult = '...', level=''})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             		play_sound('tarot1')
@@ -212,6 +206,54 @@ local planetlua = {
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	else
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function() --"borrowed" from Wheel Of Fortune
+                attention_text({
+                    text = localize('k_nope_ex'),
+                    scale = 1.3, 
+                    hold = 1.4,
+                    major = card,
+                    backdrop_colour = G.C.SECONDARY_SET.Planet,
+                    align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and 'tm' or 'cm',
+                    offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0},
+                    silent = true
+                    })
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+                        play_sound('tarot2', 0.76, 0.4);return true end}))
+                    play_sound('tarot2', 1, 0.4)
+                    card:juice_up(0.3, 0.5)
+                return true end }))
+	end
+    end,
+	bulk_use = function(self, card, area, copier, number)
+	local quota = 0
+	for i = 1, number do
+		quota = quota + (pseudorandom('planetlua') < G.GAME.probabilities.normal/card.ability.extra.odds and 1 or 0)
+	end
+	if quota > 0 then 
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('k_all_hands'),chips = '...', mult = '...', level=''})
+        	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            		play_sound('tarot1')
+            		card:juice_up(0.8, 0.5)
+            		G.TAROT_INTERRUPT_PULSE = true
+            		return true end }))
+        	update_hand_text({delay = 0}, {mult = '+', StatusText = true})
+        	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            		play_sound('tarot1')
+            		card:juice_up(0.8, 0.5)
+            		return true end }))
+        	update_hand_text({delay = 0}, {chips = '+', StatusText = true})
+        	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            		play_sound('tarot1')
+            		card:juice_up(0.8, 0.5)
+            		G.TAROT_INTERRUPT_PULSE = nil
+            		return true end }))
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level='+' .. quota})
+        	delay(1.3)
+        	for k, v in pairs(G.GAME.hands) do
+            		level_up_hand(card, k, true, quota)
+        	end
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+	else
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 attention_text({
                     text = localize('k_nope_ex'),
                     scale = 1.3, 
