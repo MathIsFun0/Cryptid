@@ -162,7 +162,7 @@ local planetlua = {
     config = {extra = {odds = 5}},
     pos = {x=4,y=2},
     loc_txt = {
-        name = 'Planet.Lua',
+        name = 'Planet.lua',
         text = {
             "{C:green}#1# in #2#{} chance to",
             "upgrade every",
