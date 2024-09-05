@@ -174,7 +174,7 @@ local planetlua = {
     aurinko = true,
     atlas = "atlasnotjokers",
     loc_vars = function(self, info_queue, center)
-        return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds}}
+        return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.config.extra.odds}}
     end,
     can_use = function(self, card)
         return true
