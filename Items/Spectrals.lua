@@ -90,7 +90,7 @@ local vacuum = {
         name = 'Vacuum',
         text = {
 			"Removes {C:red}all {C:green}modifications{}",
-			"from {C:red}all{} cards in your hand,",
+			"from {C:red}all{} cards held in hand,",
 			"Earn {C:money}$#1#{} per {C:green}modification{} removed",
 			"{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)"
         }
@@ -143,8 +143,7 @@ local hammerspace = {
         text = {
 			"Apply random {C:attention}consumables{}",
 			"as if they were {C:dark_edition}Enhancements{}",
-			"to your {C:attention}entire hand{}",
-			"{C:red}-1{} hand size"
+			"to cards held in hand"
         }
     },
     cost = 4,
@@ -165,9 +164,8 @@ local hammerspace = {
         for i=1, #G.hand.cards do
 			local CARD = G.hand.cards[i]
             local percent = 0.85 + (i-0.999)/(#G.hand.cards-0.998)*0.3
-            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_hammerspace')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(get_random_consumable('cry_hammerspace'), true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
         end
-		G.hand:change_size(-1)
     end
 }
 local lock = {
@@ -180,8 +178,10 @@ local lock = {
     loc_txt = {
         name = 'Lock',
         text = {
-			"Remove {C:red}all{} stickers from {C:red}all {C:attention}Jokers{},",
-			"then apply {C:purple,E:1}Eternal{} to a random {C:attention}Joker{}"
+			"Remove {C:red}all{} stickers",
+			"from {C:red}all{} Jokers,",
+			"then apply {C:purple,E:1}Eternal{}",
+			"to a random {C:attention}Joker{}"
         }
     },
     cost = 4,
@@ -420,6 +420,48 @@ local analog = {
         ease_ante(card.ability.ante)
     end
 }
+local summoning = {
+    object_type = "Consumable",
+    set = "Spectral",
+    name = "cry-Summoning",
+    key = "summoning",
+    pos = {x=3,y=4},
+    loc_txt = {
+        name = 'Summoning',
+        text = { "Create a random",
+        "{C:cry_epic}Epic{} {C:joker}Joker{}, destroy",
+        'one random {C:joker}Joker{}' }
+    },
+    cost = 4,
+    atlas = "atlasnotjokers",
+    can_use = function(self, card)
+        return #G.jokers.cards > 0
+    end,
+    use = function(self, card, area, copier)
+        local deletable_jokers = {}
+        for k, v in pairs(G.jokers.cards) do
+            if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
+        end
+        local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed('cry_summoning'))
+        local _first_dissolve = nil
+        G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.75, func = function()
+            for k, v in pairs(deletable_jokers) do
+                if v == chosen_joker then 
+                    v:start_dissolve(nil, _first_dissolve)
+                    _first_dissolve = true
+                end
+            end
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('timpani')
+            local card = create_card('Joker', G.jokers, nil, "cry_epic", nil, nil, nil, 'cry_summoning')
+            card:add_to_deck()
+            G.jokers:emplace(card)
+            card:juice_up(0.3, 0.5)
+            return true end }))
+        delay(0.6)
+    end
+}
 local replica = {
     object_type = "Consumable",
     set = "Spectral",
@@ -430,8 +472,10 @@ local replica = {
     loc_txt = {
         name = 'Replica',
         text = {
-			"Convert all cards in hand to a",
-            "{C:attention}random{} card held in hand"
+	    "Convert all cards",
+	    "held in hand",
+            "to a {C:attention}random{}",
+	    "card held in hand"
         }
     },
     cost = 4,
@@ -646,4 +690,4 @@ return {name = "Spectrals",
 
             end
         end,
-        items = {white_hole, vacuum, hammerspace, lock, trade, analog, replica}}
+        items = {white_hole, vacuum, hammerspace, lock, trade, analog, summoning, replica}}

@@ -3,6 +3,15 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
+# Code UI disables hold R shortcut
+[[patches]]
+[patches.pattern]
+target = "engine/controller.lua"
+pattern = 'if key == "r" and not G.SETTINGS.paused then'
+position = "at"
+payload = 'if key == "r" and not G.SETTINGS.paused and not (G.GAME and G.GAME.USING_CODE) then'
+match_indent = true
+
 
 # Payload - cash out UI
 [[patches]]

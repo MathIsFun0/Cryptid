@@ -151,7 +151,7 @@ local massproduct = {
     	object_type = "Voucher",
 	key = "massproduct",
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 4},
 	requires = {"v_liquidation"},
 	loc_txt = {
         name = 'Mass Production',
@@ -528,6 +528,30 @@ local quintuple = { --Clone machine voucher quintuple tag
         return G.GAME.used_vouchers.v_cry_clone_machine
     end
 }
+
+-- If Tier 3 Vouchers is loaded, make Cryptid function as Tier 4 Vouchers
+if SMODS.Mods["Tier3Sub"] then
+    overstock_multi.requires[#overstock_multi.requires+1] = "v_overstock_three"
+    massproduct.requires[#massproduct.requires+1] = "v_money_mint"
+    curate.requires[#curate.requires+1] = "v_glow_in_dark"
+    rerollexchange.requires[#rerollexchange.requires+1] = "v_reroll_addict"
+    dexterity.requires[#dexterity.requires+1] = "v_applause"
+    threers.requires[#threers.requires+1] = "v_down_to_zero"
+    tacclimator.requires[#tacclimator.requires+1] = "v_tarot_factory"
+    pacclimator.requires[#pacclimator.requires+1] = "v_planet_factory"
+    moneybean.requires[#moneybean.requires+1] = "v_money_forest"
+    fabric.requires[#fabric.requires+1] = "v_neutral_particle"
+    asteroglyph.requires[#asteroglyph.requires+1] = "v_in_the_beginning"
+    blankcanvas.requires[#blankcanvas.requires+1] = "v_happy_accident"
+    tacclimator.config.extra = tacclimator.config.extra * 8
+    pacclimator.config.extra = pacclimator.config.extra * 8
+end
+local voucheritems = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine,}
+if Cryptid_config["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
+    voucheritems[#voucheritems+1] = command_prompt
+    voucheritems[#voucheritems+1] = satellite_uplink
+    voucheritems[#voucheritems+1] = quantum_computing
+end
 return {name = "Vouchers", 
         init = function()
             --Curate
@@ -582,4 +606,4 @@ return {name = "Vouchers",
                 end
             end
         end,
-        items = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, command_prompt, satellite_uplink, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine, quantum_computing,}}
+        items = voucheritems}

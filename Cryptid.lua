@@ -7,6 +7,7 @@
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0828b]
 --- VERSION: 0.5.0~pre2
+--- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -176,17 +177,8 @@ function cry_debuff_voucher(center)	-- sorry for all the mess here...
                 end
 end
 
-function cry_edition_to_table(edition)		-- need help, how do i do this
-	if edition == 'negative' then return {negative = true}
-	elseif edition == 'polychrome' then return {polychrome = true}
-	elseif edition == 'holo' then return {holo = true}
-	elseif edition == 'foil' then return {foil = true}
-	elseif edition == 'cry_blur' then return {cry_blur = true}
-	elseif edition == 'cry_astral' then return {cry_astral = true}
-	elseif edition == 'cry_mosaic' then return {cry_mosaic = true}
-	elseif edition == 'cry_glitched' then return {cry_glitched = true}
-	elseif edition == 'cry_oversat' then return {cry_oversat = true}
-	end
+function cry_edition_to_table(edition)		-- look mom i figured it out (this does NOT need to be a function)
+	if edition then return {[edition] = true} end
 end
 
 function cry_cheapest_boss_reroll()
@@ -224,6 +216,26 @@ function cry_voucher_pinned(name)
 		end
 	end
 	return false
+end
+
+function get_random_consumable(seed, excluded_flags, unbalanced)
+    excluded_flags = excluded_flags or unbalanced and {'no_doe', 'no_grc'} or {'hidden', 'no_doe', 'no_grc'}
+    local selection = 'n/a'
+    local passes = 0
+    local tries = 500
+    while true do
+        tries = tries - 1
+        passes = 0
+        selection = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or 'grc')).key]
+        for k, v in pairs(excluded_flags) do
+            if not selection[v] then
+                passes = passes + 1
+            end
+        end
+        if passes >= #excluded_flags or tries <= 0 then
+            return selection
+        end
+    end
 end
 
 function cry_get_next_voucher_edition()	-- currently only for editions + sticker decks, can be modified if voucher stickering/editioning becomes more important
@@ -284,11 +296,34 @@ function Card:cry_calculate_consumeable_perishable()
 	end
 end
 
+function update_cry_member_count()
+	if Cryptid_config["HTTPS Module"] == true then
+		if not GLOBAL_cry_member_update_thread then
+			local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
+			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
+			GLOBAL_cry_member_update_thread:start()
+		end
+		local old = GLOBAL_cry_member_count or 2119
+		GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
+		if not GLOBAL_cry_member_count then
+			GLOBAL_cry_member_count = old
+			GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
+			if GLOBAL_cry_member_error >= 15 then
+				local error = love.thread.getChannel('member_error'):pop()
+				if error then sendDebugMessage(error) end
+				GLOBAL_cry_member_error = 0
+			end
+		end
+	else
+		GLOBAL_cry_member_count = 2119
+	end
+end
+
 local ec = eval_card
 function eval_card(card, context)
     local ggpn = G.GAME.probabilities.normal
     if card.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local ret = ec(card, context)
     if card.ability.cry_rigged then
@@ -300,7 +335,7 @@ local uc = Card.use_consumeable
 function Card:use_consumeable(area,copier)
     local ggpn = G.GAME.probabilities.normal
     if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local ret = uc(self, area, copier)
     if self.ability.cry_rigged then
@@ -654,7 +689,7 @@ function Card:calculate_joker(context)
         G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
     end
     if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local orig_ability = {}
     if self.ability then
@@ -681,7 +716,8 @@ function Card:calculate_joker(context)
     if self.ability.name ~= "cry-happyhouse"
 	    and self.ability.name ~= "cry-sapling"
 	    and self.ability.name ~= "cry-mstack"
-	    and self.ability.name ~= "cry-notebook" then
+	    and self.ability.name ~= "cry-notebook"
+	    and self.ability.name ~= "Invisible Joker" then
         local jkr = self
         if jkr.ability and type(jkr.ability) == 'table' then
             if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
@@ -777,6 +813,18 @@ function Card:calculate_joker(context)
                     dbl_info.offset = 1
                     
                 end
+                local default_modifiers = {
+                    mult = 0,
+                    h_mult = 0,
+                    h_x_mult = 0,
+                    h_dollars = 0,
+                    p_dollars = 0,
+                    t_mult = 0,
+                    t_chips = 0,
+                    x_mult = 1,
+                    h_size = 0,
+                    d_size = 0
+                }
                 for k, v in pairs(jkr.ability) do
                     --extra_value is ignored because it can be scaled by Gift Card
                     if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
@@ -785,17 +833,19 @@ function Card:calculate_joker(context)
                         local best_key = {""}
                         local best_coeff = 10^100
                         for l, u in pairs(jkr.ability) do
-                            if l ~= k and is_number(u) then
-                                if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
-                                    best_coeff = to_big(predicted_mod/u):to_number()
-                                    best_key = {l}
+                            if not (default_modifiers[l] and default_modifiers[l] == u) then
+                                if l ~= k and is_number(u) then
+                                    if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
+                                        best_coeff = to_big(predicted_mod/u):to_number()
+                                        best_key = {l}
+                                    end
                                 end
-                            end
-                            if type(jkr.ability[l]) == 'table' then
-                                for _l, _u in pairs(jkr.ability[l]) do 
-                                    if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
-                                        best_coeff = to_big(predicted_mod/_u):to_number()
-                                        best_key = {l,_l}
+                                if type(jkr.ability[l]) == 'table' then
+                                    for _l, _u in pairs(jkr.ability[l]) do 
+                                        if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
+                                            best_coeff = to_big(predicted_mod/_u):to_number()
+                                            best_key = {l,_l}
+                                        end
                                     end
                                 end
                             end
@@ -884,7 +934,7 @@ function Card:calculate_joker(context)
                 local obj = G.jokers.cards[i].config.center
                 if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                     if G.jokers.cards[i].ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                     if G.jokers.cards[i].ability.cry_rigged then
@@ -908,7 +958,7 @@ function Card:calculate_joker(context)
                     for i2=1, #G.jokers.cards do
                         local _card = G.jokers.cards[i2]
                         if _card.ability.cry_rigged then
-                            G.GAME.probabilities.normal = 1e300
+                            G.GAME.probabilities.normal = 1e9
                         end
                         local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                         if _card.ability.cry_rigged then
@@ -933,7 +983,7 @@ function Card:calculate_joker(context)
                             for r = 1, j.repetitions do
                                 card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                                 if G.jokers.cards[i].ability.cry_rigged then
-                                    G.GAME.probabilities.normal = 1e300
+                                    G.GAME.probabilities.normal = 1e9
                                 end
                                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                                 if G.jokers.cards[i].ability.cry_rigged then
@@ -1065,7 +1115,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                 if G.jokers.cards[i].ability.cry_rigged then
-                    G.GAME.probabilities.normal = 1e300
+                    G.GAME.probabilities.normal = 1e9
                 end
                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                 if G.jokers.cards[i].ability.cry_rigged then
@@ -1089,7 +1139,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
                     if _card.ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                     if _card.ability.cry_rigged then
@@ -1114,7 +1164,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                             if G.jokers.cards[i].ability.cry_rigged then
-                                G.GAME.probabilities.normal = 1e300
+                                G.GAME.probabilities.normal = 1e9
                             end
                             local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                             if G.jokers.cards[i].ability.cry_rigged then
@@ -1174,7 +1224,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
                 if G.jokers.cards[i].ability.cry_rigged then
-                    G.GAME.probabilities.normal = 1e300
+                    G.GAME.probabilities.normal = 1e9
                 end
                 local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                 if G.jokers.cards[i].ability.cry_rigged then
@@ -1198,7 +1248,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
                     if _card.ability.cry_rigged then
-                        G.GAME.probabilities.normal = 1e300
+                        G.GAME.probabilities.normal = 1e9
                     end
                     local check = cj(G.jokers.cards[i2], {retrigger_joker_check = true, other_card = G.jokers.cards[i]})
                     if _card.ability.cry_rigged then
@@ -1223,7 +1273,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
                             if G.jokers.cards[i].ability.cry_rigged then
-                                G.GAME.probabilities.normal = 1e300
+                                G.GAME.probabilities.normal = 1e9
                             end
                             local o = obj:cry_scale_mod(G.jokers.cards[i], jkr, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
                             if G.jokers.cards[i].ability.cry_rigged then
@@ -1251,6 +1301,17 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
     end
 end
 
+function cry_with_deck_effects(card, func)
+    if not card.added_to_deck then
+        return func(card)
+    else
+        card:remove_from_deck(true)
+        local ret = func(card)
+        card:add_to_deck(true)
+        return ret
+    end
+end
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
 --for first boot, make sure config is defined properly beforehand
@@ -1258,6 +1319,7 @@ for _, file in ipairs(files) do
     local f, err = SMODS.load_file("Items/"..file)
     if not err then
         local curr_obj = f()
+        if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
         if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
     end
 end
@@ -1266,6 +1328,7 @@ for _, file in ipairs(files) do
     local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
+      if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
       if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
@@ -1435,12 +1498,25 @@ function calculate_reroll_cost(skip_increment)
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
   local center = G.P_CENTERS.b_red
-
   if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
     forced_key = "j_cry_rnjoker"
   end
-      
-
+  local function aeqviable(card)
+    return not card.no_doe and not card.no_aeq and not (card.rarity == 6 or card.rarity == 'cry_exotic')
+  end
+  if _type == "Joker" and not _rarity then
+        local aeqactive = nil
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
+                while (not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive])) do
+                    if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then G.jokers.cards[i].ability.extra.num = 1 end
+                    aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
+                    G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+                end
+            end
+        end
+        if aeqactive then forced_key = G.P_CENTER_POOLS["Joker"][aeqactive].key end
+  end
   --should pool be skipped with a forced key
   if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
       for _, v in ipairs(SMODS.Consumable.legendaries) do
@@ -1893,6 +1969,12 @@ function SMODS.current_mod.process_loc_text()
             "nothing on use"
         },
     }
+    G.localization.descriptions.Other.cry_https_disabled = {
+        name = "M",
+        text = {
+            "{C:attention,s:0.7}Updating{s:0.7} is disabled by default ({C:attention,s:0.7}HTTPS Module{s:0.7})",
+        },
+    }
     SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
     SMODS.process_loc_text(G.localization.misc.achievement_descriptions, "hidden_achievement", "Play more to find out!")
 end
@@ -1981,6 +2063,41 @@ function Card:set_eternal(_eternal)
         self.ability.eternal = _eternal
     end
 end
+function Card:calculate_banana()
+    if not self.ability.extinct then
+        if self.ability.banana and (pseudorandom('banana') < G.GAME.probabilities.normal/10) then 
+            self.ability.extinct = true
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    self.T.r = -0.2
+                    self:juice_up(0.3, 0.4)
+                    self.states.drag.is = true
+                    self.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                        func = function()
+                                if self.area then self.area:remove_card(self) end
+                                self:remove()
+                                self = nil
+                            return true; end})) 
+                    return true
+                end
+            }))
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
+            return true
+        elseif self.ability.banana then
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_safe_ex'), delay = 0.1})
+            return false
+        end
+    end
+    return false
+end
+function Card:set_banana(_banana)
+    self.ability.banana = _banana
+end
+function Card:set_pinned(_pinned)
+    self.pinned = _pinned
+end
 
 --Gradients based on Balatrostuck code
 local upd = Game.update
@@ -2045,6 +2162,10 @@ SMODS.Sound({
     path = "e_blur.ogg"
 })
 SMODS.Sound({
+    key = "e_jolly",
+    path = "e_jolly.ogg"
+})
+SMODS.Sound({
     key = "studiofromhelsinki",
     path = "studiofromhelsinki.ogg"
 })
@@ -2084,6 +2205,12 @@ SMODS.Atlas({
     path = "cry_icon.png",
     px = 32,
     py = 32
+}):register()
+SMODS.Atlas({
+    key = "placeholders",
+    path = "placeholders.png",
+    px = 71,
+    py = 95
 }):register()
 SMODS.Atlas({
     key = "atlasepic",

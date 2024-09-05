@@ -181,7 +181,19 @@ local oversat = {
 	    "are {C:attention}doubled{}",
 	    "{C:inactive}(If possible)"
         }
-    }
+    },
+    on_apply = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end)
+    end,
+    on_remove = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card)
+        end)
+    end
 }
 local glitched_shader = {
     object_type = "Shader",
@@ -212,7 +224,19 @@ local glitched = {
             'between {C:attention}X0.1{} and {C:attention}X10{}',
             '{C:inactive}(If possible){}',
         }
-    }
+    },
+    on_apply = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
+        end)
+    end,
+    on_remove = function(card)
+        cry_with_deck_effects(card, function(card)
+            cry_misprintize(card,nil,true)
+            cry_misprintize(card)
+        end)
+    end
 }
 local astral_shader = {
     object_type = "Shader",
@@ -292,6 +316,11 @@ local jollyedition = {
     in_shop = false,
     weight = 0,
     name = "cry-jollyedition",
+    sound = {
+        sound = 'cry_e_jolly',
+        per = 1,
+        vol = 0.3
+    },
     extra_cost = 0,
     config = {mult = 8},
     apply_to_float = true,
@@ -312,6 +341,30 @@ local jollyedition = {
         }
     }
 }
+
+local glass_shader = {
+    object_type = "Shader",
+    key = 'glass',
+    path = 'glass.fs'
+}
+local glass_edition = {
+    object_type = "Edition",
+    key = "glass",
+    shader = "glass",
+    disable_base_shader = true,
+    disable_shadow = true,
+}
+
+local gold_shader = {
+    object_type = "Shader",
+    key = 'gold',
+    path = 'gold.fs'
+}
+local gold_edition = {
+    object_type = "Edition",
+    key = "gold",
+    shader = "gold",
+}
 local echo_atlas = {
     object_type = 'Atlas',
     key = 'echo_atlas',
@@ -319,7 +372,6 @@ local echo_atlas = {
     px = 71,
     py = 95,
 }
-
 local echo = {
     object_type = 'Enhancement',
     key = 'echo',
@@ -355,6 +407,39 @@ local eclipse = {
 
         return {vars = {self.config.max_highlighted}}
     end,
+}
+local blessing = {
+    object_type = "Consumable",
+    set = "Tarot",
+    name = "cry-theblessing",
+    key = "theblessing",
+    pos = {x=2, y=3},
+    loc_txt = {
+        name = "The Blessing",
+        text = {
+		"Creates {C:attention}1{}",
+		"random {C:attention}consumable{}",
+		"{C:inactive}(Must have room){}",
+        }
+    },
+    cost = 3,
+    atlas = "atlasnotjokers",
+    can_use = function(self, card)
+        return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
+    end,
+    can_bulk_use = true,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                if G.consumeables.config.card_limit > #G.consumeables.cards then
+                    play_sound('timpani')
+                    local _card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'blessing')
+                    _card:add_to_deck()
+                    G.consumeables:emplace(_card)
+                    card:juice_up(0.3, 0.5)
+                end
+                return true end }))
+        delay(0.6)
+    end
 }
 --note: seal colors are also used in lovely.toml for spectral descriptions
 -- and must be modified in both places
@@ -521,6 +606,39 @@ local epic_tag = {
                 else
                     tag:nope()
                 end
+                tag.triggered = true
+                return card
+        end
+    end
+}
+local schematic = {
+    object_type = "Tag",
+    atlas = "tag_cry",
+    pos = {x=1, y=2},
+    config = {type = 'store_joker_create'},
+    key = "schematic",
+    loc_txt = {
+        name = "Schematic Tag",
+        text = {
+            "Shop has a",
+            "{C:attention}Brainstorm"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_brainstorm'} 
+        return {vars = {}}
+    end,
+    apply = function(tag, context)
+        if context.type == 'store_joker_create' then
+                local card
+                    card = create_card('Joker', context.area, nil, nil, nil, nil, "j_brainstorm")
+                    create_shop_card_ui(card, 'Joker', context.area)
+                    card.states.visible = false
+                    tag:yep('+', G.C.RARITY.cry_epic,function() 
+                        card:start_materialize()
+                        card:set_cost()
+                        return true
+                    end)
                 tag.triggered = true
                 return card
         end
@@ -703,11 +821,11 @@ local memory = {
 }
 
 local miscitems = {memepack_atlas, meme_object_type, meme1, meme2, meme3,
-mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader,
-glitched, mosaic, oversat, blurred, astral,
-echo_atlas, echo, eclipse, 
+mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
+glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
+echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
-cat, empowered, gambler, bundle, memory}
+cat, empowered, gambler, bundle, memory, schematic}
 if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
 end
@@ -735,24 +853,6 @@ function calculate_blurred(card)
         repetitions = retriggers,
         card = card
     }
-end
-
-se = Card.set_edition
-function Card:set_edition(x,y,z)
-    local from_copy = false
-    if self.from_copy then from_copy = true end
-    self.from_copy = nil
-    se(self,x,y,z)
-    if not from_copy then
-        if self.edition and self.edition.cry_oversat then
-            cry_misprintize(self,nil,true)
-            cry_misprintize(self, {min=2*(G.GAME.modifiers.cry_misprint_min or 1),max=2*(G.GAME.modifiers.cry_misprint_max or 1)})
-        end
-        if self.edition and self.edition.cry_glitched then
-            cry_misprintize(self,nil,true)
-            cry_misprintize(self, {min=0.1*(G.GAME.modifiers.cry_misprint_min or 1),max=10*(G.GAME.modifiers.cry_misprint_max or 1)})
-        end
-    end
 end
 
 --echo card
@@ -796,43 +896,53 @@ function Tag:apply_to_run(x)
     end
     return ret
 end
-
-function Card:calculate_banana()
-    if not self.ability.extinct then
-        if self.ability.banana and (pseudorandom('banana') < G.GAME.probabilities.normal/10) then 
-            self.ability.extinct = true
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    play_sound('tarot1')
-                    self.T.r = -0.2
-                    self:juice_up(0.3, 0.4)
-                    self.states.drag.is = true
-                    self.children.center.pinch.x = true
-                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                        func = function()
-                                if self.area then self.area:remove_card(self) end
-                                self:remove()
-                                self = nil
-                            return true; end})) 
-                    return true
-                end
-            }))
-            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
-            return true
-        elseif self.ability.banana then
-            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_safe_ex'), delay = 0.1})
-            return false
+		
+--Change name of cards with Jolly edition
+local gcui = generate_card_ui
+function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+    local full_UI_table = gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+    if card and card.edition and card.edition.cry_m and (not card.ability or card.ability.set ~= "Edition") and full_UI_table and full_UI_table.name and type(full_UI_table.name) == 'table' and full_UI_table.name[1] and full_UI_table.name[1].config and full_UI_table.name[1].config.object and full_UI_table.name[1].config.object.config then
+        local conf = full_UI_table.name[1].config.object.config
+        if conf.string and #conf.string > 0 then
+            local function m_ify_word(text)
+                -- Define a pattern for vowels
+                local vowels = "AEIOUaeiou"
+            
+                -- Use gsub to replace the first consonant of each word with 'M'
+                local result = text:gsub("(%a)(%w*)", function(first, rest)
+                    if vowels:find(first) then
+                        -- If the first character is a vowel, add an M
+                        if (not rest[1]) or (rest:lower()[1] == rest[1]) then --this check doesn't work properly
+                            return "M" .. first:lower() .. rest
+                        else
+                            return "M" .. first:upper() .. rest
+                        end
+                    elseif first:lower() == "m" then
+                        -- If the word already starts with 'M', keep it unchanged
+                        return first .. rest
+                    else
+                        -- Replace the first consonant with 'M'
+                        return "M" .. rest
+                    end
+                end)
+            
+                return result
+            end
+            function m_ify(text)
+                -- Use gsub to apply the m_ify_word function to each word
+                local result = text:gsub("(%S+)", function(word)
+                    return m_ify_word(word)
+                end)
+            
+                return result
+            end
+            conf.string[1] = m_ify(conf.string[1])
+            full_UI_table.name[1].config.object:remove()
+            full_UI_table.name[1].config.object = DynaText(conf)
         end
     end
-    return false
+    return full_UI_table
 end
 
-function Card:set_banana(_banana)
-    self.ability.banana = _banana
-end
-
-function Card:set_pinned(_pinned)
-    self.pinned = _pinned
-end
         end,
         items = miscitems}

@@ -415,13 +415,9 @@ local seed = {
         if area then area:remove_from_highlighted(card) end
         if G.jokers.highlighted[1] then
             G.jokers.highlighted[1].ability.cry_rigged = true
-            print(G.jokers.highlighted[1].config.center.key.." rigged")
             if G.jokers.highlighted[1].config.center.key == "j_cry_googol_play" then 
-                print('ach_cry_googol_play_pass unlocked')
                 check_for_unlock({type = 'googol_play_rigged'})
-            else
-                print(G.jokers.highlighted[1].config.center.key.." ~= j_cry_googol_play")
-            end
+	    end
         end
         if G.hand.highlighted[1] then
             G.hand.highlighted[1].ability.cry_rigged = true
@@ -678,7 +674,9 @@ local multiply = {
             G.jokers.highlighted[1].cry_multiply = 1
         end
         G.jokers.highlighted[1].cry_multiply = G.jokers.highlighted[1].cry_multiply * 2
-        cry_misprintize(G.jokers.highlighted[1],{min=2,max=2},nil,true)
+        cry_with_deck_effects(G.jokers.highlighted[1], function(card)
+            cry_misprintize(card,{min=2,max=2},nil,true)
+        end)
     end
 }
 local divide = {
@@ -1536,6 +1534,7 @@ function create_UIBox_variable(card)
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'variable_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'variable_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'variable_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1560,6 +1559,7 @@ function create_UIBox_class(card)
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'class_apply', label = {'APPLY'}, minw = 4.5, focus_args = {snap_to = true}})}},
 	{n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'class_apply_previous', label = {'APPLY PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+	{n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'class_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1584,6 +1584,7 @@ function create_UIBox_exploit(card)
           })}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'exploit_apply', label = {'EXPLOIT'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'exploit_apply_previous', label = {'EXPLOIT PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, nodes = {UIBox_button({colour = G.C.RED, button = 'exploit_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
     }})
     return t
 end
@@ -1632,14 +1633,24 @@ function create_UIBox_pointer(card)
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'pointer_apply', label = {'CREATE'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.SET.Code, button = 'your_collection', label = {'COLLECTION'}, minw = 4.5, focus_args = {snap_to = true}})}},
         {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.RED, button = 'pointer_apply_previous', label = {'CREATE PREVIOUS'}, minw = 4.5, focus_args = {snap_to = true}})}},
+        {n=G.UIT.R, config = {align = "cm"}, nodes = {UIBox_button({colour = G.C.RED, button = 'pointer_cancel', label = {'CANCEL'}, minw = 4.5, focus_args = {snap_to = true}})}},
 
     }})
     return t
 end
+
+G.FUNCS.pointer_cancel = function ()
+    
+    G.CHOOSE_CARD:remove()
+    G.GAME.USING_CODE = false
+    G.GAME.USING_POINTER = false
+end
+
 G.FUNCS.variable_apply_previous = function()
 	if G.PREVIOUS_ENTERED_RANK then G.ENTERED_RANK = G.PREVIOUS_ENTERED_RANK or "" end
 	G.FUNCS.variable_apply()
 end
+
 G.FUNCS.variable_apply = function()
     local rank_table = {
         {},
@@ -1732,6 +1743,12 @@ G.FUNCS.variable_apply = function()
         G.CHOOSE_RANK:remove()
     end
 end
+
+G.FUNCS.variable_cancel = function ()
+    G.CHOOSE_RANK:remove()
+    G.GAME.USING_CODE = false
+end
+
 G.FUNCS.exploit_apply_previous = function()
 	if G.PREVIOUS_ENTERED_HAND then G.ENTERED_HAND = G.PREVIOUS_ENTERED_HAND or "" end
 	G.FUNCS.exploit_apply()
@@ -1767,11 +1784,16 @@ G.FUNCS.exploit_apply = function()
 	if current_hand and G.GAME.hands[current_hand].visible then
 		G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
 		G.GAME.cry_exploit_override = current_hand 
-		G.CHOOSE_HAND:remove()
-		G.GAME.USING_CODE = false
+		G.FUNCS.exploit_cancel()
 		return
 	end
 end
+
+G.FUNCS.exploit_cancel = function()
+    G.CHOOSE_HAND:remove()
+    G.GAME.USING_CODE = false
+end
+
 G.FUNCS.exploit_info = function()
 	local text = G.GAME.cry_exploit_override
 	local disp_text = text
@@ -1824,7 +1846,7 @@ G.FUNCS.class_apply = function()
             for i=1, #G.hand.highlighted do
                 local CARD = G.hand.highlighted[i]
                 local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
-                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('cry_class')).key], true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD:set_ability(get_random_consumable('cry_class'), true, nil);play_sound('tarot2', percent);CARD:juice_up(0.3, 0.3);return true end }))
             end
         elseif enh_suffix == "null" then
             check_for_unlock({type = 'cheat_used'})
@@ -1860,6 +1882,12 @@ G.FUNCS.class_apply = function()
         G.CHOOSE_ENH:remove()
     end
 end
+
+G.FUNCS.class_cancel = function ()
+    G.GAME.USING_CODE = false
+    G.CHOOSE_ENH:remove()
+end
+
 G.FUNCS.ca = function()
     G.GAME.USING_CODE = false
     loadstring(G.ENTERED_ACE)() --Scary!
@@ -1875,11 +1903,13 @@ G.FUNCS.pointer_apply_previous = function()
 end
 G.FUNCS.pointer_apply = function()
     local function apply_lower(str)
+        -- Remove content within {} and any remaining spaces
+        str = str:gsub("%b{}", ""):gsub("%s+", "")
         --this weirdness allows you to get m and M separately
         if string.len(str) == 1 then return str end
         return string.lower(str)
     end
-	local aliases = { --todo
+	local aliases = {
         jimbo = "joker",
         greedy = "greedy joker",
         lusty = "lusty joker",
@@ -1902,25 +1932,26 @@ G.FUNCS.pointer_apply = function()
         fib = "fibonacci",
         scary = "scary face",
         abstract = "abstract joker",
-        ["delayed grat"] = "delayed gratification",
+        delayedgrat = "delayed gratification",
         banana = "gros michel",
         steven = "even steven",
         todd = "odd todd",
         bus = "ride the bus",
         faceless = "faceless joker",
-        ["to do"] = "to do list",
+        todo = "to do list",
         ["to-do"] = "to do list",
         square = "square joker",
         seance = "séance",
-        ["riff raff"] = "riff-raff",
-        ["cloud nine"] = "cloud 9",
+        riffraff = "riff-raff",
+        cloudnine = "cloud 9",
         trousers = "spare trousers",
         ancient = "ancient joker",
-        ["mr bones"] = "mr. bones",
+        mrbones = "mr. bones",
         smeared = "smeared joker",
         wee = "wee joker",
-        ["oops all 6s"] = "oops! all 6s",
-        ["all 6s"] = "oops! all 6s",
+        oopsall6s = "oops! all 6s",
+        all6s = "oops! all 6s",
+        oa6 = "oops! all 6s",
         idol = "the idol",
         duo = "the duo",
         trio = "the trio",
@@ -1928,12 +1959,12 @@ G.FUNCS.pointer_apply = function()
         order = "the order",
         tribe = "the tribe",
         invisible = "invisible joker",
-        ["drivers license"] = "driver's license",
+        driverslicense = "driver's license",
         burnt = "burnt joker",
         caino = "canio",
         house = "happy house",
-        ["queens gambit"] = "queen's gambit",
-        ["wee fib"] = "weebonacci",
+        queensgambit = "queen's gambit",
+        weefib = "weebonacci",
         interest = "compound interest",
         whip = "the whip",
         triplet = "triplet rhythm",
@@ -1943,10 +1974,11 @@ G.FUNCS.pointer_apply = function()
         gofp = "garden of forking paths",
         lutn = "light up the night",
         nsnm = "no sound, no memory",
-        ["no sound no memory"] = "no sound, no memory",
-        latn = "...like antennas to heaven",
-        ["like antennas to heaven"] = "...like antennas to heaven",
+        nosoundnomemory = "no sound, no memory",
+        lath = "...like antennas to heaven",
+        likeantennastoheaven = "...like antennas to heaven",
         consumeable = "consume-able",
+        error = "j_cry_error",
         ap = "ap joker",
         rng = "rnjoker",
         filler = "the filler",
@@ -1958,42 +1990,42 @@ G.FUNCS.pointer_apply = function()
         swarm = "the swarm",
         crypto = "crypto coin",
         googol = "googol play card",
-        ["googol play"] = "googol play card",
+        googolplay = "googol play card",
         google = "googol play card",
-        ["google play"] = "googol play card",
-        ["google play card"] = "googol play card",
-        ["error"] = "j_cry_error",
-        ["nostalgic googol"] = "nostalgic googol play card",
-        ["nostalgic googol play"] = "nostalgic googol play card",
-        ["nostalgic google"] = "nostalgic googol play card",
-        ["nostalgic google play"] = "nostalgic googol play card",
-        ["nostalgic google play card"] = "nostalgic googol play card",
-        ["old googol"] = "nostalgic googol play card",
-        ["old googol play"] = "nostalgic googol play card",
-        ["old google"] = "nostalgic googol play card",
-        ["old google play"] = "nostalgic googol play card",
-        ["old google play card"] = "nostalgic googol play card",
+        googleplay = "googol play card",
+        googleplaycard = "googol play card",
+        nostalgicgoogol = "nostalgic googol play card",
+        nostalgicgoogolplay = "nostalgic googol play card",
+        nostalgicgoogle = "nostalgic googol play card",
+        nostalgicgoogleplay = "nostalgic googol play card",
+        nostalgicgoogleplaycard = "nostalgic googol play card",
+        oldgoogol = "nostalgic googol play card",
+        oldgoogolplay = "nostalgic googol play card",
+        oldgoogle = "nostalgic googol play card",
+        oldgoogleplay = "nostalgic googol play card",
+        oldgoogleplaycard = "nostalgic googol play card",
+        localthunk = "supercell",
         ["1fa"] = "one for all",
         crust = "crustulum",
-        ["death star"] = "stella mortis",
+        deathstar = "stella mortis",
         ["jolly?"] = "jolly joker?",
         scrabble = "scrabble tile",
         ["13"] = "tredecim",
         ["overstock+"] = "overstock plus",
-        ["directors cut"] = "director's cut",
-        ["3 rs"] = "the 3 rs",
+        directorscut = "director's cut",
+        ["3rs"] = "the 3 rs",
         fool = "the fool",
         magician = "the magician",
         priestess = "the high priestess",
-        ["high priestess"] = "the high priestess",
+        highpriestess = "the high priestess",
         empress = "the empress",
         emperor = "the emperor",
         hierophant = "the hierophant",
         lovers = "the lovers",
         chariot = "the chariot",
         hermit = "the hermit",
-        ["wheel of fortune"] = "the wheel of fortune",
-        ["hanged man"] = "the hanged man",
+        wheeloffortune = "the wheel of fortune",
+        hangedman = "the hanged man",
         devil = "the devil",
         tower = "the tower",
         star = "the star",
@@ -2001,7 +2033,7 @@ G.FUNCS.pointer_apply = function()
         sun = "the sun",
         world = "the world",
         automaton = "the automaton",
-        eclipse = "the eclipse",
+        eclipse = "c_cry_eclipse",
         x = "planet x",
         X = "planet x",
         pointer = "pointer://",
@@ -2021,15 +2053,13 @@ G.FUNCS.pointer_apply = function()
         divide = "://divide",
         delete = "://delete",
         machinecode = "://machinecode",
-        ["machine code"] = "://machinecode",
         run = "://run",
         exploit = "://exploit",
         offbyone = "://offbyone",
-        ["off by one"] = "://offbyone",
         rework = "://rework",
         spaghetti = "://spaghetti",
-        ["top up tag"] = "top-up tag",
-        ["gamblers tag"] = "gambler's tag",
+        topuptag = "top-up tag",
+        gamblerstag = "gambler's tag",
         hook = "the hook",
         ox = "the ox",
         wall = "the wall",
@@ -2052,22 +2082,57 @@ G.FUNCS.pointer_apply = function()
         tooth = "the tooth",
         flint = "the flint",
         mark = "the mark",
-        ["old ox"] = "nostalgic ox",
-        ["old house"] = "nostalgic house",
-        ["old arm"] = "nostalgic arm",
-        ["old fish"] = "nostalgic fish",
-        ["old manacle"] = "nostalgic manacle",
-        ["old serpent"] = "nostalgic serpent",
-        ["old pillar"] = "nostalgic pillar",
-        ["old flint"] = "nostalgic flint",
-        ["old mark"] = "nostalgic mark",
+        oldox = "nostalgic ox",
+        oldhouse = "nostalgic house",
+        oldarm = "nostalgic arm",
+        oldfish = "nostalgic fish",
+        oldmanacle = "nostalgic manacle",
+        oldserpent = "nostalgic serpent",
+        oldpillar = "nostalgic pillar",
+        oldflint = "nostalgic flint",
+        oldmark = "nostalgic mark",
         tax = "the tax",
         trick = "the trick",
         joke = "the joke",
         hammer = "the hammer",
         box = "the box",
         windmill = "the windmill",
-        clock = "the clock"
+        clock = "the clock",
+        code = "code joker",
+        copypaste = "copy/paste",
+        translucent = "translucent joker",
+        circulus = "circulus pistoris",
+        macabre = "macabre joker",
+        -- Jen's Almanac aliases
+        freddy = "freddy snowshoe",
+        paupovlin = "paupovlin revere",
+        jen = "jen walter",
+        --should I add "reverse ___" prefixes for the reverse tarots?
+        survivor = "the survivor",
+        monk = "the monk",
+        hunter = "the hunter",
+        gourmand = "the gourmand",
+        saint = "the saint",
+        genius = "the genius",
+        scientist = "the scientist",
+        peasant = "the peasant",
+        adversary = "the adversary",
+        rivals = "the rivals",
+        hitchhiker = "the hitchhiker",
+        angel = "the angel",
+        collapse = "the collapse",
+        lowlaywoman = "the low laywoman",
+        laywoman = "the low laywoman",
+        servant = "the servant",
+        extrovert = "the extrovert",
+        discofpenury = "the disc of penury",
+        flash = "the flash",
+        eclipsespectral = "c_jen_reverse_moon",
+        eclipsetorat = "c_jen_reverse_moon",
+        darkness = "the darkness",
+        void = "the void",
+        topuptoken = "top-up token",
+        sagittarius = "sagittarius a*"
 	}
 	local current_card
     local entered_card = G.ENTERED_CARD
@@ -2743,7 +2808,9 @@ return {name = "Code Cards",
                 for i = 1, #G.jokers.cards do
                     if G.jokers.cards[i].cry_multiply then
                         m = G.jokers.cards[i].cry_multiply
-                        cry_misprintize(G.jokers.cards[i],{min=1/m,max=1/m},nil,true)
+                        cry_with_deck_effects(G.jokers.cards[i], function(card)
+                            cry_misprintize(card,{min=1/m,max=1/m},nil,true)
+                        end)
                         G.jokers.cards[i].cry_multiply = nil
                     end
                 end

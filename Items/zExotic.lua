@@ -1,4 +1,7 @@
 cry_enable_exotics = false
+--TIP!!! for coding exotics, make sure you know which layer corresponds to which value!
+--The Normal pos correponds to the background. use this for the layer that goes all the way in the back!
+--The soul_pos = {blahblahblah, extra = {blahblahblah}} correspomds to the other two layers. the value in the extra table is for the layer that goes in the middle, and the other value is the one that goes all the way in the front
 local gateway = {
     object_type = "Consumable",
     set = "Spectral",
@@ -751,6 +754,165 @@ if JokerDisplay then
 		end
 	}
 end
+local aequilibrium = {
+    object_type = "Joker",
+    name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
+            key = 'equilib',
+            loc_txt = {
+                name = "Ace Aequilibrium",
+                text = {
+                    "Jokers appear using the",
+    "order from the {C:attention}Collection{}",
+                    "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
+    "when hand is played",
+                    "{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
+                    "{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#"
+                }
+            },
+            config = {extra = {jokers = 2, num = 1,card = nil}},
+            rarity = "cry_exotic",
+            pos = {x = 7, y = 0},
+            soul_pos = {x = 69, y = 0, extra = {x = 8, y = 0}},
+            atlas = 'atlasexotic',
+            cost = 50,
+            unlocked = true,
+            discovered = true,
+            blueprint_compat = true,
+    immune_to_chemach = true,
+            eternal_compat = true,
+            perishable_compat = true,
+            loc_vars = function(self, info_queue, center)
+                info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+                local joker_generated = "None"
+                if center.ability.extra.num > 1 then
+                    joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][center.ability.extra.num-1].key}
+                end
+                return {vars = {center.ability.extra.jokers,joker_generated}}
+            end,
+            calculate = function(self, card, context)
+                if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
+                    for i = 1, math.min(200, card.ability.extra.jokers) do
+                        local newcard = create_card('Joker', G.jokers, nil, nil, nil, nil, nil)
+                        newcard:add_to_deck()
+                        G.jokers:emplace(newcard)
+                        newcard:set_edition({negative = true}, true)
+                    end
+                    --return {}
+                end
+            end,
+            add_to_deck = function(self, card, from_debuff)
+                if not from_debuff then
+                    if card.ability.extra.card then
+                        card.ability.extra.card = nil
+                    end
+                    card.ability.extra.card = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, G.P_CARDS.S_A, G.P_CENTERS.c_base)
+                    --G.hand:emplace(card.ability.extra.card)
+                    --card.ability.extra.card:set_card_area(G.hand)
+                    card.ability.extra.card:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
+                    card.ability.extra.card:set_seal('Gold', true, true)
+                    card.ability.extra.card:set_edition({cry_glitched = true}, true)
+                    --card.ability.extra.card.T.x = card.T.x
+        
+        
+                    if card.ability.extra.card and (G.P_CENTERS.j_blueprint.unlocked) then
+                        local viable_unlockables = {}
+                        for k, v in ipairs(G.P_LOCKED) do
+                            if (v.set == 'Voucher' or v.set == 'Joker') and not v.demo then 
+                                viable_unlockables[#viable_unlockables+1] = v
+                            end
+                        end
+                        if #viable_unlockables > 0 then 
+                            local card2 = card.ability.extra.card
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 4.04,
+                                func = (function()
+                                    card2 = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, nil, pseudorandom_element(viable_unlockables) or self.P_CENTERS.j_joker)
+                                    card2.no_ui = #viable_unlockables == 0
+                                    card2.states.visible = false
+                                    card.ability.extra.card.parent = nil
+                                    card.ability.extra.card:start_dissolve({G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD})
+                                    return true
+                            end)}))
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 1.04,
+                                func = (function()
+                                    card2:start_materialize()
+                                    --G.:emplace(card)
+                                    return true
+                            end)}))
+                        end
+                    end
+                end
+        
+            end,
+            --Known bug: card does not reappear after save reopened
+            update = function(self,card,front)
+                if card.ability.extra.card then
+                    if card.ability.extra.card.states and not card.ability.extra.card.states.drag.is then 
+                        card.ability.extra.card.T.x = card.T.x + card.T.w /5
+                        card.ability.extra.card.T.y = card.T.y + card.T.h /5
+                    end
+                end
+            end,
+        }
+local cc = copy_card
+function copy_card(card,a,b,c,d)
+    local m
+    if card and card.ability and card.ability.extra and type(card.ability.extra) == 'table' and card.ability.extra.card then
+        m = card.ability.extra.card
+        card.ability.extra.card = nil
+    end
+    local ret = cc(card,a,b,c,d)
+    if card and card.ability and card.ability.extra and type(card.ability.extra) == 'table' and card.ability.extra.card and m then
+        card.ability.extra.card = m
+    end
+    return ret
+end
+local facile = {
+    object_type = "Joker",
+    name = "cry-facile",
+    key = "facile",
+    config = {extra = {Emult = 3, check = 10, check2 = 0}},
+    pos = { x = 0, y = 1 },
+    soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    loc_txt = {
+        name = 'Facile',
+        text = {
+            "{X:dark_edition,C:white}^#1#{} Mult if",
+            "{C:attention}#2#{} or fewer",
+            "cards are scored"
+        }
+    },
+    rarity = "cry_exotic",
+    cost = 50,
+    blueprint_compat = true,
+    atlas = "placeholders",
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {center.ability.extra.Emult, center.ability.extra.check}
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual then
+            if context.cardarea == G.play then
+                card.ability.extra.check2 = card.ability.extra.check2 + 1
+            end
+        end
+        if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
+            if card.ability.extra.check2 <= card.ability.extra.check then
+                return {
+                    message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+                    Emult_mod = card.ability.extra.Emult,
+                    colour = G.C.DARK_EDITION
+                }
+            else
+                card.ability.extra.check2 = 0
+            end
+        end
+    end
+}
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -860,4 +1022,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile}}

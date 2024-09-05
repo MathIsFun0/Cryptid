@@ -553,7 +553,7 @@ local pickle = {
         end
         if context.setting_blind and not context.blueprint then
             card.ability.extra.tags = card.ability.extra.tags - card.ability.extra.tags_mod
-            if card.ability.extra.tags > 0 then
+            if to_big(card.ability.extra.tags) > to_big(0) then
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "-"..card.ability.extra.tags_mod.." Tag"..(card.ability.extra.tags_mod>1 and "s" or ""), colour = G.C.FILTER})
                 return {calculated = true}
             else
@@ -707,6 +707,8 @@ local booster = {
         name = 'Booster Joker',
         text = {
             "{C:attention}+#1#{} Booster Pack slot",
+	    "available in shop",
+	
         }
     },
 	rarity = 2,
@@ -1434,14 +1436,14 @@ local mario = {
     object_type = "Joker",
     name = "cry-mario",
     key = "mario",
-    config = {extra = {retriggers = 1}},
+    config = {extra = {retriggers = 2}},
     pos = {x = 4, y = 3},
     soul_pos = {x = 5, y = 3},
     loc_txt = {
         name = 'Mario',
         text = {
-            "All Jokers",
-            "retrigger {C:attention}#1#{} additional time"
+            "Retrigger all Jokers",
+            "{C:attention}#1#{} additional time(s)"
             }
         },
     rarity = 4,
@@ -4351,7 +4353,7 @@ local oldblueprint = {
     object_type = "Joker",
     name = "cry-oldblueprint",
     key = "oldblueprint",
-    pos = {x = 2, y = 1},
+    pos = {x = 4, y = 4},
     config = {extra = {odds = 4}},
     loc_txt = {
         name = 'Old Blueprint',
@@ -4563,7 +4565,7 @@ local busdriver = {
 	    "for {C:mult}-#2#{} Mult"
         }
     },
-    rarity = 3,
+    rarity = 2,
     cost = 7,
     atlas = "atlasthree",
     blueprint_compat = true,
@@ -4580,7 +4582,7 @@ local busdriver = {
             	}
 	    else
 		return {
-                	message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult * -1}},
+                	message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra.mult}},
                 	mult_mod = (card.ability.extra.mult * -1), 
                 	colour = G.C.MULT
             	}
@@ -4715,6 +4717,129 @@ if JokerDisplay then
         end
     }
 end
+local membershipcard = {
+    	object_type = "Joker",
+	name = "cry-membershipcard",
+	key = "membershipcard",
+    	config = {extra = {Xmult_mod = 0.1}},
+	pos = {x = 3, y = 4},
+	loc_txt = {
+        name = 'Membership Card',
+        text = {
+            "{X:mult,C:white}X#1#{} Mult for each member",
+	    "in the {C:attention}Cryptid Discord{}",
+	    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+            "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
+        }
+    	},
+	rarity = 4,
+	cost = 20,
+	blueprint_compat = true,
+	atlas = "atlasthree",
+    	loc_vars = function(self, info_queue, card)
+        	return {vars = {card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}}
+    	end,
+    	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after
+		and card.ability.extra.Xmult_mod*GLOBAL_cry_member_count > 1 then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult_mod*GLOBAL_cry_member_count}},
+				Xmult_mod = card.ability.extra.Xmult_mod*GLOBAL_cry_member_count
+			}
+		end
+    	end
+}
+if JokerDisplay then
+	membershipcard.joker_display_definition = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "exp" }
+				}
+			}
+		},
+		calc_function = function(card)
+            		card.joker_display_values.stat = math.max(1, (card.ability.extra.Xmult_mod * (GLOBAL_cry_member_count or 1)))
+        	end,
+	}
+end
+local kscope = {
+    object_type = "Joker",
+    name = "cry-kscope",
+    key = "kscope",
+    pos = {x = 5, y = 4},
+    loc_txt = {
+        name = 'Kaleidoscope',
+        text = {
+            "Add {C:dark_edition}Polychrome{} to",
+	    "a random {C:attention}Joker{} when",
+	    "{C:attention}Boss Blind{} is defeated",
+        }
+    },
+    rarity = 3,
+    cost = 7,
+    atlas = "atlasthree",
+    calculate = function(self, card, context)
+        if context.end_of_round and G.GAME.blind.boss then
+        	local eligiblejokers = {}
+        	for k, v in pairs(G.jokers.cards) do
+                    if v.ability.set == 'Joker' and (not v.edition) and v ~= card then
+                        table.insert(eligiblejokers, v)
+                    end
+                end
+                if #eligiblejokers > 0 then
+                    local over = false --From wof code??? Does this even do anything???
+                    local eligible_card = pseudorandom_element(eligiblejokers, pseudoseed("nevergonnagiveyouupnevergonnaletyoudown"))
+                    local edition = {polychrome = true}
+                    eligible_card:set_edition(edition, true)
+                    check_for_unlock({type = 'have_edition'})
+                end
+        end
+    end
+}
+local cryptidmoment = {
+	object_type = "Joker",
+	name = "cry_cryptidmoment",
+	key = "cryptidmoment",
+	pos = {x = 6, y = 0},
+    	config = {extra = {money = 1}},
+	loc_txt = {
+	name = 'M Chain',
+	text = {
+			"Sell this card to",
+			"add {C:money}$#1#{} of {C:attention}sell value{}",
+			"to every {C:attention}Joker{} card",
+		}
+	},
+    	loc_vars = function(self, info_queue, center)
+    		return {vars = {math.max(1, math.floor(center.ability.extra.money))}}
+    	end,
+	rarity = 1,
+	cost = 4,
+	eternal_compat = false,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+           	    for k, v in ipairs(G.jokers.cards) do
+                        if v.set_cost then 
+                            v.ability.extra_value = (v.ability.extra_value or 0) + math.max(1, math.floor(card.ability.extra.money))
+                            v:set_cost()
+                        end
+                    end
+		    card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_val_up'), colour = G.C.MONEY})
+            	end
+	end
+}
+if JokerDisplay then
+	cryptidmoment.joker_display_definition = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "money" },
+		},
+		text_config = { colour = G.C.ORANGE },
+	}
+end
 return {name = "Misc. Jokers", 
         init = function()
 	    cry_enable_jokers = true
@@ -4798,4 +4923,4 @@ return {name = "Misc. Jokers",
             end
 
         end,
-        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent}}
+        items = {jimball_sprite, dropshot, happyhouse, maximized, potofjokes, queensgambit, wee_fib, compound_interest, whip, pickle, triplet_rhythm, booster, chili_pepper, lucky_joker, cursor, cube, big_cube, nice, sus, chad, jimball, luigi, waluigi, mario, wario, eternalflame, seal_the_deal, fspinner, krustytheclown, blurred, gardenfork, lightupthenight, nosound, antennastoheaven, hunger, weegaming, redbloon, apjoker, maze, panopticon, magnet, unjust_dagger, monkey_dagger, pirate_dagger, mondrian, sapling, spaceglobe, happy, meteor, exoplanet, stardust, rnjoker, filler, duos, home, nuts, quintet, unity, swarm, coin, wheelhope, night, busdriver, oldblueprint, morse, translucent, membershipcard, kscope, cryptidmoment}}

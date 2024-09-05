@@ -23,9 +23,17 @@ if currentBack.effect.config.cry_force_seal and not currentBack.effect.config.hi
     if currentBack.effect.config.cry_force_seal == 'Gold' then G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center) end
 end
 if currentBack.effect.config.cry_force_sticker and not currentBack.effect.config.cry_antimatter then
-    G["shared_sticker_"..currentBack.effect.config.cry_force_sticker].role.draw_major = self
-    G["shared_sticker_"..currentBack.effect.config.cry_force_sticker]:draw_shader('dissolve', nil, nil, true, self.children.center)
-    G["shared_sticker_"..currentBack.effect.config.cry_force_sticker]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center)
+    for k, v in pairs(SMODS.Stickers) do
+        if currentBack.effect.config.cry_force_sticker == v.key then
+            if v and v.draw and type(v.draw) == 'function' then
+                v:draw(self)
+            else
+                G.shared_stickers[v.key].role.draw_major = self
+                G.shared_stickers[v.key]:draw_shader('dissolve', nil, nil, true, self.children.center)
+                G.shared_stickers[v.key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center)
+            end
+        end
+    end
 end
 if currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
     self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)

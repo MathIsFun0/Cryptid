@@ -468,7 +468,7 @@ local notebook = {
     	"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
 	"slot per {C:attention}reroll{} in the shop",
 	"{C:green}Always triggers{} if there are",
-	"{C:attention}#6#{} or more {C:attention}Jolly Jokers{}",
+	"{C:attention}#5#{} or more {C:attention}Jolly Jokers{}",
 	"{C:red}Works once per round{}",
 	"{C:inactive}(Currently {C:dark_edition}+#3#{}{C:inactive} and #4#){}"
     	}
@@ -1310,8 +1310,8 @@ local macabre = {
                     if v ~= card
                     and v.config.center.key ~= "j_jolly"
 		    and v.config.center.key ~= "j_cry_mprime"
-		    and (v.edition and v.edition.key ~= "e_cry_m")
-                    and not (v.ability.eternal or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
+                    and not (v.ability.eternal or (v.edition and v.edition.key == "e_cry_m")
+		    or v.getting_sliced or Cryptid.M_jokers[v.config.center.key]) then
                         destroyed_jokers[#destroyed_jokers+1] = v
                     end
                 end
