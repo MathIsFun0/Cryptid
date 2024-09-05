@@ -326,31 +326,35 @@ local nstar = {
 	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end,
     bulk_use = function(self, card, area, copier, number)
-	--Get amount of Neutron stars used this run or set to 0 if nil
         G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
 
-	--Save this amount to use for later
-	local neutronstarsusedminimum = G.GAME.neutronstarsusedinthisrun + 1
-
-	--increase amount of neutron stars used this run by the stack
-        G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + (1 * number)
-
-	--The follwing is just a formula to calculate the amound of levels that a random poker hand should be increased by
-	local neutronstarsusedextra = G.GAME.neutronstarsusedinthisrun - neutronstarsusedminimum + 1
-	local neutronstarsusedfinal = (neutronstarsusedextra / 2) * (neutronstarsusedminimum + G.GAME.neutronstarsusedinthisrun)
-
-	--Continues normally from here
-	local neutronhand = neutronstarrandomhand() --Random poker hand (WE LOVE GAMBLING IT ALL ON ONE HAND!!!)
-	update_hand_text(
-		{sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3},
-		{handname = localize(neutronhand, 'poker_hands'),
-		chips = G.GAME.hands[neutronhand].chips,
-		mult = G.GAME.hands[neutronhand].mult,
-		level=G.GAME.hands[neutronhand].level}
-	)
-	--level up using the amount calculated with the formula
-	level_up_hand(card, neutronhand, nil, neutronstarsusedfinal)
+	local handstolv = {}
+	local neutronhand = 'n/a'
+	for i = 1, number do
+		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
+		neutronhand = neutronstarrandomhand()
+		handstolv[neutronhand] = (handstolv[neutronhand] or 0) + G.GAME.neutronstarsusedinthisrun
+	end
+	for k, v in pairs(handstolv) do
+		update_hand_text(
+			{sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3},
+			{handname = localize(k, 'poker_hands'),
+			chips = G.GAME.hands[k].chips,
+			mult = G.GAME.hands[k].mult,
+			level=G.GAME.hands[k].level}
+		)
+		card_eval_status_text(card, 'extra', nil, nil, nil, {message = '+' .. tostring(v), colour = G.C.BLUE})
+		level_up_hand(card, k, nil, v)
+	end
 	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+	G.E_MANAGER:add_event(Event({
+		trigger = 'after',
+		delay = time or 1,
+		func = function()
+			handstolv = nil
+			return true
+		end
+	}), queue)
     end,
     calculate = function(self, card, context) --Observatory effect: X0.04 mult for each neutron star used this run
 	if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil then
