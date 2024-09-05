@@ -391,7 +391,12 @@ local jollyedition = {
 local glass_shader = {
     object_type = "Shader",
     key = 'glass',
-    path = 'glass.fs'
+    path = 'glass.fs',
+    send_vars = function (sprite, card)
+        return {
+            lines_offset = card and card.edition.cry_glass_seed or 0
+        }
+    end,
 }
 local glass_edition = {
     object_type = "Edition",
@@ -399,17 +404,30 @@ local glass_edition = {
     shader = "glass",
     disable_base_shader = true,
     disable_shadow = true,
+    on_apply = function (card)
+        -- Randomize offset to -1..1
+        card.edition.cry_glass_seed = pseudorandom('e_cry_glass') * 2 - 1
+    end,
 }
 
 local gold_shader = {
     object_type = "Shader",
     key = 'gold',
-    path = 'gold.fs'
+    path = 'gold.fs',
+    send_vars = function (sprite, card)
+        return {
+            lines_offset = card and card.edition.cry_gold_seed or 0
+        }
+    end,
 }
 local gold_edition = {
     object_type = "Edition",
     key = "gold",
     shader = "gold",
+    on_apply = function (card)
+        -- Randomize offset to -1..1
+        card.edition.cry_gold_seed = pseudorandom('e_cry_gold') * 2 - 1
+    end,
 }
 local echo_atlas = {
     object_type = 'Atlas',
@@ -868,7 +886,7 @@ local memory = {
 
 local miscitems = {memepack_atlas, meme1, meme2, meme3,
 mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
-glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
+glitched, mosaic, oversat, blurred, astral, glass_edition, gold_edition, --disable for now; want to do on-trigger effects
 echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory, schematic}
