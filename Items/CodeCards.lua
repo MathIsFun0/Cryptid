@@ -3075,12 +3075,12 @@ return {name = "Code Cards",
             local cj = Card.calculate_joker
             function Card:calculate_joker(context)
                 local ret, trig = cj(self, context)
-                if (ret or trig) and self.ability.cry_hooked and not context.post_trigger and not context.cry_hook then
+                if (ret or trig) and self.ability.cry_hooked and not context.post_trigger and not context.cry_hook and not context.retrigger_joker_check and not context.megatrigger_check then
                     context.cry_hook = true
                     for i = 1, #G.jokers.cards do
                         if G.jokers.cards[i].sort_id == self.ability.hook_id then
                             card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = "Hooked!",colour = G.C.SET.Code})
-                            G.jokers.cards[i]:calculate_joker(context)
+                            cj(G.jokers.cards[i],context)
                             --I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(
                         end
                     end
