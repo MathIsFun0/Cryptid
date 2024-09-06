@@ -467,7 +467,12 @@ local jollyedition = {
 local glass_shader = {
     object_type = "Shader",
     key = 'glass',
-    path = 'glass.fs'
+    path = 'glass.fs',
+    send_vars = function (sprite, card)
+        return {
+            lines_offset = card and card.edition.cry_glass_seed or 0
+        }
+    end,
 }
 local glass_edition = {
     object_type = "Edition",
@@ -475,6 +480,10 @@ local glass_edition = {
     shader = "glass",
     disable_base_shader = true,
     disable_shadow = true,
+    on_apply = function (card)
+        -- Randomize offset to -1..1
+        card.edition.cry_glass_seed = pseudorandom('e_cry_glass') * 2 - 1
+    end,
     weight = 7,
     extra_cost = 2,
     config = {x_mult = 3, shatter_chance = 8},
@@ -512,7 +521,12 @@ local glass_edition = {
 local gold_shader = {
     object_type = "Shader",
     key = 'gold',
-    path = 'gold.fs'
+    path = 'gold.fs',
+    send_vars = function (sprite, card)
+        return {
+            lines_offset = card and card.edition.cry_gold_seed or 0
+        }
+    end,
 }
 local gold_edition = {
     object_type = "Edition",
