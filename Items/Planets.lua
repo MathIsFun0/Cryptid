@@ -180,28 +180,29 @@ local planetlua = {
         return true
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
 	if pseudorandom('planetlua') < G.GAME.probabilities.normal/card.ability.extra.odds then --Code "borrowed" from black hole
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('k_all_hands'),chips = '...', mult = '...', level=''})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             		play_sound('tarot1')
-            		card:juice_up(0.8, 0.5)
+            		used_consumable:juice_up(0.8, 0.5)
             		G.TAROT_INTERRUPT_PULSE = true
             		return true end }))
         	update_hand_text({delay = 0}, {mult = '+', StatusText = true})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
             		play_sound('tarot1')
-            		card:juice_up(0.8, 0.5)
+            		used_consumable:juice_up(0.8, 0.5)
             		return true end }))
         	update_hand_text({delay = 0}, {chips = '+', StatusText = true})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
             		play_sound('tarot1')
-            		card:juice_up(0.8, 0.5)
+            		used_consumable:juice_up(0.8, 0.5)
             		G.TAROT_INTERRUPT_PULSE = nil
             		return true end }))
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level='+1'})
         	delay(1.3)
         	for k, v in pairs(G.GAME.hands) do
-            		level_up_hand(card, k, true)
+            		level_up_hand(used_consumable, k, true)
         	end
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	else
@@ -210,7 +211,7 @@ local planetlua = {
                     text = localize('k_nope_ex'),
                     scale = 1.3, 
                     hold = 1.4,
-                    major = card,
+                    major = used_consumable,
                     backdrop_colour = G.C.SECONDARY_SET.Planet,
                     align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and 'tm' or 'cm',
                     offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0},
@@ -219,11 +220,12 @@ local planetlua = {
                     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
                         play_sound('tarot2', 0.76, 0.4);return true end}))
                     play_sound('tarot2', 1, 0.4)
-                    card:juice_up(0.3, 0.5)
+                    used_consumable:juice_up(0.3, 0.5)
                 return true end }))
 	end
     end,
     bulk_use = function(self, card, area, copier, number)
+	local used_consumable = copier or card
 	local quota = 0
 	for i = 1, number do
 		quota = quota + (pseudorandom('planetlua') < G.GAME.probabilities.normal/card.ability.extra.odds and 1 or 0)
@@ -232,18 +234,18 @@ local planetlua = {
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('k_all_hands'),chips = '...', mult = '...', level=''})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             		play_sound('tarot1')
-            		card:juice_up(0.8, 0.5)
+            		used_consumable:juice_up(0.8, 0.5)
             		G.TAROT_INTERRUPT_PULSE = true
             		return true end }))
         	update_hand_text({delay = 0}, {mult = '+', StatusText = true})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
             		play_sound('tarot1')
-            		card:juice_up(0.8, 0.5)
+            		used_consumable:juice_up(0.8, 0.5)
             		return true end }))
         	update_hand_text({delay = 0}, {chips = '+', StatusText = true})
         	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
             		play_sound('tarot1')
-            		card:juice_up(0.8, 0.5)
+            		used_consumable:juice_up(0.8, 0.5)
             		G.TAROT_INTERRUPT_PULSE = nil
             		return true end }))
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level='+' .. quota})
@@ -258,7 +260,7 @@ local planetlua = {
                     text = localize('k_nope_ex'),
                     scale = 1.3, 
                     hold = 1.4,
-                    major = card,
+                    major = used_consumable,
                     backdrop_colour = G.C.SECONDARY_SET.Planet,
                     align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and 'tm' or 'cm',
                     offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0},
@@ -267,7 +269,7 @@ local planetlua = {
                     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
                         play_sound('tarot2', 0.76, 0.4);return true end}))
                     play_sound('tarot2', 1, 0.4)
-                    card:juice_up(0.3, 0.5)
+                    used_consumable:juice_up(0.3, 0.5)
                 return true end }))
 	end
     end,
@@ -308,6 +310,7 @@ local nstar = {
         return {vars = {(G.GAME and G.GAME.neutronstarsusedinthisrun or 0)}}
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
 	--Get amount of Neutron stars use this run or set to 0 if nil
         G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
 		
@@ -322,10 +325,11 @@ local nstar = {
 		level=G.GAME.hands[neutronhand].level}
 	)
 	--level up once for each neutron star used this run
-	level_up_hand(card, neutronhand, nil, G.GAME.neutronstarsusedinthisrun)
+	level_up_hand(used_consumable, neutronhand, nil, G.GAME.neutronstarsusedinthisrun)
 	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end,
     bulk_use = function(self, card, area, copier, number)
+	local used_consumable = copier or card
         G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
 
 	local handstolv = {}
@@ -343,8 +347,8 @@ local nstar = {
 			mult = G.GAME.hands[k].mult,
 			level=G.GAME.hands[k].level}
 		)
-		card_eval_status_text(card, 'extra', nil, nil, nil, {message = '+' .. tostring(v), colour = G.C.BLUE})
-		level_up_hand(card, k, nil, v)
+		card_eval_status_text(used_consumable, 'extra', nil, nil, nil, {message = '+' .. tostring(v), colour = G.C.BLUE})
+		level_up_hand(used_consumable, k, nil, v)
 	end
 	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	G.E_MANAGER:add_event(Event({
@@ -366,9 +370,10 @@ local nstar = {
     end
 }
 function suit_level_up(center, card, area, copier, number)
+	local used_consumable = copier or card
 	for _, v in pairs(card.config.center.config.hand_types) do
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(v, 'poker_hands'),chips = G.GAME.hands[v].chips, mult = G.GAME.hands[v].mult, level=G.GAME.hands[v].level})
-        	level_up_hand(card, v, nil, number)
+        	level_up_hand(used_consumable, v, nil, number)
 	end
 	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 end
@@ -390,7 +395,7 @@ function neutronstarrandomhand(ignore, seed, allowhidden)
 	end
 	return chosen_hand
 end
-local planet_cards = {sydan, klubi, lapio, timantti, planetlua, nstar}
+local planet_cards = {planetlua, nstar, timantti, klubi, sydan, lapio}
 if not (SMODS.Mods["jen"] or {}).can_load then
 end
 return {name = "Planets", 
