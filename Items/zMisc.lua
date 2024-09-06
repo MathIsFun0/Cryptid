@@ -470,7 +470,7 @@ local glass_shader = {
     path = 'glass.fs',
     send_vars = function (sprite, card)
         return {
-            lines_offset = card and card.edition.cry_glass_seed or 0
+            lines_offset = card and card.edition and card.edition.cry_glass_seed or 0
         }
     end,
 }
@@ -524,7 +524,7 @@ local gold_shader = {
     path = 'gold.fs',
     send_vars = function (sprite, card)
         return {
-            lines_offset = card and card.edition.cry_gold_seed or 0
+            lines_offset = card and card.edition and card.edition.cry_gold_seed or 0
         }
     end,
 }
@@ -537,6 +537,10 @@ local gold_edition = {
     config = {dollars = 2},
     loc_vars = function(self, info_queue)
         return {vars = {self.config.dollars}}
+    end,
+    on_apply = function (card)
+        -- Randomize offset to -1..1
+        card.edition.cry_gold_seed = pseudorandom('e_cry_gold') * 2 - 1
     end,
     loc_txt = {
         name = "Golden",
