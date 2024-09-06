@@ -1347,34 +1347,7 @@ for _, file in ipairs(files) do
       end
     end
 end
-
-if not SpectralPack then
-    SpectralPack = {}
-    local ct = create_tabs
-    function create_tabs(args)
-        if args and args.tab_h == 7.05 then
-            args.tabs[#args.tabs+1] = {
-                label = "Spectral Pack",
-                tab_definition_function = function() return {
-                    n = G.UIT.ROOT,
-                    config = {
-                        emboss = 0.05,
-                        minh = 6,
-                        r = 0.1,
-                        minw = 10,
-                        align = "cm",
-                        padding = 0.2,
-                        colour = G.C.BLACK
-                    },
-                    nodes = SpectralPack
-                } end
-            }
-        end
-        return ct(args)
-    end
-  end
-  SpectralPack[#SpectralPack+1] = UIBox_button{ label = {"Cryptid"}, button = "cryptidMenu", colour = G.C.DARK_EDITION, minw = 5, minh = 0.7, scale = 0.6}
-  local cryptidTabs = {
+local cryptidTabs = {
     {
         label = "Features",
         chosen = true,
