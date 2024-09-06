@@ -646,20 +646,24 @@ local stella_mortis = {
 	calculate = function(self, card, context)
         if context.ending_shop then
             local destructable_planet = {}
+	    local quota = 1
             for i = 1, #G.consumeables.cards do
                 if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_planet[#destructable_planet+1] = G.consumeables.cards[i] end
             end
             local planet_to_destroy = #destructable_planet > 0 and pseudorandom_element(destructable_planet, pseudoseed('stella_mortis')) or nil
 
-            if planet_to_destroy then 
+            if planet_to_destroy then
+		if Incantation then
+			quota = planet_to_destroy:getEvalQty()
+		end
                 planet_to_destroy.getting_sliced = true
-                card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+                card.ability.extra.Emult = card.ability.extra.Emult + (card.ability.extra.Emult_mod * quota)
                 G.E_MANAGER:add_event(Event({func = function()
                     (context.blueprint_card or card):juice_up(0.8, 0.8)
                     planet_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
-                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod)).." Mult"})
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + (card.ability.extra.Emult_mod * quota))).." Mult"})
                 end
                 return {calculated = true}, true
             end
