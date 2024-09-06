@@ -1158,6 +1158,8 @@ return {name = "Blinds",
                    (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"]) and
                    (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"]) and
                    (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"]) and
+                   (self.name ~= "cry-Lavender Loop" or not G.GAME.defeated_blinds["bl_cry_tax"]) and
+                   (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_cry_lavender_loop"]) and
                    (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"]) and
                    (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
                    then

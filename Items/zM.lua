@@ -109,11 +109,11 @@ local kidnap = {
 	cost = 1,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_zany', specific_vars = {self.config.zany.t_mult, self.config.zany.type} }
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_mad', specific_vars = {self.config.mad.t_mult, self.config.mad.type} }
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_crazy', specific_vars = {self.config.crazy.t_mult, self.config.crazy.type} }
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_droll', specific_vars = {self.config.droll.t_mult, self.config.droll.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_zany', specific_vars = {self.config.zany.t_mult, localize(self.config.zany.type, 'poker_hands')} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_mad', specific_vars = {self.config.mad.t_mult, localize(self.config.mad.type, 'poker_hands')} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_crazy', specific_vars = {self.config.crazy.t_mult, localize(self.config.crazy.type, 'poker_hands')} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_droll', specific_vars = {self.config.droll.t_mult, localize(self.config.droll.type, 'poker_hands')} }
 		return {vars = {center.ability.extra.money}}
     	end,
 	atlas = "atlasone",
@@ -147,7 +147,7 @@ local bubblem = {
     name = "cry-bubblem",
     key = "bubblem",
     pos = {x = 0, y = 0},
-    config = {extra = {spawn = false, type = "Three of a Kind"}, jolly = {t_mult = 8, type = 'Pair'}}, --Kind is capitalized (see The Trio) so don't change this back pls and ty
+    config = {extra = {spawn = false, type = "Three of a Kind"}, jolly = {t_mult = 8, type = 'Pair'}},
     loc_txt = {
     name = 'Bubble M',
     text = {
@@ -161,9 +161,9 @@ local bubblem = {
     cost = 2,
     eternal_compat = false,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 	info_queue[#info_queue+1] = G.P_CENTERS.e_foil
-    return {vars = {center.ability.extra.type}}
+    return {vars = {localize(center.ability.extra.type, 'poker_hands')}}
     end,
     atlas = "atlasone",
     calculate = function(self, card, context)
@@ -238,7 +238,7 @@ local foodm = {
     blueprint_compat = true,
     eternal_compat = false,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {center.ability.extra.mult, center.ability.extra.rounds_remaining, center.ability.extra.text, center.ability.extra.round_inc}}
     end,
     calculate = function(self, card, context)
@@ -335,7 +335,7 @@ local mstack = {
     blueprint_compat = true,
     perishable_compat = false,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {center.ability.extra.retriggers, center.ability.extra.sell_req, center.ability.extra.sell}}
     end,
     calculate = function(self, card, context) --note: hardcoded like this intentionally
@@ -413,7 +413,7 @@ local mneon = {
     perishable_compat = false,
     blueprint_compat = false,
     loc_vars = function(self, info_queue, center)
-	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {center.ability.extra.bonus, center.ability.extra.money}}
     end,
     atlas = "atlastwo",
@@ -477,7 +477,7 @@ local notebook = {
     cost = 9,
     perishable_compat = false,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 	return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.slot, center.ability.extra.active, center.ability.extra.jollies}}
     end,
     atlas = "atlasone",
@@ -512,7 +512,7 @@ local notebook = {
                         				colour = G.C.DARK_EDITION,
                     				})
                 				}
-					else return {calculated = true} end
+					else return nil, true end
 				end
 	    end
 	    if context.end_of_round and not context.retrigger_joker and not context.blueprint then
@@ -574,8 +574,8 @@ local bonk = {
 		}
 	},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, center.ability.extra.type, (center.ability.extra.chips * center.ability.extra.xchips)}}
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
+		return {vars = {center.ability.extra.chips, center.ability.extra.bonus, localize(center.ability.extra.type, 'poker_hands'), (center.ability.extra.chips * center.ability.extra.xchips)}}
 	end,
 	rarity = 2,
 	cost = 5,
@@ -590,6 +590,7 @@ local bonk = {
 					message = localize('k_upgrade_ex'),
 					colour = G.C.CHIPS
 				})
+                return nil, true
 			end
 		end
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
@@ -661,7 +662,7 @@ local loopy = { --this may or may not need further balancing
     joker_gate = "Jolly Joker",
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {center.ability.extra.retrigger, center.ability.extra.text}}
     end,
     calculate = function(self, card, context)
@@ -748,7 +749,10 @@ local scrabble = {
             			card:add_to_deck()
             			G.jokers:emplace(card)
 			end
-			if check then card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION}) end
+			if check then 
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
+                return nil, true 
+            end
 		end
 	end,
 }
@@ -791,7 +795,7 @@ local sacrifice = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 		return {vars = {center.ability.extra.text}}
 	end,
 	calculate = function(self, card, context)
@@ -855,9 +859,9 @@ local reverse = {
 	eternal_compat = false,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 		info_queue[#info_queue+1] = G.P_CENTERS.e_holographic
-		return {vars = {center.ability.extra.type}}
+		return {vars = {localize(center.ability.extra.type, 'poker_hands')}}
 	end,
 	calculate = function(self, card, context)
 		if context.pre_discard and not context.retrigger_joker and not context.blueprint then
@@ -935,7 +939,7 @@ local doodlem = {
     cost = 13,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
-	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 	--TODO: Replace the negative infoqueue with the one used for consumables
 	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
     end,
@@ -980,11 +984,11 @@ local virgo = {
 	cost = 8,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 		if not center.edition or (center.edition and not center.edition.polychrome) then
             		info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
         	end
-	return {vars = {center.ability.extra.bonus, center.ability.extra.type}}
+	return {vars = {center.ability.extra.bonus, localize(center.ability.extra.type, 'poker_hands')}}
     	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -1017,7 +1021,7 @@ local virgo = {
 					card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
 				return true
 			end)}))
-			return {completed=true}
+			return nil, true
 		end
 	end
 	
@@ -1059,7 +1063,7 @@ local smallestm = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
     	loc_vars = function(self, info_queue, center)
-        return {vars = {center.ability.extra.x_chips, center.ability.extra.type, center.ability.extra.text}}
+        return {vars = {center.ability.extra.x_chips, localize(center.ability.extra.type, 'poker_hands'), center.ability.extra.text}}
     	end,
     	calculate = function(self, card, context)
         	if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
@@ -1133,7 +1137,7 @@ cost = 12,
 blueprint_compat = true,
 atlas = "atlasepic",
     loc_vars = function(self, info_queue, center)
-    return {vars = {center.ability.extra.x_mult, center.ability.extra.type, center.ability.extra.text}}
+    return {vars = {center.ability.extra.x_mult, localize(center.ability.extra.type, 'poker_hands'), center.ability.extra.text}}
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
@@ -1203,7 +1207,7 @@ local mprime = {
 		}
 	},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 		return {vars = {center.ability.extra.mult, center.ability.extra.bonus}}
 	end,
 	rarity = "cry_exotic",
@@ -1294,7 +1298,7 @@ local macabre = {
 		}
 	},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
 	end,
 	rarity = 1,
 	cost = 5,
@@ -1345,7 +1349,7 @@ local megg = {
         }
     },
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+        info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {math.max(1, center.ability.extra.amount_mod), math.min(200, math.floor(center.ability.extra.amount)), (center.ability.extra.amount > 1 and "Jokers") or "Joker"}}
     end,
     rarity = 1,
@@ -1356,6 +1360,7 @@ local megg = {
             card.ability.extra.amount = card.ability.extra.amount + math.max(1, card.ability.extra.amount_mod)
 	    if card.ability.extra.amount > 200 then card.ability.extra.amount = 200 end
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = {"Jolly Up!"}, colour = G.C.FILTER})
+            return nil, true
         end
         if context.selling_self and not (context.blueprint or context.retrigger_joker_check or context.retrigger_joker) and card.ability.extra.amount > 0 then
             for i = 1, math.min(200, math.floor(card.ability.extra.amount)) do

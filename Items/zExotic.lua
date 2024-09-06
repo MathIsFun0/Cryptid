@@ -243,7 +243,7 @@ local speculo = {
                         return true
                     end}))
                 card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                return {calculated = true}
+                return nil, true
             end
             return
         end
@@ -284,7 +284,7 @@ local redeo = {
             if ante_mod < 0 then
                 ease_ante(ante_mod)
             end
-            return {calculated = true}
+            return nil, true
         end
 	end
 }
@@ -367,6 +367,7 @@ local effarcire = {
 		if not context.blueprint then
 			if context.first_hand_drawn then
 				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
+                return nil, true
 			elseif G.hand.config.card_limit < 1 then
 				G.hand.config.card_limit = 1
 			end
@@ -408,7 +409,7 @@ local crustulum = {
     	if context.reroll_shop and not context.blueprint then
         	card.ability.extra.chips = (card.ability.extra.chips) + card.ability.extra.chip_mod
         	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
-		return {calculated = true}
+		return nil, true
 		end
 	if context.cardarea == G.jokers and to_big(card.ability.extra.chips) > to_big(0) and not context.before and not context.after then
         return {
@@ -646,22 +647,26 @@ local stella_mortis = {
 	calculate = function(self, card, context)
         if context.ending_shop then
             local destructable_planet = {}
+	    local quota = 1
             for i = 1, #G.consumeables.cards do
                 if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_planet[#destructable_planet+1] = G.consumeables.cards[i] end
             end
             local planet_to_destroy = #destructable_planet > 0 and pseudorandom_element(destructable_planet, pseudoseed('stella_mortis')) or nil
 
-            if planet_to_destroy then 
+            if planet_to_destroy then
+		if Incantation then
+			quota = planet_to_destroy:getEvalQty()
+		end
                 planet_to_destroy.getting_sliced = true
-                card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+                card.ability.extra.Emult = card.ability.extra.Emult + (card.ability.extra.Emult_mod * quota)
                 G.E_MANAGER:add_event(Event({func = function()
                     (context.blueprint_card or card):juice_up(0.8, 0.8)
                     planet_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
-                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod)).." Mult"})
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + (card.ability.extra.Emult_mod * quota))).." Mult"})
                 end
-                return {calculated = true}, true
+                return nil, true
             end
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
@@ -755,46 +760,121 @@ if JokerDisplay then
 	}
 end
 local aequilibrium = {
-	object_type = "Joker",
-	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
-        key = 'equilib',
-        loc_txt = {
-            name = "Ace Aequilibrium",
-            text = {
-                "Jokers appear using the",
-		"order from the {C:attention}Collection{}",
-                "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
-		"when hand is played",
-            }
-        },
-        config = {extra = {jokers = 2, num = 1}},
-        rarity = "cry_exotic",
-        pos = {x = 7, y = 0},
-        soul_pos = {x = 6, y = 0, extra = {x = 8, y = 0}},
-        atlas = 'atlasexotic',
-        cost = 50,
-        unlocked = true,
-        discovered = true,
-        blueprint_compat = true,
-	immune_to_chemach = true,
-        eternal_compat = true,
-        perishable_compat = true,
-        loc_vars = function(self, info_queue, center)
-            info_queue[#info_queue+1] = G.P_CENTERS.e_negative
-            return {vars = {center.ability.extra.jokers,}}
-        end,
-        calculate = function(self, card, context)
-            if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
-                for i = 1, math.min(200, card.ability.extra.jokers) do
-                    local newcard = create_card('Joker', G.jokers, nil, nil, nil, nil, nil)
-                    newcard:add_to_deck()
-                    G.jokers:emplace(newcard)
-                    newcard:set_edition({negative = true}, true)
+    object_type = "Joker",
+    name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
+            key = 'equilib',
+            loc_txt = {
+                name = "Ace Aequilibrium",
+                text = {
+                    "Jokers appear using the",
+    "order from the {C:attention}Collection{}",
+                    "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
+    "when hand is played",
+                    "{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
+                    "{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#"
+                }
+            },
+            config = {extra = {jokers = 2, num = 1,card = nil}},
+            rarity = "cry_exotic",
+            pos = {x = 7, y = 0},
+            soul_pos = {x = 69, y = 0, extra = {x = 8, y = 0}},
+            atlas = 'atlasexotic',
+            cost = 50,
+            unlocked = true,
+            discovered = true,
+            blueprint_compat = true,
+    immune_to_chemach = true,
+            eternal_compat = true,
+            perishable_compat = true,
+            loc_vars = function(self, info_queue, center)
+                info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+                local joker_generated = "None"
+                if center.ability.extra.num > 1 then
+                    joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][center.ability.extra.num-1].key}
                 end
-                --return {}
-            end
-        end,
-    }
+                return {vars = {center.ability.extra.jokers,joker_generated}}
+            end,
+            calculate = function(self, card, context)
+                if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
+                    for i = 1, math.min(200, card.ability.extra.jokers) do
+                        local newcard = create_card('Joker', G.jokers, nil, nil, nil, nil, nil)
+                        newcard:add_to_deck()
+                        G.jokers:emplace(newcard)
+                        newcard:set_edition({negative = true}, true)
+                    end
+                    return nil, true
+                end
+            end,
+            add_to_deck = function(self, card, from_debuff)
+                if not from_debuff then
+                    if card.ability.extra.card then
+                        card.ability.extra.card = nil
+                    end
+                    card.ability.extra.card = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, G.P_CARDS.S_A, G.P_CENTERS.c_base)
+                    --G.hand:emplace(card.ability.extra.card)
+                    --card.ability.extra.card:set_card_area(G.hand)
+                    card.ability.extra.card:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
+                    card.ability.extra.card:set_seal('Gold', true, true)
+                    card.ability.extra.card:set_edition({cry_glitched = true}, true)
+                    --card.ability.extra.card.T.x = card.T.x
+        
+        
+                    if card.ability.extra.card and (G.P_CENTERS.j_blueprint.unlocked) then
+                        local viable_unlockables = {}
+                        for k, v in ipairs(G.P_LOCKED) do
+                            if (v.set == 'Voucher' or v.set == 'Joker') and not v.demo then 
+                                viable_unlockables[#viable_unlockables+1] = v
+                            end
+                        end
+                        if #viable_unlockables > 0 then 
+                            local card2 = card.ability.extra.card
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 4.04,
+                                func = (function()
+                                    card2 = Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W*0.675, G.CARD_H*0.675, nil, pseudorandom_element(viable_unlockables) or self.P_CENTERS.j_joker)
+                                    card2.no_ui = #viable_unlockables == 0
+                                    card2.states.visible = false
+                                    card.ability.extra.card.parent = nil
+                                    card.ability.extra.card:start_dissolve({G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD})
+                                    return true
+                            end)}))
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 1.04,
+                                func = (function()
+                                    card2:start_materialize()
+                                    --G.:emplace(card)
+                                    return true
+                            end)}))
+                        end
+                    end
+                end
+        
+            end,
+            --Known bug: card does not reappear after save reopened
+            update = function(self,card,front)
+                if card.ability.extra.card then
+                    if card.ability.extra.card.states and not card.ability.extra.card.states.drag.is then 
+                        card.ability.extra.card.T.x = card.T.x + card.T.w /5
+                        card.ability.extra.card.T.y = card.T.y + card.T.h /5
+                    end
+                end
+            end,
+        }
+local cc = copy_card
+function copy_card(card,a,b,c,d)
+    local m
+    if card and card.ability and card.ability.extra and type(card.ability.extra) == 'table' and card.ability.extra.card then
+        m = card.ability.extra.card
+        card.ability.extra.card = nil
+    end
+    local ret = cc(card,a,b,c,d)
+    if card and card.ability and card.ability.extra and type(card.ability.extra) == 'table' and card.ability.extra.card and m then
+        card.ability.extra.card = m
+    end
+    return ret
+end
 local facile = {
     object_type = "Joker",
     name = "cry-facile",
@@ -932,18 +1012,6 @@ return {name = "Exotic Jokers",
                 ed(mod,x)
                 for i = 1, #G.jokers.cards do
                     local effects = G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod})
-                    if effects and effects.joker_repetitions then
-                        rep_list = effects.joker_repetitions
-                        for z=1, #rep_list do
-                            if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
-                                for r=1, rep_list[z].repetitions do
-                                    card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
-                                    if percent then percent = percent+percent_delta end
-                                    G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod, retrigger_joker = true})
-                                end
-                            end
-                        end
-                    end
                 end
             end
         end,

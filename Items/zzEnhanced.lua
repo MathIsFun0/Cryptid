@@ -56,6 +56,9 @@ local typed_decks = {
 	
 	{'cry',			'Enhancement',	"The Eclipse's Deck",		'Echo',					'echo',				nil,				"atlasenhanced",	1,		5,		''},
 	
+	{'cry',			'Edition',		nil,						'Fragile',				'glass',			nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Golden',				'gold',				nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Noisy',				'noisy',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Astral',				'astral',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Blurred',				'blur',				nil,				nil,				0,		0,		''},
 	{'cry',			'Edition',		nil,						'Mosaic',				'mosaic',			nil,				nil,				5,		2,		''},
@@ -484,7 +487,7 @@ return {name = "Enhanced Decks",
                                     if random_enhancement.key and G.P_CENTERS[random_enhancement.key] then
                                         G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key]);
                                     else
-                                        G.playing_cards[c]:set_ability(get_random_consumable('cry_ant_ccd'))
+                                        G.playing_cards[c]:set_ability(get_random_consumable('cry_ant_ccd', nil, true))
                                     end
                                 else
                                     G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement]);
