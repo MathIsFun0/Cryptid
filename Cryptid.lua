@@ -1756,6 +1756,18 @@ SMODS.Sound({
     path = "e_jolly.ogg"
 })
 SMODS.Sound({
+    key = "e_noisy",
+    path = "e_noisy.ogg"
+})
+SMODS.Sound({
+    key = "e_fragile",
+    path = "e_fragile.ogg"
+})
+SMODS.Sound({
+    key = "e_golden",
+    path = "e_golden.ogg"
+})
+SMODS.Sound({
     key = "studiofromhelsinki",
     path = "studiofromhelsinki.ogg"
 })

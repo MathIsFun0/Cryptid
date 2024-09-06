@@ -377,7 +377,7 @@ local noisy = {
     extra_cost = 4,
     config = {min_mult = 0, max_mult = 30, min_chips = 0, max_chips = 150},
     sound = {
-        sound = 'cry_e_oversaturated',
+        sound = 'cry_e_noisy',
         per = 1,
         vol = 0.25
     },
@@ -484,6 +484,11 @@ local glass_edition = {
         -- Randomize offset to -1..1
         card.edition.cry_glass_seed = pseudorandom('e_cry_glass') * 2 - 1
     end,
+    sound = {
+        sound = 'cry_e_fragile',
+        per = 1,
+        vol = 0.3
+    },
     weight = 7,
     extra_cost = 2,
     config = {x_mult = 3, shatter_chance = 8},
@@ -538,6 +543,11 @@ local gold_edition = {
     loc_vars = function(self, info_queue)
         return {vars = {self.config.dollars}}
     end,
+    sound = {
+        sound = 'cry_e_golden',
+        per = 1,
+        vol = 0.3
+    },
     on_apply = function (card)
         -- Randomize offset to -1..1
         card.edition.cry_gold_seed = pseudorandom('e_cry_gold') * 2 - 1

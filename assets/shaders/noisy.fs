@@ -1,22 +1,44 @@
 #if defined(VERTEX) || __VERSION__ > 100 || defined(GL_FRAGMENT_PRECISION_HIGH)
-	#define MY_HIGHP_OR_MEDIUMP highp
+	#define PRECISION highp
 #else
-	#define MY_HIGHP_OR_MEDIUMP mediump
+	#define PRECISION mediump
 #endif
 
-extern MY_HIGHP_OR_MEDIUMP vec2 noisy;
-extern MY_HIGHP_OR_MEDIUMP number dissolve;
-extern MY_HIGHP_OR_MEDIUMP number time;
-extern MY_HIGHP_OR_MEDIUMP vec4 texture_details;
-extern MY_HIGHP_OR_MEDIUMP vec2 image_details;
-extern bool shadow;
-extern MY_HIGHP_OR_MEDIUMP vec4 burn_colour_1;
-extern MY_HIGHP_OR_MEDIUMP vec4 burn_colour_2;
+// Pseudorandom number generator
+// https://stackoverflow.com/a/34223787
 
-vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
+float rand(vec2 co){
+  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+extern PRECISION vec2 noisy;
+
+extern PRECISION number dissolve;
+extern PRECISION number time;
+extern PRECISION vec4 texture_details;
+extern PRECISION vec2 image_details;
+extern bool shadow;
+extern PRECISION vec4 burn_colour_1;
+extern PRECISION vec4 burn_colour_2;
+
+vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
+
+vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
+{
+	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
+    vec4 pixel = Texel(texture, texture_coords);
+
+    float random = rand(uv);
+
+    if (pixel.a > 0) pixel.a += 0.1*sin(noisy.x) - 0.51;
+	
+	return dissolve_mask(vec4(pixel.rgb * random, pixel.a), texture_coords, uv);
+}
+
+vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv)
 {
     if (dissolve < 0.001) {
-        return vec4(shadow ? vec3(0.,0.,0.) : tex.xyz, shadow ? tex.a*0.3: tex.a);
+        return vec4(shadow ? vec3(0.,0.,0.) : final_pixel.xyz, shadow ? final_pixel.a*0.3: final_pixel.a);
     }
 
     float adjusted_dissolve = (dissolve*dissolve*(3.-2.*dissolve))*1.02 - 0.01; //Adjusting 0.0-1.0 to fall to -0.1 - 1.1 scale so the mask does not pause at extreme values
@@ -40,91 +62,20 @@ vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
     - (floored_uv.x < borders.x ? (borders.x - floored_uv.x)*(5. + 5.*dissolve) : 0.)*(dissolve)
     - (floored_uv.y < borders.x ? (borders.x - floored_uv.y)*(5. + 5.*dissolve) : 0.)*(dissolve);
 
-    if (tex.a > 0.01 && burn_colour_1.a > 0.01 && !shadow && res < adjusted_dissolve + 0.8*(0.5-abs(adjusted_dissolve-0.5)) && res > adjusted_dissolve) {
+    if (final_pixel.a > 0.01 && burn_colour_1.a > 0.01 && !shadow && res < adjusted_dissolve + 0.8*(0.5-abs(adjusted_dissolve-0.5)) && res > adjusted_dissolve) {
         if (!shadow && res < adjusted_dissolve + 0.5*(0.5-abs(adjusted_dissolve-0.5)) && res > adjusted_dissolve) {
-            tex.rgba = burn_colour_1.rgba;
+            final_pixel.rgba = burn_colour_1.rgba;
         } else if (burn_colour_2.a > 0.01) {
-            tex.rgba = burn_colour_2.rgba;
+            final_pixel.rgba = burn_colour_2.rgba;
         }
     }
 
-    return vec4(shadow ? vec3(0.,0.,0.) : tex.xyz, res > adjusted_dissolve ? (shadow ? tex.a*0.3: tex.a) : .0);
+    return vec4(shadow ? vec3(0.,0.,0.) : final_pixel.xyz, res > adjusted_dissolve ? (shadow ? final_pixel.a*0.3: final_pixel.a) : .0);
 }
 
-number hue(number s, number t, number h)
-{
-	number hs = mod(h, 1.)*6.;
-	if (hs < 1.) return (t-s) * hs + s;
-	if (hs < 3.) return t;
-	if (hs < 4.) return (t-s) * (4.-hs) + s;
-	return s;
-}
-
-vec4 RGB(vec4 c)
-{
-	if (c.y < 0.0001)
-		return vec4(vec3(c.z), c.a);
-
-	number t = (c.z < .5) ? c.y*c.z + c.z : -c.y*c.z + (c.y+c.z);
-	number s = 2.0 * c.z - t;
-	return vec4(hue(s,t,c.x + 1./3.), hue(s,t,c.x), hue(s,t,c.x - 1./3.), c.w);
-}
-
-vec4 HSL(vec4 c)
-{
-	number low = min(c.r, min(c.g, c.b));
-	number high = max(c.r, max(c.g, c.b));
-	number delta = high - low;
-	number sum = high+low;
-
-	vec4 hsl = vec4(.0, .0, .5 * sum, c.a);
-	if (delta == .0)
-		return hsl;
-
-	hsl.y = (hsl.z < .5) ? delta / sum : delta / (2.0 - sum);
-
-	if (high == c.r)
-		hsl.x = (c.g - c.b) / delta;
-	else if (high == c.g)
-		hsl.x = (c.b - c.r) / delta + 2.0;
-	else
-		hsl.x = (c.r - c.g) / delta + 4.0;
-
-	hsl.x = mod(hsl.x / 6., 1.);
-	return hsl;
-}
-
-float random(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(22.9898,88.233))) * 63758.5453);
-}
-vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
-{
-    //All of this is useless code from m.fs
-    vec2 uv = (((texture_coords) * (image_details)) - texture_details.xy * texture_details.zw) / texture_details.zw;
-    vec2 origin_uv = uv.xy;
-    vec4 pixel = Texel(texture, texture_coords);
-
-    uv.y = uv.y + noisy.x * 0.000000000001;
-    float noise_strength = 0.35;
-    // Generate random shifts for each color channel
-    float r_shift = random(texture_coords + vec2(0.0, 0.0)) * noise_strength * 2.0 - noise_strength;
-    float g_shift = random(texture_coords + vec2(1.0, 0.0)) * noise_strength * 2.0 - noise_strength;
-    float b_shift = random(texture_coords + vec2(0.0, 1.0)) * noise_strength * 2.0 - noise_strength;
-
-    // Apply the shifts
-    vec4 shifted = vec4(
-        clamp(pixel.r + r_shift, 0.0, 1.0),
-        clamp(pixel.g + g_shift, 0.0, 1.0),
-        clamp(pixel.b + b_shift, 0.0, 1.0),
-        pixel.a
-    );
-
-    return dissolve_mask(shifted, texture_coords, origin_uv);
-}
-
-extern MY_HIGHP_OR_MEDIUMP vec2 mouse_screen_pos;
-extern MY_HIGHP_OR_MEDIUMP float hovering;
-extern MY_HIGHP_OR_MEDIUMP float screen_scale;
+extern PRECISION vec2 mouse_screen_pos;
+extern PRECISION float hovering;
+extern PRECISION float screen_scale;
 
 #ifdef VERTEX
 vec4 position( mat4 transform_projection, vec4 vertex_position )
