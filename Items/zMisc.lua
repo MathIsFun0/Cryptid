@@ -631,13 +631,14 @@ local blessing = {
     end,
     can_bulk_use = true,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 if G.consumeables.config.card_limit > #G.consumeables.cards then
                     play_sound('timpani')
                     local _card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'blessing')
                     _card:add_to_deck()
                     G.consumeables:emplace(_card)
-                    card:juice_up(0.3, 0.5)
+                    used_consumable:juice_up(0.3, 0.5)
                 end
                 return true end }))
         delay(0.6)
@@ -740,6 +741,7 @@ local typhoon = {
     atlas = "atlasnotjokers",
     pos = {x=0, y=4},
     use = function(self, card, area, copier) --Good enough
+	local used_consumable = copier or card
 	for i = 1, #G.hand.highlighted do
 	local highlighted = G.hand.highlighted[i]
 	G.E_MANAGER:add_event(Event({func = function()

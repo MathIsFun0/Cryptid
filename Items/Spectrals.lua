@@ -19,6 +19,7 @@ local white_hole = {
         return true
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         --Get most played hand type (logic yoinked from Telescope)
         local _planet, _hand, _tally = nil, nil, -1
         for k, v in ipairs(G.handlist) do
@@ -39,11 +40,11 @@ local white_hole = {
             if G.GAME.hands[v].level > 1 then
                 local this_removed_levels = G.GAME.hands[v].level - 1
                 removed_levels = removed_levels + this_removed_levels
-                level_up_hand(card, v, true, -this_removed_levels)
+                level_up_hand(used_consumable, v, true, -this_removed_levels)
             end
         end
         update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(_hand, 'poker_hands'),chips = G.GAME.hands[_hand].chips, mult = G.GAME.hands[_hand].mult, level=G.GAME.hands[_hand].level})
-        level_up_hand(card, _hand, false, 3*removed_levels)
+        level_up_hand(used_consumable, _hand, false, 3*removed_levels)
         update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end,
     --Incantation compat
@@ -51,6 +52,7 @@ local white_hole = {
     can_divide = true,
     can_bulk_use = true,
     bulk_use = function(self, card, area, copier, number)
+	local used_consumable = copier or card
         --Get most played hand type (logic yoinked from Telescope)
         local _planet, _hand, _tally = nil, nil, -1
         for k, v in ipairs(G.handlist) do
@@ -71,11 +73,11 @@ local white_hole = {
             if G.GAME.hands[v].level > 1 then
                 local this_removed_levels = G.GAME.hands[v].level - 1
                 removed_levels = removed_levels + this_removed_levels
-                level_up_hand(card, v, true, -this_removed_levels)
+                level_up_hand(used_consumable, v, true, -this_removed_levels)
             end
         end
         update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(_hand, 'poker_hands'),chips = G.GAME.hands[_hand].chips, mult = G.GAME.hands[_hand].mult, level=G.GAME.hands[_hand].level})
-        level_up_hand(card, _hand, false, removed_levels*3^number)
+        level_up_hand(used_consumable, _hand, false, removed_levels*3^number)
         update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end
 }
@@ -104,10 +106,11 @@ local vacuum = {
         return #G.hand.cards > 0
     end,
     use = function(self, card, area, copier)
-		local earnings = 0
+	local used_consumable = copier or card
+	local earnings = 0
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot1')
-            card:juice_up(0.3, 0.5)
+            used_consumable:juice_up(0.3, 0.5)
             return true end }))
         for i=1, #G.hand.cards do
             local percent = 1.15 - (i-0.999)/(#G.hand.cards-0.998)*0.3
@@ -152,9 +155,10 @@ local hammerspace = {
         return #G.hand.cards > 0
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot1')
-            card:juice_up(0.3, 0.5)
+            used_consumable:juice_up(0.3, 0.5)
             return true end }))
         for i=1, #G.hand.cards do
             local percent = 1.15 - (i-0.999)/(#G.hand.cards-0.998)*0.3
@@ -190,10 +194,11 @@ local lock = {
         return #G.jokers.cards > 0
     end,
     use = function(self, card, area, copier)
-		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
+	local used_consumable = copier or card
+	local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot1')
-            card:juice_up(0.3, 0.5)
+            used_consumable:juice_up(0.3, 0.5)
             return true end }))
         for i=1, #G.jokers.cards do
             local percent = 1.15 - (i-0.999)/(#G.jokers.cards-0.998)*0.3
@@ -201,14 +206,14 @@ local lock = {
         end
         delay(0.2)
         for i=1, #G.jokers.cards do
-			local CARD = G.jokers.cards[i]
+	    local CARD = G.jokers.cards[i]
             local percent = 0.85 + (i-0.999)/(#G.jokers.cards-0.998)*0.3
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() CARD:flip();CARD.ability.perishable = nil;CARD.pinned = nil;CARD:set_rental(nil);CARD:set_eternal(nil);CARD.ability.banana = nil;play_sound('card1', percent);CARD:juice_up(0.3, 0.3);return true end }))
         end
         delay(0.2)
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot2')
-            card:juice_up(0.3, 0.5)
+            used_consumable:juice_up(0.3, 0.5)
             return true end }))
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.15, func = function()
             play_sound('card1', 0.9)
@@ -256,6 +261,7 @@ local trade = {
 	if usable_count > 0 then return true else return false end
     end,
     use = function(self, card, area, copier)
+    local used_consumable = copier or card
         local usable_vouchers = {}
         for k, _ in pairs(G.GAME.used_vouchers) do
             local can_use = true
@@ -395,6 +401,7 @@ local analog = {
         return #G.jokers.cards > 0
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         local deletable_jokers = {}
         for k, v in pairs(G.jokers.cards) do
             if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
@@ -438,6 +445,7 @@ local summoning = {
         return #G.jokers.cards > 0
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         local deletable_jokers = {}
         for k, v in pairs(G.jokers.cards) do
             if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end
@@ -484,10 +492,11 @@ local replica = {
         return #G.hand.cards > 0
     end,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed('cry_replica_choice'))
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             play_sound('tarot1')
-            card:juice_up(0.3, 0.5)
+            used_consumable:juice_up(0.3, 0.5)
             return true end }))
         for i=1, #G.hand.cards do
             local percent = 1.15 - (i-0.999)/(#G.hand.cards-0.998)*0.3
