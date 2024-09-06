@@ -1274,12 +1274,15 @@ local pointer = {
         text = {
             "Create a card",
             "of {C:cry_code}your choice",
-            "{C:inactive,s:0.8}(Exotic Jokers excluded)"
+            "{C:inactive,s:0.8}(Exotic Jokers #1#excluded)"
         }
     },
     atlas = "code",
     can_use = function(self, card)
         return true
+    end,
+    loc_vars = function(self, info_queue, center)
+        return {vars = {(SMODS['jen'] or {}).can_load and "and OMEGA consumables " or ""}}
     end,
     use = function(self, card, area, copier)
         G.GAME.USING_CODE = true
@@ -2172,6 +2175,7 @@ G.FUNCS.pointer_apply = function()
         -- Jen's Almanac aliases
         freddy = "freddy snowshoe",
         paupovlin = "paupovlin revere",
+	poppin = "paupovlin revere",
         jen = "jen walter",
         --should I add "reverse ___" prefixes for the reverse tarots?
         survivor = "the survivor",
@@ -2198,7 +2202,9 @@ G.FUNCS.pointer_apply = function()
         darkness = "the darkness",
         void = "the void",
         topuptoken = "top-up token",
-        sagittarius = "sagittarius a*"
+        sagittarius = "sagittarius a*",
+        ["sagitarius a*"] = "sagittarius a*", --minor spelling mistakes are forgiven
+	sagitarius = "sagittarius a*" --minor spelling mistakes are forgiven
 	}
 	local current_card
     local entered_card = G.ENTERED_CARD
@@ -2223,7 +2229,7 @@ G.FUNCS.pointer_apply = function()
             G.jokers:emplace(card)
             created = true
         end
-        if G.P_CENTERS[current_card].consumeable then
+        if G.P_CENTERS[current_card].consumeable and G.P_CENTERS[current_card].set ~= 'jen_omegaconsumable' then
             local card = create_card('Consumeable', G.consumeables, nil, nil, nil, nil, current_card)
             card:add_to_deck()
             G.consumeables:emplace(card)
