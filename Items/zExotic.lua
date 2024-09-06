@@ -658,13 +658,13 @@ local stella_mortis = {
 			quota = planet_to_destroy:getEvalQty()
 		end
                 planet_to_destroy.getting_sliced = true
-                card.ability.extra.Emult = card.ability.extra.Emult + (card.ability.extra.Emult_mod * quota)
+                card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod * quota
                 G.E_MANAGER:add_event(Event({func = function()
                     (context.blueprint_card or card):juice_up(0.8, 0.8)
                     planet_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
-                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + (card.ability.extra.Emult_mod * quota))).." Mult"})
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)).." Mult"})
                 end
                 return nil, true
             end
