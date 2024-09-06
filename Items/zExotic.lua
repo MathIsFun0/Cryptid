@@ -243,7 +243,7 @@ local speculo = {
                         return true
                     end}))
                 card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                return {calculated = true}
+                return nil, true
             end
             return
         end
@@ -284,7 +284,7 @@ local redeo = {
             if ante_mod < 0 then
                 ease_ante(ante_mod)
             end
-            return {calculated = true}
+            return nil, true
         end
 	end
 }
@@ -367,6 +367,7 @@ local effarcire = {
 		if not context.blueprint then
 			if context.first_hand_drawn then
 				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
+                return nil, true
 			elseif G.hand.config.card_limit < 1 then
 				G.hand.config.card_limit = 1
 			end
@@ -408,7 +409,7 @@ local crustulum = {
     	if context.reroll_shop and not context.blueprint then
         	card.ability.extra.chips = (card.ability.extra.chips) + card.ability.extra.chip_mod
         	card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chips}}, colour = G.C.CHIPS})
-		return {calculated = true}
+		return nil, true
 		end
 	if context.cardarea == G.jokers and to_big(card.ability.extra.chips) > to_big(0) and not context.before and not context.after then
         return {
@@ -646,22 +647,26 @@ local stella_mortis = {
 	calculate = function(self, card, context)
         if context.ending_shop then
             local destructable_planet = {}
+	    local quota = 1
             for i = 1, #G.consumeables.cards do
                 if G.consumeables.cards[i].ability.set == 'Planet' and not G.consumeables.cards[i].getting_sliced and not G.consumeables.cards[i].ability.eternal then destructable_planet[#destructable_planet+1] = G.consumeables.cards[i] end
             end
             local planet_to_destroy = #destructable_planet > 0 and pseudorandom_element(destructable_planet, pseudoseed('stella_mortis')) or nil
 
-            if planet_to_destroy then 
+            if planet_to_destroy then
+		if Incantation then
+			quota = planet_to_destroy:getEvalQty()
+		end
                 planet_to_destroy.getting_sliced = true
-                card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+                card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod * quota
                 G.E_MANAGER:add_event(Event({func = function()
                     (context.blueprint_card or card):juice_up(0.8, 0.8)
                     planet_to_destroy:start_dissolve({G.C.RED}, nil, 1.6)
                 return true end }))
                 if not (context.blueprint_card or self).getting_sliced then
-                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod)).." Mult"})
+                    card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "^"..number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)).." Mult"})
                 end
-                return {calculated = true}, true
+                return nil, true
             end
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
@@ -797,7 +802,7 @@ local aequilibrium = {
                         G.jokers:emplace(newcard)
                         newcard:set_edition({negative = true}, true)
                     end
-                    --return {}
+                    return nil, true
                 end
             end,
             add_to_deck = function(self, card, from_debuff)
@@ -1007,18 +1012,6 @@ return {name = "Exotic Jokers",
                 ed(mod,x)
                 for i = 1, #G.jokers.cards do
                     local effects = G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod})
-                    if effects and effects.joker_repetitions then
-                        rep_list = effects.joker_repetitions
-                        for z=1, #rep_list do
-                            if type(rep_list[z]) == 'table' and rep_list[z].repetitions then
-                                for r=1, rep_list[z].repetitions do
-                                    card_eval_status_text(rep_list[z].card, 'jokers', nil, nil, nil, rep_list[z])
-                                    if percent then percent = percent+percent_delta end
-                                    G.jokers.cards[i]:calculate_joker({cry_ease_dollars = mod, retrigger_joker = true})
-                                end
-                            end
-                        end
-                    end
                 end
             end
         end,

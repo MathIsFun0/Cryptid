@@ -304,6 +304,82 @@ local blurred = {
         local retriggers = center and center.edition.retriggers or self.config.retriggers
 
         return {vars = {G.GAME.probabilities.normal, chance, retriggers}}
+    end,
+    calculate = function(self, card, context)
+        if context.retrigger_edition_check then
+            if pseudorandom("cry_blurred") <= G.GAME.probabilities.normal / self.config.retrigger_chance then
+                return {
+                    message = "Again?",
+                    repetitions = self.config.extra_retriggers,
+                    card = card
+                }
+            end
+        end
+    end
+}
+local noisy_shader = {
+    object_type = "Shader",
+    key = 'noisy', 
+    path = 'noisy.fs'
+}
+local noisy = {
+    object_type = "Edition",
+    key = "noisy",
+    weight = 3,
+    shader = "noisy",
+    in_shop = true,
+    extra_cost = 4,
+    config = {min_mult = 0, max_mult = 30, min_chips = 0, max_chips = 150},
+    sound = {
+        sound = 'cry_e_noisy',
+        per = 1,
+        vol = 0.25
+    },
+    loc_txt = {
+        name = "Noisy",
+        label = "Noisy",
+        text = {
+            "???"
+        }
+    },
+    calculate = function(self, card, context)
+        if context.edition_main then
+            context.edition_val.mult_mod = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult)
+            context.edition_val.chip_mod = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
+        end
+    end,
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        if not full_UI_table.name then
+            full_UI_table.name = localize { type = 'name', set = self.set, key = self.key, nodes = full_UI_table.name }
+        end
+        local r_mults = {}
+        for i = self.config.min_mult, self.config.max_mult do
+            r_mults[#r_mults+1] = tostring(i)
+        end
+        local loc_mult = ' '..(localize('k_mult'))..' '
+        local r_chips = {}
+        for i = self.config.min_chips, self.config.max_chips do
+            r_chips[#r_chips+1] = tostring(i)
+        end
+        local loc_chips = ' Chips '
+        mult_ui = {
+            {n=G.UIT.T, config={text = '  +',colour = G.C.MULT, scale = 0.32}},
+            {n=G.UIT.O, config={object = DynaText({string = r_mults, colours = {G.C.MULT},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0})}},
+            {n=G.UIT.O, config={object = DynaText({string = {
+                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
+                loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult},
+            colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.2011, scale = 0.32, min_cycle_time = 0})}},
+        }
+        chip_ui = {
+            {n=G.UIT.T, config={text = '  +',colour = G.C.CHIPS, scale = 0.32}},
+            {n=G.UIT.O, config={object = DynaText({string = r_chips, colours = {G.C.CHIPS},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0})}},
+            {n=G.UIT.O, config={object = DynaText({string = {
+                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "@#"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(2,2) or 'm')..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 7), colour = G.C.BLUE},
+                loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips},
+            colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.2011, scale = 0.32, min_cycle_time = 0})}},
+        }
+        desc_nodes[#desc_nodes+1] = mult_ui
+        desc_nodes[#desc_nodes+1] = chip_ui
     end
 }
 local jollyeditionshader = {
@@ -345,7 +421,12 @@ local jollyedition = {
 local glass_shader = {
     object_type = "Shader",
     key = 'glass',
-    path = 'glass.fs'
+    path = 'glass.fs',
+    send_vars = function (sprite, card)
+        return {
+            lines_offset = card and card.edition and card.edition.cry_glass_seed or 0
+        }
+    end,
 }
 local glass_edition = {
     object_type = "Edition",
@@ -353,17 +434,92 @@ local glass_edition = {
     shader = "glass",
     disable_base_shader = true,
     disable_shadow = true,
+    on_apply = function (card)
+        -- Randomize offset to -1..1
+        card.edition.cry_glass_seed = pseudorandom('e_cry_glass') * 2 - 1
+    end,
+    sound = {
+        sound = 'cry_e_fragile',
+        per = 1,
+        vol = 0.3
+    },
+    weight = 7,
+    extra_cost = 2,
+    config = {x_mult = 3, shatter_chance = 8},
+    loc_vars = function(self, info_queue)
+        return {vars = {(G.GAME.probabilities.normal or 1)*(self.config.shatter_chance-1), self.config.shatter_chance, self.config.x_mult}}
+    end,
+    loc_txt = {
+        name = "Fragile",
+        label = "Fragile",
+        text = {
+            "{C:white,X:mult} X#3# {} Mult",
+            "{C:green}#1# in #2#{} chance this",
+            "card isn't {C:red}destroyed",
+            "when triggered"	
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_triggered or (context.from_playing_card and context.cardarea and context.cardarea == G.play and not context.repetition) then
+            if pseudorandom("cry_fragile") > G.GAME.probabilities.normal*(self.config.shatter_chance-1)/self.config.shatter_chance then
+                card.will_shatter = true
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    func = function()
+                        if not card.shattered then
+                            card:shatter()
+                        end
+                    return true
+                    end
+                }))
+            end
+        end
+    end
 }
 
 local gold_shader = {
     object_type = "Shader",
     key = 'gold',
-    path = 'gold.fs'
+    path = 'gold.fs',
+    send_vars = function (sprite, card)
+        return {
+            lines_offset = card and card.edition and card.edition.cry_gold_seed or 0
+        }
+    end,
 }
 local gold_edition = {
     object_type = "Edition",
     key = "gold",
     shader = "gold",
+    weight = 7,
+    extra_cost = 2,
+    config = {dollars = 2},
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.dollars}}
+    end,
+    sound = {
+        sound = 'cry_e_golden',
+        per = 1,
+        vol = 0.3
+    },
+    on_apply = function (card)
+        -- Randomize offset to -1..1
+        card.edition.cry_gold_seed = pseudorandom('e_cry_gold') * 2 - 1
+    end,
+    loc_txt = {
+        name = "Golden",
+        label = "Golden",
+        text = {
+            "{C:money}+$#1#{} when used",
+            "or triggered"	
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_triggered or context.from_consumable or (context.from_playing_card and context.cardarea and context.cardarea == G.play and not context.repetition) then
+            ease_dollars(self.config.dollars)
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('$')..self.config.dollars, colour = G.C.MONEY})
+        end
+    end
 }
 local echo_atlas = {
     object_type = 'Atlas',
@@ -429,13 +585,14 @@ local blessing = {
     end,
     can_bulk_use = true,
     use = function(self, card, area, copier)
+	local used_consumable = copier or card
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 if G.consumeables.config.card_limit > #G.consumeables.cards then
                     play_sound('timpani')
                     local _card = create_card('Consumeables', G.consumables, nil, nil, nil, nil, nil, 'blessing')
                     _card:add_to_deck()
                     G.consumeables:emplace(_card)
-                    card:juice_up(0.3, 0.5)
+                    used_consumable:juice_up(0.3, 0.5)
                 end
                 return true end }))
         delay(0.6)
@@ -538,6 +695,7 @@ local typhoon = {
     atlas = "atlasnotjokers",
     pos = {x=0, y=4},
     use = function(self, card, area, copier) --Good enough
+	local used_consumable = copier or card
 	for i = 1, #G.hand.highlighted do
 	local highlighted = G.hand.highlighted[i]
 	G.E_MANAGER:add_event(Event({func = function()
@@ -821,8 +979,8 @@ local memory = {
 }
 
 local miscitems = {memepack_atlas, meme_object_type, meme1, meme2, meme3,
-mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader,
-glitched, mosaic, oversat, blurred, astral, --glass_edition, gold_edition, --disable for now; want to do on-trigger effects
+mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader, noisy_shader,
+glass_edition, gold_edition, glitched, noisy, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
 cat, empowered, gambler, bundle, memory, schematic}
@@ -836,25 +994,6 @@ end
 return {name = "Misc.", 
         init = function()
 
-function calculate_blurred(card)
-    local retriggers = card.edition.retriggers
-
-    if card.edition.retrigger_chance then
-        local chance = card.edition.retrigger_chance
-        chance = G.GAME.probabilities.normal / chance
-
-        if pseudorandom("blurred") <= chance then
-            retriggers = retriggers + card.edition.extra_retriggers
-        end
-    end
-    
-    return {
-        message = 'Again?',
-        repetitions = retriggers,
-        card = card
-    }
-end
-
 --echo card
 cs = Card.calculate_seal
 function Card:calculate_seal(context)
@@ -865,13 +1004,6 @@ function Card:calculate_seal(context)
         if self.config.center == G.P_CENTERS.m_cry_echo then
             if pseudorandom('echo') < G.GAME.probabilities.normal/(self.ability.extra or 2) then --hacky crash fix
                 total_repetitions = total_repetitions + self.ability.retriggers
-            end
-        end
-        if self.edition and self.edition.cry_blur and not context.other_card then
-            local check = calculate_blurred(self)
-            
-            if check and check.repetitions then
-                total_repetitions = total_repetitions + check.repetitions
             end
         end
 

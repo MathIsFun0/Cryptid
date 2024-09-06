@@ -14,12 +14,16 @@ extern bool shadow;
 extern PRECISION vec4 burn_colour_1;
 extern PRECISION vec4 burn_colour_2;
 
+extern PRECISION float lines_offset;
+
+#define TWO_PI 6.28318530718
+
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
 
 bool line(vec2 uv, float offset, float width) {
     uv.x = uv.x * texture_details.z / texture_details.w;
 
-    offset = offset + 0.35 * sin(glass.x);
+    offset = offset + 0.35 * sin(glass.x + TWO_PI * lines_offset);
     width = width + 0.005 * sin(glass.x);
 
     float min_y = -uv.x + offset;
@@ -33,9 +37,12 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.zw)/texture_details.zw;
     vec4 pixel = Texel(texture, texture_coords);
 
-    vec4 tex = vec4(.8, .8, 1., 0.2);
+    vec4 tex = vec4(.3, .8, 1., 0.2);
 
-    if (line(uv, 0.4, 0.1) || line(uv, 0.55, 0.1) || line(uv, 1.3, 0.05) || line(uv, 1.8, 0.1) || line(uv, 0.01, 0.07)) {
+    if (
+        lines_offset >  0. && (line(uv, 0.4, 0.1) || line(uv, 0.55, 0.1) || line(uv, 1.3, 0.05) || line(uv, 1.8, 0.1) || line(uv, 0.01, 0.07)) ||
+        lines_offset <= 0. && (line(uv, -0.1, 0.05) || line(uv, 0.1, 0.12) || line(uv, 0.8, 0.1) || line(uv, 1.3, 0.08) || line(uv, 1.7, 0.05))
+    ) {
         tex.a = tex.a * 2.;
     }
 

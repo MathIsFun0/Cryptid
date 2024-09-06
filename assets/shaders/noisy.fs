@@ -4,7 +4,14 @@
 	#define PRECISION mediump
 #endif
 
-extern PRECISION vec2 gold;
+// Pseudorandom number generator
+// https://stackoverflow.com/a/34223787
+
+float rand(vec2 co){
+  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+extern PRECISION vec2 noisy;
 
 extern PRECISION number dissolve;
 extern PRECISION number time;
@@ -14,46 +21,18 @@ extern bool shadow;
 extern PRECISION vec4 burn_colour_1;
 extern PRECISION vec4 burn_colour_2;
 
-extern PRECISION float lines_offset;
-
-#define TWO_PI 6.28318530718
-
-vec4 gold_color = vec4(231., 164., 25., 0.) / 255.;
-
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
-
-bool line(vec2 uv, float offset, float width) {
-    uv.x = uv.x * texture_details.z / texture_details.w;
-
-    offset = offset + 0.35 * sin(gold.x + TWO_PI * lines_offset);
-    width = width + 0.005 * sin(gold.x);
-
-    float min_y = -uv.x + offset;
-    float max_y = -uv.x + offset + width;
-
-    return uv.y > min_y && uv.y < max_y;
-}
 
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
-	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.zw)/texture_details.zw;
+	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
     vec4 pixel = Texel(texture, texture_coords);
 
-    vec4 tex = vec4(1., 1., 1., 0.1);
+    float random = rand(uv);
 
-    if (
-        lines_offset >  0. && (line(uv, 0.0, 0.07) || line(uv, 0.4, 0.1) || line(uv, 0.55, 0.1) || line(uv, 1.3, 0.05) || line(uv, 1.8, 0.1)) ||
-        lines_offset <= 0. && (line(uv, -0.2, 0.13) || line(uv, 0.3, 0.05) || line(uv, 0.8, 0.1) || line(uv, 1.3, 0.11) || line(uv, 1.7, 0.07))
-    ) {
-        tex.a = tex.a * 2.;
-    } else {
-        tex.a = 0.05;
-    }
-    
-    float avg = (pixel.r + pixel.g + pixel.b) / 3.;
-    pixel = vec4(gold_color.rgb * avg + tex.rgb * tex.a, pixel.a);
-
-	return dissolve_mask(pixel, texture_coords, uv);
+    if (pixel.a > 0) pixel.a += 0.1*sin(noisy.x) - 0.51;
+	
+	return dissolve_mask(vec4(pixel.rgb * random, pixel.a), texture_coords, uv);
 }
 
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv)
