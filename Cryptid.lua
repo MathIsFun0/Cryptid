@@ -360,6 +360,7 @@ function Card:cry_copy_ability()
     end
     return orig_ability
 end
+local cj = Card.calculate_joker
 
 function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
     if self.ability.name ~= "cry-happyhouse"
@@ -661,7 +662,6 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
     end
 end
 
-local cj = Card.calculate_joker
 function Card:calculate_joker(context)
     if self.will_shatter then return end
     local ggpn = G.GAME.probabilities.normal
