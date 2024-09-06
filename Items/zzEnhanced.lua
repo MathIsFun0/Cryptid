@@ -56,6 +56,9 @@ local typed_decks = {
 	
 	{'cry',			'Enhancement',	"The Eclipse's Deck",		'Echo',					'echo',				nil,				"atlasenhanced",	1,		5,		''},
 	
+	{'cry',			'Edition',		nil,						'Fragile',				'glass',			nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Golden',				'gold',				nil,				nil,				5,		2,		''},
+	{'cry',			'Edition',		nil,						'Noisy',				'noisy',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Astral',				'astral',			nil,				nil,				5,		2,		''},
 	{'cry',			'Edition',		nil,						'Blurred',				'blur',				nil,				nil,				0,		0,		''},
 	{'cry',			'Edition',		nil,						'Mosaic',				'mosaic',			nil,				nil,				5,		2,		''},

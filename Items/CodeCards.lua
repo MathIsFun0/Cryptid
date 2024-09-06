@@ -452,6 +452,74 @@ local rigged = {
     end
 }
 
+local hook = {
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-Hook",
+    key = "hook",
+    pos = {
+        x = 0,
+        y = 4
+    },
+    config = {},
+    loc_txt = {
+        name = 'HOOK://',
+        text = {
+            "Select two Jokers",
+            "to become {C:cry_code}Hooked"
+        }
+    },
+    cost = 4,
+    atlas = "code",
+    can_use = function(self, card)
+        return #G.jokers.highlighted == 2
+    end,
+    loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {key = 'cry_hooked', set = 'Other', vars = {"hooked Joker"}}
+	end,
+    use = function(self, card, area, copier)
+        G.jokers.highlighted[1].ability.cry_hooked = true
+        G.jokers.highlighted[2].ability.cry_hooked = true
+        G.jokers.highlighted[1].ability.hook_id = G.jokers.highlighted[2].sort_id
+        G.jokers.highlighted[2].ability.hook_id = G.jokers.highlighted[1].sort_id
+    end
+}
+local hooked = {
+    object_type = "Sticker",
+    atlas = "sticker",
+    pos = {x = 5, y = 3}, 
+    loc_txt = {
+        name = "Hooked",
+        label = "Hooked",
+        text = {
+            "When this Joker is {C:cry_code}triggered{},",
+            "trigger {C:cry_code}#1#"
+        },
+    },
+    loc_vars = function(self, info_queue, card)
+        local var
+        if not card or not card.ability.hook_id then
+            var = "[Joker]"
+        else
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].sort_id == card.ability.hook_id then
+                    var = localize{type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key}
+                end
+            end
+            var = var or "[no joker found - "..(card.ability.hook_id or "nil").."]"
+        end
+        return {vars = {var or "hooked Joker"}}
+	end,
+    key = "cry_hooked",
+    no_sticker_sheet = true,
+    prefix_config = {key = false},
+    badge_colour = HEX("14b341"),
+    draw = function(self, card) --don't draw shine
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+    end
+}
+
 local variable = {
     object_type = 'Consumable',
     set = 'Code',
@@ -1287,7 +1355,7 @@ local CodeJoker = {
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			card:juice_up(0.3, 0.5)
-			return {completed=true}
+			return nil, true
 		end
 	end
 }
@@ -1401,7 +1469,7 @@ local cut = {
                 if not (context.blueprint_card or self).getting_sliced then
                     card_eval_status_text((context.blueprint_card or card), 'extra', nil, nil, nil, {message = "X"..number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)).." Mult"})
                 end
-                return {calculated = true}, true
+                return nil, true
             end
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Xmult) > to_big(1)) and not context.before and not context.after then
@@ -2703,7 +2771,7 @@ crashes = {
 
 
 
-local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
+local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, hook, hooked, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
 if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
 if Cryptid_config["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
 if Cryptid_config["Epic Jokers"] then
@@ -3002,6 +3070,23 @@ return {name = "Code Cards",
             G.FUNCS.your_collection = function(e)
                 if G.CHOOSE_CARD then G.CHOOSE_CARD:remove(); G.CHOOSE_CARD=nil end
                 yc(e)
+            end
+            --HOOK:// patches
+            local cj = Card.calculate_joker
+            function Card:calculate_joker(context)
+                local ret, trig = cj(self, context)
+                if (ret or trig) and self.ability.cry_hooked and not context.post_trigger and not context.cry_hook and not context.retrigger_joker_check and not context.megatrigger_check then
+                    context.cry_hook = true
+                    for i = 1, #G.jokers.cards do
+                        if G.jokers.cards[i].sort_id == self.ability.hook_id then
+                            card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = "Hooked!",colour = G.C.SET.Code})
+                            cj(G.jokers.cards[i],context)
+                            --I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(
+                        end
+                    end
+                    context.cry_hook = nil
+                end
+                return ret, trig
             end
             --Encoded Deck patches
             local Backapply_to_runRef = Back.apply_to_run

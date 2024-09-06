@@ -110,7 +110,7 @@ local googol_play = {
 					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
 					Xmult_mod = card.ability.extra.Xmult
 				}
-			else return {calculated = true} end
+			else return nil, true end
 		end
 	end,
 }
@@ -324,7 +324,7 @@ local error_joker = {
 				card:add_to_deck()
 				G.jokers:emplace(card)
 			end
-			return
+			return nil, true
 		end
 	end
 }
@@ -392,7 +392,7 @@ local m = {
 		and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-			return {calculated = true}
+			return nil, true
 		end
 	end
 }
@@ -437,7 +437,7 @@ local M = {
 			})
 			card:add_to_deck()
 			G.jokers:emplace(card)
-			return {completed=true}
+			return nil, true
 		end
 	end
 }
@@ -473,7 +473,7 @@ local boredom = {
 					repetitions = 1,
 					card = card
 				}
-			else return {calculated = true} end
+			else return nil, true end
         end
 		if context.repetition and context.cardarea == G.play then
 			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
@@ -483,7 +483,7 @@ local boredom = {
 					card = card
 				}
 			else
-				return {calculated = true}
+				return nil, true
 			end
 		end
 	end
@@ -537,7 +537,7 @@ local number_blocks = {
             else
                 card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
-                return {calculated = true}
+                return nil, true
             end
         end
     end,
@@ -613,6 +613,7 @@ local oldcandy = {
 	calculate = function(self, card, context)
 	if context.selling_self and not context.blueprint then
             G.hand:change_size(math.max(1, math.floor(card.ability.extra.hand_size)))
+			return nil, true
         end
 	end
 }
@@ -1143,7 +1144,8 @@ local multjoker = {
                                             	G.GAME.consumeable_buffer = 0
                                             	return true
                                         	end}))   
-                                    	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = ('+1 Cryptid'), colour = G.C.SECONDARY_SET.Spectral})                
+                                    	card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = ('+1 Cryptid'), colour = G.C.SECONDARY_SET.Spectral}) 
+					return nil, true               
 				end
         		end
     		end
@@ -1288,8 +1290,8 @@ local altgoogol = {
                         				return true
                     				end}))
                 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                				return {calculated = true}
-			else return {calculated = true} end
+                				return nil, true
+			else return nil, true end
         	end
 	end
 }

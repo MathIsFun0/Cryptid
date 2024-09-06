@@ -512,7 +512,7 @@ local notebook = {
                         				colour = G.C.DARK_EDITION,
                     				})
                 				}
-					else return {calculated = true} end
+					else return nil, true end
 				end
 	    end
 	    if context.end_of_round and not context.retrigger_joker and not context.blueprint then
@@ -590,6 +590,7 @@ local bonk = {
 					message = localize('k_upgrade_ex'),
 					colour = G.C.CHIPS
 				})
+                return nil, true
 			end
 		end
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
@@ -748,7 +749,10 @@ local scrabble = {
             			card:add_to_deck()
             			G.jokers:emplace(card)
 			end
-			if check then card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION}) end
+			if check then 
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
+                return nil, true 
+            end
 		end
 	end,
 }
@@ -1017,7 +1021,7 @@ local virgo = {
 					card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.DARK_EDITION})
 				return true
 			end)}))
-			return {completed=true}
+			return nil, true
 		end
 	end
 	
@@ -1356,6 +1360,7 @@ local megg = {
             card.ability.extra.amount = card.ability.extra.amount + math.max(1, card.ability.extra.amount_mod)
 	    if card.ability.extra.amount > 200 then card.ability.extra.amount = 200 end
             card_eval_status_text(card, 'extra', nil, nil, nil, {message = {"Jolly Up!"}, colour = G.C.FILTER})
+            return nil, true
         end
         if context.selling_self and not (context.blueprint or context.retrigger_joker_check or context.retrigger_joker) and card.ability.extra.amount > 0 then
             for i = 1, math.min(200, math.floor(card.ability.extra.amount)) do
