@@ -551,7 +551,7 @@ position = "before"
 payload = '''
 if not GLOBAL_cry_member_count_delay then GLOBAL_cry_member_count_delay = 0 end
 if (GLOBAL_cry_member_count_delay > 5) or not GLOBAL_cry_member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
-	update_cry_member_count()
+	if update_cry_member_count then update_cry_member_count() end	-- i honestly hate nil checks like this, wish there was a shorthand
 	GLOBAL_cry_member_count_delay = 0
 else
 	GLOBAL_cry_member_count_delay = GLOBAL_cry_member_count_delay + dt
@@ -567,7 +567,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''G.FUNCS.your_collection = function(e)'''
 position = "after"
 payload = '''
-update_cry_member_count()
+if update_cry_member_count then update_cry_member_count() end
 '''
 match_indent = true
 
