@@ -659,7 +659,11 @@ return {name = "Spectrals",
                 end
                 if center_table.name == 'Money Tree' then
                     G.E_MANAGER:add_event(Event({func = function()
-                        G.GAME.interest_cap = G.P_CENTERS.v_seed_money.extra
+			if G.GAME.used_vouchers.v_seed_money then
+                        	G.GAME.interest_cap = 50
+			else
+				G.GAME.interest_cap = 25
+			end
                         return true end }))
                 end
                 if center_table.name == 'Grabber' or center_table.name == 'Nacho Tong' then
