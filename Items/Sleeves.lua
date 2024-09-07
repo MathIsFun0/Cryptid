@@ -1,7 +1,3 @@
---cry_enable_exotics = false
---TIP!!! for coding exotics, make sure you know which layer corresponds to which value!
---The Normal pos correponds to the background. use this for the layer that goes all the way in the back!
---The soul_pos = {blahblahblah, extra = {blahblahblah}} correspomds to the other two layers. the value in the extra table is for the layer that goes in the middle, and the other value is the one that goes all the way in the front
 if CardSleeves then
     local atlasSleeves = SMODS.Atlas{
         object_type = "Atlas",
@@ -322,10 +318,21 @@ if CardSleeves then
             end
         end
     }
-
+    local sleeveitems = {atlasSleeves}
+if CardSleeves and Cryptid_config["Misc. Decks"] then
+    sleeveitems[#sleeveitems+1] = encodedsleeve
+    sleeveitems[#sleeveitems+1] = equilibriumsleeve
+    sleeveitems[#sleeveitems+1] = misprintsleeve
+    sleeveitems[#sleeveitems+1] = infinitesleeve
+    sleeveitems[#sleeveitems+1] = conveyorsleeve
+    sleeveitems[#sleeveitems+1] = CCDsleeve
+    sleeveitems[#sleeveitems+1] = wormholesleeve
+    sleeveitems[#sleeveitems+1] = redeemedsleeve
+    sleeveitems[#sleeveitems+1] = criticalsleeve 
+end
+end
 return {name = "Sleeves", 
         init = function()
             
         end,
-        items = {}}
-    end
+        items = {sleeveitems}}
