@@ -247,8 +247,8 @@ local oversat = {
 }
 
 AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
-	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips, 0)
-	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult, 1)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + (G.GAME.hands[hand].l_chips * amount), 0)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + (G.GAME.hands[hand].l_mult * amount), 1)
 	if not instant then
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
 			play_sound('chips1')
@@ -329,8 +329,8 @@ local function obfuscatedtext(length)
 end
 
 AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
-	local modc = G.GAME.hands[hand].l_chips * cry_log_random(pseudoseed('cry_aurinko_chips_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10)
-	local modm = G.GAME.hands[hand].l_mult * cry_log_random(pseudoseed('cry_aurinko_mult_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10)
+	local modc = G.GAME.hands[hand].l_chips * cry_log_random(pseudoseed('cry_aurinko_chips_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10) * amount
+	local modm = G.GAME.hands[hand].l_mult * cry_log_random(pseudoseed('cry_aurinko_mult_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10) * amount
 	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
 	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
 	if not instant then
