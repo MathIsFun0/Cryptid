@@ -164,6 +164,10 @@ local meme3 = {
     group_key = "k_cry_meme_pack"
 }
 
+if not AurinkoAddons then
+	AurinkoAddons = {}
+end
+
 --Edition code based on Bunco's Glitter Edition
 
 local mosaic_shader = {
@@ -241,6 +245,35 @@ local oversat = {
         end)
     end
 }
+
+AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips, 0)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult, 1)
+	if not instant then
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {chips = G.GAME.hands[hand].chips, StatusText = true})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {mult = G.GAME.hands[hand].mult, StatusText = true})
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {chips = (amount > 0 and '++' or '--'), StatusText = true})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {mult = (amount > 0 and '++' or '--'), StatusText = true})
+	end
+end
+
 local glitched_shader = {
     object_type = "Shader",
     key = 'glitched', 
@@ -284,6 +317,55 @@ local glitched = {
         end)
     end
 }
+
+local randtext = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' ','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','-','?','!','$','%','[',']','(',')'}
+
+local function obfuscatedtext(length)
+	local str = ''
+	for i = 1, length do
+		str = str .. randtext[math.random(#randtext)]
+	end
+	return str
+end
+
+AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
+	local modc = G.GAME.hands[hand].l_chips * cry_log_random(pseudoseed('cry_aurinko_chips_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10)
+	local modm = G.GAME.hands[hand].l_mult * cry_log_random(pseudoseed('cry_aurinko_mult_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+	if not instant then
+		for i = 1, math.random(6,10) do
+			update_hand_text({sound = 'button', volume = 0.4, pitch = 1.1, delay = 0.2}, {chips = obfuscatedtext(3)})
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 0}, {chips = (amount > 0 and '+' or '-') .. number_format(math.abs(modc)), StatusText = true})
+		update_hand_text({delay = 1.3}, {chips = G.GAME.hands[hand].chips})
+		for i = 1, math.random(6,10) do
+			update_hand_text({sound = 'button', volume = 0.4, pitch = 1.1, delay = 0.2}, {mult = obfuscatedtext(3)})
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 0}, {mult = (amount > 0 and '+' or '-') .. number_format(math.abs(modm)), StatusText = true})
+		update_hand_text({delay = 1.3}, {mult = G.GAME.hands[hand].mult})
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {chips = (amount > 0 and '+' or '-') .. '???', StatusText = true})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {mult = (amount > 0 and '+' or '-') .. '???', StatusText = true})
+	end
+end
+
 local astral_shader = {
     object_type = "Shader",
     key = 'astral', 
