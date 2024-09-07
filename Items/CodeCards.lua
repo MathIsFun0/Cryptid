@@ -733,7 +733,7 @@ local multiply = {
         }
     },
     can_use = function(self, card)
-        return #G.jokers.highlighted == 1
+        return #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.name ~= "Ace Aequilibrium"
     end,
     use = function(self, card, area, copier)
         if not G.jokers.highlighted[1].cry_multiply then
