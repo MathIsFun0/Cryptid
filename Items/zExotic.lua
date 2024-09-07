@@ -789,7 +789,7 @@ local aequilibrium = {
             loc_vars = function(self, info_queue, center)
                 info_queue[#info_queue+1] = G.P_CENTERS.e_negative
                 local joker_generated = "None"
-                if center.ability.extra.num > 1 then
+                if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
                     joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][center.ability.extra.num-1].key}
                 end
                 return {vars = {center.ability.extra.jokers,joker_generated}}
