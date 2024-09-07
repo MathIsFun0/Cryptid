@@ -1368,6 +1368,7 @@ local copypaste = {
 	name = "cry-copypaste",
 	key = "copypaste",
 	pos = {x = 3, y = 4},
+	immune_to_chemach = true,
 	config = {extra = {odds = 2, ckt = 0}},
 	loc_txt = {
         name = 'Copy/Paste',
