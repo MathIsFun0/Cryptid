@@ -813,7 +813,7 @@ local sacrifice = {
 	                        G.jokers:emplace(card)
                         	card:start_materialize()
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.SPECTRAL})
-				return true
+				return nil, true
 			end
 		end
 		if context.end_of_round and not context.retrigger_joker and not context.blueprint then
