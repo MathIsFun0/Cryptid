@@ -299,7 +299,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 2119
+		local old = GLOBAL_cry_member_count or 2340
 		GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
 		if not GLOBAL_cry_member_count then
 			GLOBAL_cry_member_count = old
@@ -311,7 +311,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 2119
+		GLOBAL_cry_member_count = 2340
 	end
 end
 

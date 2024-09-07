@@ -81,6 +81,50 @@ if JokerDisplay then
 		end
 	}
 end
+local membershipcardtwo = {
+    	object_type = "Joker",
+	name = "cry-membershipcardtwo",
+	key = "membershipcardtwo",
+    	config = {extra = {chips = 1}},
+	pos = {x = 5, y = 4},
+	loc_txt = {
+        name = 'Old Membership Card', --Could probably have a diff Name imo
+        text = {
+            "{C:chips}+#1#{} Chips for each member",
+	    "in the {C:attention}Cryptid Discord{}",
+	    "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
+            "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
+        }
+    	},
+	rarity = "cry_epic",
+	cost = 17,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+    	loc_vars = function(self, info_queue, card)
+        	return {vars = {card.ability.extra.chips, card.ability.extra.chips*GLOBAL_cry_member_count}}
+    	end,
+    	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after
+		and card.ability.extra.chips > 0 then
+			return {
+				message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips*GLOBAL_cry_member_count}},
+				chip_mod = card.ability.extra.chips*GLOBAL_cry_member_count
+			}
+		end
+    	end
+}
+if JokerDisplay then
+	membershipcardtwo.joker_display_definition = {
+		text = {
+			    { text = "+" },
+			    { ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "mult" }
+		},
+		text_config = { colour = G.C.CHIPS },
+		calc_function = function(card)
+            		card.joker_display_values.stat = card.ability.extra.chips * (GLOBAL_cry_member_count or 1)
+        	end,
+	}
+end
 local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
@@ -1438,4 +1482,4 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, circus, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}
+		items = {supercell, membershipcardtwo, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, circus, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}

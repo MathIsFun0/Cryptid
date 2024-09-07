@@ -4726,7 +4726,8 @@ local membershipcard = {
 	name = "cry-membershipcard",
 	key = "membershipcard",
     	config = {extra = {Xmult_mod = 0.1}},
-	pos = {x = 3, y = 4},
+	pos = {x = 6, y = 2},
+	soul_pos = {x = 6, y = 1},
 	loc_txt = {
         name = 'Membership Card',
         text = {
