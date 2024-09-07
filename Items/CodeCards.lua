@@ -1282,7 +1282,7 @@ local pointer = {
         return true
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = {(SMODS['jen'] or {}).can_load and "and OMEGA consumables " or ""}}
+        return {vars = {(SMODS.Mods['jen'] or {}).can_load and "and OMEGA consumables " or ""}}
     end,
     use = function(self, card, area, copier)
         G.GAME.USING_CODE = true
