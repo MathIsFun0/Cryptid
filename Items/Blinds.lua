@@ -472,7 +472,40 @@ local hammer = {
     boss_colour = HEX('ffabd6'),
     recalc_debuff = function(self, card, from_blind)
         if card.area ~= G.jokers and not G.GAME.blind.disabled then
-            if card.ability.effect ~= 'Stone Card' and (card.base.value == '3' or card.base.value == '5' or card.base.value == '7' or card.base.value == '9' or card.base.value == 'Ace') then
+            if card.ability.effect ~= 'Stone Card'
+	    and (card.base.value == '3' or card.base.value == '5'
+	    or card.base.value == '7' or card.base.value == '9'
+	    or card.base.value == 'Ace') then
+                return true
+            end
+            return false
+        end
+    end
+}
+local magic = {
+    object_type = "Blind",
+    name = "cry-magic",
+    key = "magic",
+    pos = {x = 0, y = 12},
+    boss = {
+        min = 2,
+        max = 10
+    },
+    loc_txt = {
+        name = 'The Magic',
+        text = {
+            "All cards with even",
+            "rank are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('009eff'),
+    recalc_debuff = function(self, card, from_blind)
+        if card.area ~= G.jokers and not G.GAME.blind.disabled then
+            if card.ability.effect ~= 'Stone Card'
+	    and (card.base.value == '2' or card.base.value == '4'
+	    or card.base.value == '6' or card.base.value == '8'
+	    or card.base.value == '10') then
                 return true
             end
             return false
@@ -499,6 +532,103 @@ local windmill = {
     boss_colour = HEX('f70000'),
     recalc_debuff = function(self, card, from_blind)
     if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 2 then
+        return true
+    end
+    return false
+end
+}
+local striker = {
+    object_type = "Blind",
+    name = "cry-striker",
+    key = "striker",
+    pos = {x = 0, y = 13},
+    boss = {
+        min = 4,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Striker',
+        text = {
+            "All Rare Jokers",
+            "are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('505e5c'),
+    recalc_debuff = function(self, card, from_blind)
+    if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 3 then
+        return true
+    end
+    return false
+end
+}
+local shackle = {
+    object_type = "Blind",
+    name = "cry-shackle",
+    key = "shackle",
+    pos = {x = 0, y = 15},
+    boss = {
+        min = 1,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Shackle',
+        text = {
+            "All Negative Jokers",
+            "are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('010466'),
+    in_pool = function()
+        if not G.jokers then return false end
+        for i, j in pairs(G.jokers.cards) do
+            if j.edition and j.edition.negative == true then
+                return true
+            end
+        end
+        return false
+    end,
+    recalc_debuff = function(self, card, from_blind)
+    if (card.area == G.jokers) and not G.GAME.blind.disabled 
+    and card.edition and card.edition.negative == true then
+        return true
+    end
+    return false
+end
+}
+local pin = {
+    object_type = "Blind",
+    name = "cry-pin",
+    key = "pin",
+    pos = {x = 0, y = 14},
+    boss = {
+        min = 4,
+        max = 10
+    },
+	loc_txt = {
+        name = 'The Pin',
+        text = {
+            "Jokers with Epic or higher",
+            "rarity are debuffed"
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('452703'),
+    in_pool = function()
+        if not G.jokers then return false end
+        for i, j in pairs(G.jokers.cards) do
+            if not ((j.config.center.rarity == 1)
+	    or (j.config.center.rarity == 2) 
+	    or (j.config.center.rarity == 3)) then
+                return true
+            end
+        end
+        return false
+    end,
+    recalc_debuff = function(self, card, from_blind)
+    if (card.area == G.jokers) and not G.GAME.blind.disabled and (card.config.center.rarity ~= 3
+    and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1) then
         return true
     end
     return false
@@ -564,6 +694,42 @@ local lavender_loop = {
         return 1.25^(dt/1.5)
     end
 }
+local tornado = {
+    object_type = "Blind",
+    name = "cry-tornado",
+    key = "tornado",
+    pos = {x = 0, y = 16},
+    mult = 0.8,
+    dollars = 8,
+    boss = {
+        min = 3,
+        max = 10,
+	showdown = true
+    },
+	loc_txt = {
+        name = 'Turquoise Tornado',
+        text = {
+            "#1# in #2# chance for",
+	    "played hand to not score",
+        }
+    },
+    atlas = "blinds",
+    boss_colour = HEX('3dd9ca'),
+    loc_vars = function(self)
+        return {vars = {''..((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3}}
+    end,
+    collection_loc_vars = function(self)
+	return {vars = {''..((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3}}
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+    	if (pseudorandom(pseudoseed('tornado')) < ((G.GAME.probabilities.normal * 2)/3)) and not G.GAME.blind.disabled then
+		G.GAME.blind.triggered = true
+        	return true
+    	end
+	return false
+    end
+}
+--todo: disable get_local_debuff_text for this
 local vermillion_virus = {
     object_type = "Blind",
     name = "cry-Vermillion Virus",
@@ -1077,7 +1243,8 @@ local nostalgia_sprites = {
     frames = 21
 }
 
-local items_togo = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, trick, joke, hammer, box, windmill, vermillion_virus, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}
+local items_togo = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, trick,
+joke, hammer, magic, box, windmill, striker, shackle, pin, vermillion_virus, tornado, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}
 
 if Cryptid_config["Timer Mechanics"] then
 	table.insert(items_togo, clock)
