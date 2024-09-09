@@ -767,9 +767,9 @@ local aequilibrium = {
                 name = "Ace Aequilibrium",
                 text = {
                     "Jokers appear using the",
-    "order from the {C:attention}Collection{}",
+    		    "order from the {C:attention}Collection{}",
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
-    "when hand is played",
+   		    "when hand is played",
                     "{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
                     "{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#"
                 }
@@ -780,10 +780,8 @@ local aequilibrium = {
             soul_pos = {x = 69, y = 0, extra = {x = 8, y = 0}},
             atlas = 'atlasexotic',
             cost = 50,
-            unlocked = true,
-            discovered = true,
             blueprint_compat = true,
-    immune_to_chemach = true,
+    	    immune_to_chemach = true,
             eternal_compat = true,
             perishable_compat = true,
             loc_vars = function(self, info_queue, center)
