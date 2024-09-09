@@ -188,7 +188,7 @@ local rerollexchange = {
     	object_type = "Voucher",
 	key = "rerollexchange",
    	atlas = "atlasvoucher",
-	pos = {x = 7, y = 2},
+	pos = {x = 6, y = 2},
 	requires = {"v_reroll_glut"},
 	loc_txt = {
         name = 'Reroll Exchange',
@@ -225,7 +225,7 @@ local dexterity = {
 	key = "dexterity",
 	config = {extra = 2},
    	atlas = "atlasvoucher",
-	pos = {x = 7, y = 1},
+	pos = {x = 6, y = 3},
 	requires = {"v_nacho_tong"},
 	loc_txt = {
         name = 'Dexterity',
@@ -351,7 +351,7 @@ local fabric = {
 	key = "fabric",
 	config = {extra = 2},
    	atlas = "atlasvoucher",
-	pos = {x = 7, y = 0},
+	pos = {x = 6, y = 0},
 	requires = {"v_antimatter"},
 	loc_txt = {
         name = 'Universal Fabric',
