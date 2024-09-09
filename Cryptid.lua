@@ -948,7 +948,6 @@ for _, file in ipairs(files) do
             print("Warning: "..file.." has no items")
           else
             for _, item in ipairs(curr_obj.items) do
-                item.discovered = true
                 if SMODS[item.object_type] then
                     SMODS[item.object_type](item)
                     -- JokerDisplay mod support
