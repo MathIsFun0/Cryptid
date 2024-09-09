@@ -802,7 +802,9 @@ local sapphire_stamp = {
         end
     end,
     disable = function(self, silent)
-        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+        if not G.GAME.blind.disabled then
+            G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+        end
     end,
 }
 
