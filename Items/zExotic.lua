@@ -960,22 +960,33 @@ local gemino = {
         eternal_compat = false,
         perishable_compat = true,
         rental_compat = true,
+        config = {extra = {tags = 1}},
         loc_txt = {
               name = 'Vendere',
                 text = {
-			"Sell this card to"
-        		"{C:green}create{} {C:attention}1{} {C:cry_exotic,E:1}Empowered Tag{}",
+			"Sell this card to",
+        		"{C:green}create{} {C:attention}#1#{} copy of",
+                "{C:dark_edition}every{} tag"
         	}
            },
+        loc_vars = function(self, info_queue, center)
+            return {
+                vars = {center.ability.extra.tags}
+            }
+        end,
         rarity = "cry_exotic",
         cost = 50,
         atlas = "atlasexotic",
         calculate = function(self, card, context)
             if context.selling_self and not context.blueprint then
-                add_tag(Tag('tag_cry_empowered'))
-                play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-                play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
-                return true
+                for i = 1, math.max(1, card.ability.extra.tags) do
+                    for t = 1, #G.P_CENTER_POOLS.Tag do
+                        add_tag(Tag(G.P_CENTER_POOLS.Tag[t].key))
+                        play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
+                        play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+                    end
+                end
+                return nil, true
             end
     end
 }
@@ -1078,4 +1089,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, vendere}}
