@@ -416,7 +416,7 @@ for i = 1, #typed_decks do
 		local obj = {object_type = "Back",
 			name = deck_internal_name,
 			key = deck_key,
-			config = {cry_force_sticker = object_key}, -- stickers DON'T use object_key for SOME reason
+			config = {cry_force_sticker = deck[5]}, -- stickers DON'T use object_key for SOME reason
 			pos = {x = deck[8], y = deck[9]},
 			loc_txt = {
 				name = deck_name,
