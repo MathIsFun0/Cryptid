@@ -264,8 +264,8 @@ local redeo = {
         text = {
             "{C:attention}-#1#{} Ante when",
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
-            "{s:0.8}Requirements increase by",
-            "{C:money,s:0.8}$#4#{s:0.8} after each use"
+            "{s:0.8}Requirements increase exponentially per use",
+            "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#"
         }
     },
 	rarity = "cry_exotic",
@@ -279,6 +279,7 @@ local redeo = {
             while card.ability.extra.money_remaining >= card.ability.extra.money_req do
                 card.ability.extra.money_remaining = card.ability.extra.money_remaining - card.ability.extra.money_req
                 card.ability.extra.money_req = card.ability.extra.money_req + card.ability.extra.money_mod
+		card.ability.extra.money_mod = math.min(1e300, math.ceil(card.ability.extra.money_mod * 1.13))
                 ante_mod = ante_mod - card.ability.extra.ante_reduction
             end
             if ante_mod < 0 then
