@@ -1078,4 +1078,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, vendere}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino}}
