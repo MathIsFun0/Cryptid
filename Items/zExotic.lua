@@ -879,8 +879,8 @@ local facile = {
     name = "cry-facile",
     key = "facile",
     config = {extra = {Emult = 3, check = 10, check2 = 0}},
-    pos = { x = 0, y = 1 },
-    soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    pos = { x = 6, y = 2 },
+    soul_pos = {x = 8, y = 2, extra = {x = 7, y = 2}},
     loc_txt = {
         name = 'Facile',
         text = {
@@ -892,7 +892,7 @@ local facile = {
     rarity = "cry_exotic",
     cost = 50,
     blueprint_compat = true,
-    atlas = "placeholders",
+    atlas = "atlasexotic",
     loc_vars = function(self, info_queue, center)
         return {
             vars = {center.ability.extra.Emult, center.ability.extra.check}
