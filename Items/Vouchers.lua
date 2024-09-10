@@ -370,6 +370,13 @@ local fabric = {
             return true end }))
     end
 }
+
+local function asteroglyph_ante()
+	if not (G.GAME or {}).modifiers then return 0 end
+	if not G.GAME.modifiers.cry_astero_ante then G.GAME.modifiers.cry_astero_ante = 0 end
+	return G.GAME.modifiers.cry_astero_ante
+end
+
 local asteroglyph = {
     	object_type = "Voucher",
 	key = "asteroglyph",
@@ -379,15 +386,20 @@ local asteroglyph = {
 	loc_txt = {
         name = 'Asteroglyph',
         text = {
-	    "Set Ante to {C:attention}0{}"
-		}
+	    "Set Ante to {C:attention}#1#{}"
+	}
     },
+    loc_vars = function(self, info_queue)
+        return {vars = {asteroglyph_ante()}}
+    end,
     redeem = function(self)
-	ease_ante(-G.GAME.round_resets.ante)
-        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante --idk if this stuff is actually needed or not
-        G.GAME.round_resets.blind_ante = 0 --Kinda in incorrect interaction with redemmed deck when heiroglyph/petroglyph is redeemed at ante 1, not sure if this code causes it but can't be bothered
+	local mod = -G.GAME.round_resets.ante + asteroglyph_ante()
+	ease_ante(mod)
+	G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0 and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300) or 1
+        G.E_MANAGER:add_event(Event({func = function() G.GAME.round_resets.blind_ante = mod return true end}))
     end
 }
+
 local blankcanvas = {
     	object_type = "Voucher",
 	key = "blankcanvas",
