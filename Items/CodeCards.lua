@@ -480,8 +480,8 @@ local hook = {
     use = function(self, card, area, copier)
         G.jokers.highlighted[1].ability.cry_hooked = true
         G.jokers.highlighted[2].ability.cry_hooked = true
-        G.jokers.highlighted[1].ability.hook_id = G.jokers.highlighted[2].sort_id
-        G.jokers.highlighted[2].ability.hook_id = G.jokers.highlighted[1].sort_id
+        G.jokers.highlighted[1].hook_id = G.jokers.highlighted[2].sort_id
+        G.jokers.highlighted[2].hook_id = G.jokers.highlighted[1].sort_id
     end
 }
 local hooked = {
@@ -498,15 +498,15 @@ local hooked = {
     },
     loc_vars = function(self, info_queue, card)
         local var
-        if not card or not card.ability.hook_id then
+        if not card or not card.hook_id then
             var = "[Joker]"
         else
             for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].sort_id == card.ability.hook_id then
+                if G.jokers.cards[i].sort_id == card.hook_id then
                     var = localize{type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key}
                 end
             end
-            var = var or "[no joker found - "..(card.ability.hook_id or "nil").."]"
+            var = var or "[no joker found - "..(card.hook_id or "nil").."]"
         end
         return {vars = {var or "hooked Joker"}}
 	end,
@@ -3085,7 +3085,7 @@ return {name = "Code Cards",
                 if (ret or trig) and self.ability.cry_hooked and not context.post_trigger and not context.cry_hook and not context.retrigger_joker_check and not context.megatrigger_check then
                     context.cry_hook = true
                     for i = 1, #G.jokers.cards do
-                        if G.jokers.cards[i].sort_id == self.ability.hook_id then
+                        if G.jokers.cards[i].sort_id == self.hook_id then
                             card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = "Hooked!",colour = G.C.SET.Code})
                             cj(G.jokers.cards[i],context)
                             --I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(

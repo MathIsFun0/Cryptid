@@ -1667,6 +1667,7 @@ local lightupthenight = {
 	config = {extra = {xmult = 1.5}},
 	pos = {x = 1, y = 1},
 	atlas = 'atlasone',
+    blueprint_compat = false,
 	loc_txt = {
         name = 'Light Up the Night',
         text = {

@@ -46,6 +46,7 @@ function loc_colour(_c, _default)
     G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
     G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
     G.ARGS.LOC_COLOURS.cry_ascendant = G.C.CRY_ASCENDANT
+    G.ARGS.LOC_COLOURS.cry_jolly = G.C.CRY_JOLLY
     return lc(_c, _default)
 end
 
@@ -924,6 +925,8 @@ function cry_with_deck_effects(card, func)
     end
 end
 
+G.C.CRY_JOLLY = {0,0,0,0}
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
 --for first boot, make sure config is defined properly beforehand
@@ -1064,6 +1067,57 @@ local cryptidTabs = {
     }
 end--]]
 SMODS.current_mod.extra_tabs = function() return cryptidTabs end
+
+-- Modify to display badges for credits
+local smcmb = SMODS.create_mod_badges
+function SMODS.create_mod_badges(obj, badges)
+    smcmb(obj, badges)
+    if obj and obj.cry_credits then
+        local function calc_scale_fac(text)
+            local size = 0.9
+            local font = G.LANG.font
+            local max_text_width = 2 - 2*0.05 - 4*0.03*size - 2*0.03
+            local calced_text_width = 0
+            -- Math reproduced from DynaText:update_text
+            for _, c in utf8.chars(text) do
+                local tx = font.FONT:getWidth(c)*(0.33*size)*G.TILESCALE*font.FONTSCALE + 2.7*1*G.TILESCALE*font.FONTSCALE
+                calced_text_width = calced_text_width + tx/(G.TILESIZE*G.TILESCALE)
+            end
+            local scale_fac =
+                calced_text_width > max_text_width and max_text_width/calced_text_width
+                or 1
+            return scale_fac
+        end
+        local scale_fac = {}
+        if obj.cry_credits and obj.cry_credits.text then
+            for i = 1, #obj.cry_credits.text do
+                scale_fac[i] = calc_scale_fac(obj.cry_credits.text[i])
+            end
+        end
+        local ct = {}
+        for i = 1, #obj.cry_credits.text do
+            ct[i] = {
+                string = obj.cry_credits.text[i],
+                scale = scale_fac[i],
+                spacing = scale_fac[i]
+            }
+        end
+        badges[#badges+1] = {n=G.UIT.R, config={align = "cm"}, nodes={
+            {n=G.UIT.R, config={align = "cm", colour = obj.cry_credits and obj.cry_credits.colour or G.C.RED, r = 0.1, minw = 2, minh = 0.36, emboss = 0.05, padding = 0.03*0.9}, nodes={
+              {n=G.UIT.B, config={h=0.1,w=0.03}},
+              {n=G.UIT.O, config={object = DynaText({string = ct or "ERROR",
+                  colours = {G.C.WHITE},
+                  silent = true,
+                  float = true,
+                  shadow = true,
+                  offset_y = -0.03,
+                  spacing = 1,
+                  scale = 0.33*0.9})}},
+              {n=G.UIT.B, config={h=0.1,w=0.03}},
+            }}
+          }}
+    end
+end
 
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
@@ -1313,7 +1367,7 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
                 if is_number(tbl[k]) and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'qty') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
-                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format((stack and tbl[k] or Cryptid.base_values[name][k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+                    tbl[k] = cry_sanity_check(clear and Cryptid.base_values[name][k] or cry_format((stack and tbl[k] or Cryptid.base_values[name][k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g"))
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
@@ -1321,7 +1375,7 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
-                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format((stack and tbl[k][_k] or Cryptid.base_values[name][k][_k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+                        tbl[k][_k] = cry_sanity_check(clear and Cryptid.base_values[name][k][_k] or cry_format((stack and tbl[k][_k] or Cryptid.base_values[name][k][_k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g"))
                     end
                 end
             end
@@ -1330,9 +1384,15 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 end
 function cry_misprintize_val(val, override)
    if is_number(val) then
-    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+    val = cry_sanity_check(cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g"))
    end 
    return val
+end
+function cry_sanity_check(val)
+    if not val or type(val) == 'number' and (val ~= val or val > 1e300 or val < -1e300) then
+        return 1e300
+    end
+    return val
 end
 function cry_deep_copy(obj, seen)
     if type(obj) ~= 'table' then return obj end
@@ -1709,6 +1769,7 @@ Cryptid.C = {
     BLOSSOM = {HEX("ff09da"),HEX("ffd121")},
     AZURE = {HEX("0409ff"),HEX("63dcff")},
     ASCENDANT = {HEX("2e00f5"),HEX("e5001d")},
+    JOLLY = {HEX("6ec1f5"),HEX("456b84")}
 }
 function Game:update(dt)
     upd(self,dt)

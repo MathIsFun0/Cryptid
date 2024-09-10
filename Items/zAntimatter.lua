@@ -121,6 +121,13 @@ local antimatter = {
             delay(0.6)
             return args.chips, args.mult
         end
+        --Glowing Deck
+        if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss  then
+            for i = 1, #G.jokers.cards do
+                local card = G.jokers.cards[i]
+                cry_misprintize(card,{min=1.25,max=1.25},nil,true)
+            end
+        end
     end,
     atlas = "antimatter"
 }

@@ -260,6 +260,34 @@ local critical = {
         end
     end
 }
+local glowing = {
+    object_type = "Back",
+    name = "cry-Glowing",
+    key = "glowing",
+    config = {cry_glowing = true},
+    pos = {x = 4, y = 2},
+    loc_txt = {
+        name = "Glowing Deck",
+        text = {
+            "Multiply the values of",
+            "all Jokers by {X:dark_edition,C:white} X1.25 {}",
+            "when Boss Blind is defeated",
+            "{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person" --peak loc_vars right here
+        }
+    },
+    loc_vars = function(self, info_queue, center)
+        return {vars = {" "}}
+    end,
+    atlas = "placeholders",
+    trigger_effect = function(self, args)
+        if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss  then
+            for i = 1, #G.jokers.cards do
+                local card = G.jokers.cards[i]
+                cry_misprintize(card,{min=1.25,max=1.25},nil,true)
+            end
+        end
+    end
+}
 return {name = "Misc. Decks",
         init = function()
             local Backapply_to_runRef = Back.apply_to_run
@@ -408,4 +436,4 @@ return {name = "Misc. Decks",
                 end
             end
         end,
-        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, redeemed, critical}}
+        items = {atlasdeck, very_fair, equilibrium, misprint, infinite, conveyor, CCD, wormhole, redeemed, critical, glowing}}

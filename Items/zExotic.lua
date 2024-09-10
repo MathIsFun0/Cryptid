@@ -916,6 +916,37 @@ local facile = {
         end
     end
 }
+local gemino = {
+    object_type = "Joker",
+    name = "cry-Gemino",
+    key = "gemino",
+    pos = { x = 0, y = 1 },
+    soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    loc_txt = {
+          name = 'Gemino',
+            text = {
+    "{C:attention}Double{} all values", "of leftmost {C:attention}Joker", "at end of round",
+    }
+       },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Requiacity"
+        }
+    },
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "placeholders",
+    calculate = function(self, card2, context)
+            if context.end_of_round and not context.repetition and not context.individual then
+                local card = G.jokers.cards[1]
+                cry_misprintize(card,{min=2,max=2},nil,true)
+                card_eval_status_text(card2, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.DARK_EDITION})
+                return nil, true
+            end
+    end,
+    }
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -1013,4 +1044,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino}}
