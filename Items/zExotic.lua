@@ -920,10 +920,10 @@ local gemino = {
     object_type = "Joker",
     name = "cry-Gemino",
     key = "gemino",
-    pos = { x = 0, y = 1 },
-    soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    pos = { x = 6, y = 1 },
+    soul_pos = {x = 8, y = 1, extra = {x = 7, y = 1}},
     loc_txt = {
-          name = 'Gemino',
+          name = 'Gemini',
             text = {
     "{C:attention}Double{} all values", "of leftmost {C:attention}Joker", "at end of round",
     }
@@ -937,7 +937,7 @@ local gemino = {
     },
     rarity = "cry_exotic",
     cost = 50,
-    atlas = "placeholders",
+    atlas = "atlasexotic",
     calculate = function(self, card2, context)
             if context.end_of_round and not context.repetition and not context.individual then
                 local card = G.jokers.cards[1]
