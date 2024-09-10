@@ -266,6 +266,7 @@ local redeo = {
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
             "{s:0.8}Requirements increase",
 	    "{C:attention,s:0.8}exponentially{s:0.8} per use",
+	    "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#"
         }
     },
 	rarity = "cry_exotic",
