@@ -612,7 +612,7 @@ local scalae = {
                 if new_scale >= to_big(1e300) then
                     new_scale = 1e300
                 else
-                    new_scale = new_scale:to_number()
+                    new_scale = to_number(new_scale)
                 end
             end
             return new_scale

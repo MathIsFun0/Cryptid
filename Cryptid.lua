@@ -5,7 +5,7 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0909a]
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
 --- VERSION: 0.5.0
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
@@ -479,21 +479,21 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                     --extra_value is ignored because it can be scaled by Gift Card
                     if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
                         dbl_info.base = {k}
-                        local predicted_mod = math.abs(to_big(v):to_number()-to_big(dbl_info.ability[k]):to_number())
+                        local predicted_mod = math.abs(to_number(to_big(v))-to_number(to_big(dbl_info.ability[k])))
                         local best_key = {""}
                         local best_coeff = 10^100
                         for l, u in pairs(jkr.ability) do
                             if not (default_modifiers[l] and default_modifiers[l] == u) then
                                 if l ~= k and is_number(u) then
-                                    if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
-                                        best_coeff = to_big(predicted_mod/u):to_number()
+                                    if to_number(to_big(predicted_mod/u)) >= 0.999 and to_number(to_big(predicted_mod/u)) < to_number(to_big(best_coeff)) then
+                                        best_coeff = to_number(to_big(predicted_mod/u))
                                         best_key = {l}
                                     end
                                 end
                                 if type(jkr.ability[l]) == 'table' then
                                     for _l, _u in pairs(jkr.ability[l]) do 
-                                        if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
-                                            best_coeff = to_big(predicted_mod/_u):to_number()
+                                        if is_number(_u) and to_number(to_big(predicted_mod/_u)) >= 0.999 and to_number(to_big(predicted_mod/_u)) < to_number(to_big(best_coeff)) then
+                                            best_coeff = to_number(to_big(predicted_mod/_u))
                                             best_key = {l,_l}
                                         end
                                     end
@@ -510,17 +510,17 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                                 local best_key = {""}
                                 local best_coeff = 10^100
                                 for l, u in pairs(jkr.ability) do
-                                    if is_number(u) and to_big(predicted_mod/u):to_number() >= 0.999 then
-                                        if to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
-                                            best_coeff = to_big(predicted_mod/u):to_number()
+                                    if is_number(u) and to_number(to_big(predicted_mod/u)) >= 0.999 then
+                                        if to_number(to_big(predicted_mod/u)) < to_number(to_big(best_coeff)) then
+                                            best_coeff = to_number(to_big(predicted_mod/u))
                                             best_key = {l}
                                         end
                                     end
                                     if type(jkr.ability[l]) == 'table' then
                                         for _l, _u in pairs(jkr.ability[l]) do 
-                                            if (l ~= k or _l ~= _k) and is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 then
-                                                if to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
-                                                    best_coeff = to_big(predicted_mod/_u):to_number()
+                                            if (l ~= k or _l ~= _k) and is_number(_u) and to_number(to_big(predicted_mod/_u)) >= 0.999 then
+                                                if to_number(to_big(predicted_mod/_u)) < to_number(to_big(best_coeff)) then
+                                                    best_coeff = to_number(to_big(predicted_mod/_u))
                                                     best_key = {l,_l}
                                                 end
                                             end
@@ -1377,7 +1377,7 @@ function cry_log_random(seed,min,max)
     return math.exp(poll)
 end
 function cry_format(number, str)
-    return tonumber(str:format((Big and to_big(number):to_number() or number)))
+    return tonumber(str:format((Big and to_number(to_big(number)) or number)))
 end
 --use ID to work with glitched/misprint
 function Card:get_nominal(mod)

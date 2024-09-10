@@ -544,7 +544,7 @@ return {name = "Enhanced Decks",
                             for c = #G.playing_cards, 1, -1 do
                                 G.playing_cards[c].config.center.eternal_compat = true
                                 G.playing_cards[c].config.center.perishable_compat = true
-								if SMODS.Stickers[self.effect.config.cry_force_sticker].apply then
+								if SMODS.Stickers[self.effect.config.cry_force_sticker] and SMODS.Stickers[self.effect.config.cry_force_sticker].apply then
 									SMODS.Stickers[self.effect.config.cry_force_sticker]:apply(G.playing_cards[c],true);
 								else
                                		G.playing_cards[c]["set_"..self.effect.config.cry_force_sticker](G.playing_cards[c],true);
