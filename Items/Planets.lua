@@ -8,8 +8,11 @@ local timantti = {
     loc_txt = {
         name = 'Timantti',
         text = {
-            "Level up {C:attention}#1#{},",
-            "{C:attention}#2#{}, and {C:attention}#3#"
+	    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+            "Level up",
+	    "{C:attention}#1#{},",
+	    "{C:attention}#2#{},",
+	    "and {C:attention}#3#{}",
         }
     },
     cost = 4,
@@ -19,7 +22,20 @@ local timantti = {
         return true
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = self.config.hand_types}
+        local levelone = G.GAME.hands['High Card'].level or 1
+	local leveltwo = G.GAME.hands['Pair'].level or 1
+	local levelthree = G.GAME.hands['Two Pair'].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+	local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+	local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+        if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
+	    if levelone == 1 then planetcolourone = G.C.UI.TEXT_DARK end
+	    if leveltwo == 1 then planetcolourtwo = G.C.UI.TEXT_DARK end
+	    if levelthree == 1 then planetcolourthree = G.C.UI.TEXT_DARK end
+	end
+        return {vars = {localize('High Card', 'poker_hands'),localize('Pair', 'poker_hands'),localize('Two Pair', 'poker_hands'),
+	G.GAME.hands['High Card'].level,G.GAME.hands['Pair'].level,G.GAME.hands['Two Pair'].level,
+	colours = {planetcolourone,planetcolourtwo,planetcolourthree}}}
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
@@ -47,8 +63,11 @@ local klubi = {
     loc_txt = {
         name = 'Klubi',
         text = {
-            "Level up {C:attention}#1#{},",
-            "{C:attention}#2#{}, and {C:attention}#3#"
+	    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+            "Level up",
+	    "{C:attention}#1#{},",
+	    "{C:attention}#2#{},",
+	    "and {C:attention}#3#{}",
         }
     },
     cost = 4,
@@ -58,7 +77,20 @@ local klubi = {
         return true
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = self.config.hand_types}
+        local levelone = G.GAME.hands['Three of a Kind'].level or 1
+	local leveltwo = G.GAME.hands['Straight'].level or 1
+	local levelthree = G.GAME.hands['Flush'].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+	local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+	local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+        if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
+	    if levelone == 1 then planetcolourone = G.C.UI.TEXT_DARK end
+	    if leveltwo == 1 then planetcolourtwo = G.C.UI.TEXT_DARK end
+	    if levelthree == 1 then planetcolourthree = G.C.UI.TEXT_DARK end
+	end
+        return {vars = {localize('Three of a Kind', 'poker_hands'),localize('Straight', 'poker_hands'),localize('Flush', 'poker_hands'),
+	G.GAME.hands['Three of a Kind'].level,G.GAME.hands['Straight'].level,G.GAME.hands['Flush'].level,
+	colours = {planetcolourone,planetcolourtwo,planetcolourthree}}}
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
@@ -86,8 +118,11 @@ local sydan = {
     loc_txt = {
         name = 'Sydan',
         text = {
-            "Level up {C:attention}#1#{},",
-            "{C:attention}#2#{}, and {C:attention}#3#"
+	    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+            "Level up",
+	    "{C:attention}#1#{},",
+	    "{C:attention}#2#{},",
+	    "and {C:attention}#3#{}",
         }
     },
     cost = 4,
@@ -97,7 +132,20 @@ local sydan = {
         return true
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = self.config.hand_types}
+        local levelone = G.GAME.hands['Full House'].level or 1
+	local leveltwo = G.GAME.hands['Four of a Kind'].level or 1
+	local levelthree = G.GAME.hands['Straight Flush'].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+	local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+	local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+        if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
+	    if levelone == 1 then planetcolourone = G.C.UI.TEXT_DARK end
+	    if leveltwo == 1 then planetcolourtwo = G.C.UI.TEXT_DARK end
+	    if levelthree == 1 then planetcolourthree = G.C.UI.TEXT_DARK end
+	end
+        return {vars = {localize('Full House', 'poker_hands'),localize('Four of a Kind', 'poker_hands'),localize('Straight Flush', 'poker_hands'),
+	G.GAME.hands['Full House'].level,G.GAME.hands['Four of a Kind'].level,G.GAME.hands['Straight Flush'].level,
+	colours = {planetcolourone,planetcolourtwo,planetcolourthree}}}
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
@@ -125,8 +173,11 @@ local lapio = {
     loc_txt = {
         name = 'Lapio',
         text = {
-            "Level up {C:attention}#1#{},",
-            "{C:attention}#2#{}, and {C:attention}#3#"
+	    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+            "Level up",
+	    "{C:attention}#1#{},",
+	    "{C:attention}#2#{},",
+	    "and {C:attention}#3#{}",
         }
     },
     cost = 4,
@@ -136,7 +187,20 @@ local lapio = {
         return true
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = self.config.hand_types}
+        local levelone = G.GAME.hands['Five of a Kind'].level or 1
+	local leveltwo = G.GAME.hands['Flush House'].level or 1
+	local levelthree = G.GAME.hands['Flush Five'].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+	local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+	local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+        if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
+	    if levelone == 1 then planetcolourone = G.C.UI.TEXT_DARK end
+	    if leveltwo == 1 then planetcolourtwo = G.C.UI.TEXT_DARK end
+	    if levelthree == 1 then planetcolourthree = G.C.UI.TEXT_DARK end
+	end
+        return {vars = {localize('Five of a Kind', 'poker_hands'),localize('Flush House', 'poker_hands'),localize('Flush Five', 'poker_hands'),
+	G.GAME.hands['Five of a Kind'].level,G.GAME.hands['Flush House'].level,G.GAME.hands['Flush Five'].level,
+	colours = {planetcolourone,planetcolourtwo,planetcolourthree}}}
     end,
     use = function(self, card, area, copier)
         suit_level_up(self, card, area, copier)
@@ -303,6 +367,9 @@ local nstar = {
     cost = 4,
     aurinko = true,
     atlas = "atlasnotjokers",
+    set_card_type_badge = function(self, card, badges)
+        badges[1] = create_badge(localize('k_planet_q'), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
     can_use = function(self, card)
         return true
     end,
