@@ -264,8 +264,8 @@ local redeo = {
         text = {
             "{C:attention}-#1#{} Ante when",
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
-            "{s:0.8}Requirements increase exponentially per use",
-            "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#"
+            "{s:0.8}Requirements increase",
+	    "{C:attention,s:0.8}exponentially{s:0.8} per use",
         }
     },
 	rarity = "cry_exotic",
@@ -962,9 +962,9 @@ local gemino = {
         loc_txt = {
               name = 'Vendere',
                 text = {
-        "{C:green}Create{} {C:attention}1{} {C:cry_exotic,E:1}Empowered Tag{}",
-        "when this card is {C:money}sold{}"
-        }
+			"Sell this card to"
+        		"{C:green}create{} {C:attention}1{} {C:cry_exotic,E:1}Empowered Tag{}",
+        	}
            },
         rarity = "cry_exotic",
         cost = 50,
