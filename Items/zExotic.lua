@@ -279,7 +279,7 @@ local redeo = {
             while card.ability.extra.money_remaining >= card.ability.extra.money_req do
                 card.ability.extra.money_remaining = card.ability.extra.money_remaining - card.ability.extra.money_req
                 card.ability.extra.money_req = card.ability.extra.money_req + card.ability.extra.money_mod
-		card.ability.extra.money_mod = math.min(1e300, math.ceil(card.ability.extra.money_mod * 1.13))
+		card.ability.extra.money_mod = math.min(1e300, math.ceil(card.ability.extra.money_mod * 1.06))
                 ante_mod = ante_mod - card.ability.extra.ante_reduction
             end
             if ante_mod < 0 then
