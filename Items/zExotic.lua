@@ -266,7 +266,6 @@ local redeo = {
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
             "{s:0.8}Requirements increase",
 	    "{C:attention,s:0.8}exponentially{s:0.8} per use",
-            "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#"
         }
     },
 	rarity = "cry_exotic",
@@ -949,6 +948,38 @@ local gemino = {
             end
     end,
     }
+
+    local vendere = {
+        object_type = "Joker",
+        name = "cry-Vendere",
+        key = "vendere",
+        pos = { x = 6, y = 3 },
+        soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
+        blueprint_compat = false,
+        eternal_compat = false,
+        perishable_compat = true,
+        rental_compat = true,
+        loc_txt = {
+              name = 'Vendere',
+                text = {
+			"Sell this card to"
+        		"{C:green}create{} {C:attention}1{} {C:cry_exotic,E:1}Empowered Tag{}",
+        	}
+           },
+        rarity = "cry_exotic",
+        cost = 50,
+        atlas = "atlasexotic",
+        calculate = function(self, card, context)
+            if context.selling_self and not context.blueprint then
+                add_tag(Tag('tag_cry_empowered'))
+                play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
+                play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+                return true
+            end
+    end
+}
+    
+
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -1046,4 +1077,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, vendere}}
