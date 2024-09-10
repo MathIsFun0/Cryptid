@@ -981,7 +981,21 @@ local gemino = {
             if context.selling_self and not context.blueprint then
                 for i = 1, math.max(1, card.ability.extra.tags) do
                     for t = 1, #G.P_CENTER_POOLS.Tag do
-                        add_tag(Tag(G.P_CENTER_POOLS.Tag[t].key))
+                        local current_card = G.P_CENTER_POOLS.Tag[t].key
+                        local t = Tag(current_card, nil, 'Big')
+                        add_tag(t)
+                        if current_card == "tag_orbital" then
+                            local _poker_hands = {}
+                            for k, v in pairs(G.GAME.hands) do
+                                if v.visible then _poker_hands[#_poker_hands+1] = k end
+                            end
+                            t.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('cry_pointer_orbital'))
+                        end
+                        if current_card == "tag_cry_rework" then
+                            --tbh this is the most unbalanced part of the card
+                            t.ability.rework_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_pointer_edition')).key
+                            t.ability.rework_key = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed('cry_pointer_joker')).key
+                        end
                         play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
                         play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
                     end
