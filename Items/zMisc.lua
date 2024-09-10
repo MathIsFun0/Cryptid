@@ -471,7 +471,7 @@ local noisy = {
         }
     },
     calculate = function(self, card, context)
-        if context.edition_main then
+        if context.edition_main and context.edition_val then
             context.edition_val.mult_mod = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult)
             context.edition_val.chip_mod = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
         end
