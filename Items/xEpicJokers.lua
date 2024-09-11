@@ -421,7 +421,7 @@ local m = {
 	cost = 13,
 	perishable_compat = false,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
 	atlas = "atlasepic",
@@ -469,8 +469,10 @@ local M = {
 	rarity = "cry_epic",
 	cost = 13,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
+		if not center.edition or (center.edition and not center.edition.negative) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        	end
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)

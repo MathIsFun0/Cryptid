@@ -162,7 +162,9 @@ local bubblem = {
     eternal_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
-	info_queue[#info_queue+1] = G.P_CENTERS.e_foil
+	if not center.edition or (center.edition and not center.edition.foil) then
+            info_queue[#info_queue+1] = G.P_CENTERS.e_foil
+        end
     return {vars = {localize(center.ability.extra.type, 'poker_hands')}}
     end,
     atlas = "atlasone",
@@ -860,7 +862,9 @@ local reverse = {
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
-		info_queue[#info_queue+1] = G.P_CENTERS.e_holographic
+		if not center.edition or (center.edition and not center.edition.holo) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_holo
+       		end
 		return {vars = {localize(center.ability.extra.type, 'poker_hands')}}
 	end,
 	calculate = function(self, card, context)

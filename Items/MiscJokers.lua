@@ -253,7 +253,9 @@ local queensgambit = {
     rarity = 3,
     cost = 7,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+        if not center.edition or (center.edition and not center.edition.negative) then
+            	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        end
     end,
     atlas = "atlastwo",
     config = { extra = { type = "Straight Flush" } },
