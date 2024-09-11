@@ -899,7 +899,6 @@ local spaghetti = {
 	if G.P_CENTERS.j_sdm_burger then jokers[#jokers+1] = "j_sdm_burger" end
 	if G.P_CENTERS.j_sdm_pizza then jokers[#jokers+1] = "j_sdm_pizza" end
 	if G.P_CENTERS.j_grm_energy_bar then jokers[#jokers+1] = "j_grm_energy_bar" end
-		energy_bar
 	local card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(jokers,pseudoseed("cry_spaghetti")))
         card:set_edition({
             cry_glitched = true
