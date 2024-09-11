@@ -1437,6 +1437,9 @@ function cry_log_random(seed,min,max)
     return math.exp(poll)
 end
 function cry_format(number, str)
+    if math.abs(to_big(number)) >= to_big(1e300) then
+        return number
+    end
     return tonumber(str:format((Big and to_number(to_big(number)) or number)))
 end
 --use ID to work with glitched/misprint
