@@ -950,10 +950,10 @@ local gemino = {
     end,
 }
 
-local vendere = {
+local energia = {
     object_type = "Joker",
-    name = "cry-Vendere",
-    key = "vendere",
+    name = "cry-Energia",
+    key = "energia",
     pos = { x = 6, y = 3 },
     soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
     blueprint_compat = false,
@@ -962,9 +962,9 @@ local vendere = {
     rental_compat = true,
     config = {extra = {tags = 1, tag_mod = 1}},
     loc_txt = {
-            name = 'Vendere',
+            name = 'Energia',
             text = {
-            "When a tag is acquired,",
+            "When a {C:attention}Tag{} is acquired,",
             "create {C:attention}#1#{} copies of it",
             "and {C:attention}increase{} the number of",
             "copies by {C:attention}#2#"
@@ -1086,4 +1086,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, vendere}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, energia}}
