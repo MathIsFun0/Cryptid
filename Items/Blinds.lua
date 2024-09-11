@@ -722,7 +722,7 @@ local tornado = {
 	return {vars = {''..((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3}}
     end,
     debuff_hand = function(self, cards, hand, handname, check)
-    	if (pseudorandom(pseudoseed('tornado')) < ((G.GAME.probabilities.normal * 2)/3)) and not G.GAME.blind.disabled then
+    	if not check and (pseudorandom(pseudoseed('tornado')) < ((G.GAME.probabilities.normal * 2)/3)) and not G.GAME.blind.disabled then
 		G.GAME.blind.triggered = true
         	return true
     	end
