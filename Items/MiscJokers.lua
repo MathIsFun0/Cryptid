@@ -853,7 +853,7 @@ if JokerDisplay then
             { ref_table = "card.joker_display_values", ref_value = "localized_text" },
         },
         calc_function = function(card)
-            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * G.GAME.dollars))
+            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
             card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
             card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
         end
@@ -4882,6 +4882,9 @@ return {name = "Misc. Jokers",
             override_maximized = false
             function Card:get_id()
                 local id = cgi_ref(self)
+		if id == nil then
+    		    id = 10
+		end
                 if (next(find_joker("cry-Maximized")) and not override_maximized) then
                     if (id >= 2 and id <= 10) then id = 10 end
                     if (id >= 11 and id <= 13 or next(find_joker("Pareidolia"))) then id = 13 end
