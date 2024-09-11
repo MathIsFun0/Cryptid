@@ -121,6 +121,67 @@ local quantum_computing = {
     end,
     requires = {"v_cry_satellite_uplink"}
 }
+local pairing = {
+    object_type = "Voucher",
+	key = "pairing",
+    atlas = "atlasvoucher",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Pairing',
+        text = {
+            "{C:attention}Retrigger{} all M Jokers",
+            "if played hand is a {C:attention}Pair"
+		}
+    },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Xaltios"
+        }
+    },
+}
+local repair_man = {
+    object_type = "Voucher",
+	key = "repair_man",
+    atlas = "atlasvoucher",
+	pos = {x = 1, y = 0},
+	loc_txt = {
+        name = 'Repair Man',
+        text = {
+            "{C:attention}Retrigger{} all M Jokers",
+            "if played hand contains a {C:attention}Pair"
+		}
+    },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Xaltios"
+        }
+    },
+}
+local pairamount_plus = {
+    object_type = "Voucher",
+	key = "pairamount_plus",
+    atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	loc_txt = {
+        name = 'Pairamount Plus',
+        text = {
+            "{C:attention}Retrigger{} all M Jokers",
+            "once for every Pair",
+            "{C:attention}contained{} in played hand"
+		}
+    },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Xaltios"
+        }
+    },
+}
 local overstock_multi = {
     	object_type = "Voucher",
 	key = "overstock_multi",
@@ -563,6 +624,11 @@ if Cryptid_config["Code Cards"] then --tweak this later since I want command pro
     voucheritems[#voucheritems+1] = command_prompt
     voucheritems[#voucheritems+1] = satellite_uplink
     voucheritems[#voucheritems+1] = quantum_computing
+end
+if Cryptid_config["M Jokers"] then
+    voucheritems[#voucheritems+1] = pairing
+    voucheritems[#voucheritems+1] = repair_man
+    voucheritems[#voucheritems+1] = pairamount_plus
 end
 return {name = "Vouchers", 
         init = function()

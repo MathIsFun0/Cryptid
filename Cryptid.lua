@@ -925,6 +925,17 @@ function cry_with_deck_effects(card, func)
     end
 end
 
+
+function cry_deep_copy(obj, seen)
+    if type(obj) ~= 'table' then return obj end
+    if seen and seen[obj] then return seen[obj] end
+    local s = seen or {}
+    local res = setmetatable({}, getmetatable(obj))
+    s[obj] = res
+    for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
+    return res
+end
+
 G.C.CRY_JOLLY = {0,0,0,0}
 
 -- File loading based on Relic-Jokers
@@ -1341,6 +1352,21 @@ function add_tag(tag)
     end
 end
 
+--add calculation context and callback to tag function
+local at2 = add_tag
+function add_tag(tag)
+    local added_tags = 1
+    for i = 1, #G.jokers.cards do
+        local ret = G.jokers.cards[i]:calculate_joker{cry_add_tag = true}
+        if ret and ret.tags then
+            added_tags = added_tags + ret.tags
+        end
+    end
+    for i = 1, added_tags do
+        at2(tag)
+    end
+end
+
 local tr = Tag.remove
 function Tag:remove()
     tr(self)
@@ -1393,15 +1419,6 @@ function cry_sanity_check(val)
         return 1e300
     end
     return val
-end
-function cry_deep_copy(obj, seen)
-    if type(obj) ~= 'table' then return obj end
-    if seen and seen[obj] then return seen[obj] end
-    local s = seen or {}
-    local res = setmetatable({}, getmetatable(obj))
-    s[obj] = res
-    for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
-    return res
 end
 function cry_misprintize(card, override, force_reset, stack)
     if (not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod) and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker") then

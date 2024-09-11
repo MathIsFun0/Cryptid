@@ -948,60 +948,43 @@ local gemino = {
                 return nil, true
             end
     end,
-    }
+}
 
-    local vendere = {
-        object_type = "Joker",
-        name = "cry-Vendere",
-        key = "vendere",
-        pos = { x = 6, y = 3 },
-        soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
-        blueprint_compat = false,
-        eternal_compat = false,
-        perishable_compat = true,
-        rental_compat = true,
-        config = {extra = {tags = 1}},
-        loc_txt = {
-              name = 'Vendere',
-                text = {
-			"Sell this card to",
-        		"{C:green}create{} {C:attention}#1#{} copy of",
-                "{C:dark_edition}every{} tag"
-        	}
-           },
-        loc_vars = function(self, info_queue, center)
-            return {
-                vars = {center.ability.extra.tags}
-            }
-        end,
-        rarity = "cry_exotic",
-        cost = 50,
-        atlas = "atlasexotic",
-        calculate = function(self, card, context)
-            if context.selling_self and not context.blueprint then
-                for i = 1, math.max(1, card.ability.extra.tags) do
-                    for t = 1, #G.P_CENTER_POOLS.Tag do
-                        local current_card = G.P_CENTER_POOLS.Tag[t].key
-                        local t = Tag(current_card, nil, 'Big')
-                        add_tag(t)
-                        if current_card == "tag_orbital" then
-                            local _poker_hands = {}
-                            for k, v in pairs(G.GAME.hands) do
-                                if v.visible then _poker_hands[#_poker_hands+1] = k end
-                            end
-                            t.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('cry_pointer_orbital'))
-                        end
-                        if current_card == "tag_cry_rework" then
-                            --tbh this is the most unbalanced part of the card
-                            t.ability.rework_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed('cry_pointer_edition')).key
-                            t.ability.rework_key = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed('cry_pointer_joker')).key
-                        end
-                        play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-                        play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
-                    end
-                end
-                return nil, true
-            end
+local vendere = {
+    object_type = "Joker",
+    name = "cry-Vendere",
+    key = "vendere",
+    pos = { x = 6, y = 3 },
+    soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = true,
+    rental_compat = true,
+    config = {extra = {tags = 1, tag_mod = 1}},
+    loc_txt = {
+            name = 'Vendere',
+            text = {
+            "When a tag is acquired,",
+            "create {C:attention}#1#{} copies of it",
+            "and {C:attention}increase{} the number of",
+            "copies by {C:attention}#2#"
+        }
+        },
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {center.ability.extra.tags, center.ability.extra.tag_mod}
+        }
+    end,
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "atlasexotic",
+    calculate = function(self, card, context)
+        if context.cry_add_tag then
+            local t = card.ability.extra.tags
+            card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.DARK_EDITION})
+            return {tags = t}
+        end
     end
 }
     
