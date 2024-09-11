@@ -289,8 +289,11 @@ local glowing = {
     trigger_effect = function(self, args)
         if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss  then
             for i = 1, #G.jokers.cards do
-                local card = G.jokers.cards[i]
-                cry_misprintize(card,{min=1.25,max=1.25},nil,true)
+                if G.jokers.cards[i].ability.name ~= "Ace Aequilibrium" then --Same Reason as Gemini/Multiply
+			cry_with_deck_effects(G.jokers.cards[i], function(card)
+            			cry_misprintize(card,{min=1.25,max=1.25},nil,true)
+        		end)
+		end
             end
         end
     end
