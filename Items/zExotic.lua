@@ -777,6 +777,7 @@ local aequilibrium = {
                 }
             },
             config = {extra = {jokers = 2, num = 1,card = nil}},
+	    no_doe = true,
             rarity = "cry_exotic",
             pos = {x = 7, y = 0},
             soul_pos = {x = 69, y = 0, extra = {x = 8, y = 0}},
@@ -790,7 +791,7 @@ local aequilibrium = {
                 info_queue[#info_queue+1] = G.P_CENTERS.e_negative
                 local joker_generated = "None"
                 if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
-                    joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][center.ability.extra.num-1].key}
+                    joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][math.floor(center.ability.extra.num or 1)-1].key}
                 end
                 return {vars = {center.ability.extra.jokers,joker_generated}}
             end,
