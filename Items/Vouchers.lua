@@ -146,6 +146,7 @@ local repair_man = {
 	key = "repair_man",
     atlas = "atlasvoucher",
 	pos = {x = 1, y = 0},
+	requires = {"v_cry_pairing"},
 	loc_txt = {
         name = 'Repair Man',
         text = {
@@ -166,6 +167,7 @@ local pairamount_plus = {
 	key = "pairamount_plus",
     atlas = "atlasvoucher",
 	pos = {x = 2, y = 0},
+	requires = {"v_cry_repair_man"},
 	loc_txt = {
         name = 'Pairamount Plus',
         text = {
