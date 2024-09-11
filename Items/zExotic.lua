@@ -225,7 +225,9 @@ local speculo = {
 	atlas = "atlasexotic",
 	soul_pos = {x = 4, y = 1, extra = {x = 5, y = 1}},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+		if not center.edition or (center.edition and not center.edition.negative) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        	end
 	end,
 	calculate = function(self, card, context)
         if context.ending_shop then
@@ -777,7 +779,6 @@ local aequilibrium = {
                 }
             },
             config = {extra = {jokers = 2, num = 1,card = nil}},
-	    no_doe = true,
             rarity = "cry_exotic",
             pos = {x = 7, y = 0},
             soul_pos = {x = 69, y = 0, extra = {x = 8, y = 0}},
@@ -788,7 +789,9 @@ local aequilibrium = {
             eternal_compat = true,
             perishable_compat = true,
             loc_vars = function(self, info_queue, center)
-                info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+                if not center.edition or (center.edition and not center.edition.negative) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        	end
                 local joker_generated = "None"
                 if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
                     joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][math.floor(center.ability.extra.num or 1)-1].key}
