@@ -911,6 +911,7 @@ local facile = {
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
             if card.ability.extra.check2 <= card.ability.extra.check then
+		card.ability.extra.check2 = 0
                 return {
                     message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
                     Emult_mod = card.ability.extra.Emult,
@@ -947,7 +948,9 @@ local gemino = {
     calculate = function(self, card2, context)
             if context.end_of_round and not context.repetition and not context.individual then
                 local card = G.jokers.cards[1]
-                cry_misprintize(card,{min=2,max=2},nil,true)
+		cry_with_deck_effects(G.jokers.cards[1], function(card)
+            		cry_misprintize(card,{min=2,max=2},nil,true)
+        	end)
                 card_eval_status_text(card2, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.DARK_EDITION})
                 return nil, true
             end
