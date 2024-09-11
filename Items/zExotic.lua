@@ -943,15 +943,20 @@ local gemino = {
         }
     },
     rarity = "cry_exotic",
+    blueprint_compat = true,
     cost = 50,
     atlas = "atlasexotic",
     calculate = function(self, card2, context)
             if context.end_of_round and not context.repetition and not context.individual then
+		local check = false
                 local card = G.jokers.cards[1]
-		cry_with_deck_effects(G.jokers.cards[1], function(card)
-            		cry_misprintize(card,{min=2,max=2},nil,true)
-        	end)
-                card_eval_status_text(card2, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.DARK_EDITION})
+		if G.jokers.cards[1].ability.name ~= "Ace Aequilibrium" then --Causes the same crashes that multiply spam on Aequilibrium did so preventing this from happening
+			cry_with_deck_effects(G.jokers.cards[1], function(card)
+            			cry_misprintize(card,{min=2,max=2},nil,true)
+        		end)
+			check = true
+		end
+                if check then card_eval_status_text(context.blueprint_card or card2, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.GREEN}) end
                 return nil, true
             end
     end,
