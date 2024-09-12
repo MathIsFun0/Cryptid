@@ -2225,7 +2225,7 @@ G.FUNCS.pointer_apply = function()
 	end
 	if current_card then
         local created = false
-        if G.P_CENTERS[current_card].set == "Joker" and G.P_CENTERS[current_card].rarity ~= "cry_exotic" and (type(G.P_CENTERS[current_card].rarity) ~= "number" or G.P_CENTERS[current_card].rarity < 5) then
+        if G.P_CENTERS[current_card].set == "Joker" and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card('j_jen_p03') > 0) and (type(G.P_CENTERS[current_card].rarity) ~= "number" or G.P_CENTERS[current_card].rarity < 5) then
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, current_card)
             card:add_to_deck()
             G.jokers:emplace(card)
