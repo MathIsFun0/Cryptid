@@ -502,7 +502,7 @@ local noisy = {
             {n=G.UIT.T, config={text = '  +',colour = G.C.CHIPS, scale = 0.32}},
             {n=G.UIT.O, config={object = DynaText({string = r_chips, colours = {G.C.CHIPS},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0})}},
             {n=G.UIT.O, config={object = DynaText({string = {
-                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "@#"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(2,2) or 'm')..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 7), colour = G.C.BLUE},
+                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "@#"..(G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit:sub(2,2) or 'm')..(G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7), colour = G.C.BLUE},
                 loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips},
             colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.2011, scale = 0.32, min_cycle_time = 0})}},
         }
