@@ -969,9 +969,7 @@ local energia = {
     pos = { x = 6, y = 3 },
     soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
     blueprint_compat = false,
-    eternal_compat = false,
-    perishable_compat = true,
-    rental_compat = true,
+    perishable_compat = false,
     config = {extra = {tags = 1, tag_mod = 1}},
     loc_txt = {
             name = 'Energia',
@@ -999,8 +997,71 @@ local energia = {
         end
     end
 }
-    
-
+local verisimile = {
+	object_type = "Joker",
+	name = "cry-verisimile",
+	key = "verisimile",
+	pos = { x = 0, y = 1 },
+        soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    	config = {extra = {xmult = 1}},
+    	rarity = "cry_exotic",
+	cost = 50,
+    	blueprint_compat = true,
+	atlas = "placeholders",
+	loc_txt = {
+        name = 'Non Verisimile',
+        text = {
+            "When any probability",
+            "is {C:green}successfully{} triggered,",
+	    "this Joker gains {X:red,C:white}XMult{}",
+	    "equal to its listed {C:attention}odds",
+	    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)"
+		}
+    	},
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.xmult}}
+    	end,
+    	calculate = function(self, card, context)
+            if context.post_trigger and not context.blueprint then
+		--Todo: Gros Michel, Cavendish, Planet.lua
+		--Bus driver is ignored because it always triggers anyway
+		if context.other_joker.ability.name == "8 Ball" 
+		or context.other_joker.ability.name == "Space Joker" then
+			local variable = context.other_joker
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		elseif context.other_joker.ability.name == "Reserved Parking"
+		or context.other_joker.ability.name == "Bloodstone"
+		or context.other_joker.ability.name == "cry-Googol Play Card"
+		or context.other_joker.ability.name == "cry-Boredom"
+		or context.other_joker.ability.name == "cry-bonusjoker"
+		or context.other_joker.ability.name == "cry-multjoker"
+		or context.other_joker.ability.name == "cry-scrabble" then
+			local variable = context.other_joker
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		elseif context.other_joker.ability.name == "cry-notebook" then
+			--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
+			local variable = context.other_joker
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		end
+            	return nil, true
+	    elseif context.consumeable and not context.blueprint then
+		if context.consumeable.ability.name == 'The Wheel of Fortune' 
+		and (context.consumeable.cry_wheel_success) then
+			local variable = context.consumeable
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra --Doesn't account for misprintizing for some reason
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		end
+	    elseif context.cardarea == G.jokers and (to_big(card.ability.extra.xmult) > to_big(1)) and not context.before and not context.after then
+		return {
+                	message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+                	Xmult_mod = card.ability.extra.xmult
+            	}
+	    end
+        end
+}
 return {name = "Exotic Jokers", 
         init = function()
             cry_enable_exotics = true
@@ -1098,4 +1159,4 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, energia}}
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, energia, verisimile}}

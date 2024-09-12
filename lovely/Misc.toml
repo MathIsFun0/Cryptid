@@ -225,13 +225,14 @@ match_indent = true
 
 # calculate wheel fail (for Wheel of Hope)
 [[patches]]
-[patches.regex]
+[patches.pattern]
 target = "card.lua"
-pattern = '''play_sound\('tarot2', 1, 0.4\)\n\s+used_tarot:juice_up\(0.3, 0.5\)\n\s+return true end \}\)\)'''
+pattern = "if self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex' or pseudorandom('wheel_of_fortune') < G.GAME.probabilities.normal/self.ability.extra then"
 position = "after"
-payload = '''for i = 1, #G.jokers.cards do
-	G.jokers.cards[i]:calculate_joker({cry_wheel_fail = true})
-end'''
+payload = '''
+if self.ability.name == 'The Wheel of Fortune' then self.cry_wheel_success = true end
+'''
+match_indent = false
 
 # unscoring context (for Green Seal)
 [[patches]]

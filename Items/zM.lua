@@ -491,31 +491,19 @@ local notebook = {
 				or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
 				then jollycount = jollycount + 1 end
             		end
-				if jollycount >= card.ability.extra.jollies then --if there are 5 or more jolly jokers
-						card.ability.extra.slot = card.ability.extra.slot + 1
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
-						card.ability.extra.check = false
-						card.ability.extra.active = "Inactive"
-						return {
-                    					card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        				message = "Upgrade!",
-                        				colour = G.C.DARK_EDITION,
+			if jollycount >= card.ability.extra.jollies    --if there are 5 or more jolly jokers
+			or pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds then 
+					card.ability.extra.slot = card.ability.extra.slot + 1
+					G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+					card.ability.extra.check = false
+					card.ability.extra.active = "Inactive"
+					return {
+                    				card_eval_status_text(card, 'extra', nil, nil, nil, {
+                        			message = "Upgrade!",
+                        			colour = G.C.DARK_EDITION,
                     				})
-                				}
-				else --default
-					if pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds then
-						card.ability.extra.slot = card.ability.extra.slot + 1
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
-						card.ability.extra.check = false
-						card.ability.extra.active = "Inactive"
-						return {
-                    					card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        				message = "Upgrade!",
-                        				colour = G.C.DARK_EDITION,
-                    				})
-                				}
-					else return nil, true end
-				end
+                			}
+			end
 	    end
 	    if context.end_of_round and not context.retrigger_joker and not context.blueprint then
             	if not card.ability.extra.check then

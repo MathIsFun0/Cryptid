@@ -4331,10 +4331,12 @@ local wheelhope = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.cry_wheel_fail and not context.blueprint then
-			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-			return nil, true
+		if context.consumeable then
+                	if context.consumeable.ability.name =='The Wheel of Fortune' and not(context.consumeable.cry_wheel_success) then
+				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
+				return nil, true
+			end
 		end
 	end
 }

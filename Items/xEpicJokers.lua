@@ -148,13 +148,12 @@ local googol_play = {
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xmult}}
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
-			if pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/card.ability.extra.odds then
+		if context.cardarea == G.jokers and not context.before and not context.after 
+		and pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				return {
 					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
 					Xmult_mod = card.ability.extra.Xmult
 				}
-			else return nil, true end
 		end
 	end,
 }
@@ -512,26 +511,23 @@ local boredom = {
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				return {
-					message = localize('k_again_ex'),
-					repetitions = 1,
-					card = card
-				}
-			else return nil, true end
-        end
-		if context.repetition and context.cardarea == G.play then
-			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				return {
-					message = localize('k_again_ex'),
-					repetitions = 1,
-					card = card
-				}
-			else
-				return nil, true
-			end
-		end
+            if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+		if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
+			return {
+				message = localize('k_again_ex'),
+				repetitions = 1,
+				card = card	
+			}
+		else return nil, true end
+            end
+	    if context.repetition and context.cardarea == G.play
+	    and pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
+		return {
+			message = localize('k_again_ex'),
+			repetitions = 1,
+			card = card
+		}
+	    end
 	end
 }
 if JokerDisplay then
