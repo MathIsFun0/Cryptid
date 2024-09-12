@@ -4788,7 +4788,7 @@ local kscope = {
     cost = 7,
     atlas = "atlasthree",
     calculate = function(self, card, context)
-        if context.end_of_round and G.GAME.blind.boss then
+        if context.end_of_round and G.GAME.blind.boss and not context.individual and not context.repetition then
         	local eligiblejokers = {}
         	for k, v in pairs(G.jokers.cards) do
                     if v.ability.set == 'Joker' and (not v.edition) and v ~= card then
