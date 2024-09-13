@@ -6,15 +6,23 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
---- VERSION: 0.5.0
+--- VERSION: 0.5.0a~0912c
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
+if not Cryptid then Cryptid = {} end
+
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
 Cryptid_config = SMODS.current_mod.config
+Cryptid.enabled = copy_table(Cryptid_config)
+--backwards compat moment
+cry_enable_jokers = Cryptid.enabled["Misc. Jokers"]
+cry_enable_epics = Cryptid.enabled["Epic Jokers"]
+cry_enable_exotics = Cryptid.enabled["Exotic Jokers"]
+cry_minvasion = Cryptid.enabled["M Jokers"]
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
@@ -294,7 +302,7 @@ function Card:cry_calculate_consumeable_perishable()
 end
 
 function update_cry_member_count()
-	if Cryptid_config["HTTPS Module"] == true then
+	if Cryptid.enabled["HTTPS Module"] == true then
 		if not GLOBAL_cry_member_update_thread then
 			local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
@@ -940,30 +948,34 @@ G.C.CRY_JOLLY = {0,0,0,0}
 
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
---for first boot, make sure config is defined properly beforehand
-for _, file in ipairs(files) do
-    local f, err = SMODS.load_file("Items/"..file)
-    if not err then
-        local curr_obj = f()
-        if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
-        if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
-    end
-end
+Cryptid.obj_buffer = {}
 for _, file in ipairs(files) do
     print("Loading file "..file)
     local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
-      if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
+      if Cryptid_config[curr_obj.name] == nil then 
+        Cryptid_config[curr_obj.name] = true
+        Cryptid.enabled[curr_obj.name] = true 
+      end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
           if not curr_obj.items then
             print("Warning: "..file.." has no items")
           else
             for _, item in ipairs(curr_obj.items) do
+                if not item.order then
+                    item.order = 0
+                end
+                if curr_obj.order then
+                    item.order = item.order + curr_obj.order
+                end
                 if SMODS[item.object_type] then
-                    SMODS[item.object_type](item)
+                    if not Cryptid.obj_buffer[item.object_type] then
+                        Cryptid.obj_buffer[item.object_type] = {}
+                    end
+                    Cryptid.obj_buffer[item.object_type][#Cryptid.obj_buffer[item.object_type]+1] = item
                     -- JokerDisplay mod support
                     if JokerDisplay and item.joker_display_definition then
                         JokerDisplay.Definitions[item.key] = item.joker_display_definition
@@ -974,6 +986,12 @@ for _, file in ipairs(files) do
             end
          end
       end
+    end
+end
+for set, objs in pairs(Cryptid.obj_buffer) do
+    table.sort(objs, function(a, b) return a.order < b.order end)
+    for i = 1, #objs do
+        SMODS[set](objs[i])
     end
 end
 local cryptidTabs = {
@@ -1146,6 +1164,16 @@ function calculate_reroll_cost(skip_increment)
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
+  local pseudo = function(x)
+    return pseudorandom(pseudoseed(x))
+  end
+  local ps = pseudoseed
+  if area == "ERROR" then
+    pseudo = function(x)
+        return pseudorandom(predict_pseudoseed(x))
+    end
+    ps = predict_pseudoseed
+  end
   local center = G.P_CENTERS.b_red
   if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
     forced_key = "j_cry_rnjoker"
@@ -1170,20 +1198,20 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
       for _, v in ipairs(SMODS.Consumable.legendaries) do
           if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) then
-              if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+              if pseudo('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
                   forced_key = v.key
               end
           end
       end
           if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
       not (G.GAME.used_jokers['c_soul'] and not next(find_joker("Showman")))  then
-          if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+          if pseudo('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
               forced_key = 'c_soul'
           end
       end
       if (_type == 'Planet' or _type == 'Spectral') and
       not (G.GAME.used_jokers['c_black_hole'] and not next(find_joker("Showman")))  then 
-          if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+          if pseudo('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
               forced_key = 'c_black_hole'
           end
       end
@@ -1199,18 +1227,24 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       center = G.P_CENTERS[forced_key]
       _type = (center.set ~= 'Default' and center.set or _type)
   else
+      gcparea = area
       local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
-      center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+      gcparea = nil
+      center = pseudorandom_element(_pool, ps(_pool_key))
       local it = 1
       while center == 'UNAVAILABLE' do
           it = it + 1
-          center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+          center = pseudorandom_element(_pool, ps(_pool_key..'_resample'..it))
       end
 
       center = G.P_CENTERS[center]
   end
 
-  local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, pseudoseed('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+  local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, ps('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+  
+  if area == "ERROR" then
+    return (front or center)
+  end
 
   local card = Card(area and (area.T.x + area.T.w/2) or 0, area and (area.T.y) or 0, G.CARD_W*(center and center.set == 'Booster' and 1.27 or 1), G.CARD_H*(center and center.set == 'Booster' and 1.27 or 1), front, center,
   {bypass_discovery_center = area==G.shop_jokers or area == G.pack_cards or area == G.shop_vouchers or (G.shop_demo and area==G.shop_demo) or area==G.jokers or area==G.consumeables,
@@ -1384,7 +1418,6 @@ function new_round()
 end
 
 --Redefine these here because they're always used
-if not Cryptid then Cryptid = {} end
 Cryptid.base_values = {}
 function cry_misprintize_tbl(name, tbl, clear, override, stack)
     if name and tbl then

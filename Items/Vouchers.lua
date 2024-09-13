@@ -622,12 +622,12 @@ if SMODS.Mods["Tier3Sub"] then
     pacclimator.config.extra = pacclimator.config.extra * 8
 end
 local voucheritems = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine,}
-if Cryptid_config["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
+if Cryptid.enabled["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
     voucheritems[#voucheritems+1] = command_prompt
     voucheritems[#voucheritems+1] = satellite_uplink
     voucheritems[#voucheritems+1] = quantum_computing
 end
-if Cryptid_config["M Jokers"] then
+if Cryptid.enabled["M Jokers"] then
     voucheritems[#voucheritems+1] = pairing
     voucheritems[#voucheritems+1] = repair_man
     voucheritems[#voucheritems+1] = pairamount_plus

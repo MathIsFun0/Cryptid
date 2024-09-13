@@ -1,4 +1,3 @@
-cry_enable_jokers = false
 local dropshot = {
     object_type = "Joker",
 	name = "cry-Dropshot",

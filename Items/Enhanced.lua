@@ -606,4 +606,5 @@ return {name = "Enhanced Decks",
 				end
 			end
         end,
+		order = 1000000,
         items = packs_to_add}
