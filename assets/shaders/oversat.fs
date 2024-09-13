@@ -202,8 +202,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
         cos(length(field_part3) / 27.193) * sin(field_part3.x / 21.92) ))/2.;
 
     float res = (.5 + .5* cos( (oversat.x) * 2.612 + ( field + -.5 ) *3.14));
-    tex = RGB(hsl);
-    tex.rgb = increaseContrast(tex.rgb,4);
+    vec4 textp = RGB(hsl);
+    tex.rgb = increaseContrast(textp.rgb,4.0);
 	return dissolve_mask(tex*colour, texture_coords, uv);
 }
 

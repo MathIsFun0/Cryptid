@@ -59,7 +59,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     // Adjust lightness for a glossy effect
 
-    float t = blur.y*2.221 + mod(time,1);
+    float t = blur.y*2.221 + mod(time,1.);
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 50.;
 	
@@ -73,7 +73,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     float res = (.5 + .5* cos( (blur.x) * 2.612 + ( field + -.5 ) *3.14));
     // Mostly use original lightness, with slight change from moving the card & with time
-	hsl.z = 0.7*hsl.z + sin(hsl.z/2.5 - res/4 + sin(blur.y)/8 + 0.5)/3.;
+	hsl.z = 0.7*hsl.z + sin(hsl.z/2.5 - res/4. + sin(blur.y)/8. + 0.5)/3.;
 
     final_pixel = RGB(hsl);
 
