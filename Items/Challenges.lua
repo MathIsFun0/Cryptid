@@ -44,6 +44,7 @@ local sticker_sheet_plus = {
 }
 local ballin = {
     object_type = "Challenge",
+    loc_txt = "Ballin",
     key = "ballin",
 	rules = {
         custom = {},
@@ -56,7 +57,23 @@ local ballin = {
     },
     deck = {
         type = 'Challenge Deck',enhancement = 'm_stone'},
-	loc_txt = "Ballin'"
+    restrictions = {
+        banned_cards = {
+            {id = 'j_vampire'},
+            {id = 'c_magician'},
+	    {id = 'c_empress'},
+	    {id = 'c_heirophant'},
+	    {id = 'c_lovers'},
+	    {id = 'c_chariot'},
+	    {id = 'c_justice'},	
+	    {id = 'c_devil'},
+	    {id = 'c_tower'},
+	    {id = 'c_familiar'},
+	    {id = 'c_grim'},
+	    {id = 'c_incantation'}			
+        },
+        banned_other = {}
+    }
 }
 local rush_hour = {
     object_type = "Challenge",
@@ -99,13 +116,9 @@ local rush_hour_ii = {
             {id = 'j_luchador'},
             {id = 'j_chicot'},
             {id = 'j_throwback'},
-            {id = 'j_cry_pickle'},
             {id = 'j_diet_cola'},
             {id = 'v_directors_cut'},
             {id = 'v_retcon'},
-            {id = 'v_cry_copies'},
-            {id = 'v_cry_tag_printer'},
-            {id = 'v_cry_clone_machine'},
         },
         banned_other = {}
     }
@@ -136,13 +149,9 @@ local rush_hour_iii = {
             {id = 'j_luchador'},
             {id = 'j_chicot'},
             {id = 'j_throwback'},
-            {id = 'j_cry_pickle'},
             {id = 'j_diet_cola'},
             {id = 'v_directors_cut'},
             {id = 'v_retcon'},
-            {id = 'v_cry_copies'},
-            {id = 'v_cry_tag_printer'},
-            {id = 'v_cry_clone_machine'},
         },
         banned_other = {}
     }
@@ -169,13 +178,9 @@ local boss_rush = {
             {id = 'j_luchador'},
             {id = 'j_chicot'},
             {id = 'j_throwback'},
-            {id = 'j_cry_pickle'},
             {id = 'j_diet_cola'},
             {id = 'v_directors_cut'},
             {id = 'v_retcon'},
-            {id = 'v_cry_copies'},
-            {id = 'v_cry_tag_printer'},
-            {id = 'v_cry_clone_machine'},
         },
         banned_other = {}
     }
@@ -196,18 +201,76 @@ local rng = {
         type = 'Challenge Deck',
     },
     restrictions = {
-        banned_cards = {
-            {id = 'c_cry_delete'},	
-        },
+	banned_tags = {},
+        banned_cards = {},
         banned_other = {}
     }
 }
-
+local dagger_war = {
+    object_type = "Challenge",
+    key = "dagger_war",
+    rules = {
+        custom = {},
+        modifiers = {}
+    },
+    restrictions = {
+        banned_cards = {},
+        banned_other = {}
+    },
+    jokers = {
+	{id = 'j_cry_cryptidmoment',edition = 'negative'},
+	{id = 'j_cry_cryptidmoment',edition = 'negative'},
+        {id = 'j_gift',edition = 'negative'},
+        {id = 'j_gift',edition = 'negative'},
+	{id = 'j_ceremonial',eternal=true},
+        {id = 'j_cry_unjust_dagger',eternal=true},
+        {id = 'j_cry_monkey_dagger',eternal=true},
+        {id = 'j_cry_pirate_dagger',eternal=true},
+    },
+    deck = {
+        type = 'Challenge Deck'
+    },
+    loc_txt = "Dagger War"
+}
+--Add banned cards when specific features are enabled here
+if Cryptid.enabled["Misc."] then
+    ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards+1] = {id = 'c_cry_eclipse'}
+    rng.restrictions.banned_tags[#rng.restrictions.banned_tags+1] = {id = 'tag_cry_schematic'}
+end
+if Cryptid.enabled["Misc. Jokers"] then
+    rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards+1] = {id = 'j_cry_pickle'}
+    rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards+1] = {id = 'j_cry_pickle'}
+    boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards+1] = {id = 'j_cry_pickle'}
+end
+if Cryptid.enabled["Code Cards"] then
+    ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards+1] = {id = 'c_cry_class'}
+    rng.restrictions.banned_cards[#rng.restrictions.banned_cards+1] = {id = 'c_cry_delete'}
+    rng.restrictions.banned_cards[#rng.restrictions.banned_cards+1] = {id = 'c_cry_spaghetti'}
+    rng.restrictions.banned_cards[#rng.restrictions.banned_cards+1] = {id = 'c_cry_pointer'}
+end
+if Cryptid.enabled["Spectrals"] then
+    sticker_sheet.restrictions.banned_cards[#sticker_sheet.restrictions.banned_cards+1] = {id = 'c_cry_lock'}
+    sticker_sheet_plus.restrictions.banned_cards[#sticker_sheet_plus.restrictions.banned_cards+1] = {id = 'c_cry_lock'}
+    dagger_war.restrictions.banned_cards[#dagger_war.restrictions.banned_cards+1] = {id = 'c_cry_lock'}
+end
+if Cryptid.enabled["Vouchers"] then
+    rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards+1] = {id = 'v_cry_copies'}
+    rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards+1] = {id = 'v_cry_copies'}
+    boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards+1] = {id = 'v_cry_copies'}
+    rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards+1] = {id = 'v_cry_tag_printer'}
+    rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards+1] = {id = 'v_cry_tag_printer'}
+    boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards+1] = {id = 'v_cry_tag_printer'}
+    rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards+1] = {id = 'v_cry_clone_machine'}
+    rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards+1] = {id = 'v_cry_clone_machine'}
+    boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards+1] = {id = 'v_cry_clone_machine'}
+end
+--end of banned cards
 local challenges = {sticker_sheet, sticker_sheet_plus}
 if Cryptid.enabled["Misc. Jokers"] then 
     challenges[#challenges+1] = ballin 
     challenges[#challenges+1] = boss_rush
     challenges[#challenges+1] = rng
+    challenges[#challenges+1] = dagger_war
 end
 if Cryptid.enabled["Blinds"] and Cryptid.enabled["Timer Mechanics"] then
     challenges[#challenges+1] = rush_hour
