@@ -1029,12 +1029,13 @@ local oboe = {
         text = {
             'Next {C:cry_code}Booster Pack{} has',
             '{C:cry_code}#1#{} extra card and',
-            '{C:cry_code}#1#{} extra choice'
+            '{C:cry_code}#1#{} extra choice',
+	    '{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})'
         }
     },
     loc_vars = function(self, info_queue, card)
-		return {vars = {card.ability.extra.choices}}
-	end,
+	return {vars = {card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0)}}
+    end,
     can_use = function(self, card)
         return true
     end,
