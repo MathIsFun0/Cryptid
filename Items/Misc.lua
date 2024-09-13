@@ -1,3 +1,61 @@
+Cryptid.memepack = { --This is used for the Cryptid memepack pool
+    "j_jolly",
+    "j_obelisk",
+    "j_space", --Nobody takes this thing seriously so i'm putting it here
+    "j_mr_bones", --sans undertale
+}
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_cube" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_happyhouse" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_nice" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_sus" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_chad" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_jimball" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_krustytheclown" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_blurred" end
+if cry_enable_jokers then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_filler" end
+if cry_minvasion then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_reverse" end --uno reverse
+if cry_minvasion then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_bonk" end
+if cry_enable_epics then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_boredom" end
+if cry_enable_epics then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_curse" end
+if cry_enable_epics then Cryptid.memepack[#Cryptid.memepack+1] = "j_cry_m" end
+
+function memepackpool(_type, _rarity, legendary, key_append)
+    G.ARGS.TEMP_POOL = EMPTY(G.ARGS.TEMP_POOL)
+    local _pool, _starting_pool, _pool_key, _pool_size = G.ARGS.TEMP_POOL, {}, 'meme', 0
+
+    for k, v in pairs(Cryptid.memepack) do
+        if v then 
+            _starting_pool[#_starting_pool+1] = G.P_CENTERS[v]
+        end
+    end
+
+    for k, v in ipairs(_starting_pool) do
+        local add = true
+        
+        if G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) then
+            add = false
+        end
+
+        if add and not G.GAME.banned_keys[v.key] then
+            _pool[#_pool+1] = v.key
+            _pool_size = _pool_size + 1
+        end
+
+        if _pool_size == 0 then
+            _pool = EMPTY(G.ARGS.TEMP_POOL)
+            _pool[#_pool + 1] = "j_mr_bones"
+        end
+    end
+
+    return _pool, _pool_key .. G.GAME.round_resets.ante
+end
+
+local memepackgetcurrentpool = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append)
+    if _type == "meme" then return memepackpool(_type, _rarity, _legendary, _append) end
+    return memepackgetcurrentpool(_type, _rarity, _legendary, _append)
+end
+
 local memepack_atlas = {
     object_type = "Atlas",
     key = "memepack",
@@ -28,7 +86,7 @@ local meme1 = {
     cost = 14,
     weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
     create_card = function(self, card)
-        return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, 'cry_meme')
+        return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_meme')
     end,
     ease_background_colour = function(self)
         ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -61,7 +119,7 @@ local meme2 = {
     cost = 14,
     weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
     create_card = function(self, card)
-        return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memetwo')
+        return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memetwo')
     end,
     ease_background_colour = function(self)
         ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -94,7 +152,7 @@ local meme3 = {
     cost = 14,
     weight = 0.18/3, --0.18 base ÷ 3 since there are 3 identical packs
     create_card = function(self, card)
-        return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memethree')
+        return create_card("meme", G.pack_cards, nil, nil, true, true, nil, 'cry_memethree')
     end,
     ease_background_colour = function(self)
         ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -117,6 +175,10 @@ local meme3 = {
     end,
     group_key = "k_cry_meme_pack"
 }
+
+if not AurinkoAddons then
+	AurinkoAddons = {}
+end
 
 --Edition code based on Bunco's Glitter Edition
 
@@ -195,6 +257,35 @@ local oversat = {
         end)
     end
 }
+
+AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + (G.GAME.hands[hand].l_chips * amount), 0)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + (G.GAME.hands[hand].l_mult * amount), 1)
+	if not instant then
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {chips = G.GAME.hands[hand].chips, StatusText = true})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {mult = G.GAME.hands[hand].mult, StatusText = true})
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {chips = (amount > 0 and '++' or '--'), StatusText = true})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {mult = (amount > 0 and '++' or '--'), StatusText = true})
+	end
+end
+
 local glitched_shader = {
     object_type = "Shader",
     key = 'glitched', 
@@ -238,6 +329,55 @@ local glitched = {
         end)
     end
 }
+
+local randtext = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' ','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','-','?','!','$','%','[',']','(',')'}
+
+local function obfuscatedtext(length)
+	local str = ''
+	for i = 1, length do
+		str = str .. randtext[math.random(#randtext)]
+	end
+	return str
+end
+
+AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
+	local modc = G.GAME.hands[hand].l_chips * cry_log_random(pseudoseed('cry_aurinko_chips_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10) * amount
+	local modm = G.GAME.hands[hand].l_mult * cry_log_random(pseudoseed('cry_aurinko_mult_misprint'..G.GAME.round_resets.ante),(G.GAME.modifiers.cry_misprint_min or 1) / 10,(G.GAME.modifiers.cry_misprint_max or 1) * 10) * amount
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+	if not instant then
+		for i = 1, math.random(6,10) do
+			update_hand_text({sound = 'button', volume = 0.4, pitch = 1.1, delay = 0.2}, {chips = obfuscatedtext(3)})
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 0}, {chips = (amount > 0 and '+' or '-') .. number_format(math.abs(modc)), StatusText = true})
+		update_hand_text({delay = 1.3}, {chips = G.GAME.hands[hand].chips})
+		for i = 1, math.random(6,10) do
+			update_hand_text({sound = 'button', volume = 0.4, pitch = 1.1, delay = 0.2}, {mult = obfuscatedtext(3)})
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 0}, {mult = (amount > 0 and '+' or '-') .. number_format(math.abs(modm)), StatusText = true})
+		update_hand_text({delay = 1.3}, {mult = G.GAME.hands[hand].mult})
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('chips1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {chips = (amount > 0 and '+' or '-') .. '???', StatusText = true})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('multhit1')
+			card:juice_up(0.8, 0.5)
+		return true end }))
+		update_hand_text({delay = 1.3}, {mult = (amount > 0 and '+' or '-') .. '???', StatusText = true})
+	end
+end
+
 local astral_shader = {
     object_type = "Shader",
     key = 'astral', 
@@ -343,7 +483,7 @@ local noisy = {
         }
     },
     calculate = function(self, card, context)
-        if context.edition_main then
+        if context.edition_main and context.edition_val then
             context.edition_val.mult_mod = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult)
             context.edition_val.chip_mod = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
         end
@@ -374,7 +514,7 @@ local noisy = {
             {n=G.UIT.T, config={text = '  +',colour = G.C.CHIPS, scale = 0.32}},
             {n=G.UIT.O, config={object = DynaText({string = r_chips, colours = {G.C.CHIPS},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0})}},
             {n=G.UIT.O, config={object = DynaText({string = {
-                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "@#"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(2,2) or 'm')..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 7), colour = G.C.BLUE},
+                {string = 'rand()', colour = G.C.JOKER_GREY},{string = "@#"..(G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit:sub(2,2) or 'm')..(G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7), colour = G.C.BLUE},
                 loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips},
             colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.2011, scale = 0.32, min_cycle_time = 0})}},
         }
@@ -802,7 +942,51 @@ local schematic = {
         end
     end
 }
---Bug: this still doesn't trigger immediately
+local empoweredPack = {
+    object_type = "Booster",
+    key = "empowered",
+    kind = "Spectral",
+    pos = {x=0,y=4},
+    config = {extra = 2, choose = 1},
+    cost = 0,
+    weight = 0,
+    draw_hand = true,
+    update_pack = SMODS.Booster.update_pack,
+    loc_vars = SMODS.Booster.loc_vars,
+    ease_background_colour = function(self) ease_background_colour_blind(G.STATES.SPECTRAL_PACK) end,
+    create_UIBox = function(self) return create_UIBox_spectral_pack() end,
+    particles = function(self)
+        G.booster_pack_sparkles = Particles(1, 1, 0,0, {
+            timer = 0.015,
+            scale = 0.1,
+            initialize = true,
+            lifespan = 3,
+            speed = 0.2,
+            padding = -1,
+            attach = G.ROOM_ATTACH,
+            colours = {G.C.WHITE, lighten(G.C.GOLD, 0.2)},
+            fill = true
+        })
+        G.booster_pack_sparkles.fade_alpha = 1
+        G.booster_pack_sparkles:fade(1, 0)
+    end,
+    create_card = function(self, card, i)
+        if (i%2 == 1) then
+            return create_card("Spectral", G.pack_cards, nil, nil, true, true, 'c_soul')
+        else
+            return create_card("Spectral", G.pack_cards, nil, nil, true, true, 'c_cry_gateway')
+        end
+    end,
+    loc_txt = {
+        name = "Spectral Pack [Empowered Tag]",
+        text = {
+            "Choose {C:attention}#1#{} of up to",
+            "{C:attention}#2#{C:spectral} Spectral{} cards",
+            "{s:0.8,C:inactive}(Generated by Empowered Tag)"
+        }
+    },
+    group_key = "k_spectral_pack"
+}
 local empowered = {
     object_type = "Tag",
     atlas = "tag_cry",
@@ -830,12 +1014,11 @@ local empowered = {
                 G.GAME.PACK_INTERRUPT = G.STATE
             end
             tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
-                local key = 'p_spectral_normal_1'
+                local key = 'p_cry_empowered'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
                 G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
                 card.cost = 0
                 card.from_tag = true
-                card.from_empowered = true
                 G.FUNCS.use_card({config = {ref_table = card}})
                 card:start_materialize()
                 return true
@@ -977,13 +1160,12 @@ local memory = {
         return G.GAME.cry_last_tag_used and true
     end
 }
-
 local miscitems = {memepack_atlas, meme_object_type, meme1, meme2, meme3,
 mosaic_shader, oversat_shader, glitched_shader, astral_shader, blurred_shader, glass_shader, gold_shader, noisy_shader,
 glass_edition, gold_edition, glitched, noisy, mosaic, oversat, blurred, astral,
 echo_atlas, echo, eclipse, blessing,
 azure_seal_sprite, typhoon, azure_seal,
-cat, empowered, gambler, bundle, memory, schematic}
+cat, empoweredPack, empowered, gambler, bundle, memory, schematic}
 if cry_enable_epics then
     miscitems[#miscitems+1] = epic_tag
 end

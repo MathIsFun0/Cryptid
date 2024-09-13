@@ -416,7 +416,7 @@ for i = 1, #typed_decks do
 		local obj = {object_type = "Back",
 			name = deck_internal_name,
 			key = deck_key,
-			config = {cry_force_sticker = object_key}, -- stickers DON'T use object_key for SOME reason
+			config = {cry_force_sticker = deck[5]}, -- stickers DON'T use object_key for SOME reason
 			pos = {x = deck[8], y = deck[9]},
 			loc_txt = {
 				name = deck_name,
@@ -544,7 +544,7 @@ return {name = "Enhanced Decks",
                             for c = #G.playing_cards, 1, -1 do
                                 G.playing_cards[c].config.center.eternal_compat = true
                                 G.playing_cards[c].config.center.perishable_compat = true
-								if SMODS.Stickers[self.effect.config.cry_force_sticker].apply then
+								if SMODS.Stickers[self.effect.config.cry_force_sticker] and SMODS.Stickers[self.effect.config.cry_force_sticker].apply then
 									SMODS.Stickers[self.effect.config.cry_force_sticker]:apply(G.playing_cards[c],true);
 								else
                                		G.playing_cards[c]["set_"..self.effect.config.cry_force_sticker](G.playing_cards[c],true);
@@ -606,4 +606,5 @@ return {name = "Enhanced Decks",
 				end
 			end
         end,
+		order = 1000000,
         items = packs_to_add}

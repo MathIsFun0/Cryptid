@@ -5,16 +5,24 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta4, Steamodded>=1.0.0~ALPHA-0828b]
---- VERSION: 0.5.0~pre2
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
+--- VERSION: 0.5.0a~0912c
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
+if not Cryptid then Cryptid = {} end
+
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
 Cryptid_config = SMODS.current_mod.config
+Cryptid.enabled = copy_table(Cryptid_config)
+--backwards compat moment
+cry_enable_jokers = Cryptid.enabled["Misc. Jokers"]
+cry_enable_epics = Cryptid.enabled["Epic Jokers"]
+cry_enable_exotics = Cryptid.enabled["Exotic Jokers"]
+cry_minvasion = Cryptid.enabled["M Jokers"]
 
 -- Gradient isn't included since other logic seems to also handle it
 SMODS.Rarity{
@@ -50,6 +58,7 @@ function loc_colour(_c, _default)
     G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
     G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
     G.ARGS.LOC_COLOURS.cry_ascendant = G.C.CRY_ASCENDANT
+    G.ARGS.LOC_COLOURS.cry_jolly = G.C.CRY_JOLLY
     return lc(_c, _default)
 end
 
@@ -297,13 +306,13 @@ function Card:cry_calculate_consumeable_perishable()
 end
 
 function update_cry_member_count()
-	if Cryptid_config["HTTPS Module"] == true then
+	if Cryptid.enabled["HTTPS Module"] == true then
 		if not GLOBAL_cry_member_update_thread then
 			local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 2119
+		local old = GLOBAL_cry_member_count or 2340
 		GLOBAL_cry_member_count = love.thread.getChannel('member_count'):pop()
 		if not GLOBAL_cry_member_count then
 			GLOBAL_cry_member_count = old
@@ -315,7 +324,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 2119
+		GLOBAL_cry_member_count = 2340
 	end
 end
 
@@ -483,21 +492,21 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                     --extra_value is ignored because it can be scaled by Gift Card
                     if k ~= "extra_value" and dbl_info.ability[k] ~= v and is_number(v) and is_number(dbl_info.ability[k]) then
                         dbl_info.base = {k}
-                        local predicted_mod = math.abs(to_big(v):to_number()-to_big(dbl_info.ability[k]):to_number())
+                        local predicted_mod = math.abs(to_number(to_big(v))-to_number(to_big(dbl_info.ability[k])))
                         local best_key = {""}
                         local best_coeff = 10^100
                         for l, u in pairs(jkr.ability) do
                             if not (default_modifiers[l] and default_modifiers[l] == u) then
                                 if l ~= k and is_number(u) then
-                                    if to_big(predicted_mod/u):to_number() >= 0.999 and to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
-                                        best_coeff = to_big(predicted_mod/u):to_number()
+                                    if to_number(to_big(predicted_mod/u)) >= 0.999 and to_number(to_big(predicted_mod/u)) < to_number(to_big(best_coeff)) then
+                                        best_coeff = to_number(to_big(predicted_mod/u))
                                         best_key = {l}
                                     end
                                 end
                                 if type(jkr.ability[l]) == 'table' then
                                     for _l, _u in pairs(jkr.ability[l]) do 
-                                        if is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 and to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
-                                            best_coeff = to_big(predicted_mod/_u):to_number()
+                                        if is_number(_u) and to_number(to_big(predicted_mod/_u)) >= 0.999 and to_number(to_big(predicted_mod/_u)) < to_number(to_big(best_coeff)) then
+                                            best_coeff = to_number(to_big(predicted_mod/_u))
                                             best_key = {l,_l}
                                         end
                                     end
@@ -514,17 +523,17 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                                 local best_key = {""}
                                 local best_coeff = 10^100
                                 for l, u in pairs(jkr.ability) do
-                                    if is_number(u) and to_big(predicted_mod/u):to_number() >= 0.999 then
-                                        if to_big(predicted_mod/u):to_number() < to_big(best_coeff):to_number() then
-                                            best_coeff = to_big(predicted_mod/u):to_number()
+                                    if is_number(u) and to_number(to_big(predicted_mod/u)) >= 0.999 then
+                                        if to_number(to_big(predicted_mod/u)) < to_number(to_big(best_coeff)) then
+                                            best_coeff = to_number(to_big(predicted_mod/u))
                                             best_key = {l}
                                         end
                                     end
                                     if type(jkr.ability[l]) == 'table' then
                                         for _l, _u in pairs(jkr.ability[l]) do 
-                                            if (l ~= k or _l ~= _k) and is_number(_u) and to_big(predicted_mod/_u):to_number() >= 0.999 then
-                                                if to_big(predicted_mod/_u):to_number() < to_big(best_coeff):to_number() then
-                                                    best_coeff = to_big(predicted_mod/_u):to_number()
+                                            if (l ~= k or _l ~= _k) and is_number(_u) and to_number(to_big(predicted_mod/_u)) >= 0.999 then
+                                                if to_number(to_big(predicted_mod/_u)) < to_number(to_big(best_coeff)) then
+                                                    best_coeff = to_number(to_big(predicted_mod/_u))
                                                     best_key = {l,_l}
                                                 end
                                             end
@@ -587,6 +596,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
             for i = 1, #G.jokers.cards do
                 local obj = G.jokers.cards[i].config.center
                 if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                    local ggpn = G.GAME.probabilities.normal
                     if G.jokers.cards[i].ability.cry_rigged then
                         G.GAME.probabilities.normal = 1e9
                     end
@@ -611,6 +621,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                     local reps = {}
                     for i2=1, #G.jokers.cards do
                         local _card = G.jokers.cards[i2]
+                        local ggpn = G.GAME.probabilities.normal
                         if _card.ability.cry_rigged then
                             G.GAME.probabilities.normal = 1e9
                         end
@@ -636,6 +647,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
                         if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
                             for r = 1, j.repetitions do
                                 card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                                local ggpn = G.GAME.probabilities.normal
                                 if G.jokers.cards[i].ability.cry_rigged then
                                     G.GAME.probabilities.normal = 1e9
                                 end
@@ -673,7 +685,7 @@ function Card:calculate_joker(context)
         G.GAME.cry_double_scale = {double_scale = true} --doesn't really matter what's in here as long as there's something
     end
     if self.ability.cry_rigged then
-        G.GAME.probabilities.normal = 1e300
+        G.GAME.probabilities.normal = 1e9
     end
     local orig_ability = self:cry_copy_ability()
     local in_context_scaling = false
@@ -721,6 +733,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
         for i = 1, #G.jokers.cards do
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                local ggpn = G.GAME.probabilities.normal
                 if G.jokers.cards[i].ability.cry_rigged then
                     G.GAME.probabilities.normal = 1e9
                 end
@@ -745,6 +758,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                 local reps = {}
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
+                    local ggpn = G.GAME.probabilities.normal
                     if _card.ability.cry_rigged then
                         G.GAME.probabilities.normal = 1e9
                     end
@@ -770,6 +784,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
                     if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                            local ggpn = G.GAME.probabilities.normal
                             if G.jokers.cards[i].ability.cry_rigged then
                                 G.GAME.probabilities.normal = 1e9
                             end
@@ -830,6 +845,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
         for i = 1, #G.jokers.cards do
             local obj = G.jokers.cards[i].config.center
             if obj.cry_scale_mod and type(obj.cry_scale_mod) == 'function' then
+                local ggpn = G.GAME.probabilities.normal
                 if G.jokers.cards[i].ability.cry_rigged then
                     G.GAME.probabilities.normal = 1e9
                 end
@@ -854,6 +870,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                 local reps = {}
                 for i2=1, #G.jokers.cards do
                     local _card = G.jokers.cards[i2]
+                    local ggpn = G.GAME.probabilities.normal
                     if _card.ability.cry_rigged then
                         G.GAME.probabilities.normal = 1e9
                     end
@@ -879,6 +896,7 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
                     if (type(j) == 'table') and j.repetitions and (j.repetitions > 0) then
                         for r = 1, j.repetitions do
                             card_eval_status_text(j.card, 'jokers', nil, nil, nil, j)
+                            local ggpn = G.GAME.probabilities.normal
                             if G.jokers.cards[i].ability.cry_rigged then
                                 G.GAME.probabilities.normal = 1e9
                             end
@@ -919,33 +937,49 @@ function cry_with_deck_effects(card, func)
     end
 end
 
+
+function cry_deep_copy(obj, seen)
+    if type(obj) ~= 'table' then return obj end
+    if seen and seen[obj] then return seen[obj] end
+    local s = seen or {}
+    local res = setmetatable({}, getmetatable(obj))
+    s[obj] = res
+    for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
+    return res
+end
+
+G.C.CRY_JOLLY = {0,0,0,0}
+
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
---for first boot, make sure config is defined properly beforehand
-for _, file in ipairs(files) do
-    local f, err = SMODS.load_file("Items/"..file)
-    if not err then
-        local curr_obj = f()
-        if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
-        if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
-    end
-end
+Cryptid.obj_buffer = {}
 for _, file in ipairs(files) do
     print("Loading file "..file)
     local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
-      if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
+      if Cryptid_config[curr_obj.name] == nil then 
+        Cryptid_config[curr_obj.name] = true
+        Cryptid.enabled[curr_obj.name] = true 
+      end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
           if not curr_obj.items then
             print("Warning: "..file.." has no items")
           else
             for _, item in ipairs(curr_obj.items) do
-                item.discovered = true
+                if not item.order then
+                    item.order = 0
+                end
+                if curr_obj.order then
+                    item.order = item.order + curr_obj.order
+                end
                 if SMODS[item.object_type] then
-                    SMODS[item.object_type](item)
+                    if not Cryptid.obj_buffer[item.object_type] then
+                        Cryptid.obj_buffer[item.object_type] = {}
+                    end
+                    Cryptid.obj_buffer[item.object_type][#Cryptid.obj_buffer[item.object_type]+1] = item
                     -- JokerDisplay mod support
                     if JokerDisplay and item.joker_display_definition then
                         JokerDisplay.Definitions[item.key] = item.joker_display_definition
@@ -956,6 +990,12 @@ for _, file in ipairs(files) do
             end
          end
       end
+    end
+end
+for set, objs in pairs(Cryptid.obj_buffer) do
+    table.sort(objs, function(a, b) return a.order < b.order end)
+    for i = 1, #objs do
+        SMODS[set](objs[i])
     end
 end
 local cryptidTabs = {
@@ -1061,6 +1101,57 @@ local cryptidTabs = {
 end--]]
 SMODS.current_mod.extra_tabs = function() return cryptidTabs end
 
+-- Modify to display badges for credits
+local smcmb = SMODS.create_mod_badges
+function SMODS.create_mod_badges(obj, badges)
+    smcmb(obj, badges)
+    if obj and obj.cry_credits then
+        local function calc_scale_fac(text)
+            local size = 0.9
+            local font = G.LANG.font
+            local max_text_width = 2 - 2*0.05 - 4*0.03*size - 2*0.03
+            local calced_text_width = 0
+            -- Math reproduced from DynaText:update_text
+            for _, c in utf8.chars(text) do
+                local tx = font.FONT:getWidth(c)*(0.33*size)*G.TILESCALE*font.FONTSCALE + 2.7*1*G.TILESCALE*font.FONTSCALE
+                calced_text_width = calced_text_width + tx/(G.TILESIZE*G.TILESCALE)
+            end
+            local scale_fac =
+                calced_text_width > max_text_width and max_text_width/calced_text_width
+                or 1
+            return scale_fac
+        end
+        local scale_fac = {}
+        if obj.cry_credits and obj.cry_credits.text then
+            for i = 1, #obj.cry_credits.text do
+                scale_fac[i] = calc_scale_fac(obj.cry_credits.text[i])
+            end
+        end
+        local ct = {}
+        for i = 1, #obj.cry_credits.text do
+            ct[i] = {
+                string = obj.cry_credits.text[i],
+                scale = scale_fac[i],
+                spacing = scale_fac[i]
+            }
+        end
+        badges[#badges+1] = {n=G.UIT.R, config={align = "cm"}, nodes={
+            {n=G.UIT.R, config={align = "cm", colour = obj.cry_credits and obj.cry_credits.colour or G.C.RED, r = 0.1, minw = 2, minh = 0.36, emboss = 0.05, padding = 0.03*0.9}, nodes={
+              {n=G.UIT.B, config={h=0.1,w=0.03}},
+              {n=G.UIT.O, config={object = DynaText({string = ct or "ERROR",
+                  colours = {G.C.WHITE},
+                  silent = true,
+                  float = true,
+                  shadow = true,
+                  offset_y = -0.03,
+                  spacing = 1,
+                  scale = 0.33*0.9})}},
+              {n=G.UIT.B, config={h=0.1,w=0.03}},
+            }}
+          }}
+    end
+end
+
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
     if next(find_joker("cry-crustulum")) then
@@ -1077,6 +1168,16 @@ function calculate_reroll_cost(skip_increment)
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
+  local pseudo = function(x)
+    return pseudorandom(pseudoseed(x))
+  end
+  local ps = pseudoseed
+  if area == "ERROR" then
+    pseudo = function(x)
+        return pseudorandom(predict_pseudoseed(x))
+    end
+    ps = predict_pseudoseed
+  end
   local center = G.P_CENTERS.b_red
   if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
     forced_key = "j_cry_rnjoker"
@@ -1101,20 +1202,20 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
       for _, v in ipairs(SMODS.Consumable.legendaries) do
           if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) then
-              if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+              if pseudo('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
                   forced_key = v.key
               end
           end
       end
           if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
       not (G.GAME.used_jokers['c_soul'] and not next(find_joker("Showman")))  then
-          if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+          if pseudo('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
               forced_key = 'c_soul'
           end
       end
       if (_type == 'Planet' or _type == 'Spectral') and
       not (G.GAME.used_jokers['c_black_hole'] and not next(find_joker("Showman")))  then 
-          if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+          if pseudo('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
               forced_key = 'c_black_hole'
           end
       end
@@ -1130,18 +1231,24 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       center = G.P_CENTERS[forced_key]
       _type = (center.set ~= 'Default' and center.set or _type)
   else
+      gcparea = area
       local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
-      center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+      gcparea = nil
+      center = pseudorandom_element(_pool, ps(_pool_key))
       local it = 1
       while center == 'UNAVAILABLE' do
           it = it + 1
-          center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+          center = pseudorandom_element(_pool, ps(_pool_key..'_resample'..it))
       end
 
       center = G.P_CENTERS[center]
   end
 
-  local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, pseudoseed('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+  local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, ps('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+  
+  if area == "ERROR" then
+    return (front or center)
+  end
 
   local card = Card(area and (area.T.x + area.T.w/2) or 0, area and (area.T.y) or 0, G.CARD_W*(center and center.set == 'Booster' and 1.27 or 1), G.CARD_H*(center and center.set == 'Booster' and 1.27 or 1), front, center,
   {bypass_discovery_center = area==G.shop_jokers or area == G.pack_cards or area == G.shop_vouchers or (G.shop_demo and area==G.shop_demo) or area==G.jokers or area==G.consumeables,
@@ -1283,6 +1390,21 @@ function add_tag(tag)
     end
 end
 
+--add calculation context and callback to tag function
+local at2 = add_tag
+function add_tag(tag)
+    local added_tags = 1
+    for i = 1, #G.jokers.cards do
+        local ret = G.jokers.cards[i]:calculate_joker{cry_add_tag = true}
+        if ret and ret.tags then
+            added_tags = added_tags + ret.tags
+        end
+    end
+    for i = 1, added_tags do
+        at2(tag)
+    end
+end
+
 local tr = Tag.remove
 function Tag:remove()
     tr(self)
@@ -1300,24 +1422,23 @@ function new_round()
 end
 
 --Redefine these here because they're always used
-if not Cryptid then Cryptid = {} end
 Cryptid.base_values = {}
 function cry_misprintize_tbl(name, tbl, clear, override, stack)
-    if tbl then
+    if name and tbl then
         for k, v in pairs(tbl) do
             if (type(tbl[k]) ~= 'table') or is_number(tbl[k]) then
-                if is_number(tbl[k]) and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
+                if is_number(tbl[k]) and not (k == 'id') and not (k == 'suit_nominal') and not (k == 'qty') and not (k == 'x_mult' and v == 1 and not tbl.override_x_mult_check) and not (k == "selected_d6_face") then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
                     if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                     if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = tbl[k] end
-                    tbl[k] = clear and Cryptid.base_values[name][k] or cry_format((stack and tbl[k] or Cryptid.base_values[name][k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+                    tbl[k] = cry_sanity_check(clear and Cryptid.base_values[name][k] or cry_format((stack and tbl[k] or Cryptid.base_values[name][k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g"))
                 end
             else
                 for _k, _v in pairs(tbl[k]) do
-                    if is_number(tbl[k][_k]) and not (_k == 'id') and not (_k == 'suit_nominal') and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
+                    if is_number(tbl[k][_k]) and not (_k == 'id') and not (_k == 'suit_nominal') and not (k == 'qty') and not (k == 'x_mult' and v == 1 and not tbl[k].override_x_mult_check) and not (k == "selected_d6_face") then --Refer to above
                         if not Cryptid.base_values[name] then Cryptid.base_values[name] = {} end
                         if not Cryptid.base_values[name][k] then Cryptid.base_values[name][k] = {} end
                         if not Cryptid.base_values[name][k][_k] then Cryptid.base_values[name][k][_k] = tbl[k][_k] end
-                        tbl[k][_k] = clear and Cryptid.base_values[name][k][_k] or cry_format((stack and tbl[k][_k] or Cryptid.base_values[name][k][_k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+                        tbl[k][_k] = cry_sanity_check(clear and Cryptid.base_values[name][k][_k] or cry_format((stack and tbl[k][_k] or Cryptid.base_values[name][k][_k]) * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g"))
                     end
                 end
             end
@@ -1326,18 +1447,15 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 end
 function cry_misprintize_val(val, override)
    if is_number(val) then
-    val = cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g")
+    val = cry_sanity_check(cry_format(val * cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2g"))
    end 
    return val
 end
-function cry_deep_copy(obj, seen)
-    if type(obj) ~= 'table' then return obj end
-    if seen and seen[obj] then return seen[obj] end
-    local s = seen or {}
-    local res = setmetatable({}, getmetatable(obj))
-    s[obj] = res
-    for k, v in pairs(obj) do res[cry_deep_copy(k, s)] = cry_deep_copy(v, s) end
-    return res
+function cry_sanity_check(val)
+    if not val or type(val) == 'number' and (val ~= val or val > 1e300 or val < -1e300) then
+        return 1e300
+    end
+    return val
 end
 function cry_misprintize(card, override, force_reset, stack)
     if (not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod) and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker") then
@@ -1373,7 +1491,10 @@ function cry_log_random(seed,min,max)
     return math.exp(poll)
 end
 function cry_format(number, str)
-    return tonumber(str:format((Big and to_big(number):to_number() or number)))
+    if math.abs(to_big(number)) >= to_big(1e300) then
+        return number
+    end
+    return tonumber(str:format((Big and to_number(to_big(number)) or number)))
 end
 --use ID to work with glitched/misprint
 function Card:get_nominal(mod)
@@ -1691,6 +1812,7 @@ Cryptid.C = {
     BLOSSOM = {HEX("ff09da"),HEX("ffd121")},
     AZURE = {HEX("0409ff"),HEX("63dcff")},
     ASCENDANT = {HEX("2e00f5"),HEX("e5001d")},
+    JOLLY = {HEX("6ec1f5"),HEX("456b84")}
 }
 function Game:update(dt)
     upd(self,dt)

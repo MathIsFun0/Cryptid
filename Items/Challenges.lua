@@ -204,12 +204,12 @@ local rng = {
 }
 
 local challenges = {sticker_sheet, sticker_sheet_plus}
-if Cryptid_config["Misc. Jokers"] then 
+if Cryptid.enabled["Misc. Jokers"] then 
     challenges[#challenges+1] = ballin 
     challenges[#challenges+1] = boss_rush
     challenges[#challenges+1] = rng
 end
-if Cryptid_config["Blinds"] and Cryptid_config["Timer Mechanics"] then
+if Cryptid.enabled["Blinds"] and Cryptid.enabled["Timer Mechanics"] then
     challenges[#challenges+1] = rush_hour
     challenges[#challenges+1] = rush_hour_ii
     challenges[#challenges+1] = rush_hour_iii

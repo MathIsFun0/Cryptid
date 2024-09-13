@@ -121,6 +121,69 @@ local quantum_computing = {
     end,
     requires = {"v_cry_satellite_uplink"}
 }
+local pairing = {
+    object_type = "Voucher",
+	key = "pairing",
+    atlas = "atlasvoucher",
+	pos = {x = 0, y = 0},
+	loc_txt = {
+        name = 'Pairing',
+        text = {
+            "{C:attention}Retrigger{} all M Jokers",
+            "if played hand is a {C:attention}Pair"
+		}
+    },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Xaltios"
+        }
+    },
+}
+local repair_man = {
+    object_type = "Voucher",
+	key = "repair_man",
+    atlas = "atlasvoucher",
+	pos = {x = 1, y = 0},
+	requires = {"v_cry_pairing"},
+	loc_txt = {
+        name = 'Repair Man',
+        text = {
+            "{C:attention}Retrigger{} all M Jokers",
+            "if played hand contains a {C:attention}Pair"
+		}
+    },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Xaltios"
+        }
+    },
+}
+local pairamount_plus = {
+    object_type = "Voucher",
+	key = "pairamount_plus",
+    atlas = "atlasvoucher",
+	pos = {x = 2, y = 0},
+	requires = {"v_cry_repair_man"},
+	loc_txt = {
+        name = 'Pairamount Plus',
+        text = {
+            "{C:attention}Retrigger{} all M Jokers",
+            "once for every Pair",
+            "{C:attention}contained{} in played hand"
+		}
+    },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Xaltios"
+        }
+    },
+}
 local overstock_multi = {
     	object_type = "Voucher",
 	key = "overstock_multi",
@@ -188,7 +251,7 @@ local rerollexchange = {
     	object_type = "Voucher",
 	key = "rerollexchange",
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 2},
 	requires = {"v_reroll_glut"},
 	loc_txt = {
         name = 'Reroll Exchange',
@@ -225,7 +288,7 @@ local dexterity = {
 	key = "dexterity",
 	config = {extra = 2},
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 3},
 	requires = {"v_nacho_tong"},
 	loc_txt = {
         name = 'Dexterity',
@@ -351,7 +414,7 @@ local fabric = {
 	key = "fabric",
 	config = {extra = 2},
    	atlas = "atlasvoucher",
-	pos = {x = 2, y = 0},
+	pos = {x = 6, y = 0},
 	requires = {"v_antimatter"},
 	loc_txt = {
         name = 'Universal Fabric',
@@ -370,6 +433,13 @@ local fabric = {
             return true end }))
     end
 }
+
+local function asteroglyph_ante()
+	if not (G.GAME or {}).modifiers then return 0 end
+	if not G.GAME.modifiers.cry_astero_ante then G.GAME.modifiers.cry_astero_ante = 0 end
+	return G.GAME.modifiers.cry_astero_ante
+end
+
 local asteroglyph = {
     	object_type = "Voucher",
 	key = "asteroglyph",
@@ -379,15 +449,20 @@ local asteroglyph = {
 	loc_txt = {
         name = 'Asteroglyph',
         text = {
-	    "Set Ante to {C:attention}0{}"
-		}
+	    "Set Ante to {C:attention}#1#{}"
+	}
     },
+    loc_vars = function(self, info_queue)
+        return {vars = {asteroglyph_ante()}}
+    end,
     redeem = function(self)
-	ease_ante(-G.GAME.round_resets.ante)
-        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante --idk if this stuff is actually needed or not
-        G.GAME.round_resets.blind_ante = 0 --Kinda in incorrect interaction with redemmed deck when heiroglyph/petroglyph is redeemed at ante 1, not sure if this code causes it but can't be bothered
+	local mod = -G.GAME.round_resets.ante + asteroglyph_ante()
+	ease_ante(mod)
+	G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0 and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300) or 1
+        G.E_MANAGER:add_event(Event({func = function() G.GAME.round_resets.blind_ante = mod return true end}))
     end
 }
+
 local blankcanvas = {
     	object_type = "Voucher",
 	key = "blankcanvas",
@@ -547,10 +622,15 @@ if SMODS.Mods["Tier3Sub"] then
     pacclimator.config.extra = pacclimator.config.extra * 8
 end
 local voucheritems = {voucher_atlas, copies, tag_printer, triple, quadruple, quintuple, overstock_multi, massproduct, curate, rerollexchange, dexterity, threers, tacclimator, pacclimator, moneybean, fabric, asteroglyph, blankcanvas, clone_machine,}
-if Cryptid_config["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
+if Cryptid.enabled["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
     voucheritems[#voucheritems+1] = command_prompt
     voucheritems[#voucheritems+1] = satellite_uplink
     voucheritems[#voucheritems+1] = quantum_computing
+end
+if Cryptid.enabled["M Jokers"] then
+    voucheritems[#voucheritems+1] = pairing
+    voucheritems[#voucheritems+1] = repair_man
+    voucheritems[#voucheritems+1] = pairamount_plus
 end
 return {name = "Vouchers", 
         init = function()

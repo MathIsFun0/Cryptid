@@ -1,4 +1,3 @@
-cry_enable_exotics = false
 --TIP!!! for coding exotics, make sure you know which layer corresponds to which value!
 --The Normal pos correponds to the background. use this for the layer that goes all the way in the back!
 --The soul_pos = {blahblahblah, extra = {blahblahblah}} correspomds to the other two layers. the value in the extra table is for the layer that goes in the middle, and the other value is the one that goes all the way in the front
@@ -225,7 +224,9 @@ local speculo = {
 	atlas = "atlasexotic",
 	soul_pos = {x = 4, y = 1, extra = {x = 5, y = 1}},
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+		if not center.edition or (center.edition and not center.edition.negative) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        	end
 	end,
 	calculate = function(self, card, context)
         if context.ending_shop then
@@ -264,8 +265,9 @@ local redeo = {
         text = {
             "{C:attention}-#1#{} Ante when",
             "{C:money}$#2#{} {C:inactive}($#3#){} spent",
-            "{s:0.8}Requirements increase by",
-            "{C:money,s:0.8}$#4#{s:0.8} after each use"
+            "{s:0.8}Requirements increase",
+	    "{C:attention,s:0.8}exponentially{s:0.8} per use",
+	    "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#"
         }
     },
 	rarity = "cry_exotic",
@@ -279,6 +281,7 @@ local redeo = {
             while card.ability.extra.money_remaining >= card.ability.extra.money_req do
                 card.ability.extra.money_remaining = card.ability.extra.money_remaining - card.ability.extra.money_req
                 card.ability.extra.money_req = card.ability.extra.money_req + card.ability.extra.money_mod
+		card.ability.extra.money_mod = math.min(1e300, math.ceil(card.ability.extra.money_mod * 1.06))
                 ante_mod = ante_mod - card.ability.extra.ante_reduction
             end
             if ante_mod < 0 then
@@ -612,7 +615,7 @@ local scalae = {
                 if new_scale >= to_big(1e300) then
                     new_scale = 1e300
                 else
-                    new_scale = new_scale:to_number()
+                    new_scale = to_number(new_scale)
                 end
             end
             return new_scale
@@ -767,9 +770,9 @@ local aequilibrium = {
                 name = "Ace Aequilibrium",
                 text = {
                     "Jokers appear using the",
-    "order from the {C:attention}Collection{}",
+    		    "order from the {C:attention}Collection{}",
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
-    "when hand is played",
+   		    "when hand is played",
                     "{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
                     "{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#"
                 }
@@ -780,17 +783,17 @@ local aequilibrium = {
             soul_pos = {x = 69, y = 0, extra = {x = 8, y = 0}},
             atlas = 'atlasexotic',
             cost = 50,
-            unlocked = true,
-            discovered = true,
             blueprint_compat = true,
-    immune_to_chemach = true,
+    	    immune_to_chemach = true,
             eternal_compat = true,
             perishable_compat = true,
             loc_vars = function(self, info_queue, center)
-                info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+                if not center.edition or (center.edition and not center.edition.negative) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        	end
                 local joker_generated = "None"
-                if center.ability.extra.num > 1 then
-                    joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][center.ability.extra.num-1].key}
+                if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
+                    joker_generated = localize{type = "name_text", set = "Joker", key = G.P_CENTER_POOLS["Joker"][math.floor(center.ability.extra.num or 1)-1].key}
                 end
                 return {vars = {center.ability.extra.jokers,joker_generated}}
             end,
@@ -880,8 +883,8 @@ local facile = {
     name = "cry-facile",
     key = "facile",
     config = {extra = {Emult = 3, check = 10, check2 = 0}},
-    pos = { x = 0, y = 1 },
-    soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    pos = { x = 6, y = 2 },
+    soul_pos = {x = 8, y = 2, extra = {x = 7, y = 2}},
     loc_txt = {
         name = 'Facile',
         text = {
@@ -893,7 +896,7 @@ local facile = {
     rarity = "cry_exotic",
     cost = 50,
     blueprint_compat = true,
-    atlas = "placeholders",
+    atlas = "atlasexotic",
     loc_vars = function(self, info_queue, center)
         return {
             vars = {center.ability.extra.Emult, center.ability.extra.check}
@@ -907,6 +910,7 @@ local facile = {
         end
         if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and not context.before and not context.after then
             if card.ability.extra.check2 <= card.ability.extra.check then
+		card.ability.extra.check2 = 0
                 return {
                     message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
                     Emult_mod = card.ability.extra.Emult,
@@ -917,6 +921,145 @@ local facile = {
             end
         end
     end
+}
+local gemino = {
+    object_type = "Joker",
+    name = "cry-Gemino",
+    key = "gemino",
+    pos = { x = 6, y = 1 },
+    soul_pos = {x = 8, y = 1, extra = {x = 7, y = 1}},
+    loc_txt = {
+          name = 'Gemini',
+            text = {
+    "{C:attention}Double{} all values", "of leftmost {C:attention}Joker", "at end of round",
+    }
+       },
+    cry_credits = {
+        colour = G.C.CRY_JOLLY,
+        text = {
+            "Jolly Open Winner",
+            "Requiacity"
+        }
+    },
+    rarity = "cry_exotic",
+    blueprint_compat = true,
+    cost = 50,
+    atlas = "atlasexotic",
+    calculate = function(self, card2, context)
+            if context.end_of_round and not context.repetition and not context.individual then
+		local check = false
+                local card = G.jokers.cards[1]
+		if G.jokers.cards[1].ability.name ~= "Ace Aequilibrium" then --Causes the same crashes that multiply spam on Aequilibrium did so preventing this from happening
+			cry_with_deck_effects(G.jokers.cards[1], function(card)
+            			cry_misprintize(card,{min=2,max=2},nil,true)
+        		end)
+			check = true
+		end
+                if check then card_eval_status_text(context.blueprint_card or card2, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.GREEN}) end
+                return nil, true
+            end
+    end,
+}
+
+local energia = {
+    object_type = "Joker",
+    name = "cry-Energia",
+    key = "energia",
+    pos = { x = 6, y = 3 },
+    soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
+    blueprint_compat = false,
+    perishable_compat = false,
+    config = {extra = {tags = 1, tag_mod = 1}},
+    loc_txt = {
+            name = 'Energia',
+            text = {
+            "When a {C:attention}Tag{} is acquired,",
+            "create {C:attention}#1#{} copies of it",
+            "and {C:attention}increase{} the number of",
+            "copies by {C:attention}#2#"
+        }
+        },
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {center.ability.extra.tags, center.ability.extra.tag_mod}
+        }
+    end,
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "atlasexotic",
+    calculate = function(self, card, context)
+        if context.cry_add_tag then
+            local t = card.ability.extra.tags
+            card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.DARK_EDITION})
+            return {tags = t}
+        end
+    end
+}
+local verisimile = {
+	object_type = "Joker",
+	name = "cry-verisimile",
+	key = "verisimile",
+	pos = { x = 0, y = 1 },
+        soul_pos = {x = 1, y = 1, extra = {x = 2, y = 1}},
+    	config = {extra = {xmult = 1}},
+    	rarity = "cry_exotic",
+	cost = 50,
+    	blueprint_compat = true,
+	atlas = "placeholders",
+	loc_txt = {
+        name = 'Non Verisimile',
+        text = {
+            "When any probability",
+            "is {C:green}successfully{} triggered,",
+	    "this Joker gains {X:red,C:white}XMult{}",
+	    "equal to its listed {C:attention}odds",
+	    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)"
+		}
+    	},
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.xmult}}
+    	end,
+    	calculate = function(self, card, context)
+            if context.post_trigger and not context.blueprint then
+		--Todo: Gros Michel, Cavendish, Planet.lua
+		--Bus driver is ignored because it always triggers anyway
+		if context.other_joker.ability.name == "8 Ball" 
+		or context.other_joker.ability.name == "Space Joker" then
+			local variable = context.other_joker
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		elseif context.other_joker.ability.name == "Reserved Parking"
+		or context.other_joker.ability.name == "Bloodstone"
+		or context.other_joker.ability.name == "cry-Googol Play Card"
+		or context.other_joker.ability.name == "cry-Boredom"
+		or context.other_joker.ability.name == "cry-bonusjoker"
+		or context.other_joker.ability.name == "cry-multjoker"
+		or context.other_joker.ability.name == "cry-scrabble" then
+			local variable = context.other_joker
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		elseif context.other_joker.ability.name == "cry-notebook" then
+			--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
+			local variable = context.other_joker
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		end
+            	return nil, true
+	    elseif context.consumeable and not context.blueprint then
+		if context.consumeable.ability.name == 'The Wheel of Fortune' 
+		and (context.consumeable.cry_wheel_success) then
+			local variable = context.consumeable
+			card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra --Doesn't account for misprintizing for some reason
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.xmult}}})
+		end
+	    elseif context.cardarea == G.jokers and (to_big(card.ability.extra.xmult) > to_big(1)) and not context.before and not context.after then
+		return {
+                	message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+                	Xmult_mod = card.ability.extra.xmult
+            	}
+	    end
+        end
 }
 return {name = "Exotic Jokers", 
         init = function()
@@ -1015,4 +1158,5 @@ return {name = "Exotic Jokers",
                 end
             end
         end,
-        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile}}
+        order = 3000000,
+        items = {gateway_sprite, gateway, iterum, universum, exponentia, speculo, redeo, tenebris, effarcire, effarcire_sprite, crustulum, primus, scalae, stella_mortis, circulus_pistoris, aequilibrium, facile, gemino, energia, verisimile}}

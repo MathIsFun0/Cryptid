@@ -12,26 +12,6 @@ position = 'at'
 match_indent = true
 payload = "if (self.edition and (self.edition.negative or self.edition.cry_oversat)) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
 
-# Empowered Tag
-[[patches]]
-[patches.pattern]
-target = 'card.lua'
-pattern = '''card = create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, 'spe')'''
-position = 'at'
-match_indent = true
-payload = '''
-card = nil --this line allows Steamodded's Pack API patch to work
-if self.from_empowered then
-    if i == 1 then
-        card = create_card("Spectral", G.pack_cards, nil, nil, true, true, 'c_soul', 'spe')
-    else
-        card = create_card("Spectral", G.pack_cards, nil, nil, true, true, G.P_CENTERS.c_cry_gateway and 'c_cry_gateway' or 'c_soul', 'spe')
-    end
-else
-    card = create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, 'spe')
-end
-'''
-
 # Detect if edition comes from copy_card
 [[patches]]
 [patches.pattern]
@@ -245,13 +225,14 @@ match_indent = true
 
 # calculate wheel fail (for Wheel of Hope)
 [[patches]]
-[patches.regex]
+[patches.pattern]
 target = "card.lua"
-pattern = '''play_sound\('tarot2', 1, 0.4\)\n\s+used_tarot:juice_up\(0.3, 0.5\)\n\s+return true end \}\)\)'''
+pattern = "if self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex' or pseudorandom('wheel_of_fortune') < G.GAME.probabilities.normal/self.ability.extra then"
 position = "after"
-payload = '''for i = 1, #G.jokers.cards do
-	G.jokers.cards[i]:calculate_joker({cry_wheel_fail = true})
-end'''
+payload = '''
+if self.ability.name == 'The Wheel of Fortune' then self.cry_wheel_success = true end
+'''
+match_indent = false
 
 # unscoring context (for Green Seal)
 [[patches]]

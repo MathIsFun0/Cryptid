@@ -121,6 +121,16 @@ local antimatter = {
             delay(0.6)
             return args.chips, args.mult
         end
+        --Glowing Deck
+        if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss  then
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.name ~= "Ace Aequilibrium" then --Same Reason as Gemini/Multiply
+			cry_with_deck_effects(G.jokers.cards[i], function(card)
+            			cry_misprintize(card,{min=1.25,max=1.25},nil,true)
+        		end)
+		end
+            end
+        end
     end,
     atlas = "antimatter"
 }
@@ -134,4 +144,5 @@ local antimatter_sprite = {
 return {name = "Antimatter Deck",
         init = function()
         end,
+        order = 2000000,
         items = {blank_sprite, antimatter_sprite, blank, antimatter}}

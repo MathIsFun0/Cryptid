@@ -1,4 +1,3 @@
-cry_enable_epics = false
 local supercell = {
     	object_type = "Joker",
 	name = "cry-supercell",
@@ -81,6 +80,50 @@ if JokerDisplay then
 		end
 	}
 end
+local membershipcardtwo = {
+    	object_type = "Joker",
+	name = "cry-membershipcardtwo",
+	key = "membershipcardtwo",
+    	config = {extra = {chips = 1}},
+	pos = {x = 5, y = 4},
+	loc_txt = {
+        name = 'Old Membership Card', --Could probably have a diff Name imo
+        text = {
+            "{C:chips}+#1#{} Chips for each member",
+	    "in the {C:attention}Cryptid Discord{}",
+	    "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
+            "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}"
+        }
+    	},
+	rarity = "cry_epic",
+	cost = 17,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+    	loc_vars = function(self, info_queue, card)
+        	return {vars = {card.ability.extra.chips, card.ability.extra.chips*GLOBAL_cry_member_count}}
+    	end,
+    	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after
+		and card.ability.extra.chips > 0 then
+			return {
+				message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips*GLOBAL_cry_member_count}},
+				chip_mod = card.ability.extra.chips*GLOBAL_cry_member_count
+			}
+		end
+    	end
+}
+if JokerDisplay then
+	membershipcardtwo.joker_display_definition = {
+		text = {
+			    { text = "+" },
+			    { ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "mult" }
+		},
+		text_config = { colour = G.C.CHIPS },
+		calc_function = function(card)
+            		card.joker_display_values.stat = card.ability.extra.chips * (GLOBAL_cry_member_count or 1)
+        	end,
+	}
+end
 local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
@@ -104,13 +147,12 @@ local googol_play = {
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.Xmult}}
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
-			if pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/card.ability.extra.odds then
+		if context.cardarea == G.jokers and not context.before and not context.after 
+		and pseudorandom('cry_googol_play') < G.GAME.probabilities.normal/card.ability.extra.odds then
 				return {
 					message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
 					Xmult_mod = card.ability.extra.Xmult
 				}
-			else return nil, true end
 		end
 	end,
 }
@@ -304,11 +346,12 @@ local error_joker = {
 				card.ability.extra.active = true
 				local eval = function(card) return not card.REMOVED end
 				juice_card_until(self, eval, true)
+			else
+				return {
+					message = "???",
+					colour = G.C.BLACK
+				}
 			end
-			return {
-				message = "???",
-				colour = G.C.BLACK
-			}
 		end
 		if context.selling_self and card.ability.extra.active and not context.retrigger_joker and not context.blueprint then
 			local eval = function(card) return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
@@ -378,7 +421,7 @@ local m = {
 	cost = 13,
 	perishable_compat = false,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
         return {vars = {center.ability.extra.extra, center.ability.extra.x_mult}}
     end,
 	atlas = "atlasepic",
@@ -426,8 +469,10 @@ local M = {
 	rarity = "cry_epic",
 	cost = 13,
 	blueprint_compat = true,loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, self.config.jolly.type} }
-		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
+		if not center.edition or (center.edition and not center.edition.negative) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        	end
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -468,26 +513,23 @@ local boredom = {
     end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				return {
-					message = localize('k_again_ex'),
-					repetitions = 1,
-					card = card
-				}
-			else return nil, true end
-        end
-		if context.repetition and context.cardarea == G.play then
-			if pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				return {
-					message = localize('k_again_ex'),
-					repetitions = 1,
-					card = card
-				}
-			else
-				return nil, true
-			end
-		end
+            if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+		if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal/card.ability.extra.odds then
+			return {
+				message = localize('k_again_ex'),
+				repetitions = 1,
+				card = card	
+			}
+		else return nil, true end
+            end
+	    if context.repetition and context.cardarea == G.play
+	    and pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal/card.ability.extra.odds then
+		return {
+			message = localize('k_again_ex'),
+			repetitions = 1,
+			card = card
+		}
+	    end
 	end
 }
 if JokerDisplay then
@@ -1374,8 +1416,52 @@ return {name = "Epic Jokers",
 				{string = 'Tarots', colour = G.C.SECONDARY_SET.Tarot},
 				{string = 'Planets', colour = G.C.SECONDARY_SET.Planet},
 				{string = 'Specls', colour = G.C.SECONDARY_SET.Spectral},
-				{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
+				{string = '%%ERROR', colour = G.C.CRY_ASCENDANT}, --temp string, this will be modified
 			}
+
+			function predict_pseudoseed(key)
+				local M = G.GAME.pseudorandom[key] or pseudohash(key..(G.GAME.pseudorandom.seed or ''))
+				local m = math.abs(tonumber(string.format("%.13f", (2.134453429141+M*1.72431234)%1)))
+  				return (m + (G.GAME.pseudorandom.hashed_seed or 0))/2
+			end
+
+			function predict_card_for_shop()
+				G.GAME.spectral_rate = G.GAME.spectral_rate or 0
+				local total_rate = G.GAME.joker_rate + G.GAME.playing_card_rate
+				for _,v in ipairs(SMODS.ConsumableType.obj_buffer) do
+					total_rate = total_rate + G.GAME[v:lower()..'_rate']
+				end
+				local polled_rate = pseudorandom(predict_pseudoseed('cdt'..G.GAME.round_resets.ante))*total_rate
+				local check_rate = 0
+				-- need to preserve order to leave RNG unchanged
+				local rates = {
+				  {type = 'Joker', val = G.GAME.joker_rate},
+				  {type = 'Tarot', val = G.GAME.tarot_rate},
+				  {type = 'Planet', val = G.GAME.planet_rate},
+				  {type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(predict_pseudoseed('illusion')) > 0.6) and 'Enhanced' or 'Base', val = G.GAME.playing_card_rate},
+				  {type = 'Spectral', val = G.GAME.spectral_rate},
+				}
+				for _, v in ipairs(SMODS.ConsumableType.obj_buffer) do
+					if not (v == 'Tarot' or v == 'Planet' or v == 'Spectral') then
+						table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] })
+					end
+				end
+				for _, v in ipairs(rates) do
+					if polled_rate > check_rate and polled_rate <= check_rate + v.val then
+						local c = create_card(v.type, "ERROR", nil, nil, nil, nil, nil, 'sho')
+						if not c.set then
+							return v.type:sub(1,1) .. c.suit:sub(1,1) .. c.value:sub(1,2)
+						else
+							for i = 1, #G.P_CENTER_POOLS[c.set] do
+								if G.P_CENTER_POOLS[c.set][i].key == c.key then
+									return c.set:sub(1,1) .. i
+								end
+							end
+						end
+					end
+					check_rate = check_rate + v.val
+				end
+			end
 
 			cry_enable_epics = true
 			--Number Blocks Patches
@@ -1441,4 +1527,5 @@ return {name = "Epic Jokers",
                 loc_txt = {}
             },true)
 		end,
-		items = {supercell, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, circus, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}
+		order = 2000000,
+		items = {supercell, membershipcardtwo, googol_play, sync_catalyst, negative, canvas, error_joker, M, m, boredom, double_scale, number_blocks, oldcandy, circus, caramel, curse, bonusjoker, multjoker,goldjoker,altgoogol,soccer}}

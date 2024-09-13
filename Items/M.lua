@@ -1,5 +1,3 @@
-cry_minvasion = false
-if not Cryptid then Cryptid = {} end
 Cryptid.M_jokers = {
     j_cry_m = true,
     j_cry_M = true,
@@ -162,7 +160,9 @@ local bubblem = {
     eternal_compat = false,
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
-	info_queue[#info_queue+1] = G.P_CENTERS.e_foil
+	if not center.edition or (center.edition and not center.edition.foil) then
+            info_queue[#info_queue+1] = G.P_CENTERS.e_foil
+        end
     return {vars = {localize(center.ability.extra.type, 'poker_hands')}}
     end,
     atlas = "atlasone",
@@ -489,31 +489,19 @@ local notebook = {
 				or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
 				then jollycount = jollycount + 1 end
             		end
-				if jollycount >= card.ability.extra.jollies then --if there are 5 or more jolly jokers
-						card.ability.extra.slot = card.ability.extra.slot + 1
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
-						card.ability.extra.check = false
-						card.ability.extra.active = "Inactive"
-						return {
-                    					card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        				message = "Upgrade!",
-                        				colour = G.C.DARK_EDITION,
+			if jollycount >= card.ability.extra.jollies    --if there are 5 or more jolly jokers
+			or pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds then 
+					card.ability.extra.slot = card.ability.extra.slot + 1
+					G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+					card.ability.extra.check = false
+					card.ability.extra.active = "Inactive"
+					return {
+                    				card_eval_status_text(card, 'extra', nil, nil, nil, {
+                        			message = "Upgrade!",
+                        			colour = G.C.DARK_EDITION,
                     				})
-                				}
-				else --default
-					if pseudorandom('cry_notebook') < G.GAME.probabilities.normal/card.ability.extra.odds then
-						card.ability.extra.slot = card.ability.extra.slot + 1
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
-						card.ability.extra.check = false
-						card.ability.extra.active = "Inactive"
-						return {
-                    					card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        				message = "Upgrade!",
-                        				colour = G.C.DARK_EDITION,
-                    				})
-                				}
-					else return nil, true end
-				end
+                			}
+			end
 	    end
 	    if context.end_of_round and not context.retrigger_joker and not context.blueprint then
             	if not card.ability.extra.check then
@@ -814,7 +802,7 @@ local sacrifice = {
 	                        G.jokers:emplace(card)
                         	card:start_materialize()
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = "M!", colour = G.C.SPECTRAL})
-				return true
+				return nil, true
 			end
 		end
 		if context.end_of_round and not context.retrigger_joker and not context.blueprint then
@@ -862,7 +850,9 @@ local reverse = {
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
-		info_queue[#info_queue+1] = G.P_CENTERS.e_holographic
+		if not center.edition or (center.edition and not center.edition.holo) then
+            		info_queue[#info_queue+1] = G.P_CENTERS.e_holo
+       		end
 		return {vars = {localize(center.ability.extra.type, 'poker_hands')}}
 	end,
 	calculate = function(self, card, context)
@@ -942,8 +932,7 @@ local doodlem = {
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
 	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
-	--TODO: Replace the negative infoqueue with the one used for consumables
-	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+	info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
     end,
     calculate = function(self, card, context)
     if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
@@ -1389,8 +1378,28 @@ if JokerDisplay then
 	}
 end	
 local ret_items = {jollysus,kidnap,bubblem,foodm,mstack,mneon,notebook,bonk,loopy,scrabble,sacrifice,reverse,macabre,megg}
-for _, v in pairs(ret_items) do
-    Cryptid.M_jokers["j_cry_" .. v.key] = true
+--retriggering system for M Vouchers
+function get_m_retriggers(self, card, context)
+    local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
+    if G.GAME.used_vouchers.v_cry_pairamount_plus then
+        local pairs = 0
+        for i = 1, #G.play.cards-1 do
+            for j = i+1, #G.play.cards do
+                local m, n = G.play.cards[i], G.play.cards[j]
+                if m:get_id() == n:get_id() then
+                    pairs = pairs + 1
+                end
+            end
+        end
+        return pairs
+    end
+    if G.GAME.used_vouchers.v_cry_repair_man and poker_hands["Pair"] then
+        return 1
+    end
+    if G.GAME.used_vouchers.v_cry_pairing and text == "Pair" then
+        return 1
+    end
+    return 0
 end
 return {name = "M Jokers", 
         init = function()
@@ -1405,7 +1414,6 @@ return {name = "M Jokers",
             end
             if cry_enable_epics then
                 for _, jkr in pairs({doodlem, virgo, smallestm, biggestm}) do
-                    Cryptid.M_jokers["j_cry_" .. jkr.key] = true
                     ret_items[#ret_items+1] = jkr
                 end
             end
@@ -1414,5 +1422,25 @@ return {name = "M Jokers",
                     ret_items[#ret_items+1] = jkr
                 end
             end
+            for i = 1, #ret_items do
+                Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
+                local vc = ret_items[i].calculate
+                ret_items[i].calculate = function(self, card, context)
+                    local ret, trig = vc(self, card, context)
+                    local reps = get_m_retriggers(self, card, context)
+                    if context.retrigger_joker_check and context.other_card == card and reps > 0 then
+                        return {
+                            message = localize('k_again_ex'),
+                            repetitions = reps + (ret and ret.repetitions or 0),
+                            card = card
+                        }
+                    end
+                    return ret, trig
+                end
+            end
+            if cry_enable_exotics then
+                Cryptid.M_jokers.j_cry_mprime = nil
+            end
         end,
+        order = 1000000,
         items = ret_items}

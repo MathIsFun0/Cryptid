@@ -1,4 +1,3 @@
-cry_enable_jokers = false
 local dropshot = {
     object_type = "Joker",
 	name = "cry-Dropshot",
@@ -254,7 +253,9 @@ local queensgambit = {
     rarity = 3,
     cost = 7,
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+        if not center.edition or (center.edition and not center.edition.negative) then
+            	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+        end
     end,
     atlas = "atlastwo",
     config = { extra = { type = "Straight Flush" } },
@@ -835,7 +836,7 @@ local compound_interest = {
         return {vars = {center.ability.extra.percent, center.ability.extra.percent_mod}}
     end,
 	calc_dollar_bonus = function(self, card)
-		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*G.GAME.dollars))
+		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*(G.GAME.dollars or 1)))
         local old = card.ability.extra.percent
         card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
         compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
@@ -853,7 +854,7 @@ if JokerDisplay then
             { ref_table = "card.joker_display_values", ref_value = "localized_text" },
         },
         calc_function = function(card)
-            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * G.GAME.dollars))
+            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
             card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
             card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
         end
@@ -4338,10 +4339,12 @@ local wheelhope = {
                 Xmult_mod = card.ability.extra.x_mult
             }
         end
-		if context.cry_wheel_fail and not context.blueprint then
-			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
-			return nil, true
+		if context.consumeable then
+                	if context.consumeable.ability.name =='The Wheel of Fortune' and not(context.consumeable.cry_wheel_success) then
+				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.extra.x_mult}}})
+				return nil, true
+			end
 		end
 	end
 }
@@ -4735,7 +4738,8 @@ local membershipcard = {
 	name = "cry-membershipcard",
 	key = "membershipcard",
     	config = {extra = {Xmult_mod = 0.1}},
-	pos = {x = 3, y = 4},
+	pos = {x = 6, y = 2},
+	soul_pos = {x = 6, y = 1},
 	loc_txt = {
         name = 'Membership Card',
         text = {
@@ -4794,7 +4798,7 @@ local kscope = {
     cost = 7,
     atlas = "atlasthree",
     calculate = function(self, card, context)
-        if context.end_of_round and G.GAME.blind.boss then
+        if context.end_of_round and G.GAME.blind.boss and not context.individual and not context.repetition then
         	local eligiblejokers = {}
         	for k, v in pairs(G.jokers.cards) do
                     if v.ability.set == 'Joker' and (not v.edition) and v ~= card then
@@ -4888,6 +4892,9 @@ return {name = "Misc. Jokers",
             override_maximized = false
             function Card:get_id()
                 local id = cgi_ref(self)
+		if id == nil then
+    		    id = 10
+		end
                 if (next(find_joker("cry-Maximized")) and not override_maximized) then
                     if (id >= 2 and id <= 10) then id = 10 end
                     if (id >= 11 and id <= 13 or next(find_joker("Pareidolia"))) then id = 13 end

@@ -480,8 +480,8 @@ local hook = {
     use = function(self, card, area, copier)
         G.jokers.highlighted[1].ability.cry_hooked = true
         G.jokers.highlighted[2].ability.cry_hooked = true
-        G.jokers.highlighted[1].ability.hook_id = G.jokers.highlighted[2].sort_id
-        G.jokers.highlighted[2].ability.hook_id = G.jokers.highlighted[1].sort_id
+        G.jokers.highlighted[1].hook_id = G.jokers.highlighted[2].sort_id
+        G.jokers.highlighted[2].hook_id = G.jokers.highlighted[1].sort_id
     end
 }
 local hooked = {
@@ -498,15 +498,15 @@ local hooked = {
     },
     loc_vars = function(self, info_queue, card)
         local var
-        if not card or not card.ability.hook_id then
+        if not card or not card.hook_id then
             var = "[Joker]"
         else
             for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i].sort_id == card.ability.hook_id then
+                if G.jokers.cards[i].sort_id == card.hook_id then
                     var = localize{type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key}
                 end
             end
-            var = var or "[no joker found - "..(card.ability.hook_id or "nil").."]"
+            var = var or "[no joker found - "..(card.hook_id or "nil").."]"
         end
         return {vars = {var or "hooked Joker"}}
 	end,
@@ -735,7 +735,7 @@ local multiply = {
         }
     },
     can_use = function(self, card)
-        return #G.jokers.highlighted == 1
+        return #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.name ~= "Ace Aequilibrium"
     end,
     use = function(self, card, area, copier)
         if not G.jokers.highlighted[1].cry_multiply then
@@ -900,6 +900,7 @@ local spaghetti = {
 	if G.P_CENTERS.j_pape_ghost_cola then jokers[#jokers+1] = "j_pape_ghost_cola" end
 	if G.P_CENTERS.j_sdm_burger then jokers[#jokers+1] = "j_sdm_burger" end
 	if G.P_CENTERS.j_sdm_pizza then jokers[#jokers+1] = "j_sdm_pizza" end
+	if G.P_CENTERS.j_grm_energy_bar then jokers[#jokers+1] = "j_grm_energy_bar" end
 	local card = create_card('Joker', G.jokers, nil, nil, nil, nil, pseudorandom_element(jokers,pseudoseed("cry_spaghetti")))
         card:set_edition({
             cry_glitched = true
@@ -1284,7 +1285,7 @@ local pointer = {
         return true
     end,
     loc_vars = function(self, info_queue, center)
-        return {vars = {(SMODS['jen'] or {}).can_load and "and OMEGA consumables " or ""}}
+        return {vars = {(SMODS.Mods['jen'] or {}).can_load and "and OMEGA consumables " or ""}}
     end,
     use = function(self, card, area, copier)
         G.GAME.USING_CODE = true
@@ -1345,7 +1346,10 @@ local CodeJoker = {
 			"{C:cry_code}Code Card{} when",
 			"{C:attention}Blind{} is selected"
 		}
-    },
+    	},
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
+    	end,
 	rarity = "cry_epic",
 	cost = 11,
 	blueprint_compat = true,
@@ -1370,6 +1374,7 @@ local copypaste = {
 	name = "cry-copypaste",
 	key = "copypaste",
 	pos = {x = 3, y = 4},
+	immune_to_chemach = true,
 	config = {extra = {odds = 2, ckt = 0}},
 	loc_txt = {
         name = 'Copy/Paste',
@@ -1385,7 +1390,7 @@ local copypaste = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2)}}
-    end,
+    	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then
@@ -2225,7 +2230,7 @@ G.FUNCS.pointer_apply = function()
 	end
 	if current_card then
         local created = false
-        if G.P_CENTERS[current_card].set == "Joker" and G.P_CENTERS[current_card].rarity ~= "cry_exotic" and (type(G.P_CENTERS[current_card].rarity) ~= "number" or G.P_CENTERS[current_card].rarity < 5) then
+        if G.P_CENTERS[current_card].set == "Joker" and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card('j_jen_p03') > 0) and (type(G.P_CENTERS[current_card].rarity) ~= "number" or G.P_CENTERS[current_card].rarity < 5) then
             local card = create_card('Joker', G.jokers, nil, nil, nil, nil, current_card)
             card:add_to_deck()
             G.jokers:emplace(card)
@@ -2780,9 +2785,9 @@ crashes = {
 
 
 local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, hook, hooked, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
-if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
-if Cryptid_config["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
-if Cryptid_config["Epic Jokers"] then
+if Cryptid.enabled["Misc."] then code_cards[#code_cards+1] = spaghetti end
+if Cryptid.enabled["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
+if Cryptid.enabled["Epic Jokers"] then
     code_cards[#code_cards+1] = encoded
     code_cards[#code_cards+1] = CodeJoker
     code_cards[#code_cards+1] = copypaste
@@ -3086,7 +3091,7 @@ return {name = "Code Cards",
                 if (ret or trig) and self.ability.cry_hooked and not context.post_trigger and not context.cry_hook and not context.retrigger_joker_check and not context.megatrigger_check then
                     context.cry_hook = true
                     for i = 1, #G.jokers.cards do
-                        if G.jokers.cards[i].sort_id == self.ability.hook_id then
+                        if G.jokers.cards[i].sort_id == self.hook_id then
                             card_eval_status_text(G.jokers.cards[i], 'extra', nil, nil, nil, {message = "Hooked!",colour = G.C.SET.Code})
                             cj(G.jokers.cards[i],context)
                             --I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(
