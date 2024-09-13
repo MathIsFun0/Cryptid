@@ -1248,7 +1248,7 @@ local nostalgia_sprites = {
 local items_togo = {oldox, oldhouse, oldarm, oldfish, oldmanacle, oldserpent, oldpillar, oldflint, oldmark, tax, trick,
 joke, hammer, magic, box, windmill, striker, shackle, pin, vermillion_virus, tornado, sapphire_stamp, obsidian_orb, blind_sprites, nostalgia_sprites}
 
-if Cryptid_config["Timer Mechanics"] then
+if Cryptid.enabled["Timer Mechanics"] then
 	table.insert(items_togo, clock)
 	table.insert(items_togo, lavender_loop)
 end

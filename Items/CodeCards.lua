@@ -2780,9 +2780,9 @@ crashes = {
 
 
 local code_cards = {code, code_atlas, pack_atlas, pack1, pack2, packJ, packM, console, automaton, green_seal, green_seal_sprite, source, pointer, cut, blender, python, payload, reboot, revert, crash, semicolon, malware, seed, rigged, hook, hooked, variable, class, commit, merge, multiply, divide, delete, machinecode, run, exploit, oboe, rework, rework_tag}
-if Cryptid_config["Misc."] then code_cards[#code_cards+1] = spaghetti end
-if Cryptid_config["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
-if Cryptid_config["Epic Jokers"] then
+if Cryptid.enabled["Misc."] then code_cards[#code_cards+1] = spaghetti end
+if Cryptid.enabled["Enhanced Decks"] then code_cards[#code_cards+1] = source_deck end
+if Cryptid.enabled["Epic Jokers"] then
     code_cards[#code_cards+1] = encoded
     code_cards[#code_cards+1] = CodeJoker
     code_cards[#code_cards+1] = copypaste

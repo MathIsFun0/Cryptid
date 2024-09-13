@@ -319,7 +319,7 @@ if CardSleeves then
         end
     }
     local sleeveitems = {atlasSleeves}
-if CardSleeves and Cryptid_config["Misc. Decks"] then
+if CardSleeves and Cryptid.enabled["Misc. Decks"] then
     sleeveitems[#sleeveitems+1] = encodedsleeve
     sleeveitems[#sleeveitems+1] = equilibriumsleeve
     sleeveitems[#sleeveitems+1] = misprintsleeve

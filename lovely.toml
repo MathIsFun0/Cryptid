@@ -579,7 +579,7 @@ pattern = "if _c.set == 'Other' then"
 position = "before"
 payload = '''
 if _c.name == 'cry-membershipcard' or _c.name == 'cry-membershipcardtwo' then
-	if not Cryptid_config["HTTPS Module"] then
+	if not Cryptid.enabled["HTTPS Module"] then
 		if G.localization.descriptions.Other.cry_https_disabled then 
 			main_end = {}
 			localize{type = 'other', key = 'cry_https_disabled', nodes = main_end, vars = {}}

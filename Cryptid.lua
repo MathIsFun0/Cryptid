@@ -6,15 +6,23 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
---- VERSION: 0.5.0a~0912b
+--- VERSION: 0.5.0a~0912c
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
+if not Cryptid then Cryptid = {} end
+
 local mod_path = ''..SMODS.current_mod.path
 -- Load Options
 Cryptid_config = SMODS.current_mod.config
+Cryptid.enabled = copy_table(Cryptid_config)
+--backwards compat moment
+cry_enable_jokers = Cryptid.enabled["Misc. Jokers"]
+cry_enable_epics = Cryptid.enabled["Epic Jokers"]
+cry_enable_exotics = Cryptid.enabled["Exotic Jokers"]
+cry_minvasion = Cryptid.enabled["M Jokers"]
 
 -- Custom Rarity setup (based on Relic-Jokers)
 Game:set_globals()
@@ -294,7 +302,7 @@ function Card:cry_calculate_consumeable_perishable()
 end
 
 function update_cry_member_count()
-	if Cryptid_config["HTTPS Module"] == true then
+	if Cryptid.enabled["HTTPS Module"] == true then
 		if not GLOBAL_cry_member_update_thread then
 			local file_data = assert(NFS.newFileData(mod_path.."https/thread.lua"))
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
@@ -940,30 +948,34 @@ G.C.CRY_JOLLY = {0,0,0,0}
 
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."Items")
---for first boot, make sure config is defined properly beforehand
-for _, file in ipairs(files) do
-    local f, err = SMODS.load_file("Items/"..file)
-    if not err then
-        local curr_obj = f()
-        if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
-        if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
-    end
-end
+Cryptid.obj_buffer = {}
 for _, file in ipairs(files) do
     print("Loading file "..file)
     local f, err = SMODS.load_file("Items/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if curr_obj.name == "HTTPS Module" and Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = false end
-      if Cryptid_config[curr_obj.name] == nil then Cryptid_config[curr_obj.name] = true end
+      if Cryptid_config[curr_obj.name] == nil then 
+        Cryptid_config[curr_obj.name] = true
+        Cryptid.enabled[curr_obj.name] = true 
+      end
       if Cryptid_config[curr_obj.name] then
           if curr_obj.init then curr_obj:init() end
           if not curr_obj.items then
             print("Warning: "..file.." has no items")
           else
             for _, item in ipairs(curr_obj.items) do
+                if not item.order then
+                    item.order = 0
+                end
+                if curr_obj.order then
+                    item.order = item.order + curr_obj.order
+                end
                 if SMODS[item.object_type] then
-                    SMODS[item.object_type](item)
+                    if not Cryptid.obj_buffer[item.object_type] then
+                        Cryptid.obj_buffer[item.object_type] = {}
+                    end
+                    Cryptid.obj_buffer[item.object_type][#Cryptid.obj_buffer[item.object_type]+1] = item
                     -- JokerDisplay mod support
                     if JokerDisplay and item.joker_display_definition then
                         JokerDisplay.Definitions[item.key] = item.joker_display_definition
@@ -974,6 +986,12 @@ for _, file in ipairs(files) do
             end
          end
       end
+    end
+end
+for set, objs in pairs(Cryptid.obj_buffer) do
+    table.sort(objs, function(a, b) return a.order < b.order end)
+    for i = 1, #objs do
+        SMODS[set](objs[i])
     end
 end
 local cryptidTabs = {
@@ -1400,7 +1418,6 @@ function new_round()
 end
 
 --Redefine these here because they're always used
-if not Cryptid then Cryptid = {} end
 Cryptid.base_values = {}
 function cry_misprintize_tbl(name, tbl, clear, override, stack)
     if name and tbl then
