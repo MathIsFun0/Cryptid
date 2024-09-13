@@ -1344,7 +1344,10 @@ local CodeJoker = {
 			"{C:cry_code}Code Card{} when",
 			"{C:attention}Blind{} is selected"
 		}
-    },
+    	},
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
+    	end,
 	rarity = "cry_epic",
 	cost = 11,
 	blueprint_compat = true,
@@ -1385,7 +1388,7 @@ local copypaste = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2)}}
-    end,
+    	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.using_consumeable and context.consumeable.ability.set == 'Code' and not context.consumeable.beginning_end then

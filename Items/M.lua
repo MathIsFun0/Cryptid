@@ -930,8 +930,7 @@ local doodlem = {
     blueprint_compat = true,
     loc_vars = function(self, info_queue, center)
 	info_queue[#info_queue+1] = { set = 'Joker', key = 'j_jolly', specific_vars = {self.config.jolly.t_mult, localize(self.config.jolly.type, 'poker_hands')} }
-	--TODO: Replace the negative infoqueue with the one used for consumables
-	info_queue[#info_queue+1] = G.P_CENTERS.e_negative
+	info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
     end,
     calculate = function(self, card, context)
     if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
