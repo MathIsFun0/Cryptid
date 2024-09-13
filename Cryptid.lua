@@ -1146,6 +1146,16 @@ function calculate_reroll_cost(skip_increment)
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
   local area = area or G.jokers
+  local pseudo = function(x)
+    return pseudorandom(pseudoseed(x))
+  end
+  local ps = pseudoseed
+  if area == "ERROR" then
+    pseudo = function(x)
+        return pseudorandom(predict_pseudoseed(x))
+    end
+    ps = predict_pseudoseed
+  end
   local center = G.P_CENTERS.b_red
   if (_type == 'Joker') and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
     forced_key = "j_cry_rnjoker"
@@ -1170,20 +1180,20 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
       for _, v in ipairs(SMODS.Consumable.legendaries) do
           if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) then
-              if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+              if pseudo('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
                   forced_key = v.key
               end
           end
       end
           if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
       not (G.GAME.used_jokers['c_soul'] and not next(find_joker("Showman")))  then
-          if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+          if pseudo('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
               forced_key = 'c_soul'
           end
       end
       if (_type == 'Planet' or _type == 'Spectral') and
       not (G.GAME.used_jokers['c_black_hole'] and not next(find_joker("Showman")))  then 
-          if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+          if pseudo('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
               forced_key = 'c_black_hole'
           end
       end
@@ -1199,18 +1209,24 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
       center = G.P_CENTERS[forced_key]
       _type = (center.set ~= 'Default' and center.set or _type)
   else
+      gcparea = area
       local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
-      center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+      gcparea = nil
+      center = pseudorandom_element(_pool, ps(_pool_key))
       local it = 1
       while center == 'UNAVAILABLE' do
           it = it + 1
-          center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+          center = pseudorandom_element(_pool, ps(_pool_key..'_resample'..it))
       end
 
       center = G.P_CENTERS[center]
   end
 
-  local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, pseudoseed('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+  local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, ps('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
+  
+  if area == "ERROR" then
+    return (front or center)
+  end
 
   local card = Card(area and (area.T.x + area.T.w/2) or 0, area and (area.T.y) or 0, G.CARD_W*(center and center.set == 'Booster' and 1.27 or 1), G.CARD_H*(center and center.set == 'Booster' and 1.27 or 1), front, center,
   {bypass_discovery_center = area==G.shop_jokers or area == G.pack_cards or area == G.shop_vouchers or (G.shop_demo and area==G.shop_demo) or area==G.jokers or area==G.consumeables,

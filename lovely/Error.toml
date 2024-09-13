@@ -11,6 +11,11 @@ pattern = "elseif self.ability.name == 'Misprint' then"
 position = "before"
 payload = '''
 elseif self.ability.name == 'cry-Error' then
+    if G.GAME and G.GAME.pseudorandom and G.STAGE == G.STAGES.RUN then
+        cry_error_msgs[#cry_error_msgs].string = "%%" .. predict_card_for_shop()
+    else
+        cry_error_msgs[#cry_error_msgs].string = "%%J6"
+    end
     main_start = {
         {n=G.UIT.O, config={object = DynaText({string = cry_error_operators, colours = {G.C.DARK_EDITION,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.30, scale = 0.32, min_cycle_time = 0})}},
         {n=G.UIT.O, config={object = DynaText({string = cry_error_numbers, colours = {G.C.DARK_EDITION,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.33, scale = 0.32, min_cycle_time = 0})}},
@@ -18,6 +23,16 @@ elseif self.ability.name == 'cry-Error' then
         colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.4011, scale = 0.32, min_cycle_time = 0})}},
     }
 '''
+match_indent = true
+
+# Patch get_current_pool to predict for ERROR desc
+# There's also a consumable rarity patch I should do but don't feel like overriding SMODS right now
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "local rarity = _rarity or pseudorandom('rarity'..G.GAME.round_resets.ante..(_append or ''))"
+position = "at"
+payload = "local rarity = _rarity or pseudorandom(_G[gcparea == 'ERROR' and 'predict_pseudoseed' or 'pseudoseed']('rarity'..G.GAME.round_resets.ante..(_append or '')))"
 match_indent = true
 
 [[patches]]

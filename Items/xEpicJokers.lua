@@ -347,11 +347,12 @@ local error_joker = {
 				card.ability.extra.active = true
 				local eval = function(card) return not card.REMOVED end
 				juice_card_until(self, eval, true)
+			else
+				return {
+					message = "???",
+					colour = G.C.BLACK
+				}
 			end
-			return {
-				message = "???",
-				colour = G.C.BLACK
-			}
 		end
 		if context.selling_self and card.ability.extra.active and not context.retrigger_joker and not context.blueprint then
 			local eval = function(card) return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES end
@@ -1413,8 +1414,52 @@ return {name = "Epic Jokers",
 				{string = 'Tarots', colour = G.C.SECONDARY_SET.Tarot},
 				{string = 'Planets', colour = G.C.SECONDARY_SET.Planet},
 				{string = 'Specls', colour = G.C.SECONDARY_SET.Spectral},
-				{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
+				{string = '%%ERROR', colour = G.C.CRY_ASCENDANT}, --temp string, this will be modified
 			}
+
+			function predict_pseudoseed(key)
+				local M = G.GAME.pseudorandom[key] or pseudohash(key..(G.GAME.pseudorandom.seed or ''))
+				local m = math.abs(tonumber(string.format("%.13f", (2.134453429141+M*1.72431234)%1)))
+  				return (m + (G.GAME.pseudorandom.hashed_seed or 0))/2
+			end
+
+			function predict_card_for_shop()
+				G.GAME.spectral_rate = G.GAME.spectral_rate or 0
+				local total_rate = G.GAME.joker_rate + G.GAME.playing_card_rate
+				for _,v in ipairs(SMODS.ConsumableType.obj_buffer) do
+					total_rate = total_rate + G.GAME[v:lower()..'_rate']
+				end
+				local polled_rate = pseudorandom(predict_pseudoseed('cdt'..G.GAME.round_resets.ante))*total_rate
+				local check_rate = 0
+				-- need to preserve order to leave RNG unchanged
+				local rates = {
+				  {type = 'Joker', val = G.GAME.joker_rate},
+				  {type = 'Tarot', val = G.GAME.tarot_rate},
+				  {type = 'Planet', val = G.GAME.planet_rate},
+				  {type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(predict_pseudoseed('illusion')) > 0.6) and 'Enhanced' or 'Base', val = G.GAME.playing_card_rate},
+				  {type = 'Spectral', val = G.GAME.spectral_rate},
+				}
+				for _, v in ipairs(SMODS.ConsumableType.obj_buffer) do
+					if not (v == 'Tarot' or v == 'Planet' or v == 'Spectral') then
+						table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] })
+					end
+				end
+				for _, v in ipairs(rates) do
+					if polled_rate > check_rate and polled_rate <= check_rate + v.val then
+						local c = create_card(v.type, "ERROR", nil, nil, nil, nil, nil, 'sho')
+						if not c.set then
+							return v.type:sub(1,1) .. c.suit:sub(1,1) .. c.value:sub(1,2)
+						else
+							for i = 1, #G.P_CENTER_POOLS[c.set] do
+								if G.P_CENTER_POOLS[c.set][i].key == c.key then
+									return c.set:sub(1,1) .. i
+								end
+							end
+						end
+					end
+					check_rate = check_rate + v.val
+				end
+			end
 
 			cry_enable_epics = true
 			--Number Blocks Patches
