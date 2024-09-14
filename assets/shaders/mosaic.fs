@@ -119,7 +119,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	number delta = 0.2+0.3*(high- low) + 0.1*high;
 
 	number gridsize = 0.6;
-    number fac = max(max(0., 7.*abs(cos(uv.x*gridsize*20.))-6.), max(0., 7.*cos(uv.y*gridsize*45)-6.));
+    number fac = max(max(0., 7.*abs(cos(uv.x*gridsize*20.))-6.), max(0., 7.*cos(uv.y*gridsize*45.)-6.));
 	
 	hsl.x = hsl.x + res + fac;
 	hsl.y = hsl.y*1.3;	

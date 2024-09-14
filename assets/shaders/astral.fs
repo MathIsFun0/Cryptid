@@ -107,7 +107,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	vec4 hsl = HSL(vec4(tex.r*saturation_fac, tex.g*saturation_fac, tex.b, tex.a));
 
-	float t = astral.y*2.221 + mod(time,1);
+	float t = astral.y*2.221 + mod(time,1.);
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 50.;
 	
@@ -122,7 +122,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float res = (.5 + .5* cos( (astral.x) * 2.612 + ( field + -.5 ) *3.14));
 	hsl.x = .8;
 	hsl.y = hsl.y * 0.8;
-	hsl.z = hsl.z * 0.2 + 0.6 * sin(hsl.z/2.5 - res/4 + sin(astral.y)/8 + 0.5)/1.4;
+	hsl.z = hsl.z * 0.2 + 0.6 * sin(hsl.z/2.5 - res/4. + sin(astral.y)/8. + 0.5)/1.4;
 
     tex.rgb = RGB(hsl).rgb;
 
