@@ -30,7 +30,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     float random = rand(uv);
 
-    if (pixel.a > 0) pixel.a += 0.1*sin(noisy.x) - 0.51;
+    if (pixel.a > 0.) pixel.a += 0.1*sin(noisy.x) - 0.51;
 	
 	return dissolve_mask(vec4(pixel.rgb * random, pixel.a), texture_coords, uv);
 }
