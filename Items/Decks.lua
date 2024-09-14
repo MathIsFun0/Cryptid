@@ -222,7 +222,7 @@ local critical = {
     name = "cry-Critical",
     key = "critical",
     config = {cry_crit_rate = 0.25, cry_crit_miss_rate = 0.125},
-    pos = {x = 5, y = 0},
+    pos = {x = 4, y = 5},
     atlas = "atlasdeck",
     loc_txt = {
         name = "Critical Deck",

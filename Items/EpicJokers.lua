@@ -1276,7 +1276,7 @@ local goldjoker = {
     		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*G.GAME.dollars))
+		local bonus = math.max(0,math.floor(0.01*card.ability.extra.percent*(G.GAME.dollars or 0)))
         if bonus > 0 then return bonus end
 	end
 }
@@ -1291,7 +1291,7 @@ if JokerDisplay then
             { ref_table = "card.joker_display_values", ref_value = "localized_text" },
         },
         calc_function = function(card)
-            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * G.GAME.dollars))
+            local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
             card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
             card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
         end
