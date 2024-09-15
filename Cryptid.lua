@@ -1243,7 +1243,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
   local front = ((_type=='Base' or _type == 'Enhanced') and pseudorandom_element(G.P_CARDS, ps('front'..(key_append or '')..G.GAME.round_resets.ante))) or nil
   
   if area == "ERROR" then
-    return (front or center)
+    local ret = (front or center)
+    if not ret.config then ret.config = {} end
+    if not ret.config.center then ret.config.center = {} end
+    if not ret.config.center.key then ret.config.center.key = "" end
+    return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
   end
 
   local card = Card(area and (area.T.x + area.T.w/2) or 0, area and (area.T.y) or 0, G.CARD_W*(center and center.set == 'Booster' and 1.27 or 1), G.CARD_H*(center and center.set == 'Booster' and 1.27 or 1), front, center,
