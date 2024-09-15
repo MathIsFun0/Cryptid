@@ -1944,10 +1944,11 @@ return {
 				self.dbl_side = cry_deep_copy(self)
 			end
 			local tmp_side = cry_deep_copy(self.dbl_side)
+			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
+			self.T.w, self.T.h = G.CARD_W, G.CARD_H
 			copy_dbl_card(self, self.dbl_side, false)
 			copy_dbl_card(tmp_side, self, true)
-			--this does NOT like resizing or animated jokers right now
-			--don't really know how to fix this
+			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
 		end
 		local csave = Card.save
 		function Card:save()
