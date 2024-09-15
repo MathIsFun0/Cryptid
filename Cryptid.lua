@@ -15,6 +15,7 @@
 if not Cryptid then
 	Cryptid = {}
 end
+--Cryptid.debug = true
 
 local mod_path = "" .. SMODS.current_mod.path
 -- Load Options
@@ -2501,6 +2502,10 @@ SMODS.Sound({
 SMODS.Sound({
 	key = "e_blur",
 	path = "e_blur.ogg",
+})
+SMODS.Sound({
+	key = "e_double_sided",
+	path = "e_double_sided.ogg",
 })
 SMODS.Sound({
 	key = "e_jolly",
