@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
---- VERSION: 0.5.0a~0912c
+--- VERSION: 0.5.1~0914a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -634,7 +634,8 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 										if
 											is_number(_u)
 											and to_number(to_big(predicted_mod / _u)) >= 0.999
-											and to_number(to_big(predicted_mod / _u)) < to_number(to_big(best_coeff))
+											and to_number(to_big(predicted_mod / _u))
+												< to_number(to_big(best_coeff))
 										then
 											best_coeff = to_number(to_big(predicted_mod / _u))
 											best_key = { l, _l }

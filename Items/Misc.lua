@@ -264,10 +264,10 @@ local oversat = {
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, nil, true)
-			cry_misprintize(
-				card,
-				{ min = 2 * (G.GAME.modifiers.cry_misprint_min or 1), max = 2 * (G.GAME.modifiers.cry_misprint_max or 1) }
-			)
+			cry_misprintize(card, {
+				min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
+				max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
+			})
 		end)
 	end,
 	on_remove = function(card)
@@ -359,11 +359,10 @@ local glitched = {
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, nil, true)
-			cry_misprintize(
-				card,
-				{ min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1), max = 10
-					* (G.GAME.modifiers.cry_misprint_max or 1) }
-			)
+			cry_misprintize(card, {
+				min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+				max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+			})
 		end)
 	end,
 	on_remove = function(card)
@@ -928,6 +927,48 @@ local gold_edition = {
 		text = {
 			"{C:money}+$#1#{} when used",
 			"or triggered",
+		},
+	},
+	calculate = function(self, card, context)
+		if
+			context.joker_triggered
+			or context.from_consumable
+			or (
+				context.from_playing_card
+				and context.cardarea
+				and context.cardarea == G.play
+				and not context.repetition
+			)
+		then
+			ease_dollars(self.config.dollars)
+			card_eval_status_text(
+				card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize("$") .. self.config.dollars, colour = G.C.MONEY }
+			)
+		end
+	end,
+}
+
+local double_sided = {
+	object_type = "Edition",
+	key = "double_sided",
+	weight = 10,
+	extra_cost = 0,
+	on_apply = function(card)
+		-- Ok so definitely do something with this but not now
+	end,
+	loc_txt = {
+		name = "Double-Sided",
+		label = "Double-Sided",
+		text = {
+			"This card can be",
+			"{C:attention}flipped{} to reveal",
+			"a different card",
+			"{s:0.8}Currently: ???",
 		},
 	},
 	calculate = function(self, card, context)
