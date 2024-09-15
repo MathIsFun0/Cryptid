@@ -1322,6 +1322,8 @@ return {name = "Blinds",
             local dft = Blind.defeat
             function Blind:defeat(s)
                 dft(self, s)
+                local obj = self.config.blind
+                if obj.boss and (obj.boss.no_orb or obj.boss.epic) then return end
                 if self.name ~= "cry-Obsidian Orb" and 
                    (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"]) and
                    (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"]) and
