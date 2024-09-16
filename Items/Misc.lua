@@ -1542,8 +1542,10 @@ local meld = {
 	use = function(self, card, area, copier)
 		if #G.jokers.highlighted == 1 then
 			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
 		else
 			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.hand:remove_from_highlighted(G.hand.highlighted[1])
 		end
 	end,
 }
@@ -1583,6 +1585,8 @@ local miscitems = {
 	bundle,
 	memory,
 	schematic,
+	double_sided,
+	meld
 }
 if cry_enable_epics then
 	miscitems[#miscitems + 1] = epic_tag
@@ -1590,10 +1594,6 @@ end
 if cry_minvasion then
 	miscitems[#miscitems + 1] = jollyeditionshader
 	miscitems[#miscitems + 1] = jollyedition
-end
-if Cryptid.debug then
-	miscitems[#miscitems + 1] = double_sided
-	miscitems[#miscitems + 1] = meld
 end
 return {
 	name = "Misc.",
@@ -1722,6 +1722,7 @@ return {
 			for i = 1, #area.highlighted do
 				if area.highlighted[i].edition and area.highlighted[i].edition.cry_double_sided then
 					mergable = mergable + 1
+					mergedcard = area.highlighted[i]
 				end
 			end
 			if mergable == 1 then
@@ -1745,14 +1746,9 @@ return {
 				func = function()
 					local area = e.config.ref_table.area
 					area:remove_card(e.config.ref_table)
-					for i = 1, #area.highlighted do
-						if area.highlighted[i].edition and area.highlighted[i].edition.cry_double_sided then
-							area.highlighted[i].dbl_side = cry_deep_copy(e.config.ref_table)
-							e.config.ref_table:remove()
-							e.config.ref_table = nil
-							return true
-						end
-					end
+					copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
+					e.config.ref_table:remove()
+					e.config.ref_table = nil
 					return true
 				end,
 			}))
@@ -1760,7 +1756,12 @@ return {
 		local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
 		function G.UIDEF.use_and_sell_buttons(card)
 			local retval = use_and_sell_buttonsref(card)
-			if card.area and card.edition and card.added_to_deck and card.edition.cry_double_sided then
+			if
+				card.area
+				and card.edition
+				and (card.added_to_deck or card.area == G.hand)
+				and card.edition.cry_double_sided
+			then
 				local use = {
 					n = G.UIT.C,
 					config = { align = "cr" },
@@ -1795,18 +1796,22 @@ return {
 						},
 					},
 				}
-				retval.nodes[1].nodes = retval.nodes[1].nodes or {}
-				table.insert(
-					retval.nodes[1].nodes,
-					{ n = G.UIT.R, config = { align = "cl" }, nodes = {
-						use,
-					} }
-				)
+				local m = retval.nodes[1]
+				if not card.added_to_deck then
+					use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+					if card.ability.consumeable then
+						m = retval
+					end
+				end
+				m.nodes = m.nodes or {}
+				table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+					use,
+				} })
 				return retval
 			end
 			if
 				card.area
-				and card.added_to_deck
+				and (card.added_to_deck or (card.base and card.base.value))
 				and (not card.edition or not card.edition.cry_double_sided)
 				and not card.ability.eternal
 			then
@@ -1846,13 +1851,17 @@ return {
 								},
 							},
 						}
-						retval.nodes[1].nodes = retval.nodes[1].nodes or {}
-						table.insert(
-							retval.nodes[1].nodes,
-							{ n = G.UIT.R, config = { align = "cl" }, nodes = {
-								use,
-							} }
-						)
+						local m = retval.nodes[1]
+						if not card.added_to_deck then
+							use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+							if card.ability.consumeable then
+								m = retval
+							end
+						end
+						m.nodes = m.nodes or {}
+						table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+							use,
+						} })
 						return retval
 					end
 				end
@@ -1872,7 +1881,6 @@ return {
 			end
 		end
 		function copy_dbl_card(C, c, deck_effects)
-			--set ability c.config.center
 			if not c.T then
 				c.T = C.T
 			end
@@ -1930,6 +1938,8 @@ return {
 				local suit = SMODS.Suits[c.base.suit] or {}
 				c.base.suit_nominal = suit.suit_nominal or 0
 				c.base.suit_nominal_original = suit_base_nominal_original or suit.suit_nominal or 0
+			else
+				c.base = nil
 			end
 			for k, v in pairs(C.ability) do
 				c.ability[k] = C.ability[k]
@@ -1940,8 +1950,12 @@ return {
 			Card.set_cost(c)
 		end
 		function Card:dbl_side_flip()
+			local fresh_copy = false
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
+				self.dbl_side:set_ability(G.P_CENTERS.c_base)
+				self.dbl_side:set_base(G.P_CARDS.blank)
+				fresh_copy = true
 			end
 			local tmp_side = cry_deep_copy(self.dbl_side)
 			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
@@ -1949,6 +1963,27 @@ return {
 			copy_dbl_card(self, self.dbl_side, false)
 			copy_dbl_card(tmp_side, self, true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
+			if self.config.card and self.base and self.config.card_key then
+				--Note: this causes a one-frame stutter
+				self:set_sprites(nil, self.config.card)
+				if self.children.front then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
+			end
+			if (not self.base or not self.base.name) and self.children.front then
+				self.children.front:remove()
+				self.children.front = nil
+			end
+			if fresh_copy and self.area == G.hand then
+				self.config.center.no_rank = true
+			end
+		end
+		function Card:is_face(from_boss)
+			if self.debuff and not from_boss then return end
+			local id = self:get_id()
+			local rank = SMODS.Ranks[self.base.value]
+			if not id then return end
+			if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
+				return true
+			end
 		end
 		local csave = Card.save
 		function Card:save()

@@ -296,3 +296,12 @@ pattern = '''local edition_effects = eval_card(_card, {cardarea = G.jokers, full
 position = "after"
 payload = '''if not edition_effects then edition_effects = {} end'''
 match_indent = true
+
+# m
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.consumeable or self.ability.set == 'Joker' or (self.area and self.area == G.pack_cards) then'''
+position = "at"
+payload = '''if true then'''
+match_indent = true
