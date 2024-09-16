@@ -435,21 +435,20 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 2340
-		GLOBAL_cry_member_count = love.thread.getChannel("member_count"):pop()
+		local old = GLOBAL_cry_member_count or 2800
+		local ret = love.thread.getChannel("member_count"):pop()
+		if ret then
+			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
+		end
 		if not GLOBAL_cry_member_count then
 			GLOBAL_cry_member_count = old
-			GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
-			if GLOBAL_cry_member_error >= 15 then
-				local error = love.thread.getChannel("member_error"):pop()
-				if error then
-					sendDebugMessage(error)
-				end
-				GLOBAL_cry_member_error = 0
+			local error = love.thread.getChannel("member_error"):pop()
+			if error then
+				sendDebugMessage(error)
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 2340
+		GLOBAL_cry_member_count = 2800
 	end
 end
 
@@ -1657,6 +1656,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		if not ret.config.center.key then
 			ret.config.center.key = ""
 		end
+		if not ret.ability then ret.ability = {} end
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
@@ -2040,6 +2040,7 @@ function cry_misprintize(card, override, force_reset, stack)
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 	then
+		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}

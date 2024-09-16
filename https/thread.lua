@@ -24,13 +24,11 @@ while true do
 	if (os.time() - last_update_time >= 60) or initial then
 		initial = nil
 		last_update_time = os.time()
-		local resp, txt = loc_https.request("https://gist.githubusercontent.com/Toneblock/7478d96bcf04e3b470b23d85c98e6a8c/raw/text.txt".."?v=" .. tostring(os.time()))
+		local resp, txt = loc_https.request("https://discord.com/api/v10/invites/eUf9Ur6RyB?with_counts=true".."&v=" .. tostring(os.time()))
 		if resp == 200 then
-			love.thread.getChannel('member_count'):push(tonumber(txt))
+			love.thread.getChannel('member_count'):push(txt)
 		else
-			if not txt then txt = 2000 end		-- placeholder value, if you see this it means something's gone wrong (or you're just not connected)
-			love.thread.getChannel('member_error'):push("Failed to index gist: "..resp)
-			love.thread.getChannel('member_count'):push(tonumber(txt))
+			love.thread.getChannel('member_error'):push("Failed to get count: "..resp)
 		end
 	end
 end
