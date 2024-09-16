@@ -1656,6 +1656,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		if not ret.config.center.key then
 			ret.config.center.key = ""
 		end
+		if not ret.ability then ret.ability = {} end
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
