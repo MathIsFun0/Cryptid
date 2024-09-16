@@ -830,6 +830,7 @@ local glass_edition = {
 	object_type = "Edition",
 	key = "glass",
 	shader = "glass",
+	in_shop = true,
 	disable_base_shader = true,
 	disable_shadow = true,
 	on_apply = function(card)
@@ -908,6 +909,7 @@ local gold_edition = {
 	shader = "gold",
 	weight = 7,
 	extra_cost = 2,
+	in_shop = true,
 	config = { dollars = 2 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.dollars } }
@@ -953,13 +955,13 @@ local gold_edition = {
 	end,
 }
 
---Todo: get this working on playing cards
 local double_sided = {
 	object_type = "Edition",
 	key = "double_sided",
 	shader = false,
 	weight = 10,
 	extra_cost = 0,
+	in_shop = true,
 	sound = {
 		sound = "cry_e_double_sided",
 		per = 1,
@@ -981,6 +983,9 @@ local double_sided = {
 			"Axolotolus",
 		},
 	},
+	get_weight = function(self)
+		return G.GAME.edition_rate * self.weight * (G.GAME.used_vouchers.v_cry_double_vision and 4 or 1)
+	end,
 }
 local echo_atlas = {
 	object_type = "Atlas",
@@ -1512,13 +1517,12 @@ local memory = {
 	end,
 }
 
---This should probably be moved to Spectrals later
 local meld = {
 	object_type = "Consumable",
-	set = "Spectral",
+	set = "Tarot",
 	name = "cry-Meld",
 	key = "meld",
-	pos = { x = 2, y = 2 },
+	pos = { x = 1, y = 2 },
 	config = { extra = 4 },
 	loc_txt = {
 		name = "Meld",
@@ -1548,6 +1552,9 @@ local meld = {
 			G.hand:remove_from_highlighted(G.hand.highlighted[1])
 		end
 	end,
+	in_pool = function()
+		return G.GAME.used_vouchers.v_cry_double_slit
+	end
 }
 
 local miscitems = {

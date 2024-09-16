@@ -187,6 +187,80 @@ local pairamount_plus = {
 		},
 	},
 }
+local double_vision = {
+	object_type = "Voucher",
+	key = "double_vision",
+	atlas = "atlasvoucher",
+	pos = { x = 0, y = 0 },
+	loc_txt = {
+		name = "Double Vision",
+		text = {
+			"{C:dark_edition}Double-Sided{} cards appear",
+			"{C:attention}4X{} more frequently",
+		},
+	},
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+}
+local double_slit = {
+	object_type = "Voucher",
+	key = "double_slit",
+	atlas = "atlasvoucher",
+	pos = { x = 1, y = 0 },
+	requires = { "v_cry_double_vision" },
+	loc_txt = {
+		name = "Double Slit",
+		text = {
+			"{C:attention}Meld{} can appear",
+			"in the shop and",
+			"Arcana Packs",
+		},
+	},
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_meld
+	end,
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+}
+local double_down = {
+	object_type = "Voucher",
+	key = "double_down",
+	atlas = "atlasvoucher",
+	pos = { x = 2, y = 0 },
+	requires = { "v_cry_double_slit" },
+	loc_txt = {
+		name = "Double Down",
+		text = {
+			"After every round,",
+			"{X:dark_edition,C:white} X1.5 {} to all values",
+			"on the back of",
+			"{C:dark_edition}Double-Sided{} cards"
+		},
+	},
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+}
 local overstock_multi = {
 	object_type = "Voucher",
 	key = "overstock_multi",
@@ -720,6 +794,11 @@ if Cryptid.enabled["M Jokers"] then
 	voucheritems[#voucheritems + 1] = pairing
 	voucheritems[#voucheritems + 1] = repair_man
 	voucheritems[#voucheritems + 1] = pairamount_plus
+end
+if Cryptid.enabled["Misc."] then
+	voucheritems[#voucheritems + 1] = double_vision
+	voucheritems[#voucheritems + 1] = double_slit
+	voucheritems[#voucheritems + 1] = double_down
 end
 return {
 	name = "Vouchers",

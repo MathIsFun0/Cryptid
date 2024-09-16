@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
---- VERSION: 0.5.1~0914a
+--- VERSION: 0.5.1~0916a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1946,7 +1946,10 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 				if
 					is_number(tbl[k])
 					and not (k == "id")
+					and not (k == "colour")
 					and not (k == "suit_nominal")
+					and not (k == "base_nominal")
+					and not (k == "face_nominal")
 					and not (k == "qty")
 					and not (k == "x_mult" and v == 1 and not tbl.override_x_mult_check)
 					and not (k == "selected_d6_face")
@@ -1975,10 +1978,13 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
+						and not (k == "colour")
 						and not (_k == "suit_nominal")
-						and not (k == "qty")
+						and not (_k == "base_nominal")
+						and not (_k == "face_nominal")
+						and not (_k == "qty")
 						and not (k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
-						and not (k == "selected_d6_face")
+						and not (_k == "selected_d6_face")
 					then --Refer to above
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
@@ -2045,6 +2051,9 @@ function cry_misprintize(card, override, force_reset, stack)
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
 			cry_misprintize_tbl(card.config.center_key, card.ability, nil, override, stack)
+			if card.base then
+				cry_misprintize_tbl(card.config.card_key, card.base, nil, override, stack)
+			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then
 			--card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
