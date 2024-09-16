@@ -435,21 +435,20 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 2340
-		GLOBAL_cry_member_count = love.thread.getChannel("member_count"):pop()
+		local old = GLOBAL_cry_member_count or 2800
+		local ret = love.thread.getChannel("member_count"):pop()
+		if ret then
+			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
+		end
 		if not GLOBAL_cry_member_count then
 			GLOBAL_cry_member_count = old
-			GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
-			if GLOBAL_cry_member_error >= 15 then
-				local error = love.thread.getChannel("member_error"):pop()
-				if error then
-					sendDebugMessage(error)
-				end
-				GLOBAL_cry_member_error = 0
+			local error = love.thread.getChannel("member_error"):pop()
+			if error then
+				sendDebugMessage(error)
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 2340
+		GLOBAL_cry_member_count = 2800
 	end
 end
 
