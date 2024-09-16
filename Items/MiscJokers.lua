@@ -2458,6 +2458,7 @@ local unjust_dagger = {
 		return { vars = { center.ability.extra.x_mult } }
 	end,
 	atlas = "atlasone",
+	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
 			context.cardarea == G.jokers
@@ -2552,6 +2553,7 @@ local monkey_dagger = {
 	rarity = 2,
 	cost = 6,
 	perishable_compat = false,
+	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.chips } }
 	end,
@@ -2647,6 +2649,7 @@ local pirate_dagger = {
 	rarity = 2,
 	cost = 8,
 	perishable_compat = false,
+	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.x_chips } }
 	end,
