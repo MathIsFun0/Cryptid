@@ -497,7 +497,7 @@ local pin = {
 		end
 		for i, j in pairs(G.jokers.cards) do
 			if
-				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3))
+				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3) or (j.config.center.rarity == 5))
 			then
 				return true
 			end
@@ -508,7 +508,7 @@ local pin = {
 		if
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
-			and (card.config.center.rarity ~= 3 and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1)
+			and (card.config.center.rarity ~= 3 and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1 and card.config.center.rarity ~= 5)
 		then
 			return true
 		end
