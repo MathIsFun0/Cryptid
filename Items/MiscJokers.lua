@@ -5652,6 +5652,141 @@ if JokerDisplay then
 		text_config = { colour = G.C.ORANGE },
 	}
 end
+
+local flipside = {
+	object_type = "Joker",
+	name = "cry-Flip Side",
+	key = "flip_side",
+	pos = { x = 0, y = 0 },
+	loc_txt = {
+		name = "On the Flip Side",
+		text = {
+			"{C:dark_edition}Double-Sided{} Jokers use",
+			"their back side for effects",
+			"{C:attention}Retrigger{} all {C:dark_edition}Double-Sided{} Jokers"
+		},
+	},
+	rarity = 2,
+	cost = 7,
+	atlas = "placeholders",
+	source_gate = "sho",
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
+				G.jokers.cards[i]:init_dbl_side()
+				G.jokers.cards[i]:remove_from_deck(true)
+				G.jokers.cards[i].dbl_side:add_to_deck(true)
+			end
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
+				G.jokers.cards[i]:init_dbl_side()
+				G.jokers.cards[i]:add_to_deck(true)
+				G.jokers.cards[i].dbl_side:remove_from_deck(true)
+			end
+		end
+	end,
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+	calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if context.other_context.dbl_side then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = 1,
+					card = card,
+				}
+			else
+				return nil, true
+			end
+		end
+	end,
+	
+}
+local miscitems =  {
+	jimball_sprite,
+	dropshot,
+	happyhouse,
+	maximized,
+	potofjokes,
+	queensgambit,
+	wee_fib,
+	compound_interest,
+	whip,
+	pickle,
+	triplet_rhythm,
+	booster,
+	chili_pepper,
+	lucky_joker,
+	cursor,
+	cube,
+	big_cube,
+	nice,
+	sus,
+	chad,
+	jimball,
+	luigi,
+	waluigi,
+	mario,
+	wario,
+	eternalflame,
+	seal_the_deal,
+	fspinner,
+	krustytheclown,
+	blurred,
+	gardenfork,
+	lightupthenight,
+	nosound,
+	antennastoheaven,
+	hunger,
+	weegaming,
+	redbloon,
+	apjoker,
+	maze,
+	panopticon,
+	magnet,
+	unjust_dagger,
+	monkey_dagger,
+	pirate_dagger,
+	mondrian,
+	sapling,
+	spaceglobe,
+	happy,
+	meteor,
+	exoplanet,
+	stardust,
+	rnjoker,
+	filler,
+	duos,
+	home,
+	nuts,
+	quintet,
+	unity,
+	swarm,
+	coin,
+	wheelhope,
+	night,
+	busdriver,
+	oldblueprint,
+	morse,
+	translucent,
+	membershipcard,
+	kscope,
+	cryptidmoment
+}
+if Cryptid.enabled["Misc."] then
+	miscitems[#miscitems+1] = flipside
+end
 return {
 	name = "Misc. Jokers",
 	init = function()
@@ -5746,75 +5881,5 @@ return {
 			end
 		end
 	end,
-	items = {
-		jimball_sprite,
-		dropshot,
-		happyhouse,
-		maximized,
-		potofjokes,
-		queensgambit,
-		wee_fib,
-		compound_interest,
-		whip,
-		pickle,
-		triplet_rhythm,
-		booster,
-		chili_pepper,
-		lucky_joker,
-		cursor,
-		cube,
-		big_cube,
-		nice,
-		sus,
-		chad,
-		jimball,
-		luigi,
-		waluigi,
-		mario,
-		wario,
-		eternalflame,
-		seal_the_deal,
-		fspinner,
-		krustytheclown,
-		blurred,
-		gardenfork,
-		lightupthenight,
-		nosound,
-		antennastoheaven,
-		hunger,
-		weegaming,
-		redbloon,
-		apjoker,
-		maze,
-		panopticon,
-		magnet,
-		unjust_dagger,
-		monkey_dagger,
-		pirate_dagger,
-		mondrian,
-		sapling,
-		spaceglobe,
-		happy,
-		meteor,
-		exoplanet,
-		stardust,
-		rnjoker,
-		filler,
-		duos,
-		home,
-		nuts,
-		quintet,
-		unity,
-		swarm,
-		coin,
-		wheelhope,
-		night,
-		busdriver,
-		oldblueprint,
-		morse,
-		translucent,
-		membershipcard,
-		kscope,
-		cryptidmoment,
-	},
+	items = miscitems,
 }

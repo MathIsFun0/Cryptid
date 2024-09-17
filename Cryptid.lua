@@ -5,8 +5,8 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
---- VERSION: 0.5.1~0916a
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
+--- VERSION: 0.5.1~0917a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -888,28 +888,40 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 end
 
 function Card:calculate_joker(context)
-	if self.will_shatter then
+	local active_side = self
+	if next(find_joker("cry-Flip Side")) and not context.dbl_side and self.edition and self.edition.cry_double_sided then
+		self:init_dbl_side()
+		active_side = self.dbl_side
+		if context.callback then
+			local m = context.callback
+			context.callback = function(card,a,b)
+				m(self,a,b)
+			end
+			context.dbl_side = true
+		end
+	end
+	if active_side.will_shatter then
 		return
 	end
 	local ggpn = G.GAME.probabilities.normal
 	if not G.GAME.cry_double_scale then
 		G.GAME.cry_double_scale = { double_scale = true } --doesn't really matter what's in here as long as there's something
 	end
-	if self.ability.cry_rigged then
+	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = 1e9
 	end
-	local orig_ability = self:cry_copy_ability()
+	local orig_ability = active_side:cry_copy_ability()
 	local in_context_scaling = false
-	local ret, trig = cj(self, context)
-	if not context.blueprint and (self.ability.set == "Joker") and not self.debuff then
+	local ret, trig = cj(active_side, context)
+	if not context.blueprint and (active_side.ability.set == "Joker") and not active_side.debuff then
 		if ret or trig then
 			in_context_scaling = true
 		end
 	end
-	if self.ability.cry_rigged then
+	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	self:cry_double_scale_calc(orig_ability, in_context_scaling)
+	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
 	return ret, trig
 end
 

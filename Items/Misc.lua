@@ -1769,7 +1769,7 @@ return {
 			if
 				card.area
 				and card.edition
-				and (card.added_to_deck or card.area == G.hand)
+				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and card.edition.cry_double_sided
 			then
 				local use = {
@@ -1821,7 +1821,7 @@ return {
 			end
 			if
 				card.area
-				and (card.added_to_deck or (card.base and card.base.value))
+				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and (not card.edition or not card.edition.cry_double_sided)
 				and not card.ability.eternal
 			then
@@ -1977,10 +1977,16 @@ return {
 			local tmp_side = cry_deep_copy(self.dbl_side)
 			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
 			self.T.w, self.T.h = G.CARD_W, G.CARD_H
-			if not init_dbl_side then self:remove_from_deck(true) end
+			local active_side = self
+			if next(find_joker("cry-Flip Side")) and self.dbl_side then
+				active_side = self.dbl_side
+			end
+			if not init_dbl_side then 
+				active_side:remove_from_deck(true) 
+			end
 			copy_dbl_card(self, self.dbl_side, false)
 			copy_dbl_card(tmp_side, self, false)
-			self:add_to_deck(true)
+			active_side:add_to_deck(true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
 			if self.config.card and self.base and self.config.card_key then
 				--Note: this causes a one-frame stutter
@@ -2001,6 +2007,11 @@ return {
 				return true
 			end
 		end
+		local cgcb = Card.get_chip_bonus
+		function Card:get_chip_bonus()
+			if self.ability.set == "Joker" then return 0 end
+			return cgcb(self)
+		end
 		local csave = Card.save
 		function Card:save()
 			local cardTable = csave(self)
@@ -2018,6 +2029,7 @@ return {
 				self.dbl_side.VT = self.VT
 				function self.dbl_side.set_sprites() end
 				cload(self.dbl_side, cardTable.dbl_side)
+				setmetatable(self.dbl_side, Card)
 			end
 		end
 		local rma = remove_all
