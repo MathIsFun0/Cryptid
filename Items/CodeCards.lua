@@ -8,6 +8,16 @@ local code = {
 		collection = "Code Cards",
 		name = "Code",
 		label = "Code",
+		undiscovered = { 
+ 			name = 'Not Discovered',
+ 			text = {
+				--TODO: fix machine code still displaying it's description when undiscovered
+				"Purchase or use",
+				"this card in an",
+				"unseeded run to",
+				"learn what it does"
+			},
+ 		},
 	},
 	shop_rate = 0.0,
 	default = "c_cry_crash",
@@ -21,6 +31,14 @@ local code_atlas = {
 	px = 71,
 	py = 95,
 }
+SMODS.UndiscoveredSprite({
+	key = "Code",
+	atlas = "code",
+	path = "c_cry_code.png",
+	pos = { x = 2, y = 5 },
+	px = 71,
+	py = 95,
+}):register()
 local pack_atlas = {
 	object_type = "Atlas",
 	key = "pack",
