@@ -1,7 +1,202 @@
 --Work in progress!
---Completed: Cryptid.lua, Achievements
+--Completed: Cryptid.lua, Achievements-Antimatter
 return {
     descriptions = {
+        Back = {
+            b_cry_antimatter = {
+                name = "Antimatter Deck",
+                text = {
+                    "Applies the {C:legendary,E:1}upsides{}",
+                    "of {C:attention}every{} deck",
+                },
+            },
+            b_cry_blank = {
+                name = "Blank Deck",
+                text = {
+                    "{C:inactive,E:1}Does nothing?",
+                },
+            },
+        },
+        Blind = {
+            bl_cry_box = {
+                name = "The Box",
+                text = {
+                    "All Common Jokers",
+                    "are debuffed",
+                },
+            },
+            bl_cry_clock = {
+                name = "The Clock",
+                text = {
+                    "+0.1X blind requirements every",
+                    "3 seconds spent this ante",
+                },
+            },
+            bl_cry_hammer = {
+                name = "The Hammer",
+                text = {
+                    "All cards with odd",
+                    "rank are debuffed",
+                },
+            },
+            bl_cry_joke = {
+                name = "The Joke",
+                text = {
+                    "If score is >2X requirements,",
+                    "set ante to multiple of #1#",
+                },
+            },
+            bl_cry_magic = {
+                name = "The Magic",
+                text = {
+                    "All cards with even",
+                    "rank are debuffed",
+                },
+            },
+            bl_cry_lavender_loop = {
+                name = "Lavender Loop",
+                text = {
+                    "1.25X blind requirements every",
+                    "1.5 seconds spent this round",
+                },
+            },
+            bl_cry_obsidian_orb = {
+                name = "Obsidian Orb",
+                text = {
+                    "Applies abilities of",
+                    "all defeated bosses",
+                },
+            },
+            bl_cry_oldarm = {
+                name = "Nostalgic Arm",
+                text = {
+                    "Must play 4",
+                    "or fewer cards",
+                },
+            },
+            bl_cry_oldfish = {
+                name = "Nostalgic Fish",
+                text = {
+                    "All hands start",
+                    "with 1 Mult",
+                },
+            },
+            bl_cry_oldflint = {
+                name = "Nostalgic Flint",
+                text = {
+                    "No Flushes",
+                },
+            },
+            bl_cry_oldhouse = {
+                name = "Nostalgic House",
+                text = {
+                    "No Full Houses",
+                },
+            },
+            bl_cry_oldmanacle = {
+                name = "Nostalgic Manacle",
+                text = {
+                    "Divide Mult by discards",
+                },
+            },
+            bl_cry_oldmark = {
+                name = "Nostalgic Mark",
+                text = {
+                    "No hands that",
+                    "contain a Pair",
+                },
+            },
+            bl_cry_oldox = {
+                name = "Nostalgic Ox",
+                text = {
+                    "All hands start",
+                    "with 0 Chips",
+                },
+            },
+            bl_cry_oldpillar = {
+                name = "Nostalgic Pillar",
+                text = {
+                    "No Straights",
+                },
+            },
+            bl_cry_oldserpent = {
+                name = "Nostalgic Serpent",
+                text = {
+                    "Divide Mult by level",
+                    "of played poker hand",
+                },
+            },
+            bl_cry_pin = {
+                name = "The Pin",
+                text = {
+                    "Jokers with Epic or higher",
+                    "rarity are debuffed",
+                },
+            },
+            bl_cry_pinkbow = {
+                name = "Pink Bow",
+                text = {
+                    "Randomize rank of cards",
+                    "held in hand on play",
+                },
+            },
+            bl_cry_sapphire_stamp = {
+                name = "Sapphire Stamp",
+                text = {
+                    "Select an extra card, deselect",
+                    "random card before scoring",
+                },
+            },
+            bl_cry_shackle = {
+                name = "The Shackle",
+                text = {
+                    "All Negative Jokers",
+                    "are debuffed",
+                },
+            },
+            bl_cry_striker = {
+                name = "The Striker",
+                text = {
+                    "All Rare Jokers",
+                    "are debuffed",
+                },
+            },
+            bl_cry_tax = {
+                name = "The Tax",
+                text = {
+                    "Score per hand capped at",
+                    "0.4X blind requirements",
+                },
+            },
+            bl_cry_tornado = {
+                name = "Turquoise Tornado",
+                text = {
+                    "#1# in #2# chance for",
+                    "played hand to not score",
+                },
+            },
+            bl_cry_trick = {
+                name = "The Trick",
+                text = {
+                    "After each hand, flip all",
+                    "face-up cards held in hand",
+                },
+            },
+            bl_cry_vermillion_virus = {
+                name = "Vermillion Virus",
+                text = {
+                    "One random Joker",
+                    "replaced every hand",
+                },
+            },
+            bl_cry_windmill = {
+                name = "The Windmill",
+                text = {
+                    "All Uncommon Jokers",
+                    "are debuffed",
+                },
+            },
+        },
         Other = {
             banana = {
                 name = "Banana",
@@ -211,6 +406,16 @@ return {
 
             k_cry_program_pack = "Program Pack",
             k_cry_meme_pack = "Meme Pack",
+
+            cry_critical_hit_ex = "Critical Hit!",
+            cry_critical_miss_ex = "Critical Miss!",
+
+            cry_debuff_oldhouse = "No Full Houses",
+            cry_debuff_oldarm = "Must play 4 or fewer cards",
+            cry_debuff_oldpillar = "No Straights",
+            cry_debuff_oldflint = "No Flushes",
+            cry_debuff_oldmark = "No hands containing a Pair",
+            cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
         },
         labels = {
             food_jokers = "Food Jokers",
