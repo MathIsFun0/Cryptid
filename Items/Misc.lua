@@ -1545,7 +1545,9 @@ local meld = {
 	end,
 	use = function(self, card, area, copier)
 		if #G.jokers.highlighted == 1 then
+			G.jokers.highlighted[1]:remove_from_deck(true)
 			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.jokers.highlighted[1]:add_to_deck(true)
 			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
 		else
 			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
@@ -1753,6 +1755,7 @@ return {
 				func = function()
 					local area = e.config.ref_table.area
 					area:remove_card(e.config.ref_table)
+					mergedcard:init_dbl_side()
 					copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
 					e.config.ref_table:remove()
 					e.config.ref_table = nil
@@ -1909,10 +1912,10 @@ return {
 				c.added_to_deck = false
 			end
 			Card.set_ability(c, C.config.center)
-			if not deck_effects then
+			--[[if not deck_effects then
 				C.added_to_deck = Cdeck
 				c.added_to_deck = cdeck
-			end
+			end--]]
 			c.ability.type = C.ability.type
 			c.config.card = C.config.card
 			c.config.center_key = C.config.center_key
@@ -1956,19 +1959,28 @@ return {
 			c.pinned = C.pinned
 			Card.set_cost(c)
 		end
-		function Card:dbl_side_flip()
-			local fresh_copy = false
+		function Card:init_dbl_side()
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
 				self.dbl_side:set_ability(G.P_CENTERS.c_base)
-				self.dbl_side:set_base(G.P_CARDS.blank)
-				fresh_copy = true
+				self.dbl_side:set_base(G.P_CARDS.empty)
+				if self.area == G.hand then
+					self.dbl_side.config.center = cry_deep_copy(self.dbl_side.config.center)
+					self.dbl_side.config.center.no_rank = true
+				end
+				self.dbl_side.added_to_deck = false
+				return true
 			end
+		end
+		function Card:dbl_side_flip()
+			local init_dbl_side = self:init_dbl_side()
 			local tmp_side = cry_deep_copy(self.dbl_side)
 			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
 			self.T.w, self.T.h = G.CARD_W, G.CARD_H
+			if not init_dbl_side then self:remove_from_deck(true) end
 			copy_dbl_card(self, self.dbl_side, false)
-			copy_dbl_card(tmp_side, self, true)
+			copy_dbl_card(tmp_side, self, false)
+			self:add_to_deck(true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
 			if self.config.card and self.base and self.config.card_key then
 				--Note: this causes a one-frame stutter
@@ -1978,9 +1990,6 @@ return {
 			if (not self.base or not self.base.name) and self.children.front then
 				self.children.front:remove()
 				self.children.front = nil
-			end
-			if fresh_copy and self.area == G.hand then
-				self.config.center.no_rank = true
 			end
 		end
 		function Card:is_face(from_boss)
