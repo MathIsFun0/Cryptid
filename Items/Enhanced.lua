@@ -643,7 +643,7 @@ return {
 			if center and center.set == "Enhanced" then
 				return sa(
 					self,
-					G.GAME.modifiers.cry_force_enhancement and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
+					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement) and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
 						or center,
 					y,
 					z
@@ -654,20 +654,15 @@ return {
 		end
 		local se = Card.set_edition
 		function Card:set_edition(edition, y, z)
-			return se(
-				self,
-				G.GAME.modifiers.cry_force_edition and { [G.GAME.modifiers.cry_force_edition] = true } or edition,
-				y,
-				z
-			)
+			return se(self, (not self.no_forced_edition and G.GAME.modifiers.cry_force_edition) and { [G.GAME.modifiers.cry_force_edition] = true } or edition, y, z)
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
-			return ss(self, G.GAME.modifiers.cry_force_seal or seal, y, z)
+			return ss(self, not self.no_forced_seal and G.GAME.modifiers.cry_force_seal or seal, y, z)
 		end
 		local cs = Card.change_suit
 		function Card:change_suit(new_suit)
-			return cs(self, G.GAME.modifiers.cry_force_suit or new_suit)
+			return cs(self, not self.no_forced_suit and G.GAME.modifiers.cry_force_suit or new_suit)
 		end
 		local sc = Card.set_cost
 		function Card:set_cost()
