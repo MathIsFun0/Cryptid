@@ -11,7 +11,6 @@ return {
 	["Cryptid"] = { ["jimball_music"] = true, ["code_music"] = true, ["exotic_music"] = true, ["big_music"] = true },
 	["Epic Jokers"] = true,
 	["Antimatter Deck"] = true,
-	["Retrigger API"] = true,
 	["Misc. Jokers"] = true,
 	["Code Cards"] = true,
 	["Misc. Decks"] = true,

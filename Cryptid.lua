@@ -1347,13 +1347,14 @@ local cryptidTabs = function() return {
 			left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			for k, _ in pairs(Cryptid_config) do
+				print(k)
 				if k ~= "Cryptid" then
 					if #right_settings.nodes < #left_settings.nodes then
 						right_settings.nodes[#right_settings.nodes + 1] =
-							create_toggle({ label = k, ref_table = Cryptid_config, ref_value = k })
+							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
 					else
 						left_settings.nodes[#left_settings.nodes + 1] =
-							create_toggle({ label = k, ref_table = Cryptid_config, ref_value = k })
+							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
 					end
 				end
 			end
