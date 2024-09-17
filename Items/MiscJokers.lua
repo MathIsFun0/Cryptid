@@ -5669,7 +5669,7 @@ local flipside = {
 	rarity = 2,
 	cost = 7,
 	atlas = "placeholders",
-	source_gate = "sho",
+	config = {no_dbl = true},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,

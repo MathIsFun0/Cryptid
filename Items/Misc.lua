@@ -1535,11 +1535,21 @@ local meld = {
 	cost = 4,
 	atlas = "placeholders",
 	can_use = function(self, card)
-		return #G.jokers.highlighted
+		if #G.jokers.highlighted
 				+ #G.hand.highlighted
 				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
-			== 1
+			== 1 then
+			if #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.no_dbl then return false end
+			return true
+		end
 	end,
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
@@ -1771,6 +1781,7 @@ return {
 				and card.edition
 				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and card.edition.cry_double_sided
+				and not card.ability.no_dbl
 			then
 				local use = {
 					n = G.UIT.C,
@@ -1824,6 +1835,7 @@ return {
 				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and (not card.edition or not card.edition.cry_double_sided)
 				and not card.ability.eternal
+				and not card.ability.no_dbl
 			then
 				for i = 1, #card.area.cards do
 					if card.area.cards[i].edition and card.area.cards[i].edition.cry_double_sided then
@@ -1960,6 +1972,9 @@ return {
 			Card.set_cost(c)
 		end
 		function Card:init_dbl_side()
+			if self.ability.no_dbl then
+				self:set_edition(nil, true)
+			end
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
 				self.dbl_side:set_ability(G.P_CENTERS.c_base)
