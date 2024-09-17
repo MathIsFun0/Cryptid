@@ -21,7 +21,6 @@ local sticker_sheet = {
 	deck = {
 		type = "Challenge Deck",
 	},
-	loc_txt = "Sticker Sheet",
 }
 local sticker_sheet_plus = {
 	object_type = "Challenge",
@@ -40,11 +39,9 @@ local sticker_sheet_plus = {
 	deck = {
 		type = "Challenge Deck",
 	},
-	loc_txt = "Sticker Sheet+",
 }
 local ballin = {
 	object_type = "Challenge",
-	loc_txt = "Ballin",
 	key = "ballin",
 	rules = {
 		custom = {},
@@ -80,7 +77,6 @@ local ballin = {
 local rush_hour = {
 	object_type = "Challenge",
 	key = "rush_hour",
-	loc_txt = "Rush Hour I",
 	rules = {
 		custom = {
 			{ id = "cry_rush_hour" }, --this just explains the rule
@@ -101,7 +97,6 @@ local rush_hour = {
 local rush_hour_ii = {
 	object_type = "Challenge",
 	key = "rush_hour_ii",
-	loc_txt = "Rush Hour II",
 	rules = {
 		custom = {
 			{ id = "cry_rush_hour" },
@@ -129,7 +124,6 @@ local rush_hour_ii = {
 local rush_hour_iii = {
 	object_type = "Challenge",
 	key = "rush_hour_iii",
-	loc_txt = "Rush Hour III",
 	rules = {
 		custom = {
 			{ id = "cry_rush_hour" },
@@ -218,7 +212,6 @@ local rush_hour_iii = {
 local boss_rush = {
 	object_type = "Challenge",
 	key = "boss_rush",
-	loc_txt = "Enter the Gungeon",
 	rules = {
 		custom = {
 			{ id = "cry_rush_hour_ii" },
@@ -247,7 +240,6 @@ local boss_rush = {
 local rng = {
 	object_type = "Challenge",
 	key = "rng",
-	loc_txt = "RNG",
 	rules = {
 		custom = {
 			{ id = "all_rnj" },
@@ -292,7 +284,6 @@ local dagger_war = {
 	deck = {
 		type = "Challenge Deck",
 	},
-	loc_txt = "Dagger War",
 }
 local onlycard = {
 	object_type = "Challenge",
@@ -352,7 +343,6 @@ local onlycard = {
 			{ s = "C", r = "A", g='Blue' },
 		},
 	},
-	loc_txt = "Solo Card",
 }
 --Add banned cards when specific features/mods are enabled here
 --TODO other mods

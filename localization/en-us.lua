@@ -1,5 +1,5 @@
 --Work in progress!
---Completed: Cryptid.lua, Achievements-Antimatter
+--Completed: Cryptid.lua, Achievements-CodeCards:1131
 return {
     descriptions = {
         Back = {
@@ -197,12 +197,179 @@ return {
                 },
             },
         },
+        Code = {
+            c_cry_class = {
+                name = "://CLASS",
+                text = {
+                    "Convert {C:cry_code}#1#{} selected card",
+                    "to a {C:cry_code}chosen{} enhancement",
+                },
+            },
+            c_cry_commit = {
+                name = "://COMMIT",
+                text = {
+                    "Destroy a {C:cry_code}selected{} Joker,",
+                    "create a {C:cry_code}new{} Joker",
+                    "of the {C:cry_code}same rarity",
+                },
+            },
+            c_cry_crash = {
+                name = "://CRASH",
+                text = {
+                    "{C:cry_code,E:1}Don't.",
+                },
+            },
+            c_cry_delete = {
+                name = "://DELETE",
+                text = {
+                    "{C:cry_code}Permanently{} remove a",
+                    "{C:cry_code}selected{} shop item",
+                    "{C:inactive,s:0.8}Item cannot appear again this run",
+                },
+            },
+            c_cry_divide = {
+                name = "://DIVIDE",
+                text = {
+                    "{C:cry_code}Halve{} all listed prices",
+                    "in current shop",
+                },
+            },
+            c_cry_exploit = {
+                name = "://EXPLOIT",
+                text = {
+                    "The {C:cry_code}next{} hand played",
+                    "is calculated as a",
+                    "{C:cry_code}chosen{} poker hand",
+                    "{C:inactive,s:0.8}Secret hands must be",
+                    "{C:inactive,s:0.8}discovered to be valid",
+                },
+            },
+            c_cry_hook = {
+                name = "HOOK://",
+                text = {
+                    "Select two Jokers",
+                    "to become {C:cry_code}Hooked",
+                },
+            },
+            c_cry_machinecode = {
+                name = "://MACHINECODE",
+                text = {
+                    "",
+                },
+            },
+            c_cry_malware = {
+                name = "://MALWARE",
+                text = { "Add {C:dark_edition}Glitched{} to all", "cards {C:cry_code}held in hand" },
+            },
+            c_cry_merge = {
+                name = "://MERGE",
+                text = {
+                    "Merge a selected {C:cry_code}consumable",
+                    "with a selected {C:cry_code}playing card",
+                },
+            },
+            c_cry_multiply = {
+                name = "://MULTIPLY",
+                text = {
+                    "{C:cry_code}Double{} all values of",
+                    "a selected {C:cry_code}Joker{} until",
+                    "end of round",
+                },
+            },
+            c_cry_payload = {
+                name = "://PAYLOAD",
+                text = {
+                    "Next defeated Blind",
+                    "gives {C:cry_code}X#1#{} interest",
+                },
+            },
+            c_cry_oboe = {
+                name = "://OFFBYONE",
+                text = {
+                    "Next {C:cry_code}Booster Pack{} has",
+                    "{C:cry_code}#1#{} extra card and",
+                    "{C:cry_code}#1#{} extra choice",
+                    "{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
+                },
+            },
+            c_cry_reboot = {
+                name = "://REBOOT",
+                text = {
+                    "Replenish {C:blue}Hands{} and {C:red}Discards{},",
+                    "return {C:cry_code}all{} cards to deck",
+                    "and draw a {C:cry_code}new{} hand",
+                },
+            },
+            c_cry_revert = {
+                name = "://REVERT",
+                text = {
+                    "Set {C:cry_code}game state{} to",
+                    "start of {C:cry_code}this Ante{}",
+                },
+            },
+            c_cry_rework = {
+                name = "://REWORK",
+                text = {
+                    "Destroy a {C:cry_code}selected{} Joker,",
+                    "create a {C:cry_code}Rework Tag{} with",
+                    "an {C:cry_code}upgraded{} edition",
+                    "{C:inactive,s:0.8}Upgrades using order in the Collection",
+                },
+            },
+            c_cry_run = {
+                name = "://RUN",
+                text = {
+                    "Visit a {C:cry_code}shop",
+                    "during a {C:cry_code}Blind",
+                },
+            },
+            c_cry_seed = {
+                name = "://SEED",
+                text = {
+                    "Select a Joker",
+                    "or playing card",
+                    "to become {C:cry_code}Rigged",
+                },
+            },
+            c_cry_semicolon = {
+                name = ";//",
+                text = { "Ends current non-Boss {C:cry_code}Blind{}", "{C:cry_code}without{} cashing out" },
+            },
+            c_cry_spaghetti = {
+                name = "://SPAGHETTI",
+                text = {
+                    "Create a {C:cry_code}Glitched",
+                    "Food Joker",
+                },
+            },
+            c_cry_variable = {
+                name = "://VARIABLE",
+                text = {
+                    "Convert {C:cry_code}#1#{} selected cards",
+                    "to a {C:cry_code}chosen{} rank",
+                },
+            },
+        },
         Other = {
             banana = {
                 name = "Banana",
                 text = {
                     "{C:green}#1# in #2#{} chance of being",
                     "destroyed each round",
+                },
+            },
+            cry_rigged = {
+                name = "Rigged",
+                text = {
+                    "All {C:cry_code}listed{} probabilities",
+                    "are {C:cry_code}guaranteed",
+                },
+            },
+            cry_hooked = {
+                name = "Hooked",
+                text = {
+                    "When this Joker is {C:cry_code}triggered{},",
+                    "trigger {C:cry_code}#1#",
                 },
             },
             food_jokers = {
@@ -327,7 +494,60 @@ return {
                     "{C:green}#1# in #2#{} chance to do",
                     "nothing on use",
                 },
-            }
+            },
+            p_cry_code_normal_1 = {
+                name = "Program Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{C:cry_code} Code{} cards",
+                },
+            },
+            p_cry_code_normal_2 = {
+                name = "Program Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{C:cry_code} Code{} cards",
+                },
+            },
+            p_cry_code_jumbo_1 = {
+                name = "Jumbo Program Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{C:cry_code} Code{} cards",
+                },
+            },
+            p_cry_code_mega_1 = {
+                name = "Mega Program Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{C:cry_code} Code{} cards",
+                },
+            },
+            undiscovered_code = {
+                name = "Not Discovered",
+                text = {
+                    "Purchase or use",
+                    "this card in an",
+                    "unseeded run to",
+                    "learn what it does"
+                }
+            },
+        },
+        Tag = {
+            tag_cry_console = {
+                name = "Console Tag",
+                text = {
+                    "Gives a free",
+                    "{C:cry_code}Program Pack",
+                },
+            },
+            tag_cry_rework = {
+                name = "Rework Tag",
+                text = {
+                    "Shop has a(n)",
+                    "{C:dark_edition}#1# {C:cry_code}#2#",
+                },
+            },
         }
     },
     misc = {
@@ -375,6 +595,18 @@ return {
             ach_cry_used_crash = "Use ://CRASH",
             ach_cry_what_have_you_done = "Delete or Sacrifice an Exotic Joker",
         },
+        challenge_names = {
+            c_cry_ballin = "Ballin'",
+            c_cry_boss_rush = "Enter the Gungeon",
+            c_cry_dagger_war = "Dagger War",
+            c_cry_onlycard = "Solo Card",
+            c_cry_rng = "RNG",
+            c_cry_rush_hour = "Rush Hour I",
+            c_cry_rush_hour_ii = "Rush Hour II",
+            c_cry_rush_hour_iii = "Rush Hour III",
+            c_cry_sticker_sheet = "Sticker Sheet",
+            c_cry_sticker_sheet_plus = "Sticker Sheet+",
+        },
         dictionary = {
             --Settings Menu
             cry_set_features = "Features",
@@ -416,10 +648,16 @@ return {
             cry_debuff_oldflint = "No Flushes",
             cry_debuff_oldmark = "No hands containing a Pair",
             cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
+
+            k_code = "Code",
+            b_code_cards = "Code Cards",
         },
         labels = {
             food_jokers = "Food Jokers",
             banana = "Banana",
+            code = "Code",
+            cry_rigged = "Rigged",
+            cry_hooked = "Hooked"
         },
         v_dictionary = {
             a_xchips = {"X#1# Chips"},
