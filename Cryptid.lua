@@ -1347,7 +1347,6 @@ local cryptidTabs = function() return {
 			left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			for k, _ in pairs(Cryptid_config) do
-				print(k)
 				if k ~= "Cryptid" then
 					if #right_settings.nodes < #left_settings.nodes then
 						right_settings.nodes[#right_settings.nodes + 1] =
@@ -1376,7 +1375,7 @@ local cryptidTabs = function() return {
 		end,
 	},
 	{
-		label = "Music",
+		label = localize("cry_set_music"),
 		tab_definition_function = function()
 			-- TODO: Add a button here to reset all Cryptid achievements.
 			-- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
@@ -1397,22 +1396,22 @@ local cryptidTabs = function() return {
 			}
 			settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "Jimball (Funkytown by Lipps Inc. - Copyrighted)",
+				label = localize("cry_mus_jimball"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "jimball_music",
 			})
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
+				label = localize("cry_mus_code"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "code_music",
 			})
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "Exotic Jokers (Amen Balatro by AlexZGreat)",
+				label = localize("cry_mus_exotic"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "exotic_music",
 			})
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "High Score (BalAAAAAAtro by AlexZGreat)",
+				label = localize("cry_mus_high_score"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "big_music",
 			})
@@ -2138,157 +2137,6 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	G.localization.misc.v_text.ch_c_cry_all_perishable = { "All Jokers are {C:eternal}Perishable{}" }
-	G.localization.misc.v_text.ch_c_cry_all_rental = { "All Jokers are {C:eternal}Rental{}" }
-	G.localization.misc.v_text.ch_c_cry_all_pinned = { "All Jokers are {C:eternal}Pinned{}" }
-	G.localization.misc.v_text.ch_c_cry_all_banana = { "All Jokers are {C:eternal}Banana{}" }
-	G.localization.misc.v_text.ch_c_all_rnj = { "All Jokers are {C:attention}RNJoker{}" }
-	G.localization.misc.v_text.ch_c_cry_sticker_sheet_plus = { "All purchasable items have all stickers" }
-	G.localization.misc.v_text.ch_c_cry_rush_hour =
-		{ "All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop" }
-	G.localization.misc.v_text.ch_c_cry_rush_hour_ii = { "All Blinds are {C:attention}Boss Blinds{}" }
-	G.localization.misc.v_text.ch_c_cry_rush_hour_iii =
-		{ "{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast" }
-	G.localization.misc.v_text.ch_c_cry_no_tags = { "Skipping is {C:attention}disabled{}" }
-	G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
-	G.localization.misc.dictionary.k_cry_meme_pack = "Meme Pack"
-	G.localization.misc.labels.food_jokers = "Food Jokers"
-	G.localization.misc.labels.banana = "Banana"
-end
-
-function SMODS.current_mod.process_loc_text()
-	G.localization.misc.v_dictionary.a_xchips = "X#1# Chips"
-	G.localization.descriptions.Other.banana = {
-		name = "Banana",
-		text = {
-			"{C:green}#1# in #2#{} chance of being",
-			"destroyed each round",
-		},
-	}
-	G.localization.descriptions.Other.food_jokers = {
-		name = "Food Jokers",
-		text = {
-			"{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
-			"{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
-			"{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
-			"{s:0.8}Nostalgic Candy, Fast Food M,",
-			"{s:0.8}Cut The Cheese, Café Gourmand, Cherry,",
-			"{s:0.8}Full-Sugar Cola, Starfruit, Fondue,",
-			"{s:0.8}Fortune Cookie, Swiss Joker, Taliaferro,",
-			"{s:0.8}Royal Gala, Fine Wine, Mystery Soda,",
-			"{s:0.8}Popcorn Bag, Turkey Dinner, Coffee,",
-			"{s:0.8}Candle Service, Burning Melon,",
-			"{s:0.8}Burning Cherry, Soft Taco, Crispy Taco,",
-			"{s:0.8}Nachos, Ghost Cola, Burger, Pizza",
-		},
-	}
-	-- i am so sorry for this
-	G.localization.descriptions.Other.cry_eternal_booster = {
-		name = "Eternal",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Eternal{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_perishable_booster = {
-		name = "Perishable",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Perishable{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_rental_booster = {
-		name = "Rental",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Rental{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_pinned_booster = {
-		name = "Pinned",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Pinned{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_banana_booster = {
-		name = "Banana",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Banana{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_eternal_voucher = {
-		name = "Eternal",
-		text = {
-			"Can't be traded",
-		},
-	}
-	G.localization.descriptions.Other.cry_perishable_voucher = {
-		name = "Perishable",
-		text = {
-			"Debuffed after",
-			"{C:attention}#1#{} rounds",
-			"{C:inactive}({C:attention}#2#{C:inactive} remaining)",
-		},
-	}
-	G.localization.descriptions.Other.cry_rental_voucher = {
-		name = "Rental",
-		text = {
-			"Lose {C:money}$#1#{} at",
-			"end of round",
-		},
-	}
-	G.localization.descriptions.Other.cry_pinned_voucher = {
-		name = "Pinned",
-		text = {
-			"Remains in shop",
-			"until redeemed",
-		},
-	}
-	G.localization.descriptions.Other.cry_banana_voucher = {
-		name = "Banana",
-		text = {
-			"{C:green}#1# in #2#{} chance of being",
-			"unredeemed each round",
-		},
-	}
-	G.localization.descriptions.Other.cry_perishable_consumeable = {
-		name = "Perishable",
-		text = {
-			"Debuffed at",
-			"end of round",
-		},
-	}
-	G.localization.descriptions.Other.cry_rental_consumeable = {
-		name = "Rental",
-		text = {
-			"Lose {C:money}$#1#{} at end of",
-			"round, and on use",
-		},
-	}
-	G.localization.descriptions.Other.cry_pinned_consumeable = {
-		name = "Pinned",
-		text = {
-			"Can't use other",
-			"non-{C:attention}Pinned{} consumables",
-		},
-	}
-	G.localization.descriptions.Other.cry_banana_consumeable = {
-		name = "Banana",
-		text = {
-			"{C:green}#1# in #2#{} chance to do",
-			"nothing on use",
-		},
-	}
-	G.localization.descriptions.Other.cry_https_disabled = {
-		name = "M",
-		text = {
-			"{C:attention,s:0.7}Updating{s:0.7} is disabled by default ({C:attention,s:0.7}HTTPS Module{s:0.7})",
-		},
-	}
-	SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
-	SMODS.process_loc_text(G.localization.misc.achievement_descriptions, "hidden_achievement", "Play more to find out!")
 end
 
 function SMODS.current_mod.reset_game_globals(run_start)
