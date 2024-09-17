@@ -1320,9 +1320,9 @@ for set, objs in pairs(Cryptid.obj_buffer) do
 		SMODS[set](objs[i])
 	end
 end
-local cryptidTabs = {
+local cryptidTabs = function() return {
 	{
-		label = "Features",
+		label = localize("cry_set_features"),
 		chosen = true,
 		tab_definition_function = function()
 			cry_nodes = {
@@ -1334,7 +1334,7 @@ local cryptidTabs = {
 							n = G.UIT.O,
 							config = {
 								object = DynaText({
-									string = "Select features to enable (applies on game restart):",
+									string = localize("cry_set_enable_features"),
 									colours = { G.C.WHITE },
 									shadow = true,
 									scale = 0.4,
@@ -1432,11 +1432,11 @@ local cryptidTabs = {
 			}
 		end,
 	},
-}
+} end
 G.FUNCS.cryptidMenu = function(e)
 	local tabs = create_tabs({
 		snap_to_nav = true,
-		tabs = cryptidTabs,
+		tabs = cryptidTabs(),
 	})
 	G.FUNCS.overlay_menu({
 		definition = create_UIBox_generic_options({
@@ -1462,9 +1462,7 @@ end
         nodes = {UIBox_button{ label = {"Open Cryptid Config"}, button = "cryptidMenu", colour = G.C.DARK_EDITION, minw = 5, minh = 0.7, scale = 0.6}}
     }
 end--]]
-SMODS.current_mod.extra_tabs = function()
-	return cryptidTabs
-end
+SMODS.current_mod.extra_tabs = cryptidTabs
 
 -- Modify to display badges for credits
 local smcmb = SMODS.create_mod_badges
