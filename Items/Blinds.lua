@@ -61,13 +61,6 @@ local oldox = {
 		min = 2,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic Ox",
-		text = {
-			"All hands start",
-			"with 0 Chips",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
@@ -87,12 +80,6 @@ local oldhouse = {
 		min = 3,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic House",
-		text = {
-			"No Full Houses",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
@@ -103,7 +90,7 @@ local oldhouse = {
 		return false
 	end,
 	get_loc_debuff_text = function(self)
-		return "No Full Houses"
+		return localize("cry_debuff_oldhouse")
 	end,
 }
 local oldarm = {
@@ -115,13 +102,6 @@ local oldarm = {
 		min = 3,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic Arm",
-		text = {
-			"Must play 4",
-			"or fewer cards",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
@@ -132,7 +112,7 @@ local oldarm = {
 		return false
 	end,
 	get_loc_debuff_text = function(self)
-		return "Must play 4 or fewer cards"
+		return localize("cry_debuff_oldarm")
 	end,
 }
 local oldfish = {
@@ -143,13 +123,6 @@ local oldfish = {
 	boss = {
 		min = 2,
 		max = 10,
-	},
-	loc_txt = {
-		name = "Nostalgic Fish",
-		text = {
-			"All hands start",
-			"with 1 Mult",
-		},
 	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
@@ -170,12 +143,6 @@ local oldmanacle = {
 		min = 1,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic Manacle",
-		text = {
-			"Divide Mult by discards",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
@@ -194,13 +161,6 @@ local oldserpent = {
 	boss = {
 		min = 5,
 		max = 10,
-	},
-	loc_txt = {
-		name = "Nostalgic Serpent",
-		text = {
-			"Divide Mult by level",
-			"of played poker hand",
-		},
 	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
@@ -221,12 +181,6 @@ local oldpillar = {
 		min = 3,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic Pillar",
-		text = {
-			"No Straights",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
@@ -237,7 +191,7 @@ local oldpillar = {
 		return false
 	end,
 	get_loc_debuff_text = function(self)
-		return "No Straights"
+		return localize("cry_debuff_oldpillar")
 	end,
 }
 local oldflint = {
@@ -249,12 +203,6 @@ local oldflint = {
 		min = 3,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic Flint",
-		text = {
-			"No Flushes",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
@@ -265,7 +213,7 @@ local oldflint = {
 		return false
 	end,
 	get_loc_debuff_text = function(self)
-		return "No Flushes"
+		return localize("cry_debuff_oldflint")
 	end,
 }
 local oldmark = {
@@ -277,13 +225,6 @@ local oldmark = {
 		min = 4,
 		max = 10,
 	},
-	loc_txt = {
-		name = "Nostalgic Mark",
-		text = {
-			"No hands that",
-			"contain a Pair",
-		},
-	},
 	atlas = "nostalgia",
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
@@ -294,7 +235,7 @@ local oldmark = {
 		return false
 	end,
 	get_loc_debuff_text = function(self)
-		return "No hands containing a Pair"
+		return localize("cry_debuff_oldmark")
 	end,
 }
 local tax = {
@@ -305,13 +246,6 @@ local tax = {
 	boss = {
 		min = 1,
 		max = 10,
-	},
-	loc_txt = {
-		name = "The Tax",
-		text = {
-			"Score per hand capped at",
-			"0.4X blind requirements",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("40ff40"),
@@ -331,13 +265,6 @@ local box = {
 		min = 1,
 		max = 10,
 	},
-	loc_txt = {
-		name = "The Box",
-		text = {
-			"All Common Jokers",
-			"are debuffed",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("883a3b"),
 	recalc_debuff = function(self, card, from_blind)
@@ -356,13 +283,6 @@ local clock = {
 	boss = {
 		min = 1,
 		max = 10,
-	},
-	loc_txt = {
-		name = "The Clock",
-		text = {
-			"+0.1X blind requirements every",
-			"3 seconds spent this ante",
-		},
 	},
 	config = {
 		tw_bl = {
@@ -390,13 +310,6 @@ local trick = {
 	boss = {
 		min = 1,
 		max = 10,
-	},
-	loc_txt = {
-		name = "The Trick",
-		text = {
-			"After each hand, flip all",
-			"face-up cards held in hand",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("babd24"),
@@ -429,13 +342,6 @@ local joke = {
 		min = 1,
 		max = 10,
 	},
-	loc_txt = {
-		name = "The Joke",
-		text = {
-			"If score is >2X requirements,",
-			"set ante to multiple of #1#",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("00ffaa"),
 	loc_vars = function(self, info_queue, card)
@@ -459,13 +365,6 @@ local hammer = {
 	boss = {
 		min = 2,
 		max = 10,
-	},
-	loc_txt = {
-		name = "The Hammer",
-		text = {
-			"All cards with odd",
-			"rank are debuffed",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("ffabd6"),
@@ -496,13 +395,6 @@ local magic = {
 		min = 2,
 		max = 10,
 	},
-	loc_txt = {
-		name = "The Magic",
-		text = {
-			"All cards with even",
-			"rank are debuffed",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("009eff"),
 	recalc_debuff = function(self, card, from_blind)
@@ -532,13 +424,6 @@ local windmill = {
 		min = 4,
 		max = 10,
 	},
-	loc_txt = {
-		name = "The Windmill",
-		text = {
-			"All Uncommon Jokers",
-			"are debuffed",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("f70000"),
 	recalc_debuff = function(self, card, from_blind)
@@ -557,13 +442,6 @@ local striker = {
 		min = 4,
 		max = 10,
 	},
-	loc_txt = {
-		name = "The Striker",
-		text = {
-			"All Rare Jokers",
-			"are debuffed",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("505e5c"),
 	recalc_debuff = function(self, card, from_blind)
@@ -581,13 +459,6 @@ local shackle = {
 	boss = {
 		min = 1,
 		max = 10,
-	},
-	loc_txt = {
-		name = "The Shackle",
-		text = {
-			"All Negative Jokers",
-			"are debuffed",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("010466"),
@@ -618,13 +489,6 @@ local pin = {
 		min = 4,
 		max = 10,
 	},
-	loc_txt = {
-		name = "The Pin",
-		text = {
-			"Jokers with Epic or higher",
-			"rarity are debuffed",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("452703"),
 	in_pool = function()
@@ -651,7 +515,7 @@ local pin = {
 		return false
 	end,
 }
-local pinkbow = { --Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
+local pinkbow = { --TODO: Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
 	object_type = "Blind",
 	name = "cry-pinkbow",
 	key = "pinkbow",
@@ -661,13 +525,6 @@ local pinkbow = { --Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
 		min = 3,
 		max = 10,
 		showdown = true,
-	},
-	loc_txt = {
-		name = "Pink Bow",
-		text = {
-			"Randomize rank of cards",
-			"held in hand on play",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("ff00cc"),
@@ -683,13 +540,6 @@ local lavender_loop = {
 		min = 3,
 		max = 10,
 		showdown = true,
-	},
-	loc_txt = {
-		name = "Lavender Loop",
-		text = {
-			"1.25X blind requirements every",
-			"1.5 seconds spent this round",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("ae00ff"),
@@ -727,17 +577,21 @@ local tornado = {
 		max = 10,
 		showdown = true,
 	},
-	loc_txt = {
-		name = "Turquoise Tornado",
-		text = {
-			"#1# in #2# chance for",
-			"played hand to not score",
-		},
-	},
 	atlas = "blinds",
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
+	end,
+	in_pool = function()
+		if not G.jokers then
+			return true
+		end
+		for i, j in pairs(G.jokers.cards) do
+			if j.ability.name == "Oops! All 6s" and j.ability.eternal == true then
+				return false
+			end
+		end
+		return true
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
@@ -765,13 +619,6 @@ local vermillion_virus = {
 		min = 3,
 		max = 10,
 		showdown = true,
-	},
-	loc_txt = {
-		name = "Vermillion Virus",
-		text = {
-			"One random Joker",
-			"replaced every hand",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("f65d34"),
@@ -802,13 +649,6 @@ local sapphire_stamp = {
 		min = 3,
 		max = 10,
 		showdown = true,
-	},
-	loc_txt = {
-		name = "Sapphire Stamp",
-		text = {
-			"Select an extra card, deselect",
-			"random card before scoring",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("4057d6"),
@@ -843,13 +683,6 @@ local obsidian_orb = {
 		min = 3,
 		max = 10,
 		showdown = true,
-	},
-	loc_txt = {
-		name = "Obsidian Orb",
-		text = {
-			"Applies abilities of",
-			"all defeated bosses",
-		},
 	},
 	atlas = "blinds",
 	boss_colour = HEX("290759"),
@@ -1310,7 +1143,7 @@ local obsidian_orb = {
 	end,
 	get_loc_debuff_text = function(self)
 		if not G.GAME.blind.debuff_boss then
-			return "Applies abilities of all defeated bosses"
+			return localize("cry_debuff_obsidian_orb")
 		end
 		local loc_vars = nil
 		if G.GAME.blind.debuff_boss.name == "The Ox" then

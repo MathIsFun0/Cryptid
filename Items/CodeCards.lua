@@ -4,12 +4,8 @@ local code = {
 	primary_colour = HEX("14b341"),
 	secondary_colour = HEX("12f254"),
 	collection_rows = { 4, 4 }, -- 4 pages for all code cards
-	loc_txt = {
-		collection = "Code Cards",
-		name = "Code",
-		label = "Code",
-	},
 	shop_rate = 0.0,
+	loc_txt = {},
 	default = "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
@@ -21,6 +17,14 @@ local code_atlas = {
 	px = 71,
 	py = 95,
 }
+SMODS.UndiscoveredSprite({
+	key = "Code",
+	atlas = "code",
+	path = "c_cry_code.png",
+	pos = { x = 2, y = 5 },
+	px = 71,
+	py = 95,
+}):register()
 local pack_atlas = {
 	object_type = "Atlas",
 	key = "pack",
@@ -47,13 +51,6 @@ local pack1 = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.config.center.config.choose, card.ability.extra } }
 	end,
-	loc_txt = {
-		name = "Program Pack",
-		text = {
-			"Choose {C:attention}#1#{} of up to",
-			"{C:attention}#2#{C:cry_code} Code{} cards",
-		},
-	},
 	group_key = "k_cry_program_pack",
 }
 local pack2 = {
@@ -75,13 +72,6 @@ local pack2 = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.config.center.config.choose, card.ability.extra } }
 	end,
-	loc_txt = {
-		name = "Program Pack",
-		text = {
-			"Choose {C:attention}#1#{} of up to",
-			"{C:attention}#2#{C:cry_code} Code{} cards",
-		},
-	},
 	group_key = "k_cry_program_pack",
 }
 local packJ = {
@@ -103,13 +93,6 @@ local packJ = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.config.center.config.choose, card.ability.extra } }
 	end,
-	loc_txt = {
-		name = "Jumbo Program Pack",
-		text = {
-			"Choose {C:attention}#1#{} of up to",
-			"{C:attention}#2#{C:cry_code} Code{} cards",
-		},
-	},
 	group_key = "k_cry_program_pack",
 }
 local packM = {
@@ -131,13 +114,6 @@ local packM = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.config.center.config.choose, card.ability.extra } }
 	end,
-	loc_txt = {
-		name = "Mega Program Pack",
-		text = {
-			"Choose {C:attention}#1#{} of up to",
-			"{C:attention}#2#{C:cry_code} Code{} cards",
-		},
-	},
 	group_key = "k_cry_program_pack",
 }
 local console = {
@@ -147,13 +123,6 @@ local console = {
 	config = { type = "new_blind_choice" },
 	key = "console",
 	min_ante = 2,
-	loc_txt = {
-		name = "Console Tag",
-		text = {
-			"Gives a free",
-			"{C:cry_code}Program Pack",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_code_normal_1", specific_vars = { 1, 2 } }
 		return { vars = {} }
@@ -189,12 +158,6 @@ local crash = {
 	key = "crash",
 	pos = { x = 0, y = 0 },
 	config = {},
-	loc_txt = {
-		name = "://CRASH",
-		text = {
-			"{C:cry_code,E:1}Don't.",
-		},
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -219,13 +182,6 @@ local payload = {
 	key = "payload",
 	pos = { x = 1, y = 0 },
 	config = { interest_mult = 3 },
-	loc_txt = {
-		name = "://PAYLOAD",
-		text = {
-			"Next defeated Blind",
-			"gives {C:cry_code}X#1#{} interest",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.interest_mult } }
 	end,
@@ -249,14 +205,6 @@ local reboot = {
 	key = "reboot",
 	pos = { x = 2, y = 0 },
 	config = {},
-	loc_txt = {
-		name = "://REBOOT",
-		text = {
-			"Replenish {C:blue}Hands{} and {C:red}Discards{},",
-			"return {C:cry_code}all{} cards to deck",
-			"and draw a {C:cry_code}new{} hand",
-		},
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -294,13 +242,6 @@ local revert = {
 	key = "revert",
 	pos = { x = 3, y = 0 },
 	config = {},
-	loc_txt = {
-		name = "://REVERT",
-		text = {
-			"Set {C:cry_code}game state{} to",
-			"start of {C:cry_code}this Ante{}",
-		},
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -333,10 +274,6 @@ local semicolon = {
 		y = 1,
 	},
 	config = {},
-	loc_txt = {
-		name = ";//",
-		text = { "Ends current non-Boss {C:cry_code}Blind{}", "{C:cry_code}without{} cashing out" },
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -372,10 +309,6 @@ local malware = {
 		y = 1,
 	},
 	config = {},
-	loc_txt = {
-		name = "://MALWARE",
-		text = { "Add {C:dark_edition}Glitched{} to all", "cards {C:cry_code}held in hand" },
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -435,14 +368,6 @@ local seed = {
 		y = 1,
 	},
 	config = {},
-	loc_txt = {
-		name = "://SEED",
-		text = {
-			"Select a Joker",
-			"or playing card",
-			"to become {C:cry_code}Rigged",
-		},
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -481,14 +406,6 @@ local rigged = {
 	object_type = "Sticker",
 	atlas = "sticker",
 	pos = { x = 5, y = 1 },
-	loc_txt = {
-		name = "Rigged",
-		label = "Rigged",
-		text = {
-			"All {C:cry_code}listed{} probabilities",
-			"are {C:cry_code}guaranteed",
-		},
-	},
 	key = "cry_rigged",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
@@ -509,13 +426,6 @@ local hook = {
 		y = 4,
 	},
 	config = {},
-	loc_txt = {
-		name = "HOOK://",
-		text = {
-			"Select two Jokers",
-			"to become {C:cry_code}Hooked",
-		},
-	},
 	cost = 4,
 	atlas = "code",
 	can_use = function(self, card)
@@ -535,18 +445,10 @@ local hooked = {
 	object_type = "Sticker",
 	atlas = "sticker",
 	pos = { x = 5, y = 3 },
-	loc_txt = {
-		name = "Hooked",
-		label = "Hooked",
-		text = {
-			"When this Joker is {C:cry_code}triggered{},",
-			"trigger {C:cry_code}#1#",
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		local var
 		if not card or not card.hook_id then
-			var = "[Joker]"
+			var = "["..localize("k_joker").."]"
 		else
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.hook_id then
@@ -579,13 +481,6 @@ local variable = {
 	},
 	cost = 4,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
-	loc_txt = {
-		name = "://VARIABLE",
-		text = {
-			"Convert {C:cry_code}#1#{} selected cards",
-			"to a {C:cry_code}chosen{} rank",
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.max_highlighted } }
 	end,
@@ -619,13 +514,6 @@ local class = {
 	},
 	cost = 4,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
-	loc_txt = {
-		name = "://CLASS",
-		text = {
-			"Convert {C:cry_code}#1#{} selected card",
-			"to a {C:cry_code}chosen{} enhancement",
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.max_highlighted } }
 	end,
@@ -658,14 +546,6 @@ local commit = {
 		y = 2,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://COMMIT",
-		text = {
-			"Destroy a {C:cry_code}selected{} Joker,",
-			"create a {C:cry_code}new{} Joker",
-			"of the {C:cry_code}same rarity",
-		},
-	},
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 1
 			and not G.jokers.highlighted[1].ability.eternal
@@ -729,13 +609,6 @@ local merge = {
 		y = 2,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://MERGE",
-		text = {
-			"Merge a selected {C:cry_code}consumable",
-			"with a selected {C:cry_code}playing card",
-		},
-	},
 	can_use = function(self, card)
 		if #G.hand.highlighted ~= 1 + (card.area == G.hand and 1 or 0) then
 			return false
@@ -826,14 +699,6 @@ local multiply = {
 		y = 2,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://MULTIPLY",
-		text = {
-			"{C:cry_code}Double{} all values of",
-			"a selected {C:cry_code}Joker{} until",
-			"end of round",
-		},
-	},
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.name ~= "Ace Aequilibrium"
 	end,
@@ -858,13 +723,6 @@ local divide = {
 		y = 2,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://DIVIDE",
-		text = {
-			"{C:cry_code}Halve{} all listed prices",
-			"in current shop",
-		},
-	},
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 	end,
@@ -897,14 +755,6 @@ local delete = {
 		y = 2,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://DELETE",
-		text = {
-			"{C:cry_code}Permanently{} remove a",
-			"{C:cry_code}selected{} shop item",
-			"{C:inactive,s:0.8}Item cannot appear again this run",
-		},
-	},
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
@@ -954,13 +804,6 @@ local spaghetti = {
 		y = 2,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://SPAGHETTI",
-		text = {
-			"Create a {C:cry_code}Glitched",
-			"Food Joker",
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_glitched
 		info_queue[#info_queue + 1] = { set = "Other", key = "food_jokers" }
@@ -1092,12 +935,6 @@ local machinecode = {
 	name = "cry-Machine Code",
 	key = "machinecode",
 	pos = { x = 0, y = 3 },
-	loc_txt = {
-		name = "://MACHINECODE",
-		text = {
-			"",
-		},
-	},
 	cost = 3,
 	atlas = "code",
 	can_use = function(self, card)
@@ -1117,13 +954,6 @@ local run = {
 	name = "cry-Run",
 	key = "run",
 	pos = { x = 5, y = 0 },
-	loc_txt = {
-		name = "://RUN",
-		text = {
-			"Visit a {C:cry_code}shop",
-			"during a {C:cry_code}Blind",
-		},
-	},
 	cost = 3,
 	atlas = "code",
 	can_use = function(self, card)
@@ -1170,16 +1000,6 @@ local exploit = {
 	},
 	cost = 4,
 	config = { extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
-	loc_txt = {
-		name = "://EXPLOIT",
-		text = {
-			"The {C:cry_code}next{} hand played",
-			"is calculated as a",
-			"{C:cry_code}chosen{} poker hand",
-			"{C:inactive,s:0.8}Secret hands must be",
-			"{C:inactive,s:0.8}discovered to be valid",
-		},
-	},
 	can_use = function(self, card)
 		return true
 	end,
@@ -1213,15 +1033,6 @@ local oboe = {
 		y = 3,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://OFFBYONE",
-		text = {
-			"Next {C:cry_code}Booster Pack{} has",
-			"{C:cry_code}#1#{} extra card and",
-			"{C:cry_code}#1#{} extra choice",
-			"{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
@@ -1243,15 +1054,6 @@ local rework = {
 		y = 3,
 	},
 	cost = 4,
-	loc_txt = {
-		name = "://REWORK",
-		text = {
-			"Destroy a {C:cry_code}selected{} Joker,",
-			"create a {C:cry_code}Rework Tag{} with",
-			"an {C:cry_code}upgraded{} edition",
-			"{C:inactive,s:0.8}Upgrades using order in the Collection",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] =
 			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]" } }
@@ -1300,14 +1102,7 @@ local rework_tag = {
 	pos = { x = 0, y = 3 },
 	config = { type = "store_joker_create" },
 	key = "rework",
-	ability = { rework_edition = "[edition]", rework_key = "[joker]" },
-	loc_txt = {
-		name = "Rework Tag",
-		text = {
-			"Shop has a(n)",
-			"{C:dark_edition}#1# {C:cry_code}#2#",
-		},
-	},
+	ability = { rework_edition = "["..string.lower(localize("k_edition")).."]", rework_key = "["..string.lower(localize("k_joker")).."]" },
 	apply = function(tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, tag.ability.rework_key)

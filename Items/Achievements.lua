@@ -9,10 +9,6 @@ local achievement_atlas = {
 local break_infinity = {
 	object_type = "Achievement",
 	key = "break_infinity",
-	loc_txt = {
-		name = "Break Infinity",
-		description = "Score 1.79e308 Chips in a single hand",
-	},
 	order = 1,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -27,10 +23,6 @@ local break_infinity = {
 local used_crash = {
 	object_type = "Achievement",
 	key = "used_crash",
-	loc_txt = {
-		name = "We Told You Not To",
-		description = "Use ://CRASH",
-	},
 	order = 2,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -49,10 +41,6 @@ local used_crash = {
 local haxxor = {
 	object_type = "Achievement",
 	key = "haxxor",
-	loc_txt = {
-		name = "H4xx0r",
-		description = "Use a cheat code",
-	},
 	order = 3,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -67,10 +55,6 @@ local haxxor = {
 local googol_play_pass = {
 	object_type = "Achievement",
 	key = "googol_play_pass",
-	loc_txt = {
-		name = "Googol Play Pass",
-		description = "Rig a Googol Play Card",
-	},
 	order = 4,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -85,10 +69,6 @@ local googol_play_pass = {
 local bullet_hell = {
 	object_type = "Achievement",
 	key = "bullet_hell",
-	loc_txt = {
-		name = "Bullet Hell",
-		description = "Have 15 AP Jokers",
-	},
 	order = 5,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -115,10 +95,6 @@ local bullet_hell = {
 local what_have_you_done = {
 	object_type = "Achievement",
 	key = "what_have_you_done",
-	loc_txt = {
-		name = "WHAT HAVE YOU DONE?!",
-		description = "Delete or Sacrifice an Exotic Joker",
-	},
 	order = 6,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -133,10 +109,6 @@ local what_have_you_done = {
 local cryptid_the_cryptid = {
 	object_type = "Achievement",
 	key = "cryptid_the_cryptid",
-	loc_txt = {
-		name = "Cryptid the Cryptid",
-		description = "Use Cryptid on Cryptid",
-	},
 	order = 7,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -151,10 +123,6 @@ local cryptid_the_cryptid = {
 local niw_uoy = {
 	object_type = "Achievement",
 	key = "niw_uoy",
-	loc_txt = {
-		name = "!niW uoY",
-		description = "Reach Ante -8",
-	},
 	order = 8,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -169,10 +137,6 @@ local niw_uoy = {
 local jokes_on_you = {
 	object_type = "Achievement",
 	key = "jokes_on_you",
-	loc_txt = {
-		name = "Joke's on You, Pal!",
-		description = "Trigger The Joke's effect on Ante 1 and win the run",
-	},
 	order = 9,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -187,10 +151,6 @@ local jokes_on_you = {
 local now_the_fun_begins = {
 	object_type = "Achievement",
 	key = "now_the_fun_begins",
-	loc_txt = {
-		name = "Now the Fun Begins", --Possible rename to "Art is My Passion"?
-		description = "Obtain Canvas",
-	},
 	order = 10,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -209,10 +169,6 @@ local now_the_fun_begins = {
 local blurred_blurred_joker = {
 	object_type = "Achievement",
 	key = "blurred_blurred_joker",
-	loc_txt = {
-		name = "Legally Blind", --Rename. Maybe "20/50 Vision"?
-		description = "Obtain Blurred Blurred Joker",
-	},
 	order = 11,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -234,10 +190,6 @@ local blurred_blurred_joker = {
 local exodia = {
 	object_type = "Achievement",
 	key = "exodia",
-	loc_txt = {
-		name = "Exodia",
-		description = "Have 5 Exotic Jokers",
-	},
 	order = 12,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -262,10 +214,6 @@ local exodia = {
 local freak_house = {
 	object_type = "Achievement",
 	key = "freak_house",
-	loc_txt = {
-		name = "Freak House",
-		description = "Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice",
-	},
 	order = 13,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -310,10 +258,6 @@ local freak_house = {
 local ult_full_skip = {
 	object_type = "Achievement",
 	key = "ult_full_skip",
-	loc_txt = {
-		name = "Ultimate Full Skip",
-		description = "Win in 1 round",
-	},
 	order = 14,
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
@@ -328,10 +272,6 @@ local ult_full_skip = {
 local patience_virtue = {
 	object_type = "Achievement",
 	key = "patience_virtue",
-	loc_txt = {
-		name = "Patience is a Virtue",
-		description = "Wait out Lavender Loop for 2 minutes before playing first hand and beat the blind",
-	},
 	order = 15,
 	bypass_all_unlocked = true,
 	hidden_text = true,
@@ -359,10 +299,6 @@ local patience_virtue = {
 local pull_request = {
 	object_type = "Achievement",
 	key = "pull_request",
-	loc_txt = {
-		name = "Pull Request",
-		description = "Have ://COMMIT spawn the same Joker that it destroyed",
-	},
 	order = 16,
 	bypass_all_unlocked = true,
 	hidden_text = true,
@@ -379,10 +315,6 @@ local pull_request = {
 local ace_through_crash = {
 	object_type = "Achievement",
 	key = "ace_in_crash",
-	loc_txt = {
-		name = "Pocket ACE",
-		description = 'check_for_unlock({type = "ace_in_crash"})',
-	},
 	order = 17,
 	bypass_all_unlocked = true,
 	pos = { x = 2, y = 0 },
@@ -398,10 +330,6 @@ local ace_through_crash = {
 local home_realtor = {
 	object_type = "Achievement",
 	key = "home_realtor",
-	loc_txt = {
-		name = "Home Realtor",
-		description = "Activate Happy House before Ante 8 (without DoE/Antimatter)",
-	},
 	order = 18,
 	bypass_all_unlocked = true,
 	hidden_text = true,
@@ -409,6 +337,7 @@ local home_realtor = {
 	atlas = "cry_achievements",
 	--reset_on_startup = true,
 	unlock_condition = function(self, args)
+		--todo: check for doe/antimatter sleeves
 		if args.type == "home_realtor" then
 			return true
 		end
@@ -418,10 +347,6 @@ local home_realtor = {
 local traffic_jam = {
 	object_type = "Achievement",
 	key = "traffic_jam",
-	loc_txt = {
-		name = "Traffic Jam",
-		description = "Beat all Rush Hour challenges",
-	},
 	order = 19,
 	bypass_all_unlocked = true,
 	hidden_text = true,
@@ -452,10 +377,6 @@ local traffic_jam = {
 local perfectly_balanced = {
 	object_type = "Achievement",
 	key = "perfectly_balanced",
-	loc_txt = {
-		name = "Perfectly Balanced",
-		description = "Beat Very Fair Deck on Ascendant Stake",
-	},
 	order = 20,
 	bypass_all_unlocked = true,
 	hidden_text = true,

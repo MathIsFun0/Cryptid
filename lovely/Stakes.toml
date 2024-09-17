@@ -39,6 +39,7 @@ G.hand.cards[i]:calculate_perishable()
 match_indent = true
 
 # Yellow Stake - perishable and rental effects on cards in deck and discard pile
+# Double Down
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -58,6 +59,22 @@ while i <= #G.deck.cards do
     G.deck.cards[i]:calculate_perishable()
     local gone = G.deck.cards[i]:calculate_banana()
     if not gone then i = i + 1 end
+end
+if G.GAME.used_vouchers.v_cry_double_down then
+    local function update_dbl(area)
+        for i = 1, #area.cards do
+            if area.cards[i].dbl_side then
+                --tweak to do deck effects with on the flip side
+                cry_misprintize(area.cards[i].dbl_side, {min = 1.5, max = 1.5}, nil, true)
+                card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+            end
+        end
+    end
+    update_dbl(G.jokers)
+    update_dbl(G.consumeables)
+    update_dbl(G.hand)
+    update_dbl(G.discard)
+    update_dbl(G.deck)
 end
 '''
 match_indent = true

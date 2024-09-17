@@ -1797,7 +1797,11 @@ return {
 					card.ability.mult = math.max(0, card.ability.mult - card.ability.extra)
 					if card.ability.mult ~= prev_mult then
 						return {
-							message = localize({ type = "variable", key = "a_mult_minus", vars = { card.ability.extra } }),
+							message = localize({
+								type = "variable",
+								key = "a_mult_minus",
+								vars = { card.ability.extra },
+							}),
 							colour = G.C.RED,
 							card = card,
 						}

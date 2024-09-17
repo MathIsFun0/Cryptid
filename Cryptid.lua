@@ -5,8 +5,8 @@
 --- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0909a]
---- VERSION: 0.5.1~0914a
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
+--- VERSION: 0.5.1~0917c
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -15,6 +15,7 @@
 if not Cryptid then
 	Cryptid = {}
 end
+--Cryptid.debug = true
 
 local mod_path = "" .. SMODS.current_mod.path
 -- Load Options
@@ -432,21 +433,20 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 2340
-		GLOBAL_cry_member_count = love.thread.getChannel("member_count"):pop()
+		local old = GLOBAL_cry_member_count or 2800
+		local ret = love.thread.getChannel("member_count"):pop()
+		if ret then
+			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
+		end
 		if not GLOBAL_cry_member_count then
 			GLOBAL_cry_member_count = old
-			GLOBAL_cry_member_error = (GLOBAL_cry_member_error and GLOBAL_cry_member_error + 1) or 0
-			if GLOBAL_cry_member_error >= 15 then
-				local error = love.thread.getChannel("member_error"):pop()
-				if error then
-					sendDebugMessage(error)
-				end
-				GLOBAL_cry_member_error = 0
+			local error = love.thread.getChannel("member_error"):pop()
+			if error then
+				sendDebugMessage(error)
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 2340
+		GLOBAL_cry_member_count = 2800
 	end
 end
 
@@ -886,28 +886,40 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 end
 
 function Card:calculate_joker(context)
-	if self.will_shatter then
+	local active_side = self
+	if next(find_joker("cry-Flip Side")) and not context.dbl_side and self.edition and self.edition.cry_double_sided then
+		self:init_dbl_side()
+		active_side = self.dbl_side
+		if context.callback then
+			local m = context.callback
+			context.callback = function(card,a,b)
+				m(self,a,b)
+			end
+			context.dbl_side = true
+		end
+	end
+	if active_side.will_shatter then
 		return
 	end
 	local ggpn = G.GAME.probabilities.normal
 	if not G.GAME.cry_double_scale then
 		G.GAME.cry_double_scale = { double_scale = true } --doesn't really matter what's in here as long as there's something
 	end
-	if self.ability.cry_rigged then
+	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = 1e9
 	end
-	local orig_ability = self:cry_copy_ability()
+	local orig_ability = active_side:cry_copy_ability()
 	local in_context_scaling = false
-	local ret, trig = cj(self, context)
-	if not context.blueprint and (self.ability.set == "Joker") and not self.debuff then
+	local ret, trig = cj(active_side, context)
+	if not context.blueprint and (active_side.ability.set == "Joker") and not active_side.debuff then
 		if ret or trig then
 			in_context_scaling = true
 		end
 	end
-	if self.ability.cry_rigged then
+	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	self:cry_double_scale_calc(orig_ability, in_context_scaling)
+	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
 	return ret, trig
 end
 
@@ -1306,9 +1318,9 @@ for set, objs in pairs(Cryptid.obj_buffer) do
 		SMODS[set](objs[i])
 	end
 end
-local cryptidTabs = {
+local cryptidTabs = function() return {
 	{
-		label = "Features",
+		label = localize("cry_set_features"),
 		chosen = true,
 		tab_definition_function = function()
 			cry_nodes = {
@@ -1320,7 +1332,7 @@ local cryptidTabs = {
 							n = G.UIT.O,
 							config = {
 								object = DynaText({
-									string = "Select features to enable (applies on game restart):",
+									string = localize("cry_set_enable_features"),
 									colours = { G.C.WHITE },
 									shadow = true,
 									scale = 0.4,
@@ -1336,10 +1348,10 @@ local cryptidTabs = {
 				if k ~= "Cryptid" then
 					if #right_settings.nodes < #left_settings.nodes then
 						right_settings.nodes[#right_settings.nodes + 1] =
-							create_toggle({ label = k, ref_table = Cryptid_config, ref_value = k })
+							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
 					else
 						left_settings.nodes[#left_settings.nodes + 1] =
-							create_toggle({ label = k, ref_table = Cryptid_config, ref_value = k })
+							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
 					end
 				end
 			end
@@ -1361,7 +1373,7 @@ local cryptidTabs = {
 		end,
 	},
 	{
-		label = "Music",
+		label = localize("cry_set_music"),
 		tab_definition_function = function()
 			-- TODO: Add a button here to reset all Cryptid achievements.
 			-- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
@@ -1382,22 +1394,22 @@ local cryptidTabs = {
 			}
 			settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "Jimball (Funkytown by Lipps Inc. - Copyrighted)",
+				label = localize("cry_mus_jimball"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "jimball_music",
 			})
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
+				label = localize("cry_mus_code"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "code_music",
 			})
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "Exotic Jokers (Amen Balatro by AlexZGreat)",
+				label = localize("cry_mus_exotic"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "exotic_music",
 			})
 			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = "High Score (BalAAAAAAtro by AlexZGreat)",
+				label = localize("cry_mus_high_score"),
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "big_music",
 			})
@@ -1418,11 +1430,11 @@ local cryptidTabs = {
 			}
 		end,
 	},
-}
+} end
 G.FUNCS.cryptidMenu = function(e)
 	local tabs = create_tabs({
 		snap_to_nav = true,
-		tabs = cryptidTabs,
+		tabs = cryptidTabs(),
 	})
 	G.FUNCS.overlay_menu({
 		definition = create_UIBox_generic_options({
@@ -1448,9 +1460,7 @@ end
         nodes = {UIBox_button{ label = {"Open Cryptid Config"}, button = "cryptidMenu", colour = G.C.DARK_EDITION, minw = 5, minh = 0.7, scale = 0.6}}
     }
 end--]]
-SMODS.current_mod.extra_tabs = function()
-	return cryptidTabs
-end
+SMODS.current_mod.extra_tabs = cryptidTabs
 
 -- Modify to display badges for credits
 local smcmb = SMODS.create_mod_badges
@@ -1654,6 +1664,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		if not ret.config.center.key then
 			ret.config.center.key = ""
 		end
+		if not ret.ability then ret.ability = {} end
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
@@ -1943,7 +1954,10 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 				if
 					is_number(tbl[k])
 					and not (k == "id")
+					and not (k == "colour")
 					and not (k == "suit_nominal")
+					and not (k == "base_nominal")
+					and not (k == "face_nominal")
 					and not (k == "qty")
 					and not (k == "x_mult" and v == 1 and not tbl.override_x_mult_check)
 					and not (k == "selected_d6_face")
@@ -1972,10 +1986,13 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
+						and not (k == "colour")
 						and not (_k == "suit_nominal")
-						and not (k == "qty")
+						and not (_k == "base_nominal")
+						and not (_k == "face_nominal")
+						and not (_k == "qty")
 						and not (k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
-						and not (k == "selected_d6_face")
+						and not (_k == "selected_d6_face")
 					then --Refer to above
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
@@ -2031,6 +2048,7 @@ function cry_misprintize(card, override, force_reset, stack)
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 	then
+		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}
@@ -2042,6 +2060,9 @@ function cry_misprintize(card, override, force_reset, stack)
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
 			cry_misprintize_tbl(card.config.center_key, card.ability, nil, override, stack)
+			if card.base then
+				cry_misprintize_tbl(card.config.card_key, card.base, nil, override, stack)
+			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then
 			--card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
@@ -2114,157 +2135,6 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	G.localization.misc.v_text.ch_c_cry_all_perishable = { "All Jokers are {C:eternal}Perishable{}" }
-	G.localization.misc.v_text.ch_c_cry_all_rental = { "All Jokers are {C:eternal}Rental{}" }
-	G.localization.misc.v_text.ch_c_cry_all_pinned = { "All Jokers are {C:eternal}Pinned{}" }
-	G.localization.misc.v_text.ch_c_cry_all_banana = { "All Jokers are {C:eternal}Banana{}" }
-	G.localization.misc.v_text.ch_c_all_rnj = { "All Jokers are {C:attention}RNJoker{}" }
-	G.localization.misc.v_text.ch_c_cry_sticker_sheet_plus = { "All purchasable items have all stickers" }
-	G.localization.misc.v_text.ch_c_cry_rush_hour =
-		{ "All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop" }
-	G.localization.misc.v_text.ch_c_cry_rush_hour_ii = { "All Blinds are {C:attention}Boss Blinds{}" }
-	G.localization.misc.v_text.ch_c_cry_rush_hour_iii =
-		{ "{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast" }
-	G.localization.misc.v_text.ch_c_cry_no_tags = { "Skipping is {C:attention}disabled{}" }
-	G.localization.misc.dictionary.k_cry_program_pack = "Program Pack"
-	G.localization.misc.dictionary.k_cry_meme_pack = "Meme Pack"
-	G.localization.misc.labels.food_jokers = "Food Jokers"
-	G.localization.misc.labels.banana = "Banana"
-end
-
-function SMODS.current_mod.process_loc_text()
-	G.localization.misc.v_dictionary.a_xchips = "X#1# Chips"
-	G.localization.descriptions.Other.banana = {
-		name = "Banana",
-		text = {
-			"{C:green}#1# in #2#{} chance of being",
-			"destroyed each round",
-		},
-	}
-	G.localization.descriptions.Other.food_jokers = {
-		name = "Food Jokers",
-		text = {
-			"{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
-			"{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
-			"{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
-			"{s:0.8}Nostalgic Candy, Fast Food M,",
-			"{s:0.8}Cut The Cheese, Café Gourmand, Cherry,",
-			"{s:0.8}Full-Sugar Cola, Starfruit, Fondue,",
-			"{s:0.8}Fortune Cookie, Swiss Joker, Taliaferro,",
-			"{s:0.8}Royal Gala, Fine Wine, Mystery Soda,",
-			"{s:0.8}Popcorn Bag, Turkey Dinner, Coffee,",
-			"{s:0.8}Candle Service, Burning Melon,",
-			"{s:0.8}Burning Cherry, Soft Taco, Crispy Taco,",
-			"{s:0.8}Nachos, Ghost Cola, Burger, Pizza",
-		},
-	}
-	-- i am so sorry for this
-	G.localization.descriptions.Other.cry_eternal_booster = {
-		name = "Eternal",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Eternal{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_perishable_booster = {
-		name = "Perishable",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Perishable{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_rental_booster = {
-		name = "Rental",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Rental{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_pinned_booster = {
-		name = "Pinned",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Pinned{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_banana_booster = {
-		name = "Banana",
-		text = {
-			"All cards in pack",
-			"are {C:attention}Banana{}",
-		},
-	}
-	G.localization.descriptions.Other.cry_eternal_voucher = {
-		name = "Eternal",
-		text = {
-			"Can't be traded",
-		},
-	}
-	G.localization.descriptions.Other.cry_perishable_voucher = {
-		name = "Perishable",
-		text = {
-			"Debuffed after",
-			"{C:attention}#1#{} rounds",
-			"{C:inactive}({C:attention}#2#{C:inactive} remaining)",
-		},
-	}
-	G.localization.descriptions.Other.cry_rental_voucher = {
-		name = "Rental",
-		text = {
-			"Lose {C:money}$#1#{} at",
-			"end of round",
-		},
-	}
-	G.localization.descriptions.Other.cry_pinned_voucher = {
-		name = "Pinned",
-		text = {
-			"Remains in shop",
-			"until redeemed",
-		},
-	}
-	G.localization.descriptions.Other.cry_banana_voucher = {
-		name = "Banana",
-		text = {
-			"{C:green}#1# in #2#{} chance of being",
-			"unredeemed each round",
-		},
-	}
-	G.localization.descriptions.Other.cry_perishable_consumeable = {
-		name = "Perishable",
-		text = {
-			"Debuffed at",
-			"end of round",
-		},
-	}
-	G.localization.descriptions.Other.cry_rental_consumeable = {
-		name = "Rental",
-		text = {
-			"Lose {C:money}$#1#{} at end of",
-			"round, and on use",
-		},
-	}
-	G.localization.descriptions.Other.cry_pinned_consumeable = {
-		name = "Pinned",
-		text = {
-			"Can't use other",
-			"non-{C:attention}Pinned{} consumables",
-		},
-	}
-	G.localization.descriptions.Other.cry_banana_consumeable = {
-		name = "Banana",
-		text = {
-			"{C:green}#1# in #2#{} chance to do",
-			"nothing on use",
-		},
-	}
-	G.localization.descriptions.Other.cry_https_disabled = {
-		name = "M",
-		text = {
-			"{C:attention,s:0.7}Updating{s:0.7} is disabled by default ({C:attention,s:0.7}HTTPS Module{s:0.7})",
-		},
-	}
-	SMODS.process_loc_text(G.localization.misc.achievement_names, "hidden_achievement", "???")
-	SMODS.process_loc_text(G.localization.misc.achievement_descriptions, "hidden_achievement", "Play more to find out!")
 end
 
 function SMODS.current_mod.reset_game_globals(run_start)
@@ -2485,6 +2355,10 @@ SMODS.Sound({
 SMODS.Sound({
 	key = "e_blur",
 	path = "e_blur.ogg",
+})
+SMODS.Sound({
+	key = "e_double_sided",
+	path = "e_double_sided.ogg",
 })
 SMODS.Sound({
 	key = "e_jolly",

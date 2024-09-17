@@ -843,6 +843,7 @@ local glass_edition = {
 	object_type = "Edition",
 	key = "glass",
 	shader = "glass",
+	in_shop = true,
 	disable_base_shader = true,
 	disable_shadow = true,
 	on_apply = function(card)
@@ -921,6 +922,7 @@ local gold_edition = {
 	shader = "gold",
 	weight = 7,
 	extra_cost = 2,
+	in_shop = true,
 	config = { dollars = 2 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.dollars } }
@@ -969,11 +971,15 @@ local gold_edition = {
 local double_sided = {
 	object_type = "Edition",
 	key = "double_sided",
+	shader = false,
 	weight = 10,
 	extra_cost = 0,
-	on_apply = function(card)
-		-- Ok so definitely do something with this but not now
-	end,
+	in_shop = true,
+	sound = {
+		sound = "cry_e_double_sided",
+		per = 1,
+		vol = 0.3,
+	},
 	loc_txt = {
 		name = "Double-Sided",
 		label = "Double-Sided",
@@ -981,30 +987,17 @@ local double_sided = {
 			"This card can be",
 			"{C:attention}flipped{} to reveal",
 			"a different card",
-			"{s:0.8}Currently: ???",
 		},
 	},
-	calculate = function(self, card, context)
-		if
-			context.joker_triggered
-			or context.from_consumable
-			or (
-				context.from_playing_card
-				and context.cardarea
-				and context.cardarea == G.play
-				and not context.repetition
-			)
-		then
-			ease_dollars(self.config.dollars)
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("$") .. self.config.dollars, colour = G.C.MONEY }
-			)
-		end
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+	get_weight = function(self)
+		return G.GAME.edition_rate * self.weight * (G.GAME.used_vouchers.v_cry_double_vision and 4 or 1)
 	end,
 }
 local echo_atlas = {
@@ -1537,6 +1530,58 @@ local memory = {
 	end,
 }
 
+local meld = {
+	object_type = "Consumable",
+	set = "Tarot",
+	name = "cry-Meld",
+	key = "meld",
+	pos = { x = 1, y = 2 },
+	config = { extra = 4 },
+	loc_txt = {
+		name = "Meld",
+		text = {
+			"Select a {C:attention}Joker{} or",
+			"{C:attention}playing card{} to",
+			"become {C:dark_edition}Double-Sided",
+		},
+	},
+	cost = 4,
+	atlas = "placeholders",
+	can_use = function(self, card)
+		if #G.jokers.highlighted
+				+ #G.hand.highlighted
+				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
+			== 1 then
+			if #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.no_dbl then return false end
+			return true
+		end
+	end,
+	cry_credits = {
+		colour = G.C.CRY_JOLLY,
+		text = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	use = function(self, card, area, copier)
+		if #G.jokers.highlighted == 1 then
+			G.jokers.highlighted[1]:remove_from_deck(true)
+			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.jokers.highlighted[1]:add_to_deck(true)
+			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
+		else
+			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.hand:remove_from_highlighted(G.hand.highlighted[1])
+		end
+	end,
+	in_pool = function()
+		return G.GAME.used_vouchers.v_cry_double_slit
+	end
+}
+
 local miscitems = {
 	memepack_atlas,
   meme_object_type,
@@ -1573,6 +1618,8 @@ local miscitems = {
 	bundle,
 	memory,
 	schematic,
+	double_sided,
+	meld
 }
 if cry_enable_epics then
 	miscitems[#miscitems + 1] = epic_tag
@@ -1693,6 +1740,332 @@ return {
 				end
 			end
 			return full_UI_table
+		end
+
+		-- Double-Sided - create FLIP button
+		-- kinda based on Fusion Jokers
+		local card_focus_ui = G.UIDEF.card_focus_ui
+		function G.FUNCS.can_flip_card(e)
+			e.config.colour = G.C.DARK_EDITION
+			e.config.button = "flip"
+		end
+		function G.FUNCS.can_flip_merge_card(e)
+			local area = e.config.ref_table.area
+			local mergable = 0
+			for i = 1, #area.highlighted do
+				if area.highlighted[i].edition and area.highlighted[i].edition.cry_double_sided then
+					mergable = mergable + 1
+					mergedcard = area.highlighted[i]
+				end
+			end
+			if mergable == 1 then
+				e.config.colour = G.C.DARK_EDITION
+				e.config.button = "flip_merge"
+			else
+				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				e.config.button = nil
+			end
+		end
+		function G.FUNCS.flip(e)
+			e.config.ref_table:flip()
+			e.config.ref_table.area:remove_from_highlighted(e.config.ref_table)
+		end
+		function G.FUNCS.flip_merge(e)
+			e.config.ref_table:flip()
+			e.config.ref_table.area:remove_from_highlighted(e.config.ref_table)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 1,
+				func = function()
+					local area = e.config.ref_table.area
+					area:remove_card(e.config.ref_table)
+					mergedcard:init_dbl_side()
+					copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
+					e.config.ref_table:remove()
+					e.config.ref_table = nil
+					return true
+				end,
+			}))
+		end
+		local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
+		function G.UIDEF.use_and_sell_buttons(card)
+			local retval = use_and_sell_buttonsref(card)
+			if
+				card.area
+				and card.edition
+				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
+				and card.edition.cry_double_sided
+				and not card.ability.no_dbl
+			then
+				local use = {
+					n = G.UIT.C,
+					config = { align = "cr" },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = {
+								ref_table = card,
+								align = "cr",
+								maxw = 1.25,
+								padding = 0.1,
+								r = 0.08,
+								hover = true,
+								shadow = true,
+								colour = G.C.UI.BACKGROUND_INACTIVE,
+								one_press = true,
+								button = "flip",
+								func = "can_flip_card",
+							},
+							nodes = {
+								{ n = G.UIT.B, config = { w = 0.1, h = 0.3 } },
+								{
+									n = G.UIT.T,
+									config = {
+										text = "FLIP",
+										colour = G.C.UI.TEXT_LIGHT,
+										scale = 0.3,
+										shadow = true,
+									},
+								},
+							},
+						},
+					},
+				}
+				local m = retval.nodes[1]
+				if not card.added_to_deck then
+					use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+					if card.ability.consumeable then
+						m = retval
+					end
+				end
+				m.nodes = m.nodes or {}
+				table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+					use,
+				} })
+				return retval
+			end
+			if
+				card.area
+				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
+				and (not card.edition or not card.edition.cry_double_sided)
+				and not card.ability.eternal
+				and not card.ability.no_dbl
+			then
+				for i = 1, #card.area.cards do
+					if card.area.cards[i].edition and card.area.cards[i].edition.cry_double_sided then
+						local use = {
+							n = G.UIT.C,
+							config = { align = "cr" },
+							nodes = {
+								{
+									n = G.UIT.C,
+									config = {
+										ref_table = card,
+										align = "cr",
+										maxw = 1.25,
+										padding = 0.1,
+										r = 0.08,
+										hover = true,
+										shadow = true,
+										colour = G.C.UI.BACKGROUND_INACTIVE,
+										one_press = true,
+										button = "flip_merge",
+										func = "can_flip_merge_card",
+									},
+									nodes = {
+										{ n = G.UIT.B, config = { w = 0.1, h = 0.3 } },
+										{
+											n = G.UIT.T,
+											config = {
+												text = "MERGE",
+												colour = G.C.UI.TEXT_LIGHT,
+												scale = 0.3,
+												shadow = true,
+											},
+										},
+									},
+								},
+							},
+						}
+						local m = retval.nodes[1]
+						if not card.added_to_deck then
+							use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+							if card.ability.consumeable then
+								m = retval
+							end
+						end
+						m.nodes = m.nodes or {}
+						table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+							use,
+						} })
+						return retval
+					end
+				end
+			end
+			return retval
+		end
+		local cupd = Card.update
+		function Card:update(dt)
+			cupd(self, dt)
+			if self.sprite_facing == "back" and self.edition and self.edition.cry_double_sided then
+				self.sprite_facing = "front"
+				self.facing = "front"
+				if self.flipping == "f2b" then
+					self.flipping = "b2f"
+				end
+				self:dbl_side_flip()
+			end
+		end
+		function copy_dbl_card(C, c, deck_effects)
+			if not c.T then
+				c.T = C.T
+			end
+			if not c.set_sprites then
+				function c.set_sprites() end
+			end
+			if not c.set_debuff then
+				function c.set_debuff() end
+			end
+			if not c.params then
+				c.params = C.params or {}
+			end
+			c.add_to_deck = Card.add_to_deck
+			c.remove_from_deck = Card.remove_from_deck
+			if not deck_effects then
+				Cdeck = C.added_to_deck
+				cdeck = c.added_to_deck
+				C.added_to_deck = true
+				c.added_to_deck = false
+			end
+			Card.set_ability(c, C.config.center)
+			--[[if not deck_effects then
+				C.added_to_deck = Cdeck
+				c.added_to_deck = cdeck
+			end--]]
+			c.ability.type = C.ability.type
+			c.config.card = C.config.card
+			c.config.center_key = C.config.center_key
+			c.config.card_key = C.config.card_key
+			if c.config.card then
+				for k, v in pairs(G.P_CARDS) do
+					if card == v then
+						c.config.card_key = k
+					end
+				end
+				local suit_base_nominal_original = nil
+				if c.base and c.base.suit_nominal_original then
+					suit_base_nominal_original = c.base.suit_nominal_original
+				end
+				c.base = {
+					name = c.config.card.name,
+					suit = c.config.card.suit,
+					value = c.config.card.value,
+					nominal = 0,
+					suit_nominal = 0,
+					face_nominal = 0,
+					colour = G.C.SUITS[c.config.card.suit],
+					times_played = 0,
+				}
+				local rank = SMODS.Ranks[c.base.value] or {}
+				c.base.nominal = rank.nominal or 0
+				c.base.face_nominal = rank.face_nominal or 0
+				c.base.id = rank.id
+
+				local suit = SMODS.Suits[c.base.suit] or {}
+				c.base.suit_nominal = suit.suit_nominal or 0
+				c.base.suit_nominal_original = suit_base_nominal_original or suit.suit_nominal or 0
+			else
+				c.base = nil
+			end
+			for k, v in pairs(C.ability) do
+				c.ability[k] = C.ability[k]
+			end
+			c.seal = C.seal
+			c.debuff = C.debuff
+			c.pinned = C.pinned
+			Card.set_cost(c)
+		end
+		function Card:init_dbl_side()
+			if self.ability.no_dbl then
+				self:set_edition(nil, true)
+			end
+			if not self.dbl_side then
+				self.dbl_side = cry_deep_copy(self)
+				self.dbl_side:set_ability(G.P_CENTERS.c_base)
+				self.dbl_side:set_base(G.P_CARDS.empty)
+				if self.area == G.hand then
+					self.dbl_side.config.center = cry_deep_copy(self.dbl_side.config.center)
+					self.dbl_side.config.center.no_rank = true
+				end
+				self.dbl_side.added_to_deck = false
+				return true
+			end
+		end
+		function Card:dbl_side_flip()
+			local init_dbl_side = self:init_dbl_side()
+			local tmp_side = cry_deep_copy(self.dbl_side)
+			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
+			self.T.w, self.T.h = G.CARD_W, G.CARD_H
+			local active_side = self
+			if next(find_joker("cry-Flip Side")) and self.dbl_side then
+				active_side = self.dbl_side
+			end
+			if not init_dbl_side then 
+				active_side:remove_from_deck(true) 
+			end
+			copy_dbl_card(self, self.dbl_side, false)
+			copy_dbl_card(tmp_side, self, false)
+			active_side:add_to_deck(true)
+			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
+			if self.config.card and self.base and self.config.card_key then
+				--Note: this causes a one-frame stutter
+				self:set_sprites(nil, self.config.card)
+				if self.children.front then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
+			end
+			if (not self.base or not self.base.name) and self.children.front then
+				self.children.front:remove()
+				self.children.front = nil
+			end
+		end
+		function Card:is_face(from_boss)
+			if self.debuff and not from_boss then return end
+			local id = self:get_id()
+			local rank = SMODS.Ranks[self.base.value]
+			if not id then return end
+			if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
+				return true
+			end
+		end
+		local cgcb = Card.get_chip_bonus
+		function Card:get_chip_bonus()
+			if self.ability.set == "Joker" then return 0 end
+			return cgcb(self)
+		end
+		local csave = Card.save
+		function Card:save()
+			local cardTable = csave(self)
+			if self.dbl_side then
+				cardTable.dbl_side = csave(self.dbl_side)
+			end
+			return cardTable
+		end
+		local cload = Card.load
+		function Card:load(cardTable, other_card)
+			cload(self, cardTable, other_card)
+			if cardTable.dbl_side then
+				self.dbl_side = {}
+				self.dbl_side.T = self.T
+				self.dbl_side.VT = self.VT
+				function self.dbl_side.set_sprites() end
+				cload(self.dbl_side, cardTable.dbl_side)
+				setmetatable(self.dbl_side, Card)
+			end
+		end
+		local rma = remove_all
+		function remove_all(t)
+			if t then
+				rma(t)
+			end
 		end
 	end,
 	items = miscitems,

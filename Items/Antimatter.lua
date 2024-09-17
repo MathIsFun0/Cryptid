@@ -3,12 +3,6 @@ local blank = {
 	name = "cry-Blank",
 	key = "blank",
 	pos = { x = 1, y = 0 },
-	loc_txt = {
-		name = "Blank Deck",
-		text = {
-			"{C:inactive,E:1}Does nothing?",
-		},
-	},
 	atlas = "blank",
 }
 local blank_sprite = {
@@ -59,13 +53,6 @@ local antimatter = {
 		cry_boss_blocked = { "bl_goad", "bl_window", "bl_club", "bl_head" },
 	},
 	pos = { x = 2, y = 0 },
-	loc_txt = {
-		name = "Antimatter Deck",
-		text = {
-			"Applies the {C:legendary,E:1}upsides{}",
-			"of {C:attention}every{} deck",
-		},
-	},
 	trigger_effect = function(self, args)
 		if args.context == "final_scoring_step" then
 			--Critical Deck
@@ -79,7 +66,7 @@ local antimatter = {
 						play_sound("talisman_emult", 1)
 						attention_text({
 							scale = 1.4,
-							text = "Critical Hit!",
+							text = localize("cry_critical_hit_ex"),
 							hold = 4,
 							align = "cm",
 							offset = { x = 0, y = -1.7 },

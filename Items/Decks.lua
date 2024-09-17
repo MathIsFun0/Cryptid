@@ -256,7 +256,7 @@ local critical = {
 						play_sound("talisman_emult", 1)
 						attention_text({
 							scale = 1.4,
-							text = "Critical Hit!",
+							text = localize("cry_critical_hit_ex"),
 							hold = 2,
 							align = "cm",
 							offset = { x = 0, y = -2.7 },
@@ -273,7 +273,7 @@ local critical = {
 						play_sound("timpani", 1)
 						attention_text({
 							scale = 1.4,
-							text = "Critical Miss!",
+							text = localize("cry_critical_miss_ex"),
 							hold = 2,
 							align = "cm",
 							offset = { x = 0, y = -2.7 },
