@@ -5657,7 +5657,7 @@ local flipside = {
 	object_type = "Joker",
 	name = "cry-Flip Side",
 	key = "flip_side",
-	pos = { x = 0, y = 0 },
+	pos = { x = 1, y = 0 },
 	loc_txt = {
 		name = "On the Flip Side",
 		text = {

@@ -582,6 +582,17 @@ local tornado = {
 	loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
 	end,
+	in_pool = function()
+		if not G.jokers then
+			return true
+		end
+		for i, j in pairs(G.jokers.cards) do
+			if j.ability.name == "Oops! All 6s" and j.ability.eternal == true then
+				return false
+			end
+		end
+		return true
+	end,
 	collection_loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
 	end,
