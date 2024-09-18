@@ -497,7 +497,7 @@ local pin = {
 		end
 		for i, j in pairs(G.jokers.cards) do
 			if
-				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3))
+				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3) or (j.config.center.rarity == 5))
 			then
 				return true
 			end
@@ -508,7 +508,7 @@ local pin = {
 		if
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
-			and (card.config.center.rarity ~= 3 and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1)
+			and (card.config.center.rarity ~= 3 and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1 and card.config.center.rarity ~= 5)
 		then
 			return true
 		end
@@ -581,6 +581,17 @@ local tornado = {
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
+	end,
+	in_pool = function()
+		if not G.jokers then
+			return true
+		end
+		for i, j in pairs(G.jokers.cards) do
+			if j.ability.name == "Oops! All 6s" and j.ability.eternal == true then
+				return false
+			end
+		end
+		return true
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
