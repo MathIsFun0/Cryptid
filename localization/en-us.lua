@@ -1,5 +1,5 @@
 --Work in progress!
---Completed: Cryptid.lua, Achievements-CodeCards:1131
+--Completed: Cryptid.lua, Achievements-CodeCards.lua, Achievements-Code.toml
 return {
     descriptions = {
         Back = {
@@ -14,6 +14,14 @@ return {
                 name = "Blank Deck",
                 text = {
                     "{C:inactive,E:1}Does nothing?",
+                },
+            },
+            b_cry_encoded = {
+                name = "Encoded Deck",
+                text = {
+                    "Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+                    "and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+                    "Only {C:cry_code}Code Cards{} appear in shop",
                 },
             },
         },
@@ -350,6 +358,97 @@ return {
                 },
             },
         },
+        Joker = {
+            j_cry_blender = {
+                name = "Blender",
+                text = {
+                    "Create a {C:attention}random{}",
+                    "consumable when a",
+                    "{C:cry_code}Code{} card is used",
+                    "{C:inactive}(Must have room){}",
+                },
+            },
+            j_cry_CodeJoker = {
+                name = "Code Joker",
+                text = {
+                    "Create a {C:dark_edition}Negative{}",
+                    "{C:cry_code}Code Card{} when",
+                    "{C:attention}Blind{} is selected",
+                },
+            },
+            j_cry_copypaste = {
+                name = "Copy/Paste",
+                text = {
+                    "When a {C:cry_code}Code{} card is used,",
+                    "{C:green}#1# in #2#{} chance to add a copy",
+                    "to your consumable area",
+                    "{C:inactive}(Must have room)",
+                },
+            },
+            j_cry_cut = {
+                name = "Cut",
+                text = {
+                    "This Joker destroys",
+                    "a random {C:cry_code}Code{} card",
+                    "and gains {X:mult,C:white} X#1# {} Mult",
+                    "at the end of the {C:attention}shop{}",
+                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
+            j_cry_python = {
+                name = "Python",
+                text = {
+                    "This Joker gains",
+                    "{X:mult,C:white} X#1# {} Mult when a",
+                    "{C:cry_code}Code{} card is used",
+                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
+        },
+        Spectral = {
+            c_cry_pointer = {
+                name = "POINTER://",
+                text = {
+                    "Create a card",
+                    "of {C:cry_code}your choice",
+                    "{C:inactive,s:0.8}(Exotic Jokers #1#excluded)",
+                },
+            },
+            c_cry_source = {
+                name = "Source",
+                text = {
+                    "Add a {C:cry_code}Green Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+                },
+            },
+        },
+        Tag = {
+            tag_cry_console = {
+                name = "Console Tag",
+                text = {
+                    "Gives a free",
+                    "{C:cry_code}Program Pack",
+                },
+            },
+            tag_cry_rework = {
+                name = "Rework Tag",
+                text = {
+                    "Shop has a(n)",
+                    "{C:dark_edition}#1# {C:cry_code}#2#",
+                },
+            },
+        },
+        Tarot = {
+            c_cry_automaton = {
+                name = "The Automaton",
+                text = {
+                    "Creates up to {C:attention}#1#",
+                    "random {C:cry_code}Code{} card",
+                    "{C:inactive}(Must have room)",
+                },
+            },
+        },
         Other = {
             banana = {
                 name = "Banana",
@@ -532,23 +631,15 @@ return {
                     "learn what it does"
                 }
             },
+            cry_green_seal = {
+                name = "Green Seal",
+                text = {
+                    "Creates a {C:cry_code}Code{} card",
+                    "when played and unscoring",
+                    "{C:inactive}(Must have room)",
+                },
+            },
         },
-        Tag = {
-            tag_cry_console = {
-                name = "Console Tag",
-                text = {
-                    "Gives a free",
-                    "{C:cry_code}Program Pack",
-                },
-            },
-            tag_cry_rework = {
-                name = "Rework Tag",
-                text = {
-                    "Shop has a(n)",
-                    "{C:dark_edition}#1# {C:cry_code}#2#",
-                },
-            },
-        }
     },
     misc = {
         achievement_names = {
@@ -651,13 +742,30 @@ return {
 
             k_code = "Code",
             b_code_cards = "Code Cards",
+            b_pull = "PULL",
+            k_hooked_ex = "Hooked!",
+            k_end_blind = "End Blind",
+
+            cry_code_rank = "ENTER RANK",
+            cry_code_enh = "ENTER ENHANCEMENT",
+            cry_code_hand = "ENTER POKER HAND",
+            cry_code_enter_card = "ENTER A CARD",
+            cry_code_apply = "APPLY",
+            cry_code_apply_previous = "APPLY PREVIOUS",
+            cry_code_exploit = "EXPLOIT",
+            cry_code_exploit_previous = "EXPLOIT PREVIOUS",
+            cry_code_create = "CREATE",
+            cry_code_create_previous = "CREATE PREVIOUS",
+            cry_code_execute = "EXECUTE",
+            cry_code_cancel = "CANCEL",
         },
         labels = {
             food_jokers = "Food Jokers",
             banana = "Banana",
             code = "Code",
             cry_rigged = "Rigged",
-            cry_hooked = "Hooked"
+            cry_hooked = "Hooked",
+            cry_green_seal = "Green Seal",
         },
         v_dictionary = {
             a_xchips = {"X#1# Chips"},
