@@ -1,5 +1,5 @@
 --Work in progress!
---Completed: Cryptid.lua, Achievements-CodeCards.lua, Achievements-Code.toml
+--Completed: Cryptid.lua, lovely patches, Achievements-Enhanced.lua
 return {
     descriptions = {
         Back = {
@@ -16,12 +16,96 @@ return {
                     "{C:inactive,E:1}Does nothing?",
                 },
             },
+            b_cry_CCD = {
+                name = "CCD Deck",
+                text = {
+                    "Every card is also",
+                    "a {C:attention}random{} consumable",
+                },
+            },
+            b_cry_conveyor = {
+                name = "Conveyor Deck",
+                text = {
+                    "Jokers may {C:attention}not{} be moved",
+                    "At start of round,",
+                    "{C:attention}duplicate{} rightmost Joker",
+                    "and {C:attention}destroy{} leftmost Joker",
+                },
+            },
+            b_cry_critical = {
+                name = "Critical Deck",
+                text = {
+                    "After each hand played,",
+                    "{C:green}#1# in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+                    "{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+                },
+            },
             b_cry_encoded = {
                 name = "Encoded Deck",
                 text = {
                     "Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
                     "and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
                     "Only {C:cry_code}Code Cards{} appear in shop",
+                },
+            },
+            b_cry_equilibrium = {
+                name = "Deck of Equilibrium",
+                text = {
+                    "All cards have the",
+                    "{C:attention}same chance{} of",
+                    "appearing in shops,",
+                    "start run with",
+                    "{C:attention,T:v_overstock_plus}Overstock Plus",
+                },
+            },
+            b_cry_glowing = {
+                name = "Glowing Deck",
+                text = {
+                    "Multiply the values of",
+                    "all Jokers by {X:dark_edition,C:white} X1.25 {}",
+                    "when Boss Blind is defeated",
+                    "{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
+                },
+            },
+            b_cry_infinite = {
+                name = "Infinite Deck",
+                text = {
+                    "You can select {C:attention}any",
+                    "number of cards",
+                    "{C:attention}+1{} hand size",
+                },
+            },
+            b_cry_misprint = {
+                name = "Misprint Deck",
+                text = {
+                    "Values of cards",
+                    "and poker hands",
+                    "are {C:attention}randomized",
+                },
+            },
+            b_cry_redeemed = {
+                name = "Redeemed Deck",
+                text = {
+                    "When a {C:attention}Voucher{} is purchased,",
+                    "gain its {C:attention}extra tiers",
+                },
+            },
+            b_cry_very_fair = {
+                name = "Very Fair Deck",
+                text = {
+                    "{C:blue}-2{} hands, {C:red}-2{} discards",
+                    "every round",
+                    "{C:attention}Vouchers{} no longer",
+                    "appear in the shop",
+                },
+            },
+            b_cry_wormhole = {
+                name = "Wormhole Deck",
+                text = {
+                    "Start with an {C:cry_exotic}Exotic{C:attention} Joker",
+                    "Jokers are {C:attention}20X{} more",
+                    "likely to be {C:dark_edition}Negative",
+                    "{C:attention}-2{} Joker slots",
                 },
             },
         },
@@ -781,6 +865,82 @@ return {
             ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}Boss Blinds{}"},
             ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"},
             ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
+        },
+        -- Thanks to many members of the community for contributing to all of these quips!
+        -- There's too many to credit so just go here: https://discord.com/channels/1116389027176787968/1209506360987877408/1237971471146553406
+        -- And here: https://discord.com/channels/1116389027176787968/1219749193204371456/1240468252325318667
+        very_fair_quips = {
+            { "L", "NO VOUCHERS", "FOR YOU" },
+            { "BOZO", "DID YOU THINK I WOULD", "GIVE YOU A VOUCHER?" },
+            { "NOPE!", "NO VOUCHERS HERE!", "(SLUMPAGE EDITION)" },
+            { "SKILL ISSUE", "IMAGINE BEING GOOD ENOUGH", "FOR A VOUCHER" },
+            { "JIMBO", "FROM MANAGEMENT", "FORGOT TO RESTOCK" },
+            { "OOPS!", "NO VOUCHERS", "" },
+            { "YOU JOKER,", "WHY ARE YOU LOOKING", "OVER HERE? LOL" },
+            { "THE VOUCHER", "IS IN", "ANOTHER CASTLE" },
+            { "$0", "BLANK VOUCHER", "(GET IT?)" },
+            { "ERROR", "CANNOT DO ARITHMETIC ON A NIL VALUE", "(tier4vouchers.lua)" },
+            { "100% OFF", "ON ALL VOUCHERS", "(SOMEONE ALREADY BOUGHT THEM)" },
+            { "TRY AGAIN LATER", "HINT: YOU WON'T HAVE", "ENOUGH MONEY ANYWAYS" },
+            { "HUH?", '"VOUCHER"?', "THAT'S NOT EVEN A WORD..." },
+            { 'HOLD "R"', "TO RESTOCK", "ALL VOUCHERS" },
+            { "DID YOU KNOW?", "PRESSING ALT+F4", "GIVES FREE VOUCHERS!" },
+            { "SORRY,", "THERE ARE NO VOUCHERS", "DUE TO BUDGET CUTS" },
+            { "CALL 1-600-JIMBO", "TO RATE YOUR", "VOUCHER EXPERIENCE" },
+            { "DEFEAT", "ANTE 39 BOSS BLIND", "TO RESTOCK" },
+            { "MAGIC TRICK", "I MADE THIS VOUCHER", "DISAPPEAR" },
+            { "WHY IS A", "VOUCHER LIKE", "A WRITING DESK?" },
+            { "WE HAVE RETRACTED", "YOUR VOUCHERS, THEY WOULD BE", "BETTER USED IN OTHER RUNS" },
+            { "WHY DO THEY CALL IT VOUCHER", "WHEN MULT OUT THE HOT", "IN COLD EAT EAT THE CHIP" },
+            { "SORRY", "THE VOUCHERS ARE EXPERIENCING", "VOUCHIFIA ABORTUS" },
+            { "UNFORTUNATELY", "THE VOUCHRX REWRITE UPDATE", "HAS BEEN CANCELLED" },
+            { "DEFEAT", "BOSS BLIND", "TO CHANGE NOTHING" },
+            { "BIRDS ARE SINGING", "FLOWERS ARE BLOOMING", "KIDS LIKE YOU..." },
+            { "WE ARE SORRY TO SAY", "ALL VOUCHERS HAVE BEEN RECALLED", "DUE TO SALMONELLA EXPOSURE" },
+            { "VOUCHERS COULDN'T ARRIVE", "DUE TO SHOP LAYOUT BEING", "200% OVERBUDGET" },
+            { "YOU LIKE", "BUYING VOUCHERS, DON'T YOU", "YOU'RE A VOUCHERBUYER" },
+            { "VOUCHERS", "!E", "VOUCHER POOL" },
+            { "THERE", "IS NO", "VOUCHER" },
+            { "THERE IS", "NO SANTA", "AND THERE ARE NO VOUCHERS" },
+            { "", "VOUCHERN'T", "" },
+            { "YOU", "JUST LOST", "THE GAME" },
+            { "CAN I OFFER YOU", "A NICE EGG", "IN THESE TRYING TIMES?" },
+            { "GO TOUCH GRASS", "INSTEAD OF USING", "THIS DECK" },
+            { "YOU COULD BE", "PLAYING ON BLUE DECK", "RIGHT NOW" },
+            { "FREE EXOTICS", "GET THEM BEFORE ITS", "TOO LATE (sold out)" },
+            { "PROVE THEM WRONG", "BUY BUYING AN INVISIBLE", "VOUCHER FOR $10" },
+            { "", "no vouchers?", "" },
+            { "see this ad?", "if you are, then it's working", "and you could have it for your own" },
+            { "YOU'RE MISSING OUT ON", "AT LEAST 5 VOUCHERS RIGHT NOW", "tonktonktonktonktonk" },
+            { "10", "20 NO VOUCHER XD", "30 GOTO 10" },
+            { "VOUCHERS", "ARE A PREMIUM FEATURE", "$199.99 JOLLARS TO UNLOCK" },
+            { "TRUE VOUCHERLESS!?!?", "ASCENDANT STAKE ONLY", "VERY FAIR DECK" },
+            { "ENJOYING YOUR", "VOUCHER EXPERIENCE? GIVE US A", "FIVE STAR RATING ON JESTELP" },
+            { "FREE VOUCHERS", "HOT VOUCHERS NEAR YOU", "GET VOUCHERS QUICK WITH THIS ONE TRICK" },
+            { "INTRODUCING", "THE VERY FIRST TIER 0 VOUCHER!", "(coming to Cryptid 1.0 soon)" },
+            { "A VOUCHER!", "IT'S JUST IMAGINARY", "WE IMAGINED YOU WOULD WANT IT, THAT IS" },
+            { "TURN OFF ADBLOCKER", "WITHOUT ADS, WE WOULDN'T", "BE ABLE TO SELL YOU VOUCHERS" },
+            { "IF YOU HAVE", "A PROBLEM WITH THIS", "EMAIL IT TO US AT NORESPONSE@JMAIL.COM" },
+            { "NOT ENOUGH MONEY", "TO BUY THIS VOUCHER", "SO WHY WOULD WE PUT IT HERE?" },
+            { "WANT A VOUCHER?", "WELL SHUT UP", "YOU CAN'T HAVE ANY LOL" },
+            { "^$%& NO", "VOUCHERS ^%&% %&$^% FOR", "$%&%%$ %&$&*%$^ YOU" },
+            { "A VOUCHER (TRUST)", "|\\/|", "|/\\|" },
+            {
+                "... --- ...",
+                ".--. .-.. .- -.-- . .-. -.. . -.-. --- -.. . -.. -- --- .-. ... .",
+                "-.-. --- -.. . - --- ..-. .. -. -.. .- ...- --- ..- -.-. .... . .-.",
+            },
+            { "RUN > NEW", "STARE AT NOTHING", "FOR AN HOUR OR TWO" },
+            { "WE'RE VERY SORRY", "THE LAST GUY PANIC BOUGHT", "ALL THE VOUCHERS" },
+            { "HOW IT FEELS", "TO BUY NO", "VOUCHERS" },
+            { "JIMBO GOT A NAT 1", "AND DUMPED ALL THE", "VOUCHERS IN A DITCH" },
+            { "ATTEMPT TO INDEX", "FIELD 'VOUCHER'", "(A NIL VALUE)" },
+            {
+                "OH YOU REALLY THOUGHT THAT READING ALL THESE LINES WOULD BRING YOUR VOUCHERS BACK?",
+                "SORRY TO TELL YOU, BUT THIS DECK DOESN'T CONTAIN THE VOUCHERS YOU SEEK.",
+                "THIS ABNORMALLY LONG TEXT IS HERE AND DESIGNED TO WASTE YOUR TIME AND EFFORT WHILE YOU READ IT.",
+            },
+            { "GO TO", "https://youtu.be/p7YXXieghto", "FOR FREE VOUCHERS" },
         }
     }
 }

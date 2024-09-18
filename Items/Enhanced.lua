@@ -1,4 +1,5 @@
 -- Enhanced has to be loaded near-last because of Jolly edition
+-- Not localized for now - will be rewritten later
 
 local atlasenhanced = {
 	object_type = "Atlas",
