@@ -1693,6 +1693,80 @@ if JokerDisplay then
 		end,
 	}
 end
+local longboi = {
+	object_type = "Joker",
+	name = "cry-longboi",
+	key = "longboi",
+	pos = { x = 0, y = 5 },
+	config = { extra = 2 },
+	loc_txt = {
+		name = "Monster",
+		text = {
+			"Give future copies of",
+			"this Joker {X:mult,C:white}X#1#{} Mult",
+			"at end of round",
+			"{C:red,E:2}self destructs{}",
+			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
+		},
+	},
+	rarity = 1,
+	cost = 3,
+	blueprint_compat = true,
+	eternal_compat = false,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { math.max(2, math.floor(center.ability.extra)), (G.GAME and G.GAME.monstermult or 1) } }
+	end,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if
+			context.end_of_round
+			and not context.individual
+			and not context.repetition
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
+			G.GAME.monstermult = G.GAME.monstermult or 1
+			G.GAME.monstermult = G.GAME.monstermult + math.max(2, math.floor(card.ability.extra))
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					card.T.r = -0.2
+					card:juice_up(0.3, 0.4)
+					card.states.drag.is = true
+					card.children.center.pinch.x = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.3,
+						blockable = false,
+						func = function()
+							G.jokers:remove_card(self)
+							card:remove()
+							card = nil
+							return true
+						end,
+					}))
+					return true
+				end,
+			}))
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = "M!",
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.cardarea == G.jokers
+			and ((G.GAME.monstermult or 1) > 1)
+			and not context.before
+			and not context.after
+		then
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { G.GAME.monstermult } }),
+				Xmult_mod = G.GAME.monstermult,
+			}
+		end
+	end,
+}
 local ret_items = {
 	jollysus,
 	kidnap,
@@ -1708,6 +1782,7 @@ local ret_items = {
 	reverse,
 	macabre,
 	megg,
+	longboi
 }
 --retriggering system for M Vouchers
 function get_m_retriggers(self, card, context)
