@@ -15,7 +15,7 @@ if not self.GAME.modifiers.cry_no_vouchers then
         self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()
     end
 else
-    very_fair_quip = pseudorandom_element(very_fair_quips, pseudoseed("cry_very_fair"))
+    very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
 end
 '''
 match_indent = true
@@ -33,13 +33,14 @@ if not G.GAME.modifiers.cry_no_vouchers then
         G.GAME.current_round.voucher = get_next_voucher_key()
     end
 else
-    very_fair_quip = pseudorandom_element(very_fair_quips, pseudoseed("cry_very_fair"))
+    very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
 end
 '''
 match_indent = true
 
 
 # Change empty voucher text on Very Fair Deck
+# This ain't localized, but that's a vanilla issue anyway
 [[patches]]
 [patches.pattern]
 target = "cardarea.lua"
