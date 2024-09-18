@@ -3867,7 +3867,7 @@ return {
 							nil,
 							nil,
 							nil,
-							{ message = localize("k_hooked_ex"), colour = G.C.SET.Code }
+							{ message = localize("cry_hooked_ex"), colour = G.C.SET.Code }
 						)
 						cj(G.jokers.cards[i], context)
 						--I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(
