@@ -496,6 +496,14 @@ return {
                     "for the next {C:attention}#2#{} rounds",
                 },
             },
+            j_cry_circulus_pistoris = {
+                name = "Circulus Pistoris",
+                text = {
+                    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#1#{} Mult",
+                    "if {C:attention}exactly{} #2#",
+                    "hands remaining",
+                },
+            },
             j_cry_circus = {
                 name = "Circus",
                 text = {
@@ -520,6 +528,15 @@ return {
                     "{C:green}#1# in #2#{} chance to add a copy",
                     "to your consumable area",
                     "{C:inactive}(Must have room)",
+                },
+            },
+            j_cry_crustulum = {
+                name = "Crustulum",
+                text = {
+                    "This Joker gains {C:chips}+#2#{} Chips",
+                    "per {C:attention}reroll{} in the shop",
+                    "{C:green}All rerolls are free{}",
+                    "{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)",
                 },
             },
             j_cry_curse = {
@@ -550,10 +567,63 @@ return {
                     "{C:inactive,s:0.8}(grows by +1, +2, +3)",
                 },
             },
+            j_cry_effarcire = {
+                name = "Effarcire",
+                text = {
+                    "Draw {C:green}full deck{} to hand",
+                    "when {C:attention}Blind{} is selected",
+                    "{C:inactive,s:0.8}\"If you can't handle me at my 1x,",
+                    "{C:inactive,s:0.8}you don't deserve me at my 2x\"",
+                },
+            },
+            j_cry_energia = {
+                name = "Energia",
+                text = {
+                    "When a {C:attention}Tag{} is acquired,",
+                    "create {C:attention}#1#{} copies of it",
+                    "and {C:attention}increase{} the number of",
+                    "copies by {C:attention}#2#",
+                },
+            },
+            j_cry_equilib = {
+                name = "Ace Aequilibrium",
+                text = {
+                    "Jokers appear using the",
+                    "order from the {C:attention}Collection{}",
+                    "Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
+                    "when hand is played",
+                    "{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
+                    "{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#",
+                },
+            },
             j_cry_error = {
                 name = "{C:red}ERR{}{C:dark_edition}O{}{C:red}R{}",
                 text = {
                     "",
+                },
+            },
+            j_cry_exponentia = {
+                name = "Exponentia",
+                text = {
+                    "This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+                    "when {X:red,C:white} XMult {} is triggered",
+                    "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+                },
+            },
+            j_cry_facile = {
+                name = "Facile",
+                text = {
+                    "{X:dark_edition,C:white}^#1#{} Mult if",
+                    "{C:attention}#2#{} or fewer",
+                    "cards are scored",
+                },
+            },
+            j_cry_gemino = {
+                name = "Gemini",
+                text = {
+                    "{C:attention}Double{} all values",
+                    "of leftmost {C:attention}Joker",
+                    "at end of round",
                 },
             },
             j_cry_goldjoker = {
@@ -571,6 +641,15 @@ return {
                 text = {
                     "{C:green}#1# in #2#{} chance for",
                     "{X:red,C:white} X#3# {} Mult",
+                },
+            },
+            j_cry_iterum = {
+                name = "Iterum",
+                text = {
+                    "Retrigger all cards played",
+                    "{C:attention}#2#{} time(s),",
+                    "each played card gives",
+                    "{X:mult,C:white} X#1# {} Mult when scored",
                 },
             },
             j_cry_m = {
@@ -630,6 +709,15 @@ return {
                     "{C:attention}+#1#{} hand size",
                 },
             },
+            j_cry_primus = {
+                name = "Primus",
+                text = {
+                    "This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+                    "if all cards in played hand are",
+                    "{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
+                    "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+                },
+            },
             j_cry_python = {
                 name = "Python",
                 text = {
@@ -637,6 +725,26 @@ return {
                     "{X:mult,C:white} X#1# {} Mult when a",
                     "{C:cry_code}Code{} card is used",
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
+            j_cry_redeo = {
+                name = "Redeo",
+                text = {
+                    "{C:attention}-#1#{} Ante when",
+                    "{C:money}$#2#{} {C:inactive}($#3#){} spent",
+                    "{s:0.8}Requirements increase",
+                    "{C:attention,s:0.8}exponentially{s:0.8} per use",
+                    "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#",
+                },
+            },
+            j_cry_Scalae = {
+                name = "Scalae",
+                text = {
+                    "Scaling {C:attention}Jokers{} scale",
+                    "as a degree-{C:attention}#1#{} polynomial",
+                    "raise degree by {C:attention}#2#{}",
+                    "at end of round",
+                    "{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
                 },
             },
             j_cry_soccer = {
@@ -647,6 +755,25 @@ return {
                     "{C:attention}+#1#{} hand size",
                     "{C:attention}+#1#{} consumable slot",
                     "{C:attention}+#1#{} card in shop",
+                },
+            },
+            j_cry_speculo = {
+                name = "Speculo",
+                text = {
+                    "Creates a {C:dark_edition}Negative{} copy",
+                    "of a random {C:attention}Joker{}",
+                    "at the end of the {C:attention}shop",
+                    "{C:inactive,s:0.8}Does not copy other Speculo{}",
+                },
+            },
+            j_cry_stella_mortis = {
+                name = "Stella Mortis",
+                text = {
+                    "This Joker destroys a",
+                    "random {C:planet}Planet{} card",
+                    "and gains {X:dark_edition,C:white} ^#1# {} Mult",
+                    "at the end of the {C:attention}shop{}",
+                    "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
             j_cry_supercell = {
@@ -665,8 +792,41 @@ return {
                     "{C:inactive,s:0.8}Hey! I've seen this one before!",
                 },
             },
+            j_cry_tenebris = {
+                name = "Tenebris",
+                text = {
+                    "{C:dark_edition}+#1#{C:attention} Joker{} slots",
+                    "Earn {C:money}$#2#{} at end of round",
+                },
+            },
+            j_cry_universum = {
+                name = "Universum",
+                text = {
+                    "{C:attention}Poker hands{} gain",
+                    "{X:red,C:white} X#1# {} Mult and {X:blue,C:white} X#1# {} Chips",
+                    "when leveled up",
+                },
+            },
+            j_cry_verisimile = {
+                name = "Non Verisimile",
+                text = {
+                    "When any probability",
+                    "is {C:green}successfully{} triggered,",
+                    "this Joker gains {X:red,C:white}XMult{}",
+                    "equal to its listed {C:attention}odds",
+                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+                },
+            },
         },
         Spectral = {
+            c_cry_gateway = {
+                name = "Gateway",
+                text = {
+                    "Create a random",
+                    "{C:cry_exotic,E:1}Exotic{C:attention} Joker{}, destroy",
+                    "all other Jokers",
+                },
+            },
             c_cry_pointer = {
                 name = "POINTER://",
                 text = {
@@ -1035,6 +1195,9 @@ return {
         },
         v_dictionary = {
             a_xchips = {"X#1# Chips"},
+            a_powmult = {"^#1# Mult"},
+            a_powchips = {"^#1# Chips"},
+            a_powmultchips = {"^#1# Mult+Chips"}
         },
         v_text = {
             ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"},
