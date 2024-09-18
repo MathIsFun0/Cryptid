@@ -5713,6 +5713,70 @@ local flipside = {
 	end,
 	
 }
+local oldinvisible = {
+	object_type = "Joker",
+	name = "cry-OldInvisible",
+	key = "oldinvisible",
+	pos = { x = 6, y = 4 },
+	config = { extra = 0 },
+	loc_txt = {
+		name = "Nostalgic Invisible Joker",
+		text = {
+			"{C:attention}Duplicate{} a random",
+			"{C:attention}Joker{} every {C:attention}4",
+			"Joker cards sold",
+			"{s:0.8}Nostalgic Invisible Joker Excluded{}",
+			"{C:inactive}(Currently #1#/4){}",
+		},
+	},
+	rarity = 4,
+	cost = 20,
+	atlas = "atlasthree",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_card and not context.blueprint and not context.retrigger_joker then
+			if card.ability.extra == 3 then
+				card.ability.extra = 0
+				local eligibleJokers = {}
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].ability.name ~= card.ability.name then
+						eligibleJokers[#eligibleJokers + 1] = G.jokers.cards[i]
+					end
+				end
+				if #eligibleJokers > 0 then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local card = copy_card(pseudorandom_element(eligibleJokers, pseudoseed("cry_oldinvis")), nil)
+							card:add_to_deck()
+							G.jokers:emplace(card)
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_duplicated_ex") }
+					)
+					return nil, true
+				end
+				return
+			else
+				card.ability.extra = card.ability.extra + 1
+				return {
+					card_eval_status_text(card, "extra", nil, nil, nil, {
+						message = card.ability.extra .. "/4",
+						colour = G.C.FILTER,
+					}),
+				}
+			end
+		end
+	end,
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -5782,7 +5846,8 @@ local miscitems =  {
 	translucent,
 	membershipcard,
 	kscope,
-	cryptidmoment
+	cryptidmoment,
+	oldinvisible
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
