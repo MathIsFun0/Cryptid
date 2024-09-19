@@ -1139,6 +1139,7 @@ return {
             ["cry_feat_misc."] = "Misc.",
             ["cry_feat_misc. jokers"] = "Misc. Jokers",
             cry_feat_planets = "Planets",
+            cry_feat_jokerdisplay = "JokerDisplay (Does Nothing)",
             cry_feat_sleeves = "Sleeves",
             cry_feat_spectrals = "Spectrals",
             ["cry_feat_more stakes"] = "Stakes",
@@ -1181,6 +1182,7 @@ return {
             cry_code_cancel = "CANCEL",
 
             cry_curse_ex = "Curse!",
+            cry_sobbing = "Help me...",
             cry_gaming_ex = "Gaming!",
             cry_minus_round = "-1 Round",
             cry_plus_cryptid = "+1 Cryptid",
