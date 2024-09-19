@@ -757,6 +757,7 @@ local delete = {
 	cost = 4,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
+			and card.area == G.consumeables
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
 			and G.shop_jokers.highlighted[1] ~= self
 			and G.shop_booster.highlighted[1] ~= self
