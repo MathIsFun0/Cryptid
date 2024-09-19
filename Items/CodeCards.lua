@@ -757,6 +757,7 @@ local delete = {
 	cost = 4,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
+			and card.area == G.consumeables
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
 			and G.shop_jokers.highlighted[1] ~= self
 			and G.shop_booster.highlighted[1] ~= self
@@ -1137,14 +1138,6 @@ local automaton = {
 	key = "automaton",
 	pos = { x = 5, y = 1 },
 	config = { create = 1 },
-	loc_txt = {
-		name = "The Automaton",
-		text = {
-			"Creates up to {C:attention}#1#",
-			"random {C:cry_code}Code{} card",
-			"{C:inactive}(Must have room)",
-		},
-	},
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.create } }
@@ -1178,17 +1171,6 @@ local green_seal = {
 	name = "cry-Green-Seal",
 	key = "green",
 	badge_colour = HEX("12f254"), --same as code cards
-	loc_txt = {
-		-- Badge name
-		label = "Green Seal",
-		-- Tooltip description
-		name = "Green Seal",
-		text = {
-			"Creates a {C:cry_code}Code{} card",
-			"when played and unscoring",
-			"{C:inactive}(Must have room)",
-		},
-	},
 	atlas = "green_atlas",
 	pos = { x = 0, y = 0 },
 
@@ -1234,14 +1216,6 @@ local source = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_green_seal" }
 		return { vars = { center.ability.max_highlighted } }
 	end,
-	loc_txt = {
-		name = "Source",
-		text = {
-			"Add a {C:cry_code}Green Seal{}",
-			"to {C:attention}#1#{} selected",
-			"card in your hand",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	pos = { x = 2, y = 4 },
@@ -1285,14 +1259,6 @@ local pointer = {
 	pos = { x = 4, y = 3 },
 	hidden = true,
 	soul_set = "Code",
-	loc_txt = {
-		name = "POINTER://",
-		text = {
-			"Create a card",
-			"of {C:cry_code}your choice",
-			"{C:inactive,s:0.8}(Exotic Jokers #1#excluded)",
-		},
-	},
 	atlas = "code",
 	can_use = function(self, card)
 		return true
@@ -1327,14 +1293,6 @@ local encoded = {
 	config = { cry_encoded = true, cry_encoded_downside = true },
 	pos = { x = 2, y = 5 },
 	atlas = "atlasdeck",
-	loc_txt = {
-		name = "Encoded Deck",
-		text = {
-			"Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
-			"and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
-			"Only {C:cry_code}Code Cards{} appear in shop",
-		},
-	},
 }
 
 local source_deck = {
@@ -1344,7 +1302,7 @@ local source_deck = {
 	config = { cry_force_seal = "cry_green" },
 	pos = { x = 3, y = 5 },
 	loc_txt = {
-		name = "Source Deck",
+		name = "Source Deck", --not localizing enhanced decks for now; they will be handled automatically later
 		text = {
 			"All cards have a {C:cry_code}Green Seal{}",
 			"Cards cannot change seals",
@@ -1358,14 +1316,6 @@ local CodeJoker = {
 	name = "cry-CodeJoker",
 	key = "CodeJoker",
 	pos = { x = 2, y = 4 },
-	loc_txt = {
-		name = "Code Joker",
-		text = {
-			"Create a {C:dark_edition}Negative{}",
-			"{C:cry_code}Code Card{} when",
-			"{C:attention}Blind{} is selected",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
 	end,
@@ -1395,15 +1345,6 @@ local copypaste = {
 	pos = { x = 3, y = 4 },
 	immune_to_chemach = true,
 	config = { extra = { odds = 2, ckt = 0 } },
-	loc_txt = {
-		name = "Copy/Paste",
-		text = {
-			"When a {C:cry_code}Code{} card is used,",
-			"{C:green}#1# in #2#{} chance to add a copy",
-			"to your consumable area",
-			"{C:inactive}(Must have room)",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
@@ -1455,40 +1396,12 @@ local copypaste = {
 		end
 	end,
 }
-if JokerDisplay then
-	copypaste.joker_display_definition = {
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
-
 local cut = {
 	object_type = "Joker",
 	name = "cry-cut",
 	key = "cut",
 	config = { extra = { Xmult = 1, Xmult_mod = 0.5 } },
 	pos = { x = 2, y = 2 },
-	loc_txt = {
-		name = "Cut",
-		text = {
-			"This Joker destroys",
-			"a random {C:cry_code}Code{} card",
-			"and gains {X:mult,C:white} X#1# {} Mult",
-			"at the end of the {C:attention}shop{}",
-			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
-		},
-	},
 	rarity = 3,
 	cost = 7,
 	blueprint_compat = true,
@@ -1522,9 +1435,7 @@ local cut = {
 				}))
 				if not (context.blueprint_card or self).getting_sliced then
 					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
-						message = "X"
-							.. number_format(to_big(card.ability.extra.Xmult + card.ability.extra.Xmult_mod))
-							.. " Mult",
+						message = localize{type='variable',key='a_xmult',vars={number_format(to_big(card.ability.extra.Xmult))}}
 					})
 				end
 				return nil, true
@@ -1537,7 +1448,7 @@ local cut = {
 			and not context.after
 		then
 			return {
-				message = "X" .. number_format(card.ability.extra.Xmult) .. " Mult",
+				message = localize{type='variable',key='a_xmult',vars={number_format(card.ability.extra.Xmult)}},
 				Xmult_mod = card.ability.extra.Xmult,
 				colour = G.C.MULT,
 			}
@@ -1547,34 +1458,11 @@ local cut = {
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
 }
-if JokerDisplay then
-	cut.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-				border_colour = G.C.MULT,
-			},
-		},
-	}
-end
-
 local blender = {
 	object_type = "Joker",
 	name = "cry-blender",
 	key = "blender",
 	pos = { x = 3, y = 2 },
-	loc_txt = {
-		name = "Blender",
-		text = {
-			"Create a {C:attention}random{}",
-			"consumable when a",
-			"{C:cry_code}Code{} card is used",
-			"{C:inactive}(Must have room){}",
-		},
-	},
 	rarity = 1,
 	cost = 5,
 	blueprint_compat = true,
@@ -1593,22 +1481,12 @@ local blender = {
 		end
 	end,
 }
-
 local python = {
 	object_type = "Joker",
 	name = "cry-python",
 	key = "python",
 	config = { extra = { Xmult = 1, Xmult_mod = 0.15 } },
 	pos = { x = 4, y = 2 },
-	loc_txt = {
-		name = "Python",
-		text = {
-			"This Joker gains",
-			"{X:mult,C:white} X#1# {} Mult when a",
-			"{C:cry_code}Code{} card is used",
-			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
-		},
-	},
 	rarity = 2,
 	cost = 7,
 	blueprint_compat = true,
@@ -1658,19 +1536,6 @@ local python = {
 		end
 	end,
 }
-if JokerDisplay then
-	python.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 
 function create_UIBox_variable(card)
 	G.E_MANAGER:add_event(Event({
@@ -1695,7 +1560,7 @@ function create_UIBox_variable(card)
 						h = 1,
 						max_length = 16,
 						extended_corpus = true,
-						prompt_text = "ENTER RANK",
+						prompt_text = localize("cry_code_rank"),
 						ref_table = G,
 						ref_value = "ENTERED_RANK",
 						keyboard_offset = 1,
@@ -1708,7 +1573,7 @@ function create_UIBox_variable(card)
 					UIBox_button({
 						colour = G.C.SET.Code,
 						button = "variable_apply",
-						label = { "APPLY" },
+						label = { localize("cry_code_apply") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1720,7 +1585,7 @@ function create_UIBox_variable(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "variable_apply_previous",
-						label = { "APPLY PREVIOUS" },
+						label = { localize("cry_code_apply_previous") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1732,7 +1597,7 @@ function create_UIBox_variable(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "variable_cancel",
-						label = { "CANCEL" },
+						label = { localize("cry_code_cancel") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1765,7 +1630,7 @@ function create_UIBox_class(card)
 						w = 4.5,
 						h = 1,
 						max_length = 16,
-						prompt_text = "ENTER ENHANCEMENT",
+						prompt_text = localize("cry_code_enh"),
 						ref_table = G,
 						ref_value = "ENTERED_ENH",
 						keyboard_offset = 1,
@@ -1778,7 +1643,7 @@ function create_UIBox_class(card)
 					UIBox_button({
 						colour = G.C.SET.Code,
 						button = "class_apply",
-						label = { "APPLY" },
+						label = { localize("cry_code_apply") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1790,7 +1655,7 @@ function create_UIBox_class(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "class_apply_previous",
-						label = { "APPLY PREVIOUS" },
+						label = { localize("cry_code_apply_previous") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1802,7 +1667,7 @@ function create_UIBox_class(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "class_cancel",
-						label = { "CANCEL" },
+						label = { localize("cry_code_cancel") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1836,7 +1701,7 @@ function create_UIBox_exploit(card)
 						h = 1,
 						max_length = 24,
 						extended_corpus = true,
-						prompt_text = "ENTER POKER HAND",
+						prompt_text = localize("cry_code_hand"),
 						ref_table = G,
 						ref_value = "ENTERED_HAND",
 						keyboard_offset = 1,
@@ -1849,7 +1714,7 @@ function create_UIBox_exploit(card)
 					UIBox_button({
 						colour = G.C.SET.Code,
 						button = "exploit_apply",
-						label = { "EXPLOIT" },
+						label = { localize("cry_code_exploit") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1861,7 +1726,7 @@ function create_UIBox_exploit(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "exploit_apply_previous",
-						label = { "EXPLOIT PREVIOUS" },
+						label = { localize("cry_code_exploit_previous") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1873,7 +1738,7 @@ function create_UIBox_exploit(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "exploit_cancel",
-						label = { "CANCEL" },
+						label = { localize("cry_code_cancel") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1921,7 +1786,7 @@ function create_UIBox_crash(card)
 					UIBox_button({
 						colour = G.C.SET.Code,
 						button = "ca",
-						label = { "EXECUTE" },
+						label = { localize("cry_code_execute") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1955,7 +1820,7 @@ function create_UIBox_pointer(card)
 						h = 1,
 						max_length = 100,
 						extended_corpus = true,
-						prompt_text = "ENTER A CARD",
+						prompt_text = localize("cry_code_enter_card"),
 						ref_table = G,
 						ref_value = "ENTERED_CARD",
 						keyboard_offset = 1,
@@ -1969,7 +1834,7 @@ function create_UIBox_pointer(card)
 					UIBox_button({
 						colour = G.C.SET.Code,
 						button = "pointer_apply",
-						label = { "CREATE" },
+						label = { localize("cry_code_create") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1982,7 +1847,7 @@ function create_UIBox_pointer(card)
 					UIBox_button({
 						colour = G.C.SET.Code,
 						button = "your_collection",
-						label = { "COLLECTION" },
+						label = { localize("b_collection_cap") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -1995,7 +1860,7 @@ function create_UIBox_pointer(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "pointer_apply_previous",
-						label = { "CREATE PREVIOUS" },
+						label = { localize("cry_code_create_previous") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -2008,7 +1873,7 @@ function create_UIBox_pointer(card)
 					UIBox_button({
 						colour = G.C.RED,
 						button = "pointer_cancel",
-						label = { "CANCEL" },
+						label = { localize("cry_code_cancel") },
 						minw = 4.5,
 						focus_args = { snap_to = true },
 					}),
@@ -2581,7 +2446,7 @@ G.FUNCS.pointer_apply = function()
 		spaghetti = "://spaghetti",
 		topuptag = "top-up tag",
 		gamblerstag = "gambler's tag",
-		hook = "the hook",
+		hook = "hook://",
 		ox = "the ox",
 		wall = "the wall",
 		wheel = "the wheel",
@@ -3236,7 +3101,7 @@ crashes = {
 							if #name == 0 or name == "Untitled" then
 								name = "Game"
 							end
-							local buttons = { "OK", "Cancel", "Restart" }
+							local buttons = { "OK", localize("cry_code_cancel"), "Restart" }
 							if love.system then
 								buttons[4] = "Copy to clipboard"
 							end
@@ -3409,7 +3274,7 @@ return {
 									{
 										n = G.UIT.T,
 										config = {
-											text = "PULL",
+											text = localize("b_pull"),
 											colour = G.C.UI.TEXT_LIGHT,
 											scale = 0.55,
 											shadow = true,
@@ -3957,7 +3822,7 @@ return {
 							nil,
 							nil,
 							nil,
-							{ message = "Hooked!", colour = G.C.SET.Code }
+							{ message = localize("cry_hooked_ex"), colour = G.C.SET.Code }
 						)
 						cj(G.jokers.cards[i], context)
 						--I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(

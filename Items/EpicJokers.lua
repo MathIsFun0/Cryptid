@@ -4,15 +4,6 @@ local supercell = {
 	key = "supercell",
 	config = { extra = { stat1 = 15, stat2 = 2, money = 3 } },
 	pos = { x = 5, y = 1 },
-	loc_txt = {
-		name = "Supercell",
-		text = {
-			"{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
-			"{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
-			"Earn {C:money}$#3#{} at",
-			"end of round",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
@@ -24,7 +15,7 @@ local supercell = {
 		if context.cardarea == G.jokers and not context.before and not context.after then
 			if card.ability.extra.stat2 > 1 then --misprint deck moment
 				return {
-					message = "Gaming!",
+					message = localize("cry_gaming_ex"),
 					chip_mod = card.ability.extra.stat1,
 					mult_mod = card.ability.extra.stat1,
 					Xchip_mod = card.ability.extra.stat2,
@@ -44,62 +35,12 @@ local supercell = {
 		end
 	end,
 }
-if JokerDisplay then
-	supercell.joker_display_definition = {
-		text = {
-			{ text = "+", colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
-			{ text = " +", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
-		},
-		extra = {
-			{
-				{
-					border_nodes = {
-						{ text = "X" },
-						{ ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" },
-					},
-					border_colour = G.C.CHIPS,
-				},
-				{ text = " " },
-				{
-					border_nodes = {
-						{ text = "X" },
-						{ ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" },
-					},
-				},
-			},
-			{
-				{ text = "+$", colour = G.C.GOLD },
-				{ ref_table = "card.ability.extra", ref_value = "money", colour = G.C.GOLD },
-				{
-					ref_table = "card.joker_display_values",
-					ref_value = "localized_text",
-					colour = G.C.UI.TEXT_INACTIVE,
-					scale = 0.3,
-				},
-			},
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local membershipcardtwo = {
 	object_type = "Joker",
 	name = "cry-membershipcardtwo",
 	key = "membershipcardtwo",
 	config = { extra = { chips = 1 } },
 	pos = { x = 5, y = 4 },
-	loc_txt = {
-		name = "Old Membership Card", --Could probably have a diff Name imo
-		text = {
-			"{C:chips}+#1#{} Chips for each member",
-			"in the {C:attention}Cryptid Discord{}",
-			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
-			"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 17,
 	blueprint_compat = true,
@@ -125,18 +66,6 @@ local membershipcardtwo = {
 		end
 	end,
 }
-if JokerDisplay then
-	membershipcardtwo.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "mult" },
-		},
-		text_config = { colour = G.C.CHIPS },
-		calc_function = function(card)
-			card.joker_display_values.stat = card.ability.extra.chips * (GLOBAL_cry_member_count or 1)
-		end,
-	}
-end
 local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
@@ -144,13 +73,6 @@ local googol_play = {
 	config = { extra = { Xmult = 1e100, odds = 8 } },
 	pos = { x = 3, y = 0 },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Googol Play Card",
-		text = {
-			"{C:green}#1# in #2#{} chance for",
-			"{X:red,C:white} X#3# {} Mult",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 10,
 	blueprint_compat = true,
@@ -179,43 +101,11 @@ local googol_play = {
 		end
 	end,
 }
-if JokerDisplay then
-	googol_play.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-			},
-		},
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
 local sync_catalyst = {
 	object_type = "Joker",
 	name = "cry-Sync Catalyst",
 	key = "sync_catalyst",
 	pos = { x = 5, y = 2 },
-	loc_txt = {
-		name = "Sync Catalyst",
-		text = {
-			"Balances {C:chips}Chips{} and {C:mult}Mult{}",
-			"{C:inactive,s:0.8}Hey! I've seen this one before!",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 12,
 	blueprint_compat = true,
@@ -249,12 +139,6 @@ local negative = {
 	key = "negative",
 	pos = { x = 1, y = 3 },
 	config = { extra = 4 },
-	loc_txt = {
-		name = "Negative Joker",
-		text = {
-			"{C:dark_edition}+#1#{C:attention} Joker{} slots",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 10,
 	atlas = "atlasepic",
@@ -274,14 +158,6 @@ local canvas = {
 	key = "canvas",
 	pos = { x = 2, y = 1 },
 	config = { num_retriggers = 0 },
-	loc_txt = {
-		name = "Canvas",
-		text = {
-			"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
-			"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
-			"to the right of this Joker",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 18,
 	blueprint_compat = true,
@@ -307,33 +183,6 @@ local canvas = {
 		end
 	end,
 }
-if JokerDisplay then
-	canvas.joker_display_definition = {
-		text = {
-			{ text = "x" },
-			{ ref_table = "card.joker_display_values", ref_value = "num_retriggers" },
-		},
-		calc_function = function(card)
-			local num_retriggers = 0
-			if G.jokers then
-				for i = 1, #G.jokers.cards do
-					if
-						card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2
-						and G.jokers.cards[i].config.center.rarity ~= 1
-					then
-						num_retriggers = num_retriggers + 1
-					end
-				end
-			end
-			card.joker_display_values.num_retriggers = num_retriggers
-		end,
-		retrigger_joker_function = function(card, retrigger_joker)
-			return card.T.x + card.T.w / 2 < retrigger_joker.T.x + retrigger_joker.T.w / 2
-					and retrigger_joker.joker_display_values.num_retriggers
-				or 0
-		end,
-	}
-end
 local error_joker = {
 	object_type = "Joker",
 	name = "cry-Error",
@@ -341,12 +190,6 @@ local error_joker = {
 	pos = { x = 4, y = 2 },
 	config = { extra = { sell_rounds = 0, active = false } },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "{C:red}ERR{}{C:dark_edition}O{}{C:red}R{}",
-		text = {
-			"",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 1,
 	blueprint_compat = false,
@@ -416,61 +259,6 @@ local error_joker = {
 		end
 	end,
 }
-if JokerDisplay then
-	error_joker.joker_display_definition = {
-		text = {
-			{
-				dynatext = {
-					-- Maybe this can be defined before so we don't have to hard code the value
-					string = { "+", "-", "X", "/", "^", "=", ">", "<", "m" },
-					colours = { G.C.DARK_EDITION },
-					pop_in_rate = 9999999,
-					silent = true,
-					random_element = true,
-					pop_delay = 0.30,
-					scale = 0.4,
-					min_cycle_time = 0,
-				},
-			},
-			{
-				dynatext = {
-					string = {
-						"0",
-						"1",
-						"2",
-						"3",
-						"4",
-						"5",
-						"6",
-						"7",
-						"8",
-						"9",
-						"10",
-						"69",
-						"404",
-						"420",
-						"-1",
-						"0.5",
-						"m",
-						"nan",
-						"inf",
-						"nil",
-						"pi",
-						"1e9",
-						"???",
-					},
-					colours = { G.C.DARK_EDITION },
-					pop_in_rate = 9999999,
-					silent = true,
-					random_element = true,
-					pop_delay = 0.33,
-					scale = 0.4,
-					min_cycle_time = 0,
-				},
-			},
-		},
-	}
-end
 local m = {
 	object_type = "Joker",
 	name = "cry-m",
@@ -478,14 +266,6 @@ local m = {
 	pos = { x = 3, y = 1 },
 	config = { extra = { extra = 13, x_mult = 1 }, jolly = { t_mult = 8, type = "Pair" } },
   pools = {["Meme"] = true},
-	loc_txt = {
-		name = "m",
-		text = {
-			"This Joker gains {X:mult,C:white} X#1# {} Mult",
-			"when {C:attention}Jolly Joker{} is sold",
-			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 13,
 	perishable_compat = false,
@@ -529,32 +309,12 @@ local m = {
 		end
 	end,
 }
-if JokerDisplay then
-	m.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "x_mult", retrigger_type = "exp" },
-				},
-			},
-		},
-	}
-end
 local M = {
 	object_type = "Joker",
 	name = "cry-M",
 	key = "M",
 	pos = { x = 0, y = 0 },
 	config = { jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "M",
-		text = {
-			"Create a {C:dark_edition}Negative{}",
-			"{C:attention}Jolly Joker{} when",
-			"{C:attention}Blind{} is selected",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 13,
 	blueprint_compat = true,
@@ -581,7 +341,6 @@ local M = {
 		end
 	end,
 }
-
 local boredom = {
 	object_type = "Joker",
 	name = "cry-Boredom",
@@ -590,15 +349,6 @@ local boredom = {
 	config = { extra = { odds = 2 } },
 	immune_to_chemach = true,
   pools = {["Meme"] = true},
-	loc_txt = {
-		name = "Boredom",
-		text = {
-			"{C:green}#1# in #2#{} chance to",
-			"{C:attention}retrigger{} each {C:attention}Joker{}",
-			"or {C:attention}played card{}",
-			"{C:inactive,s:0.8}Does not affect other Boredom{}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
@@ -631,38 +381,12 @@ local boredom = {
 		end
 	end,
 }
-if JokerDisplay then
-	boredom.joker_display_definition = {
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
 local number_blocks = {
 	object_type = "Joker",
 	name = "cry-Number Blocks",
 	key = "number_blocks",
 	config = { extra = { money_mod = 1, money = 1 } },
 	pos = { x = 0, y = 2 },
-	loc_txt = {
-		name = "Number Blocks",
-		text = {
-			"Earn {C:money}$#1#{} at end of round",
-			"Increase payout by {C:money}$#2#{}",
-			"for each {C:attention}#3#{} held in hand,",
-			"rank changes every round",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 14,
 	atlas = "atlasepic",
@@ -704,43 +428,11 @@ local number_blocks = {
 		end
 	end,
 }
-if JokerDisplay then
-	number_blocks.joker_display_definition = {
-		text = {
-			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
-		},
-		text_config = { colour = G.C.GOLD },
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text_rank" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text_round" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text_rank = "("
-				.. localize(
-					G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace",
-					"ranks"
-				)
-				.. ") "
-			card.joker_display_values.localized_text_round = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
-
 local double_scale = {
 	object_type = "Joker",
 	name = "cry-Double Scale",
 	key = "Double Scale",
 	pos = { x = 0, y = 3 },
-	loc_txt = {
-		name = "Double Scale",
-		text = {
-			"Scaling {C:attention}Jokers{}",
-			"scale {C:attention}quadratically",
-			"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
-			"{C:inactive,s:0.8}(grows by +1, +2, +3)",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 18,
 	atlas = "atlasepic",
@@ -755,14 +447,6 @@ local oldcandy = {
 	key = "oldcandy",
 	pos = { x = 4, y = 1 },
 	config = { extra = { hand_size = 3 } },
-	loc_txt = {
-		name = "Nostalgic Candy",
-		text = {
-			"Sell this card to",
-			"permanently gain",
-			"{C:attention}+#1#{} hand size",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.max(1, math.floor(center.ability.extra.hand_size)) } }
 	end,
@@ -777,15 +461,6 @@ local oldcandy = {
 		end
 	end,
 }
-if JokerDisplay then
-	oldcandy.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.ability.extra", ref_value = "hand_size" },
-		},
-		text_config = { colour = G.C.ORANGE },
-	}
-end
 local circus = {
 	object_type = "Joker",
 	name = "cry-circus",
@@ -793,15 +468,6 @@ local circus = {
 	pos = { x = 4, y = 4 },
 	config = { extra = { Xmult = 1 } },
 	atlas = "atlasepic",
-	loc_txt = {
-		name = "Circus",
-		text = {
-			"{C:red}Rare{} Jokers each give {X:mult,C:white} X#1# {} Mult",
-			"{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
-			"{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
-			"{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -889,21 +555,12 @@ local circus = {
 		end
 	end,
 }
---jokerdisplay soon tm
 local caramel = {
 	object_type = "Joker",
 	name = "cry-caramel",
 	key = "caramel",
 	config = { extra = { x_mult = 1.75, rounds_remaining = 11 } },
 	pos = { x = 0, y = 1 },
-	loc_txt = {
-		name = "Caramel",
-		text = {
-			"Each played card gives",
-			"{X:mult,C:white}X#1#{} Mult when scored",
-			"for the next {C:attention}#2#{} rounds",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 12,
 	blueprint_compat = true,
@@ -932,7 +589,7 @@ local caramel = {
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
 			if card.ability.extra.rounds_remaining > 0 then
 				return {
-					message = { "-1 Round" },
+					message = { localize("cry_minus_round") },
 					colour = G.C.FILTER,
 				}
 			else
@@ -965,55 +622,13 @@ local caramel = {
 		end
 	end,
 }
-if JokerDisplay then
-	caramel.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" },
-				},
-			},
-		},
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
-		},
-		calc_function = function(card)
-			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
-			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
-					count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
-				end
-			end
-			card.joker_display_values.x_mult = card.ability.extra.x_mult ^ count
-
-			card.joker_display_values.start_round = card.joker_display_values.start_round
-				or card.ability.extra.rounds_remaining
-			card.joker_display_values.rounds_remaining = "("
-				.. card.ability.extra.rounds_remaining
-				.. "/"
-				.. card.joker_display_values.start_round
-				.. ")"
-		end,
-	}
-end
+--this has to be the most spaghetti code in cryptid
 local curse = {
 	object_type = "Joker",
 	name = "cry_curse",
 	key = "curse",
 	pos = { x = 1, y = 1 },
   pools = {["Meme"] = true},
-	loc_txt = {
-		name = "Sob",
-		text = {
-			"{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}run...{}",
-			"{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}hide...{}",
-			"{C:dark_edition,E:1}you cannot escape...{}",
-			"{C:inactive}(Must have room){}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 9,
 	perishable_compat = true,
@@ -1033,7 +648,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1052,7 +667,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1071,7 +686,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1090,7 +705,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1109,7 +724,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1128,7 +743,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1147,7 +762,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1167,7 +782,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1186,7 +801,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1206,7 +821,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1225,7 +840,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1244,7 +859,7 @@ local curse = {
 			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Curse!",
+					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -1260,20 +875,12 @@ local curse = {
 		G.jokers:emplace(card)
 		return {
 			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = "Curse!",
+				message = localize("cry_curse_ex"),
 				colour = G.C.DARK_EDITION,
 			}),
 		}
 	end,
 }
-if JokerDisplay then
-	curse.joker_display_definition = {
-		text = {
-			{ text = "Help me..." },
-		},
-		text_config = { colour = G.C.DARK_EDITION },
-	}
-end
 local bonusjoker = {
 	object_type = "Joker",
 	name = "cry-bonusjoker",
@@ -1281,17 +888,6 @@ local bonusjoker = {
 	pos = { x = 3, y = 2 },
 	config = { extra = { odds = 8, check = 0 } },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Bonus Joker",
-		text = {
-			"{C:green}#1# in #2#{} chance for each",
-			"played {C:attention}Bonus{} card to increase",
-			"{C:attention}Joker{} or {C:attention}Consumable slots",
-			"by {C:dark_edition}1{} when scored",
-			"{C:red}Works twice per round",
-			"{C:inactive,s:0.8}(Equal chance for each){}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 11,
 	blueprint_compat = true,
@@ -1345,39 +941,6 @@ local bonusjoker = {
 		end
 	end,
 }
-if JokerDisplay then
-	bonusjoker.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.joker_display_values", ref_value = "count" },
-		},
-		text_config = { colour = G.C.DARK_EDITION },
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
-			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
-					if scoring_card.ability.effect and scoring_card.ability.effect == "Bonus Card" then
-						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
-					end
-				end
-			end
-			card.joker_display_values.count = math.min(count, 2 - card.ability.extra.check)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
 local multjoker = {
 	object_type = "Joker",
 	name = "cry-multjoker",
@@ -1385,15 +948,6 @@ local multjoker = {
 	pos = { x = 2, y = 3 },
 	config = { extra = { odds = 4 } },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Mult Joker",
-		text = {
-			"{C:green}#1# in #2#{} chance for each",
-			"played {C:attention}Mult{} card to create",
-			"a {C:spectral}Cryptid{} card when scored",
-			"{C:inactive}(Must have room)",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 11,
 	blueprint_compat = true,
@@ -1428,7 +982,7 @@ local multjoker = {
 						nil,
 						nil,
 						nil,
-						{ message = "+1 Cryptid", colour = G.C.SECONDARY_SET.Spectral }
+						{ message = localize("cry_plus_cryptid"), colour = G.C.SECONDARY_SET.Spectral }
 					)
 					return nil, true
 				end
@@ -1436,56 +990,12 @@ local multjoker = {
 		end
 	end,
 }
-if JokerDisplay then
-	multjoker.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" },
-		},
-		text_config = { colour = G.C.SECONDARY_SET.Spectral },
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
-			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
-					if scoring_card.ability.effect and scoring_card.ability.effect == "Mult Card" then
-						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
-					end
-				end
-			end
-			card.joker_display_values.count = count
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
-
 local goldjoker = {
 	object_type = "Joker",
 	name = "cry-goldjoker",
 	key = "goldjoker",
 	config = { extra = { percent_mod = 1, percent = 0 } },
 	pos = { x = 0, y = 4 },
-	loc_txt = {
-		name = "Gold Joker",
-		text = {
-			"Earn {C:money}#1#%{} of total",
-			"money at end of round",
-			"Payout increases by {C:money}#2#%{}",
-			"when each played {C:attention}Gold{}",
-			"card is scored",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 14,
 	enhancement_gate = "m_gold",
@@ -1524,37 +1034,12 @@ local goldjoker = {
 		end
 	end,
 }
-if JokerDisplay then
-	goldjoker.joker_display_definition = {
-		text = {
-			{ text = "+$" },
-			{ ref_table = "card.joker_display_values", ref_value = "dollars" },
-		},
-		text_config = { colour = G.C.GOLD },
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
-			card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local altgoogol = {
 	object_type = "Joker",
 	name = "cry-altgoogol",
 	key = "altgoogol",
 	pos = { x = 4, y = 3 },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Nostalgic Googol Play Card",
-		text = {
-			"Sell this card to create",
-			"{C:attention}2{} copies of the leftmost {C:attention}Joker{}",
-			"{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 10,
 	blueprint_compat = true,
@@ -1571,7 +1056,7 @@ local altgoogol = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						for i = 1, 2 do
-							local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_speculo")), nil) --borrowed code moment
+							local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_ngpc")), nil) --borrowed code moment
 							card:add_to_deck()
 							G.jokers:emplace(card)
 						end
@@ -1593,24 +1078,6 @@ local altgoogol = {
 		end
 	end,
 }
-if JokerDisplay then
-	altgoogol.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			local leftmost_joker_key = G.jokers
-				and G.jokers.cards[1]
-				and G.jokers.cards[1] ~= card
-				and G.jokers.cards[1].config.center.key
-			card.joker_display_values.localized_text = leftmost_joker_key
-					and localize({ type = "name_text", key = leftmost_joker_key, set = "Joker" })
-				or "-"
-		end,
-	}
-end
 local soccer = {
 	object_type = "Joker",
 	name = "cry-soccer",
@@ -1618,16 +1085,6 @@ local soccer = {
 	pos = { x = 1, y = 4 },
 	config = { extra = { holygrail = 1 } },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "One for All", --changed the name from latin because this isn't exotic
-		text = {
-			"{C:attention}+#1#{} Joker slot",
-			"{C:attention}+#1#{} Booster Pack slot",
-			"{C:attention}+#1#{} hand size",
-			"{C:attention}+#1#{} consumable slot",
-			"{C:attention}+#1#{} card in shop",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 20,
 	atlas = "atlasepic",

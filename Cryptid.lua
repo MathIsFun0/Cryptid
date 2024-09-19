@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0917c
+--- VERSION: 0.5.1~0918b
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1298,10 +1298,6 @@ for _, file in ipairs(files) do
 							Cryptid.obj_buffer[item.object_type] = {}
 						end
 						Cryptid.obj_buffer[item.object_type][#Cryptid.obj_buffer[item.object_type] + 1] = item
-						-- JokerDisplay mod support
-						if JokerDisplay and item.joker_display_definition then
-							JokerDisplay.Definitions[item.key] = item.joker_display_definition
-						end
 					else
 						print("Error loading item " .. item.key .. " of unknown type " .. item.object_type)
 					end

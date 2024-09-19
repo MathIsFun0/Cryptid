@@ -7,14 +7,6 @@ local gateway = {
 	name = "cry-Gateway",
 	key = "gateway",
 	pos = { x = 0, y = 0 },
-	loc_txt = {
-		name = "Gateway",
-		text = {
-			"Create a random",
-			"{C:cry_exotic,E:1}Exotic{C:attention} Joker{}, destroy",
-			"all other Jokers",
-		},
-	},
 	cost = 4,
 	atlas = "gateway",
 	hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
@@ -70,15 +62,6 @@ local iterum = {
 	key = "iterum",
 	config = { extra = { x_mult = 2, repetitions = 1 } },
 	pos = { x = 0, y = 1 },
-	loc_txt = {
-		name = "Iterum",
-		text = {
-			"Retrigger all cards played",
-			"{C:attention}#2#{} time(s),",
-			"each played card gives",
-			"{X:mult,C:white} X#1# {} Mult when scored",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
@@ -107,49 +90,12 @@ local iterum = {
 		end
 	end,
 }
-if JokerDisplay then
-	iterum.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" },
-				},
-			},
-		},
-		calc_function = function(card)
-			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
-			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
-					count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
-				end
-			end
-			card.joker_display_values.x_mult = card.ability.extra.x_mult ^ count
-		end,
-		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
-			if held_in_hand then
-				return 0
-			end
-			return (joker_card.ability.extra.repetitions * JokerDisplay.calculate_joker_triggers(joker_card)) or 0
-		end,
-	}
-end
 local universum = {
 	object_type = "Joker",
 	name = "cry-Universum",
 	key = "universum",
 	config = { extra = 2 },
 	pos = { x = 3, y = 3 },
-	loc_txt = {
-		name = "Universum",
-		text = {
-			"{C:attention}Poker hands{} gain",
-			"{X:red,C:white} X#1# {} Mult and {X:blue,C:white} X#1# {} Chips",
-			"when leveled up",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
@@ -170,14 +116,6 @@ local exponentia = {
 	key = "exponentia",
 	config = { extra = { Emult = 1, Emult_mod = 0.01 } },
 	pos = { x = 0, y = 0 },
-	loc_txt = {
-		name = "Exponentia",
-		text = {
-			"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
-			"when {X:red,C:white} XMult {} is triggered",
-			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
@@ -192,7 +130,7 @@ local exponentia = {
 			and not context.after
 		then
 			return {
-				message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -202,43 +140,11 @@ local exponentia = {
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
 }
-if JokerDisplay then
-	exponentia.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "^" },
-					{
-						ref_table = "card.ability.extra",
-						ref_value = "Emult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
-					},
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 local speculo = {
 	object_type = "Joker",
 	name = "cry-Speculo",
 	key = "speculo",
 	pos = { x = 3, y = 1 },
-	loc_txt = {
-		name = "Speculo",
-		text = {
-			"Creates a {C:dark_edition}Negative{} copy",
-			"of a random {C:attention}Joker{}",
-			"at the end of the {C:attention}shop",
-			"{C:inactive,s:0.8}Does not copy other Speculo{}",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
@@ -298,16 +204,6 @@ local redeo = {
 	end,
 	pos = { x = 3, y = 0 },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Redeo",
-		text = {
-			"{C:attention}-#1#{} Ante when",
-			"{C:money}$#2#{} {C:inactive}($#3#){} spent",
-			"{s:0.8}Requirements increase",
-			"{C:attention,s:0.8}exponentially{s:0.8} per use",
-			"{C:money,s:0.8}Next increase: {s:1,c:money}$#4#",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
@@ -329,17 +225,6 @@ local redeo = {
 		end
 	end,
 }
-if JokerDisplay then
-	redeo.joker_display_definition = {
-		reminder_text = {
-			{ text = "($" },
-			{ ref_table = "card.ability.extra", ref_value = "money_remaining" },
-			{ text = "/$" },
-			{ ref_table = "card.ability.extra", ref_value = "money_req" },
-			{ text = ")" },
-		},
-	}
-end
 local tenebris = {
 	object_type = "Joker",
 	name = "cry-Tenebris",
@@ -347,13 +232,6 @@ local tenebris = {
 	pos = { x = 3, y = 2 },
 	soul_pos = { x = 4, y = 2, extra = { x = 5, y = 2 } },
 	config = { extra = { slots = 25, money = 25 } },
-	loc_txt = {
-		name = "Tenebris",
-		text = {
-			"{C:dark_edition}+#1#{C:attention} Joker{} slots",
-			"Earn {C:money}$#2#{} at end of round",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
@@ -370,21 +248,6 @@ local tenebris = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
 	end,
 }
-if JokerDisplay then
-	tenebris.joker_display_definition = {
-		text = {
-			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
-		},
-		text_config = { colour = G.C.GOLD },
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local effarcire = {
 	object_type = "Joker",
 	name = "cry-Effarcire",
@@ -392,15 +255,6 @@ local effarcire = {
 	config = {},
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
-	loc_txt = {
-		name = "Effarcire",
-		text = {
-			"Draw {C:green}full deck{} to hand",
-			"when {C:attention}Blind{} is selected",
-			"{C:inactive,s:0.8}\"If you can't handle me at my 1x,",
-			"{C:inactive,s:0.8}you don't deserve me at my 2x\"",
-		},
-	},
 	cost = 50,
 	atlas = "effarcire",
 	rarity = "cry_exotic",
@@ -429,15 +283,6 @@ local crustulum = {
 	config = { extra = { chips = 0, chip_mod = 4 } },
 	pos = { x = 0, y = 2 },
 	soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
-	loc_txt = {
-		name = "Crustulum",
-		text = {
-			"This Joker gains {C:chips}+#2#{} Chips",
-			"per {C:attention}reroll{} in the shop",
-			"{C:green}All rerolls are free{}",
-			"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
@@ -478,15 +323,6 @@ local crustulum = {
 		calculate_reroll_cost(true)
 	end,
 }
-if JokerDisplay then
-	crustulum.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" },
-		},
-		text_config = { colour = G.C.CHIPS },
-	}
-end
 --todo: make the Emult always prime
 local primus = {
 	object_type = "Joker",
@@ -494,15 +330,6 @@ local primus = {
 	key = "primus",
 	config = { extra = { Emult = 1.01, Emult_mod = 0.17 } },
 	pos = { x = 0, y = 4 },
-	loc_txt = {
-		name = "Primus",
-		text = {
-			"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
-			"if all cards in played hand are",
-			"{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
-			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 53,
 	blueprint_compat = true,
@@ -532,7 +359,7 @@ local primus = {
 				card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = "Upgrade!",
+						message = localize("k_upgrade_ex"),
 						colour = G.C.DARK_EDITION,
 					}),
 				}
@@ -545,7 +372,7 @@ local primus = {
 			and not context.after
 		then
 			return {
-				message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -555,35 +382,6 @@ local primus = {
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
 }
-if JokerDisplay then
-	primus.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "^" },
-					{
-						ref_table = "card.ability.extra",
-						ref_value = "Emult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
-					},
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("Ace", "ranks") .. ",2,3,5,7)"
-		end,
-	}
-end
 local big_num_whitelist = {
 	j_ride_the_bus = true,
 	j_egg = true,
@@ -640,16 +438,6 @@ local scalae = {
 	pos = { x = 3, y = 4 },
 	soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Scalae",
-		text = {
-			"Scaling {C:attention}Jokers{} scale",
-			"as a degree-{C:attention}#1#{} polynomial",
-			"raise degree by {C:attention}#2#{}",
-			"at end of round",
-			"{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
@@ -719,16 +507,6 @@ local stella_mortis = {
 	key = "stella_mortis",
 	config = { extra = { Emult = 1, Emult_mod = 0.4 } },
 	pos = { x = 3, y = 5 },
-	loc_txt = {
-		name = "Stella Mortis",
-		text = {
-			"This Joker destroys a",
-			"random {C:planet}Planet{} card",
-			"and gains {X:dark_edition,C:white} ^#1# {} Mult",
-			"at the end of the {C:attention}shop{}",
-			"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
@@ -773,9 +551,9 @@ local stella_mortis = {
 						nil,
 						nil,
 						{
-							message = "^" .. number_format(
+							message = localize{type='variable',key='a_powmult',vars={number_format(
 								to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
-							) .. " Mult",
+							)}},
 						}
 					)
 				end
@@ -789,7 +567,7 @@ local stella_mortis = {
 			and not context.after
 		then
 			return {
-				message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -799,43 +577,12 @@ local stella_mortis = {
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
 }
-if JokerDisplay then
-	stella_mortis.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "^" },
-					{
-						ref_table = "card.ability.extra",
-						ref_value = "Emult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
-					},
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 local circulus_pistoris = {
 	object_type = "Joker",
 	name = "cry-Circulus Pistoris",
 	key = "circulus_pistoris",
 	config = { extra = { Emult = math.pi, Echips = math.pi, hands_remaining = 3 } },
 	pos = { x = 0, y = 3 },
-	loc_txt = {
-		name = "Circulus Pistoris",
-		text = {
-			"{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#1#{} Mult",
-			"if {C:attention}exactly{} #2#",
-			"hands remaining",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 10 * math.pi,
 	blueprint_compat = true,
@@ -864,49 +611,16 @@ local circulus_pistoris = {
 			return {
 				Echip_mod = pi,
 				Emult_mod = pi,
-				message = "^" .. (card.edition and card.edition.cry_oversat and "tau" or "pi") .. " Mult+Chips",
+				message = localize{type='variable',key='a_powmultchips',vars={(card.edition and card.edition.cry_oversat and "tau" or "pi")}},
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
 		end
 	end,
 }
-if JokerDisplay then
-	circulus_pistoris.joker_display_definition = {
-		text = {
-			{ text = "^", colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "Echips", colour = G.C.CHIPS },
-			{ text = "^", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "Emult", colour = G.C.MULT },
-		},
-		extra = {
-
-			{
-				ref_table = "card.joker_display_values",
-				ref_value = "localized_text",
-				colour = G.C.UI.TEXT_INACTIVE,
-				scale = 0.3,
-			},
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local aequilibrium = {
 	object_type = "Joker",
 	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
 	key = "equilib",
-	loc_txt = {
-		name = "Ace Aequilibrium",
-		text = {
-			"Jokers appear using the",
-			"order from the {C:attention}Collection{}",
-			"Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker(s)",
-			"when hand is played",
-			"{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
-			"{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#",
-		},
-	},
 	config = { extra = { jokers = 2, num = 1, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
@@ -1040,14 +754,6 @@ local facile = {
 	config = { extra = { Emult = 3, check = 10, check2 = 0 } },
 	pos = { x = 6, y = 2 },
 	soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
-	loc_txt = {
-		name = "Facile",
-		text = {
-			"{X:dark_edition,C:white}^#1#{} Mult if",
-			"{C:attention}#2#{} or fewer",
-			"cards are scored",
-		},
-	},
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
@@ -1072,7 +778,7 @@ local facile = {
 			if card.ability.extra.check2 <= card.ability.extra.check then
 				card.ability.extra.check2 = 0
 				return {
-					message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+					message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 					Emult_mod = card.ability.extra.Emult,
 					colour = G.C.DARK_EDITION,
 				}
@@ -1088,14 +794,6 @@ local gemino = {
 	key = "gemino",
 	pos = { x = 6, y = 1 },
 	soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
-	loc_txt = {
-		name = "Gemini",
-		text = {
-			"{C:attention}Double{} all values",
-			"of leftmost {C:attention}Joker",
-			"at end of round",
-		},
-	},
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -1141,15 +839,6 @@ local energia = {
 	blueprint_compat = false,
 	perishable_compat = false,
 	config = { extra = { tags = 1, tag_mod = 1 } },
-	loc_txt = {
-		name = "Energia",
-		text = {
-			"When a {C:attention}Tag{} is acquired,",
-			"create {C:attention}#1#{} copies of it",
-			"and {C:attention}increase{} the number of",
-			"copies by {C:attention}#2#",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = { center.ability.extra.tags, center.ability.extra.tag_mod },
@@ -1185,16 +874,6 @@ local verisimile = {
 	cost = 50,
 	blueprint_compat = true,
 	atlas = "placeholders",
-	loc_txt = {
-		name = "Non Verisimile",
-		text = {
-			"When any probability",
-			"is {C:green}successfully{} triggered,",
-			"this Joker gains {X:red,C:white}XMult{}",
-			"equal to its listed {C:attention}odds",
-			"{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.xmult } }
 	end,
