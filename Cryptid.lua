@@ -1300,10 +1300,6 @@ for _, file in ipairs(files) do
 							Cryptid.obj_buffer[item.object_type] = {}
 						end
 						Cryptid.obj_buffer[item.object_type][#Cryptid.obj_buffer[item.object_type] + 1] = item
-						-- JokerDisplay mod support
-						if JokerDisplay and item.joker_display_definition then
-							JokerDisplay.Definitions[item.key] = item.joker_display_definition
-						end
 					else
 						print("Error loading item " .. item.key .. " of unknown type " .. item.object_type)
 					end

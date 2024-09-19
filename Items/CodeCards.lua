@@ -1395,24 +1395,6 @@ local copypaste = {
 		end
 	end,
 }
-if JokerDisplay then
-	copypaste.joker_display_definition = {
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
-
 local cut = {
 	object_type = "Joker",
 	name = "cry-cut",
@@ -1475,20 +1457,6 @@ local cut = {
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
 }
-if JokerDisplay then
-	cut.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-				border_colour = G.C.MULT,
-			},
-		},
-	}
-end
-
 local blender = {
 	object_type = "Joker",
 	name = "cry-blender",
@@ -1512,7 +1480,6 @@ local blender = {
 		end
 	end,
 }
-
 local python = {
 	object_type = "Joker",
 	name = "cry-python",
@@ -1568,19 +1535,6 @@ local python = {
 		end
 	end,
 }
-if JokerDisplay then
-	python.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 
 function create_UIBox_variable(card)
 	G.E_MANAGER:add_event(Event({
