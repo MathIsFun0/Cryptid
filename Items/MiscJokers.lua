@@ -5116,7 +5116,7 @@ local oldblueprint = {
 	object_type = "Joker",
 	name = "cry-oldblueprint",
 	key = "oldblueprint",
-	pos = { x = 4, y = 4 },
+	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
 	loc_txt = {
 		name = "Old Blueprint",
@@ -5578,7 +5578,7 @@ local kscope = {
 	object_type = "Joker",
 	name = "cry-kscope",
 	key = "kscope",
-	pos = { x = 5, y = 4 },
+	pos = { x = 3, y = 4 },
 	loc_txt = {
 		name = "Kaleidoscope",
 		text = {
@@ -5717,7 +5717,7 @@ local oldinvisible = {
 	object_type = "Joker",
 	name = "cry-OldInvisible",
 	key = "oldinvisible",
-	pos = { x = 6, y = 4 },
+	pos = { x = 4, y = 4 },
 	config = { extra = 0 },
 	loc_txt = {
 		name = "Nostalgic Invisible Joker",

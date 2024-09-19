@@ -1697,7 +1697,7 @@ local longboi = {
 	object_type = "Joker",
 	name = "cry-longboi",
 	key = "longboi",
-	pos = { x = 0, y = 5 },
+	pos = { x = 5, y = 4 },
 	config = { extra = 2 },
 	loc_txt = {
 		name = "Monster",
