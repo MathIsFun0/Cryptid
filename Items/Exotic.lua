@@ -1112,6 +1112,121 @@ local verisimile = {
 		end
 	end,
 }
+
+
+local duplicare = {
+    object_type = "Joker",
+    name = "cry-duplicare",
+    key = "duplicare",
+    config = {extra = {Emult = 1.1, Emult_mod = 0.001}},
+    pos = { x = 6, y = 2 },
+    soul_pos = {x = 8, y = 2, extra = {x = 7, y = 2}},
+    loc_txt = {
+        name = 'Duplicare',
+        text = {
+            "{X:dark_edition,C:white}^#1#{} Mult for every {C:attention}Joker{}",
+            "Increases by {X:dark_edition,C:white}^#2#{}", "when triggered"
+        }
+    },
+    rarity = "cry_exotic",
+    cost = 50,
+    blueprint_compat = true,
+    atlas = "atlasexotic",
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {center.ability.extra.Emult, center.ability.extra.Emult_mod}
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.ability.set == "Joker" then
+            if not Talisman.config_file.disable_anims then 
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end
+                })) 
+            end
+            card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+            return {
+                message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+                Emult_mod = card.ability.extra.Emult,
+                colour = G.C.DARK_EDITION
+            }
+        end
+    end
+}
+
+local rescribere = {
+    object_type = "Joker",
+    name = "cry-Rescribere",
+    key = "rescribere",
+    pos = { x = 6, y = 3 },
+    soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
+    blueprint_compat = false,
+    perishable_compat = false,
+    config = {extra = {}},
+    loc_txt = {
+            name = 'Rescribere',
+            text = {
+            "When a {C:attention}Joker{} is sold,",
+            "add its effects to",
+            "every other joker",
+            "{C:inactive,s:0.8}Does not affect other Rescribere{}"
+        }
+        },
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {}
+        }
+    end,
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "atlasexotic",
+    calculate = function(self, card, context)
+        local eligibleJokers = {}
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name ~= card.ability.name then eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] end
+        end
+
+        for i = 1, #eligibleJokers do
+            if context.selling_card and context.card.ability.name ~= card.ability.name and context.card ~= eligibleJokers[i] then
+                local oldfunc = eligibleJokers[i].calculate_joker
+
+
+                eligibleJokers[i].ability.rescribere_jokers = eligibleJokers[i].ability.rescribere_jokers or {}
+                eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers+1] = context.card
+
+
+                eligibleJokers[i].calculate_joker = function(cardd,contextt)
+                    local totalret = oldfunc(cardd,contextt)
+                    
+                    v = eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers]
+
+                    local ret = v:calculate_joker(contextt)
+                    if ret and type(ret) == 'table' then
+                        totalret = totalret or {message = "Copying", card = eligibleJokers[i]}
+                        for _i,_v in pairs(ret) do
+                            if not totalret[_i] then
+                                totalret[_i] = ret[_i] or _v
+                                --print(totalret[_i] .. "--------------")
+                            else
+                                if type(totalret[_i]) == 'number' then
+                                    totalret[_i] = totalret[_i] + ret[_i]
+                                end
+                            end
+                        end
+                        totalret.card = eligibleJokers[i]
+                    end
+
+                    return totalret
+
+                end
+            end
+        end
+    end
+}
+
 return {
 	name = "Exotic Jokers",
 	init = function()
@@ -1263,5 +1378,7 @@ return {
 		gemino,
 		energia,
 		verisimile,
+		rescribere,
+		duplicare,
 	},
 }
