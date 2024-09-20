@@ -175,20 +175,6 @@ position = "at"
 payload = "ease_ante(math.floor(-center_table.extra))"
 match_indent = true
 
-# Consumables lying to you
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "function Card:use_consumeable(area, copier)"
-position = "after"
-payload = '''
-if self.ability.set ~= "Gear" and not (self.ability.extra and type(self.ability.extra) == "table" and self.ability.extra.local_d6_sides) then --Ro-Balatro and D6 Jokers compat, I need a better system for this later
-for k, v in pairs(G.P_CENTERS[self.config.center_key].config) do
-        self.ability[k] = v --surely nothing will go wrong
-    end
-end'''
-match_indent = true
-
 # Get Cryptid to display and work with card selections
 [[patches]]
 [patches.pattern]
