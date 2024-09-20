@@ -1,9 +1,8 @@
-Cryptid.memepack = { --This is used for the Cryptid memepack pool
-	"j_jolly",
-	"j_obelisk",
-	"j_space", --Nobody takes this thing seriously so i'm putting it here
-	"j_mr_bones", --sans undertale
-}
+--This pool is used for Cryptid's Meme Packs, and other mods can add to it (hence it is already loaded)
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_jolly"
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_obelisk"
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_space" --Nobody takes this thing seriously so i'm putting it here
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_mr_bones" --sans undertale
 if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cube"
 end

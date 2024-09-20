@@ -598,3 +598,16 @@ pattern = '''if self.ability.perishable then'''
 position = "at"
 payload = '''if self.ability.perishable and not layer then'''
 match_indent = true
+
+# init Cryptid global through lovely
+# so other mods can add things to memepack pool
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''function love.load()'''
+position = "before"
+payload = '''
+Cryptid = {}
+Cryptid.memepack = {}
+'''
+match_indent = true

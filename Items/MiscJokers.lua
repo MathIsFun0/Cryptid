@@ -5477,7 +5477,7 @@ local morse = {
 			card.ability.extra.active = "No triggers left!"
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "Upgrade!",
+					message = localize("k_upgrade_ex"),
 					colour = G.C.MONEY,
 				}),
 			}
