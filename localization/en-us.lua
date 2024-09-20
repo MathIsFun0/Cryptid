@@ -1,5 +1,6 @@
 --Work in progress!
 --Completed: Cryptid.lua, lovely patches, Achievements-M.lua
+--I couldn't get Meme Packs to work without crashing
 return {
     descriptions = {
         Back = {
@@ -439,6 +440,98 @@ return {
                 text = {
                     "Convert {C:cry_code}#1#{} selected cards",
                     "to a {C:cry_code}chosen{} rank",
+                },
+            },
+        },
+        Edition = {
+            e_cry_astral = {
+                name = "Astral",
+                text = {
+                    "{X:dark_edition,C:white}^#1#{} Mult",
+                },
+            },
+            e_cry_blur = {
+                name = "Blurred",
+                text = {
+                    "{C:attention}Retrigger{} this",
+                    "card {C:attention}1{} time",
+                    "{C:green}#1# in #2#{} chance",
+                    "to retrigger {C:attention}#3#{}",
+                    "additional time",
+                },
+            },
+            e_cry_double_sided = {
+                name = "Double-Sided",
+                text = {
+                    "This card can be",
+                    "{C:attention}flipped{} to reveal",
+                    "a different card",
+                },
+            },
+            e_cry_glass = {
+                name = "Fragile",
+                label = "Fragile",
+                text = {
+                    "{C:white,X:mult} X#3# {} Mult",
+                    "{C:green}#1# in #2#{} chance this",
+                    "card isn't {C:red}destroyed",
+                    "when triggered",
+                },
+            },
+            e_cry_glitched = {
+                name = "Glitched",
+                text = {
+                    "All values on this card",
+                    "are {C:dark_edition}randomized{}",
+                    "between {C:attention}X0.1{} and {C:attention}X10{}",
+                    "{C:inactive}(If possible){}",
+                },
+            },
+            e_cry_gold = {
+                name = "Golden",
+                label = "Golden",
+                text = {
+                    "{C:money}+$#1#{} when used",
+                    "or triggered",
+                },
+            },
+            e_cry_m = {
+                name = "Jolly",
+                text = {
+                    "{C:mult}+#1#{} Mult",
+                    "This card is feeling",
+                    "rather {C:attention}jolly{}",
+                },
+            },
+            e_cry_mosaic = {
+                name = "Mosaic",
+                text = {
+                    "{X:chips,C:white} X#1# {} Chips",
+                },
+            },
+            e_cry_noisy = {
+                name = "Noisy",
+                text = {
+                    "???",
+                },
+            },
+            e_cry_oversat = {
+                name = "Oversaturated",
+                text = {
+                    "All values",
+                    "on this card",
+                    "are {C:attention}doubled{}",
+                    "{C:inactive}(If possible)",
+                },
+            },
+        },
+        Enhanced = {
+            m_cry_echo = {
+                name = "Echo Card",
+                text = {
+                    "{C:green}#2# in #3#{} chance to",
+                    "{C:attention}retrigger{} #1# additional",
+                    "times when scored",
                 },
             },
         },
@@ -1037,8 +1130,27 @@ return {
                     "card in your hand",
                 },
             },
+            c_cry_typhoon = {
+                name = "Typhoon",
+                text = {
+                    "Add an {C:cry_azure}Azure Seal{}",
+                    "to {C:attention}#1#{} selected",
+                    "card in your hand",
+                },
+            },
         },
         Tag = {
+            tag_cry_bundle = {
+                name = "Bundle Tag",
+                text = {
+                    "Create a {C:attention}Standard Tag{}, {C:tarot}Charm Tag{},",
+                    "{C:attention}Buffoon Tag{}, and {C:planet}Meteor Tag",
+                },
+            },
+            tag_cry_cat = {
+                name = "Cat Tag",
+                text = { "Meow.", "{C:inactive}Level {C:dark_edition}#1#" },
+            },
             tag_cry_console = {
                 name = "Console Tag",
                 text = {
@@ -1046,11 +1158,49 @@ return {
                     "{C:cry_code}Program Pack",
                 },
             },
+            tag_cry_empowered = {
+                name = "Empowered Tag",
+                text = {
+                    "Gives a free {C:spectral}Spectral Pack",
+                    "with {C:legendary,E:1}The Soul{} and {C:cry_exotic,E:1}Gateway{}",
+                },
+            },
+            tag_cry_epic = {
+                name = "Epic Tag",
+                text = {
+                    "Shop has a half-price",
+                    "{C:cry_epic}Epic Joker",
+                },
+            },
+            tag_cry_gambler = {
+                name = "Gambler's Tag",
+                text = {
+                    "{C:green}#1# in #2#{} chance to create",
+                    "an {C:cry_exotic,E:1}Empowered Tag",
+                },
+            },
+            tag_cry_memory = {
+                name = "Memory Tag",
+                text = {
+                    "Create {C:attention}#1#{} copies of",
+                    "the last {C:attention}Tag{} used",
+                    "during this run",
+                    "{s:0.8,C:inactive}Copying Tags excluded",
+                    "{s:0.8,C:inactive}Currently: {s:0.8,C:attention}#2#",
+                },
+            },
             tag_cry_rework = {
                 name = "Rework Tag",
                 text = {
                     "Shop has a(n)",
                     "{C:dark_edition}#1# {C:cry_code}#2#",
+                },
+            },
+            tag_cry_schematic = {
+                name = "Schematic Tag",
+                text = {
+                    "Shop has a",
+                    "{C:attention}Brainstorm",
                 },
             },
         },
@@ -1061,6 +1211,29 @@ return {
                     "Creates up to {C:attention}#1#",
                     "random {C:cry_code}Code{} card",
                     "{C:inactive}(Must have room)",
+                },
+            },
+            c_cry_eclipse = {
+                name = "The Eclipse",
+                text = {
+                    "Enhances {C:attention}#1#{} selected card",
+                    "into an {C:attention}Echo Card",
+                },
+            },
+            c_cry_meld = {
+                name = "Meld",
+                text = {
+                    "Select a {C:attention}Joker{} or",
+                    "{C:attention}playing card{} to",
+                    "become {C:dark_edition}Double-Sided",
+                },
+            },
+            c_cry_theblessing = {
+                name = "The Blessing",
+                text = {
+                    "Creates {C:attention}1{}",
+                    "random {C:attention}consumable{}",
+                    "{C:inactive}(Must have room){}",
                 },
             },
         },
@@ -1237,6 +1410,41 @@ return {
                     "{C:attention}#2#{C:cry_code} Code{} cards",
                 },
             },
+            p_cry_empowered = {
+                name = "Spectral Pack [Empowered Tag]",
+                text = {
+                    "Choose {C:attention}#1#{} of up to",
+                    "{C:attention}#2#{C:spectral} Spectral{} cards",
+                    "{s:0.8,C:inactive}(Generated by Empowered Tag)",
+                },
+            },
+            p_cry_meme_1 = {
+                {
+                    name = "Meme Pack",
+                    text = {
+                        "Choose {C:attention}#1#{} of",
+                        "up to {C:attention}#2# Meme Jokers{}",
+                    },
+                },
+            },
+            p_cry_meme_two = {
+                {
+                    name = "Meme Pack",
+                    text = {
+                        "Choose {C:attention}#1#{} of",
+                        "up to {C:attention}#2# Meme Jokers{}",
+                    },
+                },
+            },
+            p_cry_meme_tbree = {
+                {
+                    name = "Meme Pack",
+                    text = {
+                        "Choose {C:attention}#1#{} of",
+                        "up to {C:attention}#2# Meme Jokers{}",
+                    },
+                },
+            },
             undiscovered_code = {
                 name = "Not Discovered",
                 text = {
@@ -1252,6 +1460,15 @@ return {
                     "Creates a {C:cry_code}Code{} card",
                     "when played and unscoring",
                     "{C:inactive}(Must have room)",
+                },
+            },
+            cry_azure_seal = {
+                name = "Azure Seal",
+                text = {
+                    "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
+                    "{C:planet}Planets{} for played",
+                    "{C:attention}poker hand{}, then",
+                    "{C:red}destroy{} this card",
                 },
             },
         },
@@ -1375,6 +1592,10 @@ return {
             cry_code_execute = "EXECUTE",
             cry_code_cancel = "CANCEL",
 
+            b_flip = "FLIP",
+            b_merge = "MERGE",
+
+            cry_again_q = "Again?",
             cry_curse_ex = "Curse!",
             cry_sobbing = "Help me...",
             cry_gaming_ex = "Gaming!",
@@ -1392,7 +1613,20 @@ return {
             code = "Code",
             cry_rigged = "Rigged",
             cry_hooked = "Hooked",
+
             cry_green_seal = "Green Seal",
+            cry_azure_seal = "Azure Seal",
+
+            cry_astral = "Astral",
+            cry_blur = "Blurred",
+            cry_double_sided = "Double-Sided",
+            cry_glass = "Fragile",
+            cry_glitched = "Glitched",
+            cry_gold = "Golden",
+            cry_m = "Jolly",
+            cry_mosaic = "Mosaic",
+            cry_noisy = "Noisy",
+            cry_oversat = "Oversaturated",
         },
         v_dictionary = {
             a_xchips = {"X#1# Chips"},
