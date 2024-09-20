@@ -2139,7 +2139,6 @@ function init_localization()
 				name = localize{type='variable',key='cry_sticker_name',vars={color}},
 				text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
 			}
-			print(tprint(G.localization.descriptions.Other[sticker_key]))
 		end
 	end
 end
