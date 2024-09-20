@@ -279,7 +279,7 @@ return {
                 name = "://类别",
                 text = {
                     "将 {C:cry_code}#1#{} 选中的牌",
-                    "转换为 {C:cry_code}选择的{} 增强",
+                    "转换为 {C:cry_code}指令下的{} 增强",
                 },
             },
             c_cry_commit = {
@@ -344,14 +344,14 @@ return {
                 name = "://合并",
                 text = {
                     "将一个 {C:cry_code}消耗牌",
-                    "与一个 {C:cry_code}扑克牌{} 合并",
+                    "与一个 {C:cry_code}手牌{} 合并",
                 },
             },
             c_cry_multiply = {
                 name = "://乘",
                 text = {
                     " 选中的所有数值{C:cry_code}翻倍{}",
-                    "直到 {C:cry_code}回合结束",
+                    "直到 {C:cry_code}回合结束{}",
                 },
             },
             c_cry_payload = {
@@ -406,20 +406,20 @@ return {
                 text = {
                     "选择一张小丑牌",
                     "或扑克牌",
-                    "使它们成为 {C:cry_code}固定",
+                    "使它们成为 {C:cry_code}固定{}",
                 },
             },
             c_cry_semicolon = {
                 name = ";//",
                 text = {
-                    "结束当前非Boss {C:cry_code}盲注",
+                    "结束当前非Boss {C:cry_code}盲注{}",
                     "{C:cry_code}没有{} 兑现",
                 },
             },
             c_cry_spaghetti = {
                 name = "://意大利面",
                 text = {
-                    "创建一个 {C:cry_code}故障的",
+                    "创建一个 {C:cry_code}故障的{}",
                     "食品小丑牌",
                 },
             },
@@ -427,7 +427,88 @@ return {
                 name = "://变量",
                 text = {
                     "将 {C:cry_code}#1#{} 张选中的牌",
-                    "转换为 {C:cry_code}选择的{} 等级",
+                    "转换为 {C:cry_code}指令下的{} 牌型",
+                },
+            },
+        },
+        Edition = {
+            e_cry_astral = {
+                name = "星界",
+                text = {
+                    "{X:dark_edition,C:white}^#1#{} Mult",
+                },
+            },
+            e_cry_blur = {
+                name = "模糊",
+                text = {
+                    "{C:attention}重新触发{}此卡",
+                    "卡牌 {C:attention}1{} 次",
+                    "{C:green}#1# 在 #2#{} 的概率",
+                    "重新触发 {C:attention}#3#{}",
+                    "额外一次",
+                },
+            },
+            e_cry_double_sided = {
+                name = "双面",
+                text = {
+                    "此卡可以被",
+                    "{C:attention}翻转{}以展示",
+                    "另一张不同的卡牌",
+                },
+            },
+            e_cry_glass = {
+                name = "易碎",
+                label = "易碎",
+                text = {
+                    "{C:white,X:mult} X#3# {} Mult",
+                    "{C:green}#1# 在 #2#{} 的概率此",
+                    "卡牌不会被 {C:red}摧毁",
+                    "当被触发时",
+                },
+            },
+            e_cry_glitched = {
+                name = "故障",
+                text = {
+                    "此卡上的所有数值",
+                    "在 {C:dark_edition}随机{}之间",
+                    "{C:attention}X0.1{} 与 {C:attention}X10{}",
+                    "{C:inactive}(如果可能){}",
+                },
+            },
+            e_cry_gold = {
+                name = "金色",
+                label = "金色",
+                text = {
+                    "{C:money}+$#1#{} 当使用",
+                    "或触发时",
+                },
+            },
+            e_cry_m = {
+                name = "欢乐",
+                text = {
+                    "{C:mult}+#1#{} Mult",
+                    "这张卡牌感到",
+                    "相当 {C:attention}欢乐{}",
+                },
+            },
+            e_cry_mosaic = {
+                name = "马赛克",
+                text = {
+                    "{X:chips,C:white} X#1# {} Chips",
+                },
+            },
+            e_cry_noisy = {
+                name = "吵闹",
+                text = {
+                    "???",
+                },
+            },
+            e_cry_oversat = {
+                name = "过饱和",
+                text = {
+                    "此卡上的所有数值",
+                    "都被 {C:attention}翻倍{}",
+                    "{C:inactive}(如果可能)",
                 },
             },
         },
@@ -492,7 +573,7 @@ return {
                 }
             },
             j_cry_negative = {
-                name = "负面小丑",
+                name = "负片小丑",
                 text = {
                     "{C:dark_edition}+#1#{C:attention} 小丑{} 槽"
                 }
@@ -522,7 +603,7 @@ return {
                 name = "M",
                 text = {
                     "当选择{C:attention}盲注{}时",
-                    "创建一个{C:dark_edition}负面{}",
+                    "创建一个{C:dark_edition}负片{}",
                     "{C:attention}欢乐小丑{}"
                 }
             },
@@ -610,10 +691,9 @@ return {
             j_cry_goldjoker = {
                 name = "金小丑",
                 text = {
-                    "在回合结束时获得总额的{C:money}#1#%{}",
-                    "得到的金钱",
+                    "在回合结束时获得总额的{C:money}#1#%{}钱",
                     "每张得分的{C:attention}金牌{}",
-                    "增加{C:money}#2#%{}的支付"
+                    "增加{C:money}#2#%{}钱"
                 }
             },
             j_cry_altgoogol = {
@@ -650,9 +730,9 @@ return {
             j_cry_speculo = {
                 name = "镜像",
                 text = {
-                    "创建一张{C:dark_edition}负面{}的",
-                    "随机{C:attention}小丑{}的复制",
-                    "在{C:attention}商店{}结束时",
+                    "结束{C:attention}购物{}时",
+                    "随机获得一张{C:attention}小丑{}",
+                    "的{C:dark_edition}负片{}",
                     "{C:inactive,s:0.8}不复制其他镜像{}"
                 }
             },
@@ -730,7 +810,7 @@ return {
                 name = "王牌平衡",
                 text = {
                     "小丑按{C:attention}收藏{}的顺序出现",
-                    "在手牌打出时创建{C:attention}#1#{} {C:dark_edition}负面{}小丑",
+                    "在手牌打出时创建{C:attention}#1#{} {C:dark_edition}负片{}小丑",
                     "{C:cry_exotic,s:0.8}异域{C:inactive,s:0.8}或更好的小丑无法出现",
                     "{s:0.8}最后生成的小丑: {C:attention,s:0.8}#2#"
                 }
@@ -882,7 +962,7 @@ return {
                 name = "涂鸦 M",
                 text = {
                     "当选择{C:attention}盲注{}时",
-                    "创建2个{C:dark_edition}负面{} {C:attention}消耗品{}",
+                    "创建2个{C:dark_edition}负片{} {C:attention}消耗品{}",
                     "每个{C:attention}欢乐小丑{}创建1个额外的{C:attention}消耗品"
                 }
             },
@@ -1455,6 +1535,142 @@ return {
                 }
             }
 		},
+        Planet = {
+            c_cry_Klubi = {
+                name = "俱乐部",
+                text = {
+                    "({V:1}等级.#4#{})({V:2}等级.#5#{})({V:3}等级.#6#{})",
+                    "升级",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "以及 {C:attention}#3#{}",
+                },
+            },
+            c_cry_Lapio = {
+                name = "铲子",
+                text = {
+                    "({V:1}等级.#4#{})({V:2}等级.#5#{})({V:3}等级.#6#{})",
+                    "升级",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "以及 {C:attention}#3#{}",
+                },
+            },
+            c_cry_nstar = {
+                name = "中子星",
+                text = {
+                    "随机升级一组",
+                    "扑克手牌，每使用",
+                    "{C:attention}1{}个中子星",
+                    "在本次运行中",
+                    "{C:inactive}(当前{C:attention} #1#{C:inactive}){}",
+                },
+            },
+            c_cry_planetlua = {
+                name = "Planet.lua",
+                text = {
+                    "{C:green}#1# 在 #2#{} 的几率",
+                    "升级每一个",
+                    "{C:legendary,E:1}扑克手牌{}",
+                    "至 {C:attention}1{} 级",
+                },
+            },
+            c_cry_Sydan = {
+                name = "心脏",
+                text = {
+                    "({V:1}等级.#4#{})({V:2}等级.#5#{})({V:3}等级.#6#{})",
+                    "升级",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "以及 {C:attention}#3#{}",
+                },
+            },
+            c_cry_Timantti = {
+                name = "钻石",
+                text = {
+                    "({V:1}等级.#4#{})({V:2}等级.#5#{})({V:3}等级.#6#{})",
+                    "升级",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "以及 {C:attention}#3#{}",
+                },
+            },
+        },
+        Sleeve = {
+            sleeve_cry_ccd_sleeve = {
+                name = "CCD 牌组",
+                text = {
+                    "每张卡片也是",
+                    "一个 {C:attention}随机{} 消耗品",
+                },
+            },
+            sleeve_cry_conveyor_sleeve = {
+                name = "传送带牌组",
+                text = {
+                    "小丑卡可能 {C:attention}不能{} 移动",
+                    "回合开始时，",
+                    "{C:attention}复制{} 最右边的小丑卡",
+                    "并且 {C:attention}销毁{} 最左边的小丑卡",
+                },
+            },
+            sleeve_cry_critical_sleeve = {
+                name = "致命牌组",
+                text = {
+                    "每打出一手牌后，",
+                    "{C:green}四分之一{} 的几率获得 {X:dark_edition,C:white} ^2 {} 倍",
+                    "{C:green}八分之一{} 的几率获得 {X:dark_edition,C:white} ^0.5 {} 倍",
+                },
+            },
+            sleeve_cry_encoded_sleeve = {
+                name = "编码牌组",
+                text = {
+                    "开始时获得一张 {C:cry_code,T:j_cry_CodeJoker}代码小丑卡{}",
+                    "和一张 {C:cry_code,T:j_cry_copypaste}复制/粘贴卡{}",
+                    "商店中只出现 {C:cry_code}代码卡{}",
+                },
+            },
+            sleeve_cry_equilibrium_sleeve = {
+                name = "平衡牌组",
+                text = {
+                    "所有卡片在",
+                    "商店中的 {C:attention}出现几率相同{}",
+                    "开始时拥有",
+                    "{C:attention,T:v_overstock_plus}+2 商店插槽",
+                },
+            },
+            sleeve_cry_infinite_sleeve = {
+                name = "无限牌组",
+                text = {
+                    "你可以选择 {C:attention}任意数量",
+                    "的卡片",
+                    --someone do the hand size thing for me
+                },
+            },
+            sleeve_cry_misprint_sleeve = {
+                name = "印刷错误牌组",
+                text = {
+                    "卡片的数值",
+                    "是 {C:attention}随机的",
+                },
+            },
+            sleeve_cry_redeemed_sleeve = {
+                name = "赎回牌组",
+                text = {
+                    "当 {C:attention}凭证{} 被购买时，",
+                    "获得其 {C:attention}额外层级",
+                },
+            },
+            sleeve_cry_wormhole_sleeve = {
+                name = "虫洞牌组",
+                text = {
+                    "开始时获得一张 {C:cry_exotic}异域{C:attention} 小丑卡",
+                    "小丑卡 {C:attention}20倍{} 更有可能",
+                    "成为 {C:dark_edition}负面卡",
+                    "{C:attention}-2{} 小丑卡插槽",
+                },
+            },
+        }
+        ,
         Spectral = {
             c_cry_gateway = {
                 name = "传送门",
@@ -1481,29 +1697,496 @@ return {
                 },
             },
         },
+        Stake = {
+            stake_cry_pink = {
+                name = "粉色赌注",
+                colour = "Pink", --this is used for auto-generated sticker localization
+                text = {
+                    "所需分数会随每个 {C:attention}Ante 加速增加",
+                },
+            },
+            stake_cry_brown = {
+                name = "棕色赌注",
+                colour = "Brown",
+                text = {
+                    "所有 {C:attention}贴纸{} 彼此兼容",
+                },
+            },
+            stake_cry_yellow = {
+                name = "黄色赌注",
+                colour = "Yellow",
+                text = {
+                    "{C:attention}贴纸{} 可出现在",
+                    "所有可购买的物品上",
+                },
+            },
+            stake_cry_jade = {
+                name = "玉色赌注",
+                colour = "Jade",
+                text = {
+                    "卡牌可以以 {C:attention}面朝下{} 抽取",
+                },
+            },
+            stake_cry_cyan = {
+                name = "青色赌注",
+                colour = "Cyan",
+                text = {
+                    "{C:green}不常见的{} 和 {C:red}稀有的{} 小丑牌出现概率",
+                    "减少",
+                },
+            },
+            stake_cry_gray = {
+                name = "灰色赌注",
+                colour = "Gray",
+                text = {
+                    "重新投掷的费用每次增加 {C:attention}$2{}",
+                },
+            },
+            stake_cry_crimson = {
+                name = "猩红赌注",
+                colour = "Crimson",
+                text = {
+                    "代金券会在 {C:attention}双数{} Ante 时补货",
+                },
+            },
+            stake_cry_diamond = {
+                name = "钻石赌注",
+                colour = "Diamond",
+                text = {
+                    "必须打败 Ante {C:attention}10{} 才能获胜",
+                },
+            },
+            stake_cry_amber = {
+                name = "琥珀赌注",
+                colour = "Amber",
+                text = {
+                    "商店{C:attention}-1{} 增强包槽位",
+                },
+            },
+            stake_cry_bronze = {
+                name = "青铜赌注",
+                colour = "Bronze",
+                text = {
+                    "代金券价格增加 {C:attention}50%{}",
+                },
+            },
+            stake_cry_quartz = {
+                name = "石英赌注",
+                colour = "Quartz",
+                text = {
+                    "小丑牌可以被 {C:attention}固定{}",
+                    "{s:0.8,C:inactive}(固定在最左侧的位置){}",
+                },
+            },
+            stake_cry_ruby = {
+                name = "红宝石赌注",
+                colour = "Ruby",
+                text = {
+                    "{C:attention}大{} 盲注可以变为",
+                    "{C:attention}Boss{} 盲注",
+                },
+            },
+            stake_cry_glass = {
+                name = "玻璃赌注",
+                colour = "Glass",
+                text = {
+                    "卡牌在得分时可能 {C:attention}破碎{}",
+                },
+            },
+            stake_cry_sapphire = {
+                name = "蓝宝石赌注",
+                colour = "Sapphire",
+                text = {
+                    "在 Ante 结束时失去 {C:attention}25%{} 的当前金钱",
+                    "{s:0.8,C:inactive}(最高至 $10){}",
+                },
+            },
+            stake_cry_emerald = {
+                name = "翡翠赌注",
+                colour = "Emerald",
+                text = {
+                    "卡牌、包和代金券可以是 {C:attention}面朝下{} 的",
+                    "{s:0.8,C:inactive}(购买前无法查看){}",
+                },
+            },
+            stake_cry_platinum = {
+                name = "铂金赌注",
+                colour = "Platinum",
+                text = {
+                    "小盲注被 {C:attention}移除{}",
+                },
+            },
+            stake_cry_twilight = {
+                name = "暮光赌注",
+                colour = "Twilight",
+                text = {
+                    "卡牌可能会成为 {C:attention}香蕉{}",
+                    "{s:0.8,C:inactive}(每回合有 1/10 的几率被销毁){}",
+                },
+            },
+            stake_cry_verdant = {
+                name = "翠绿赌注",
+                colour = "Verdant",
+                text = {
+                    "所需分数会随每个 {C:attention}Ante 加速增加",
+                },
+            },
+            stake_cry_ember = {
+                name = "余烬赌注",
+                colour = "Ember",
+                text = {
+                    "所有物品出售时不再产生金钱",
+                },
+            },
+            stake_cry_dawn = {
+                name = "黎明赌注",
+                colour = "Dawn",
+                text = {
+                    "塔罗牌和幽灵牌的目标 {C:attention}减少 1{}",
+                    "{s:0.8,C:inactive}(最少 1 张){}",
+                },
+            },
+            stake_cry_horizon = {
+                name = "地平线赌注",
+                colour = "Horizon",
+                text = {
+                    "选择盲注时，增加一张",
+                    "{C:attention}随机卡牌{} 到牌堆",
+                },
+            },
+            stake_cry_blossom = {
+                name = "花朵赌注",
+                colour = "Blossom",
+                text = {
+                    "{C:attention}最终{} Boss 盲注可以出现在",
+                    "{C:attention}任何{} Ante 中",
+                },
+            },
+            stake_cry_azure = {
+                name = "蔚蓝赌注",
+                colour = "Azure",
+                text = {
+                    "小丑牌的数值降低",
+                    "{C:attention}20%{}",
+                },
+            },
+            stake_cry_ascendant = {
+                name = "卓越赌注",
+                colour = "Ascendant",
+                text = {
+                    "{C:attention}-1{} 商店槽位",
+                },
+            },
+        },        
         Tag = {
+            tag_cry_bundle = {
+                name = "组合标签",
+                text = {
+                    "创建一个 {C:attention}标准标签{}，{C:tarot}魅力标签{}，",
+                    "{C:attention}小丑标签{}，和 {C:planet}流星标签",
+                },
+            },
+            tag_cry_cat = {
+                name = "猫标签",
+                text = { "喵。", "{C:inactive}等级 {C:dark_edition}#1#" },
+            },
             tag_cry_console = {
                 name = "控制台标签",
                 text = {
-                    "赠送一个免费的",
+                    "给予一个免费",
                     "{C:cry_code}程序包",
                 },
             },
+            tag_cry_empowered = {
+                name = "强化标签",
+                text = {
+                    "给予一个免费 {C:spectral}光谱包",
+                    "包括 {C:legendary,E:1}灵魂{} 和 {C:cry_exotic,E:1}传送门{}",
+                },
+            },
+            tag_cry_epic = {
+                name = "史诗标签",
+                text = {
+                    "商店有半价的",
+                    "{C:cry_epic}史诗小丑",
+                },
+            },
+            tag_cry_gambler = {
+                name = "赌徒标签",
+                text = {
+                    "{C:green}#1# 在 #2#{} 的几率",
+                    "创建一个 {C:cry_exotic,E:1}强化标签",
+                },
+            },
+            tag_cry_memory = {
+                name = "记忆标签",
+                text = {
+                    "创建 {C:attention}#1#{} 份",
+                    "上一次使用的 {C:attention}标签{}",
+                    "在本次运行中",
+                    "{s:0.8,C:inactive}复制的标签除外",
+                    "{s:0.8,C:inactive}当前: {s:0.8,C:attention}#2#",
+                },
+            },
+            tag_cry_quadruple = {
+                name = "四倍标签",
+                text = {
+                    "给予 {C:attention}#1#{} 份",
+                    "下一个选择的 {C:attention}标签",
+                    "{s:0.8,C:inactive}复制的标签除外",
+                },
+            },
+            tag_cry_quintuple = {
+                name = "五倍标签",
+                text = {
+                    "给予 {C:attention}#1#{} 份",
+                    "下一个选择的 {C:attention}标签",
+                    "{s:0.8,C:inactive}复制的标签除外",
+                },
+            },
             tag_cry_rework = {
-                name = "重新工作标签",
+                name = "重制标签",
                 text = {
                     "商店有一个",
                     "{C:dark_edition}#1# {C:cry_code}#2#",
                 },
             },
+            tag_cry_schematic = {
+                name = "原理图标签",
+                text = {
+                    "商店有一个",
+                    "{C:attention}头脑风暴",
+                },
+            },
+            tag_cry_triple = {
+                name = "三倍标签",
+                text = {
+                    "给予 {C:attention}#1#{} 份",
+                    "下一个选择的 {C:attention}标签",
+                    "{s:0.8,C:inactive}复制的标签除外",
+                },
+            },
         },
         Tarot = {
             c_cry_automaton = {
-                name = "自动机",
+                name = "机械人",
                 text = {
-                    "创建最多 {C:attention}#1#",
-                    "张随机的 {C:cry_code}代码{} 卡",
-                    "{C:inactive}(必须有足够的空间)",
+                    "创建多达 {C:attention}#1#",
+                    "随机 {C:cry_code}代码{} 卡",
+                    "{C:inactive}(必须有空间)",
+                },
+            },
+            c_cry_eclipse = {
+                name = "日食",
+                text = {
+                    "增强 {C:attention}#1#{} 选定的卡片",
+                    "为 {C:attention}回声卡",
+                },
+            },
+            c_cry_meld = {
+                name = "融合",
+                text = {
+                    "选择一个 {C:attention}小丑{} 或",
+                    "{C:attention}扑克牌{} 变成",
+                    "{C:dark_edition}双面",
+                },
+            },
+            c_cry_theblessing = {
+                name = "祝福",
+                text = {
+                    "创造 {C:attention}1{}",
+                    "随机 {C:attention}消耗品{}",
+                    "{C:inactive}(必须有空间){}",
+                },
+            },
+        },
+        Voucher = {
+            v_cry_asteroglyph = {
+                name = "星象文字",
+                text = {
+                    "设置底注为 {C:attention}#1#{}",
+                },
+            },
+            v_cry_blankcanvas = {
+                name = "空白画布",
+                text = {
+                    "{C:attention}+#1#{} 手牌大小",
+                },
+            },
+            v_cry_clone_machine = {
+                name = "克隆机",
+                text = {
+                    "双倍标签变成",
+                    "{C:attention}五倍标签{}，并且",
+                    "是 {C:attention}4X{} 常见",
+                },
+            },
+            v_cry_command_prompt = {
+                name = "命令提示符",
+                text = {
+                    "{C:cry_code}代码{} 牌可以",
+                    "出现在 {C:attention}商店{}",
+                },
+            },
+            v_cry_copies = {
+                name = "复制",
+                text = {
+                    "双倍标签变成",
+                    "{C:attention}三倍标签{}，并且",
+                    "是 {C:attention}2X{} 常见",
+                },
+            },
+            v_cry_curate = {
+                name = "策展",
+                text = {
+                    "所有牌",
+                    "都出现",
+                    "带有 {C:dark_edition}版本{}",
+                },
+            },
+            v_cry_dexterity = {
+                name = "灵巧",
+                text = {
+                    "永久",
+                    "每回合获得 {C:blue}+#1#{} 手牌",
+                },
+            },
+            v_cry_double_down = {
+                name = "双倍下注",
+                text = {
+                    "每轮之后，",
+                    "{X:dark_edition,C:white} X1.5 {} 所有数值",
+                    "在 {C:dark_edition}双面{} 牌的背面",
+                },
+            },
+            v_cry_double_slit = {
+                name = "双缝",
+                text = {
+                    "{C:attention}融合{} 可以",
+                    "出现在商店和",
+                    "秘术包中",
+                },
+            },
+            v_cry_double_vision = {
+                name = "双重视觉",
+                text = {
+                    "{C:dark_edition}双面{} 牌出现",
+                    "{C:attention}4X{} 更频繁",
+                },
+            },
+            v_cry_fabric = {
+                name = "万能织物",
+                text = {
+                    "{C:dark_edition}+#1#{} 小丑槽",
+                },
+            },
+            v_cry_massproduct = {
+                name = "量产",
+                text = {
+                    "商店中的所有牌和包",
+                    "费用为 {C:attention}$1{}",
+                },
+            },
+            v_cry_moneybean = {
+                name = "金钱豆茎",
+                text = {
+                    "提高每轮获得的",
+                    "利息上限至 {C:money}$#1#{}",
+                },
+            },
+            v_cry_overstock_multi = {
+                name = "多重库存",
+                text = {
+                    "{C:attention}+#1#{} 卡槽和",
+                    "{C:attention}+#1#{} 补充包槽",
+                    "在商店中可用",
+                },
+            },
+            v_cry_pacclimator = {
+                name = "星球适应器",
+                text = {
+                    "{C:planet}星球{} 牌出现",
+                    "{C:attention}X#1#{} 更频繁",
+                    "在商店中",
+                    "所有未来的 {C:planet}星球{}",
+                    "牌是 {C:green}免费{}",
+                },
+            },
+            v_cry_pairamount_plus = {
+                name = "对额外加成",
+                text = {
+                    "{C:attention}重新触发{} 所有 M 小丑",
+                    "对于每对包含在出牌中",
+                    "{C:attention}触发{} 一次",
+                },
+            },
+            v_cry_pairing = {
+                name = "配对",
+                text = {
+                    "{C:attention}重新触发{} 所有 M 小丑",
+                    "如果出牌是 {C:attention}一对",
+                },
+            },
+            v_cry_quantum_computing = {
+                name = "量子计算",
+                text = {
+                    "{C:cry_code}代码{} 牌可以生成",
+                    "带有 {C:dark_edition}负片{} 版本",
+                },
+            },
+            v_cry_repair_man = {
+                name = "修理工",
+                text = {
+                    "{C:attention}重新触发{} 所有 M 小丑",
+                    "如果出牌包含 {C:attention}一对",
+                },
+            },
+            v_cry_rerollexchange = {
+                name = "重掷交换",
+                text = {
+                    "所有重掷",
+                    "费用 {C:attention}$2{}",
+                },
+            },
+            v_cry_satellite_uplink = {
+                name = "卫星链接",
+                text = {
+                    "{C:cry_code}代码{} 牌可能",
+                    "出现在任何",
+                    "{C:attention}天体包{}",
+                },
+            },
+            v_cry_scope = {
+                name = "银河望远镜",
+                text = {
+                    "为出牌创建 {C:planet}星球",
+                    "{C:attention}牌型{}",
+                    "{C:inactive}(必须有空间){}",
+                },
+            },
+            v_cry_tacclimator = {
+                name = "塔罗适应器",
+                text = {
+                    "{C:tarot}塔罗{} 牌出现",
+                    "{C:attention}X#1#{} 更频繁",
+                    "在商店中",
+                    "所有未来的 {C:tarot}塔罗{}",
+                    "牌是 {C:green}免费{}",
+                },
+            },
+            v_cry_tag_printer = {
+                name = "标签打印机",
+                text = {
+                    "双倍标签变成",
+                    "{C:attention}四倍标签{}，并且",
+                    "是 {C:attention}3X{} 常见",
+                },
+            },
+            v_cry_threers = {
+                name = "三个R",
+                text = {
+                    "永久",
+                    "每回合获得 {C:red}+#1#{} 弃牌",
                 },
             },
         },
@@ -1691,6 +2374,50 @@ return {
                     "{C:inactive}(必须有空间)",
                 },
             },
+            p_cry_empowered = {
+                name = "幽灵包 [强化标签]",
+                text = {
+                    "选择 {C:attention}#1#{} 张，最多",
+                    "{C:attention}#2#{C:spectral} 幽灵{}牌",
+                    "{s:0.8,C:inactive}(由强化标签生成)",
+                },
+            },
+            p_cry_meme_1 = {
+                {
+                    name = "表情包",
+                    text = {
+                        "选择 {C:attention}#1#{} 张，最多",
+                        "可达 {C:attention}#2# 张表情小丑{}",
+                    },
+                },
+            },
+            p_cry_meme_two = {
+                {
+                    name = "表情包",
+                    text = {
+                        "选择 {C:attention}#1#{} 张，最多",
+                        "可达 {C:attention}#2# 张表情小丑{}",
+                    },
+                },
+            },
+            p_cry_meme_tbree = {
+                {
+                    name = "表情包",
+                    text = {
+                        "选择 {C:attention}#1#{} 张，最多",
+                        "可达 {C:attention}#2# 张表情小丑{}",
+                    },
+                },
+            },
+            cry_azure_seal = {
+                name = "天蓝封印",
+                text = {
+                    "创建 {C:attention}#1#{} 张 {C:dark_edition}负片{}",
+                    "{C:planet}星球{}来打出",
+                    "{C:attention}扑克手牌{}，然后",
+                    "{C:red}摧毁{}这张牌",
+                },
+            },
         },
     },
     misc = {
@@ -1826,7 +2553,18 @@ return {
             cry_green_seal = "绿色封蜡",
         },
         v_dictionary = {
-            a_xchips = {"X#1# 洋芋片"},
+            a_xchips = {"X#1# 筹码"},
+            a_powmult = {"^#1# 倍率"},
+            a_powchips = {"^#1# 筹码"},
+            a_powmultchips = {"^#1# 筹码+筹码"},
+            a_round = {"+#1# 回合"},
+
+            cry_sticker_name = {"#1# 贴纸"},
+            cry_sticker_desc = {
+                "使用这张小丑在",
+                "#2#Stake#3# 难度",
+                "赢得 #2##1#",
+            },
         },
         v_text = {
             ch_c_cry_all_perishable = {"所有小丑都是 {C:eternal}易腐{}"},
