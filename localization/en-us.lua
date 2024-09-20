@@ -1,5 +1,5 @@
 --Work in progress!
---Completed: Cryptid.lua, lovely patches, Achievements-M.lua
+--Completed: Everything except MiscJokers.lua
 --I couldn't get Meme Packs to work without crashing
 return {
     descriptions = {
@@ -1105,13 +1105,175 @@ return {
                 },
             },
         },
+        Planet = {
+            c_cry_Klubi = {
+                name = "Klubi",
+                text = {
+                    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+                    "Level up",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "and {C:attention}#3#{}",
+                },
+            },
+            c_cry_Lapio = {
+                name = "Lapio",
+                text = {
+                    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+                    "Level up",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "and {C:attention}#3#{}",
+                },
+            },
+            c_cry_nstar = {
+                name = "Neutron Star",
+                text = {
+                    "Upgrade a random",
+                    "poker hand by",
+                    "{C:attention}1{} level for each",
+                    "{C:attention}Neutron Star{} used",
+                    "in this run",
+                    "{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
+                },
+            },
+            c_cry_planetlua = {
+                name = "Planet.lua",
+                text = {
+                    "{C:green}#1# in #2#{} chance to",
+                    "upgrade every",
+                    "{C:legendary,E:1}poker hand{}",
+                    "by {C:attention}1{} level",
+                },
+            },
+            c_cry_Sydan = {
+                name = "Sydan",
+                text = {
+                    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+                    "Level up",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "and {C:attention}#3#{}",
+                },
+            },
+            c_cry_Timantti = {
+                name = "Timantti",
+                text = {
+                    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+                    "Level up",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "and {C:attention}#3#{}",
+                },
+            },
+        },
+        Sleeve = {
+            sleeve_cry_ccd_sleeve = {
+                name = "CCD Sleeve",
+                text = {
+                    "Every card is also",
+                    "a {C:attention}random{} consumable",
+                },
+            },
+            sleeve_cry_conveyor_sleeve = {
+                name = "Conveyor Sleeve",
+                text = {
+                    "Jokers may {C:attention}not{} be moved",
+                    "At start of round,",
+                    "{C:attention}duplicate{} rightmost Joker",
+                    "and {C:attention}destroy{} leftmost Joker",
+                },
+            },
+            sleeve_cry_critical_sleeve = {
+                name = "Critical Sleeve",
+                text = {
+                    "After each hand played,",
+                    "{C:green}1 in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+                    "{C:green}1 in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+                },
+            },
+            sleeve_cry_encoded_sleeve = {
+                name = "Encoded Sleeve",
+                text = {
+                    "Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+                    "and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+                    "Only {C:cry_code}Code Cards{} appear in shop",
+                },
+            },
+            sleeve_cry_equilibrium_sleeve = {
+                name = "Balanced Sleeve",
+                text = {
+                    "All cards have the",
+                    "{C:attention}same chance{} of",
+                    "appearing in shops,",
+                    "start run with",
+                    "{C:attention,T:v_overstock_plus}+2 Shop Slots",
+                },
+            },
+            sleeve_cry_infinite_sleeve = {
+                name = "Unlimited Sleeve",
+                text = {
+                    "You can select {C:attention}any",
+                    "number of cards",
+                    --someone do the hand size thing for me
+                },
+            },
+            sleeve_cry_misprint_sleeve = {
+                name = "Misprinted Sleeve",
+                text = {
+                    "Values of cards",
+                    "are {C:attention}randomized",
+                },
+            },
+            sleeve_cry_redeemed_sleeve = {
+                name = "Redeemed Sleeve",
+                text = {
+                    "When a {C:attention}Voucher{} is purchased,",
+                    "gain its {C:attention}extra tiers",
+                },
+            },
+            sleeve_cry_wormhole_sleeve = {
+                name = "Wormhole Sleeve",
+                text = {
+                    "Start with an {C:cry_exotic}Exotic{C:attention} Joker",
+                    "Jokers are {C:attention}20X{} more",
+                    "likely to be {C:dark_edition}Negative",
+                    "{C:attention}-2{} Joker slots",
+                },
+            },
+        },
         Spectral = {
+            c_cry_analog = {
+                name = "Analog",
+                text = {
+                    "Create {C:attention}#1#{} copies of a",
+                    "random {C:attention}Joker{}, destroy",
+                    "all other Jokers, {C:attention}+#2#{} Ante",
+                },
+            },
             c_cry_gateway = {
                 name = "Gateway",
                 text = {
                     "Create a random",
                     "{C:cry_exotic,E:1}Exotic{C:attention} Joker{}, destroy",
                     "all other Jokers",
+                },
+            },
+            c_cry_hammerspace = {
+                name = "Hammerspace",
+                text = {
+                    "Apply random {C:attention}consumables{}",
+                    "as if they were {C:dark_edition}Enhancements{}",
+                    "to cards held in hand",
+                },
+            },
+            c_cry_lock = {
+                name = "Lock",
+                text = {
+                    "Remove {C:red}all{} stickers",
+                    "from {C:red}all{} Jokers,",
+                    "then apply {C:purple,E:1}Eternal{}",
+                    "to a random {C:attention}Joker{}",
                 },
             },
             c_cry_pointer = {
@@ -1122,6 +1284,15 @@ return {
                     "{C:inactive,s:0.8}(Exotic Jokers #1#excluded)",
                 },
             },
+            c_cry_replica = {
+                name = "Replica",
+                text = {
+                    "Convert all cards",
+                    "held in hand",
+                    "to a {C:attention}random{}",
+                    "card held in hand",
+                },
+            },
             c_cry_source = {
                 name = "Source",
                 text = {
@@ -1130,12 +1301,231 @@ return {
                     "card in your hand",
                 },
             },
+            c_cry_summoning = {
+                name = "Summoning",
+                text = {
+                    "Create a random",
+                    "{C:cry_epic}Epic{} {C:joker}Joker{}, destroy",
+                    "one random {C:joker}Joker{}",
+                },
+            },
+            c_cry_trade = {
+                name = "Trade",
+                text = {
+                    "{C:attention}Lose{} a random Voucher,",
+                    "gain {C:attention}2{} random Vouchers",
+                },
+            },
             c_cry_typhoon = {
                 name = "Typhoon",
                 text = {
                     "Add an {C:cry_azure}Azure Seal{}",
                     "to {C:attention}#1#{} selected",
                     "card in your hand",
+                },
+            },
+            c_cry_vacuum = {
+                name = "Vacuum",
+                text = {
+                    "Removes {C:red}all {C:green}modifications{}",
+                    "from {C:red}all{} cards held in hand,",
+                    "Earn {C:money}$#1#{} per {C:green}modification{} removed",
+                    "{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)",
+                },
+            },
+            c_cry_white_hole = {
+                name = "White Hole",
+                text = {
+                    "{C:attention}Remove{} all hand levels,",
+                    "upgrade {C:legendary,E:1}most played{} poker hand",
+                    "by {C:attention}3{} for each removed level",
+                },
+            },
+        },
+        Stake = {
+            stake_cry_pink = {
+                name = "Pink Stake",
+                colour = "Pink", --this is used for auto-generated sticker localization
+                text = {
+                    "Required score scales",
+                    "faster for each {C:attention}Ante",
+                },
+            },
+            stake_cry_brown = {
+                name = "Brown Stake",
+                colour = "Brown",
+                text = {
+                    "All {C:attention}stickers{} are compatible",
+                    "with each other",
+                },
+            },
+            stake_cry_yellow = {
+                name = "Yellow Stake",
+                colour = "Yellow",
+                text = {
+                    "{C:attention}Stickers{} can appear on",
+                    "all purchasable items",
+                },
+            },
+            stake_cry_jade = {
+                name = "Jade Stake",
+                colour = "Jade",
+                text = {
+                    "Cards can be drawn {C:attention}face down{}",
+                },
+            },
+            stake_cry_cyan = {
+                name = "Cyan Stake",
+                colour = "Cyan",
+                text = {
+                    "{C:green}Uncommon{} and {C:red}Rare{} Jokers are",
+                    "less likely to appear",
+                },
+            },
+            stake_cry_gray = {
+                name = "Gray Stake",
+                colour = "Gray",
+                text = {
+                    "Rerolls increase by {C:attention}$2{} each",
+                },
+            },
+            stake_cry_crimson = {
+                name = "Crimson Stake",
+                colour = "Crimson",
+                text = {
+                    "Vouchers restock on {C:attention}even{} Antes",
+                },
+            },
+            stake_cry_diamond = {
+                name = "Diamond Stake",
+                colour = "Diamond",
+                text = {
+                    "Must beat Ante {C:attention}10{} to win",
+                },
+            },
+            stake_cry_amber = {
+                name = "Amber Stake",
+                colour = "Amber",
+                text = {
+                    "{C:attention}-1{} Booster Pack slot",
+                },
+            },
+            stake_cry_bronze = {
+                name = "Bronze Stake",
+                colour = "Bronze",
+                text = {
+                    "Vouchers are {C:attention}50%{} more expensive",
+                },
+            },
+            stake_cry_quartz = {
+                name = "Quartz Stake",
+                colour = "Quartz",
+                text = {
+                    "Jokers can be {C:attention}Pinned{}",
+                    "{s:0.8,C:inactive}(Stays pinned to the leftmost position){}",
+                },
+            },
+            stake_cry_ruby = {
+                name = "Ruby Stake",
+                colour = "Ruby",
+                text = {
+                    "{C:attention}Big{} Blinds can become",
+                    "{C:attention}Boss{} Blinds",
+                },
+            },
+            stake_cry_glass = {
+                name = "Glass Stake",
+                colour = "Glass",
+                text = {
+                    "Cards can {C:attention}shatter{} when scored",
+                },
+            },
+            stake_cry_sapphire = {
+                name = "Sapphire Stake",
+                colour = "Sapphire",
+                text = {
+                    "Lose {C:attention}25%{} of current money",
+                    "at end of Ante",
+                    "{s:0.8,C:inactive}(Up to $10){}",
+                },
+            },
+            stake_cry_emerald = {
+                name = "Emerald Stake",
+                colour = "Emerald",
+                text = {
+                    "Cards, packs, and vouchers",
+                    "can be {C:attention}face down{}",
+                    "{s:0.8,C:inactive}(Unable to be viewed until purchased){}",
+                },
+            },
+            stake_cry_platinum = {
+                name = "Platinum Stake",
+                colour = "Platinum",
+                text = {
+                    "Small Blinds are {C:attention}removed{}",
+                },
+            },
+            stake_cry_twilight = {
+                name = "Twilight Stake",
+                colour = "Twilight",
+                text = {
+                    "Cards can be {C:attention}Banana{}",
+                    "{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
+                },
+            },
+            stake_cry_verdant = {
+                name = "Verdant Stake",
+                colour = "Verdant",
+                text = {
+                    "Required score scales",
+                    "faster for each {C:attention}Ante",
+                },
+            },
+            stake_cry_ember = {
+                name = "Ember Stake",
+                colour = "Ember",
+                text = {
+                    "All items give no money when sold",
+                },
+            },
+            stake_cry_dawn = {
+                name = "Dawn Stake",
+                colour = "Dawn",
+                text = {
+                    "Tarots and Spectrals target {C:attention}1",
+                    "fewer card",
+                    "{s:0.8,C:inactive}(Minimum of 1){}",
+                },
+            },
+            stake_cry_horizon = {
+                name = "Horizon Stake",
+                colour = "Horizon",
+                text = {
+                    "When blind selected, add a",
+                    "{C:attention}random card{} to deck",
+                },
+            },
+            stake_cry_blossom = {
+                name = "Blossom Stake",
+                colour = "Blossom",
+                text = {
+                    "{C:attention}Final{} Boss Blinds can appear",
+                    "in {C:attention}any{} Ante",
+                },
+            },
+            stake_cry_azure = {
+                name = "Azure Stake",
+                colour = "Azure",
+                text = {
+                    "Values on Jokers are reduced",
+                    "by {C:attention}20%{}",
+                },
+            },
+            stake_cry_ascendant = {
+                name = "Ascendant Stake",
+                colour = "Ascendant",
+                text = {
+                    "{C:attention}-1{} Shop slot",
                 },
             },
         },
@@ -1189,6 +1579,22 @@ return {
                     "{s:0.8,C:inactive}Currently: {s:0.8,C:attention}#2#",
                 },
             },
+            tag_cry_quadruple = {
+                name = "Quadruple Tag",
+                text = {
+                    "Gives {C:attention}#1#{} copies of the",
+                    "next selected {C:attention}Tag",
+                    "{s:0.8,C:inactive}Copying Tags excluded",
+                },
+            },
+            tag_cry_quintuple = {
+                name = "Quintuple Tag",
+                text = {
+                    "Gives {C:attention}#1#{} copies of the",
+                    "next selected {C:attention}Tag",
+                    "{s:0.8,C:inactive}Copying Tags excluded",
+                },
+            },
             tag_cry_rework = {
                 name = "Rework Tag",
                 text = {
@@ -1201,6 +1607,14 @@ return {
                 text = {
                     "Shop has a",
                     "{C:attention}Brainstorm",
+                },
+            },
+            tag_cry_triple = {
+                name = "Triple Tag",
+                text = {
+                    "Gives {C:attention}#1#{} copies of the",
+                    "next selected {C:attention}Tag",
+                    "{s:0.8,C:inactive}Copying Tags excluded",
                 },
             },
         },
@@ -1234,6 +1648,202 @@ return {
                     "Creates {C:attention}1{}",
                     "random {C:attention}consumable{}",
                     "{C:inactive}(Must have room){}",
+                },
+            },
+        },
+        Voucher = {
+            v_cry_asteroglyph = {
+                name = "Asteroglyph",
+                text = {
+                    "Set Ante to {C:attention}#1#{}",
+                },
+            },
+            v_cry_blankcanvas = {
+                name = "Blank Canvas",
+                text = {
+                    "{C:attention}+#1#{} hand size",
+                },
+            },
+            v_cry_clone_machine = {
+                name = "Clone Machine",
+                text = {
+                    "Double Tags become",
+                    "{C:attention}Quintuple Tags{} and",
+                    "are {C:attention}4X{} as common",
+                },
+            },
+            v_cry_command_prompt = {
+                name = "Command Prompt",
+                text = {
+                    "{C:cry_code}Code{} cards",
+                    "can appear",
+                    "in the {C:attention}shop{}",
+                },
+            },
+            v_cry_copies = {
+                name = "Copies",
+                text = {
+                    "Double Tags become",
+                    "{C:attention}Triple Tags{} and are",
+                    "{C:attention}2X{} as common",
+                },
+            },
+            v_cry_curate = {
+                name = "Curate",
+                text = {
+                    "All cards",
+                    "appear with",
+                    "an {C:dark_edition}Edition{}",
+                },
+            },
+            v_cry_dexterity = {
+                name = "Dexterity",
+                text = {
+                    "Permanently",
+                    "gain {C:blue}+#1#{} hand(s)",
+                    "each round",
+                },
+            },
+            v_cry_double_down = {
+                name = "Double Down",
+                text = {
+                    "After every round,",
+                    "{X:dark_edition,C:white} X1.5 {} to all values",
+                    "on the back of",
+                    "{C:dark_edition}Double-Sided{} cards"
+                },
+            },
+            v_cry_double_slit = {
+                name = "Double Slit",
+                text = {
+                    "{C:attention}Meld{} can appear",
+                    "in the shop and",
+                    "Arcana Packs",
+                },
+            },
+            v_cry_double_vision = {
+                name = "Double Vision",
+                text = {
+                    "{C:dark_edition}Double-Sided{} cards appear",
+                    "{C:attention}4X{} more frequently",
+                },
+            },
+            v_cry_fabric = {
+                name = "Universal Fabric",
+                text = {
+                    "{C:dark_edition}+#1#{} Joker slot(s)",
+                },
+            },
+            v_cry_massproduct = {
+                name = "Mass Production",
+                text = {
+                    "All cards and packs",
+                    "in shop cost {C:attention}$1{}",
+                },
+            },
+            v_cry_moneybean = {
+                name = "Money Beanstalk",
+                text = {
+                    "Raise the cap on",
+                    "interest earned in",
+                    "each round to {C:money}$#1#{}",
+                },
+            },
+            v_cry_overstock_multi = {
+                name = "Multistock",
+                text = {
+                    "{C:attention}+#1#{} card slot(s) and",
+                    "{C:attention}+#1#{} booster pack slot(s)",
+                    "available in shop",
+                },
+            },
+            v_cry_pacclimator = {
+                name = "Planet Acclimator",
+                text = {
+                    "{C:planet}Planet{} cards appear",
+                    "{C:attention}X#1#{} more frequently",
+                    "in the shop",
+                    "All future {C:planet}Planet{}",
+                    "cards are {C:green}free{}",
+                },
+            },
+            v_cry_pairamount_plus = {
+                name = "Pairamount Plus",
+                text = {
+                    "{C:attention}Retrigger{} all M Jokers",
+                    "once for every Pair",
+                    "{C:attention}contained{} in played hand",
+                },
+            },
+            v_cry_pairing = {
+                name = "Pairing",
+                text = {
+                    "{C:attention}Retrigger{} all M Jokers",
+                    "if played hand is a {C:attention}Pair",
+                },
+            },
+            v_cry_quantum_computing = {
+                name = "Quantum Computing",
+                text = {
+                    "{C:cry_code}Code{} cards can spawn",
+                    "with {C:dark_edition}Negative{} edition",
+                },
+            },
+            v_cry_repair_man = {
+                name = "Repair Man",
+                text = {
+                    "{C:attention}Retrigger{} all M Jokers",
+                    "if played hand contains a {C:attention}Pair",
+                },
+            },
+            v_cry_rerollexchange = {
+                name = "Reroll Exchange",
+                text = {
+                    "All rerolls",
+                    "cost {C:attention}$2{}",
+                },
+            },
+            v_cry_satellite_uplink = {
+                name = "Satellite Uplink",
+                text = {
+                    "{C:cry_code}Code{} cards may",
+                    "appear in any of",
+                    "the {C:attention}Celestial Packs{}",
+                },
+            },
+            v_cry_scope = {
+                name = "Galactic Scope",
+                text = {
+                    "Create the {C:planet}Planet",
+                    "card for played",
+                    "{C:attention}poker hand{}",
+                    "{C:inactive}(Must have room){}",
+                },
+            },
+            v_cry_tacclimator = {
+                name = "Tarot Acclimator",
+                text = {
+                    "{C:tarot}Tarot{} cards appear",
+                    "{C:attention}X#1#{} more frequently",
+                    "in the shop",
+                    "All future {C:tarot}Tarot{}",
+                    "cards are {C:green}free{}",
+                },
+            },
+            v_cry_tag_printer = {
+                name = "Tag Printer",
+                text = {
+                    "Double Tags become",
+                    "{C:attention}Quadruple Tags{} and",
+                    "are {C:attention}3X{} as common",
+                },
+            },
+            v_cry_threers = {
+                name = "The 3 Rs",
+                text = {
+                    "Permanently",
+                    "gain {C:red}+#1#{} discard(s)",
+                    "each round",
                 },
             },
         },
@@ -1604,6 +2214,7 @@ return {
             cry_minus_round = "-1 Round",
             cry_plus_cryptid = "+1 Cryptid",
             cry_no_triggers = "No triggers left!",
+            cry_unredeemed = "Unredeemed...",
             cry_active = "Active",
             cry_inactive = "Inactive",
         },
@@ -1633,7 +2244,14 @@ return {
             a_powmult = {"^#1# Mult"},
             a_powchips = {"^#1# Chips"},
             a_powmultchips = {"^#1# Mult+Chips"},
-            a_round = {"+#1# Round"}
+            a_round = {"+#1# Round"},
+
+            cry_sticker_name = {"#1# Sticker"},
+            cry_sticker_desc = {
+                "Used this Joker",
+                "to win on #2##1#",
+                "#2#Stake#3# difficulty"
+            },
         },
         v_text = {
             ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"},

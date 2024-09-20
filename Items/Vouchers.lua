@@ -10,14 +10,6 @@ local copies = {
 	key = "copies",
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 1 },
-	loc_txt = {
-		name = "Copies",
-		text = {
-			"Double Tags become",
-			"{C:attention}Triple Tags{} and are",
-			"{C:attention}2X{} as common",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
@@ -29,14 +21,6 @@ local tag_printer = {
 	key = "tag_printer",
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 },
-	loc_txt = {
-		name = "Tag Printer",
-		text = {
-			"Double Tags become",
-			"{C:attention}Quadruple Tags{} and",
-			"are {C:attention}3X{} as common",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
@@ -49,14 +33,6 @@ local clone_machine = {
 	key = "clone_machine",
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 3 },
-	loc_txt = {
-		name = "Clone Machine",
-		text = {
-			"Double Tags become",
-			"{C:attention}Quintuple Tags{} and",
-			"are {C:attention}4X{} as common",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
@@ -69,14 +45,6 @@ local command_prompt = {
 	key = "command_prompt",
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 1 },
-	loc_txt = {
-		name = "Command Prompt",
-		text = {
-			"{C:cry_code}Code{} cards",
-			"can appear",
-			"in the {C:attention}shop{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
 	end,
@@ -94,14 +62,6 @@ local satellite_uplink = {
 	key = "satellite_uplink",
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 2 },
-	loc_txt = {
-		name = "Satellite Uplink",
-		text = {
-			"{C:cry_code}Code{} cards may",
-			"appear in any of",
-			"the {C:attention}Celestial Packs{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
 	end,
@@ -112,13 +72,6 @@ local quantum_computing = {
 	key = "quantum_computing",
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 3 },
-	loc_txt = {
-		name = "Quantum Computing",
-		text = {
-			"{C:cry_code}Code{} cards can spawn",
-			"with {C:dark_edition}Negative{} edition",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
 	end,
@@ -129,13 +82,6 @@ local pairing = {
 	key = "pairing",
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 0 },
-	loc_txt = {
-		name = "Pairing",
-		text = {
-			"{C:attention}Retrigger{} all M Jokers",
-			"if played hand is a {C:attention}Pair",
-		},
-	},
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -150,13 +96,6 @@ local repair_man = {
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 0 },
 	requires = { "v_cry_pairing" },
-	loc_txt = {
-		name = "Repair Man",
-		text = {
-			"{C:attention}Retrigger{} all M Jokers",
-			"if played hand contains a {C:attention}Pair",
-		},
-	},
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -171,14 +110,6 @@ local pairamount_plus = {
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 0 },
 	requires = { "v_cry_repair_man" },
-	loc_txt = {
-		name = "Pairamount Plus",
-		text = {
-			"{C:attention}Retrigger{} all M Jokers",
-			"once for every Pair",
-			"{C:attention}contained{} in played hand",
-		},
-	},
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -192,13 +123,6 @@ local double_vision = {
 	key = "double_vision",
 	atlas = "atlasvoucher",
 	pos = { x = 4, y = 3 },
-	loc_txt = {
-		name = "Double Vision",
-		text = {
-			"{C:dark_edition}Double-Sided{} cards appear",
-			"{C:attention}4X{} more frequently",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
@@ -216,14 +140,6 @@ local double_slit = {
 	atlas = "atlasvoucher",
 	pos = { x = 3, y = 4 },
 	requires = { "v_cry_double_vision" },
-	loc_txt = {
-		name = "Double Slit",
-		text = {
-			"{C:attention}Meld{} can appear",
-			"in the shop and",
-			"Arcana Packs",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_meld
 	end,
@@ -241,15 +157,6 @@ local double_down = {
 	atlas = "atlasvoucher",
 	pos = { x = 4, y = 4 },
 	requires = { "v_cry_double_slit" },
-	loc_txt = {
-		name = "Double Down",
-		text = {
-			"After every round,",
-			"{X:dark_edition,C:white} X1.5 {} to all values",
-			"on the back of",
-			"{C:dark_edition}Double-Sided{} cards"
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
@@ -268,14 +175,6 @@ local overstock_multi = {
 	atlas = "atlasvoucher",
 	pos = { x = 4, y = 1 },
 	requires = { "v_overstock_plus" },
-	loc_txt = {
-		name = "Multistock",
-		text = {
-			"{C:attention}+#1#{} card slot(s) and",
-			"{C:attention}+#1#{} booster pack slot(s)",
-			"available in shop",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
@@ -299,13 +198,6 @@ local massproduct = {
 	atlas = "atlasvoucher",
 	pos = { x = 6, y = 4 },
 	requires = { "v_liquidation" },
-	loc_txt = {
-		name = "Mass Production",
-		text = {
-			"All cards and packs",
-			"in shop cost {C:attention}$1{}",
-		},
-	},
 	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -326,14 +218,6 @@ local curate = {
 	atlas = "atlasvoucher",
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
-	loc_txt = {
-		name = "Curate",
-		text = {
-			"All cards",
-			"appear with",
-			"an {C:dark_edition}Edition{}",
-		},
-	},
 }
 local rerollexchange = {
 	object_type = "Voucher",
@@ -341,13 +225,6 @@ local rerollexchange = {
 	atlas = "atlasvoucher",
 	pos = { x = 6, y = 2 },
 	requires = { "v_reroll_glut" },
-	loc_txt = {
-		name = "Reroll Exchange",
-		text = {
-			"All rerolls",
-			"cost {C:attention}$2{}",
-		},
-	},
 	redeem = function(self)
 		--most of the code for this (one line) is in cryptid.lua, check out the reroll function there
 		G.E_MANAGER:add_event(Event({
@@ -366,15 +243,6 @@ local scope = {
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 0 },
 	requires = { "v_observatory" },
-	loc_txt = {
-		name = "Galactic Scope",
-		text = {
-			"Create the {C:planet}Planet",
-			"card for played",
-			"{C:attention}poker hand{}",
-			"{C:inactive}(Must have room){}",
-		},
-	},
 }
 local dexterity = {
 	object_type = "Voucher",
@@ -383,14 +251,6 @@ local dexterity = {
 	atlas = "atlasvoucher",
 	pos = { x = 6, y = 3 },
 	requires = { "v_nacho_tong" },
-	loc_txt = {
-		name = "Dexterity",
-		text = {
-			"Permanently",
-			"gain {C:blue}+#1#{} hand(s)",
-			"each round",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
@@ -411,14 +271,6 @@ local threers = {
 	atlas = "atlasvoucher",
 	pos = { x = 5, y = 0 },
 	requires = { "v_recyclomancy" },
-	loc_txt = {
-		name = "The 3 Rs",
-		text = {
-			"Permanently",
-			"gain {C:red}+#1#{} discard(s)",
-			"each round",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
@@ -439,16 +291,6 @@ local tacclimator = {
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 4 },
 	requires = { "v_tarot_tycoon" },
-	loc_txt = {
-		name = "Tarot Acclimator",
-		text = {
-			"{C:tarot}Tarot{} cards appear",
-			"{C:attention}X#1#{} more frequently",
-			"in the shop",
-			"All future {C:tarot}Tarot{}",
-			"cards are {C:green}free{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.extra_disp } }
 	end,
@@ -468,16 +310,6 @@ local pacclimator = {
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 4 },
 	requires = { "v_planet_tycoon" },
-	loc_txt = {
-		name = "Planet Acclimator",
-		text = {
-			"{C:planet}Planet{} cards appear",
-			"{C:attention}X#1#{} more frequently",
-			"in the shop",
-			"All future {C:planet}Planet{}",
-			"cards are {C:green}free{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.extra_disp } }
 	end,
@@ -497,14 +329,6 @@ local moneybean = {
 	atlas = "atlasvoucher",
 	pos = { x = 5, y = 1 },
 	requires = { "v_money_tree" },
-	loc_txt = {
-		name = "Money Beanstalk",
-		text = {
-			"Raise the cap on",
-			"interest earned in",
-			"each round to {C:money}$#1#{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.extra / 5 } }
 	end,
@@ -524,12 +348,6 @@ local fabric = {
 	atlas = "atlasvoucher",
 	pos = { x = 6, y = 0 },
 	requires = { "v_antimatter" },
-	loc_txt = {
-		name = "Universal Fabric",
-		text = {
-			"{C:dark_edition}+#1#{} Joker slot(s)",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
@@ -561,12 +379,6 @@ local asteroglyph = {
 	atlas = "atlasvoucher",
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
-	loc_txt = {
-		name = "Asteroglyph",
-		text = {
-			"Set Ante to {C:attention}#1#{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { asteroglyph_ante() } }
 	end,
@@ -592,12 +404,6 @@ local blankcanvas = {
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 4 },
 	requires = { "v_palette" },
-	loc_txt = {
-		name = "Blank Canvas",
-		text = {
-			"{C:attention}+#1#{} hand size",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
@@ -611,14 +417,6 @@ local triple = { --Copies voucher triple tag
 	pos = { x = 0, y = 1 },
 	config = { type = "tag_add", num = 2 },
 	key = "triple",
-	loc_txt = {
-		name = "Triple Tag",
-		text = {
-			"Gives {C:attention}#1#{} copies of the",
-			"next selected {C:attention}Tag",
-			"{s:0.8,C:inactive}Copying Tags excluded",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
@@ -658,14 +456,6 @@ local quadruple = { --Tag printer voucher quadruple tag
 	pos = { x = 1, y = 1 },
 	config = { type = "tag_add", num = 3 },
 	key = "quadruple",
-	loc_txt = {
-		name = "Quadruple Tag",
-		text = {
-			"Gives {C:attention}#1#{} copies of the",
-			"next selected {C:attention}Tag",
-			"{s:0.8,C:inactive}Copying Tags excluded",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
@@ -705,14 +495,6 @@ local quintuple = { --Clone machine voucher quintuple tag
 	pos = { x = 2, y = 1 },
 	config = { type = "tag_add", num = 4 },
 	key = "quintuple",
-	loc_txt = {
-		name = "Quintuple Tag",
-		text = {
-			"Gives {C:attention}#1#{} copies of the",
-			"next selected {C:attention}Tag",
-			"{s:0.8,C:inactive}Copying Tags excluded",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
