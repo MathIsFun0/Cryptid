@@ -107,10 +107,12 @@
 --Python
 --Monster
 --Non-Verisimile
---
---
---
+--Gemini
+--Nostalgic Invisible Joker
+--Facile
 if JokerDisplay then
+
+	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page1 = {}
@@ -1758,6 +1760,47 @@ if JokerDisplay then
 				},
 			},
 		},
+	}
+	JokerDisplay.Definitions["j_cry_gemino"] = {
+		text = {
+			{ text = "X2" },
+		},
+		text_config = { colour = G.C.GREEN },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_oldinvisible"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+			{ text = "/4)" },
+		}
+	}
+	JokerDisplay.Definitions["j_cry_facile"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "Emult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		calc_function = function(card)
+			local count = 0
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
+				for _, scoring_card in pairs(scoring_hand) do
+					count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+				end
+			end
+			card.joker_display_values.Emult = (count <= card.ability.extra.check and card.ability.extra.Emult or 1)
+		end,
 	}
 	--end of Jokerdisplays
 end

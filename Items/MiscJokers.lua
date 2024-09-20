@@ -4784,7 +4784,8 @@ local oldinvisible = {
 		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
-		if context.selling_card and not context.blueprint and not context.retrigger_joker then
+		if context.selling_card and context.card.ability.set == "Joker"
+		and not context.blueprint and not context.retrigger_joker then
 			if card.ability.extra == 3 then
 				card.ability.extra = 0
 				local eligibleJokers = {}
