@@ -191,7 +191,7 @@ local double_vision = {
 	object_type = "Voucher",
 	key = "double_vision",
 	atlas = "atlasvoucher",
-	pos = { x = 0, y = 0 },
+	pos = { x = 4, y = 3 },
 	loc_txt = {
 		name = "Double Vision",
 		text = {
@@ -214,7 +214,7 @@ local double_slit = {
 	object_type = "Voucher",
 	key = "double_slit",
 	atlas = "atlasvoucher",
-	pos = { x = 1, y = 0 },
+	pos = { x = 3, y = 4 },
 	requires = { "v_cry_double_vision" },
 	loc_txt = {
 		name = "Double Slit",
@@ -239,7 +239,7 @@ local double_down = {
 	object_type = "Voucher",
 	key = "double_down",
 	atlas = "atlasvoucher",
-	pos = { x = 2, y = 0 },
+	pos = { x = 4, y = 4 },
 	requires = { "v_cry_double_slit" },
 	loc_txt = {
 		name = "Double Down",

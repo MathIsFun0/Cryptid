@@ -1521,7 +1521,7 @@ local meld = {
 	set = "Tarot",
 	name = "cry-Meld",
 	key = "meld",
-	pos = { x = 1, y = 2 },
+	pos = { x = 4, y = 4 },
 	config = { extra = 4 },
 	loc_txt = {
 		name = "Meld",
@@ -1532,7 +1532,7 @@ local meld = {
 		},
 	},
 	cost = 4,
-	atlas = "placeholders",
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		if #G.jokers.highlighted
 				+ #G.hand.highlighted
