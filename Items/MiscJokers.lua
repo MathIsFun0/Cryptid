@@ -4759,7 +4759,7 @@ local flipside = {
 			end
 		end
 	end,
-	
+
 }
 local oldinvisible = {
 	object_type = "Joker",
@@ -4826,6 +4826,33 @@ local oldinvisible = {
 		end
 	end,
 }
+
+local fractal = {
+	object_type = "Joker",
+	name = "cry-FractalFingers",
+	key = "fractal",
+	pos = { x = 6, y = 4 },
+	config = { extra = 2 },
+	loc_txt = {
+		name = "Fractal Fingers",
+		text = {
+			"{C:attention}+#1#{} card selection limit",
+		},
+	},
+	rarity = 3,
+	cost = 7,
+	atlas = "atlasthree",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
+	end,
+}
+
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -4896,7 +4923,8 @@ local miscitems =  {
 	membershipcard,
 	kscope,
 	cryptidmoment,
-	oldinvisible
+	oldinvisible,
+	fractal
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

@@ -1846,6 +1846,31 @@ return {
                     "each round",
                 },
             },
+            v_cry_stickyhand = {
+                name = "Sticky Hand",
+                text = {
+                    "{C:attention}+#1#{} card",
+                    "selection limit",
+                },
+            },
+            v_cry_grapplinghook = {
+                name = "Grappling Hook",
+                text = {
+                    "{C:attention}+#1#{} card",
+                    "selection limit",
+                    "{C:inactive,s:0.7}NOTE: Will have extra{}",
+                    "{C:inactive,s:0.7}functionality later{}",
+                },
+            },
+            v_cry_hyperspacetether = {
+                name = "Hyperspace Tether",
+                text = {
+                    "{C:attention}+#1#{} card",
+                    "selection limit",
+                    "{C:inactive,s:0.7}NOTE: Will have extra{}",
+                    "{C:inactive,s:0.7}functionality later{}",
+                },
+            },
         },
         Other = {
             banana = {

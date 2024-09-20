@@ -411,6 +411,55 @@ local blankcanvas = {
 		G.hand:change_size(math.max(1, math.floor(self.config.extra)))
 	end,
 }
+
+local stickyhand = {
+	object_type = "Voucher",
+	key = "stickyhand",
+	config = { extra = 1 },
+	atlas = "atlasvoucher",
+	pos = { x = 0, y = 5 },
+	loc_vars = function(self, info_queue)
+		return { vars = { math.max(1, math.floor(self.config.extra)) } }
+	end,
+	redeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ math.max(1, math.floor(self.config.extra))
+	end,
+}
+
+local grapplinghook = {
+	object_type = "Voucher",
+	key = "grapplinghook",
+	config = { extra = 1 },
+	atlas = "atlasvoucher",
+	pos = { x = 1, y = 5 },
+	requires = { "v_cry_stickyhand" },
+	loc_vars = function(self, info_queue)
+		return { vars = { math.max(1, math.floor(self.config.extra)) } }
+	end,
+	redeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ math.max(1, math.floor(self.config.extra))
+	end,
+}
+
+local hyperspacetether = {
+	object_type = "Voucher",
+	key = "hyperspacetether",
+	config = { extra = 2 },
+	atlas = "atlasvoucher",
+	pos = { x = 2, y = 5 },
+	requires = { "v_cry_grapplinghook" },
+	loc_vars = function(self, info_queue)
+		return { vars = { math.max(1, math.floor(self.config.extra)) } }
+	end,
+	redeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ math.max(1, math.floor(self.config.extra))
+	end,
+}
+
+
 local triple = { --Copies voucher triple tag
 	object_type = "Tag",
 	atlas = "tag_cry",
@@ -566,6 +615,9 @@ local voucheritems = {
 	asteroglyph,
 	blankcanvas,
 	clone_machine,
+	stickyhand,
+	grapplinghook,
+	hyperspacetether
 }
 if Cryptid.enabled["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
 	voucheritems[#voucheritems + 1] = command_prompt
