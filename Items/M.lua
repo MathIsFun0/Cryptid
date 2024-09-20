@@ -66,15 +66,6 @@ local jollysus = {
 		end
 	end,
 }
-if JokerDisplay then
-	jollysus.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "active" },
-			{ text = ")" },
-		},
-	}
-end
 --TODO
 --Fix Incompatiblity with Brainstorm (the joker not the mod)
 --Make Blueprints create copies when this is sold to the right of Blueprint
@@ -147,15 +138,6 @@ local kidnap = {
 		end
 	end,
 }
-if JokerDisplay then
-	kidnap.joker_display_definition = {
-		text = {
-			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
-		},
-		text_config = { colour = G.C.GOLD },
-	}
-end
 local bubblem = {
 	object_type = "Joker",
 	name = "cry-bubblem",
@@ -221,19 +203,6 @@ local bubblem = {
 		end
 	end,
 }
-if JokerDisplay then
-	bubblem.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		reminder_text_config = { scale = 0.35 },
-		calc_function = function(card)
-			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
-		end,
-	}
-end
 local foodm = {
 	object_type = "Joker",
 	name = "cry-foodm",
@@ -334,27 +303,6 @@ local foodm = {
 		end
 	end,
 }
-if JokerDisplay then
-	foodm.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" },
-		},
-		text_config = { colour = G.C.MULT },
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.rounds_remaining = localize({
-				type = "variable",
-				key = "loyalty_inactive",
-				vars = { card.ability.extra.rounds_remaining or 2 },
-			})
-		end,
-	}
-end
 local mstack = {
 	object_type = "Joker",
 	name = "cry-mstack",
@@ -421,26 +369,6 @@ local mstack = {
 		end
 	end,
 }
-if JokerDisplay then
-	mstack.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{
-				ref_table = "card.ability.extra",
-				ref_value = "retriggers",
-				colour = G.C.ORANGE,
-				retrigger_type = "mult",
-			},
-			{ text = ")" },
-		},
-		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
-			if held_in_hand then
-				return 0
-			end
-			return (joker_card.ability.extra.retriggers * JokerDisplay.calculate_joker_triggers(joker_card)) or 0
-		end,
-	}
-end
 local mneon = {
 	object_type = "Joker",
 	name = "cry-mneon",
@@ -486,21 +414,6 @@ local mneon = {
 		end
 	end,
 }
-if JokerDisplay then
-	mneon.joker_display_definition = {
-		text = {
-			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
-		},
-		text_config = { colour = G.C.GOLD },
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local notebook = {
 	object_type = "Joker",
 	name = "cry-notebook",
@@ -685,17 +598,6 @@ local bonk = {
 		card.ability.extra.xchips = math.floor(card.ability.extra.xchips + 0.5) --lua moment
 	end,
 }
-if JokerDisplay then
-	bonk.joker_display_definition = {
-		mod_function = function(card, mod_joker)
-			local chips_mod = mod_joker.ability.extra.chips
-			if card.ability.name == "Jolly Joker" or (card.edition and card.edition.key == "e_cry_m") then
-				chips_mod = chips_mod * mod_joker.ability.extra.xchips
-			end
-			return { chips = chips_mod * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
-		end,
-	}
-end
 local loopy = { --this may or may not need further balancing
 	object_type = "Joker",
 	name = "cry-loopy",
@@ -762,17 +664,6 @@ local loopy = { --this may or may not need further balancing
 		end
 	end,
 }
-if JokerDisplay then
-	loopy.joker_display_definition = {
-		text = {
-			{ text = "x" },
-			{ ref_table = "card.ability.extra", ref_value = "retrigger" },
-		},
-		retrigger_joker_function = function(card, retrigger_joker)
-			return retrigger_joker.ability.extra.retrigger or 0
-		end,
-	}
-end
 local scrabble = {
 	object_type = "Joker",
 	name = "cry-scrabble",
@@ -811,23 +702,6 @@ local scrabble = {
 		end
 	end,
 }
-if JokerDisplay then
-	scrabble.joker_display_definition = {
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
 local sacrifice = {
 	object_type = "Joker",
 	name = "cry-sacrifice",
@@ -881,15 +755,6 @@ local sacrifice = {
 		end
 	end,
 }
-if JokerDisplay then
-	sacrifice.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "text" },
-			{ text = ")" },
-		},
-	}
-end
 --TODO: Fix Brainstorm incompatibility (the joker not the mod)
 local reverse = {
 	object_type = "Joker",
@@ -961,19 +826,6 @@ local reverse = {
 		end
 	end,
 }
-if JokerDisplay then
-	reverse.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		reminder_text_config = { scale = 0.35 },
-		calc_function = function(card)
-			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
-		end,
-	}
-end
 local doodlem = {
 	object_type = "Joker",
 	name = "cry-doodlem",
@@ -1090,22 +942,6 @@ local virgo = {
 		end
 	end,
 }
-if JokerDisplay then
-	virgo.joker_display_definition = {
-		reminder_text = {
-			{ text = "(" },
-			{ text = "$", colour = G.C.GOLD },
-			{ ref_table = "card", ref_value = "sell_cost", colour = G.C.GOLD },
-			{ text = ") (" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		reminder_text_config = { scale = 0.35 },
-		calc_function = function(card)
-			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
-		end,
-	}
-end
 local smallestm = {
 	object_type = "Joker",
 	name = "cry-smallestm",
@@ -1160,29 +996,6 @@ local smallestm = {
 		end
 	end,
 }
-if JokerDisplay then
-	smallestm.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_chips", retrigger_type = "exp" },
-				},
-				border_colour = G.C.CHIPS,
-			},
-		},
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.x_chips = card.ability.extra.check and card.ability.extra.x_chips or 1
-			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
-		end,
-	}
-end
-
 local biggestm = {
 	object_type = "Joker",
 	name = "cry-biggestm",
@@ -1237,27 +1050,6 @@ local biggestm = {
 		end
 	end,
 }
-if JokerDisplay then
-	biggestm.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" },
-				},
-			},
-		},
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.x_mult = card.ability.extra.check and card.ability.extra.x_mult or 1
-			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
-		end,
-	}
-end
 local mprime = {
 	object_type = "Joker",
 	name = "cry-mprime",
@@ -1359,25 +1151,6 @@ local mprime = {
 		end
 	end,
 }
-if JokerDisplay then --needs to be tweaked later
-	mprime.joker_display_definition = {
-		--todo: show if active
-		mod_function = function(card, mod_joker)
-			if card.ability.name ~= "Jolly Joker" or (card.edition and card.edition.key ~= "e_cry_m") then
-				return {}
-			end
-			local e_mult = mod_joker.ability.extra.mult
-			local triggers = JokerDisplay.calculate_joker_triggers(mod_joker)
-			if triggers == 0 then
-				return {}
-			end
-			for i = 1, triggers - 1 do
-				e_mult = e_mult ^ mod_joker.ability.extra.mult
-			end
-			return { e_mult = e_mult }
-		end,
-	}
-end
 local macabre = {
 	object_type = "Joker",
 	name = "cry-macabre",
@@ -1482,26 +1255,11 @@ local megg = {
 		end
 	end,
 }
-if JokerDisplay then
-	megg.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.ability.extra", ref_value = "amount" },
-		},
-		text_config = { colour = G.C.ORANGE },
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local longboi = {
 	object_type = "Joker",
 	name = "cry-longboi",
 	key = "longboi",
-	pos = { x = 0, y = 5 },
+	pos = { x = 5, y = 4 },
 	config = { extra = 2 },
 	rarity = 1,
 	cost = 3,

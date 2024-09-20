@@ -18,4 +18,5 @@ return {
 	["Enhanced Decks"] = true,
 	["Blinds"] = true,
 	["HTTPS Module"] = false,
+	["JokerDisplay"] = true,
 }
