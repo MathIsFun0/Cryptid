@@ -4851,6 +4851,7 @@ local fractal = {
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
+		G.hand:unhighlight_all()
 	end,
 }
 
