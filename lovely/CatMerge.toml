@@ -28,7 +28,8 @@ tag_sprite.click = function(_self)
 			if other_cat.key == 'tag_cry_cat' then
 				if not self.ability.level then self.ability.level = 1 end
 				if not other_cat.ability.level then other_cat.ability.level = 1 end	-- setting ability just doesn't seem to be working... so you get this
-				if (self.ability.level == other_cat.ability.level) and (other_cat ~= self) then
+				if (self.ability.level == other_cat.ability.level) and (other_cat ~= self) and not cry_too_fast_kitty then
+					cry_too_fast_kitty = true
 					local perc = (other_cat.ability.level + 1)/10
 					if perc > 1 then perc = 1 end
 					G.E_MANAGER:add_event(Event({
@@ -82,6 +83,7 @@ tag_sprite.click = function(_self)
 						delay = 0.7,
 						func = (function()
 							self:remove()
+							cry_too_fast_kitty = nil
 							return true
 						end)
 					}))

@@ -6,15 +6,12 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0918b
+--- VERSION: 0.5.1~0920b
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
-if not Cryptid then
-	Cryptid = {}
-end
 --Cryptid.debug = true
 
 local mod_path = "" .. SMODS.current_mod.path
@@ -1300,10 +1297,6 @@ for _, file in ipairs(files) do
 							Cryptid.obj_buffer[item.object_type] = {}
 						end
 						Cryptid.obj_buffer[item.object_type][#Cryptid.obj_buffer[item.object_type] + 1] = item
-						-- JokerDisplay mod support
-						if JokerDisplay and item.joker_display_definition then
-							JokerDisplay.Definitions[item.key] = item.joker_display_definition
-						end
 					else
 						print("Error loading item " .. item.key .. " of unknown type " .. item.object_type)
 					end
@@ -2136,6 +2129,17 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
+	end
+	for i = 1, #Cryptid.obj_buffer.Stake do
+		local key = Cryptid.obj_buffer.Stake[i].key
+		local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
+		if color then
+			local sticker_key = key:sub(7).."_sticker"
+			G.localization.descriptions.Other[sticker_key] = {
+				name = localize{type='variable',key='cry_sticker_name',vars={color}},
+				text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+			}
+		end
 	end
 end
 

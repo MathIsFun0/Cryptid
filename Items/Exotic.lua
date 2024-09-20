@@ -90,35 +90,6 @@ local iterum = {
 		end
 	end,
 }
-if JokerDisplay then
-	iterum.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" },
-				},
-			},
-		},
-		calc_function = function(card)
-			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
-			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
-					count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
-				end
-			end
-			card.joker_display_values.x_mult = card.ability.extra.x_mult ^ count
-		end,
-		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
-			if held_in_hand then
-				return 0
-			end
-			return (joker_card.ability.extra.repetitions * JokerDisplay.calculate_joker_triggers(joker_card)) or 0
-		end,
-	}
-end
 local universum = {
 	object_type = "Joker",
 	name = "cry-Universum",
@@ -169,29 +140,6 @@ local exponentia = {
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
 }
-if JokerDisplay then
-	exponentia.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "^" },
-					{
-						ref_table = "card.ability.extra",
-						ref_value = "Emult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
-					},
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 local speculo = {
 	object_type = "Joker",
 	name = "cry-Speculo",
@@ -277,17 +225,6 @@ local redeo = {
 		end
 	end,
 }
-if JokerDisplay then
-	redeo.joker_display_definition = {
-		reminder_text = {
-			{ text = "($" },
-			{ ref_table = "card.ability.extra", ref_value = "money_remaining" },
-			{ text = "/$" },
-			{ ref_table = "card.ability.extra", ref_value = "money_req" },
-			{ text = ")" },
-		},
-	}
-end
 local tenebris = {
 	object_type = "Joker",
 	name = "cry-Tenebris",
@@ -311,21 +248,6 @@ local tenebris = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
 	end,
 }
-if JokerDisplay then
-	tenebris.joker_display_definition = {
-		text = {
-			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
-		},
-		text_config = { colour = G.C.GOLD },
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local effarcire = {
 	object_type = "Joker",
 	name = "cry-Effarcire",
@@ -401,15 +323,6 @@ local crustulum = {
 		calculate_reroll_cost(true)
 	end,
 }
-if JokerDisplay then
-	crustulum.joker_display_definition = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" },
-		},
-		text_config = { colour = G.C.CHIPS },
-	}
-end
 --todo: make the Emult always prime
 local primus = {
 	object_type = "Joker",
@@ -469,35 +382,6 @@ local primus = {
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
 }
-if JokerDisplay then
-	primus.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "^" },
-					{
-						ref_table = "card.ability.extra",
-						ref_value = "Emult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
-					},
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("Ace", "ranks") .. ",2,3,5,7)"
-		end,
-	}
-end
 local big_num_whitelist = {
 	j_ride_the_bus = true,
 	j_egg = true,
@@ -693,29 +577,6 @@ local stella_mortis = {
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
 }
-if JokerDisplay then
-	stella_mortis.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "^" },
-					{
-						ref_table = "card.ability.extra",
-						ref_value = "Emult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
-					},
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 local circulus_pistoris = {
 	object_type = "Joker",
 	name = "cry-Circulus Pistoris",
@@ -756,28 +617,6 @@ local circulus_pistoris = {
 		end
 	end,
 }
-if JokerDisplay then
-	circulus_pistoris.joker_display_definition = {
-		text = {
-			{ text = "^", colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "Echips", colour = G.C.CHIPS },
-			{ text = "^", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "Emult", colour = G.C.MULT },
-		},
-		extra = {
-
-			{
-				ref_table = "card.joker_display_values",
-				ref_value = "localized_text",
-				colour = G.C.UI.TEXT_INACTIVE,
-				scale = 0.3,
-			},
-		},
-		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-		end,
-	}
-end
 local aequilibrium = {
 	object_type = "Joker",
 	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!

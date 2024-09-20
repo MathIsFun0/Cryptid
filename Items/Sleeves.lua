@@ -13,14 +13,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 1, y = 0 },
 		config = {},
-		loc_txt = {
-			name = "Encoded Sleeve",
-			text = {
-				"Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
-				"and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
-				"Only {C:cry_code}Code Cards{} appear in shop",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Encoded Deck", stake = 1 },
 		loc_vars = function(self)
@@ -60,16 +52,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 2, y = 0 },
 		config = { vouchers = { "v_overstock_norm", "v_overstock_plus" }, cry_equilibrium = true },
-		loc_txt = {
-			name = "Balanced Sleeve",
-			text = {
-				"All cards have the",
-				"{C:attention}same chance{} of",
-				"appearing in shops,",
-				"start run with",
-				"{C:attention,T:v_overstock_plus}+2 Shop Slots",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Deck of Equilibrium", stake = 1 },
 		loc_vars = function(self)
@@ -89,13 +71,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 3, y = 0 },
 		config = { cry_misprint_min = 0.1, cry_misprint_max = 10 },
-		loc_txt = {
-			name = "Misprinted Sleeve",
-			text = {
-				"Values of cards",
-				"are {C:attention}randomized",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Misprint Deck", stake = 1 },
 		trigger_effect = function(self, args)
@@ -119,14 +94,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 4, y = 0 },
 		config = { cry_highlight_limit = 1e20, hand_size = 1 },
-		loc_txt = {
-			name = "Unlimited Sleeve",
-			text = {
-				"You can select {C:attention}any",
-				"number of cards",
-				--someone do the hand size thing for me
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Infinite Deck", stake = 1 },
 		loc_vars = function(self)
@@ -144,15 +111,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 5, y = 0 },
 		config = { cry_conveyor = true },
-		loc_txt = {
-			name = "Conveyor Sleeve",
-			text = {
-				"Jokers may {C:attention}not{} be moved",
-				"At start of round,",
-				"{C:attention}duplicate{} rightmost Joker",
-				"and {C:attention}destroy{} leftmost Joker",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Conveyor Deck", stake = 1 },
 		loc_vars = function(self)
@@ -170,13 +128,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 6, y = 0 },
 		config = { cry_conveyor = true },
-		loc_txt = {
-			name = "CCD Sleeve",
-			text = {
-				"Every card is also",
-				"a {C:attention}random{} consumable",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "CCD Deck", stake = 1 },
 		loc_vars = function(self)
@@ -194,15 +145,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 0, y = 0 },
 		config = { cry_wormhole = true, cry_negative_rate = 20, joker_slot = -2 },
-		loc_txt = {
-			name = "Wormhole Sleeve",
-			text = {
-				"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
-				"Jokers are {C:attention}20X{} more",
-				"likely to be {C:dark_edition}Negative",
-				"{C:attention}-2{} Joker slots",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Wormhole Deck", stake = 1 },
 		loc_vars = function(self)
@@ -233,13 +175,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 7, y = 0 },
 		config = { cry_negative_rate = 20, joker_slot = -2 },
-		loc_txt = {
-			name = "Redeemed Sleeve",
-			text = {
-				"When a {C:attention}Voucher{} is purchased,",
-				"gain its {C:attention}extra tiers",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Redeemed Deck", stake = 1 },
 		loc_vars = function(self)
@@ -256,14 +191,6 @@ if CardSleeves then
 		atlas = "atlasSleeves",
 		pos = { x = 8, y = 0 },
 		config = { cry_crit_rate = 0.25, cry_crit_miss_rate = 0.125 },
-		loc_txt = {
-			name = "Critical Sleeve",
-			text = {
-				"After each hand played,",
-				"{C:green}1 in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
-				"{C:green}1 in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
-			},
-		},
 		unlocked = true,
 		unlock_condition = { deck = "Redeemed Deck", stake = 1 },
 		loc_vars = function(self)
@@ -282,7 +209,7 @@ if CardSleeves then
 							play_sound("talisman_emult", 1)
 							attention_text({
 								scale = 1.4,
-								text = "Critical Hit!",
+								text = localize("cry_critical_hit_ex"),
 								hold = 2,
 								align = "cm",
 								offset = { x = 0, y = -2.7 },
@@ -299,7 +226,7 @@ if CardSleeves then
 							play_sound("timpani", 1)
 							attention_text({
 								scale = 1.4,
-								text = "Critical Miss!",
+								text = localize("cry_critical_miss_ex"),
 								hold = 2,
 								align = "cm",
 								offset = { x = 0, y = -2.7 },
