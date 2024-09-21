@@ -2149,6 +2149,7 @@ return {
             ["cry_feat_epic jokers"] = "Epic Jokers",
             ["cry_feat_exotic jokers"] = "Exotic Jokers",
             ["cry_feat_m jokers"] = "M Jokers",
+            cry_feat_menu = "Custom Main Menu",
             ["cry_feat_misc."] = "Misc.",
             ["cry_feat_misc. jokers"] = "Misc. Jokers",
             cry_feat_planets = "Planets",
