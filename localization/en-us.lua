@@ -2868,18 +2868,15 @@ return {
             a_powchips = {"^#1# Chips"},
             a_powmultchips = {"^#1# Mult+Chips"},
             a_round = {"+#1# Round"},
-<<<<<<< Updated upstream
             a_xchips_minus = {"-X#1# Chips"},
             a_powmult_minus = {"-^#1# Mult"},
             a_powchips_minus = {"-^#1# Chips"},
             a_powmultchips_minus = {"-^#1# Mult+Chips"},
             a_round_minus = {"-#1# Round"},
             
-=======
             a_tag = {"#1# Tag"},
             a_tags = {"#1# Tags"},
 
->>>>>>> Stashed changes
             cry_sticker_name = {"#1# Sticker"},
             cry_sticker_desc = {
                 "Used this Joker",
