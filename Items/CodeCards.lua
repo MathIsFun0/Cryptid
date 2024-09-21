@@ -757,6 +757,7 @@ local delete = {
 	cost = 4,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
+			and card.area == G.consumeables
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
 			and G.shop_jokers.highlighted[1] ~= self
 			and G.shop_booster.highlighted[1] ~= self
@@ -793,6 +794,31 @@ local delete = {
 		c:start_dissolve()
 	end,
 }
+local jokers = {
+	"j_gros_michel",
+	"j_egg",
+	"j_ice_cream",
+	"j_cavendish",
+	"j_turtle_bean",
+	"j_diet_cola",
+	"j_popcorn",
+	"j_ramen",
+	"j_selzer",
+}
+if Cryptid.enabled["Misc. Jokers"] then
+	jokers[#jokers + 1] = "j_cry_pickle"
+	jokers[#jokers + 1] = "j_cry_chili_pepper"
+end
+if Cryptid.enabled["Epic Jokers"] then
+	jokers[#jokers + 1] = "j_cry_oldcandy"
+	jokers[#jokers + 1] = "j_cry_caramel"
+end
+if Cryptid.enabled["M Jokers"] then
+	jokers[#jokers + 1] = "j_cry_foodm"
+end
+for i = 1, #jokers do
+	Cryptid.food[#Cryptid.food+1] = jokers[i]
+end
 local spaghetti = {
 	object_type = "Consumable",
 	set = "Code",
@@ -812,107 +838,6 @@ local spaghetti = {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		local jokers = {
-			"j_gros_michel",
-			"j_egg",
-			"j_ice_cream",
-			"j_cavendish",
-			"j_turtle_bean",
-			"j_diet_cola",
-			"j_popcorn",
-			"j_ramen",
-			"j_selzer",
-		}
-		if G.P_CENTERS.j_cry_pickle then
-			jokers[#jokers + 1] = "j_cry_pickle"
-		end
-		if G.P_CENTERS.j_cry_chili_pepper then
-			jokers[#jokers + 1] = "j_cry_chili_pepper"
-		end
-		if G.P_CENTERS.j_cry_oldcandy then
-			jokers[#jokers + 1] = "j_cry_oldcandy"
-		end
-		if G.P_CENTERS.j_cry_caramel then
-			jokers[#jokers + 1] = "j_cry_caramel"
-		end
-		if G.P_CENTERS.j_cry_foodm then
-			jokers[#jokers + 1] = "j_cry_foodm"
-		end
-		if G.P_CENTERS.j_jank_cut_the_cheese then
-			jokers[#jokers + 1] = "j_jank_cut_the_cheese"
-		end
-		if G.P_CENTERS.j_cafeg then
-			jokers[#jokers + 1] = "j_cafeg"
-		end
-		if G.P_CENTERS.j_cherry then
-			jokers[#jokers + 1] = "j_cherry"
-		end
-		if G.P_CENTERS.j_evo_full_sugar_cola then
-			jokers[#jokers + 1] = "j_evo_full_sugar_cola"
-		end
-		if G.P_CENTERS.j_bunc_starfruit then
-			jokers[#jokers + 1] = "j_bunc_starfruit"
-		end
-		if G.P_CENTERS.j_bunc_fondue then
-			jokers[#jokers + 1] = "j_bunc_fondue"
-		end
-		if G.P_CENTERS.j_kcva_fortunecookie then
-			jokers[#jokers + 1] = "j_kcva_fortunecookie"
-		end
-		if G.P_CENTERS.j_kcva_swiss then
-			jokers[#jokers + 1] = "j_kcva_swiss"
-		end
-		if G.P_CENTERS.j_olab_taliaferro then
-			jokers[#jokers + 1] = "j_olab_taliaferro"
-		end
-		if G.P_CENTERS.j_olab_royal_gala then
-			jokers[#jokers + 1] = "j_olab_royal_gala"
-		end
-		if G.P_CENTERS.j_olab_fine_wine then
-			jokers[#jokers + 1] = "j_olab_fine_wine"
-		end
-		if G.P_CENTERS.j_olab_mystery_soda then
-			jokers[#jokers + 1] = "j_olab_mystery_soda"
-		end
-		if G.P_CENTERS.j_olab_popcorn_bag then
-			jokers[#jokers + 1] = "j_olab_popcorn_bag"
-		end
-		if G.P_CENTERS.j_snow_turkey_dinner then
-			jokers[#jokers + 1] = "j_snow_turkey_dinner"
-		end
-		if G.P_CENTERS.j_ssj_coffee then
-			jokers[#jokers + 1] = "j_ssj_coffee"
-		end
-		if G.P_CENTERS.j_twewy_candleService then
-			jokers[#jokers + 1] = "j_twewy_candleService"
-		end
-		if G.P_CENTERS.j_twewy_burningCherry then
-			jokers[#jokers + 1] = "j_twewy_burningCherry"
-		end
-		if G.P_CENTERS.j_twewy_burningMelon then
-			jokers[#jokers + 1] = "j_twewy_burningMelon"
-		end
-		if G.P_CENTERS.j_pape_soft_taco then
-			jokers[#jokers + 1] = "j_pape_soft_taco"
-		end
-		if G.P_CENTERS.j_pape_crispy_taco then
-			jokers[#jokers + 1] = "j_pape_crispy_taco"
-		end
-		if G.P_CENTERS.j_pape_nachos then
-			jokers[#jokers + 1] = "j_pape_nachos"
-		end
-		if G.P_CENTERS.j_pape_ghost_cola then
-			jokers[#jokers + 1] = "j_pape_ghost_cola"
-		end
-		if G.P_CENTERS.j_sdm_burger then
-			jokers[#jokers + 1] = "j_sdm_burger"
-		end
-		if G.P_CENTERS.j_sdm_pizza then
-			jokers[#jokers + 1] = "j_sdm_pizza"
-		end
-		if G.P_CENTERS.j_grm_energy_bar then
-			jokers[#jokers + 1] = "j_grm_energy_bar"
-		end
 		local card = create_card(
 			"Joker",
 			G.jokers,
@@ -920,7 +845,7 @@ local spaghetti = {
 			nil,
 			nil,
 			nil,
-			pseudorandom_element(jokers, pseudoseed("cry_spaghetti"))
+			pseudorandom_element(Cryptid.food, pseudoseed("cry_spaghetti"))
 		)
 		card:set_edition({
 			cry_glitched = true,
@@ -1395,24 +1320,6 @@ local copypaste = {
 		end
 	end,
 }
-if JokerDisplay then
-	copypaste.joker_display_definition = {
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values", ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
-				{ text = ")" },
-			},
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end,
-	}
-end
-
 local cut = {
 	object_type = "Joker",
 	name = "cry-cut",
@@ -1475,20 +1382,6 @@ local cut = {
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
 }
-if JokerDisplay then
-	cut.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-				border_colour = G.C.MULT,
-			},
-		},
-	}
-end
-
 local blender = {
 	object_type = "Joker",
 	name = "cry-blender",
@@ -1512,7 +1405,6 @@ local blender = {
 		end
 	end,
 }
-
 local python = {
 	object_type = "Joker",
 	name = "cry-python",
@@ -1568,19 +1460,6 @@ local python = {
 		end
 	end,
 }
-if JokerDisplay then
-	python.joker_display_definition = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
-				},
-				border_colour = G.C.DARK_EDITION,
-			},
-		},
-	}
-end
 
 function create_UIBox_variable(card)
 	G.E_MANAGER:add_event(Event({
@@ -2330,6 +2209,238 @@ G.FUNCS.pointer_apply_previous = function()
 	end
 	G.FUNCS.pointer_apply()
 end
+
+local aliases = {
+	jimbo = "joker",
+	greedy = "greedy joker",
+	lusty = "lusty joker",
+	wrathful = "wrathful joker",
+	gluttonous = "gluttonous joker",
+	jolly = "jolly joker",
+	zany = "zany joker",
+	mad = "mad joker",
+	crazy = "crazy joker",
+	droll = "droll joker",
+	sly = "sly joker",
+	wily = "wily joker",
+	clever = "clever joker",
+	devious = "devious joker",
+	crafty = "crafty joker",
+	half = "half joker",
+	stencil = "joker stencil",
+	dagger = "ceremonial dagger",
+	chaos = "chaos the clown",
+	fib = "fibonacci",
+	scary = "scary face",
+	abstract = "abstract joker",
+	delayedgrat = "delayed gratification",
+	banana = "gros michel",
+	steven = "even steven",
+	todd = "odd todd",
+	bus = "ride the bus",
+	faceless = "faceless joker",
+	todo = "to do list",
+	["to-do"] = "to do list",
+	square = "square joker",
+	seance = "séance",
+	riffraff = "riff-raff",
+	cloudnine = "cloud 9",
+	trousers = "spare trousers",
+	ancient = "ancient joker",
+	mrbones = "mr. bones",
+	smeared = "smeared joker",
+	wee = "wee joker",
+	oopsall6s = "oops! all 6s",
+	all6s = "oops! all 6s",
+	oa6 = "oops! all 6s",
+	idol = "the idol",
+	duo = "the duo",
+	trio = "the trio",
+	family = "the family",
+	order = "the order",
+	tribe = "the tribe",
+	invisible = "invisible joker",
+	driverslicense = "driver's license",
+	burnt = "burnt joker",
+	caino = "canio",
+	house = "happy house",
+	queensgambit = "queen's gambit",
+	weefib = "weebonacci",
+	interest = "compound interest",
+	whip = "the whip",
+	triplet = "triplet rhythm",
+	pepper = "chili pepper",
+	krusty = "krusty the clown",
+	blurred = "blurred joker",
+	gofp = "garden of forking paths",
+	lutn = "light up the night",
+	nsnm = "no sound, no memory",
+	nosoundnomemory = "no sound, no memory",
+	lath = "...like antennas to heaven",
+	likeantennastoheaven = "...like antennas to heaven",
+	consumeable = "consume-able",
+	error = "j_cry_error",
+	ap = "ap joker",
+	rng = "rnjoker",
+	filler = "the filler",
+	duos = "the duos",
+	home = "the home",
+	nuts = "the nuts",
+	quintet = "the quintet",
+	unity = "the unity",
+	swarm = "the swarm",
+	crypto = "crypto coin",
+	googol = "googol play card",
+	googolplay = "googol play card",
+	google = "googol play card",
+	googleplay = "googol play card",
+	googleplaycard = "googol play card",
+	nostalgicgoogol = "nostalgic googol play card",
+	nostalgicgoogolplay = "nostalgic googol play card",
+	nostalgicgoogle = "nostalgic googol play card",
+	nostalgicgoogleplay = "nostalgic googol play card",
+	nostalgicgoogleplaycard = "nostalgic googol play card",
+	oldgoogol = "nostalgic googol play card",
+	oldgoogolplay = "nostalgic googol play card",
+	oldgoogle = "nostalgic googol play card",
+	oldgoogleplay = "nostalgic googol play card",
+	oldgoogleplaycard = "nostalgic googol play card",
+	localthunk = "supercell",
+	["1fa"] = "one for all",
+	crust = "crustulum",
+	deathstar = "stella mortis",
+	["jolly?"] = "jolly joker?",
+	scrabble = "scrabble tile",
+	["13"] = "tredecim",
+	["overstock+"] = "overstock plus",
+	directorscut = "director's cut",
+	["3rs"] = "the 3 rs",
+	fool = "the fool",
+	magician = "the magician",
+	priestess = "the high priestess",
+	highpriestess = "the high priestess",
+	empress = "the empress",
+	emperor = "the emperor",
+	hierophant = "the hierophant",
+	lovers = "the lovers",
+	chariot = "the chariot",
+	hermit = "the hermit",
+	wheeloffortune = "the wheel of fortune",
+	hangedman = "the hanged man",
+	devil = "the devil",
+	tower = "the tower",
+	star = "the star",
+	moon = "the moon",
+	sun = "the sun",
+	world = "the world",
+	automaton = "the automaton",
+	eclipse = "c_cry_eclipse",
+	x = "planet x",
+	X = "planet x",
+	pointer = "pointer://",
+	payload = "://payload",
+	reboot = "://reboot",
+	revert = "://revert",
+	crash = "://crash",
+	semicolon = ";//",
+	[";"] = ";//",
+	malware = "://malware",
+	seed = "://seed",
+	variable = "://variable",
+	class = "://class",
+	commit = "://commit",
+	merge = "://merge",
+	multiply = "://multiply",
+	divide = "://divide",
+	delete = "://delete",
+	machinecode = "://machinecode",
+	run = "://run",
+	exploit = "://exploit",
+	offbyone = "://offbyone",
+	rework = "://rework",
+	spaghetti = "://spaghetti",
+	topuptag = "top-up tag",
+	gamblerstag = "gambler's tag",
+	hook = "hook://",
+	ox = "the ox",
+	wall = "the wall",
+	wheel = "the wheel",
+	arm = "the arm",
+	club = "the club",
+	fish = "the fish",
+	psychic = "the psychic",
+	goad = "the goad",
+	water = "the water",
+	window = "the window",
+	manacle = "the manacle",
+	eye = "the eye",
+	mouth = "the mouth",
+	plant = "the plant",
+	serpent = "the serpent",
+	pillar = "the pillar",
+	needle = "the needle",
+	head = "the head",
+	tooth = "the tooth",
+	flint = "the flint",
+	mark = "the mark",
+	oldox = "nostalgic ox",
+	oldhouse = "nostalgic house",
+	oldarm = "nostalgic arm",
+	oldfish = "nostalgic fish",
+	oldmanacle = "nostalgic manacle",
+	oldserpent = "nostalgic serpent",
+	oldpillar = "nostalgic pillar",
+	oldflint = "nostalgic flint",
+	oldmark = "nostalgic mark",
+	tax = "the tax",
+	trick = "the trick",
+	joke = "the joke",
+	hammer = "the hammer",
+	box = "the box",
+	windmill = "the windmill",
+	clock = "the clock",
+	code = "code joker",
+	copypaste = "copy/paste",
+	translucent = "translucent joker",
+	circulus = "circulus pistoris",
+	macabre = "macabre joker",
+	-- Jen's Almanac aliases
+	freddy = "freddy snowshoe",
+	paupovlin = "paupovlin revere",
+	poppin = "paupovlin revere",
+	jen = "jen walter",
+	--should I add "reverse ___" prefixes for the reverse tarots?
+	survivor = "the survivor",
+	monk = "the monk",
+	hunter = "the hunter",
+	gourmand = "the gourmand",
+	saint = "the saint",
+	genius = "the genius",
+	scientist = "the scientist",
+	peasant = "the peasant",
+	adversary = "the adversary",
+	rivals = "the rivals",
+	hitchhiker = "the hitchhiker",
+	angel = "the angel",
+	collapse = "the collapse",
+	lowlaywoman = "the low laywoman",
+	laywoman = "the low laywoman",
+	servant = "the servant",
+	extrovert = "the extrovert",
+	discofpenury = "the disc of penury",
+	flash = "the flash",
+	eclipsespectral = "c_jen_reverse_moon",
+	eclipsetorat = "c_jen_reverse_moon",
+	darkness = "the darkness",
+	void = "the void",
+	topuptoken = "top-up token",
+	sagittarius = "sagittarius a*",
+	["sagitarius a*"] = "sagittarius a*", --minor spelling mistakes are forgiven
+	sagitarius = "sagittarius a*", --minor spelling mistakes are forgiven
+}
+for k, v in pairs(aliases) do
+	Cryptid.aliases[k] = v
+end
 G.FUNCS.pointer_apply = function()
 	local function apply_lower(str)
 		-- Remove content within {} and any remaining spaces
@@ -2340,237 +2451,10 @@ G.FUNCS.pointer_apply = function()
 		end
 		return string.lower(str)
 	end
-	local aliases = {
-		jimbo = "joker",
-		greedy = "greedy joker",
-		lusty = "lusty joker",
-		wrathful = "wrathful joker",
-		gluttonous = "gluttonous joker",
-		jolly = "jolly joker",
-		zany = "zany joker",
-		mad = "mad joker",
-		crazy = "crazy joker",
-		droll = "droll joker",
-		sly = "sly joker",
-		wily = "wily joker",
-		clever = "clever joker",
-		devious = "devious joker",
-		crafty = "crafty joker",
-		half = "half joker",
-		stencil = "joker stencil",
-		dagger = "ceremonial dagger",
-		chaos = "chaos the clown",
-		fib = "fibonacci",
-		scary = "scary face",
-		abstract = "abstract joker",
-		delayedgrat = "delayed gratification",
-		banana = "gros michel",
-		steven = "even steven",
-		todd = "odd todd",
-		bus = "ride the bus",
-		faceless = "faceless joker",
-		todo = "to do list",
-		["to-do"] = "to do list",
-		square = "square joker",
-		seance = "séance",
-		riffraff = "riff-raff",
-		cloudnine = "cloud 9",
-		trousers = "spare trousers",
-		ancient = "ancient joker",
-		mrbones = "mr. bones",
-		smeared = "smeared joker",
-		wee = "wee joker",
-		oopsall6s = "oops! all 6s",
-		all6s = "oops! all 6s",
-		oa6 = "oops! all 6s",
-		idol = "the idol",
-		duo = "the duo",
-		trio = "the trio",
-		family = "the family",
-		order = "the order",
-		tribe = "the tribe",
-		invisible = "invisible joker",
-		driverslicense = "driver's license",
-		burnt = "burnt joker",
-		caino = "canio",
-		house = "happy house",
-		queensgambit = "queen's gambit",
-		weefib = "weebonacci",
-		interest = "compound interest",
-		whip = "the whip",
-		triplet = "triplet rhythm",
-		pepper = "chili pepper",
-		krusty = "krusty the clown",
-		blurred = "blurred joker",
-		gofp = "garden of forking paths",
-		lutn = "light up the night",
-		nsnm = "no sound, no memory",
-		nosoundnomemory = "no sound, no memory",
-		lath = "...like antennas to heaven",
-		likeantennastoheaven = "...like antennas to heaven",
-		consumeable = "consume-able",
-		error = "j_cry_error",
-		ap = "ap joker",
-		rng = "rnjoker",
-		filler = "the filler",
-		duos = "the duos",
-		home = "the home",
-		nuts = "the nuts",
-		quintet = "the quintet",
-		unity = "the unity",
-		swarm = "the swarm",
-		crypto = "crypto coin",
-		googol = "googol play card",
-		googolplay = "googol play card",
-		google = "googol play card",
-		googleplay = "googol play card",
-		googleplaycard = "googol play card",
-		nostalgicgoogol = "nostalgic googol play card",
-		nostalgicgoogolplay = "nostalgic googol play card",
-		nostalgicgoogle = "nostalgic googol play card",
-		nostalgicgoogleplay = "nostalgic googol play card",
-		nostalgicgoogleplaycard = "nostalgic googol play card",
-		oldgoogol = "nostalgic googol play card",
-		oldgoogolplay = "nostalgic googol play card",
-		oldgoogle = "nostalgic googol play card",
-		oldgoogleplay = "nostalgic googol play card",
-		oldgoogleplaycard = "nostalgic googol play card",
-		localthunk = "supercell",
-		["1fa"] = "one for all",
-		crust = "crustulum",
-		deathstar = "stella mortis",
-		["jolly?"] = "jolly joker?",
-		scrabble = "scrabble tile",
-		["13"] = "tredecim",
-		["overstock+"] = "overstock plus",
-		directorscut = "director's cut",
-		["3rs"] = "the 3 rs",
-		fool = "the fool",
-		magician = "the magician",
-		priestess = "the high priestess",
-		highpriestess = "the high priestess",
-		empress = "the empress",
-		emperor = "the emperor",
-		hierophant = "the hierophant",
-		lovers = "the lovers",
-		chariot = "the chariot",
-		hermit = "the hermit",
-		wheeloffortune = "the wheel of fortune",
-		hangedman = "the hanged man",
-		devil = "the devil",
-		tower = "the tower",
-		star = "the star",
-		moon = "the moon",
-		sun = "the sun",
-		world = "the world",
-		automaton = "the automaton",
-		eclipse = "c_cry_eclipse",
-		x = "planet x",
-		X = "planet x",
-		pointer = "pointer://",
-		payload = "://payload",
-		reboot = "://reboot",
-		revert = "://revert",
-		crash = "://crash",
-		semicolon = ";//",
-		[";"] = ";//",
-		malware = "://malware",
-		seed = "://seed",
-		variable = "://variable",
-		class = "://class",
-		commit = "://commit",
-		merge = "://merge",
-		multiply = "://multiply",
-		divide = "://divide",
-		delete = "://delete",
-		machinecode = "://machinecode",
-		run = "://run",
-		exploit = "://exploit",
-		offbyone = "://offbyone",
-		rework = "://rework",
-		spaghetti = "://spaghetti",
-		topuptag = "top-up tag",
-		gamblerstag = "gambler's tag",
-		hook = "hook://",
-		ox = "the ox",
-		wall = "the wall",
-		wheel = "the wheel",
-		arm = "the arm",
-		club = "the club",
-		fish = "the fish",
-		psychic = "the psychic",
-		goad = "the goad",
-		water = "the water",
-		window = "the window",
-		manacle = "the manacle",
-		eye = "the eye",
-		mouth = "the mouth",
-		plant = "the plant",
-		serpent = "the serpent",
-		pillar = "the pillar",
-		needle = "the needle",
-		head = "the head",
-		tooth = "the tooth",
-		flint = "the flint",
-		mark = "the mark",
-		oldox = "nostalgic ox",
-		oldhouse = "nostalgic house",
-		oldarm = "nostalgic arm",
-		oldfish = "nostalgic fish",
-		oldmanacle = "nostalgic manacle",
-		oldserpent = "nostalgic serpent",
-		oldpillar = "nostalgic pillar",
-		oldflint = "nostalgic flint",
-		oldmark = "nostalgic mark",
-		tax = "the tax",
-		trick = "the trick",
-		joke = "the joke",
-		hammer = "the hammer",
-		box = "the box",
-		windmill = "the windmill",
-		clock = "the clock",
-		code = "code joker",
-		copypaste = "copy/paste",
-		translucent = "translucent joker",
-		circulus = "circulus pistoris",
-		macabre = "macabre joker",
-		-- Jen's Almanac aliases
-		freddy = "freddy snowshoe",
-		paupovlin = "paupovlin revere",
-		poppin = "paupovlin revere",
-		jen = "jen walter",
-		--should I add "reverse ___" prefixes for the reverse tarots?
-		survivor = "the survivor",
-		monk = "the monk",
-		hunter = "the hunter",
-		gourmand = "the gourmand",
-		saint = "the saint",
-		genius = "the genius",
-		scientist = "the scientist",
-		peasant = "the peasant",
-		adversary = "the adversary",
-		rivals = "the rivals",
-		hitchhiker = "the hitchhiker",
-		angel = "the angel",
-		collapse = "the collapse",
-		lowlaywoman = "the low laywoman",
-		laywoman = "the low laywoman",
-		servant = "the servant",
-		extrovert = "the extrovert",
-		discofpenury = "the disc of penury",
-		flash = "the flash",
-		eclipsespectral = "c_jen_reverse_moon",
-		eclipsetorat = "c_jen_reverse_moon",
-		darkness = "the darkness",
-		void = "the void",
-		topuptoken = "top-up token",
-		sagittarius = "sagittarius a*",
-		["sagitarius a*"] = "sagittarius a*", --minor spelling mistakes are forgiven
-		sagitarius = "sagittarius a*", --minor spelling mistakes are forgiven
-	}
 	local current_card
 	local entered_card = G.ENTERED_CARD
 	G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
+	local aliases = Cryptid.aliases
 	if aliases[apply_lower(entered_card)] then
 		entered_card = aliases[apply_lower(entered_card)]
 	end

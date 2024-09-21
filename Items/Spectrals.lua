@@ -4,14 +4,6 @@ local white_hole = {
 	name = "cry-White Hole",
 	key = "white_hole",
 	pos = { x = 1, y = 4 },
-	loc_txt = {
-		name = "White Hole",
-		text = {
-			"{C:attention}Remove{} all hand levels,",
-			"upgrade {C:legendary,E:1}most played{} poker hand",
-			"by {C:attention}3{} for each removed level",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	hidden = true, --default soul_rate of 0.3% in spectral packs is used
@@ -111,15 +103,6 @@ local vacuum = {
 	key = "vacuum",
 	pos = { x = 3, y = 1 },
 	config = { extra = 4 },
-	loc_txt = {
-		name = "Vacuum",
-		text = {
-			"Removes {C:red}all {C:green}modifications{}",
-			"from {C:red}all{} cards held in hand,",
-			"Earn {C:money}$#1#{} per {C:green}modification{} removed",
-			"{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, center)
@@ -190,14 +173,6 @@ local hammerspace = {
 	key = "hammerspace",
 	pos = { x = 4, y = 3 },
 	config = {},
-	loc_txt = {
-		name = "Hammerspace",
-		text = {
-			"Apply random {C:attention}consumables{}",
-			"as if they were {C:dark_edition}Enhancements{}",
-			"to cards held in hand",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
@@ -252,15 +227,6 @@ local lock = {
 	key = "lock",
 	pos = { x = 0, y = 1 },
 	config = {},
-	loc_txt = {
-		name = "Lock",
-		text = {
-			"Remove {C:red}all{} stickers",
-			"from {C:red}all{} Jokers,",
-			"then apply {C:purple,E:1}Eternal{}",
-			"to a random {C:attention}Joker{}",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
@@ -360,13 +326,6 @@ local trade = {
 	key = "trade",
 	pos = { x = 2, y = 1 },
 	config = {},
-	loc_txt = {
-		name = "Trade",
-		text = {
-			"{C:attention}Lose{} a random Voucher,",
-			"gain {C:attention}2{} random Vouchers",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
@@ -517,14 +476,6 @@ local analog = {
 	key = "analog",
 	pos = { x = 0, y = 0 },
 	config = { copies = 2, ante = 1 },
-	loc_txt = {
-		name = "Analog",
-		text = {
-			"Create {C:attention}#1#{} copies of a",
-			"random {C:attention}Joker{}, destroy",
-			"all other Jokers, {C:attention}+#2#{} Ante",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.copies, center.ability.ante } }
 	end,
@@ -578,14 +529,6 @@ local summoning = {
 	name = "cry-Summoning",
 	key = "summoning",
 	pos = { x = 3, y = 4 },
-	loc_txt = {
-		name = "Summoning",
-		text = {
-			"Create a random",
-			"{C:cry_epic}Epic{} {C:joker}Joker{}, destroy",
-			"one random {C:joker}Joker{}",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
@@ -636,15 +579,6 @@ local replica = {
 	key = "replica",
 	pos = { x = 1, y = 1 },
 	config = {},
-	loc_txt = {
-		name = "Replica",
-		text = {
-			"Convert all cards",
-			"held in hand",
-			"to a {C:attention}random{}",
-			"card held in hand",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
@@ -740,7 +674,7 @@ return {
 							pop_in_rate = 1.5 * G.SPEEDFACTOR,
 						})
 						bot_dynatext = DynaText({
-							string = "Unredeemed...",
+							string = localize("cry_unredeemed"),
 							colours = { G.C.RED },
 							rotate = 2,
 							shadow = true,

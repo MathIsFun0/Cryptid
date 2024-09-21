@@ -1,9 +1,8 @@
-Cryptid.memepack = { --This is used for the Cryptid memepack pool
-	"j_jolly",
-	"j_obelisk",
-	"j_space", --Nobody takes this thing seriously so i'm putting it here
-	"j_mr_bones", --sans undertale
-}
+--This pool is used for Cryptid's Meme Packs, and other mods can add to it (hence it is already loaded)
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_jolly"
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_obelisk"
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_space" --Nobody takes this thing seriously so i'm putting it here
+Cryptid.memepack[#Cryptid.memepack + 1] = "j_mr_bones" --sans undertale
 if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cube"
 end
@@ -111,7 +110,7 @@ local meme1 = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.config.center.config.choose, card.ability.extra } }
-	end,
+	end, --For some reason, I need to keep the loc_txt or else it crashes
 	loc_txt = {
 		name = "Meme Pack",
 		text = {
@@ -223,13 +222,6 @@ local mosaic = {
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.x_chips } }
 	end,
-	loc_txt = {
-		name = "Mosaic",
-		label = "Mosaic",
-		text = {
-			"{X:chips,C:white} X#1# {} Chips",
-		},
-	},
 }
 local oversat_shader = {
 	object_type = "Shader",
@@ -251,16 +243,6 @@ local oversat = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	loc_txt = {
-		name = "Oversaturated",
-		label = "Oversaturated",
-		text = {
-			"All values",
-			"on this card",
-			"are {C:attention}doubled{}",
-			"{C:inactive}(If possible)",
-		},
-	},
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, nil, true)
@@ -269,6 +251,14 @@ local oversat = {
 				max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
 			})
 		end)
+		if card.config.center.apply_oversat then
+			card.config.center:apply_oversat(card, 	function(val)
+				return cry_misprintize_val(val, {
+					min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
+					max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
+				})
+			end)
+		end
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
@@ -346,16 +336,6 @@ local glitched = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	loc_txt = {
-		name = "Glitched",
-		label = "Glitched",
-		text = {
-			"All values on this card",
-			"are {C:dark_edition}randomized{}",
-			"between {C:attention}X0.1{} and {C:attention}X10{}",
-			"{C:inactive}(If possible){}",
-		},
-	},
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, nil, true)
@@ -364,6 +344,14 @@ local glitched = {
 				max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
 			})
 		end)
+		if card.config.center.apply_glitched then
+			card.config.center:apply_glitched(card, function(val)
+				return cry_misprintize_val(val, {
+					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+				})
+			end)
+		end
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
@@ -556,13 +544,6 @@ local astral = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	loc_txt = {
-		name = "Astral",
-		label = "Astral",
-		text = {
-			"{X:dark_edition,C:white}^#1#{} Mult",
-		},
-	},
 	config = { e_mult = 1.1 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.e_mult } }
@@ -588,17 +569,6 @@ local blurred = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	loc_txt = {
-		name = "Blurred",
-		label = "Blurred",
-		text = {
-			"{C:attention}Retrigger{} this",
-			"card {C:attention}1{} time",
-			"{C:green}#1# in #2#{} chance",
-			"to retrigger {C:attention}#3#{}",
-			"additional time",
-		},
-	},
 	config = { retrigger_chance = 2, retriggers = 1, extra_retriggers = 1 },
 	loc_vars = function(self, info_queue, center)
 		local chance = center and center.edition.retrigger_chance or self.config.retrigger_chance
@@ -610,7 +580,7 @@ local blurred = {
 		if context.retrigger_edition_check then
 			if pseudorandom("cry_blurred") <= G.GAME.probabilities.normal / self.config.retrigger_chance then
 				return {
-					message = "Again?",
+					message = localize("cry_again_q"),
 					repetitions = self.config.extra_retriggers,
 					card = card,
 				}
@@ -635,13 +605,6 @@ local noisy = {
 		sound = "cry_e_noisy",
 		per = 1,
 		vol = 0.25,
-	},
-	loc_txt = {
-		name = "Noisy",
-		label = "Noisy",
-		text = {
-			"???",
-		},
 	},
 	calculate = function(self, card, context)
 		if context.edition_main and context.edition_val then
@@ -805,15 +768,6 @@ local jollyedition = {
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.mult } }
 	end,
-	loc_txt = {
-		name = "Jolly",
-		label = "Jolly",
-		text = {
-			"{C:mult}+#1#{} Mult",
-			"This card is feeling",
-			"rather {C:attention}jolly{}",
-		},
-	},
 }
 
 local glass_shader = {
@@ -854,16 +808,6 @@ local glass_edition = {
 			},
 		}
 	end,
-	loc_txt = {
-		name = "Fragile",
-		label = "Fragile",
-		text = {
-			"{C:white,X:mult} X#3# {} Mult",
-			"{C:green}#1# in #2#{} chance this",
-			"card isn't {C:red}destroyed",
-			"when triggered",
-		},
-	},
 	calculate = function(self, card, context)
 		if
 			context.joker_triggered
@@ -923,14 +867,6 @@ local gold_edition = {
 		-- Randomize offset to -1..1
 		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
 	end,
-	loc_txt = {
-		name = "Golden",
-		label = "Golden",
-		text = {
-			"{C:money}+$#1#{} when used",
-			"or triggered",
-		},
-	},
 	calculate = function(self, card, context)
 		if
 			context.joker_triggered
@@ -967,15 +903,6 @@ local double_sided = {
 		per = 1,
 		vol = 0.3,
 	},
-	loc_txt = {
-		name = "Double-Sided",
-		label = "Double-Sided",
-		text = {
-			"This card can be",
-			"{C:attention}flipped{} to reveal",
-			"a different card",
-		},
-	},
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -997,14 +924,6 @@ local echo_atlas = {
 local echo = {
 	object_type = "Enhancement",
 	key = "echo",
-	loc_txt = {
-		name = "Echo Card",
-		text = {
-			"{C:green}#2# in #3#{} chance to",
-			"{C:attention}retrigger{} #1# additional",
-			"times when scored",
-		},
-	},
 	atlas = "echo_atlas",
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue)
@@ -1018,13 +937,6 @@ local eclipse = {
 	key = "eclipse",
 	pos = { x = 1, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
-	loc_txt = {
-		name = "The Eclipse",
-		text = {
-			"Enhances {C:attention}#1#{} selected card",
-			"into an {C:attention}Echo Card",
-		},
-	},
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
@@ -1038,14 +950,6 @@ local blessing = {
 	name = "cry-theblessing",
 	key = "theblessing",
 	pos = { x = 2, y = 3 },
-	loc_txt = {
-		name = "The Blessing",
-		text = {
-			"Creates {C:attention}1{}",
-			"random {C:attention}consumable{}",
-			"{C:inactive}(Must have room){}",
-		},
-	},
 	cost = 3,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
@@ -1060,7 +964,8 @@ local blessing = {
 			func = function()
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
-					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "blessing")
+					local forced_key = get_random_consumable("blessing")
+					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
 					_card:add_to_deck()
 					G.consumeables:emplace(_card)
 					used_consumable:juice_up(0.3, 0.5)
@@ -1079,18 +984,6 @@ local azure_seal = {
 	key = "azure",
 	badge_colour = HEX("1d4fd7"),
 	config = { planets_amount = 3 },
-	loc_txt = {
-		-- Badge name
-		label = "Azure Seal",
-		-- Tooltip description
-		name = "Azure Seal",
-		text = {
-			"Create {C:attention}#1#{} {C:dark_edition}Negative{}",
-			"{C:planet}Planets{} for played",
-			"{C:attention}poker hand{}, then",
-			"{C:red}destroy{} this card",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.planets_amount } }
 	end,
@@ -1157,14 +1050,6 @@ local typhoon = {
 			{ set = "Other", key = "cry_azure_seal", specific_vars = { self.config.seal.planets_amount } }
 		return { vars = { center.ability.max_highlighted } }
 	end,
-	loc_txt = {
-		name = "Typhoon",
-		text = {
-			"Add an {C:cry_azure}Azure Seal{}",
-			"to {C:attention}#1#{} selected",
-			"card in your hand",
-		},
-	},
 	cost = 4,
 	atlas = "atlasnotjokers",
 	pos = { x = 0, y = 4 },
@@ -1207,10 +1092,6 @@ local cat = {
 	pos = { x = 0, y = 2 },
 	key = "cat",
 	name = "cry-Cat Tag",
-	loc_txt = {
-		name = "Cat Tag",
-		text = { "Meow.", "{C:inactive}Level {C:dark_edition}#1#" },
-	},
 }
 local epic_tag = {
 	object_type = "Tag",
@@ -1218,13 +1099,6 @@ local epic_tag = {
 	pos = { x = 3, y = 0 },
 	config = { type = "store_joker_create" },
 	key = "epic",
-	loc_txt = {
-		name = "Epic Tag",
-		text = {
-			"Shop has a half-price",
-			"{C:cry_epic}Epic Joker",
-		},
-	},
 	apply = function(tag, context)
 		if context.type == "store_joker_create" then
 			local rares_in_posession = { 0 }
@@ -1259,13 +1133,6 @@ local schematic = {
 	pos = { x = 1, y = 2 },
 	config = { type = "store_joker_create" },
 	key = "schematic",
-	loc_txt = {
-		name = "Schematic Tag",
-		text = {
-			"Shop has a",
-			"{C:attention}Brainstorm",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Joker", key = "j_brainstorm" }
 		return { vars = {} }
@@ -1325,14 +1192,6 @@ local empoweredPack = {
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
 	end,
-	loc_txt = {
-		name = "Spectral Pack [Empowered Tag]",
-		text = {
-			"Choose {C:attention}#1#{} of up to",
-			"{C:attention}#2#{C:spectral} Spectral{} cards",
-			"{s:0.8,C:inactive}(Generated by Empowered Tag)",
-		},
-	},
 	group_key = "k_spectral_pack",
 }
 local empowered = {
@@ -1341,13 +1200,6 @@ local empowered = {
 	pos = { x = 1, y = 0 },
 	config = { type = "new_blind_choice" },
 	key = "empowered",
-	loc_txt = {
-		name = "Empowered Tag",
-		text = {
-			"Gives a free {C:spectral}Spectral Pack",
-			"with {C:legendary,E:1}The Soul{} and {C:cry_exotic,E:1}Gateway{}",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
@@ -1393,13 +1245,6 @@ local gambler = {
 	config = { type = "immediate", odds = 4 },
 	min_ante = 2,
 	key = "gambler",
-	loc_txt = {
-		name = "Gambler's Tag",
-		text = {
-			"{C:green}#1# in #2#{} chance to create",
-			"an {C:cry_exotic,E:1}Empowered Tag",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_empowered" }
 		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
@@ -1439,13 +1284,6 @@ local bundle = {
 	config = { type = "immediate" },
 	key = "bundle",
 	min_ante = 2,
-	loc_txt = {
-		name = "Bundle Tag",
-		text = {
-			"Create a {C:attention}Standard Tag{}, {C:tarot}Charm Tag{},",
-			"{C:attention}Buffoon Tag{}, and {C:planet}Meteor Tag",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_standard" }
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_charm" }
@@ -1477,16 +1315,6 @@ local memory = {
 	name = "cry-Memory Tag",
 	config = { type = "immediate", num = 2 },
 	key = "memory",
-	loc_txt = {
-		name = "Memory Tag",
-		text = {
-			"Create {C:attention}#1#{} copies of",
-			"the last {C:attention}Tag{} used",
-			"during this run",
-			"{s:0.8,C:inactive}Copying Tags excluded",
-			"{s:0.8,C:inactive}Currently: {s:0.8,C:attention}#2#",
-		},
-	},
 	loc_vars = function(self, info_queue)
 		if G.GAME.cry_last_tag_used then
 			_c = G.P_TAGS[G.GAME.cry_last_tag_used]
@@ -1522,18 +1350,10 @@ local meld = {
 	set = "Tarot",
 	name = "cry-Meld",
 	key = "meld",
-	pos = { x = 1, y = 2 },
+	pos = { x = 4, y = 4 },
 	config = { extra = 4 },
-	loc_txt = {
-		name = "Meld",
-		text = {
-			"Select a {C:attention}Joker{} or",
-			"{C:attention}playing card{} to",
-			"become {C:dark_edition}Double-Sided",
-		},
-	},
 	cost = 4,
-	atlas = "placeholders",
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		if #G.jokers.highlighted
 				+ #G.hand.highlighted
@@ -1807,7 +1627,7 @@ return {
 								{
 									n = G.UIT.T,
 									config = {
-										text = "FLIP",
+										text = localize("b_flip"),
 										colour = G.C.UI.TEXT_LIGHT,
 										scale = 0.3,
 										shadow = true,
@@ -1863,7 +1683,7 @@ return {
 										{
 											n = G.UIT.T,
 											config = {
-												text = "MERGE",
+												text = localize("b_merge"),
 												colour = G.C.UI.TEXT_LIGHT,
 												scale = 0.3,
 												shadow = true,
