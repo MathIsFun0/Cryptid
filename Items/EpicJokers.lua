@@ -880,7 +880,7 @@ local curse = {
 }
 local bonusjoker = {
 	object_type = "Joker",
-	name = "cry-bonusjoker",
+	name = "cry-Bonus Joker",
 	key = "bonusjoker",
 	pos = { x = 3, y = 2 },
 	config = { extra = { odds = 8, check = 0 } },
@@ -940,7 +940,7 @@ local bonusjoker = {
 }
 local multjoker = {
 	object_type = "Joker",
-	name = "cry-multjoker",
+	name = "cry-Mult Joker",
 	key = "multjoker",
 	pos = { x = 2, y = 3 },
 	config = { extra = { odds = 4 } },
@@ -989,7 +989,7 @@ local multjoker = {
 }
 local goldjoker = {
 	object_type = "Joker",
-	name = "cry-goldjoker",
+	name = "cry-gold Joker",
 	key = "goldjoker",
 	config = { extra = { percent_mod = 1, percent = 0 } },
 	pos = { x = 0, y = 4 },
