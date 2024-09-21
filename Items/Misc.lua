@@ -7,6 +7,9 @@ if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cube"
 end
 if cry_enable_jokers then
+	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cryptidmoment"
+end
+if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_happyhouse"
 end
 if cry_enable_jokers then

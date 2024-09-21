@@ -47,6 +47,33 @@ function get_badge_colour(key)
 	return fromRef
 end
 
+--Changes main menu colors and stuff
+--Known bug: The logo is slightly off-center
+if Cryptid.enabled["Menu"] then
+	local oldfunc = Game.main_menu
+	Game.main_menu = function(change_context)
+		local ret = oldfunc(change_context)
+		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
+		G.title_top.T.w = G.title_top.T.w*1.7675
+		G.title_top:emplace(newcard)
+		newcard.T.w = newcard.T.w * 1.1*1.2
+		newcard.T.h = newcard.T.h *1.1*1.2
+		newcard.no_ui = true
+
+		G.SPLASH_BACK:define_draw_steps({{
+			shader = 'splash',
+			send = {
+				{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL_SHADER'},
+				{name = 'vort_speed', val = 0.4},
+				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
+				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
+			}}})
+		G.SPLASH_LOGO.T.w = G.SPLASH_LOGO.T.w * 1.1
+		G.SPLASH_LOGO.T.h = G.SPLASH_LOGO.T.h * 1.1
+		return ret
+	end
+end
+
 --Localization colors
 local lc = loc_colour
 function loc_colour(_c, _default)
