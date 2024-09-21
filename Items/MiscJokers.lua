@@ -2172,87 +2172,6 @@ local stardust = {
 	end,
 	atlas = "atlastwo",
 }
-local rnj_loc_txts = {
-	stats = {
-		plus_mult = { "{C:red}+#2#{} Mult" },
-		plus_chips = { "{C:blue}+#2#{} Chips" },
-		x_mult = { "{X:red,C:white} X#2#{} Mult" },
-		x_chips = { "{X:blue,C:white} X#2#{} Chips" },
-		h_size = { "{C:attention}+#2#{} Hand Size" },
-		money = { "{C:money}+$#2#{} at payout" },
-	},
-	stats_inactive = {
-		plus_mult = { "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)" },
-		plus_chips = { "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chips)" },
-		x_mult = { "{C:inactive}(Currently {X:red,C:white} X#1# {C:inactive} Mult)" },
-		x_chips = { "{C:inactive}(Currently {X:blue,C:white} X#1# {C:inactive} Chips)" },
-		h_size = { "{C:inactive}(Currently {C:attention}+#1#{C:inactive} Hand Size)" },
-		money = { "{C:inactive}(Currently {C:money}+$#1#{C:inactive})" },
-	},
-	actions = {
-		make_joker = { "Create {C:attention}#2# Joker{}" },
-		make_tarot = { "Create {C:attention}#2#{C:tarot} Tarot{} card" },
-		make_planet = { "Create {C:attention}#2#{C:planet} Planet{} card" },
-		make_spectral = { "Create {C:attention}#2#{C:spectral} Spectral{} card" },
-		add_dollars = { "Earn {C:money}$#2#{}" },
-	},
-	contexts = {
-		open_booster = { "when a {C:attention}Booster{} is opened" },
-		buying_card = { "when a card is bought" },
-		selling_self = { "when this card is sold" },
-		selling_card = { "when a card is sold" },
-		reroll_shop = { "on reroll" },
-		ending_shop = { "at the end of the {C:attention}shop{}" },
-		skip_blind = { "when a {C:attention}blind{} is skipped" },
-		skipping_booster = { "when any {C:attention}Booster Pack{} is skipped" },
-		playing_card_added = { "every time a {C:attention}playing card{} is added to your deck" },
-		first_hand_drawn = { "when round begins" },
-		setting_blind = { "when {C:attention}Blind{} is selected" },
-		remove_playing_cards = { "when a card is destroyed" },
-		using_consumeable = { "when a {C:attention}consumable{} card is used" },
-		debuffed_hand = { "if played {C:attention}hand{} is not allowed" },
-		pre_discard = { "before each discard" },
-		discard = { "for each discarded card" },
-		end_of_round = { "at end of {C:attention}round{}" },
-		individual_play = { "for each card scored" },
-		individual_hand_score = { "for each card held in hand during scoring" },
-		individual_hand_end = { "for each card held in hand at end of {C:attention}round{}" },
-		repetition_play = { "Retrigger played cards" },
-		repetition_hand = { "Retrigger held in hand cards" },
-		other_joker = { "per {C:attention}Joker{}" },
-		before = { "before each {C:attention}hand{}" },
-		after = { "after each {C:attention}hand{}" },
-		joker_main = {},
-	},
-	conds = {
-		buy_common = { "if it is a {C:blue}Common{} {C:attention}Joker{}" },
-		buy_uncommon = { "if it is a {C:green}Uncommon{} {C:attention}Joker{}" },
-		tarot = { "if card is a {C:tarot}Tarot{} card" },
-		planet = { "if card is a {C:planet}Planet{} card" },
-		spectral = { "if card is a {C:spectral}Spectral{} card" },
-		joker = { "if card is a {C:attention}Joker{}" },
-		suit = { "if card is a {V:1}#3#{}" },
-		rank = { "if card is rank {C:attention}#3#{}" },
-		face = { "if card is a {C:attention}face{} card" },
-		boss = { "if {C:attention}blind{} is a {C:attention}Boss {C:attention}Blind{}" },
-		non_boss = { "if {C:attention}blind{} is a {C:attention}Non-Boss {C:attention}Blind{}" },
-		small = { "if {C:attention}blind{} is a {C:attention}Small {C:attention}Blind{}" },
-		big = { "if {C:attention}blind{} is a {C:attention}Big {C:attention}Blind{}" },
-		first = { "if it's the {C:attention}first {C:attention}hand{}" },
-		last = { "if it's the {C:attention}last {C:attention}hand{}" },
-		common = { "if it is a {C:blue}Common{} {C:attention}Joker{}" },
-		uncommon = { "if it is an {C:green}Uncommon{} {C:attention}Joker{}" },
-		rare = { "if it is a {C:red}Rare{} {C:attention}Joker{}" },
-		poker_hand = { "if hand is a {C:attention}#3#{}" },
-		or_more = { "if hand contains {C:attention}#3#{} or more cards" },
-		or_less = { "if hand contains {C:attention}#3#{} or less cards" },
-		hands_left = { "if #3# {C:blue}hands{} remaining at end of round" },
-		discards_left = { "if #3# {C:red}discards{} remaining at end of round" },
-		first_discard = { "if it's the {C:attention}first {C:attention}discard{}" },
-		last_discard = { "if it's the {C:attention}last {C:attention}discard{}" },
-		odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },
-	},
-}
 function rnjoker_randomize(card)
 	card.ability.abilities = {}
 	card.ability.extra = {}
@@ -2527,7 +2446,7 @@ function rnjoker_randomize(card)
 	local extra_lines = { "" }
 	if (context ~= "repetition_play") and (context ~= "repetition_hand") then
 		if values.stat then
-			for i, j in ipairs(rnj_loc_txts.stats[values.stat]) do
+			for i, j in ipairs(G.localization.misc.rnj_loc_txts.stats[values.stat]) do
 				if scale and (i == 1) then
 					loc_txt = loc_txt .. "Gains "
 				end
@@ -2535,7 +2454,7 @@ function rnjoker_randomize(card)
 			end
 		end
 		if values.act then
-			for i, j in ipairs(rnj_loc_txts.actions[values.act]) do
+			for i, j in ipairs(G.localization.misc.rnj_loc_txts.actions[values.act]) do
 				loc_txt = loc_txt .. j
 			end
 		end
@@ -2548,7 +2467,7 @@ function rnjoker_randomize(card)
 	end
 	loc_txt = loc_txt .. " "
 	if values.context then
-		for i, j in ipairs(rnj_loc_txts.contexts[values.context]) do
+		for i, j in ipairs(G.localization.misc.rnj_loc_txts.contexts[values.context]) do
 			loc_txt = loc_txt .. j
 		end
 	end
@@ -2556,12 +2475,12 @@ function rnjoker_randomize(card)
 		loc_txt = loc_txt .. " "
 	end
 	if values.cond then
-		for i, j in ipairs(rnj_loc_txts.conds[values.cond]) do
+		for i, j in ipairs(G.localization.misc.rnj_loc_txts.conds[values.cond]) do
 			loc_txt = loc_txt .. j
 		end
 	end
 	if scale then
-		for i, j in ipairs(rnj_loc_txts.stats_inactive[values.stat]) do
+		for i, j in ipairs(G.localization.misc.rnj_loc_txts.stats_inactive[values.stat]) do
 			table.insert(extra_lines, j)
 		end
 	end
