@@ -7,6 +7,9 @@ if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cube"
 end
 if cry_enable_jokers then
+	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cryptidmoment"
+end
+if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_happyhouse"
 end
 if cry_enable_jokers then
@@ -251,6 +254,14 @@ local oversat = {
 				max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
 			})
 		end)
+		if card.config.center.apply_oversat then
+			card.config.center:apply_oversat(card, 	function(val)
+				return cry_misprintize_val(val, {
+					min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
+					max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
+				})
+			end)
+		end
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
@@ -336,6 +347,14 @@ local glitched = {
 				max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
 			})
 		end)
+		if card.config.center.apply_glitched then
+			card.config.center:apply_glitched(card, function(val)
+				return cry_misprintize_val(val, {
+					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+				})
+			end)
+		end
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)

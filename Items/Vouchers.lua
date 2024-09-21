@@ -51,7 +51,15 @@ local command_prompt = {
 	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.code_rate = 4
+				G.GAME.code_rate = (G.GAME.code_rate or 0) + 4
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.code_rate = math.max(0, G.GAME.code_rate - 4)
 				return true
 			end,
 		}))
@@ -191,6 +199,19 @@ local overstock_multi = {
 			end,
 		}))
 	end,
+	unredeem = function(self)
+		if not G.GAME.modifiers.cry_booster_packs then
+			G.GAME.modifiers.cry_booster_packs = 2
+		end
+		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
+			- math.max(1, math.floor(self.config.extra)) --Booster slots
+		G.E_MANAGER:add_event(Event({
+			func = function() --card slot
+				change_shop_size(math.min(-1, -1*math.floor(self.config.extra)))
+				return true
+			end,
+		}))
+	end,
 }
 local massproduct = {
 	object_type = "Voucher",
@@ -201,7 +222,21 @@ local massproduct = {
 	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
+				G.GAME.backup_discount_percent = G.GAME.backup_discount_percent or G.GAME.discount_percent
 				G.GAME.discount_percent = 100
+				for k, v in pairs(G.I.CARD) do
+					if v.set_cost then
+						v:set_cost()
+					end
+				end
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.discount_percent = G.GAME.backup_discount_percent or 0
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
@@ -263,6 +298,15 @@ local dexterity = {
 			end,
 		}))
 	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.round_resets.hands = G.GAME.round_resets.hands - math.max(1, math.floor(self.config.extra))
+				ease_hands_played(math.min(-1, -1*math.floor(self.config.extra)))
+				return true
+			end,
+		}))
+	end,
 }
 local threers = {
 	object_type = "Voucher",
@@ -279,6 +323,15 @@ local threers = {
 			func = function()
 				G.GAME.round_resets.discards = G.GAME.round_resets.discards + math.max(1, math.floor(self.config.extra))
 				ease_discard(math.max(1, math.floor(self.config.extra)))
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.round_resets.discards = G.GAME.round_resets.discards - math.max(1, math.floor(self.config.extra))
+				ease_discard(math.min(-1, math.floor(-1*self.config.extra)))
 				return true
 			end,
 		}))
@@ -302,6 +355,14 @@ local tacclimator = {
 			end,
 		}))
 	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.tarot_rate = G.GAME.tarot_rate / self.config.extra * (56/4) / 6
+				return true
+			end,
+		}))
+	end,
 }
 local pacclimator = {
 	object_type = "Voucher",
@@ -317,6 +378,14 @@ local pacclimator = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.planet_rate = 4 * self.config.extra
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.planet_rate = G.GAME.planet_rate / self.config.extra * (56/4) / 6
 				return true
 			end,
 		}))
@@ -340,6 +409,14 @@ local moneybean = {
 			end,
 		}))
 	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.interest_cap = G.P_CENTERS.v_money_tree.config.extra
+				return true
+			end,
+		}))
+	end,
 }
 local fabric = {
 	object_type = "Voucher",
@@ -356,6 +433,16 @@ local fabric = {
 			func = function()
 				if G.jokers then
 					G.jokers.config.card_limit = G.jokers.config.card_limit + math.max(1, math.floor(self.config.extra))
+				end
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					G.jokers.config.card_limit = G.jokers.config.card_limit - math.max(1, math.floor(self.config.extra))
 				end
 				return true
 			end,
@@ -394,7 +481,7 @@ local asteroglyph = {
 				return true
 			end,
 		}))
-	end,
+	end
 }
 
 local blankcanvas = {
@@ -410,7 +497,77 @@ local blankcanvas = {
 	redeem = function(self)
 		G.hand:change_size(math.max(1, math.floor(self.config.extra)))
 	end,
+	unredeem = function(self)
+		G.hand:change_size(-1*math.max(1, math.floor(self.config.extra)))
+	end,
 }
+
+local stickyhand = {
+	object_type = "Voucher",
+	key = "stickyhand",
+	config = { extra = 1 },
+	atlas = "atlasvoucher",
+	pos = { x = 0, y = 5 },
+	loc_vars = function(self, info_queue)
+		return { vars = { math.max(1, math.floor(self.config.extra)) } }
+	end,
+	redeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ math.max(1, math.floor(self.config.extra))
+	end,
+	unredeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		- math.max(1, math.floor(self.config.extra))
+		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand:unhighlight_all()
+	end,
+}
+
+local grapplinghook = {
+	object_type = "Voucher",
+	key = "grapplinghook",
+	config = { extra = 1 },
+	atlas = "atlasvoucher",
+	pos = { x = 1, y = 5 },
+	requires = { "v_cry_stickyhand" },
+	loc_vars = function(self, info_queue)
+		return { vars = { math.max(1, math.floor(self.config.extra)) } }
+	end,
+	redeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ math.max(1, math.floor(self.config.extra))
+	end,
+	unredeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		- math.max(1, math.floor(self.config.extra))
+		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand:unhighlight_all()
+	end,
+}
+
+local hyperspacetether = {
+	object_type = "Voucher",
+	key = "hyperspacetether",
+	config = { extra = 2 },
+	atlas = "atlasvoucher",
+	pos = { x = 2, y = 5 },
+	requires = { "v_cry_grapplinghook" },
+	loc_vars = function(self, info_queue)
+		return { vars = { math.max(1, math.floor(self.config.extra)) } }
+	end,
+	redeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ math.max(1, math.floor(self.config.extra))
+	end,
+	unredeem = function(self)
+  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		- math.max(1, math.floor(self.config.extra))
+		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand:unhighlight_all()
+	end,
+}
+
+
 local triple = { --Copies voucher triple tag
 	object_type = "Tag",
 	atlas = "tag_cry",
@@ -566,6 +723,9 @@ local voucheritems = {
 	asteroglyph,
 	blankcanvas,
 	clone_machine,
+	stickyhand,
+	grapplinghook,
+	hyperspacetether
 }
 if Cryptid.enabled["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
 	voucheritems[#voucheritems + 1] = command_prompt

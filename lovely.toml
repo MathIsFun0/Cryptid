@@ -609,5 +609,7 @@ position = "before"
 payload = '''
 Cryptid = {}
 Cryptid.memepack = {}
+Cryptid.aliases = {}
+Cryptid.food = {}
 '''
 match_indent = true

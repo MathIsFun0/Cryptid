@@ -47,6 +47,33 @@ function get_badge_colour(key)
 	return fromRef
 end
 
+--Changes main menu colors and stuff
+--Known bug: The logo is slightly off-center
+if Cryptid.enabled["Menu"] then
+	local oldfunc = Game.main_menu
+	Game.main_menu = function(change_context)
+		local ret = oldfunc(change_context)
+		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
+		G.title_top.T.w = G.title_top.T.w*1.7675
+		G.title_top:emplace(newcard)
+		newcard.T.w = newcard.T.w * 1.1*1.2
+		newcard.T.h = newcard.T.h *1.1*1.2
+		newcard.no_ui = true
+
+		G.SPLASH_BACK:define_draw_steps({{
+			shader = 'splash',
+			send = {
+				{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL_SHADER'},
+				{name = 'vort_speed', val = 0.4},
+				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
+				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
+			}}})
+		G.SPLASH_LOGO.T.w = G.SPLASH_LOGO.T.w * 1.1
+		G.SPLASH_LOGO.T.h = G.SPLASH_LOGO.T.h * 1.1
+		return ret
+	end
+end
+
 --Localization colors
 local lc = loc_colour
 function loc_colour(_c, _default)
@@ -432,7 +459,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 2800
+		local old = GLOBAL_cry_member_count or 3400
 		local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
 			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
@@ -445,7 +472,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 2800
+		GLOBAL_cry_member_count = 3400
 	end
 end
 
@@ -1938,6 +1965,28 @@ local nr = new_round
 function new_round()
 	G.hand:change_size(0)
 	nr()
+end
+
+local gfcfbs = G.FUNCS.check_for_buy_space
+G.FUNCS.check_for_buy_space = function(card)
+  if (card.ability.name == "cry-Negative Joker" and card.ability.extra >= 1) or
+	(card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1) or 
+	(card.ability.name == "cry-Tenebris" and card.ability.extra.slots >= 1) then
+    return true
+  end
+  return gfcfbs(card)
+end
+
+local gfcsc = G.FUNCS.can_select_card
+G.FUNCS.can_select_card = function(e)
+  if (e.config.ref_table.ability.name == "cry-Negative Joker" and card.config.ref_table.ability.extra >= 1) or
+	(e.config.ref_table.ability.name == "cry-soccer" and card.config.ref_table.ability.extra.holygrail >= 1) or 
+	(e.config.ref_table.ability.name == "cry-Tenebris" and card.config.ref_table.ability.extra.slots >= 1) then 
+    e.config.colour = G.C.GREEN
+    e.config.button = 'use_card'
+  else
+    gfcsc(e)
+  end
 end
 
 --Redefine these here because they're always used
