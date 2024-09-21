@@ -9,6 +9,7 @@ local copies = {
 	object_type = "Voucher",
 	key = "copies",
 	atlas = "atlasvoucher",
+	order = 1,
 	pos = { x = 1, y = 1 },
 	loc_vars = function(self, info_queue)
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
@@ -19,6 +20,7 @@ local copies = {
 local tag_printer = {
 	object_type = "Voucher",
 	key = "tag_printer",
+	order = 2,
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
@@ -32,6 +34,7 @@ local clone_machine = {
 	object_type = "Voucher",
 	key = "clone_machine",
 	atlas = "atlasvoucher",
+	order = 91,
 	pos = { x = 1, y = 3 },
 	loc_vars = function(self, info_queue)
 		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
@@ -44,6 +47,7 @@ local command_prompt = {
 	object_type = "Voucher",
 	key = "command_prompt",
 	atlas = "atlasvoucher",
+	order = 3,
 	pos = { x = 0, y = 1 },
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
@@ -69,6 +73,7 @@ local satellite_uplink = {
 	object_type = "Voucher",
 	key = "satellite_uplink",
 	atlas = "atlasvoucher",
+	order = 4,
 	pos = { x = 0, y = 2 },
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
@@ -78,6 +83,7 @@ local satellite_uplink = {
 local quantum_computing = {
 	object_type = "Voucher",
 	key = "quantum_computing",
+	order = 92,
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 3 },
 	loc_vars = function(self, info_queue)
@@ -89,6 +95,7 @@ local pairing = {
 	object_type = "Voucher",
 	key = "pairing",
 	atlas = "atlasvoucher",
+	order = 5,
 	pos = { x = 0, y = 0 },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
@@ -102,6 +109,7 @@ local repair_man = {
 	object_type = "Voucher",
 	key = "repair_man",
 	atlas = "atlasvoucher",
+	order = 6,
 	pos = { x = 1, y = 0 },
 	requires = { "v_cry_pairing" },
 	cry_credits = {
@@ -116,6 +124,7 @@ local pairamount_plus = {
 	object_type = "Voucher",
 	key = "pairamount_plus",
 	atlas = "atlasvoucher",
+	order = 93,
 	pos = { x = 2, y = 0 },
 	requires = { "v_cry_repair_man" },
 	cry_credits = {
@@ -129,6 +138,7 @@ local pairamount_plus = {
 local double_vision = {
 	object_type = "Voucher",
 	key = "double_vision",
+	order = 7,
 	atlas = "atlasvoucher",
 	pos = { x = 4, y = 3 },
 	loc_vars = function(self, info_queue)
@@ -146,6 +156,7 @@ local double_slit = {
 	object_type = "Voucher",
 	key = "double_slit",
 	atlas = "atlasvoucher",
+	order = 8,
 	pos = { x = 3, y = 4 },
 	requires = { "v_cry_double_vision" },
 	loc_vars = function(self, info_queue)
@@ -163,6 +174,7 @@ local double_down = {
 	object_type = "Voucher",
 	key = "double_down",
 	atlas = "atlasvoucher",
+	order = 94,
 	pos = { x = 4, y = 4 },
 	requires = { "v_cry_double_slit" },
 	loc_vars = function(self, info_queue)
@@ -181,6 +193,7 @@ local overstock_multi = {
 	key = "overstock_multi",
 	config = { extra = 1 },
 	atlas = "atlasvoucher",
+	order = 75,
 	pos = { x = 4, y = 1 },
 	requires = { "v_overstock_plus" },
 	loc_vars = function(self, info_queue)
@@ -217,6 +230,7 @@ local massproduct = {
 	object_type = "Voucher",
 	key = "massproduct",
 	atlas = "atlasvoucher",
+	order = 76,
 	pos = { x = 6, y = 4 },
 	requires = { "v_liquidation" },
 	redeem = function(self)
@@ -251,6 +265,7 @@ local curate = {
 	object_type = "Voucher",
 	key = "curate",
 	atlas = "atlasvoucher",
+	order = 77,
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
 }
@@ -258,6 +273,7 @@ local rerollexchange = {
 	object_type = "Voucher",
 	key = "rerollexchange",
 	atlas = "atlasvoucher",
+	order = 78,
 	pos = { x = 6, y = 2 },
 	requires = { "v_reroll_glut" },
 	redeem = function(self)
@@ -272,10 +288,12 @@ local rerollexchange = {
 		}))
 	end,
 }
-local scope = {
+--Order 79 reserved for celestial storage (unimplemented)
+local scope = { --Also unimplemented
 	object_type = "Voucher",
 	key = "scope",
 	atlas = "atlasvoucher",
+	order = 80,
 	pos = { x = 2, y = 0 },
 	requires = { "v_observatory" },
 }
@@ -284,6 +302,7 @@ local dexterity = {
 	key = "dexterity",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
+	order = 81,
 	pos = { x = 6, y = 3 },
 	requires = { "v_nacho_tong" },
 	loc_vars = function(self, info_queue)
@@ -313,6 +332,7 @@ local threers = {
 	key = "threers",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
+	order = 82,
 	pos = { x = 5, y = 0 },
 	requires = { "v_recyclomancy" },
 	loc_vars = function(self, info_queue)
@@ -342,6 +362,7 @@ local tacclimator = {
 	key = "tacclimator",
 	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
 	atlas = "atlasvoucher",
+	order = 83,
 	pos = { x = 1, y = 4 },
 	requires = { "v_tarot_tycoon" },
 	loc_vars = function(self, info_queue)
@@ -369,6 +390,7 @@ local pacclimator = {
 	key = "pacclimator",
 	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
 	atlas = "atlasvoucher",
+	order = 84,
 	pos = { x = 0, y = 4 },
 	requires = { "v_planet_tycoon" },
 	loc_vars = function(self, info_queue)
@@ -396,6 +418,7 @@ local moneybean = {
 	key = "moneybean",
 	config = { extra = 1e300 },
 	atlas = "atlasvoucher",
+	order = 85,
 	pos = { x = 5, y = 1 },
 	requires = { "v_money_tree" },
 	loc_vars = function(self, info_queue)
@@ -423,6 +446,7 @@ local fabric = {
 	key = "fabric",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
+	order = 86,
 	pos = { x = 6, y = 0 },
 	requires = { "v_antimatter" },
 	loc_vars = function(self, info_queue)
@@ -449,7 +473,7 @@ local fabric = {
 		}))
 	end,
 }
-
+--Order 87 reserved for Fake-out (unimplemented)
 local function asteroglyph_ante()
 	if not (G.GAME or {}).modifiers then
 		return 0
@@ -464,6 +488,7 @@ local asteroglyph = {
 	object_type = "Voucher",
 	key = "asteroglyph",
 	atlas = "atlasvoucher",
+	order = 88,
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
 	loc_vars = function(self, info_queue)
@@ -483,12 +508,13 @@ local asteroglyph = {
 		}))
 	end
 }
-
+--Order 89 reserved for Ivory Script (unimplemented)
 local blankcanvas = {
 	object_type = "Voucher",
 	key = "blankcanvas",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
+	order = 90,
 	pos = { x = 2, y = 4 },
 	requires = { "v_palette" },
 	loc_vars = function(self, info_queue)
@@ -507,6 +533,7 @@ local stickyhand = {
 	key = "stickyhand",
 	config = { extra = 1 },
 	atlas = "atlasvoucher",
+	order = 9,
 	pos = { x = 0, y = 5 },
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
@@ -528,6 +555,7 @@ local grapplinghook = {
 	key = "grapplinghook",
 	config = { extra = 1 },
 	atlas = "atlasvoucher",
+	order = 10,
 	pos = { x = 1, y = 5 },
 	requires = { "v_cry_stickyhand" },
 	loc_vars = function(self, info_queue)
@@ -551,6 +579,7 @@ local hyperspacetether = {
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 5 },
+	order = 95,
 	requires = { "v_cry_grapplinghook" },
 	loc_vars = function(self, info_queue)
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
