@@ -700,8 +700,8 @@ return {
             j_cry_duplicare = {
                 name = 'Duplicare',
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Mult for every {C:attention}Joker{}",
-                    "Increases by {X:dark_edition,C:white}^#2#{}", "when triggered"
+                    "Every {C:attention}Joker{} gives",
+                    "{X:dark_edition,C:white}^#1#{} Mult"
                 }
             },
             j_cry_effarcire = {
@@ -2240,10 +2240,14 @@ return {
             b_merge = "MERGE",
 
             cry_again_q = "Again?",
+            cry_curse = "Curse",
             cry_curse_ex = "Curse!",
             cry_sobbing = "Help me...",
+            cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
             cry_jolly_ex = "Jolly Up!",
+            cry_m_minus = "m",
+            cry_m = "M",
             cry_m_ex = "M!",
             cry_minus_round = "-1 Round",
             cry_plus_cryptid = "+1 Cryptid",
@@ -2279,7 +2283,12 @@ return {
             a_powchips = {"^#1# Chips"},
             a_powmultchips = {"^#1# Mult+Chips"},
             a_round = {"+#1# Round"},
-
+            a_xchips_minus = {"-X#1# Chips"},
+            a_powmult_minus = {"-^#1# Mult"},
+            a_powchips_minus = {"-^#1# Chips"},
+            a_powmultchips_minus = {"-^#1# Mult+Chips"},
+            a_round_minus = {"-#1# Round"},
+            
             cry_sticker_name = {"#1# Sticker"},
             cry_sticker_desc = {
                 "Used this Joker",
