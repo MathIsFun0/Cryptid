@@ -957,20 +957,13 @@ local duplicare = {
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
-    config = {extra = {Emult = 1.1, Emult_mod = 0.001}},
-    pos = { x = 6, y = 2 },
-    soul_pos = {x = 8, y = 2, extra = {x = 7, y = 2}},
-    loc_txt = {
-        name = 'Duplicare',
-        text = {
-            "{X:dark_edition,C:white}^#1#{} Mult for every {C:attention}Joker{}",
-            "Increases by {X:dark_edition,C:white}^#2#{}", "when triggered"
-        }
-    },
+    config = {extra = {Emult = 1.1, Emult_mod = 0.005}},
+	pos = { x = 0, y = 1 },
+	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     rarity = "cry_exotic",
     cost = 50,
     blueprint_compat = true,
-    atlas = "atlasexotic",
+    atlas = "placeholders",
     loc_vars = function(self, info_queue, center)
         return {
             vars = {center.ability.extra.Emult, center.ability.extra.Emult_mod}
@@ -996,32 +989,21 @@ local duplicare = {
     end
 }
 
+-- to be honest, this needs a refactor because
+-- rescribed jokers are forgotten on save reload
+-- they are not saved in a good way right now
+-- status text is not handled properly
 local rescribere = {
     object_type = "Joker",
     name = "cry-Rescribere",
     key = "rescribere",
-    pos = { x = 6, y = 3 },
-    soul_pos = {x = 8, y = 3, extra = {x = 7, y = 3}},
+	pos = { x = 0, y = 1 },
+	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     blueprint_compat = false,
     perishable_compat = false,
-    config = {extra = {}},
-    loc_txt = {
-            name = 'Rescribere',
-            text = {
-            "When a {C:attention}Joker{} is sold,",
-            "add its effects to",
-            "every other joker",
-            "{C:inactive,s:0.8}Does not affect other Rescribere{}"
-        }
-        },
-    loc_vars = function(self, info_queue, center)
-        return {
-            vars = {}
-        }
-    end,
     rarity = "cry_exotic",
     cost = 50,
-    atlas = "atlasexotic",
+    atlas = "placeholders",
     calculate = function(self, card, context)
         local eligibleJokers = {}
         for i = 1, #G.jokers.cards do
@@ -1057,7 +1039,6 @@ local rescribere = {
                         end
                         totalret.card = eligibleJokers[i]
                     end
-
                     return totalret
 
                 end
@@ -1217,7 +1198,7 @@ return {
 		gemino,
 		energia,
 		verisimile,
-		rescribere,
+		--rescribere, [NEEDS REFACTOR]
 		duplicare,
 	},
 }

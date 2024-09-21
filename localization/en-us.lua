@@ -697,6 +697,13 @@ return {
                     "{C:inactive,s:0.8}(grows by +1, +2, +3)",
                 },
             },
+            j_cry_duplicare = {
+                name = 'Duplicare',
+                text = {
+                    "{X:dark_edition,C:white}^#1#{} Mult for every {C:attention}Joker{}",
+                    "Increases by {X:dark_edition,C:white}^#2#{}", "when triggered"
+                }
+            },
             j_cry_effarcire = {
                 name = "Effarcire",
                 text = {
@@ -975,6 +982,15 @@ return {
                     "{C:attention,s:0.8}exponentially{s:0.8} per use",
                     "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#",
                 },
+            },
+            j_cry_rescribere = {
+                name = 'Rescribere',
+                text = {
+                    "When a {C:attention}Joker{} is sold,",
+                    "add its effects to",
+                    "every other Joker",
+                    "{C:inactive,s:0.8}Does not affect other Rescribere{}"
+                }
             },
             j_cry_reverse = {
                 name = "Reverse Card",
