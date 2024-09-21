@@ -957,7 +957,7 @@ local duplicare = {
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
-    config = {extra = {Emult = 1.1, Emult_mod = 0.005}},
+    config = {extra = {Emult = 1.25, Emult_mod = 0.005}},
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     rarity = "cry_exotic",
@@ -979,7 +979,7 @@ local duplicare = {
                     end
                 })) 
             end
-            card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+            card.ability.extra.Emult = card.ability.extra.Emult + 0
             return {
                 message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
                 Emult_mod = card.ability.extra.Emult,
