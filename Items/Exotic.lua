@@ -794,6 +794,7 @@ local gemino = {
 	key = "gemino",
 	pos = { x = 6, y = 1 },
 	soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
+	immune_to_chemach = true,
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -809,7 +810,7 @@ local gemino = {
 		if context.end_of_round and not context.repetition and not context.individual then
 			local check = false
 			local card = G.jokers.cards[1]
-			if G.jokers.cards[1].ability.name ~= "Ace Aequilibrium" then --Causes the same crashes that multiply spam on Aequilibrium did so preventing this from happening
+			if not G.jokers.cards[1].config.center.immune_to_chemach then
 				cry_with_deck_effects(G.jokers.cards[1], function(card)
 					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
