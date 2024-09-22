@@ -1,3 +1,4 @@
+--note to self: refer to https://docs.google.com/document/d/1LNaIouU3vrtWIuPBdFCqLyjYAjVtq7t64xjHnckEY50/edit for order of remaining consumables
 local code = {
 	object_type = "ConsumableType",
 	key = "Code",
@@ -160,6 +161,7 @@ local crash = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 1,
 	can_use = function(self, card)
 		return true
 	end,
@@ -187,6 +189,7 @@ local payload = {
 	end,
 	cost = 4,
 	atlas = "code",
+	order = 2,
 	can_use = function(self, card)
 		return true
 	end,
@@ -207,6 +210,7 @@ local reboot = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 3,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SELECTING_HAND
 	end,
@@ -244,6 +248,7 @@ local revert = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 4,
 	can_use = function(self, card)
 		return G.GAME.cry_revert
 	end,
@@ -276,6 +281,7 @@ local semicolon = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 32,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SELECTING_HAND and not G.GAME.blind.boss
 	end,
@@ -311,6 +317,7 @@ local malware = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 9,
 	can_use = function(self, card)
 		return #G.hand.cards > 0
 	end,
@@ -370,6 +377,7 @@ local seed = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 12,
 	can_use = function(self, card)
 		--the card itself and one other card
 		return #G.jokers.highlighted
@@ -428,6 +436,7 @@ local hook = {
 	config = {},
 	cost = 4,
 	atlas = "code",
+	order = 14,
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 2
 	end,
@@ -480,6 +489,7 @@ local variable = {
 		y = 1,
 	},
 	cost = 4,
+	order = 8,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.max_highlighted } }
@@ -513,6 +523,7 @@ local class = {
 		y = 1,
 	},
 	cost = 4,
+	order = 16,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.max_highlighted } }
@@ -546,6 +557,7 @@ local commit = {
 		y = 2,
 	},
 	cost = 4,
+	order = 31,
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 1
 			and not G.jokers.highlighted[1].ability.eternal
@@ -609,6 +621,7 @@ local merge = {
 		y = 2,
 	},
 	cost = 4,
+	order = 21,
 	can_use = function(self, card)
 		if #G.hand.highlighted ~= 1 + (card.area == G.hand and 1 or 0) then
 			return false
@@ -694,6 +707,7 @@ local multiply = {
 	key = "multiply",
 	name = "cry-Multiply",
 	atlas = "code",
+	order = 24,
 	pos = {
 		x = 3,
 		y = 2,
@@ -718,6 +732,7 @@ local divide = {
 	key = "divide",
 	name = "cry-Divide",
 	atlas = "code",
+	order = 23,
 	pos = {
 		x = 2,
 		y = 2,
@@ -750,6 +765,7 @@ local delete = {
 	key = "delete",
 	name = "cry-Delete",
 	atlas = "code",
+	order = 18,
 	pos = {
 		x = 4,
 		y = 2,
@@ -825,6 +841,7 @@ local spaghetti = {
 	key = "spaghetti",
 	name = "cry-Spaghetti",
 	atlas = "code",
+	order = 13,
 	pos = {
 		x = 5,
 		y = 2,
@@ -862,6 +879,7 @@ local machinecode = {
 	pos = { x = 0, y = 3 },
 	cost = 3,
 	atlas = "code",
+	order = 19,
 	can_use = function(self, card)
 		return true
 	end,
@@ -881,6 +899,7 @@ local run = {
 	pos = { x = 5, y = 0 },
 	cost = 3,
 	atlas = "code",
+	order = 6,
 	can_use = function(self, card)
 		return G.GAME.blind and G.GAME.blind.in_blind
 	end,
@@ -924,6 +943,7 @@ local exploit = {
 		y = 3,
 	},
 	cost = 4,
+	order = 28,
 	config = { extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
 	can_use = function(self, card)
 		return true
@@ -952,6 +972,7 @@ local oboe = {
 	key = "oboe",
 	name = "cry-oboe",
 	atlas = "code",
+	order = 10,
 	config = { extra = { choices = 1 } },
 	pos = {
 		x = 2,
@@ -974,6 +995,7 @@ local rework = {
 	key = "rework",
 	name = "cry-Rework",
 	atlas = "code",
+	order = 25,
 	pos = {
 		x = 3,
 		y = 3,
