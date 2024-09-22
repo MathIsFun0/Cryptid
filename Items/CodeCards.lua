@@ -1286,22 +1286,9 @@ local copypaste = {
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / card.ability.extra.odds then
-					if
-						G.GAME.probabilities.normal >= card.ability.extra.odds and context.consumeable.from_copypaste
-					then
-						card.ability.extra.ckt = card.ability.extra.ckt + 1
-					else
-						card.ability.extra.ckt = 0
-					end
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
-							if card.ability.extra.ckt >= 10 then
-								cards.beginning_end = true
-								card.ability.extra.ckt = 0
-							else
-								cards.from_from_copypaste = true
-							end
 							cards:add_to_deck()
 							G.consumeables:emplace(cards)
 							return true

@@ -847,7 +847,7 @@ local doodlem = {
 				nil,
 				{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
 			)
-			return true
+			return nil, true
 		end
 	end,
 }

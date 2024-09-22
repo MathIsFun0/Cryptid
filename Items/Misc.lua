@@ -1876,6 +1876,21 @@ return {
 				rma(t)
 			end
 		end
+		--prevent chaos the clown's ability from being applied on debuff
+		local catd = Card.add_to_deck
+		local crfd = Card.remove_from_deck
+		function Card:add_to_deck(debuff)
+			if debuff and self.ability.name == 'Chaos the Clown' then
+				return
+			end
+			return catd(self, debuff)
+		end
+		function Card:remove_from_deck(debuff)
+			if debuff and self.ability.name == 'Chaos the Clown' then
+				return
+			end
+			return crfd(self, debuff)
+		end
 	end,
 	items = miscitems,
 }
