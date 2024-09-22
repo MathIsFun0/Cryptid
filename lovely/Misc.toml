@@ -206,13 +206,21 @@ end
 '''
 match_indent = true
 
-# Compat UI for Old Blueprint
+# Compat UI for Old Blueprint and Gemini
 [[patches]]
 [patches.pattern]
 target = "card.lua"
 pattern = "elseif self.ability.name == 'Blueprint' then"
 position = "at"
-payload = "elseif self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' then"
+payload = '''elseif self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' then'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.ability.name == 'Brainstorm' then"
+position = "at"
+payload = '''elseif self.ability.name == 'Brainstorm' or self.config.center.key == 'j_cry_gemino' then'''
 match_indent = true
 
 [[patches]]
@@ -220,7 +228,15 @@ match_indent = true
 target = "card.lua"
 pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
 position = "at"
-payload = "if self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' or self.ability.name == 'Brainstorm' then"
+payload = '''
+if self.config.center.key == 'j_cry_gemino' then
+other_joker = G.jokers.cards[1]
+if other_joker and other_joker ~= self and not other_joker.config.center.immune_to_chemach then
+    self.ability.blueprint_compat = 'compatible'
+else
+    self.ability.blueprint_compat = 'incompatible'
+end end
+if self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' or self.ability.name == 'Brainstorm' then'''
 match_indent = true
 
 # calculate wheel fail (for Wheel of Hope)
