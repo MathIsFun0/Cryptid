@@ -280,6 +280,8 @@ return {
                 text = {
                     "将 {C:cry_code}#1#{} 选中的牌",
                     "转换为 {C:cry_code}指令下的{} 增强",
+                    "可用指令：{C:cry_code}full house{},{C:cry_code}flush{},{C:cry_code}straight flush{},{C:cry_code}four of a kind{}",
+                    "{C:cry_code}three of a kind{},{C:cry_code}pair{},{C:cry_code}two pair{},{C:cry_code}high{}"
                 },
             },
             c_cry_commit = {
@@ -315,9 +317,12 @@ return {
                 text = {
                     "{C:cry_code}下一{} 手牌",
                     "被计算为",
-                    "{C:cry_code}选择的{} 扑克牌",
+                    "{C:cry_code}指令下的{} 牌型",
                     "{C:inactive,s:0.8}必须发现",
                     "{C:inactive,s:0.8}有效的隐藏手牌",
+                    "可用指令：{C:cry_code}bonus{},{C:cry_code}mult{},{C:cry_code}wild{},{C:cry_code}glass{}",
+                    "{C:cry_code}steel{},{C:cry_code}stone{},{C:cry_code}gold{},{C:cry_code}lucky{},{C:cry_code}echo{}",
+
                 },
             },
             c_cry_hook = {
@@ -428,6 +433,7 @@ return {
                 text = {
                     "将 {C:cry_code}#1#{} 张选中的牌",
                     "转换为 {C:cry_code}指令下的{} 牌型",
+                    "可用指令：{C:cry_code}A,2~10,J,Q,K{}"
                 },
             },
         },
