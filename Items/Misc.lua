@@ -15,8 +15,12 @@ if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_krustytheclown"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_blurred"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_filler"
+end
+if cry_minvasion then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_reverse"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_bonk"
+end
+if cry_enable_epics then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_boredom"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_curse"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_m"
