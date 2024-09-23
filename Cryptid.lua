@@ -39,7 +39,6 @@ SMODS.Rarity{
     default_rate = 0.003,
     pools = {["Joker"] = true},
     get_rate = function(self, orig_rate, object_type)
-		print(tostring(orig_rate))
         if Cryptid_config["Epic Jokers"] then
             return 0.003
         else
