@@ -4,7 +4,7 @@ Cryptid.memepack[#Cryptid.memepack + 1] = "j_obelisk"
 Cryptid.memepack[#Cryptid.memepack + 1] = "j_space" --Nobody takes this thing seriously so i'm putting it here
 Cryptid.memepack[#Cryptid.memepack + 1] = "j_mr_bones" --sans undertale
 
-if cry_enable_jokers then
+if Cryptid.enabled["Misc. Jokers"] then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cube"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cryptidmoment"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_happyhouse"
@@ -15,8 +15,12 @@ if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_krustytheclown"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_blurred"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_filler"
+end
+if Cryptid.enabled["M Jokers"] then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_reverse"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_bonk"
+end
+if Cryptid.enabled["Epic Jokers"] then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_boredom"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_curse"
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_m"
