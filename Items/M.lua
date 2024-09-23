@@ -5,20 +5,10 @@ Cryptid.M_jokers = {
 
 local jollysus = {
 	object_type = "Joker",
-	name = "cry-jollysus",
+	name = "cry-jollysus Joker",
 	key = "jollysus",
 	pos = { x = 3, y = 1 },
-	config = { extra = { spawn = true, active = "Active!" } },
-	loc_txt = {
-		name = "Jolly Joker?",
-		text = {
-			"Create a {C:dark_edition}Jolly{} Joker",
-			"when a Joker is {C:attention}sold{}",
-			"{C:red}Works once per round{}",
-			"{C:inactive}#1#{}",
-			"{C:inactive,s:0.8}Seems legit...{}",
-		},
-	},
+	config = { extra = { spawn = true, active = localize("k_active_ex") } },
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -31,7 +21,7 @@ local jollysus = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.retrigger_joker and not context.blueprint then
 			if not card.ability.extra.spawn then
-				card.ability.extra.active = "Active!"
+				card.ability.extra.active = localize("k_active_ex")
 				card.ability.extra.spawn = true
 				return {
 					message = localize("k_reset"),
@@ -42,7 +32,7 @@ local jollysus = {
 		if context.selling_card and card.ability.extra.spawn and not context.retrigger_joker then
 			if context.card.ability.set == "Joker" then
 				if not context.blueprint and not context.retrigger_joker then
-					card.ability.extra.active = "No triggers left!"
+					card.ability.extra.active = localize("cry_no_triggers")
 					card.ability.extra.spawn = false
 				end
 				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
@@ -51,7 +41,7 @@ local jollysus = {
 				G.jokers:emplace(card)
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = "M!",
+						message = localize("cry_m_ex"),
 						colour = G.C.FILTER,
 						card = card,
 					}),
@@ -59,7 +49,7 @@ local jollysus = {
 			end
 		elseif context.selling_self and card.ability.extra.spawn and not context.retrigger_joker then
 			if not context.blueprint and not context.retrigger_joker then
-				card.ability.extra.active = "No triggers left!"
+				card.ability.extra.active = localize("cry_no_triggers")
 				card.ability.extra.spawn = false
 			end
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
@@ -68,7 +58,7 @@ local jollysus = {
 			G.jokers:emplace(card)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "M!",
+					message = localize("cry_m_ex"),
 					colour = G.C.FILTER,
 					card = card,
 				}),
@@ -91,15 +81,6 @@ local kidnap = {
 		mad = { t_mult = 10, type = "Two Pair" },
 		crazy = { t_mult = 12, type = "Straight" },
 		droll = { t_mult = 10, type = "Flush" },
-	},
-	loc_txt = {
-		name = "Kidnapping",
-		text = {
-			"Earn {C:money}$#1#{} and Create a {C:attention}Jolly{}",
-			"{C:attention}Joker{} when {C:attention}Zany Joker{},",
-			"{C:attention}Mad Joker{}, {C:attention}Crazy Joker{},",
-			"or {C:attention}Droll Joker{} is {C:attention}sold{}",
-		},
 	},
 	rarity = 1,
 	cost = 1,
@@ -149,7 +130,7 @@ local kidnap = {
 			G.jokers:emplace(card)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "M!",
+					message = localize("cry_m_ex"),
 					colour = G.C.FILTER,
 					card = card,
 				}),
@@ -163,15 +144,6 @@ local bubblem = {
 	key = "bubblem",
 	pos = { x = 0, y = 0 },
 	config = { extra = { spawn = false, type = "Three of a Kind" }, jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Bubble M",
-		text = {
-			"Create a {C:dark_edition}Foil {C:attention}Jolly Joker{}",
-			"if played hand contains",
-			"a {C:attention}#1#{}",
-			"{C:red,E:2}self destructs{}",
-		},
-	},
 	rarity = 1,
 	cost = 2,
 	eternal_compat = false,
@@ -224,7 +196,7 @@ local bubblem = {
 			G.jokers:emplace(card)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "M!",
+					message = localize("cry_m_ex"),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -236,21 +208,10 @@ local foodm = {
 	name = "cry-foodm",
 	key = "foodm",
 	config = {
-		extra = { mult = 40, rounds_remaining = 2, text = "s", round_inc = 1 },
+		extra = { mult = 40, rounds_remaining = 2, round_inc = 1 },
 		jolly = { t_mult = 8, type = "Pair" },
 	},
 	pos = { x = 4, y = 2 },
-	loc_txt = {
-		name = "Fast Food M",
-		text = {
-			"{C:mult}+#1#{} Mult",
-			"{C:red,E:2}self destructs{} in {C:attention}#2#{} round#3#",
-			"Increases by {C:attention}#4#{} round when",
-			"{C:attention}Jolly Joker{} is {C:attention}sold{}",
-			"{C:inactive,s:0.8}2 McDoubles, 2 McChickens{}",
-			"{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
-		},
-	},
 	rarity = 1,
 	cost = 5,
 	atlas = "atlasone",
@@ -266,7 +227,6 @@ local foodm = {
 			vars = {
 				center.ability.extra.mult,
 				center.ability.extra.rounds_remaining,
-				center.ability.extra.text,
 				center.ability.extra.round_inc,
 			},
 		}
@@ -294,7 +254,7 @@ local foodm = {
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
 			if card.ability.extra.rounds_remaining > 0 then
 				return {
-					message = { "-1 Round" },
+					message = { localize("cry_minus_round") },
 					colour = G.C.FILTER,
 				}
 			else
@@ -320,7 +280,7 @@ local foodm = {
 					end,
 				}))
 				return {
-					message = "M!",
+					message = localize("cry_m_ex"),
 				}
 			end
 		end
@@ -336,15 +296,10 @@ local foodm = {
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + card.ability.extra.round_inc
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "+" .. card.ability.extra.round_inc .. " Round",
+					message = localize{type='variable',key='a_round',vars={card.ability.extra.round_inc}},
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if card.ability.extra.rounds_remaining == 1 then --For text display
-			card.ability.extra.text = ""
-		else
-			card.ability.extra.text = "s"
 		end
 	end,
 }
@@ -355,15 +310,6 @@ local mstack = {
 	config = { extra = { sell = 0, sell_req = 3, retriggers = 1, check = false }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 2, y = 3 },
 	atlas = "atlastwo",
-	loc_txt = {
-		name = "M Stack",
-		text = {
-			"Retrigger all cards played",
-			"once for every",
-			"{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Jokers{} sold",
-			"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
-		},
-	},
 	rarity = 3,
 	cost = 7,
 	blueprint_compat = true,
@@ -401,7 +347,7 @@ local mstack = {
 				card.ability.extra.sell = 0
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = "Upgrade!",
+						message = localize("k_upgrade_ex"),
 						colour = G.C.FILTER,
 					}),
 				}
@@ -429,16 +375,6 @@ local mneon = {
 	key = "mneon",
 	pos = { x = 4, y = 2 },
 	config = { extra = { bonus = 1, money = 0 }, jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Neon M",
-		text = {
-			"Earn {C:money}$#2#{} at end of round",
-			"Increase payout by",
-			"{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-			"at end of round",
-			"{C:inactive}(Minimum increase of{} {C:money}$1{}{C:inactive}){}",
-		},
-	},
 	rarity = 2,
 	cost = 7,
 	perishable_compat = false,
@@ -465,10 +401,10 @@ local mneon = {
 			end
 			if (card.ability.extra.bonus * jollycount) > 1 then
 				card.ability.extra.money = card.ability.extra.money + card.ability.extra.bonus * jollycount
-				return { message = "M!" }
+				return { message = localize("cry_m_ex") }
 			else
 				card.ability.extra.money = card.ability.extra.money + math.max(1, card.ability.extra.bonus)
-				return { message = "Upgrade!" }
+				return { message = localize("k_upgrade_ex") }
 			end
 		end
 	end,
@@ -488,17 +424,6 @@ local notebook = {
 		jolly = { t_mult = 8, type = "Pair" },
 	},
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Notebook",
-		text = {
-			"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
-			"slot per {C:attention}reroll{} in the shop",
-			"{C:green}Always triggers{} if there are",
-			"{C:attention}#5#{} or more {C:attention}Jolly Jokers{}",
-			"{C:red}Works once per round{}",
-			"{C:inactive}(Currently {C:dark_edition}+#3#{}{C:inactive} and #4#){}",
-		},
-	},
 	rarity = 3,
 	cost = 9,
 	perishable_compat = false,
@@ -542,10 +467,10 @@ local notebook = {
 				card.ability.extra.slot = card.ability.extra.slot + 1
 				G.jokers.config.card_limit = G.jokers.config.card_limit + 1
 				card.ability.extra.check = false
-				card.ability.extra.active = "Inactive"
+				card.ability.extra.active = localize("cry_inactive")
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = "Upgrade!",
+						message = localize("k_upgrade_ex"),
 						colour = G.C.DARK_EDITION,
 					}),
 				}
@@ -554,7 +479,7 @@ local notebook = {
 		if context.end_of_round and not context.retrigger_joker and not context.blueprint then
 			if not card.ability.extra.check then
 				card.ability.extra.check = true
-				card.ability.extra.active = "Active"
+				card.ability.extra.active = localize("cry_active")
 				return {
 					message = localize("k_reset"),
 					card = card,
@@ -575,16 +500,7 @@ local bonk = {
 	key = "bonk",
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" }, jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Bonk",
-		text = {
-			"Each {C:attention}Joker{} gives {C:chips}+#1#{} Chips",
-			"Increase amount by {C:chips}+#2#{} if",
-			"{C:attention} poker hand{} is a {C:attention}#3#{}",
-			"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chips instead{}",
-		},
-	},
-    pools = {["Meme"] = true},
+  pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -661,20 +577,10 @@ local loopy = { --this may or may not need further balancing
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
-	config = { extra = { retrigger = 0, text = "s" }, jolly = { t_mult = 8, type = "Pair" } },
+	config = { extra = { retrigger = 0}, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 4, y = 1 },
 	atlas = "atlastwo",
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Loopy",
-		text = {
-			"{C:attention}Retrigger{} all Jokers",
-			"once for each {C:attention}Jolly{}",
-			"{C:attention}Joker{} sold this round",
-			"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} Retrigger#2#){}",
-			"{C:inactive,s:0.8}There wasn't enough room...{}",
-		},
-	},
 	rarity = 1,
 	cost = 4,
 	joker_gate = "Jolly Joker",
@@ -685,7 +591,7 @@ local loopy = { --this may or may not need further balancing
 			key = "j_jolly",
 			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
 		}
-		return { vars = { center.ability.extra.retrigger, center.ability.extra.text } }
+		return { vars = { center.ability.extra.Retrigger } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -695,14 +601,9 @@ local loopy = { --this may or may not need further balancing
 			and not context.retrigger_joker
 		then
 			card.ability.extra.retrigger = card.ability.extra.retrigger + 1
-			if card.ability.extra.retrigger == 1 then
-				card.ability.extra.text = ""
-			else
-				card.ability.extra.text = "s"
-			end
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "M!",
+					message = localize("cry_m_ex"),
 					colour = G.C.GREEN,
 				}),
 			}
@@ -716,7 +617,6 @@ local loopy = { --this may or may not need further balancing
 			and not context.repetition
 		then
 			card.ability.extra.retrigger = 0
-			card.ability.extra.text = "s"
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("k_reset"),
@@ -746,14 +646,6 @@ local scrabble = {
 	config = { extra = { odds = 4 } },
 	pos = { x = 0, y = 2 },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Scrabble Tile",
-		text = {
-			"{C:green}#1# in #2#{} chance to create",
-			"a {C:dark_edition}Jolly {C:green}Uncommon{} Joker",
-			"when hand is played",
-		},
-	},
 	rarity = 2,
 	cost = 8,
 	blueprint_compat = true,
@@ -779,7 +671,7 @@ local scrabble = {
 				G.jokers:emplace(card)
 			end
 			if check then
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = "M!", colour = G.C.DARK_EDITION })
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
 				return nil, true
 			end
 		end
@@ -789,19 +681,9 @@ local sacrifice = {
 	object_type = "Joker",
 	name = "cry-sacrifice",
 	key = "sacrifice",
-	config = { extra = { text = "Active!", spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
+	config = { extra = { text = localize("k_active_ex"), spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 5, y = 2 },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Sacrifice",
-		text = {
-			"Create an {C:green}Uncommon{} Joker",
-			"and 3 {C:attention}Jolly Jokers{} when",
-			"a {C:spectral}Spectral{} card is used",
-			"{C:red}Works once per round{}",
-			"{C:inactive}#1#{}",
-		},
-	},
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -821,7 +703,7 @@ local sacrifice = {
 					card.ability.extra.spawn = false
 				end
 				if not card.ability.extra.spawn then
-					card.ability.extra.text = "No triggers left!"
+					card.ability.extra.text = localize("cry_no_triggers")
 				end
 				for i = 1, 3 do
 					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
@@ -832,14 +714,14 @@ local sacrifice = {
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:start_materialize()
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = "M!", colour = G.C.SPECTRAL })
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.SPECTRAL })
 				return nil, true
 			end
 		end
 		if context.end_of_round and not context.retrigger_joker and not context.blueprint then
 			if not card.ability.extra.spawn then
 				card.ability.extra.spawn = true
-				card.ability.extra.text = "Active!"
+				card.ability.extra.text = localize("k_active_ex")
 				return {
 					message = localize("k_reset"),
 					card = card,
@@ -854,18 +736,8 @@ local reverse = {
 	name = "cry-reverse",
 	key = "reverse",
 	config = { extra = { type = "Pair", spawn = 0 }, jolly = { t_mult = 8, type = "Pair" } },
-	pos = { x = 0, y = 0 },
   pools = {["Meme"] = true},
-	loc_txt = {
-		name = "Reverse Card",
-		text = {
-			"Fill all empty Joker slots {C:inactive}(Max 100){}",
-			"with {C:dark_edition}Holographic{} {C:attention}Jolly Jokers{} if",
-			"{C:attention}discarded poker hand{} is a {C:attention}#1#{}",
-			"{C:red,E:2}self destructs{}",
-			"{C:inactive,s:0.8}The ULTIMATE comeback{}",
-		},
-	},
+	pos = { x = 0, y = 0 },
 	rarity = 2,
 	cost = 4,
 	eternal_compat = false,
@@ -925,7 +797,7 @@ local reverse = {
 						return true
 					end,
 				}))
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = "M!", colour = G.C.DARK_EDITION })
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
 			end
 		end
 	end,
@@ -938,15 +810,6 @@ local doodlem = {
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 2, y = 0 },
 	immune_to_chemach = true,
-	loc_txt = {
-		name = "Doodle M",
-		text = {
-			"Create 2 {C:dark_edition}Negative{} {C:attention}consumables{}",
-			"when {C:attention}Blind{} is selected",
-			"Create 1 more {C:attention}consumable",
-			"for each {C:attention}Jolly Joker{}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 13,
 	blueprint_compat = true,
@@ -984,9 +847,9 @@ local doodlem = {
 				nil,
 				nil,
 				nil,
-				{ message = "M!", colour = G.C.DARK_EDITION }
+				{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
 			)
-			return true
+			return nil, true
 		end
 	end,
 }
@@ -997,16 +860,6 @@ local virgo = {
 	pos = { x = 1, y = 2 },
 	soul_pos = { x = 10, y = 0, extra = { x = 2, y = 2 } },
 	config = { extra = { bonus = 4, type = "Pair" }, jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Virgo",
-		text = {
-			"This Joker gains {C:money}$#1#{} of {C:attention}sell value{}",
-			"if {C:attention}poker hand{} contains a {C:attention}#2#{}",
-			"Sell this card to create a",
-			"{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
-			"every {C:money}$4{} of {C:attention}sell value{} {C:inactive}(Min 1){}",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 8,
 	eternal_compat = false,
@@ -1057,7 +910,7 @@ local virgo = {
 							return true
 						end,
 					}))
-					card_eval_status_text(card, "extra", nil, nil, nil, { message = "M!", colour = G.C.DARK_EDITION })
+					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
 					return true
 				end,
 			}))
@@ -1071,16 +924,6 @@ local smallestm = {
 	key = "smallestm",
 	config = { extra = { x_chips = 9, type = "Pair", check = false, text = "Inactive" } },
 	pos = { x = 5, y = 0 },
-	loc_txt = {
-		name = "Tiny",
-		text = {
-			"{X:chips,C:white} X#1# {} Chips until end",
-			"of round if {C:attention}poker hand{}",
-			"is a {C:attention}#2#{}",
-			"{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
-			"{C:inactive,s:0.8}ok so basically i'm very smol",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 8,
 	blueprint_compat = true,
@@ -1109,7 +952,7 @@ local smallestm = {
 					message = localize("k_active_ex"),
 					colour = G.C.FILTER,
 				})
-				card.ability.extra.text = "Active"
+				card.ability.extra.text = localize("cry_active")
 			end
 		end
 		if
@@ -1121,7 +964,7 @@ local smallestm = {
 			and not context.repetition
 		then
 			card.ability.extra.check = false
-			card.ability.extra.text = "Inactive"
+			card.ability.extra.text = localize("cry_inactive")
 			return {
 				message = localize("k_reset"),
 				card = card,
@@ -1135,16 +978,6 @@ local biggestm = {
 	key = "biggestm",
 	config = { extra = { x_mult = 7, type = "Pair", check = false, text = "Inactive" } },
 	pos = { x = 3, y = 3 },
-	loc_txt = {
-		name = "Huge",
-		text = {
-			"{X:mult,C:white} X#1# {} Mult until end",
-			"of round if {C:attention}poker hand{}",
-			"is a {C:attention}#2#{}",
-			"{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
-			"{C:inactive,s:0.8}not fat, just big boned.",
-		},
-	},
 	rarity = "cry_epic",
 	cost = 12,
 	blueprint_compat = true,
@@ -1161,7 +994,7 @@ local biggestm = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and card.ability.extra.check and not context.before and not context.after then
 			return {
-				message = "X" .. number_format(card.ability.extra.x_mult) .. " Mult", -- why is it like this?
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
 				Xmult_mod = card.ability.extra.x_mult,
 				colour = G.C.MULT,
 			}
@@ -1173,7 +1006,7 @@ local biggestm = {
 					message = localize("k_active_ex"),
 					colour = G.C.FILTER,
 				})
-				card.ability.extra.text = "Active"
+				card.ability.extra.text = localize("cry_active")
 			end
 		end
 		if
@@ -1185,7 +1018,7 @@ local biggestm = {
 			and not context.repetition
 		then
 			card.ability.extra.check = false
-			card.ability.extra.text = "Inactive"
+			card.ability.extra.text = localize("cry_inactive")
 			return {
 				message = localize("k_reset"),
 				card = card,
@@ -1200,17 +1033,6 @@ local mprime = {
 	pos = { x = 0, y = 5 },
 	soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
 	config = { extra = { mult = 1.05, bonus = 0.04, check = true }, jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Tredecim",
-		text = {
-			"Create up to 4 {C:attention}Jolly Jokers{} when obtained",
-			"Each {C:attention}Jolly Joker{} gives {X:dark_edition,C:white}^#1#{} Mult",
-			"Increase amount by {X:dark_edition,C:white}^#2#{} and",
-			"create an {C:legendary}M Joker{} {C:red}once per round",
-			"when a {C:attention}Jolly Joker{} is {C:attention}sold",
-			"{C:inactive,s:0.8}(Tredecim excluded)",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -1256,7 +1078,7 @@ local mprime = {
 				_card:start_materialize()
 				G.jokers:emplace(_card)
 			end
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = "M!", colour = G.C.DARK_EDITION })
+			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
 		end
 		if context.other_joker then
 			if
@@ -1275,7 +1097,7 @@ local mprime = {
 					}))
 				end
 				return {
-					message = "^" .. number_format(card.ability.extra.mult) .. " Mult",
+					message = localize{type='variable',key='a_powmult',vars={card.ability.extra.mult}},
 					Emult_mod = card.ability.extra.mult,
 					colour = G.C.DARK_EDITION,
 					card = card,
@@ -1307,20 +1129,10 @@ local mprime = {
 }
 local macabre = {
 	object_type = "Joker",
-	name = "cry-macabre",
+	name = "cry-Macabre Joker",
 	key = "macabre",
 	pos = { x = 1, y = 2 },
 	config = { jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Macabre Joker",
-		text = {
-			"When {C:attention}Blind{} is selected,",
-			"destroys each {C:attention}Joker{} except",
-			"{C:legendary}M-Jokers{} and {C:attention}Jolly Jokers{}",
-			"and create 1 {C:attention}Jolly Joker{}",
-			"for each destroyed card",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -1353,6 +1165,9 @@ local macabre = {
 						end
 					end
 					for _, v in pairs(destroyed_jokers) do
+						if v.config.center.rarity == "cry_exotic" then
+							check_for_unlock({ type = "what_have_you_done" })
+						end
 						triggered = true
 						v.getting_sliced = true
 						v:start_dissolve({ HEX("57ecab") }, nil, 1.6)
@@ -1376,14 +1191,6 @@ local megg = {
 	key = "Megg",
 	pos = { x = 0, y = 4 },
 	config = { extra = { amount = 0, amount_mod = 1 }, jolly = { t_mult = 8, type = "Pair" } },
-	loc_txt = {
-		name = "Megg",
-		text = {
-			"Sell this card to create",
-			"{C:attention}#2#{} Jolly #3#, increase",
-			"by {C:attention}#1#{} at end of round",
-		},
-	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -1411,7 +1218,7 @@ local megg = {
 			if card.ability.extra.amount > 200 then
 				card.ability.extra.amount = 200
 			end
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = { "Jolly Up!" }, colour = G.C.FILTER })
+			card_eval_status_text(card, "extra", nil, nil, nil, { message = { localize("cry_jolly_ex") }, colour = G.C.FILTER })
 			return nil, true
 		end
 		if
@@ -1433,16 +1240,6 @@ local longboi = {
 	key = "longboi",
 	pos = { x = 5, y = 4 },
 	config = { extra = 2 },
-	loc_txt = {
-		name = "Monster",
-		text = {
-			"Give future copies of",
-			"this Joker {X:mult,C:white}X#1#{} Mult",
-			"at end of round",
-			"{C:red,E:2}self destructs{}",
-			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
-		},
-	},
 	rarity = 1,
 	cost = 3,
 	blueprint_compat = true,
@@ -1484,7 +1281,7 @@ local longboi = {
 			}))
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = "M!",
+					message = localize("cry_m_ex"),
 					colour = G.C.FILTER,
 				}),
 			}

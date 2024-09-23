@@ -5,16 +5,10 @@ local pink = {
 	pos = { x = 0, y = 0 },
 	atlas = "stake",
 	applied_stakes = { "gold" },
-	loc_txt = {
-		name = "Pink Stake",
-		text = {
-			"Required score scales",
-			"faster for each {C:attention}Ante",
-		},
-	},
 	modifiers = function()
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
 	end,
+	order = 9,
 	colour = HEX("ff5ee6"),
 }
 local brown = {
@@ -27,13 +21,7 @@ local brown = {
 	modifiers = function()
 		G.GAME.modifiers.cry_eternal_perishable_compat = true
 	end,
-	loc_txt = {
-		name = "Brown Stake",
-		text = {
-			"All {C:attention}stickers{} are compatible",
-			"with each other",
-		},
-	},
+	order = 10,
 	colour = HEX("883200"),
 }
 local yellow = {
@@ -46,13 +34,7 @@ local yellow = {
 	modifiers = function()
 		G.GAME.modifiers.cry_any_stickers = true
 	end,
-	loc_txt = {
-		name = "Yellow Stake",
-		text = {
-			"{C:attention}Stickers{} can appear on",
-			"all purchasable items",
-		},
-	},
+	order = 11,
 	colour = HEX("f7ff1f"),
 }
 local jade = {
@@ -65,13 +47,8 @@ local jade = {
 	modifiers = function()
 		G.GAME.modifiers.flipped_cards = 20
 	end,
-	loc_txt = {
-		name = "Jade Stake",
-		text = {
-			"Cards can be drawn {C:attention}face down{}",
-		},
-	},
 	shiny = true,
+	order = 12,
 	colour = HEX("78953c"),
 }
 local cyan = {
@@ -87,13 +64,7 @@ local cyan = {
     G.GAME.uncommon_mod = 0.5
     G.GAME.rare_mod = 0.5
 	end,
-	loc_txt = {
-		name = "Cyan Stake",
-		text = {
-			"{C:green}Uncommon{} and {C:red}Rare{} Jokers are",
-			"less likely to appear",
-		},
-	},
+	order = 13,
 	colour = HEX("39ffcc"),
 }
 local gray = {
@@ -106,12 +77,7 @@ local gray = {
 	modifiers = function()
 		G.GAME.modifiers.cry_reroll_scaling = 2
 	end,
-	loc_txt = {
-		name = "Gray Stake",
-		text = {
-			"Rerolls increase by {C:attention}$2{} each",
-		},
-	},
+	order = 14,
 	colour = HEX("999999"),
 }
 local crimson = {
@@ -124,12 +90,7 @@ local crimson = {
 	modifiers = function()
 		G.GAME.modifiers.cry_voucher_restock_antes = 2
 	end,
-	loc_txt = {
-		name = "Crimson Stake",
-		text = {
-			"Vouchers restock on {C:attention}even{} Antes",
-		},
-	},
+	order = 15,
 	colour = HEX("800000"),
 }
 local diamond = {
@@ -142,13 +103,8 @@ local diamond = {
 	modifiers = function()
 		G.GAME.win_ante = 10
 	end,
-	loc_txt = {
-		name = "Diamond Stake",
-		text = {
-			"Must beat Ante {C:attention}10{} to win",
-		},
-	},
 	shiny = true,
+	order = 16,
 	colour = HEX("88e5d9"),
 }
 local amber = {
@@ -161,13 +117,8 @@ local amber = {
 	modifiers = function()
 		G.GAME.modifiers.cry_booster_packs = 1
 	end,
-	loc_txt = {
-		name = "Amber Stake",
-		text = {
-			"{C:attention}-1{} Booster Pack slot",
-		},
-	},
 	shiny = true,
+	order = 17,
 	colour = HEX("feb900"),
 }
 local bronze = {
@@ -180,13 +131,8 @@ local bronze = {
 	modifiers = function()
 		G.GAME.modifiers.cry_voucher_price_hike = 1.5
 	end,
-	loc_txt = {
-		name = "Bronze Stake",
-		text = {
-			"Vouchers are {C:attention}50%{} more expensive",
-		},
-	},
 	shiny = true,
+	order = 18,
 	colour = HEX("d27c37"),
 }
 local quartz = {
@@ -199,14 +145,8 @@ local quartz = {
 	modifiers = function()
 		G.GAME.modifiers.cry_enable_pinned_in_shop = true
 	end,
-	loc_txt = {
-		name = "Quartz Stake",
-		text = {
-			"Jokers can be {C:attention}Pinned{}",
-			"{s:0.8,C:inactive}(Stays pinned to the leftmost position){}",
-		},
-	},
 	shiny = true,
+	order = 19,
 	colour = HEX("e8e8e8"),
 }
 local ruby = {
@@ -219,14 +159,8 @@ local ruby = {
 	modifiers = function()
 		G.GAME.modifiers.cry_big_boss_rate = 0.3
 	end,
-	loc_txt = {
-		name = "Ruby Stake",
-		text = {
-			"{C:attention}Big{} Blinds can become",
-			"{C:attention}Boss{} Blinds",
-		},
-	},
 	shiny = true,
+	order = 20,
 	colour = HEX("fc5f55"),
 }
 local glass = {
@@ -239,13 +173,8 @@ local glass = {
 	modifiers = function()
 		G.GAME.modifiers.cry_shatter_rate = 30
 	end,
-	loc_txt = {
-		name = "Glass Stake",
-		text = {
-			"Cards can {C:attention}shatter{} when scored",
-		},
-	},
 	shiny = true,
+	order = 21,
 	colour = HEX("ffffff8f"),
 }
 local sapphire = {
@@ -259,15 +188,8 @@ local sapphire = {
 		G.GAME.modifiers.cry_ante_tax = 0.25
 		G.GAME.modifiers.cry_ante_tax_max = 10
 	end,
-	loc_txt = {
-		name = "Sapphire Stake",
-		text = {
-			"Lose {C:attention}25%{} of current money",
-			"at end of Ante",
-			"{s:0.8,C:inactive}(Up to $10){}",
-		},
-	},
 	shiny = true,
+	order = 22,
 	colour = HEX("3551fc"),
 }
 local emerald = {
@@ -280,15 +202,8 @@ local emerald = {
 	modifiers = function()
 		G.GAME.modifiers.cry_enable_flipped_in_shop = true
 	end,
-	loc_txt = {
-		name = "Emerald Stake",
-		text = {
-			"Cards, packs, and vouchers",
-			"can be {C:attention}face down{}",
-			"{s:0.8,C:inactive}(Unable to be viewed until purchased){}",
-		},
-	},
 	shiny = true,
+	order = 23,
 	colour = HEX("06fc2c"),
 }
 local platinum = {
@@ -302,13 +217,8 @@ local platinum = {
 		G.GAME.modifiers.cry_no_small_blind = true
 		G.GAME.round_resets.blind_states["Small"] = "Hide"
 	end,
-	loc_txt = {
-		name = "Platinum Stake",
-		text = {
-			"Small Blinds are {C:attention}removed{}",
-		},
-	},
 	shiny = true,
+	order = 24,
 	colour = HEX("b0f6ff"),
 }
 --init colors so they have references
@@ -330,14 +240,8 @@ local twilight = {
 	modifiers = function()
 		G.GAME.modifiers.enable_banana = true
 	end,
-	loc_txt = {
-		name = "Twilight Stake",
-		text = {
-			"Cards can be {C:attention}Banana{}",
-			"{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
-		},
-	},
 	shiny = true,
+	order = 25,
 	colour = G.C.CRY_TWILIGHT,
 }
 local banana = {
@@ -370,14 +274,8 @@ local verdant = {
 	modifiers = function()
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
 	end,
-	loc_txt = {
-		name = "Verdant Stake",
-		text = {
-			"Required score scales",
-			"faster for each {C:attention}Ante",
-		},
-	},
 	shiny = true,
+	order = 26,
 	colour = G.C.CRY_VERDANT,
 }
 local ember = {
@@ -390,13 +288,8 @@ local ember = {
 	modifiers = function()
 		G.GAME.modifiers.cry_no_sell_value = true
 	end,
-	loc_txt = {
-		name = "Ember Stake",
-		text = {
-			"All items give no money when sold",
-		},
-	},
 	shiny = true,
+	order = 27,
 	colour = G.C.CRY_EMBER,
 }
 local dawn = {
@@ -409,15 +302,8 @@ local dawn = {
 	modifiers = function()
 		G.GAME.modifiers.cry_consumable_reduce = true
 	end,
-	loc_txt = {
-		name = "Dawn Stake",
-		text = {
-			"Tarots and Spectrals target {C:attention}1",
-			"fewer card",
-			"{s:0.8,C:inactive}(Minimum of 1){}",
-		},
-	},
 	shiny = true,
+	order = 28,
 	colour = G.C.CRY_DAWN,
 }
 local horizon = {
@@ -430,14 +316,8 @@ local horizon = {
 	modifiers = function()
 		G.GAME.modifiers.cry_card_each_round = true
 	end,
-	loc_txt = {
-		name = "Horizon Stake",
-		text = {
-			"When blind selected, add a",
-			"{C:attention}random card{} to deck",
-		},
-	},
 	shiny = true,
+	order = 29,
 	colour = G.C.CRY_HORIZON,
 }
 local blossom = {
@@ -450,14 +330,8 @@ local blossom = {
 	modifiers = function()
 		G.GAME.modifiers.cry_big_showdown = true
 	end,
-	loc_txt = {
-		name = "Blossom Stake",
-		text = {
-			"{C:attention}Final{} Boss Blinds can appear",
-			"in {C:attention}any{} Ante",
-		},
-	},
 	shiny = true,
+	order = 30,
 	colour = G.C.CRY_BLOSSOM,
 }
 local azure = {
@@ -470,14 +344,8 @@ local azure = {
 	modifiers = function()
 		G.GAME.modifiers.cry_jkr_misprint_mod = 0.8
 	end,
-	loc_txt = {
-		name = "Azure Stake",
-		text = {
-			"Values on Jokers are reduced",
-			"by {C:attention}20%{}",
-		},
-	},
 	shiny = true,
+	order = 31,
 	colour = G.C.CRY_AZURE,
 }
 local ascendant = {
@@ -490,13 +358,8 @@ local ascendant = {
 	modifiers = function()
 		change_shop_size(-1)
 	end,
-	loc_txt = {
-		name = "Ascendant Stake",
-		text = {
-			"{C:attention}-1{} Shop slot",
-		},
-	},
 	shiny = true,
+	order = 32,
 	colour = G.C.CRY_ASCENDANT,
 }
 local stake_atlas = { object_type = "Atlas", key = "stake", 
@@ -703,24 +566,6 @@ return {
 					self.cost = 0
 				end
 				self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
-			end
-		end
-
-		for _, v in pairs(self.items) do
-			if v.object_type == "Stake" then
-				v.sticker_pos = v.pos
-				v.sticker_atlas = "sticker"
-				local words = {}
-				words[1], words[2] = v.loc_txt.name:match("(%w+)(.+)")
-				local stakeName = words[1]
-				v.loc_txt.sticker = {
-					name = stakeName .. " Sticker",
-					text = {
-						"Used this Joker",
-						"to win on {C:attention}" .. stakeName,
-						"{C:attention}Stake{} difficulty",
-					},
-				}
 			end
 		end
 	end,

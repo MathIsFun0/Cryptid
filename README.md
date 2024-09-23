@@ -1,27 +1,12 @@
 # Cryptid
-An unbalanced Balatro mod. Note that this is currently a heavy work in progress.
+An unbalanced Balatro mod.
 
 Note: Cryptid requires [Steamodded **1.0.0-Alpha**](https://github.com/Steamopollys/Steamodded/archive/refs/heads/main.zip) and [Talisman](https://github.com/MathIsFun0/Talisman/releases/latest).
 
 Cryptid currently adds:
-- 121 new Jokers
-- 2 new joker rarities
-- 46 new decks
-- 24 new stakes
-- 20 new boss blinds
-- 18 new vouchers
-- 11 new Spectral cards
-- 11 new tags
-- 7 new challenges
-- 6 new editions
-- 4 new Planet cards
-- 7 new booster packs
-- 3 new Tarot cards
-- 1 new consumable type
-- 20 new Code cards
-- 1 new enhancement
-- 2 new seals
-- Other Cross mod content 
+![image](https://github.com/user-attachments/assets/a1df4265-eb42-4fd8-9f25-923a33055dd2)
+![image](https://github.com/user-attachments/assets/3e3298d9-fb47-4025-9d1c-5ef996246a4d)
+
 
 ### [Official Discord](https://discord.gg/eUf9Ur6RyB)
 
