@@ -59,10 +59,10 @@ local cyan = {
 	atlas = "stake",
 	applied_stakes = { "cry_jade" },
 	modifiers = function()
-    G.GAME.modifiers.cry_rarer_jokers = true
-    -- Note that this is not the exact rarity as the old lovely patch might be nerf/buff to the stake
-    G.GAME.uncommon_mod = 0.5
-    G.GAME.rare_mod = 0.5
+		G.GAME.modifiers.cry_rarer_jokers = true
+		-- Note that this is not the exact rarity as the old lovely patch might be nerf/buff to the stake
+		G.GAME.uncommon_mod = 0.5
+		G.GAME.rare_mod = 0.5
 	end,
 	order = 13,
 	colour = HEX("39ffcc"),
