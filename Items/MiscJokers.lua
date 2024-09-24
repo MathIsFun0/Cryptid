@@ -3749,6 +3749,12 @@ local delirious = {
 			}
 		end
 	end,
+	in_pool = function(self)
+		if G.GAME.hands["Five of a Kind"].played > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local wacky = {
 	object_type = "Joker",
@@ -3772,6 +3778,12 @@ local wacky = {
 			}
 		end
 	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush House"].played > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local kooky = {
 	object_type = "Joker",
@@ -3794,6 +3806,12 @@ local kooky = {
 				mult_mod = card.ability.t_mult,
 			}
 		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush Five"].played > 0 then
+			return true
+		end
+		return false
 	end,
 }
 local dubious = {
@@ -3910,6 +3928,12 @@ local savvy = {
 			}
 		end
 	end,
+	in_pool = function(self)
+		if G.GAME.hands["Five of a Kind"].played > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local subtle = {
 	object_type = "Joker",
@@ -3933,6 +3957,12 @@ local subtle = {
 			}
 		end
 	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush House"].played > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local discreet = {
 	object_type = "Joker",
@@ -3955,6 +3985,12 @@ local discreet = {
 				chip_mod = card.ability.t_chips,
 			}
 		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush Five"].played > 0 then
+			return true
+		end
+		return false
 	end,
 }
 local coin = {
