@@ -156,6 +156,7 @@ local canvas = {
 	object_type = "Joker",
 	name = "cry-Canvas",
 	key = "canvas",
+	immune_to_chemach = true,
 	pos = { x = 2, y = 1 },
 	config = { num_retriggers = 0 },
 	rarity = "cry_epic",

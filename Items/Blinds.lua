@@ -345,7 +345,7 @@ local joke = {
 	atlas = "blinds",
 	boss_colour = HEX("00ffaa"),
 	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.win_ante } }
+		return { vars = { G.GAME.win_ante or 8 } }
 	end,
 	cry_calc_ante_gain = function(self)
 		if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
