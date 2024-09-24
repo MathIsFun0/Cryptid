@@ -95,7 +95,7 @@ local meme1 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		return create_card("meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
+		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -128,7 +128,7 @@ local meme2 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		return create_card("meme", G.pack_cards, nil, nil, true, true, nil, "cry_memetwo")
+		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memetwo")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -161,7 +161,7 @@ local meme3 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		return create_card("meme", G.pack_cards, nil, nil, true, true, nil, "cry_memethree")
+		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memethree")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
