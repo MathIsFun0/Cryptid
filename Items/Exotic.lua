@@ -982,7 +982,7 @@ local duplicare = {
             end
             card.ability.extra.Emult = card.ability.extra.Emult + 0
             return {
-                message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+                message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
                 Emult_mod = card.ability.extra.Emult,
                 colour = G.C.DARK_EDITION
             }
