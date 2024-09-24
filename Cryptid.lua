@@ -2163,7 +2163,25 @@ function Card:get_nominal(mod)
 		+ 0.000001 * self.unique_val
 end
 
---Cryptid (the spectral) localization
+--Cryptid (THE MOD) localization
+local function parse_loc_txt(center)
+	center.text_parsed = {}
+	if not center.text then else
+		for _, line in ipairs(center.text) do
+			center.text_parsed[#center.text_parsed+1] = loc_parse_string(line)
+		end
+		center.name_parsed = {}
+		for _, line in ipairs(type(center.name) == 'table' and center.name or {center.name}) do
+			center.name_parsed[#center.name_parsed+1] = loc_parse_string(line)
+		end
+		if center.unlock then
+			center.unlock_parsed = {}
+			for _, line in ipairs(center.unlock) do
+				center.unlock_parsed[#center.unlock_parsed+1] = loc_parse_string(line)
+			end
+		end
+	end
+end
 local il = init_localization
 function init_localization()
 	il()
@@ -2186,10 +2204,13 @@ function init_localization()
 		local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 		if color then
 			local sticker_key = key:sub(7).."_sticker"
-			G.localization.descriptions.Other[sticker_key] = {
-				name = localize{type='variable',key='cry_sticker_name',vars={color}},
-				text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
-			}
+			if not G.localization.descriptions.Other[sticker_key] then
+				G.localization.descriptions.Other[sticker_key] = {
+					name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
+					text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+				}
+				parse_loc_txt(G.localization.descriptions.Other[sticker_key])
+			end
 		end
 	end
 end
