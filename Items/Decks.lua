@@ -226,13 +226,13 @@ return {
 						local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 						for _, id in ipairs(valid_pools) do
 							for k, v in pairs(G.P_CENTER_POOLS[id]) do
-								if not v.no_doe then
+								if not center_no(v, "doe", k) then
 									P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 								end
 							end
 						end
 						for k, v in pairs(G.P_CARDS) do
-							if not v.no_doe then
+							if not center_no(v, "doe", k) then
 								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 							end
 						end
@@ -250,13 +250,13 @@ return {
 					local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 					for _, id in ipairs(valid_pools) do
 						for k, v in pairs(G.P_CENTER_POOLS[id]) do
-							if not v.no_doe then
+							if not center_no(v, "doe", k) then
 								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 							end
 						end
 					end
 					for k, v in pairs(G.P_CARDS) do
-						if not v.no_doe then
+						if not center_no(v, "doe", k) then
 							P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 						end
 					end
@@ -350,9 +350,8 @@ return {
 				end
 			end
 			for k, v in pairs(G.I.CARD) do
-				if v.back and G.GAME[v.back] and G.GAME[v.back].effect.center.key == "b_cry_glowing" then
-					G.GAME[v.back].pos = G.P_CENTERS.b_cry_glowing.pos
-					v.children.back:set_sprite_pos(G.GAME[v.back].pos or G.P_CENTERS["b_red"].pos)
+				if v.children.back and v.children.back.atlas.name == "cry_glowing" then
+					v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
 				end
 			end
 		end

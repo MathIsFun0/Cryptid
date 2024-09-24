@@ -3,49 +3,26 @@ Cryptid.memepack[#Cryptid.memepack + 1] = "j_jolly"
 Cryptid.memepack[#Cryptid.memepack + 1] = "j_obelisk"
 Cryptid.memepack[#Cryptid.memepack + 1] = "j_space" --Nobody takes this thing seriously so i'm putting it here
 Cryptid.memepack[#Cryptid.memepack + 1] = "j_mr_bones" --sans undertale
-if cry_enable_jokers then
+
+if Cryptid.enabled["Misc. Jokers"] then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cube"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_cryptidmoment"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_happyhouse"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_nice"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_sus"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_chad"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_jimball"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_krustytheclown"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_blurred"
-end
-if cry_enable_jokers then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_filler"
 end
-if cry_minvasion then
+if Cryptid.enabled["M Jokers"] then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_reverse"
-end --uno reverse
-if cry_minvasion then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_bonk"
 end
-if cry_enable_epics then
+if Cryptid.enabled["Epic Jokers"] then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_boredom"
-end
-if cry_enable_epics then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_curse"
-end
-if cry_enable_epics then
 	Cryptid.memepack[#Cryptid.memepack + 1] = "j_cry_m"
 end
 
@@ -824,6 +801,7 @@ local glass_edition = {
 			if
 				pseudorandom("cry_fragile")
 				> G.GAME.probabilities.normal * (self.config.shatter_chance - 1) / self.config.shatter_chance
+				and not card.ability.eternal
 			then
 				card.will_shatter = true
 				G.E_MANAGER:add_event(Event({
@@ -1362,7 +1340,7 @@ local meld = {
 				+ #G.hand.highlighted
 				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
 			== 1 then
-			if #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.no_dbl then return false end
+			if #G.jokers.highlighted == 1 and G.jokers.highlighted[1]:no("dbl") then return false end
 			return true
 		end
 	end,
@@ -1604,7 +1582,7 @@ return {
 				and card.edition
 				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and card.edition.cry_double_sided
-				and not card.ability.no_dbl
+				and not card:no("dbl")
 			then
 				local use = {
 					n = G.UIT.C,
@@ -1658,7 +1636,7 @@ return {
 				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and (not card.edition or not card.edition.cry_double_sided)
 				and not card.ability.eternal
-				and not card.ability.no_dbl
+				and not card:no("dbl")
 			then
 				for i = 1, #card.area.cards do
 					if card.area.cards[i].edition and card.area.cards[i].edition.cry_double_sided then
@@ -1795,7 +1773,7 @@ return {
 			Card.set_cost(c)
 		end
 		function Card:init_dbl_side()
-			if self.ability.no_dbl then
+			if self:no("dbl") then
 				self:set_edition(nil, true)
 			end
 			if not self.dbl_side then
@@ -1875,6 +1853,21 @@ return {
 			if t then
 				rma(t)
 			end
+		end
+		--prevent chaos the clown's ability from being applied on debuff
+		local catd = Card.add_to_deck
+		local crfd = Card.remove_from_deck
+		function Card:add_to_deck(debuff)
+			if debuff and self.ability.name == 'Chaos the Clown' then
+				return
+			end
+			return catd(self, debuff)
+		end
+		function Card:remove_from_deck(debuff)
+			if debuff and self.ability.name == 'Chaos the Clown' then
+				return
+			end
+			return crfd(self, debuff)
 		end
 	end,
 	items = miscitems,

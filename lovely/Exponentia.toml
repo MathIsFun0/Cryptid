@@ -14,7 +14,25 @@ if effects.jokers.Xmult_mod and effects.jokers.Xmult_mod ~= 1 and next(find_joke
     for _, v in pairs(find_joker("cry-Exponentia")) do
         local old = v.ability.extra.Emult
         v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true
+
+# Increment Exponentia on Joker-on-Joker XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, effect) end"
+position = "after"
+payload = '''
+if effect.Xmult_mod and effect.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
         exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
     end
 end
@@ -33,7 +51,7 @@ if effects.Xmult_mod and next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
         local old = v.ability.extra.Emult
         v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
         exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
     end
 end
@@ -52,7 +70,7 @@ if next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
         local old = v.ability.extra.Emult
         v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
         exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
     end
 end
@@ -71,7 +89,7 @@ if next(find_joker("cry-Exponentia")) then
     for _, v in pairs(find_joker("cry-Exponentia")) do
         local old = v.ability.extra.Emult
         v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
         exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
     end
 end
@@ -90,7 +108,7 @@ if (effects and effects[ii] and effects[ii].edition and effects[ii].edition.x_mu
     for _, v in pairs(find_joker("cry-Exponentia")) do
         local old = v.ability.extra.Emult
         v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "^"..number_format(to_big(v.ability.extra.Emult)).." Mult"})
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
         exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
     end
 end

@@ -5,7 +5,7 @@ Cryptid.M_jokers = {
 
 local jollysus = {
 	object_type = "Joker",
-	name = "cry-jollysus",
+	name = "cry-jollysus Joker",
 	key = "jollysus",
 	pos = { x = 3, y = 1 },
 	config = { extra = { spawn = true, active = localize("k_active_ex") } },
@@ -847,7 +847,7 @@ local doodlem = {
 				nil,
 				{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
 			)
-			return true
+			return nil, true
 		end
 	end,
 }
@@ -1127,7 +1127,7 @@ local mprime = {
 }
 local macabre = {
 	object_type = "Joker",
-	name = "cry-macabre",
+	name = "cry-Macabre Joker",
 	key = "macabre",
 	pos = { x = 1, y = 2 },
 	config = { jolly = { t_mult = 8, type = "Pair" } },
@@ -1163,6 +1163,9 @@ local macabre = {
 						end
 					end
 					for _, v in pairs(destroyed_jokers) do
+						if v.config.center.rarity == "cry_exotic" then
+							check_for_unlock({ type = "what_have_you_done" })
+						end
 						triggered = true
 						v.getting_sliced = true
 						v:start_dissolve({ HEX("57ecab") }, nil, 1.6)

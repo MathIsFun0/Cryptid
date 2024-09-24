@@ -433,7 +433,7 @@ local pickle = {
 				nil,
 				nil,
 				{
-					message = "+"..localize({ type = "variable", key = "a_tag" .. (card.ability.extra.tags > 1 and "s" or ""), vars = { card.ability.extra.tags } }),
+					message = "+"..localize({ type = "variable", key = "a_tag" .. (card.ability.extra.tags > 1 and "s" or ""), vars = { card.ability.extra.tags } })[1],
 					colour = G.C.FILTER,
 				}
 			)
@@ -449,7 +449,7 @@ local pickle = {
 					nil,
 					nil,
 					{
-						message = "-"..localize({ type = "variable", key = "a_tag" .. (card.ability.extra.tags > 1 and "s" or ""), vars = { card.ability.extra.tags } }),
+						message = "-"..localize({ type = "variable", key = "a_tag" .. (card.ability.extra.tags > 1 and "s" or ""), vars = { card.ability.extra.tags } })[1],
 						colour = G.C.FILTER,
 					}
 				)
@@ -1155,7 +1155,7 @@ local krustytheclown = {
 }
 local blurred = {
 	object_type = "Joker",
-	name = "cry-blurred",
+	name = "cry-blurred Joker",
 	key = "blurred",
 	pos = { x = 4, y = 4 },
 	config = { extra = { hands = 1 } },
@@ -1416,7 +1416,7 @@ local redbloon = {
 }
 local apjoker = {
 	object_type = "Joker",
-	name = "cry-apjoker",
+	name = "cry-AP Joker",
 	key = "apjoker",
 	pos = { x = 2, y = 0 },
 	config = { extra = { x_mult = 4 } },
@@ -2664,7 +2664,7 @@ function localalize_with_direct(loc_target, args, misc_cat)
 end
 local rnjoker = {
 	object_type = "Joker",
-	name = "cry-rnjoker",
+	name = "cry-rnjoker Joker", --:balatrojoker:
 	key = "rnjoker",
 	pos = { x = 5, y = 4 },
 	config = {},
@@ -3891,7 +3891,7 @@ local busdriver = {
 }
 local translucent = {
 	object_type = "Joker",
-	name = "cry-translucent",
+	name = "cry-translucent Joker",
 	key = "translucent",
 	pos = { x = 5, y = 2 },
 	rarity = 1,
@@ -4063,7 +4063,7 @@ local flipside = {
 	rarity = 2,
 	cost = 7,
 	atlas = "placeholders",
-	config = {no_dbl = true},
+	no_dbl = true,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
@@ -4109,7 +4109,7 @@ local flipside = {
 }
 local oldinvisible = {
 	object_type = "Joker",
-	name = "cry-OldInvisible",
+	name = "cry-Old Invisible Joker",
 	key = "oldinvisible",
 	pos = { x = 4, y = 4 },
 	config = { extra = 0 },

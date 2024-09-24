@@ -590,6 +590,19 @@ end
 '''
 match_indent = true
 
+# hand size forgiveness if playing negative or antimatter deck (someone please fix)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "function Game:update_draw_to_hand(dt)"
+position = "after"
+payload = '''
+if G.GAME.selected_back and (G.GAME.selected_back.name == 'cry--Negative Deck' or G.GAME.selected_back.name == 'cry-Antimatter') and G.hand.config.card_limit <= 0 then	-- 'cry--Negative Deck'... sure
+	G.hand.config.card_limit = 1
+end
+'''
+match_indent = true
+
 # don't draw old perishable texture
 [[patches]]
 [patches.pattern]

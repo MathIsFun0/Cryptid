@@ -8,6 +8,7 @@ local pink = {
 	modifiers = function()
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
 	end,
+	order = 9,
 	colour = HEX("ff5ee6"),
 }
 local brown = {
@@ -20,6 +21,7 @@ local brown = {
 	modifiers = function()
 		G.GAME.modifiers.cry_eternal_perishable_compat = true
 	end,
+	order = 10,
 	colour = HEX("883200"),
 }
 local yellow = {
@@ -32,6 +34,7 @@ local yellow = {
 	modifiers = function()
 		G.GAME.modifiers.cry_any_stickers = true
 	end,
+	order = 11,
 	colour = HEX("f7ff1f"),
 }
 local jade = {
@@ -45,6 +48,7 @@ local jade = {
 		G.GAME.modifiers.flipped_cards = 20
 	end,
 	shiny = true,
+	order = 12,
 	colour = HEX("78953c"),
 }
 local cyan = {
@@ -57,6 +61,7 @@ local cyan = {
 	modifiers = function()
 		G.GAME.modifiers.cry_rarer_jokers = true
 	end,
+	order = 13,
 	colour = HEX("39ffcc"),
 }
 local gray = {
@@ -69,6 +74,7 @@ local gray = {
 	modifiers = function()
 		G.GAME.modifiers.cry_reroll_scaling = 2
 	end,
+	order = 14,
 	colour = HEX("999999"),
 }
 local crimson = {
@@ -81,6 +87,7 @@ local crimson = {
 	modifiers = function()
 		G.GAME.modifiers.cry_voucher_restock_antes = 2
 	end,
+	order = 15,
 	colour = HEX("800000"),
 }
 local diamond = {
@@ -94,6 +101,7 @@ local diamond = {
 		G.GAME.win_ante = 10
 	end,
 	shiny = true,
+	order = 16,
 	colour = HEX("88e5d9"),
 }
 local amber = {
@@ -107,6 +115,7 @@ local amber = {
 		G.GAME.modifiers.cry_booster_packs = 1
 	end,
 	shiny = true,
+	order = 17,
 	colour = HEX("feb900"),
 }
 local bronze = {
@@ -120,6 +129,7 @@ local bronze = {
 		G.GAME.modifiers.cry_voucher_price_hike = 1.5
 	end,
 	shiny = true,
+	order = 18,
 	colour = HEX("d27c37"),
 }
 local quartz = {
@@ -133,6 +143,7 @@ local quartz = {
 		G.GAME.modifiers.cry_enable_pinned_in_shop = true
 	end,
 	shiny = true,
+	order = 19,
 	colour = HEX("e8e8e8"),
 }
 local ruby = {
@@ -146,6 +157,7 @@ local ruby = {
 		G.GAME.modifiers.cry_big_boss_rate = 0.3
 	end,
 	shiny = true,
+	order = 20,
 	colour = HEX("fc5f55"),
 }
 local glass = {
@@ -159,6 +171,7 @@ local glass = {
 		G.GAME.modifiers.cry_shatter_rate = 30
 	end,
 	shiny = true,
+	order = 21,
 	colour = HEX("ffffff8f"),
 }
 local sapphire = {
@@ -173,6 +186,7 @@ local sapphire = {
 		G.GAME.modifiers.cry_ante_tax_max = 10
 	end,
 	shiny = true,
+	order = 22,
 	colour = HEX("3551fc"),
 }
 local emerald = {
@@ -186,6 +200,7 @@ local emerald = {
 		G.GAME.modifiers.cry_enable_flipped_in_shop = true
 	end,
 	shiny = true,
+	order = 23,
 	colour = HEX("06fc2c"),
 }
 local platinum = {
@@ -200,6 +215,7 @@ local platinum = {
 		G.GAME.round_resets.blind_states["Small"] = "Hide"
 	end,
 	shiny = true,
+	order = 24,
 	colour = HEX("b0f6ff"),
 }
 --init colors so they have references
@@ -222,6 +238,7 @@ local twilight = {
 		G.GAME.modifiers.enable_banana = true
 	end,
 	shiny = true,
+	order = 25,
 	colour = G.C.CRY_TWILIGHT,
 }
 local banana = {
@@ -255,6 +272,7 @@ local verdant = {
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
 	end,
 	shiny = true,
+	order = 26,
 	colour = G.C.CRY_VERDANT,
 }
 local ember = {
@@ -268,6 +286,7 @@ local ember = {
 		G.GAME.modifiers.cry_no_sell_value = true
 	end,
 	shiny = true,
+	order = 27,
 	colour = G.C.CRY_EMBER,
 }
 local dawn = {
@@ -281,6 +300,7 @@ local dawn = {
 		G.GAME.modifiers.cry_consumable_reduce = true
 	end,
 	shiny = true,
+	order = 28,
 	colour = G.C.CRY_DAWN,
 }
 local horizon = {
@@ -294,6 +314,7 @@ local horizon = {
 		G.GAME.modifiers.cry_card_each_round = true
 	end,
 	shiny = true,
+	order = 29,
 	colour = G.C.CRY_HORIZON,
 }
 local blossom = {
@@ -307,6 +328,7 @@ local blossom = {
 		G.GAME.modifiers.cry_big_showdown = true
 	end,
 	shiny = true,
+	order = 30,
 	colour = G.C.CRY_BLOSSOM,
 }
 local azure = {
@@ -320,6 +342,7 @@ local azure = {
 		G.GAME.modifiers.cry_jkr_misprint_mod = 0.8
 	end,
 	shiny = true,
+	order = 31,
 	colour = G.C.CRY_AZURE,
 }
 local ascendant = {
@@ -333,6 +356,7 @@ local ascendant = {
 		change_shop_size(-1)
 	end,
 	shiny = true,
+	order = 32,
 	colour = G.C.CRY_ASCENDANT,
 }
 local stake_atlas = { object_type = "Atlas", key = "stake", 
@@ -539,6 +563,12 @@ return {
 					self.cost = 0
 				end
 				self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
+			end
+		end
+		for _, v in pairs(self.items) do
+			if v.object_type == "Stake" then
+				v.sticker_pos = v.pos
+				v.sticker_atlas = "sticker"
 			end
 		end
 	end,

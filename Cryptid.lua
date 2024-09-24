@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0920b
+--- VERSION: 0.5.1~0923a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -329,9 +329,10 @@ function get_random_consumable(seed, excluded_flags, unbalanced)
 	while true do
 		tries = tries - 1
 		passes = 0
-		selection = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key]
+		local key = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
+		selection = G.P_CENTERS[key]
 		for k, v in pairs(excluded_flags) do
-			if not selection[v] then
+			if not center_no(selection, v, key, true) then
 				passes = passes + 1
 			end
 		end
@@ -1600,7 +1601,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(card)
-		return not card.no_doe and not card.no_aeq and not (card.rarity == 6 or card.rarity == "cry_exotic")
+		return not card:no("doe") and not card:no("aeq") and not (card.rarity == 6 or card.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
 		local aeqactive = nil
@@ -2091,6 +2092,7 @@ function cry_misprintize(card, override, force_reset, stack)
 	if
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
+		and not stack or (not card:no("immune_to_chemach", true) and not card:no("immutable", true))
 	then
 		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
@@ -2161,7 +2163,25 @@ function Card:get_nominal(mod)
 		+ 0.000001 * self.unique_val
 end
 
---Cryptid (the spectral) localization
+--Cryptid (THE MOD) localization
+local function parse_loc_txt(center)
+	center.text_parsed = {}
+	if not center.text then else
+		for _, line in ipairs(center.text) do
+			center.text_parsed[#center.text_parsed+1] = loc_parse_string(line)
+		end
+		center.name_parsed = {}
+		for _, line in ipairs(type(center.name) == 'table' and center.name or {center.name}) do
+			center.name_parsed[#center.name_parsed+1] = loc_parse_string(line)
+		end
+		if center.unlock then
+			center.unlock_parsed = {}
+			for _, line in ipairs(center.unlock) do
+				center.unlock_parsed[#center.unlock_parsed+1] = loc_parse_string(line)
+			end
+		end
+	end
+end
 local il = init_localization
 function init_localization()
 	il()
@@ -2184,10 +2204,13 @@ function init_localization()
 		local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 		if color then
 			local sticker_key = key:sub(7).."_sticker"
-			G.localization.descriptions.Other[sticker_key] = {
-				name = localize{type='variable',key='cry_sticker_name',vars={color}},
-				text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
-			}
+			if not G.localization.descriptions.Other[sticker_key] then
+				G.localization.descriptions.Other[sticker_key] = {
+					name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
+					text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+				}
+				parse_loc_txt(G.localization.descriptions.Other[sticker_key])
+			end
 		end
 	end
 end
@@ -2220,6 +2243,21 @@ function cry_has_exotic()
 			end
 		end
 	end
+end
+
+-- Check G.GAME as well as joker info for banned keys
+function Card:no(m, no_no)
+	if no_no then
+		return self.config.center[m] or (G.GAME and G.GAME[m] and G.GAME[m][self.config.center_key]) or false
+	end
+	return self:no("no_"..m, true)
+end
+
+function center_no(center, m, key, no_no)
+	if no_no then
+		return center[m] or (G.GAME and G.GAME[m] and G.GAME[m][key]) or false
+	end
+	return center_no(center, "no_"..m, key, true)
 end
 
 -- Fix a CCD-related crash
