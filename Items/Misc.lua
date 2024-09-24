@@ -801,6 +801,7 @@ local glass_edition = {
 			if
 				pseudorandom("cry_fragile")
 				> G.GAME.probabilities.normal * (self.config.shatter_chance - 1) / self.config.shatter_chance
+				and not card.ability.eternal
 			then
 				card.will_shatter = true
 				G.E_MANAGER:add_event(Event({
