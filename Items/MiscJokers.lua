@@ -914,6 +914,9 @@ local sus = {
 				end
 				if #deletable_cards ~= 0 then
 					local _first_dissolve = nil
+					for j=1, #G.jokers.cards do
+						eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = deletable_cards})
+					end
 					G.E_MANAGER:add_event(Event({
 						trigger = "before",
 						delay = 0.75,
@@ -928,6 +931,7 @@ local sus = {
 							return true
 						end,
 					}))
+					
 				end
 			end
 			if card.ability.chosen_card ~= nil then
@@ -3631,6 +3635,364 @@ local filler = {
 		end
 	end,
 }
+local giggly = {
+	object_type = "Joker",
+	name = "cry-giggly",
+	key = "giggly",
+	pos = { x = 0, y = 5 },
+	config = { t_mult = 0, type = "High Card" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 1,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+}
+local nutty = {
+	object_type = "Joker",
+	name = "cry-nutty",
+	key = "nutty",
+	pos = { x = 1, y = 5 },
+	config = { t_mult = 19, type = "Four of a Kind" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Four of a Kind"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+}
+local manic = {
+	object_type = "Joker",
+	name = "cry-manic",
+	key = "manic",
+	pos = { x = 2, y = 5 },
+	config = { t_mult = 22, type = "Straight Flush" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Straight Flush"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+}
+local silly = {
+	object_type = "Joker",
+	name = "cry-silly",
+	key = "silly",
+	pos = { x = 3, y = 5 },
+	config = { t_mult = 16, type = "Full House" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Full House"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+}
+local delirious = {
+	object_type = "Joker",
+	name = "cry-delirious",
+	key = "delirious",
+	pos = { x = 4, y = 5 },
+	config = { t_mult = 22, type = "Five of a Kind" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Five of a Kind"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Five of a Kind"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local wacky = {
+	object_type = "Joker",
+	name = "cry-wacky",
+	key = "wacky",
+	pos = { x = 5, y = 5 },
+	config = { t_mult = 25, type = "Flush House" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Flush House"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush House"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local kooky = {
+	object_type = "Joker",
+	name = "cry-kooky",
+	key = "kooky",
+	pos = { x = 6, y = 5 },
+	config = { t_mult = 30, type = "Flush Five" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Flush Five"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush Five"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local dubious = {
+	object_type = "Joker",
+	name = "cry-dubious",
+	key = "dubious",
+	pos = { x = 0, y = 6 },
+	config = { t_chips = 0, type = "High Card" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 1,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+}
+local shrewd = {
+	object_type = "Joker",
+	name = "cry-shrewd",
+	key = "shrewd",
+	pos = { x = 1, y = 6 },
+	config = { t_chips = 150, type = "Four of a Kind" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Four of a Kind"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+}
+local tricksy = {
+	object_type = "Joker",
+	name = "cry-tricksy",
+	key = "tricksy",
+	pos = { x = 2, y = 6 },
+	config = { t_chips = 170, type = "Straight Flush" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Straight Flush"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+}
+local foxy = {
+	object_type = "Joker",
+	name = "cry-foxy",
+	key = "foxy",
+	pos = { x = 3, y = 6 },
+	config = { t_chips = 130, type = "Full House" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Full House"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+}
+local savvy = {
+	object_type = "Joker",
+	name = "cry-savvy",
+	key = "savvy",
+	pos = { x = 4, y = 6 },
+	config = { t_chips = 170, type = "Five of a Kind" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Five of a Kind"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Five of a Kind"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local subtle = {
+	object_type = "Joker",
+	name = "cry-subtle",
+	key = "subtle",
+	pos = { x = 5, y = 6 },
+	config = { t_chips = 200, type = "Flush House" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Flush House"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush House"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local discreet = {
+	object_type = "Joker",
+	name = "cry-discreet",
+	key = "discreet",
+	pos = { x = 6, y = 6 },
+	config = { t_chips = 240, type = "Flush Five" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["Flush Five"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["Flush Five"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
 local coin = {
 	object_type = "Joker",
 	name = "cry-coin",
@@ -4257,7 +4619,21 @@ local miscitems =  {
 	kscope,
 	cryptidmoment,
 	oldinvisible,
-	fractal
+	fractal,
+	giggly,
+	nutty,
+	manic,
+	silly,
+	delirious,
+	wacky,
+	kooky,
+	dubious,
+	shrewd,
+	tricksy,
+	foxy,
+	savvy,
+	subtle,
+	discreet,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

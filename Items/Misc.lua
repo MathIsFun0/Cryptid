@@ -1869,6 +1869,18 @@ return {
 			end
 			return crfd(self, debuff)
 		end
+		local cae = CardArea.emplace
+		function CardArea:emplace(card,m1,m2)
+			if not (card.will_shatter or card.destroyed or card.shattered) then
+				cae(self,card,m1,m2)
+			else
+				if card.area then
+					card.area:remove_card(card)
+				end
+				card:remove()
+				card = nil
+			end
+		end
 	end,
 	items = miscitems,
 }
