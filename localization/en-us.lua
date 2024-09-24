@@ -775,6 +775,22 @@ return {
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
                 },
             },
+            j_cry_delirious = {
+                name = "Delirious Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
+            j_cry_discreet = {
+                name = "Discreet Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_doodlem = {
                 name = "Doodle M",
                 text = {
@@ -801,6 +817,14 @@ return {
                     "suit changes every round",
                     "{C:inactive}(Currently {X:mult,C:white} X#3# {C:inactive} Mult)",
                 },
+            },
+            j_cry_dubious = {
+                name = "Dubious Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_duos = {
                 name = "The Duos",
@@ -918,6 +942,14 @@ return {
                     "{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
                 },
             },
+            j_cry_foxy = {
+                name = "Foxy Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_fspinner = {
                 name = "Fidget Spinner",
                 text = {
@@ -941,6 +973,14 @@ return {
                     "of leftmost {C:attention}Joker",
                     "at end of round",
                 },
+            },
+            j_cry_giggly = {
+                name = "Absurd Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_goldjoker = {
                 name = "Gold Joker",
@@ -1030,6 +1070,14 @@ return {
                     "{C:attention}Mad Joker{}, {C:attention}Crazy Joker{},",
                     "or {C:attention}Droll Joker{} is {C:attention}sold{}",
                 },
+            },
+            j_cry_kooky = {
+                name = "Kooky Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_krustytheclown = {
                 name = "Krusty the Clown",
@@ -1123,6 +1171,14 @@ return {
                     "This earns {X:money,C:white} X#2# {} if there are",
                     "{C:attention}#3#{} or fewer {C:attention}Joker{} cards",
                 },
+            },
+            j_cry_manic = {
+                name = "Manic Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_mario = {
                 name = "Mario",
@@ -1310,6 +1366,14 @@ return {
                     "a {C:attention}#2#",
                 },
             },
+            j_cry_nutty = {
+                name = "Nutty Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_oldblueprint = {
                 name = "Old Blueprint",
                 text = {
@@ -1468,6 +1532,14 @@ return {
                     "{C:inactive,s:0.8}if {C:cry_epic,s:0.8}Epic{} {C:inactive,s:0.8}Jokers are disabled{}",
                 },
             },
+            j_cry_savvy = {
+                name = "Savvy Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_Scalae = {
                 name = "Scalae",
                 text = {
@@ -1492,6 +1564,22 @@ return {
                     "Add a {C:attention}random seal{} to each card",
                     "scored on {C:attention}final hand{} of round",
                 },
+            },
+            j_cry_shrewd = {
+                name = "Shrewd Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
+            j_cry_silly = {
+                name = "Silly Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_smallestm = {
                 name = "Tiny",
@@ -1550,6 +1638,14 @@ return {
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+            j_cry_subtle = {
+                name = "Subtle Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_supercell = {
                 name = "Supercell",
                 text = {
@@ -1599,6 +1695,14 @@ return {
                     "of a random {C:attention}Joker{}",
                     "{s:0.8,C:inactive}(Copy bypasses perish compat)",
                 },
+            },
+            j_cry_tricksy = {
+                name = "Tricksy Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_triplet_rhythm = {
                 name = "Triplet Rhythm",
@@ -1652,6 +1756,14 @@ return {
                     "{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
                     "every {C:money}$4{} of {C:attention}sell value{} {C:inactive}(Min 1){}",
                 },
+            },
+            j_cry_wacky = {
+                name = "Wacky Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_waluigi = {
                 name = "Waluigi",
