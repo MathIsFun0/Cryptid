@@ -2449,7 +2449,7 @@ return {
                 name = "Mass Production",
                 text = {
                     "All cards and packs",
-                    "in shop cost {C:attention}$1{}",
+                    "in the shop cost {C:attention}$1{}",
                 },
             },
             v_cry_moneybean = {
@@ -2465,7 +2465,7 @@ return {
                 text = {
                     "{C:attention}+#1#{} card slot(s) and",
                     "{C:attention}+#1#{} booster pack slot(s)",
-                    "available in shop",
+                    "available in the shop",
                 },
             },
             v_cry_pacclimator = {

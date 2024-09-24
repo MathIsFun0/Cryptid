@@ -5,7 +5,7 @@ local voucher_atlas = {
 	px = 71,
 	py = 95,
 }
-local copies = {
+local copies = { --Double tags become Triple Tags and are 2X as common
 	object_type = "Voucher",
 	key = "copies",
 	atlas = "atlasvoucher",
@@ -17,7 +17,7 @@ local copies = {
 		return { vars = {} }
 	end,
 }
-local tag_printer = {
+local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 	object_type = "Voucher",
 	key = "tag_printer",
 	order = 2,
@@ -30,7 +30,7 @@ local tag_printer = {
 	end,
 	requires = { "v_cry_copies" },
 }
-local clone_machine = {
+local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 	object_type = "Voucher",
 	key = "clone_machine",
 	atlas = "atlasvoucher",
@@ -43,7 +43,7 @@ local clone_machine = {
 	end,
 	requires = { "v_cry_tag_printer" },
 }
-local command_prompt = {
+local command_prompt = { --Code cards can appear in the shop
 	object_type = "Voucher",
 	key = "command_prompt",
 	atlas = "atlasvoucher",
@@ -69,7 +69,7 @@ local command_prompt = {
 		}))
 	end,
 }
-local satellite_uplink = {
+local satellite_uplink = { --Code cards may appear in any of the Celestial Packs
 	object_type = "Voucher",
 	key = "satellite_uplink",
 	atlas = "atlasvoucher",
@@ -80,7 +80,7 @@ local satellite_uplink = {
 	end,
 	requires = { "v_cry_command_prompt" },
 }
-local quantum_computing = {
+local quantum_computing = { --Code cards can spawn with Negative addition
 	object_type = "Voucher",
 	key = "quantum_computing",
 	order = 92,
@@ -91,7 +91,7 @@ local quantum_computing = {
 	end,
 	requires = { "v_cry_satellite_uplink" },
 }
-local pairing = {
+local pairing = { --Retrigger all M Jokers if played hand is a Pair
 	object_type = "Voucher",
 	key = "pairing",
 	atlas = "atlasvoucher",
@@ -105,7 +105,7 @@ local pairing = {
 		},
 	},
 }
-local repair_man = {
+local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	object_type = "Voucher",
 	key = "repair_man",
 	atlas = "atlasvoucher",
@@ -120,7 +120,7 @@ local repair_man = {
 		},
 	},
 }
-local pairamount_plus = {
+local pairamount_plus = { --Retrigger all M Jokers once for every pair contained in played hand
 	object_type = "Voucher",
 	key = "pairamount_plus",
 	atlas = "atlasvoucher",
@@ -135,7 +135,7 @@ local pairamount_plus = {
 		},
 	},
 }
-local double_vision = {
+local double_vision = { --Double-Sided cards appear 4x more frequently
 	object_type = "Voucher",
 	key = "double_vision",
 	order = 7,
@@ -152,7 +152,7 @@ local double_vision = {
 		},
 	},
 }
-local double_slit = {
+local double_slit = { --Meld can appear in the shop and Arcana Packs
 	object_type = "Voucher",
 	key = "double_slit",
 	atlas = "atlasvoucher",
@@ -170,7 +170,7 @@ local double_slit = {
 		},
 	},
 }
-local double_down = {
+local double_down = { --After every round, X1.5 to all values on the back of Double-Sided Cards
 	object_type = "Voucher",
 	key = "double_down",
 	atlas = "atlasvoucher",
@@ -188,7 +188,7 @@ local double_down = {
 		},
 	},
 }
-local overstock_multi = {
+local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] available in the shop
 	object_type = "Voucher",
 	key = "overstock_multi",
 	config = { extra = 1 },
@@ -226,7 +226,7 @@ local overstock_multi = {
 		}))
 	end,
 }
-local massproduct = {
+local massproduct = { --All cards and packs in the shop cost $1
 	object_type = "Voucher",
 	key = "massproduct",
 	atlas = "atlasvoucher",
@@ -261,7 +261,7 @@ local massproduct = {
 		}))
 	end,
 }
-local curate = {
+local curate = { --All cards appear with an Edition
 	object_type = "Voucher",
 	key = "curate",
 	atlas = "atlasvoucher",
@@ -269,7 +269,7 @@ local curate = {
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
 }
-local rerollexchange = {
+local rerollexchange = { --All rerolls cost $2
 	object_type = "Voucher",
 	key = "rerollexchange",
 	atlas = "atlasvoucher",
@@ -297,7 +297,7 @@ local scope = { --Also unimplemented
 	pos = { x = 2, y = 0 },
 	requires = { "v_observatory" },
 }
-local dexterity = {
+local dexterity = { --Permanently gain +2 hand[s] each round
 	object_type = "Voucher",
 	key = "dexterity",
 	config = { extra = 2 },
@@ -327,7 +327,7 @@ local dexterity = {
 		}))
 	end,
 }
-local threers = {
+local threers = { --Permanently gain +2 discard[s] each round
 	object_type = "Voucher",
 	key = "threers",
 	config = { extra = 2 },
@@ -357,7 +357,7 @@ local threers = {
 		}))
 	end,
 }
-local tacclimator = {
+local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All future Tarot cards are free
 	object_type = "Voucher",
 	key = "tacclimator",
 	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
@@ -385,7 +385,7 @@ local tacclimator = {
 		}))
 	end,
 }
-local pacclimator = {
+local pacclimator = { --Planet cards appear X6 more frequently in the shop   All future Planet cards are free
 	object_type = "Voucher",
 	key = "pacclimator",
 	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
@@ -413,7 +413,7 @@ local pacclimator = {
 		}))
 	end,
 }
-local moneybean = {
+local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	object_type = "Voucher",
 	key = "moneybean",
 	config = { extra = 1e300 },
@@ -441,7 +441,7 @@ local moneybean = {
 		}))
 	end,
 }
-local fabric = {
+local fabric = { --+2 Joker slot[s]
 	object_type = "Voucher",
 	key = "fabric",
 	config = { extra = 2 },
@@ -484,7 +484,7 @@ local function asteroglyph_ante()
 	return G.GAME.modifiers.cry_astero_ante
 end
 
-local asteroglyph = {
+local asteroglyph = { --Set Ante to 0
 	object_type = "Voucher",
 	key = "asteroglyph",
 	atlas = "atlasvoucher",
@@ -509,7 +509,7 @@ local asteroglyph = {
 	end
 }
 --Order 89 reserved for Ivory Script (unimplemented)
-local blankcanvas = {
+local blankcanvas = { --+2 hand size
 	object_type = "Voucher",
 	key = "blankcanvas",
 	config = { extra = 2 },
@@ -528,7 +528,7 @@ local blankcanvas = {
 	end,
 }
 
-local stickyhand = {
+local stickyhand = { --+1 card selection limit
 	object_type = "Voucher",
 	key = "stickyhand",
 	config = { extra = 1 },
@@ -550,7 +550,7 @@ local stickyhand = {
 	end,
 }
 
-local grapplinghook = {
+local grapplinghook = { --+1 card selection limit (replace me when "extra functionality" is added later)
 	object_type = "Voucher",
 	key = "grapplinghook",
 	config = { extra = 1 },
@@ -573,7 +573,7 @@ local grapplinghook = {
 	end,
 }
 
-local hyperspacetether = {
+local hyperspacetether = { --+2 card selection limit (replace me when "extra functionality" is added later)
 	object_type = "Voucher",
 	key = "hyperspacetether",
 	config = { extra = 2 },
