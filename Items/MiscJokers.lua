@@ -914,6 +914,9 @@ local sus = {
 				end
 				if #deletable_cards ~= 0 then
 					local _first_dissolve = nil
+					for j=1, #G.jokers.cards do
+						eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = deletable_cards})
+					end
 					G.E_MANAGER:add_event(Event({
 						trigger = "before",
 						delay = 0.75,
@@ -928,6 +931,7 @@ local sus = {
 							return true
 						end,
 					}))
+					
 				end
 			end
 			if card.ability.chosen_card ~= nil then

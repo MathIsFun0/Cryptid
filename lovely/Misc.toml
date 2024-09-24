@@ -290,8 +290,8 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''highlight_card(scoring_hand[i],(i-0.999)/(#scoring_hand-0.998),'down')'''
-position = "after"
+pattern = '''if destroyed then'''
+position = "before"
 payload = '''if scoring_hand[i].will_shatter then destroyed = true end'''
 match_indent = true
 
