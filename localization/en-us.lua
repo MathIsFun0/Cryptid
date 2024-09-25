@@ -2757,30 +2757,24 @@ return {
                 },
             },
             p_cry_meme_1 = {
-                {
-                    name = "Meme Pack",
-                    text = {
-                        "Choose {C:attention}#1#{} of",
-                        "up to {C:attention}#2# Meme Jokers{}",
-                    },
+                name = "Meme Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of",
+                    "up to {C:attention}#2# Meme Jokers{}",
                 },
             },
             p_cry_meme_two = {
-                {
-                    name = "Meme Pack",
-                    text = {
-                        "Choose {C:attention}#1#{} of",
-                        "up to {C:attention}#2# Meme Jokers{}",
-                    },
+                name = "Meme Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of",
+                    "up to {C:attention}#2# Meme Jokers{}",
                 },
             },
             p_cry_meme_tbree = {
-                {
-                    name = "Meme Pack",
-                    text = {
-                        "Choose {C:attention}#1#{} of",
-                        "up to {C:attention}#2# Meme Jokers{}",
-                    },
+                name = "Meme Pack",
+                text = {
+                    "Choose {C:attention}#1#{} of",
+                    "up to {C:attention}#2# Meme Jokers{}",
                 },
             },
             undiscovered_code = {
