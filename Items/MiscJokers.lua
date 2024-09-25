@@ -3637,7 +3637,7 @@ local filler = {
 }
 local giggly = {
 	object_type = "Joker",
-	name = "cry-giggly",
+	name = "cry-Giggly Joker",
 	key = "giggly",
 	pos = { x = 0, y = 5 },
 	config = { t_mult = 0, type = "High Card" },
@@ -3660,7 +3660,7 @@ local giggly = {
 }
 local nutty = {
 	object_type = "Joker",
-	name = "cry-nutty",
+	name = "cry-Nutty Joker",
 	key = "nutty",
 	pos = { x = 1, y = 5 },
 	config = { t_mult = 19, type = "Four of a Kind" },
@@ -3683,7 +3683,7 @@ local nutty = {
 }
 local manic = {
 	object_type = "Joker",
-	name = "cry-manic",
+	name = "cry-Manic Joker",
 	key = "manic",
 	pos = { x = 2, y = 5 },
 	config = { t_mult = 22, type = "Straight Flush" },
@@ -3706,7 +3706,7 @@ local manic = {
 }
 local silly = {
 	object_type = "Joker",
-	name = "cry-silly",
+	name = "cry-Silly Joker",
 	key = "silly",
 	pos = { x = 3, y = 5 },
 	config = { t_mult = 16, type = "Full House" },
@@ -3729,7 +3729,7 @@ local silly = {
 }
 local delirious = {
 	object_type = "Joker",
-	name = "cry-delirious",
+	name = "cry-Delirious Joker",
 	key = "delirious",
 	pos = { x = 4, y = 5 },
 	config = { t_mult = 22, type = "Five of a Kind" },
@@ -3758,7 +3758,7 @@ local delirious = {
 }
 local wacky = {
 	object_type = "Joker",
-	name = "cry-wacky",
+	name = "cry-Wacky Joker",
 	key = "wacky",
 	pos = { x = 5, y = 5 },
 	config = { t_mult = 25, type = "Flush House" },
@@ -3787,7 +3787,7 @@ local wacky = {
 }
 local kooky = {
 	object_type = "Joker",
-	name = "cry-kooky",
+	name = "cry-Kooky Joker",
 	key = "kooky",
 	pos = { x = 6, y = 5 },
 	config = { t_mult = 30, type = "Flush Five" },
@@ -3816,7 +3816,7 @@ local kooky = {
 }
 local dubious = {
 	object_type = "Joker",
-	name = "cry-dubious",
+	name = "cry-Dubious Joker",
 	key = "dubious",
 	pos = { x = 0, y = 6 },
 	config = { t_chips = 0, type = "High Card" },
@@ -3839,7 +3839,7 @@ local dubious = {
 }
 local shrewd = {
 	object_type = "Joker",
-	name = "cry-shrewd",
+	name = "cry-Shrewd Joker",
 	key = "shrewd",
 	pos = { x = 1, y = 6 },
 	config = { t_chips = 150, type = "Four of a Kind" },
@@ -3862,7 +3862,7 @@ local shrewd = {
 }
 local tricksy = {
 	object_type = "Joker",
-	name = "cry-tricksy",
+	name = "cry-Tricksy Joker",
 	key = "tricksy",
 	pos = { x = 2, y = 6 },
 	config = { t_chips = 170, type = "Straight Flush" },
@@ -3885,7 +3885,7 @@ local tricksy = {
 }
 local foxy = {
 	object_type = "Joker",
-	name = "cry-foxy",
+	name = "cry-Foxy Joker",
 	key = "foxy",
 	pos = { x = 3, y = 6 },
 	config = { t_chips = 130, type = "Full House" },
@@ -3908,7 +3908,7 @@ local foxy = {
 }
 local savvy = {
 	object_type = "Joker",
-	name = "cry-savvy",
+	name = "cry-Savvy Joker",
 	key = "savvy",
 	pos = { x = 4, y = 6 },
 	config = { t_chips = 170, type = "Five of a Kind" },
@@ -3937,7 +3937,7 @@ local savvy = {
 }
 local subtle = {
 	object_type = "Joker",
-	name = "cry-subtle",
+	name = "cry-Subtle Joker",
 	key = "subtle",
 	pos = { x = 5, y = 6 },
 	config = { t_chips = 200, type = "Flush House" },
@@ -3966,7 +3966,7 @@ local subtle = {
 }
 local discreet = {
 	object_type = "Joker",
-	name = "cry-discreet",
+	name = "cry-Discreet Joker",
 	key = "discreet",
 	pos = { x = 6, y = 6 },
 	config = { t_chips = 240, type = "Flush Five" },
