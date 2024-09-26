@@ -810,7 +810,7 @@ local gemino = {
 		if context.end_of_round and not context.repetition and not context.individual then
 			local check = false
 			local card = G.jokers.cards[1]
-			if not G.jokers.cards[1].config.center.immune_to_chemach then
+			if not G.jokers.cards[1]:no("immune_to_chemach", true) and not G.jokers.cards[1]:no("immutable", true) then
 				cry_with_deck_effects(G.jokers.cards[1], function(card)
 					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
@@ -982,7 +982,7 @@ local duplicare = {
             end
             card.ability.extra.Emult = card.ability.extra.Emult + 0
             return {
-                message = "^" .. number_format(card.ability.extra.Emult) .. " Mult",
+                message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
                 Emult_mod = card.ability.extra.Emult,
                 colour = G.C.DARK_EDITION
             }

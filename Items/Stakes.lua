@@ -568,6 +568,12 @@ return {
 				self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
 			end
 		end
+		for _, v in pairs(self.items) do
+			if v.object_type == "Stake" then
+				v.sticker_pos = v.pos
+				v.sticker_atlas = "sticker"
+			end
+		end
 	end,
 	items = {
 		stake_atlas,
