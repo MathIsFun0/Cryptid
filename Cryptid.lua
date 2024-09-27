@@ -2433,6 +2433,33 @@ function Game:update(dt)
 		CryptidIncanCompat = true
 	end
 end
+
+local jokers = {
+	"j_gros_michel",
+	"j_egg",
+	"j_ice_cream",
+	"j_cavendish",
+	"j_turtle_bean",
+	"j_diet_cola",
+	"j_popcorn",
+	"j_ramen",
+	"j_selzer",
+}
+if Cryptid.enabled["Misc. Jokers"] then
+	jokers[#jokers + 1] = "j_cry_pickle"
+	jokers[#jokers + 1] = "j_cry_chili_pepper"
+end
+if Cryptid.enabled["Epic Jokers"] then
+	jokers[#jokers + 1] = "j_cry_oldcandy"
+	jokers[#jokers + 1] = "j_cry_caramel"
+end
+if Cryptid.enabled["M Jokers"] then
+	jokers[#jokers + 1] = "j_cry_foodm"
+end
+for i = 1, #jokers do
+	Cryptid.food[#Cryptid.food+1] = jokers[i]
+end
+
 SMODS.Sound({
 	key = "meow1",
 	path = "meow1.ogg",

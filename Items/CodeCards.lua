@@ -120,6 +120,8 @@ local packM = {
 local console = {
 	object_type = "Tag",
 	atlas = "tag_cry",
+	name = "cry-Console Tag",
+	order = 26,
 	pos = { x = 3, y = 2 },
 	config = { type = "new_blind_choice" },
 	key = "console",
@@ -810,31 +812,6 @@ local delete = {
 		c:start_dissolve()
 	end,
 }
-local jokers = {
-	"j_gros_michel",
-	"j_egg",
-	"j_ice_cream",
-	"j_cavendish",
-	"j_turtle_bean",
-	"j_diet_cola",
-	"j_popcorn",
-	"j_ramen",
-	"j_selzer",
-}
-if Cryptid.enabled["Misc. Jokers"] then
-	jokers[#jokers + 1] = "j_cry_pickle"
-	jokers[#jokers + 1] = "j_cry_chili_pepper"
-end
-if Cryptid.enabled["Epic Jokers"] then
-	jokers[#jokers + 1] = "j_cry_oldcandy"
-	jokers[#jokers + 1] = "j_cry_caramel"
-end
-if Cryptid.enabled["M Jokers"] then
-	jokers[#jokers + 1] = "j_cry_foodm"
-end
-for i = 1, #jokers do
-	Cryptid.food[#Cryptid.food+1] = jokers[i]
-end
 local spaghetti = {
 	object_type = "Consumable",
 	set = "Code",
@@ -1046,6 +1023,7 @@ local rework_tag = {
 	object_type = "Tag",
 	atlas = "tag_cry",
 	name = "cry-Rework Tag",
+	order = 19,
 	pos = { x = 0, y = 3 },
 	config = { type = "store_joker_create" },
 	key = "rework",

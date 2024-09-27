@@ -600,6 +600,8 @@ local hyperspacetether = { --+2 card selection limit (replace me when "extra fun
 local triple = { --Copies voucher triple tag
 	object_type = "Tag",
 	atlas = "tag_cry",
+	name = "cry-Triple Tag",
+	order = 20,
 	pos = { x = 0, y = 1 },
 	config = { type = "tag_add", num = 2 },
 	key = "triple",
@@ -639,6 +641,8 @@ local triple = { --Copies voucher triple tag
 local quadruple = { --Tag printer voucher quadruple tag
 	object_type = "Tag",
 	atlas = "tag_cry",
+	name = "cry-Quadruple Tag",
+	order = 21,
 	pos = { x = 1, y = 1 },
 	config = { type = "tag_add", num = 3 },
 	key = "quadruple",
@@ -678,6 +682,8 @@ local quadruple = { --Tag printer voucher quadruple tag
 local quintuple = { --Clone machine voucher quintuple tag
 	object_type = "Tag",
 	atlas = "tag_cry",
+	name = "cry-Quintuple Tag",
+	order = 22,
 	pos = { x = 2, y = 1 },
 	config = { type = "tag_add", num = 4 },
 	key = "quintuple",
@@ -714,7 +720,6 @@ local quintuple = { --Clone machine voucher quintuple tag
 		return G.GAME.used_vouchers.v_cry_clone_machine
 	end,
 }
-
 -- If Tier 3 Vouchers is loaded, make Cryptid function as Tier 4 Vouchers
 if SMODS.Mods["Tier3Sub"] then
 	overstock_multi.requires[#overstock_multi.requires + 1] = "v_overstock_three"
@@ -732,6 +737,96 @@ if SMODS.Mods["Tier3Sub"] then
 	tacclimator.config.extra = tacclimator.config.extra * 8
 	pacclimator.config.extra = pacclimator.config.extra * 8
 end
+
+--Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
+--I am sorry in advance (this is extremely cursed)
+Cryptid.Megavouchers = {
+	"v_cry_overstock_multi",
+	"v_cry_massproduct",
+	"v_cry_curate",
+	"v_cry_rerollexchange",
+	"v_cry_dexterity",
+	"v_cry_threers",
+	"v_cry_tacclimator",
+	"v_cry_pacclimator",
+	"v_cry_moneybean",
+	"v_cry_fabric",
+	"v_cry_asteroglyph",
+	"v_cry_blankcanvas",
+	"v_cry_hyperspacetether",
+	"v_cry_clone_machine",
+}
+
+if Cryptid.enabled["M Jokers"] then
+	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_pairamount_plus"
+end
+if Cryptid.enabled["Code Cards"] then
+	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_quantum_computing"
+end
+if Cryptid.enabled["Misc."] then
+	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_double_down"
+end
+
+function megavoucherpool(_type, _rarity, legendary, key_append)
+	G.ARGS.TEMP_POOL = EMPTY(G.ARGS.TEMP_POOL)
+	local _pool, _starting_pool, _pool_key, _pool_size = G.ARGS.TEMP_POOL, {}, "megavoucher", 0
+
+	for k, v in pairs(Cryptid.Megavouchers) do
+		if v then
+			_starting_pool[#_starting_pool + 1] = G.P_CENTERS[v]
+		end
+	end
+
+	for k, v in ipairs(_starting_pool) do
+		local add = false
+
+		if not G.GAME.cry_owned_vouchers[v.key] then
+                	local check = true
+			if G.shop_vouchers and G.shop_vouchers.cards then
+                            for kk, vv in ipairs(G.shop_vouchers.cards) do
+                                if vv.config.center.key == v.key then check = false end
+                            end
+                        end
+			if check then
+                            add = true
+                        end
+		end
+
+		if add and not G.GAME.banned_keys[v.key] then
+			_pool[#_pool + 1] = v.key
+			_pool_size = _pool_size + 1
+		end
+
+		if _pool_size == 0 then
+			_pool = EMPTY(G.ARGS.TEMP_POOL)
+			_pool[#_pool + 1] = "v_blank"
+		end
+	end
+
+	return _pool, _pool_key .. G.GAME.round_resets.ante
+end
+
+local megavouchergetcurrentpool = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append)
+	if _type == "megavoucher" then
+		return megavoucherpool(_type, _rarity, _legendary, _append)
+	end
+	return megavouchergetcurrentpool(_type, _rarity, _legendary, _append)
+end
+
+function get_next_megavoucher_key(_from_tag)
+    local _pool, _pool_key = get_current_pool('megavoucher')
+    if _from_tag then _pool_key = 'Voucher_fromtag' end
+    local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+    local it = 1
+    while center == 'UNAVAILABLE' do
+        it = it + 1
+        center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+    end
+
+    return center
+end
+
 local voucheritems = {
 	voucher_atlas,
 	copies,
