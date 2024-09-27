@@ -62,6 +62,7 @@ local oldox = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 4,
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
 		if to_big(hand_chips) ~= to_big(0) then
@@ -81,6 +82,7 @@ local oldhouse = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 5,
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
 		if handname == "Full House" and not G.GAME.blind.disabled then
@@ -103,6 +105,7 @@ local oldarm = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 6,
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
 		if #cards > 4 and not G.GAME.blind.disabled then
@@ -125,6 +128,7 @@ local oldfish = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 7,
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
 		if to_big(mult) ~= to_big(1) then
@@ -144,6 +148,7 @@ local oldmanacle = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 8,
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
 		if G.GAME.current_round.discards_left > 1 then
@@ -163,6 +168,7 @@ local oldserpent = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 9,
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
 		if G.GAME.hands[text].level > 1 then
@@ -182,6 +188,7 @@ local oldpillar = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 10,
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
 		if handname == "Straight" and not G.GAME.blind.disabled then
@@ -204,6 +211,7 @@ local oldflint = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 11,
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
 		if handname == "Flush" and not G.GAME.blind.disabled then
@@ -226,6 +234,7 @@ local oldmark = {
 		max = 10,
 	},
 	atlas = "nostalgia",
+	order = 12,
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
 		if next(hand["Pair"]) then
@@ -248,6 +257,7 @@ local tax = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 2,
 	boss_colour = HEX("40ff40"),
 	cry_cap_score = function(self, score)
 		return math.floor(math.min(0.4 * G.GAME.blind.chips, score) + 0.5)
@@ -266,6 +276,7 @@ local box = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 13,
 	boss_colour = HEX("883a3b"),
 	recalc_debuff = function(self, card, from_blind)
 		if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 1 then
@@ -290,6 +301,7 @@ local clock = {
 		},
 	},
 	atlas = "blinds",
+	order = 3,
 	boss_colour = HEX("853455"),
 	defeat = function(self, silent)
 		G.P_BLINDS.bl_cry_clock.mult = 0
@@ -312,6 +324,7 @@ local trick = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 14,
 	boss_colour = HEX("babd24"),
 	cry_after_play = function(self)
 		--flip and shuffle all cards held in hand
@@ -343,6 +356,7 @@ local joke = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 15,
 	boss_colour = HEX("00ffaa"),
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.win_ante or 8 } }
@@ -367,6 +381,7 @@ local hammer = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 19,
 	boss_colour = HEX("ffabd6"),
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
@@ -396,6 +411,7 @@ local magic = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 20,
 	boss_colour = HEX("009eff"),
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
@@ -425,6 +441,7 @@ local windmill = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 16,
 	boss_colour = HEX("f70000"),
 	recalc_debuff = function(self, card, from_blind)
 		if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 2 then
@@ -443,6 +460,7 @@ local striker = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 1,
 	boss_colour = HEX("505e5c"),
 	recalc_debuff = function(self, card, from_blind)
 		if (card.area == G.jokers) and not G.GAME.blind.disabled and card.config.center.rarity == 3 then
@@ -461,6 +479,7 @@ local shackle = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 18,
 	boss_colour = HEX("010466"),
 	in_pool = function()
 		if not G.jokers then
@@ -490,6 +509,7 @@ local pin = {
 		max = 10,
 	},
 	atlas = "blinds",
+	order = 17,
 	boss_colour = HEX("452703"),
 	in_pool = function()
 		if not G.jokers then
@@ -515,6 +535,9 @@ local pin = {
 		return false
 	end,
 }
+
+--It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
+
 local pinkbow = { --TODO: Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
 	object_type = "Blind",
 	name = "cry-pinkbow",
@@ -542,6 +565,7 @@ local lavender_loop = {
 		showdown = true,
 	},
 	atlas = "blinds",
+	order = 2,
 	boss_colour = HEX("ae00ff"),
 	set_blind = function(self, reset, silent)
 		G.GAME.cry_ach_conditions.patience_virtue_timer = 120
@@ -578,6 +602,7 @@ local tornado = {
 		showdown = true,
 	},
 	atlas = "blinds",
+	order = 5,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
@@ -621,6 +646,7 @@ local vermillion_virus = {
 		showdown = true,
 	},
 	atlas = "blinds",
+	order = 1,
 	boss_colour = HEX("f65d34"),
 	cry_before_play = function(self)
 		if G.jokers.cards[1] then
@@ -651,6 +677,7 @@ local sapphire_stamp = {
 		showdown = true,
 	},
 	atlas = "blinds",
+	order = 3,
 	boss_colour = HEX("4057d6"),
 	cry_before_play = function(self)
 		local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
@@ -685,6 +712,7 @@ local obsidian_orb = {
 		showdown = true,
 	},
 	atlas = "blinds",
+	order = 4,
 	boss_colour = HEX("290759"),
 	set_blind = function(self, reset, silent)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
