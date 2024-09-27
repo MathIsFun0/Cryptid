@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0924a
+--- VERSION: 0.5.1~0927a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1992,8 +1992,9 @@ end
 
 --Redefine these here because they're always used
 Cryptid.base_values = {}
-function cry_misprintize_tbl(name, tbl, clear, override, stack)
-	if name and tbl then
+function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
+	if name and ref_tbl and ref_value then
+		tbl = cry_deep_copy(ref_tbl[ref_value])
 		for k, v in pairs(tbl) do
 			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
 				if
@@ -2064,6 +2065,7 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 				end
 			end
 		end
+		ref_tbl[ref_value] = tbl
 	end
 end
 function cry_misprintize_val(val, override)
@@ -2105,9 +2107,9 @@ function cry_misprintize(card, override, force_reset, stack)
 			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
-			cry_misprintize_tbl(card.config.center_key, card.ability, nil, override, stack)
+			cry_misprintize_tbl(card.config.center_key, card, "ability", nil, override, stack)
 			if card.base then
-				cry_misprintize_tbl(card.config.card_key, card.base, nil, override, stack)
+				cry_misprintize_tbl(card.config.card_key, card, "base", nil, override, stack)
 			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then
@@ -2121,7 +2123,7 @@ function cry_misprintize(card, override, force_reset, stack)
 			card:set_cost()
 		end
 	else
-		cry_misprintize_tbl(card.config.center_key, card.ability, true)
+		cry_misprintize_tbl(card.config.center_key, card, "ability", true)
 	end
 	if card.ability.consumeable then
 		for k, v in pairs(card.ability.consumeable) do
