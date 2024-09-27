@@ -346,16 +346,22 @@ local onlycard = {
 }
 --Add banned cards when specific features/mods are enabled here
 --TODO other mods
-if Cryptid.enabled["Misc."] then
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_cry_eclipse" }
-	if Cryptid.enabled["Epic Jokers"] then
-		rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_epic" }
-	end
+if Cryptid.enabled["Tags"] then
 	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_schematic" }
+	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_gourmand" }
+	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_banana" }
+	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_double_m" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_bundle" }
+	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_loss" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_gambler" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_empowered" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "p_cry_empowered" }
+	if Cryptid.enabled["Epic Jokers"] then
+		rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_epic" }
+	end
+end
+if Cryptid.enabled["Misc."] then
+	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_cry_eclipse" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {id = 'p_cry_meme_1', ids = {'p_cry_meme_1','p_cry_meme_two','p_cry_meme_three'}}
 end
 if Cryptid.enabled["Misc. Jokers"] then

@@ -490,7 +490,7 @@ return {
                 name = "Golden",
                 label = "Golden",
                 text = {
-                    "{C:money}+$#1#{} when used",
+                    "Earn {C:money}$#1#{} when used",
                     "or triggered",
                 },
             },
@@ -2241,6 +2241,52 @@ return {
             },
         },
         Tag = {
+            tag_cry_astral = {
+                name = "Astral Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Astral{}",
+                },
+            },
+            tag_cry_banana = {
+                name = "Banana Tag",
+                text = {
+                    "Creates {C:attention}#1#",
+                    "{C:inactive}(Must have room){}",
+                },
+            },
+            tag_cry_bettertop_up = {
+                name = "Better Top-up Tag",
+                text = {
+                    "Creates up to {C:attention}#1#",
+                    "{C:green}Uncommon{} Jokers",
+                    "{C:inactive}(Must have room){}",
+                },
+            },
+            tag_cry_better_voucher = {
+                name = "Golden Voucher Tag",
+                text = {
+                    "Adds one Tier {C:attention}#1#{} Voucher",
+                    "to the next shop",
+                },
+            },
+            tag_cry_blur = {
+                name = "Blurred Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Blurred{}",
+                },
+            },
+            tag_cry_booster = {
+                name = "Booster Tag",
+                text = {
+                    "Next {C:cry_code}Booster Pack{} has",
+                    "{C:attention}double{} cards and",
+                    "{C:attention}double{} choices",
+                },
+            },
             tag_cry_bundle = {
                 name = "Bundle Tag",
                 text = {
@@ -2257,6 +2303,13 @@ return {
                 text = {
                     "Gives a free",
                     "{C:cry_code}Program Pack",
+                },
+            },
+            tag_cry_double_m = {
+                name = "Double M Tag",
+                text = {
+                    "Shop has a",
+                    "{C:dark_edition}Jolly {C:legendary}M Joker{}",
                 },
             },
             tag_cry_empowered = {
@@ -2280,6 +2333,52 @@ return {
                     "an {C:cry_exotic,E:1}Empowered Tag",
                 },
             },
+            tag_cry_glass = {
+                name = "Fragile Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Fragile{}",
+                },
+            },
+            tag_cry_glitched = {
+                name = "Glitched Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Glitched{}",
+                },
+            },
+            tag_cry_gold = {
+                name = "Golden Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Golden{}",
+                },
+            },
+            tag_cry_gourmand = {
+                name = "Gourmand Tag",
+                text = {
+                    "Shop has a free",
+                    "{C:attention}Food Joker",
+                },
+            },
+            tag_cry_loss = {
+                name = "Loss",
+                text = {
+                    "Gives a free",
+                    "{C:cry_ascendant}Meme Pack",
+                },
+            },
+            tag_cry_m = {
+                name = "Jolly Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Jolly{}",
+                },
+            },
             tag_cry_memory = {
                 name = "Memory Tag",
                 text = {
@@ -2288,6 +2387,22 @@ return {
                     "during this run",
                     "{s:0.8,C:inactive}Copying Tags excluded",
                     "{s:0.8,C:inactive}Currently: {s:0.8,C:attention}#2#",
+                },
+            },
+            tag_cry_mosaic = {
+                name = "Mosaic Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Mosaic{}",
+                },
+            },
+            tag_cry_oversat = {
+                name = "Mosaic Tag",
+                text = {
+                    "Next base edition shop",
+                    "Joker is free and",
+                    "becomes {C:dark_edition}Oversaturated{}",
                 },
             },
             tag_cry_quadruple = {
@@ -2318,6 +2433,13 @@ return {
                 text = {
                     "Shop has a",
                     "{C:attention}Brainstorm",
+                },
+            },
+            tag_cry_scope = {
+                name = "Scope Tag",
+                text = {
+                    "{C:attention}+#1# {C:blue}hands{} and",
+                    "{C:red}discards{} next round",
                 },
             },
             tag_cry_triple = {
@@ -2884,6 +3006,7 @@ return {
             ["cry_feat_misc. jokers"] = "Misc. Jokers",
             cry_feat_planets = "Planets",
             cry_feat_jokerdisplay = "JokerDisplay (Does Nothing)",
+            cry_feat_tags = "Tags",
             cry_feat_sleeves = "Sleeves",
             cry_feat_spectrals = "Spectrals",
             ["cry_feat_more stakes"] = "Stakes",
