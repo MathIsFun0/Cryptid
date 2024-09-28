@@ -14,7 +14,7 @@ local jollysus = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
-		--Add Jolly Edition to infoqueue later
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = { center.ability.extra.active } }
 	end,
 	atlas = "atlastwo",
@@ -572,7 +572,7 @@ local bonk = {
 		card.ability.extra.xchips = math.floor(card.ability.extra.xchips + 0.5) --lua moment
 	end,
 }
-local loopy = { --this may or may not need further balancing
+local loopy = { 
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
@@ -590,7 +590,7 @@ local loopy = { --this may or may not need further balancing
 			key = "j_jolly",
 			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
 		}
-		return { vars = { center.ability.extra.Retrigger } }
+		return { vars = { center.ability.extra.retrigger } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -650,7 +650,7 @@ local scrabble = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		--Add Jolly Edition to infoqueue later
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
