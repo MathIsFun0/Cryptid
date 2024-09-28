@@ -739,6 +739,7 @@ local jollyedition = {
 	in_shop = false,
 	order = 31,
 	weight = 0,
+	pos = {x = 2, y = 0},
 	name = "cry-jollyedition",
 	sound = {
 		sound = "cry_e_jolly",
