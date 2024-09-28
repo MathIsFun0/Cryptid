@@ -8,6 +8,7 @@ local timantti = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
+	order = 3,
 	can_use = function(self, card)
 		return true
 	end,
@@ -74,6 +75,7 @@ local klubi = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
+	order = 4,
 	can_use = function(self, card)
 		return true
 	end,
@@ -140,6 +142,7 @@ local sydan = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
+	order = 5,
 	can_use = function(self, card)
 		return true
 	end,
@@ -206,6 +209,7 @@ local lapio = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
+	order = 6,
 	can_use = function(self, card)
 		return true
 	end,
@@ -272,6 +276,7 @@ local planetlua = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
+	order = 1,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), self.config.extra.odds } }
 	end,
@@ -493,6 +498,7 @@ local nstar = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
+	order = 2,
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
