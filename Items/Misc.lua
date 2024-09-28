@@ -186,6 +186,7 @@ local mosaic_shader = {
 local mosaic = {
 	object_type = "Edition",
 	key = "mosaic",
+	order = 2,
 	weight = 0.8, --slightly rarer than Polychrome
 	shader = "mosaic",
 	in_shop = true,
@@ -211,6 +212,7 @@ local oversat_shader = {
 local oversat = {
 	object_type = "Edition",
 	key = "oversat",
+	order = 3,
 	weight = 3,
 	shader = "oversat",
 	in_shop = true,
@@ -304,6 +306,7 @@ local glitched_shader = {
 local glitched = {
 	object_type = "Edition",
 	key = "glitched",
+	order = 1,
 	weight = 15,
 	shader = "glitched",
 	in_shop = true,
@@ -512,6 +515,7 @@ local astral_shader = {
 local astral = {
 	object_type = "Edition",
 	key = "astral",
+	order = 30,
 	weight = 0.3, --very rare
 	shader = "astral",
 	in_shop = true,
@@ -537,6 +541,7 @@ local blurred_shader = {
 local blurred = {
 	object_type = "Edition",
 	key = "blur",
+	order = 6,
 	weight = 0.5, --very rare
 	shader = "blur",
 	in_shop = true,
@@ -576,6 +581,7 @@ local noisy_shader = {
 local noisy = {
 	object_type = "Edition",
 	key = "noisy",
+	order = 7,
 	weight = 3,
 	shader = "noisy",
 	in_shop = true,
@@ -731,6 +737,7 @@ local jollyeditionshader = {
 local jollyedition = {
 	object_type = "Edition",
 	in_shop = false,
+	order = 31,
 	weight = 0,
 	name = "cry-jollyedition",
 	sound = {
@@ -763,6 +770,7 @@ local glass_shader = {
 local glass_edition = {
 	object_type = "Edition",
 	key = "glass",
+	order = 4,
 	shader = "glass",
 	in_shop = true,
 	disable_base_shader = true,
@@ -831,6 +839,7 @@ local gold_shader = {
 local gold_edition = {
 	object_type = "Edition",
 	key = "gold",
+	order = 5,
 	shader = "gold",
 	weight = 7,
 	extra_cost = 2,
@@ -876,6 +885,7 @@ local double_sided = {
 	object_type = "Edition",
 	key = "double_sided",
 	shader = false,
+	order = 32,
 	weight = 10,
 	extra_cost = 0,
 	in_shop = true,
@@ -1143,10 +1153,10 @@ local miscitems = {
 	double_sided,
 	meld
 }
-if cry_enable_epics then
+if Cryptid.enabled["Epic Jokers"] then
 	miscitems[#miscitems + 1] = epic_tag
 end
-if cry_minvasion then
+if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
 	miscitems[#miscitems + 1] = jollyedition
 end

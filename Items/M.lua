@@ -1297,7 +1297,6 @@ local longboi = {
 	end,
 }
 local ret_items = {
-	jollysus,
 	kidnap,
 	bubblem,
 	foodm,
@@ -1306,7 +1305,6 @@ local ret_items = {
 	notebook,
 	bonk,
 	loopy,
-	scrabble,
 	sacrifice,
 	reverse,
 	macabre,
@@ -1348,16 +1346,25 @@ return {
 				self.cost = 1
 			end
 		end
-		if cry_enable_epics then
+
+		--Load In Jokers if specific Cryptid configs are enabled
+		if Cryptid.enabled["Epic Jokers"] then
 			for _, jkr in pairs({ doodlem, virgo, smallestm, biggestm }) do
 				ret_items[#ret_items + 1] = jkr
 			end
 		end
-		if cry_enable_exotics then
+		if Cryptid.enabled["Exotic Jokers"] then
 			for _, jkr in pairs({ mprime }) do
 				ret_items[#ret_items + 1] = jkr
 			end
 		end
+		if Cryptid.enabled["Misc."] then
+			for _, jkr in pairs({ jollysus, scrabble }) do
+				ret_items[#ret_items + 1] = jkr
+			end
+		end
+		--end of cryptid config loading
+		
 		for i = 1, #ret_items do
 			Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
 			local vc = ret_items[i].calculate
