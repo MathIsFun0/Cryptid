@@ -77,6 +77,7 @@ local empoweredPack = {
 	name = "cry-Empowered Pack",
 	key = "empowered",
 	kind = "Spectral",
+	no_doe = true,
 	pos = { x = 0, y = 4 },
 	config = { extra = 2, choose = 1 },
 	cost = 0,
@@ -106,10 +107,10 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if i % 2 == 1 then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
-		else
+		if i % 2 == 1 and Cryptid.enabled["Exotic Jokers"] then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
+		else
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
 		end
 	end,
 	group_key = "k_spectral_pack",
@@ -125,7 +126,7 @@ local empowered = {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
-		if G.P_CENTERS.c_cry_gateway then
+		if Cryptid.enabled["Exotic Jokers"] then
 			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		end
 		return { vars = {} }
