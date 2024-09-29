@@ -110,6 +110,22 @@
 --Gemini
 --Nostalgic Invisible Joker
 --Facile
+--=============== Page 8 ===============--
+--Giggly Joker
+--Nutty Joker
+--Manic Joker
+--Silly Joker
+--Delirious Joker
+--Wacky Joker
+--Kooky Joker
+--Dubious Joker
+--Shrewd Joker
+--Tricksy Joker
+--Foxy Joker
+--Savvy Joker
+--Subtle Joker
+--Discreet Joker
+--
 if JokerDisplay then
 
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
@@ -1802,6 +1818,73 @@ if JokerDisplay then
 			card.joker_display_values.Emult = (count <= card.ability.extra.check and card.ability.extra.Emult or 1)
 		end,
 	}
+
+	--This is here so it shows up on the github symbol panel (easy to scroll to)
+	local page8 = {}
+	
+	local hand_tmult_jd = {
+		text = {
+                        { text = "+", colour = G.C.MULT },
+                        { ref_table = "card.joker_display_values", ref_value = "t_mult", colour = G.C.MULT, retrigger_type = "mult" },
+                },
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local t_mult = 0
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
+				t_mult = card.ability.t_mult
+			end
+			card.joker_display_values.t_mult = t_mult
+			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
+		end,
+	}
+	local hand_tchips_jd = {
+		text = {
+                        { text = "+", colour = G.C.CHIPS },
+                        { ref_table = "card.joker_display_values", ref_value = "t_chips", colour = G.C.CHIPS, retrigger_type = "mult" },
+                },
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local t_chips = 0
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
+				t_chips = card.ability.t_chips
+			end
+			card.joker_display_values.t_chips = t_chips
+			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_giggly"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_nutty"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_manic"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_silly"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_delirious"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_wacky"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_kooky"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_dubious"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_shrewd"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_tricksy"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_foxy"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_savvy"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_subtle"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_discreet"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_fractal"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+		},
+		text_config = { colour = G.C.ORANGE },
+	}
+	
+	
 	--end of Jokerdisplays
 end
 --Disabling this file doesn't actually disable the JokerDisplays
