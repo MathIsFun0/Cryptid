@@ -5,6 +5,7 @@ local white_hole = {
 	key = "white_hole",
 	pos = { x = 1, y = 4 },
 	cost = 4,
+	order = 40,
 	atlas = "atlasnotjokers",
 	hidden = true, --default soul_rate of 0.3% in spectral packs is used
 	soul_set = "Planet",
@@ -104,6 +105,7 @@ local vacuum = {
 	pos = { x = 3, y = 1 },
 	config = { extra = 4 },
 	cost = 4,
+	order = 2,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -174,6 +176,7 @@ local hammerspace = {
 	pos = { x = 4, y = 3 },
 	config = {},
 	cost = 4,
+	order = 3,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return #G.hand.cards > 0
@@ -228,6 +231,7 @@ local lock = {
 	pos = { x = 0, y = 1 },
 	config = {},
 	cost = 4,
+	order = 1,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
@@ -327,6 +331,7 @@ local trade = {
 	pos = { x = 2, y = 1 },
 	config = {},
 	cost = 4,
+	order = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local usable_count = 0
@@ -480,6 +485,7 @@ local analog = {
 		return { vars = { center.ability.copies, center.ability.ante } }
 	end,
 	cost = 4,
+	order = 7,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
@@ -530,6 +536,7 @@ local summoning = {
 	key = "summoning",
 	pos = { x = 3, y = 4 },
 	cost = 4,
+	order = 5,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
@@ -580,6 +587,7 @@ local replica = {
 	pos = { x = 1, y = 1 },
 	config = {},
 	cost = 4,
+	order = 6,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return #G.hand.cards > 0

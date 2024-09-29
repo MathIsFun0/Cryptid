@@ -41,6 +41,7 @@ local pack1 = {
 	pos = { x = 0, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = 4,
+	order = 1,
 	weight = 0.96,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -62,6 +63,7 @@ local pack2 = {
 	pos = { x = 1, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = 4,
+	order = 2,
 	weight = 0.96,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -83,6 +85,7 @@ local packJ = {
 	pos = { x = 2, y = 0 },
 	config = { extra = 4, choose = 1 },
 	cost = 6,
+	order = 3,
 	weight = 0.48,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -104,6 +107,7 @@ local packM = {
 	pos = { x = 3, y = 0 },
 	config = { extra = 4, choose = 2 },
 	cost = 8,
+	order = 4,
 	weight = 0.12,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -1128,6 +1132,7 @@ local source = {
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Source",
+	order = 9,
 	key = "source",
 	config = {
 		-- This will add a tooltip.
@@ -1183,6 +1188,7 @@ local pointer = {
 	pos = { x = 4, y = 3 },
 	hidden = true,
 	soul_set = "Code",
+	order = 41,
 	atlas = "code",
 	can_use = function(self, card)
 		return true

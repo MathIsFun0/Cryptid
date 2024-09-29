@@ -78,6 +78,7 @@ local meme1 = {
 	kind = "meme",
 	atlas = "memepack",
 	pos = { x = 0, y = 1 },
+	order = 5,
 	config = { extra = 5, choose = 2 },
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
@@ -111,6 +112,7 @@ local meme2 = {
 	kind = "meme",
 	atlas = "memepack",
 	pos = { x = 1, y = 1 },
+	order = 6,
 	config = { extra = 5, choose = 2 },
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
@@ -144,6 +146,7 @@ local meme3 = {
 	kind = "meme",
 	atlas = "memepack",
 	pos = { x = 2, y = 1 },
+	order = 7,
 	config = { extra = 5, choose = 2 },
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
@@ -1029,6 +1032,7 @@ local typhoon = {
 	set = "Spectral",
 	name = "cry-Typhoon",
 	key = "typhoon",
+	order = 8,
 	config = {
 		-- This will add a tooltip.
 		mod_conv = "cry_azure_seal",
@@ -1154,9 +1158,6 @@ local miscitems = {
 	double_sided,
 	meld
 }
-if Cryptid.enabled["Epic Jokers"] then
-	miscitems[#miscitems + 1] = epic_tag
-end
 if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
 	miscitems[#miscitems + 1] = jollyedition

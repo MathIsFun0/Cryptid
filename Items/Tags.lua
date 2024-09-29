@@ -82,6 +82,7 @@ local empoweredPack = {
 	config = { extra = 2, choose = 1 },
 	cost = 0,
 	weight = 0,
+	order = 8,
 	draw_hand = true,
 	update_pack = SMODS.Booster.update_pack,
 	loc_vars = SMODS.Booster.loc_vars,
