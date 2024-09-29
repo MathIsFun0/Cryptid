@@ -8,7 +8,7 @@ Progress:
 Decks: No
 Jokers: No
 Code Cards: No
-Deck Sleeves (requires Decksleeves Mod: No
+Deck Sleeves (requires Decksleeves Mod): No
 Boss Blinds: No
 Spectrals: No
 Tarots: No
