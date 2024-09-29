@@ -2,6 +2,7 @@ local blank = {
 	object_type = "Back",
 	name = "cry-Blank",
 	key = "blank",
+	order = 75,
 	pos = { x = 1, y = 0 },
 	atlas = "blank",
 }
@@ -15,6 +16,7 @@ local blank_sprite = {
 local antimatter = {
 	object_type = "Back",
 	name = "cry-Antimatter",
+	order = 76,
 	key = "antimatter",
 	config = {
 		cry_antimatter = true,
@@ -35,7 +37,7 @@ local antimatter = {
 		consumables = { "c_fool", "c_fool", "c_hex" }, --Consumables from all decks
 		spectral_rate = 2, --Ghost Deck
 		remove_faces = true, --Abandoned Deck
-		hand_size = 2, --Painted Deck
+		hand_size = 3, --Painted Deck & Infinite deck
 		randomize_rank_suit = true, --Erratic Deck
 		cry_equilibrium = true, --Deck of Equilibrium
 		cry_misprint_min = 1,
@@ -142,18 +144,10 @@ local antimatter = {
 			end
 		end
 	end,
-	atlas = "antimatter",
-}
-local antimatter_sprite = {
-	object_type = "Atlas",
-	key = "antimatter",
-	path = "atlasdeck.png",
-	px = 71,
-	py = 95,
+	atlas = "blank",
 }
 return {
 	name = "Antimatter Deck",
 	init = function() end,
-	order = 2000000,
-	items = { blank_sprite, antimatter_sprite, blank, antimatter },
+	items = { blank_sprite, blank, antimatter },
 }

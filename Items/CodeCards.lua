@@ -1223,6 +1223,7 @@ local encoded = {
 	object_type = "Back",
 	name = "cry-Encoded",
 	key = "encoded",
+	order = 11,
 	config = { cry_encoded = true, cry_encoded_downside = true },
 	pos = { x = 2, y = 5 },
 	atlas = "atlasdeck",
@@ -1232,6 +1233,7 @@ local source_deck = {
 	object_type = "Back",
 	name = "cry-Source Deck",
 	key = "source_deck",
+	order = 12,
 	config = { cry_force_seal = "cry_green" },
 	pos = { x = 3, y = 5 },
 	loc_txt = {
