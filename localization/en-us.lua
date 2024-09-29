@@ -905,8 +905,8 @@ return {
                 name = "Facile",
                 text = {
                     "{X:dark_edition,C:white}^#1#{} Mult if",
-                    "{C:attention}#2#{} or fewer",
-                    "cards are scored",
+                    "played cards are scored",
+                    "{C:attention}#2#{} or fewer times",
                 },
             },
             j_cry_filler = {
