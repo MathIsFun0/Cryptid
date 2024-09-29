@@ -1,5 +1,26 @@
 --I couldn't get Meme Packs to work without crashing
 --yes somehow that was harder than RNJoker
+--Wip Localization, putting this here since people have expressed interst in this
+
+--[[
+Progress:
+
+Decks: No
+Jokers: No
+Code Cards: No
+Deck Sleeves (requires Decksleeves Mod: No
+Boss Blinds: No
+Spectrals: No
+Tarots: No
+Dictonary: No
+Editions: No
+Vouchers: No
+Enhancements (aka echo card): No
+Tags: No
+Other (packs, stickers, etc): No
+Misc: No
+
+]]--
 return {
     descriptions = {
         Back = {
