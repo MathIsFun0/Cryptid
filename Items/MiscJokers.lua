@@ -143,6 +143,7 @@ local potofjokes = {
 	config = { extra = { h_size = -2, h_mod = 1 } },
 	pos = { x = 5, y = 0 },
 	immune_to_chemach = true,
+	unlocked = false,
 	rarity = 3,
 	cost = 10,
 	perishable_compat = false,
@@ -172,6 +173,11 @@ local potofjokes = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand:change_size(-card.ability.extra.h_size)
 	end,
+	check_for_unlock = function(self, args)
+        	if G and G.hand and G.hand.config.card_limit > 10 then
+			unlock_card(self)
+		end
+    	end,
 }
 local queensgambit = {
 	object_type = "Joker",
