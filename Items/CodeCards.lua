@@ -989,6 +989,9 @@ local rework = {
 	end,
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
+		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
+		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
+		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
