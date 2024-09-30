@@ -604,5 +604,6 @@ Cryptid = {}
 Cryptid.memepack = {}
 Cryptid.aliases = {}
 Cryptid.food = {}
+Cryptid.M_jokers = {} 
 '''
 match_indent = true

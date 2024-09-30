@@ -125,7 +125,7 @@
 --Savvy Joker
 --Subtle Joker
 --Discreet Joker
---
+--Fractal
 if JokerDisplay then
 
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)

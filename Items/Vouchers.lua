@@ -12,8 +12,8 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 	order = 1,
 	pos = { x = 1, y = 1 },
 	loc_vars = function(self, info_queue)
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
 		return { vars = {} }
 	end,
 }
@@ -24,8 +24,8 @@ local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
 		return { vars = {} }
 	end,
 	requires = { "v_cry_copies" },
@@ -37,8 +37,8 @@ local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 	order = 91,
 	pos = { x = 1, y = 3 },
 	loc_vars = function(self, info_queue)
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
 		return { vars = {} }
 	end,
 	requires = { "v_cry_tag_printer" },
@@ -435,7 +435,7 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	unredeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = G.P_CENTERS.v_money_tree.config.extra
+				G.GAME.interest_cap = math.max(25, (G.P_CENTERS.v_money_tree.config.extra or 0), (G.P_CENTERS.v_seed_money.config.extra or 0))
 				return true
 			end,
 		}))
