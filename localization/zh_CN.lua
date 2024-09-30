@@ -1,6 +1,310 @@
 return {
     descriptions = {
         Back = {
+            ["b_cry_cry-bonus_deck"] = {
+                name = "The Hierophant's 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_bonus}奖励牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-mult_deck"] = {
+                name = "The Empress' 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_mult}倍率牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-wild_deck"] = {
+                name = "The Lovers' 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_wild}万能牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-glass_deck"] = {
+                name = "正义牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_glass}玻璃牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-steel_deck"] = {
+                name = "The Chariot's 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_steel}钢铁牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-stone_deck"] = {
+                name = "Stoner's 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_stone}石头牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-gold_deck"] = {
+                name = "The Devil's 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_gold}黄金牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-lucky_deck"] = {
+                name = "The Magician's 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "都是 {C:attention,T:m_lucky}幸运牌{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-foil_deck"] = {
+                name = "闪箔牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:foil}闪箔牌{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-holo_deck"] = {
+                name = "镭射牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:holo}镭射牌{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-polychrome_deck"] = {
+                name = "多彩牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:polychrome}多彩牌{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-negative_deck"] = {
+                name = "负片牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:negative}负片牌{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-Gold_deck"] = {
+                name = "Talisman 牌组",
+                text = {
+                        "所有牌都带有一个{C:dark_edition}金色蜡封{}",
+                        "卡牌不能更改蜡封类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            b_cry_source_deck = {
+                name = "源代码卡组",
+                text = {
+                    "所有牌都带有一个{C:dark_edition}绿色蜡封{}",
+                    "卡牌不能更改蜡封类型",
+                    "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-Red_deck"] = {
+                name = "Déja Vu 牌组",
+                text = {
+                        "所有牌都带有一个{C:dark_edition}红色蜡封{}",
+                        "卡牌不能更改蜡封类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-Blue_deck"] = {
+                name = "Trance 牌组",
+                text = {
+                        "所有牌都带有一个{C:dark_edition}蓝色蜡封{}",
+                        "卡牌不能更改蜡封类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-Purple_deck"] = {
+                name = "Medium 牌组",
+                text = {
+                        "所有牌都带有一个{C:dark_edition}紫色蜡封{}",
+                        "卡牌不能更改蜡封类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-eternal_deck"] = {
+                name = "Eternal 牌组",
+                text = {
+                        "所有的牌都是{C:attention}永恒卡{}",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-perishable_deck"] = {
+                name = "Perishable 牌组",
+                text = {
+                        "所有的牌都是{C:attention}易腐{}",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-rental_deck"] = {
+                name = "Rental 牌组",
+                text = {
+                        "所有的牌都是{C:attention}租用{}",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-pinned_deck"] = {
+                name = "Pinned 牌组",
+                text = {
+                        "所有的牌都是{C:attention}固定卡{}",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cry-window_deck"] = {
+                name = "Deck of the Stars",
+                text = {
+                        "所有的牌都是{C:dark_edition}方块{}",
+                        "不能改变花色",
+                        "",
+                        "{C:attention}The Window{}不会出现",
+                }
+            },
+            ["b_cry_cry-head_deck"] = {
+                name = "Deck of the Sun",
+                text = {
+                        "所有的牌都是{C:dark_edition}红桃{}",
+                        "不能改变花色",
+                        "",
+                        "{C:attention}The Head{}不会出现",
+                }
+            },
+            ["b_cry_cry-goad_deck"] = {
+                name = "Deck of the World",
+                text = {
+                        "所有的牌都是{C:dark_edition}黑桃{}",
+                        "不能改变花色",
+                        "",
+                        "{C:attention}The Goad{}不会出现",
+                }
+            },
+            ["b_cry_cry-club_deck"] = {
+                name = "梅花卡组",
+                text = {
+                    "所有的牌都是{C:dark_edition}黑桃{}",
+                    "不能改变花色",
+                    "",
+                    "{C:attention}The Club{}不会出现",
+                }
+            },
+            ["b_cry_cryecho_deck"] = {
+                name = "The Eclipse's 牌组",
+                text = {
+                        "所有的 {C:attention}打出的牌{}",
+                        "are {C:attention,T:m_cry_echo}回响版本{}",
+                        "不能更改增强类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cryglass_deck"] = {
+                name = "Fragile 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_glass}灰质琉璃版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_crygold_deck"] = {
+                name = "Golden 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_gold}鎏金版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_crynoisy_deck"] = {
+                name = "Noisy 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_noisy}噪声版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cryastral_deck"] = {
+                name = "Astral 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_astral}星界版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cryblur_deck"] = {
+                name = "Blurred 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_blur}模糊版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_crym_deck"] = {
+                name = "Meck",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_m}愉快版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_crymosaic_deck"] = {
+                name = "Mosaic 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_mosaic}马赛克版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cryoversat_deck"] = {
+                name = "Oversaturated 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_oversat}过曝版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_cryglitched_deck"] = {
+                name = "Glitched 牌组",
+                text = {
+                        "所有的牌都是{C:dark_edition,T:cry_glitched}故障版本{}",
+                        "不能更改版本类型",
+                        "{s:0.8,C:inactive}不对，这不就是印错牌组吗?",
+                }
+            },
+            ["b_cry_cryazure_deck"] = {
+                name = "Typhoon 牌组",
+                text = {
+                        "所有牌都带有一个{C:dark_edition}蔚蓝火漆{}",
+                        "卡牌不能更改蜡封类型",
+                        "{s:0.8,C:inactive}",
+                }
+            },
+            ["b_cry_crybanana_deck"] = {
+                name = "Banana 牌组",
+                text = {
+                        "所有的牌带有{C:attention}香蕉贴纸{}",
+                        "{s:0.8,C:inactive}",
+                }
+            },
             b_cry_CCD = {
                 name = "CCD卡组",
                 text = {
@@ -48,7 +352,7 @@ return {
                 text = {
                     "所有卡牌在",
                     "商店中出现的{C:attention}几率相同{}，",
-                    "以{C:attention,T:v_overstock_plus}Overstock Plus{}开始游戏"
+                    "以{C:attention,T:v_overstock_plus}库存过剩加强版{}开始游戏"
                 }
             },
             b_cry_glowing = {
@@ -456,7 +760,7 @@ return {
                 }
             },
             e_cry_glitched = {
-                name = "故#_《障&",
+                name = "故障&_",
                 text = {
                     "此牌上的数值会在",
                     "{C:attention}X0.1{} 与 {C:attention}X10{}之间{C:dark_edition}随机{}流动",
@@ -501,7 +805,7 @@ return {
         },
         Enhanced = {
             m_cry_echo = {
-                name = "回声卡",
+                name = "回响卡",
                 text = {
                     "当计分时",
                     "{C:green}#2# / #3#{} 几率",
@@ -513,7 +817,8 @@ return {
             j_cry_CodeJoker = {
                 name = "代码小丑",
                 text = {
-                    "{C:inactive,s:0.8}空间不够了...{}"
+                    "当选择{C:attention}盲注{}时",
+                    "创建一个{C:dark_edition}负片{}{C:cry_code}代码牌{}"
                 }
             },
             ["j_cry_Double Scale"] = {
@@ -2554,7 +2859,7 @@ return {
                 name = "日食",
                 text = {
                     "增强 {C:attention}#1#{} 选定的卡片",
-                    "为 {C:attention}回声卡"
+                    "为 {C:attention}回响卡"
                 }
             },
             c_cry_meld = {
@@ -2806,7 +3111,7 @@ return {
             ach_cry_niw_uoy = "达到底注 -8",
             ach_cry_now_the_fun_begins = "获得画布",
             ach_cry_patience_virtue = "在玩第一手牌之前等待Lavender Loop 2分钟并击败盲注",
-            ach_cry_perfectly_balanced = "在Ascendant Stake上击败Very Fair Deck",
+            ach_cry_perfectly_balanced = "在Ascendant Stake上击败非常公平牌组",
             ach_cry_pull_request = "让://提交生成它摧毁的相同小丑",
             ach_cry_traffic_jam = "击败所有Rush Hour挑战",
             ach_cry_ult_full_skip = "在1回合内获胜",
