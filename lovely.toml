@@ -603,6 +603,29 @@ end
 '''
 match_indent = true
 
+# kitty printer 1 (i'd rather replace it in a different way, but i don't fully understand what's going on here)
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "add_tag(_tag.config.ref_table)"
+position = "at"
+payload = '''
+if G.GAME.kitty_printers and G.GAME.kitty_printers > 0 then add_tag(Tag('tag_cry_cat')) else add_tag(_tag.config.ref_table) end
+'''
+match_indent = true
+
+# kitty printer 2 (does anyone know if creating a second tag object here majorly messes things up?)
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "local _tag = Tag(G.GAME.round_resets.blind_tags[blind_choice], nil, blind_choice)"
+position = "after"
+payload = '''
+if G.GAME.kitty_printers and G.GAME.kitty_printers > 0 then _tag = Tag('tag_cry_cat', nil, blind_choice) end
+'''
+match_indent = true
+
+
 # don't draw old perishable texture
 [[patches]]
 [patches.pattern]

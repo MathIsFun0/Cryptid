@@ -4531,7 +4531,7 @@ local fractal = {
 	key = "fractal",
 	pos = { x = 6, y = 4 },
 	config = { extra = 2 },
-	rarity = 3,
+	rarity = 2,
 	cost = 7,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
@@ -4545,6 +4545,42 @@ local fractal = {
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
 		G.hand:unhighlight_all()
+	end,
+}
+local kittyprinter = {
+	object_type = "Joker",
+	name = "cry-kittyprinter",
+	key = "kittyprinter",
+	config = { extra = { Xmult = 2.3 } },
+	pos = { x = 1, y = 0 },
+	rarity = 2,
+	cost = 3,
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult } }
+	end,
+	calculate = function(self, card, context)
+		if
+			context.cardarea == G.jokers
+			and not context.before
+			and not context.after
+			and card.ability.extra.Xmult > 1
+		then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { card.ability.extra.Xmult },
+				}),
+				Xmult_mod = card.ability.extra.Xmult,
+			}
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.GAME.kitty_printers = G.GAME.kitty_printers and G.GAME.kitty_printers + 1 or 1
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.GAME.kitty_printers = math.max(0, G.GAME.kitty_printers - 1)
 	end,
 }
 
@@ -4620,6 +4656,7 @@ local miscitems =  {
 	cryptidmoment,
 	oldinvisible,
 	fractal,
+	kittyprinter,
 	giggly,
 	nutty,
 	manic,
