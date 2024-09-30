@@ -2891,7 +2891,7 @@ local rnjoker = {
 									cond_passed = true
 								end
 							elseif j.cond == "poker_hand" then
-								if next(context.poker_hands[j.poker_hand]) then
+								if context.poker_hands~= nil and next(context.poker_hands[j.poker_hand]) then
 									cond_passed = true
 								end
 							elseif j.cond == "or_more" then
@@ -3268,7 +3268,7 @@ local rnjoker = {
 								cond_passed = true
 							end
 						elseif j.cond == "poker_hand" then
-							if next(context.poker_hands[j.poker_hand]) then
+							if context.poker_hands~= nil and next(context.poker_hands[j.poker_hand]) then
 								cond_passed = true
 							end
 						elseif j.cond == "or_more" then
@@ -3442,7 +3442,7 @@ local duos = {
 			and not context.before
 			and not context.after
 		then
-			if next(context.poker_hands["Two Pair"]) or next(context.poker_hands["Full House"]) then
+			if context.poker_hands~= nil and next(context.poker_hands["Two Pair"]) or context.poker_hands~= nil and next(context.poker_hands["Full House"]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -3472,7 +3472,7 @@ local home = {
 			and not context.before
 			and not context.after
 		then
-			if next(context.poker_hands["Full House"]) then
+			if context.poker_hands~= nil and next(context.poker_hands["Full House"]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -3502,7 +3502,7 @@ local nuts = {
 			and not context.before
 			and not context.after
 		then
-			if next(context.poker_hands["Straight Flush"]) then
+			if context.poker_hands ~= nil and  next(context.poker_hands["Straight Flush"]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -3532,7 +3532,7 @@ local quintet = {
 			and not context.before
 			and not context.after
 		then
-			if next(context.poker_hands["Five of a Kind"]) then
+			if context.poker_hands~= nil and next(context.poker_hands["Five of a Kind"]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -3568,7 +3568,7 @@ local unity = {
 			and not context.before
 			and not context.after
 		then
-			if next(context.poker_hands["Flush House"]) then
+			if context.poker_hands~= nil and next(context.poker_hands["Flush House"]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -3604,7 +3604,7 @@ local swarm = {
 			and not context.before
 			and not context.after
 		then
-			if next(context.poker_hands["Flush Five"]) then
+			if context.poker_hands~= nil and next(context.poker_hands["Flush Five"]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,

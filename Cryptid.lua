@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0924a
+--- VERSION: 0.5.1~0927a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -458,7 +458,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 3400
+		local old = GLOBAL_cry_member_count or 3764
 		local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
 			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
@@ -471,7 +471,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 3400
+		GLOBAL_cry_member_count = 3764
 	end
 end
 
@@ -1978,9 +1978,9 @@ end
 
 local gfcsc = G.FUNCS.can_select_card
 G.FUNCS.can_select_card = function(e)
-  if (e.config.ref_table.ability.name == "cry-Negative Joker" and card.config.ref_table.ability.extra >= 1) or
-	(e.config.ref_table.ability.name == "cry-soccer" and card.config.ref_table.ability.extra.holygrail >= 1) or 
-	(e.config.ref_table.ability.name == "cry-Tenebris" and card.config.ref_table.ability.extra.slots >= 1) then 
+  if (e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra >= 1) or
+	(e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1) or 
+	(e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1) then 
     e.config.colour = G.C.GREEN
     e.config.button = 'use_card'
   else
@@ -1990,8 +1990,9 @@ end
 
 --Redefine these here because they're always used
 Cryptid.base_values = {}
-function cry_misprintize_tbl(name, tbl, clear, override, stack)
-	if name and tbl then
+function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
+	if name and ref_tbl and ref_value then
+		tbl = cry_deep_copy(ref_tbl[ref_value])
 		for k, v in pairs(tbl) do
 			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
 				if
@@ -2062,6 +2063,7 @@ function cry_misprintize_tbl(name, tbl, clear, override, stack)
 				end
 			end
 		end
+		ref_tbl[ref_value] = tbl
 	end
 end
 function cry_misprintize_val(val, override)
@@ -2103,9 +2105,9 @@ function cry_misprintize(card, override, force_reset, stack)
 			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
-			cry_misprintize_tbl(card.config.center_key, card.ability, nil, override, stack)
+			cry_misprintize_tbl(card.config.center_key, card, "ability", nil, override, stack)
 			if card.base then
-				cry_misprintize_tbl(card.config.card_key, card.base, nil, override, stack)
+				cry_misprintize_tbl(card.config.card_key, card, "base", nil, override, stack)
 			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then
@@ -2119,7 +2121,7 @@ function cry_misprintize(card, override, force_reset, stack)
 			card:set_cost()
 		end
 	else
-		cry_misprintize_tbl(card.config.center_key, card.ability, true)
+		cry_misprintize_tbl(card.config.center_key, card, "ability", true)
 	end
 	if card.ability.consumeable then
 		for k, v in pairs(card.ability.consumeable) do
@@ -2415,6 +2417,33 @@ function Game:update(dt)
 		CryptidIncanCompat = true
 	end
 end
+
+local jokers = {
+	"j_gros_michel",
+	"j_egg",
+	"j_ice_cream",
+	"j_cavendish",
+	"j_turtle_bean",
+	"j_diet_cola",
+	"j_popcorn",
+	"j_ramen",
+	"j_selzer",
+}
+if Cryptid.enabled["Misc. Jokers"] then
+	jokers[#jokers + 1] = "j_cry_pickle"
+	jokers[#jokers + 1] = "j_cry_chili_pepper"
+end
+if Cryptid.enabled["Epic Jokers"] then
+	jokers[#jokers + 1] = "j_cry_oldcandy"
+	jokers[#jokers + 1] = "j_cry_caramel"
+end
+if Cryptid.enabled["M Jokers"] then
+	jokers[#jokers + 1] = "j_cry_foodm"
+end
+for i = 1, #jokers do
+	Cryptid.food[#Cryptid.food+1] = jokers[i]
+end
+
 SMODS.Sound({
 	key = "meow1",
 	path = "meow1.ogg",

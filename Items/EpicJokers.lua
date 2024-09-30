@@ -200,7 +200,11 @@ local error_joker = {
 		if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_edition_from_deck then
 			G.GAME.modifiers.cry_force_edition_from_deck = G.GAME.modifiers.cry_force_edition
 		elseif not G.GAME.modifiers.cry_force_edition_from_deck then
-			G.GAME.modifiers.cry_force_edition = "cry_glitched"
+			if Cryptid.enabled["Misc."] then
+				G.GAME.modifiers.cry_force_edition = "cry_glitched"
+			else
+				G.GAME.modifiers.cry_force_edition = "foil"
+			end
 			G.GAME.modifiers.cry_force_edition_from_deck = "Nope!"
 		end
 	end,

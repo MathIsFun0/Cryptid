@@ -14,7 +14,7 @@ local jollysus = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
-		--Add Jolly Edition to infoqueue later
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = { center.ability.extra.active } }
 	end,
 	atlas = "atlastwo",
@@ -573,7 +573,7 @@ local bonk = {
 		card.ability.extra.xchips = math.floor(card.ability.extra.xchips + 0.5) --lua moment
 	end,
 }
-local loopy = { --this may or may not need further balancing
+local loopy = { 
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
@@ -591,7 +591,7 @@ local loopy = { --this may or may not need further balancing
 			key = "j_jolly",
 			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
 		}
-		return { vars = { center.ability.extra.Retrigger } }
+		return { vars = { center.ability.extra.retrigger } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -651,7 +651,7 @@ local scrabble = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		--Add Jolly Edition to infoqueue later
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
@@ -1299,7 +1299,6 @@ local longboi = {
 	end,
 }
 local ret_items = {
-	jollysus,
 	kidnap,
 	bubblem,
 	foodm,
@@ -1308,7 +1307,6 @@ local ret_items = {
 	notebook,
 	bonk,
 	loopy,
-	scrabble,
 	sacrifice,
 	reverse,
 	macabre,
@@ -1350,16 +1348,25 @@ return {
 				self.cost = 1
 			end
 		end
-		if cry_enable_epics then
+
+		--Load In Jokers if specific Cryptid configs are enabled
+		if Cryptid.enabled["Epic Jokers"] then
 			for _, jkr in pairs({ doodlem, virgo, smallestm, biggestm }) do
 				ret_items[#ret_items + 1] = jkr
 			end
 		end
-		if cry_enable_exotics then
+		if Cryptid.enabled["Exotic Jokers"] then
 			for _, jkr in pairs({ mprime }) do
 				ret_items[#ret_items + 1] = jkr
 			end
 		end
+		if Cryptid.enabled["Misc."] then
+			for _, jkr in pairs({ jollysus, scrabble }) do
+				ret_items[#ret_items + 1] = jkr
+			end
+		end
+		--end of cryptid config loading
+		
 		for i = 1, #ret_items do
 			Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
 			local vc = ret_items[i].calculate

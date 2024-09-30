@@ -36,6 +36,7 @@ match_indent = true
 
 # Prevent pack softlocks
 # Off by One Error effect
+# Booster Tag effect 
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -53,6 +54,12 @@ if G.GAME.cry_oboe then
     self.ability.extra = self.ability.extra + G.GAME.cry_oboe
     G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
     G.GAME.cry_oboe = nil
+    G.GAME.pack_size = self.ability.extra
+end
+if G.GAME.boostertag then
+    self.ability.extra = self.ability.extra * 2
+    G.GAME.pack_choices = G.GAME.pack_choices * 2
+    G.GAME.boostertag = nil
     G.GAME.pack_size = self.ability.extra
 end
 '''

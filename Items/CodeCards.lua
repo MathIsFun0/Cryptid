@@ -41,6 +41,7 @@ local pack1 = {
 	pos = { x = 0, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = 4,
+	order = 1,
 	weight = 0.96,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -62,6 +63,7 @@ local pack2 = {
 	pos = { x = 1, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = 4,
+	order = 2,
 	weight = 0.96,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -83,6 +85,7 @@ local packJ = {
 	pos = { x = 2, y = 0 },
 	config = { extra = 4, choose = 1 },
 	cost = 6,
+	order = 3,
 	weight = 0.48,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -104,6 +107,7 @@ local packM = {
 	pos = { x = 3, y = 0 },
 	config = { extra = 4, choose = 2 },
 	cost = 8,
+	order = 4,
 	weight = 0.12,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
@@ -120,6 +124,8 @@ local packM = {
 local console = {
 	object_type = "Tag",
 	atlas = "tag_cry",
+	name = "cry-Console Tag",
+	order = 26,
 	pos = { x = 3, y = 2 },
 	config = { type = "new_blind_choice" },
 	key = "console",
@@ -714,7 +720,7 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1 and G.jokers.highlighted[1].ability.name ~= "Ace Aequilibrium"
+		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1]:no("immune_to_chemach", true) and not G.jokers.highlighted[1]:no("immutable", true)
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].cry_multiply then
@@ -810,31 +816,6 @@ local delete = {
 		c:start_dissolve()
 	end,
 }
-local jokers = {
-	"j_gros_michel",
-	"j_egg",
-	"j_ice_cream",
-	"j_cavendish",
-	"j_turtle_bean",
-	"j_diet_cola",
-	"j_popcorn",
-	"j_ramen",
-	"j_selzer",
-}
-if Cryptid.enabled["Misc. Jokers"] then
-	jokers[#jokers + 1] = "j_cry_pickle"
-	jokers[#jokers + 1] = "j_cry_chili_pepper"
-end
-if Cryptid.enabled["Epic Jokers"] then
-	jokers[#jokers + 1] = "j_cry_oldcandy"
-	jokers[#jokers + 1] = "j_cry_caramel"
-end
-if Cryptid.enabled["M Jokers"] then
-	jokers[#jokers + 1] = "j_cry_foodm"
-end
-for i = 1, #jokers do
-	Cryptid.food[#Cryptid.food+1] = jokers[i]
-end
 local spaghetti = {
 	object_type = "Consumable",
 	set = "Code",
@@ -1008,6 +989,9 @@ local rework = {
 	end,
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
+		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
+		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
+		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
@@ -1046,6 +1030,7 @@ local rework_tag = {
 	object_type = "Tag",
 	atlas = "tag_cry",
 	name = "cry-Rework Tag",
+	order = 19,
 	pos = { x = 0, y = 3 },
 	config = { type = "store_joker_create" },
 	key = "rework",
@@ -1150,6 +1135,7 @@ local source = {
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Source",
+	order = 9,
 	key = "source",
 	config = {
 		-- This will add a tooltip.
@@ -1205,6 +1191,7 @@ local pointer = {
 	pos = { x = 4, y = 3 },
 	hidden = true,
 	soul_set = "Code",
+	order = 41,
 	atlas = "code",
 	can_use = function(self, card)
 		return true
@@ -1236,6 +1223,7 @@ local encoded = {
 	object_type = "Back",
 	name = "cry-Encoded",
 	key = "encoded",
+	order = 11,
 	config = { cry_encoded = true, cry_encoded_downside = true },
 	pos = { x = 2, y = 5 },
 	atlas = "atlasdeck",
@@ -1245,6 +1233,7 @@ local source_deck = {
 	object_type = "Back",
 	name = "cry-Source Deck",
 	key = "source_deck",
+	order = 12,
 	config = { cry_force_seal = "cry_green" },
 	pos = { x = 3, y = 5 },
 	loc_txt = {

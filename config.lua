@@ -2,6 +2,7 @@ return {
 	["More Stakes"] = true,
 	["M Jokers"] = true,
 	["Misc."] = true,
+	["Tags"] = true,
 	["Challenges"] = true,
 	["Spectrals"] = true,
 	["Vouchers"] = true,
