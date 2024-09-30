@@ -1,7 +1,5 @@
-Cryptid.M_jokers = {
-	j_cry_m = true,
-	j_cry_M = true,
-} -- Global table for M Jokers
+Cryptid.M_jokers["j_cry_m"] = true
+Cryptid.M_jokers["j_cry_M"] = true
 
 local jollysus = {
 	object_type = "Joker",
