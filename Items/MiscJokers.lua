@@ -4656,7 +4656,6 @@ local miscitems =  {
 	cryptidmoment,
 	oldinvisible,
 	fractal,
-	kittyprinter,
 	giggly,
 	nutty,
 	manic,
@@ -4674,6 +4673,9 @@ local miscitems =  {
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
+end
+if Cryptid.enabled["Tags"] then
+	miscitems[#miscitems+1] = kittyprinter
 end
 return {
 	name = "Misc. Jokers",
