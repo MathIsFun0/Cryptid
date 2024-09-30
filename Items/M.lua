@@ -1,6 +1,3 @@
-Cryptid.M_jokers["j_cry_m"] = true
-Cryptid.M_jokers["j_cry_M"] = true
-
 local jollysus = {
 	object_type = "Joker",
 	name = "cry-jollysus Joker",
@@ -1347,6 +1344,8 @@ return {
 
 		--Load In Jokers if specific Cryptid configs are enabled
 		if Cryptid.enabled["Epic Jokers"] then
+			Cryptid.M_jokers["j_cry_m"] = true
+			Cryptid.M_jokers["j_cry_M"] = true
 			for _, jkr in pairs({ doodlem, virgo, smallestm, biggestm }) do
 				ret_items[#ret_items + 1] = jkr
 			end
