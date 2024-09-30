@@ -4531,7 +4531,7 @@ local fractal = {
 	key = "fractal",
 	pos = { x = 6, y = 4 },
 	config = { extra = 2 },
-	rarity = 2,
+	rarity = 3,
 	cost = 7,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
