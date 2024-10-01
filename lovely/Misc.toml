@@ -330,3 +330,12 @@ pattern = '''add_tag(_tag.config.ref_table)'''
 position = "at"
 payload = '''add_tag(_tag.config.ref_table, true)'''
 match_indent = true
+
+# Energia - don't add tags from save load
+[[patches]]
+[patches.pattern]
+target = "functions/game.lua"
+pattern = '''add_tag(_tag)'''
+position = "at"
+payload = '''add_tag(_tag, nil, true)'''
+match_indent = true
