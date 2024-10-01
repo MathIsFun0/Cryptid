@@ -2037,7 +2037,8 @@ local meteor = {
 				}
 			else
 				return {
-					chips = card.ability.extra.chips, --this doesn't exist :pensive: if only...
+					chips = card.ability.extra.chips, --this doesn't exist yet :pensive: if only...
+					card = card
 				}
 			end
 		end
@@ -2104,6 +2105,7 @@ local exoplanet = {
 			else
 				return {
 					h_mult = card.ability.extra.mult,
+					card = card
 				}
 			end
 		end
@@ -2170,6 +2172,7 @@ local stardust = {
 			else
 				return {
 					x_mult = card.ability.extra.xmult,
+					card = card
 				}
 			end
 		end

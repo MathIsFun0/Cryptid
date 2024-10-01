@@ -1400,7 +1400,7 @@ if JokerDisplay then
 			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
 			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
 			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
+				for _, scoring_card in pairs(scoring_hand) do --Foil cards scored (Note: Meteor shower does not support foil cards held in hand)
 					if scoring_card.edition and scoring_card.edition.foil == true then
 						chips = chips
 							+ card.ability.extra.chips
@@ -1410,6 +1410,10 @@ if JokerDisplay then
 			end
 			card.joker_display_values.chips = chips
 			card.joker_display_values.localized_text = localize({ type = "name_text", set = "Edition", key = "e_foil" })
+		end,
+		mod_function = function(card, mod_joker) --Foil Jokers
+			return { chips = (card ~= mod_joker and card.edition and card.edition.foil == true) and 
+			mod_joker.ability.extra.chips * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_exoplanet"] = {
@@ -1424,20 +1428,31 @@ if JokerDisplay then
 			{ text = ")" },
 		},
 		calc_function = function(card)
-			local mult = 0
+			local count = 0
+			local playing_hand = next(G.play.cards)
 			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
 			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
 			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
+				for _, scoring_card in pairs(scoring_hand) do --Holographic cards scored
 					if scoring_card.edition and scoring_card.edition.holo == true then
-						mult = mult
-							+ card.ability.extra.mult
-								* JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
 					end
 				end
 			end
-			card.joker_display_values.mult = mult
+			for _, playing_card in ipairs(G.hand.cards) do --Holographic cards held in hand
+                		if playing_hand or not playing_card.highlighted then
+                    			if not (playing_card.facing == 'back') and not playing_card.debuff 
+					and playing_card.edition and playing_card.edition.holo == true then
+                        			count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+                    			end
+                		end
+            		end
+			card.joker_display_values.mult = card.ability.extra.mult * count
 			card.joker_display_values.localized_text = localize({ type = "name_text", set = "Edition", key = "e_holo" })
+		end,
+		mod_function = function(card, mod_joker)--Holographic Jokers
+			return { mult = (card ~= mod_joker and card.edition and card.edition.holo == true) and 
+			mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_stardust"] = {
@@ -1456,18 +1471,31 @@ if JokerDisplay then
 		},
 		calc_function = function(card)
 			local count = 0
+			local playing_hand = next(G.play.cards)
 			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
 			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
 			if text ~= "Unknown" then
-				for _, scoring_card in pairs(scoring_hand) do
+				for _, scoring_card in pairs(scoring_hand) do --Polychrome cards scored
 					if scoring_card.edition and scoring_card.edition.polychrome == true then
 						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
 					end
 				end
 			end
+			for _, playing_card in ipairs(G.hand.cards) do --Polychrome cards held in hand
+                		if playing_hand or not playing_card.highlighted then
+                    			if not (playing_card.facing == 'back') and not playing_card.debuff 
+					and playing_card.edition and playing_card.edition.polychrome == true then
+                        			count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+                    			end
+                		end
+            		end
 			card.joker_display_values.x_mult = card.ability.extra.xmult ^ count
 			card.joker_display_values.localized_text =
 				localize({ type = "name_text", set = "Edition", key = "e_polychrome" })
+		end,
+		mod_function = function(card, mod_joker) --Polychrome Jokers
+			return { x_mult = (card ~= mod_joker and card.edition and card.edition.polychrome == true) and 
+			mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_multjoker"] = {
