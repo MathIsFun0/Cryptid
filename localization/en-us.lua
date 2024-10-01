@@ -3068,6 +3068,9 @@ return {
             cry_unredeemed = "Unredeemed...",
             cry_active = "Active",
             cry_inactive = "Inactive",
+
+            cry_epic = "Epic",
+            cry_exotic = "Exotic"
         },
         labels = {
             food_jokers = "Food Jokers",
@@ -3089,6 +3092,9 @@ return {
             cry_mosaic = "Mosaic",
             cry_noisy = "Noisy",
             cry_oversat = "Oversaturated",
+
+            cry_epic = "Epic",
+            cry_exotic = "Exotic"
         },
         rnj_loc_txts = {
             stats = {
