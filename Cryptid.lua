@@ -1939,7 +1939,7 @@ end
 
 --add calculation context and callback to tag function
 local at2 = add_tag
-function add_tag(tag)
+function add_tag(tag, from_skip)
 	local added_tags = 1
 	for i = 1, #G.jokers.cards do
 		local ret = G.jokers.cards[i]:calculate_joker({ cry_add_tag = true })
@@ -1947,8 +1947,11 @@ function add_tag(tag)
 			added_tags = added_tags + ret.tags
 		end
 	end
-	for i = 1, added_tags do
+	if added_tags >= 1 then
 		at2(tag)
+	end
+	for i = 2, added_tags do
+		at2(Tag(tag.key))
 	end
 end
 
