@@ -1918,13 +1918,13 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
 	end
 	if card.ability.name == "cry-meteor" then
-		card:set_edition("e_foil", true)
+		card:set_edition("e_foil", true, nil, true)
 	end
 	if card.ability.name == "cry-exoplanet" then
-		card:set_edition("e_holo", true)
+		card:set_edition("e_holo", true, nil, true)
 	end
 	if card.ability.name == "cry-stardust" then
-		card:set_edition("e_polychrome", true)
+		card:set_edition("e_polychrome", true, nil, true)
 	end
 	return card
 end
