@@ -1069,6 +1069,7 @@ local automaton = {
 	key = "automaton",
 	pos = { x = 5, y = 1 },
 	config = { create = 1 },
+	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.create } }
