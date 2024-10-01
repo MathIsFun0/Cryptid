@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0927a
+--- VERSION: 0.5.1~1001a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1601,7 +1601,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(card)
-		return not card:no("doe") and not card:no("aeq") and not (card.rarity == 6 or card.rarity == "cry_exotic")
+		return not Card.no(card, "doe") and not Card.no(card, "aeq") and not (card.rarity == 6 or card.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
 		local aeqactive = nil
@@ -2094,7 +2094,7 @@ function cry_misprintize(card, override, force_reset, stack)
 	if
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
-		and not stack or (not card:no("immune_to_chemach", true) and not card:no("immutable", true))
+		and not stack or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
 	then
 		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
@@ -2252,7 +2252,7 @@ function Card:no(m, no_no)
 	if no_no then
 		return self.config.center[m] or (G.GAME and G.GAME[m] and G.GAME[m][self.config.center_key]) or false
 	end
-	return self:no("no_"..m, true)
+	return Card.no(self, "no_"..m, true)
 end
 
 function center_no(center, m, key, no_no)

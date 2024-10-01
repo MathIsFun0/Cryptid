@@ -720,7 +720,7 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1]:no("immune_to_chemach", true) and not G.jokers.highlighted[1]:no("immutable", true)
+		return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true) and not Card.no(G.jokers.highlighted[1], "immutable", true)
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].cry_multiply then
