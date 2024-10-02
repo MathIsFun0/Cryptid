@@ -1586,6 +1586,24 @@ function calculate_reroll_cost(skip_increment)
 	end
 end
 
+--Top Gear from The World End with Jimbo has several conflicts with Cryptid items
+--Namely, It overrides the edition that edition jokers spawn with, and doesn't work correctly with edition decks
+--I'm taking ownership of this, overiding it, and making an implementaion that is compatible with Cryptid
+
+--Unrelated but kind of related side note: this prevents top gear from showing up in collection, not sure what's up with that
+--Is it due to how TWEWJ is Coded? Is it an issue with Steamodded itself? Might be worth looking into, just sayin
+
+if (SMODS.Mods["TWEWY"] or {}).can_load then
+	SMODS.Joker:take_ownership('twewy_topGear', {
+		name = "Cry-topGear",
+		--Stop Top Gear's Old code from working by overriding these
+		add_to_deck = function(self, card, from_debuff)
+		end,
+		remove_from_deck = function(self, card, from_debuff)
+		end,
+	})
+end
+
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local area = area or G.jokers
@@ -1916,6 +1934,13 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+	end
+	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
+		if card.ability.name ~= "cry-meteor"
+		and card.ability.name ~= "cry-exoplanet"
+		and card.ability.name ~= "cry-stardust" then
+			card:set_edition("e_polychrome", true, nil, true)
+		end
 	end
 	if card.ability.name == "cry-meteor" then
 		card:set_edition("e_foil", true, nil, true)
