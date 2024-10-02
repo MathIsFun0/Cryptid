@@ -1601,6 +1601,14 @@ if (SMODS.Mods["TWEWY"] or {}).can_load then
 		end,
 		remove_from_deck = function(self, card, from_debuff)
 		end,
+		rarity = 3,
+		loc_txt = {
+        		name = 'Top Gear',
+        		text = { 
+				"All {C:blue}Common{C:attention} Jokers{}",
+        			"are {C:dark_edition}Polychrome{}",
+			}
+    		},
 	})
 end
 
