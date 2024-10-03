@@ -313,6 +313,23 @@ local m = {
 			return nil, true
 		end
 	end,
+	post_process = function(self)
+		if get_m_retriggers then
+			local vc = self.calculate
+			self.calculate = function(self, card, context)
+				local ret, trig = vc(self, card, context)
+				local reps = get_m_retriggers(self, card, context)
+				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = reps + (ret and ret.repetitions or 0),
+						card = card,
+					}
+				end
+				return ret, trig
+			end
+		end
+	end
 }
 local M = {
 	object_type = "Joker",
@@ -345,6 +362,23 @@ local M = {
 			return nil, true
 		end
 	end,
+	post_process = function(self)
+		if get_m_retriggers then
+			local vc = self.calculate
+			self.calculate = function(self, card, context)
+				local ret, trig = vc(self, card, context)
+				local reps = get_m_retriggers(self, card, context)
+				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = reps + (ret and ret.repetitions or 0),
+						card = card,
+					}
+				end
+				return ret, trig
+			end
+		end
+	end
 }
 local boredom = {
 	object_type = "Joker",

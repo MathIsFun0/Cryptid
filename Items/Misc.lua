@@ -880,6 +880,7 @@ local eclipse = {
 	set = "Tarot",
 	name = "cry-Eclipse",
 	key = "eclipse",
+	order = 1,
 	pos = { x = 1, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
@@ -894,6 +895,7 @@ local blessing = {
 	set = "Tarot",
 	name = "cry-theblessing",
 	key = "theblessing",
+	order = 6,
 	pos = { x = 2, y = 3 },
 	cost = 3,
 	atlas = "atlasnotjokers",
@@ -1038,6 +1040,7 @@ local meld = {
 	set = "Tarot",
 	name = "cry-Meld",
 	key = "meld",
+	order = 3,
 	pos = { x = 4, y = 4 },
 	config = { extra = 4 },
 	cost = 4,
@@ -1047,7 +1050,7 @@ local meld = {
 				+ #G.hand.highlighted
 				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
 			== 1 then
-			if #G.jokers.highlighted == 1 and G.jokers.highlighted[1]:no("dbl") then return false end
+			if #G.jokers.highlighted == 1 and Card.no(G.jokers.highlighted[1], "dbl") then return false end
 			return true
 		end
 	end,
@@ -1262,7 +1265,7 @@ return {
 				and card.edition
 				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and card.edition.cry_double_sided
-				and not card:no("dbl")
+				and not Card.no(card, "dbl")
 			then
 				local use = {
 					n = G.UIT.C,
@@ -1316,7 +1319,7 @@ return {
 				and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
 				and (not card.edition or not card.edition.cry_double_sided)
 				and not card.ability.eternal
-				and not card:no("dbl")
+				and not Card.no(card, "dbl")
 			then
 				for i = 1, #card.area.cards do
 					if card.area.cards[i].edition and card.area.cards[i].edition.cry_double_sided then
@@ -1374,6 +1377,11 @@ return {
 		local cupd = Card.update
 		function Card:update(dt)
 			cupd(self, dt)
+			if self.area then
+				if self.area.config.type == "discard" or self.area.config.type == "deck" then
+					return --prevent lagging event queues with unneeded flips
+				end
+			end
 			if self.sprite_facing == "back" and self.edition and self.edition.cry_double_sided then
 				self.sprite_facing = "front"
 				self.facing = "front"
@@ -1383,7 +1391,7 @@ return {
 				self:dbl_side_flip()
 			end
 		end
-		function copy_dbl_card(C, c, deck_effects)
+		--[[function copy_dbl_card(C, c, deck_effects)
 			if not c.T then
 				c.T = C.T
 			end
@@ -1405,10 +1413,6 @@ return {
 				c.added_to_deck = false
 			end
 			Card.set_ability(c, C.config.center)
-			--[[if not deck_effects then
-				C.added_to_deck = Cdeck
-				c.added_to_deck = cdeck
-			end--]]
 			c.ability.type = C.ability.type
 			c.config.card = C.config.card
 			c.config.center_key = C.config.center_key
@@ -1451,9 +1455,18 @@ return {
 			c.debuff = C.debuff
 			c.pinned = C.pinned
 			Card.set_cost(c)
+		end--]]
+		function copy_dbl_card(C, c, deck_effects)
+			if not deck_effects then
+				Cdeck = C.added_to_deck
+				cdeck = c.added_to_deck
+				C.added_to_deck = true
+				c.added_to_deck = false
+			end
+			copy_card(C, c)
 		end
 		function Card:init_dbl_side()
-			if self:no("dbl") then
+			if Card.no(self, "dbl") then
 				self:set_edition(nil, true)
 			end
 			if not self.dbl_side then
@@ -1484,25 +1497,32 @@ return {
 			copy_dbl_card(tmp_side, self, false)
 			active_side:add_to_deck(true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
-			if self.config.card and self.base and self.config.card_key then
+			if self.base then
 				--Note: this causes a one-frame stutter
+				for k, v in pairs(G.P_CARDS) do
+					if self.base.suit == v.suit and self.base.value == v.value then
+						self.config.card_key = k
+					end
+				end
 				self:set_sprites(nil, self.config.card)
-				if self.children.front then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
+				if self.children and self.children.front and self.config.card_key then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
 			end
 			if (not self.base or not self.base.name) and self.children.front then
 				self.children.front:remove()
 				self.children.front = nil
 			end
+			self:set_edition({cry_double_sided = true},true,true)
 		end
-		function Card:is_face(from_boss)
-			if self.debuff and not from_boss then return end
-			local id = self:get_id()
-			local rank = SMODS.Ranks[self.base.value]
-			if not id then return end
-			if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
-				return true
-			end
-		end
+		-- WHY IS THIS HERE??????????
+		-- function Card:is_face(from_boss)
+		--	if self.debuff and not from_boss then return end
+		--	local id = self:get_id()
+		--	local rank = SMODS.Ranks[self.base.value]
+		--	if not id then return end
+		--	if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
+		--		return true
+		--	end
+		--end
 		local cgcb = Card.get_chip_bonus
 		function Card:get_chip_bonus()
 			if self.ability.set == "Joker" then return 0 end

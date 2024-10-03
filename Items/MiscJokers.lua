@@ -2045,7 +2045,8 @@ local meteor = {
 				}
 			else
 				return {
-					chips = card.ability.extra.chips, --this doesn't exist :pensive: if only...
+					chips = card.ability.extra.chips, --this doesn't exist yet :pensive: if only...
+					card = card
 				}
 			end
 		end
@@ -2112,6 +2113,7 @@ local exoplanet = {
 			else
 				return {
 					h_mult = card.ability.extra.mult,
+					card = card
 				}
 			end
 		end
@@ -2178,6 +2180,7 @@ local stardust = {
 			else
 				return {
 					x_mult = card.ability.extra.xmult,
+					card = card
 				}
 			end
 		end
@@ -4497,7 +4500,7 @@ local oldinvisible = {
 				card.ability.extra = 0
 				local eligibleJokers = {}
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].ability.name ~= card.ability.name then
+					if G.jokers.cards[i].ability.name ~= card.ability.name and G.jokers.cards[i] ~= context.card then
 						eligibleJokers[#eligibleJokers + 1] = G.jokers.cards[i]
 					end
 				end

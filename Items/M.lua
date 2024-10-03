@@ -1109,16 +1109,18 @@ local mprime = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		local jollycount = 4 --Create up to 4 jollies if there are none to help start off fresh from the gateway
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.name == "Jolly Joker" then
-				jollycount = jollycount - 1
+		if not from_debuff then
+			local jollycount = 4 --Create up to 4 jollies if there are none to help start off fresh from the gateway
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.name == "Jolly Joker" then
+					jollycount = jollycount - 1
+				end
 			end
-		end
-		for i = 1, math.max(0, jollycount) do
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-			card:add_to_deck()
-			G.jokers:emplace(card)
+			for i = 1, math.max(0, jollycount) do
+				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+			end
 		end
 	end,
 }

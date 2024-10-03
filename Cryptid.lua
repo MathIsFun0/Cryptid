@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~0927a
+--- VERSION: 0.5.1~1001a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1336,6 +1336,9 @@ for set, objs in pairs(Cryptid.obj_buffer) do
 		return a.order < b.order
 	end)
 	for i = 1, #objs do
+		if objs[i].post_process and type(objs[i].post_process) == "function" then
+			objs[i]:post_process()
+		end
 		SMODS[set](objs[i])
 	end
 end
@@ -1581,6 +1584,32 @@ function calculate_reroll_cost(skip_increment)
 	end
 end
 
+--Top Gear from The World End with Jimbo has several conflicts with Cryptid items
+--Namely, It overrides the edition that edition jokers spawn with, and doesn't work correctly with edition decks
+--I'm taking ownership of this, overiding it, and making an implementaion that is compatible with Cryptid
+
+--Unrelated but kind of related side note: this prevents top gear from showing up in collection, not sure what's up with that
+--Is it due to how TWEWJ is Coded? Is it an issue with Steamodded itself? Might be worth looking into, just sayin
+
+if (SMODS.Mods["TWEWY"] or {}).can_load then
+	SMODS.Joker:take_ownership('twewy_topGear', {
+		name = "Cry-topGear",
+		--Stop Top Gear's Old code from working by overriding these
+		add_to_deck = function(self, card, from_debuff)
+		end,
+		remove_from_deck = function(self, card, from_debuff)
+		end,
+		rarity = 3,
+		loc_txt = {
+        		name = 'Top Gear',
+        		text = { 
+				"All {C:blue}Common{C:attention} Jokers{}",
+        			"are {C:dark_edition}Polychrome{}",
+			}
+    		},
+	})
+end
+
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local area = area or G.jokers
@@ -1599,7 +1628,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(card)
-		return not card:no("doe") and not card:no("aeq") and not (card.rarity == 6 or card.rarity == "cry_exotic")
+		return not Card.no(card, "doe") and not Card.no(card, "aeq") and not (card.rarity == 6 or card.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
 		local aeqactive = nil
@@ -1652,7 +1681,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "c_base"
 	end
 
-	if forced_key and not G.GAME.banned_keys[forced_key] then
+	if forced_key then --vanilla behavior change, mainly for M Joker reasons
 		center = G.P_CENTERS[forced_key]
 		_type = (center.set ~= "Default" and center.set or _type)
 	else
@@ -1912,14 +1941,21 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
 	end
+	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
+		if card.ability.name ~= "cry-meteor"
+		and card.ability.name ~= "cry-exoplanet"
+		and card.ability.name ~= "cry-stardust" then
+			card:set_edition("e_polychrome", true, nil, true)
+		end
+	end
 	if card.ability.name == "cry-meteor" then
-		card:set_edition("e_foil", true)
+		card:set_edition("e_foil", true, nil, true)
 	end
 	if card.ability.name == "cry-exoplanet" then
-		card:set_edition("e_holo", true)
+		card:set_edition("e_holo", true, nil, true)
 	end
 	if card.ability.name == "cry-stardust" then
-		card:set_edition("e_polychrome", true)
+		card:set_edition("e_polychrome", true, nil, true)
 	end
 	return card
 end
@@ -1937,7 +1973,11 @@ end
 
 --add calculation context and callback to tag function
 local at2 = add_tag
-function add_tag(tag)
+function add_tag(tag, from_skip, no_copy)
+	if no_copy then
+		at2(tag)
+		return
+	end
 	local added_tags = 1
 	for i = 1, #G.jokers.cards do
 		local ret = G.jokers.cards[i]:calculate_joker({ cry_add_tag = true })
@@ -1945,8 +1985,11 @@ function add_tag(tag)
 			added_tags = added_tags + ret.tags
 		end
 	end
-	for i = 1, added_tags do
+	if added_tags >= 1 then
 		at2(tag)
+	end
+	for i = 2, added_tags do
+		at2(Tag(tag.key))
 	end
 end
 
@@ -2089,10 +2132,18 @@ function cry_sanity_check(val)
 	return val
 end
 function cry_misprintize(card, override, force_reset, stack)
+	--infinifusion compat
+	if card.infinifusion then
+		if card.config.center == card.infinifusion_center or card.config.center.key == 'j_infus_fused' then
+			calculate_infinifusion(card, nil, function(i)
+				cry_misprintize(card, override, force_reset, stack)
+			end)
+		end
+	end
 	if
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
-		and not stack or (not card:no("immune_to_chemach", true) and not card:no("immutable", true))
+		and not stack or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
 	then
 		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
@@ -2199,17 +2250,19 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	for i = 1, #Cryptid.obj_buffer.Stake do
-		local key = Cryptid.obj_buffer.Stake[i].key
-		local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
-		if color then
-			local sticker_key = key:sub(7).."_sticker"
-			if not G.localization.descriptions.Other[sticker_key] then
-				G.localization.descriptions.Other[sticker_key] = {
-					name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
-					text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
-				}
-				parse_loc_txt(G.localization.descriptions.Other[sticker_key])
+	if Cryptid.obj_buffer.Stake then
+		for i = 1, #Cryptid.obj_buffer.Stake do
+			local key = Cryptid.obj_buffer.Stake[i].key
+			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
+			if color then
+				local sticker_key = key:sub(7).."_sticker"
+				if not G.localization.descriptions.Other[sticker_key] then
+					G.localization.descriptions.Other[sticker_key] = {
+						name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
+						text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+					}
+					parse_loc_txt(G.localization.descriptions.Other[sticker_key])
+				end
 			end
 		end
 	end
@@ -2248,9 +2301,23 @@ end
 -- Check G.GAME as well as joker info for banned keys
 function Card:no(m, no_no)
 	if no_no then
+		-- Infinifusion Compat
+		if self.infinifusion then
+			for i = 1, #self.infinifusion do
+				if G.P_CENTERS[self.infinifusion[i].key][m] or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key]) then
+					return true
+				end
+			end
+			return false
+		end
+		if not self.config then
+			--assume this is from one component of infinifusion
+			return G.P_CENTERS[self.key][m] or (G.GAME and G.GAME[m] and G.GAME[m][self.key])
+		end
+
 		return self.config.center[m] or (G.GAME and G.GAME[m] and G.GAME[m][self.config.center_key]) or false
 	end
-	return self:no("no_"..m, true)
+	return Card.no(self, "no_"..m, true)
 end
 
 function center_no(center, m, key, no_no)

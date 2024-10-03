@@ -231,7 +231,7 @@ position = "at"
 payload = '''
 if self.config.center.key == 'j_cry_gemino' then
 other_joker = G.jokers.cards[1]
-if other_joker and other_joker ~= self and not (other_joker:no("immune_to_chemach", true) or other_joker:no("immutable", true)) then
+if other_joker and other_joker ~= self and not (Card.no(other_joker, "immune_to_chemach", true) or Card.no(other_joker, "immutable", true)) then
     self.ability.blueprint_compat = 'compatible'
 else
     self.ability.blueprint_compat = 'incompatible'
@@ -320,4 +320,22 @@ target = "card.lua"
 pattern = '''if self.ability.consumeable or self.ability.set == 'Joker' or (self.area and self.area == G.pack_cards) then'''
 position = "at"
 payload = '''if true then'''
+match_indent = true
+
+# Energia - detect blind skips from tag
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''add_tag(_tag.config.ref_table)'''
+position = "at"
+payload = '''add_tag(_tag.config.ref_table, true)'''
+match_indent = true
+
+# Energia - don't add tags from save load
+[[patches]]
+[patches.pattern]
+target = "functions/game.lua"
+pattern = '''add_tag(_tag)'''
+position = "at"
+payload = '''add_tag(_tag, nil, true)'''
 match_indent = true
