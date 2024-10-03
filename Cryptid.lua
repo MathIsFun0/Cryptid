@@ -2211,17 +2211,19 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	for i = 1, #Cryptid.obj_buffer.Stake do
-		local key = Cryptid.obj_buffer.Stake[i].key
-		local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
-		if color then
-			local sticker_key = key:sub(7).."_sticker"
-			if not G.localization.descriptions.Other[sticker_key] then
-				G.localization.descriptions.Other[sticker_key] = {
-					name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
-					text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
-				}
-				parse_loc_txt(G.localization.descriptions.Other[sticker_key])
+	if Cryptid.obj_buffer.Stake then
+		for i = 1, #Cryptid.obj_buffer.Stake do
+			local key = Cryptid.obj_buffer.Stake[i].key
+			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
+			if color then
+				local sticker_key = key:sub(7).."_sticker"
+				if not G.localization.descriptions.Other[sticker_key] then
+					G.localization.descriptions.Other[sticker_key] = {
+						name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
+						text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+					}
+					parse_loc_txt(G.localization.descriptions.Other[sticker_key])
+				end
 			end
 		end
 	end
