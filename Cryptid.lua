@@ -1629,8 +1629,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if (_type == "Joker") and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
-	local function aeqviable(card)
-		return not Card.no(card, "doe") and not Card.no(card, "aeq") and not (card.rarity == 6 or card.rarity == "cry_exotic")
+	local function aeqviable(center)
+		return not center_no(center, "doe") and not center_no(center, "aeq") and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
 		local aeqactive = nil
