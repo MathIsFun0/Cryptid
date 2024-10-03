@@ -1562,15 +1562,16 @@ return {
 			end
 			self:set_edition({cry_double_sided = true},true,true)
 		end
-		function Card:is_face(from_boss)
-			if self.debuff and not from_boss then return end
-			local id = self:get_id()
-			local rank = SMODS.Ranks[self.base.value]
-			if not id then return end
-			if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
-				return true
-			end
-		end
+		-- WHY IS THIS HERE??????????
+		-- function Card:is_face(from_boss)
+		--	if self.debuff and not from_boss then return end
+		--	local id = self:get_id()
+		--	local rank = SMODS.Ranks[self.base.value]
+		--	if not id then return end
+		--	if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
+		--		return true
+		--	end
+		--end
 		local cgcb = Card.get_chip_bonus
 		function Card:get_chip_bonus()
 			if self.ability.set == "Joker" then return 0 end
