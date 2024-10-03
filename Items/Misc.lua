@@ -1426,6 +1426,11 @@ return {
 		local cupd = Card.update
 		function Card:update(dt)
 			cupd(self, dt)
+			if self.area then
+				if self.area.config.type == "discard" or self.area.config.type == "deck" then
+					return --prevent lagging event queues with unneeded flips
+				end
+			end
 			if self.sprite_facing == "back" and self.edition and self.edition.cry_double_sided then
 				self.sprite_facing = "front"
 				self.facing = "front"
@@ -1435,7 +1440,7 @@ return {
 				self:dbl_side_flip()
 			end
 		end
-		function copy_dbl_card(C, c, deck_effects)
+		--[[function copy_dbl_card(C, c, deck_effects)
 			if not c.T then
 				c.T = C.T
 			end
@@ -1457,10 +1462,6 @@ return {
 				c.added_to_deck = false
 			end
 			Card.set_ability(c, C.config.center)
-			--[[if not deck_effects then
-				C.added_to_deck = Cdeck
-				c.added_to_deck = cdeck
-			end--]]
 			c.ability.type = C.ability.type
 			c.config.card = C.config.card
 			c.config.center_key = C.config.center_key
@@ -1503,6 +1504,15 @@ return {
 			c.debuff = C.debuff
 			c.pinned = C.pinned
 			Card.set_cost(c)
+		end--]]
+		function copy_dbl_card(C, c, deck_effects)
+			if not deck_effects then
+				Cdeck = C.added_to_deck
+				cdeck = c.added_to_deck
+				C.added_to_deck = true
+				c.added_to_deck = false
+			end
+			copy_card(C, c)
 		end
 		function Card:init_dbl_side()
 			if Card.no(self, "dbl") then
@@ -1536,8 +1546,13 @@ return {
 			copy_dbl_card(tmp_side, self, false)
 			active_side:add_to_deck(true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
-			if self.config.card and self.base and self.config.card_key then
+			if self.base then
 				--Note: this causes a one-frame stutter
+				for k, v in pairs(G.P_CARDS) do
+					if self.base.suit == v.suit and self.base.value == v.value then
+						self.config.card_key = k
+					end
+				end
 				self:set_sprites(nil, self.config.card)
 				if self.children.front then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
 			end
@@ -1545,6 +1560,7 @@ return {
 				self.children.front:remove()
 				self.children.front = nil
 			end
+			self:set_edition({cry_double_sided = true},true,true)
 		end
 		function Card:is_face(from_boss)
 			if self.debuff and not from_boss then return end
