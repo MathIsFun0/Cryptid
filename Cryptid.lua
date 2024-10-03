@@ -1959,6 +1959,10 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.name == "cry-stardust" then
 		card:set_edition("e_polychrome", true, nil, true)
 	end
+	-- Certain jokers such as Steel Joker and Driver's License depend on values set 
+	-- during the update function. Cryptid can create jokers mid-scoring, meaning
+	-- those values will be unset during scoring unless update() is manually called.
+	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
 	return card
 end
 
