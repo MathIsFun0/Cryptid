@@ -1554,7 +1554,7 @@ return {
 					end
 				end
 				self:set_sprites(nil, self.config.card)
-				if self.children.front then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
+				if self.children and self.children.front and self.config.card_key then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
 			end
 			if (not self.base or not self.base.name) and self.children.front then
 				self.children.front:remove()
