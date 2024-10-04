@@ -114,7 +114,7 @@ local exponentia = {
 	object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
-	config = { extra = { Emult = 1, Emult_mod = 0.01 } },
+	config = { extra = { Emult = 1, Emult_mod = 0.03 } },
 	pos = { x = 0, y = 0 },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -842,7 +842,7 @@ local energia = {
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { center.ability.extra.tags, center.ability.extra.tag_mod },
+			vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tag_mod },
 		}
 	end,
 	rarity = "cry_exotic",
@@ -850,16 +850,18 @@ local energia = {
 	atlas = "atlasexotic",
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
-			local t = card.ability.extra.tags
+			local t = math.min(20, card.ability.extra.tags)
 			card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
-			)
+			if card.ability.extra.tags < 20 then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
+				)
+			end
 			return { tags = t }
 		end
 	end,

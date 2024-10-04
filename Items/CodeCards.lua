@@ -1325,7 +1325,7 @@ local cut = {
 	key = "cut",
 	config = { extra = { Xmult = 1, Xmult_mod = 0.5 } },
 	pos = { x = 2, y = 2 },
-	rarity = 3,
+	rarity = 2,
 	cost = 7,
 	blueprint_compat = true,
 	perishable_compat = false,
