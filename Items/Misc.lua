@@ -1630,6 +1630,20 @@ return {
 				card = nil
 			end
 		end
+		local sjw = set_joker_win
+		function set_joker_win()
+			sjw()
+			for k, v in pairs(G.jokers.cards) do
+			  if v.dbl_side and v.dbl_side.config.center_key and v.dbl_side.ability.set == 'Joker' then
+				G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] or {count = 1, order = v.dbl_side.config.center.order, wins = {}, losses = {}, wins_by_key = {}, losses_by_key = {}}
+				if G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] then
+				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins or {}
+				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] = (G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] or 0) + 1
+				end
+			  end
+			end
+			G:save_settings()
+		end
 	end,
 	items = miscitems,
 }
