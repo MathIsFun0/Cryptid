@@ -1436,6 +1436,10 @@ return {
                     "increases by",
                     "{C:blue}#2#{} every round",
                 },
+                unlock = {
+                    'Increase {C:attention}handsize',
+                    'to 12'
+                },
             },
             j_cry_primus = {
                 name = "Primus",
