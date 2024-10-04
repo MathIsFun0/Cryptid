@@ -312,18 +312,18 @@ return {
         },
         Code = {
             c_cry_class = {
-                name = "://CLASS",
+                name = "://CLASSE",
                 text = {
-                    "Convert {C:cry_code}#1#{} selected card",
-                    "to a {C:cry_code}chosen{} enhancement",
+                    "Convertit {C:cry_code}#1#{} carte sélectionnée",
+                    "en une amélioration {C:cry_code}de votre choix{}",
                 },
             },
             c_cry_commit = {
-                name = "://COMMIT",
+                name = "://ENGAGER",
                 text = {
-                    "Destroy a {C:cry_code}selected{} Joker,",
-                    "create a {C:cry_code}new{} Joker",
-                    "of the {C:cry_code}same rarity",
+                    "Détruit un Joker {C:cry_code}choisi{},",
+                    "crée un {C:cry_code}nouveau{} Joker",
+                    "de la {C:cry_code}même rareté",
                 },
             },
             c_cry_crash = {
