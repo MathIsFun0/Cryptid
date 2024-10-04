@@ -1330,7 +1330,7 @@ local weegaming = {
 	object_type = "Joker",
 	name = "cry-weegaming",
 	key = "weegaming",
-	config = { extra = { retriggers = 1 } },
+	config = { extra = { retriggers = 2 } },
 	pos = { x = 3, y = 4 },
 	atlas = "atlastwo",
 	rarity = 1,

@@ -460,7 +460,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 3764
+		local old = GLOBAL_cry_member_count or 3961
 		local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
 			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
@@ -473,7 +473,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 3764
+		GLOBAL_cry_member_count = 3961
 	end
 end
 
@@ -1687,6 +1687,24 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		center = G.P_CENTERS[forced_key]
 		_type = (center.set ~= "Default" and center.set or _type)
 	else
+		--Reimplement Door Hanger From Bunco
+                if next(find_joker('Doorhanger')) then
+                    	if _rarity == nil or _rarity < 0.9 then
+        
+                        	_rarity = 0.9
+
+				--Minor Changes from Bunco's implementation
+				local rng = pseudorandom('doorhanger'..G.SEED)
+                        	if rng > 0.97 then
+					--Rare Jokers
+                            		_rarity = 0.993
+                        	end
+				if rng > 0.99 then
+					--Epic Jokers (If enabled, otherwise rare jokers)
+                            		_rarity = 1
+                        	end
+                    	end
+                end
 		gcparea = area
 		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
 		gcparea = nil
