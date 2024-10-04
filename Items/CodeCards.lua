@@ -646,7 +646,7 @@ local merge = {
 		if G.consumeables.highlighted[1] == card then
 			m = 2
 		end
-		if G.consumeables.highlighted[m].ability.eternal then
+		if G.consumeables.highlighted[m].ability.eternal or not G.consumeables.highlighted[m].ability.consumeable then
 			return false
 		end
 		return true
@@ -988,6 +988,7 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
+		--todo: nostalgic deck compat
 		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
 		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
 		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"

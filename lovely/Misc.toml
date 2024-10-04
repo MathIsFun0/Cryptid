@@ -334,8 +334,76 @@ match_indent = true
 # Energia - don't add tags from save load
 [[patches]]
 [patches.pattern]
-target = "functions/game.lua"
+target = "game.lua"
 pattern = '''add_tag(_tag)'''
 position = "at"
 payload = '''add_tag(_tag, nil, true)'''
+match_indent = true
+
+# Beta Deck - merge slots
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''self.consumeables = CardArea('''
+position = "before"
+payload = '''if not G.GAME.modifiers.cry_beta then'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''self.discard = CardArea('''
+position = "before"
+payload = '''else
+self.jokers = CardArea(
+    0, 0,
+    CAI.joker_W+CAI.consumeable_W,
+    CAI.joker_H, 
+    {card_limit = self.GAME.starting_params.joker_slots+self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1e100})
+self.consumeables = self.jokers
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''G.consumeables.T.y = 0'''
+position = "after"
+payload = '''G.jokers.T.x = G.hand.T.x - 0.1
+G.jokers.T.y = 0'''
+match_indent = true
+
+# Make Perkeo only copy consumables
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if G.consumeables.cards[1] then'''
+position = "at"
+payload = '''local eligibleJokers = {}
+for i = 1, #G.consumeables.cards do
+    if G.consumeables.cards[i].ability.consumeable then
+        eligibleJokers[#eligibleJokers + 1] = G.consumeables.cards[i]
+    end
+end
+if #eligibleJokers > 0 then'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('perkeo')), nil)'''
+position = "at"
+payload = '''local card = copy_card(pseudorandom_element(eligibleJokers, pseudoseed('perkeo')), nil)'''
+match_indent = true
+
+# More Beta Deck fixes
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''for i=1, #G.jokers.cards + #G.consumeables.cards do'''
+position = "at"
+payload = '''
+local numcards = #G.jokers.cards + #G.consumeables.cards
+if G.GAME.modifiers.cry_beta then numcards = #G.jokers.cards end
+for i=1, numcards do'''
 match_indent = true

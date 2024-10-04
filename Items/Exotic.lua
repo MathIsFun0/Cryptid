@@ -159,7 +159,7 @@ local speculo = {
 		if context.ending_shop then
 			local eligibleJokers = {}
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.name ~= card.ability.name then
+				if G.jokers.cards[i].ability.name ~= card.ability.name and G.jokers.cards[i].ability.set == "Joker" then
 					eligibleJokers[#eligibleJokers + 1] = G.jokers.cards[i]
 				end
 			end

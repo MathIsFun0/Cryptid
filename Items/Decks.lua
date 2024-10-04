@@ -169,6 +169,15 @@ local glowing = {
 		end
 	end,
 }
+local beta = {
+	object_type = "Back",
+	name = "cry-Beta",
+	key = "beta",
+	config = { cry_beta = true },
+	pos = { x = 5, y = 5 },
+	order = 11,
+	atlas = "atlasdeck",
+}
 return {
 	name = "Misc. Decks",
 	init = function()
@@ -193,6 +202,9 @@ return {
 			end
 			if self.effect.config.cry_ccd then
 				G.GAME.modifiers.cry_ccd = true
+			end
+			if self.effect.config.cry_beta then
+				G.GAME.modifiers.cry_beta = true
 			end
 			if self.effect.config.cry_wormhole then
 				G.E_MANAGER:add_event(Event({
@@ -379,5 +391,6 @@ return {
 		critical,
 		atlasglowing,
 		glowing,
+		beta
 	},
 }

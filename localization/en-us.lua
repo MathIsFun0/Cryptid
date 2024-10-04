@@ -10,6 +10,15 @@ return {
                     "of {C:attention}every{} deck",
                 },
             },
+            b_cry_beta = {
+                name = "Nostalgic Deck",
+                text = {
+                    "{C:attention}Joker{} and {C:attention}Consumable{}",
+                    "slots are {C:attention}combined",
+                    "{C:attention}Nostalgic{} Blinds replace",
+                    "their updated Blind"
+                },
+            },
             b_cry_blank = {
                 name = "Blank Deck",
                 text = {
