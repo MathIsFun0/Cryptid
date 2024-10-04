@@ -341,20 +341,20 @@ return {
                 },
             },
             c_cry_divide = {
-                name = "://DIVISE",
+                name = "://DIVISER",
                 text = {
                     "{C:cry_code}Divise par 2{} tous les prix",
                     "indiqués dans la boutique actuelle",
                 },
             },
             c_cry_exploit = {
-                name = "://EXPLOIT",
+                name = "://EXPLOITER",
                 text = {
-                    "The {C:cry_code}next{} hand played",
-                    "is calculated as a",
-                    "{C:cry_code}chosen{} poker hand",
-                    "{C:inactive,s:0.8}Secret hands must be",
-                    "{C:inactive,s:0.8}discovered to be valid",
+                    "La {C:cry_code}prochaine{} main jouée",
+                    "est calculée comme la",
+                    "main de poker{C:cry_code}choisie{}",
+                    "{C:inactive,s:0.8}Les mains secretes doivent être",
+                    "{C:inactive,s:0.8}découvertes pour être valides",
                 },
             },
             c_cry_hook = {
