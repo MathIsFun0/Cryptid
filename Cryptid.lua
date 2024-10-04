@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~1004a
+--- VERSION: 0.5.1~1004b
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1370,15 +1370,21 @@ local cryptidTabs = function() return {
 			}
 			left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+			--todo: completely redesign this, make it possible to enable/disable individual items
+			local ordered_config = {}
 			for k, _ in pairs(Cryptid_config) do
-				if k ~= "Cryptid" then
-					if #right_settings.nodes < #left_settings.nodes then
-						right_settings.nodes[#right_settings.nodes + 1] =
-							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
-					else
-						left_settings.nodes[#left_settings.nodes + 1] =
-							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
-					end
+				if localize("cry_feat_"..string.lower(k)) ~= "ERROR" and k ~= "JokerDisplay" then
+					ordered_config[#ordered_config+1] = k
+				end
+			end
+			table.sort(ordered_config)
+			for _, k in ipairs(ordered_config) do
+				if #right_settings.nodes < #left_settings.nodes then
+					right_settings.nodes[#right_settings.nodes + 1] =
+						create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
+				else
+					left_settings.nodes[#left_settings.nodes + 1] =
+						create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
 				end
 			end
 			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
