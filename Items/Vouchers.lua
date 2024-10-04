@@ -287,6 +287,14 @@ local rerollexchange = { --All rerolls cost $2
 			end,
 		}))
 	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				calculate_reroll_cost(true)
+				return true
+			end,
+		}))
+	end,
 }
 --Order 79 reserved for celestial storage (unimplemented)
 local scope = { --Also unimplemented
