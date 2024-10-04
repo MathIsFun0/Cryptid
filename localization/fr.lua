@@ -27,7 +27,7 @@ return {
                 name = "Jeu d'Antimatière",
                 text = {
                     "Applique les {C:legendary,E:1}effets{}",
-                    "de {C:attention}chaque{} jeu",
+                    "de {C:attention}tous{} les jeux",
                 },
             },
             b_cry_blank = {
@@ -61,15 +61,15 @@ return {
                 },
             },
             b_cry_encoded = {
-                name = "Deck Encodé",
+                name = "Jeu Encodé",
                 text = {
                     "Démarre avec un {C:cry_code,T:j_cry_CodeJoker}Joker Code{}",
-                    "et un  {C:cry_code,T:j_cry_copypaste}Copier/Coller{}",
+                    "et un {C:cry_code,T:j_cry_copypaste}Copier/Coller{}",
                     "Seules les {C:cry_code}Cartes Code{} apparaissent dans la boutique",
                 },
             },
             b_cry_equilibrium = {
-                name = "Jeu de l'Equilibrium",
+                name = "Jeu de l'Équilibrium",
                 text = {
                     "Toutes les cartes ont",
                     "la {C:attention}même chance{}",
@@ -88,7 +88,7 @@ return {
                 },
             },
             b_cry_infinite = {
-                name = "Deck Infini",
+                name = "Jeu Infini",
                 text = {
                     "Sélectionne {C:attention}n'importe quel",
                     "nombre de cartes",
@@ -123,8 +123,8 @@ return {
                 name = "Jeu Vortex",
                 text = {
                     "Démarre avec un Joker {C:cry_exotic}Exotique{C:attention}",
-                    "Les Jokers sont suceptiples d'être",
-                    "{C:attention}20X{} plus {C:dark_edition}Négatifs",
+                    "Les Jokers sont {C:attention}20X{} ",
+                    "plus susceptiples d'être {C:dark_edition}Négatifs",
                     "{C:attention}-2{} emplacements de Joker",
                 },
             },
@@ -335,8 +335,8 @@ return {
             c_cry_delete = {
                 name = "://EFFACER",
                 text = {
-                    "Enlève de manière{C:cry_code}permanente{}",
-                    "un objet{C:cry_code}choisi{} de la boutique",
+                    "Enlève de manière {C:cry_code}permanente{}",
+                    "un objet {C:cry_code}choisi{} de la boutique",
                     "{C:inactive,s:0.8}L'objet n'apparîtra plus pendant le reste de la partie",
                 },
             },
@@ -397,9 +397,9 @@ return {
                 },
             },
             c_cry_oboe = {
-                name = "://UNESEULEFOIS",
+                name = "://DÉCALAGE",
                 text = {
-                    "Le prochain {C:cry_code}Paquet Booster{} a une",
+                    "Le prochain {C:cry_code}Paquet Booster{} a",
                     "{C:cry_code}#1#{} carte supplémentaire et",
                     "un {C:cry_code}#1#{} choix supplémentaire",
                     "{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
@@ -425,8 +425,9 @@ return {
                 text = {
                     "Détruit un Joker {C:cry_code}choisi{},",
                     "crée un {C:cry_code}Badge Remaniement{} avec",
-                    "un édition {C:cry_code}améliorée{}",
-                    "{C:inactive,s:0.8}Les amélioration sont utilisés dans l'ordre de la Collection",
+                    "une édition {C:cry_code}améliorée{}",
+                    "{C:inactive,s:0.8}Les améliorations sont",
+		    "utilisés dans l'ordre de la Collection",
                 },
             },
             c_cry_run = {
@@ -437,7 +438,7 @@ return {
                 },
             },
             c_cry_seed = {
-                name = "://Graine",
+                name = "://GRAINE",
                 text = {
                     "Choisit un Joker",
                     "ou une Carte à Jouer",
@@ -446,7 +447,7 @@ return {
             },
             c_cry_semicolon = {
                 name = ";//",
-                text = { "Finit la {C:cry_code}Blinde{} non-Boss actuelle", "{C:cry_code}sans{} sans encaissement" },
+                text = { "Finit la {C:cry_code}Blinde{} non-Boss actuelle", "{C:cry_code}sans{} encaissement" },
             },
             c_cry_spaghetti = {
                 name = "://SPAGHETTI",
