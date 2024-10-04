@@ -5,8 +5,11 @@
 --[[
 Progress:
 
+Decks: Almost [ChatSigna]
+    Beta Deck TODO
+    Note from Jevonn: Enchanced decks are planned to have their localization done differently, don't worry about these for now
 Jokers: No
-Code Cards: No
+Code Cards: Yes [ChatSigna]
 Deck Sleeves (requires Decksleeves Mod): No
 Boss Blinds: Yes [HastagGuigui]
 Spectrals: No
@@ -28,6 +31,15 @@ return {
                 text = {
                     "Applique les {C:legendary,E:1}effets{}",
                     "de {C:attention}tous{} les jeux",
+                },
+            },
+	    b_cry_beta = {
+                name = "Nostalgic Deck",
+                text = {
+                    "{C:attention}Joker{} and {C:attention}Consumable{}",
+                    "slots are {C:attention}combined",
+                    "{C:attention}Nostalgic{} Blinds replace",
+                    "their updated Blind"
                 },
             },
             b_cry_blank = {
@@ -427,7 +439,7 @@ return {
                     "crée un {C:cry_code}Badge Remaniement{} avec",
                     "une édition {C:cry_code}améliorée{}",
                     "{C:inactive,s:0.8}Les améliorations sont",
-		    "utilisés dans l'ordre de la Collection",
+		    "{C:inactive,s:0.8}utilisés dans l'ordre de la Collection",
                 },
             },
             c_cry_run = {
