@@ -747,6 +747,7 @@ local divide = {
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 	end,
+	can_bulk_use = true,
 	use = function(self, card, area, copier)
 		for i = 1, #G.shop_jokers.cards do
 			local c = G.shop_jokers.cards[i]
@@ -761,6 +762,23 @@ local divide = {
 		for i = 1, #G.shop_vouchers.cards do
 			local c = G.shop_vouchers.cards[i]
 			c.misprint_cost_fac = (c.misprint_cost_fac or 1) * 0.5
+			c:set_cost()
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, #G.shop_jokers.cards do
+			local c = G.shop_jokers.cards[i]
+			c.misprint_cost_fac = (c.misprint_cost_fac or 1) / (2 ^ number)
+			c:set_cost()
+		end
+		for i = 1, #G.shop_booster.cards do
+			local c = G.shop_booster.cards[i]
+			c.misprint_cost_fac = (c.misprint_cost_fac or 1) / (2 ^ number)
+			c:set_cost()
+		end
+		for i = 1, #G.shop_vouchers.cards do
+			local c = G.shop_vouchers.cards[i]
+			c.misprint_cost_fac = (c.misprint_cost_fac or 1) / (2 ^ number)
 			c:set_cost()
 		end
 	end,
@@ -960,6 +978,7 @@ local oboe = {
 		y = 3,
 	},
 	cost = 4,
+	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
@@ -968,6 +987,9 @@ local oboe = {
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + card.ability.extra.choices
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + (card.ability.extra.choices * number)
 	end,
 }
 local rework = {

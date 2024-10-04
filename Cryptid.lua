@@ -1573,6 +1573,10 @@ function calculate_reroll_cost(skip_increment)
 		G.GAME.current_round.reroll_cost = 0
 		return
 	end
+	if G.GAME.used_vouchers.v_cry_rerollexchange then
+		G.GAME.current_round.reroll_cost = 2
+		return
+	end
 	if G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
@@ -1587,9 +1591,6 @@ function calculate_reroll_cost(skip_increment)
 	end
 	G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost)
 		+ G.GAME.current_round.reroll_cost_increase
-	if G.GAME.used_vouchers.v_cry_rerollexchange then
-		G.GAME.current_round.reroll_cost = 2
-	end
 end
 
 --Top Gear from The World End with Jimbo has several conflicts with Cryptid items

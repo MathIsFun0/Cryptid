@@ -175,7 +175,7 @@ local beta = {
 	key = "beta",
 	config = { cry_beta = true },
 	pos = { x = 5, y = 5 },
-	order = 11,
+	order = 13,
 	atlas = "atlasdeck",
 }
 return {
