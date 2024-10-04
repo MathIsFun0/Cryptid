@@ -329,22 +329,22 @@ return {
             c_cry_crash = {
                 name = "://CRASH",
                 text = {
-                    "{C:cry_code,E:1}Don't.",
+                    "{C:cry_code,E:1}Ne le faites pas.",
                 },
             },
             c_cry_delete = {
-                name = "://DELETE",
+                name = "://EFFACER",
                 text = {
-                    "{C:cry_code}Permanently{} remove a",
-                    "{C:cry_code}selected{} shop item",
-                    "{C:inactive,s:0.8}Item cannot appear again this run",
+                    "Enlève de manière{C:cry_code}permanente{}",
+                    "un objet{C:cry_code}choisi{} de la boutique",
+                    "{C:inactive,s:0.8}L'objet n'apparîtra plus pendant le reste de la partie",
                 },
             },
             c_cry_divide = {
-                name = "://DIVIDE",
+                name = "://DIVISE",
                 text = {
-                    "{C:cry_code}Halve{} all listed prices",
-                    "in current shop",
+                    "{C:cry_code}Divise par 2{} tous les prix",
+                    "indiqués dans la boutique actuelle",
                 },
             },
             c_cry_exploit = {
