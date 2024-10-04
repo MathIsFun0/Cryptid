@@ -358,10 +358,10 @@ return {
                 },
             },
             c_cry_hook = {
-                name = "HOOK://",
+                name = "ACCROCHER://",
                 text = {
-                    "Select two Jokers",
-                    "to become {C:cry_code}Hooked",
+                    "Choisis deux Jokers",
+                    "qui seront {C:cry_code}Accrochés",
                 },
             },
             c_cry_machinecode = {
@@ -372,7 +372,7 @@ return {
             },
             c_cry_malware = {
                 name = "://MALWARE",
-                text = { "Add {C:dark_edition}Glitched{} to all", "cards {C:cry_code}held in hand" },
+                text = { "Ajoute {C:dark_edition}Glitché{} à toutes", " les cartes {C:cry_code}tenues en main" },
             },
             c_cry_merge = {
                 name = "://MERGE",
