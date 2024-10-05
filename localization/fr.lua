@@ -439,7 +439,7 @@ return {
                     "crée un {C:cry_code}Badge Remaniement{} avec",
                     "une édition {C:cry_code}améliorée{}",
                     "{C:inactive,s:0.8}Les améliorations sont",
-		            "{C:inactive,s:0.8}utilisés dans l'ordre de la Collection",
+		    "{C:inactive,s:0.8}utilisés dans l'ordre de la Collection",
                 },
             },
             c_cry_run = {
