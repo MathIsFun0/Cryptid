@@ -114,7 +114,7 @@ local exponentia = {
 	object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
-	config = { extra = { Emult = 1, Emult_mod = 0.01 } },
+	config = { extra = { Emult = 1, Emult_mod = 0.03 } },
 	pos = { x = 0, y = 0 },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -159,7 +159,7 @@ local speculo = {
 		if context.ending_shop then
 			local eligibleJokers = {}
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.name ~= card.ability.name then
+				if G.jokers.cards[i].ability.name ~= card.ability.name and G.jokers.cards[i].ability.set == "Joker" then
 					eligibleJokers[#eligibleJokers + 1] = G.jokers.cards[i]
 				end
 			end
@@ -320,6 +320,11 @@ local crustulum = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+		--This makes the reroll immediately after obtaining free because the game doesn't do that for some reason
+		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
+		calculate_reroll_cost(true)
+	end,
+	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
 	end,
 }
@@ -810,7 +815,7 @@ local gemino = {
 		if context.end_of_round and not context.repetition and not context.individual then
 			local check = false
 			local card = G.jokers.cards[1]
-			if not G.jokers.cards[1]:no("immune_to_chemach", true) and not G.jokers.cards[1]:no("immutable", true) then
+			if not Card.no(G.jokers.cards[1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[1], "immutable", true) then
 				cry_with_deck_effects(G.jokers.cards[1], function(card)
 					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
@@ -842,7 +847,7 @@ local energia = {
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { center.ability.extra.tags, center.ability.extra.tag_mod },
+			vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tag_mod },
 		}
 	end,
 	rarity = "cry_exotic",
@@ -850,16 +855,18 @@ local energia = {
 	atlas = "atlasexotic",
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
-			local t = card.ability.extra.tags
+			local t = math.min(20, card.ability.extra.tags)
 			card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
-			)
+			if card.ability.extra.tags < 20 then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
+				)
+			end
 			return { tags = t }
 		end
 	end,
