@@ -1871,6 +1871,13 @@ local spaceglobe = {
 		}
 	end,
 	atlas = "atlasone",
+	set_ability = function(self, card, initial, delay_sprites)
+		local _poker_hands = {}
+        	for k, v in pairs(G.GAME.hands) do
+            		if v.visible then _poker_hands[#_poker_hands+1] = k end
+	        end
+		card.ability.extra.type = pseudorandom_element(_poker_hands, pseudoseed('cry_space_globe'))
+	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
@@ -1890,6 +1897,7 @@ local spaceglobe = {
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
+					colour = G.C.CHIPS,
 				}
 			end
 		end
@@ -4568,7 +4576,7 @@ local kidnap = {
 	},
 	rarity = 1,
 	cost = 4,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
