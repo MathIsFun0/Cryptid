@@ -646,7 +646,7 @@ local merge = {
 		if G.consumeables.highlighted[1] == card then
 			m = 2
 		end
-		if G.consumeables.highlighted[m].ability.eternal then
+		if G.consumeables.highlighted[m].ability.eternal or not G.consumeables.highlighted[m].ability.consumeable then
 			return false
 		end
 		return true
@@ -720,7 +720,7 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1]:no("immune_to_chemach", true) and not G.jokers.highlighted[1]:no("immutable", true)
+		return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true) and not Card.no(G.jokers.highlighted[1], "immutable", true)
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].cry_multiply then
@@ -747,6 +747,7 @@ local divide = {
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 	end,
+	can_bulk_use = true,
 	use = function(self, card, area, copier)
 		for i = 1, #G.shop_jokers.cards do
 			local c = G.shop_jokers.cards[i]
@@ -761,6 +762,23 @@ local divide = {
 		for i = 1, #G.shop_vouchers.cards do
 			local c = G.shop_vouchers.cards[i]
 			c.misprint_cost_fac = (c.misprint_cost_fac or 1) * 0.5
+			c:set_cost()
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, #G.shop_jokers.cards do
+			local c = G.shop_jokers.cards[i]
+			c.misprint_cost_fac = (c.misprint_cost_fac or 1) / (2 ^ number)
+			c:set_cost()
+		end
+		for i = 1, #G.shop_booster.cards do
+			local c = G.shop_booster.cards[i]
+			c.misprint_cost_fac = (c.misprint_cost_fac or 1) / (2 ^ number)
+			c:set_cost()
+		end
+		for i = 1, #G.shop_vouchers.cards do
+			local c = G.shop_vouchers.cards[i]
+			c.misprint_cost_fac = (c.misprint_cost_fac or 1) / (2 ^ number)
 			c:set_cost()
 		end
 	end,
@@ -960,6 +978,7 @@ local oboe = {
 		y = 3,
 	},
 	cost = 4,
+	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
@@ -968,6 +987,9 @@ local oboe = {
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + card.ability.extra.choices
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + (card.ability.extra.choices * number)
 	end,
 }
 local rework = {
@@ -988,6 +1010,7 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
+		--todo: nostalgic deck compat
 		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
 		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
 		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
@@ -1069,6 +1092,7 @@ local automaton = {
 	key = "automaton",
 	pos = { x = 5, y = 1 },
 	config = { create = 1 },
+	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.create } }
@@ -1324,7 +1348,7 @@ local cut = {
 	key = "cut",
 	config = { extra = { Xmult = 1, Xmult_mod = 0.5 } },
 	pos = { x = 2, y = 2 },
-	rarity = 3,
+	rarity = 2,
 	cost = 7,
 	blueprint_compat = true,
 	perishable_compat = false,

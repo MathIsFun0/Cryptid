@@ -654,8 +654,11 @@ return {
 			end
 		end
 		local se = Card.set_edition
-		function Card:set_edition(edition, y, z)
-			return se(self, (not self.no_forced_edition and G.GAME.modifiers.cry_force_edition) and { [G.GAME.modifiers.cry_force_edition] = true } or edition, y, z)
+		function Card:set_edition(edition, y, z, force)
+			if not force then
+				return se(self, (not self.no_forced_edition and G.GAME.modifiers.cry_force_edition) and { [G.GAME.modifiers.cry_force_edition] = true } or edition, y, z)
+			end
+			return se(self, edition, y, z)
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
