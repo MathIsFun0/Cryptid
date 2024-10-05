@@ -686,7 +686,7 @@ return {
             j_cry_circulus_pistoris = {
                 name = "Circulus Pistoris",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#1#{} Mult",
+                    "{X:dark_edition,C:white}^#1#{} Chips and {X:dark_edition,C:white}^#1#{} Mult",
                     "if {C:attention}exactly{} #2#",
                     "hands remaining",
                 },
