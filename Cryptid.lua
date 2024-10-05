@@ -2,7 +2,7 @@
 --- MOD_NAME: Cryptid
 --- MOD_ID: Cryptid
 --- PREFIX: cry
---- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
+--- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
