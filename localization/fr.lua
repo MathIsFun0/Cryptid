@@ -9,16 +9,16 @@ Decks: No
 Jokers: No
 Code Cards: No
 Deck Sleeves (requires Decksleeves Mod): No
-Boss Blinds: No
+Boss Blinds: Yes [HastagGuigui]
 Spectrals: No
 Tarots: No
 Dictonary: No
-Editions: No
+Editions: Yes [HastagGuigui]
 Vouchers: No
 Enhancements (aka echo card): No
 Tags: No
 Other (packs, stickers, etc): No
-Misc: No
+Misc: Only v_dictionary [HastagGuigui]
 
 ]]--
 return {
@@ -131,184 +131,185 @@ return {
             },
         },
         Blind = {
-            bl_cry_box = {
-                name = "The Box",
-                text = {
-                    "All Common Jokers",
-                    "are debuffed",
-                },
-            },
-            bl_cry_clock = {
-                name = "The Clock",
-                text = {
-                    "+0.1X blind requirements every",
-                    "3 seconds spent this ante",
-                },
-            },
-            bl_cry_hammer = {
-                name = "The Hammer",
-                text = {
-                    "All cards with odd",
-                    "rank are debuffed",
-                },
-            },
-            bl_cry_joke = {
-                name = "The Joke",
-                text = {
-                    "If score is >2X requirements,",
-                    "set ante to multiple of #1#",
-                },
-            },
-            bl_cry_magic = {
-                name = "The Magic",
-                text = {
-                    "All cards with even",
-                    "rank are debuffed",
-                },
-            },
-            bl_cry_lavender_loop = {
-                name = "Lavender Loop",
-                text = {
-                    "1.25X blind requirements every",
-                    "1.5 seconds spent this round",
-                },
-            },
-            bl_cry_obsidian_orb = {
-                name = "Obsidian Orb",
-                text = {
-                    "Applies abilities of",
-                    "all defeated bosses",
-                },
-            },
-            bl_cry_oldarm = {
-                name = "Nostalgic Arm",
-                text = {
-                    "Must play 4",
-                    "or fewer cards",
-                },
-            },
-            bl_cry_oldfish = {
-                name = "Nostalgic Fish",
-                text = {
-                    "All hands start",
-                    "with 1 Mult",
-                },
-            },
-            bl_cry_oldflint = {
-                name = "Nostalgic Flint",
-                text = {
-                    "No Flushes",
-                },
-            },
-            bl_cry_oldhouse = {
-                name = "Nostalgic House",
-                text = {
-                    "No Full Houses",
-                },
-            },
-            bl_cry_oldmanacle = {
-                name = "Nostalgic Manacle",
-                text = {
-                    "Divide Mult by discards",
-                },
-            },
-            bl_cry_oldmark = {
-                name = "Nostalgic Mark",
-                text = {
-                    "No hands that",
-                    "contain a Pair",
-                },
-            },
-            bl_cry_oldox = {
-                name = "Nostalgic Ox",
-                text = {
-                    "All hands start",
-                    "with 0 Chips",
-                },
-            },
-            bl_cry_oldpillar = {
-                name = "Nostalgic Pillar",
-                text = {
-                    "No Straights",
-                },
-            },
-            bl_cry_oldserpent = {
-                name = "Nostalgic Serpent",
-                text = {
-                    "Divide Mult by level",
-                    "of played poker hand",
-                },
-            },
-            bl_cry_pin = {
-                name = "The Pin",
-                text = {
-                    "Jokers with Epic or higher",
-                    "rarity are debuffed",
-                },
-            },
-            bl_cry_pinkbow = {
-                name = "Pink Bow",
-                text = {
-                    "Randomize rank of cards",
-                    "held in hand on play",
-                },
-            },
-            bl_cry_sapphire_stamp = {
-                name = "Sapphire Stamp",
-                text = {
-                    "Select an extra card, deselect",
-                    "random card before scoring",
-                },
-            },
-            bl_cry_shackle = {
-                name = "The Shackle",
-                text = {
-                    "All Negative Jokers",
-                    "are debuffed",
-                },
-            },
-            bl_cry_striker = {
-                name = "The Striker",
-                text = {
-                    "All Rare Jokers",
-                    "are debuffed",
-                },
-            },
-            bl_cry_tax = {
-                name = "The Tax",
-                text = {
-                    "Score per hand capped at",
-                    "0.4X blind requirements",
-                },
-            },
-            bl_cry_tornado = {
-                name = "Turquoise Tornado",
-                text = {
-                    "#1# in #2# chance for",
-                    "played hand to not score",
-                },
-            },
-            bl_cry_trick = {
-                name = "The Trick",
-                text = {
-                    "After each hand, flip all",
-                    "face-up cards held in hand",
-                },
-            },
-            bl_cry_vermillion_virus = {
-                name = "Vermillion Virus",
-                text = {
-                    "One random Joker",
-                    "replaced every hand",
-                },
-            },
-            bl_cry_windmill = {
-                name = "The Windmill",
-                text = {
-                    "All Uncommon Jokers",
-                    "are debuffed",
-                },
-            },
+			bl_cry_box = {
+				name = "La Boîte",
+				text = {
+					"Tous les Jokers Communs",
+					"sont affaiblis",
+				},
+			},
+			bl_cry_clock = {
+				name = "L'Horloge",
+				text = {
+					"+0.1X du score requis toutes",
+					"les 3 secondes passées dans cette Ante",
+				},
+			},
+			bl_cry_hammer = {
+				name = "Le Marteau",
+				text = {
+					"Toutes les cartes avec un",
+					"rang impair sont affaiblies",
+				},
+			},
+			bl_cry_joke = {
+				name = "La Blague",
+				text = {
+					"Si le score est >2X plus grand que le score requis,",
+					"saute directement à l'Ante multiple de #1# suivant",
+				},
+			},
+			bl_cry_magic = {
+				name = "La Magie",
+				text = {
+					"Toutes les cartes avec un",
+					"rang pair sont affaiblies",
+				},
+			},
+			bl_cry_lavender_loop = {
+				name = "Boucle Lavande",
+				text = {
+					"1.25X du score requis toutes les",
+					"1.5 secondes passées dans cette manche",
+				},
+			},
+			bl_cry_obsidian_orb = {
+				name = "Orbe d'Obsidienne",
+				text = {
+					"Applique les capacités",
+					"de tous les boss battus",
+				},
+			},
+			bl_cry_oldarm = {
+				name = "Bras Nostalgique",
+				text = {
+					"4 cartes ou moins",
+					"doivent être jouées",
+				},
+			},
+			bl_cry_oldfish = {
+				name = "Poisson Nostalgique",
+				text = {
+					"Toutes les mains",
+					"démarrent à 1 Multi",
+				},
+			},
+			bl_cry_oldflint = {
+				name = "Silex Nostalgique",
+				text = {
+					"Pas de Couleur",
+				},
+			},
+			bl_cry_oldhouse = {
+				name = "Maison Nostalgique",
+				text = {
+					"Pas de Full",
+				},
+			},
+			bl_cry_oldmanacle = {
+				name = "Menottes Nostalgiques",
+				text = {
+					"Divise le Mult par",
+					"les Défausses restantes",
+				},
+			},
+			bl_cry_oldmark = {
+				name = "Marque Nostalgique",
+				text = {
+					"Pas de main",
+					"contenant une Paire",
+				},
+			},
+			bl_cry_oldox = {
+				name = "Bœuf Nostalgique",
+				text = {
+					"Toutes les mains",
+					"démarrent avec 0 Jetons",
+				},
+			},
+			bl_cry_oldpillar = {
+				name = "Pilier Nostalgique",
+				text = {
+					"Pas de Quinte",
+				},
+			},
+			bl_cry_oldserpent = {
+				name = "Serpent Nostalgique",
+				text = {
+					"Divise le Mult par le niveau",
+					"de la main de poker jouée",
+				},
+			},
+			bl_cry_pin = {
+				name = "L'Épingle",
+				text = {
+					"Tous les Jokers Épiques ou de",
+					"rareté supérieure sont affaiblis",
+				},
+			},
+			bl_cry_pinkbow = {
+				name = "Nœud Rose",
+				text = {
+					"Le rang des cartes en main ou jouées",
+					"est altéré de manière aléatoire",
+				},
+			},
+			bl_cry_sapphire_stamp = {
+				name = "Tampon Saphir",
+				text = {
+					"Sélectionnez une carte en plus, déselectionne",
+					"une carte aléatoire avant de compter les points",
+				},
+			},
+			bl_cry_shackle = {
+				name = "La Manille",
+				text = {
+					"Tous les Jokers Négatifs",
+					"sont affaiblis",
+				},
+			},
+			bl_cry_striker = {
+				name = "La Butée", -- the fuck is striker meaning here
+				text = {
+					"Tous les Jokers Rares",
+					"sont affaiblis",
+				},
+			},
+			bl_cry_tax = {
+				name = "La Taxe",
+				text = {
+					"Le score par main est capé à",
+					"0.4X le score requis",
+				},
+			},
+			bl_cry_tornado = {
+				name = "Tornade Turquoise",
+				text = {
+					"#1# chances sur #2# que",
+					"la main jouée ne score pas",
+				},
+			},
+			bl_cry_trick = {
+				name = "La Ruse",
+				text = {
+					"Après chaque main, retourne",
+					"les cartes visibles en main",
+				},
+			},
+			bl_cry_vermillion_virus = {
+				name = "Virus Vermillion",
+				text = {
+					"Un Joker aléatoire est",
+					"remplacé à chaque main",
+				},
+			},
+			bl_cry_windmill = {
+				name = "Le Moulin",
+				text = {
+					"Tous les Jokers Peu communs",
+					"sont affaiblis",
+				},
+			},
         },
         Code = {
             c_cry_class = {
@@ -465,83 +466,83 @@ return {
         },
         Edition = {
             e_cry_astral = {
-                name = "Astral",
+                name = "Astrale",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Mult",
+                    "{X:dark_edition,C:white}^#1#{} Multi",
                 },
             },
             e_cry_blur = {
-                name = "Blurred",
+                name = "Floue",
                 text = {
-                    "{C:attention}Retrigger{} this",
-                    "card {C:attention}1{} time",
-                    "{C:green}#1# in #2#{} chance",
-                    "to retrigger {C:attention}#3#{}",
-                    "additional time",
+                    "{C:attention}Redéclenche{} cette",
+                    "carte {C:attention}1{} fois",
+                    "{C:green}#1# chance(s) sur #2#{}",
+                    "de la redéclencher {C:attention}#3#{}",
+                    "fois de plus",
                 },
             },
             e_cry_double_sided = {
-                name = "Double-Sided",
+                name = "Double-Face",
                 text = {
-                    "This card can be",
-                    "{C:attention}flipped{} to reveal",
-                    "a different card",
+                    "Cette carte peut être",
+                    "{C:attention}retournée{} pour révéler",
+                    "une autre carte",
                 },
             },
             e_cry_glass = {
                 name = "Fragile",
                 label = "Fragile",
                 text = {
-                    "{C:white,X:mult} X#3# {} Mult",
-                    "{C:green}#1# in #2#{} chance this",
-                    "card isn't {C:red}destroyed",
-                    "when triggered",
+                    "{C:white,X:mult} X#3# {} Multi",
+                    "{C:green}#1# chance(s) sur #2#{} de",
+                    "ne pas {C:red}détruite{} cette carte",
+                    "lorsqu'elle est déclenchée",
                 },
             },
             e_cry_glitched = {
-                name = "Glitched",
+                name = "Glitchée",
                 text = {
-                    "All values on this card",
-                    "are {C:dark_edition}randomized{}",
-                    "between {C:attention}X0.1{} and {C:attention}X10{}",
-                    "{C:inactive}(If possible){}",
+                    "Toutes les valeurs de cette carte",
+                    "sont {C:dark_edition}randomized{}",
+                    "entre {C:attention}X0.1{} et {C:attention}X10{}",
+                    "{C:inactive}(si possible){}",
                 },
             },
             e_cry_gold = {
-                name = "Golden",
-                label = "Golden",
+                name = "Dorée",
+                label = "Dorée",
                 text = {
-                    "Earn {C:money}$#1#{} when used",
-                    "or triggered",
+                    "{C:money}+$#1#{} lorsque cette carte",
+                    "est utilisée ou déclenchée",
                 },
             },
             e_cry_m = {
-                name = "Jolly",
+                name = "Joyeuse",
                 text = {
-                    "{C:mult}+#1#{} Mult",
-                    "This card is feeling",
-                    "rather {C:attention}jolly{}",
+                    "{C:mult}+#1#{} Multi",
+                    "Cette carte a l'air",
+                    "plutôt {C:attention}joyeuse{}",
                 },
             },
             e_cry_mosaic = {
-                name = "Mosaic",
+                name = "Mosaïque",
                 text = {
-                    "{X:chips,C:white} X#1# {} Chips",
+                    "{X:chips,C:white} X#1# {} Jetons",
                 },
             },
             e_cry_noisy = {
-                name = "Noisy",
+                name = "Bruitée",
                 text = {
                     "???",
                 },
             },
             e_cry_oversat = {
-                name = "Oversaturated",
+                name = "Super-saturée",
                 text = {
-                    "All values",
-                    "on this card",
-                    "are {C:attention}doubled{}",
-                    "{C:inactive}(If possible)",
+                    "Toutes les valeurs",
+                    "de cette carte",
+                    "sont {C:attention}doublées{}",
+                    "{C:inactive}(si possible)",
                 },
             },
         },
@@ -910,8 +911,6 @@ return {
                 text = {
                     "{C:dark_edition}Holographic{} cards",
                     "each give {C:mult}+#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Exoplanet",
                 },
             },
             j_cry_exponentia = {
@@ -1086,10 +1085,10 @@ return {
             j_cry_kidnap = {
                 name = "Kidnapping",
                 text = {
-                    "Earn {C:money}$#1#{} and Create a {C:attention}Jolly{}",
-                    "{C:attention}Joker{} when {C:attention}Zany Joker{},",
-                    "{C:attention}Mad Joker{}, {C:attention}Crazy Joker{},",
-                    "or {C:attention}Droll Joker{} is {C:attention}sold{}",
+                    "Earn {C:money}$#2#{} at end of round",
+                    "Increase payout by {C:money}$#1#{}",
+                    "when a {C:attention}Type {C:mult}Mult{} or",
+                    "{C:attention}Type Chips{} Joker is sold",
                 },
             },
             j_cry_kooky = {
@@ -1130,7 +1129,6 @@ return {
                     "Give future copies of",
                     "this Joker {X:mult,C:white}X#1#{} Mult",
                     "at end of round",
-                    "{C:red,E:2}self destructs{}",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
                 },
             },
@@ -1257,8 +1255,6 @@ return {
                 text = {
                     "{C:dark_edition}Foil{} cards each",
                     "give {C:chips}+#1#{} Chips",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Meteor Shower",
                 },
             },
             j_cry_mneon = {
@@ -1267,8 +1263,8 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by",
                     "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-                    "at end of round",
-                    "{C:inactive}(Minimum increase of{} {C:money}$1{}{C:inactive}){}",
+                    "or {C:legendary}M Joker at",
+                    "end of round",
                 },
             },
             j_cry_mondrian = {
@@ -1296,17 +1292,15 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by {C:money}$#1#{} when",
                     "a card with an {C:attention}Edition{} is sold",
-                    "{C:red}Works once per round{}",
-                    "{C:inactive}#3#{}",
                 },
             },
             j_cry_mprime = {
                 name = "Tredecim",
                 text = {
-                    "Create up to 4 {C:attention}Jolly Jokers{} when obtained",
-                    "Each {C:attention}Jolly Joker{} gives {X:dark_edition,C:white}^#1#{} Mult",
-                    "Increase amount by {X:dark_edition,C:white}^#2#{} and",
-                    "create an {C:legendary}M Joker{} {C:red}once per round",
+                    "Create an {C:legendary}M Joker{} at end of round",
+                    "Each {C:attention}Jolly Joker{} or {C:legendary}M Joker",
+                    "gives {X:dark_edition,C:white}^#1#{} Mult",
+                    "Increase amount by {X:dark_edition,C:white}^#2#{}",
                     "when a {C:attention}Jolly Joker{} is {C:attention}sold",
                     "{C:inactive,s:0.8}(Tredecim excluded)",
                 },
@@ -1645,8 +1639,6 @@ return {
                 text = {
                     "{C:dark_edition}Polychrome{} cards",
                     "each give {X:mult,C:white}X#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Stardust",
                 },
             },
             j_cry_stella_mortis = {
@@ -3193,21 +3185,21 @@ return {
             },
         },
         v_dictionary = {
-            a_xchips = {"X#1# Chips"},
-            a_powmult = {"^#1# Mult"},
-            a_powchips = {"^#1# Chips"},
-            a_powmultchips = {"^#1# Mult+Chips"},
-            a_round = {"+#1# Round"},
-            a_xchips_minus = {"-X#1# Chips"},
-            a_powmult_minus = {"-^#1# Mult"},
-            a_powchips_minus = {"-^#1# Chips"},
-            a_powmultchips_minus = {"-^#1# Mult+Chips"},
-            a_round_minus = {"-#1# Round"},
+            a_xchips = {"X#1# Jetons"},
+            a_powmult = {"^#1# Multi"},
+            a_powchips = {"^#1# Jetons"},
+            a_powmultchips = {"^#1# Multi+Jetons"},
+            a_round = {"+#1# Manche(s)"},
+            a_xchips_minus = {"-X#1# Jetons"},
+            a_powmult_minus = {"-^#1# Multi"},
+            a_powchips_minus = {"-^#1# Jetons"},
+            a_powmultchips_minus = {"-^#1# Multi+Jetons"},
+            a_round_minus = {"-#1# Manche(s)"},
             
-            a_tag = {"#1# Tag"},
-            a_tags = {"#1# Tags"},
+            a_tag = {"#1# Badge"},
+            a_tags = {"#1# Badges"},
 
-            cry_sticker_name = {"#1# Sticker"},
+            cry_sticker_name = {"Sticker #1#"},
             cry_sticker_desc = {
                 "Used this Joker",
                 "to win on #2##1#",

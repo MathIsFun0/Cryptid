@@ -12,8 +12,8 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 	order = 1,
 	pos = { x = 1, y = 1 },
 	loc_vars = function(self, info_queue)
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
 		return { vars = {} }
 	end,
 }
@@ -24,8 +24,8 @@ local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
 		return { vars = {} }
 	end,
 	requires = { "v_cry_copies" },
@@ -37,8 +37,8 @@ local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 	order = 91,
 	pos = { x = 1, y = 3 },
 	loc_vars = function(self, info_queue)
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		--info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
+		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
 		return { vars = {} }
 	end,
 	requires = { "v_cry_tag_printer" },
@@ -96,7 +96,7 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 	key = "pairing",
 	atlas = "atlasvoucher",
 	order = 5,
-	pos = { x = 0, y = 0 },
+	pos = { x = 4, y = 5 },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -110,7 +110,7 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	key = "repair_man",
 	atlas = "atlasvoucher",
 	order = 6,
-	pos = { x = 1, y = 0 },
+	pos = { x = 5, y = 5 },
 	requires = { "v_cry_pairing" },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
@@ -125,7 +125,7 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 	key = "pairamount_plus",
 	atlas = "atlasvoucher",
 	order = 93,
-	pos = { x = 2, y = 0 },
+	pos = { x = 6, y = 5 },
 	requires = { "v_cry_repair_man" },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
@@ -287,6 +287,14 @@ local rerollexchange = { --All rerolls cost $2
 			end,
 		}))
 	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				calculate_reroll_cost(true)
+				return true
+			end,
+		}))
+	end,
 }
 --Order 79 reserved for celestial storage (unimplemented)
 local scope = { --Also unimplemented
@@ -435,7 +443,7 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	unredeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = G.P_CENTERS.v_money_tree.config.extra
+				G.GAME.interest_cap = math.max(25, (G.P_CENTERS.v_money_tree.config.extra or 0), (G.P_CENTERS.v_seed_money.config.extra or 0))
 				return true
 			end,
 		}))
@@ -851,7 +859,7 @@ local voucheritems = {
 	grapplinghook,
 	hyperspacetether
 }
-if Cryptid.enabled["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
+if Cryptid.enabled["Code Cards"] then
 	voucheritems[#voucheritems + 1] = command_prompt
 	voucheritems[#voucheritems + 1] = satellite_uplink
 	voucheritems[#voucheritems + 1] = quantum_computing

@@ -911,8 +911,6 @@ return {
                 text = {
                     "{C:dark_edition}Holographic{} cards",
                     "each give {C:mult}+#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Exoplanet",
                 },
             },
             j_cry_exponentia = {
@@ -1087,10 +1085,10 @@ return {
             j_cry_kidnap = {
                 name = "Kidnapping",
                 text = {
-                    "Earn {C:money}$#1#{} and Create a {C:attention}Jolly{}",
-                    "{C:attention}Joker{} when {C:attention}Zany Joker{},",
-                    "{C:attention}Mad Joker{}, {C:attention}Crazy Joker{},",
-                    "or {C:attention}Droll Joker{} is {C:attention}sold{}",
+                    "Earn {C:money}$#2#{} at end of round",
+                    "Increase payout by {C:money}$#1#{}",
+                    "when a {C:attention}Type Mult{} or",
+                    "{C:attention}Type Chips{} Joker is sold",
                 },
             },
             j_cry_kooky = {
@@ -1131,7 +1129,6 @@ return {
                     "Give future copies of",
                     "this Joker {X:mult,C:white}X#1#{} Mult",
                     "at end of round",
-                    "{C:red,E:2}self destructs{}",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
                 },
             },
@@ -1258,8 +1255,6 @@ return {
                 text = {
                     "{C:dark_edition}Foil{} cards each",
                     "give {C:chips}+#1#{} Chips",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Meteor Shower",
                 },
             },
             j_cry_mneon = {
@@ -1268,8 +1263,8 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by",
                     "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-                    "at end of round",
-                    "{C:inactive}(Minimum increase of{} {C:money}$1{}{C:inactive}){}",
+                    "or {C:legendary}M Joker at",
+                    "end of round",
                 },
             },
             j_cry_mondrian = {
@@ -1297,8 +1292,6 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by {C:money}$#1#{} when",
                     "a card with an {C:attention}Edition{} is sold",
-                    "{C:red}Works once per round{}",
-                    "{C:inactive}#3#{}",
                 },
             },
             j_cry_mprime = {
@@ -1646,8 +1639,6 @@ return {
                 text = {
                     "{C:dark_edition}Polychrome{} cards",
                     "each give {X:mult,C:white}X#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Stardust",
                 },
             },
             j_cry_stella_mortis = {

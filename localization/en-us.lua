@@ -10,6 +10,15 @@ return {
                     "of {C:attention}every{} deck",
                 },
             },
+            b_cry_beta = {
+                name = "Nostalgic Deck",
+                text = {
+                    "{C:attention}Joker{} and {C:attention}Consumable{}",
+                    "slots are {C:attention}combined",
+                    "{C:attention}Nostalgic{} Blinds replace",
+                    "their updated Blind"
+                },
+            },
             b_cry_blank = {
                 name = "Blank Deck",
                 text = {
@@ -889,8 +898,6 @@ return {
                 text = {
                     "{C:dark_edition}Holographic{} cards",
                     "each give {C:mult}+#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Exoplanet",
                 },
             },
             j_cry_exponentia = {
@@ -1065,10 +1072,10 @@ return {
             j_cry_kidnap = {
                 name = "Kidnapping",
                 text = {
-                    "Earn {C:money}$#1#{} and Create a {C:attention}Jolly{}",
-                    "{C:attention}Joker{} when {C:attention}Zany Joker{},",
-                    "{C:attention}Mad Joker{}, {C:attention}Crazy Joker{},",
-                    "or {C:attention}Droll Joker{} is {C:attention}sold{}",
+                    "Earn {C:money}$#2#{} at end of round",
+                    "Increase payout by {C:money}$#1#{}",
+                    "when a {C:attention}Type Mult{} or",
+                    "{C:attention}Type Chips{} Joker is sold",
                 },
             },
             j_cry_kooky = {
@@ -1109,7 +1116,6 @@ return {
                     "Give future copies of",
                     "this Joker {X:mult,C:white}X#1#{} Mult",
                     "at end of round",
-                    "{C:red,E:2}self destructs{}",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
                 },
             },
@@ -1236,8 +1242,6 @@ return {
                 text = {
                     "{C:dark_edition}Foil{} cards each",
                     "give {C:chips}+#1#{} Chips",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Meteor Shower",
                 },
             },
             j_cry_mneon = {
@@ -1246,8 +1250,8 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by",
                     "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-                    "at end of round",
-                    "{C:inactive}(Minimum increase of{} {C:money}$1{}{C:inactive}){}",
+                    "or {C:legendary}M Joker at",
+                    "end of round",
                 },
             },
             j_cry_mondrian = {
@@ -1275,17 +1279,15 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by {C:money}$#1#{} when",
                     "a card with an {C:attention}Edition{} is sold",
-                    "{C:red}Works once per round{}",
-                    "{C:inactive}#3#{}",
                 },
             },
             j_cry_mprime = {
                 name = "Tredecim",
                 text = {
-                    "Create up to 4 {C:attention}Jolly Jokers{} when obtained",
-                    "Each {C:attention}Jolly Joker{} gives {X:dark_edition,C:white}^#1#{} Mult",
-                    "Increase amount by {X:dark_edition,C:white}^#2#{} and",
-                    "create an {C:legendary}M Joker{} {C:red}once per round",
+                    "Create an {C:legendary}M Joker{} at end of round",
+                    "Each {C:attention}Jolly Joker{} or {C:legendary}M Joker",
+                    "gives {X:dark_edition,C:white}^#1#{} Mult",
+                    "Increase amount by {X:dark_edition,C:white}^#2#{}",
                     "when a {C:attention}Jolly Joker{} is {C:attention}sold",
                     "{C:inactive,s:0.8}(Tredecim excluded)",
                 },
@@ -1584,10 +1586,9 @@ return {
             j_cry_smallestm = {
                 name = "Tiny",
                 text = {
-                    "{X:chips,C:white} X#1# {} Chips until end",
-                    "of round if {C:attention}poker hand{}",
-                    "is a {C:attention}#2#{}",
-                    "{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
+                    "Create a {C:cry_jolly}Double M",
+                    "tag if {C:attention}poker hand{}",
+                    "is a {C:attention}#1#{}",
                     "{C:inactive,s:0.8}ok so basically i'm very smol",
                 },
             },
@@ -1624,8 +1625,6 @@ return {
                 text = {
                     "{C:dark_edition}Polychrome{} cards",
                     "each give {X:mult,C:white}X#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Stardust",
                 },
             },
             j_cry_stella_mortis = {
@@ -3068,6 +3067,9 @@ return {
             cry_unredeemed = "Unredeemed...",
             cry_active = "Active",
             cry_inactive = "Inactive",
+
+            cry_epic = "Epic",
+            cry_exotic = "Exotic"
         },
         labels = {
             food_jokers = "Food Jokers",
@@ -3089,6 +3091,9 @@ return {
             cry_mosaic = "Mosaic",
             cry_noisy = "Noisy",
             cry_oversat = "Oversaturated",
+
+            cry_epic = "Epic",
+            cry_exotic = "Exotic"
         },
         rnj_loc_txts = {
             stats = {

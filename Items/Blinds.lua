@@ -1252,7 +1252,25 @@ function get_new_boss()
 			G.GAME.bosses_used[k] = 0
 		end
 	end
-	return gnb()
+	local bl = gnb()
+	if G.GAME.modifiers.cry_beta then
+		local bl_key = string.sub(bl,4)
+		local nostalgicblinds = {
+			arm = true,
+			fish = true,
+			flint = true,
+			house = true,
+			manacle = true,
+			mark = true,
+			ox = true,
+			pillar = true,
+			serpent = true
+		}
+		if nostalgicblinds[bl_key] then
+			return "bl_cry_old"..bl_key
+		end
+	end
+	return bl
 end
 
 return {

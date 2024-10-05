@@ -27,7 +27,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')})[card.config.center.rarity] end"
 position = "at"
-payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = 'Epic', ['cry_exotic'] = 'Exotic'})[card.config.center.rarity] end"
+payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = localize('cry_epic'), ['cry_exotic'] = localize('cry_exotic')})[card.config.center.rarity] end"
 match_indent = true
 
 
@@ -624,5 +624,6 @@ Cryptid = {}
 Cryptid.memepack = {}
 Cryptid.aliases = {}
 Cryptid.food = {}
+Cryptid.M_jokers = {} 
 '''
 match_indent = true
