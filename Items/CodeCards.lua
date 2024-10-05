@@ -1057,12 +1057,12 @@ local rework_tag = {
 	pos = { x = 0, y = 3 },
 	config = { type = "store_joker_create" },
 	key = "rework",
-	ability = { rework_edition = "["..string.lower(localize("k_edition")).."]", rework_key = "["..string.lower(localize("k_joker")).."]" },
+	ability = { rework_edition = nil, rework_key = nil },
 	apply = function(tag, context)
 		if context.type == "store_joker_create" then
-			local card = create_card("Joker", context.area, nil, nil, nil, nil, tag.ability.rework_key)
+			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
 			create_shop_card_ui(card, "Joker", context.area)
-			card:set_edition(tag.ability.rework_edition)
+			card:set_edition((tag.ability.rework_edition or "e_foil"), true, nil, true)
 			card.states.visible = false
 			tag:yep("+", G.C.FILTER, function()
 				card:start_materialize()
