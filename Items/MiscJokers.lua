@@ -1808,11 +1808,11 @@ local sapling = {
 	name = "cry-sapling",
 	key = "sapling",
 	pos = { x = 3, y = 2 },
-	config = { extra = { score = 0, req = 18 } },
+	config = { extra = { score = 0, req = 18, check = nil } },
 	immune_to_chemach = true,
 	rarity = 2,
 	cost = 6,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.score, center.ability.extra.req } }
@@ -1827,25 +1827,27 @@ local sapling = {
 		then
 			if context.other_card.ability.effect ~= "Base" then
 				card.ability.extra.score = card.ability.extra.score + 1
-				if card.ability.extra.score >= card.ability.extra.req then
-					local eval = function(card)
-						return not card.REMOVED
-					end
-					juice_card_until(self, eval, true)
-				end
+				if card.ability.extra.score >= card.ability.extra.req and not card.ability.extra.check then 
+					card.ability.extra.check = true --Prevents violent juice up spam when playing enchanced cards while already active
+                        		local eval = function(card) return not card.REMOVED end
+                        		juice_card_until(card, eval, true)
+                    		end
 			end
-		end
-		if
+		elseif
 			context.selling_self
-			and card.ability.extra.score >= card.ability.extra.req
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			card:start_materialize()
-			return nil, true
+			if card.ability.extra.score >= card.ability.extra.req then
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.RARITY["cry_epic"]})
+				local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				card:start_materialize()
+				return nil, true
+			else
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize("k_nope_ex"), colour = G.C.RARITY["cry_epic"]})
+			end
 		end
 	end,
 }
