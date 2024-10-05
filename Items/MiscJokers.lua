@@ -4618,6 +4618,7 @@ local kidnap = {
 				]]--
 				or context.card.ability.effect == "Boost Kidnapping"
 			)
+			and not context.blueprint
 		then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
 			return {
