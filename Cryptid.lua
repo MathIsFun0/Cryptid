@@ -1642,7 +1642,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if _type == "Joker" and not _rarity then
 		local aeqactive = nil
 		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
+			if (G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not G.jokers.cards[i].debuff) and not forced_key then
 				while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
 					if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then
 						G.jokers.cards[i].ability.extra.num = 1
