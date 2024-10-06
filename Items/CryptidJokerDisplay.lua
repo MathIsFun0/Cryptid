@@ -126,6 +126,7 @@
 --Subtle Joker
 --Discreet Joker
 --Fractal
+
 if JokerDisplay then
 
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
@@ -212,6 +213,12 @@ if JokerDisplay then
 			{ ref_table = "card.ability.extra", ref_value = "money" },
 		},
 		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+		end,
 	}
 	JokerDisplay.Definitions["j_cry_iterum"] = {
 		text = {
@@ -511,22 +518,12 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_smallestm"] = {
-		text = {
-			{
-				border_nodes = {
-					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "x_chips", retrigger_type = "exp" },
-				},
-				border_colour = G.C.CHIPS,
-			},
-		},
 		reminder_text = {
 			{ text = "(" },
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
 			{ text = ")" },
 		},
 		calc_function = function(card)
-			card.joker_display_values.x_chips = card.ability.extra.check and card.ability.extra.x_chips or 1
 			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
 		end,
 	}
@@ -565,18 +562,12 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_mprime"] = {
 		--todo: show if active
 		mod_function = function(card, mod_joker)
-			if card.ability.name ~= "Jolly Joker" or (card.edition and card.edition.key ~= "e_cry_m") then
-				return {}
-			end
-			local e_mult = mod_joker.ability.extra.mult
-			local triggers = JokerDisplay.calculate_joker_triggers(mod_joker)
-			if triggers == 0 then
-				return {}
-			end
-			for i = 1, triggers - 1 do
-				e_mult = e_mult ^ mod_joker.ability.extra.mult
-			end
-			return { e_mult = e_mult }
+			return { e_mult = (
+				card.ability.name == "Jolly Joker"
+				or card.edition and card.edition.key == "e_cry_m"
+				or card.ability.effect == "M Joker"
+		 	) 
+			and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_whip"] = {
@@ -1715,9 +1706,6 @@ if JokerDisplay then
 		text_config = { colour = G.C.GOLD },
 		reminder_text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "active" },
-			{ text = ")" },
 		},
 		calc_function = function(card)
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
@@ -1786,14 +1774,10 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.joker_display_values", ref_value = "stat", retrigger_type = "exp" },
+					{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "exp" },
 				},
 			},
 		},
-		calc_function = function(card)
-			card.joker_display_values.stat =
-				(G.GAME and G.GAME.monstermult or 1)
-		end,
 	}
 	JokerDisplay.Definitions["j_cry_verisimile"] = {
 		text = {
