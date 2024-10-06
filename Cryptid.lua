@@ -1640,16 +1640,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		return not center_no(center, "doe") and not center_no(center, "aeq") and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
+		if not G.GAME.aequilibriumkey then G.GAME.aequilibriumkey = 1 end
 		local aeqactive = nil
-		for i = 1, #G.jokers.cards do
-			if (G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not G.jokers.cards[i].debuff) and not forced_key then
-				while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
-					if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then
-						G.jokers.cards[i].ability.extra.num = 1
-					end
-					aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
-					G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+		if next(find_joker('Ace Aequilibrium')) and not forced_key then
+			while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
+				if math.ceil(G.GAME.aequilibriumkey) > #G.P_CENTER_POOLS["Joker"] then
+					G.GAME.aequilibriumkey = 1
 				end
+				aeqactive = math.ceil(G.GAME.aequilibriumkey)
+				G.GAME.aequilibriumkey = math.ceil(G.GAME.aequilibriumkey + 1)
 			end
 		end
 		if aeqactive then
