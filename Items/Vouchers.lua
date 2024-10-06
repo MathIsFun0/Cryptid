@@ -96,7 +96,7 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 	key = "pairing",
 	atlas = "atlasvoucher",
 	order = 5,
-	pos = { x = 0, y = 0 },
+	pos = { x = 4, y = 5 },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
 		text = {
@@ -110,7 +110,7 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	key = "repair_man",
 	atlas = "atlasvoucher",
 	order = 6,
-	pos = { x = 1, y = 0 },
+	pos = { x = 5, y = 5 },
 	requires = { "v_cry_pairing" },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
@@ -125,7 +125,7 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 	key = "pairamount_plus",
 	atlas = "atlasvoucher",
 	order = 93,
-	pos = { x = 2, y = 0 },
+	pos = { x = 6, y = 5 },
 	requires = { "v_cry_repair_man" },
 	cry_credits = {
 		colour = G.C.CRY_JOLLY,
@@ -283,6 +283,14 @@ local rerollexchange = { --All rerolls cost $2
 				if G.GAME.current_round.reroll_cost > 2 then
 					G.GAME.current_round.reroll_cost = 2
 				end
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				calculate_reroll_cost(true)
 				return true
 			end,
 		}))
@@ -851,7 +859,7 @@ local voucheritems = {
 	grapplinghook,
 	hyperspacetether
 }
-if Cryptid.enabled["Code Cards"] then --tweak this later since I want command prompt/satellite uplink in the same space as the other vouchers
+if Cryptid.enabled["Code Cards"] then
 	voucheritems[#voucheritems + 1] = command_prompt
 	voucheritems[#voucheritems + 1] = satellite_uplink
 	voucheritems[#voucheritems + 1] = quantum_computing

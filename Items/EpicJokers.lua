@@ -220,6 +220,7 @@ local error_joker = {
 			context.end_of_round
 			and not context.blueprint
 			and not context.repetition
+			and not context.individual
 			and not card.ability.extra.active
 		then
 			if card.ability.extra.sell_rounds == 0 then
@@ -228,10 +229,8 @@ local error_joker = {
 			card.ability.extra.sell_rounds = card.ability.extra.sell_rounds - 1
 			if card.ability.extra.sell_rounds == 0 then
 				card.ability.extra.active = true
-				local eval = function(card)
-					return not card.REMOVED
-				end
-				juice_card_until(self, eval, true)
+				local eval = function(card) return not card.REMOVED end
+                        	juice_card_until(card, eval, true)
 			else
 				return {
 					message = "???",
@@ -248,7 +247,7 @@ local error_joker = {
 			local eval = function(card)
 				return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES
 			end
-			juice_card_until(self, eval, true)
+			juice_card_until(card, eval, true)
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.name ~= "cry-Error" then
@@ -272,6 +271,7 @@ local m = {
 	config = { extra = { extra = 13, x_mult = 1 }, jolly = { t_mult = 8, type = "Pair" } },
 	rarity = "cry_epic",
 	cost = 13,
+	effect = "M Joker",
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -301,17 +301,39 @@ local m = {
 			and not context.blueprint
 		then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }) }
-			)
+			if not context.retrigger_joker then
+				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
+				--But I would rather have this than constant card_eval_status_text spam
+				--If anyone knows a solution feel free to do a pr xd
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }) }
+				)
+			end
 			return nil, true
 		end
 	end,
+	post_process = function(self)
+		if get_m_retriggers then
+			local vc = self.calculate
+			self.calculate = function(self, card, context)
+				local ret, trig = vc(self, card, context)
+				local reps = get_m_retriggers(self, card, context)
+				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = reps + (ret and ret.repetitions or 0),
+						card = card,
+					}
+				end
+				return ret, trig
+			end
+		end
+	end
 }
 local M = {
 	object_type = "Joker",
@@ -320,6 +342,7 @@ local M = {
 	pos = { x = 0, y = 0 },
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	rarity = "cry_epic",
+	effect = "M Joker",
 	cost = 13,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -344,6 +367,23 @@ local M = {
 			return nil, true
 		end
 	end,
+	post_process = function(self)
+		if get_m_retriggers then
+			local vc = self.calculate
+			self.calculate = function(self, card, context)
+				local ret, trig = vc(self, card, context)
+				local reps = get_m_retriggers(self, card, context)
+				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = reps + (ret and ret.repetitions or 0),
+						card = card,
+					}
+				end
+				return ret, trig
+			end
+		end
+	end
 }
 local boredom = {
 	object_type = "Joker",
@@ -869,9 +909,7 @@ local curse = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-		card:set_edition({
-			negative = true,
-		})
+		card:set_edition("e_negative", true, nil, true)
 		card:set_eternal(true)
 		card:add_to_deck()
 		G.jokers:emplace(card)
@@ -948,7 +986,7 @@ local multjoker = {
 	name = "cry-Mult Joker",
 	key = "multjoker",
 	pos = { x = 2, y = 3 },
-	config = { extra = { odds = 4 } },
+	config = { extra = { odds = 3 } },
 	immune_to_chemach = true,
 	rarity = "cry_epic",
 	cost = 11,
@@ -996,7 +1034,7 @@ local goldjoker = {
 	object_type = "Joker",
 	name = "cry-gold Joker",
 	key = "goldjoker",
-	config = { extra = { percent_mod = 1, percent = 0 } },
+	config = { extra = { percent_mod = 2, percent = 0 } },
 	pos = { x = 0, y = 4 },
 	rarity = "cry_epic",
 	cost = 14,
