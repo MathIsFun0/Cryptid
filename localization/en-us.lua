@@ -2397,7 +2397,7 @@ return {
                 },
             },
             tag_cry_oversat = {
-                name = "Mosaic Tag",
+                name = "Oversaturated Tag",
                 text = {
                     "Next base edition shop",
                     "Joker is free and",
