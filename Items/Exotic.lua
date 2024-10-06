@@ -114,7 +114,7 @@ local exponentia = {
 	object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
-	config = { extra = { Emult = 1, Emult_mod = 0.01 } },
+	config = { extra = { Emult = 1, Emult_mod = 0.03 } },
 	pos = { x = 0, y = 0 },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -159,7 +159,7 @@ local speculo = {
 		if context.ending_shop then
 			local eligibleJokers = {}
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.name ~= card.ability.name then
+				if G.jokers.cards[i].ability.name ~= card.ability.name and G.jokers.cards[i].ability.set == "Joker" then
 					eligibleJokers[#eligibleJokers + 1] = G.jokers.cards[i]
 				end
 			end
@@ -253,13 +253,14 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
+	immune_to_chemach = true,
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
 	atlas = "effarcire",
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
-		if not context.blueprint then
+		if not context.blueprint and not context.retrigger_joker then
 			if context.first_hand_drawn then
 				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
 				return nil, true
@@ -320,6 +321,11 @@ local crustulum = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+		--This makes the reroll immediately after obtaining free because the game doesn't do that for some reason
+		G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + 1
+		calculate_reroll_cost(true)
+	end,
+	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
 	end,
 }
@@ -621,7 +627,7 @@ local aequilibrium = {
 	object_type = "Joker",
 	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
 	key = "equilib",
-	config = { extra = { jokers = 2, num = 1, card = nil } },
+	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
 	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
@@ -635,12 +641,12 @@ local aequilibrium = {
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
-		local joker_generated = "None"
-		if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
+		local joker_generated = "???"
+		if G.GAME.aequilibriumkey and G.GAME.aequilibriumkey > 1 then
 			joker_generated = localize({
 				type = "name_text",
 				set = "Joker",
-				key = G.P_CENTER_POOLS["Joker"][math.floor(center.ability.extra.num or 1) - 1].key,
+				key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
 			})
 		end
 		return { vars = { center.ability.extra.jokers, joker_generated } }
@@ -842,7 +848,7 @@ local energia = {
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { center.ability.extra.tags, center.ability.extra.tag_mod },
+			vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tag_mod },
 		}
 	end,
 	rarity = "cry_exotic",
@@ -850,16 +856,18 @@ local energia = {
 	atlas = "atlasexotic",
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
-			local t = card.ability.extra.tags
+			local t = math.min(20, card.ability.extra.tags)
 			card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
-			)
+			if card.ability.extra.tags < 20 then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
+				)
+			end
 			return { tags = t }
 		end
 	end,
@@ -958,7 +966,7 @@ local duplicare = {
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
-    config = {extra = {Emult = 1.25, Emult_mod = 0.005}},
+    config = {extra = {Emult = 1.25}},
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     rarity = "cry_exotic",
@@ -967,7 +975,7 @@ local duplicare = {
     atlas = "placeholders",
     loc_vars = function(self, info_queue, center)
         return {
-            vars = {center.ability.extra.Emult, center.ability.extra.Emult_mod}
+            vars = {center.ability.extra.Emult}
         }
     end,
     calculate = function(self, card, context)
@@ -980,7 +988,6 @@ local duplicare = {
                     end
                 })) 
             end
-            card.ability.extra.Emult = card.ability.extra.Emult + 0
             return {
                 message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
                 Emult_mod = card.ability.extra.Emult,
@@ -1051,7 +1058,6 @@ local rescribere = {
 return {
 	name = "Exotic Jokers",
 	init = function()
-		cry_enable_exotics = true
 		--Universum Patches
 		local uht = update_hand_text
 		function update_hand_text(config, vals)

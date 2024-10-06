@@ -861,6 +861,14 @@ return {
             },
             j_cry_exoplanet = {
                 name = "系外行星",
+                --[[
+                Outdated, new text:
+
+                "{C:dark_edition}Holographic{} cards",
+                "each give {C:mult}+#1#{} Mult",
+
+                 Delete this when you are done btw
+                ]]--
                 text = {
                     "{C:dark_edition}镭射{}卡",
                     "每张提供{C:mult}+#1#{} 倍率",
@@ -1027,6 +1035,16 @@ return {
             },
             j_cry_kidnap = {
                 name = "劫缴朋友~",
+                --[[
+                Outdated, new text:
+
+                 "Earn {C:money}$#2#{} at end of round",
+                 "Increase payout by {C:money}$#1#{}",
+                 "when a {C:attention}Type Mult{} or",
+                 "{C:attention}Type Chips{} Joker is sold",
+
+                 Delete this when you are done btw
+                ]]--
                 text = {
                     "当 {C:attention}滑稽小丑{}，",
                     "{C:attention}疯狂小丑{}，{C:attention}疯狂小丑{}，",
@@ -1069,7 +1087,8 @@ return {
                     "给未来的",
                     "这张小丑牌 {X:mult,C:white}X#1#{} 倍率",
                     "在回合结束时",
-                    "{C:red,E:2}自毁{}",
+                    -- "{C:red,E:2}自毁{}", I'm assuming this is the line that mentions self destructing. 
+                    --Commented out for now since it no longer does that. feel free to change the desc and/or remove this if this isn't the case
                     "{C:inactive}(当前 {X:mult,C:white}X#2#{C:inactive} 倍率){}"
                 }
             },
@@ -1167,6 +1186,14 @@ return {
             },
             j_cry_meteor = {
                 name = "流星雨",
+                --[[
+                Outdated, new text:
+
+                "{C:dark_edition}Foil{} cards each",
+                "give {C:chips}+#1#{} Chips",
+
+                 Delete this when you are done btw
+                ]]--
                 text = {
                     "每张{C:dark_edition}闪箔{}卡都会",
                     "提供{C:chips}+#1#{} 筹码",
@@ -1175,6 +1202,17 @@ return {
             },
             j_cry_mneon = {
                 name = "霓虹 M",
+                --[[
+                Outdated, new text:
+
+                "Earn {C:money}$#2#{} at end of round",
+                "Increase payout by",
+                "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
+                "or {C:legendary}M Joker at",
+                "end of round",
+
+                Delete this when you are done btw
+                ]]--
                 text = {
                     "在回合结束时获得{C:money}$#2#{}",
                     "每张{C:attention}欢乐小丑{}增加{C:money}$#1#{}",
@@ -1205,12 +1243,23 @@ return {
                 text = {
                     "在回合结尾获得 {C:money}$#2#{}",
                     "每卖掉一张 {C:attention}增强卡牌{}增加 {C:money}$#1#{}",
-                    "{C:red}每回合生效一次{}",
-                    "{C:inactive}#3#{}"
+                    --"{C:red}每回合生效一次{}",
                 }
             },
             j_cry_mprime = {
                 name = "使徒·十三",
+                --[[
+                Outdated, new text:
+
+               "Create an {C:legendary}M Joker{} at end of round",
+                "Each {C:attention}Jolly Joker{} or {C:legendary}M Joker",
+                "gives {X:dark_edition,C:white}^#1#{} Mult",
+                "Increase amount by {X:dark_edition,C:white}^#2#{}",
+                "when a {C:attention}Jolly Joker{} is {C:attention}sold",
+                "{C:inactive,s:0.8}(Tredecim excluded)",
+
+                Delete this when you are done btw
+                ]]--
                 text = {
                     "获得该小丑时",
                     " 召唤4 个 {C:attention}开心小丑{}",
@@ -1518,6 +1567,14 @@ return {
             },
             j_cry_stardust = {
                 name = "星尘",
+                --[[
+                Outdated, new text:
+
+                "{C:dark_edition}Polychrome{} cards",
+                "each give {X:mult,C:white}X#1#{} Mult",
+
+                 Delete this when you are done btw
+                ]]--
                 text = {
                     "{C:dark_edition}多色{}卡",
                     "每张提供{X:mult,C:white}X#1#{} 倍率",
