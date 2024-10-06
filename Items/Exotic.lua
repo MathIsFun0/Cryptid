@@ -253,13 +253,14 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
+	immune_to_chemach = true,
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
 	atlas = "effarcire",
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
-		if not context.blueprint then
+		if not context.blueprint and not context.retrigger_joker then
 			if context.first_hand_drawn then
 				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
 				return nil, true
