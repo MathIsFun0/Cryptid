@@ -220,6 +220,7 @@ local error_joker = {
 			context.end_of_round
 			and not context.blueprint
 			and not context.repetition
+			and not context.individual
 			and not card.ability.extra.active
 		then
 			if card.ability.extra.sell_rounds == 0 then
@@ -228,10 +229,8 @@ local error_joker = {
 			card.ability.extra.sell_rounds = card.ability.extra.sell_rounds - 1
 			if card.ability.extra.sell_rounds == 0 then
 				card.ability.extra.active = true
-				local eval = function(card)
-					return not card.REMOVED
-				end
-				juice_card_until(self, eval, true)
+				local eval = function(card) return not card.REMOVED end
+                        	juice_card_until(card, eval, true)
 			else
 				return {
 					message = "???",
@@ -248,7 +247,7 @@ local error_joker = {
 			local eval = function(card)
 				return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES
 			end
-			juice_card_until(self, eval, true)
+			juice_card_until(card, eval, true)
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.name ~= "cry-Error" then

@@ -699,7 +699,7 @@ local noisy = {
 							{ string = "rand()", colour = G.C.JOKER_GREY },
 							{
 								string = "@#"
-									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit:sub(2, 2) or "m")
+									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(2, 2) or "m")
 									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7),
 								colour = G.C.BLUE,
 							},
@@ -1440,71 +1440,6 @@ return {
 				self:dbl_side_flip()
 			end
 		end
-		--[[function copy_dbl_card(C, c, deck_effects)
-			if not c.T then
-				c.T = C.T
-			end
-			if not c.set_sprites then
-				function c.set_sprites() end
-			end
-			if not c.set_debuff then
-				function c.set_debuff() end
-			end
-			if not c.params then
-				c.params = C.params or {}
-			end
-			c.add_to_deck = Card.add_to_deck
-			c.remove_from_deck = Card.remove_from_deck
-			if not deck_effects then
-				Cdeck = C.added_to_deck
-				cdeck = c.added_to_deck
-				C.added_to_deck = true
-				c.added_to_deck = false
-			end
-			Card.set_ability(c, C.config.center)
-			c.ability.type = C.ability.type
-			c.config.card = C.config.card
-			c.config.center_key = C.config.center_key
-			c.config.card_key = C.config.card_key
-			if c.config.card then
-				for k, v in pairs(G.P_CARDS) do
-					if card == v then
-						c.config.card_key = k
-					end
-				end
-				local suit_base_nominal_original = nil
-				if c.base and c.base.suit_nominal_original then
-					suit_base_nominal_original = c.base.suit_nominal_original
-				end
-				c.base = {
-					name = c.config.card.name,
-					suit = c.config.card.suit,
-					value = c.config.card.value,
-					nominal = 0,
-					suit_nominal = 0,
-					face_nominal = 0,
-					colour = G.C.SUITS[c.config.card.suit],
-					times_played = 0,
-				}
-				local rank = SMODS.Ranks[c.base.value] or {}
-				c.base.nominal = rank.nominal or 0
-				c.base.face_nominal = rank.face_nominal or 0
-				c.base.id = rank.id
-
-				local suit = SMODS.Suits[c.base.suit] or {}
-				c.base.suit_nominal = suit.suit_nominal or 0
-				c.base.suit_nominal_original = suit_base_nominal_original or suit.suit_nominal or 0
-			else
-				c.base = nil
-			end
-			for k, v in pairs(C.ability) do
-				c.ability[k] = C.ability[k]
-			end
-			c.seal = C.seal
-			c.debuff = C.debuff
-			c.pinned = C.pinned
-			Card.set_cost(c)
-		end--]]
 		function copy_dbl_card(C, c, deck_effects)
 			if not deck_effects then
 				Cdeck = C.added_to_deck
@@ -1513,6 +1448,7 @@ return {
 				c.added_to_deck = false
 			end
 			copy_card(C, c)
+			c.config.center_key = C.config.center_key
 		end
 		function Card:init_dbl_side()
 			if Card.no(self, "dbl") then
@@ -1562,16 +1498,6 @@ return {
 			end
 			self:set_edition({cry_double_sided = true},true,true)
 		end
-		-- WHY IS THIS HERE??????????
-		-- function Card:is_face(from_boss)
-		--	if self.debuff and not from_boss then return end
-		--	local id = self:get_id()
-		--	local rank = SMODS.Ranks[self.base.value]
-		--	if not id then return end
-		--	if (id > 0 and rank and rank.face) or next(find_joker("Pareidolia")) then
-		--		return true
-		--	end
-		--end
 		local cgcb = Card.get_chip_bonus
 		function Card:get_chip_bonus()
 			if self.ability.set == "Joker" then return 0 end
@@ -1588,13 +1514,25 @@ return {
 		local cload = Card.load
 		function Card:load(cardTable, other_card)
 			cload(self, cardTable, other_card)
+			if self.ability.set == "Default" then
+				self:set_ability(G.P_CENTERS.c_base, true)
+			end
+			if not self.base.name then
+				self:set_base(G.P_CARDS.empty, true)
+				if self.children.front then
+					self.children.front:remove()
+					self.children.front = nil
+				end
+			end
 			if cardTable.dbl_side then
-				self.dbl_side = {}
-				self.dbl_side.T = self.T
-				self.dbl_side.VT = self.VT
-				function self.dbl_side.set_sprites() end
+				self.dbl_side = cry_deep_copy(self)
 				cload(self.dbl_side, cardTable.dbl_side)
-				setmetatable(self.dbl_side, Card)
+				if self.dbl_side.ability.set == "Default" and self.ability.set ~= "Default" then
+					self.dbl_side:set_ability(G.P_CENTERS.c_base, true)
+				end
+				if not self.dbl_side.base.name then
+					self.dbl_side:set_base(G.P_CARDS.empty, true)
+				end
 			end
 		end
 		local rma = remove_all
@@ -1629,6 +1567,20 @@ return {
 				card:remove()
 				card = nil
 			end
+		end
+		local sjw = set_joker_win
+		function set_joker_win()
+			sjw()
+			for k, v in pairs(G.jokers.cards) do
+			  if v.dbl_side and v.dbl_side.config.center_key and v.dbl_side.ability.set == 'Joker' then
+				G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] or {count = 1, order = v.dbl_side.config.center.order, wins = {}, losses = {}, wins_by_key = {}, losses_by_key = {}}
+				if G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] then
+				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins or {}
+				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] = (G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] or 0) + 1
+				end
+			  end
+			end
+			G:save_settings()
 		end
 	end,
 	items = miscitems,

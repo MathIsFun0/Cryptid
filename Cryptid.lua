@@ -2,11 +2,11 @@
 --- MOD_NAME: Cryptid
 --- MOD_ID: Cryptid
 --- PREFIX: cry
---- MOD_AUTHOR: [MathIsFun_, Balatro Discord]
+--- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.1~1004a
+--- VERSION: 0.5.2~1005a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -48,13 +48,13 @@ function get_badge_colour(key)
 end
 
 --Changes main menu colors and stuff
---Known bug: The logo is slightly off-center
 if Cryptid.enabled["Menu"] then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
 		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
 		G.title_top.T.w = G.title_top.T.w*1.7675
+		G.title_top.T.x = G.title_top.T.x - 0.8
 		G.title_top:emplace(newcard)
 		newcard.T.w = newcard.T.w * 1.1*1.2
 		newcard.T.h = newcard.T.h *1.1*1.2
@@ -68,8 +68,6 @@ if Cryptid.enabled["Menu"] then
 				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
 				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
 			}}})
-		G.SPLASH_LOGO.T.w = G.SPLASH_LOGO.T.w * 1.1
-		G.SPLASH_LOGO.T.h = G.SPLASH_LOGO.T.h * 1.1
 		return ret
 	end
 end
@@ -1370,15 +1368,21 @@ local cryptidTabs = function() return {
 			}
 			left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+			--todo: completely redesign this, make it possible to enable/disable individual items
+			local ordered_config = {}
 			for k, _ in pairs(Cryptid_config) do
-				if k ~= "Cryptid" then
-					if #right_settings.nodes < #left_settings.nodes then
-						right_settings.nodes[#right_settings.nodes + 1] =
-							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
-					else
-						left_settings.nodes[#left_settings.nodes + 1] =
-							create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
-					end
+				if localize("cry_feat_"..string.lower(k)) ~= "ERROR" and k ~= "JokerDisplay" then
+					ordered_config[#ordered_config+1] = k
+				end
+			end
+			table.sort(ordered_config)
+			for _, k in ipairs(ordered_config) do
+				if #right_settings.nodes < #left_settings.nodes then
+					right_settings.nodes[#right_settings.nodes + 1] =
+						create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
+				else
+					left_settings.nodes[#left_settings.nodes + 1] =
+						create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
 				end
 			end
 			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
@@ -1634,16 +1638,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		return not center_no(center, "doe") and not center_no(center, "aeq") and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
+		if not G.GAME.aequilibriumkey then G.GAME.aequilibriumkey = 1 end
 		local aeqactive = nil
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
-				while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
-					if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then
-						G.jokers.cards[i].ability.extra.num = 1
-					end
-					aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
-					G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+		if next(find_joker('Ace Aequilibrium')) and not forced_key then
+			while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
+				if math.ceil(G.GAME.aequilibriumkey) > #G.P_CENTER_POOLS["Joker"] then
+					G.GAME.aequilibriumkey = 1
 				end
+				aeqactive = math.ceil(G.GAME.aequilibriumkey)
+				G.GAME.aequilibriumkey = math.ceil(G.GAME.aequilibriumkey + 1)
 			end
 		end
 		if aeqactive then

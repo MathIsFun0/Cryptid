@@ -1254,7 +1254,6 @@ function get_new_boss()
 	end
 	local bl = gnb()
 	if G.GAME.modifiers.cry_beta then
-		print(bl)
 		local bl_key = string.sub(bl,4)
 		local nostalgicblinds = {
 			arm = true,

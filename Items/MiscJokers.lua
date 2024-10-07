@@ -1814,11 +1814,11 @@ local sapling = {
 	name = "cry-sapling",
 	key = "sapling",
 	pos = { x = 3, y = 2 },
-	config = { extra = { score = 0, req = 18 } },
+	config = { extra = { score = 0, req = 18, check = nil } },
 	immune_to_chemach = true,
 	rarity = 2,
 	cost = 6,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.score, center.ability.extra.req } }
@@ -1833,25 +1833,27 @@ local sapling = {
 		then
 			if context.other_card.ability.effect ~= "Base" then
 				card.ability.extra.score = card.ability.extra.score + 1
-				if card.ability.extra.score >= card.ability.extra.req then
-					local eval = function(card)
-						return not card.REMOVED
-					end
-					juice_card_until(self, eval, true)
-				end
+				if card.ability.extra.score >= card.ability.extra.req and not card.ability.extra.check then 
+					card.ability.extra.check = true --Prevents violent juice up spam when playing enchanced cards while already active
+                        		local eval = function(card) return not card.REMOVED end
+                        		juice_card_until(card, eval, true)
+                    		end
 			end
-		end
-		if
+		elseif
 			context.selling_self
-			and card.ability.extra.score >= card.ability.extra.req
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			card:start_materialize()
-			return nil, true
+			if card.ability.extra.score >= card.ability.extra.req then
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.RARITY["cry_epic"]})
+				local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				card:start_materialize()
+				return nil, true
+			else
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize("k_nope_ex"), colour = G.C.RARITY["cry_epic"]})
+			end
 		end
 	end,
 }
@@ -1875,6 +1877,13 @@ local spaceglobe = {
 		}
 	end,
 	atlas = "atlasone",
+	set_ability = function(self, card, initial, delay_sprites)
+		local _poker_hands = {}
+        	for k, v in pairs(G.GAME.hands) do
+            		if v.visible then _poker_hands[#_poker_hands+1] = k end
+	        end
+		card.ability.extra.type = pseudorandom_element(_poker_hands, pseudoseed('cry_space_globe'))
+	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
@@ -1894,6 +1903,7 @@ local spaceglobe = {
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
+					colour = G.C.CHIPS,
 				}
 			end
 		end
@@ -4177,11 +4187,12 @@ local night = {
 	object_type = "Joker",
 	name = "cry-night",
 	key = "night",
-	config = { extra = { mult = 3, check = false } },
+	config = { extra = { mult = 3 } },
 	pos = { x = 3, y = 1 },
 	rarity = 3,
 	cost = 6,
 	eternal_compat = false,
+	blueprint_compat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.mult } }
@@ -4193,7 +4204,6 @@ local night = {
 			and not context.after
 			and G.GAME.current_round.hands_left == 0
 		then
-			card.ability.extra.check = true
 			if card.ability.extra.mult > 1 then
 				return {
 					message = localize{type='variable',key='a_powmult',vars={card.ability.extra.mult}},
@@ -4201,33 +4211,42 @@ local night = {
 					colour = G.C.DARK_EDITION,
 				}
 			end
-		end
-		if context.cardarea == G.jokers and context.after and card.ability.extra.check then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound("tarot1")
-					card.T.r = -0.2
-					card:juice_up(0.3, 0.4)
-					card.states.drag.is = true
-					card.children.center.pinch.x = true
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.3,
-						blockable = false,
-						func = function()
-							G.jokers:remove_card(card)
-							card:remove()
-							card = nil
-							return true
-						end,
-					}))
-					return true
-				end,
-			}))
-			return {
-				message = localize("k_extinct_ex"),
-				colour = G.C.FILTER,
-			}
+		elseif context.cardarea == G.jokers and context.after and not context.blueprint and not context.retrigger_joker then
+			if G.GAME.current_round.hands_left <= 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_extinct_ex"),
+					colour = G.C.FILTER,
+				}
+			elseif G.GAME.current_round.hands_left <= 1 then
+				local eval = function(card) return G.GAME.current_round.hands_left <= 1 and not G.RESET_JIGGLES end
+                        	juice_card_until(card, eval, true)
+			end
+		elseif context.first_hand_drawn and not context.blueprint and not context.retrigger_joker then
+			if next(find_joker('cry-panopticon')) then
+				local eval = function(card) return G.GAME.current_round.hands_played == 0 and not G.RESET_JIGGLES end
+                        	juice_card_until(card, eval, true)
+			end
 		end
 	end,
 }
@@ -4521,10 +4540,16 @@ local oldinvisible = {
 						{ message = localize("k_duplicated_ex") }
 					)
 					return nil, true
-				end
+				else
+                    			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_no_other_jokers')})
+                		end
 				return
 			else
 				card.ability.extra = card.ability.extra + 1
+				if card.ability.extra == 3 then
+					local eval = function(card) return (card.ability.extra == 3) end
+                                	juice_card_until(card, eval, true)
+				end
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = card.ability.extra .. "/4",
@@ -4572,7 +4597,7 @@ local kidnap = {
 	},
 	rarity = 1,
 	cost = 4,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -4622,6 +4647,7 @@ local kidnap = {
 				]]--
 				or context.card.ability.effect == "Boost Kidnapping"
 			)
+			and not context.blueprint
 		then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
 			return {

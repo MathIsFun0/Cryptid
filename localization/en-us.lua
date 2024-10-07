@@ -686,7 +686,7 @@ return {
             j_cry_circulus_pistoris = {
                 name = "Circulus Pistoris",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^#1#{} Mult",
+                    "{X:dark_edition,C:white}^#1#{} Chips and {X:dark_edition,C:white}^#1#{} Mult",
                     "if {C:attention}exactly{} #2#",
                     "hands remaining",
                 },
@@ -2401,7 +2401,7 @@ return {
                 },
             },
             tag_cry_oversat = {
-                name = "Mosaic Tag",
+                name = "Oversaturated Tag",
                 text = {
                     "Next base edition shop",
                     "Joker is free and",

@@ -359,7 +359,7 @@ self.jokers = CardArea(
     0, 0,
     CAI.joker_W+CAI.consumeable_W,
     CAI.joker_H, 
-    {card_limit = self.GAME.starting_params.joker_slots+self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1e100})
+    {card_limit = self.GAME.starting_params.joker_slots+self.GAME.starting_params.consumable_slots-1, type = 'joker', highlight_limit = 1e100})
 self.consumeables = self.jokers
 end'''
 match_indent = true

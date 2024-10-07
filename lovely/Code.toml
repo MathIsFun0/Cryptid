@@ -257,8 +257,8 @@ pattern = '''elseif name_to_check == 'Economy Tag' then loc_vars = {self.config.
 position = "after"
 payload = '''
 elseif name_to_check == "cry-Rework Tag" then loc_vars = {
-            self.ability and self.ability.rework_edition and localize{type = "name_text", set = "Edition", key = self.ability.rework_edition} or "[edition]",
-            self.ability and self.ability.rework_key and localize{type = "name_text", set = "Joker", key = self.ability.rework_key} or "[joker]",
+            self.ability and self.ability.rework_edition and localize{type = "name_text", set = "Edition", key = self.ability.rework_edition} or "["..string.lower(localize("k_edition")).."]",
+            self.ability and self.ability.rework_key and localize{type = "name_text", set = "Joker", key = self.ability.rework_key} or "["..string.lower(localize("k_joker")).."]",
         }
 '''
 match_indent = true
