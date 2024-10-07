@@ -3630,7 +3630,7 @@ local filler = {
 	name = "cry-filler",
 	key = "filler",
 	pos = { x = 0, y = 1 },
-	config = { Xmult = 1.5, type = "High Card" },
+	config = { Xmult = 1.00000000000001, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3654,7 +3654,7 @@ local giggly = {
 	key = "giggly",
 	effect = "Cry Type Mult",
 	pos = { x = 0, y = 5 },
-	config = { t_mult = 3, type = "High Card" },
+	config = { t_mult = 4, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
