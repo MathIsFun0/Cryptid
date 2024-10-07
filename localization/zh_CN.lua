@@ -114,7 +114,7 @@ return {
                 }
             },
             b_cry_source_deck = {
-                name = "源代码卡组",
+                name = "源代码牌组",
                 text = {
                     "所有牌都带有一个{C:dark_edition}绿色蜡封{}",
                     "卡牌不能更改蜡封类型",
@@ -311,6 +311,13 @@ return {
                     "每张卡也是一个{C:attention}随机{}消耗品"
                 }
             },
+            b_cry_beta = {
+                name = "怀旧卡组",
+                text = {
+                    "{C:attention}小丑{} 和 {C:attention}消耗槽{}",
+                    " {C:attention}合并"
+                },
+            },
             b_cry_antimatter = {
                 name = "反物质卡组",
                 text = {
@@ -344,7 +351,7 @@ return {
                 name = "编码卡组",
                 text = {
                     "以一张{C:cry_code,T:j_cry_CodeJoker}代码小丑{}和一张{C:cry_code,T:j_cry_copypaste}复制/粘贴{}开始",
-                    "商店中只出现{C:cry_code}代码卡{}"
+                    "商店中只出现{C:cry_code}代码牌{}"
                 }
             },
             b_cry_equilibrium = {
@@ -1166,18 +1173,8 @@ return {
             },
             j_cry_exoplanet = {
                 name = "系外行星",
-                --[[
-                Outdated, new text:
-
-                "{C:dark_edition}Holographic{} cards",
-                "each give {C:mult}+#1#{} Mult",
-
-                 Delete this when you are done btw
-                ]]--
                 text = {
-                    "{C:dark_edition}镭射{}卡",
-                    "每张提供{C:mult}+#1#{} 倍率",
-                    "{C:inactive,s:0.8}效果不会在系外行星上触发"
+                    "每张{C:dark_edition}镭射{}卡提供{C:mult}+#1#{} 倍率",
                 }
             },
             j_cry_exponentia = {
@@ -1340,21 +1337,10 @@ return {
             },
             j_cry_kidnap = {
                 name = "劫缴朋友~",
-                --[[
-                Outdated, new text:
-
-                 "Earn {C:money}$#2#{} at end of round",
-                 "Increase payout by {C:money}$#1#{}",
-                 "when a {C:attention}Type Mult{} or",
-                 "{C:attention}Type Chips{} Joker is sold",
-
-                 Delete this when you are done btw
-                ]]--
                 text = {
-                    "当 {C:attention}滑稽小丑{}，",
-                    "{C:attention}疯狂小丑{}，{C:attention}疯狂小丑{}，",
-                    "或{C:attention}滑稽小丑{}被{C:attention}出售{}时",
-                    "获得 {C:money}$#1#{} 并创建一个{C:attention}开心{}{C:attention}小丑{}"
+                    "每回合结尾获得{C:money}$#2#{}",
+                    "每卖掉一张{C:attention}倍率{}或者{C:attention}筹码{}小丑时",
+                    "增加{C:money}$#1#{}"
                 }
             },
             j_cry_kooky = {
@@ -1389,11 +1375,9 @@ return {
             j_cry_longboi = {
                 name = "怪物",
                 text = {
+                    "在回合结束时",
                     "给未来的",
                     "这张小丑牌 {X:mult,C:white}X#1#{} 倍率",
-                    "在回合结束时",
-                    -- "{C:red,E:2}自毁{}", I'm assuming this is the line that mentions self destructing. 
-                    --Commented out for now since it no longer does that. feel free to change the desc and/or remove this if this isn't the case
                     "{C:inactive}(当前 {X:mult,C:white}X#2#{C:inactive} 倍率){}"
                 }
             },
@@ -1491,38 +1475,18 @@ return {
             },
             j_cry_meteor = {
                 name = "流星雨",
-                --[[
-                Outdated, new text:
-
-                "{C:dark_edition}Foil{} cards each",
-                "give {C:chips}+#1#{} Chips",
-
-                 Delete this when you are done btw
-                ]]--
                 text = {
                     "每张{C:dark_edition}闪箔{}卡都会",
                     "提供{C:chips}+#1#{} 筹码",
-                    "{C:inactive,s:0.8}这个效果不会在流星雨上触发"
                 }
             },
             j_cry_mneon = {
                 name = "霓虹 M",
-                --[[
-                Outdated, new text:
-
-                "Earn {C:money}$#2#{} at end of round",
-                "Increase payout by",
-                "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-                "or {C:legendary}M Joker at",
-                "end of round",
-
-                Delete this when you are done btw
-                ]]--
                 text = {
                     "在回合结束时获得{C:money}$#2#{}",
-                    "每张{C:attention}欢乐小丑{}增加{C:money}$#1#{}",
+                    "每张{C:attention}欢乐小丑{}或者{C:legendary}M 小丑{}",
                     "在回合结束时",
-                    "{C:inactive}(最低增加{} {C:money}$1{}{C:inactive}){}"
+                    "增加{C:money}$#1#{}",
                 }
             },
             j_cry_mondrian = {
@@ -1553,26 +1517,13 @@ return {
             },
             j_cry_mprime = {
                 name = "使徒·十三",
-                --[[
-                Outdated, new text:
-
-               "Create an {C:legendary}M Joker{} at end of round",
-                "Each {C:attention}Jolly Joker{} or {C:legendary}M Joker",
-                "gives {X:dark_edition,C:white}^#1#{} Mult",
-                "Increase amount by {X:dark_edition,C:white}^#2#{}",
-                "when a {C:attention}Jolly Joker{} is {C:attention}sold",
-                "{C:inactive,s:0.8}(Tredecim excluded)",
-
-                Delete this when you are done btw
-                ]]--
                 text = {
                     "获得该小丑时",
-                    " 召唤4 个 {C:attention}开心小丑{}",
-                    "每个 {C:attention}开心小丑{} 提供 {X:dark_edition,C:white}^#1#{} 倍率",
+                    " 召唤4 个 {C:attention}M小丑{}",
+                    "每个 {C:attention}开心小丑{}或者{C:attention}M小丑{} 提供 {X:dark_edition,C:white}^#1#{} 倍率",
                     "每 {C:attention}卖出{}一个 {C:attention}开心小丑{}",
                     "额外提供 {X:dark_edition,C:white}^#2#{}倍率",
-                    "并且，每轮 {C:attention}第一次出售开心小丑 {C:attention}时",
-                    "可以额外创建一个 {C:attention}M小丑{}"
+                    "{C:inactive,s:0.8}(使徒·十三 除外)",
                 }
             },
             j_cry_mstack = {
@@ -1664,7 +1615,9 @@ return {
             j_cry_oldcandy = {
                 name = "经典口味糖果",
                 text = {
-                    "{C:attention}小丑{}一次"
+                    "出售此卡以",
+                    "永久增加",
+                    "{C:attention}+#1#{} 手牌上限"
                 }
             },
             j_cry_oldinvisible = {
@@ -1836,10 +1789,9 @@ return {
             j_cry_smallestm = {
                 name = "小小的也很可爱~",
                 text = {
-                    "{X:chips,C:white} X#1# {} 筹码直到本轮结束",
                     "如果 {C:attention}扑克手牌{}",
-                    "是一个 {C:attention}#2#{}",
-                    "{C:inactive}(当前 {C:attention}#3#{}{C:inactive}){}",
+                    "是一个 {C:attention}#1#{}",
+                    "创建两个 a {C:cry_jolly}M 标签",
                     "{C:inactive,s:0.8}好吧，基本上我很小"
                 }
             },
@@ -1872,18 +1824,9 @@ return {
             },
             j_cry_stardust = {
                 name = "星尘",
-                --[[
-                Outdated, new text:
-
-                "{C:dark_edition}Polychrome{} cards",
-                "each give {X:mult,C:white}X#1#{} Mult",
-
-                 Delete this when you are done btw
-                ]]--
                 text = {
                     "{C:dark_edition}多色{}卡",
                     "每张提供{X:mult,C:white}X#1#{} 倍率",
-                    "{C:inactive,s:0.8}效果不会在星尘上触发"
                 }
             },
             j_cry_stella_mortis = {
@@ -2260,21 +2203,21 @@ return {
                 }
             },
             p_cry_meme_1 = {
-                name = "表情包",
+                name = "表情包1",
                 text = {
                     "选择 {C:attention}#1#{} 张，最多",
                     "可达 {C:attention}#2# 张表情小丑{}"
                 }
             },
             p_cry_meme_tbree = {
-                name = "表情包",
+                name = "表情包3",
                 text = {
                     "选择 {C:attention}#1#{} 张，最多",
                     "可达 {C:attention}#2# 张表情小丑{}"
                 }
             },
             p_cry_meme_two = {
-                name = "表情包",
+                name = "表情包2",
                 text = {
                     "选择 {C:attention}#1#{} 张，最多",
                     "可达 {C:attention}#2# 张表情小丑{}"
@@ -2380,7 +2323,7 @@ return {
                 text = {
                     "开始时获得一张 {C:cry_code,T:j_cry_CodeJoker}代码小丑卡{}",
                     "和一张 {C:cry_code,T:j_cry_copypaste}复制/粘贴卡{}",
-                    "商店中只出现 {C:cry_code}代码卡{}"
+                    "商店中只出现 {C:cry_code}代码牌{}"
                 }
             },
             sleeve_cry_equilibrium_sleeve = {
@@ -3212,7 +3155,7 @@ return {
             c_cry_sticker_sheet_plus = "贴纸纸张+"
         },
         dictionary = {
-            b_code_cards = "代码卡",
+            b_code_cards = "代码牌",
             cry_epic = "史诗",
             cry_exotic = "域外",
             b_flip = "翻转",
@@ -3257,7 +3200,7 @@ return {
             ["cry_feat_antimatter deck"] = "反物质牌组",
             cry_feat_blinds = "盲注",
             cry_feat_challenges = "挑战",
-            ["cry_feat_code cards"] = "代码卡",
+            ["cry_feat_code cards"] = "代码牌",
             ["cry_feat_enhanced decks"] = "增强牌组",
             ["cry_feat_epic jokers"] = "史诗小丑",
             ["cry_feat_epic jokers"] = "史诗小丑",
@@ -3277,7 +3220,7 @@ return {
             cry_gaming_ex = "开赌!",
             cry_inactive = "Inactive",
             cry_minus_round = "-1 回合",
-            cry_mus_code = "代码卡 (://LETS_BREAK_THE_GAME)",
+            cry_mus_code = "代码牌 (://LETS_BREAK_THE_GAME)",
             cry_mus_exotic = "域外小丑 (by AlexZGreat)",
             cry_mus_high_score = "高分 (最终 Boss [For Your Computer] by AlexZGreat)",
             cry_mus_jimball = "吉姆球 (Funkytown by Lipps Inc.)",
@@ -3288,7 +3231,7 @@ return {
             cry_set_music = "音乐",
             cry_unredeemed = "Unredeemed...",
             k_code = "代码",
-            k_cry_meme_pack = "笑料包",
+            k_cry_meme_pack = "表情包",
             k_cry_program_pack = "程序包",
             k_end_blind = "结束盲注",
             k_hooked_ex = "钩住了！"
