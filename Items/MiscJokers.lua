@@ -1871,6 +1871,13 @@ local spaceglobe = {
 		}
 	end,
 	atlas = "atlasone",
+	set_ability = function(self, card, initial, delay_sprites)
+		local _poker_hands = {}
+        	for k, v in pairs(G.GAME.hands) do
+            		if v.visible then _poker_hands[#_poker_hands+1] = k end
+	        end
+		card.ability.extra.type = pseudorandom_element(_poker_hands, pseudoseed('cry_space_globe'))
+	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
@@ -1890,6 +1897,7 @@ local spaceglobe = {
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
+					colour = G.C.CHIPS,
 				}
 			end
 		end
@@ -3622,7 +3630,7 @@ local filler = {
 	name = "cry-filler",
 	key = "filler",
 	pos = { x = 0, y = 1 },
-	config = { Xmult = 1.5, type = "High Card" },
+	config = { Xmult = 1.00000000000001, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3646,7 +3654,7 @@ local giggly = {
 	key = "giggly",
 	effect = "Cry Type Mult",
 	pos = { x = 0, y = 5 },
-	config = { t_mult = 3, type = "High Card" },
+	config = { t_mult = 4, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4173,11 +4181,12 @@ local night = {
 	object_type = "Joker",
 	name = "cry-night",
 	key = "night",
-	config = { extra = { mult = 3, check = false } },
+	config = { extra = { mult = 3 } },
 	pos = { x = 3, y = 1 },
 	rarity = 3,
 	cost = 6,
 	eternal_compat = false,
+	blueprint_compat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.mult } }
@@ -4189,7 +4198,6 @@ local night = {
 			and not context.after
 			and G.GAME.current_round.hands_left == 0
 		then
-			card.ability.extra.check = true
 			if card.ability.extra.mult > 1 then
 				return {
 					message = localize{type='variable',key='a_powmult',vars={card.ability.extra.mult}},
@@ -4197,33 +4205,42 @@ local night = {
 					colour = G.C.DARK_EDITION,
 				}
 			end
-		end
-		if context.cardarea == G.jokers and context.after and card.ability.extra.check then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound("tarot1")
-					card.T.r = -0.2
-					card:juice_up(0.3, 0.4)
-					card.states.drag.is = true
-					card.children.center.pinch.x = true
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.3,
-						blockable = false,
-						func = function()
-							G.jokers:remove_card(card)
-							card:remove()
-							card = nil
-							return true
-						end,
-					}))
-					return true
-				end,
-			}))
-			return {
-				message = localize("k_extinct_ex"),
-				colour = G.C.FILTER,
-			}
+		elseif context.cardarea == G.jokers and context.after and not context.blueprint and not context.retrigger_joker then
+			if G.GAME.current_round.hands_left <= 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_extinct_ex"),
+					colour = G.C.FILTER,
+				}
+			elseif G.GAME.current_round.hands_left <= 1 then
+				local eval = function(card) return G.GAME.current_round.hands_left <= 1 and not G.RESET_JIGGLES end
+                        	juice_card_until(card, eval, true)
+			end
+		elseif context.first_hand_drawn and not context.blueprint and not context.retrigger_joker then
+			if next(find_joker('cry-panopticon')) then
+				local eval = function(card) return G.GAME.current_round.hands_played == 0 and not G.RESET_JIGGLES end
+                        	juice_card_until(card, eval, true)
+			end
 		end
 	end,
 }
@@ -4517,10 +4534,16 @@ local oldinvisible = {
 						{ message = localize("k_duplicated_ex") }
 					)
 					return nil, true
-				end
+				else
+                    			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_no_other_jokers')})
+                		end
 				return
 			else
 				card.ability.extra = card.ability.extra + 1
+				if card.ability.extra == 3 then
+					local eval = function(card) return (card.ability.extra == 3) end
+                                	juice_card_until(card, eval, true)
+				end
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = card.ability.extra .. "/4",
@@ -4568,7 +4591,7 @@ local kidnap = {
 	},
 	rarity = 1,
 	cost = 4,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -4618,6 +4641,7 @@ local kidnap = {
 				]]--
 				or context.card.ability.effect == "Boost Kidnapping"
 			)
+			and not context.blueprint
 		then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
 			return {

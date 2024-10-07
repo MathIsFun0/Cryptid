@@ -253,13 +253,14 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
+	immune_to_chemach = true,
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
 	atlas = "effarcire",
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
-		if not context.blueprint then
+		if not context.blueprint and not context.retrigger_joker then
 			if context.first_hand_drawn then
 				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
 				return nil, true
@@ -626,7 +627,7 @@ local aequilibrium = {
 	object_type = "Joker",
 	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
 	key = "equilib",
-	config = { extra = { jokers = 2, num = 1, card = nil } },
+	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
 	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
@@ -640,12 +641,12 @@ local aequilibrium = {
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
-		local joker_generated = "None"
-		if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
+		local joker_generated = "???"
+		if G.GAME.aequilibriumkey and G.GAME.aequilibriumkey > 1 then
 			joker_generated = localize({
 				type = "name_text",
 				set = "Joker",
-				key = G.P_CENTER_POOLS["Joker"][math.floor(center.ability.extra.num or 1) - 1].key,
+				key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
 			})
 		end
 		return { vars = { center.ability.extra.jokers, joker_generated } }
@@ -965,7 +966,7 @@ local duplicare = {
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
-    config = {extra = {Emult = 1.25, Emult_mod = 0.005}},
+    config = {extra = {Emult = 1.25}},
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     rarity = "cry_exotic",
@@ -974,7 +975,7 @@ local duplicare = {
     atlas = "placeholders",
     loc_vars = function(self, info_queue, center)
         return {
-            vars = {center.ability.extra.Emult, center.ability.extra.Emult_mod}
+            vars = {center.ability.extra.Emult}
         }
     end,
     calculate = function(self, card, context)
@@ -987,7 +988,6 @@ local duplicare = {
                     end
                 })) 
             end
-            card.ability.extra.Emult = card.ability.extra.Emult + 0
             return {
                 message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
                 Emult_mod = card.ability.extra.Emult,
@@ -1058,7 +1058,6 @@ local rescribere = {
 return {
 	name = "Exotic Jokers",
 	init = function()
-		cry_enable_exotics = true
 		--Universum Patches
 		local uht = update_hand_text
 		function update_hand_text(config, vals)
