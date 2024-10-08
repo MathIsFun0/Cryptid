@@ -3,6 +3,24 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
+# Make the splash screen more jolly
+# Requires "Custom Main Menu" config to be enabled
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_joker'])"
+position = "after"
+payload = '''
+if Cryptid.enabled["Menu"] then
+	if Cryptid.enabled["Epic Jokers"] then
+		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_cry_m'])
+  	else
+   		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'])
+	end
+end
+'''
+match_indent = true
+
 # Show Glitched Edition to confirm Cryptid is Active
 [[patches]]
 [patches.pattern]
@@ -29,7 +47,6 @@ pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarit
 position = "at"
 payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = localize('cry_epic'), ['cry_exotic'] = localize('cry_exotic')})[card.config.center.rarity] end"
 match_indent = true
-
 
 # Fix Rare Tag creating Epic jokers
 [[patches]]
