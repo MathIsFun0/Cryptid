@@ -126,6 +126,10 @@
 --Subtle Joker
 --Discreet Joker
 --Fractal
+--=============== Page 9 ===============--
+--Ace Aequilibrium
+--Duplicare
+--Queen's Gambit
 
 if JokerDisplay then
 
@@ -560,7 +564,6 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_mprime"] = {
-		--todo: show if active
 		mod_function = function(card, mod_joker)
 			return { e_mult = (
 				card.ability.name == "Jolly Joker"
@@ -1896,9 +1899,42 @@ if JokerDisplay then
 		text_config = { colour = G.C.ORANGE },
 	}
 	
+	--This is here so it shows up on the github symbol panel (easy to scroll to)
+	local page9 = {}
+
+	JokerDisplay.Definitions["j_cry_duplicare"] = {
+		mod_function = function(card, mod_joker)
+			return { e_mult = mod_joker.ability.extra.Emult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_equilib"] = {
+		text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+		},
+		calc_function = function(card)
+			local joker_generated = "???"
+			if G.GAME.aequilibriumkey and G.GAME.aequilibriumkey > 1 then
+				joker_generated = localize({
+					type = "name_text",
+					set = "Joker",
+					key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
+				})
+			end
+			card.joker_display_values.localized_text = joker_generated
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_queens_gambit"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		reminder_text_config = { scale = 0.35 },
+		calc_function = function(card)
+			card.joker_display_values.localized_text = localize("Royal Flush", "poker_hands")
+		end,
+	}
 	
 	--end of Jokerdisplays
 end
---Disabling this file doesn't actually disable the JokerDisplays
---in the future I want to find a way to load this without it showing up in items (since it does nothing)
 return { name = "JokerDisplay" }
