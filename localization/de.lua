@@ -2891,7 +2891,7 @@ return {
                     "{C:attention}#2# Meme Jokern{}",
                 },
             },
-            p_cry_meme_tbree = {
+            p_cry_meme_three = {
                 name = "Meme Packet",
                 text = {
                     "Wähle {C:attention}#1#{} von bis zu",

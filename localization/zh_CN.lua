@@ -2209,7 +2209,7 @@ return {
                     "可达 {C:attention}#2# 张表情小丑{}"
                 }
             },
-            p_cry_meme_tbree = {
+            p_cry_meme_three = {
                 name = "表情包3",
                 text = {
                     "选择 {C:attention}#1#{} 张，最多",
