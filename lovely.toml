@@ -21,6 +21,18 @@ end
 '''
 match_indent = true
 
+# Make cards in splash screen CCD cards
+# Requires "Custom Main Menu" config to be enabled
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
+position = "before"
+payload = '''
+if Cryptid.enabled["Menu"] then card:set_ability(get_random_consumable('cry_ccd', nil, true), true, nil) end
+'''
+match_indent = true
+
 # Show Glitched Edition to confirm Cryptid is Active
 [[patches]]
 [patches.pattern]
