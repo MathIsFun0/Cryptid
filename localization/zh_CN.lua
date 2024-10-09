@@ -1521,8 +1521,8 @@ return {
             j_cry_mprime = {
                 name = "使徒·十三",
                 text = {
-                    "获得该小丑时",
-                    " 召唤4 个 {C:attention}M小丑{}",
+                    "每回合结束时",
+                    "召唤一个{C:attention}M小丑{}",
                     "每个 {C:attention}开心小丑{}或者{C:attention}M小丑{} 提供 {X:dark_edition,C:white}^#1#{} 倍率",
                     "每 {C:attention}卖出{}一个 {C:attention}开心小丑{}",
                     "额外提供 {X:dark_edition,C:white}^#2#{}倍率",
