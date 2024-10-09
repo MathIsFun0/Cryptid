@@ -3,6 +3,48 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
+# Make the splash screen more jolly
+# Requires "Custom Main Menu" config to be enabled
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_joker'])"
+position = "after"
+payload = '''
+if Cryptid.enabled["Menu"] then
+	if Cryptid.enabled["M Jokers"] then
+ 		local mcard = {}
+			for k, _ in pairs(Cryptid.M_jokers) do
+				if G.P_CENTERS[k] then
+					mcard[#mcard + 1] = k
+				end
+			end
+ 		local option = math.random(#mcard)
+   		local chosenoption = mcard[option]
+       		if chosenoption == "j_cry_biggestm" or chosenoption == "j_cry_reverse" then --These don't render properly; replace these with loopy instead
+			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_cry_loopy'])
+   		else
+     			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[chosenoption])
+     		end
+  	else
+   		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'])
+	end
+end
+'''
+match_indent = true
+
+# Make cards in splash screen CCD cards
+# Requires "Custom Main Menu" config to be enabled
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
+position = "before"
+payload = '''
+if Cryptid.enabled["Menu"] then card:set_ability(get_random_consumable('cry_ccd', nil, true), true, nil) end
+'''
+match_indent = true
+
 # Show Glitched Edition to confirm Cryptid is Active
 [[patches]]
 [patches.pattern]
