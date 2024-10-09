@@ -2021,13 +2021,13 @@ G.FUNCS.exploit_apply = function()
 		["High Card"] = { "high card", "high" },
 		["Pair"] = { "pair", "2oak" },
 		["Two Pair"] = { "two pair", "2 pair" },
-		["Three of a Kind"] = { "three of a kind", "3oak", "trips" },
+		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips" },
 		["Straight"] = { "straight" },
 		["Flush"] = { "flush" },
 		["Full House"] = { "full house", "full" },
-		["Four of a Kind"] = { "four of a kind", "4oak" },
-		["Straight Flush"] = { "straight flush", "slush", "slushie", "slushy" },
-		["Five of a Kind"] = { "five of a kind", "5oak" },
+		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak" },
+		["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
+		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak" },
 		["Flush House"] = { "flush house", "flouse" },
 		["Flush Five"] = { "flush five", "fish" },
 	}
@@ -2059,12 +2059,6 @@ G.FUNCS.exploit_cancel = function()
 	G.GAME.USING_CODE = false
 end
 
-G.FUNCS.exploit_info = function()
-	local text = G.GAME.cry_exploit_override
-	local disp_text = text
-	local loc_disp_text = localize(disp_text, "poker_hands")
-	return text, loc_disp_text, disp_text
-end
 G.FUNCS.class_apply_previous = function()
 	if G.PREVIOUS_ENTERED_ENH then
 		G.ENTERED_ENH = G.PREVIOUS_ENTERED_ENH or ""
@@ -3782,6 +3776,16 @@ return {
 				context.cry_hook = nil
 			end
 			return ret, trig
+		end
+		local evaluate_poker_hand_ref = evaluate_poker_hand
+		function evaluate_poker_hand(hand)
+			local results = evaluate_poker_hand_ref(hand)
+			if G.GAME.cry_exploit_override then
+				if not results[G.GAME.cry_exploit_override][1] then
+					results[G.GAME.cry_exploit_override] = results["High Card"]	-- i would do results.top here but it just doesn't work, if someone could get that working that would be great
+				end
+			end
+			return results
 		end
 		--Encoded Deck patches
 		local Backapply_to_runRef = Back.apply_to_run
