@@ -24,28 +24,28 @@ cry_enable_epics = Cryptid.enabled["Epic Jokers"]
 cry_enable_exotics = Cryptid.enabled["Exotic Jokers"]
 cry_minvasion = Cryptid.enabled["M Jokers"]
 
--- Custom Rarity setup (based on Relic-Jokers)
-Game:set_globals()
-G.C.RARITY["cry_exotic"] = HEX("708b91")
-G.C.RARITY["cry_epic"] = HEX("571d91")
-local ip = SMODS.insert_pool
-function SMODS.insert_pool(pool, center, replace)
-	if pool == nil then
-		pool = {}
-	end
-	ip(pool, center, replace)
-end
-local get_badge_colourref = get_badge_colour
-function get_badge_colour(key)
-	local fromRef = get_badge_colourref(key)
-	if key == "cry_exotic" then
-		return G.C.RARITY["cry_exotic"]
-	end
-	if key == "cry_epic" then
-		return G.C.RARITY["cry_epic"]
-	end
-	return fromRef
-end
+-- Gradient isn't included since other logic seems to also handle it
+SMODS.Rarity{
+    key = "exotic",
+    loc_txt = {name = "Exotic"},
+    badge_colour = HEX('708b91'),
+    default_rate = 0,
+}
+
+SMODS.Rarity{
+    key = "epic",
+    loc_txt = {name = "Epic"},
+    badge_colour = HEX('571d91'),
+    default_rate = 0.003,
+    pools = {["Joker"] = true},
+    get_rate = function(self, orig_rate, object_type)
+        if Cryptid_config["Epic Jokers"] then
+            return 0.003
+        else
+            return 0
+        end
+    end,
+}
 
 --Changes main menu colors and stuff
 if Cryptid.enabled["Menu"] then
@@ -78,8 +78,6 @@ function loc_colour(_c, _default)
 	if not G.ARGS.LOC_COLOURS then
 		lc()
 	end
-	G.ARGS.LOC_COLOURS.cry_exotic = G.C.RARITY["cry_exotic"]
-	G.ARGS.LOC_COLOURS.cry_epic = G.C.RARITY["cry_epic"]
 	G.ARGS.LOC_COLOURS.cry_azure = HEX("1d4fd7")
 	G.ARGS.LOC_COLOURS.cry_code = G.C.SET.Code
 	G.ARGS.LOC_COLOURS.heart = G.C.SUITS.Hearts
@@ -2477,20 +2475,6 @@ function Card:set_banana(_banana)
 end
 function Card:set_pinned(_pinned)
 	self.pinned = _pinned
-end
---Register custom rarity pools
-local is = SMODS.injectItems
-function SMODS.injectItems()
-	local m = is()
-	G.P_JOKER_RARITY_POOLS.cry_epic = {}
-	G.P_JOKER_RARITY_POOLS.cry_exotic = {}
-	for k, v in pairs(G.P_CENTERS) do
-		v.key = k
-		if v.rarity and (v.rarity == "cry_epic" or v.rarity == "cry_exotic") and v.set == "Joker" and not v.demo then
-			table.insert(G.P_JOKER_RARITY_POOLS[v.rarity], v)
-		end
-	end
-	return m
 end
 
 --Gradients based on Balatrostuck code

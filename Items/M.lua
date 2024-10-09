@@ -429,6 +429,7 @@ local bonk = {
 	effect = "M Joker",
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" }, jolly = { t_mult = 8, type = "Pair" } },
+    pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -668,6 +669,7 @@ local reverse = {
 	key = "reverse",
 	effect = "M Joker",
 	config = { extra = { type = "Pair", spawn = 0 }, jolly = { t_mult = 8, type = "Pair" } },
+    pools = {["Meme"] = true},
 	pos = { x = 0, y = 0 },
 	rarity = 2,
 	cost = 4,

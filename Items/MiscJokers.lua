@@ -77,7 +77,8 @@ local happyhouse = {
 	pos = { x = 2, y = 4 },
 	config = { extra = { mult = 4, check = 0 } },
 	immune_to_chemach = true,
-	rarity = 2,
+    pools = {["Meme"] = true},
+	rarity = "Uncommon",
 	cost = 2,
 	blueprint_compat = true,
 	atlas = "atlastwo",
@@ -494,6 +495,7 @@ local cube = {
 	cost = -27,
 	blueprint_compat = true,
 	atlas = "atlasone",
+    pools = {["Meme"] = true},
 	source_gate = "sho",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.chips } }
@@ -730,6 +732,7 @@ local nice = {
 	key = "nice",
 	config = { extra = { chips = 420, sixcount = 0, ninecount = 0 } },
 	pos = { x = 2, y = 3 },
+    pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 6.9,
 	atlas = "atlasone",
@@ -801,6 +804,7 @@ local chad = {
 	pos = { x = 0, y = 3 },
 	config = { extra = { retriggers = 2 } },
 	immune_to_chemach = true,
+    pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 10,
 	blueprint_compat = true,
@@ -828,6 +832,7 @@ local jimball = {
 	key = "jimball",
 	pos = { x = 0, y = 0 },
 	config = { x_mult = 1, extra = 0.15, override_x_mult_check = true },
+    pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra, center.ability.x_mult } }
 	end,
@@ -872,6 +877,7 @@ local sus = {
 	name = "cry-SUS",
 	key = "sus",
 	pos = { x = 1, y = 3 },
+    pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 7,
 	blueprint_compat = true,
@@ -1127,6 +1133,7 @@ local krustytheclown = {
 	key = "krustytheclown",
 	pos = { x = 3, y = 4 },
 	config = { extra = { extra = 0.02, x_mult = 1 } },
+    pools = {["Meme"] = true},
 	rarity = 2,
 	cost = 7,
 	perishable_compat = false,
@@ -1163,6 +1170,7 @@ local blurred = {
 	key = "blurred",
 	pos = { x = 4, y = 4 },
 	config = { extra = { hands = 1 } },
+    pools = {["Meme"] = true},
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -1840,7 +1848,7 @@ local sapling = {
 		then
 			if card.ability.extra.score >= card.ability.extra.req then
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.RARITY["cry_epic"]})
-				local card = create_card("Joker", G.jokers, nil, 1, nil, nil, nil, "cry_sapling")
+				local card = create_card("Joker", G.jokers, nil, cry_enable_epics and 'cry_epic' or 1, nil, nil, nil, "cry_sapling")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:start_materialize()
@@ -3630,6 +3638,7 @@ local filler = {
 	name = "cry-filler",
 	key = "filler",
 	pos = { x = 0, y = 1 },
+  pools = {["Meme"] = true},
 	config = { Xmult = 1.00000000000001, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
