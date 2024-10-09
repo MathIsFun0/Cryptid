@@ -1693,21 +1693,23 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	else
 		--Reimplement Door Hanger From Bunco
                 if next(find_joker('Doorhanger')) then
-                    	if _rarity == nil or _rarity < 0.9 then
+			if type(_rarity) ~= "string" then
+                    		if _rarity == nil or _rarity < 0.9 then
         
-                        	_rarity = 0.9
+                        		_rarity = 0.9
 
-				--Minor Changes from Bunco's implementation
-				local rng = pseudorandom('doorhanger'..G.SEED)
-                        	if rng > 0.97 then
-					--Rare Jokers
-                            		_rarity = 0.993
-                        	end
-				if rng > 0.99 then
-					--Epic Jokers (If enabled, otherwise rare jokers)
-                            		_rarity = 1
-                        	end
-                    	end
+					--Minor Changes from Bunco's implementation
+					local rng = pseudorandom('doorhanger'..G.SEED)
+                        		if rng > 0.97 then
+						--Rare Jokers
+                            			_rarity = 0.993
+                        		end
+					if rng > 0.99 then
+						--Epic Jokers (If enabled, otherwise rare jokers)
+                            			_rarity = 1
+                        		end
+                    		end
+			end
                 end
 		gcparea = area
 		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
