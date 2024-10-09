@@ -273,7 +273,9 @@ local lock = {
 					CARD.ability.perishable = nil
 					CARD.pinned = nil
 					CARD:set_rental(nil)
-					CARD:set_eternal(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
 					CARD.ability.banana = nil
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)

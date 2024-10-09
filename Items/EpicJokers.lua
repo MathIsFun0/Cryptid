@@ -694,8 +694,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.discard
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -713,8 +712,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.pre_discard
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -732,8 +730,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.reroll_shop
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -751,8 +748,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.open_booster
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -770,8 +766,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.buying_card
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -789,8 +784,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.skip_blind
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -808,8 +802,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.cardarea == G.jokers
 			and context.before
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
@@ -828,8 +821,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.using_consumeable
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -847,8 +839,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.selling_card
 			and context.card.ability.name ~= "Obelisk"
 			and #G.jokers.cards + G.GAME.joker_buffer - (context.card.ability.set == "Joker" and 1 or 0) < G.jokers.config.card_limit
@@ -867,8 +858,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.setting_blind
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -886,8 +876,7 @@ local curse = {
 					colour = G.C.FILTER,
 				}),
 			}
-		end
-		if
+		elseif
 			context.skipping_booster
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
@@ -910,6 +899,7 @@ local curse = {
 	add_to_deck = function(self, card, from_debuff)
 		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
 		card:set_edition("e_negative", true, nil, true)
+		card.sob = true
 		card:set_eternal(true)
 		card:add_to_deck()
 		G.jokers:emplace(card)
