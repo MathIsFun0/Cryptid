@@ -443,7 +443,7 @@ local scalae = {
 	key = "Scalae",
 	pos = { x = 3, y = 4 },
 	soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
-	immune_to_chemach = true,
+	immune_to_chemach = false,
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
