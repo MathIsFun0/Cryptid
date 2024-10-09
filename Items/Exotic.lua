@@ -726,6 +726,11 @@ local aequilibrium = {
 			end
 		end
 	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			card.ability.extra.card:start_dissolve()
+		end
+	end,
 }
 local cc = copy_card
 function copy_card(card, a, b, c, d)
