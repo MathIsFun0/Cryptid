@@ -4617,7 +4617,32 @@ local kidnap = {
 			set = "Joker",
 			key = "j_droll",
 			specific_vars = { self.config.droll.t_mult, localize(self.config.droll.type, "poker_hands") },
-		} 
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_sly",
+			specific_vars = { 50, localize(self.config.jolly.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_wily",
+			specific_vars = { 100, localize(self.config.zany.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_clever",
+			specific_vars = { 80, localize(self.config.mad.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_devious",
+			specific_vars = { 100, localize(self.config.crazy.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_crafty",
+			specific_vars = { 80, localize(self.config.droll.type, "poker_hands") },
+		}
 		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
 	end,
 	atlas = "atlasone",
