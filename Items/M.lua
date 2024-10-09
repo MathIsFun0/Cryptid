@@ -1095,6 +1095,8 @@ local megg = {
 	name = "cry-megg",
 	key = "Megg",
 	effect = "M Joker",
+	blueprint_compat = false,
+	eternal_compat = false,
 	pos = { x = 0, y = 4 },
 	config = { extra = { amount = 0, amount_mod = 1 }, jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)

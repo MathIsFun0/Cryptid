@@ -1250,7 +1250,7 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by",
                     "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-                    "or {C:legendary}M Joker at",
+                    "or {C:legendary}M Joker{} at",
                     "end of round",
                 },
             },
@@ -2891,7 +2891,7 @@ return {
                     "up to {C:attention}#2# Meme Jokers{}",
                 },
             },
-            p_cry_meme_tbree = {
+            p_cry_meme_three = {
                 name = "Meme Pack",
                 text = {
                     "Choose {C:attention}#1#{} of",

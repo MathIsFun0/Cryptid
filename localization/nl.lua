@@ -2905,7 +2905,7 @@ return {
                     "up to {C:attention}#2# Meme Jokers{}",
                 },
             },
-            p_cry_meme_tbree = {
+            p_cry_meme_three = {
                 name = "Meme Pack",
                 text = {
                     "Choose {C:attention}#1#{} of",
