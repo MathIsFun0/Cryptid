@@ -1098,12 +1098,14 @@ local wario = {
 	calculate = function(self, card, context)
 		if context.post_trigger then
 			ease_dollars(card.ability.extra.money)
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					(context.blueprint_card or card):juice_up(0.5, 0.5)
-					return true
-				end,
-			}))
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						(context.blueprint_card or card):juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
 			card_eval_status_text(
 				context.other_context.blueprint_card or context.other_joker,
 				"extra",
