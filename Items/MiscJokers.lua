@@ -4576,6 +4576,42 @@ local fractal = {
 		G.hand:unhighlight_all()
 	end,
 }
+local kittyprinter = {
+	object_type = "Joker",
+	name = "cry-kittyprinter",
+	key = "kittyprinter",
+	config = { extra = { Xmult = 2.3 } },
+	pos = { x = 1, y = 0 },
+	rarity = 2,
+	cost = 3,
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult } }
+	end,
+	calculate = function(self, card, context)
+		if
+			context.cardarea == G.jokers
+			and not context.before
+			and not context.after
+			and card.ability.extra.Xmult > 1
+		then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { card.ability.extra.Xmult },
+				}),
+				Xmult_mod = card.ability.extra.Xmult,
+			}
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.GAME.kitty_printers = G.GAME.kitty_printers and G.GAME.kitty_printers + 1 or 1
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.GAME.kitty_printers = math.max(0, G.GAME.kitty_printers - 1)
+  end,
+}
 local kidnap = {
 	object_type = "Joker",
 	name = "cry-kidnap",
@@ -4774,6 +4810,9 @@ local miscitems =  {
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
+end
+if Cryptid.enabled["Tags"] then
+	miscitems[#miscitems+1] = kittyprinter
 end
 return {
 	name = "Misc. Jokers",
