@@ -895,7 +895,10 @@ local verisimile = {
 		if context.post_trigger and not context.blueprint then
 			--Todo: Gros Michel, Cavendish, Planet.lua
 			--Bus driver is ignored because it always triggers anyway
-			if context.other_joker.ability.name == "8 Ball" or context.other_joker.ability.name == "Space Joker" then
+			if context.other_joker.ability.name == "8 Ball" 
+			or context.other_joker.ability.name == "Space Joker"
+			or context.other_joker.ability.name == "Business Card"
+			or context.other_joker.ability.name == "Hallucination" then
 				local variable = context.other_joker
 				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
 				card_eval_status_text(
