@@ -632,7 +632,12 @@ local triple = { --Copies voucher triple tag
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
 				for i = 1, tag.config.num do
-					add_tag(Tag(context.tag.key))
+					local tag = Tag(context.tag.key)
+					if context.tag.key == "tag_cry_rework" then
+						tag.ability.rework_edition = context.tag.ability.rework_edition
+						tag.ability.rework_key = context.tag.ability.rework_key
+					end
+					add_tag(tag)
 				end
 				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil
@@ -673,7 +678,12 @@ local quadruple = { --Tag printer voucher quadruple tag
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
 				for i = 1, tag.config.num do
-					add_tag(Tag(context.tag.key))
+					local tag = Tag(context.tag.key)
+					if context.tag.key == "tag_cry_rework" then
+						tag.ability.rework_edition = context.tag.ability.rework_edition
+						tag.ability.rework_key = context.tag.ability.rework_key
+					end
+					add_tag(tag)
 				end
 				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil
@@ -714,7 +724,12 @@ local quintuple = { --Clone machine voucher quintuple tag
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
 				for i = 1, tag.config.num do
-					add_tag(Tag(context.tag.key))
+					local tag = Tag(context.tag.key)
+					if context.tag.key == "tag_cry_rework" then
+						tag.ability.rework_edition = context.tag.ability.rework_edition
+						tag.ability.rework_key = context.tag.ability.rework_key
+					end
+					add_tag(tag)
 				end
 				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil
