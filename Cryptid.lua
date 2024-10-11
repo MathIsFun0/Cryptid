@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.2~1005a
+--- VERSION: 0.5.2~1010a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -48,13 +48,13 @@ function get_badge_colour(key)
 end
 
 --Changes main menu colors and stuff
---Known bug: The logo is slightly off-center
 if Cryptid.enabled["Menu"] then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
 		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
 		G.title_top.T.w = G.title_top.T.w*1.7675
+		G.title_top.T.x = G.title_top.T.x - 0.8
 		G.title_top:emplace(newcard)
 		newcard.T.w = newcard.T.w * 1.1*1.2
 		newcard.T.h = newcard.T.h *1.1*1.2
@@ -68,8 +68,6 @@ if Cryptid.enabled["Menu"] then
 				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
 				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
 			}}})
-		G.SPLASH_LOGO.T.w = G.SPLASH_LOGO.T.w * 1.1
-		G.SPLASH_LOGO.T.h = G.SPLASH_LOGO.T.h * 1.1
 		return ret
 	end
 end
@@ -1640,16 +1638,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		return not center_no(center, "doe") and not center_no(center, "aeq") and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
+		if not G.GAME.aequilibriumkey then G.GAME.aequilibriumkey = 1 end
 		local aeqactive = nil
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.name == "Ace Aequilibrium" and not forced_key then
-				while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
-					if math.ceil(G.jokers.cards[i].ability.extra.num) > #G.P_CENTER_POOLS["Joker"] then
-						G.jokers.cards[i].ability.extra.num = 1
-					end
-					aeqactive = math.ceil(G.jokers.cards[i].ability.extra.num)
-					G.jokers.cards[i].ability.extra.num = math.ceil(G.jokers.cards[i].ability.extra.num + 1)
+		if next(find_joker('Ace Aequilibrium')) and not forced_key then
+			while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
+				if math.ceil(G.GAME.aequilibriumkey) > #G.P_CENTER_POOLS["Joker"] then
+					G.GAME.aequilibriumkey = 1
 				end
+				aeqactive = math.ceil(G.GAME.aequilibriumkey)
+				G.GAME.aequilibriumkey = math.ceil(G.GAME.aequilibriumkey + 1)
 			end
 		end
 		if aeqactive then
@@ -1696,21 +1693,23 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	else
 		--Reimplement Door Hanger From Bunco
                 if next(find_joker('Doorhanger')) then
-                    	if _rarity == nil or _rarity < 0.9 then
+			if type(_rarity) ~= "string" then
+                    		if _rarity == nil or _rarity < 0.9 then
         
-                        	_rarity = 0.9
+                        		_rarity = 0.9
 
-				--Minor Changes from Bunco's implementation
-				local rng = pseudorandom('doorhanger'..G.SEED)
-                        	if rng > 0.97 then
-					--Rare Jokers
-                            		_rarity = 0.993
-                        	end
-				if rng > 0.99 then
-					--Epic Jokers (If enabled, otherwise rare jokers)
-                            		_rarity = 1
-                        	end
-                    	end
+					--Minor Changes from Bunco's implementation
+					local rng = pseudorandom('doorhanger'..G.SEED)
+                        		if rng > 0.97 then
+						--Rare Jokers
+                            			_rarity = 0.993
+                        		end
+					if rng > 0.99 then
+						--Epic Jokers (If enabled, otherwise rare jokers)
+                            			_rarity = 1
+                        		end
+                    		end
+			end
                 end
 		gcparea = area
 		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
@@ -2763,5 +2762,80 @@ SMODS.Sticker:take_ownership("rental", {
 		end
 	end,
 })
+
+function create_cryptid_notif_overlay(key)
+	if not G.SETTINGS.cryptid_notifs then -- I want this to be across profiles
+		G.SETTINGS.cryptid_notifs = {}
+	end
+	if not G.SETTINGS.cryptid_notifs[key] then
+		G.E_MANAGER:add_event(Event({
+			trigger = 'immediate',
+			no_delete = true,
+			func = (function()
+				if not G.OVERLAY_MENU then 
+					G.SETTINGS.paused = true
+					G.FUNCS.overlay_menu{
+						definition = create_UIBox_cryptid_notif(key),
+					}
+					play_sound('foil1', 0.7, 0.3)
+					play_sound('gong', 1.4, 0.15)
+					G.SETTINGS.cryptid_notifs[key] = true
+					G:save_settings()
+					return true
+				end
+			end)
+		}), 'unlock')
+	end
+end
+
+function create_UIBox_cryptid_notif(key)
+	local t = create_UIBox_generic_options({padding = 0,back_label = localize('b_continue'), no_pip = true, snap_back = true, back_func = 'continue_unlock', minw = 4.5, contents = {
+		{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+		  {n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
+			{n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
+			  {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+				{n=G.UIT.O, config={object = DynaText({string = {localize('cry_notif_'..key..'_1')}, colours = {G.C.BLUE},shadow = true, rotate = true, bump = true, pop_in = 0.3, pop_in_rate = 2, scale = 1.2})}}
+			  }},
+			  {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+				{n=G.UIT.O, config={object = DynaText({string = {localize('cry_notif_'..key..'_2')}, colours = {G.C.RED},shadow = true, rotate = true, bump = true, pop_in = 0.6, pop_in_rate = 2, scale = 0.8})}}
+			  }},
+			}},
+			{n=G.UIT.R, config={align = "cm", padding = 0.2}, nodes={
+			  {n=G.UIT.R, config={align = "cm", padding = 0.05, emboss = 0.05, colour = G.C.WHITE, r = 0.1}, nodes={
+				Cryptid.notifications[key].nodes()
+			  }}
+			}}
+		  }},
+		  Cryptid.notifications[key].cta and {n=G.UIT.R, config={id = 'overlay_menu_back_button', align = "cm", minw = 2.5, padding =0.1, r = 0.1, hover = true, colour = G.C.BLUE, button = "notif_"..key, shadow = true, focus_args = {nav = 'wide', button = 'b'}}, nodes={
+			{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
+			  {n=G.UIT.T, config={text = localize(Cryptid.notifications[key].cta.label), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip', focus_args = {button = 'b'}}}
+			}}
+		  }} or nil
+		}}
+	  }})
+	return t
+  end
+
+-- I couldn't figure out how to use localization for this, so this implementation is pretty scuffed
+Cryptid.notifications = {
+	jimball = {
+		nodes = function() return {n=G.UIT.R, config={align = "cm", colour = empty and G.C.CLEAR or G.C.UI.BACKGROUND_WHITE, r = 0.1, padding = 0.04, minw = 2, minh = 0.8, emboss = not empty and 0.05 or nil, filler = true}, nodes={
+			{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes={
+				{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+					{n=G.UIT.T, config={text = localize('cry_notif_jimball_d1'), scale = 0.5, colour = G.C.BLACK}},
+				}},
+				{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+					{n=G.UIT.T, config={text = localize('cry_notif_jimball_d2'), scale = 0.5, colour = G.C.BLACK}},
+				}},
+				{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+					{n=G.UIT.T, config={text = localize('cry_notif_jimball_d3'), scale = 0.5, colour = G.C.BLACK}},
+				}},
+			}}
+		}} end,
+		cta = {
+			label = "k_disable_music"
+		}
+	}
+}
 ----------------------------------------------
 ------------MOD CODE END----------------------

@@ -1250,7 +1250,7 @@ return {
                     "Earn {C:money}$#2#{} at end of round",
                     "Increase payout by",
                     "{C:money}$#1#{} for each {C:attention}Jolly Joker{}",
-                    "or {C:legendary}M Joker at",
+                    "or {C:legendary}M Joker{} at",
                     "end of round",
                 },
             },
@@ -2397,7 +2397,7 @@ return {
                 },
             },
             tag_cry_oversat = {
-                name = "Mosaic Tag",
+                name = "Oversaturated Tag",
                 text = {
                     "Next base edition shop",
                     "Joker is free and",
@@ -2891,7 +2891,7 @@ return {
                     "up to {C:attention}#2# Meme Jokers{}",
                 },
             },
-            p_cry_meme_tbree = {
+            p_cry_meme_three = {
                 name = "Meme Pack",
                 text = {
                     "Choose {C:attention}#1#{} of",
@@ -3068,8 +3068,16 @@ return {
             cry_active = "Active",
             cry_inactive = "Inactive",
 
+            k_disable_music = "Disable Music",
+
             cry_epic = "Epic",
-            cry_exotic = "Exotic"
+            cry_exotic = "Exotic",
+
+            cry_notif_jimball_1 = "Jimball",
+            cry_notif_jimball_2 = "Copyright Notice",
+            cry_notif_jimball_d1 = "Jimball plays the song \"Funkytown\",",
+            cry_notif_jimball_d2 = "which is copyrighted and can't be",
+            cry_notif_jimball_d3 = "used for streams and videos.",
         },
         labels = {
             food_jokers = "Food Jokers",

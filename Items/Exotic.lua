@@ -63,6 +63,7 @@ local iterum = {
 	config = { extra = { x_mult = 2, repetitions = 1 } },
 	pos = { x = 0, y = 1 },
 	rarity = "cry_exotic",
+	order = 500,
 	cost = 50,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
@@ -98,6 +99,7 @@ local universum = {
 	pos = { x = 3, y = 3 },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 501,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 3, extra = { x = 5, y = 3 } },
@@ -121,6 +123,7 @@ local exponentia = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
+	order = 503,
 	soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
 	calculate = function(self, card, context)
 		if
@@ -149,6 +152,7 @@ local speculo = {
 	cost = 50,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
+	order = 504,
 	soul_pos = { x = 4, y = 1, extra = { x = 5, y = 1 } },
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.negative) then
@@ -206,6 +210,7 @@ local redeo = {
 	immune_to_chemach = true,
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 506,
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	calculate = function(self, card, context)
@@ -234,6 +239,7 @@ local tenebris = {
 	config = { extra = { slots = 25, money = 25 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 507,
 	atlas = "atlasexotic",
 	calc_dollar_bonus = function(self, card)
 		return card.ability.extra.money
@@ -253,13 +259,15 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
+	immune_to_chemach = true,
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
+	order = 505,
 	atlas = "effarcire",
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
-		if not context.blueprint then
+		if not context.blueprint and not context.retrigger_joker then
 			if context.first_hand_drawn then
 				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
 				return nil, true
@@ -285,6 +293,7 @@ local crustulum = {
 	soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 508,
 	atlas = "atlasexotic",
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -337,6 +346,7 @@ local primus = {
 	pos = { x = 0, y = 4 },
 	rarity = "cry_exotic",
 	cost = 53,
+	order = 510,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
@@ -442,10 +452,11 @@ local scalae = {
 	key = "Scalae",
 	pos = { x = 3, y = 4 },
 	soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
-	immune_to_chemach = true,
+	immune_to_chemach = false,
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
+	order = 311,
 	config = { extra = { scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1 } },
 	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
@@ -514,6 +525,7 @@ local stella_mortis = {
 	pos = { x = 3, y = 5 },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 502,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
@@ -590,6 +602,7 @@ local circulus_pistoris = {
 	pos = { x = 0, y = 3 },
 	rarity = "cry_exotic",
 	cost = 10 * math.pi,
+	order = 509,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
@@ -626,12 +639,13 @@ local aequilibrium = {
 	object_type = "Joker",
 	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
 	key = "equilib",
-	config = { extra = { jokers = 2, num = 1, card = nil } },
+	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
 	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
 	atlas = "atlasexotic",
 	cost = 50,
+	order = 512,
 	blueprint_compat = true,
 	immune_to_chemach = true,
 	eternal_compat = true,
@@ -640,12 +654,12 @@ local aequilibrium = {
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
-		local joker_generated = "None"
-		if center and center.ability and center.ability.extra and center.ability.extra.num > 1 then
+		local joker_generated = "???"
+		if G.GAME.aequilibriumkey and G.GAME.aequilibriumkey > 1 then
 			joker_generated = localize({
 				type = "name_text",
 				set = "Joker",
-				key = G.P_CENTER_POOLS["Joker"][math.floor(center.ability.extra.num or 1) - 1].key,
+				key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
 			})
 		end
 		return { vars = { center.ability.extra.jokers, joker_generated } }
@@ -725,6 +739,11 @@ local aequilibrium = {
 			end
 		end
 	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			card.ability.extra.card:start_dissolve()
+		end
+	end,
 }
 local cc = copy_card
 function copy_card(card, a, b, c, d)
@@ -761,6 +780,7 @@ local facile = {
 	soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 513,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	loc_vars = function(self, info_queue, center)
@@ -810,6 +830,7 @@ local gemino = {
 	rarity = "cry_exotic",
 	blueprint_compat = true,
 	cost = 50,
+	order = 515,
 	atlas = "atlasexotic",
 	calculate = function(self, card2, context)
 		if context.end_of_round and not context.repetition and not context.individual then
@@ -844,6 +865,7 @@ local energia = {
 	soul_pos = { x = 8, y = 3, extra = { x = 7, y = 3 } },
 	blueprint_compat = false,
 	perishable_compat = false,
+	order = 514,
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -880,6 +902,7 @@ local verisimile = {
 	config = { extra = { xmult = 1 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 516,
 	blueprint_compat = true,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
@@ -889,7 +912,10 @@ local verisimile = {
 		if context.post_trigger and not context.blueprint then
 			--Todo: Gros Michel, Cavendish, Planet.lua
 			--Bus driver is ignored because it always triggers anyway
-			if context.other_joker.ability.name == "8 Ball" or context.other_joker.ability.name == "Space Joker" then
+			if context.other_joker.ability.name == "8 Ball" 
+			or context.other_joker.ability.name == "Space Joker"
+			or context.other_joker.ability.name == "Business Card"
+			or context.other_joker.ability.name == "Hallucination" then
 				local variable = context.other_joker
 				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
 				card_eval_status_text(
@@ -965,16 +991,17 @@ local duplicare = {
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
-    config = {extra = {Emult = 1.25, Emult_mod = 0.005}},
+    config = {extra = {Emult = 1.25}},
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     rarity = "cry_exotic",
     cost = 50,
+    order = 517,
     blueprint_compat = true,
     atlas = "placeholders",
     loc_vars = function(self, info_queue, center)
         return {
-            vars = {center.ability.extra.Emult, center.ability.extra.Emult_mod}
+            vars = {center.ability.extra.Emult}
         }
     end,
     calculate = function(self, card, context)
@@ -987,7 +1014,6 @@ local duplicare = {
                     end
                 })) 
             end
-            card.ability.extra.Emult = card.ability.extra.Emult + 0
             return {
                 message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
                 Emult_mod = card.ability.extra.Emult,
@@ -1011,6 +1037,7 @@ local rescribere = {
     perishable_compat = false,
     rarity = "cry_exotic",
     cost = 50,
+    order = 69420,
     atlas = "placeholders",
     calculate = function(self, card, context)
         local eligibleJokers = {}
@@ -1058,7 +1085,6 @@ local rescribere = {
 return {
 	name = "Exotic Jokers",
 	init = function()
-		cry_enable_exotics = true
 		--Universum Patches
 		local uht = update_hand_text
 		function update_hand_text(config, vals)
@@ -1184,7 +1210,6 @@ return {
 			end
 		end
 	end,
-	order = 3000000,
 	items = {
 		gateway_sprite,
 		gateway,

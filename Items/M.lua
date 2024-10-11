@@ -7,6 +7,7 @@ local jollysus = {
 	config = { extra = { spawn = true, active = localize("k_active_ex") } },
 	rarity = 1,
 	cost = 4,
+	order = 267,
 	blueprint_compat = true,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -70,6 +71,7 @@ local bubblem = {
 	name = "cry-bubblem",
 	key = "bubblem",
 	effect = "M Joker",
+	order = 251,
 	pos = { x = 0, y = 0 },
 	config = { extra = { spawn = false, type = "Three of a Kind" }, jolly = { t_mult = 8, type = "Pair" } },
 	rarity = 1,
@@ -142,6 +144,7 @@ local foodm = {
 	},
 	pos = { x = 4, y = 2 },
 	rarity = 1,
+	order = 252,
 	cost = 5,
 	atlas = "atlasone",
 	blueprint_compat = true,
@@ -237,6 +240,7 @@ local mstack = {
 	name = "cry-mstack",
 	key = "mstack",
 	effect = "M Joker",
+	order = 253,
 	config = { extra = { sell = 0, sell_req = 3, retriggers = 1, check = false }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 2, y = 3 },
 	atlas = "atlastwo",
@@ -305,6 +309,7 @@ local mneon = {
 	key = "mneon",
 	effect = "M Joker",
 	pos = { x = 4, y = 2 },
+	order = 254,
 	config = { extra = { bonus = 1, money = 0 }, jolly = { t_mult = 8, type = "Pair" } },
 	rarity = 2,
 	cost = 7,
@@ -347,6 +352,7 @@ local notebook = {
 	key = "notebook",
 	effect = "M Joker",
 	pos = { x = 1, y = 0 },
+	order = 255,
 	config = {
 		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "" },
 		jolly = { t_mult = 8, type = "Pair" },
@@ -427,6 +433,7 @@ local bonk = {
 	name = "cry-bonk",
 	key = "bonk",
 	effect = "M Joker",
+	order = 256,
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" }, jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)
@@ -508,6 +515,7 @@ local loopy = {
 	effect = "M Joker",
 	config = { extra = { retrigger = 0}, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 4, y = 1 },
+	order = 257,
 	atlas = "atlastwo",
 	immune_to_chemach = true,
 	rarity = 1,
@@ -575,6 +583,7 @@ local scrabble = {
 	effect = "M Joker",
 	config = { extra = { odds = 4 } },
 	pos = { x = 0, y = 2 },
+	order = 258,
 	immune_to_chemach = true,
 	rarity = 2,
 	cost = 8,
@@ -614,6 +623,7 @@ local sacrifice = {
 	effect = "M Joker",
 	config = { extra = { text = localize("k_active_ex"), spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 5, y = 2 },
+	order = 259,
 	immune_to_chemach = true,
 	rarity = 1,
 	cost = 4,
@@ -670,6 +680,7 @@ local reverse = {
 	config = { extra = { type = "Pair", spawn = 0 }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 0, y = 0 },
 	rarity = 2,
+	order = 260,
 	cost = 4,
 	eternal_compat = false,
 	atlas = "atlastwo",
@@ -744,6 +755,7 @@ local doodlem = {
 	immune_to_chemach = true,
 	rarity = "cry_epic",
 	cost = 13,
+	order = 266,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
@@ -795,6 +807,7 @@ local virgo = {
 	config = { extra = { bonus = 4, type = "Pair" }, jolly = { t_mult = 8, type = "Pair" } },
 	rarity = "cry_epic",
 	cost = 8,
+	order = 265,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
@@ -859,6 +872,7 @@ local smallestm = {
 	pos = { x = 5, y = 0 },
 	rarity = "cry_epic",
 	cost = 8,
+	order = 264,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
@@ -893,6 +907,7 @@ local biggestm = {
 	rarity = "cry_epic",
 	effect = "M Joker",
 	cost = 12,
+	order = 268,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
@@ -956,6 +971,7 @@ local mprime = {
 	end,
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 1000000,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	perishable_compat = false,
@@ -1036,6 +1052,7 @@ local macabre = {
 	name = "cry-Macabre Joker",
 	key = "macabre",
 	effect = "M Joker",
+	order = 263,
 	pos = { x = 1, y = 2 },
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)
@@ -1095,7 +1112,10 @@ local megg = {
 	name = "cry-megg",
 	key = "Megg",
 	effect = "M Joker",
+	blueprint_compat = false,
+	eternal_compat = false,
 	pos = { x = 0, y = 4 },
+	order = 262,
 	config = { extra = { amount = 0, amount_mod = 1 }, jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
@@ -1148,6 +1168,7 @@ local longboi = {
 	config = { extra = { mult = nil, bonus = 0.75 } },
 	rarity = 1,
 	cost = 5,
+	order = 261,
 	effect = "M Joker",
 	blueprint_compat = true,
 	eternal_compat = false,
@@ -1275,6 +1296,5 @@ return {
 			Cryptid.M_jokers.j_cry_mprime = nil
 		end
 	end,
-	order = 1000000,
 	items = ret_items,
 }
