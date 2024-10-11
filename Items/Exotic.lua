@@ -63,6 +63,7 @@ local iterum = {
 	config = { extra = { x_mult = 2, repetitions = 1 } },
 	pos = { x = 0, y = 1 },
 	rarity = "cry_exotic",
+	order = 500,
 	cost = 50,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
@@ -98,6 +99,7 @@ local universum = {
 	pos = { x = 3, y = 3 },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 501,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 3, extra = { x = 5, y = 3 } },
@@ -121,6 +123,7 @@ local exponentia = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
+	order = 503,
 	soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
 	calculate = function(self, card, context)
 		if
@@ -149,6 +152,7 @@ local speculo = {
 	cost = 50,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
+	order = 504,
 	soul_pos = { x = 4, y = 1, extra = { x = 5, y = 1 } },
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.negative) then
@@ -206,6 +210,7 @@ local redeo = {
 	immune_to_chemach = true,
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 506,
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	calculate = function(self, card, context)
@@ -234,6 +239,7 @@ local tenebris = {
 	config = { extra = { slots = 25, money = 25 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 507,
 	atlas = "atlasexotic",
 	calc_dollar_bonus = function(self, card)
 		return card.ability.extra.money
@@ -257,6 +263,7 @@ local effarcire = {
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
+	order = 505,
 	atlas = "effarcire",
 	rarity = "cry_exotic",
 	calculate = function(self, card, context)
@@ -286,6 +293,7 @@ local crustulum = {
 	soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 508,
 	atlas = "atlasexotic",
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -338,6 +346,7 @@ local primus = {
 	pos = { x = 0, y = 4 },
 	rarity = "cry_exotic",
 	cost = 53,
+	order = 510,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
@@ -447,6 +456,7 @@ local scalae = {
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
+	order = 311,
 	config = { extra = { scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1 } },
 	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
@@ -515,6 +525,7 @@ local stella_mortis = {
 	pos = { x = 3, y = 5 },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 502,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasexotic",
@@ -591,6 +602,7 @@ local circulus_pistoris = {
 	pos = { x = 0, y = 3 },
 	rarity = "cry_exotic",
 	cost = 10 * math.pi,
+	order = 509,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
@@ -633,6 +645,7 @@ local aequilibrium = {
 	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
 	atlas = "atlasexotic",
 	cost = 50,
+	order = 512,
 	blueprint_compat = true,
 	immune_to_chemach = true,
 	eternal_compat = true,
@@ -767,6 +780,7 @@ local facile = {
 	soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 513,
 	blueprint_compat = true,
 	atlas = "atlasexotic",
 	loc_vars = function(self, info_queue, center)
@@ -816,6 +830,7 @@ local gemino = {
 	rarity = "cry_exotic",
 	blueprint_compat = true,
 	cost = 50,
+	order = 515,
 	atlas = "atlasexotic",
 	calculate = function(self, card2, context)
 		if context.end_of_round and not context.repetition and not context.individual then
@@ -850,6 +865,7 @@ local energia = {
 	soul_pos = { x = 8, y = 3, extra = { x = 7, y = 3 } },
 	blueprint_compat = false,
 	perishable_compat = false,
+	order = 514,
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -886,6 +902,7 @@ local verisimile = {
 	config = { extra = { xmult = 1 } },
 	rarity = "cry_exotic",
 	cost = 50,
+	order = 516,
 	blueprint_compat = true,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
@@ -979,6 +996,7 @@ local duplicare = {
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     rarity = "cry_exotic",
     cost = 50,
+    order = 517,
     blueprint_compat = true,
     atlas = "placeholders",
     loc_vars = function(self, info_queue, center)
@@ -1019,6 +1037,7 @@ local rescribere = {
     perishable_compat = false,
     rarity = "cry_exotic",
     cost = 50,
+    order = 69420,
     atlas = "placeholders",
     calculate = function(self, card, context)
         local eligibleJokers = {}
@@ -1191,7 +1210,6 @@ return {
 			end
 		end
 	end,
-	order = 3000000,
 	items = {
 		gateway_sprite,
 		gateway,

@@ -6,6 +6,7 @@ local supercell = {
 	pos = { x = 5, y = 1 },
 	rarity = "cry_epic",
 	cost = 14,
+	order = 64,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
@@ -43,6 +44,7 @@ local membershipcardtwo = {
 	pos = { x = 5, y = 4 },
 	rarity = "cry_epic",
 	cost = 17,
+	order = 50,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, card)
@@ -75,6 +77,7 @@ local googol_play = {
 	immune_to_chemach = true,
 	rarity = "cry_epic",
 	cost = 10,
+	order = 14,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
@@ -108,6 +111,7 @@ local sync_catalyst = {
 	pos = { x = 5, y = 2 },
 	rarity = "cry_epic",
 	cost = 12,
+	order = 54,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -141,6 +145,7 @@ local negative = {
 	config = { extra = 4 },
 	rarity = "cry_epic",
 	cost = 10,
+	order = 70,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -157,6 +162,7 @@ local canvas = {
 	name = "cry-Canvas",
 	key = "canvas",
 	immune_to_chemach = true,
+	order = 4,
 	pos = { x = 2, y = 1 },
 	config = { num_retriggers = 0 },
 	rarity = "cry_epic",
@@ -193,6 +199,7 @@ local error_joker = {
 	immune_to_chemach = true,
 	rarity = "cry_epic",
 	cost = 1,
+	order = 72,
 	blueprint_compat = false,
 	eternal_compat = false,
 	atlas = "atlasepic",
@@ -265,11 +272,13 @@ local error_joker = {
 }
 local m = {
 	object_type = "Joker",
+	discovered = true,
 	name = "cry-m",
 	key = "m",
 	pos = { x = 3, y = 1 },
 	config = { extra = { extra = 13, x_mult = 1 }, jolly = { t_mult = 8, type = "Pair" } },
 	rarity = "cry_epic",
+	order = 1,
 	cost = 13,
 	effect = "M Joker",
 	perishable_compat = false,
@@ -340,6 +349,7 @@ local M = {
 	name = "cry-M",
 	key = "M",
 	pos = { x = 0, y = 0 },
+	order = 250,
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	rarity = "cry_epic",
 	effect = "M Joker",
@@ -393,6 +403,7 @@ local boredom = {
 	config = { extra = { odds = 2 } },
 	immune_to_chemach = true,
 	rarity = "cry_epic",
+	order = 32,
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -432,6 +443,7 @@ local number_blocks = {
 	pos = { x = 0, y = 2 },
 	rarity = "cry_epic",
 	cost = 14,
+	order = 12,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -476,6 +488,7 @@ local double_scale = {
 	name = "cry-Double Scale",
 	key = "Double Scale",
 	pos = { x = 0, y = 3 },
+	order = 6,
 	rarity = "cry_epic",
 	cost = 18,
 	atlas = "atlasepic",
@@ -489,6 +502,7 @@ local oldcandy = {
 	name = "cry_oldcandy",
 	key = "oldcandy",
 	pos = { x = 4, y = 1 },
+	order = 43,
 	config = { extra = { hand_size = 3 } },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.max(1, math.floor(center.ability.extra.hand_size)) } }
@@ -511,6 +525,7 @@ local circus = {
 	pos = { x = 4, y = 4 },
 	config = { extra = { Xmult = 1 } },
 	atlas = "atlasepic",
+	order = 33,
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -606,6 +621,7 @@ local caramel = {
 	pos = { x = 0, y = 1 },
 	rarity = "cry_epic",
 	cost = 12,
+	order = 106,
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasepic",
@@ -673,6 +689,7 @@ local curse = {
 	pos = { x = 1, y = 1 },
 	rarity = "cry_epic",
 	cost = 9,
+	order = 82,
 	perishable_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -920,6 +937,7 @@ local bonusjoker = {
 	immune_to_chemach = true,
 	rarity = "cry_epic",
 	cost = 11,
+	order = 75,
 	blueprint_compat = true,
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, center)
@@ -979,6 +997,7 @@ local multjoker = {
 	config = { extra = { odds = 3 } },
 	immune_to_chemach = true,
 	rarity = "cry_epic",
+	order = 99,
 	cost = 11,
 	blueprint_compat = true,
 	enhancement_gate = "m_mult",
@@ -1028,6 +1047,7 @@ local goldjoker = {
 	pos = { x = 0, y = 4 },
 	rarity = "cry_epic",
 	cost = 14,
+	order = 81,
 	enhancement_gate = "m_gold",
 	perishable_compat = false,
 	atlas = "atlasepic",
@@ -1072,6 +1092,7 @@ local altgoogol = {
 	immune_to_chemach = true,
 	rarity = "cry_epic",
 	cost = 10,
+	order = 60,
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasepic",
@@ -1116,6 +1137,7 @@ local soccer = {
 	config = { extra = { holygrail = 1 } },
 	immune_to_chemach = true,
 	rarity = "cry_epic",
+	order = 58,
 	cost = 20,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
@@ -1237,8 +1259,6 @@ return {
 				check_rate = check_rate + v.val
 			end
 		end
-
-		cry_enable_epics = true
 		--Number Blocks Patches
 		local gigo = Game.init_game_object
 		function Game:init_game_object()
@@ -1311,7 +1331,6 @@ return {
 			loc_txt = {},
 		}, true)
 	end,
-	order = 2000000,
 	items = {
 		supercell,
 		membershipcardtwo,
