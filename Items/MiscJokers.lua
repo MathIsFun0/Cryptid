@@ -879,8 +879,19 @@ local jimball = {
 			end
 		end
 	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			create_cryptid_notif_overlay("jimball")
+		end
+	end,
 	atlas = "jimball",
 }
+G.FUNCS.notif_jimball = function()
+	Cryptid_config.Cryptid.jimball_music = false
+	G:save_settings()
+	G.FUNCS:exit_overlay_menu()
+	-- todo: autosave settings (Not sure if this autosaves it)
+end
 local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 	object_type = "Atlas",
 	key = "jimball",

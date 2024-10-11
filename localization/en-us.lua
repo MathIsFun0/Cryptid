@@ -3068,8 +3068,16 @@ return {
             cry_active = "Active",
             cry_inactive = "Inactive",
 
+            k_disable_music = "Disable Music",
+
             cry_epic = "Epic",
-            cry_exotic = "Exotic"
+            cry_exotic = "Exotic",
+
+            cry_notif_jimball_1 = "Jimball",
+            cry_notif_jimball_2 = "Copyright Notice",
+            cry_notif_jimball_d1 = "Jimball plays the song \"Funkytown\",",
+            cry_notif_jimball_d2 = "which is copyrighted and can't be",
+            cry_notif_jimball_d3 = "used for streams and videos.",
         },
         labels = {
             food_jokers = "Food Jokers",
