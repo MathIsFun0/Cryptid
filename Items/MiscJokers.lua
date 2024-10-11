@@ -1981,7 +1981,7 @@ local happy = {
 	key = "happy",
 	pos = { x = 2, y = 1 },
 	rarity = 1,
-	cost = 2,
+	cost = 5,
 	order = 63,
 	blueprint_compat = true,
 	eternal_compat = false,
