@@ -491,7 +491,7 @@ return {
                 text = {
                     "All values on this card",
                     "are {C:dark_edition}randomized{}",
-                    "between {C:attention}X0.1{} and {C:attention}X10{}",
+                    "between {C:attention}X0.1{} and {C:attention}X3{}",
                     "{C:inactive}(If possible){}",
                 },
             },
