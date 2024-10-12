@@ -129,17 +129,6 @@ local happyhouse = {
 		end
 	end,
 }
---Move this to epic later
-local maximized = {
-	object_type = "Joker",
-	name = "cry-Maximized",
-	key = "maximized",
-	pos = { x = 5, y = 2 },
-	rarity = 3,
-	order = 13,
-	cost = 11,
-	atlas = "atlastwo",
-}
 local potofjokes = {
 	object_type = "Joker",
 	name = "cry-Pot of Jokes",
