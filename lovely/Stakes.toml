@@ -445,6 +445,7 @@ payload = '''if G.GAME.modifiers.cry_card_each_round then
             end
             G.play:emplace(card)
             table.insert(G.playing_cards, card)
+            playing_card_joker_effects({true})
             return true
         end}))
     G.E_MANAGER:add_event(Event({
