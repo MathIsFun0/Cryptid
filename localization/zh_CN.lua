@@ -10,7 +10,7 @@ return {
             b_cry_antimatter = {
                 name = "反物质牌组",
                 text = {
-                    "应用{C:legendary,E:1}所有牌组的{}增益效果"
+                    "拥有{C:legendary,E:1}所有牌组的{}增益效果"
                 }
             },
             b_cry_beta = {
@@ -79,7 +79,7 @@ return {
             ["b_cry_cry-bonus_deck"] = {
                 name = "教皇牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_bonus}奖励牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -90,8 +90,7 @@ return {
                 text = {
                     "所有的牌都是{C:dark_edition}黑桃{}",
                     "不能改变花色",
-                    "",
-                    "{C:attention}The Club{}不会出现"
+                    "boss不会出现{C:attention}梅花{}"
                 }
             },
             ["b_cry_cry-eternal_deck"] = {
@@ -112,7 +111,7 @@ return {
             ["b_cry_cry-glass_deck"] = {
                 name = "正义牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_glass}玻璃牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -123,14 +122,13 @@ return {
                 text = {
                     "所有的牌都是{C:dark_edition}黑桃{}",
                     "不能改变花色",
-                    "",
-                    "{C:attention}挑衅{}不会出现"
+                    "boss不会出现{C:attention}挑衅{}"
                 }
             },
             ["b_cry_cry-gold_deck"] = {
                 name = "恶魔牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_gold}黄金牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -156,7 +154,7 @@ return {
             ["b_cry_cry-lucky_deck"] = {
                 name = "魔术师牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_lucky}幸运牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -165,7 +163,7 @@ return {
             ["b_cry_cry-mult_deck"] = {
                 name = "皇后牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_mult}倍率牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -182,14 +180,14 @@ return {
             ["b_cry_cry-perishable_deck"] = {
                 name = "易腐牌组",
                 text = {
-                    "所有的牌都是{C:attention}易腐{}",
+                    "所有的牌都带有{C:attention}易腐{}贴纸",
                     "{s:0.8,C:inactive}"
                 }
             },
             ["b_cry_cry-pinned_deck"] = {
                 name = "固定牌组",
                 text = {
-                    "所有的牌都是{C:attention}固定卡{}",
+                    "所有的牌都带有{C:attention}固定{}贴纸",
                     "{s:0.8,C:inactive}"
                 }
             },
@@ -204,14 +202,14 @@ return {
             ["b_cry_cry-rental_deck"] = {
                 name = "租赁牌组",
                 text = {
-                    "所有的牌都是{C:attention}租用{}",
+                    "所有的牌都带有{C:attention}租用{}贴纸",
                     "{s:0.8,C:inactive}"
                 }
             },
             ["b_cry_cry-steel_deck"] = {
                 name = "战车牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_steel}钢铁牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -220,7 +218,7 @@ return {
             ["b_cry_cry-stone_deck"] = {
                 name = "石头牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_stone}石头牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -229,7 +227,7 @@ return {
             ["b_cry_cry-wild_deck"] = {
                 name = "爱人牌组",
                 text = {
-                    "所有的 {C:attention}打出的牌{}",
+                    "所有的 {C:attention}手牌{}",
                     "都是 {C:attention,T:m_wild}万能牌{}",
                     "不能更改增强类型",
                     "{s:0.8,C:inactive}"
@@ -240,8 +238,7 @@ return {
                 text = {
                     "所有的牌都是{C:dark_edition}方块{}",
                     "不能改变花色",
-                    "",
-                    "{C:attention}The Window{}不会出现"
+                    "boss不会出现{C:attention}窗{}"
                 }
             },
             b_cry_cryastral_deck = {
@@ -263,7 +260,7 @@ return {
             b_cry_crybanana_deck = {
                 name = "香蕉牌组",
                 text = {
-                    "所有的牌带有{C:attention}香蕉贴纸{}",
+                    "所有的牌都带有{C:attention}香蕉{}贴纸",
                     "{s:0.8,C:inactive}"
                 }
             },
@@ -372,7 +369,7 @@ return {
             b_cry_misprint = {
                 name = "错版牌组",
                 text = {
-                    "卡牌价格手牌的数值",
+                    "卡牌价格，手牌的数值",
                     "都是{C:attention}随机{}数值"
                 }
             },
