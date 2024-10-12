@@ -1165,9 +1165,45 @@ local soccer = {
 		change_shop_size(card.ability.extra.holygrail * -1)
 	end,
 }
+local maximized = {
+	object_type = "Joker",
+	name = "cry-Maximized",
+	key = "maximized",
+	pos = { x = 5, y = 2 },
+	rarity = 3,
+	order = 13,
+	cost = 11,
+	atlas = "atlastwo",
+}
 return {
 	name = "Epic Jokers",
 	init = function()
+		--Maximized Patches
+		local cgi_ref = Card.get_id
+		override_maximized = false
+		function Card:get_id()
+			local id = cgi_ref(self)
+			if id == nil then
+				id = 10
+			end
+			if next(find_joker("cry-Maximized")) and not override_maximized then
+				if id >= 2 and id <= 10 then
+					id = 10
+				end
+				if id >= 11 and id <= 13 or next(find_joker("Pareidolia")) then
+					id = 13
+				end
+			end
+			return id
+		end
+		--Fix issues with View Deck and Maximized
+		local gui_vd = G.UIDEF.view_deck
+		function G.UIDEF.view_deck(unplayed_only)
+			override_maximized = true
+			local ret_value = gui_vd(unplayed_only)
+			override_maximized = false
+			return ret_value
+		end
 		--Error Patches
 		cry_error_operators = { "+", "-", "X", "/", "^", "=", ">", "<", "m" }
 		cry_error_numbers = {
@@ -1353,5 +1389,6 @@ return {
 		goldjoker,
 		altgoogol,
 		soccer,
+		maximized,
 	},
 }

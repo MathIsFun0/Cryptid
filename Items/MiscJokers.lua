@@ -4788,7 +4788,6 @@ local miscitems =  {
 	jimball_sprite,
 	dropshot,
 	happyhouse,
-	maximized,
 	potofjokes,
 	queensgambit,
 	wee_fib,
@@ -4909,39 +4908,12 @@ return {
 			end
 		end
 
-		--Maximized Patches
-		local cgi_ref = Card.get_id
-		override_maximized = false
-		function Card:get_id()
-			local id = cgi_ref(self)
-			if id == nil then
-				id = 10
-			end
-			if next(find_joker("cry-Maximized")) and not override_maximized then
-				if id >= 2 and id <= 10 then
-					id = 10
-				end
-				if id >= 11 and id <= 13 or next(find_joker("Pareidolia")) then
-					id = 13
-				end
-			end
-			return id
-		end
-		--Fix issues with View Deck and Maximized
-		local gui_vd = G.UIDEF.view_deck
-		function G.UIDEF.view_deck(unplayed_only)
-			override_maximized = true
-			local ret_value = gui_vd(unplayed_only)
-			override_maximized = false
-			return ret_value
-		end
-
 		--Cube Patches
 		local sc = Card.set_cost
 		function Card:set_cost()
 			sc(self)
 			if self.ability.name == "cry-Cube" then
-				self.cost = -27
+				self.cost = -15
 			end
 			if self.ability.name == "cry-Big Cube" then
 				self.cost = 27
