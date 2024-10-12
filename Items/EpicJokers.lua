@@ -1170,7 +1170,7 @@ local maximized = {
 	name = "cry-Maximized",
 	key = "maximized",
 	pos = { x = 5, y = 2 },
-	rarity = 3,
+	rarity = "cry_epic",
 	order = 13,
 	cost = 11,
 	atlas = "atlastwo",
