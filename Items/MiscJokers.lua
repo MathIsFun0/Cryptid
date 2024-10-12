@@ -4106,12 +4106,12 @@ local coin = {
 	cost = 5,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.money, center.ability.extra.money * 10 } }
+		return { vars = { center.ability.extra.money, center.ability.extra.money * 5 } }
 	end,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == "Joker" then
-			local option = pseudorandom(pseudoseed("coin"), card.ability.extra.money, card.ability.extra.money * 10)
+			local option = pseudorandom(pseudoseed("coin"), card.ability.extra.money, card.ability.extra.money * 5)
 			ease_dollars(option)
 			card_eval_status_text(
 				context.blueprint_card or card,
@@ -4411,7 +4411,7 @@ local morse = {
 	name = "cry-morse",
 	key = "morse",
 	pos = { x = 5, y = 1 },
-	config = { extra = { bonus = 2, money = 1 } },
+	config = { extra = { bonus = 1, money = 1 } },
 	rarity = 1,
 	cost = 5,
 	order = 57,
