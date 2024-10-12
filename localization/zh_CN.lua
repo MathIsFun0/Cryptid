@@ -4,7 +4,8 @@ return {
             b_cry_CCD = {
                 name = "CCD牌组",
                 text = {
-                    "每张牌也是一个{C:attention}随机{}消耗牌"
+                    "每张牌也是一个{C:attention}随机{}消耗牌",
+                    "{C:inactive,s:0.8}{C:attention,s:0.8}(Consume Card Deck){C:inactive,s:0.8}"
                 }
             },
             b_cry_antimatter = {
@@ -238,7 +239,7 @@ return {
                 text = {
                     "所有的牌都是{C:dark_edition}方块{}",
                     "不能改变花色",
-                    "boss不会出现{C:attention}窗{}"
+                    "boss不会出现{C:attention}窗口{}"
                 }
             },
             b_cry_cryastral_deck = {
@@ -586,7 +587,7 @@ return {
                 name = "://提交",
                 text = {
                     "摧毁一张 {C:cry_code}选中的{} 小丑牌,",
-                    "创建一张 {C:cry_code}新的相同 {C:cry_code}稀有度的{} 小丑牌"
+                    "创造一张 {C:cry_code}新的相同 {C:cry_code}稀有度的{} 小丑牌"
                 }
             },
             c_cry_crash = {
@@ -695,9 +696,9 @@ return {
                 name = "://重制",
                 text = {
                     "摧毁一张 {C:cry_code}选中的{} 小丑牌,",
-                    "创建一张 {C:cry_code}重制标记{}，并",
+                    "创造一份此小丑 {C:cry_code}重制标签{}，并",
                     "获得一个 {C:cry_code}升级的{} 版本",
-                    "{C:inactive,s:0.8}通过收藏中的顺序升级",
+                    "{C:inactive,s:0.8}版本通过收藏中的顺序升级",
                     "基础，闪箔，镭射，多彩，负片，故障，马赛克，过曝，",
                     "灰质琉璃，鎏金，模糊，噪声，星界，欢愉，双面，基础"
                 }
@@ -830,7 +831,7 @@ return {
                 name = "代码小丑",
                 text = {
                     "当选择{C:attention}盲注{}时",
-                    "创建一个随机{C:dark_edition}负片{}{C:cry_code}代码牌{}"
+                    "创造一个随机{C:dark_edition}负片{}{C:cry_code}代码牌{}"
                 }
             },
             ["j_cry_Double Scale"] = {
@@ -846,32 +847,33 @@ return {
                 name = "M",
                 text = {
                     "当选择{C:attention}盲注{}时",
-                    "创建一个{C:dark_edition}负片{}",
+                    "创造一张{C:dark_edition}负片{}",
                     "{C:attention}欢乐小丑{}"
                 }
             },
             j_cry_Megg = {
-                name = "乐乐蛋",
+                name = "M蛋",
                 text = {
-                    "出售这张牌来创造",
-                    "{C:attention}#2#{} 欢愉~ #3#小丑，增加",
+                    "出售这张小丑来创造",
+                    "{C:attention}#2#{} 开心小丑",
                     "在回合结束时增加 {C:attention}#1#{}"
                 }
             },
             j_cry_Scalae = {
-                name = "斯卡拉",
+                name = "刻度",
                 text = {
-                    "缩放的{C:attention}小丑{}缩放",
-                    "为度数为{C:attention}#1#{}的多项式",
-                    "在回合结束时提升度数{C:attention}#2#{}",
-                    "{C:inactive,s:0.8}({C:attention,s:0.8}斯卡拉{C:inactive,s:0.8}除外)"
+                    "成长性{C:attention}小丑{}成长速度",
+                    "为{C:attention}#1#{}次幂级",
+                    "在回合结束时使幂级成长提升{C:attention}#2#{}",
+                    "{C:inactive,s:0.8}({C:attention,s:0.8}平方成长、立方成长、四次方、五次方以此类推{C:inactive,s:0.8})",
+                    "{C:inactive,s:0.8}({C:attention,s:0.8}刻度{C:inactive,s:0.8}除外)"
                 }
             },
             j_cry_altgoogol = {
                 name = "怀旧 Googol 游戏牌",
                 text = {
-                    "出售此牌以创建",
-                    "{C:attention}2{} 张最左侧小丑的复制品",
+                    "出售此牌以复制",
+                    "{C:attention}2{} 张最左侧的小丑",
                     "{C:inactive,s:0.8}不会复制怀旧 Googol 游戏牌{}"
                 }
             },
@@ -952,7 +954,7 @@ return {
                 }
             },
             j_cry_bubblem = {
-                name = "泡泡M",
+                name = "泡泡 M",
                 text = {
                     "如果手中包含{C:attention}#1#{}",
                     "生成一个{C:dark_edition}闪箔{C:attention}欢乐小丑{}",
@@ -1044,7 +1046,7 @@ return {
                 }
             },
             j_cry_cryptidmoment = {
-                name = " M接龙",
+                name = " M 接龙",
                 text = {
                     "",
                     "卖掉这张卡时，每张{C:attention}小丑牌{}的售价增加 {C:money}$#1#{}"
@@ -1100,8 +1102,8 @@ return {
                 name = "涂鸦 M",
                 text = {
                     "当{C:attention}选择盲注{}时",
-                    "创建2个随机{C:dark_edition}负片{} {C:attention}消耗牌{}",
-                    "每有1个{C:attention}欢乐小丑{}创建1个额外的{C:attention}消耗牌"
+                    "创造2个随机{C:dark_edition}负片{} {C:attention}消耗牌{}",
+                    "每有1个{C:attention}欢乐小丑{}创造1个额外的{C:attention}消耗牌"
                 }
             },
             j_cry_dropshot = {
@@ -1243,19 +1245,19 @@ return {
                 }
             },
             j_cry_gardenfork = {
-                name = "《小径分岔的花园》",
+                name = "7-1 小径分岔的花园",
                 text = {
                     "打出的{C:attention} A{} 和{C:attention} 7{}",
-                    "会在被计分时+{C:money}$#1#{} 块钱"
+                    "会在被计分时+{C:money}$#1#{} 块钱",
+                    "（一本书名，同时也捏他ultrakill关卡名）"
                 }
             },
             j_cry_gemino = {
                 name = "双子",
                 text = {
                     "在回合结束时",
-                    "最左侧的{C:attention}小丑",
+                    "最左侧的{C:attention}小丑{}",
                     "所有数值{C:attention}翻倍{}",
-                    "",
                     ""
                 }
             },
@@ -1284,9 +1286,9 @@ return {
             j_cry_happy = {
                 name = ":D",
                 text = {
-                    "在回合结束时创造一个随机的{C:attention}小丑{}",
+                    "在回合结束时创造一张随机的{C:attention}小丑{}",
                     "卖掉这张卡以",
-                    "创造一个随机的{C:attention}小丑{}",
+                    "创造一张随机的{C:attention}小丑{}",
                     "{C:inactive}(必须有空间){}"
                 }
             },
@@ -1302,8 +1304,8 @@ return {
             j_cry_home = {
                 name = "家园",
                 text = {
-                    "{X:mult,C:white} X#1# {} 倍率如果出牌",
-                    "手牌包含",
+                    "{X:mult,C:white} X#1# {} 倍率",
+                    "如果打出的手牌包含",
                     "一个{C:attention}#2#"
                 }
             },
@@ -1324,17 +1326,17 @@ return {
             j_cry_jimball = {
                 name = "小丑球",
                 text = {
-                    "你{C:attention}连续{}打出",
+                    "{C:attention}连续{}打出",
                     "{C:attention}使用次数最多的牌型{}时",
                     "获得 {X:mult,C:white} X#1# {} 倍率",
                     "{C:inactive}(当前{X:mult,C:white} X#2# {C:inactive}倍率)"
                 }
             },
             j_cry_jollysus = {
-                name = "开心小丑。。吗？",
+                name = "开心小丑…吗？",
                 text = {
                     "当一个小丑被{C:attention}出售{}时",
-                    "创建一个{C:dark_edition}开心{}小丑",
+                    "创造一个{C:dark_edition}开心{}小丑",
                     "{C:red}每回合只生效一次{}",
                     "{C:inactive}#1#{}"
                 }
@@ -1360,7 +1362,7 @@ return {
                     "当出的每张牌都计分时",
                     "这张牌增加{X:mult,C:white} X#1# {}倍率",
                     "{C:inactive}(当前{X:mult,C:white} X#2# {C:inactive}倍率)",
-                    "捏他辛普森一家"
+                    "（捏他辛普森一家）"
                 }
             },
             j_cry_kscope = {
@@ -1422,7 +1424,7 @@ return {
                 name = "毛骨悚然",
                 text = {
                     "当选择{C:attention}盲注{}时，除了{C:attention}开心小丑{}和{C:legendary}M系小丑{}",
-                    "其余小丑全部摧毁，与此同时每摧毁一张就获得一张{C:attention}开心小丑{}"
+                    "其余小丑全部摧毁，每摧毁一张小丑就获得一张{C:attention}开心小丑{}"
                 }
             },
             j_cry_magnet = {
@@ -1530,7 +1532,7 @@ return {
                 }
             },
             j_cry_mstack = {
-                name = "堆叠M",
+                name = "堆叠 M",
                 text = {
                     "每出售{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}欢乐小丑{}",
                     "重新触发所有已打出的牌",
@@ -1542,7 +1544,7 @@ return {
                 text = {
                     "每张计分的倍率牌有",
                     "{C:green}#1# / #2#{} 概率",
-                    "创建一张{C:spectral}神秘生物{}牌",
+                    "创造一张{C:spectral}神秘生物{}牌",
                     "（必须有空间）"
                 }
             },
@@ -1640,7 +1642,7 @@ return {
             j_cry_pickle = {
                 name = "腌黄瓜",
                 text = {
-                    "当跳过 {C:attention}盲注{} 时，创建{C:attention}#1#{} 个标签",
+                    "当跳过 {C:attention}盲注{} 时，创造{C:attention}#1#{} 个标签",
                     "当选择 {C:attention}盲注{} 时，则减少{C:red}#2#{} "
                 }
             },
@@ -1657,7 +1659,7 @@ return {
             j_cry_pot_of_jokes = {
                 name = "贪欲之壶",
                 text = {
-                    "减少{C:attention}#1#{}手牌数,",
+                    "{C:attention}#1#{}手牌上限,",
                     "每回合增加{C:blue}#2#{} "
                 }
             },
@@ -1794,7 +1796,7 @@ return {
                 text = {
                     "如果 {C:attention}扑克手牌{}",
                     "是一个 {C:attention}#1#{}",
-                    "创建两个 a {C:cry_jolly}M 标签",
+                    "创造两个 a {C:cry_jolly}M 标签",
                     "{C:inactive,s:0.8}好吧，基本上我很小"
                 }
             },
@@ -1803,7 +1805,7 @@ return {
                 text = {
                     "{C:attention}+#1#{} 小丑牌槽位",
                     "{C:attention}+#1#{} 补充包槽位",
-                    "{C:attention}+#1#{} 手牌大小",
+                    "{C:attention}+#1#{} 手牌上限",
                     "{C:attention}+#1#{} 消耗牌槽位",
                     "{C:attention}+#1#{} 商店栏位"
                 }
@@ -1859,9 +1861,8 @@ return {
             j_cry_sus = {
                 name = "sus小丑",
                 text = {
-                    "在回合结束时，创建",
-                    "手中持有牌的{C:attention}随机副本{}，",
-                    "销毁其他所有",
+                    "在回合结束时，{C:attention}随机复制{}一张手牌",
+                    "摧毁其他所有手牌",
                     "{C:hearts,s:0.8}优先选择红桃K{}"
                 }
             },
@@ -2065,8 +2066,8 @@ return {
             cry_green_seal = {
                 name = "秩绿火漆",
                 text = {
-                    "使用时创建一个 {C:cry_code}代码{} 卡片",
-                    "当被打出且不计分时",
+                    "仅当被打出且不计分时",
+                    "创造一张 {C:cry_code}代码{} 卡牌",
                     "{C:inactive}(必须有空间)"
                 }
             },
@@ -2357,7 +2358,7 @@ return {
                 name = "赎回牌组",
                 text = {
                     "当购买{C:attention}优惠券{} 时，",
-                    "会获得其 {C:attention}高级{} 版"
+                    "会获得对应 {C:attention}高级{} 版"
                 }
             },
             sleeve_cry_wormhole_sleeve = {
@@ -2630,7 +2631,7 @@ return {
             },
             stake_cry_ruby = {
                 colour = "Ruby",
-                name = "红宝石注",
+                name = "红玉注",
                 text = {
                     "{C:attention}大{} 盲注有可能变为",
                     "{C:attention}Boss{} 盲注",
@@ -2639,7 +2640,7 @@ return {
             },
             stake_cry_sapphire = {
                 colour = "Sapphire",
-                name = "蓝宝石注",
+                name = "蓝晶注",
                 text = {
                     "在 底注 结束时，失去当前总资金的 {C:attention}25%{} ",
                     "{s:0.8,C:inactive}(最高失去至 $10)",
@@ -2684,7 +2685,7 @@ return {
             tag_cry_banana = {
                 name = "香蕉标签",
                 text = {
-                    "创建{C:attention}#1#",
+                    "创造{C:attention}#1#",
                     "{C:inactive}(必须有空间){}"
                 }
             },
@@ -2697,7 +2698,7 @@ return {
             tag_cry_bettertop_up = {
                 name = "进阶充值标签",
                 text = {
-                    "创建 {C:attention}#1#个{C:green}罕见{}小丑",
+                    "创造 {C:attention}#1#张{C:green}罕见{}小丑",
                     "{C:inactive}（必须有空间）{}"
                 }
             },
@@ -2719,7 +2720,7 @@ return {
             tag_cry_bundle = {
                 name = "组合标签",
                 text = {
-                    "创建一个 {C:attention}标准标签{}，{C:tarot}吊饰标签{}，",
+                    "创造一个 {C:attention}标准标签{}，{C:tarot}吊饰标签{}，",
                     "{C:attention}小丑标签{}，和 {C:planet}流星标签"
                 }
             },
@@ -2761,7 +2762,7 @@ return {
                 name = "赌徒标签",
                 text = {
                     "{C:green}#1# / #2#{} 的几率",
-                    "创建一个 {C:cry_exotic,E:1}强化{} 标签"
+                    "创造一个 {C:cry_exotic,E:1}强化{} 标签"
                 }
             },
             tag_cry_glass = {
@@ -2810,7 +2811,7 @@ return {
             tag_cry_memory = {
                 name = "记忆标签",
                 text = {
-                    "创建 {C:attention}#1#{} 份",
+                    "创造 {C:attention}#1#{} 份",
                     "本局游戏上一次使用的 {C:attention}标签{}",
                     "{s:0.8,C:inactive}复制类标签除外",
                     "{s:0.8,C:inactive}当前: {s:0.8,C:attention}#2#"
@@ -2831,7 +2832,7 @@ return {
                 }
             },
             tag_cry_quadruple = {
-                name = "四击标签",
+                name = "四方标签",
                 text = {
                     "给予 {C:attention}#1#{} 份",
                     "下一个选择的 {C:attention}标签",
@@ -2926,7 +2927,7 @@ return {
                 name = "克隆机器",
                 text = {
                     "双倍标签变成",
-                    "{C:attention}五倍标签{}，并且",
+                    "{C:attention}五重标签{}，并且",
                     " {C:attention}4X{} 常见"
                 }
             },
@@ -2941,7 +2942,7 @@ return {
                 name = "多重复制",
                 text = {
                     "双倍标签变成",
-                    "{C:attention}三倍标签{}，并且",
+                    "{C:attention}三连标签{}，并且",
                     "是 {C:attention}2X{} 常见"
                 }
             },
@@ -3082,7 +3083,7 @@ return {
             v_cry_scope = {
                 name = "银河望远镜",
                 text = {
-                    "为出牌创建 {C:planet}星球",
+                    "为出牌创造 {C:planet}星球",
                     "{C:attention}牌型{}",
                     "{C:inactive}(必须有空间){}"
                 }
@@ -3107,7 +3108,7 @@ return {
                 name = "标签打印机",
                 text = {
                     "双倍标签变成",
-                    "{C:attention}四倍标签{}，并且",
+                    "{C:attention}四方标签{}，并且",
                     " {C:attention}3X{} 常见"
                 }
             },
@@ -3126,12 +3127,12 @@ return {
             ach_cry_blurred_blurred_joker = "获得模糊的模糊小丑",
             ach_cry_break_infinity = "在次出牌中获得1.79e308筹码",
             ach_cry_bullet_hell = "拥有15个AP小丑",
-            ach_cry_cryptid_the_cryptid = "在Cryptid上使用Cryptid",
+            ach_cry_cryptid_the_cryptid = "用神秘生物复制神秘生物",
             ach_cry_exodia = "拥有5个域外小丑",
             ach_cry_freak_house = "打出由6和9的红心组成的同花顺，同时拥有Nice",
-            ach_cry_googol_play_pass = "伪造一个Googol Play卡",
+            ach_cry_googol_play_pass = "灌铅一张Googol Play卡",
             ach_cry_haxxor = "使用作弊代码",
-            ach_cry_home_realtor = "在底注 8之前激活Happy House（没有DoE/Antimatter）",
+            ach_cry_home_realtor = "在底注 8之前激活快乐之家（不使用均衡牌组或反物质牌组）",
             ach_cry_jokes_on_you = "在底注 1上触发笑料boss的效果并赢得比赛",
             ach_cry_niw_uoy = "达到底注 -8",
             ach_cry_now_the_fun_begins = "获得画布",
@@ -3155,14 +3156,14 @@ return {
             ach_cry_haxxor = "黑客",
             ach_cry_home_realtor = "房产经纪人",
             ach_cry_jokes_on_you = "现在谁是笑料？",
-            ach_cry_niw_uoy = "到达底注 -8",
+            ach_cry_niw_uoy = "！了赢你",
             ach_cry_now_the_fun_begins = "乐趣开始了",
             ach_cry_patience_virtue = "耐心是美德",
             ach_cry_perfectly_balanced = "完美平衡",
             ach_cry_pull_request = "拉取请求",
             ach_cry_traffic_jam = "交通堵塞",
             ach_cry_ult_full_skip = "终极全跳过",
-            ach_cry_used_crash = "早告诉过你别用",
+            ach_cry_used_crash = "早告诉过你",
             ach_cry_what_have_you_done = "你到底做了什么？！"
         },
         challenge_names = {
@@ -3225,8 +3226,8 @@ return {
             ["cry_feat_misc. jokers"] = "杂项小丑",
             ["cry_feat_more stakes"] = "注",
             cry_feat_planets = "星球",
-            cry_feat_sleeves = "卡套",
-            cry_feat_spectrals = "幽灵",
+            cry_feat_sleeves = "牌套",
+            cry_feat_spectrals = "幻灵",
             cry_feat_tags = "标签",
             ["cry_feat_timer mechanics"] = "计时器机制",
             cry_feat_vouchers = "优惠券",
@@ -3243,7 +3244,7 @@ return {
             cry_mus_exotic = "域外小丑 (by AlexZGreat)",
             cry_mus_high_score = "高分 (最终 Boss [For Your Computer] by AlexZGreat)",
             cry_mus_jimball = "小丑球 (Funkytown by Lipps Inc.)",
-            cry_no_triggers = "No triggers left!",
+            cry_no_triggers = "无触发次数!",
             cry_plus_cryptid = "+1 Cryptid",
             cry_set_enable_features = "选择要启用的功能（游戏重新启动后生效）：",
             cry_set_features = "功能",
@@ -3795,7 +3796,7 @@ return {
             },
             {
                 "真正的无优惠券！ ! ",
-                "仅限 ASCENDANT STAKE",
+                "仅限飞升注",
                 "超平衡的牌组"
             },
             {
