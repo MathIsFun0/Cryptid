@@ -1557,7 +1557,7 @@ local magnet = {
 	name = "cry-magnet",
 	key = "magnet",
 	pos = { x = 4, y = 0 },
-	config = { extra = { money = 2, Xmoney = 5, slots = 4 } },
+	config = { extra = { money = 2, Xmoney = 3, slots = 3 } },
 	rarity = 1,
 	cost = 6,
 	order = 96,
