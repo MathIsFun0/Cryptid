@@ -2043,7 +2043,7 @@ local meteor = {
 	name = "cry-meteor",
 	key = "meteor",
 	pos = { x = 0, y = 2 },
-	config = { extra = { chips = 75 } },
+	config = { extra = { chips = 30 } },
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.foil) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_foil
@@ -2111,7 +2111,7 @@ local exoplanet = {
 	name = "cry-exoplanet",
 	key = "exoplanet",
 	pos = { x = 1, y = 2 },
-	config = { extra = { mult = 15 } },
+	config = { extra = { mult = 7 } },
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.holo) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_holo
@@ -2179,7 +2179,7 @@ local stardust = {
 	name = "cry-stardust",
 	key = "stardust",
 	pos = { x = 2, y = 2 },
-	config = { extra = { xmult = 2 } },
+	config = { extra = { xmult = 1.5 } },
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.polychrome) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_polychrome
