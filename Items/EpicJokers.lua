@@ -617,7 +617,7 @@ local caramel = {
 	object_type = "Joker",
 	name = "cry-caramel",
 	key = "caramel",
-	config = { extra = { x_mult = 1.75, rounds_remaining = 11 } },
+	config = { extra = { x_mult = 1.5, rounds_remaining = 7 } },
 	pos = { x = 0, y = 1 },
 	rarity = "cry_epic",
 	cost = 12,
