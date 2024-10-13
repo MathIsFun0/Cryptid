@@ -935,6 +935,7 @@ return {
                 text = {
                     "{C:dark_edition}Double-Sided{} Jokers use",
                     "their back side for effects",
+                    "instead of the front side",
                     "{C:attention}Retrigger{} all {C:dark_edition}Double-Sided{} Jokers"
                 },
             },

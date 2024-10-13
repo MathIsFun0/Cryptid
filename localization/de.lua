@@ -933,6 +933,7 @@ return {
                 text = {
                     "{C:dark_edition}Doppelseitige{} Joker nutzen",
                     "ihre Rückseite für Effekte",
+		    "statt der Vorderseite",
                     "{C:attention}Löse{} alle {C:dark_edition}Doppelseitigen{} Joker erneut {C:attention}aus"
                 },
             },
