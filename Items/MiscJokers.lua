@@ -1342,7 +1342,7 @@ local hunger = {
 	object_type = "Joker",
 	name = "cry-hunger",
 	key = "hunger",
-	config = { extra = { money = 3 } },
+	config = { extra = { money = 2 } },
 	pos = { x = 3, y = 0 },
 	rarity = 2,
 	cost = 6,
