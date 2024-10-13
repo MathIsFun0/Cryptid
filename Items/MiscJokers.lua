@@ -1354,12 +1354,15 @@ local hunger = {
 	end,
 	calculate = function(self, card, context) --This didn't work for Jevonn for some reason but it works for me :joker:
 		if context.using_consumeable then --shush
-			return {
-				ease_dollars(card.ability.extra.money),
-				message = "$" .. card.ability.extra.money,
-				colour = G.C.MONEY, --this isn't displaying a message for some reason ugh
-				card = card,
-			}
+			ease_dollars(card.ability.extra.money)
+			card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = "$" .. card.ability.extra.money, colour = G.C.MONEY, }
+			)
 		end
 	end,
 }
