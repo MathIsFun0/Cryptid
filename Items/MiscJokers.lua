@@ -4674,14 +4674,14 @@ local kidnap = {
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 1, money_mod = 3 },
+		extra = { money = 1, money_mod = 2 },
 		jolly = { t_mult = 8, type = "Pair" },
 		zany = { t_mult = 12, type = "Three of a Kind" },
 		mad = { t_mult = 10, type = "Two Pair" },
 		crazy = { t_mult = 12, type = "Straight" },
 		droll = { t_mult = 10, type = "Flush" },
 	},
-	rarity = 1,
+	rarity = 2,
 	cost = 4,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
