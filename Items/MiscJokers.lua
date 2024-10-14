@@ -4674,7 +4674,7 @@ local kidnap = {
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 0, money_mod = 3 },
+		extra = { money = 1, money_mod = 3 },
 		jolly = { t_mult = 8, type = "Pair" },
 		zany = { t_mult = 12, type = "Three of a Kind" },
 		mad = { t_mult = 10, type = "Two Pair" },
