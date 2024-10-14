@@ -4775,7 +4775,253 @@ local kidnap = {
 		end
 	end,
 }
-
+--this has to be the most spaghetti code in cryptid
+local curse = {
+	object_type = "Joker",
+	name = "cry_curse",
+	key = "curse",
+	pos = { x = 1, y = 1 },
+	rarity = 4,
+	cost = 20,
+	order = 82,
+	perishable_compat = true,
+	atlas = "atlasepic",
+	calculate = function(self, card, context)
+		if
+			context.selling_self
+			and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.discard
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.pre_discard
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.reroll_shop
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.open_booster
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.buying_card
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.skip_blind
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.cardarea == G.jokers
+			and context.before
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.using_consumeable
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.selling_card
+			and context.card.ability.name ~= "Obelisk"
+			and #G.jokers.cards + G.GAME.joker_buffer - (context.card.ability.set == "Joker" and 1 or 0) < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.setting_blind
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		elseif
+			context.skipping_booster
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+			and not context.blueprint
+		then
+			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			G.GAME.joker_buffer = 0
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.FILTER,
+				}),
+			}
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+		card:set_edition("e_negative", true, nil, true)
+		card.sob = true
+		card:set_eternal(true)
+		card:add_to_deck()
+		G.jokers:emplace(card)
+		return {
+			card_eval_status_text(card, "extra", nil, nil, nil, {
+				message = localize("cry_curse_ex"),
+				colour = G.C.DARK_EDITION,
+			}),
+		}
+	end,
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -4862,6 +5108,7 @@ local miscitems =  {
 	subtle,
 	discreet,
 	kidnap,
+	curse,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
