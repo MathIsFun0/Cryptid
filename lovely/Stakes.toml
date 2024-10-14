@@ -178,7 +178,7 @@ match_indent = true
 target = "game.lua"
 pattern = "for i = 1, 2 do"
 position = "at"
-payload = "for i = 1, G.GAME.modifiers.cry_booster_packs or 2 do"
+payload = "for i = 1, G.GAME.modifiers.cry_no_boosters and 0 or G.GAME.modifiers.cry_booster_packs or 2 do"
 match_indent = true
 
 
