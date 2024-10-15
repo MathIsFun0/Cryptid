@@ -2488,7 +2488,7 @@ return {
             v_cry_asteroglyph = {
                 name = "Asteroglyph",
                 text = {
-                    "Set Ante to {C:attention}#1#{}",
+                    "{C:attention}-#1#{} Ante",
                 },
             },
             v_cry_blankcanvas = {
@@ -2570,8 +2570,8 @@ return {
             v_cry_massproduct = {
                 name = "Mass Production",
                 text = {
-                    "All cards and packs",
-                    "in shop cost {C:attention}$1{}",
+                    "All cards and packs in",
+                    "shop are {C:attention}75%{} off",
                 },
             },
             v_cry_moneybean = {
@@ -2593,9 +2593,6 @@ return {
             v_cry_pacclimator = {
                 name = "Planet Acclimator",
                 text = {
-                    "{C:planet}Planet{} cards appear",
-                    "{C:attention}X#1#{} more frequently",
-                    "in the shop",
                     "All future {C:planet}Planet{}",
                     "cards are {C:green}free{}",
                 },
@@ -2656,9 +2653,6 @@ return {
             v_cry_tacclimator = {
                 name = "Tarot Acclimator",
                 text = {
-                    "{C:tarot}Tarot{} cards appear",
-                    "{C:attention}X#1#{} more frequently",
-                    "in the shop",
                     "All future {C:tarot}Tarot{}",
                     "cards are {C:green}free{}",
                 },

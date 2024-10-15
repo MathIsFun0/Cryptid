@@ -3009,8 +3009,8 @@ return {
             v_cry_massproduct = {
                 name = "规模量产",
                 text = {
-                    "商店中的所有牌和包",
-                    "费用为 {C:attention}$1{}"
+                    "所有卡牌、补充包和优惠券",
+                    "在店内均可享受{C:attention}75%{}折扣",
                 }
             },
             v_cry_moneybean = {
@@ -3031,8 +3031,6 @@ return {
             v_cry_pacclimator = {
                 name = "星球适应器",
                 text = {
-                    "{C:planet}星球{} 牌出现的概率",
-                    "{C:attention}X#1#{} ",
                     "购买此优惠券后本赛局所有",
                     "{C:planet}星球{}牌都{C:green}免费{}"
                 }
@@ -3098,8 +3096,6 @@ return {
             v_cry_tacclimator = {
                 name = "塔罗适应器",
                 text = {
-                    "{C:tarot}塔罗{} 牌出现的概率",
-                    "{C:attention}X#1#{} ",
                     "购买此优惠券后本赛局所有",
                     "{C:tarot}塔罗{}牌都{C:green}免费{}"
                 }

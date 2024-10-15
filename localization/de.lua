@@ -2487,7 +2487,7 @@ return {
             v_cry_asteroglyph = {
                 name = "Astroglyphe",
                 text = {
-                    "Setzt Ante zu {C:attention}#1#{}",
+                    "{C:attention}-#1#{} Ante",
                 },
             },
             v_cry_blankcanvas = {
@@ -2592,9 +2592,6 @@ return {
             v_cry_pacclimator = {
                 name = "Planetenakklimatisierung",
                 text = {
-                    "{C:planet}Planet{} Karten erscheinen",
-                    "{C:attention}X#1#{} öfter",
-                    "im Shop.",
                     "Alle zukünftigen {C:planet}Planeten{}",
                     "Karten sind {C:green}kostenlos{}",
                 },
@@ -2656,9 +2653,6 @@ return {
             v_cry_tacclimator = {
                 name = "Tarotakklimatisierung",
                 text = {
-                    "{C:tarot}Tarot{} Karten erscheinen",
-                    "{C:attention}X#1#{} öfter",
-                    "im Shop.",
                     "Alle zukünftigen {C:tarot}Tarot{}",
                     "Karten sind {C:green}kostenlos{}",
                 },

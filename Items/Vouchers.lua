@@ -247,7 +247,7 @@ local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] availabl
 		}))
 	end,
 }
-local massproduct = { --All cards and packs in the shop cost $1
+local massproduct = { --All cards and packs in the shop are 75% off
 	object_type = "Voucher",
 	key = "massproduct",
 	atlas = "atlasvoucher",
@@ -258,7 +258,7 @@ local massproduct = { --All cards and packs in the shop cost $1
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.backup_discount_percent = G.GAME.backup_discount_percent or G.GAME.discount_percent
-				G.GAME.discount_percent = 100
+				G.GAME.discount_percent = 75
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
@@ -290,7 +290,7 @@ local curate = { --All cards appear with an Edition
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
 }
-local rerollexchange = { --All rerolls cost $2
+local rerollexchange = { --All rerolls are $2 cheaper
 	object_type = "Voucher",
 	key = "rerollexchange",
 	atlas = "atlasvoucher",
@@ -326,10 +326,10 @@ local scope = { --Also unimplemented
 	pos = { x = 2, y = 0 },
 	requires = { "v_observatory" },
 }
-local dexterity = { --Permanently gain +2 hand[s] each round
+local dexterity = { --Permanently gain +1 hand[s] each round
 	object_type = "Voucher",
 	key = "dexterity",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	order = 81,
 	pos = { x = 6, y = 3 },
@@ -356,10 +356,10 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 		}))
 	end,
 }
-local threers = { --Permanently gain +2 discard[s] each round
+local threers = { --Permanently gain +1 discard[s] each round
 	object_type = "Voucher",
 	key = "threers",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	order = 82,
 	pos = { x = 5, y = 0 },
@@ -386,7 +386,7 @@ local threers = { --Permanently gain +2 discard[s] each round
 		}))
 	end,
 }
-local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All future Tarot cards are free
+local tacclimator = { --All future Tarot cards are free
 	object_type = "Voucher",
 	key = "tacclimator",
 	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
@@ -397,24 +397,8 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.extra_disp } }
 	end,
-	redeem = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.tarot_rate = 4 * self.config.extra
-				return true
-			end,
-		}))
-	end,
-	unredeem = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.tarot_rate = G.GAME.tarot_rate / self.config.extra * (56/4) / 6
-				return true
-			end,
-		}))
-	end,
 }
-local pacclimator = { --Planet cards appear X6 more frequently in the shop   All future Planet cards are free
+local pacclimator = { --All future Planet cards are free
 	object_type = "Voucher",
 	key = "pacclimator",
 	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
@@ -425,27 +409,11 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.extra_disp } }
 	end,
-	redeem = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.planet_rate = 4 * self.config.extra
-				return true
-			end,
-		}))
-	end,
-	unredeem = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.planet_rate = G.GAME.planet_rate / self.config.extra * (56/4) / 6
-				return true
-			end,
-		}))
-	end,
 }
-local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
+local moneybean = { --Raise the cap on interest earned in each round to $60
 	object_type = "Voucher",
 	key = "moneybean",
-	config = { extra = 1e300 },
+	config = { extra = 300 },
 	atlas = "atlasvoucher",
 	order = 85,
 	pos = { x = 5, y = 1 },
@@ -470,10 +438,10 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 		}))
 	end,
 }
-local fabric = { --+2 Joker slot[s]
+local fabric = { --+1 Joker slot[s]
 	object_type = "Voucher",
 	key = "fabric",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	order = 86,
 	pos = { x = 6, y = 0 },
@@ -513,7 +481,7 @@ local function asteroglyph_ante()
 	return G.GAME.modifiers.cry_astero_ante
 end
 
-local asteroglyph = { --Set Ante to 0
+local asteroglyph = { -- -1 ante
 	object_type = "Voucher",
 	key = "asteroglyph",
 	atlas = "atlasvoucher",
@@ -521,27 +489,17 @@ local asteroglyph = { --Set Ante to 0
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
 	loc_vars = function(self, info_queue)
-		return { vars = { asteroglyph_ante() } }
+		return { vars = { 1 } }
 	end,
 	redeem = function(self)
-		local mod = -G.GAME.round_resets.ante + asteroglyph_ante()
-		ease_ante(mod)
-		G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0
-				and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300)
-			or 1
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.round_resets.blind_ante = mod
-				return true
-			end,
-		}))
+		ease_ante(-1)
 	end
 }
 --Order 89 reserved for Ivory Script (unimplemented)
-local blankcanvas = { --+2 hand size
+local blankcanvas = { --+1 hand size
 	object_type = "Voucher",
 	key = "blankcanvas",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	order = 90,
 	pos = { x = 2, y = 4 },
