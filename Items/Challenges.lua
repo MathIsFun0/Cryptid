@@ -403,7 +403,11 @@ local joker_poker = {
 			{id = "j_perkeo"},
 			{id = "j_constellation"}
 		},
-		banned_other = {},
+		banned_other = {
+			{ id = 'bl_hook', type = 'blind' },
+			{ id = 'bl_arm', type = 'blind' },
+			{ id = 'bl_water', type = 'blind' },
+		},
 	},
 }
 local gfcr = G.FUNCS.can_reroll
@@ -424,6 +428,10 @@ function Game:start_run(args)
 end
 --Add banned cards when specific features/mods are enabled here
 --TODO other mods
+if Cryptid.enabled["Blinds"] then
+	--WHY DOES THIS SHOW UP AS THE FISH????????
+	joker_poker.restrictions.banned_other[#joker_poker.restrictions.banned_other + 1] = { id = 'bl_cry_oldmanacle', type = 'blind' }
+end
 if Cryptid.enabled["Tags"] then
 	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_schematic" }
 	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_gourmand" }
