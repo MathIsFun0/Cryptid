@@ -1166,7 +1166,7 @@ return {
                 text = {
                     "When {C:attention}Blind{} is selected,",
                     "destroys each {C:attention}Joker{} except",
-                    "{C:legendary}M-Jokers{} and {C:attention}Jolly Jokers{}",
+                    "{C:legendary}M Jokers{} and {C:attention}Jolly Jokers{}",
                     "and create 1 {C:attention}Jolly Joker{}",
                     "for each destroyed card",
                 },
@@ -2976,6 +2976,7 @@ return {
             c_cry_ballin = "Ballin'",
             c_cry_boss_rush = "Enter the Gungeon",
             c_cry_dagger_war = "Dagger War",
+            c_cry_joker_poker = "Joker Poker",
             c_cry_onlycard = "Solo Card",
             c_cry_rng = "RNG",
             c_cry_rush_hour = "Rush Hour I",
@@ -3217,7 +3218,11 @@ return {
             ch_c_cry_rush_hour = {"All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop"},
             ch_c_cry_rush_hour_ii = {"All Blinds are {C:attention}Boss Blinds{}"},
             ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast"},
-            ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"}
+            ch_c_cry_no_tags = {"Skipping is {C:attention}disabled{}"},
+            ch_c_cry_no_vouchers = {"{C:attention}Vouchers{} no longer appear in the shop"},
+            ch_c_cry_no_boosters = {"{C:attention}Booster Packs{} no longer appear in the shop"},
+            ch_c_cry_no_rerolls = {"Rerolling is {C:attention}disabled{}"},
+            ch_c_cry_no_consumables = {"{C:attention}Consumables{} no longer appear"}
         },
         -- Thanks to many members of the community for contributing to all of these quips!
         -- There's too many to credit so just go here: https://discord.com/channels/1116389027176787968/1209506360987877408/1237971471146553406
