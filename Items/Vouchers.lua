@@ -104,6 +104,13 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 			"Xaltios",
 		},
 	},
+	in_pool = function(self)
+		local mcheck = get_m_jokers()
+		if mcheck > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	object_type = "Voucher",
@@ -119,6 +126,13 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 			"Xaltios",
 		},
 	},
+	in_pool = function(self)
+		local mcheck = get_m_jokers()
+		if mcheck > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local pairamount_plus = { --Retrigger all M Jokers once for every pair contained in played hand
 	object_type = "Voucher",
@@ -134,6 +148,13 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 			"Xaltios",
 		},
 	},
+	in_pool = function(self)
+		local mcheck = get_m_jokers()
+		if mcheck > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local double_vision = { --Double-Sided cards appear 4x more frequently
 	object_type = "Voucher",
