@@ -1804,7 +1804,6 @@ return {
             j_cry_soccer = {
                 name = "合众为一",
                 text = {
-                    "{C:attention}+#1#{} 小丑牌槽位",
                     "{C:attention}+#1#{} 补充包槽位",
                     "{C:attention}+#1#{} 手牌上限",
                     "{C:attention}+#1#{} 消耗牌槽位",

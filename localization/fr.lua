@@ -1623,7 +1623,6 @@ return {
             j_cry_soccer = {
                 name = "One for All", --changed the name from latin because this isn't exotic
                 text = {
-                    "{C:attention}+#1#{} Joker slot",
                     "{C:attention}+#1#{} Booster Pack slot",
                     "{C:attention}+#1#{} hand size",
                     "{C:attention}+#1#{} consumable slot",
