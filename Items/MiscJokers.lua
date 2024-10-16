@@ -1203,22 +1203,28 @@ local blurred = {
 	name = "cry-blurred Joker",
 	key = "blurred",
 	pos = { x = 4, y = 4 },
-	config = { extra = { hands = 1 } },
+	config = { extra = 1 },
 	rarity = 1,
 	cost = 4,
 	order = 51,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.hands } }
+		return { vars = { center.ability.extra } }
 	end,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
-			return {
-				message = localize("k_hand"), --make this actually work in the future
-				ease_hands_played(card.ability.extra.hands),
-				delay(0.6),
-			}
+			G.E_MANAGER:add_event(Event({func = function()
+				ease_hands_played(card.ability.extra)
+				card_eval_status_text(
+					context.blueprint_card or card,
+					'extra',
+					nil,
+					nil,
+					nil, 
+					{message = localize{type = 'variable', key = 'a_hands', vars = {card.ability.extra}}}
+				)
+			return true end }))
 		end
 	end,
 }
@@ -1409,7 +1415,7 @@ local redbloon = {
 	object_type = "Joker",
 	name = "cry-redbloon",
 	key = "redbloon",
-	config = { extra = { money = 20, rounds_remaining = 2, text = "s" } },
+	config = { extra = { money = 20, rounds_remaining = 2 } },
 	pos = { x = 5, y = 1 },
 	immune_to_chemach = true,
 	rarity = 1,
@@ -1420,7 +1426,7 @@ local redbloon = {
 	perishable_compat = false,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.money, center.ability.extra.rounds_remaining, center.ability.extra.text } }
+		return { vars = { center.ability.extra.money, center.ability.extra.rounds_remaining } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1464,9 +1470,6 @@ local redbloon = {
 					colour = G.C.MONEY,
 				}
 			end
-		end
-		if card.ability.extra.rounds_remaining == 1 then
-			card.ability.extra.text = ""
 		end
 	end,
 }

@@ -1476,7 +1476,7 @@ return {
             j_cry_redbloon = {
                 name = "Red Bloon",
                 text = {
-                    "Earn {C:money}$#1#{} in {C:attention}#2#{} round#3#",
+                    "Earn {C:money}$#1#{} in {C:attention}#2#{} round(s)",
                     "{C:red,E:2}self destructs{}",
                 },
             },
