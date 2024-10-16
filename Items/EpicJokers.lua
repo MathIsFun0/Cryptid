@@ -861,11 +861,11 @@ local altgoogol = {
                 	if #jokers > 0 then
 				if #G.jokers.cards <= G.jokers.config.card_limit then 
 					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
-						local spawn = {G.jokers.cards[1]}
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								for i = 1, 1 do
-									local card = copy_card(spawn, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
+									local chosen_joker = G.jokers.cards[1]
+									local card = copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
 									card:add_to_deck()
 									G.jokers:emplace(card)
 								end
