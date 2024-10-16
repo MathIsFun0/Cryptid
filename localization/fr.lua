@@ -574,6 +574,7 @@ return {
                 text = {
                     "Vendre cette carte crée",
                     "{C:attention}2{} copies du {C:attention}Joker{} le plus à gauche",
+                    "{C:inactive}(Selon la place disponible){}",
                     "{C:inactive,s:0.8}Ne copie pas les Carte Googol Play Nostalgiques{}",
                 },
             },

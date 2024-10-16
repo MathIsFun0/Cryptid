@@ -548,7 +548,8 @@ return {
                 name = "Nostalgic Googol Play Card",
                 text = {
                     "Sell this card to create",
-                    "{C:attention}2{} copies of the leftmost {C:attention}Joker{}",
+                    "{C:attention}1{} copy of the leftmost {C:attention}Joker{}",
+                    "{C:inactive}(Must have room){}",
                     "{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
                 },
             },
