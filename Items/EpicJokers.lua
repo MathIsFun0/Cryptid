@@ -503,7 +503,7 @@ local oldcandy = {
 	key = "oldcandy",
 	pos = { x = 4, y = 1 },
 	order = 43,
-	config = { extra = { hand_size = 3 } },
+	config = { extra = { hand_size = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.max(1, math.floor(center.ability.extra.hand_size)) } }
 	end,
