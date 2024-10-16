@@ -2559,10 +2559,6 @@ if Cryptid.enabled["Misc. Jokers"] then
 	jokers[#jokers + 1] = "j_cry_pickle"
 	jokers[#jokers + 1] = "j_cry_chili_pepper"
 end
-if Cryptid.enabled["Epic Jokers"] then
-	jokers[#jokers + 1] = "j_cry_oldcandy"
-	jokers[#jokers + 1] = "j_cry_caramel"
-end
 if Cryptid.enabled["M Jokers"] then
 	jokers[#jokers + 1] = "j_cry_foodm"
 end
