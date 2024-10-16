@@ -897,6 +897,7 @@ local altgoogol = {
 							}
 						)
 						return nil, true
+					end
 				else
 					card_eval_status_text(
 							context.blueprint_card or card,
