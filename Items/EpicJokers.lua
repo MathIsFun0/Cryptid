@@ -844,14 +844,14 @@ local altgoogol = {
 	pos = { x = 4, y = 3 },
 	immune_to_chemach = true,
 	rarity = "cry_epic",
-	cost = 10,
+	cost = 13,
 	order = 60,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	eternal_compat = false,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	calculate = function(self, card, context)
-		if context.selling_self and not context.retrigger_joker then
+		if context.selling_self and not context.retrigger_joker and not context.blueprint then
 			local jokers = {}
                 	for i=1, #G.jokers.cards do 
                     		if G.jokers.cards[i] ~= card then
@@ -859,41 +859,55 @@ local altgoogol = {
                     		end
                 	end
                 	if #jokers > 0 then
-				if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
-					local spawn = {G.jokers.cards[1]}
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							for i = 1, 2 do
-								local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_ngpc")), nil)
-								card:add_to_deck()
-								G.jokers:emplace(card)
-							end
-							return true
-						end,
-					}))
-					card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
+				if #G.jokers.cards <= G.jokers.config.card_limit then 
+					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
+						local spawn = {G.jokers.cards[1]}
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								for i = 1, 1 do
+									local card = copy_card(spawn, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
+									card:add_to_deck()
+									G.jokers:emplace(card)
+								end
+								return true
+							end,
+						}))
+						card_eval_status_text(
+							context.blueprint_card or card,
+							"extra",
+							nil,
+							nil,
+							nil,
 						{ 
-						message = localize("k_duplicated_ex"),
-						colour = G.C.RARITY.cry_epic,
-						}
-					)
-					return nil, true
+							message = localize("k_duplicated_ex"),
+							colour = G.C.RARITY.cry_epic,
+							}
+						)
+						return nil, true
+					else
+						card_eval_status_text(
+							context.blueprint_card or card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{ 
+							message = localize("k_nope_ex"),
+							colour = G.C.RARITY.cry_epic,
+							}
+						)
+						return nil, true
 				else
 					card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ 
-						message = localize("k_nope_ex"),
-						colour = G.C.RARITY.cry_epic,
-						}
+							context.blueprint_card or card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{ 
+							message = localize("k_no_room_ex"),
+							colour = G.C.RARITY.cry_epic,
+							}
 					)
 					return nil, true
 				end
