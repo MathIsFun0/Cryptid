@@ -1405,7 +1405,7 @@ local redbloon = {
 	object_type = "Joker",
 	name = "cry-redbloon",
 	key = "redbloon",
-	config = { extra = { money = 20, rounds_remaining = 2 } },
+	config = { extra = { money = 20, rounds_remaining = 3 } },
 	pos = { x = 5, y = 1 },
 	immune_to_chemach = true,
 	rarity = 1,
