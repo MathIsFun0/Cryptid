@@ -613,6 +613,7 @@ if update_cry_member_count then update_cry_member_count() end
 match_indent = true
 
 # notice if https is disabled (by default)
+# Also put some other stuff here since this patch is in the same place anyways
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -629,6 +630,19 @@ if _c.name == 'cry-membershipcard' or _c.name == 'cry-membershipcardtwo' then
 	end
 end
 if _c.name == 'cry-translucent Joker' then 
+	if G.jokers and G.jokers.cards then
+                for k, v in ipairs(G.jokers.cards) do
+                    if (v.edition and v.edition.negative) and (G.localization.descriptions.Other.remove_negative)then 
+                        main_end = {}
+                        localize{type = 'other', key = 'remove_negative', nodes = main_end, vars = {}}
+                        main_end = main_end[1]
+                        break
+                    end
+                end
+        end 
+end 
+--The following is/are exclusive to Balanced Cryptid, this/these do/does NOT remove negative from copies in base Cryptid
+if _c.name == 'cry-altgoogol' then 
 	if G.jokers and G.jokers.cards then
                 for k, v in ipairs(G.jokers.cards) do
                     if (v.edition and v.edition.negative) and (G.localization.descriptions.Other.remove_negative)then 
