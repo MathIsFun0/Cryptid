@@ -873,7 +873,7 @@ return {
                 name = "怀旧 Googol 游戏牌",
                 text = {
                     "出售此牌以复制",
-                    "{C:attention}2{} 张最左侧的小丑",
+                    "{C:attention}1{} 张最左侧的小丑",
                     "{C:inactive}(必须有空间){}",
                     "{C:inactive,s:0.8}不会复制怀旧 Googol 游戏牌{}"
                 }
