@@ -3490,7 +3490,7 @@ local duos = {
 	key = "duos",
 	order = 90,
 	pos = { x = 0, y = 0 },
-	config = { Xmult = 2.5, type = "Two Pair" },
+	config = { Xmult = 2, type = "Two Pair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3521,7 +3521,7 @@ local home = {
 	key = "home",
 	order = 91,
 	pos = { x = 2, y = 0 },
-	config = { Xmult = 3.5, type = "Full House" },
+	config = { Xmult = 3, type = "Full House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3552,7 +3552,7 @@ local nuts = {
 	key = "nuts",
 	order = 92,
 	pos = { x = 1, y = 0 },
-	config = { Xmult = 5, type = "Straight Flush" },
+	config = { Xmult = 4, type = "Straight Flush" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3620,7 +3620,7 @@ local unity = {
 	key = "unity",
 	order = 94,
 	pos = { x = 4, y = 0 },
-	config = { Xmult = 9, type = "Flush House" },
+	config = { Xmult = 5, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3657,7 +3657,7 @@ local swarm = {
 	key = "swarm",
 	order = 95,
 	pos = { x = 5, y = 0 },
-	config = { Xmult = 9, type = "Flush Five" },
+	config = { Xmult = 5, type = "Flush Five" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3693,7 +3693,7 @@ local filler = {
 	name = "cry-filler",
 	key = "filler",
 	pos = { x = 0, y = 1 },
-	config = { Xmult = 1.00000000000001, type = "High Card" },
+	config = { Xmult = 1.5, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3725,7 +3725,7 @@ local giggly = {
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
-	cost = 1,
+	cost = 2,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["High Card"]) then
@@ -3769,7 +3769,7 @@ local manic = {
 	effect = "Cry Type Mult",
 	pos = { x = 2, y = 5 },
 	order = 18,
-	config = { t_mult = 22, type = "Straight Flush" },
+	config = { t_mult = 20, type = "Straight Flush" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3794,7 +3794,7 @@ local silly = {
 	pos = { x = 3, y = 5 },
 	effect = "Cry Type Mult",
 	order = 19,
-	config = { t_mult = 16, type = "Full House" },
+	config = { t_mult = 12, type = "Full House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3819,7 +3819,7 @@ local delirious = {
 	effect = "Cry Type Mult",
 	pos = { x = 4, y = 5 },
 	order = 20,
-	config = { t_mult = 22, type = "Five of a Kind" },
+	config = { t_mult = 25, type = "Five of a Kind" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3849,7 +3849,7 @@ local wacky = {
 	key = "wacky",
 	pos = { x = 5, y = 5 },
 	order = 21,
-	config = { t_mult = 30, type = "Flush House" },
+	config = { t_mult = 25, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3880,7 +3880,7 @@ local kooky = {
 	key = "kooky",
 	pos = { x = 6, y = 5 },
 	order = 22,
-	config = { t_mult = 30, type = "Flush Five" },
+	config = { t_mult = 25, type = "Flush Five" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3918,7 +3918,7 @@ local dubious = {
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
-	cost = 1,
+	cost = 2,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["High Card"]) then
@@ -3962,7 +3962,7 @@ local tricksy = {
 	effect = "Cry Type Chips",
 	order = 26,
 	pos = { x = 2, y = 6 },
-	config = { t_chips = 170, type = "Straight Flush" },
+	config = { t_chips = 150, type = "Straight Flush" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3987,7 +3987,7 @@ local foxy = {
 	pos = { x = 3, y = 6 },
 	order = 27,
 	effect = "Cry Type Chips",
-	config = { t_chips = 130, type = "Full House" },
+	config = { t_chips = 100, type = "Full House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4043,7 +4043,7 @@ local subtle = {
 	pos = { x = 5, y = 6 },
 	effect = "Cry Type Chips",
 	order = 29,
-	config = { t_chips = 240, type = "Flush House" },
+	config = { t_chips = 170, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4074,7 +4074,7 @@ local discreet = {
 	pos = { x = 6, y = 6 },
 	effect = "Cry Type Chips",
 	order = 30,
-	config = { t_chips = 240, type = "Flush Five" },
+	config = { t_chips = 170, type = "Flush Five" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
