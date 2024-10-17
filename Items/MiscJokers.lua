@@ -4387,7 +4387,9 @@ local translucent = {
 		if context.selling_self and not (context.retrigger_joker or context.blueprint) then
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff then
+				if G.jokers.cards[i].ability.name ~= "cry-translucent Joker" and not G.jokers.cards[i].debuff
+				--stops an infinite sell combo with Nostalgic Googol Play Card and 2 Translucent Jokers
+				and G.jokers.cards[i].ability.name ~= "cry-altgoogol" then
 					jokers[#jokers + 1] = G.jokers.cards[i]
 				end
 			end
