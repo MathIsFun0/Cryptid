@@ -901,6 +901,7 @@ local soccer = {
 	pos = { x = 1, y = 4 },
 	config = { extra = { holygrail = 1 } },
 	immune_to_chemach = true,
+	no_dbl = true,
 	rarity = "cry_epic",
 	order = 58,
 	cost = 20,
