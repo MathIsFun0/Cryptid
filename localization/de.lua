@@ -3072,7 +3072,7 @@ return {
 	    k_disable_music = "Musik deaktivieren",
 
             cry_epic = "Episch",
-            cry_exotic = "Exotisch"
+            cry_exotic = "Exotisch",
 
 	    cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Anmerkung",
