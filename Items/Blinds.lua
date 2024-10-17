@@ -1335,17 +1335,19 @@ return {
 							local blind_UI =
 								G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
 							local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-							chip_text_node.config.text = number_format(
-								get_blind_amount(G.GAME.round_resets.blind_ante)
-									* G.GAME.starting_params.ante_scaling
-									* G.GAME.CRY_BLINDS[c]
-							)
-							chip_text_node.config.scale = score_number_scale(
-								0.9,
-								get_blind_amount(G.GAME.round_resets.blind_ante)
-									* G.GAME.starting_params.ante_scaling
-									* G.GAME.CRY_BLINDS[c]
-							)
+							if chip_text_node then
+								chip_text_node.config.text = number_format(
+									get_blind_amount(G.GAME.round_resets.blind_ante)
+										* G.GAME.starting_params.ante_scaling
+										* G.GAME.CRY_BLINDS[c]
+								)
+								chip_text_node.config.scale = score_number_scale(
+									0.9,
+									get_blind_amount(G.GAME.round_resets.blind_ante)
+										* G.GAME.starting_params.ante_scaling
+										* G.GAME.CRY_BLINDS[c]
+								)
+							end
 							G.blind_select_opts[string.lower(c)]:recalculate()
 						end
 					elseif
