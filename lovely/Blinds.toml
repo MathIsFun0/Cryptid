@@ -47,7 +47,7 @@ position = "before"
 payload = '''
 	if self.name == "The Psychic" and #cards > 5 then
 		self.triggered = true
-        return true
+     		return true
 	end
 '''
 match_indent = true
