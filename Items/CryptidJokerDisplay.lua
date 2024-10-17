@@ -139,12 +139,6 @@ if JokerDisplay then
 	local page1 = {}
 	
         JokerDisplay.Definitions["j_cry_supercell"] = {
-                text = {
-                        { text = "+", colour = G.C.CHIPS },
-                        { ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
-                        { text = " +", colour = G.C.MULT },
-                        { ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
-                },
                 extra = {
                         {
                                 {
