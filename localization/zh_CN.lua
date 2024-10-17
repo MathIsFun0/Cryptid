@@ -1853,7 +1853,6 @@ return {
             j_cry_supercell = {
                 name = "supercell",
                 text = {
-                    "{C:chips}+#1#{} 筹码, {C:mult}+#1#{} 倍率,",
                     "{X:chips,C:white}X#2#{} 筹码, {X:mult,C:white}X#2#{} 倍率",
                     "在回合结束时获得 {C:money}$#3#{}"
                 }

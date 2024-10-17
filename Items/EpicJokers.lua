@@ -17,8 +17,6 @@ local supercell = {
 			if card.ability.extra.stat2 > 1 then --misprint deck moment
 				return {
 					message = localize("cry_gaming_ex"),
-					chip_mod = card.ability.extra.stat1,
-					mult_mod = card.ability.extra.stat1,
 					Xchip_mod = card.ability.extra.stat2,
 					Xmult_mod = card.ability.extra.stat2,
 				}

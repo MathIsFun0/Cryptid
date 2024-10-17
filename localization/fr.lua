@@ -1677,7 +1677,6 @@ return {
             j_cry_supercell = {
                 name = "Supercell",
                 text = {
-                    "{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
                     "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
                     "Earn {C:money}$#3#{} at",
                     "end of round",
