@@ -102,39 +102,6 @@ local googol_play = {
 		end
 	end,
 }
-local sync_catalyst = {
-	object_type = "Joker",
-	name = "cry-Sync Catalyst",
-	key = "sync_catalyst",
-	pos = { x = 5, y = 2 },
-	rarity = "cry_epic",
-	cost = 12,
-	order = 54,
-	blueprint_compat = true,
-	atlas = "atlasepic",
-	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
-			local tot = hand_chips + mult
-			if not tot.array or #tot.array < 2 or tot.array[2] < 2 then --below eXeY notation
-				hand_chips = mod_chips(math.floor(tot / 2))
-				mult = mod_mult(math.floor(tot / 2))
-			else
-				if hand_chips > mult then
-					tot = hand_chips
-				else
-					tot = mult
-				end
-				hand_chips = mod_chips(tot)
-				mult = mod_chips(tot)
-			end
-			update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
-			return {
-				message = localize("k_balanced"),
-				colour = { 0.8, 0.45, 0.85, 1 },
-			}
-		end
-	end,
-}
 local negative = {
 	object_type = "Joker",
 	name = "cry-Negative Joker",
@@ -1167,7 +1134,6 @@ return {
 		supercell,
 		membershipcardtwo,
 		googol_play,
-		sync_catalyst,
 		negative,
 		canvas,
 		error_joker,
