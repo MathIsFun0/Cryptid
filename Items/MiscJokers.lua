@@ -183,7 +183,7 @@ local queensgambit = {
 	atlas = "atlastwo",
 	config = { extra = { type = "Straight Flush" } },
 	calculate = function(self, card, context)
-		if context.destroying_card and not context.blueprint then
+		if context.destroying_card and not context.blueprint and not context.retrigger_joker then
 			if
 				G.GAME.current_round.current_hand.handname == "Royal Flush"
 				and SMODS.Ranks[context.destroying_card.base.value].key == "Queen"
