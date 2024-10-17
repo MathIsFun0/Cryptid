@@ -37,3 +37,17 @@ pattern = "if not G.P_CENTERS['e_'..(self.edition.type)].discovered then"
 position = "at"
 payload = "if self.edition.type and G.P_CENTERS['e_'..(self.edition.type)] and not G.P_CENTERS['e_'..(self.edition.type)].discovered then"
 match_indent = true
+
+# Blocks hands with more than 5 cards with Psychic
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = "if self.debuff.h_size_ge and #cards < self.debuff.h_size_ge then"
+position = "before"
+payload = '''
+	if self.name == "The Psychic" and #cards > 5 then
+		self.triggered = true
+        return true
+	end
+'''
+match_indent = true
