@@ -104,6 +104,13 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 			"Xaltios",
 		},
 	},
+	in_pool = function(self)
+		local mcheck = get_m_jokers()
+		if mcheck > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	object_type = "Voucher",
@@ -119,6 +126,13 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 			"Xaltios",
 		},
 	},
+	in_pool = function(self)
+		local mcheck = get_m_jokers()
+		if mcheck > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local pairamount_plus = { --Retrigger all M Jokers once for every pair contained in played hand
 	object_type = "Voucher",
@@ -134,6 +148,13 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 			"Xaltios",
 		},
 	},
+	in_pool = function(self)
+		local mcheck = get_m_jokers()
+		if mcheck > 0 then
+			return true
+		end
+		return false
+	end,
 }
 local double_vision = { --Double-Sided cards appear 4x more frequently
 	object_type = "Voucher",
@@ -632,7 +653,12 @@ local triple = { --Copies voucher triple tag
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
 				for i = 1, tag.config.num do
-					add_tag(Tag(context.tag.key))
+					local tag = Tag(context.tag.key)
+					if context.tag.key == "tag_cry_rework" then
+						tag.ability.rework_edition = context.tag.ability.rework_edition
+						tag.ability.rework_key = context.tag.ability.rework_key
+					end
+					add_tag(tag)
 				end
 				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil
@@ -673,7 +699,12 @@ local quadruple = { --Tag printer voucher quadruple tag
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
 				for i = 1, tag.config.num do
-					add_tag(Tag(context.tag.key))
+					local tag = Tag(context.tag.key)
+					if context.tag.key == "tag_cry_rework" then
+						tag.ability.rework_edition = context.tag.ability.rework_edition
+						tag.ability.rework_key = context.tag.ability.rework_key
+					end
+					add_tag(tag)
 				end
 				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil
@@ -714,7 +745,12 @@ local quintuple = { --Clone machine voucher quintuple tag
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
 				for i = 1, tag.config.num do
-					add_tag(Tag(context.tag.key))
+					local tag = Tag(context.tag.key)
+					if context.tag.key == "tag_cry_rework" then
+						tag.ability.rework_edition = context.tag.ability.rework_edition
+						tag.ability.rework_key = context.tag.ability.rework_key
+					end
+					add_tag(tag)
 				end
 				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil

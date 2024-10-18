@@ -933,6 +933,7 @@ return {
                 text = {
                     "{C:dark_edition}Doppelseitige{} Joker nutzen",
                     "ihre Rückseite für Effekte",
+		    "statt der Vorderseite",
                     "{C:attention}Löse{} alle {C:dark_edition}Doppelseitigen{} Joker erneut {C:attention}aus"
                 },
             },
@@ -3068,8 +3069,16 @@ return {
             cry_active = "Aktiv",
             cry_inactive = "Inaktiv",
 
+	    k_disable_music = "Musik deaktivieren",
+
             cry_epic = "Episch",
-            cry_exotic = "Exotisch"
+            cry_exotic = "Exotisch",
+
+	    cry_notif_jimball_1 = "Jimball",
+            cry_notif_jimball_2 = "Copyright Anmerkung",
+            cry_notif_jimball_d1 = "Jimball spielt den Song \"Funkytown\",",
+            cry_notif_jimball_d2 = "welcher urheberrechtlich geschützt ist und nicht",
+            cry_notif_jimball_d3 = "für Streams und Videos genutzt werden kann.",
         },
         labels = {
             food_jokers = "Essen Joker",

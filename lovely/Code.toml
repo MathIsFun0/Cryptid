@@ -262,3 +262,19 @@ elseif name_to_check == "cry-Rework Tag" then loc_vars = {
         }
 '''
 match_indent = true
+
+# Double Tag makes exact copy of rework tag
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = 'add_tag(Tag(_context.tag.key))'
+position = "at"
+payload = '''
+	local tag = Tag(_context.tag.key)
+	if _context.tag.key == "tag_cry_rework" then
+		tag.ability.rework_edition = _context.tag.ability.rework_edition
+		tag.ability.rework_key = _context.tag.ability.rework_key
+	end
+	add_tag(tag)
+'''
+match_indent = true

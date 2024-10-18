@@ -607,6 +607,11 @@ local tornado = {
 	loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
 	end,
+	set_blind = function(self, reset, silent)
+		if not reset then
+			G.GAME.blind.tornado_guarantee = pseudorandom(pseudoseed("tornado"),1,G.GAME.round_resets.hands)
+		end
+	end,
 	in_pool = function()
 		if not G.jokers then
 			return true
@@ -627,6 +632,11 @@ local tornado = {
 			and (pseudorandom(pseudoseed("tornado")) < ((G.GAME.probabilities.normal * 2) / 3))
 			and not G.GAME.blind.disabled
 		then
+			--check for guarantee
+			if G.GAME.probabilities.normal <= 1 and G.GAME.current_round.hands_left+1 == G.GAME.blind.tornado_guarantee then
+				return false
+			end
+
 			G.GAME.blind.triggered = true
 			return true
 		end
@@ -1325,17 +1335,19 @@ return {
 							local blind_UI =
 								G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
 							local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-							chip_text_node.config.text = number_format(
-								get_blind_amount(G.GAME.round_resets.blind_ante)
-									* G.GAME.starting_params.ante_scaling
-									* G.GAME.CRY_BLINDS[c]
-							)
-							chip_text_node.config.scale = score_number_scale(
-								0.9,
-								get_blind_amount(G.GAME.round_resets.blind_ante)
-									* G.GAME.starting_params.ante_scaling
-									* G.GAME.CRY_BLINDS[c]
-							)
+							if chip_text_node then
+								chip_text_node.config.text = number_format(
+									get_blind_amount(G.GAME.round_resets.blind_ante)
+										* G.GAME.starting_params.ante_scaling
+										* G.GAME.CRY_BLINDS[c]
+								)
+								chip_text_node.config.scale = score_number_scale(
+									0.9,
+									get_blind_amount(G.GAME.round_resets.blind_ante)
+										* G.GAME.starting_params.ante_scaling
+										* G.GAME.CRY_BLINDS[c]
+								)
+							end
 							G.blind_select_opts[string.lower(c)]:recalculate()
 						end
 					elseif

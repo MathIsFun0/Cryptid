@@ -354,8 +354,84 @@ local onlycard = {
 		},
 	},
 }
+local joker_poker = {
+	object_type = "Challenge",
+	key = "joker_poker",
+	order = 11,
+	rules = {
+		custom = {
+			{ id = "cry_no_tags" },
+			{ id = "cry_no_rerolls" },
+			{ id = "cry_no_vouchers" },
+			{ id = "cry_no_boosters" },
+			{ id = "cry_no_consumables" },
+		},
+		modifiers = {
+			{id = "consumable_slots", value = 0},
+			{id = "discards", value = 0}
+		},
+	},
+	deck = {
+		type = "Challenge Deck",
+	},
+	restrictions = {
+		banned_cards = {
+			{id = "j_banner"},
+			{id = "j_8_ball"},
+			{id = "j_chaos"},
+			{id = "j_delayed_grat"},
+			{id = "j_sixth_sense"},
+			{id = "j_faceless"},
+			{id = "j_superposition"},
+			{id = "j_red_card"},
+			{id = "j_seance"},
+			{id = "j_vagabond"},
+			{id = "j_mail"},
+			{id = "j_hallucination"},
+			{id = "j_fortune_teller"},
+			{id = "j_drunkard"},
+			{id = "j_trading"},
+			{id = "j_flash"},
+			{id = "j_castle"},
+			{id = "j_merry_andy"},
+			{id = "j_hit_the_road"},
+			{id = "j_satellite"},
+			{id = "j_cartomancer"},
+			{id = "j_astronomer"},
+			{id = "j_burnt"},
+			{id = "j_yorick"},
+			{id = "j_perkeo"},
+			{id = "j_constellation"}
+		},
+		banned_other = {
+			{ id = 'bl_hook', type = 'blind' },
+			{ id = 'bl_arm', type = 'blind' },
+			{ id = 'bl_water', type = 'blind' },
+		},
+	},
+}
+local gfcr = G.FUNCS.can_reroll
+function G.FUNCS.can_reroll(e)
+	if G.GAME.modifiers.cry_no_rerolls then
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+	else
+		return gfcr(e)
+	end
+end
+local gsr = Game.start_run
+function Game:start_run(args)
+	gsr(self, args)
+	if G.GAME.modifiers.cry_no_consumables then
+		G.GAME.joker_rate = 1e300
+	end
+end
 --Add banned cards when specific features/mods are enabled here
 --TODO other mods
+if Cryptid.enabled["Blinds"] then
+	--WHY DOES THIS SHOW UP AS THE FISH????????
+	joker_poker.restrictions.banned_other[#joker_poker.restrictions.banned_other + 1] = { id = 'bl_cry_oldmanacle', type = 'blind' }
+end
 if Cryptid.enabled["Tags"] then
 	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_schematic" }
 	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_gourmand" }
@@ -378,12 +454,24 @@ if Cryptid.enabled["Misc. Jokers"] then
 	rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards + 1] = { id = "j_cry_pickle" }
 	rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards + 1] = { id = "j_cry_pickle" }
 	boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards + 1] = { id = "j_cry_pickle" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_booster" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_wheelhope" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_hunger" }
+end
+if Cryptid.enabled["M Jokers"] then
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_sacrifice" }
+	if Cryptid.enabled["Epic Jokers"] then
+		joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_doodlem" }
+	end
 end
 if Cryptid.enabled["Epic Jokers"] then
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "j_cry_multjoker" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_multjoker" }
 end
 if Cryptid.enabled["Exotic Jokers"] then
 	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "j_cry_equilib" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_stella_mortis" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_crustulum" }
 end
 if Cryptid.enabled["Code Cards"] then
 	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_cry_class" }
@@ -393,6 +481,11 @@ if Cryptid.enabled["Code Cards"] then
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_console" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_cry_pointer" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {id = 'p_cry_code_normal_1', ids = {'p_cry_code_normal_1','p_cry_code_normal_2','p_cry_code_jumbo_1','p_cry_code_mega_1',}}
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_cut" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_CodeJoker" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_copypaste" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_blender" }
+	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_python" }
 end
 if Cryptid.enabled["Spectrals"] then
 	sticker_sheet.restrictions.banned_cards[#sticker_sheet.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
@@ -473,6 +566,9 @@ if Cryptid.enabled["Blinds"] and Cryptid.enabled["Timer Mechanics"] then
 	challenges[#challenges + 1] = rush_hour
 	challenges[#challenges + 1] = rush_hour_ii
 	challenges[#challenges + 1] = rush_hour_iii
+end
+if Cryptid.enabled["Misc. Decks"] then --yoinking vfd code here
+	challenges[#challenges + 1] = joker_poker
 end
 
 for k, v in pairs(G.P_CENTERS) do

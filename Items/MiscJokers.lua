@@ -2,6 +2,7 @@ local dropshot = {
 	object_type = "Joker",
 	name = "cry-Dropshot",
 	key = "dropshot",
+	order = 3,
 	config = { extra = { Xmult_mod = 0.2, x_mult = 1 } },
 	pos = { x = 5, y = 0 },
 	rarity = 3,
@@ -75,6 +76,7 @@ local happyhouse = {
 	name = "cry-happyhouse",
 	key = "happyhouse",
 	pos = { x = 2, y = 4 },
+	order = 2,
 	config = { extra = { mult = 4, check = 0 } },
 	immune_to_chemach = true,
     pools = {["Meme"] = true},
@@ -134,6 +136,7 @@ local maximized = {
 	key = "maximized",
 	pos = { x = 5, y = 2 },
 	rarity = 3,
+	order = 13,
 	cost = 11,
 	atlas = "atlastwo",
 }
@@ -145,6 +148,7 @@ local potofjokes = {
 	pos = { x = 5, y = 0 },
 	immune_to_chemach = true,
 	rarity = 3,
+	order = 104,
 	cost = 10,
 	perishable_compat = false,
 	atlas = "atlastwo",
@@ -180,6 +184,7 @@ local queensgambit = {
 	key = "queens_gambit",
 	pos = { x = 1, y = 0 },
 	rarity = 1,
+	order = 7,
 	cost = 7,
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.negative) then
@@ -226,6 +231,7 @@ local wee_fib = {
 	pos = { x = 1, y = 5 },
 	rarity = 3,
 	cost = 9,
+	order = 98,
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -266,6 +272,7 @@ local whip = {
 	config = { extra = { Xmult_mod = 0.5, x_mult = 1 } },
 	rarity = 2,
 	cost = 8,
+	order = 15,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasone",
@@ -329,6 +336,7 @@ local lucky_joker = {
 	pos = { x = 4, y = 3 },
 	rarity = 1,
 	cost = 4,
+	order = 36,
 	blueprint_compat = true,
 	atlas = "atlasone",
 	enhancement_gate = "m_lucky",
@@ -358,6 +366,7 @@ local cursor = {
 	pos = { x = 4, y = 1 },
 	rarity = 1,
 	cost = 5,
+	order = 5,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasone",
@@ -401,6 +410,7 @@ local pickle = {
 	pos = { x = 3, y = 3 },
 	immune_to_chemach = true,
 	rarity = 2,
+	order = 45,
 	cost = 6,
 	blueprint_compat = true,
 	eternal_compat = false,
@@ -492,6 +502,7 @@ local cube = {
 	config = { extra = { chips = 6 } },
 	pos = { x = 5, y = 4 },
 	rarity = 1,
+	order = 11,
 	cost = -27,
 	blueprint_compat = true,
 	atlas = "atlasone",
@@ -516,6 +527,7 @@ local triplet_rhythm = {
 	config = { extra = { Xmult = 3 } },
 	pos = { x = 0, y = 4 },
 	rarity = 1,
+	order = 10,
 	cost = 6,
 	blueprint_compat = true,
 	atlas = "atlastwo",
@@ -545,6 +557,7 @@ local booster = {
 	key = "booster",
 	config = { extra = { booster_slots = 1 } },
 	pos = { x = 2, y = 0 },
+	order = 34,
 	immune_to_chemach = true,
 	rarity = 2,
 	cost = 6,
@@ -574,6 +587,7 @@ local chili_pepper = {
 	pos = { x = 0, y = 1 },
 	rarity = 2,
 	cost = 6,
+	order = 48,
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
@@ -646,6 +660,7 @@ local compound_interest = {
 	config = { extra = { percent_mod = 3, percent = 12 } },
 	pos = { x = 3, y = 2 },
 	rarity = 3,
+	order = 9,
 	cost = 10,
 	perishable_compat = false,
 	atlas = "atlastwo",
@@ -670,6 +685,7 @@ local big_cube = {
 	config = { extra = { x_chips = 6 } },
 	pos = { x = 4, y = 4 },
 	rarity = 1,
+	order = 105,
 	cost = 27,
 	blueprint_compat = true,
 	atlas = "atlasone",
@@ -693,6 +709,7 @@ local eternalflame = {
 	pos = { x = 0, y = 4 },
 	config = { extra = { extra = 0.1, x_mult = 1 } },
 	rarity = 3,
+	order = 100,
 	cost = 9,
 	perishable_compat = false,
 	blueprint_compat = true,
@@ -735,6 +752,7 @@ local nice = {
     pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 6.9,
+	order = 84,
 	atlas = "atlasone",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -769,6 +787,7 @@ local seal_the_deal = {
 	pos = { x = 2, y = 4 },
 	rarity = 2,
 	cost = 5,
+	order = 101,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
@@ -802,6 +821,7 @@ local chad = {
 	name = "cry-Chad",
 	key = "chad",
 	pos = { x = 0, y = 3 },
+	order = 71,
 	config = { extra = { retriggers = 2 } },
 	immune_to_chemach = true,
     pools = {["Meme"] = true},
@@ -831,6 +851,7 @@ local jimball = {
 	name = "cry-Jimball",
 	key = "jimball",
 	pos = { x = 0, y = 0 },
+	order = 8,
 	config = { x_mult = 1, extra = 0.15, override_x_mult_check = true },
     pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
@@ -863,8 +884,19 @@ local jimball = {
 			end
 		end
 	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			create_cryptid_notif_overlay("jimball")
+		end
+	end,
 	atlas = "jimball",
 }
+G.FUNCS.notif_jimball = function()
+	Cryptid_config.Cryptid.jimball_music = false
+	G:save_settings()
+	G.FUNCS:exit_overlay_menu()
+	-- todo: autosave settings (Not sure if this autosaves it)
+end
 local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 	object_type = "Atlas",
 	key = "jimball",
@@ -880,6 +912,7 @@ local sus = {
     pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 7,
+	order = 79,
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -973,6 +1006,7 @@ local fspinner = {
 	end,
 	rarity = 1,
 	cost = 6,
+	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "fspinner",
@@ -1015,6 +1049,7 @@ local luigi = {
 	end,
 	rarity = 4,
 	cost = 20,
+	order = 86,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
@@ -1047,6 +1082,7 @@ local waluigi = {
 	end,
 	rarity = 4,
 	cost = 20,
+	order = 87,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
@@ -1074,6 +1110,7 @@ local mario = {
 	pos = { x = 4, y = 3 },
 	soul_pos = { x = 5, y = 3 },
 	rarity = 4,
+	order = 85,
 	cost = 20,
 	blueprint_compat = true,
 	immune_to_chemach = true,
@@ -1095,6 +1132,7 @@ local wario = {
 	object_type = "Joker",
 	name = "cry-wario",
 	key = "wario",
+	order = 88,
 	pos = { x = 2, y = 3 },
 	soul_pos = { x = 3, y = 3 },
 	config = { extra = { money = 3 } },
@@ -1104,12 +1142,14 @@ local wario = {
 	calculate = function(self, card, context)
 		if context.post_trigger then
 			ease_dollars(card.ability.extra.money)
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					(context.blueprint_card or card):juice_up(0.5, 0.5)
-					return true
-				end,
-			}))
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						(context.blueprint_card or card):juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
 			card_eval_status_text(
 				context.other_context.blueprint_card or context.other_joker,
 				"extra",
@@ -1135,6 +1175,7 @@ local krustytheclown = {
 	config = { extra = { extra = 0.02, x_mult = 1 } },
     pools = {["Meme"] = true},
 	rarity = 2,
+	order = 31,
 	cost = 7,
 	perishable_compat = false,
 	blueprint_compat = true,
@@ -1169,22 +1210,29 @@ local blurred = {
 	name = "cry-blurred Joker",
 	key = "blurred",
 	pos = { x = 4, y = 4 },
-	config = { extra = { hands = 1 } },
-    pools = {["Meme"] = true},
+  pools = {["Meme"] = true},
+	config = { extra = 1 },
 	rarity = 1,
 	cost = 4,
+	order = 51,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.hands } }
+		return { vars = { center.ability.extra } }
 	end,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
-			return {
-				message = localize("k_hand"), --make this actually work in the future
-				ease_hands_played(card.ability.extra.hands),
-				delay(0.6),
-			}
+			G.E_MANAGER:add_event(Event({func = function()
+				ease_hands_played(card.ability.extra)
+				card_eval_status_text(
+					context.blueprint_card or card,
+					'extra',
+					nil,
+					nil,
+					nil, 
+					{message = localize{type = 'variable', key = 'a_hands', vars = {card.ability.extra}}}
+				)
+			return true end }))
 		end
 	end,
 }
@@ -1196,6 +1244,7 @@ local gardenfork = {
 	config = { extra = { money = 7 } },
 	rarity = 3,
 	cost = 7,
+	order = 66,
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
@@ -1225,6 +1274,7 @@ local lightupthenight = {
 	atlas = "atlasone",
 	rarity = 3,
 	cost = 7,
+	order = 67,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.xmult } }
@@ -1250,6 +1300,7 @@ local nosound = {
 	pos = { x = 2, y = 1 },
 	atlas = "atlasone",
 	rarity = 3,
+	order = 68,
 	cost = 7,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -1278,6 +1329,7 @@ local antennastoheaven = {
 	config = { extra = { bonus = 0.1, x_chips = 1 } },
 	rarity = 3,
 	cost = 7,
+	order = 69,
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -1318,6 +1370,7 @@ local hunger = {
 	pos = { x = 3, y = 0 },
 	rarity = 2,
 	cost = 6,
+	order = 80,
 	blueprint_compat = true,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
@@ -1325,12 +1378,15 @@ local hunger = {
 	end,
 	calculate = function(self, card, context) --This didn't work for Jevonn for some reason but it works for me :joker:
 		if context.using_consumeable then --shush
-			return {
-				ease_dollars(card.ability.extra.money),
-				message = "$" .. card.ability.extra.money,
-				colour = G.C.MONEY, --this isn't displaying a message for some reason ugh
-				card = card,
-			}
+			ease_dollars(card.ability.extra.money)
+			card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = "$" .. card.ability.extra.money, colour = G.C.MONEY, }
+			)
 		end
 	end,
 }
@@ -1338,6 +1394,7 @@ local weegaming = {
 	object_type = "Joker",
 	name = "cry-weegaming",
 	key = "weegaming",
+	order = 62,
 	config = { extra = { retriggers = 2 } },
 	pos = { x = 3, y = 4 },
 	atlas = "atlastwo",
@@ -1366,17 +1423,18 @@ local redbloon = {
 	object_type = "Joker",
 	name = "cry-redbloon",
 	key = "redbloon",
-	config = { extra = { money = 20, rounds_remaining = 2, text = "s" } },
+	config = { extra = { money = 20, rounds_remaining = 2 } },
 	pos = { x = 5, y = 1 },
 	immune_to_chemach = true,
 	rarity = 1,
 	cost = 4,
+	order = 97,
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.money, center.ability.extra.rounds_remaining, center.ability.extra.text } }
+		return { vars = { center.ability.extra.money, center.ability.extra.rounds_remaining } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1421,9 +1479,6 @@ local redbloon = {
 				}
 			end
 		end
-		if card.ability.extra.rounds_remaining == 1 then
-			card.ability.extra.text = ""
-		end
 	end,
 }
 local apjoker = {
@@ -1434,6 +1489,7 @@ local apjoker = {
 	config = { extra = { x_mult = 4 } },
 	rarity = 2,
 	cost = 6,
+	order = 37,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasone",
@@ -1456,6 +1512,7 @@ local maze = {
 	pos = { x = 1, y = 1 },
 	rarity = 1,
 	cost = 1,
+	order = 61,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.after and not context.blueprint and not context.retrigger_joker then
@@ -1501,6 +1558,7 @@ local panopticon = {
 		extra = {},
 	},
 	rarity = 1,
+	order = 47,
 	cost = 1,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
@@ -1526,6 +1584,7 @@ local magnet = {
 	config = { extra = { money = 2, Xmoney = 5, slots = 4 } },
 	rarity = 1,
 	cost = 6,
+	order = 96,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.money, center.ability.extra.Xmoney, center.ability.extra.slots } }
@@ -1547,6 +1606,7 @@ local unjust_dagger = {
 	config = { extra = { x_mult = 1 } },
 	rarity = 2,
 	cost = 8,
+	order = 102,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.x_mult } }
@@ -1624,6 +1684,7 @@ local monkey_dagger = {
 	config = { extra = { chips = 0 } },
 	rarity = 2,
 	cost = 6,
+	order = 49,
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -1701,6 +1762,7 @@ local pirate_dagger = {
 	config = { extra = { x_chips = 1 } },
 	rarity = 2,
 	cost = 8,
+	order = 103,
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -1778,6 +1840,7 @@ local mondrian = {
 	config = { extra = { extra = 0.25, x_mult = 1 } },
 	rarity = 2,
 	cost = 7,
+	order = 44,
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -1820,6 +1883,7 @@ local sapling = {
 	immune_to_chemach = true,
 	rarity = 2,
 	cost = 6,
+	order = 42,
 	blueprint_compat = false,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -1867,6 +1931,7 @@ local spaceglobe = {
 	config = { extra = { x_chips = 1, Xchipmod = 0.2, type = "High Card" } },
 	rarity = 3,
 	cost = 8,
+	order = 73,
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -1930,6 +1995,7 @@ local happy = {
 	pos = { x = 2, y = 1 },
 	rarity = 1,
 	cost = 2,
+	order = 63,
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlastwo",
@@ -2010,6 +2076,7 @@ local meteor = {
 	end,
 	rarity = 1,
 	cost = 4,
+	order = 38,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
@@ -2076,6 +2143,7 @@ local exoplanet = {
 		return { vars = { center.ability.extra.mult } }
 	end,
 	rarity = 1,
+	order = 39,
 	cost = 3,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -2144,6 +2212,7 @@ local stardust = {
 	end,
 	rarity = 1,
 	cost = 2,
+	order = 40,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
@@ -2693,6 +2762,7 @@ local rnjoker = {
 	key = "rnjoker",
 	pos = { x = 5, y = 4 },
 	config = {},
+	order = 59,
 	loc_vars = function(self, info_queue, card)
 		local vars = {
 			vars = {
@@ -3439,6 +3509,7 @@ local duos = {
 	object_type = "Joker",
 	name = "cry-duos",
 	key = "duos",
+	order = 90,
 	pos = { x = 0, y = 0 },
 	config = { Xmult = 2.5, type = "Two Pair" },
 	loc_vars = function(self, info_queue, card)
@@ -3469,6 +3540,7 @@ local home = {
 	object_type = "Joker",
 	name = "cry-home",
 	key = "home",
+	order = 91,
 	pos = { x = 2, y = 0 },
 	config = { Xmult = 3.5, type = "Full House" },
 	loc_vars = function(self, info_queue, card)
@@ -3499,6 +3571,7 @@ local nuts = {
 	object_type = "Joker",
 	name = "cry-nuts",
 	key = "nuts",
+	order = 92,
 	pos = { x = 1, y = 0 },
 	config = { Xmult = 5, type = "Straight Flush" },
 	loc_vars = function(self, info_queue, card)
@@ -3529,6 +3602,7 @@ local quintet = {
 	object_type = "Joker",
 	name = "cry-quintet",
 	key = "quintet",
+	order = 93,
 	pos = { x = 3, y = 0 },
 	config = { Xmult = 5, type = "Five of a Kind" },
 	loc_vars = function(self, info_queue, card)
@@ -3565,8 +3639,9 @@ local unity = {
 	object_type = "Joker",
 	name = "cry-unity",
 	key = "unity",
+	order = 94,
 	pos = { x = 4, y = 0 },
-	config = { Xmult = 7, type = "Flush House" },
+	config = { Xmult = 9, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3601,6 +3676,7 @@ local swarm = {
 	object_type = "Joker",
 	name = "cry-swarm",
 	key = "swarm",
+	order = 95,
 	pos = { x = 5, y = 0 },
 	config = { Xmult = 9, type = "Flush Five" },
 	loc_vars = function(self, info_queue, card)
@@ -3645,6 +3721,7 @@ local filler = {
 	end,
 	atlas = "atlasthree",
 	rarity = 3,
+	order = 89,
 	cost = 1,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -3664,6 +3741,7 @@ local giggly = {
 	effect = "Cry Type Mult",
 	pos = { x = 0, y = 5 },
 	config = { t_mult = 4, type = "High Card" },
+	order = 16,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3687,6 +3765,7 @@ local nutty = {
 	key = "nutty",
 	effect = "Cry Type Mult",
 	pos = { x = 1, y = 5 },
+	order = 17,
 	config = { t_mult = 19, type = "Four of a Kind" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
@@ -3711,6 +3790,7 @@ local manic = {
 	key = "manic",
 	effect = "Cry Type Mult",
 	pos = { x = 2, y = 5 },
+	order = 18,
 	config = { t_mult = 22, type = "Straight Flush" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
@@ -3735,6 +3815,7 @@ local silly = {
 	key = "silly",
 	pos = { x = 3, y = 5 },
 	effect = "Cry Type Mult",
+	order = 19,
 	config = { t_mult = 16, type = "Full House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
@@ -3759,6 +3840,7 @@ local delirious = {
 	key = "delirious",
 	effect = "Cry Type Mult",
 	pos = { x = 4, y = 5 },
+	order = 20,
 	config = { t_mult = 22, type = "Five of a Kind" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
@@ -3788,7 +3870,8 @@ local wacky = {
 	name = "cry-Wacky Joker",
 	key = "wacky",
 	pos = { x = 5, y = 5 },
-	config = { t_mult = 25, type = "Flush House" },
+	order = 21,
+	config = { t_mult = 30, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3818,6 +3901,7 @@ local kooky = {
 	name = "cry-Kooky Joker",
 	key = "kooky",
 	pos = { x = 6, y = 5 },
+	order = 22,
 	config = { t_mult = 30, type = "Flush Five" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
@@ -3848,6 +3932,7 @@ local dubious = {
 	name = "cry-Dubious Joker",
 	key = "dubious",
 	pos = { x = 0, y = 6 },
+	order = 24,
 	config = { t_chips = 20, type = "High Card" },
 	effect = "Cry Type Chips",
 	loc_vars = function(self, info_queue, card)
@@ -3872,6 +3957,7 @@ local shrewd = {
 	name = "cry-Shrewd Joker",
 	key = "shrewd",
 	pos = { x = 1, y = 6 },
+	order = 25,
 	effect = "Cry Type Chips",
 	config = { t_chips = 150, type = "Four of a Kind" },
 	loc_vars = function(self, info_queue, card)
@@ -3896,6 +3982,7 @@ local tricksy = {
 	name = "cry-Tricksy Joker",
 	key = "tricksy",
 	effect = "Cry Type Chips",
+	order = 26,
 	pos = { x = 2, y = 6 },
 	config = { t_chips = 170, type = "Straight Flush" },
 	loc_vars = function(self, info_queue, card)
@@ -3920,6 +4007,7 @@ local foxy = {
 	name = "cry-Foxy Joker",
 	key = "foxy",
 	pos = { x = 3, y = 6 },
+	order = 27,
 	effect = "Cry Type Chips",
 	config = { t_chips = 130, type = "Full House" },
 	loc_vars = function(self, info_queue, card)
@@ -3945,6 +4033,7 @@ local savvy = {
 	key = "savvy",
 	pos = { x = 4, y = 6 },
 	effect = "Cry Type Chips",
+	order = 28,
 	config = { t_chips = 170, type = "Five of a Kind" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
@@ -3975,7 +4064,8 @@ local subtle = {
 	key = "subtle",
 	pos = { x = 5, y = 6 },
 	effect = "Cry Type Chips",
-	config = { t_chips = 200, type = "Flush House" },
+	order = 29,
+	config = { t_chips = 240, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4005,6 +4095,7 @@ local discreet = {
 	key = "discreet",
 	pos = { x = 6, y = 6 },
 	effect = "Cry Type Chips",
+	order = 30,
 	config = { t_chips = 240, type = "Flush Five" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
@@ -4036,6 +4127,7 @@ local coin = {
 	pos = { x = 0, y = 2 },
 	config = { extra = { money = 1 } },
 	rarity = 1,
+	order = 53,
 	cost = 5,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -4066,6 +4158,7 @@ local wheelhope = {
 	config = { extra = { extra = 0.5, x_mult = 1 } },
 	rarity = 2,
 	cost = 5,
+	order = 74,
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -4112,6 +4205,7 @@ local oldblueprint = {
 	config = { extra = { odds = 4 } },
 	rarity = 1,
 	cost = 5,
+	order = 83,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
 	end,
@@ -4194,6 +4288,7 @@ local night = {
 	pos = { x = 3, y = 1 },
 	rarity = 3,
 	cost = 6,
+	order = 41,
 	eternal_compat = false,
 	blueprint_compat = true,
 	atlas = "atlasthree",
@@ -4262,6 +4357,7 @@ local busdriver = {
 	immune_to_chemach = true,
 	rarity = 2,
 	cost = 7,
+	order = 46,
 	atlas = "atlasthree",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -4303,6 +4399,7 @@ local translucent = {
 	pos = { x = 5, y = 2 },
 	rarity = 1,
 	cost = 4,
+	order = 52,
 	eternal_compat = false,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
@@ -4342,6 +4439,7 @@ local morse = {
 	config = { extra = { bonus = 2, money = 1 } },
 	rarity = 1,
 	cost = 5,
+	order = 57,
 	perishable_compat = false,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
@@ -4374,6 +4472,7 @@ local membershipcard = {
 	soul_pos = { x = 6, y = 1 },
 	rarity = 4,
 	cost = 20,
+	order = 35,
 	blueprint_compat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, card)
@@ -4404,6 +4503,7 @@ local kscope = {
 	pos = { x = 3, y = 4 },
 	rarity = 3,
 	cost = 7,
+	order = 55,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.end_of_round and G.GAME.blind.boss and not context.individual and not context.repetition then
@@ -4435,6 +4535,7 @@ local cryptidmoment = {
 	end,
 	rarity = 1,
 	cost = 4,
+	order = 65,
 	eternal_compat = false,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
@@ -4457,6 +4558,7 @@ local flipside = {
 	pos = { x = 1, y = 0 },
 	rarity = 2,
 	cost = 7,
+	order = 107,
 	atlas = "placeholders",
 	no_dbl = true,
 	loc_vars = function(self, info_queue)
@@ -4510,6 +4612,7 @@ local oldinvisible = {
 	config = { extra = 0 },
 	rarity = 4,
 	cost = 20,
+	order = 78,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -4571,6 +4674,7 @@ local fractal = {
 	config = { extra = 2 },
 	rarity = 3,
 	cost = 7,
+	order = 76,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -4589,9 +4693,10 @@ local kidnap = {
 	object_type = "Joker",
 	name = "cry-kidnap",
 	key = "kidnap",
+	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 0, money_mod = 3 },
+		extra = { money = 1, money_mod = 3 },
 		jolly = { t_mult = 8, type = "Pair" },
 		zany = { t_mult = 12, type = "Three of a Kind" },
 		mad = { t_mult = 10, type = "Two Pair" },
@@ -4626,7 +4731,32 @@ local kidnap = {
 			set = "Joker",
 			key = "j_droll",
 			specific_vars = { self.config.droll.t_mult, localize(self.config.droll.type, "poker_hands") },
-		} 
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_sly",
+			specific_vars = { 50, localize(self.config.jolly.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_wily",
+			specific_vars = { 100, localize(self.config.zany.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_clever",
+			specific_vars = { 80, localize(self.config.mad.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_devious",
+			specific_vars = { 100, localize(self.config.crazy.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_crafty",
+			specific_vars = { 80, localize(self.config.droll.type, "poker_hands") },
+		}
 		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
 	end,
 	atlas = "atlasone",

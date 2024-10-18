@@ -1280,6 +1280,7 @@ local CodeJoker = {
 	end,
 	rarity = "cry_epic",
 	cost = 11,
+	order = 109,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -1302,6 +1303,7 @@ local copypaste = {
 	name = "cry-copypaste",
 	key = "copypaste",
 	pos = { x = 3, y = 4 },
+	order = 110,
 	immune_to_chemach = true,
 	config = { extra = { odds = 2, ckt = 0 } },
 	rarity = "cry_epic",
@@ -1350,6 +1352,7 @@ local cut = {
 	pos = { x = 2, y = 2 },
 	rarity = 2,
 	cost = 7,
+	order = 108,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasthree",
@@ -1413,6 +1416,7 @@ local blender = {
 	cost = 5,
 	blueprint_compat = true,
 	atlas = "atlasthree",
+	order = 111,
 	calculate = function(self, card, context)
 		if
 			context.using_consumeable
@@ -1438,6 +1442,7 @@ local python = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasthree",
+	order = 112,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
