@@ -873,8 +873,7 @@ return {
                 name = "怀旧 Googol 游戏牌",
                 text = {
                     "出售此牌以复制",
-                    "{C:attention}1{} 张最左侧的小丑",
-                    "{C:inactive}(必须有空间){}",
+                    "{C:attention}2{} 张最左侧的小丑",
                     "{C:inactive,s:0.8}不会复制怀旧 Googol 游戏牌{}"
                 }
             },
@@ -1804,6 +1803,7 @@ return {
             j_cry_soccer = {
                 name = "合众为一",
                 text = {
+                    "{C:attention}+#1#{} 小丑牌槽位",
                     "{C:attention}+#1#{} 补充包槽位",
                     "{C:attention}+#1#{} 手牌上限",
                     "{C:attention}+#1#{} 消耗牌槽位",
@@ -1853,6 +1853,7 @@ return {
             j_cry_supercell = {
                 name = "supercell",
                 text = {
+                    "{C:chips}+#1#{} 筹码, {C:mult}+#1#{} 倍率,",
                     "{X:chips,C:white}X#2#{} 筹码, {X:mult,C:white}X#2#{} 倍率",
                     "在回合结束时获得 {C:money}$#3#{}"
                 }
@@ -3008,8 +3009,8 @@ return {
             v_cry_massproduct = {
                 name = "规模量产",
                 text = {
-                    "所有卡牌、补充包和优惠券",
-                    "在店内均可享受{C:attention}75%{}折扣",
+                    "商店中的所有牌和包",
+                    "费用为 {C:attention}$1{}"
                 }
             },
             v_cry_moneybean = {
@@ -3030,6 +3031,8 @@ return {
             v_cry_pacclimator = {
                 name = "星球适应器",
                 text = {
+                    "{C:planet}星球{} 牌出现的概率",
+                    "{C:attention}X#1#{} ",
                     "购买此优惠券后本赛局所有",
                     "{C:planet}星球{}牌都{C:green}免费{}"
                 }
@@ -3095,6 +3098,8 @@ return {
             v_cry_tacclimator = {
                 name = "塔罗适应器",
                 text = {
+                    "{C:tarot}塔罗{} 牌出现的概率",
+                    "{C:attention}X#1#{} ",
                     "购买此优惠券后本赛局所有",
                     "{C:tarot}塔罗{}牌都{C:green}免费{}"
                 }

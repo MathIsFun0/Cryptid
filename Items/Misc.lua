@@ -194,7 +194,7 @@ local mosaic = {
 	shader = "mosaic",
 	in_shop = true,
 	extra_cost = 6,
-	config = { x_chips = 1.5 },
+	config = { x_chips = 2.5 },
 	sound = {
 		sound = "cry_e_mosaic",
 		per = 1,
@@ -334,7 +334,7 @@ local glitched = {
 			card.config.center:apply_glitched(card, function(val)
 				return cry_misprintize_val(val, {
 					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-					max = 3 * (G.GAME.modifiers.cry_misprint_max or 1),
+					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
 				})
 			end)
 		end
