@@ -27,13 +27,14 @@ match_indent = true
 
 # Patch get_current_pool to predict for ERROR desc
 # There's also a consumable rarity patch I should do but don't feel like overriding SMODS right now
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "local rarity = _rarity or pseudorandom('rarity'..G.GAME.round_resets.ante..(_append or ''))"
-position = "at"
-payload = "local rarity = _rarity or pseudorandom(_G[gcparea == 'ERROR' and 'predict_pseudoseed' or 'pseudoseed']('rarity'..G.GAME.round_resets.ante..(_append or '')))"
-match_indent = true
+## Note this breaks one of the regexs for SMODS.Rarity
+# [[patches]]
+# [patches.pattern]
+# target = "functions/common_events.lua"
+# pattern = "local rarity = _rarity or pseudorandom('rarity'..G.GAME.round_resets.ante..(_append or ''))"
+# position = "at"
+# payload = "local rarity = _rarity or pseudorandom(_G[gcparea == 'ERROR' and 'predict_pseudoseed' or 'pseudoseed']('rarity'..G.GAME.round_resets.ante..(_append or '')))"
+# match_indent = true
 
 [[patches]]
 [patches.pattern]
