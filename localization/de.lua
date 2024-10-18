@@ -546,7 +546,8 @@ return {
                 name = "Nostalgische Googol Play Karte",
                 text = {
                     "Verkaufe diese Karte um",
-                    "{C:attention}2{} Kopien von dem linkesten {C:attention}Joker{} zu machen",
+                    "{C:attention}1{} Kopien von dem linkesten {C:attention}Joker{} zu machen",
+                    "{C:inactive}(Muss Platz haben){}",
                     "{C:inactive,s:0.8}Kopiert keine Nostalgischen Googol Play Karten{}",
                 },
             },
@@ -1594,7 +1595,6 @@ return {
             j_cry_soccer = {
                 name = "Einer für Alle", --changed the name from latin because this isn't exotic
                 text = {
-                    "{C:attention}+#1#{} Joker Slot",
                     "{C:attention}+#1#{} Booster Packer Slot",
                     "{C:attention}+#1#{} Handgröße",
                     "{C:attention}+#1#{} Verbrauchsgegenstand Slot",
@@ -1647,7 +1647,6 @@ return {
             j_cry_supercell = {
                 name = "Supercell",
                 text = {
-                    "{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
                     "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
                     "Verdiene {C:money}$#3#{} am",
                     "Ende der Runde",
@@ -2487,7 +2486,7 @@ return {
             v_cry_asteroglyph = {
                 name = "Astroglyphe",
                 text = {
-                    "Setzt Ante zu {C:attention}#1#{}",
+                    "{C:attention}-#1#{} Ante",
                 },
             },
             v_cry_blankcanvas = {
@@ -2592,9 +2591,6 @@ return {
             v_cry_pacclimator = {
                 name = "Planetenakklimatisierung",
                 text = {
-                    "{C:planet}Planet{} Karten erscheinen",
-                    "{C:attention}X#1#{} öfter",
-                    "im Shop.",
                     "Alle zukünftigen {C:planet}Planeten{}",
                     "Karten sind {C:green}kostenlos{}",
                 },
@@ -2656,9 +2652,6 @@ return {
             v_cry_tacclimator = {
                 name = "Tarotakklimatisierung",
                 text = {
-                    "{C:tarot}Tarot{} Karten erscheinen",
-                    "{C:attention}X#1#{} öfter",
-                    "im Shop.",
                     "Alle zukünftigen {C:tarot}Tarot{}",
                     "Karten sind {C:green}kostenlos{}",
                 },

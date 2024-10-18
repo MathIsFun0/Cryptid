@@ -573,7 +573,8 @@ return {
                 name = "Carte Googol Play Nostalgique",
                 text = {
                     "Vendre cette carte crée",
-                    "{C:attention}2{} copies du {C:attention}Joker{} le plus à gauche",
+                    "{C:attention}1{} copies du {C:attention}Joker{} le plus à gauche",
+                    "{C:inactive}(Selon la place disponible){}",
                     "{C:inactive,s:0.8}Ne copie pas les Carte Googol Play Nostalgiques{}",
                 },
             },
@@ -1622,7 +1623,6 @@ return {
             j_cry_soccer = {
                 name = "One for All", --changed the name from latin because this isn't exotic
                 text = {
-                    "{C:attention}+#1#{} Joker slot",
                     "{C:attention}+#1#{} Booster Pack slot",
                     "{C:attention}+#1#{} hand size",
                     "{C:attention}+#1#{} consumable slot",
@@ -1677,7 +1677,6 @@ return {
             j_cry_supercell = {
                 name = "Supercell",
                 text = {
-                    "{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
                     "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
                     "Earn {C:money}$#3#{} at",
                     "end of round",
