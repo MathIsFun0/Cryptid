@@ -1,23 +1,3 @@
-function Card:is_jolly()
-	local check = false
-	if self.ability.name == "Jolly Joker" then
-		check = true
-	end
-	if (self.edition and self.edition.key == "e_cry_m") then
-		check = true
-	end
-
-	--[[
-	Some scenarios/ examples I used for testing this (These DO work as intended if not commented out)
-	if next(find_joker("cry-mneon")) then
-		check = true
-	end
-	if G.GAME.blind.boss then
-		check = true
-	end
-	]]--
-	return check	
-end
 local jollysus = {
 	object_type = "Joker",
 	name = "cry-jollysus Joker",
