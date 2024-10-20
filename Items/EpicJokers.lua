@@ -308,7 +308,7 @@ local m = {
 		end
 		if
 			context.selling_card
-			and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m"))
+			and context.card:is_jolly()
 			and not context.blueprint
 		then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
