@@ -23,6 +23,18 @@ new_card.from_copy = true
 '''
 match_indent = true
 
+# Used to check for Monster from copy_card and update values
+# more or less the same patch above but this also applies if strip_edition is true
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = "if not strip_edition then"
+position = 'before'
+payload = '''
+new_card.checkmonster = true
+'''
+match_indent = true
+
 # Joker BigNum value support
 [[patches]]
 [patches.pattern]
@@ -407,3 +419,6 @@ local numcards = #G.jokers.cards + #G.consumeables.cards
 if G.GAME.modifiers.cry_beta then numcards = #G.jokers.cards end
 for i=1, numcards do'''
 match_indent = true
+
+
+

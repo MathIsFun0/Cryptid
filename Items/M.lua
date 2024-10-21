@@ -1195,7 +1195,10 @@ local longboi = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff and card.ability.extra.mult == nil then
+		if (not from_debuff and card.ability.extra.mult == nil) or card.checkmonster then
+			--Stops Things like Gemini from updating mult when it isn't supposed to
+			if card.checkmonster then card.checkmonster = nil end
+			
 			card.ability.extra.mult = G.GAME.monstermult or 1
 		end
 	end,
