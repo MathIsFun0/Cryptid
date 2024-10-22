@@ -49,7 +49,7 @@ local antimatter = {
 		cry_crit_rate = 0.25, --Critical Deck
 		cry_encoded = true, --Encoded Deck
 		cry_legendary = true,
-		cry_legendary_rate = 0.2,
+		cry_legendary_rate = 0.2, --Legendary Deck
 		-- Enhanced Decks
 		cry_force_enhancement = "random",
 		cry_force_edition = "random",
