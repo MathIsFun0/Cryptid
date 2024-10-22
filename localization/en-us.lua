@@ -372,7 +372,7 @@ return {
             c_cry_multiply = {
                 name = "://MULTIPLY",
                 text = {
-                    "{C:cry_code}Double{} all values of",
+                    "{C:cry_code}{} all values of",
                     "a selected {C:cry_code}Joker{} until",
                     "end of round",
                 },
@@ -474,6 +474,8 @@ return {
                     "This card can be",
                     "{C:attention}flipped{} to reveal",
                     "a different card",
+                    "{C:inactive}(Blank side can be merged",
+					"{C:inactive}with another card)",
                 },
             },
             e_cry_glass = {
