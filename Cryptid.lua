@@ -52,22 +52,25 @@ if Cryptid.enabled["Menu"] then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
-		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
-		G.title_top.T.w = G.title_top.T.w*1.7675
+		local newcard = create_card("Spectral", G.title_top, nil, nil, nil, nil, "c_cryptid", "elial1")
+		G.title_top.T.w = G.title_top.T.w * 1.7675
 		G.title_top.T.x = G.title_top.T.x - 0.8
 		G.title_top:emplace(newcard)
-		newcard.T.w = newcard.T.w * 1.1*1.2
-		newcard.T.h = newcard.T.h *1.1*1.2
+		newcard.T.w = newcard.T.w * 1.1 * 1.2
+		newcard.T.h = newcard.T.h * 1.1 * 1.2
 		newcard.no_ui = true
 
-		G.SPLASH_BACK:define_draw_steps({{
-			shader = 'splash',
-			send = {
-				{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL_SHADER'},
-				{name = 'vort_speed', val = 0.4},
-				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
-				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
-			}}})
+		G.SPLASH_BACK:define_draw_steps({
+			{
+				shader = "splash",
+				send = {
+					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
+					{ name = "vort_speed", val = 0.4 },
+					{ name = "colour_1", ref_table = G.C, ref_value = "CRY_EXOTIC" },
+					{ name = "colour_2", ref_table = G.C, ref_value = "DARK_EDITION" },
+				},
+			},
+		})
 		return ret
 	end
 end
@@ -912,13 +915,18 @@ end
 
 function Card:calculate_joker(context)
 	local active_side = self
-	if next(find_joker("cry-Flip Side")) and not context.dbl_side and self.edition and self.edition.cry_double_sided then
+	if
+		next(find_joker("cry-Flip Side"))
+		and not context.dbl_side
+		and self.edition
+		and self.edition.cry_double_sided
+	then
 		self:init_dbl_side()
 		active_side = self.dbl_side
 		if context.callback then
 			local m = context.callback
-			context.callback = function(card,a,b)
-				m(self,a,b)
+			context.callback = function(card, a, b)
+				m(self, a, b)
 			end
 			context.dbl_side = true
 		end
@@ -1263,7 +1271,7 @@ function Card:is_jolly()
 	if self.ability.name == "Jolly Joker" then
 		check = true
 	end
-	if (self.edition and self.edition.key == "e_cry_m") then
+	if self.edition and self.edition.key == "e_cry_m" then
 		check = true
 	end
 
@@ -1275,8 +1283,9 @@ function Card:is_jolly()
 	if G.GAME.blind.boss then
 		check = true
 	end
-	]]--
-	return check	
+	]]
+	--
+	return check
 end
 
 function cry_with_deck_effects(card, func)
@@ -1363,125 +1372,134 @@ for set, objs in pairs(Cryptid.obj_buffer) do
 		SMODS[set](objs[i])
 	end
 end
-local cryptidTabs = function() return {
-	{
-		label = localize("cry_set_features"),
-		chosen = true,
-		tab_definition_function = function()
-			cry_nodes = {
-				{
-					n = G.UIT.R,
-					config = { align = "cm" },
-					nodes = {
-						{
-							n = G.UIT.O,
-							config = {
-								object = DynaText({
-									string = localize("cry_set_enable_features"),
-									colours = { G.C.WHITE },
-									shadow = true,
-									scale = 0.4,
-								}),
+local cryptidTabs = function()
+	return {
+		{
+			label = localize("cry_set_features"),
+			chosen = true,
+			tab_definition_function = function()
+				cry_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = localize("cry_set_enable_features"),
+										colours = { G.C.WHITE },
+										shadow = true,
+										scale = 0.4,
+									}),
+								},
 							},
 						},
 					},
-				},
-			}
-			left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-			--todo: completely redesign this, make it possible to enable/disable individual items
-			local ordered_config = {}
-			for k, _ in pairs(Cryptid_config) do
-				if localize("cry_feat_"..string.lower(k)) ~= "ERROR" and k ~= "JokerDisplay" then
-					ordered_config[#ordered_config+1] = k
+				}
+				left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				--todo: completely redesign this, make it possible to enable/disable individual items
+				local ordered_config = {}
+				for k, _ in pairs(Cryptid_config) do
+					if localize("cry_feat_" .. string.lower(k)) ~= "ERROR" and k ~= "JokerDisplay" then
+						ordered_config[#ordered_config + 1] = k
+					end
 				end
-			end
-			table.sort(ordered_config)
-			for _, k in ipairs(ordered_config) do
-				if #right_settings.nodes < #left_settings.nodes then
-					right_settings.nodes[#right_settings.nodes + 1] =
-						create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
-				else
-					left_settings.nodes[#left_settings.nodes + 1] =
-						create_toggle({ label = localize("cry_feat_"..string.lower(k)), ref_table = Cryptid_config, ref_value = k })
+				table.sort(ordered_config)
+				for _, k in ipairs(ordered_config) do
+					if #right_settings.nodes < #left_settings.nodes then
+						right_settings.nodes[#right_settings.nodes + 1] = create_toggle({
+							label = localize("cry_feat_" .. string.lower(k)),
+							ref_table = Cryptid_config,
+							ref_value = k,
+						})
+					else
+						left_settings.nodes[#left_settings.nodes + 1] = create_toggle({
+							label = localize("cry_feat_" .. string.lower(k)),
+							ref_table = Cryptid_config,
+							ref_value = k,
+						})
+					end
 				end
-			end
-			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
-			cry_nodes[#cry_nodes + 1] = config
-			return {
-				n = G.UIT.ROOT,
-				config = {
-					emboss = 0.05,
-					minh = 6,
-					r = 0.1,
-					minw = 10,
-					align = "cm",
-					padding = 0.2,
-					colour = G.C.BLACK,
-				},
-				nodes = cry_nodes,
-			}
-		end,
-	},
-	{
-		label = localize("cry_set_music"),
-		tab_definition_function = function()
-			-- TODO: Add a button here to reset all Cryptid achievements.
-			-- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
-			--[[fetch_achievements()
+				config =
+					{ n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
+				cry_nodes[#cry_nodes + 1] = config
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = cry_nodes,
+				}
+			end,
+		},
+		{
+			label = localize("cry_set_music"),
+			tab_definition_function = function()
+				-- TODO: Add a button here to reset all Cryptid achievements.
+				-- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
+				--[[fetch_achievements()
             for k, v in pairs(SMODS.Achievements) do
                 G.SETTINGS.ACHIEVEMENTS_EARNED[k] = nil
                 G.ACHIEVEMENTS[k].earned = nil
             end
             fetch_achievements()]]
-			cry_nodes = {
-				{
-					n = G.UIT.R,
-					config = { align = "cm" },
-					nodes = {
-						--{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+				cry_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+							--{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+						},
 					},
-				},
-			}
-			settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_jimball"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "jimball_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_code"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "code_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_exotic"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "exotic_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_high_score"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "big_music",
-			})
-			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
-			cry_nodes[#cry_nodes + 1] = config
-			return {
-				n = G.UIT.ROOT,
-				config = {
-					emboss = 0.05,
-					minh = 6,
-					r = 0.1,
-					minw = 10,
-					align = "cm",
-					padding = 0.2,
-					colour = G.C.BLACK,
-				},
-				nodes = cry_nodes,
-			}
-		end,
-	},
-} end
+				}
+				settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_jimball"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "jimball_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_code"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "code_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_exotic"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "exotic_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_high_score"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "big_music",
+				})
+				config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
+				cry_nodes[#cry_nodes + 1] = config
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = cry_nodes,
+				}
+			end,
+		},
+	}
+end
 G.FUNCS.cryptidMenu = function(e)
 	local tabs = create_tabs({
 		snap_to_nav = true,
@@ -1620,21 +1638,19 @@ end
 --Is it due to how TWEWJ is Coded? Is it an issue with Steamodded itself? Might be worth looking into, just sayin
 
 if (SMODS.Mods["TWEWY"] or {}).can_load then
-	SMODS.Joker:take_ownership('twewy_topGear', {
+	SMODS.Joker:take_ownership("twewy_topGear", {
 		name = "Cry-topGear",
 		--Stop Top Gear's Old code from working by overriding these
-		add_to_deck = function(self, card, from_debuff)
-		end,
-		remove_from_deck = function(self, card, from_debuff)
-		end,
+		add_to_deck = function(self, card, from_debuff) end,
+		remove_from_deck = function(self, card, from_debuff) end,
 		rarity = 3,
 		loc_txt = {
-        		name = 'Top Gear',
-        		text = { 
+			name = "Top Gear",
+			text = {
 				"All {C:blue}Common{C:attention} Jokers{}",
-        			"are {C:dark_edition}Polychrome{}",
-			}
-    		},
+				"are {C:dark_edition}Polychrome{}",
+			},
+		},
 	})
 end
 
@@ -1656,12 +1672,16 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
-		return not center_no(center, "doe") and not center_no(center, "aeq") and not (center.rarity == 6 or center.rarity == "cry_exotic")
+		return not center_no(center, "doe")
+			and not center_no(center, "aeq")
+			and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity then
-		if not G.GAME.aequilibriumkey then G.GAME.aequilibriumkey = 1 end
+		if not G.GAME.aequilibriumkey then
+			G.GAME.aequilibriumkey = 1
+		end
 		local aeqactive = nil
-		if next(find_joker('Ace Aequilibrium')) and not forced_key then
+		if next(find_joker("Ace Aequilibrium")) and not forced_key then
 			while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
 				if math.ceil(G.GAME.aequilibriumkey) > #G.P_CENTER_POOLS["Joker"] then
 					G.GAME.aequilibriumkey = 1
@@ -1713,25 +1733,24 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		_type = (center.set ~= "Default" and center.set or _type)
 	else
 		--Reimplement Door Hanger From Bunco
-                if next(find_joker('Doorhanger')) then
+		if next(find_joker("Doorhanger")) then
 			if type(_rarity) ~= "string" then
-                    		if _rarity == nil or _rarity < 0.9 then
-        
-                        		_rarity = 0.9
+				if _rarity == nil or _rarity < 0.9 then
+					_rarity = 0.9
 
 					--Minor Changes from Bunco's implementation
-					local rng = pseudorandom('doorhanger'..G.SEED)
-                        		if rng > 0.97 then
+					local rng = pseudorandom("doorhanger" .. G.SEED)
+					if rng > 0.97 then
 						--Rare Jokers
-                            			_rarity = 0.993
-                        		end
+						_rarity = 0.993
+					end
 					if rng > 0.99 then
 						--Epic Jokers (If enabled, otherwise rare jokers)
-                            			_rarity = 1
-                        		end
-                    		end
+						_rarity = 1
+					end
+				end
 			end
-                end
+		end
 		gcparea = area
 		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
 		gcparea = nil
@@ -1761,7 +1780,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		if not ret.config.center.key then
 			ret.config.center.key = ""
 		end
-		if not ret.ability then ret.ability = {} end
+		if not ret.ability then
+			ret.ability = {}
+		end
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
@@ -1989,9 +2010,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
 	end
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
-		if card.ability.name ~= "cry-meteor"
-		and card.ability.name ~= "cry-exoplanet"
-		and card.ability.name ~= "cry-stardust" then
+		if
+			card.ability.name ~= "cry-meteor"
+			and card.ability.name ~= "cry-exoplanet"
+			and card.ability.name ~= "cry-stardust"
+		then
 			card:set_edition("e_polychrome", true, nil, true)
 		end
 	end
@@ -2004,7 +2027,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.name == "cry-stardust" then
 		card:set_edition("e_polychrome", true, nil, true)
 	end
-	-- Certain jokers such as Steel Joker and Driver's License depend on values set 
+	-- Certain jokers such as Steel Joker and Driver's License depend on values set
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
 	-- those values will be unset during scoring unless update() is manually called.
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
@@ -2062,24 +2085,28 @@ end
 
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
-  if (card.ability.name == "cry-Negative Joker" and card.ability.extra >= 1) or
-	(card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1) or 
-	(card.ability.name == "cry-Tenebris" and card.ability.extra.slots >= 1) then
-    return true
-  end
-  return gfcfbs(card)
+	if
+		(card.ability.name == "cry-Negative Joker" and card.ability.extra >= 1)
+		or (card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1)
+		or (card.ability.name == "cry-Tenebris" and card.ability.extra.slots >= 1)
+	then
+		return true
+	end
+	return gfcfbs(card)
 end
 
 local gfcsc = G.FUNCS.can_select_card
 G.FUNCS.can_select_card = function(e)
-  if (e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra >= 1) or
-	(e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1) or 
-	(e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1) then 
-    e.config.colour = G.C.GREEN
-    e.config.button = 'use_card'
-  else
-    gfcsc(e)
-  end
+	if
+		(e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra >= 1)
+		or (e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1)
+		or (e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1)
+	then
+		e.config.colour = G.C.GREEN
+		e.config.button = "use_card"
+	else
+		gfcsc(e)
+	end
 end
 
 --Redefine these here because they're always used
@@ -2185,7 +2212,7 @@ end
 function cry_misprintize(card, override, force_reset, stack)
 	--infinifusion compat
 	if card.infinifusion then
-		if card.config.center == card.infinifusion_center or card.config.center.key == 'j_infus_fused' then
+		if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
 			calculate_infinifusion(card, nil, function(i)
 				cry_misprintize(card, override, force_reset, stack)
 			end)
@@ -2193,10 +2220,13 @@ function cry_misprintize(card, override, force_reset, stack)
 	end
 	if
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
-		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
-		and not stack or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
+			and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
+			and not stack
+		or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
 	then
-		if card.ability.name == "Ace Aequilibrium" then return end
+		if card.ability.name == "Ace Aequilibrium" then
+			return
+		end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}
@@ -2268,18 +2298,19 @@ end
 --Cryptid (THE MOD) localization
 local function parse_loc_txt(center)
 	center.text_parsed = {}
-	if not center.text then else
+	if not center.text then
+	else
 		for _, line in ipairs(center.text) do
-			center.text_parsed[#center.text_parsed+1] = loc_parse_string(line)
+			center.text_parsed[#center.text_parsed + 1] = loc_parse_string(line)
 		end
 		center.name_parsed = {}
-		for _, line in ipairs(type(center.name) == 'table' and center.name or {center.name}) do
-			center.name_parsed[#center.name_parsed+1] = loc_parse_string(line)
+		for _, line in ipairs(type(center.name) == "table" and center.name or { center.name }) do
+			center.name_parsed[#center.name_parsed + 1] = loc_parse_string(line)
 		end
 		if center.unlock then
 			center.unlock_parsed = {}
 			for _, line in ipairs(center.unlock) do
-				center.unlock_parsed[#center.unlock_parsed+1] = loc_parse_string(line)
+				center.unlock_parsed[#center.unlock_parsed + 1] = loc_parse_string(line)
 			end
 		end
 	end
@@ -2306,11 +2337,19 @@ function init_localization()
 			local key = Cryptid.obj_buffer.Stake[i].key
 			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 			if color then
-				local sticker_key = key:sub(7).."_sticker"
+				local sticker_key = key:sub(7) .. "_sticker"
 				if not G.localization.descriptions.Other[sticker_key] then
 					G.localization.descriptions.Other[sticker_key] = {
-						name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
-						text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+						name = localize({ type = "variable", key = "cry_sticker_name", vars = { color } })[1],
+						text = localize({
+							type = "variable",
+							key = "cry_sticker_desc",
+							vars = {
+								color,
+								"{C:attention}",
+								"{}",
+							},
+						}),
 					}
 					parse_loc_txt(G.localization.descriptions.Other[sticker_key])
 				end
@@ -2370,7 +2409,10 @@ function Card:no(m, no_no)
 		-- Infinifusion Compat
 		if self.infinifusion then
 			for i = 1, #self.infinifusion do
-				if G.P_CENTERS[self.infinifusion[i].key][m] or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key]) then
+				if
+					G.P_CENTERS[self.infinifusion[i].key][m]
+					or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key])
+				then
 					return true
 				end
 			end
@@ -2383,14 +2425,14 @@ function Card:no(m, no_no)
 
 		return self.config.center[m] or (G.GAME and G.GAME[m] and G.GAME[m][self.config.center_key]) or false
 	end
-	return Card.no(self, "no_"..m, true)
+	return Card.no(self, "no_" .. m, true)
 end
 
 function center_no(center, m, key, no_no)
 	if no_no then
 		return center[m] or (G.GAME and G.GAME[m] and G.GAME[m][key]) or false
 	end
-	return center_no(center, "no_"..m, key, true)
+	return center_no(center, "no_" .. m, key, true)
 end
 
 -- Fix a CCD-related crash
@@ -2588,7 +2630,7 @@ if Cryptid.enabled["M Jokers"] then
 	jokers[#jokers + 1] = "j_cry_foodm"
 end
 for i = 1, #jokers do
-	Cryptid.food[#Cryptid.food+1] = jokers[i]
+	Cryptid.food[#Cryptid.food + 1] = jokers[i]
 end
 
 SMODS.Sound({
@@ -2804,74 +2846,228 @@ function create_cryptid_notif_overlay(key)
 		G.SETTINGS.cryptid_notifs = {}
 	end
 	if not G.SETTINGS.cryptid_notifs[key] then
-		G.E_MANAGER:add_event(Event({
-			trigger = 'immediate',
-			no_delete = true,
-			func = (function()
-				if not G.OVERLAY_MENU then 
-					G.SETTINGS.paused = true
-					G.FUNCS.overlay_menu{
-						definition = create_UIBox_cryptid_notif(key),
-					}
-					play_sound('foil1', 0.7, 0.3)
-					play_sound('gong', 1.4, 0.15)
-					G.SETTINGS.cryptid_notifs[key] = true
-					G:save_settings()
-					return true
-				end
-			end)
-		}), 'unlock')
+		G.E_MANAGER:add_event(
+			Event({
+				trigger = "immediate",
+				no_delete = true,
+				func = function()
+					if not G.OVERLAY_MENU then
+						G.SETTINGS.paused = true
+						G.FUNCS.overlay_menu({
+							definition = create_UIBox_cryptid_notif(key),
+						})
+						play_sound("foil1", 0.7, 0.3)
+						play_sound("gong", 1.4, 0.15)
+						G.SETTINGS.cryptid_notifs[key] = true
+						G:save_settings()
+						return true
+					end
+				end,
+			}),
+			"unlock"
+		)
 	end
 end
 
 function create_UIBox_cryptid_notif(key)
-	local t = create_UIBox_generic_options({padding = 0,back_label = localize('b_continue'), no_pip = true, snap_back = true, back_func = 'continue_unlock', minw = 4.5, contents = {
-		{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
-		  {n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
-			{n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
-			  {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
-				{n=G.UIT.O, config={object = DynaText({string = {localize('cry_notif_'..key..'_1')}, colours = {G.C.BLUE},shadow = true, rotate = true, bump = true, pop_in = 0.3, pop_in_rate = 2, scale = 1.2})}}
-			  }},
-			  {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
-				{n=G.UIT.O, config={object = DynaText({string = {localize('cry_notif_'..key..'_2')}, colours = {G.C.RED},shadow = true, rotate = true, bump = true, pop_in = 0.6, pop_in_rate = 2, scale = 0.8})}}
-			  }},
-			}},
-			{n=G.UIT.R, config={align = "cm", padding = 0.2}, nodes={
-			  {n=G.UIT.R, config={align = "cm", padding = 0.05, emboss = 0.05, colour = G.C.WHITE, r = 0.1}, nodes={
-				Cryptid.notifications[key].nodes()
-			  }}
-			}}
-		  }},
-		  Cryptid.notifications[key].cta and {n=G.UIT.R, config={id = 'overlay_menu_back_button', align = "cm", minw = 2.5, padding =0.1, r = 0.1, hover = true, colour = G.C.BLUE, button = "notif_"..key, shadow = true, focus_args = {nav = 'wide', button = 'b'}}, nodes={
-			{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
-			  {n=G.UIT.T, config={text = localize(Cryptid.notifications[key].cta.label), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = 'set_button_pip', focus_args = {button = 'b'}}}
-			}}
-		  }} or nil
-		}}
-	  }})
+	local t = create_UIBox_generic_options({
+		padding = 0,
+		back_label = localize("b_continue"),
+		no_pip = true,
+		snap_back = true,
+		back_func = "continue_unlock",
+		minw = 4.5,
+		contents = {
+			{
+				n = G.UIT.R,
+				config = { align = "cm", padding = 0 },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm", padding = 0.1 },
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.1 },
+								nodes = {
+									{
+										n = G.UIT.R,
+										config = { align = "cm", padding = 0 },
+										nodes = {
+											{
+												n = G.UIT.O,
+												config = {
+													object = DynaText({
+														string = { localize("cry_notif_" .. key .. "_1") },
+														colours = { G.C.BLUE },
+														shadow = true,
+														rotate = true,
+														bump = true,
+														pop_in = 0.3,
+														pop_in_rate = 2,
+														scale = 1.2,
+													}),
+												},
+											},
+										},
+									},
+									{
+										n = G.UIT.R,
+										config = { align = "cm", padding = 0 },
+										nodes = {
+											{
+												n = G.UIT.O,
+												config = {
+													object = DynaText({
+														string = { localize("cry_notif_" .. key .. "_2") },
+														colours = { G.C.RED },
+														shadow = true,
+														rotate = true,
+														bump = true,
+														pop_in = 0.6,
+														pop_in_rate = 2,
+														scale = 0.8,
+													}),
+												},
+											},
+										},
+									},
+								},
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0.2 },
+								nodes = {
+									{
+										n = G.UIT.R,
+										config = {
+											align = "cm",
+											padding = 0.05,
+											emboss = 0.05,
+											colour = G.C.WHITE,
+											r = 0.1,
+										},
+										nodes = {
+											Cryptid.notifications[key].nodes(),
+										},
+									},
+								},
+							},
+						},
+					},
+					Cryptid.notifications[key].cta and {
+						n = G.UIT.R,
+						config = {
+							id = "overlay_menu_back_button",
+							align = "cm",
+							minw = 2.5,
+							padding = 0.1,
+							r = 0.1,
+							hover = true,
+							colour = G.C.BLUE,
+							button = "notif_" .. key,
+							shadow = true,
+							focus_args = { nav = "wide", button = "b" },
+						},
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0, no_fill = true },
+								nodes = {
+									{
+										n = G.UIT.T,
+										config = {
+											text = localize(Cryptid.notifications[key].cta.label),
+											scale = 0.5,
+											colour = G.C.UI.TEXT_LIGHT,
+											shadow = true,
+											func = "set_button_pip",
+											focus_args = { button = "b" },
+										},
+									},
+								},
+							},
+						},
+					} or nil,
+				},
+			},
+		},
+	})
 	return t
-  end
+end
 
 -- I couldn't figure out how to use localization for this, so this implementation is pretty scuffed
 Cryptid.notifications = {
 	jimball = {
-		nodes = function() return {n=G.UIT.R, config={align = "cm", colour = empty and G.C.CLEAR or G.C.UI.BACKGROUND_WHITE, r = 0.1, padding = 0.04, minw = 2, minh = 0.8, emboss = not empty and 0.05 or nil, filler = true}, nodes={
-			{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes={
-				{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
-					{n=G.UIT.T, config={text = localize('cry_notif_jimball_d1'), scale = 0.5, colour = G.C.BLACK}},
-				}},
-				{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
-					{n=G.UIT.T, config={text = localize('cry_notif_jimball_d2'), scale = 0.5, colour = G.C.BLACK}},
-				}},
-				{n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
-					{n=G.UIT.T, config={text = localize('cry_notif_jimball_d3'), scale = 0.5, colour = G.C.BLACK}},
-				}},
-			}}
-		}} end,
+		nodes = function()
+			return {
+				n = G.UIT.R,
+				config = {
+					align = "cm",
+					colour = empty and G.C.CLEAR or G.C.UI.BACKGROUND_WHITE,
+					r = 0.1,
+					padding = 0.04,
+					minw = 2,
+					minh = 0.8,
+					emboss = not empty and 0.05 or nil,
+					filler = true,
+				},
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm", padding = 0.03 },
+						nodes = {
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0 },
+								nodes = {
+									{
+										n = G.UIT.T,
+										config = {
+											text = localize("cry_notif_jimball_d1"),
+											scale = 0.5,
+											colour = G.C.BLACK,
+										},
+									},
+								},
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0 },
+								nodes = {
+									{
+										n = G.UIT.T,
+										config = {
+											text = localize("cry_notif_jimball_d2"),
+											scale = 0.5,
+											colour = G.C.BLACK,
+										},
+									},
+								},
+							},
+							{
+								n = G.UIT.R,
+								config = { align = "cm", padding = 0 },
+								nodes = {
+									{
+										n = G.UIT.T,
+										config = {
+											text = localize("cry_notif_jimball_d3"),
+											scale = 0.5,
+											colour = G.C.BLACK,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+		end,
 		cta = {
-			label = "k_disable_music"
-		}
-	}
+			label = "k_disable_music",
+		},
+	},
 }
 ----------------------------------------------
 ------------MOD CODE END----------------------

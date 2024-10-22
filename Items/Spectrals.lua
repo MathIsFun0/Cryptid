@@ -37,15 +37,12 @@ local white_hole = {
 				level_up_hand(used_consumable, v, true, -this_removed_levels)
 			end
 		end
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{
-				handname = localize(_hand, "poker_hands"),
-				chips = G.GAME.hands[_hand].chips,
-				mult = G.GAME.hands[_hand].mult,
-				level = G.GAME.hands[_hand].level,
-			}
-		)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize(_hand, "poker_hands"),
+			chips = G.GAME.hands[_hand].chips,
+			mult = G.GAME.hands[_hand].mult,
+			level = G.GAME.hands[_hand].level,
+		})
 		level_up_hand(used_consumable, _hand, false, 3 * removed_levels)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -81,15 +78,12 @@ local white_hole = {
 				level_up_hand(used_consumable, v, true, -this_removed_levels)
 			end
 		end
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{
-				handname = localize(_hand, "poker_hands"),
-				chips = G.GAME.hands[_hand].chips,
-				mult = G.GAME.hands[_hand].mult,
-				level = G.GAME.hands[_hand].level,
-			}
-		)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize(_hand, "poker_hands"),
+			chips = G.GAME.hands[_hand].chips,
+			mult = G.GAME.hands[_hand].mult,
+			level = G.GAME.hands[_hand].level,
+		})
 		level_up_hand(used_consumable, _hand, false, removed_levels * 3 ^ number)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },

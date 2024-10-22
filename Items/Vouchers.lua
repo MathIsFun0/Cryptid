@@ -12,8 +12,8 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 	order = 1,
 	pos = { x = 1, y = 1 },
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_triple", specific_vars = { 2 } }
 		return { vars = {} }
 	end,
 }
@@ -24,8 +24,8 @@ local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quadruple", specific_vars = {3}}
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quadruple", specific_vars = { 3 } }
 		return { vars = {} }
 	end,
 	requires = { "v_cry_copies" },
@@ -37,8 +37,8 @@ local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 	order = 91,
 	pos = { x = 1, y = 3 },
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
-		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quintuple", specific_vars = { 4 } }
 		return { vars = {} }
 	end,
 	requires = { "v_cry_tag_printer" },
@@ -241,7 +241,7 @@ local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] availabl
 			- math.max(1, math.floor(self.config.extra)) --Booster slots
 		G.E_MANAGER:add_event(Event({
 			func = function() --card slot
-				change_shop_size(math.min(-1, -1*math.floor(self.config.extra)))
+				change_shop_size(math.min(-1, -1 * math.floor(self.config.extra)))
 				return true
 			end,
 		}))
@@ -350,7 +350,7 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.round_resets.hands = G.GAME.round_resets.hands - math.max(1, math.floor(self.config.extra))
-				ease_hands_played(math.min(-1, -1*math.floor(self.config.extra)))
+				ease_hands_played(math.min(-1, -1 * math.floor(self.config.extra)))
 				return true
 			end,
 		}))
@@ -380,7 +380,7 @@ local threers = { --Permanently gain +2 discard[s] each round
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.round_resets.discards = G.GAME.round_resets.discards - math.max(1, math.floor(self.config.extra))
-				ease_discard(math.min(-1, math.floor(-1*self.config.extra)))
+				ease_discard(math.min(-1, math.floor(-1 * self.config.extra)))
 				return true
 			end,
 		}))
@@ -408,7 +408,7 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 	unredeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.tarot_rate = G.GAME.tarot_rate / self.config.extra * (56/4) / 6
+				G.GAME.tarot_rate = G.GAME.tarot_rate / self.config.extra * (56 / 4) / 6
 				return true
 			end,
 		}))
@@ -436,7 +436,7 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 	unredeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.planet_rate = G.GAME.planet_rate / self.config.extra * (56/4) / 6
+				G.GAME.planet_rate = G.GAME.planet_rate / self.config.extra * (56 / 4) / 6
 				return true
 			end,
 		}))
@@ -464,7 +464,11 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	unredeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = math.max(25, (G.P_CENTERS.v_money_tree.config.extra or 0), (G.P_CENTERS.v_seed_money.config.extra or 0))
+				G.GAME.interest_cap = math.max(
+					25,
+					(G.P_CENTERS.v_money_tree.config.extra or 0),
+					(G.P_CENTERS.v_seed_money.config.extra or 0)
+				)
 				return true
 			end,
 		}))
@@ -535,7 +539,7 @@ local asteroglyph = { --Set Ante to 0
 				return true
 			end,
 		}))
-	end
+	end,
 }
 --Order 89 reserved for Ivory Script (unimplemented)
 local blankcanvas = { --+2 hand size
@@ -553,7 +557,7 @@ local blankcanvas = { --+2 hand size
 		G.hand:change_size(math.max(1, math.floor(self.config.extra)))
 	end,
 	unredeem = function(self)
-		G.hand:change_size(-1*math.max(1, math.floor(self.config.extra)))
+		G.hand:change_size(-1 * math.max(1, math.floor(self.config.extra)))
 	end,
 }
 
@@ -568,13 +572,13 @@ local stickyhand = { --+1 card selection limit
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
 	redeem = function(self)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		+ math.max(1, math.floor(self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(self.config.extra))
 	end,
 	unredeem = function(self)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		- math.max(1, math.floor(self.config.extra))
-		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - math.max(1, math.floor(self.config.extra))
+		if G.hand.config.highlighted_limit < 5 then
+			G.hand.config.highlighted_limit = 5
+		end
 		G.hand:unhighlight_all()
 	end,
 }
@@ -591,13 +595,13 @@ local grapplinghook = { --+1 card selection limit (replace me when "extra functi
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
 	redeem = function(self)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		+ math.max(1, math.floor(self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(self.config.extra))
 	end,
 	unredeem = function(self)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		- math.max(1, math.floor(self.config.extra))
-		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - math.max(1, math.floor(self.config.extra))
+		if G.hand.config.highlighted_limit < 5 then
+			G.hand.config.highlighted_limit = 5
+		end
 		G.hand:unhighlight_all()
 	end,
 }
@@ -614,17 +618,16 @@ local hyperspacetether = { --+2 card selection limit (replace me when "extra fun
 		return { vars = { math.max(1, math.floor(self.config.extra)) } }
 	end,
 	redeem = function(self)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		+ math.max(1, math.floor(self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(self.config.extra))
 	end,
 	unredeem = function(self)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		- math.max(1, math.floor(self.config.extra))
-		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - math.max(1, math.floor(self.config.extra))
+		if G.hand.config.highlighted_limit < 5 then
+			G.hand.config.highlighted_limit = 5
+		end
 		G.hand:unhighlight_all()
 	end,
 }
-
 
 local triple = { --Copies voucher triple tag
 	object_type = "Tag",
@@ -825,15 +828,17 @@ function megavoucherpool(_type, _rarity, legendary, key_append)
 		local add = false
 
 		if not G.GAME.cry_owned_vouchers[v.key] then
-                	local check = true
+			local check = true
 			if G.shop_vouchers and G.shop_vouchers.cards then
-                            for kk, vv in ipairs(G.shop_vouchers.cards) do
-                                if vv.config.center.key == v.key then check = false end
-                            end
-                        end
+				for kk, vv in ipairs(G.shop_vouchers.cards) do
+					if vv.config.center.key == v.key then
+						check = false
+					end
+				end
+			end
 			if check then
-                            add = true
-                        end
+				add = true
+			end
 		end
 
 		if add and not G.GAME.banned_keys[v.key] then
@@ -859,16 +864,18 @@ function get_current_pool(_type, _rarity, _legendary, _append)
 end
 
 function get_next_megavoucher_key(_from_tag)
-    local _pool, _pool_key = get_current_pool('megavoucher')
-    if _from_tag then _pool_key = 'Voucher_fromtag' end
-    local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
-    local it = 1
-    while center == 'UNAVAILABLE' do
-        it = it + 1
-        center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
-    end
+	local _pool, _pool_key = get_current_pool("megavoucher")
+	if _from_tag then
+		_pool_key = "Voucher_fromtag"
+	end
+	local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+	local it = 1
+	while center == "UNAVAILABLE" do
+		it = it + 1
+		center = pseudorandom_element(_pool, pseudoseed(_pool_key .. "_resample" .. it))
+	end
 
-    return center
+	return center
 end
 
 local voucheritems = {
@@ -893,7 +900,7 @@ local voucheritems = {
 	clone_machine,
 	stickyhand,
 	grapplinghook,
-	hyperspacetether
+	hyperspacetether,
 }
 if Cryptid.enabled["Code Cards"] then
 	voucheritems[#voucheritems + 1] = command_prompt

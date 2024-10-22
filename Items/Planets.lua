@@ -516,15 +516,12 @@ local nstar = {
 		--Add +1 to amount of neutron stars used this run
 		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
 		local neutronhand = neutronstarrandomhand() --Random poker hand
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{
-				handname = localize(neutronhand, "poker_hands"),
-				chips = G.GAME.hands[neutronhand].chips,
-				mult = G.GAME.hands[neutronhand].mult,
-				level = G.GAME.hands[neutronhand].level,
-			}
-		)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize(neutronhand, "poker_hands"),
+			chips = G.GAME.hands[neutronhand].chips,
+			mult = G.GAME.hands[neutronhand].mult,
+			level = G.GAME.hands[neutronhand].level,
+		})
 		--level up once for each neutron star used this run
 		level_up_hand(used_consumable, neutronhand, nil, G.GAME.neutronstarsusedinthisrun)
 		update_hand_text(
@@ -544,15 +541,12 @@ local nstar = {
 			handstolv[neutronhand] = (handstolv[neutronhand] or 0) + G.GAME.neutronstarsusedinthisrun
 		end
 		for k, v in pairs(handstolv) do
-			update_hand_text(
-				{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-				{
-					handname = localize(k, "poker_hands"),
-					chips = G.GAME.hands[k].chips,
-					mult = G.GAME.hands[k].mult,
-					level = G.GAME.hands[k].level,
-				}
-			)
+			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+				handname = localize(k, "poker_hands"),
+				chips = G.GAME.hands[k].chips,
+				mult = G.GAME.hands[k].mult,
+				level = G.GAME.hands[k].level,
+			})
 			card_eval_status_text(
 				used_consumable,
 				"extra",
@@ -595,15 +589,12 @@ local nstar = {
 function suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
 	for _, v in pairs(card.config.center.config.hand_types) do
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{
-				handname = localize(v, "poker_hands"),
-				chips = G.GAME.hands[v].chips,
-				mult = G.GAME.hands[v].mult,
-				level = G.GAME.hands[v].level,
-			}
-		)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize(v, "poker_hands"),
+			chips = G.GAME.hands[v].chips,
+			mult = G.GAME.hands[v].mult,
+			level = G.GAME.hands[v].level,
+		})
 		level_up_hand(used_consumable, v, nil, number)
 	end
 	update_hand_text(

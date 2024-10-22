@@ -238,8 +238,10 @@ local error_joker = {
 			card.ability.extra.sell_rounds = card.ability.extra.sell_rounds - 1
 			if card.ability.extra.sell_rounds == 0 then
 				card.ability.extra.active = true
-				local eval = function(card) return not card.REMOVED end
-                        	juice_card_until(card, eval, true)
+				local eval = function(card)
+					return not card.REMOVED
+				end
+				juice_card_until(card, eval, true)
 			else
 				return {
 					message = "???",
@@ -306,11 +308,7 @@ local m = {
 				Xmult_mod = card.ability.extra.x_mult,
 			}
 		end
-		if
-			context.selling_card
-			and context.card:is_jolly()
-			and not context.blueprint
-		then
+		if context.selling_card and context.card:is_jolly() and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			if not context.retrigger_joker then
 				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
@@ -344,7 +342,7 @@ local m = {
 				return ret, trig
 			end
 		end
-	end
+	end,
 }
 local M = {
 	object_type = "Joker",
@@ -395,7 +393,7 @@ local M = {
 				return ret, trig
 			end
 		end
-	end
+	end,
 }
 local boredom = {
 	object_type = "Joker",
@@ -1102,14 +1100,14 @@ local altgoogol = {
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker then
 			local jokers = {}
-                	for i=1, #G.jokers.cards do 
-                    		if G.jokers.cards[i] ~= card then
-                        		jokers[#jokers+1] = G.jokers.cards[i]
-                    		end
-                	end
-                	if #jokers > 0 then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] ~= card then
+					jokers[#jokers + 1] = G.jokers.cards[i]
+				end
+			end
+			if #jokers > 0 then
 				if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
-					local spawn = {G.jokers.cards[1]}
+					local spawn = { G.jokers.cards[1] }
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							for i = 1, 2 do
@@ -1120,44 +1118,23 @@ local altgoogol = {
 							return true
 						end,
 					}))
-					card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ 
+					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
 						message = localize("k_duplicated_ex"),
 						colour = G.C.RARITY.cry_epic,
-						}
-					)
+					})
 					return nil, true
 				else
-					card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ 
+					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
 						message = localize("k_nope_ex"),
 						colour = G.C.RARITY.cry_epic,
-						}
-					)
+					})
 					return nil, true
 				end
 			else
-				card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ 
-						message = localize("k_no_other_jokers"),
-						colour = G.C.RARITY.cry_epic,
-						}
-				)
+				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
+					message = localize("k_no_other_jokers"),
+					colour = G.C.RARITY.cry_epic,
+				})
 				return nil, true
 			end
 		end

@@ -517,7 +517,12 @@ local pin = {
 		end
 		for i, j in pairs(G.jokers.cards) do
 			if
-				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3) or (j.config.center.rarity == 5))
+				not (
+					(j.config.center.rarity == 1)
+					or (j.config.center.rarity == 2)
+					or (j.config.center.rarity == 3)
+					or (j.config.center.rarity == 5)
+				)
 			then
 				return true
 			end
@@ -528,7 +533,12 @@ local pin = {
 		if
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
-			and (card.config.center.rarity ~= 3 and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1 and card.config.center.rarity ~= 5)
+			and (
+				card.config.center.rarity ~= 3
+				and card.config.center.rarity ~= 2
+				and card.config.center.rarity ~= 1
+				and card.config.center.rarity ~= 5
+			)
 		then
 			return true
 		end
@@ -609,7 +619,7 @@ local tornado = {
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
-			G.GAME.blind.tornado_guarantee = pseudorandom(pseudoseed("tornado"),1,G.GAME.round_resets.hands)
+			G.GAME.blind.tornado_guarantee = pseudorandom(pseudoseed("tornado"), 1, G.GAME.round_resets.hands)
 		end
 	end,
 	in_pool = function()
@@ -633,7 +643,10 @@ local tornado = {
 			and not G.GAME.blind.disabled
 		then
 			--check for guarantee
-			if G.GAME.probabilities.normal <= 1 and G.GAME.current_round.hands_left+1 == G.GAME.blind.tornado_guarantee then
+			if
+				G.GAME.probabilities.normal <= 1
+				and G.GAME.current_round.hands_left + 1 == G.GAME.blind.tornado_guarantee
+			then
 				return false
 			end
 
@@ -1264,7 +1277,7 @@ function get_new_boss()
 	end
 	local bl = gnb()
 	if G.GAME.modifiers.cry_beta then
-		local bl_key = string.sub(bl,4)
+		local bl_key = string.sub(bl, 4)
 		local nostalgicblinds = {
 			arm = true,
 			fish = true,
@@ -1274,10 +1287,10 @@ function get_new_boss()
 			mark = true,
 			ox = true,
 			pillar = true,
-			serpent = true
+			serpent = true,
 		}
 		if nostalgicblinds[bl_key] then
-			return "bl_cry_old"..bl_key
+			return "bl_cry_old" .. bl_key
 		end
 	end
 	return bl

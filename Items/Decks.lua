@@ -391,6 +391,6 @@ return {
 		critical,
 		atlasglowing,
 		glowing,
-		beta
+		beta,
 	},
 }

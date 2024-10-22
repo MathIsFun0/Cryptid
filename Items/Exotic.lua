@@ -133,7 +133,13 @@ local exponentia = {
 			and not context.after
 		then
 			return {
-				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -303,17 +309,10 @@ local crustulum = {
 	calculate = function(self, card, context)
 		if context.reroll_shop and not context.blueprint then
 			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{
-					message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
-					colour = G.C.CHIPS,
-				}
-			)
+			card_eval_status_text(card, "extra", nil, nil, nil, {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
+				colour = G.C.CHIPS,
+			})
 			return nil, true
 		end
 		if
@@ -387,7 +386,13 @@ local primus = {
 			and not context.after
 		then
 			return {
-				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -485,10 +490,10 @@ local scalae = {
 				to_big(true_base)
 				* (
 					(
-						1 + (
-							(to_big(orig_scale_scale) / to_big(true_base)) ^ (
-								to_big(1) / to_big(card.ability.extra.scale)
-							)
+						1
+						+ (
+							(to_big(orig_scale_scale) / to_big(true_base))
+							^ (to_big(1) / to_big(card.ability.extra.scale))
 						)
 					) ^ card.ability.extra.scale
 				)
@@ -561,18 +566,15 @@ local stella_mortis = {
 					end,
 				}))
 				if not (context.blueprint_card or self).getting_sliced then
-					card_eval_status_text(
-						(context.blueprint_card or card),
-						"extra",
-						nil,
-						nil,
-						nil,
-						{
-							message = localize{type='variable',key='a_powmult',vars={number_format(
-								to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
-							)}},
-						}
-					)
+					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
+						message = localize({
+							type = "variable",
+							key = "a_powmult",
+							vars = {
+								number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)),
+							},
+						}),
+					})
 				end
 				return nil, true
 			end
@@ -584,7 +586,13 @@ local stella_mortis = {
 			and not context.after
 		then
 			return {
-				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -629,7 +637,11 @@ local circulus_pistoris = {
 			return {
 				Echip_mod = pi,
 				Emult_mod = pi,
-				message = localize{type='variable',key='a_powmultchips',vars={(card.edition and card.edition.cry_oversat and "tau" or "pi")}},
+				message = localize({
+					type = "variable",
+					key = "a_powmultchips",
+					vars = { (card.edition and card.edition.cry_oversat and "tau" or "pi") },
+				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
 		end
@@ -803,7 +815,11 @@ local facile = {
 			if card.ability.extra.check2 <= card.ability.extra.check then
 				card.ability.extra.check2 = 0
 				return {
-					message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
+					message = localize({
+						type = "variable",
+						key = "a_powmult",
+						vars = { number_format(card.ability.extra.Emult) },
+					}),
 					Emult_mod = card.ability.extra.Emult,
 					colour = G.C.DARK_EDITION,
 				}
@@ -836,7 +852,10 @@ local gemino = {
 		if context.end_of_round and not context.repetition and not context.individual then
 			local check = false
 			local card = G.jokers.cards[1]
-			if not Card.no(G.jokers.cards[1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[1], "immutable", true) then
+			if
+				not Card.no(G.jokers.cards[1], "immune_to_chemach", true)
+				and not Card.no(G.jokers.cards[1], "immutable", true)
+			then
 				cry_with_deck_effects(G.jokers.cards[1], function(card)
 					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
@@ -912,10 +931,12 @@ local verisimile = {
 		if context.post_trigger and not context.blueprint then
 			--Todo: Gros Michel, Cavendish, Planet.lua
 			--Bus driver is ignored because it always triggers anyway
-			if context.other_joker.ability.name == "8 Ball" 
-			or context.other_joker.ability.name == "Space Joker"
-			or context.other_joker.ability.name == "Business Card"
-			or context.other_joker.ability.name == "Hallucination" then
+			if
+				context.other_joker.ability.name == "8 Ball"
+				or context.other_joker.ability.name == "Space Joker"
+				or context.other_joker.ability.name == "Business Card"
+				or context.other_joker.ability.name == "Hallucination"
+			then
 				local variable = context.other_joker
 				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
 				card_eval_status_text(
@@ -986,41 +1007,46 @@ local verisimile = {
 	end,
 }
 
-
 local duplicare = {
-    object_type = "Joker",
-    name = "cry-duplicare",
-    key = "duplicare",
-    config = {extra = {Emult = 1.25}},
+	object_type = "Joker",
+	name = "cry-duplicare",
+	key = "duplicare",
+	config = { extra = { Emult = 1.25 } },
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
-    rarity = "cry_exotic",
-    cost = 50,
-    order = 517,
-    blueprint_compat = true,
-    atlas = "placeholders",
-    loc_vars = function(self, info_queue, center)
-        return {
-            vars = {center.ability.extra.Emult}
-        }
-    end,
-    calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.ability.set == "Joker" then
-            if not Talisman.config_file.disable_anims then 
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        context.other_joker:juice_up(0.5, 0.5)
-                        return true
-                    end
-                })) 
-            end
-            return {
-                message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
-                Emult_mod = card.ability.extra.Emult,
-                colour = G.C.DARK_EDITION
-            }
-        end
-    end
+	rarity = "cry_exotic",
+	cost = 50,
+	order = 517,
+	blueprint_compat = true,
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = { center.ability.extra.Emult },
+		}
+	end,
+	calculate = function(self, card, context)
+		if context.other_joker and context.other_joker.ability.set == "Joker" then
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
+				Emult_mod = card.ability.extra.Emult,
+				colour = G.C.DARK_EDITION,
+			}
+		end
+	end,
 }
 
 -- to be honest, this needs a refactor because
@@ -1028,58 +1054,62 @@ local duplicare = {
 -- they are not saved in a good way right now
 -- status text is not handled properly
 local rescribere = {
-    object_type = "Joker",
-    name = "cry-Rescribere",
-    key = "rescribere",
+	object_type = "Joker",
+	name = "cry-Rescribere",
+	key = "rescribere",
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
-    blueprint_compat = false,
-    perishable_compat = false,
-    rarity = "cry_exotic",
-    cost = 50,
-    order = 69420,
-    atlas = "placeholders",
-    calculate = function(self, card, context)
-        local eligibleJokers = {}
-        for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i].ability.name ~= card.ability.name then eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] end
-        end
+	blueprint_compat = false,
+	perishable_compat = false,
+	rarity = "cry_exotic",
+	cost = 50,
+	order = 69420,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		local eligibleJokers = {}
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.name ~= card.ability.name then
+				eligibleJokers[#eligibleJokers + 1] = G.jokers.cards[i]
+			end
+		end
 
-        for i = 1, #eligibleJokers do
-            if context.selling_card and context.card.ability.name ~= card.ability.name and context.card ~= eligibleJokers[i] then
-                local oldfunc = eligibleJokers[i].calculate_joker
+		for i = 1, #eligibleJokers do
+			if
+				context.selling_card
+				and context.card.ability.name ~= card.ability.name
+				and context.card ~= eligibleJokers[i]
+			then
+				local oldfunc = eligibleJokers[i].calculate_joker
 
+				eligibleJokers[i].ability.rescribere_jokers = eligibleJokers[i].ability.rescribere_jokers or {}
+				eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers + 1] =
+					context.card
 
-                eligibleJokers[i].ability.rescribere_jokers = eligibleJokers[i].ability.rescribere_jokers or {}
-                eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers+1] = context.card
+				eligibleJokers[i].calculate_joker = function(cardd, contextt)
+					local totalret = oldfunc(cardd, contextt)
 
+					v = eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers]
 
-                eligibleJokers[i].calculate_joker = function(cardd,contextt)
-                    local totalret = oldfunc(cardd,contextt)
-                    
-                    v = eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers]
-
-                    local ret = v:calculate_joker(contextt)
-                    if ret and type(ret) == 'table' then
-                        totalret = totalret or {message = "Copying", card = eligibleJokers[i]}
-                        for _i,_v in pairs(ret) do
-                            if not totalret[_i] then
-                                totalret[_i] = ret[_i] or _v
-                                --print(totalret[_i] .. "--------------")
-                            else
-                                if type(totalret[_i]) == 'number' then
-                                    totalret[_i] = totalret[_i] + ret[_i]
-                                end
-                            end
-                        end
-                        totalret.card = eligibleJokers[i]
-                    end
-                    return totalret
-
-                end
-            end
-        end
-    end
+					local ret = v:calculate_joker(contextt)
+					if ret and type(ret) == "table" then
+						totalret = totalret or { message = "Copying", card = eligibleJokers[i] }
+						for _i, _v in pairs(ret) do
+							if not totalret[_i] then
+								totalret[_i] = ret[_i] or _v
+								--print(totalret[_i] .. "--------------")
+							else
+								if type(totalret[_i]) == "number" then
+									totalret[_i] = totalret[_i] + ret[_i]
+								end
+							end
+						end
+						totalret.card = eligibleJokers[i]
+					end
+					return totalret
+				end
+			end
+		end
+	end,
 }
 
 return {

@@ -132,52 +132,51 @@
 --Queen's Gambit
 
 if JokerDisplay then
-
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page1 = {}
-	
-        JokerDisplay.Definitions["j_cry_supercell"] = {
-                text = {
-                        { text = "+", colour = G.C.CHIPS },
-                        { ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
-                        { text = " +", colour = G.C.MULT },
-                        { ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
-                },
-                extra = {
-                        {
-                                {
-                                        border_nodes = {
-                                                { text = "X" },
-                                                { ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" },
-                                        },
-                                        border_colour = G.C.CHIPS,
-                                },
-                                { text = " " },
-                                {
-                                        border_nodes = {
-                                                { text = "X" },
-                                                { ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" },
-                                        },
-                                },
-                        },
-                        {
-                                { text = "+$", colour = G.C.GOLD },
-                                { ref_table = "card.ability.extra", ref_value = "money", colour = G.C.GOLD },
-                                {
-                                        ref_table = "card.joker_display_values",
-                                        ref_value = "localized_text",
-                                        colour = G.C.UI.TEXT_INACTIVE,
-                                        scale = 0.3,
-                                },
-                        },
-                },
-                calc_function = function(card)
-                        card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-                end,
-        }
-        JokerDisplay.Definitions["j_cry_dropshot"] = {
+
+	JokerDisplay.Definitions["j_cry_supercell"] = {
+		text = {
+			{ text = "+", colour = G.C.CHIPS },
+			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
+			{ text = " +", colour = G.C.MULT },
+			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
+		},
+		extra = {
+			{
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" },
+					},
+					border_colour = G.C.CHIPS,
+				},
+				{ text = " " },
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "stat2", retrigger_type = "exp" },
+					},
+				},
+			},
+			{
+				{ text = "+$", colour = G.C.GOLD },
+				{ ref_table = "card.ability.extra", ref_value = "money", colour = G.C.GOLD },
+				{
+					ref_table = "card.joker_display_values",
+					ref_value = "localized_text",
+					colour = G.C.UI.TEXT_INACTIVE,
+					scale = 0.3,
+				},
+			},
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_dropshot"] = {
 		text = {
 			{
 				border_nodes = {
@@ -429,10 +428,10 @@ if JokerDisplay then
 			return retrigger_joker.ability.extra.retrigger or 0
 		end,
 	}
-	
+
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page2 = {}
-	
+
 	JokerDisplay.Definitions["j_cry_membershipcardtwo"] = {
 		text = {
 			{ text = "+" },
@@ -565,12 +564,15 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_mprime"] = {
 		mod_function = function(card, mod_joker)
-			return { e_mult = (
-				card.ability.name == "Jolly Joker"
-				or card.edition and card.edition.key == "e_cry_m"
-				or card.ability.effect == "M Joker"
-		 	) 
-			and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+			return {
+				e_mult = (
+					card.ability.name == "Jolly Joker"
+					or card.edition and card.edition.key == "e_cry_m"
+					or card.ability.effect == "M Joker"
+				)
+						and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker)
+					or nil,
+			}
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_whip"] = {
@@ -655,7 +657,7 @@ if JokerDisplay then
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page3 = {}
-	
+
 	JokerDisplay.Definitions["j_cry_jollysus"] = {
 		reminder_text = {
 			{ text = "(" },
@@ -904,7 +906,7 @@ if JokerDisplay then
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page4 = {}
-	
+
 	JokerDisplay.Definitions["j_cry_jimball"] = {
 		text = {
 			{
@@ -1161,7 +1163,7 @@ if JokerDisplay then
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page5 = {}
-	
+
 	JokerDisplay.Definitions["j_cry_curse"] = {
 		text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
@@ -1377,7 +1379,7 @@ if JokerDisplay then
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page6 = {}
-	
+
 	JokerDisplay.Definitions["j_cry_meteor"] = {
 		text = {
 			{ text = "+" },
@@ -1406,8 +1408,11 @@ if JokerDisplay then
 			card.joker_display_values.localized_text = localize({ type = "name_text", set = "Edition", key = "e_foil" })
 		end,
 		mod_function = function(card, mod_joker) --Foil Jokers
-			return { chips = (card ~= mod_joker and card.edition and card.edition.foil == true) and 
-			mod_joker.ability.extra.chips * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+			return {
+				chips = (card ~= mod_joker and card.edition and card.edition.foil == true)
+						and mod_joker.ability.extra.chips * JokerDisplay.calculate_joker_triggers(mod_joker)
+					or nil,
+			}
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_exoplanet"] = {
@@ -1434,19 +1439,26 @@ if JokerDisplay then
 				end
 			end
 			for _, playing_card in ipairs(G.hand.cards) do --Holographic cards held in hand
-                		if playing_hand or not playing_card.highlighted then
-                    			if not (playing_card.facing == 'back') and not playing_card.debuff 
-					and playing_card.edition and playing_card.edition.holo == true then
-                        			count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
-                    			end
-                		end
-            		end
+				if playing_hand or not playing_card.highlighted then
+					if
+						not (playing_card.facing == "back")
+						and not playing_card.debuff
+						and playing_card.edition
+						and playing_card.edition.holo == true
+					then
+						count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+					end
+				end
+			end
 			card.joker_display_values.mult = card.ability.extra.mult * count
 			card.joker_display_values.localized_text = localize({ type = "name_text", set = "Edition", key = "e_holo" })
 		end,
-		mod_function = function(card, mod_joker)--Holographic Jokers
-			return { mult = (card ~= mod_joker and card.edition and card.edition.holo == true) and 
-			mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+		mod_function = function(card, mod_joker) --Holographic Jokers
+			return {
+				mult = (card ~= mod_joker and card.edition and card.edition.holo == true)
+						and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker)
+					or nil,
+			}
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_stardust"] = {
@@ -1476,20 +1488,27 @@ if JokerDisplay then
 				end
 			end
 			for _, playing_card in ipairs(G.hand.cards) do --Polychrome cards held in hand
-                		if playing_hand or not playing_card.highlighted then
-                    			if not (playing_card.facing == 'back') and not playing_card.debuff 
-					and playing_card.edition and playing_card.edition.polychrome == true then
-                        			count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
-                    			end
-                		end
-            		end
+				if playing_hand or not playing_card.highlighted then
+					if
+						not (playing_card.facing == "back")
+						and not playing_card.debuff
+						and playing_card.edition
+						and playing_card.edition.polychrome == true
+					then
+						count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+					end
+				end
+			end
 			card.joker_display_values.x_mult = card.ability.extra.xmult ^ count
 			card.joker_display_values.localized_text =
 				localize({ type = "name_text", set = "Edition", key = "e_polychrome" })
 		end,
 		mod_function = function(card, mod_joker) --Polychrome Jokers
-			return { x_mult = (card ~= mod_joker and card.edition and card.edition.polychrome == true) and 
-			mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+			return {
+				x_mult = (card ~= mod_joker and card.edition and card.edition.polychrome == true)
+						and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker)
+					or nil,
+			}
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_multjoker"] = {
@@ -1620,7 +1639,7 @@ if JokerDisplay then
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page7 = {}
-	
+
 	JokerDisplay.Definitions["j_cry_wheelhope"] = {
 		text = {
 			{
@@ -1809,7 +1828,7 @@ if JokerDisplay then
 			{ text = "(" },
 			{ ref_table = "card.ability", ref_value = "extra" },
 			{ text = "/4)" },
-		}
+		},
 	}
 	JokerDisplay.Definitions["j_cry_facile"] = {
 		text = {
@@ -1836,12 +1855,17 @@ if JokerDisplay then
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page8 = {}
-	
+
 	local hand_tmult_jd = {
 		text = {
-                        { text = "+", colour = G.C.MULT },
-                        { ref_table = "card.joker_display_values", ref_value = "t_mult", colour = G.C.MULT, retrigger_type = "mult" },
-                },
+			{ text = "+", colour = G.C.MULT },
+			{
+				ref_table = "card.joker_display_values",
+				ref_value = "t_mult",
+				colour = G.C.MULT,
+				retrigger_type = "mult",
+			},
+		},
 		reminder_text = {
 			{ text = "(" },
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
@@ -1859,9 +1883,14 @@ if JokerDisplay then
 	}
 	local hand_tchips_jd = {
 		text = {
-                        { text = "+", colour = G.C.CHIPS },
-                        { ref_table = "card.joker_display_values", ref_value = "t_chips", colour = G.C.CHIPS, retrigger_type = "mult" },
-                },
+			{ text = "+", colour = G.C.CHIPS },
+			{
+				ref_table = "card.joker_display_values",
+				ref_value = "t_chips",
+				colour = G.C.CHIPS,
+				retrigger_type = "mult",
+			},
+		},
 		reminder_text = {
 			{ text = "(" },
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
@@ -1898,7 +1927,7 @@ if JokerDisplay then
 		},
 		text_config = { colour = G.C.ORANGE },
 	}
-	
+
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page9 = {}
 
@@ -1934,7 +1963,7 @@ if JokerDisplay then
 			card.joker_display_values.localized_text = localize("Royal Flush", "poker_hands")
 		end,
 	}
-	
+
 	--end of Jokerdisplays
 end
 return { name = "JokerDisplay" }

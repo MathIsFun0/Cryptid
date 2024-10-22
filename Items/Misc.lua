@@ -237,7 +237,7 @@ local oversat = {
 			})
 		end)
 		if card.config.center.apply_oversat then
-			card.config.center:apply_oversat(card, 	function(val)
+			card.config.center:apply_oversat(card, function(val)
 				return cry_misprintize_val(val, {
 					min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
 					max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
@@ -699,7 +699,10 @@ local noisy = {
 							{ string = "rand()", colour = G.C.JOKER_GREY },
 							{
 								string = "@#"
-									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(2, 2) or "m")
+									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(
+										2,
+										2
+									) or "m")
 									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7),
 								colour = G.C.BLUE,
 							},
@@ -742,7 +745,7 @@ local jollyedition = {
 	in_shop = false,
 	order = 31,
 	weight = 0,
-	pos = {x = 2, y = 0},
+	pos = { x = 2, y = 0 },
 	name = "cry-jollyedition",
 	sound = {
 		sound = "cry_e_jolly",
@@ -812,7 +815,7 @@ local glass_edition = {
 		then
 			if
 				pseudorandom("cry_fragile")
-				> G.GAME.probabilities.normal * (self.config.shatter_chance - 1) / self.config.shatter_chance
+					> G.GAME.probabilities.normal * (self.config.shatter_chance - 1) / self.config.shatter_chance
 				and not card.ability.eternal
 			then
 				card.will_shatter = true
@@ -960,7 +963,16 @@ local blessing = {
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
 					local forced_key = get_random_consumable("blessing")
-					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
+					local _card = create_card(
+						"Consumeables",
+						G.consumables,
+						nil,
+						nil,
+						nil,
+						nil,
+						forced_key.config.center_key,
+						"blessing"
+					)
 					_card:add_to_deck()
 					G.consumeables:emplace(_card)
 					used_consumable:juice_up(0.3, 0.5)
@@ -1094,11 +1106,15 @@ local meld = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if #G.jokers.highlighted
+		if
+			#G.jokers.highlighted
 				+ #G.hand.highlighted
 				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
-			== 1 then
-			if #G.jokers.highlighted == 1 and Card.no(G.jokers.highlighted[1], "dbl") then return false end
+			== 1
+		then
+			if #G.jokers.highlighted == 1 and Card.no(G.jokers.highlighted[1], "dbl") then
+				return false
+			end
 			return true
 		end
 	end,
@@ -1125,7 +1141,7 @@ local meld = {
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_double_slit
-	end
+	end,
 }
 
 local miscitems = {
@@ -1157,7 +1173,7 @@ local miscitems = {
 	typhoon,
 	azure_seal,
 	double_sided,
-	meld
+	meld,
 }
 if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
@@ -1473,8 +1489,8 @@ return {
 			if next(find_joker("cry-Flip Side")) and self.dbl_side then
 				active_side = self.dbl_side
 			end
-			if not init_dbl_side then 
-				active_side:remove_from_deck(true) 
+			if not init_dbl_side then
+				active_side:remove_from_deck(true)
 			end
 			copy_dbl_card(self, self.dbl_side, false)
 			copy_dbl_card(tmp_side, self, false)
@@ -1488,17 +1504,21 @@ return {
 					end
 				end
 				self:set_sprites(nil, self.config.card)
-				if self.children and self.children.front and self.config.card_key then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
+				if self.children and self.children.front and self.config.card_key then
+					self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos)
+				end
 			end
 			if (not self.base or not self.base.name) and self.children.front then
 				self.children.front:remove()
 				self.children.front = nil
 			end
-			self:set_edition({cry_double_sided = true},true,true)
+			self:set_edition({ cry_double_sided = true }, true, true)
 		end
 		local cgcb = Card.get_chip_bonus
 		function Card:get_chip_bonus()
-			if self.ability.set == "Joker" then return 0 end
+			if self.ability.set == "Joker" then
+				return 0
+			end
 			return cgcb(self)
 		end
 		local csave = Card.save
@@ -1543,21 +1563,21 @@ return {
 		local catd = Card.add_to_deck
 		local crfd = Card.remove_from_deck
 		function Card:add_to_deck(debuff)
-			if debuff and self.ability.name == 'Chaos the Clown' then
+			if debuff and self.ability.name == "Chaos the Clown" then
 				return
 			end
 			return catd(self, debuff)
 		end
 		function Card:remove_from_deck(debuff)
-			if debuff and self.ability.name == 'Chaos the Clown' then
+			if debuff and self.ability.name == "Chaos the Clown" then
 				return
 			end
 			return crfd(self, debuff)
 		end
 		local cae = CardArea.emplace
-		function CardArea:emplace(card,m1,m2)
+		function CardArea:emplace(card, m1, m2)
 			if not (card.will_shatter or card.destroyed or card.shattered) then
-				cae(self,card,m1,m2)
+				cae(self, card, m1, m2)
 			else
 				if card.area then
 					card.area:remove_card(card)
@@ -1570,13 +1590,25 @@ return {
 		function set_joker_win()
 			sjw()
 			for k, v in pairs(G.jokers.cards) do
-			  if v.dbl_side and v.dbl_side.config.center_key and v.dbl_side.ability.set == 'Joker' then
-				G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] or {count = 1, order = v.dbl_side.config.center.order, wins = {}, losses = {}, wins_by_key = {}, losses_by_key = {}}
-				if G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] then
-				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins or {}
-				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] = (G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] or 0) + 1
+				if v.dbl_side and v.dbl_side.config.center_key and v.dbl_side.ability.set == "Joker" then
+					G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key]
+						or {
+							count = 1,
+							order = v.dbl_side.config.center.order,
+							wins = {},
+							losses = {},
+							wins_by_key = {},
+							losses_by_key = {},
+						}
+					if G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] then
+						G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins
+							or {}
+						G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] = (
+							G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake]
+							or 0
+						) + 1
+					end
 				end
-			  end
 			end
 			G:save_settings()
 		end
