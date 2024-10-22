@@ -372,7 +372,7 @@ return {
             c_cry_multiply = {
                 name = "://MULTIPLY",
                 text = {
-                    "{C:cry_code}{} all values of",
+                    "{C:cry_code}Double{} all values of",
                     "a selected {C:cry_code}Joker{} until",
                     "end of round",
                 },
