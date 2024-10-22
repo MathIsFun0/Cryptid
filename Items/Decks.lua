@@ -103,12 +103,22 @@ local legendary = {
 			if G.jokers then
 				if #G.jokers.cards < G.jokers.config.card_limit then
 					local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
+					legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
 					if legendary_poll < self.config.cry_legendary_rate then
 						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
 						card:add_to_deck()
 						card:start_materialize()
 						G.jokers:emplace(card)
 						return true
+					else
+						card_eval_status_text(
+							G.jokers,
+							"jokers",
+							nil,
+							nil,
+							nil,
+							{ message = localize("k_nope_ex"), colour = G.C.RARITY["legendary"] }
+						)
 					end
 				end
 			end
