@@ -18,6 +18,7 @@ jobs:
       - name: Run stylua
         uses: JohnnyMorganz/stylua-action@v4
         with:
-          version: latest # NOTE: we recommend pinning to a specific version in case of formatting changes
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
           # CLI arguments
           args: --check .
