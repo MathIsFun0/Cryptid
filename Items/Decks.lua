@@ -117,9 +117,18 @@ local legendary = {
 							nil,
 							nil,
 							nil,
-							{ message = localize("k_nope_ex"), colour = G.C.RARITY["legendary"] }
+							{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
 						)
 					end
+				else
+					card_eval_status_text(
+						G.jokers,
+						"jokers",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
+					)
 				end
 			end
 		end
