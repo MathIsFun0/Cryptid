@@ -301,7 +301,7 @@ local onlycard = {
 	rules = {
 		custom = {},
 		modifiers = {
-			{id = 'dollars', value = 10},
+			{ id = "dollars", value = 10 },
 		},
 	},
 	restrictions = {
@@ -309,7 +309,7 @@ local onlycard = {
 			{ id = "tag_charm" },
 			{ id = "tag_meteor" },
 			{ id = "tag_buffoon" },
-			{ id = "tag_ethereal" }
+			{ id = "tag_ethereal" },
 		},
 		banned_cards = {
 			{ id = "j_marble" },
@@ -319,29 +319,53 @@ local onlycard = {
 			{ id = "c_grim" },
 			{ id = "c_incantation" },
 			{ id = "c_cryptid" },
-			{id = 'p_celestial_normal_1', ids = {
-                		'p_celestial_normal_1','p_celestial_normal_2',
-				'p_celestial_normal_3','p_celestial_normal_4',
-				'p_celestial_jumbo_1','p_celestial_jumbo_2',
-				'p_celestial_mega_1','p_celestial_mega_2',}
-        		},
-			{id = 'p_arcana_normal_1', ids = {
-                		'p_arcana_normal_1','p_arcana_normal_2',
-				'p_arcana_normal_3','p_arcana_normal_4',
-				'p_arcana_jumbo_1','p_arcana_jumbo_2',
-				'p_arcana_mega_1','p_arcana_mega_2',}
-        		},
-			{id = 'p_spectral_normal_1', ids = {
-                		'p_spectral_normal_1','p_spectral_normal_2',
-				'p_spectral_jumbo_1','p_spectral_mega_1',}
-        		},
-			{id = 'p_buffoon_normal_1', ids = {
-                		'p_buffoon_normal_1','p_buffoon_normal_2',
-				'p_buffoon_jumbo_1','p_buffoon_mega_1',}
-        		},
+			{
+				id = "p_celestial_normal_1",
+				ids = {
+					"p_celestial_normal_1",
+					"p_celestial_normal_2",
+					"p_celestial_normal_3",
+					"p_celestial_normal_4",
+					"p_celestial_jumbo_1",
+					"p_celestial_jumbo_2",
+					"p_celestial_mega_1",
+					"p_celestial_mega_2",
+				},
+			},
+			{
+				id = "p_arcana_normal_1",
+				ids = {
+					"p_arcana_normal_1",
+					"p_arcana_normal_2",
+					"p_arcana_normal_3",
+					"p_arcana_normal_4",
+					"p_arcana_jumbo_1",
+					"p_arcana_jumbo_2",
+					"p_arcana_mega_1",
+					"p_arcana_mega_2",
+				},
+			},
+			{
+				id = "p_spectral_normal_1",
+				ids = {
+					"p_spectral_normal_1",
+					"p_spectral_normal_2",
+					"p_spectral_jumbo_1",
+					"p_spectral_mega_1",
+				},
+			},
+			{
+				id = "p_buffoon_normal_1",
+				ids = {
+					"p_buffoon_normal_1",
+					"p_buffoon_normal_2",
+					"p_buffoon_jumbo_1",
+					"p_buffoon_mega_1",
+				},
+			},
 		},
 		banned_other = {
-			{ id = 'bl_house', type = 'blind' },
+			{ id = "bl_house", type = "blind" },
 		},
 	},
 	jokers = {
@@ -350,7 +374,7 @@ local onlycard = {
 	deck = {
 		type = "Challenge Deck",
 		cards = {
-			{ s = "C", r = "A", g='Blue' },
+			{ s = "C", r = "A", g = "Blue" },
 		},
 	},
 }
@@ -367,8 +391,8 @@ local joker_poker = {
 			{ id = "cry_no_consumables" },
 		},
 		modifiers = {
-			{id = "consumable_slots", value = 0},
-			{id = "discards", value = 0}
+			{ id = "consumable_slots", value = 0 },
+			{ id = "discards", value = 0 },
 		},
 	},
 	deck = {
@@ -376,37 +400,37 @@ local joker_poker = {
 	},
 	restrictions = {
 		banned_cards = {
-			{id = "j_banner"},
-			{id = "j_8_ball"},
-			{id = "j_chaos"},
-			{id = "j_delayed_grat"},
-			{id = "j_sixth_sense"},
-			{id = "j_faceless"},
-			{id = "j_superposition"},
-			{id = "j_red_card"},
-			{id = "j_seance"},
-			{id = "j_vagabond"},
-			{id = "j_mail"},
-			{id = "j_hallucination"},
-			{id = "j_fortune_teller"},
-			{id = "j_drunkard"},
-			{id = "j_trading"},
-			{id = "j_flash"},
-			{id = "j_castle"},
-			{id = "j_merry_andy"},
-			{id = "j_hit_the_road"},
-			{id = "j_satellite"},
-			{id = "j_cartomancer"},
-			{id = "j_astronomer"},
-			{id = "j_burnt"},
-			{id = "j_yorick"},
-			{id = "j_perkeo"},
-			{id = "j_constellation"}
+			{ id = "j_banner" },
+			{ id = "j_8_ball" },
+			{ id = "j_chaos" },
+			{ id = "j_delayed_grat" },
+			{ id = "j_sixth_sense" },
+			{ id = "j_faceless" },
+			{ id = "j_superposition" },
+			{ id = "j_red_card" },
+			{ id = "j_seance" },
+			{ id = "j_vagabond" },
+			{ id = "j_mail" },
+			{ id = "j_hallucination" },
+			{ id = "j_fortune_teller" },
+			{ id = "j_drunkard" },
+			{ id = "j_trading" },
+			{ id = "j_flash" },
+			{ id = "j_castle" },
+			{ id = "j_merry_andy" },
+			{ id = "j_hit_the_road" },
+			{ id = "j_satellite" },
+			{ id = "j_cartomancer" },
+			{ id = "j_astronomer" },
+			{ id = "j_burnt" },
+			{ id = "j_yorick" },
+			{ id = "j_perkeo" },
+			{ id = "j_constellation" },
 		},
 		banned_other = {
-			{ id = 'bl_hook', type = 'blind' },
-			{ id = 'bl_arm', type = 'blind' },
-			{ id = 'bl_water', type = 'blind' },
+			{ id = "bl_hook", type = "blind" },
+			{ id = "bl_arm", type = "blind" },
+			{ id = "bl_water", type = "blind" },
 		},
 	},
 }
@@ -414,7 +438,7 @@ local gfcr = G.FUNCS.can_reroll
 function G.FUNCS.can_reroll(e)
 	if G.GAME.modifiers.cry_no_rerolls then
 		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        e.config.button = nil
+		e.config.button = nil
 	else
 		return gfcr(e)
 	end
@@ -430,7 +454,8 @@ end
 --TODO other mods
 if Cryptid.enabled["Blinds"] then
 	--WHY DOES THIS SHOW UP AS THE FISH????????
-	joker_poker.restrictions.banned_other[#joker_poker.restrictions.banned_other + 1] = { id = 'bl_cry_oldmanacle', type = 'blind' }
+	joker_poker.restrictions.banned_other[#joker_poker.restrictions.banned_other + 1] =
+		{ id = "bl_cry_oldmanacle", type = "blind" }
 end
 if Cryptid.enabled["Tags"] then
 	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_schematic" }
@@ -448,7 +473,8 @@ if Cryptid.enabled["Tags"] then
 end
 if Cryptid.enabled["Misc."] then
 	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_cry_eclipse" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {id = 'p_cry_meme_1', ids = {'p_cry_meme_1','p_cry_meme_two','p_cry_meme_three'}}
+	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] =
+		{ id = "p_cry_meme_1", ids = { "p_cry_meme_1", "p_cry_meme_two", "p_cry_meme_three" } }
 end
 if Cryptid.enabled["Misc. Jokers"] then
 	rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards + 1] = { id = "j_cry_pickle" }
@@ -480,7 +506,10 @@ if Cryptid.enabled["Code Cards"] then
 	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_cry_pointer" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_console" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_cry_pointer" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {id = 'p_cry_code_normal_1', ids = {'p_cry_code_normal_1','p_cry_code_normal_2','p_cry_code_jumbo_1','p_cry_code_mega_1',}}
+	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {
+		id = "p_cry_code_normal_1",
+		ids = { "p_cry_code_normal_1", "p_cry_code_normal_2", "p_cry_code_jumbo_1", "p_cry_code_mega_1" },
+	}
 	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_cut" }
 	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_CodeJoker" }
 	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_copypaste" }
@@ -489,7 +518,8 @@ if Cryptid.enabled["Code Cards"] then
 end
 if Cryptid.enabled["Spectrals"] then
 	sticker_sheet.restrictions.banned_cards[#sticker_sheet.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
-	sticker_sheet_plus.restrictions.banned_cards[#sticker_sheet_plus.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
+	sticker_sheet_plus.restrictions.banned_cards[#sticker_sheet_plus.restrictions.banned_cards + 1] =
+		{ id = "c_cry_lock" }
 	dagger_war.restrictions.banned_cards[#dagger_war.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_cry_replica" }
 end
@@ -501,7 +531,8 @@ if Cryptid.enabled["Vouchers"] then
 	rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards + 1] = { id = "v_cry_tag_printer" }
 	boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards + 1] = { id = "v_cry_tag_printer" }
 	rush_hour_ii.restrictions.banned_cards[#rush_hour_ii.restrictions.banned_cards + 1] = { id = "v_cry_clone_machine" }
-	rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards + 1] = { id = "v_cry_clone_machine" }
+	rush_hour_iii.restrictions.banned_cards[#rush_hour_iii.restrictions.banned_cards + 1] =
+		{ id = "v_cry_clone_machine" }
 	boss_rush.restrictions.banned_cards[#boss_rush.restrictions.banned_cards + 1] = { id = "v_cry_clone_machine" }
 end
 if (SMODS.Mods["jen"] or {}).can_load then
@@ -539,7 +570,8 @@ if (SMODS.Mods["jen"] or {}).can_load then
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_justice" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_devil" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_tower" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_high_priestess" }
+	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] =
+		{ id = "c_jen_reverse_high_priestess" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_emperor" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_death" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_star" }
