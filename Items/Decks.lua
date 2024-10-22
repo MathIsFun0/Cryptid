@@ -96,7 +96,7 @@ local legendary = {
 	name = "cry-Legendary",
 	key = "legendary",
 	config = { cry_legendary = true, cry_legendary_rate = 0.2 },
-	pos = { x = 4, y = 5 },
+	pos = { x = 0, y = 6 },
 	atlas = "atlasdeck",
 	trigger_effect = function(self, args)
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
