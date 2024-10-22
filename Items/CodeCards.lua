@@ -463,7 +463,7 @@ local hooked = {
 	loc_vars = function(self, info_queue, card)
 		local var
 		if not card or not card.hook_id then
-			var = "["..localize("k_joker").."]"
+			var = "[" .. localize("k_joker") .. "]"
 		else
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.hook_id then
@@ -720,7 +720,9 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true) and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		return #G.jokers.highlighted == 1
+			and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true)
+			and not Card.no(G.jokers.highlighted[1], "immutable", true)
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].cry_multiply then
@@ -1011,10 +1013,11 @@ local rework = {
 	end,
 	can_use = function(self, card)
 		--todo: nostalgic deck compat
-		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
-		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
-		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
-		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
+		return #G.jokers.highlighted == 1
+			and not G.jokers.highlighted[1].ability.eternal
+			and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
+			and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
+			and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
@@ -1384,7 +1387,11 @@ local cut = {
 				}))
 				if not (context.blueprint_card or self).getting_sliced then
 					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
-						message = localize{type='variable',key='a_xmult',vars={number_format(to_big(card.ability.extra.Xmult))}}
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { number_format(to_big(card.ability.extra.Xmult)) },
+						}),
 					})
 				end
 				return nil, true
@@ -1397,7 +1404,13 @@ local cut = {
 			and not context.after
 		then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={number_format(card.ability.extra.Xmult)}},
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = {
+						number_format(card.ability.extra.Xmult),
+					},
+				}),
 				Xmult_mod = card.ability.extra.Xmult,
 				colour = G.C.MULT,
 			}
@@ -1455,20 +1468,13 @@ local python = {
 			card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					card_eval_status_text(
-						card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{
-							message = localize({
-								type = "variable",
-								key = "a_xmult",
-								vars = { card.ability.extra.Xmult },
-							}),
-						}
-					)
+					card_eval_status_text(card, "extra", nil, nil, nil, {
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { card.ability.extra.Xmult },
+						}),
+					})
 					return true
 				end,
 			}))

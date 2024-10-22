@@ -644,7 +644,8 @@ return {
 			if center and center.set == "Enhanced" then
 				return sa(
 					self,
-					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement) and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
+					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement)
+							and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
 						or center,
 					y,
 					z
@@ -656,7 +657,14 @@ return {
 		local se = Card.set_edition
 		function Card:set_edition(edition, y, z, force)
 			if not force then
-				return se(self, (not self.no_forced_edition and G.GAME.modifiers.cry_force_edition) and { [G.GAME.modifiers.cry_force_edition] = true } or edition, y, z)
+				return se(
+					self,
+					(not self.no_forced_edition and G.GAME.modifiers.cry_force_edition)
+							and { [G.GAME.modifiers.cry_force_edition] = true }
+						or edition,
+					y,
+					z
+				)
 			end
 			return se(self, edition, y, z)
 		end

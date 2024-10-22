@@ -20,5 +20,5 @@ return {
 	["Blinds"] = true,
 	["HTTPS Module"] = false,
 	["JokerDisplay"] = true,
-	["Menu"] = true
+	["Menu"] = true,
 }
