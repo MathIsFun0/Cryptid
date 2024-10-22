@@ -133,9 +133,13 @@ local exponentia = {
 			and not context.after
 		then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -382,9 +386,13 @@ local primus = {
 			and not context.after
 		then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -578,9 +586,13 @@ local stella_mortis = {
 			and not context.after
 		then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -1023,9 +1035,13 @@ local duplicare = {
 				}))
 			end
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}

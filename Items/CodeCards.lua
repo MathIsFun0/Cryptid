@@ -1404,9 +1404,13 @@ local cut = {
 			and not context.after
 		then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = {
-					number_format(card.ability.extra.Xmult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = {
+						number_format(card.ability.extra.Xmult),
+					},
+				}),
 				Xmult_mod = card.ability.extra.Xmult,
 				colour = G.C.MULT,
 			}

@@ -2341,11 +2341,15 @@ function init_localization()
 				if not G.localization.descriptions.Other[sticker_key] then
 					G.localization.descriptions.Other[sticker_key] = {
 						name = localize({ type = "variable", key = "cry_sticker_name", vars = { color } })[1],
-						text = localize({ type = "variable", key = "cry_sticker_desc", vars = {
-							color,
-							"{C:attention}",
-							"{}",
-						} }),
+						text = localize({
+							type = "variable",
+							key = "cry_sticker_desc",
+							vars = {
+								color,
+								"{C:attention}",
+								"{}",
+							},
+						}),
 					}
 					parse_loc_txt(G.localization.descriptions.Other[sticker_key])
 				end

@@ -75,13 +75,10 @@ if CardSleeves then
 		unlock_condition = { deck = "Misprint Deck", stake = 1 },
 		trigger_effect = function(self, args)
 			if args.context.create_card then
-				cry_misprintize(
-					args.context.card,
-					{
-						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-					}
-				)
+				cry_misprintize(args.context.card, {
+					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+				})
 			end
 		end,
 		apply = function(self)
