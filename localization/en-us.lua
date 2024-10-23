@@ -117,6 +117,14 @@ return {
                     "{C:attention}-2{} Joker slots",
                 },
             },
+            b_cry_legendary = {
+                name = "Legendary Deck",
+                text = {
+                    "Start with an {C:legendary}Legendary{C:legendary} Joker",
+                    "{C:green}1 in 5{} chance to create another",
+					"when Boss Blind is defeated {C:inactive}(must have room){}",
+                },
+            },
         },
         Blind = {
             bl_cry_box = {
