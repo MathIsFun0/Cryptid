@@ -29,16 +29,16 @@ SMODS.Rarity{
     key = "exotic",
     loc_txt = {name = "Exotic"},
     badge_colour = HEX('708b91'),
-    default_rate = 0,
+    default_weight = 0,
 }
 
 SMODS.Rarity{
     key = "epic",
     loc_txt = {name = "Epic"},
     badge_colour = HEX('571d91'),
-    default_rate = 0.003,
+    default_weight = 0.003,
     pools = {["Joker"] = true},
-    get_rate = function(self, orig_rate, object_type)
+    get_weight = function(self, weight, object_type)
         if Cryptid_config["Epic Jokers"] then
             return 0.003
         else
