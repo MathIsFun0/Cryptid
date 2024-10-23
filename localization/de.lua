@@ -472,6 +472,8 @@ return {
                     "Diese Karte kann",
                     "{C:attention}gedreht{} werden um",
                     "eine andere Karte zu zeigen.",
+		    "{C:inactive}(Leere Seite kann mit anderer",
+		    "{C:inactive}Karte verschmolzen werden)"
                 },
             },
             e_cry_glass = {

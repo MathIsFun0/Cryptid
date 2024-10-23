@@ -474,6 +474,8 @@ return {
                     "This card can be",
                     "{C:attention}flipped{} to reveal",
                     "a different card",
+                    "{C:inactive}(Blank side can be merged",
+					"{C:inactive}with another card)",
                 },
             },
             e_cry_glass = {
