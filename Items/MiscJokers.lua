@@ -4859,7 +4859,7 @@ local tropical_smoothie = {
 	key = "tropical_smoothie",
 	pos = { x = 0, y = 1 },
 	config = {},
-	rarity = 2,
+	rarity = 3,
 	cost = 5,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
