@@ -918,6 +918,13 @@ return {
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+	    j_cry_exposed = {
+                name = "Exposed",
+                text = {
+                    "All {C:attention}Face Cards{} are {C:mult}debuffed{}",
+                    "All others are retriggered {C:attention}#1#{} times"
+                },
+            },
             j_cry_facile = {
                 name = "Facile",
                 text = {
@@ -1719,6 +1726,13 @@ return {
                 text = {
                     "{X:mult,C:white} X#1# {} Mult if scoring hand",
                     "contains {C:attention}exactly{} three {C:attention}3s",
+                },
+            },
+            j_cry_tropical_smoothie = {
+                name = "Tropical Smoothie",
+                text = {
+                    "When sold, {C:attention}multiply{} the values",
+                    "of all owned jokers by {C:attention}X1.5{}",
                 },
             },
             j_cry_unity = {
