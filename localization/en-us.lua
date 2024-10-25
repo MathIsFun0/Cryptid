@@ -1211,6 +1211,13 @@ return {
                     "{C:attention}#1#{} additional time(s)",
                 },
             },
+            j_cry_mask = {
+                name = "Mask",
+                text = {
+                    "All {C:attention}Face Cards{} retriggered {C:attention}#1#{} times",
+                    "All others are {C:mult}debuffed{}"
+                },
+            },
             j_cry_maximized = {
                 name = "Maximized",
                 text = {
