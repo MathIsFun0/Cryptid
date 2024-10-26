@@ -784,22 +784,21 @@ end
 
 --Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
 --I am sorry in advance (this is extremely cursed)
-Cryptid.Megavouchers = {
-	"v_cry_overstock_multi",
-	"v_cry_massproduct",
-	"v_cry_curate",
-	"v_cry_rerollexchange",
-	"v_cry_dexterity",
-	"v_cry_threers",
-	"v_cry_tacclimator",
-	"v_cry_pacclimator",
-	"v_cry_moneybean",
-	"v_cry_fabric",
-	"v_cry_asteroglyph",
-	"v_cry_blankcanvas",
-	"v_cry_hyperspacetether",
-	"v_cry_clone_machine",
-}
+
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_overstock_multi"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_massproduct"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_curate"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_rerollexchange"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_dexterity"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_threers"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_tacclimator"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_pacclimator"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_moneybean"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_fabric"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_asteroglyph"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_blankcanvas"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_hyperspacetether"
+Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_clone_machine"
 
 if Cryptid.enabled["M Jokers"] then
 	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_pairamount_plus"
