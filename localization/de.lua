@@ -116,6 +116,14 @@ return {
                     "{C:attention}-2{} Joker-Slots",
                 },
             },
+	    b_cry_legendary = {
+                name = "Legendäres Deck",
+                text = {
+                    "Beginne mit einem {C:legendary}Legendären{C:legendary} Joker",
+                    "Chance von {C:green}1 in 5{} einen weiteren zu erstellen",
+		    "wenn Boss Blind besiegt wurde {C:inactive}(Muss Platz haben){}",
+                },
+            },
         },
         Blind = {
             bl_cry_box = {
