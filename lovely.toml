@@ -183,7 +183,11 @@ position = "before"
 payload = '''
 local edi = self.edition or {}
 if edi.type and not self.ability.name:find('Standard') then
-	card:set_edition({[edi.type] = true})
+	if card.ability.name ~= "cry-meteor"
+ 	and card.ability.name ~= "cry-exoplanet"
+  	and card.ability.name ~= "cry-stardust" then
+		card:set_edition({[edi.type] = true})
+  	end
 end
 if self.ability.eternal then
 	card.ability.eternal = self.ability.eternal
