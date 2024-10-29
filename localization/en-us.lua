@@ -1962,6 +1962,14 @@ return {
                     "{C:attention}-2{} Joker slots",
                 },
             },
+			sleeve_cry_legendary_sleeve = {
+                name = "Legendary Sleeve",
+                text = {
+                    "Start with an {C:legendary}Legendary{C:legendary} Joker",
+                    "{C:green}1 in 5{} chance to create another",
+					"when Boss Blind is defeated {C:inactive}(must have room){}",
+                },
+            },
         },
         Spectral = {
             c_cry_analog = {
