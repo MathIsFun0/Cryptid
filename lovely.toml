@@ -183,7 +183,11 @@ position = "before"
 payload = '''
 local edi = self.edition or {}
 if edi.type and not self.ability.name:find('Standard') then
-	card:set_edition({[edi.type] = true})
+	if card.ability.name ~= "cry-meteor"
+ 	and card.ability.name ~= "cry-exoplanet"
+  	and card.ability.name ~= "cry-stardust" then
+		card:set_edition({[edi.type] = true})
+  	end
 end
 if self.ability.eternal then
 	card.ability.eternal = self.ability.eternal
@@ -628,6 +632,18 @@ if _c.name == 'cry-membershipcard' or _c.name == 'cry-membershipcardtwo' then
 		end
 	end
 end
+if _c.name == 'cry-translucent Joker' then 
+	if G.jokers and G.jokers.cards then
+                for k, v in ipairs(G.jokers.cards) do
+                    if (v.edition and v.edition.negative) and (G.localization.descriptions.Other.remove_negative)then 
+                        main_end = {}
+                        localize{type = 'other', key = 'remove_negative', nodes = main_end, vars = {}}
+                        main_end = main_end[1]
+                        break
+                    end
+                end
+        end 
+end 
 '''
 match_indent = true
 
@@ -666,5 +682,6 @@ Cryptid.memepack = {}
 Cryptid.aliases = {}
 Cryptid.food = {}
 Cryptid.M_jokers = {} 
+Cryptid.Megavouchers = {}
 '''
 match_indent = true

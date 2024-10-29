@@ -220,10 +220,7 @@ local foodm = {
 			context.selling_card
 			and not context.blueprint
 			and not context.retrigger_joker
-			and (
-				context.card.ability.name == "Jolly Joker"
-				or (context.card.edition and context.card.edition.key == "e_cry_m")
-			)
+			and context.card:is_jolly()
 		then
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + card.ability.extra.round_inc
 			return {
@@ -269,7 +266,7 @@ local mstack = {
 
 		if
 			context.selling_card
-			and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m"))
+			and context.card:is_jolly()
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
@@ -329,8 +326,7 @@ local mneon = {
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
 				if
-					G.jokers.cards[i].ability.name == "Jolly Joker"
-					or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
+					G.jokers.cards[i]:is_jolly()
 					or G.jokers.cards[i].ability.effect == "M Joker"
 				then
 					jollycount = jollycount + 1
@@ -388,8 +384,7 @@ local notebook = {
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
 				if
-					G.jokers.cards[i].ability.name == "Jolly Joker"
-					or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
+					G.jokers.cards[i]:is_jolly()
 				then
 					jollycount = jollycount + 1
 				end
@@ -469,8 +464,7 @@ local bonk = {
 		end
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
 			if
-				context.other_joker.ability.name == "Jolly Joker"
-				or (context.other_joker.edition and context.other_joker.edition.key == "e_cry_m")
+				context.other_joker:is_jolly()
 			then
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
@@ -533,7 +527,7 @@ local loopy = {
 	calculate = function(self, card, context)
 		if
 			context.selling_card
-			and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m"))
+			and context.card:is_jolly()
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
@@ -770,8 +764,7 @@ local doodlem = {
 			local jollycount = 2
 			for i = 1, #G.jokers.cards do
 				if
-					G.jokers.cards[i].ability.name == "Jolly Joker"
-					or G.jokers.cards[i].edition and G.jokers.cards[i].edition.key == "e_cry_m"
+					G.jokers.cards[i]:is_jolly()
 				then
 					jollycount = jollycount + 1
 				end
@@ -979,8 +972,7 @@ local mprime = {
 		if
 			context.selling_card
 			and (
-				context.card.ability.name == "Jolly Joker"
-				or (context.card.edition and context.card.edition.key == "e_cry_m")
+				context.card:is_jolly()
 			)
 		then
 			if not context.blueprint then
@@ -991,7 +983,7 @@ local mprime = {
 			end
 		elseif context.end_of_round and not context.individual and not context.repetition
 		and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-	    and not context.retrigger_joker then
+	    	and not context.retrigger_joker then
 			local loyalservants = {}
 			for k, _ in pairs(Cryptid.M_jokers) do
 				if G.P_CENTERS[k] then
@@ -1024,8 +1016,7 @@ local mprime = {
 			if
 				context.other_joker
 				and (
-					context.other_joker.ability.name == "Jolly Joker"
-					or (context.other_joker.edition and context.other_joker.edition.key == "e_cry_m")
+					context.other_joker:is_jolly()
 					or context.other_joker.ability.effect == "M Joker"
 				)
 			then
@@ -1074,11 +1065,10 @@ local macabre = {
 					for _, v in pairs(G.jokers.cards) do
 						if
 							v ~= card
-							and v.config.center.key ~= "j_jolly"
+							and not v:is_jolly()
 							and v.config.center.key ~= "j_cry_mprime"
 							and not (
 								v.ability.eternal
-								or (v.edition and v.edition.key == "e_cry_m")
 								or v.getting_sliced
 								or Cryptid.M_jokers[v.config.center.key]
 							)
@@ -1205,7 +1195,10 @@ local longboi = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff and card.ability.extra.mult == nil then
+		if (not from_debuff and card.ability.extra.mult == nil) or card.checkmonster then
+			--Stops Things like Gemini from updating mult when it isn't supposed to
+			if card.checkmonster then card.checkmonster = nil end
+			
 			card.ability.extra.mult = G.GAME.monstermult or 1
 		end
 	end,

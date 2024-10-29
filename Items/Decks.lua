@@ -91,6 +91,49 @@ local redeemed = {
 	pos = { x = 4, y = 4 },
 	atlas = "atlasdeck",
 }
+local legendary = {
+	object_type = "Back",
+	name = "cry-Legendary",
+	key = "legendary",
+	config = { cry_legendary = true, cry_legendary_rate = 0.2 },
+	pos = { x = 0, y = 6 },
+	atlas = "atlasdeck",
+	trigger_effect = function(self, args)
+		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
+			if G.jokers then
+				if #G.jokers.cards < G.jokers.config.card_limit then
+					local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
+					legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
+					if legendary_poll < self.config.cry_legendary_rate then
+						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+						return true
+					else
+						card_eval_status_text(
+							G.jokers,
+							"jokers",
+							nil,
+							nil,
+							nil,
+							{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
+						)
+					end
+				else
+					card_eval_status_text(
+						G.jokers,
+						"jokers",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
+					)
+				end
+			end
+		end
+	end,
+}
 local critical = {
 	object_type = "Back",
 	name = "cry-Critical",
@@ -205,6 +248,19 @@ return {
 			end
 			if self.effect.config.cry_beta then
 				G.GAME.modifiers.cry_beta = true
+			end
+			if self.effect.config.cry_legendary then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						if G.jokers then
+							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
+							card:add_to_deck()
+							card:start_materialize()
+							G.jokers:emplace(card)
+							return true
+						end
+					end,
+				}))
 			end
 			if self.effect.config.cry_wormhole then
 				G.E_MANAGER:add_event(Event({
@@ -388,9 +444,10 @@ return {
 		CCD,
 		wormhole,
 		redeemed,
+		legendary,
 		critical,
 		atlasglowing,
 		glowing,
-		beta
+		beta,
 	},
 }

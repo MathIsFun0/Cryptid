@@ -458,7 +458,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 3961
+		local old = GLOBAL_cry_member_count or 4583
 		local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
 			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
@@ -471,7 +471,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 3961
+		GLOBAL_cry_member_count = 4583
 	end
 end
 
@@ -1256,6 +1256,27 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
 			end
 		end
 	end
+end
+
+function Card:is_jolly()
+	local check = false
+	if self.ability.name == "Jolly Joker" then
+		check = true
+	end
+	if (self.edition and self.edition.key == "e_cry_m") then
+		check = true
+	end
+
+	--[[
+	Some scenarios/ examples I used for testing this (These DO work as intended if not commented out)
+	if next(find_joker("cry-mneon")) then
+		check = true
+	end
+	if G.GAME.blind.boss then
+		check = true
+	end
+	]]--
+	return check	
 end
 
 function cry_with_deck_effects(card, func)
@@ -2327,6 +2348,21 @@ function cry_has_exotic()
 		end
 	end
 end
+--Used for m vouchers, perhaps this can have more applications in the future
+function get_m_jokers()
+	local mcount = 0
+	if G.jokers then
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.effect == "M Joker" then
+				mcount = mcount + 1
+			end
+			if G.jokers.cards[i].ability.name == "cry-mprime" then
+				mcount = mcount + 1
+			end
+		end
+	end
+	return mcount
+end
 
 -- Check G.GAME as well as joker info for banned keys
 function Card:no(m, no_no)
@@ -2650,6 +2686,31 @@ SMODS.Sound({
 		return Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
 	end,
 })
+
+--Requires Malverk Mod
+if (SMODS.Mods["malverk"] or {}).can_load then
+	AltTexture({
+    		key = 'jolly_jokers',
+    		set = 'Joker',
+    		path = 'jolly.png',
+    		loc_txt = {
+        		name = 'Jolly Jokers'
+    		}
+	})
+	TexturePack{ -- HD Texture Pack
+    		key = 'jolly_texture',
+    		textures = {
+        		'cry_jolly_jokers',
+    		},
+    		loc_txt = {
+       			name = 'Jolly',
+        		text = {
+            			'Jolly Jokers lmao',
+            			'Art by B'
+        		}
+    		}
+	}
+end
 SMODS.Atlas({
 	key = "modicon",
 	path = "cry_icon.png",

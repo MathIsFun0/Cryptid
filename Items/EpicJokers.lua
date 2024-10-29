@@ -117,23 +117,25 @@ local sync_catalyst = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then
 			local tot = hand_chips + mult
-			if not tot.array or #tot.array < 2 or tot.array[2] < 2 then --below eXeY notation
-				hand_chips = mod_chips(math.floor(tot / 2))
-				mult = mod_mult(math.floor(tot / 2))
-			else
-				if hand_chips > mult then
-					tot = hand_chips
+			if not context.debuffed_hand then -- Adding Guard clause to protect against unallowed hands
+				if not tot.array or #tot.array < 2 or tot.array[2] < 2 then --below eXeY notation
+					hand_chips = mod_chips(math.floor(tot / 2))
+					mult = mod_mult(math.floor(tot / 2))
 				else
-					tot = mult
+					if hand_chips > mult then
+						tot = hand_chips
+					else
+						tot = mult
+					end
+					hand_chips = mod_chips(tot)
+					mult = mod_chips(tot)
 				end
-				hand_chips = mod_chips(tot)
-				mult = mod_chips(tot)
+				update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
+				return {
+					message = localize("k_balanced"),
+					colour = { 0.8, 0.45, 0.85, 1 },
+				}
 			end
-			update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
-			return {
-				message = localize("k_balanced"),
-				colour = { 0.8, 0.45, 0.85, 1 },
-			}
 		end
 	end,
 }
@@ -306,7 +308,7 @@ local m = {
 		end
 		if
 			context.selling_card
-			and (context.card.ability.name == "Jolly Joker" or (context.card.edition and context.card.edition.key == "e_cry_m"))
+			and context.card:is_jolly()
 			and not context.blueprint
 		then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
@@ -1099,31 +1101,63 @@ local altgoogol = {
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker then
-			local spawn = {}
-			if G.jokers.cards[1].ability.name ~= card.ability.name then
-				spawn[#spawn + 1] = G.jokers.cards[1]
-			end
-			if #spawn ~= 0 then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						for i = 1, 2 do
-							local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_ngpc")), nil) --borrowed code moment
-							card:add_to_deck()
-							G.jokers:emplace(card)
-						end
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					context.blueprint_card or card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_duplicated_ex") }
-				)
-				return nil, true
+			local jokers = {}
+                	for i=1, #G.jokers.cards do 
+                    		if G.jokers.cards[i] ~= card then
+                        		jokers[#jokers+1] = G.jokers.cards[i]
+                    		end
+                	end
+                	if #jokers > 0 then
+				if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
+					local spawn = {G.jokers.cards[1]}
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							for i = 1, 2 do
+								local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_ngpc")), nil)
+								card:add_to_deck()
+								G.jokers:emplace(card)
+							end
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ 
+						message = localize("k_duplicated_ex"),
+						colour = G.C.RARITY.cry_epic,
+						}
+					)
+					return nil, true
+				else
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ 
+						message = localize("k_nope_ex"),
+						colour = G.C.RARITY.cry_epic,
+						}
+					)
+					return nil, true
+				end
 			else
+				card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ 
+						message = localize("k_no_other_jokers"),
+						colour = G.C.RARITY.cry_epic,
+						}
+				)
 				return nil, true
 			end
 		end

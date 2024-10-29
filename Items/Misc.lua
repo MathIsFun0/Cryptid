@@ -819,9 +819,7 @@ local glass_edition = {
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					func = function()
-						if not card.shattered then
-							card:shatter()
-						end
+						card:shatter()
 						return true
 					end,
 				}))

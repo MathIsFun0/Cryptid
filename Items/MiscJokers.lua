@@ -1203,22 +1203,28 @@ local blurred = {
 	name = "cry-blurred Joker",
 	key = "blurred",
 	pos = { x = 4, y = 4 },
-	config = { extra = { hands = 1 } },
+	config = { extra = 1 },
 	rarity = 1,
 	cost = 4,
 	order = 51,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.hands } }
+		return { vars = { center.ability.extra } }
 	end,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
-			return {
-				message = localize("k_hand"), --make this actually work in the future
-				ease_hands_played(card.ability.extra.hands),
-				delay(0.6),
-			}
+			G.E_MANAGER:add_event(Event({func = function()
+				ease_hands_played(card.ability.extra)
+				card_eval_status_text(
+					context.blueprint_card or card,
+					'extra',
+					nil,
+					nil,
+					nil, 
+					{message = localize{type = 'variable', key = 'a_hands', vars = {card.ability.extra}}}
+				)
+			return true end }))
 		end
 	end,
 }
@@ -1364,12 +1370,15 @@ local hunger = {
 	end,
 	calculate = function(self, card, context) --This didn't work for Jevonn for some reason but it works for me :joker:
 		if context.using_consumeable then --shush
-			return {
-				ease_dollars(card.ability.extra.money),
-				message = "$" .. card.ability.extra.money,
-				colour = G.C.MONEY, --this isn't displaying a message for some reason ugh
-				card = card,
-			}
+			ease_dollars(card.ability.extra.money)
+			card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = "$" .. card.ability.extra.money, colour = G.C.MONEY, }
+			)
 		end
 	end,
 }
@@ -1406,7 +1415,7 @@ local redbloon = {
 	object_type = "Joker",
 	name = "cry-redbloon",
 	key = "redbloon",
-	config = { extra = { money = 20, rounds_remaining = 2, text = "s" } },
+	config = { extra = { money = 20, rounds_remaining = 2 } },
 	pos = { x = 5, y = 1 },
 	immune_to_chemach = true,
 	rarity = 1,
@@ -1417,7 +1426,7 @@ local redbloon = {
 	perishable_compat = false,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.money, center.ability.extra.rounds_remaining, center.ability.extra.text } }
+		return { vars = { center.ability.extra.money, center.ability.extra.rounds_remaining } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1461,9 +1470,6 @@ local redbloon = {
 					colour = G.C.MONEY,
 				}
 			end
-		end
-		if card.ability.extra.rounds_remaining == 1 then
-			card.ability.extra.text = ""
 		end
 	end,
 }
@@ -3627,7 +3633,7 @@ local unity = {
 	key = "unity",
 	order = 94,
 	pos = { x = 4, y = 0 },
-	config = { Xmult = 7, type = "Flush House" },
+	config = { Xmult = 9, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -3856,7 +3862,7 @@ local wacky = {
 	key = "wacky",
 	pos = { x = 5, y = 5 },
 	order = 21,
-	config = { t_mult = 25, type = "Flush House" },
+	config = { t_mult = 30, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4050,7 +4056,7 @@ local subtle = {
 	pos = { x = 5, y = 6 },
 	effect = "Cry Type Chips",
 	order = 29,
-	config = { t_chips = 200, type = "Flush House" },
+	config = { t_chips = 240, type = "Flush House" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4681,7 +4687,7 @@ local kidnap = {
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 0, money_mod = 3 },
+		extra = { money = 1, money_mod = 3 },
 		jolly = { t_mult = 8, type = "Pair" },
 		zany = { t_mult = 12, type = "Three of a Kind" },
 		mad = { t_mult = 10, type = "Two Pair" },
@@ -4764,6 +4770,7 @@ local kidnap = {
                 to their joker config if they want it to boost kidnapping when sold
 				]]--
 				or context.card.ability.effect == "Boost Kidnapping"
+				or context.card:is_jolly()
 			)
 			and not context.blueprint
 		then
