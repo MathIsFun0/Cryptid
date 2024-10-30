@@ -404,6 +404,15 @@ return {
                     "更可能是{C:dark_edition}负片{}",
                     "{C:attention}-2{}小丑牌槽"
                 }
+            },
+            b_cry_legendary = {
+                name = "传奇牌组",
+                text = {
+                    "以一张 {C:legendary}传奇{C:legendary} 小丑牌开始",
+					"击败Boss盲注后",
+                    "{C:green}1 / 5{} 几率创建另外一张",
+                    "{C:inactive}(必须有空间){}"
+                },
             }
         },
         Blind = {
@@ -1209,7 +1218,7 @@ return {
                 name = "两副面孔",
                 text = {
                     "{C:dark_edition}双面{}小丑使用",
-                    "它们反面的效果",
+                    "它们反面的效果代替正面效果",
                     "{C:attention}重新触发{}所有{C:dark_edition}双面{}小丑"
                 }
             },
@@ -3255,8 +3264,14 @@ return {
             k_code = "代码",
             k_cry_meme_pack = "玩梗包",
             k_cry_program_pack = "代码包",
+            k_disable_music = "禁用音乐",
             k_end_blind = "结束盲注",
-            k_hooked_ex = "钩住了！"
+            k_hooked_ex = "钩住了！",
+            cry_notif_jimball_1 = "小丑球",
+            cry_notif_jimball_2 = "版权提示",
+            cry_notif_jimball_d1 = "小丑球播放的音乐 \"Funkytown\",",
+            cry_notif_jimball_d2 = "是受到版权保护的",
+            cry_notif_jimball_d3 = "不能用于流媒体和视频。",
         },
         labels = {
             banana = "香蕉",

@@ -4779,6 +4779,7 @@ local kidnap = {
                 to their joker config if they want it to boost kidnapping when sold
 				]]--
 				or context.card.ability.effect == "Boost Kidnapping"
+				or context.card:is_jolly()
 			)
 			and not context.blueprint
 		then

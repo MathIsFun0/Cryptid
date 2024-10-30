@@ -48,6 +48,8 @@ local antimatter = {
 		cry_redeemed = true, --Redeemed Deck
 		cry_crit_rate = 0.25, --Critical Deck
 		cry_encoded = true, --Encoded Deck
+		cry_legendary = true,
+		cry_legendary_rate = 0.2, --Legendary Deck
 		-- Enhanced Decks
 		cry_force_enhancement = "random",
 		cry_force_edition = "random",
@@ -133,13 +135,46 @@ local antimatter = {
 			delay(0.6)
 			return args.chips, args.mult
 		end
-		--Glowing Deck
+		--Glowing Deck & Legendary Deck
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
+			--Glowing Deck
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.name ~= "Ace Aequilibrium" then --Same Reason as Gemini/Multiply
 					cry_with_deck_effects(G.jokers.cards[i], function(card)
 						cry_misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
 					end)
+				end
+			end
+			--Legendary Deck
+			if G.jokers then
+				if #G.jokers.cards < G.jokers.config.card_limit then
+					local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
+					legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
+					if legendary_poll < self.config.cry_legendary_rate then
+						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+						return true
+					else
+						card_eval_status_text(
+							G.jokers,
+							"jokers",
+							nil,
+							nil,
+							nil,
+							{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
+						)
+					end
+				else
+					card_eval_status_text(
+						G.jokers,
+						"jokers",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
+					)
 				end
 			end
 		end

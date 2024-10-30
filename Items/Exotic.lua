@@ -9,6 +9,7 @@ local gateway = {
 	pos = { x = 0, y = 0 },
 	cost = 4,
 	atlas = "gateway",
+	order = 90,
 	hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
 	can_use = function(self, card)
 		return true
