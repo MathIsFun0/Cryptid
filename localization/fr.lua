@@ -1533,7 +1533,7 @@ return {
                     "tous les autres jokers",
                     "{C:inactive,s:0.8}N'affecte pas d'autres Rescribere{}"
                 }
-            }, -- stopped there!
+            },
             j_cry_reverse = {
                 name = "Carte Inversion",
                 text = {
