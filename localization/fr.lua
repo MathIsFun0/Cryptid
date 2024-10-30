@@ -793,7 +793,7 @@ return {
                     "{C:chips}+#1#{} Jetons",
                 },
             },
-            j_cry_curse = {
+            j_cry_curse_sob = {
                 name = "Pleure",
                 text = {
                     "{C:edition,E:1}tu ne peux pas {} {C:cry_ascendant,E:1}t'enfuir...{}",

@@ -796,7 +796,7 @@ return {
                     "{C:chips}+#1#{} Chips",
                 },
             },
-            j_cry_curse = {
+            j_cry_curse_sob = {
                 name = "Sob",
                 text = {
                     "{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}run...{}",
