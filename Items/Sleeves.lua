@@ -241,7 +241,7 @@ if CardSleeves then
 			end
 		end,
 	})
-	local legendarysleve = CardSleeves.Sleeve({
+	local legendarysleeve = CardSleeves.Sleeve({
 		key = "legendary_sleeve",
 		name = "Legendary Sleeve",
 		atlas = "atlasSleeves",
@@ -312,7 +312,7 @@ if CardSleeves then
 		sleeveitems[#sleeveitems + 1] = wormholesleeve
 		sleeveitems[#sleeveitems + 1] = redeemedsleeve
 		sleeveitems[#sleeveitems + 1] = criticalsleeve
-		sleeveitems[#sleeveitems + 1] = legendarysleve
+		sleeveitems[#sleeveitems + 1] = legendarysleeve
 	end
 end
 return { name = "Sleeves", init = function() end, items = { sleeveitems } }
