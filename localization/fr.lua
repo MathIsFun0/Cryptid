@@ -8,13 +8,14 @@ Progress:
 Decks: Almost [ChatSigna]
     Beta Deck TODO
     Note from Jevonn: Enchanced decks are planned to have their localization done differently, don't worry about these for now
-Jokers: Up to Tredecim [HastagGuigui]
+Jokers: Yes [HastagGuigui]
 Code Cards: Yes [ChatSigna]
 Deck Sleeves (requires Decksleeves Mod): No
 Boss Blinds: Yes [HastagGuigui]
 Spectrals: No
 Tarots: No
-Dictonary: Yes (except RNJoker) [HastagGuigui]
+Planets: Yes [HastagGuigui]
+Dictonary: Yes [HastagGuigui]
 Editions: Yes [HastagGuigui]
 Vouchers: No
 Enhancements (aka echo card): No
@@ -138,6 +139,15 @@ return {
                     "Les Jokers sont {C:attention}20X{} ",
                     "plus susceptiples d'être {C:dark_edition}Négatifs",
                     "{C:attention}-2{} emplacements de Joker",
+                },
+            },
+            b_cry_legendary = {
+                name = "Jeu Légendaire",
+                text = {
+                    "Démarre avec un Joker {C:legendary}Légendaire{C:legendary}",
+                    "{C:green}1 chance sur 5{} d'en créer un autre",
+                    "lorsque la Boss Blinde est battue",
+                    "{C:inactive}(selon la place disponible)",
                 },
             },
         },
@@ -663,7 +673,7 @@ return {
                 text = {
                     "Crée un {C:attention}Joker Joyeux {C:dark_edition}Brillant",
                     "si la main jouée contient",
-                    "une {C:attention}#1#{}",
+                    "un {C:attention}#1#{}",
                     "puis {C:red,E:2}s'auto-détruit{}",
                 },
             },
@@ -961,7 +971,8 @@ return {
                 name = "De l'autre côté",
                 text = {
                     "Les jokers {C:dark_edition}Double-face{} utilisent",
-                    "aussi leur face arrière pour les effets",
+                    "leur face arrière pour les effets",
+                    "au lieu de leur face avant",
                     "{C:attention}Redéclenche{} tous les jokers {C:dark_edition}Double-Face{}"
                 },
             },
@@ -1138,10 +1149,10 @@ return {
                 },
             },
             j_cry_longboi = {
-                name = "Monster",
+                name = "Monstre",
                 text = {
-                    "Ajoute aux prochaînes versions de",
-                    "ce joker {X:mult,C:white}X#1#{} Multi",
+                    "Ajoute aux prochaînes versions",
+                    "de ce joker {X:mult,C:white}X#1#{} Multi",
                     "à la fin de la manche",
                     "{C:inactive}(Actuellement {X:mult,C:white}X#2#{C:inactive} Multi){}",
                 },
@@ -1317,124 +1328,123 @@ return {
                     "lorsqu'un {C:attention}Joker joyeux{} est {C:attention}vendu",
                     "{C:inactive,s:0.8}(Tredecim exclu)",
                 },
-            }, -- currently translated part ends here
+            },
             j_cry_mstack = {
-                name = "M Stack",
+                name = "Pile de Ms",
                 text = {
-                    "Retrigger all cards played",
-                    "once for every",
-                    "{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Jokers{} sold",
-                    "{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
+                    "Redéclenche toutes les cartes jouées",
+                    "une fois pour chaque",
+                    "{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jokers Joyeux{} vendus",
+                    "{C:inactive}(Actuellement {C:attention:}#1#{C:inactive} redéclenchements)",
                 },
             },
             j_cry_multjoker = {
-                name = "Mult Joker",
+                name = "Joker Multi",
                 text = {
-                    "{C:green}#1# in #2#{} chance for each",
-                    "played {C:attention}Mult{} card to create",
-                    "a {C:spectral}Cryptid{} card when scored",
-                    "{C:inactive}(Must have room)",
+                    "{C:green}#1# chance(s) sur #2#{} pour chaque",
+                    "carte {C:attention}Multi{} jouée de créer",
+                    "une carte {C:spectral}Cryptide{} lorsqu'elle est marquée",
+                    "{C:inactive}(Selon la place disponible)",
                 },
             },
             j_cry_negative = {
-                name = "Negative Joker",
+                name = "Joker négatif",
                 text = {
-                    "{C:dark_edition}+#1#{C:attention} Joker{} slots",
+                    "{C:dark_edition}+#1#{C:attention} Joker{} max",
                 },
             },
             j_cry_nice = {
                 name = "Nice",
                 text = {
-                    "{C:chips}+#1#{} Chips if played hand",
-                    "contains a {C:attention}6{} and a {C:attention}9",
+                    "{C:chips}+#1#{} Jetons si la main jouée",
+                    "contient un {C:attention}6{} et un {C:attention}9",
                     "{C:inactive,s:0.8}Nice.{}",
                 },
             },
             j_cry_night = {
-                name = "Night",
+                name = "Nuit",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Mult on final",
-                    "hand of round",
-                    "{E:2,C:red}self destructs{} on",
-                    "final hand of round",
+                    "{X:dark_edition,C:white}^#1#{} Multi sur la",
+                    "main finale de la manche",
+                    "{E:2,C:red}S'auto-détruit{} après déclenchement",
                 },
             },
             j_cry_nosound = {
                 name = "No Sound, No Memory",
                 text = {
-                    "Retrigger each played {C:attention}7{}",
-                    "{C:attention:}#1#{} additional time(s)",
+                    "Redéclenche chaque {C:attention}7{} joué",
+                    "{C:attention:}#1#{} fois supplémentaires",
                 },
             },
             j_cry_notebook = {
-                name = "Notebook",
+                name = "Carnet",
                 text = {
-                    "{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
-                    "slot per {C:attention}reroll{} in the shop",
-                    "{C:green}Always triggers{} if there are",
-                    "{C:attention}#5#{} or more {C:attention}Jolly Jokers{}",
-                    "{C:red}Works once per round{}",
-                    "{C:inactive}(Currently {C:dark_edition}+#3#{}{C:inactive} and #4#){}",
+                    "{C:green} #1# chance(s) sur #2#{} de gagner {C:dark_edition}+1{} Joker max",
+                    "à chaque {C:attention}réapprovisionnement{} de la boutique",
+                    "Se {C:green}déclenche toujours{} s'il y a",
+                    "{C:attention}#5# Jokers Joyeux{} ou plus",
+                    "{C:red}Fonctionne une seule fois par manche{}",
+                    "{C:inactive}(Actuellement {C:dark_edition}+#3#{}{C:inactive} et #4#){}",
                 },
             },
             j_cry_number_blocks = {
-                name = "Number Blocks",
+                name = "Blocs numéros",
                 text = {
-                    "Earn {C:money}$#1#{} at end of round",
-                    "Increase payout by {C:money}$#2#{}",
-                    "for each {C:attention}#3#{} held in hand,",
-                    "rank changes every round",
+                    "Gagne {C:money}$#1#{} à la fin de la manche",
+                    "Augmente le gain de {C:money}$#2#{}",
+                    "pour chaque {C:attention}#3#{} tenu en main,",
+                    "le rang change à chaque manche",
                 },
             },
             j_cry_nuts = {
-                name = "The Nuts",
+                name = "Les noix",
                 text = {
-                    "{X:mult,C:white} X#1# {} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#",
+                    "{X:mult,C:white}X#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 },
             },
             j_cry_nutty = {
                 name = "Nutty Joker",
                 text = {
-                    "{C:red}+#1#{} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:mult}+#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 }
             },
             j_cry_oldblueprint = {
-                name = "Old Blueprint",
+                name = "Vieux modèle",
                 text = {
-                    "Copies ability of",
-                    "{C:attention}Joker{} to the right",
-                    "{C:green}#1# in #2#{} chance this",
-                    "card is destroyed",
-                    "at end of round",
+                    "Copie les capacités du",
+                    "{C:attention}Joker{} à sa droite",
+                    "{C:green}#1# chance(s) sur #2#{} que",
+                    "cette carte soit détruite",
+                    "à la fin de la manche",
                 },
             },
             j_cry_oldcandy = {
-                name = "Nostalgic Candy",
+                name = "Bonbon rétro",
                 text = {
-                    "Sell this card to",
-                    "permanently gain",
-                    "{C:attention}+#1#{} hand size",
+                    "Vendre cette carte",
+                    "augmente la taille de la main de",
+                    "{C:attention}+#1#{} de manière permanente",
                 },
             },
             j_cry_oldinvisible = {
-                name = "Nostalgic Invisible Joker",
+                name = "Joker Invisible Nostalgique",
                 text = {
-                    "{C:attention}Duplicate{} a random",
-                    "{C:attention}Joker{} every {C:attention}4",
-                    "Joker cards sold",
-                    "{s:0.8}Nostalgic Invisible Joker Excluded{}",
-                    "{C:inactive}(Currently #1#/4){}",
+                    "{C:attention}Duplique{} un {C:attention}Joker{}",
+                    "aléatoire tous les {C:attention}4",
+                    "cartes Joker vendues",
+                    "{s:0.8}Joker Invisible Nostalgique exclu{}",
+                    "{C:inactive}(Actuellement #1#/4){}",
                 },
             },
             j_cry_panopticon = {
-                name = "Panopticon",
+                name = "Panoptique",
                 text = {
-                    "All hands are considered the",
-                    "{C:attention}last hand{} of each round", -- +$4
+                    "Toutes les mains sont considérés",
+                    "la {C:attention}dernière main{} de chaque manche", -- +$4
                 },
             },
             j_cry_pickle = {
@@ -1446,401 +1456,401 @@ return {
                 },
             },
             j_cry_pirate_dagger = {
-                name = "Pirate Dagger",
+                name = "Dague pirate",
                 text = {
-                    "When {C:attention}Blind{} is selected,",
-                    "destroy Joker to the right",
-                    "and gain {C:attention}one-fourth{} of",
-                    "its sell value as {X:chips,C:white} XChips {}",
-                    "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)",
+                    "Lorsque la {C:attention}Blinde{} est sélectionnée,",
+                    "détruit le Joker à droite de celui-ci",
+                    "et gagne {C:attention}un quart{} de",
+                    "sa valeur de vente en tant que {X:chips,C:white} XJetons {}",
+                    "{C:inactive}(Actuellement {X:chips,C:white} X#1# {C:inactive} Jetons)",
                 },
             },
             j_cry_pot_of_jokes = {
-                name = "Pot of Jokes",
+                name = "Pot de Blagues",
                 text = {
-                    "{C:attention}#1#{} hand size,",
-                    "increases by",
-                    "{C:blue}#2#{} every round",
+                    "{C:attention}#1#{} à la taille de la main,",
+                    "mais augmente de",
+                    "{C:blue}#2#{} à la fin de la manche",
                 },
             },
             j_cry_primus = {
                 name = "Primus",
                 text = {
-                    "This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
-                    "if all cards in played hand are",
-                    "{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
-                    "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+                    "Ce Joker gagne {X:dark_edition,C:white} ^#1# {} Multi",
+                    "si toutes les cartes jouées sont des",
+                    "{C:attention}As{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, ou {C:attention}7{}",
+                    "{C:inactive}(Actuellement {X:dark_edition,C:white} ^#2# {C:inactive} Multi)",
                 },
             },
             j_cry_python = {
                 name = "Python",
                 text = {
-                    "This Joker gains",
-                    "{X:mult,C:white} X#1# {} Mult when a",
-                    "{C:cry_code}Code{} card is used",
+                    "Ce Joker gagne",
+                    "{X:mult,C:white} X#1# {} Multi lorsqu'une",
+                    "carte {C:cry_code}Code{} est utilisée",
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
                 },
             },
             j_cry_queens_gambit = {
-                name = "Queen's Gambit",
+                name = "Gambit de la Dame",
                 text = {
-                    "If {C:attention}poker hand{} is a",
-                    "{C:attention}Royal Flush{}, destroy scored",
-                    "{C:attention}Queen{} and create a",
-                    "{C:dark_edition}Negative {}{C:red}Rare{}{C:attention} Joker{}",
+                    "Si la {C:attention}main de poker{} jouée est une",
+                    "{C:attention}Quinte flush royale{}, détruit la",
+                    "{C:attention}Dame{} marquante et crée",
+                    "un {C:attention}Joker {C:red}Rare {C:dark_edition}Negativé",
                 },
             },
             j_cry_quintet = {
-                name = "The Quintet",
+                name = "Le Quintet",
                 text = {
-                    "{X:mult,C:white} X#1# {} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#",
+                    "{X:mult,C:white}X#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 },
             },
             j_cry_redbloon = {
-                name = "Red Bloon",
+                name = "Bloon Rouge",
                 text = {
-                    "Earn {C:money}$#1#{} in {C:attention}#2#{} round#3#",
-                    "{C:red,E:2}self destructs{}",
+                    "Gagne {C:money}$#1#{} dans {C:attention}#2#{} manche#3#",
+                    "{C:red,E:2}s'auto-détruit{}",
                 },
             },
             j_cry_redeo = {
                 name = "Redeo",
                 text = {
-                    "{C:attention}-#1#{} Ante when",
-                    "{C:money}$#2#{} {C:inactive}($#3#){} spent",
-                    "{s:0.8}Requirements increase",
-                    "{C:attention,s:0.8}exponentially{s:0.8} per use",
-                    "{C:money,s:0.8}Next increase: {s:1,c:money}$#4#",
+                    "{C:attention}-#1#{} Ante lorsque",
+                    "{C:money}$#2#{} {C:inactive}($#3#){} sont dépensés",
+                    "{s:0.8}Cette condition croît",
+                    "{C:attention,s:0.8}exponentiellement{s:0.8} à chaque déclenchement",
+                    "{C:money,s:0.8}Prochaîne augmentation: {s:1,c:money}$#4#",
                 },
             },
             j_cry_rescribere = {
                 name = 'Rescribere',
                 text = {
-                    "When a {C:attention}Joker{} is sold,",
-                    "add its effects to",
-                    "every other Joker",
-                    "{C:inactive,s:0.8}Does not affect other Rescribere{}"
+                    "Lorsqu'un {C:attention}Joker{} est vendu,",
+                    "ajoute ses effets à",
+                    "tous les autres jokers",
+                    "{C:inactive,s:0.8}N'affecte pas d'autres Rescribere{}"
                 }
-            },
+            }, -- stopped there!
             j_cry_reverse = {
-                name = "Reverse Card",
+                name = "Carte Inversion",
                 text = {
-                    "Fill all empty Joker slots {C:inactive}(Max 100){}",
-                    "with {C:dark_edition}Holographic{} {C:attention}Jolly Jokers{} if",
-                    "{C:attention}discarded poker hand{} is a {C:attention}#1#{}",
-                    "{C:red,E:2}self destructs{}",
+                    "Remplit tous les emplacements de Joker vides {C:inactive}(100 max){}",
+                    "avec des {C:attention}Jokers Joyeux {C:dark_edition}Holographiques{} si",
+                    "la {C:attention}main de poker défaussée{} est une {C:attention}#1#{}",
+                    "{C:red,E:2}s'auto-détruit{}",
                     "{C:inactive,s:0.8}The ULTIMATE comeback{}",
                 },
             },
             j_cry_rnjoker = {
                 name = "RNJoker",
                 text = {
-                    "Randomize abilities each {C:attention}Ante{}",
+                    "Les capacités sont changées à chaque {C:attention}Ante{}",
                 },
             },
             j_cry_sacrifice = {
                 name = "Sacrifice",
                 text = {
-                    "Create an {C:green}Uncommon{} Joker",
-                    "and 3 {C:attention}Jolly Jokers{} when",
-                    "a {C:spectral}Spectral{} card is used",
-                    "{C:red}Works once per round{}",
+                    "Crée un Joker {C:green}Peu commun{}",
+                    "et 3 {C:attention}Jokers Joyeux{} lorsqu'une",
+                    "carte {C:spectral}Spectrale{} est utilisée",
+                    "{C:red}Ne marche qu'une fois par manche{}",
                     "{C:inactive}#1#{}",
                 },
             },
             j_cry_sapling = {
-                name = "Sapling",
+                name = "Arbuste",
                 text = {
-                    "After scoring {C:attention}#2#{} {C:inactive}[#1#]{} Enhanced",
-                    "cards, sell this card to",
-                    "create an {C:cry_epic}Epic{} {C:attention}Joker{}",
-                    "{C:inactive,s:0.8}Will create a {C:red,s:0.8}Rare{} {C:attention,s:0.8}Joker{}",
-                    "{C:inactive,s:0.8}if {C:cry_epic,s:0.8}Epic{} {C:inactive,s:0.8}Jokers are disabled{}",
+                    "Après avoir marqué {C:attention}#2#{} {C:inactive}[#1#]{}",
+                    "cartes améliorées, vendre cette carte",
+                    "crée un {C:attention}Joker{} {C:cry_epic}Épique{}",
+                    "{C:inactive,s:0.8}Crée un {C:attention,s:0.8}Joker{} {C:red,s:0.8}Rare{}",
+                    "{C:inactive,s:0.8}si les Jokers {C:cry_epic,s:0.8}Épiques{} {C:inactive,s:0.8}sont désactivés{}",
                 },
             },
             j_cry_savvy = {
-                name = "Savvy Joker",
+                name = "Joker avisé",
                 text = {
-                    "{C:chips}+#1#{} Chips if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:chips}+#1#{} Jetons si",
+                    "la main jouée",
+                    "contient un {C:attention}#2#"
                 }
             },
             j_cry_Scalae = {
                 name = "Scalae",
                 text = {
-                    "Scaling {C:attention}Jokers{} scale",
-                    "as a degree-{C:attention}#1#{} polynomial",
-                    "raise degree by {C:attention}#2#{}",
-                    "at end of round",
-                    "{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
+                    "Les {C:attention}Jokers{} augmentant augmentent",
+                    "comme un polynome de degré {C:attention}#1#{}",
+                    "élève le degré de {C:attention}#2#{}",
+                    "à la fin de la manche",
+                    "{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} exclu)",
                 },
             },
             j_cry_scrabble = {
-                name = "Scrabble Tile",
+                name = "Lettre de Scrabble",
                 text = {
-                    "{C:green}#1# in #2#{} chance to create",
-                    "a {C:dark_edition}Jolly {C:green}Uncommon{} Joker",
-                    "when hand is played",
+                    "{C:green}#1# chance(s) sur #2#{} de créer",
+                    "un Joker {C:dark_edition}Joyeux {C:green}Peu commun{}",
+                    "lorsque la main est jouée",
                 },
             },
             j_cry_seal_the_deal = {
-                name = "Seal the Deal",
+                name = "Affaire scellée",
                 text = {
-                    "Add a {C:attention}random seal{} to each card",
-                    "scored on {C:attention}final hand{} of round",
+                    "Ajoute un {C:attention}sceau aléatoire{} à chaque carte",
+                    "marquée lors de la {C:attention}dernière main{} de la manche",
                 },
             },
             j_cry_shrewd = {
-                name = "Shrewd Joker",
+                name = "Joker astucieux",
                 text = {
-                    "{C:chips}+#1#{} Chips if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:chips}+#1#{} Jetons si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 }
             },
             j_cry_silly = {
-                name = "Silly Joker",
+                name = "Joker farfelu",
                 text = {
-                    "{C:red}+#1#{} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:mult}+#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 }
             },
             j_cry_smallestm = {
-                name = "Tiny",
+                name = "Riquiqui",
                 text = {
-                    "{X:chips,C:white} X#1# {} Chips until end",
-                    "of round if {C:attention}poker hand{}",
-                    "is a {C:attention}#2#{}",
-                    "{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
+                    "{X:chips,C:white} X#1# {} Jetons jusqu'à la",
+                    "fin de la manche si la {C:attention}main de poker{} jouée",
+                    "est un(e) {C:attention}#2#{}",
+                    "{C:inactive}(Actuellement {C:attention}#3#{}{C:inactive}){}",
                     "{C:inactive,s:0.8}ok so basically i'm very smol",
                 },
             },
             j_cry_soccer = {
                 name = "One for All", --changed the name from latin because this isn't exotic
                 text = {
-                    "{C:attention}+#1#{} Joker slot",
-                    "{C:attention}+#1#{} Booster Pack slot",
-                    "{C:attention}+#1#{} hand size",
-                    "{C:attention}+#1#{} consumable slot",
-                    "{C:attention}+#1#{} card in shop",
+                    "{C:attention}+#1#{} Joker max",
+                    "{C:attention}+#1#{} Paquet Booster max",
+                    "{C:attention}+#1#{} taille de main",
+                    "{C:attention}+#1#{} emplacement de consommable",
+                    "{C:attention}+#1#{} carte dans la boutique",
                 },
             },
             j_cry_spaceglobe = {
-                name = "Celestial Globe",
+                name = "Globe Céleste",
                 text = {
-                    "This Joker gains {X:chips,C:white}X#2#{} Chips",
-                    "if {C:attention}poker hand{} is a {C:attention}#3#{},",
-                    "Hand changes after increase{}",
-                    "{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}",
+                    "Ce Joker gagne {X:chips,C:white}X#2#{} Jetons",
+                    "si la {C:attention}main de poker{} jouée est un(e) {C:attention}#3#{},",
+                    "La main change après chaque gain{}",
+                    "{C:inactive}(Actuellement{} {X:chips,C:white}X#1#{} {C:inactive}Jetons){}",
                 },
             },
             j_cry_speculo = {
                 name = "Speculo",
                 text = {
-                    "Creates a {C:dark_edition}Negative{} copy",
-                    "of a random {C:attention}Joker{}",
-                    "at the end of the {C:attention}shop",
-                    "{C:inactive,s:0.8}Does not copy other Speculo{}",
+                    "Crée une copie {C:dark_edition}Négative{}",
+                    "d'un {C:attention}Joker{} aléatoire",
+                    "à la fin de la {C:attention}boutique",
+                    "{C:inactive,s:0.8}Ne copie pas d'autres Speculo{}",
                 },
             },
             j_cry_stardust = {
-                name = "Stardust",
+                name = "Poussière d'étoile",
                 text = {
-                    "{C:dark_edition}Polychrome{} cards",
-                    "each give {X:mult,C:white}X#1#{} Mult",
-                    "{C:inactive,s:0.8}Effect does not trigger",
-                    "{C:inactive,s:0.8}on Stardust",
+                    "Les cartes {C:dark_edition}Polychrome{}",
+                    "donnent chacun {X:mult,C:white}X#1#{} Multi",
+                    "{C:inactive,s:0.8}L'effet ne se déclenche pas",
+                    "{C:inactive,s:0.8}sur Poussière d'étoile",
                 },
             },
             j_cry_stella_mortis = {
                 name = "Stella Mortis",
                 text = {
-                    "This Joker destroys a",
-                    "random {C:planet}Planet{} card",
-                    "and gains {X:dark_edition,C:white} ^#1# {} Mult",
-                    "at the end of the {C:attention}shop{}",
-                    "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+                    "Ce Joker détruit une",
+                    "carte {C:planet}Planète{} aléatoire",
+                    "et gagne {X:dark_edition,C:white} ^#1# {} Multi",
+                    "à la fin de la {C:attention}boutique{}",
+                    "{C:inactive}(Actuellement {X:dark_edition,C:white} ^#2# {C:inactive} Multi)",
                 },
             },
             j_cry_subtle = {
-                name = "Subtle Joker",
+                name = "Joker subtil",
                 text = {
-                    "{C:chips}+#1#{} Chips if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:chips}+#1#{} Jetons si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 }
             },
             j_cry_supercell = {
                 name = "Supercell",
                 text = {
-                    "{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
-                    "{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
-                    "Earn {C:money}$#3#{} at",
-                    "end of round",
+                    "{C:chips}+#1#{} Jetons, {C:mult}+#1#{} Multi,",
+                    "{X:chips,C:white}X#2#{} Jetons, {X:mult,C:white}X#2#{} Multi",
+                    "Gagne {C:money}$#3#{} à",
+                    "la fin de la manche",
                 },
             },
             j_cry_sus = {
                 name = "SUS",
                 text = {
-                    "At end of round, create",
-                    "a {C:attention}copy{} of a random",
-                    "card {C:attention}held in hand{},",
-                    "destroy all others",
-                    "{C:attention,s:0.8}Kings{s:0.8} of {C:hearts,s:0.8}Hearts{s:0.8} are prioritized",
+                    "À la fin de la manche, crée",
+                    "une {C:attention}copie{} d'une carte",
+                    "aléatoire {C:attention}tenue en main{},",
+                    "détruit toutes les autres",
+                    "{s:0.8}Les {C:attention,s:0.8}Rois{s:0.8} de {C:hearts,s:0.8}Cœur{s:0.8} sont prioritaires",
                 },
             },
             j_cry_swarm = {
-                name = "The Swarm",
+                name = "L'essaim",
                 text = {
-                    "{X:mult,C:white} X#1# {} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#",
+                    "{X:mult,C:white}x#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 },
             },
             j_cry_sync_catalyst = {
-                name = "Sync Catalyst",
+                name = "Catalyse Synchro",
                 text = {
-                    "Balances {C:chips}Chips{} and {C:mult}Mult{}",
+                    "Balance les {C:chips}Jetons{} et le {C:mult}Multi{}",
                     "{C:inactive,s:0.8}Hey! I've seen this one before!",
                 },
             },
             j_cry_tenebris = {
                 name = "Tenebris",
                 text = {
-                    "{C:dark_edition}+#1#{C:attention} Joker{} slots",
-                    "Earn {C:money}$#2#{} at end of round",
+                    "{C:dark_edition}+#1#{C:attention} Joker{} max",
+                    "Gagne {C:money}$#2#{} à la fin de la manche",
                 },
             },
             j_cry_translucent = {
-                name = "Translucent Joker",
+                name = "Joker translucent",
                 text = {
-                    "Sell this card to create",
-                    "a {C:attention}Banana Perishable{} copy",
-                    "of a random {C:attention}Joker{}",
-                    "{s:0.8,C:inactive}(Copy bypasses perish compat)",
+                    "Vendre cette carte crée",
+                    "une copie {C:attention}Périssable Banane{}",
+                    "d'un {C:attention}Joker{} aléatoire",
+                    "{s:0.8,C:inactive}(La copie ignore les compatibilités Périssable)",
                 },
             },
             j_cry_tricksy = {
-                name = "Tricksy Joker",
+                name = "Joker espiègle",
                 text = {
-                    "{C:chips}+#1#{} Chips if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:chips}+#1#{} Jetons si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 }
             },
             j_cry_triplet_rhythm = {
-                name = "Triplet Rhythm",
+                name = "Rythme triolet",
                 text = {
-                    "{X:mult,C:white} X#1# {} Mult if scoring hand",
-                    "contains {C:attention}exactly{} three {C:attention}3s",
+                    "{X:mult,C:white} X#1# {} Multi si la main marquée",
+                    "contient {C:attention}exactement{} trois cartes {C:attention}3",
                 },
             },
             j_cry_unity = {
-                name = "The Unity",
+                name = "L'Unité",
                 text = {
-                    "{X:mult,C:white} X#1# {} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#",
+                    "{X:mult,C:white}x#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 },
             },
             j_cry_universum = {
                 name = "Universum",
                 text = {
-                    "{C:attention}Poker hands{} gain",
-                    "{X:red,C:white} X#1# {} Mult and {X:blue,C:white} X#1# {} Chips",
-                    "when leveled up",
+                    "Les {C:attention}mains de poker{} gagnent",
+                    "{X:red,C:white} X#1# {} Multi et {X:blue,C:white} X#1# {} Jetons",
+                    "à chaque amélioration",
                 },
             },
             j_cry_unjust_dagger = {
-                name = "Unjust Dagger",
+                name = "Dague injuste",
                 text = {
-                    "When {C:attention}Blind{} is selected,",
-                    "destroy Joker to the left",
-                    "and gain {C:attention}one-fifth{} of",
-                    "its sell value as {X:mult,C:white} XMult {}",
-                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+                    "Lorsque la {C:attention}Blind{} est sélectionnée,",
+                    "détruit le Joker le plus à droite",
+                    "et gagne {C:attention}un cinquième{} de",
+                    "sa valeur de vente en tant que {X:mult,C:white} XMulti {}",
+                    "{C:inactive}(Actuellement {X:mult,C:white} X#1# {C:inactive} Multi)",
                 },
             },
             j_cry_verisimile = {
                 name = "Non Verisimile",
                 text = {
-                    "When any probability",
-                    "is {C:green}successfully{} triggered,",
-                    "this Joker gains {X:red,C:white}XMult{}",
-                    "equal to its listed {C:attention}odds",
-                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+                    "Lorsqu'une probabilitée",
+                    "est déclenchée et {C:green}succainte{},",
+                    "ce Joker gagne {X:red,C:white}XMulti{}",
+                    "égal à ses {C:attention}probabilités{} listées",
+                    "{C:inactive}(Actuellement {X:mult,C:white} X#1# {C:inactive} Multi)",
                 },
             },
             j_cry_virgo = {
-                name = "Virgo",
+                name = "Vierge",
                 text = {
-                    "This Joker gains {C:money}$#1#{} of {C:attention}sell value{}",
-                    "if {C:attention}poker hand{} contains a {C:attention}#2#{}",
-                    "Sell this card to create a",
-                    "{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
-                    "every {C:money}$4{} of {C:attention}sell value{} {C:inactive}(Min 1){}",
+                    "Ce Joker gagne {C:money}$#1#{} à sa {C:attention}valeur de vente{}",
+                    "si la {C:attention}main de poker{} contient une {C:attention}#2#{}",
+                    "Vendre cette carte crée",
+                    "un {C:attention}Joker Joyeux{} {C:dark_edition}Polychrome{}",
+                    "tous les {C:money}$4{} de {C:attention}valeur de vente{} {C:inactive}(1 minimum){}",
                 },
             },
             j_cry_wacky = {
-                name = "Wacky Joker",
+                name = "Joker loufoque",
                 text = {
-                    "{C:red}+#1#{} Mult if played",
-                    "hand contains",
-                    "a {C:attention}#2#"
+                    "{C:mult}+#1#{} Multi si",
+                    "la main jouée",
+                    "contient une {C:attention}#2#"
                 }
             },
             j_cry_waluigi = {
                 name = "Waluigi",
                 text = {
-                    "All Jokers give",
-                    "{X:mult,C:white} X#1# {} Mult",
+                    "Tous les Jokers donnent",
+                    "{X:mult,C:white} X#1# {} Multi",
                 },
             },
             j_cry_wario = {
                 name = "Wario",
                 text = {
-                    "All Jokers give",
-                    "{C:money}$#1#{} when triggered",
+                    "Tous les Jokers donnent",
+                    "{C:money}$#1#{} à chaque déclenchement",
                 },
             },
             j_cry_wee_fib = {
                 name = "Weebonacci",
                 text = {
-                    "This Joker gains",
-                    "{C:mult}+#2#{} Mult when each played",
-                    "{C:attention}Ace{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, or {C:attention}8{}",
-                    "is scored",
-                    "{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
+                    "Ce Joker gagne",
+                    "{C:mult}+#2#{} Multi lorsque chaque",
+                    "{C:attention}As{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, ou {C:attention}8{}",
+                    "joué est compté",
+                    "{C:inactive}(Actuellement {C:mult}+#1#{C:inactive} Multi)",
                 },
             },
             j_cry_weegaming = {
                 name = "2D",
                 text = {
-                    "Retrigger each played {C:attention}2{}", --wee gaming
-                    "{C:attention:}#1#{} additional time(s)", --wee gaming?
+                    "Redéclenche chaque {C:attention}2{} joué", --wee gaming
+                    "{C:attention:}#1#{} fois supplémentaire(s)", --wee gaming?
                     "{C:inactive,s:0.8}Wee Gaming?{}",
                 },
             },
             j_cry_wheelhope = {
-                name = "Wheel of Hope",
+                name = "la Roue de l'espérance",
                 text = {
-                    "This Joker gains",
-                    "{X:mult,C:white} X#1# {} Mult when failing",
-                    "a {C:attention}Wheel of Fortune{}",
-                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                    "Ce Joker gagne",
+                    "{X:mult,C:white} X#1# {} Multi à chaque échec",
+                    "de la {C:attention}Roue de la Fortune{}",
+                    "{C:inactive}(Actuellement {X:mult,C:white} X#2# {C:inactive} Multi)",
                 },
             },
             j_cry_whip = {
                 name = "The WHIP",
                 text = {
-                    "This Joker gains {X:mult,C:white} X#1# {} Mult",
-                    "if {C:attention}played hand{} contains a",
-                    "{C:attention}2{} and {C:attention}7{} of different suits",
-                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                    "Ce Joker gagne {X:mult,C:white} X#1# {} Multi",
+                    "si la {C:attention}main jouée{} contient",
+                    "un {C:attention}2{} et un {C:attention}7{} de couleur différentes",
+                    "{C:inactive}(Actuellement {X:mult,C:white} X#2# {C:inactive} Multi)",
                 },
             },
         },
@@ -1849,60 +1859,60 @@ return {
                 name = "Klubi",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Level up",
+                    "Améliore",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
-                    "and {C:attention}#3#{}",
+                    "et {C:attention}#3#{}",
                 },
             },
             c_cry_Lapio = {
                 name = "Lapio",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Level up",
+                    "Améliore",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
-                    "and {C:attention}#3#{}",
+                    "et {C:attention}#3#{}",
                 },
             },
             c_cry_nstar = {
-                name = "Neutron Star",
+                name = "Étoile à neutrons",
                 text = {
-                    "Upgrade a random",
-                    "poker hand by",
-                    "{C:attention}1{} level for each",
-                    "{C:attention}Neutron Star{} used",
-                    "in this run",
-                    "{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
+                    "Améliore une main de poker",
+                    "aléatoire d'{C:attention}1{} niveau",
+                    "pour chaque utilisation",
+                    "d'{C:attention}Étoile à neutrons{}",
+                    "durant cette partie",
+                    "{C:inactive}(Actuellement{C:attention} #1#{C:inactive}){}",
                 },
             },
             c_cry_planetlua = {
-                name = "Planet.lua",
+                name = "Planete.lua",
                 text = {
-                    "{C:green}#1# in #2#{} chance to",
-                    "upgrade every",
-                    "{C:legendary,E:1}poker hand{}",
-                    "by {C:attention}1{} level",
+                    "{C:green}#1# chance(s) sur #2#{}",
+                    "d'améliorer toutes",
+                    "les {C:legendary,E:1}mains de poker{}",
+                    "d'{C:attention}1{} niveau",
                 },
             },
             c_cry_Sydan = {
                 name = "Sydan",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Level up",
+                    "Améliore",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
-                    "and {C:attention}#3#{}",
+                    "et {C:attention}#3#{}",
                 },
             },
             c_cry_Timantti = {
                 name = "Timantti",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Level up",
+                    "Améliore",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
-                    "and {C:attention}#3#{}",
+                    "et {C:attention}#3#{}",
                 },
             },
         },
@@ -2940,8 +2950,9 @@ return {
             cry_green_seal = {
                 name = "Sceau vert",
                 text = {
-                    "Crée une carte {C:cry_code}Code{} card",
-                    "lorsque la carte est jouée mais pas comptée",
+                    "Crée une carte {C:cry_code}Code{}",
+                    "lorsque la carte est jouée",
+                    "et non comptée",
                     "{C:inactive}(Selon la place disponible)",
                 },
             },
@@ -2951,7 +2962,7 @@ return {
                     "Crée {C:attention}#1#{} {C:planet}Planètes",
                     "{C:dark_edition}négatives{} pour la",
                     "{C:attention}main de poker jouée{},",
-                    "puis {C:red}destroy{} this card",
+                    "puis {C:red}détruit{} cette carte",
                 },
             },
         },
@@ -3006,6 +3017,7 @@ return {
             c_cry_ballin = "Ballin'",
             c_cry_boss_rush = "Enter the Gungeon",
             c_cry_dagger_war = "Bataille de dagues",
+            c_cry_joker_poker = "Joker Poker",
             c_cry_onlycard = "La carte unique",
             c_cry_rng = "Aléas de l'aléatoire", -- okay i think i cooked with this one
             c_cry_rush_hour = "Heure de pointe I",
@@ -3247,7 +3259,11 @@ return {
             ch_c_cry_rush_hour = { "Toutes les Blindes de Boss sont {C:attention}L'Horloge{} ou la {C:attention}Boucle Lavande" },
             ch_c_cry_rush_hour_ii = { "Toutes les blindes sont des {C:attention}Blindes de Boss{}" },
             ch_c_cry_rush_hour_iii = { "{C:attention}L'Horloge{} et la {C:attention}Boucle Lavande{} augmentent {C:attention}deux fois{} plus vite" },
-            ch_c_cry_no_tags = { "Passer la blinde n'est {C:attention}plus possible{}" }
+            ch_c_cry_no_tags = { "Passer la blinde n'est {C:attention}plus possible{}" },
+            ch_c_cry_no_vouchers = { "Les {C:attention}coupons{} n'apparaissent plus dans la boutique" },
+            ch_c_cry_no_boosters = { "Les {C:attention}Paquets Booster{} n'apparaissent plus dans la boutique" },
+            ch_c_cry_no_rerolls = { "Le réapprovisionnement n'est {C:attention}plus possible{}" },
+            ch_c_cry_no_consumables = { "Les {C:attention}consommables{} n'apparaissent plus" }
         },
         -- Thanks to many members of the community for contributing to all of these quips!
         -- There's too many to credit so just go here: https://discord.com/channels/1116389027176787968/1209506360987877408/1237971471146553406
