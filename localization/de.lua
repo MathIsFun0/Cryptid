@@ -121,7 +121,7 @@ return {
                 text = {
                     "Beginne mit einem {C:legendary}Legendären{C:legendary} Joker",
                     "Chance von {C:green}1 in 5{} einen weiteren zu erstellen",
-		    "wenn Boss Blind besiegt wurde {C:inactive}(Muss Platz haben){}",
+					"wenn Boss Blind besiegt wurde {C:inactive}(Muss Platz haben){}",
                 },
             },
         },
@@ -1959,6 +1959,14 @@ return {
                     "Joker sind {C:attention}20X{} warscheinlicher",
                     "{C:dark_edition}Negativ{} zu sein",
                     "{C:attention}-2{} Joker-Slots",
+                },
+            },
+			sleeve_cry_legendary_sleeve = {
+                name = "Legendäre Hülle",
+                text = {
+                    "Beginne mit einem {C:legendary}Legendären{C:legendary} Joker",
+                    "Chance von {C:green}1 in 5{} einen weiteren zu erstellen",
+					"wenn Boss Blind besiegt wurde {C:inactive}(Muss Platz haben){}",
                 },
             },
         },
