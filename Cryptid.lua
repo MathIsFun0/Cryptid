@@ -1568,7 +1568,7 @@ function SMODS.create_mod_badges(obj, badges)
 							config = {
 								object = DynaText({
 									string = ct or "ERROR",
-									colours = { G.C.WHITE },
+									colours = { obj.cry_credits and obj.cry_credits.text_colour or G.C.WHITE },
 									silent = true,
 									float = true,
 									shadow = true,
