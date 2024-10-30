@@ -916,18 +916,20 @@ local curse = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-		card:set_edition("e_negative", true, nil, true)
-		card.sob = true
-		card:set_eternal(true)
-		card:add_to_deck()
-		G.jokers:emplace(card)
-		return {
-			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize("cry_curse_ex"),
-				colour = G.C.DARK_EDITION,
-			}),
-		}
+		if not from_debuff then
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:set_edition("e_negative", true, nil, true)
+			card.sob = true
+			card:set_eternal(true)
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.DARK_EDITION,
+				}),
+			}
+		end
 	end,
 }
 local bonusjoker = {
