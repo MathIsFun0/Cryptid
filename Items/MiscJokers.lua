@@ -80,7 +80,7 @@ local happyhouse = {
 	config = { extra = { mult = 4, check = 0 } },
 	immune_to_chemach = true,
     pools = {["Meme"] = true},
-	rarity = "Uncommon",
+	rarity = 2,
 	cost = 2,
 	blueprint_compat = true,
 	atlas = "atlastwo",
