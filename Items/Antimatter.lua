@@ -50,6 +50,8 @@ local antimatter = {
 		cry_encoded = true, --Encoded Deck
 		cry_legendary = true,
 		cry_legendary_rate = 0.2, --Legendary Deck
+		cry_spooky = true, --Spooky Deck
+		cry_curse_rate = 0,
 		-- Enhanced Decks
 		cry_force_enhancement = "random",
 		cry_force_edition = "random",

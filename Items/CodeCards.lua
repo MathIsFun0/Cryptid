@@ -26,6 +26,14 @@ SMODS.UndiscoveredSprite({
 	px = 71,
 	py = 95,
 }):register()
+SMODS.UndiscoveredSprite({ --todo change?
+	key = "Unique",
+	atlas = "code",
+	path = "c_cry_code.png",
+	pos = { x = 2, y = 5 },
+	px = 71,
+	py = 95,
+}):register()
 local pack_atlas = {
 	object_type = "Atlas",
 	key = "pack",
@@ -646,7 +654,7 @@ local merge = {
 		if G.consumeables.highlighted[1] == card then
 			m = 2
 		end
-		if G.consumeables.highlighted[m].ability.eternal or not G.consumeables.highlighted[m].ability.consumeable then
+		if G.consumeables.highlighted[m].ability.eternal or G.consumeables.highlighted[m].ability.set == "Unique" or not G.consumeables.highlighted[m].ability.consumeable then
 			return false
 		end
 		return true
