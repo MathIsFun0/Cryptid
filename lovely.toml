@@ -281,8 +281,12 @@ match_indent = true
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = "if G.GAME.used_vouchers[v.key] then"
-position = "at"
+position = "after"
 payload = '''
+    if not G.GAME.cry_owned_vouchers[v.key] then
+        G.GAME.cry_owned_vouchers[v.key] = G.GAME.used_vouchers[v.key]
+    end
+end
 if G.GAME.cry_owned_vouchers[v.key] then
 '''
 match_indent = true
