@@ -69,7 +69,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')})[card.config.center.rarity] end"
 position = "at"
-payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = localize('cry_epic'), ['cry_exotic'] = localize('cry_exotic')})[card.config.center.rarity] end"
+payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = localize('cry_epic'), ['cry_candy'] = localize('cry_candy'), ['cry_cursed'] = localize('cry_cursed'), ['cry_exotic'] = localize('cry_exotic')})[card.config.center.rarity] end"
 match_indent = true
 
 # Fix Rare Tag creating Epic jokers
@@ -183,7 +183,11 @@ position = "before"
 payload = '''
 local edi = self.edition or {}
 if edi.type and not self.ability.name:find('Standard') then
-	card:set_edition({[edi.type] = true})
+	if card.ability.name ~= "cry-meteor"
+ 	and card.ability.name ~= "cry-exoplanet"
+  	and card.ability.name ~= "cry-stardust" then
+		card:set_edition({[edi.type] = true})
+  	end
 end
 if self.ability.eternal then
 	card.ability.eternal = self.ability.eternal

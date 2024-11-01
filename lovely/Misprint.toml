@@ -83,6 +83,10 @@ pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
 cry_misprintize(card)
+if G.GAME.events.ev_cry_choco2 then
+    card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+    card:set_cost()
+end
 '''
 match_indent = true
 
@@ -93,6 +97,10 @@ pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
 cry_misprintize(card)
+if G.GAME.events.ev_cry_choco2 then
+    card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+    card:set_cost()
+end
 '''
 match_indent = true
 

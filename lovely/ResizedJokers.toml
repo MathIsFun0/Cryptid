@@ -34,6 +34,14 @@ if center.name == "cry-Cube" and (center.discovered or self.bypass_discovery_cen
     self.T.h = H
     self.T.w = W
 end
+if center.name == "cry-Potion" and (center.discovered or self.bypass_discovery_center) then 
+    H = W
+    self.T.h = H
+    H = H*35/69
+    W = W*35/69
+    self.T.h = H
+    self.T.w = W
+end
 if center.name == "cry-Jimball" and (center.discovered or self.bypass_discovery_center) then 
     H = W
     self.T.h = H
@@ -70,6 +78,11 @@ if _center.name == 'cry-Jimball' and (_center.discovered or self.bypass_discover
     self.children.center.scale.y = self.children.center.scale.y*57/69
     self.children.center.scale.x = self.children.center.scale.x*57/69
 end
+if _center.name == 'cry-Potion' and (_center.discovered or self.bypass_discovery_center) then 
+    self.children.center.scale.y = self.children.center.scale.x
+    self.children.center.scale.y = self.children.center.scale.y*35/69
+    self.children.center.scale.x = self.children.center.scale.x*35/69
+end
 if _center.name == 'cry-magnet' and (_center.discovered or self.bypass_discovery_center) then 
     self.children.center.scale.y = self.children.center.scale.x
     self.children.center.scale.y = self.children.center.scale.y*35/71
@@ -101,6 +114,10 @@ elseif self.config.center.name == "cry-Jimball" then
     H = W 
     self.T.h = H*scale*57/69*scale
     self.T.w = W*scale*57/69*scale
+elseif self.config.center.name == "cry-Potion" then 
+    H = W 
+    self.T.h = H*scale*35/69*scale
+    self.T.w = W*scale*35/69*scale
 elseif self.config.center.name == "cry-magnet" then 
     H = W 
     self.T.h = H*scale*35/71*scale

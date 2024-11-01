@@ -824,7 +824,7 @@ local virgo = {
 			card.ability.extra_value = card.ability.extra_value + card.ability.extra.bonus --this doesn't seem to work with retrigger jokers. Intentional?
 			card:set_cost()
 			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize("k_upgrade_ex"),
+				message = localize("k_val_up"),
 				colour = G.C.MONEY,
 			})
 		end

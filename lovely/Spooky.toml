@@ -1,0 +1,43 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 10
+
+# Haunted House - useless skips
+[[patches]]
+[patches.regex]
+target = "functions/button_callbacks.lua"
+pattern = 'if _tag then'
+position = 'at'
+line_prepend = '$indent'
+payload = '''if _tag and not G.GAME.events.ev_cry_choco2 then'''
+
+# Please Take One jank
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ease_background_colour_blind(G.STATES.ROUND_EVAL)'''
+position = "after"
+payload = '''if G.GAME.events.ev_cry_choco6 and G.round_eval then return true end'''
+match_indent = true
+
+# Revered Antique - create legendary
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.load_shop_booster then'''
+position = "before"
+payload = '''
+if G.GAME.events.ev_cry_choco10 and not G.load_shop_vouchers then
+    local card = create_card('Joker', G.jokers, true, nil, nil, nil, nil, 'cry_antique')
+    cry_misprintize(card)
+    card.misprint_cost_fac = 50/card.cost
+    card:set_cost()
+    create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+    card:start_materialize()
+    card.ability.cry_antique = true
+    G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+    G.shop_vouchers:emplace(card)
+end
+'''
+match_indent = true

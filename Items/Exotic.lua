@@ -992,35 +992,36 @@ local duplicare = {
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
-    config = {extra = {Emult = 1.25}},
-	pos = { x = 0, y = 1 },
-	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
+    config = {extra = {Xmult = 1, Xmult_mod = 1}},
+	pos = { x = 0, y = 6 },
+	soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
     rarity = "cry_exotic",
     cost = 50,
     order = 517,
     blueprint_compat = true,
-    atlas = "placeholders",
+    atlas = "atlasexotic",
     loc_vars = function(self, info_queue, center)
         return {
-            vars = {center.ability.extra.Emult}
+            vars = {center.ability.extra.Xmult, center.ability.extra.Xmult_mod}
         }
     end,
     calculate = function(self, card, context)
-        if context.other_joker and context.other_joker.ability.set == "Joker" then
-            if not Talisman.config_file.disable_anims then 
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        context.other_joker:juice_up(0.5, 0.5)
-                        return true
-                    end
-                })) 
-            end
-            return {
-                message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
-                Emult_mod = card.ability.extra.Emult,
-                colour = G.C.DARK_EDITION
-            }
-        end
+        if not context.blueprint and ((context.post_trigger and context.other_joker ~= card) or (context.individual and context.cardarea == G.play)) then
+			card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+		end
+		if
+			context.cardarea == G.jokers
+			and (to_big(card.ability.extra.Xmult) > to_big(1))
+			and not context.before
+			and not context.after
+		then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={number_format(card.ability.extra.Xmult)}},
+				Xmult_mod = card.ability.extra.Xmult,
+				colour = G.C.MULT,
+			}
+		end
     end
 }
 
