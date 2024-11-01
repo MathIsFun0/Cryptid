@@ -1902,11 +1902,11 @@ if JokerDisplay then
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page9 = {}
 
-	JokerDisplay.Definitions["j_cry_duplicare"] = {
+	--[[JokerDisplay.Definitions["j_cry_duplicare"] = {
 		mod_function = function(card, mod_joker)
 			return { e_mult = mod_joker.ability.extra.Emult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end,
-	}
+	}--]] --add later
 	JokerDisplay.Definitions["j_cry_equilib"] = {
 		text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },

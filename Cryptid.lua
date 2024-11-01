@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-0917a]
---- VERSION: 0.5.2~1010a
+--- VERSION: 0.5.2~1101a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -28,6 +28,8 @@ cry_minvasion = Cryptid.enabled["M Jokers"]
 Game:set_globals()
 G.C.RARITY["cry_exotic"] = HEX("708b91")
 G.C.RARITY["cry_epic"] = HEX("571d91")
+G.C.RARITY["cry_candy"] = HEX("e91ff0")
+G.C.RARITY["cry_cursed"] = HEX("474931")
 local ip = SMODS.insert_pool
 function SMODS.insert_pool(pool, center, replace)
 	if pool == nil then
@@ -45,6 +47,82 @@ function get_badge_colour(key)
 		return G.C.RARITY["cry_epic"]
 	end
 	return fromRef
+end
+
+--Add Event type - used for events in e.g. Chocolate Dice
+SMODS.Events = {}
+SMODS.Event = SMODS.GameObject:extend{
+	obj_table = SMODS.Events,
+	obj_buffer = {},
+	required_params = {
+		"key"
+	},
+	inject = function() end,
+	set = "Event",
+	class_prefix = "ev",
+	start = function(self)
+		G.GAME.events[self.key] = true
+	end,
+	finish = function(self)
+		G.GAME.events[self.key] = nil
+	end,
+	calculate = function(self, context)
+	end,
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = { set = "Other", key = self.key }
+	end,
+}
+--Calculate on cash out
+local gfco = G.FUNCS.cash_out
+G.FUNCS.cash_out = function(e)
+	local ret = gfco(e)
+	for k, v in pairs(SMODS.Events) do
+		if G.GAME.events[k] then
+			v:calculate({cash_out = true})
+		end
+	end
+	return ret
+end
+local guis = G.UIDEF.shop
+G.UIDEF.shop = function(e)
+	local ret = guis(e)
+	for k, v in pairs(SMODS.Events) do
+		if G.GAME.events[k] then
+			v:calculate({start_shop = true})
+		end
+	end
+	return ret
+end
+local gure = Game.update_round_eval
+function Game:update_round_eval(dt)
+	if G.GAME.events.ev_cry_choco6 and not pack_opened and not G.STATE_COMPLETE then 
+		G.STATE_COMPLETE = true 
+		for k, v in pairs(SMODS.Events) do
+			if G.GAME.events[k] then
+				v:calculate({pre_cash = true})
+			end
+		end
+	return end
+	if G.GAME.events.ev_cry_choco6 and pack_opened and G.STATE_COMPLETE and not G.round_eval then G.STATE_COMPLETE = false; return end
+	gure(self, dt)
+end
+--Add Unique consumable set - used for unique consumables that aren't normally obtained
+SMODS.ConsumableType{
+	key = "Unique",
+	primary_colour = G.C.MONEY,
+	secondary_colour = G.C.MONEY,
+	collection_rows = { 4, 4 }, 
+	shop_rate = 0.0,
+	loc_txt = {},
+	default = "c_cry_potion",
+	can_stack = false,
+	can_divide = false,
+}
+local gigo = Game.init_game_object
+function Game:init_game_object()
+	local g = gigo(self)
+	g.events = {}
+	return g
 end
 
 --Changes main menu colors and stuff
@@ -80,6 +158,8 @@ function loc_colour(_c, _default)
 	end
 	G.ARGS.LOC_COLOURS.cry_exotic = G.C.RARITY["cry_exotic"]
 	G.ARGS.LOC_COLOURS.cry_epic = G.C.RARITY["cry_epic"]
+	G.ARGS.LOC_COLOURS.cry_candy = G.C.RARITY["cry_candy"]
+	G.ARGS.LOC_COLOURS.cry_cursed = G.C.RARITY["cry_cursed"]
 	G.ARGS.LOC_COLOURS.cry_azure = HEX("1d4fd7")
 	G.ARGS.LOC_COLOURS.cry_code = G.C.SET.Code
 	G.ARGS.LOC_COLOURS.heart = G.C.SUITS.Hearts
@@ -911,6 +991,16 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 end
 
 function Card:calculate_joker(context)
+	--Calculate events
+	if self == G.jokers.cards[1] then
+		for k, v in pairs(SMODS.Events) do
+			if G.GAME.events[k] then
+				context.pre_jokers = true
+				v:calculate(context)
+				context.pre_jokers = nil
+			end
+		end
+	end
 	local active_side = self
 	if next(find_joker("cry-Flip Side")) and not context.dbl_side and self.edition and self.edition.cry_double_sided then
 		self:init_dbl_side()
@@ -935,7 +1025,50 @@ function Card:calculate_joker(context)
 	end
 	local orig_ability = active_side:cry_copy_ability()
 	local in_context_scaling = false
+	local callback = context.callback
+	if active_side.ability.cry_possessed then
+		if not ((context.individual and not context.repetition) or (context.joker_main) or (context.other_joker and not context.post_trigger)) then
+			return
+		end
+		context.callback = nil
+	end
 	local ret, trig = cj(active_side, context)
+	if active_side.ability.cry_possessed and ret then
+		if ret.mult_mod then ret.mult_mod = ret.mult_mod * -1 end
+		if ret.Xmult_mod then ret.Xmult_mod = ret.Xmult_mod ^ -1 end
+		if ret.mult then ret.mult = ret.mult * -1 end
+		if ret.x_mult then ret.x_mult = ret.x_mult ^ -1 end
+		ret.e_mult = nil
+		ret.ee_mult = nil
+		ret.eee_mult = nil
+		ret.hyper_mult = nil
+		ret.Emult_mod = nil
+		ret.EEmult_mod = nil
+		ret.EEEmult_mod = nil
+		ret.hypermult_mod = nil
+		if ret.chip_mod then ret.chip_mod = ret.chip_mod * -1 end
+		if ret.Xchip_mod then ret.Xchip_mod = ret.Xchip_mod ^ -1 end
+		if ret.chips then ret.chips = ret.chips * -1 end
+		if ret.x_chips then ret.x_chips = ret.x_chips ^ -1 end
+		ret.e_chips = nil
+		ret.ee_chips = nil
+		ret.eee_chips = nil
+		ret.hyper_chips = nil
+		ret.Echip_mod = nil
+		ret.EEchip_mod = nil
+		ret.EEEchip_mod = nil
+		ret.hyperchip_mod = nil
+		if ret.message then
+			if ret.message:sub(1,1) == "+" then
+				ret.message = "-" .. ret.message:sub(2)
+			elseif ret.message:sub(1,1) == "X" then
+				ret.message = "/" .. ret.message:sub(2)
+			else
+				ret.message = ret.message .. "?"
+			end
+		end
+		callback(context.blueprint_card or self, ret, context.retrigger_joker)
+	end
 	if not context.blueprint and (active_side.ability.set == "Joker") and not active_side.debuff then
 		if ret or trig then
 			in_context_scaling = true
@@ -945,6 +1078,16 @@ function Card:calculate_joker(context)
 		G.GAME.probabilities.normal = ggpn
 	end
 	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	--Calculate events
+	if self == G.jokers.cards[#G.jokers.cards] then
+		for k, v in pairs(SMODS.Events) do
+			if G.GAME.events[k] then
+				context.post_jokers = true
+				v:calculate(context)
+				context.post_jokers = nil
+			end
+		end
+	end
 	return ret, trig
 end
 
@@ -1590,6 +1733,10 @@ end
 function calculate_reroll_cost(skip_increment)
 	if next(find_joker("cry-crustulum")) then
 		G.GAME.current_round.reroll_cost = 0
+		return
+	end
+	if next(find_joker("cry-candybuttons")) then
+		G.GAME.current_round.reroll_cost = 1
 		return
 	end
 	if G.GAME.used_vouchers.v_cry_rerollexchange then
@@ -2319,6 +2466,15 @@ function init_localization()
 	end
 end
 
+--Will be moved to D20 file when that gets added
+function roll_dice(seed, min, max, config)
+	local val
+	while not val or (config and config.ignore_value == val) do
+		val = pseudorandom(seed, min, max)
+	end
+	return val
+end
+
 function SMODS.current_mod.reset_game_globals(run_start)
 	G.GAME.cry_ach_conditions = G.GAME.cry_ach_conditions or {}
 end
@@ -2520,11 +2676,10 @@ end
 local is = SMODS.injectItems
 function SMODS.injectItems()
 	local m = is()
-	G.P_JOKER_RARITY_POOLS.cry_epic = {}
-	G.P_JOKER_RARITY_POOLS.cry_exotic = {}
 	for k, v in pairs(G.P_CENTERS) do
 		v.key = k
-		if v.rarity and (v.rarity == "cry_epic" or v.rarity == "cry_exotic") and v.set == "Joker" and not v.demo then
+		if v.rarity and type(v.rarity) == "string" and v.set == "Joker" and not v.demo then
+			if not G.P_JOKER_RARITY_POOLS[v.rarity] then G.P_JOKER_RARITY_POOLS[v.rarity] = {} end
 			table.insert(G.P_JOKER_RARITY_POOLS[v.rarity], v)
 		end
 	end
@@ -2586,6 +2741,15 @@ if Cryptid.enabled["Epic Jokers"] then
 end
 if Cryptid.enabled["M Jokers"] then
 	jokers[#jokers + 1] = "j_cry_foodm"
+end
+if Cryptid.enabled["Spooky"] then
+	jokers[#jokers + 1] = "j_cry_cotton_candy"
+	jokers[#jokers + 1] = "j_cry_wrapped"
+	jokers[#jokers + 1] = "j_cry_candy_cane"
+	jokers[#jokers + 1] = "j_cry_candy_buttons"
+	jokers[#jokers + 1] = "j_cry_jawbreaker"
+	jokers[#jokers + 1] = "j_cry_mellowcreme"
+	jokers[#jokers + 1] = "j_cry_brittle"
 end
 for i = 1, #jokers do
 	Cryptid.food[#Cryptid.food+1] = jokers[i]
@@ -2748,6 +2912,12 @@ SMODS.Atlas({
 	py = 95,
 }):register()
 SMODS.Atlas({
+	key = "atlasspooky",
+	path = "atlasspooky.png",
+	px = 71,
+	py = 95,
+}):register()
+SMODS.Atlas({
 	key = "atlasexotic",
 	path = "atlasexotic.png",
 	px = 71,
@@ -2824,6 +2994,21 @@ SMODS.Sticker:take_ownership("rental", {
 	end,
 })
 
+--Sticker calc for playing cards
+local ec = eval_card
+function eval_card(card, context)
+	local ret = ec(card, context)
+	if card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck then
+		for k, v in pairs(SMODS.Stickers) do
+			if card.ability[k] and v.calculate and type(v.calculate) == "function" then
+				context.from_playing_card = true
+				context.ret = ret
+				v:calculate(card, context)
+			end
+		end
+	end
+	return ret
+end
 function create_cryptid_notif_overlay(key)
 	if not G.SETTINGS.cryptid_notifs then -- I want this to be across profiles
 		G.SETTINGS.cryptid_notifs = {}
