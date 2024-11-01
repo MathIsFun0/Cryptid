@@ -3082,8 +3082,8 @@ return {
 
             k_disable_music = "Disable Music",
 
-            cry_epic = "Epic",
-            cry_exotic = "Exotic",
+            k_cry_epic = "Epic",
+            k_cry_epic = "Exotic",
 
             cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Notice",
@@ -3112,8 +3112,8 @@ return {
             cry_noisy = "Noisy",
             cry_oversat = "Oversaturated",
 
-            cry_epic = "Epic",
-            cry_exotic = "Exotic"
+            k_cry_epic = "Epic",
+            k_cry_epic = "Exotic"
         },
         rnj_loc_txts = {
             stats = {
