@@ -458,7 +458,7 @@ local spy = {
 	end,
 	update = function(self, card, front)
 		if card.ability.extra.secret_card == "" then
-			secret_card = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed("cry_spy" .. (card.area and card.area.config.collection and "_collection" or "")))
+			secret_card = pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed("cry_spy" .. (card.area and card.area.config.collection and "_collection" or "")), {})
 			card.ability.extra.secret_card = secret_card.key
 			if not (card.area and card.area.config.collection) then
 				card.pos = secret_card.pos

@@ -27,14 +27,14 @@ cry_minvasion = Cryptid.enabled["M Jokers"]
 -- Gradient isn't included since other logic seems to also handle it
 SMODS.Rarity{
     key = "exotic",
-    loc_txt = {name = "Exotic"},
+    loc_txt = {},
     badge_colour = HEX('708b91'),
     default_weight = 0,
 }
 
 SMODS.Rarity{
     key = "epic",
-    loc_txt = {name = "Epic"},
+    loc_txt = {},
     badge_colour = HEX('571d91'),
     default_weight = 0.003,
     pools = {["Joker"] = true},
@@ -45,6 +45,20 @@ SMODS.Rarity{
             return 0
         end
     end,
+}
+
+SMODS.Rarity{
+    key = "candy",
+    loc_txt = {},
+    badge_colour = HEX("e91ff0"),
+    default_weight = 0,
+}
+
+SMODS.Rarity{
+    key = "cursed",
+    loc_txt = {},
+    badge_colour = HEX("474931"),
+    default_weight = 0,
 }
 
 --Add Event type - used for events in e.g. Chocolate Dice
