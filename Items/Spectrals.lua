@@ -938,5 +938,5 @@ return {
 			end
 		end
 	end,
-	items = { spectrals },
+	items = spectrals,
 }
