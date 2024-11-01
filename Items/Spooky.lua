@@ -1226,7 +1226,7 @@ return { name = "Spooky", order = 1e300, init = function()
 	local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 	function G.UIDEF.use_and_sell_buttons(card)
 		local m = G_UIDEF_use_and_sell_buttons_ref(card)
-		if card.area and card.area.config.type == 'joker' and card.config and card.config.center and card.config.center.rarity == "cry_cursed" and not card.config.center.name == "cry-Monopoly" then
+		if card.area and card.area.config.type == 'joker' and card.config and card.config.center and card.config.center.rarity == "cry_cursed" and card.ability.name ~= "cry-Monopoly" then
 			table.remove(m.nodes[1].nodes, 1)
 		end
 		if card.config and card.config.center and card.config.center.key == "c_cry_potion" then
