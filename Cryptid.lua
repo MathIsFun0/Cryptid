@@ -29,7 +29,6 @@ SMODS.Rarity{
     key = "exotic",
     loc_txt = {},
     badge_colour = HEX('708b91'),
-    default_weight = 0,
 }
 
 SMODS.Rarity{
@@ -51,14 +50,12 @@ SMODS.Rarity{
     key = "candy",
     loc_txt = {},
     badge_colour = HEX("e91ff0"),
-    default_weight = 0,
 }
 
 SMODS.Rarity{
     key = "cursed",
     loc_txt = {},
     badge_colour = HEX("474931"),
-    default_weight = 0,
 }
 
 --Add Event type - used for events in e.g. Chocolate Dice
