@@ -1162,7 +1162,7 @@ if JokerDisplay then
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page5 = {}
 	
-	JokerDisplay.Definitions["j_cry_curse"] = {
+	JokerDisplay.Definitions["j_cry_curse_sob"] = {
 		text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
 		},
