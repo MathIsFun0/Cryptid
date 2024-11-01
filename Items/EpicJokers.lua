@@ -279,6 +279,7 @@ local m = {
 	key = "m",
 	pos = { x = 3, y = 1 },
 	config = { extra = { extra = 13, x_mult = 1 }, jolly = { t_mult = 8, type = "Pair" } },
+    pools = {["Meme"] = true},
 	rarity = "cry_epic",
 	order = 1,
 	cost = 13,
@@ -404,6 +405,7 @@ local boredom = {
 	pos = { x = 1, y = 0 },
 	config = { extra = { odds = 2 } },
 	immune_to_chemach = true,
+    pools = {["Meme"] = true},
 	rarity = "cry_epic",
 	order = 32,
 	cost = 14,
@@ -684,11 +686,12 @@ local caramel = {
 	end,
 }
 --this has to be the most spaghetti code in cryptid
-local curse = {
+local curse_sob = {
 	object_type = "Joker",
-	name = "cry_curse",
-	key = "curse",
+	name = "cry_curse_sob",
+	key = "curse_sob",
 	pos = { x = 1, y = 1 },
+    pools = {["Meme"] = true},
 	rarity = "cry_epic",
 	cost = 9,
 	order = 82,
@@ -916,18 +919,20 @@ local curse = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-		card:set_edition("e_negative", true, nil, true)
-		card.sob = true
-		card:set_eternal(true)
-		card:add_to_deck()
-		G.jokers:emplace(card)
-		return {
-			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize("cry_curse_ex"),
-				colour = G.C.DARK_EDITION,
-			}),
-		}
+		if not from_debuff then
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
+			card:set_edition("e_negative", true, nil, true)
+			card.sob = true
+			card:set_eternal(true)
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("cry_curse_ex"),
+					colour = G.C.DARK_EDITION,
+				}),
+			}
+		end
 	end,
 }
 local bonusjoker = {
@@ -1381,7 +1386,7 @@ return {
 		oldcandy,
 		circus,
 		caramel,
-		curse,
+		curse_sob,
 		bonusjoker,
 		multjoker,
 		goldjoker,

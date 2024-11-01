@@ -796,7 +796,7 @@ return {
                     "{C:chips}+#1#{} Chips",
                 },
             },
-            j_cry_curse = {
+            j_cry_curse_sob = {
                 name = "Sob",
                 text = {
                     "{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}run...{}",
@@ -3107,8 +3107,8 @@ return {
             cry_active = "Active",
             cry_inactive = "Inactive",
 
-            cry_epic = "Epic",
-            cry_exotic = "Exotic"
+            k_cry_epic = "Epic",
+            k_cry_epic = "Exotic"
         },
         labels = {
             food_jokers = "Food Jokers",
@@ -3131,8 +3131,8 @@ return {
             cry_noisy = "Noisy",
             cry_oversat = "Oversaturated",
 
-            cry_epic = "Epic",
-            cry_exotic = "Exotic"
+            k_cry_epic = "Epic",
+            k_cry_epic = "Exotic"
         },
         rnj_loc_txts = {
             stats = {

@@ -128,7 +128,7 @@ return {
             b_cry_legendary = {
                 name = "Legendary Deck",
                 text = {
-                    "Start with an {C:legendary}Legendary{C:legendary} Joker",
+                    "Start with a {C:legendary}Legendary{C:legendary} Joker",
                     "{C:green}1 in 5{} chance to create another",
 					"when Boss Blind is defeated {C:inactive}(must have room){}",
                 },
@@ -839,7 +839,7 @@ return {
                     "{C:chips}+#1#{} Chips",
                 },
             },
-            j_cry_curse = {
+            j_cry_curse_sob = {
                 name = "Sob",
                 text = {
                     "{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}run...{}",
@@ -3380,10 +3380,10 @@ return {
 
             k_disable_music = "Disable Music",
 
-            cry_epic = "Epic",
-            cry_exotic = "Exotic",
-            cry_candy = "Candy",
-            cry_cursed = "Cursed",
+            k_cry_epic = "Epic",
+            k_cry_epic = "Exotic",
+            k_cry_candy = "Candy",
+            k_cry_cursed  = "Cursed",
 
             cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Notice",
@@ -3415,10 +3415,10 @@ return {
             cry_noisy = "Noisy",
             cry_oversat = "Oversaturated",
 
-            cry_epic = "Epic",
-            cry_exotic = "Exotic",
-            cry_candy = "Candy",
-            cry_cursed = "Cursed",
+            k_cry_epic = "Epic",
+            k_cry_epic = "Exotic",
+            k_cry_candy = "Candy",
+            k_cry_cursed  = "Cursed",
         },
         rnj_loc_txts = {
             stats = {

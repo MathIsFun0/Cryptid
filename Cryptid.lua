@@ -24,30 +24,39 @@ cry_enable_epics = Cryptid.enabled["Epic Jokers"]
 cry_enable_exotics = Cryptid.enabled["Exotic Jokers"]
 cry_minvasion = Cryptid.enabled["M Jokers"]
 
--- Custom Rarity setup (based on Relic-Jokers)
-Game:set_globals()
-G.C.RARITY["cry_exotic"] = HEX("708b91")
-G.C.RARITY["cry_epic"] = HEX("571d91")
-G.C.RARITY["cry_candy"] = HEX("e91ff0")
-G.C.RARITY["cry_cursed"] = HEX("474931")
-local ip = SMODS.insert_pool
-function SMODS.insert_pool(pool, center, replace)
-	if pool == nil then
-		pool = {}
-	end
-	ip(pool, center, replace)
-end
-local get_badge_colourref = get_badge_colour
-function get_badge_colour(key)
-	local fromRef = get_badge_colourref(key)
-	if key == "cry_exotic" then
-		return G.C.RARITY["cry_exotic"]
-	end
-	if key == "cry_epic" then
-		return G.C.RARITY["cry_epic"]
-	end
-	return fromRef
-end
+-- Gradient isn't included since other logic seems to also handle it
+SMODS.Rarity{
+    key = "exotic",
+    loc_txt = {},
+    badge_colour = HEX('708b91'),
+}
+
+SMODS.Rarity{
+    key = "epic",
+    loc_txt = {},
+    badge_colour = HEX('571d91'),
+    default_weight = 0.003,
+    pools = {["Joker"] = true},
+    get_weight = function(self, weight, object_type)
+        if Cryptid_config["Epic Jokers"] then
+            return 0.003
+        else
+            return 0
+        end
+    end,
+}
+
+SMODS.Rarity{
+    key = "candy",
+    loc_txt = {},
+    badge_colour = HEX("e91ff0"),
+}
+
+SMODS.Rarity{
+    key = "cursed",
+    loc_txt = {},
+    badge_colour = HEX("474931"),
+}
 
 --Add Event type - used for events in e.g. Chocolate Dice
 SMODS.Events = {}
@@ -156,10 +165,6 @@ function loc_colour(_c, _default)
 	if not G.ARGS.LOC_COLOURS then
 		lc()
 	end
-	G.ARGS.LOC_COLOURS.cry_exotic = G.C.RARITY["cry_exotic"]
-	G.ARGS.LOC_COLOURS.cry_epic = G.C.RARITY["cry_epic"]
-	G.ARGS.LOC_COLOURS.cry_candy = G.C.RARITY["cry_candy"]
-	G.ARGS.LOC_COLOURS.cry_cursed = G.C.RARITY["cry_cursed"]
 	G.ARGS.LOC_COLOURS.cry_azure = HEX("1d4fd7")
 	G.ARGS.LOC_COLOURS.cry_code = G.C.SET.Code
 	G.ARGS.LOC_COLOURS.heart = G.C.SUITS.Hearts
@@ -538,7 +543,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 4583
+		local old = GLOBAL_cry_member_count or 5328
 		local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
 			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
@@ -551,7 +556,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 4583
+		GLOBAL_cry_member_count = 5328
 	end
 end
 
@@ -2671,19 +2676,6 @@ function Card:set_banana(_banana)
 end
 function Card:set_pinned(_pinned)
 	self.pinned = _pinned
-end
---Register custom rarity pools
-local is = SMODS.injectItems
-function SMODS.injectItems()
-	local m = is()
-	for k, v in pairs(G.P_CENTERS) do
-		v.key = k
-		if v.rarity and type(v.rarity) == "string" and v.set == "Joker" and not v.demo then
-			if not G.P_JOKER_RARITY_POOLS[v.rarity] then G.P_JOKER_RARITY_POOLS[v.rarity] = {} end
-			table.insert(G.P_JOKER_RARITY_POOLS[v.rarity], v)
-		end
-	end
-	return m
 end
 
 --Gradients based on Balatrostuck code

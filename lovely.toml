@@ -63,25 +63,6 @@ position = "at"
 payload = "if not initial and G.GAME and G.GAME.blind then G.GAME.blind:debuff_card(self) end"
 match_indent = true
 
-# Display Epic/Exotic name in rarity
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')})[card.config.center.rarity] end"
-position = "at"
-payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = ({localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary'), ['cry_epic'] = localize('cry_epic'), ['cry_candy'] = localize('cry_candy'), ['cry_cursed'] = localize('cry_cursed'), ['cry_exotic'] = localize('cry_exotic')})[card.config.center.rarity] end"
-match_indent = true
-
-# Fix Rare Tag creating Epic jokers
-[[patches]]
-[patches.pattern]
-target = "tag.lua"
-pattern = "card = create_card('Joker', _context.area, nil, 1, nil, nil, nil, 'rta')"
-position = "at"
-payload = "card = create_card('Joker', _context.area, nil, 0.99, nil, nil, nil, 'rta')"
-match_indent = true
-
-
 # Draw midground layer
 [[patches]]
 [patches.pattern]
@@ -300,8 +281,12 @@ match_indent = true
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = "if G.GAME.used_vouchers[v.key] then"
-position = "at"
+position = "after"
 payload = '''
+    if not G.GAME.cry_owned_vouchers[v.key] then
+        G.GAME.cry_owned_vouchers[v.key] = G.GAME.used_vouchers[v.key]
+    end
+end
 if G.GAME.cry_owned_vouchers[v.key] then
 '''
 match_indent = true

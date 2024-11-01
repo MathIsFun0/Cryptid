@@ -645,6 +645,18 @@ local replica = {
 		delay(0.5)
 	end,
 }
+local spectrals = {
+	white_hole,
+	vacuum,
+	hammerspace,
+	lock, 
+	trade,
+	analog,
+	replica,
+}
+if Cryptid.enabled["Epic Jokers"] then
+	spectrals[#spectrals + 1] = summoning
+end
 return {
 	name = "Spectrals",
 	init = function()
@@ -926,5 +938,5 @@ return {
 			end
 		end
 	end,
-	items = { white_hole, vacuum, hammerspace, lock, trade, analog, summoning, replica },
+	items = spectrals,
 }

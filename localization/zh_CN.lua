@@ -1067,7 +1067,7 @@ return {
                     "{C:chips}+#1#{} 筹码"
                 }
             },
-            j_cry_curse = {
+            j_cry_curse_sob = {
                 name = "啜泣",
                 text = {
                     "{C:edition,E:1}你无法{} {C:cry_ascendant,E:1}逃跑...{}",
