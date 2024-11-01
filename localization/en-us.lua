@@ -3381,7 +3381,7 @@ return {
             k_disable_music = "Disable Music",
 
             k_cry_epic = "Epic",
-            k_cry_epic = "Exotic",
+            k_cry_exotic = "Exotic",
             k_cry_candy = "Candy",
             k_cry_cursed  = "Cursed",
 
@@ -3416,7 +3416,7 @@ return {
             cry_oversat = "Oversaturated",
 
             k_cry_epic = "Epic",
-            k_cry_epic = "Exotic",
+            k_cry_exotic = "Exotic",
             k_cry_candy = "Candy",
             k_cry_cursed  = "Cursed",
         },
