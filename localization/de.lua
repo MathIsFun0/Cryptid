@@ -98,6 +98,14 @@ return {
                     "bekomme seine {C:attention}verbesserten Versionen",
                 },
             },
+			b_cry_spooky = {
+                name = "Gruseliges Deck",
+                text = {
+                    "Starte mit einem {C:eternal}Ewigen{} {C:attention,T:j_cry_chocolate_dice}Schokoladenwürfel",
+                    "Nach jeder {C:attention}Ante{}, erstelle eine",
+                    "{C:cry_candy}Süßigkeit{} oder einen {X:cry_cursed,C:white}Verfluchten{} Joker",
+                }
+            },
             b_cry_very_fair = {
                 name = "Sehr Faires Deck",
                 text = {
@@ -589,6 +597,15 @@ return {
                     "{C:inactive,s:0.8}nicht fett, hat nur große Knochen.",
                 },
             },
+			j_cry_blacklist = {
+                name = "Blacklist",
+                text = {
+                    "Wenn ein(e) {C:attention}#1#{} in der Hand oder gespielt ist,",
+                    "setze {C:chips}Chips{} und {C:mult}Mult{} zu 0",
+                    "{C:red,E:2}zerstört sich selbst{} wenn kein {C:attention}#1#{} im deck ist",
+                    "{C:inactive,s:0.8}Rang ändert sich nicht"
+                }
+            },
             j_cry_blender = {
                 name = "Blender",
                 text = {
@@ -641,6 +658,14 @@ return {
                     "{C:inactive,s:0.8}Funktioniert nicht auf andere Lange Weilen{}",
                 },
             },
+			j_cry_brittle = {
+                name = "Zerbrechliche Süßigkeit",
+                text = {
+                    "Für die nächsten {C:attention}#1#{} Hände,",
+                    "füge {C:attention}Stein{}, {C:attention}Gold{}, oder {C:attention}Stahl{} zu",
+                    "der rechtesten gewerteten Karte hinzu"
+                }
+            },
             j_cry_bubblem = {
                 name = "Blasen M",
                 text = {
@@ -658,6 +683,37 @@ return {
                     "Chance von {C:green}1 zu 4{}",
                     "für {C:mult}-#2#{} Mult",
                 },
+            },
+			j_cry_candy_basket = {
+                name = "Süßigkeitenkorb",
+                text = {
+                    "Verkaufe diese Karte up {C:attention}#1#{} {C:cry_candy}Süßigkeiten{} zu erstellen",
+                    "{C:attention}+#2#{} {C:cry_candy}Süßigkeiten{} für alle {C:attention}2{} besiegte Blinds",
+                    "{C:attention}+#3#{} {C:cry_candy}Süßigkeiten{} für jede besiegte {C:attention}Boss Blind{}"
+                }
+            },
+            j_cry_candy_buttons = {
+                name = "Süßigkeitenknöpfe",
+                text = {
+                    "Die nächsten {C:attention}#1#{} Aktualisierungen",
+                    "kosten {C:money}$1{}",
+                }
+            },
+            j_cry_candy_cane = {
+                name = "Zuckerstange",
+                text = {
+                    "Für die nächsten {C:attention}#1#{} Runden,",
+                    "geben gespielte Karten {C:money}$#2#",
+                    "wenn {C:attention}erneut ausgelöst"
+                }
+            },
+            j_cry_candy_dagger = {
+                name = "Süßigkeitendolch",
+                text = {
+                    "Wenn {C:attention}Blind{} ausgewält wurde,",
+                    "zerstöre linken Joker",
+                    "um eine {C:cry_candy}Süßigkeit{} zu erstellen.",
+                }
             },
             j_cry_canvas = {
                 name = "Leinwand",
@@ -689,6 +745,15 @@ return {
                     "am Ende der Runde,",
                     "{C:red,E:2}zerstört sich selbst{} nach {C:attention}#3#{} Runden",
                     "{C:inactive}(Momentan{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
+                },
+            },
+			j_cry_chocolate_dice = {
+                name = "Schokoladenwürfel",
+                text = {
+                    "Werfe einen {C:green}Zehnerwürfel{} wenn",
+                    "{C:attention}Boss Blind{} besiegt wurde",
+                    "um ein {C:cry_ascendant,E:1}Event{} zu starten.",
+                    "{C:inactive}(Currently: #1#)"
                 },
             },
             j_cry_circulus_pistoris = {
@@ -740,6 +805,13 @@ return {
                     "Chance von {C:green}#1# zu #2#{} um eine Kopie",
                     "zu deinen Verbrauchsgegenständen hinzuzufügen",
                     "{C:inactive}(Muss Platz haben)",
+                },
+            },
+			j_cry_cotton_candy = {
+                name = "Zuckerwatte",
+                text = {
+                    "Wenn verkauft, bekommen",
+                    "benachbarte {C:attention}Joker{} {C:dark_edition}Negativ{}"
                 },
             },
             j_cry_crustulum = {
@@ -854,8 +926,10 @@ return {
             j_cry_duplicare = {
                 name = 'Duplicare',
                 text = {
-                    "Jeder {C:attention}Joker{} gibt",
-                    "{X:dark_edition,C:white}^#1#{} Mult"
+                    "Dieser Joker bekommt {X:mult,C:white} X#2# {} Mult",
+                    "wenn ein {C:attention}Joker{} oder eine",
+                    "Spielkarte ausgelöst wird",
+                    "{C:inactive}(Momentan {X:mult,C:white} X#1# {C:inactive} Mult)",
                 }
             },
             j_cry_effarcire = {
@@ -990,6 +1064,16 @@ return {
                     "am Ende der Runde",
                 },
             },
+			j_cry_ghost = {
+                name = "Geist",
+                text = {
+                    "Am Ende der Runde:",
+                    "Chance von {C:green}#1# zu #2#{} einen",
+                    "zufälligen {C:attention}Joker{} zu {C:attention}besetzen",
+                    "Chance von {C:green}#1# zu #3#{}",
+                    "{E:2,C:red}sich selbst zu zerstören"
+                }
+            },
             j_cry_giggly = {
                 name = "Absurder Joker",
                 text = {
@@ -1057,6 +1141,14 @@ return {
                     "jede Karte gibt",
                     "{X:mult,C:white} X#1# {} Mult wenn sie gewertet wird",
                 },
+            },
+			j_cry_jawbreaker = {
+                name = "Kieferbrecher",
+                text = {
+                    "Wenn {C:attention}Boss Blind{} besiegt wurde,",
+                    "{C:attention}verdopple{} die Werte aller Joker",
+                    "{E:2,C:red}Zerstört sich selbst{}",
+                }
             },
             j_cry_jimball = {
                 name = "Jimball",
@@ -1228,6 +1320,14 @@ return {
                     "um {C:attention}#1#{} am Ende der Runde",
                 },
             },
+			j_cry_mellowcreme = {
+                name = "Mellowcreme",
+                text = {
+                    "Verkaufe diese Karte um",
+                    "Verkaufswert aller {C:attention}Verbrauchgegenstände{}",
+                    "mit {C:attention}X#1#{} zu {C:attention}multiplizieren"
+                }
+            },
             j_cry_membershipcard = {
                 name = "Mitgliedskarte",
                 text = {
@@ -1281,6 +1381,14 @@ return {
                     "zu den {C:chips}Chips{} hinzugefügt",
                     "{C:inactive}(Momentan {C:chips}+#1#{C:inactive} Chips)",
                 },
+            },
+			j_cry_monopoly_money = {
+                name = "Monopoly Geld",
+                text = {
+                    "Chance von {C:green}#1# zu #2#{} gekaufte",
+                    "Gegenstände zu {C:attention}zerstören{}",
+                    "Halbiert Geld wenn {C:attention}Verkauft",
+                }
             },
             j_cry_morse = {
                 name = "Morse Code",
@@ -1629,6 +1737,13 @@ return {
                     "{C:inactive,s:0.8}Kopiert keine anderen Speculo{}",
                 },
             },
+			j_cry_spy = {
+                name = "Spion",
+                text = {
+                    "{X:mult,C:white} X#2# {} Mult, {C:dark_edition}+1{C:attention} Joker{} slot",
+                    "{C:inactive}Dieser #1# ist ein Spion!",
+                },
+            },
             j_cry_stardust = {
                 name = "Sternstaub",
                 text = {
@@ -1703,6 +1818,15 @@ return {
                     "eines zufälligen {C:attention}Jokers{} zu erstellen",
                     "{s:0.8,C:inactive}(Egal ob der Joker kompatibel ist)",
                 },
+            },
+			j_cry_trick_or_treat = {
+                name = "Süßes oder Saures",
+                text = {
+                    "Wenn {C:attention}verkauft{}:",
+                    "Chance von {C:green}#1# zu #2#{} {C:attention}2{} {C:cry_candy}Süßigkeiten{} zu erstellen",
+                    "Sonst erstelle einen {X:cry_cursed,C:white}Verfluchten{} Joker",
+                    "{C:inactive}(Kann überfießen)"
+                }
             },
             j_cry_tricksy = {
                 name = "Tricksy Joker",
@@ -1821,6 +1945,14 @@ return {
                     "wenn die {C:attention}Poker hand{} eine",
                     "{C:attention}2{} und {C:attention}7{} unterschiedlicher Farben enthält",
                     "{C:inactive}(Momentan {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
+			j_cry_wrapped = {
+                name = "Eingewickelte Süßigkeit",
+                text = {
+                    "Erstelle einen zufälligen {C:attention}Essen Joker{}",
+                    "in {C:attention}#1#{} Runde(n)",
+                    "{C:red,E:2}Zerstört sich selbst{}",
                 },
             },
         },
@@ -2745,6 +2877,30 @@ return {
                     "löse {C:cry_code}#1#{} aus",
                 },
             },
+			cry_flickering = {
+                name = "Flackernd",
+                text = {
+                    "Zerstört nach",
+                    "{C:attention}#1#{} Auslösungen",
+                    "{C:inactive}({C:attention}#2#{C:inactive} übrig)"
+                },
+            },
+            cry_flickering_desc = { --von Schokowürfel genutzt
+                name = "Flackernd",
+                text = {
+                    "Zerstört nach",
+                    "{C:attention}#1#{} Auslösungen",
+                },
+            },
+            cry_possessed = {
+                name = "Besessen",
+                text = {
+                    "{C:attention}Deaktiviert{} Effekte und",
+                    "{C:attention}kehrt sie um{} wenn möglich",
+                    "Zerstört sich mit {C:attention}Geist"
+                },
+            },
+            --todo? add candy jokers to list
             food_jokers = {
                 name = "Essen Joker",
                 text = {
@@ -2753,6 +2909,114 @@ return {
                     "{s:0.8}Selters, Saure Gurke, Chilischote, Karamel,",
                     "{s:0.8}Nostalgische Süßigkeit, Fast Food M, etc.",
                 },
+            },
+			v_cry_choco0 = {
+                name = "",
+                text = {
+                    "Details eines aktiven",
+                    "{C:cry_ascendant,E:1}Events{} werden hier erscheinen"
+                }
+            },
+            ev_cry_choco1 = {
+                name = "1: Bessetzung",
+                text = {
+                    "{C:attention}Joker{} und Spielkarten haben eine",
+                    "Chance von {C:green}1 zu 3{} Flackernd zu bekommen",
+                    "Erstelle einen {C:attention}Geist",
+                    "{C:inactive,s:0.7}Du wurdest von einem Geist besessen und dein",
+                    "{C:inactive,s:0.7}Bewustsein flackert ein und aus."
+                }
+            },
+            ev_cry_choco2 = {
+                name = "2: Geisterhaus",
+                text = {
+                    "Eine {C:attention}Blind{} überspringen bringt nichts",
+                    "Eine {C:attention}Aktualisierung{} pro Shop erlaubt",
+                    "{C:attention}Gutschein{} Preise sind verdoppelt",
+                    "{C:inactive,s:0.7}Gruselige Geister haben Kontrolle übernommen! Berühre nichts",
+                    "{C:inactive,s:0.7}und fliehe so schnell du kannst!",
+                }
+            },
+            ev_cry_choco3 = {
+                name = "3: Hexengebräu",
+                text = {
+                    "Erstelle 3 {C:attention}Tränke",
+                    "Benutze einen am Ende der {C:attention}Small Blind{},",
+                    "oder {C:attention}alle{} werden diese {C:attention}Ante{} angewendet",
+                    "{C:inactive,s:0.7}Du wurderst von einer Hexe entführt!",
+                    "{C:inactive,s:0.7}Sie bietet dir drei Tränke an und beobachtet dich genau.",
+                    "{C:inactive,s:0.7}Wähle einen oder sie macht die Entscheidung für dich.",
+                }
+            },
+            ev_cry_choco4 = {
+                name = "4: Mondabgrund",
+                text = {
+                    "Gespielte Karten haben eine Chance von {C:green}1 zu 4{}",
+                    "sich in eine zufällige {C:club}Kreuz{} Bildkarte zu verwandeln",
+                    "Dividiere {C:attention}Mult{} durch die Ankahl gespielter Bildkarten",
+                    "{C:inactive,s:0.7}Selbst ein Mann reines Herzes",
+                    "{C:inactive,s:0.7}der Nachts immer betet..."
+                }
+            },
+            ev_cry_choco5 = {
+                name = "5: Blutsauger",
+                text = {
+                    "Entferne {C:attention}Verbesserungen{} von allen gespielten Karten",
+                    "Chance von {C:green}1 zu 3{} {C:heart}Herz{} und",
+                    "{C:diamond}Karo{} Karten zu zerstören",
+                    "{C:inactive,s:0.7}Achte dich in der Nacht, denn",
+                    "{C:inactive,s:0.7,E:1}die in den Schatten{C:inactive,s:0.7} suchen eine Stillung für ihren Durst..."
+                }
+            },
+            ev_cry_choco6 = {
+                name = "6: Bitte nimm eins",
+                text = {
+                    "Am {C:attention}Ende der Runde{}, öffne ein",
+                    "zufälliges {C:attention}Booster{} Packet",
+                    "{C:inactive,s:0.7}Als du die Straße hinunter läufst, siehst du eine",
+                    "{C:inactive,s:0.7}Box mit vielen Booster Packeten. Warum nicht eins nehmen?"
+                }
+            },
+            ev_cry_choco7 = {
+                name = "7: Festliche Atmosphäre",
+                text = {
+                    "Erstelle 3 {C:attention}Süßes oder Saures{} und 1 {C:attention}Süßigkeitenkorb",
+                    "Shops haben jede Runde ein {C:attention}Süßes oder Saures{}",
+                    "{C:cry_candy}Süßigkeiten{} geben {C:money}$3{} wenn erhalten",
+                    "{C:inactive,s:0.7}Die ganze Nachbarschaft ist gruselig dekoriert,",
+                    "{C:inactive,s:0.7}komm und hab Spaß in der Festlichen Atmosphäre!"
+                }
+            },
+            ev_cry_choco8 = {
+                name = "8: Candy Rain",
+                text = {
+                    "When {C:attention}Blind{} defeated, obtain 1 {C:cry_candy}Candy{}",
+                    "per hand remaining; Obtain a {C:attention}Food Joker{}",
+                    "when a {C:cry_candy}Candy{} is generated",
+                    "{C:inactive,s:0.7}Candies rain from the sky! Quick,",
+                    "{C:inactive,s:0.7,E:1}grab as much as you can!"
+                }
+            },
+            ev_cry_choco9 = {
+                name = "9: Süßigkeitenregen",
+                text = {
+                    "Erhalte {C:money}$20",
+                    "Alles verdiente {C:money}Geld{} ist {C:attention}verdoppelt",
+                    "{C:inactive,s:0.7}Der Geist eines lang verstörbenen Verwanten",
+                    "{C:inactive,s:0.7}besucht dich in der Mitte der Nacht!",
+                    "{C:inactive,s:0.7}Ohne ein Wort gibt er dir ein einen Sack voll Geld,",
+                    "{C:inactive,s:0.7}gibt dir ein freundliches Lächeln, und winkt als er wieder verschwindet.",
+                }
+            },
+            ev_cry_choco10 = {
+                name = "10: Verehrte Antiquität",
+                text = {
+                    "Ein {C:legendary}Legendärer{} {C:attention}Joker{} erscheint",
+                    "in dem {C:attention}Gutschein{} slot für {C:money}$50",
+                    "Nur kaufbar als {C:attention}letzter{} Gegenstand im Shop",
+                    "{C:inactive,s:0.7}Du hast die Aufmerksamkeit des Geistes eines Relikts,",
+                    "{C:inactive,s:0.7}bekommen, aber er wird nicht leicht zu bändigen sein.",
+                }
             },
             cry_https_disabled = {
                 name = "M",
@@ -2926,6 +3190,15 @@ return {
                     "um zu lernen was es tuht"
                 }
             },
+			undiscovered_unique = {
+                name = "Nicht entdeckt",
+                text = {
+                    "Kaufe oder nutze",
+                    "diese Karte in einem",
+                    "Durchlauf ohne Code",
+                    "um zu lernen was es tuht"
+                }
+            },
             cry_green_seal = {
                 name = "Grünen Siegel",
                 text = {
@@ -2943,6 +3216,16 @@ return {
                     "{C:red}zerstöre{} diese Karte",
                 },
             },
+			Unique = {
+            c_cry_potion = {
+                name = "Trank",
+                text = {
+                    "Gibt einen unbekannten",
+                    "{C:attention}Fluch{} wenn genutz",
+                    "{C:inactive,s:0.7}Von Schokoladenwürfel erhalten"
+                }
+            }
+        }
         },
     },
     misc = {
@@ -3027,6 +3310,7 @@ return {
             cry_feat_tags = "Tags",
             cry_feat_sleeves = "Hüllen",
             cry_feat_spectrals = "Geisterkarten",
+			cry_feat_spooky = "Gruseliges Update",
             ["cry_feat_more stakes"] = "Einsätze",
             cry_feat_vouchers = "Gutscheine",
             cry_mus_jimball = "Jimball (Funkytown by Lipps Inc. - Copyrighted)",
@@ -3039,6 +3323,10 @@ return {
 
             cry_critical_hit_ex = "Kritischer Treffer!",
             cry_critical_miss_ex = "Kritisch verfehlt!",
+			
+			cry_potion1 = "-1 zu allen Handleveln",
+            cry_potion2 = "X1.15 Blindgröße",
+            cry_potion3 = "-1 Hand und Abwurf",
 
             cry_debuff_oldhouse = "Keine Full Houses",
             cry_debuff_oldarm = "Must 4 oder weniger Karten spielen",
@@ -3048,7 +3336,9 @@ return {
             cry_debuff_obsidian_orb = "Hat die Fähigkeiten aller besiegten Bosse",
 
             k_code = "Code",
+			k_unique = "Einzigartig",
             b_code_cards = "Code Karten",
+			b_unique_cards = "Einzigartige Karten",
             b_pull = "PULL",
             cry_hooked_ex = "Verhackt!",
             k_end_blind = "Beende Blind",
@@ -3091,6 +3381,8 @@ return {
 
             cry_epic = "Episch",
             cry_exotic = "Exotisch",
+			cry_candy = "Süßigkeit",
+            cry_cursed = "Verflucht",
 
 	    cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Anmerkung",
@@ -3102,8 +3394,11 @@ return {
             food_jokers = "Essen Joker",
             banana = "Banane",
             code = "Code",
+			unique = "Einzigartig",
             cry_rigged = "Manipuliert",
             cry_hooked = "Verhackt",
+			cry_flickering = "Flackernd",
+            cry_possessed = "Besezt",
 
             cry_green_seal = "Grünes Siegel",
             cry_azure_seal = "Azurblaues Siegel",
@@ -3120,7 +3415,9 @@ return {
             cry_oversat = "Übersättigt",
 
             cry_epic = "Episch",
-            cry_exotic = "Exotisch"
+            cry_exotic = "Exotisch",
+			cry_candy = "Süßigkeit",
+            cry_cursed = "Verflucht",
         },
         rnj_loc_txts = {
             stats = {
@@ -3208,12 +3505,13 @@ return {
             a_powmult = {"^#1# Mult"},
             a_powchips = {"^#1# Chips"},
             a_powmultchips = {"^#1# Mult+Chips"},
-            a_round = {"+#1# Round"},
+            a_round = {"+#1# Runde"},
+			a_candy = {"+#1# Süßigkeit"},
             a_xchips_minus = {"-X#1# Chips"},
             a_powmult_minus = {"-^#1# Mult"},
             a_powchips_minus = {"-^#1# Chips"},
             a_powmultchips_minus = {"-^#1# Mult+Chips"},
-            a_round_minus = {"-#1# Round"},
+            a_round_minus = {"-#1# Runde"},
             
             a_tag = {"#1# Tag"},
             a_tags = {"#1# Tags"},
