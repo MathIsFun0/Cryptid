@@ -684,10 +684,10 @@ local caramel = {
 	end,
 }
 --this has to be the most spaghetti code in cryptid
-local curse = {
+local curse_sob = {
 	object_type = "Joker",
-	name = "cry_curse",
-	key = "curse",
+	name = "cry_curse_sob",
+	key = "curse_sob",
 	pos = { x = 1, y = 1 },
 	rarity = "cry_epic",
 	cost = 9,
@@ -1383,7 +1383,7 @@ return {
 		oldcandy,
 		circus,
 		caramel,
-		curse,
+		curse_sob,
 		bonusjoker,
 		multjoker,
 		goldjoker,
