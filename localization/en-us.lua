@@ -1034,6 +1034,15 @@ return {
                     "{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
                 },
             },
+	    j_cry_formidiulosus = {
+		    name = "Formidiulosus",
+		    text = {
+		    	"When a {X:cry_cursed,C:white}Cursed{} Joker is obtained, destroy it",
+			"Creates {C:attention}#1#{} {C:cry_candy}Negative Candy Jokers{} at the end of Shop",
+			"{X:dark_edition,C:white}+^#2#{} Mult for each {C:cry_candy}Candy Joker{} in possession",
+			"{C:inactive}(Currently {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
+		    },
+	    },
             j_cry_foxy = {
                 name = "Foxy Joker",
                 text = {

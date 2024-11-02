@@ -1032,6 +1032,15 @@ return {
                     "{C:inactive,s:0.8}Größe Pommes, 20 Stücke & Großer Kuchen{}",
                 },
             },
+	    j_cry_formidiulosus = {
+		name = "Formidiulosus",
+		text = {
+			"Wenn ein {X:cry_cursed,C:white}Verfluchter{} Joker erhalten wird, zerstöre ihn",
+			"Erstelle {C:attention}#1#{} {C:cry_candy}Negative Süßigkeiten Joker{} am Ende des Shops",
+			"{X:dark_edition,C:white}+^#2#{} Mult für jeden {C:cry_candy}Süßigkeitenjoker{} den du besitzt",
+			"{C:inactive}(Momenan {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
+		},
+	    },
             j_cry_foxy = {
                 name = "Fuchsiger Joker",
                 text = {
