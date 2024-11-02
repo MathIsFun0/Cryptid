@@ -1038,7 +1038,7 @@ return {
 		    name = "Formidiulosus",
 		    text = {
 		    	"When a {X:cry_cursed,C:white}Cursed{} Joker is obtained, destroy it",
-			"Creates {C:attention}#1#{} {C:cry_candy}Candy Jokers{} at the end of Shop",
+			"Creates {C:attention}#1#{} {C:cry_candy}Negative Candy Jokers{} at the end of Shop",
 			"{X:dark_edition,C:white}+^#2#{} Mult for each {C:cry_candy}Candy Joker{} in possession",
 			"{C:inactive}(Currently {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 		    },
