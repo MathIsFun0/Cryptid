@@ -1084,6 +1084,64 @@ local rescribere = {
     end
 }
 
+local formidiulosus = {
+	object_type = "Joker",
+	name = "cry-Formidiulosus",
+	key = "formidiulosus",
+	pos = { x = 6, y = 4 },
+	soul_pos = { x = 8, y = 4, extra = { x = 7, y = 4 } },
+	blueprint_compat = true,
+	config = { extra = { candy = 3, Emult_mod = 0.01, Emult = 1 } },
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = { center.ability.extra.candy, center.ability.extra.Emult_mod, center.ability.extra.Emult },
+		}
+	end,
+	rarity = "cry_exotic",
+	cost = 50,
+	order = 518,
+	atlas = "atlasexotic",
+	calculate = function(self, card, context)
+		if (context.buying_card or context.cry_creating_card) and context.card.ability.set == "Joker" and context.card.config.center.rarity == "cry_cursed" and not context.blueprint and not (context.card == card) then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					context.card:start_dissolve()
+					card_eval_status_text(card, 'extra', nil, nil, nil, {
+						message = localize("k_nope_ex"),
+						colour = G.C.BLACK,
+					})
+					return true
+				end
+			}))
+		end
+		if context.ending_shop then
+			for i = 1, 3 do
+				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+			end
+		end
+		card.ability.extra.Emult = 1
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.rarity == "cry_candy" then
+				card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+			end
+		end
+		if
+			context.cardarea == G.jokers
+			and (to_big(card.ability.extra.Emult) > to_big(1))
+			and not context.before
+			and not context.after
+		then
+			return {
+				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
+				Emult_mod = card.ability.extra.Emult,
+				colour = G.C.DARK_EDITION,
+			}
+		end
+	end,
+}
+
 return {
 	name = "Exotic Jokers",
 	init = function()
@@ -1235,5 +1293,6 @@ return {
 		verisimile,
 		--rescribere, [NEEDS REFACTOR]
 		duplicare,
+		formidiulosus,
 	},
 }
