@@ -921,8 +921,9 @@ return {
 	    j_cry_exposed = {
                 name = "Exposed",
                 text = {
-                    "All {C:attention}Face Cards{} are {C:mult}debuffed{}",
-                    "All others are retriggered {C:attention}#1#{} times"
+                    "Retrigger all non-{C:attention}face{} cards",
+		    "{C:attention}#1#{} additional time(s)",
+                    "All {C:attention}face{} cards are debuffed",
                 },
             },
             j_cry_facile = {
@@ -1214,8 +1215,9 @@ return {
             j_cry_mask = {
                 name = "Mask",
                 text = {
-                    "All {C:attention}Face Cards{} retriggered {C:attention}#1#{} times",
-                    "All others are {C:mult}debuffed{}"
+                    "Retrigger all {C:attention}face{} cards",
+                    "{C:attention}#1#{} additional time(s)",
+		    "All non-{C:attention}face{} cards are debuffed",
                 },
             },
             j_cry_maximized = {
@@ -1738,8 +1740,9 @@ return {
             j_cry_tropical_smoothie = {
                 name = "Tropical Smoothie",
                 text = {
-                    "When sold, {C:attention}multiply{} the values",
-                    "of all owned jokers by {C:attention}X1.5{}",
+                    "Sell this card",
+		    "to {C:attention}multiply{} values",
+                    "of owned jokers by {C:attention}X1.5{}",
                 },
             },
             j_cry_unity = {
