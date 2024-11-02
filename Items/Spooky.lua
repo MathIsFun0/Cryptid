@@ -1076,7 +1076,7 @@ local mellowcreme = {
 local brittle = {
 	object_type = "Joker",
     key = "brittle",
-    pos = { x = 0, y = 0 },
+    pos = { x = 5, y = 1 },
     rarity = "cry_candy",
     cost = 10,
     atlas = "placeholders",
