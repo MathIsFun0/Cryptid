@@ -2939,7 +2939,7 @@ return {
             ev_cry_choco2 = {
                 name = "2: Haunted House",
                 text = {
-                    "Skipping a {C:attention}Blind{} does nothing",
+                    "Prevents skipping {C:attention}Blind{}",
                     "One {C:attention}reroll{} allowed per shop",
                     "{C:attention}Voucher{} prices are doubled",
                     "{C:inactive,s:0.7}Spooky spirits have taken over! Don't touch",
