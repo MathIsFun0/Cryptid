@@ -1062,6 +1062,18 @@ return {
                     "{C:inactive,s:0.8}1 Grande Frite, 20 McNuggets & un muffin{}",
                 },
             },
+            j_cry_formidiulosus = {
+                name = "Formidiulosus",
+                text = {
+                    "Lorsqu'un Joker {X:cry_cursed,C:white}Maudit{} est obtenu, le détruit",
+                    "Crée {C:attention}#1#{} {C:cry_candy}Joker(s) Bonbon négatif(s){} à la fin de la boutique",
+                    "{X:dark_edition,C:white}+^#2#{} Multi pour chaque {C:cry_candy}Joker Bonbon{} détenu",
+                    "{C:inactive}(Actuellement {X:dark_edition,C:white}^#3#{C:inactive} Multi)",
+                    -- another word instead of "détenu" i thought of would have been "possédé"
+                    -- but. the ghost. possession. the misunderstanding writes itself
+                    --  - #Guigui
+                },
+            },
             j_cry_foxy = {
                 name = "Joker narquois",
                 text = {
@@ -3412,10 +3424,10 @@ return {
 
             k_disable_music = "Désactiver la musique",
 
-            cry_epic = "Épique",
-            cry_exotic = "Exotique",
-            cry_candy = "Bonbon",
-            cry_cursed = "Maudit",
+            k_cry_epic = "Épique",
+            k_cry_exotic = "Exotique",
+            k_cry_candy = "Bonbon",
+            k_cry_cursed = "Maudit",
 
             cry_notif_jimball_1 = "Jimboule",
             cry_notif_jimball_2 = "Notice de droits d'auteur",
@@ -3447,10 +3459,10 @@ return {
             cry_noisy = "Bruité",
             cry_oversat = "Super-saturée",
 
-            cry_epic = "Épique",
-            cry_exotic = "Exotique",
-            cry_candy = "Candy",
-            cry_cursed = "Cursed",
+            k_cry_epic = "Épique",
+            k_cry_exotic = "Exotique",
+            k_cry_candy = "Candy",
+            k_cry_cursed = "Cursed",
         },
         rnj_loc_txts = {
             stats = {
