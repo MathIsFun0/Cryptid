@@ -1115,7 +1115,7 @@ local formidiulosus = {
 			}))
 		end
 		if context.ending_shop then
-			for i = 1, 3 do
+			for i = 1, card.ability.extra.candy do
 				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
 				card:set_edition({ negative = true }, true)
 				card:add_to_deck()
