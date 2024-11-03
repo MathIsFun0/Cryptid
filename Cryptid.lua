@@ -1064,6 +1064,10 @@ function Card:calculate_joker(context)
 		ret.EEEchip_mod = nil
 		ret.hyperchip_mod = nil
 		if ret.message then
+			-- TODO - this is a hacky way to do this, but it works for now
+			if type(ret.message) == "table" then
+				ret.message = ret.message[1]
+			end
 			if ret.message:sub(1,1) == "+" then
 				ret.message = "-" .. ret.message:sub(2)
 			elseif ret.message:sub(1,1) == "X" then
