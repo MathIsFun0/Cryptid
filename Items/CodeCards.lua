@@ -1023,6 +1023,7 @@ local rework = {
 		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
 		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
 		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
+		and G.jokers.highlighted[1].config.center.rarity ~= "cry_cursed"
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
