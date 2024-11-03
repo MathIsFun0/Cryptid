@@ -1260,7 +1260,7 @@ return {
 		function predict_card_for_shop()
 			local total_rate = G.GAME.joker_rate + G.GAME.playing_card_rate
 			for _, v in ipairs(SMODS.ConsumableType.obj_buffer) do
-				total_rate = total_rate + G.GAME[v:lower() .. "_rate"] or 0
+				total_rate = total_rate + (G.GAME[v:lower() .. "_rate"] or 0)
 			end
 			local polled_rate = pseudorandom(predict_pseudoseed("cdt" .. G.GAME.round_resets.ante)) * total_rate
 			local check_rate = 0
