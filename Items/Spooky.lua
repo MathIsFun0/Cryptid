@@ -9,7 +9,7 @@ local cotton_candy = {
 	eternal_compat = false,
 	perishable_compat = false,
 	calculate = function(self, card, context)
-		if context.selling_self then
+		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if i > 1 then
@@ -102,6 +102,7 @@ local choco_dice = {
 	atlas = "atlasspooky",
 	config = {extra = {roll = 0}},
 	immutable = true,
+	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		if not center then --tooltip
 		elseif not center.added_to_deck then
@@ -164,6 +165,7 @@ local choco2 = {
 		end
 	end
 }
+local num_potions = 3 --note: must be changed whenever new potion effects are added
 local choco3 = {
 	object_type = "Event",
 	key = "choco3",
@@ -174,7 +176,7 @@ local choco3 = {
 		for i = 1, 3 do
 			local card = create_card("Unique", G.consumeables, nil, nil, nil, nil, "c_cry_potion")
 			card:add_to_deck()
-			card.ability.random_event = pseudorandom(pseudoseed("cry_choco_witch"),1,3) --note: must be changed whenever new potion effects are added
+			card.ability.random_event = pseudorandom(pseudoseed("cry_choco_witch"),1,num_potions)
 			G.consumeables:emplace(card)
 		end
 	end,
@@ -199,13 +201,15 @@ local choco3 = {
 		--bug: if this event finishes and starts, every potion gets instantly destroyed
 		--bug: crashes if all 3 are used on blind skip
 		if context.pre_jokers and (context.skip_blind or (context.end_of_round and not context.individual and not context.repetition)) and not context.blueprint and not context.retrigger_joker then
-			local num_potions = 0
-			for i = 1, #G.consumeables.cards do
-				if G.consumeables.cards[i].config.center.key == "c_cry_potion" then
-					num_potions = num_potions+1
+			--Detect if a potion has been used
+			local used_potion = false
+			for i = 1, num_potions do
+				if G.GAME.events[self.key].potions[i] then
+					used_potion = true
+					break
 				end
 			end
-			if num_potions < 3 then
+			if used_potion then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						for i = #G.consumeables.cards, 1, -1 do
@@ -240,11 +244,12 @@ local potion = {
 	key = "potion",
 	name = "cry-Potion",
 	pos = { x = 0, y = 1 },
-	config = { random_event = 1 },
+	config = { random_event = 2 },
 	cost = 4,
 	no_doe = true,
 	no_ccd = true,
 	immutable = true,
+	no_dbl = true,
 	atlas = "atlasspooky",
 	can_use = function(self, card)
 		return true
@@ -285,6 +290,9 @@ local potion = {
 		end
 		if card.ability.random_event == 2 then -- X1.15 blind size
 			G.GAME.starting_params.ante_scaling = G.GAME.starting_params.ante_scaling * 1.15
+			if G.GAME.blind and G.GAME.blind.chips then
+				G.GAME.blind.chips = G.GAME.blind.chips * 1.15
+			end
 		end
 		if card.ability.random_event == 3 then -- -1 Hand and Discard
             G.GAME.round_resets.hands = G.GAME.round_resets.hands - 1
@@ -292,7 +300,7 @@ local potion = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards - 1
             ease_discard(-1)
 		end
-		delay(3)
+		delay(12/G.SETTINGS.GAMESPEED)
 	end,
 }
 local choco4 = { --lunar abyss
@@ -453,6 +461,7 @@ local spy = {
 	atlas = "atlasspooky",
 	config = {x_mult = 0.5, extra = {secret_card = "", revealed = false}},
 	immutable = true,
+	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { localize({ type = "name_text", set = "Joker", key = center.ability and center.ability.extra and center.ability.extra.secret_card }), center.ability.x_mult } }
 	end,
@@ -681,14 +690,15 @@ local candy_basket = {
 local blacklist = {
 	object_type = "Joker",
 	key = "blacklist",
-	pos = { x = 0, y = 0 },
+	pos = { x = 2, y = 2 },
 	rarity = "cry_cursed",
 	cost = 0,
-	atlas = "placeholders",
+	atlas = "atlasspooky",
 	config = {extra = {blacklist = {}}},
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
+	no_dbl = true,
 	calculate = function(self, card, context)
 		if context.joker_main then
 			local blacklist = false
@@ -754,6 +764,7 @@ local ghost = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
+	no_dbl = true,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint and not context.retrigger_joker then
 			if pseudorandom(pseudoseed("cry_ghost_destroy")) < G.GAME.probabilities.normal/card.ability.extra.destroy_rate then
@@ -814,10 +825,10 @@ local candy_dagger = {
     object_type = "Joker",
     name = "cry-Candy Dagger",
     key = "candy_dagger",
-    pos = { x = 1, y = 0 },
+    pos = { x = 4, y = 2 },
     rarity = 2,
     cost = 8,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
     blueprint_compat = true,
     calculate = function(self, card, context)
         local my_pos = nil
@@ -831,11 +842,11 @@ local candy_dagger = {
 			context.setting_blind
 			and not (context.blueprint_card or self).getting_sliced
 			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
+			and G.jokers.cards[my_pos + 1]
+			and not G.jokers.cards[my_pos + 1].ability.eternal
+			and not G.jokers.cards[my_pos + 1].getting_sliced
 		then
-			local sliced_card = G.jokers.cards[my_pos - 1]
+			local sliced_card = G.jokers.cards[my_pos + 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
 				check_for_unlock({ type = "what_have_you_done" })
@@ -947,11 +958,11 @@ local candy_buttons = {
 	object_type = "Joker",
     key = "candy_buttons",
 	name = "cry-candybuttons",
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 2 },
     rarity = "cry_candy",
 	config = { extra = { rerolls = 15 } },
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
     blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.rerolls } }
@@ -1002,10 +1013,10 @@ local candy_buttons = {
 local jawbreaker = {
 	object_type = "Joker",
     key = "jawbreaker",
-    pos = { x = 0, y = 0 },
+    pos = { x = 3, y = 2 },
     rarity = "cry_candy",
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
     blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not context.blueprint_card and not context.retrigger_joker then
@@ -1053,10 +1064,10 @@ local jawbreaker = {
 local mellowcreme = {
 	object_type = "Joker",
     key = "mellowcreme",
-    pos = { x = 0, y = 0 },
+    pos = { x = 0, y = 2 },
     rarity = "cry_candy",
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
 	config = {extra = {sell_mult = 4}},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.sell_mult } }
@@ -1076,10 +1087,10 @@ local mellowcreme = {
 local brittle = {
 	object_type = "Joker",
     key = "brittle",
-    pos = { x = 0, y = 0 },
+    pos = { x = 5, y = 1 },
     rarity = "cry_candy",
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
 	config = {extra = {rounds = 9}},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
@@ -1148,8 +1159,9 @@ local monopoly_money = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
+	no_dbl = true,
 	calculate = function(self, card, context)
-		if context.buying_card then
+		if context.buying_card and not context.blueprint_card and not context.retrigger_joker then
 			if pseudorandom(pseudoseed("cry_monopoly")) < G.GAME.probabilities.normal/card.ability.extra.fail_rate then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1164,7 +1176,7 @@ local monopoly_money = {
 			end
 			return nil, true
 		end
-		if context.selling_self then
+		if context.selling_self and not context.blueprint_card and not context.retrigger_joker then
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					ease_dollars(math.floor(-0.5*G.GAME.dollars))

@@ -1064,6 +1064,10 @@ function Card:calculate_joker(context)
 		ret.EEEchip_mod = nil
 		ret.hyperchip_mod = nil
 		if ret.message then
+			-- TODO - this is a hacky way to do this, but it works for now
+			if type(ret.message) == "table" then
+				ret.message = ret.message[1]
+			end
 			if ret.message:sub(1,1) == "+" then
 				ret.message = "-" .. ret.message:sub(2)
 			elseif ret.message:sub(1,1) == "X" then
@@ -1864,26 +1868,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		center = G.P_CENTERS[forced_key]
 		_type = (center.set ~= "Default" and center.set or _type)
 	else
-		--Reimplement Door Hanger From Bunco
-                if next(find_joker('Doorhanger')) then
-			if type(_rarity) ~= "string" then
-                    		if _rarity == nil or _rarity < 0.9 then
-        
-                        		_rarity = 0.9
-
-					--Minor Changes from Bunco's implementation
-					local rng = pseudorandom('doorhanger'..G.SEED)
-                        		if rng > 0.97 then
-						--Rare Jokers
-                            			_rarity = 0.993
-                        		end
-					if rng > 0.99 then
-						--Epic Jokers (If enabled, otherwise rare jokers)
-                            			_rarity = 1
-                        		end
-                    		end
-			end
-                end
 		gcparea = area
 		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
 		gcparea = nil

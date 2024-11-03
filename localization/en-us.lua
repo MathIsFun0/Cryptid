@@ -713,7 +713,7 @@ return {
                 name = "Candy Dagger",
                 text = {
                     "When {C:attention}Blind{} is selected,",
-                    "destroy Joker to the left",
+                    "destroy Joker to the right",
                     "to create a {C:cry_candy}Candy{}",
                 }
             },
@@ -1034,6 +1034,15 @@ return {
                     "{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
                 },
             },
+	    j_cry_formidiulosus = {
+		    name = "Formidiulosus",
+		    text = {
+		    	"When a {X:cry_cursed,C:white}Cursed{} Joker is obtained, destroy it",
+			"Creates {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Candies{} at end of shop",
+			"Gains {X:dark_edition,C:white}^#2#{} Mult for each {C:cry_candy}Candy{} in possession",
+			"{C:inactive}(Currently {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
+		    },
+	    },
             j_cry_foxy = {
                 name = "Foxy Joker",
                 text = {
@@ -2930,7 +2939,7 @@ return {
             ev_cry_choco2 = {
                 name = "2: Haunted House",
                 text = {
-                    "Skipping a {C:attention}Blind{} does nothing",
+                    "Prevents skipping {C:attention}Blind{}",
                     "One {C:attention}reroll{} allowed per shop",
                     "{C:attention}Voucher{} prices are doubled",
                     "{C:inactive,s:0.7}Spooky spirits have taken over! Don't touch",
@@ -3381,7 +3390,7 @@ return {
             k_disable_music = "Disable Music",
 
             k_cry_epic = "Epic",
-            k_cry_epic = "Exotic",
+            k_cry_exotic = "Exotic",
             k_cry_candy = "Candy",
             k_cry_cursed  = "Cursed",
 
@@ -3416,7 +3425,7 @@ return {
             cry_oversat = "Oversaturated",
 
             k_cry_epic = "Epic",
-            k_cry_epic = "Exotic",
+            k_cry_exotic = "Exotic",
             k_cry_candy = "Candy",
             k_cry_cursed  = "Cursed",
         },

@@ -917,7 +917,7 @@ local sus = {
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		local function is_impostor(card)
-			return SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
+			return card.base.value and SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
 		end
 		if context.end_of_round and not context.cardarea then
 			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
