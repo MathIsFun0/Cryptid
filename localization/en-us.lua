@@ -713,7 +713,7 @@ return {
                 name = "Candy Dagger",
                 text = {
                     "When {C:attention}Blind{} is selected,",
-                    "destroy Joker to the left",
+                    "destroy Joker to the right",
                     "to create a {C:cry_candy}Candy{}",
                 }
             },
@@ -1038,8 +1038,8 @@ return {
 		    name = "Formidiulosus",
 		    text = {
 		    	"When a {X:cry_cursed,C:white}Cursed{} Joker is obtained, destroy it",
-			"Creates {C:attention}#1#{} {C:cry_candy}Negative Candy Jokers{} at the end of Shop",
-			"{X:dark_edition,C:white}+^#2#{} Mult for each {C:cry_candy}Candy Joker{} in possession",
+			"Creates {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Candies{} at end of shop",
+			"Gains {X:dark_edition,C:white}^#2#{} Mult for each {C:cry_candy}Candy{} in possession",
 			"{C:inactive}(Currently {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 		    },
 	    },

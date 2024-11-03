@@ -681,10 +681,10 @@ local candy_basket = {
 local blacklist = {
 	object_type = "Joker",
 	key = "blacklist",
-	pos = { x = 0, y = 0 },
+	pos = { x = 2, y = 2 },
 	rarity = "cry_cursed",
 	cost = 0,
-	atlas = "placeholders",
+	atlas = "atlasspooky",
 	config = {extra = {blacklist = {}}},
 	blueprint_compat = false,
 	eternal_compat = false,
@@ -814,10 +814,10 @@ local candy_dagger = {
     object_type = "Joker",
     name = "cry-Candy Dagger",
     key = "candy_dagger",
-    pos = { x = 1, y = 0 },
+    pos = { x = 4, y = 2 },
     rarity = 2,
     cost = 8,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
     blueprint_compat = true,
     calculate = function(self, card, context)
         local my_pos = nil
@@ -831,11 +831,11 @@ local candy_dagger = {
 			context.setting_blind
 			and not (context.blueprint_card or self).getting_sliced
 			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
+			and G.jokers.cards[my_pos + 1]
+			and not G.jokers.cards[my_pos + 1].ability.eternal
+			and not G.jokers.cards[my_pos + 1].getting_sliced
 		then
-			local sliced_card = G.jokers.cards[my_pos - 1]
+			local sliced_card = G.jokers.cards[my_pos + 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
 				check_for_unlock({ type = "what_have_you_done" })
@@ -947,11 +947,11 @@ local candy_buttons = {
 	object_type = "Joker",
     key = "candy_buttons",
 	name = "cry-candybuttons",
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 2 },
     rarity = "cry_candy",
 	config = { extra = { rerolls = 15 } },
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
     blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.rerolls } }
@@ -1002,10 +1002,10 @@ local candy_buttons = {
 local jawbreaker = {
 	object_type = "Joker",
     key = "jawbreaker",
-    pos = { x = 0, y = 0 },
+    pos = { x = 3, y = 2 },
     rarity = "cry_candy",
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
     blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not context.blueprint_card and not context.retrigger_joker then
@@ -1053,10 +1053,10 @@ local jawbreaker = {
 local mellowcreme = {
 	object_type = "Joker",
     key = "mellowcreme",
-    pos = { x = 0, y = 0 },
+    pos = { x = 0, y = 2 },
     rarity = "cry_candy",
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
 	config = {extra = {sell_mult = 4}},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.sell_mult } }
@@ -1079,7 +1079,7 @@ local brittle = {
     pos = { x = 5, y = 1 },
     rarity = "cry_candy",
     cost = 10,
-    atlas = "placeholders",
+    atlas = "atlasspooky",
 	config = {extra = {rounds = 9}},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
