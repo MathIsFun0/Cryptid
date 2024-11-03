@@ -796,7 +796,9 @@ local ghost = {
 						table.insert(eligible_cards, i)
 					end
 				end
-				G.jokers.cards[pseudorandom_element(eligible_cards,pseudoseed("cry_ghost_possess_choice"))].ability.cry_possessed = true
+				if #eligible_cards ~= 0 then
+					G.jokers.cards[pseudorandom_element(eligible_cards,pseudoseed("cry_ghost_possess_choice"))].ability.cry_possessed = true
+				end
 				return
 			end
 		end
