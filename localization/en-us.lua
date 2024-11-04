@@ -717,6 +717,13 @@ return {
                     "to create a {C:cry_candy}Candy{}",
                 }
             },
+	    j_cry_candy_sticks = {
+		name = "Candy Sticks",
+		text = {
+			"Next boss blind's effect isn't active",
+			"until you've played {C:attention}#1#{} hand",
+	   	}
+	    },
             j_cry_canvas = {
                 name = "Canvas",
                 text = {
