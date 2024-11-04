@@ -70,6 +70,17 @@ local dropshot = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local happyhouse = {
 	object_type = "Joker",
@@ -129,6 +140,17 @@ local happyhouse = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local maximized = {
 	object_type = "Joker",
@@ -139,6 +161,17 @@ local maximized = {
 	order = 13,
 	cost = 11,
 	atlas = "atlastwo",
+	cry_credits = {
+		idea = {
+			"Gold"
+		},
+		art = {
+			"Gold"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local potofjokes = {
 	object_type = "Joker",
@@ -177,6 +210,17 @@ local potofjokes = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand:change_size(-card.ability.extra.h_size)
 	end,
+	cry_credits = {
+		idea = {
+			"Mjiojio"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local queensgambit = {
 	object_type = "Joker",
@@ -222,6 +266,18 @@ local queensgambit = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Project666"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			--wonder what happened to this guy
+			"Thedrunkenbrick"
+		}
+	},
 }
 local wee_fib = {
 	object_type = "Joker",
@@ -263,6 +319,17 @@ local wee_fib = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"LocalThunk"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local whip = {
 	object_type = "Joker",
@@ -327,6 +394,17 @@ local whip = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Gold"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local lucky_joker = {
 	object_type = "Joker",
@@ -357,6 +435,17 @@ local lucky_joker = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Ein13"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Wilsonthewolf"
+		}
+	},
 }
 local cursor = {
 	object_type = "Joker",
@@ -401,6 +490,17 @@ local cursor = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Math"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local pickle = {
 	object_type = "Joker",
@@ -494,6 +594,17 @@ local pickle = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"5381"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local cube = {
 	object_type = "Joker",
@@ -519,6 +630,17 @@ local cube = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Ein13 & Math"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local triplet_rhythm = {
 	object_type = "Joker",
@@ -550,6 +672,17 @@ local triplet_rhythm = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local booster = {
 	object_type = "Joker",
@@ -578,6 +711,17 @@ local booster = {
 		end
 		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.booster_slots
 	end,
+	cry_credits = {
+		idea = {
+			"Ein13"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local chili_pepper = {
 	object_type = "Joker",
@@ -652,6 +796,17 @@ local chili_pepper = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local compound_interest = {
 	object_type = "Joker",
@@ -676,6 +831,17 @@ local compound_interest = {
 			return bonus
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mjiojio"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local big_cube = {
 	object_type = "Joker",
@@ -701,6 +867,17 @@ local big_cube = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystick Myclick"
+		},
+		art = {
+			"AlexZGreat"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local eternalflame = {
 	object_type = "Joker",
@@ -742,6 +919,17 @@ local eternalflame = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Dovahkiin1307"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local nice = {
 	object_type = "Joker",
@@ -778,6 +966,17 @@ local nice = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"AlexZGreat"
+		}
+	},
 }
 local seal_the_deal = {
 	object_type = "Joker",
@@ -815,6 +1014,17 @@ local seal_the_deal = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Zak"
+		},
+		art = {
+			"5381"
+		},
+		code = {
+			"AlexZGreat"
+		}
+	},
 }
 local chad = {
 	object_type = "Joker",
@@ -845,6 +1055,17 @@ local chad = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"SDM0"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local jimball = {
 	object_type = "Joker",
@@ -890,6 +1111,17 @@ local jimball = {
 		end
 	end,
 	atlas = "jimball",
+	cry_credits = {
+		idea = {
+			"Math"
+		},
+		art = {
+			"Grazzy", "Zakosek Artworks"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 G.FUNCS.notif_jimball = function()
 	Cryptid_config.Cryptid.jimball_music = false
@@ -994,6 +1226,17 @@ local sus = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Math"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local fspinner = {
 	object_type = "Joker",
@@ -1036,6 +1279,17 @@ local fspinner = {
 		end
 	end,
 	atlas = "atlasone",
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local luigi = {
 	object_type = "Joker",
@@ -1069,6 +1323,17 @@ local luigi = {
 		end
 	end,
 	atlas = "atlasthree",
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local waluigi = {
 	object_type = "Joker",
@@ -1101,6 +1366,17 @@ local waluigi = {
 		end
 	end,
 	atlas = "atlastwo",
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local mario = {
 	object_type = "Joker",
@@ -1127,6 +1403,17 @@ local mario = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local wario = {
 	object_type = "Joker",
@@ -1166,6 +1453,17 @@ local wario = {
 	cost = 20,
 	blueprint_compat = true,
 	atlas = "atlasthree",
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local krustytheclown = {
 	object_type = "Joker",
@@ -1204,6 +1502,17 @@ local krustytheclown = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Izumi"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local blurred = {
 	object_type = "Joker",
@@ -1235,6 +1544,17 @@ local blurred = {
 			return true end }))
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local gardenfork = {
 	object_type = "Joker",
@@ -1264,6 +1584,17 @@ local gardenfork = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local lightupthenight = {
 	object_type = "Joker",
@@ -1291,6 +1622,17 @@ local lightupthenight = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local nosound = {
 	object_type = "Joker",
@@ -1320,6 +1662,17 @@ local nosound = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local antennastoheaven = {
 	object_type = "Joker",
@@ -1361,6 +1714,17 @@ local antennastoheaven = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local hunger = {
 	object_type = "Joker",
@@ -1389,6 +1753,17 @@ local hunger = {
 			)
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mjiojio"
+		},
+		art = {
+			"AlexZGreat"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local weegaming = {
 	object_type = "Joker",
@@ -1418,6 +1793,17 @@ local weegaming = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Gold"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local redbloon = {
 	object_type = "Joker",
@@ -1480,6 +1866,17 @@ local redbloon = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Roguefort Cookie"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local apjoker = {
 	object_type = "Joker",
@@ -1504,6 +1901,17 @@ local apjoker = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local maze = {
 	object_type = "Joker",
@@ -1546,6 +1954,17 @@ local maze = {
 		G.GAME.current_round.hands_played = 0
 		G.GAME.current_round.discards_used = 0
 	end,
+	cry_credits = {
+		idea = {
+			"zy-b-org"
+		},
+		art = {
+			"Math"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 --Fixed Jank for the most part. Other modded jokers may still be jank depending on how they are implemented
 --funny side effect of this fix causes trading card and dna to juice up like craaazy lol
@@ -1575,6 +1994,17 @@ local panopticon = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Samario"
+		},
+		art = {
+			"Samario"
+		},
+		code = {
+			"Samario", "Toneblock"
+		}
+	},
 }
 local magnet = {
 	object_type = "Joker",
@@ -1597,6 +2027,17 @@ local magnet = {
 			return card.ability.extra.money
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local unjust_dagger = {
 	object_type = "Joker",
@@ -1675,6 +2116,17 @@ local unjust_dagger = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Mystic Misclick"
+		}
+	},
 }
 local monkey_dagger = {
 	object_type = "Joker",
@@ -1753,6 +2205,17 @@ local monkey_dagger = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Mystic Misclick"
+		}
+	},
 }
 local pirate_dagger = {
 	object_type = "Joker",
@@ -1831,6 +2294,17 @@ local pirate_dagger = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Mystic Misclick"
+		}
+	},
 }
 local mondrian = {
 	object_type = "Joker",
@@ -1873,6 +2347,17 @@ local mondrian = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local sapling = {
 	object_type = "Joker",
@@ -1922,6 +2407,17 @@ local sapling = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mjiojio"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local spaceglobe = {
 	object_type = "Joker",
@@ -1987,6 +2483,17 @@ local spaceglobe = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local happy = {
 	object_type = "Joker",
@@ -2061,6 +2568,17 @@ local happy = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local meteor = {
 	object_type = "Joker",
@@ -2129,6 +2647,17 @@ local meteor = {
 		end
 	end,
 	atlas = "atlastwo",
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local exoplanet = {
 	object_type = "Joker",
@@ -2197,6 +2726,17 @@ local exoplanet = {
 		end
 	end,
 	atlas = "atlastwo",
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local stardust = {
 	object_type = "Joker",
@@ -2265,6 +2805,17 @@ local stardust = {
 		end
 	end,
 	atlas = "atlastwo",
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 function rnjoker_randomize(card)
 	card.ability.abilities = {}
@@ -3504,6 +4055,17 @@ local rnjoker = {
 		end
 	end,
 	atlas = "atlastwo",
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local duos = {
 	object_type = "Joker",
@@ -3535,6 +4097,17 @@ local duos = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local home = {
 	object_type = "Joker",
@@ -3566,6 +4139,17 @@ local home = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local nuts = {
 	object_type = "Joker",
@@ -3597,6 +4181,17 @@ local nuts = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local quintet = {
 	object_type = "Joker",
@@ -3634,6 +4229,17 @@ local quintet = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local unity = {
 	object_type = "Joker",
@@ -3671,6 +4277,17 @@ local unity = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local swarm = {
 	object_type = "Joker",
@@ -3708,6 +4325,17 @@ local swarm = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local filler = {
 	object_type = "Joker",
@@ -3733,6 +4361,17 @@ local filler = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mathguy"
+		},
+		art = {
+			"Mathguy"
+		},
+		code = {
+			"Mathguy"
+		}
+	},
 }
 local giggly = {
 	object_type = "Joker",
@@ -3758,6 +4397,17 @@ local giggly = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local nutty = {
 	object_type = "Joker",
@@ -3783,6 +4433,17 @@ local nutty = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local manic = {
 	object_type = "Joker",
@@ -3808,6 +4469,17 @@ local manic = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local silly = {
 	object_type = "Joker",
@@ -3833,6 +4505,17 @@ local silly = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local delirious = {
 	object_type = "Joker",
@@ -3864,6 +4547,17 @@ local delirious = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local wacky = {
 	object_type = "Joker",
@@ -3895,6 +4589,17 @@ local wacky = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local kooky = {
 	object_type = "Joker",
@@ -3926,6 +4631,17 @@ local kooky = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local dubious = {
 	object_type = "Joker",
@@ -3951,6 +4667,17 @@ local dubious = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local shrewd = {
 	object_type = "Joker",
@@ -3976,6 +4703,17 @@ local shrewd = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local tricksy = {
 	object_type = "Joker",
@@ -4001,6 +4739,17 @@ local tricksy = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local foxy = {
 	object_type = "Joker",
@@ -4026,6 +4775,17 @@ local foxy = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local savvy = {
 	object_type = "Joker",
@@ -4057,6 +4817,17 @@ local savvy = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local subtle = {
 	object_type = "Joker",
@@ -4088,6 +4859,17 @@ local subtle = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local discreet = {
 	object_type = "Joker",
@@ -4119,6 +4901,17 @@ local discreet = {
 		end
 		return false
 	end,
+	cry_credits = {
+		idea = {
+			"Luigicat11"
+		},
+		art = {
+			"Luigicat11"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local coin = {
 	object_type = "Joker",
@@ -4149,6 +4942,17 @@ local coin = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Squiddy"
+		},
+		art = {
+			"Timetoexplode"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local wheelhope = {
 	object_type = "Joker",
@@ -4196,6 +5000,17 @@ local wheelhope = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Linus Goof Balls"
+		},
+		art = {
+			"Linus Good Balls"
+		},
+		code = {
+			"Toneblock"
+		}
+	},
 }
 local oldblueprint = {
 	object_type = "Joker",
@@ -4279,6 +5094,17 @@ local oldblueprint = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Linus Goof Balls"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local night = {
 	object_type = "Joker",
@@ -4347,6 +5173,17 @@ local night = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Linus Goof Balls"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local busdriver = {
 	object_type = "Joker",
@@ -4391,6 +5228,17 @@ local busdriver = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Linus Goof Balls"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local translucent = {
 	object_type = "Joker",
@@ -4430,6 +5278,17 @@ local translucent = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"SDM0"
+		},
+		art = {
+			"SDM0"
+		},
+		code = {
+			"SDM0"
+		}
+	},
 }
 local morse = {
 	object_type = "Joker",
@@ -4462,6 +5321,17 @@ local morse = {
 			return card.ability.extra.money
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local membershipcard = {
 	object_type = "Joker",
@@ -4495,6 +5365,17 @@ local membershipcard = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Toneblock"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Toneblock"
+		}
+	},
 }
 local kscope = {
 	object_type = "Joker",
@@ -4523,6 +5404,17 @@ local kscope = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local cryptidmoment = {
 	object_type = "Joker",
@@ -4550,6 +5442,17 @@ local cryptidmoment = {
 			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Yamper"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local flipside = {
 	object_type = "Joker",
@@ -4601,7 +5504,17 @@ local flipside = {
 			end
 		end
 	end,
-
+	cry_credits = {
+		idea = {
+			"Axolotus"
+		},
+		art = {
+			":("
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local oldinvisible = {
 	object_type = "Joker",
@@ -4664,6 +5577,17 @@ local oldinvisible = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"LocalThunk"
+		},
+		art = {
+			"LocalThunk"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local fractal = {
 	object_type = "Joker",
@@ -4687,6 +5611,17 @@ local fractal = {
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
 		G.hand:unhighlight_all()
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"HexaCryonic"
+		}
+	},
 }
 local kidnap = {
 	object_type = "Joker",
@@ -4796,6 +5731,17 @@ local kidnap = {
 			return card.ability.extra.money
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 
 local miscitems =  {
