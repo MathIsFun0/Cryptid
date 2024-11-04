@@ -62,6 +62,17 @@ local jollysus = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 --TODO
 --Fix Incompatiblity with Brainstorm (the joker not the mod)
@@ -132,6 +143,17 @@ local bubblem = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local foodm = {
 	object_type = "Joker",
@@ -231,6 +253,17 @@ local foodm = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local mstack = {
 	object_type = "Joker",
@@ -299,6 +332,17 @@ local mstack = {
 			card.ability.extra.retriggers = 1
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local mneon = {
 	object_type = "Joker",
@@ -341,6 +385,17 @@ local mneon = {
 			return card.ability.extra.money
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local notebook = {
 	object_type = "Joker",
@@ -422,6 +477,17 @@ local notebook = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slot
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local bonk = {
 	object_type = "Joker",
@@ -502,6 +568,17 @@ local bonk = {
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.xchips = math.floor(card.ability.extra.xchips + 0.5) --lua moment
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local loopy = { 
 	object_type = "Joker",
@@ -570,6 +647,17 @@ local loopy = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local scrabble = {
 	object_type = "Joker",
@@ -610,6 +698,17 @@ local scrabble = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local sacrifice = {
 	object_type = "Joker",
@@ -665,6 +764,17 @@ local sacrifice = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 --TODO: Fix Brainstorm incompatibility (the joker not the mod)
 local reverse = {
@@ -739,6 +849,17 @@ local reverse = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local doodlem = {
 	object_type = "Joker",
@@ -791,6 +912,17 @@ local doodlem = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local virgo = {
 	object_type = "Joker",
@@ -857,6 +989,17 @@ local virgo = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local smallestm = {
 	object_type = "Joker",
@@ -892,6 +1035,17 @@ local smallestm = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local biggestm = {
 	object_type = "Joker",
@@ -948,6 +1102,17 @@ local biggestm = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Kailen"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 local mprime = {
 	object_type = "Joker",
@@ -1039,6 +1204,17 @@ local mprime = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local macabre = {
 	object_type = "Joker",
@@ -1098,6 +1274,17 @@ local macabre = {
 			}))
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"SDM0"
+		},
+		art = {
+			"SDM0"
+		},
+		code = {
+			"SDM0"
+		}
+	},
 }
 local megg = {
 	object_type = "Joker",
@@ -1151,6 +1338,17 @@ local megg = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Watermelon Lover"
+		},
+		art = {
+			"Watermelon Lover"
+		},
+		code = {
+			"SDM0"
+		}
+	},
 }
 local longboi = {
 	object_type = "Joker",
@@ -1204,6 +1402,17 @@ local longboi = {
 			card.ability.extra.mult = G.GAME.monstermult or 1
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Watermelon Lover"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local ret_items = {
 	bubblem,
