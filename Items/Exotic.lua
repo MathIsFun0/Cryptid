@@ -155,6 +155,7 @@ local exponentia = {
 	cry_credits = {
 		idea = {"Enemui"},
 		art = {"Jevonn"},
+		code = {"Math"}
 	},
 }
 local speculo = {
@@ -207,6 +208,7 @@ local speculo = {
 	cry_credits = {
 		idea = {"Mystic"},
 		art = {"Mystic"},
+		code = {"Math"}
 	},
 }
 local redeo = {
@@ -250,6 +252,7 @@ local redeo = {
 	cry_credits = {
 		idea = {"Enemui"},
 		art = {"Jevonn"},
+		code = {"Math", "jenwalter666"}
 	},
 }
 local tenebris = {
@@ -278,6 +281,7 @@ local tenebris = {
 	cry_credits = {
 		idea = {"Gold"},
 		art = {"Mystic"},
+		code = {"jenwalter666"}
 	},
 }
 local effarcire = {
@@ -305,6 +309,7 @@ local effarcire = {
 	cry_credits = {
 		idea = {"Frix"},
 		art = {"AlexZGreat"},
+		code = {"jenwalter666"}
 	},
 }
 local effarcire_sprite = {
@@ -369,6 +374,7 @@ local crustulum = {
 	cry_credits = {
 		idea = {"AlexZGreat"},
 		art = {"Jevonn"},
+		code = {"Jevonn"}
 	},
 }
 --todo: make the Emult always prime
@@ -433,6 +439,7 @@ local primus = {
 	cry_credits = {
 		idea = {"Jevonn"},
 		art = {"Jevonn"},
+		code = {"Jevonn"}
 	},
 }
 local big_num_whitelist = {
@@ -557,6 +564,7 @@ local scalae = {
 	cry_credits = {
 		idea = {"Mathguy"},
 		art = {"Mathguy"},
+		code = {"Mathguy"}
 	},
 }
 local stella_mortis = {
@@ -638,6 +646,7 @@ local stella_mortis = {
 	cry_credits = {
 		idea = {"SMG9000"},
 		art = {"SMG9000"},
+		code = {"SMG9000"}
 	},
 }
 local circulus_pistoris = {
@@ -683,6 +692,7 @@ local circulus_pistoris = {
 	cry_credits = {
 		idea = {"SMG9000", "Math"}, --not sure if there's more ppl I'm missing
 		art = {"HexaCryonic"},
+		code = {"SMG9000", "Math"}
 	},
 }
 local aequilibrium = {
@@ -797,6 +807,7 @@ local aequilibrium = {
 	cry_credits = {
 		idea = {"Elial2"},
 		art = {"Elial2"},
+		code = {"Elial2"}
 	},
 }
 local cc = copy_card
@@ -869,6 +880,7 @@ local facile = {
 	cry_credits = {
 		idea = {"Enemui"},
 		art = {"Kailen"},
+		code = {"Jevonn"}
 	},
 }
 local gemino = {
@@ -884,6 +896,7 @@ local gemino = {
 			"Requiacity",
 		},
 		art = {"Requiacity"}
+		code = {"Math"}
 	},
 	rarity = "cry_exotic",
 	blueprint_compat = true,
@@ -953,6 +966,7 @@ local energia = {
 	cry_credits = {
 		idea = {"jenwalter666"},
 		art = {"Kailen"},
+		code = {"Math"}
 	},
 }
 local verisimile = {
@@ -1048,6 +1062,7 @@ local verisimile = {
 	end,
 	cry_credits = {
 		idea = {"Enemui"},
+		code = {"Jevonn"}
 	},
 }
 
@@ -1090,6 +1105,7 @@ local duplicare = {
 	cry_credits = {
 		idea = {"Enemui"},
 		art = {"Shellular"},
+		code = {"elial2"}
 	},
 }
 
@@ -1212,6 +1228,7 @@ local formidiulosus = {
 	cry_credits = {
 		idea = {"HexaCryonic","Kailen"},
 		art = {"Foegro"},
+		code = {"Foegro"}
 	},
 }
 
