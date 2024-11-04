@@ -1688,14 +1688,12 @@ function SMODS.create_mod_badges(obj, badges)
 			local scale_fac = {}
 			local min_scale_fac = 1
 			local strings = {"Cryptid"}
-			for i = 1, #obj.cry_credits.idea do
-				strings[#strings+1] = localize{type='variable',key='cry_idea',vars={obj.cry_credits.idea[i]}}[1]
-			end
-			for i = 1, #obj.cry_credits.art do
-				strings[#strings+1] = localize{type='variable',key='cry_art',vars={obj.cry_credits.art[i]}}[1]
-			end
-			for i = 1, #obj.cry_credits.code do
-				strings[#strings+1] = localize{type='variable',key='cry_code',vars={obj.cry_credits.code[i]}}[1]
+			for _, v in ipairs({"idea", "art", "code"}) do
+				if obj.cry_credits[v] then
+					for i = 1, #obj.cry_credits[v] do
+						strings[#strings+1] = localize{type='variable',key='cry_'..v,vars={obj.cry_credits[v][i]}}[1]
+					end
+				end
 			end
 			for i = 1, #strings do
 				scale_fac[i] = calc_scale_fac(strings[i])
@@ -1717,7 +1715,7 @@ function SMODS.create_mod_badges(obj, badges)
 							align = "cm",
 							colour = G.C.CRY_EXOTIC,
 							r = 0.1,
-							minw = 2,
+							minw = 2/min_scale_fac,
 							minh = 0.36,
 							emboss = 0.05,
 							padding = 0.03 * 0.9,
@@ -1753,7 +1751,6 @@ function SMODS.create_mod_badges(obj, badges)
 				return true
 			end
 			for i = 1, #badges do
-				print(tprint(badges[i].nodes[1].config.colour))
 				if eq_col(badges[i].nodes[1].config.colour,HEX("708b91")) then
 					badges[i] = cry_badge
 					break
@@ -1773,7 +1770,6 @@ function SMODS.create_mod_badges(obj, badges)
 					string = obj.cry_credits.jolly[i],
 				}
 			end
-			print(tprint(ct))
 			badges[#badges + 1] = {
 				n = G.UIT.R,
 				config = { align = "cm" },

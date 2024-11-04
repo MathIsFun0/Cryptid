@@ -92,15 +92,9 @@ local iterum = {
 		end
 	end,
 	cry_credits = {
-		idea = {
-			"Math"
-		},
-		art = {
-			"Ein13"
-		},
-		code = {
-			"Math"
-		}
+		idea = {"Math"},
+		art = {"Ein13"},
+		code = {"Math"}
 	},
 }
 local universum = {
@@ -123,6 +117,10 @@ local universum = {
 			return { mod = to_big(card.ability.extra) }
 		end
 	end,
+	cry_credits = {
+		idea = {"Ein13"},
+		art = {"Ein13"},
+	},
 }
 local exponentia = {
 	object_type = "Joker",
@@ -154,6 +152,10 @@ local exponentia = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
+	cry_credits = {
+		idea = {"Enemui"},
+		art = {"Jevonn"},
+	},
 }
 local speculo = {
 	object_type = "Joker",
@@ -202,6 +204,10 @@ local speculo = {
 			return
 		end
 	end,
+	cry_credits = {
+		idea = {"Mystic"},
+		art = {"Mystic"},
+	},
 }
 local redeo = {
 	object_type = "Joker",
@@ -241,6 +247,10 @@ local redeo = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {"Enemui"},
+		art = {"Jevonn"},
+	},
 }
 local tenebris = {
 	object_type = "Joker",
@@ -265,6 +275,10 @@ local tenebris = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
 	end,
+	cry_credits = {
+		idea = {"Gold"},
+		art = {"Mystic"},
+	},
 }
 local effarcire = {
 	object_type = "Joker",
@@ -288,6 +302,10 @@ local effarcire = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {"Frix"},
+		art = {"AlexZGreat"},
+	},
 }
 local effarcire_sprite = {
 	object_type = "Atlas",
@@ -348,6 +366,10 @@ local crustulum = {
 	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
 	end,
+	cry_credits = {
+		idea = {"AlexZGreat"},
+		art = {"Jevonn"},
+	},
 }
 --todo: make the Emult always prime
 local primus = {
@@ -408,6 +430,10 @@ local primus = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
+	cry_credits = {
+		idea = {"Jevonn"},
+		art = {"Jevonn"},
+	},
 }
 local big_num_whitelist = {
 	j_ride_the_bus = true,
@@ -528,6 +554,10 @@ local scalae = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(card.ability.extra.scale + 1), number_format(card.ability.extra.scale_mod) } }
 	end,
+	cry_credits = {
+		idea = {"Mathguy"},
+		art = {"Mathguy"},
+	},
 }
 local stella_mortis = {
 	object_type = "Joker",
@@ -605,6 +635,10 @@ local stella_mortis = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
 	end,
+	cry_credits = {
+		idea = {"SMG9000"},
+		art = {"SMG9000"},
+	},
 }
 local circulus_pistoris = {
 	object_type = "Joker",
@@ -646,6 +680,10 @@ local circulus_pistoris = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {"SMG9000", "Math"}, --not sure if there's more ppl I'm missing
+		art = {"HexaCryonic"},
+	},
 }
 local aequilibrium = {
 	object_type = "Joker",
@@ -756,6 +794,10 @@ local aequilibrium = {
 			card.ability.extra.card:start_dissolve()
 		end
 	end,
+	cry_credits = {
+		idea = {"Elial2"},
+		art = {"Elial2"},
+	},
 }
 local cc = copy_card
 function copy_card(card, a, b, c, d)
@@ -824,6 +866,10 @@ local facile = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {"Enemui"},
+		art = {"Kailen"},
+	},
 }
 local gemino = {
 	object_type = "Joker",
@@ -837,6 +883,7 @@ local gemino = {
 			"Jolly Open Winner",
 			"Requiacity",
 		},
+		art = {"Requiacity"}
 	},
 	rarity = "cry_exotic",
 	blueprint_compat = true,
@@ -903,6 +950,10 @@ local energia = {
 			return { tags = t }
 		end
 	end,
+	cry_credits = {
+		idea = {"jenwalter666"},
+		art = {"Kailen"},
+	},
 }
 local verisimile = {
 	object_type = "Joker",
@@ -995,6 +1046,9 @@ local verisimile = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {"Enemui"},
+	},
 }
 
 
@@ -1032,7 +1086,11 @@ local duplicare = {
 				colour = G.C.MULT,
 			}
 		end
-    end
+    end,
+	cry_credits = {
+		idea = {"Enemui"},
+		art = {"Shellular"},
+	},
 }
 
 -- to be honest, this needs a refactor because
@@ -1151,6 +1209,10 @@ local formidiulosus = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {"HexaCryonic","Kailen"},
+		art = {"Foegro"},
+	},
 }
 
 return {
