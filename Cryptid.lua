@@ -2141,6 +2141,48 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
 	-- those values will be unset during scoring unless update() is manually called.
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
+
+	--Debuff jokers if certain boss blinds are active
+	if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
+		if G.GAME.blind.name == "cry-box"
+		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_box"] == true) then
+			if card.config.center.rarity == 1 and not card.debuff then
+				card.debuff = true
+				card.debuffed_by_blind = true
+			end
+		end
+		if G.GAME.blind.name == "cry-windmill"
+		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_windmill"] == true) then
+			if card.config.center.rarity == 2 and not card.debuff then
+				card.debuff = true
+				card.debuffed_by_blind = true
+			end
+		end
+		if G.GAME.blind.name == "cry-striker"
+		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_striker"] == true) then
+			if card.config.center.rarity == 3 and not card.debuff then
+				card.debuff = true
+				card.debuffed_by_blind = true
+			end
+		end
+		if G.GAME.blind.name == "cry-shackle" 
+		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_shackle"] == true) then
+			if (card.edition and card.edition.negative == true) and not card.debuff then
+				card.debuff = true
+				card.debuffed_by_blind = true
+			end
+		end
+		if G.GAME.blind.name == "cry-pin"
+		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_pin"] == true) then
+			if (card.config.center.rarity ~= 3 
+			and card.config.center.rarity ~= 2 
+			and card.config.center.rarity ~= 1 
+			and card.config.center.rarity ~= 5) then
+				card.debuff = true
+				card.debuffed_by_blind = true
+			end
+		end
+	end
 	return card
 end
 
