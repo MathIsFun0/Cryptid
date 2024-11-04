@@ -632,7 +632,7 @@ local cube = {
 	end,
 	cry_credits = {
 		idea = {
-			"Ein13 & Math"
+			"Ein13", "Math"
 		},
 		art = {
 			"Ein13"
@@ -1119,7 +1119,7 @@ local jimball = {
 			"Grazzy", "Zakosek Artworks"
 		},
 		code = {
-			"Jevonn"
+			"Math"
 		}
 	},
 }
