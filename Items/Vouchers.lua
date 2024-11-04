@@ -98,8 +98,7 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 	order = 5,
 	pos = { x = 4, y = 5 },
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Xaltios",
 		},
@@ -120,8 +119,7 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	pos = { x = 5, y = 5 },
 	requires = { "v_cry_pairing" },
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Xaltios",
 		},
@@ -142,8 +140,7 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 	pos = { x = 6, y = 5 },
 	requires = { "v_cry_repair_man" },
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Xaltios",
 		},
@@ -166,8 +163,7 @@ local double_vision = { --Double-Sided cards appear 4x more frequently
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},
@@ -184,8 +180,7 @@ local double_slit = { --Meld can appear in the shop and Arcana Packs
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_meld
 	end,
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},
@@ -202,8 +197,7 @@ local double_down = { --After every round, X1.5 to all values on the back of Dou
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},
