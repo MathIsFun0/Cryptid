@@ -91,6 +91,17 @@ local iterum = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Math"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local universum = {
 	object_type = "Joker",
@@ -822,8 +833,7 @@ local gemino = {
 	soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
 	immune_to_chemach = true,
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Requiacity",
 		},

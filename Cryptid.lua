@@ -1684,57 +1684,134 @@ function SMODS.create_mod_badges(obj, badges)
 			local scale_fac = calced_text_width > max_text_width and max_text_width / calced_text_width or 1
 			return scale_fac
 		end
-		local scale_fac = {}
-		if obj.cry_credits and obj.cry_credits.text then
-			for i = 1, #obj.cry_credits.text do
-				scale_fac[i] = calc_scale_fac(obj.cry_credits.text[i])
+		if obj.cry_credits.art or obj.cry_credits.code or obj.cry_credits.idea then
+			local scale_fac = {}
+			local min_scale_fac = 1
+			local strings = {"Cryptid"}
+			for i = 1, #obj.cry_credits.idea do
+				strings[#strings+1] = localize{type='variable',key='cry_idea',vars={obj.cry_credits.idea[i]}}[1]
 			end
-		end
-		local ct = {}
-		for i = 1, #obj.cry_credits.text do
-			ct[i] = {
-				string = obj.cry_credits.text[i],
-				scale = scale_fac[i],
-				spacing = scale_fac[i],
-			}
-		end
-		badges[#badges + 1] = {
-			n = G.UIT.R,
-			config = { align = "cm" },
-			nodes = {
-				{
-					n = G.UIT.R,
-					config = {
-						align = "cm",
-						colour = obj.cry_credits and obj.cry_credits.colour or G.C.RED,
-						r = 0.1,
-						minw = 2,
-						minh = 0.36,
-						emboss = 0.05,
-						padding = 0.03 * 0.9,
-					},
-					nodes = {
-						{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
-						{
-							n = G.UIT.O,
-							config = {
-								object = DynaText({
-									string = ct or "ERROR",
-									colours = { obj.cry_credits and obj.cry_credits.text_colour or G.C.WHITE },
-									silent = true,
-									float = true,
-									shadow = true,
-									offset_y = -0.03,
-									spacing = 1,
-									scale = 0.33 * 0.9,
-								}),
-							},
+			for i = 1, #obj.cry_credits.art do
+				strings[#strings+1] = localize{type='variable',key='cry_art',vars={obj.cry_credits.art[i]}}[1]
+			end
+			for i = 1, #obj.cry_credits.code do
+				strings[#strings+1] = localize{type='variable',key='cry_code',vars={obj.cry_credits.code[i]}}[1]
+			end
+			for i = 1, #strings do
+				scale_fac[i] = calc_scale_fac(strings[i])
+				min_scale_fac = math.min(min_scale_fac, scale_fac[i])
+			end
+			local ct = {}
+			for i = 1, #strings do
+				ct[i] = {
+					string = strings[i],
+				}
+			end
+			local cry_badge = {
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							align = "cm",
+							colour = G.C.CRY_EXOTIC,
+							r = 0.1,
+							minw = 2,
+							minh = 0.36,
+							emboss = 0.05,
+							padding = 0.03 * 0.9,
 						},
-						{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+						nodes = {
+							{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = ct or "ERROR",
+										colours = { obj.cry_credits and obj.cry_credits.text_colour or G.C.WHITE },
+										silent = true,
+										float = true,
+										shadow = true,
+										offset_y = -0.03,
+										spacing = 1,
+										scale = 0.33 * 0.9,
+									}),
+								},
+							},
+							{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+						},
 					},
 				},
-			},
-		}
+			}
+			local function eq_col(x, y)
+				for i = 1, 4 do
+					if x[1] ~= y[1] then
+						return false
+					end
+				end
+				return true
+			end
+			for i = 1, #badges do
+				print(tprint(badges[i].nodes[1].config.colour))
+				if eq_col(badges[i].nodes[1].config.colour,HEX("708b91")) then
+					badges[i] = cry_badge
+					break
+				end
+			end
+		end
+		if obj.cry_credits.jolly then
+			local scale_fac = {}
+			local min_scale_fac = 1
+			for i = 1, #obj.cry_credits.jolly do
+				scale_fac[i] = calc_scale_fac(obj.cry_credits.jolly[i])
+				min_scale_fac = math.min(min_scale_fac, scale_fac[i])
+			end
+			local ct = {}
+			for i = 1, #obj.cry_credits.jolly do
+				ct[i] = {
+					string = obj.cry_credits.jolly[i],
+				}
+			end
+			print(tprint(ct))
+			badges[#badges + 1] = {
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							align = "cm",
+							colour = G.C.CRY_JOLLY,
+							r = 0.1,
+							minw = 2,
+							minh = 0.36,
+							emboss = 0.05,
+							padding = 0.03 * 0.9,
+						},
+						nodes = {
+							{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = ct or "ERROR",
+										colours = { obj.cry_credits and obj.cry_credits.text_colour_jolly or G.C.WHITE },
+										silent = true,
+										float = true,
+										shadow = true,
+										offset_y = -0.03,
+										spacing = 1,
+										scale = 0.33 * 0.9,
+									}),
+								},
+							},
+							{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
+						},
+					},
+				},
+			}
+		end
 	end
 end
 

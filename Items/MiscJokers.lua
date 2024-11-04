@@ -4583,8 +4583,7 @@ local flipside = {
 		end
 	end,
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},

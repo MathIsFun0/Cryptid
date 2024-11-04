@@ -847,8 +847,7 @@ local double_sided = {
 		vol = 0.3,
 	},
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},
@@ -1053,8 +1052,7 @@ local meld = {
 		end
 	end,
 	cry_credits = {
-		colour = G.C.CRY_JOLLY,
-		text = {
+		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},

@@ -3532,6 +3532,10 @@ return {
                 "to win on #2##1#",
                 "#2#Stake#3# difficulty"
             },
+
+            cry_art = {"Art: #1#"},
+            cry_code = {"Code: #1#"},
+            cry_idea = {"Idea: #1#"}
         },
         v_text = {
             ch_c_cry_all_perishable = {"All Jokers are {C:eternal}Perishable{}"},
