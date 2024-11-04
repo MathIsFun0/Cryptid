@@ -895,7 +895,7 @@ local gemino = {
 			"Jolly Open Winner",
 			"Requiacity",
 		},
-		art = {"Requiacity"}
+		art = {"Requiacity"},
 		code = {"Math"}
 	},
 	rarity = "cry_exotic",
