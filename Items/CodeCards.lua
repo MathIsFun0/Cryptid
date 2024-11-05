@@ -1474,7 +1474,7 @@ local blender = {
 	end,
 	cry_credits = {
 		idea = {
-			"Kailen"
+			"HexaCryonic"
 		},
 		art = {
 			"Kailen"
@@ -1541,7 +1541,7 @@ local python = {
 	end,
 	cry_credits = {
 		idea = {
-			"Kailen"
+			"HexaCryonic"
 		},
 		art = {
 			"Kailen"
