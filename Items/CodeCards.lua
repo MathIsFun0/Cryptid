@@ -1305,6 +1305,17 @@ local CodeJoker = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Kailen"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 
 local copypaste = {
@@ -1352,6 +1363,17 @@ local copypaste = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local cut = {
 	object_type = "Joker",
@@ -1415,6 +1437,17 @@ local cut = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local blender = {
 	object_type = "Joker",
@@ -1439,6 +1472,17 @@ local blender = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Kailen"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 local python = {
 	object_type = "Joker",
@@ -1495,6 +1539,17 @@ local python = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Kailen"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 
 function create_UIBox_variable(card)
