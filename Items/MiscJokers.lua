@@ -970,7 +970,7 @@ local sus = {
 							return true
 						end,
 					}))
-					
+
 				end
 			end
 			if card.ability.chosen_card ~= nil then
@@ -1229,7 +1229,7 @@ local blurred = {
 					'extra',
 					nil,
 					nil,
-					nil, 
+					nil,
 					{message = localize{type = 'variable', key = 'a_hands', vars = {card.ability.extra}}}
 				)
 			return true end }))
@@ -1899,7 +1899,7 @@ local sapling = {
 		then
 			if context.other_card.ability.effect ~= "Base" then
 				card.ability.extra.score = card.ability.extra.score + 1
-				if card.ability.extra.score >= card.ability.extra.req and not card.ability.extra.check then 
+				if card.ability.extra.score >= card.ability.extra.req and not card.ability.extra.check then
 					card.ability.extra.check = true --Prevents violent juice up spam when playing enchanced cards while already active
                         		local eval = function(card) return not card.REMOVED end
                         		juice_card_until(card, eval, true)
@@ -3709,6 +3709,117 @@ local swarm = {
 		return false
 	end,
 }
+local stronghold = {
+	object_type = "Joker",
+	name = "cry-stronghold",
+	key = "stronghold",
+	order = 114,
+	pos = { x = 0, y = 0 },
+	config = { Xmult = 5, type = "cry_Bulwark" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_mult, localize("cry_hand_bulwark") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if
+			context.cardarea == G.jokers
+			and (to_big(card.ability.x_mult) > to_big(1))
+			and not context.before
+			and not context.after
+		then
+			if context.poker_hands~= nil and next(context.poker_hands["cry_Bulwark"]) then
+				return {
+					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
+					colour = G.C.RED,
+					Xmult_mod = card.ability.x_mult,
+				}
+			end
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_Bulwark"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local wtf = {
+	object_type = "Joker",
+	name = "cry-wtf",
+	key = "wtf",
+	order = 115,
+	pos = { x = 1, y = 0 },
+	config = { Xmult = 10, type = "cry_Clusterfuck" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_mult, localize("cry_hand_clusterfuck") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if
+			context.cardarea == G.jokers
+			and (to_big(card.ability.x_mult) > to_big(1))
+			and not context.before
+			and not context.after
+		then
+			if context.poker_hands~= nil and next(context.poker_hands["cry_Clusterfuck"]) then
+				return {
+					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
+					colour = G.C.RED,
+					Xmult_mod = card.ability.x_mult,
+				}
+			end
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_Clusterfuck"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local clash = {
+	object_type = "Joker",
+	name = "cry-clash",
+	key = "clash",
+	order = 116,
+	pos = { x = 2, y = 0 },
+	config = { Xmult = 12, type = "cry_UltPair" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_mult, localize("cry_hand_ultpair") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if
+			context.cardarea == G.jokers
+			and (to_big(card.ability.x_mult) > to_big(1))
+			and not context.before
+			and not context.after
+		then
+			if context.poker_hands~= nil and next(context.poker_hands["cry_UltPair"]) then
+				return {
+					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
+					colour = G.C.RED,
+					Xmult_mod = card.ability.x_mult,
+				}
+			end
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_UltPair"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
 local filler = {
 	object_type = "Joker",
 	name = "cry-filler",
@@ -3927,6 +4038,103 @@ local kooky = {
 		return false
 	end,
 }
+
+local bonkers = {
+	object_type = "Joker",
+	name = "cry-Bonkers Joker",
+	key = "bonkers",
+	pos = { x = 0, y = 1 },
+	order = 108,
+	config = { t_mult = 20, type = "cry_Bulwark" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize("cry_hand_bulwark") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 1,
+	effect = "Cry Type Mult",
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["cry_Bulwark"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_Bulwark"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+
+local fuckedup = {
+	object_type = "Joker",
+	name = "cry-Fucked-Up Joker",
+	key = "fuckedup",
+	pos = { x = 1, y = 1 },
+	order = 109,
+	config = { t_mult = 37, type = "cry_Clusterfuck" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize("cry_hand_clusterfuck") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 1,
+	effect = "Cry Type Mult",
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["cry_Clusterfuck"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_Clusterfuck"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+
+local foolhardy = {
+	object_type = "Joker",
+	name = "cry-Foolhardy Joker",
+	key = "foolhardy",
+	pos = { x = 2, y = 1 },
+	order = 110,
+	config = { t_mult = 42, type = "cry_UltPair" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize("cry_hand_ultpair") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 1,
+	effect = "Cry Type Mult",
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["cry_UltPair"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_UltPair"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+
 local dubious = {
 	object_type = "Joker",
 	name = "cry-Dubious Joker",
@@ -4115,6 +4323,99 @@ local discreet = {
 	end,
 	in_pool = function(self)
 		if G.GAME.hands["Flush Five"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local adroit = {
+	object_type = "Joker",
+	name = "cry-Adroit Joker",
+	key = "adroit",
+	pos = { x = 0, y = 2 },
+	effect = "Cry Type Chips",
+	order = 111,
+	config = { t_chips = 170, type = "cry_Bulwark" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize("cry_hand_bulwark") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["cry_Bulwark"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_Bulwark"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local penetrating = {
+	object_type = "Joker",
+	name = "cry-Penetrating Joker",
+	key = "penetrating",
+	pos = { x = 1, y = 2 },
+	effect = "Cry Type Chips",
+	order = 112,
+	config = { t_chips = 270, type = "cry_Clusterfuck" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize("cry_hand_clusterfuck") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["cry_Clusterfuck"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_Clusterfuck"].played > 0 then
+			return true
+		end
+		return false
+	end,
+}
+local treacherous = {
+	object_type = "Joker",
+	name = "cry-Treacherous Joker",
+	key = "treacherous",
+	pos = { x = 2, y = 2 },
+	effect = "Cry Type Chips",
+	order = 113,
+	config = { t_chips = 300, type = "cry_UltPair" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_chips, localize("cry_hand_ultpair") } }
+	end,
+	atlas = "atlascryptichandjokers",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and not context.before and not context.after and context.poker_hands and next(context.poker_hands["cry_UltPair"]) then
+			return {
+				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.t_chips } }),
+				colour = G.C.BLUE,
+				chip_mod = card.ability.t_chips,
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_UltPair"].played > 0 then
 			return true
 		end
 		return false
@@ -4759,7 +5060,7 @@ local kidnap = {
 		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
 	end,
 	atlas = "atlasone",
-	calculate = function(self, card, context) 
+	calculate = function(self, card, context)
 		if
 			context.selling_card
 			and (
@@ -4858,6 +5159,9 @@ local miscitems =  {
 	quintet,
 	unity,
 	swarm,
+	stronghold,
+	wtf,
+	clash,
 	coin,
 	wheelhope,
 	night,
@@ -4877,6 +5181,9 @@ local miscitems =  {
 	delirious,
 	wacky,
 	kooky,
+	bonkers,
+	fuckedup,
+	foolhardy,
 	dubious,
 	shrewd,
 	tricksy,
@@ -4884,6 +5191,9 @@ local miscitems =  {
 	savvy,
 	subtle,
 	discreet,
+	adroit,
+	penetrating,
+	treacherous,
 	kidnap,
 }
 if Cryptid.enabled["Misc."] then
