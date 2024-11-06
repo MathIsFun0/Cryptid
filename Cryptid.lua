@@ -104,8 +104,8 @@ G.UIDEF.shop = function(e)
 end
 local gure = Game.update_round_eval
 function Game:update_round_eval(dt)
-	if G.GAME.events.ev_cry_choco6 and not pack_opened and not G.STATE_COMPLETE then 
-		G.STATE_COMPLETE = true 
+	if G.GAME.events.ev_cry_choco6 and not pack_opened and not G.STATE_COMPLETE then
+		G.STATE_COMPLETE = true
 		for k, v in pairs(SMODS.Events) do
 			if G.GAME.events[k] then
 				v:calculate({pre_cash = true})
@@ -120,7 +120,7 @@ SMODS.ConsumableType{
 	key = "Unique",
 	primary_colour = G.C.MONEY,
 	secondary_colour = G.C.MONEY,
-	collection_rows = { 4, 4 }, 
+	collection_rows = { 4, 4 },
 	shop_rate = 0.0,
 	loc_txt = {},
 	default = "c_cry_potion",
@@ -1428,7 +1428,7 @@ function Card:is_jolly()
 		check = true
 	end
 	]]--
-	return check	
+	return check
 end
 
 function cry_with_deck_effects(card, func)
@@ -1816,7 +1816,7 @@ function calculate_reroll_cost(skip_increment)
 	if G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
-	if next(find_joker("cry-crustulum")) 
+	if next(find_joker("cry-crustulum"))
 	or G.GAME.current_round.free_rerolls > 0 then
 		G.GAME.current_round.reroll_cost = 0
 		return
@@ -1856,7 +1856,7 @@ if (SMODS.Mods["TWEWY"] or {}).can_load then
 		rarity = 3,
 		loc_txt = {
         		name = 'Top Gear',
-        		text = { 
+        		text = {
 				"All {C:blue}Common{C:attention} Jokers{}",
         			"are {C:dark_edition}Polychrome{}",
 			}
@@ -2210,7 +2210,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.name == "cry-stardust" then
 		card:set_edition("e_polychrome", true, nil, true)
 	end
-	-- Certain jokers such as Steel Joker and Driver's License depend on values set 
+	-- Certain jokers such as Steel Joker and Driver's License depend on values set
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
 	-- those values will be unset during scoring unless update() is manually called.
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
@@ -2238,7 +2238,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				card.debuffed_by_blind = true
 			end
 		end
-		if G.GAME.blind.name == "cry-shackle" 
+		if G.GAME.blind.name == "cry-shackle"
 		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_shackle"] == true) then
 			if (card.edition and card.edition.negative == true) and not card.debuff then
 				card.debuff = true
@@ -2247,9 +2247,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		end
 		if G.GAME.blind.name == "cry-pin"
 		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_pin"] == true) then
-			if (card.config.center.rarity ~= 3 
-			and card.config.center.rarity ~= 2 
-			and card.config.center.rarity ~= 1 
+			if (card.config.center.rarity ~= 3
+			and card.config.center.rarity ~= 2
+			and card.config.center.rarity ~= 1
 			and card.config.center.rarity ~= 5) then
 				card.debuff = true
 				card.debuffed_by_blind = true
@@ -2311,7 +2311,7 @@ end
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
   if (card.ability.name == "cry-Negative Joker" and card.ability.extra >= 1) or
-	(card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1) or 
+	(card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1) or
 	(card.ability.name == "cry-Tenebris" and card.ability.extra.slots >= 1) then
     return true
   end
@@ -2321,8 +2321,8 @@ end
 local gfcsc = G.FUNCS.can_select_card
 G.FUNCS.can_select_card = function(e)
   if (e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra >= 1) or
-	(e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1) or 
-	(e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1) then 
+	(e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1) or
+	(e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1) then
     e.config.colour = G.C.GREEN
     e.config.button = 'use_card'
   else
@@ -3000,6 +3000,12 @@ SMODS.Atlas({
 	py = 95,
 }):register()
 SMODS.Atlas({
+	key = "atlascryptichandjokers",
+	path = "atlascryptichandjokers.png",
+	px = 71,
+	py = 95,
+}):register()
+SMODS.Atlas({
 	key = "atlasspooky",
 	path = "atlasspooky.png",
 	px = 71,
@@ -3106,7 +3112,7 @@ function create_cryptid_notif_overlay(key)
 			trigger = 'immediate',
 			no_delete = true,
 			func = (function()
-				if not G.OVERLAY_MENU then 
+				if not G.OVERLAY_MENU then
 					G.SETTINGS.paused = true
 					G.FUNCS.overlay_menu{
 						definition = create_UIBox_cryptid_notif(key),
