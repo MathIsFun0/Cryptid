@@ -266,6 +266,73 @@ local lapio = {
 		end
 	end,
 }
+local kaikki = {
+    object_type = "Consumable",
+    set = "Planet",
+    name = "cry-Kaikki",
+    key = "Kaikki",
+    pos = { x = 3, y = 5 },
+    config = { hand_types = { "cry_Bulwark", "cry_Clusterfuck", "cry_UltPair" }, softlock = true },
+    cost = 4,
+    aurinko = true,
+    atlas = "atlasnotjokers",
+    order = 7,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Bulwark"].level or 1
+        local leveltwo = G.GAME.hands["cry_Clusterfuck"].level or 1
+        local levelthree = G.GAME.hands["cry_UltPair"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+        local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+        if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
+            if levelone == 1 then
+                planetcolourone = G.C.UI.TEXT_DARK
+            end
+            if leveltwo == 1 then
+                planetcolourtwo = G.C.UI.TEXT_DARK
+            end
+            if levelthree == 1 then
+                planetcolourthree = G.C.UI.TEXT_DARK
+            end
+        end
+        return {
+            vars = {
+                localize("cry_hand_bulwark"),
+                localize("cry_hand_clusterfuck"),
+                localize("cry_hand_ultpair"),
+                G.GAME.hands["cry_Bulwark"].level,
+                G.GAME.hands["cry_Clusterfuck"].level,
+                G.GAME.hands["cry_UltPair"].level,
+                colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+            },
+        }
+    end,
+    use = function(self, card, area, copier)
+        suit_level_up(self, card, area, copier)
+    end,
+    bulk_use = function(self, card, area, copier, number)
+        suit_level_up(self, card, area, copier, number)
+    end,
+    calculate = function(self, card, context)
+        if
+            G.GAME.used_vouchers.v_observatory
+            and (
+                context.scoring_name == "cry_Bulwark"
+                or context.scoring_name == "cry_Clusterfuck"
+                or context.scoring_name == "cry_UltPair"
+            )
+        then
+            local value = G.P_CENTERS.v_observatory.config.extra
+            return {
+                message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+                Xmult_mod = value,
+            }
+        end
+    end,
+}
 local planetlua = {
 	object_type = "Consumable",
 	set = "Planet",
@@ -635,7 +702,7 @@ function neutronstarrandomhand(ignore, seed, allowhidden)
 	end
 	return chosen_hand
 end
-local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio }
+local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio, kaikki }
 if not (SMODS.Mods["jen"] or {}).can_load then
 end
 return { name = "Planets", init = function() end, items = planet_cards }

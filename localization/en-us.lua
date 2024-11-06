@@ -364,8 +364,9 @@ return {
             c_cry_hook = {
                 name = "HOOK://",
                 text = {
-                    "Select two Jokers",
-                    "to become {C:cry_code}Hooked",
+                    "Select two Jokers to become {C:cry_code}Hooked",
+                    "{C:inactive,s:0.8}Only works properly if Jokers trigger in the same context,",
+                    "{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
                 },
             },
             c_cry_machinecode = {
@@ -562,6 +563,14 @@ return {
             },
         },
         Joker = {
+            j_cry_adroit = {
+                name = "Adroit Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_altgoogol = {
                 name = "Nostalgic Googol Play Card",
                 text = {
@@ -632,6 +641,14 @@ return {
                     "{C:attention} poker hand{} is a {C:attention}#3#{}",
                     "{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chips instead{}",
                 },
+            },
+            j_cry_bonkers = {
+                name = "Bonkers Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_bonusjoker = {
                 name = "Bonus Joker",
@@ -773,6 +790,14 @@ return {
                     "{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
                     "{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
                     "{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
+                },
+            },
+            j_cry_clash = {
+                name = "The Clash",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult if played",
+                    "hand contains",
+                    "an {C:attention}#2#",
                 },
             },
             j_cry_CodeJoker = {
@@ -1034,6 +1059,14 @@ return {
                     "{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
                 },
             },
+            j_cry_foolhardy = {
+                name = "Foolhardy Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "an {C:attention}#2#"
+                }
+            },
 	    j_cry_formidiulosus = {
 		    name = "Formidiulosus",
 		    text = {
@@ -1059,6 +1092,14 @@ return {
                     "most played {C:attention}poker hand{}",
                     "{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)",
                 },
+            },
+            j_cry_fuckedup = {
+                name = "Fucked-Up Joker",
+                text = {
+                    "{C:red}+#1#{} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
             },
             j_cry_gardenfork = {
                 name = "Garden of Forking Paths",
@@ -1539,6 +1580,14 @@ return {
                     "{C:attention}last hand{} of each round", -- +$4
                 },
             },
+            j_cry_penetrating = {
+                name = "Penetrating Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "a {C:attention}#2#"
+                }
+            },
             j_cry_pickle = {
                 name = "Pickle",
                 text = {
@@ -1772,6 +1821,14 @@ return {
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+            j_cry_stronghold = {
+                name = "The Stronghold",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                },
+            },
             j_cry_subtle = {
                 name = "Subtle Joker",
                 text = {
@@ -1829,6 +1886,14 @@ return {
                     "of a random {C:attention}Joker{}",
                     "{s:0.8,C:inactive}(Copy bypasses perish compat)",
                 },
+            },
+            j_cry_treacherous = {
+                name = "Treacherous Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains",
+                    "an {C:attention}#2#"
+                }
             },
             j_cry_trick_or_treat = {
                 name = "Trick-or-Treat",
@@ -1966,6 +2031,14 @@ return {
                     "{C:red,E:2}self destructs{}",
                 },
             },
+            j_cry_wtf = {
+                name = "The Fuck!?",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult if played",
+                    "hand contains",
+                    "a {C:attention}#2#",
+                },
+            },
         },
         Planet = {
             c_cry_Klubi = {
@@ -1980,6 +2053,16 @@ return {
             },
             c_cry_Lapio = {
                 name = "Lapio",
+                text = {
+                    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+                    "Level up",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "and {C:attention}#3#{}",
+                },
+            },
+            c_cry_Kaikki = {
+                name = "Kaikki",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
                     "Level up",
@@ -2841,26 +2924,21 @@ return {
             v_cry_stickyhand = {
                 name = "Sticky Hand",
                 text = {
-                    "{C:attention}+#1#{} card",
-                    "selection limit",
+                    "{C:attention}+#1#{} card selection limit",
                 },
             },
             v_cry_grapplinghook = {
                 name = "Grappling Hook",
                 text = {
-                    "{C:attention}+#1#{} card",
-                    "selection limit",
-                    "{C:inactive,s:0.7}NOTE: Will have extra{}",
-                    "{C:inactive,s:0.7}functionality later{}",
+                    "{C:attention}+#1#{} card selection limit",
+                    "{C:inactive,s:0.7}You can do a lot more with this than you think.{}",
                 },
             },
             v_cry_hyperspacetether = {
                 name = "Hyperspace Tether",
                 text = {
-                    "{C:attention}+#1#{} card",
-                    "selection limit",
-                    "{C:inactive,s:0.7}NOTE: Will have extra{}",
-                    "{C:inactive,s:0.7}functionality later{}",
+                    "{C:attention}+#1#{} card selection limit",
+                    "{C:inactive,s:0.7}NOTE: Will have extra functionality later{}",
                 },
             },
         },
@@ -3369,6 +3447,10 @@ return {
             b_flip = "FLIP",
             b_merge = "MERGE",
 
+            cry_hand_bulwark = "Bulwark",
+            cry_hand_clusterfuck = "Clusterfuck",
+            cry_hand_ultpair = "Ultimate Pair",
+
             cry_again_q = "Again?",
             cry_curse = "Curse",
             cry_curse_ex = "Curse!",
@@ -3522,7 +3604,7 @@ return {
             a_powchips_minus = {"-^#1# Chips"},
             a_powmultchips_minus = {"-^#1# Mult+Chips"},
             a_round_minus = {"-#1# Round"},
-            
+
             a_tag = {"#1# Tag"},
             a_tags = {"#1# Tags"},
 

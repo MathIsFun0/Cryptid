@@ -576,7 +576,7 @@ local stickyhand = { --+1 card selection limit
 local grapplinghook = { --+1 card selection limit (replace me when "extra functionality" is added later)
 	object_type = "Voucher",
 	key = "grapplinghook",
-	config = { extra = 1 },
+	config = { extra = 2 },
 	atlas = "atlasvoucher",
 	order = 10,
 	pos = { x = 1, y = 5 },
