@@ -364,8 +364,9 @@ return {
             c_cry_hook = {
                 name = "HOOK://",
                 text = {
-                    "Select two Jokers",
-                    "to become {C:cry_code}Hooked",
+                    "Select two Jokers to become {C:cry_code}Hooked",
+                    "{C:inactive,s:0.8}Only works properly if Jokers trigger in the same context,",
+                    "{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
                 },
             },
             c_cry_machinecode = {
