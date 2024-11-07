@@ -255,6 +255,9 @@ local potion = {
 	can_use = function(self, card)
 		return true
 	end,
+	in_pool = function()
+		return false
+	end,
 	use = function(self, card, area, copier)
 		G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] = (G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] or 0)+1
 		--Announce event
