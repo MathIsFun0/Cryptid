@@ -250,6 +250,7 @@ local potion = {
 	no_ccd = true,
 	immutable = true,
 	no_dbl = true,
+	no_grc = true,
 	atlas = "atlasspooky",
 	can_use = function(self, card)
 		return true
