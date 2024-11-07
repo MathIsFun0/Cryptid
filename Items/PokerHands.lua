@@ -36,7 +36,7 @@ SMODS.PokerHand{
 		evaluate = function(parts, hand)
 		  local stones = {}
 		  for i, card in ipairs(hand) do
-		    if card.config.center_key == 'm_stone' then stones[#stones+1] = card end
+		    if card.config.center_key == 'm_stone' or (card.config.center.no_rank and card.config.center.no_suit) then stones[#stones+1] = card end
 		  end
 		  return #stones >= 5 and {stones} or {}
 		end,
