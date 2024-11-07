@@ -560,6 +560,14 @@ return {
             },
         },
         Joker = {
+			j_cry_adroit = {
+                name = "Geschickter Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält"
+                }
+            },
             j_cry_altgoogol = {
                 name = "Nostalgische Googol Play Karte",
                 text = {
@@ -630,6 +638,14 @@ return {
                     "{C:attention}Pokerhand{} ein {C:attention}#3#{} ist",
                     "{C:inactive,s:0.8}Lustige Joker geben statdessen{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chips{}",
                 },
+            },
+			j_cry_bonkers = {
+                name = "Bekloppter Joker",
+                text = {
+                    "{C:red}+#1#{} Mult wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält"
+                }
             },
             j_cry_bonusjoker = {
                 name = "Bonus Joker",
@@ -771,6 +787,14 @@ return {
                     "{C:cry_epic}Epische{} Joker geben {X:mult,C:white} X#2# {} Mult",
                     "{C:legendary}Legendäre{} Joker geben {X:mult,C:white} X#3# {} Mult",
                     "{C:cry_exotic}Exotische{} Joker geben {X:mult,C:white} X#4# {} Mult",
+                },
+            },
+			j_cry_clash = {
+                name = "Der Kampf",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält",
                 },
             },
             j_cry_CodeJoker = {
@@ -1032,6 +1056,14 @@ return {
                     "{C:inactive,s:0.8}Größe Pommes, 20 Stücke & Großer Kuchen{}",
                 },
             },
+			j_cry_foolhardy = {
+                name = "Tollkühner Joker",
+                text = {
+                    "{C:red}+#1#{} Mult wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält"
+                }
+            },
 			j_cry_formidiulosus = {
 				name = "Formidiulosus",
 				text = {
@@ -1057,6 +1089,14 @@ return {
                     "die meistgespielte {C:attention}Pokerhand{} ist",
                     "{C:inactive}(Momentan {C:chips}+#1#{C:inactive} Chips)",
                 },
+            },
+			j_cry_fuckedup = {
+                name = "Abgefuckter Joker",
+                text = {
+                    "{C:red}+#1#{} Mult wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält"
+                }
             },
             j_cry_gardenfork = {
                 name = "Garden der Kreuzungen",
@@ -1537,6 +1577,14 @@ return {
                     "{C:attention}letzte Hand{} der Runde", -- +$4
                 },
             },
+			j_cry_penetrating = {
+                name = "Durchdringender Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält"
+                }
+            },
             j_cry_pickle = {
                 name = "Saure Gurke",
                 text = {
@@ -1770,6 +1818,14 @@ return {
                     "{C:inactive}(Momentan {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+			j_cry_stronghold = {
+                name = "Die Festung",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält",
+                },
+            },
             j_cry_subtle = {
                 name = "Subtiler Joker",
                 text = {
@@ -1827,6 +1883,14 @@ return {
                     "eines zufälligen {C:attention}Jokers{} zu erstellen",
                     "{s:0.8,C:inactive}(Egal ob der Joker kompatibel ist)",
                 },
+            },
+			j_cry_treacherous = {
+                name = "Tückischer Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält"
+                }
             },
 			j_cry_trick_or_treat = {
                 name = "Süßes oder Saures",
@@ -1964,6 +2028,14 @@ return {
                     "{C:red,E:2}Zerstört sich selbst{}",
                 },
             },
+			j_cry_wtf = {
+                name = "Die Hölle!?",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult wenn",
+                    "gespielte Hand",
+                    "ein {C:attention}#2#{} enthält",
+                },
+            },
         },
         Planet = {
             c_cry_Klubi = {
@@ -1978,6 +2050,16 @@ return {
             },
             c_cry_Lapio = {
                 name = "Lapio",
+                text = {
+                    "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+                    "Aufwertung für",
+                    "{C:attention}#1#{},",
+                    "{C:attention}#2#{},",
+                    "und {C:attention}#3#{}",
+                },
+            },
+			c_cry_Kaikki = {
+                name = "Kaikki",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
                     "Aufwertung für",
@@ -2841,17 +2923,15 @@ return {
             v_cry_stickyhand = {
                 name = "Klebrige Hand",
                 text = {
-                    "{C:attention}+#1#{} Karten",
-                    "auswahl limit",
+                    "{C:attention}+#1#{} Karten auswahl limit",
                 },
             },
             v_cry_grapplinghook = {
                 name = "Enterhaken",
                 text = {
-                    "{C:attention}+#1#{} Karten",
-                    "auswahl limit",
-                    "{C:inactive,s:0.7}NOTE: Bekommt später noch{}",
-                    "{C:inactive,s:0.7}mehr funktionen{}",
+                    "{C:attention}+#1#{} Karten auswahl limit",
+                    "{C:inactive,s:0.7}NOTE: Hiermit kannst du mehr{}",
+                    "{C:inactive,s:0.7}machen als du denkst{}",
                 },
             },
             v_cry_hyperspacetether = {
@@ -3367,6 +3447,10 @@ return {
 
             b_flip = "UMDREHEN",
             b_merge = "KOMBINIEREN",
+			
+			cry_hand_bulwark = "Bollwerk",
+            cry_hand_clusterfuck = "Clusterfuck",
+            cry_hand_ultpair = "Ultimatives Paar",
 
             cry_again_q = "Nochmal?",
             cry_curse = "Verflucht",
