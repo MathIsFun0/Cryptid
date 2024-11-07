@@ -10,6 +10,6 @@ Cryptid currently adds:
 
 
 
-### [Official Discord](https://discord.gg/eUf9Ur6RyB)
+### [Official Discord](https://discord.gg/unbalanced)
 
 ### [Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
