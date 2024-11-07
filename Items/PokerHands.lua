@@ -118,7 +118,7 @@ SMODS.PokerHand{
 	    name = 'Ultimatives Paar',
             description = {
                 'Zwei zwei Paare, bei denen jedes',
-		'von ihnen von einer Farbe ist,'
+		'von ihnen von einer Farbe ist,',
 		'was insgesammt 2 Farben ergibt.'
             }
 	}
