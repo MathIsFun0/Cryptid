@@ -18,18 +18,17 @@ SMODS.PokerHand{
     l_chips = 50,
     l_mult = 1,
     example = {
-        { 'S_-50',    true },
-        { 'S_-50',    true },
-        { 'S_-50',    true },
-        { 'S_-50',    true },
-        { 'S_-50',    true },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
     },
     loc_txt = {
         ['en-us'] = {
             name = 'Bulwark',
             description = {
                 '5 rankless, suitless cards played together.',
-                '(Pretend the preview shows Stone Cards.)'
             }
         }
     },
