@@ -731,6 +731,13 @@ return {
                     "um eine {C:cry_candy}Süßigkeit{} zu erstellen.",
                 }
             },
+	    j_cry_candy_sticks = {
+		name = "Zuckerstöcke",
+		text = {
+			"Der Effekt der nächsten Boss Bind ist nicht Aktiv",
+			"bis {C:attention}#1#{} Hand gespielt wurde.",
+		}
+	    },
             j_cry_canvas = {
                 name = "Leinwand",
                 text = {

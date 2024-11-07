@@ -1194,6 +1194,79 @@ local monopoly_money = {
 		return { vars = { G.GAME.probabilities.normal or 1, center.ability.extra.fail_rate} }
 	end,
 }
+local candy_sticks = {
+	object_type = "Joker",
+	key = "candy_sticks",
+	name = "cry-Candy-Sticks",
+	pos = { x = 5, y = 2 },
+	config = {extra = { boss = {}, hands = 1, clockscore = 0}},
+	rarity = "cry_candy",
+	cost = 3,
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	calculate = function(self, card, context)
+		if context.setting_blind and not self.getting_sliced and not context.blueprint and context.blind.boss then
+			card.ability.extra.boss = G.GAME.blind:save()
+			if G.GAME.blind.name == 'The Clock' then
+				card.ability.extra.clockscore = G.GAME.blind.chips
+			end
+			G.E_MANAGER:add_event(Event({func = function()
+                G.E_MANAGER:add_event(Event({func = function()
+                    G.GAME.blind:disable()
+                    play_sound('timpani')
+                    delay(0.4)
+                    return true end }))
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('ph_boss_disabled')})
+            return true end }))
+		end
+		if context.after and G.GAME.blind:get_type() == 'Boss' then
+			card.ability.extra.hands = card.ability.extra.hands-1
+		end
+		if ((context.selling_self and G.GAME.blind and G.GAME.blind:get_type() == 'Boss') or card.ability.extra.hands <= 0) and G.GAME.blind.disabled then
+			G.GAME.blind:load(card.ability.extra.boss)
+			if not context.selling_self then
+				G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound('tarot1')
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                            func = function()
+                                    G.jokers:remove_card(card)
+                                    card:remove()
+                                    card = nil
+                                return true; end})) 
+                        return true
+                    end
+                }))
+			end
+		end
+		if context.end_of_round and G.GAME.blind:get_type() == 'Boss' then
+			G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound('tarot1')
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                            func = function()
+                                    G.jokers:remove_card(card)
+                                    card:remove()
+                                    card = nil
+                                return true; end})) 
+                        return true
+                    end
+                }))
+		end
+	end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.hands} }
+	end,
+}
 items = {
 	cotton_candy,
 	wrapped,
@@ -1224,7 +1297,8 @@ items = {
 	jawbreaker,
 	mellowcreme,
 	brittle,
-	monopoly_money
+	monopoly_money,
+	candy_sticks,
 }
 --order is temporary so we can more easily test these out
 return { name = "Spooky", order = 1e300, init = function() 
