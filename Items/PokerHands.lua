@@ -18,25 +18,24 @@ SMODS.PokerHand{
     l_chips = 50,
     l_mult = 1,
     example = {
-        { 'S_-50',    true },
-        { 'S_-50',    true },
-        { 'S_-50',    true },
-        { 'S_-50',    true },
-        { 'S_-50',    true },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
     },
     loc_txt = {
         ['en-us'] = {
             name = 'Bulwark',
             description = {
                 '5 rankless, suitless cards played together.',
-                '(Pretend the preview shows Stone Cards.)'
             }
         }
     },
 		evaluate = function(parts, hand)
 		  local stones = {}
 		  for i, card in ipairs(hand) do
-		    if card.config.center_key == 'm_stone' then stones[#stones+1] = card end
+		    if card.config.center_key == 'm_stone' or (card.config.center.no_rank and card.config.center.no_suit) then stones[#stones+1] = card end
 		  end
 		  return #stones >= 5 and {stones} or {}
 		end,
