@@ -391,6 +391,13 @@ return {
                     "zum ende der Runde.",
                 },
             },
+	    c_cry_patch = {
+		name = "://PATCH",
+		text = {
+			"Entfernt alle Flüche von",
+			"allen momentan sichtbaren Gegenständen",
+		},
+	    },
             c_cry_payload = {
                 name = "://PAYLOAD",
                 text = {
