@@ -394,6 +394,13 @@ return {
                     "end of round",
                 },
             },
+	    c_cry_patch = {
+		name = "://PATCH",
+		text = {
+			"Remove all Curses from",
+			"currently visible items",
+	    	},
+	    },
             c_cry_payload = {
                 name = "://PAYLOAD",
                 text = {
