@@ -30,7 +30,13 @@ SMODS.PokerHand{
             description = {
                 '5 rankless, suitless cards played together.',
             }
-        }
+        },
+	['de'] = {
+		name = 'Bollwerk',
+        	description = {
+                '5 ranglose, farbenlose Karten zusammen gespielt.',
+            }
+	}
     },
 		evaluate = function(parts, hand)
 		  local stones = {}
@@ -65,7 +71,14 @@ SMODS.PokerHand{
                 'At least 8 cards that do not',
                 'contain a Pair, Flush, or Straight.',
             }
-        }
+        },
+	['de'] = {
+		name = 'Clusterfuck',
+        	description = {
+                'Mindestens 8 Karten, welche nicht',
+		'Paar, Flush oder Straße enthalten.'
+            }
+	}
     },
     evaluate = function(parts, hand)
     local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
@@ -100,7 +113,15 @@ SMODS.PokerHand{
                 'Two Pair is a single suit, for a',
 								'total of two suits between them.',
             }
-        }
+        },
+	['de'] = {
+	    name = 'Ultimatives Paar',
+            description = {
+                'Zwei zwei Paare, bei denen jedes',
+		'von ihnen von einer Farbe ist,'
+		'was insgesammt 2 Farben ergibt.'
+            }
+	}
     },
 		evaluate = function(parts, hand)
 		local scoring_pairs = {}
@@ -161,6 +182,9 @@ SMODS.Consumable{
     loc_txt = {
         ['en-us'] = {
             name = 'Asteroid Belt'
+        },
+	['de'] = {
+            name = 'Asteroidengürtel'
         }
     }
 }
@@ -185,7 +209,10 @@ SMODS.Consumable{
     loc_txt = {
         ['en-us'] = {
             name = 'Void'
-        }
+        },
+	['en-us'] = {
+            name = 'Leere'
+	}
     }
 }
 
@@ -207,6 +234,9 @@ SMODS.Consumable{
     generate_ui = 0,
     loc_txt = {
         ['en-us'] = {
+            name = 'Phobos & Deimos'
+        },
+	['de'] = {
             name = 'Phobos & Deimos'
         }
     }
