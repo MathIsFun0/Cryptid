@@ -353,8 +353,8 @@ return {
             c_cry_exploit = {
                 name = "://EXPLOIT",
                 text = {
-                    "Die {C:cry_code}nächste{} gespielte Hand",
-                    "wird als {C:cry_code}chosen{} Pokerhand gewertet.",
+                    "Die {C:cry_code}nächste{} gespielte Hand wird",
+                    "gewertet als ob sie eine {C:cry_code}gewählte{} Pokerhand enthält.",
                     "{C:inactive,s:0.8}Geheime Hände müssen",
                     "{C:inactive,s:0.8}entdeckt weden um gültig zu sein.",
                 },
