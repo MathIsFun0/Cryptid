@@ -2879,7 +2879,6 @@ if Cryptid.enabled["Spooky"] then
 	jokers[#jokers + 1] = "j_cry_jawbreaker"
 	jokers[#jokers + 1] = "j_cry_mellowcreme"
 	jokers[#jokers + 1] = "j_cry_brittle"
-	jokers[#jokers + 1] = "j_cry_fudge"
 end
 for i = 1, #jokers do
 	Cryptid.food[#Cryptid.food+1] = jokers[i]
