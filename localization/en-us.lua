@@ -592,6 +592,14 @@ return {
                 name = "AP Joker",
                 text = { "{X:mult,C:white} X#1# {} Mult against {C:attention}Boss Blinds{}" },
             },
+            j_cry_astral_bottle = {
+                name = "Astral in a Bottle",
+                text = {
+                    "When sold, apply {C:dark_edition}Astral{}",
+                    "and {C:attention}Perishable{} to",
+                    "a random {C:attention}Joker{}",
+                }
+            },
             j_cry_big_cube = {
                 name = "Big Cube",
                 text = {
@@ -1942,6 +1950,13 @@ return {
                     "a {C:attention}#2#",
                 },
             },
+            j_cry_universe = {
+                name = "Universe",
+                text = {
+                    "{C:dark_edition}Astral{} cards",
+                    "each give {X:dark_edition,C:white}^#1#{} Mult",
+                },
+            },
             j_cry_universum = {
                 name = "Universum",
                 text = {
@@ -2259,6 +2274,13 @@ return {
                     "held in hand",
                     "to a {C:attention}random{}",
                     "card held in hand",
+                },
+            },
+            c_cry_ritual = {
+                name = "Ritual",
+                text = {
+                    "Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{}, or {C:dark_edition}Astral{}",
+                    "to 1 selected Playing Card.",
                 },
             },
             c_cry_source = {

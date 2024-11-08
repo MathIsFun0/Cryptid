@@ -1268,6 +1268,11 @@ local candy_sticks = {
 	end,
 }
 local fudge = {
+	cry_credits = {
+		idea = {"Squiddy"},
+		art = {"Shellular"},
+		code = {"spire_winder"}
+	},
 	object_type = "Joker",
 	name = "cry-fudge",
 	key = "fudge",

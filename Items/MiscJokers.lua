@@ -5098,7 +5098,116 @@ local kidnap = {
 		end
 	end,
 }
-
+local universe = {
+	cry_credits = {
+		idea = {"Mystic Misclick"},
+		art = {"spire_winder"},
+		code = {"spire_winder"}
+	},
+	object_type = "Joker",
+	name = "cry-universe",
+	key = "universe",
+	pos = { x = 1, y = 0 },
+	atlas = "atlasastraljokers",
+	config = { extra = { emult = 1.2 } },
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
+		return { vars = { center.ability.extra.emult } }
+	end,
+	rarity = 1,
+	cost = 6,
+	order = 40,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if
+			context.other_joker
+			and context.other_joker.edition
+			and context.other_joker.edition.cry_astral == true
+			and card ~= context.other_joker
+		then
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
+			return {
+				message = localize({ type = "variable", key = "a_powmult", vars = { card.ability.extra.emult } }),
+				Emult_mod = card.ability.extra.emult,
+				colour = G.C.DARK_EDITION
+			}
+		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.cry_astral == true then
+				return {
+					e_mult = card.ability.extra.emult,
+					colour = G.C.DARK_EDITION,
+					card = card
+				}
+			end
+		end
+		if
+			context.individual
+			and context.cardarea == G.hand
+			and context.other_card.edition
+			and context.other_card.edition.cry_astral == true
+			and not context.end_of_round
+		then
+			if context.other_card.debuff then
+				return {
+					message = localize("k_debuffed"),
+					colour = G.C.RED,
+					card = card,
+				}
+			else
+				return {
+					e_mult = card.ability.extra.emult,
+					colour = G.C.DARK_EDITION,
+					card = card
+				}
+			end
+		end
+	end,
+}
+local astral_bottle = {
+	cry_credits = {
+		idea = {"AlexZGreat"},
+		art = {"spire_winder"},
+		code = {"spire_winder"}
+	},
+	object_type = "Joker",
+	name = "cry-astral_bottle",
+	key = "astral_bottle",
+	pos = { x = 0, y = 0 },
+	atlas = "atlasastraljokers",
+	rarity = 3,
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
+			local jokers = {}
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff and not G.jokers.cards[i].edition then
+					jokers[#jokers + 1] = G.jokers.cards[i]
+				end
+			end
+			if #jokers > 0 then
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_duplicated_ex") })
+				local chosen_joker = pseudorandom_element(jokers, pseudoseed("trans"))
+				chosen_joker:set_edition{cry_astral = true}
+				chosen_joker.ability.perishable = true -- Done manually to bypass perish compat
+				chosen_joker.ability.perish_tally = G.GAME.perishable_rounds
+				return nil, true
+			else
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers") })
+			end
+		end
+	end,
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -5195,6 +5304,8 @@ local miscitems =  {
 	penetrating,
 	treacherous,
 	kidnap,
+	universe,
+	astral_bottle,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

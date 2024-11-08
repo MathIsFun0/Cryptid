@@ -2234,7 +2234,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
 		if card.ability.name ~= "cry-meteor"
 		and card.ability.name ~= "cry-exoplanet"
-		and card.ability.name ~= "cry-stardust" then
+		and card.ability.name ~= "cry-stardust"
+		and card.ability.name ~= "cry-universe" then
 			card:set_edition("e_polychrome", true, nil, true)
 		end
 	end
@@ -2246,6 +2247,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if card.ability.name == "cry-stardust" then
 		card:set_edition("e_polychrome", true, nil, true)
+	end
+	if card.ability.name == "cry-universe" then
+		card:set_edition("e_cry_astral", true, nil, true)
 	end
 	-- Certain jokers such as Steel Joker and Driver's License depend on values set
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
@@ -3066,6 +3070,18 @@ SMODS.Atlas({
 	path = "tag_cry.png",
 	px = 34,
 	py = 34,
+}):register()
+SMODS.Atlas({
+	key = "atlasastral",
+	path = "atlasastral.png",
+	px = 71,
+	py = 95,
+}):register()
+SMODS.Atlas({
+	key = "atlasastraljokers",
+	path = "atlasastraljokers.png",
+	px = 71,
+	py = 95,
 }):register()
 SMODS.Sticker:take_ownership("perishable", {
 	atlas = "sticker",
