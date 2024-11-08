@@ -1162,6 +1162,7 @@ local longboi = {
 	cost = 5,
 	order = 261,
 	effect = "M Joker",
+	no_dbl = true,
 	blueprint_compat = true,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
