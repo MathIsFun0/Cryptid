@@ -6,17 +6,23 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1103a]
---- VERSION: 0.5.2~1101a
+--- VERSION: 0.5.2~1108a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
+-- Currently there's no rhyme or reason to how the contents of this file are organized. It's kind of just an "anything goes" sort of file.
+-- If you're learning about Cryptid's codebase, the files in the Items folder are generally much more organized.
+
+-- Enables debug features (I think this is currently useless.)
 --Cryptid.debug = true
 
+-- Save the mod path permanently.
 local mod_path = "" .. SMODS.current_mod.path
 -- Load Options
 Cryptid_config = SMODS.current_mod.config
+-- This will save the current state even when settings are modified
 Cryptid.enabled = copy_table(Cryptid_config)
 --backwards compat moment
 cry_enable_jokers = Cryptid.enabled["Misc. Jokers"]
@@ -38,6 +44,7 @@ SMODS.Rarity{
     default_weight = 0.003,
     pools = {["Joker"] = true},
     get_weight = function(self, weight, object_type)
+        -- The game shouldn't try generating Epic Jokers when they are disabled
         if Cryptid_config["Epic Jokers"] then
             return 0.003
         else
@@ -69,19 +76,23 @@ SMODS.Event = SMODS.GameObject:extend{
 	inject = function() end,
 	set = "Event",
 	class_prefix = "ev",
+    -- This should be called to start an event.
 	start = function(self)
 		G.GAME.events[self.key] = true
 	end,
+    -- This should be called to finish an event.
 	finish = function(self)
 		G.GAME.events[self.key] = nil
 	end,
+    -- Runs once before and after jokers, as well as a few special cases
 	calculate = function(self, context)
 	end,
+    -- used for Chocolate Die tooltips, can maybe be repurposed later
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { set = "Other", key = self.key }
 	end,
 }
---Calculate on cash out
+--Calculate events on cash out
 local gfco = G.FUNCS.cash_out
 G.FUNCS.cash_out = function(e)
 	local ret = gfco(e)
@@ -92,6 +103,7 @@ G.FUNCS.cash_out = function(e)
 	end
 	return ret
 end
+-- Calculate events on start of shop
 local guis = G.UIDEF.shop
 G.UIDEF.shop = function(e)
 	local ret = guis(e)
@@ -102,6 +114,7 @@ G.UIDEF.shop = function(e)
 	end
 	return ret
 end
+-- Calculations for Please Take One. Incredibly scuffed and should get moved to Spooky file later
 local gure = Game.update_round_eval
 function Game:update_round_eval(dt)
 	if G.GAME.events.ev_cry_choco6 and not pack_opened and not G.STATE_COMPLETE then
@@ -115,7 +128,7 @@ function Game:update_round_eval(dt)
 	if G.GAME.events.ev_cry_choco6 and pack_opened and G.STATE_COMPLETE and not G.round_eval then G.STATE_COMPLETE = false; return end
 	gure(self, dt)
 end
---Add Unique consumable set - used for unique consumables that aren't normally obtained
+--Add Unique consumable set - used for unique consumables that aren't normally obtained (e.g. Potion)
 SMODS.ConsumableType{
 	key = "Unique",
 	primary_colour = G.C.MONEY,
@@ -127,6 +140,7 @@ SMODS.ConsumableType{
 	can_stack = false,
 	can_divide = false,
 }
+-- Create G.GAME.events when starting a run, so there's no errors
 local gigo = Game.init_game_object
 function Game:init_game_object()
 	local g = gigo(self)
@@ -139,14 +153,18 @@ if Cryptid.enabled["Menu"] then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
+        -- adds a Cryptid spectral to the main menu
 		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
-		G.title_top.T.w = G.title_top.T.w*1.7675
+		-- recenter the title
+        G.title_top.T.w = G.title_top.T.w*1.7675
 		G.title_top.T.x = G.title_top.T.x - 0.8
 		G.title_top:emplace(newcard)
+        -- make the card look the same way as the title screen Ace of Spades
 		newcard.T.w = newcard.T.w * 1.1*1.2
 		newcard.T.h = newcard.T.h *1.1*1.2
 		newcard.no_ui = true
 
+        -- make the title screen use different background colors
 		G.SPLASH_BACK:define_draw_steps({{
 			shader = 'splash',
 			send = {
@@ -176,7 +194,8 @@ function loc_colour(_c, _default)
 	return lc(_c, _default)
 end
 
--- Midground sprites
+-- Midground sprites - used for Exotic Jokers and Gateway
+-- don't really feel like explaining this deeply, it's based on code for The Soul and Legendary Jokers
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
 	set_spritesref(self, _center, _front)
@@ -218,7 +237,8 @@ function Card:set_sprites(_center, _front)
 		self.children.floating_sprite2.states.click.can = false
 	end
 end
-
+--this is where the code starts to get really scuffed... I'd recommend closing your eyes
+--anyway this function basically hardcodes unredeeming a voucher
 function cry_debuff_voucher(center) -- sorry for all the mess here...
 	local new_center = G.GAME.cry_voucher_centers[center]
 	local center_table = {
@@ -367,6 +387,7 @@ function cry_edition_to_table(edition) -- look mom i figured it out (this does N
 	end
 end
 
+-- check if Director's Cut or Retcon offers a cheaper reroll price
 function cry_cheapest_boss_reroll()
 	local dcut = G.GAME.cry_voucher_centers["v_directors_cut"].config.extra or 1e308
 	local retc = G.GAME.cry_voucher_centers["v_retcon"].config.extra or 1e308
@@ -377,6 +398,7 @@ function cry_cheapest_boss_reroll()
 	end
 end
 
+-- generate a random edition (e.g. Antimatter Deck)
 function cry_poll_random_edition()
 	local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
 	while random_edition.key == "e_base" do
@@ -404,7 +426,9 @@ function cry_voucher_pinned(name)
 	return false
 end
 
+-- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
 function get_random_consumable(seed, excluded_flags, unbalanced)
+    -- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
 	excluded_flags = excluded_flags or unbalanced and { "no_doe", "no_grc" } or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
 	local passes = 0
@@ -412,13 +436,16 @@ function get_random_consumable(seed, excluded_flags, unbalanced)
 	while true do
 		tries = tries - 1
 		passes = 0
+        -- create a random consumable naively
 		local key = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
+        -- check if it is valid
 		for k, v in pairs(excluded_flags) do
 			if not center_no(selection, v, key, true) then
 				passes = passes + 1
 			end
 		end
+        -- use it if it's valid or we've run out of attempts
 		if passes >= #excluded_flags or tries <= 0 then
 			return selection
 		end
@@ -432,6 +459,7 @@ function cry_get_next_voucher_edition() -- currently only for editions + sticker
 		return cry_poll_random_edition()
 	end
 end
+-- code to generate Stickers for Vouchers, based on that for Jokers
 function cry_get_next_voucher_stickers()
 	local eternal_perishable_poll = pseudorandom("cry_vet" .. (key_append or "") .. G.GAME.round_resets.ante)
 	local ret = { eternal = false, perishable = false, rental = false, pinned = false, banana = false }
@@ -511,6 +539,7 @@ function cry_get_next_voucher_stickers()
 	return ret
 end
 
+-- Calculates Rental sticker for Consumables
 function Card:cry_calculate_consumeable_rental()
 	if self.ability.rental then
 		ease_dollars(-G.GAME.cry_consumeable_rental_rate)
@@ -518,6 +547,7 @@ function Card:cry_calculate_consumeable_rental()
 	end
 end
 
+-- Calculates Perishable sticker for Consumables
 function Card:cry_calculate_consumeable_perishable()
 	if not self.ability.perish_tally then
 		self.ability.perish_tally = 1
@@ -536,35 +566,41 @@ function Card:cry_calculate_consumeable_perishable()
 	end
 end
 
+-- Update the Cryptid member count using HTTPS
 function update_cry_member_count()
 	if Cryptid.enabled["HTTPS Module"] == true then
 		if not GLOBAL_cry_member_update_thread then
+            -- start up the HTTPS thread if needed
 			local file_data = assert(NFS.newFileData(mod_path .. "https/thread.lua"))
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 5328
-		local ret = love.thread.getChannel("member_count"):pop()
+		local old = GLOBAL_cry_member_count or 5624
+        -- get the HTTPS thread's value for Cryptid members
+        local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
 			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
 		end
 		if not GLOBAL_cry_member_count then
 			GLOBAL_cry_member_count = old
+            -- Something failed, print the error
 			local error = love.thread.getChannel("member_error"):pop()
 			if error then
 				sendDebugMessage(error)
 			end
 		end
 	else
-		GLOBAL_cry_member_count = 5328
+        -- Use a fallback value if HTTPS is disabled (you all are awesome) 
+		GLOBAL_cry_member_count = 5624
 	end
 end
-
+-- deal with Rigged and Fragile when scoring a playing card
 local ec = eval_card
 function eval_card(card, context)
 	if card.will_shatter then
 		return
 	end
+    -- Store old probability for later reference
 	local ggpn = G.GAME.probabilities.normal
 	if card.ability.cry_rigged then
 		G.GAME.probabilities.normal = 1e9
@@ -575,6 +611,7 @@ function eval_card(card, context)
 	end
 	return ret
 end
+-- deal wirh Rigged on Consumables
 local uc = Card.use_consumeable
 function Card:use_consumeable(area, copier)
 	local ggpn = G.GAME.probabilities.normal
