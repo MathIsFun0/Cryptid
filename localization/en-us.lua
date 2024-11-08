@@ -1024,6 +1024,14 @@ return {
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+	    j_cry_exposed = {
+                name = "Exposed",
+                text = {
+                    "Retrigger all non-{C:attention}face{} cards",
+		    "{C:attention}#1#{} additional time(s)",
+                    "All {C:attention}face{} cards are debuffed",
+                },
+            },
             j_cry_facile = {
                 name = "Facile",
                 text = {
@@ -1351,6 +1359,14 @@ return {
                 text = {
                     "Retrigger all Jokers",
                     "{C:attention}#1#{} additional time(s)",
+                },
+            },
+            j_cry_mask = {
+                name = "Mask",
+                text = {
+                    "Retrigger all {C:attention}face{} cards",
+                    "{C:attention}#1#{} additional time(s)",
+		    "All non-{C:attention}face{} cards are debuffed",
                 },
             },
             j_cry_maximized = {
@@ -1924,6 +1940,14 @@ return {
                 text = {
                     "{X:mult,C:white} X#1# {} Mult if scoring hand",
                     "contains {C:attention}exactly{} three {C:attention}3s",
+                },
+            },
+            j_cry_tropical_smoothie = {
+                name = "Tropical Smoothie",
+                text = {
+                    "Sell this card",
+		    "to {C:attention}multiply{} values",
+                    "of owned jokers by {C:attention}X1.5{}",
                 },
             },
             j_cry_unity = {

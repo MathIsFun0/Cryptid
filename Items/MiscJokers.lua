@@ -5098,7 +5098,107 @@ local kidnap = {
 		end
 	end,
 }
-
+local exposed = {
+	object_type = "Joker",
+	name = "cry-Exposed",
+	key = "exposed",
+	pos = { x = 0, y = 5 },
+	config = { extra = 2 },
+	rarity = 3,
+	cost = 8,
+	atlas = "atlastwo",
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.setting_blind and not context.blueprint then
+			for i, v in pairs (G.deck.cards) do
+				if v:is_face() then
+					v:set_debuff(true)
+				end
+			end
+		end
+		if context.repetition and context.cardarea == G.play then
+			if not context.other_card:is_face() then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra,
+                    card = card
+                }
+            end
+		end
+	end,
+}
+local mask = {
+	object_type = "Joker",
+	name = "cry-Mask",
+	key = "mask",
+	pos = { x = 1, y = 5 },
+	config = { extra = 3 },
+	rarity = 3,
+	cost = 7,
+	atlas = "atlastwo",
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.setting_blind and not context.blueprint then
+			for i, v in pairs (G.deck.cards) do
+				if not v:is_face() then
+					v:set_debuff(true)
+				end
+			end
+		end
+		if context.repetition and context.cardarea == G.play then
+			if context.other_card:is_face() then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = card.ability.extra,
+                    card = card
+                }
+            end
+		end
+	end,
+}
+local tropical_smoothie = {
+	object_type = "Joker",
+	name = "cry-Tropical Smoothie",
+	key = "tropical_smoothie",
+	pos = { x = 2, y = 5 },
+	config = {},
+	rarity = 3,
+	cost = 5,
+	atlas = "atlastwo",
+	immutable = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_self then
+			local check = false
+			for i, v in pairs (G.jokers.cards) do
+				if not Card.no(v, "immune_to_chemach", true) and not Card.no(v, "immutable", true) then
+					cry_with_deck_effects(G.jokers.cards[1], function(card)
+						cry_misprintize(v, { min = 1.5, max = 1.5}, nil, true)
+					end)
+					check = true
+				end
+			end
+			if check then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+				)
+			end
+		end
+	end,
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -5195,6 +5295,9 @@ local miscitems =  {
 	penetrating,
 	treacherous,
 	kidnap,
+	exposed,
+	mask,
+	tropical_smoothie,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
