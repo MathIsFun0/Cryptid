@@ -1267,83 +1267,7 @@ local candy_sticks = {
 		return { vars = { center.ability.extra.hands} }
 	end,
 }
-local fudge = {
-	object_type = "Joker",
-	name = "cry-fudge",
-	key = "fudge",
-	-- CONFIG:
-		-- extra.mult_mod = 1: The amount of mult moved from remaining to the played card
-		-- extra.mult_remaining = 30: Stores the amount of mult left to distribute
-	config = { extra = { mult_mod = 1, mult_remaining = 30} },
-	pos = { x = 0, y = 3 },
-	rarity = "cry_candy",
-	cost = 4,
-	blueprint_compat = true,
-	eternal_compat = false,
-	atlas = "atlasspooky",
-	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.mult_mod, center.ability.extra.mult_remaining } }
-	end,
-	calculate = function(self, card, context)
-		-- if the context is of a card being played
-		if context.individual then
-			if context.cardarea == G.play then
-				-- increment card mult by mult_mod
-				-- this is not currently visible in the UI, but works mechanically
-                context.other_card.ability.mult = context.other_card.ability.mult or 0
-                context.other_card.ability.mult = context.other_card.ability.mult + card.ability.extra.mult_mod
-				-- checks to make sure that card is the original to tick down
-				if
-					not context.blueprint
-				then
-					-- if the card is the original, decrement by the amount of mult we moved
-					card.ability.extra.mult_remaining = card.ability.extra.mult_remaining - card.ability.extra.mult_mod
-					-- as long as there is mult remaining, do the upgrade animation
-					if card.ability.extra.mult_remaining > 0 then
-						return {
-							extra = {message = localize('k_upgrade_ex'), colour = G.C.RED},
-							colour = G.C.RED,
-							card = card
-						}
-					-- if there is no more mult remaining, destroy the joker (taken from Caramel)
-					else
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								play_sound("tarot1")
-								card.T.r = -0.2
-								card:juice_up(0.3, 0.4)
-								card.states.drag.is = true
-								card.children.center.pinch.x = true
-								G.E_MANAGER:add_event(Event({
-									trigger = "after",
-									delay = 0.3,
-									blockable = false,
-									func = function()
-										G.jokers:remove_card(card)
-										card:remove()
-										card = nil
-										return true
-									end,
-								}))
-								return true
-							end,
-						}))
-						return {
-							message = localize("k_eaten_ex"),
-							colour = G.C.FILTER,
-						}
-					end
-				-- if this joker is copying a fudge, do the upgrade animation
-                return {
-                    extra = {message = localize('k_upgrade_ex'), colour = G.C.RED},
-                    colour = G.C.RED,
-                    card = self
-                }
-                end
-			end
-		end
-	end
-}
+
 items = {
 	cotton_candy,
 	wrapped,
@@ -1376,7 +1300,6 @@ items = {
 	brittle,
 	monopoly_money,
 	candy_sticks,
-	fudge,
 }
 --order is temporary so we can more easily test these out
 return { name = "Spooky", order = 1e300, init = function() 

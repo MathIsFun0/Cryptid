@@ -645,6 +645,68 @@ local replica = {
 		delay(0.5)
 	end,
 }
+local ritual = {
+	cry_credits = {
+		idea = {"Mystic Misclick"},
+		art = {"spire_winder"},
+		code = {"spire_winder"}
+	},
+	object_type = "Consumable",
+	set = "Spectral",
+	name = "cry-Ritual",
+	key = "ritual",
+	order = 8,
+	config = {
+		max_highlighted = 1,
+	},
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.max_highlighted } }
+	end,
+	cost = 5,
+	atlas = "atlasastral",
+	pos = { x = 0, y = 0 },
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		for i = 1, #G.hand.highlighted do
+			local highlighted = G.hand.highlighted[i]
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					highlighted:juice_up(0.3, 0.5)
+					return true
+				end,
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.1,
+				func = function()
+					if highlighted then
+						local random_result = pseudorandom(pseudoseed("cry-Ritual"))
+						if random_result >= 5 / 6 then
+							highlighted:set_edition({cry_astral = true})
+						else
+							if random_result >= 1 / 2 then
+								highlighted:set_edition({cry_mosaic = true})
+							else
+								highlighted:set_edition({negative = true})
+							end
+						end
+					end
+					return true
+				end,
+			}))
+			delay(0.5)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
+		end
+	end,
+}
 local spectrals = {
 	white_hole,
 	vacuum,
@@ -653,6 +715,7 @@ local spectrals = {
 	trade,
 	analog,
 	replica,
+	ritual,
 }
 if Cryptid.enabled["Epic Jokers"] then
 	spectrals[#spectrals + 1] = summoning
