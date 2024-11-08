@@ -4857,11 +4857,12 @@ local tropical_smoothie = {
 	object_type = "Joker",
 	name = "cry-Tropical Smoothie",
 	key = "tropical_smoothie",
-	pos = { x = 0, y = 1 },
+	pos = { x = 2, y = 5 },
 	config = {},
 	rarity = 3,
 	cost = 5,
-	atlas = "placeholders",
+	atlas = "atlastwo",
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
