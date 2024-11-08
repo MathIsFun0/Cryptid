@@ -1213,7 +1213,7 @@ return {
                 name = "Jawbreaker",
                 text = {
                     "When {C:attention}Boss Blind{} defeated,",
-                    "{C:attention}double{} values of all Jokers",
+                    "{C:attention}double{} values of adjacent Jokers",
                     "{E:2,C:red}self destructs{}",
                 }
             },

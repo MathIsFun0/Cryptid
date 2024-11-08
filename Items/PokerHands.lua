@@ -333,9 +333,9 @@ SMODS.Consumable{
         ['en-us'] = {
             name = 'Void'
         },
-	['en-us'] = {
-            name = 'Leere'
-	}
+        ['de'] = {
+                name = 'Leere'
+        }
     }
 }
 
