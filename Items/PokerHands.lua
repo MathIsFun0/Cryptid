@@ -269,7 +269,6 @@ SMODS.PokerHand{
 		            for i = 1, 4 do
 		                if not array[i+((rank-2)*4)] then
 		                    array[i+((rank-2)*4)] = true
-		                    table.insert(scored_cards, card)
 		                    break
 		                end
 		            end
