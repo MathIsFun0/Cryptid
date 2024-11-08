@@ -1202,7 +1202,7 @@ return {
                 name = "Kieferbrecher",
                 text = {
                     "Wenn {C:attention}Boss Blind{} besiegt wurde,",
-                    "{C:attention}verdopple{} die Werte aller Joker",
+                    "{C:attention}verdopple{} die Werte benachbarter Joker",
                     "{E:2,C:red}Zerstört sich selbst{}",
                 }
             },
