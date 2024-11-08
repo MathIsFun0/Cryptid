@@ -1108,6 +1108,14 @@ return {
                     "a {C:attention}#2#"
                 }
             },
+            j_cry_fudge = {
+            name = "Fudge",
+            text = {
+                "Played cards permanently",
+                "gain {X:mult,C:white}+#1#{} Mult",
+                "{C:inactive}({X:mult,C:white}#2#{C:inactive} Mult remaining)"
+               }
+            },
             j_cry_gardenfork = {
                 name = "Garden of Forking Paths",
                 text = {
