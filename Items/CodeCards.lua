@@ -1223,6 +1223,103 @@ local patch = {
 	end,
 }
 
+local ctrl_v = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "ctrl_v",
+	name = "cry-Ctrl-V",
+	atlas = "code",
+	order = 27,
+	config = {  },
+	pos = {
+		x = 2,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		return #G.jokers.highlighted
+				+ #G.hand.highlighted
+				+ #G.consumeables.highlighted
+			== 2
+	end,
+	use = function(self, card, area, copier)
+		if area then
+			area:remove_from_highlighted(card)
+		end
+		if G.jokers.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.jokers.highlighted[1])
+					card:add_to_deck()
+					G.jokers:emplace(card)
+					return true
+				end,
+			}))
+		end
+		if G.hand.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.hand.highlighted[1])
+					card:add_to_deck()
+					G.hand:emplace(card)
+					return true
+				end,
+			}))
+		end
+		if G.consumeables.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.consumeables.highlighted[1])
+					card:add_to_deck()
+					G.consumeables:emplace(card)
+					return true
+				end,
+			}))
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, number do
+			if area then
+				area:remove_from_highlighted(card)
+			end
+			if G.jokers.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.jokers.highlighted[1])
+						card:add_to_deck()
+						G.jokers:emplace(card)
+						return true
+					end,
+				}))
+			end
+			if G.hand.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.hand.highlighted[1])
+						card:add_to_deck()
+						G.hand:emplace(card)
+						return true
+					end,
+				}))
+			end
+			if G.consumeables.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.consumeables.highlighted[1])
+						card:add_to_deck()
+						G.consumeables:emplace(card)
+						return true
+					end,
+				}))
+			end
+		end
+	end,
+}
+
 local automaton = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -2573,6 +2670,9 @@ local aliases = {
 	offbyone = "://offbyone",
 	rework = "://rework",
 	patch = "://patch",
+	ctrlv = "://ctrl+v",
+	["ctrl+v"] = "://ctrl+v",
+	["ctrl v"] = "://ctrl+v",
 	spaghetti = "://spaghetti",
 	topuptag = "top-up tag",
 	gamblerstag = "gambler's tag",
@@ -3374,6 +3474,7 @@ local code_cards = {
 	rework,
 	rework_tag,
 	patch,
+	ctrl_v,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
