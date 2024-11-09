@@ -4989,115 +4989,6 @@ local fractal = {
 		G.hand:unhighlight_all()
 	end,
 }
-local kidnap = {
-	object_type = "Joker",
-	name = "cry-kidnap",
-	key = "kidnap",
-	order = 23,
-	pos = { x = 1, y = 2 },
-	config = {
-		extra = { money = 1, money_mod = 3 },
-		jolly = { t_mult = 8, type = "Pair" },
-		zany = { t_mult = 12, type = "Three of a Kind" },
-		mad = { t_mult = 10, type = "Two Pair" },
-		crazy = { t_mult = 12, type = "Straight" },
-		droll = { t_mult = 10, type = "Flush" },
-	},
-	rarity = 1,
-	cost = 4,
-	blueprint_compat = false,
-	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_jolly",
-			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_zany",
-			specific_vars = { self.config.zany.t_mult, localize(self.config.zany.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_mad",
-			specific_vars = { self.config.mad.t_mult, localize(self.config.mad.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_crazy",
-			specific_vars = { self.config.crazy.t_mult, localize(self.config.crazy.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_droll",
-			specific_vars = { self.config.droll.t_mult, localize(self.config.droll.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_sly",
-			specific_vars = { 50, localize(self.config.jolly.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_wily",
-			specific_vars = { 100, localize(self.config.zany.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_clever",
-			specific_vars = { 80, localize(self.config.mad.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_devious",
-			specific_vars = { 100, localize(self.config.crazy.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_crafty",
-			specific_vars = { 80, localize(self.config.droll.type, "poker_hands") },
-		}
-		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
-	end,
-	atlas = "atlasone",
-	calculate = function(self, card, context)
-		if
-			context.selling_card
-			and (
-				(
-					context.card.ability.name == "Sly Joker"
-					or context.card.ability.name == "Wily Joker"
-					or context.card.ability.name == "Clever Joker"
-					or context.card.ability.name == "Devious Joker"
-					or context.card.ability.name == "Crafty Joker"
-				)
-				or context.card.ability.effect == "Type Mult"
-				or context.card.ability.effect == "Cry Type Mult"
-				or context.card.ability.effect == "Cry Type Chips"
-				--[[
-				Other developers can add effect == "Boost Kidnapping"
-                to their joker config if they want it to boost kidnapping when sold
-				]]--
-				or context.card.ability.effect == "Boost Kidnapping"
-				or context.card:is_jolly()
-			)
-			and not context.blueprint
-		then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("k_upgrade_ex"),
-					colour = G.C.MONEY,
-				}),
-			}
-		end
-	end,
-	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			return card.ability.extra.money
-		end
-	end,
-}
 local universe = {
 	cry_credits = {
 		idea = {"Mystic Misclick"},
@@ -5205,6 +5096,115 @@ local astral_bottle = {
 			else
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers") })
 			end
+		end
+	end,
+}
+local kidnap = {
+	object_type = "Joker",
+	name = "cry-kidnap",
+	key = "kidnap",
+	order = 23,
+	pos = { x = 1, y = 2 },
+	config = {
+		extra = { money = 1, money_mod = 3 },
+		jolly = { t_mult = 8, type = "Pair" },
+		zany = { t_mult = 12, type = "Three of a Kind" },
+		mad = { t_mult = 10, type = "Two Pair" },
+		crazy = { t_mult = 12, type = "Straight" },
+		droll = { t_mult = 10, type = "Flush" },
+	},
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = false,
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_jolly",
+			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_zany",
+			specific_vars = { self.config.zany.t_mult, localize(self.config.zany.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_mad",
+			specific_vars = { self.config.mad.t_mult, localize(self.config.mad.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_crazy",
+			specific_vars = { self.config.crazy.t_mult, localize(self.config.crazy.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_droll",
+			specific_vars = { self.config.droll.t_mult, localize(self.config.droll.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_sly",
+			specific_vars = { 50, localize(self.config.jolly.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_wily",
+			specific_vars = { 100, localize(self.config.zany.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_clever",
+			specific_vars = { 80, localize(self.config.mad.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_devious",
+			specific_vars = { 100, localize(self.config.crazy.type, "poker_hands") },
+		}
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_crafty",
+			specific_vars = { 80, localize(self.config.droll.type, "poker_hands") },
+		}
+		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
+	end,
+	atlas = "atlasone",
+	calculate = function(self, card, context)
+		if
+			context.selling_card
+			and (
+				(
+					context.card.ability.name == "Sly Joker"
+					or context.card.ability.name == "Wily Joker"
+					or context.card.ability.name == "Clever Joker"
+					or context.card.ability.name == "Devious Joker"
+					or context.card.ability.name == "Crafty Joker"
+				)
+				or context.card.ability.effect == "Type Mult"
+				or context.card.ability.effect == "Cry Type Mult"
+				or context.card.ability.effect == "Cry Type Chips"
+				--[[
+				Other developers can add effect == "Boost Kidnapping"
+                to their joker config if they want it to boost kidnapping when sold
+				]]--
+				or context.card.ability.effect == "Boost Kidnapping"
+				or context.card:is_jolly()
+			)
+			and not context.blueprint
+		then
+			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
+			return {
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize("k_upgrade_ex"),
+					colour = G.C.MONEY,
+				}),
+			}
+		end
+	end,
+	calc_dollar_bonus = function(self, card)
+		if card.ability.extra.money > 0 then
+			return card.ability.extra.money
 		end
 	end,
 }
