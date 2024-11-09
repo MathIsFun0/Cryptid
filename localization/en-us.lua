@@ -2247,8 +2247,8 @@ return {
                 text = {
                     "All of your {C:attention}Jokers{}",
                     "become {C:dark_edition}Negative{},",
-                    "all {C:attention}Jokers{} in the {C:attention}Shop{} cost",
-                    "double for the rest of the {C:attention}Run{}",
+                    "all {C:attention}Jokers{} in the shop cost",
+                    "{C:attention}Double{} for the rest of the run",
                 },
             },
             c_cry_analog = {
@@ -2321,8 +2321,8 @@ return {
                 name = "Ritual",
                 text = {
                     "Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{},",
-                    "or {C:dark_edition}Astral{} to",
-                    "{C:attention}#1#{} selected card in hand",
+                    "or {C:dark_edition}Astral{} to {C:attention}#1#{}",
+                    "selected card in hand",
                 },
             },
             c_cry_source = {
