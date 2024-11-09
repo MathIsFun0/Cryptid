@@ -778,7 +778,7 @@ local adversary = {
 		}))
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.cry_joker_discount_percent = G.GAME.cry_joker_discount_percent - 100
+				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier * 2
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()

@@ -3,7 +3,7 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-## Adversary Joker Discount
+## Card Cost
 
 # Adversary needs to only double the price of jokers, so we add a condition to the cost calculation
 [[patches]]
@@ -12,8 +12,9 @@ target = "card.lua"
 pattern = '''self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))'''
 position = "at"
 payload = '''
-current_discount = G.GAME.discount_percent
-if self.ability.set == 'Joker' then current_discount = current_discount + G.GAME.cry_joker_discount_percent end
-self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-current_discount)/100))
+    local bonus_modifier = 1
+    if self.ability.set == 'Joker' then 
+        bonus_modifier = bonus_modifier * G.GAME.cry_shop_joker_price_modifier end
+    self.cost = math.max(1, math.floor(math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100) * bonus_modifier + 0.5))
 '''
 match_indent = true
