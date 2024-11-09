@@ -637,13 +637,11 @@ local nstar = {
 		G.E_MANAGER:add_event(
 			Event({
 				trigger = "after",
-				delay = time or 1,
 				func = function()
 					handstolv = nil
 					return true
 				end,
-			}),
-			queue
+			})
 		)
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.04 mult for each neutron star used this run
