@@ -394,7 +394,7 @@ return {
 	    c_cry_patch = {
 		name = "://PATCH",
 		text = {
-			"Entfernt alle Flüche von",
+			"Entfernt alle Sticker und Schwächungen von",
 			"allen momentan sichtbaren Gegenständen",
 		},
 	    },
