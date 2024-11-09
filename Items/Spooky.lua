@@ -1278,6 +1278,44 @@ local candy_sticks = {
 		return { vars = { center.ability.extra.hands} }
 	end,
 }
+
+
+
+
+
+local fudge = {
+	object_type = "Joker",
+	key = "fudge",
+	pos = { x = 2, y = 0 },
+	rarity = "cry_candy",
+	cost = 10,
+	atlas = "atlasspooky",
+	config = {extra = {mult_mod = 1, mult = 30}},
+	blueprint_compat = true,
+	eternal_compat = false,
+	perishable_compat = false,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.mult_mod, center.ability.extra.mult} }
+	end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play then
+				card:start_dissolve()
+			else
+				context.other_card.ability.mult = context.other_card.ability.mult + card.ability.extra.mult_mod or card.ability.extra.mult_mod
+			end
+			card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.mult_mod
+            return {
+                extra = {message = localize('k_upgrade_ex'), colour = G.C.MULT},
+                colour = G.C.MULT,
+                card = card
+            }
+        end
+	end
+}
+
+
+
+
 items = {
 	cotton_candy,
 	wrapped,
@@ -1310,6 +1348,7 @@ items = {
 	brittle,
 	monopoly_money,
 	candy_sticks,
+	fudge
 }
 --order is temporary so we can more easily test these out
 return { name = "Spooky", order = 1e300, init = function() 
