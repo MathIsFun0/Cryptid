@@ -5075,7 +5075,7 @@ local astral_bottle = {
 	key = "astral_bottle",
 	pos = { x = 0, y = 0 },
 	atlas = "atlasfour",
-	rarity = 3,
+	rarity = 2,
 	cost = 6,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
