@@ -2242,12 +2242,37 @@ return {
             },
         },
         Spectral = {
+            c_cry_adversary = {
+                name = "Adversary",
+                text = {
+                    "All of your {C:attention}Jokers{}",
+                    "become {C:dark_edition}Negative{},",
+                    "all {C:attention}Jokers{} in the {C:attention}Shop{} cost",
+                    "double for the rest of the {C:attention}Run{}",
+                },
+            },
             c_cry_analog = {
                 name = "Analog",
                 text = {
                     "Create {C:attention}#1#{} copies of a",
                     "random {C:attention}Joker{}, destroy",
                     "all other Jokers, {C:attention}+#2#{} Ante",
+                },
+            },
+            c_cry_chambered = {
+                name = "Chambered",
+                text = {
+                    "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
+                    "{C:attention}Copies{} of a",
+                    "random {C:attention}Consumable{}",
+                },
+            },
+            c_cry_conduit = {
+                name = "Conduit",
+                text = {
+                    "Swap the {C:attention}Edition(s){} of",
+                    "{C:attention}Two{} selected {C:attention}Playing Card(s){}",
+                    "and/or {C:attention}Joker(s){}",
                 },
             },
             c_cry_gateway = {
@@ -2295,8 +2320,9 @@ return {
             c_cry_ritual = {
                 name = "Ritual",
                 text = {
-                    "Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{}, or {C:dark_edition}Astral{}",
-                    "to 1 selected Playing Card.",
+                    "Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{},",
+                    "or {C:dark_edition}Astral{} to",
+                    "{C:attention}#1#{} selected card in hand",
                 },
             },
             c_cry_source = {
