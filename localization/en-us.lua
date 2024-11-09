@@ -1123,6 +1123,15 @@ return {
                     "a {C:attention}#2#"
                 }
             },
+            j_cry_fudge = {
+                name = "Fudge",
+                text = {
+                    "Played cards permanently gain" ,
+                    "{C:mult}+#1#{} base mult when scored",
+                    '{C:inactive,s:0.95}#2# Mult is left to distribute'
+                    
+                },
+            },
             j_cry_gardenfork = {
                 name = "Garden of Forking Paths",
                 text = {
