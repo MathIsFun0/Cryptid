@@ -272,8 +272,13 @@ match_indent = true
 target = "card.lua"
 pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))"
 position = "after"
-payload = '''if self.misprint_cost_fac then self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f') 
-if not G.GAME.modifiers.cry_misprint_min then self.cost = math.floor(self.cost) end end'''
+payload = '''
+    if self.ability.set == 'Joker' then 
+        self.cost = cry_format(self.cost * G.GAME.cry_shop_joker_price_modifier,'%.2f') end
+    if self.misprint_cost_fac then 
+        self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f') 
+    if not G.GAME.modifiers.cry_misprint_min then self.cost = math.floor(self.cost) end end
+'''
 match_indent = true
 
 # welcome to hell, enjoy your stay (initialise center copy)
