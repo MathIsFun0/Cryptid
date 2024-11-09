@@ -335,6 +335,12 @@ return {
                     "{C:cry_code,E:1}Nein",
                 },
             },
+	    c_cry_ctrl_v = {
+		name = "://CTRL+V",
+		text = {
+			"Erstelle eine Kopie einer {C:cry_code}gewälten{} Karte oder Gebrauchsgegenstand."
+		},
+	    },
             c_cry_delete = {
                 name = "://DELETE",
                 text = {
