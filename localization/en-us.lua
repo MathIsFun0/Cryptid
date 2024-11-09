@@ -336,6 +336,12 @@ return {
                     "{C:cry_code,E:1}Don't.",
                 },
             },
+	    c_cry_ctrl_v = {
+		name = "://CTRL+V",
+		text = {
+			"Create a copy of a {C:cry_code}selected{} card or consumable."
+		},
+	    },
             c_cry_delete = {
                 name = "://DELETE",
                 text = {
@@ -354,9 +360,9 @@ return {
             c_cry_exploit = {
                 name = "://EXPLOIT",
                 text = {
-                    "The {C:cry_code}next{} hand played",
-                    "is calculated as a",
-                    "{C:cry_code}chosen{} poker hand",
+                    "Any played hand is considered",
+                    "to {C:cry_code}contain{} a {C:cry_code}chosen{} poker hand,",
+                    "resets at end of round",
                     "{C:inactive,s:0.8}Secret hands must be",
                     "{C:inactive,s:0.8}discovered to be valid",
                 },
@@ -394,6 +400,13 @@ return {
                     "end of round",
                 },
             },
+	    c_cry_patch = {
+		name = "://PATCH",
+		text = {
+			"Remove all debuffs and stickers",
+			"from currently visible items",
+	    	},
+	    },
             c_cry_payload = {
                 name = "://PAYLOAD",
                 text = {
@@ -734,6 +747,13 @@ return {
                     "to create a {C:cry_candy}Candy{}",
                 }
             },
+	    j_cry_candy_sticks = {
+		name = "Candy Sticks",
+		text = {
+			"Next boss blind's effect isn't active",
+			"until you've played {C:attention}#1#{} hand",
+	   	}
+	    },
             j_cry_canvas = {
                 name = "Canvas",
                 text = {
@@ -1017,6 +1037,14 @@ return {
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+	    j_cry_exposed = {
+                name = "Exposed",
+                text = {
+                    "Retrigger all non-{C:attention}face{} cards",
+		    "{C:attention}#1#{} additional time(s)",
+                    "All {C:attention}face{} cards are debuffed",
+                },
+            },
             j_cry_facile = {
                 name = "Facile",
                 text = {
@@ -1198,7 +1226,7 @@ return {
                 name = "Jawbreaker",
                 text = {
                     "When {C:attention}Boss Blind{} defeated,",
-                    "{C:attention}double{} values of all Jokers",
+                    "{C:attention}double{} values of adjacent Jokers",
                     "{E:2,C:red}self destructs{}",
                 }
             },
@@ -1346,6 +1374,14 @@ return {
                     "{C:attention}#1#{} additional time(s)",
                 },
             },
+            j_cry_mask = {
+                name = "Mask",
+                text = {
+                    "Retrigger all {C:attention}face{} cards",
+                    "{C:attention}#1#{} additional time(s)",
+		    "All non-{C:attention}face{} cards are debuffed",
+                },
+            },
             j_cry_maximized = {
                 name = "Maximized",
                 text = {
@@ -1386,7 +1422,7 @@ return {
                     "{X:mult,C:white}X#1#{} Mult for each member",
                     "in the {C:attention}Cryptid Discord{}",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
-                    "{C:blue,s:0.7}https://discord.gg/unbalanced{}",
+                    "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
                 },
             },
             j_cry_membershipcardtwo = {
@@ -1395,7 +1431,7 @@ return {
                     "{C:chips}+#1#{} Chips for each member",
                     "in the {C:attention}Cryptid Discord{}",
                     "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
-                    "{C:blue,s:0.7}https://discord.gg/unbalanced{}",
+                    "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
                 },
             },
             j_cry_meteor = {
@@ -1917,6 +1953,14 @@ return {
                 text = {
                     "{X:mult,C:white} X#1# {} Mult if scoring hand",
                     "contains {C:attention}exactly{} three {C:attention}3s",
+                },
+            },
+            j_cry_tropical_smoothie = {
+                name = "Tropical Smoothie",
+                text = {
+                    "Sell this card",
+		    "to {C:attention}multiply{} values",
+                    "of owned jokers by {C:attention}X1.5{}",
                 },
             },
             j_cry_unity = {
