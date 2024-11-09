@@ -1265,6 +1265,7 @@ local ctrl_v = {
 				func = function()
 					local card = copy_card(G.hand.highlighted[1])
 					card:add_to_deck()
+					table.insert(G.playing_cards, card)
 					G.hand:emplace(card)
 					return true
 				end,
