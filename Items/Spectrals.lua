@@ -857,18 +857,35 @@ local conduit = {
 	order = 1,
 	atlas = "atlasnotjokerstwo",
 	can_use = function(self, card)
-		return (#G.hand.highlighted + #G.jokers.highlighted == 2)
+		local combinedTable = {}
+
+		for _, value in ipairs(G.hand.highlighted) do
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
+		end
+
+		for _, value in ipairs(G.jokers.highlighted) do
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
+		end
+		return (#combinedTable == 2)
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		local combinedTable = {}
 
 		for _, value in ipairs(G.hand.highlighted) do
-			table.insert(combinedTable, value)
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
 		end
 
 		for _, value in ipairs(G.jokers.highlighted) do
-			table.insert(combinedTable, value)
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
 		end
 		local highlighted_1 = combinedTable[1]
 		local highlighted_2 = combinedTable[2]
