@@ -5077,9 +5077,14 @@ local astral_bottle = {
 	atlas = "atlasfour",
 	rarity = 3,
 	cost = 6,
-	blueprint_compat = true,
+	blueprint_compat = false,
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
+	end,
 	calculate = function(self, card, context)
-		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
+		if context.selling_self and not context.retrigger_joker and not context.blueprint then
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff and not G.jokers.cards[i].edition then
@@ -5405,14 +5410,14 @@ local miscitems =  {
 	penetrating,
 	treacherous,
 	kidnap,
-	universe,
-	astral_bottle,
 	exposed,
 	mask,
 	tropical_smoothie,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
+	miscitems[#miscitems+1] = universe
+	miscitems[#miscitems+1] = astral_bottle
 end
 return {
 	name = "Misc. Jokers",
