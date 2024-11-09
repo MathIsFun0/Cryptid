@@ -1185,6 +1185,8 @@ local formidiulosus = {
 	cost = 50,
 	order = 518,
 	atlas = "atlasexotic",
+	no_dbl = true,
+	immutable = true,
 	calculate = function(self, card, context)
 		if (context.buying_card or context.cry_creating_card) and context.card.ability.set == "Joker" and context.card.config.center.rarity == "cry_cursed" and not context.blueprint and not (context.card == card) then
 			G.E_MANAGER:add_event(Event({
@@ -1231,7 +1233,33 @@ local formidiulosus = {
 		code = {"Foegro"}
 	},
 }
-
+local items = {
+	gateway_sprite,
+	gateway,
+	iterum,
+	universum,
+	exponentia,
+	speculo,
+	redeo,
+	tenebris,
+	effarcire,
+	effarcire_sprite,
+	crustulum,
+	primus,
+	scalae,
+	stella_mortis,
+	circulus_pistoris,
+	aequilibrium,
+	facile,
+	gemino,
+	energia,
+	verisimile,
+	--rescribere, [NEEDS REFACTOR]
+	duplicare,
+}
+if Cryptid.enabled["Spooky"] then
+	items[#items + 1] = formidiulosus
+end
 return {
 	name = "Exotic Jokers",
 	init = function()
@@ -1360,29 +1388,5 @@ return {
 			end
 		end
 	end,
-	items = {
-		gateway_sprite,
-		gateway,
-		iterum,
-		universum,
-		exponentia,
-		speculo,
-		redeo,
-		tenebris,
-		effarcire,
-		effarcire_sprite,
-		crustulum,
-		primus,
-		scalae,
-		stella_mortis,
-		circulus_pistoris,
-		aequilibrium,
-		facile,
-		gemino,
-		energia,
-		verisimile,
-		--rescribere, [NEEDS REFACTOR]
-		duplicare,
-		formidiulosus,
-	},
+	items = items,
 }

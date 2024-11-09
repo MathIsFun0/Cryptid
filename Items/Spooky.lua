@@ -1025,10 +1025,21 @@ local jawbreaker = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not context.blueprint_card and not context.retrigger_joker then
 			for i = 1, #G.jokers.cards do
-				if not Card.no(G.jokers.cards[i], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i], "immutable", true) then
-					cry_with_deck_effects(G.jokers.cards[i], function(card)
-						cry_misprintize(card, { min = 2, max = 2 }, nil, true)
-					end)
+				if G.jokers.cards[i] == card then
+					if i > 1 then
+						if not Card.no(G.jokers.cards[i-1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i-1], "immutable", true) then
+							cry_with_deck_effects(G.jokers.cards[i-1], function(card)
+								cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+							end)
+						end
+					end
+					if i < #G.jokers.cards then
+						if not Card.no(G.jokers.cards[i+1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i+1], "immutable", true) then
+							cry_with_deck_effects(G.jokers.cards[i+1], function(card)
+								cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+							end)
+						end
+					end
 				end
 			end
 			G.E_MANAGER:add_event(Event({
