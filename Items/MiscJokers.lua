@@ -5007,7 +5007,7 @@ local universe = {
 		end
 		return { vars = { center.ability.extra.emult } }
 	end,
-	rarity = 1,
+	rarity = 3,
 	cost = 6,
 	order = 40,
 	blueprint_compat = true,
