@@ -663,7 +663,7 @@ local ritual = {
 		return { vars = { center.ability.max_highlighted } }
 	end,
 	cost = 5,
-	atlas = "atlasastral",
+	atlas = "atlasnotjokerstwo",
 	pos = { x = 0, y = 0 },
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card

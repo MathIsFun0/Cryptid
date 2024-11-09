@@ -3071,14 +3071,14 @@ SMODS.Atlas({
 	py = 34,
 }):register()
 SMODS.Atlas({
-	key = "atlasastral",
-	path = "atlasastral.png",
+	key = "atlasnotjokerstwo",
+	path = "atlasnotjokerstwo.png",
 	px = 71,
 	py = 95,
 }):register()
 SMODS.Atlas({
-	key = "atlasastraljokers",
-	path = "atlasastraljokers.png",
+	key = "atlasfour",
+	path = "atlasfour.png",
 	px = 71,
 	py = 95,
 }):register()

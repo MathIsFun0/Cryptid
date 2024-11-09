@@ -4999,7 +4999,7 @@ local universe = {
 	name = "cry-universe",
 	key = "universe",
 	pos = { x = 1, y = 0 },
-	atlas = "atlasastraljokers",
+	atlas = "atlasfour",
 	config = { extra = { emult = 1.2 } },
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.cry_astral) then
@@ -5074,7 +5074,7 @@ local astral_bottle = {
 	name = "cry-astral_bottle",
 	key = "astral_bottle",
 	pos = { x = 0, y = 0 },
-	atlas = "atlasastraljokers",
+	atlas = "atlasfour",
 	rarity = 3,
 	cost = 6,
 	blueprint_compat = true,
