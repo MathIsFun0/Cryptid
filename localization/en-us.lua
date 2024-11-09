@@ -354,9 +354,9 @@ return {
             c_cry_exploit = {
                 name = "://EXPLOIT",
                 text = {
-                    "The {C:cry_code}next{} hand played",
-                    "is calculated as a",
-                    "{C:cry_code}chosen{} poker hand",
+                    "Any played hand is considered",
+                    "to {C:cry_code}contain{} a {C:cry_code}chosen{} poker hand,",
+                    "resets at end of round",
                     "{C:inactive,s:0.8}Secret hands must be",
                     "{C:inactive,s:0.8}discovered to be valid",
                 },
@@ -394,6 +394,13 @@ return {
                     "end of round",
                 },
             },
+	    c_cry_patch = {
+		name = "://PATCH",
+		text = {
+			"Remove all debuffs and stickers",
+			"from currently visible items",
+	    	},
+	    },
             c_cry_payload = {
                 name = "://PAYLOAD",
                 text = {
@@ -734,6 +741,13 @@ return {
                     "to create a {C:cry_candy}Candy{}",
                 }
             },
+	    j_cry_candy_sticks = {
+		name = "Candy Sticks",
+		text = {
+			"Next boss blind's effect isn't active",
+			"until you've played {C:attention}#1#{} hand",
+	   	}
+	    },
             j_cry_canvas = {
                 name = "Canvas",
                 text = {
@@ -1017,6 +1031,14 @@ return {
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
                 },
             },
+	    j_cry_exposed = {
+                name = "Exposed",
+                text = {
+                    "Retrigger all non-{C:attention}face{} cards",
+		    "{C:attention}#1#{} additional time(s)",
+                    "All {C:attention}face{} cards are debuffed",
+                },
+            },
             j_cry_facile = {
                 name = "Facile",
                 text = {
@@ -1198,7 +1220,7 @@ return {
                 name = "Jawbreaker",
                 text = {
                     "When {C:attention}Boss Blind{} defeated,",
-                    "{C:attention}double{} values of all Jokers",
+                    "{C:attention}double{} values of adjacent Jokers",
                     "{E:2,C:red}self destructs{}",
                 }
             },
@@ -1344,6 +1366,14 @@ return {
                 text = {
                     "Retrigger all Jokers",
                     "{C:attention}#1#{} additional time(s)",
+                },
+            },
+            j_cry_mask = {
+                name = "Mask",
+                text = {
+                    "Retrigger all {C:attention}face{} cards",
+                    "{C:attention}#1#{} additional time(s)",
+		    "All non-{C:attention}face{} cards are debuffed",
                 },
             },
             j_cry_maximized = {
@@ -1917,6 +1947,14 @@ return {
                 text = {
                     "{X:mult,C:white} X#1# {} Mult if scoring hand",
                     "contains {C:attention}exactly{} three {C:attention}3s",
+                },
+            },
+            j_cry_tropical_smoothie = {
+                name = "Tropical Smoothie",
+                text = {
+                    "Sell this card",
+		    "to {C:attention}multiply{} values",
+                    "of owned jokers by {C:attention}X1.5{}",
                 },
             },
             j_cry_unity = {

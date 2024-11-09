@@ -1094,6 +1094,135 @@ local rework_tag = {
 	end,
 }
 
+--todo: smods stickers (i know right now this won't work for flickering/possessed)
+local patch = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "patch",
+	name = "cry-patch",
+	atlas = "code",
+	order = 26,
+	config = {  },
+	pos = {
+		x = 1,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, #G.hand.cards do
+			local CARD = G.hand.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.consumeables.cards do
+			local CARD = G.consumeables.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					return true
+				end,
+			}))
+		end
+		delay(0.2)
+		for i = 1, #G.hand.cards do
+			local CARD = G.hand.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					if CARD.facing == "back" then
+						CARD:flip()
+					end
+					CARD.debuff = false
+					CARD.cry_debuff_immune = true
+					CARD.ability.perishable = nil
+					CARD.pinned = nil
+					CARD:set_rental(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
+					CARD.ability.banana = nil
+					play_sound("tarot2", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					if CARD.facing == "back" then
+						CARD:flip()
+					end
+					CARD.debuff = false
+					CARD.ability.perishable = nil
+					CARD.pinned = nil
+					CARD:set_rental(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
+					CARD.ability.banana = nil
+					play_sound("card1", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.consumeables.cards do
+			local CARD = G.consumeables.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					if CARD.facing == "back" then
+						CARD:flip()
+					end
+					CARD.debuff = false
+					CARD.ability.perishable = nil
+					CARD.pinned = nil
+					CARD:set_rental(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
+					CARD.ability.banana = nil
+					play_sound("card1", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+	end,
+}
+
 local automaton = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -1305,6 +1434,17 @@ local CodeJoker = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Kailen"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 
 local copypaste = {
@@ -1352,6 +1492,17 @@ local copypaste = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local cut = {
 	object_type = "Joker",
@@ -1415,6 +1566,17 @@ local cut = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local blender = {
 	object_type = "Joker",
@@ -1439,6 +1601,17 @@ local blender = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 local python = {
 	object_type = "Joker",
@@ -1495,6 +1668,17 @@ local python = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 
 function create_UIBox_variable(card)
@@ -2035,13 +2219,13 @@ G.FUNCS.exploit_apply = function()
 		["High Card"] = { "high card", "high" },
 		["Pair"] = { "pair", "2oak" },
 		["Two Pair"] = { "two pair", "2 pair" },
-		["Three of a Kind"] = { "three of a kind", "3oak", "trips" },
+		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips" },
 		["Straight"] = { "straight" },
 		["Flush"] = { "flush" },
 		["Full House"] = { "full house", "full" },
-		["Four of a Kind"] = { "four of a kind", "4oak" },
-		["Straight Flush"] = { "straight flush", "slush", "slushie", "slushy" },
-		["Five of a Kind"] = { "five of a kind", "5oak" },
+		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak" },
+		["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
+		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak" },
 		["Flush House"] = { "flush house", "flouse" },
 		["Flush Five"] = { "flush five", "fish" },
 	}
@@ -2073,12 +2257,6 @@ G.FUNCS.exploit_cancel = function()
 	G.GAME.USING_CODE = false
 end
 
-G.FUNCS.exploit_info = function()
-	local text = G.GAME.cry_exploit_override
-	local disp_text = text
-	local loc_disp_text = localize(disp_text, "poker_hands")
-	return text, loc_disp_text, disp_text
-end
 G.FUNCS.class_apply_previous = function()
 	if G.PREVIOUS_ENTERED_ENH then
 		G.ENTERED_ENH = G.PREVIOUS_ENTERED_ENH or ""
@@ -2394,6 +2572,7 @@ local aliases = {
 	exploit = "://exploit",
 	offbyone = "://offbyone",
 	rework = "://rework",
+	patch = "://patch",
 	spaghetti = "://spaghetti",
 	topuptag = "top-up tag",
 	gamblerstag = "gambler's tag",
@@ -3194,6 +3373,7 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
+	patch,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
@@ -3796,6 +3976,16 @@ return {
 				context.cry_hook = nil
 			end
 			return ret, trig
+		end
+		local evaluate_poker_hand_ref = evaluate_poker_hand
+		function evaluate_poker_hand(hand)
+			local results = evaluate_poker_hand_ref(hand)
+			if G.GAME.cry_exploit_override then
+				if not results[G.GAME.cry_exploit_override][1] then
+					results[G.GAME.cry_exploit_override] = results["High Card"]	-- i would do results.top here but it just doesn't work, if someone could get that working that would be great
+				end
+			end
+			return results
 		end
 		--Encoded Deck patches
 		local Backapply_to_runRef = Back.apply_to_run

@@ -35,6 +35,17 @@ local supercell = {
 			play_sound("cry_studiofromhelsinki")
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local membershipcardtwo = {
 	object_type = "Joker",
@@ -67,6 +78,17 @@ local membershipcardtwo = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local googol_play = {
 	object_type = "Joker",
@@ -103,6 +125,17 @@ local googol_play = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			".asdom"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local sync_catalyst = {
 	object_type = "Joker",
@@ -138,6 +171,17 @@ local sync_catalyst = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Project666"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local negative = {
 	object_type = "Joker",
@@ -158,6 +202,17 @@ local negative = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra
 	end,
+	cry_credits = {
+		idea = {
+			"Xero01"
+		},
+		art = {
+			"Linus Goof Balls"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local canvas = {
 	object_type = "Joker",
@@ -191,6 +246,17 @@ local canvas = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local error_joker = {
 	object_type = "Joker",
@@ -271,6 +337,17 @@ local error_joker = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Coronacht", "Fetch"
+		},
+		art = {
+			"Mystic Misclick"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local m = {
 	object_type = "Joker",
@@ -345,7 +422,18 @@ local m = {
 				return ret, trig
 			end
 		end
-	end
+	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local M = {
 	object_type = "Joker",
@@ -396,7 +484,18 @@ local M = {
 				return ret, trig
 			end
 		end
-	end
+	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local boredom = {
 	object_type = "Joker",
@@ -438,6 +537,17 @@ local boredom = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Math"
+		},
+		art = {
+			"Saturn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local number_blocks = {
 	object_type = "Joker",
@@ -486,6 +596,17 @@ local number_blocks = {
 			return card.ability.extra.money
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Math"
+		}
+	},
 }
 local double_scale = {
 	object_type = "Joker",
@@ -500,6 +621,17 @@ local double_scale = {
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
 		return orig_scale_scale + true_base
 	end,
+	cry_credits = {
+		idea = {
+			"Mystic Misclick"
+		},
+		art = {
+			"AlezZGreat"
+		},
+		code = {
+			"Math", "Mathguy"
+		}
+	},
 }
 local oldcandy = {
 	object_type = "Joker",
@@ -521,6 +653,17 @@ local oldcandy = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local circus = {
 	object_type = "Joker",
@@ -616,6 +759,17 @@ local circus = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Ein13"
+		},
+		art = {
+			"Ein13"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local caramel = {
 	object_type = "Joker",
@@ -684,6 +838,17 @@ local caramel = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 --this has to be the most spaghetti code in cryptid
 local curse_sob = {
@@ -934,6 +1099,17 @@ local curse_sob = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local bonusjoker = {
 	object_type = "Joker",
@@ -995,6 +1171,17 @@ local bonusjoker = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local multjoker = {
 	object_type = "Joker",
@@ -1045,6 +1232,17 @@ local multjoker = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local goldjoker = {
 	object_type = "Joker",
@@ -1090,6 +1288,17 @@ local goldjoker = {
 			return bonus
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local altgoogol = {
 	object_type = "Joker",
@@ -1167,6 +1376,17 @@ local altgoogol = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 local soccer = {
 	object_type = "Joker",
@@ -1203,6 +1423,17 @@ local soccer = {
 		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.holygrail
 		change_shop_size(card.ability.extra.holygrail * -1)
 	end,
+	cry_credits = {
+		idea = {
+			"Mjiojio"
+		},
+		art = {
+			"HexaCryonic"
+		},
+		code = {
+			"Jevonn"
+		}
+	},
 }
 return {
 	name = "Epic Jokers",
