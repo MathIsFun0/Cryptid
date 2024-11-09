@@ -397,8 +397,8 @@ return {
 	    c_cry_patch = {
 		name = "://PATCH",
 		text = {
-			"Remove all Curses from",
-			"currently visible items",
+			"Remove all debuffs and stickers",
+			"from currently visible items",
 	    	},
 	    },
             c_cry_payload = {

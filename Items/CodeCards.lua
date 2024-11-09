@@ -1094,6 +1094,7 @@ local rework_tag = {
 	end,
 }
 
+--todo: smods stickers (i know right now this won't work for flickering/possessed)
 local patch = {
 	object_type = "Consumable",
 	set = "Code",
