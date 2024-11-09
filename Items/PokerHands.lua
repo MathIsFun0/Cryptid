@@ -267,8 +267,8 @@ SMODS.PokerHand{
 		        for i, card in ipairs(wilds) do    -- this 100% breaks with custom ranks
 		            local rank = card:get_id()
 		            for i = 1, 4 do
-		                if not array[i+((rank-2)*4)] then
-		                    array[i+((rank-2)*4)] = true
+		                if not deck_booleans[i+((rank-2)*4)] then
+		                    deck_booleans[i+((rank-2)*4)] = true
 		                    break
 		                end
 		            end
