@@ -2245,10 +2245,10 @@ return {
             c_cry_adversary = {
                 name = "Adversary",
                 text = {
-                    "All of your {C:attention}Jokers{}",
+                    "{C:red}All{} of your {C:attention}Jokers{}",
                     "become {C:dark_edition}Negative{},",
-                    "all {C:attention}Jokers{} in the shop cost",
-                    "{C:attention}Double{} for the rest of the run",
+                    "{C:red}all{} {C:attention}Jokers{} in the shop cost",
+                    "{C:red}double{} for the rest of the run",
                 },
             },
             c_cry_analog = {
@@ -2263,8 +2263,9 @@ return {
                 name = "Chambered",
                 text = {
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
-                    "{C:attention}Copies{} of a",
+                    "copies of a",
                     "random {C:attention}Consumable{}",
+                    "{C:inactive,s:0.8}Does not copy Chambered{}"
                 },
             },
             c_cry_conduit = {

@@ -808,10 +808,26 @@ local chambered = {
 	order = 1,
 	atlas = "atlasnotjokerstwo",
 	can_use = function(self, card)
-		return #G.consumeables.cards[1]
+		local filteredCons = {}
+
+		-- Copy consumables that aren't Chambered
+		for _, item in ipairs(G.consumeables.cards) do
+			if item.ability.name ~= "cry-Chambered" then
+				table.insert(filteredCons, item)
+			end
+		end
+		return #filteredCons > 0
 	end,
 	use = function(self, card, area, copier)
-		target = pseudorandom_element(G.consumeables.cards, pseudoseed('chambered'))
+		local filteredCons = {}
+
+		-- Copy consumables that aren't Chambered
+		for _, item in ipairs(G.consumeables.cards) do
+			if item.ability.name ~= "cry-Chambered" then
+				table.insert(filteredCons, item)
+			end
+		end
+		target = pseudorandom_element(filteredCons, pseudoseed('chambered'))
 		for i=1,card.ability.extra.num_copies do
 			G.E_MANAGER:add_event(Event({
 				func = function() 
