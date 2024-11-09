@@ -613,6 +613,12 @@ return {
 					"{C:cry_code,E:1}警告！使用此牌会导致游戏崩溃！"
 				}
 			},
+			c_cry_ctrl_v = {
+				name = "://CTRL+V",
+				text = {
+					"复制一张 {C:cry_code}选择的{} 卡牌或消耗牌"
+				}
+			},
 			c_cry_delete = {
 				name = "://删除",
 				text = {
@@ -685,6 +691,13 @@ return {
 					"{C:cry_code}#1#{} 张额外卡片和",
 					"{C:cry_code}#1#{} 次额外选择",
 					"{C:inactive}(当前为 {C:cry_code}+#2#{C:inactive})"
+				}
+			},
+			c_cry_patch = {
+				name = "://补丁",
+				text = {
+					"从当前所有可见的物品中移除",
+					"贴纸和负面效果"
 				}
 			},
 			c_cry_payload = {
@@ -891,7 +904,7 @@ return {
 				text = {
 					"如果打出的手牌包含",
 					"一个 {C:attention}#2#",
-					"{C:chips}+#1#{} 筹码",
+					"{C:chips}+#1#{} 筹码"
 				}
 			},
 			j_cry_altgoogol = {
@@ -969,7 +982,7 @@ return {
 				text = {
 					"如果出的牌中包含",
 					"一个 {C:attention}#2#",
-					"{C:red}+#1#{} 倍率",
+					"{C:red}+#1#{} 倍率"
 				}
 			},
 			j_cry_bonusjoker = {
@@ -1044,6 +1057,13 @@ return {
 				text = {
 					"选择 {C:attention}盲注{} 后",
 					"摧毁最左边的小丑创建一张{C:cry_candy}糖果{}"
+				}
+			},
+			j_cry_candy_sticks = {
+				name = "棒棒糖",
+				text = {
+					"直到你打出 {C:attention}#1#{}",
+					"下个Boss盲注的效果失效"
 				}
 			},
 			j_cry_canvas = {
@@ -1291,6 +1311,14 @@ return {
 					"触发 {X:red,C:white} X 倍率 {} 时",
 					"这张小丑获得 {X:dark_edition,C:white} ^#1# {} 倍率",
 					"{C:inactive}(当前 {X:dark_edition,C:white} ^#2# {C:inactive} 倍率)"
+				}
+			},
+			j_cry_exposed = {
+				name = "揭露",
+				text = {
+					"重新触发{C:attention}非人头牌{} ",
+					"额外{C:attention}#1#{}次",
+					"所有 {C:attention}人头牌{} 都被削弱"
 				}
 			},
 			j_cry_facile = {
@@ -1591,6 +1619,14 @@ return {
 				text = {
 					"额外触发所有小丑",
 					"{C:attention}#1#{}次"
+				}
+			},
+			j_cry_mask = {
+				name = "面具",
+				text = {
+					"重新触发 {C:attention}人头牌{} cards",
+					"{C:attention}#1#{} additional 次",
+					"所有{C:attention}非人头牌{} 被削弱"
 				}
 			},
 			j_cry_maximized = {
@@ -2022,7 +2058,7 @@ return {
 				text = {
 					"如果打出的手牌包含",
 					"一个 {C:attention}#2#",
-					"{X:mult,C:white} X#1# {} 倍率",
+					"{X:mult,C:white} X#1# {} 倍率"
 				}
 			},
 			j_cry_subtle = {
@@ -2108,6 +2144,13 @@ return {
 					"计分牌中刚好有",
 					" {C:attention}3 张 3 {}时",
 					"提供{X:mult,C:white} X#1# {} 倍率"
+				}
+			},
+			j_cry_tropical_smoothie = {
+				name = "热带风味冰沙",
+				text = {
+					"卖掉这张牌",
+					"让所拥有的小丑数值{C:attention}X1.5{}"
 				}
 			},
 			j_cry_unity = {
