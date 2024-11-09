@@ -336,6 +336,12 @@ return {
                     "{C:cry_code,E:1}Don't.",
                 },
             },
+	    c_cry_ctrl_v = {
+		name = "://CTRL+V",
+		text = {
+			"Create a copy of a {C:cry_code}selected{} card or consumable."
+		},
+	    },
             c_cry_delete = {
                 name = "://DELETE",
                 text = {
@@ -394,6 +400,13 @@ return {
                     "end of round",
                 },
             },
+	    c_cry_patch = {
+		name = "://PATCH",
+		text = {
+			"Remove all debuffs and stickers",
+			"from currently visible items",
+	    	},
+	    },
             c_cry_payload = {
                 name = "://PAYLOAD",
                 text = {

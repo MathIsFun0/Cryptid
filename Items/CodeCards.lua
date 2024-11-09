@@ -1094,6 +1094,232 @@ local rework_tag = {
 	end,
 }
 
+--todo: smods stickers (i know right now this won't work for flickering/possessed)
+local patch = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "patch",
+	name = "cry-patch",
+	atlas = "code",
+	order = 26,
+	config = {  },
+	pos = {
+		x = 1,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, #G.hand.cards do
+			local CARD = G.hand.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.consumeables.cards do
+			local CARD = G.consumeables.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					return true
+				end,
+			}))
+		end
+		delay(0.2)
+		for i = 1, #G.hand.cards do
+			local CARD = G.hand.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					if CARD.facing == "back" then
+						CARD:flip()
+					end
+					CARD.debuff = false
+					CARD.cry_debuff_immune = true
+					CARD.ability.perishable = nil
+					CARD.pinned = nil
+					CARD:set_rental(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
+					CARD.ability.banana = nil
+					play_sound("tarot2", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					if CARD.facing == "back" then
+						CARD:flip()
+					end
+					CARD.debuff = false
+					CARD.ability.perishable = nil
+					CARD.pinned = nil
+					CARD:set_rental(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
+					CARD.ability.banana = nil
+					play_sound("card1", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		for i = 1, #G.consumeables.cards do
+			local CARD = G.consumeables.cards[i]
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					if CARD.facing == "back" then
+						CARD:flip()
+					end
+					CARD.debuff = false
+					CARD.ability.perishable = nil
+					CARD.pinned = nil
+					CARD:set_rental(nil)
+					if not CARD.sob then
+						CARD:set_eternal(nil)
+					end
+					CARD.ability.banana = nil
+					play_sound("card1", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+	end,
+}
+
+local ctrl_v = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "ctrl_v",
+	name = "cry-Ctrl-V",
+	atlas = "code",
+	order = 27,
+	config = {  },
+	pos = {
+		x = 2,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		return #G.jokers.highlighted
+				+ #G.hand.highlighted
+				+ #G.consumeables.highlighted
+			== 2
+	end,
+	use = function(self, card, area, copier)
+		if area then
+			area:remove_from_highlighted(card)
+		end
+		if G.jokers.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.jokers.highlighted[1])
+					card:add_to_deck()
+					G.jokers:emplace(card)
+					return true
+				end,
+			}))
+		end
+		if G.hand.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.hand.highlighted[1])
+					card:add_to_deck()
+					G.hand:emplace(card)
+					return true
+				end,
+			}))
+		end
+		if G.consumeables.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.consumeables.highlighted[1])
+					card:add_to_deck()
+					G.consumeables:emplace(card)
+					return true
+				end,
+			}))
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, number do
+			if area then
+				area:remove_from_highlighted(card)
+			end
+			if G.jokers.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.jokers.highlighted[1])
+						card:add_to_deck()
+						G.jokers:emplace(card)
+						return true
+					end,
+				}))
+			end
+			if G.hand.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.hand.highlighted[1])
+						card:add_to_deck()
+						G.hand:emplace(card)
+						return true
+					end,
+				}))
+			end
+			if G.consumeables.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.consumeables.highlighted[1])
+						card:add_to_deck()
+						G.consumeables:emplace(card)
+						return true
+					end,
+				}))
+			end
+		end
+	end,
+}
+
 local automaton = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -1305,6 +1531,17 @@ local CodeJoker = {
 			return nil, true
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Kailen"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 
 local copypaste = {
@@ -1352,6 +1589,17 @@ local copypaste = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local cut = {
 	object_type = "Joker",
@@ -1415,6 +1663,17 @@ local cut = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.Xmult_mod, center.ability.extra.Xmult } }
 	end,
+	cry_credits = {
+		idea = {
+			"Auto Watto"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Auto Watto"
+		}
+	},
 }
 local blender = {
 	object_type = "Joker",
@@ -1439,6 +1698,17 @@ local blender = {
 			end
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 local python = {
 	object_type = "Joker",
@@ -1495,6 +1765,17 @@ local python = {
 			}
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"Kailen"
+		},
+		code = {
+			"Kailen"
+		}
+	},
 }
 
 function create_UIBox_variable(card)
@@ -2388,6 +2669,10 @@ local aliases = {
 	exploit = "://exploit",
 	offbyone = "://offbyone",
 	rework = "://rework",
+	patch = "://patch",
+	ctrlv = "://ctrl+v",
+	["ctrl+v"] = "://ctrl+v",
+	["ctrl v"] = "://ctrl+v",
 	spaghetti = "://spaghetti",
 	topuptag = "top-up tag",
 	gamblerstag = "gambler's tag",
@@ -3188,6 +3473,8 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
+	patch,
+	ctrl_v,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
