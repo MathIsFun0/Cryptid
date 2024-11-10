@@ -649,6 +649,7 @@ local cj = Card.calculate_joker
 function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	if
 		self.ability.name ~= "cry-happyhouse"
+		and self.ability.name ~= "Acrobat"
 		and self.ability.name ~= "cry-sapling"
 		and self.ability.name ~= "cry-mstack"
 		and self.ability.name ~= "cry-notebook"
