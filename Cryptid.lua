@@ -3042,12 +3042,6 @@ SMODS.Atlas({
 	py = 95,
 }):register()
 SMODS.Atlas({
-	key = "atlascryptichandjokers",
-	path = "atlascryptichandjokers.png",
-	px = 71,
-	py = 95,
-}):register()
-SMODS.Atlas({
 	key = "atlasspooky",
 	path = "atlasspooky.png",
 	px = 71,
@@ -3070,18 +3064,6 @@ SMODS.Atlas({
 	path = "tag_cry.png",
 	px = 34,
 	py = 34,
-}):register()
-SMODS.Atlas({
-	key = "atlasnotjokerstwo",
-	path = "atlasnotjokerstwo.png",
-	px = 71,
-	py = 95,
-}):register()
-SMODS.Atlas({
-	key = "atlasfour",
-	path = "atlasfour.png",
-	px = 71,
-	py = 95,
 }):register()
 SMODS.Sticker:take_ownership("perishable", {
 	atlas = "sticker",

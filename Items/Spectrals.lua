@@ -481,7 +481,7 @@ local analog = {
 	set = "Spectral",
 	name = "cry-Analog",
 	key = "analog",
-	pos = { x = 0, y = 0 },
+	pos = { x = 3, y = 0 },
 	config = { copies = 2, ante = 1 },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.copies, center.ability.ante } }
@@ -663,8 +663,8 @@ local ritual = {
 		return { vars = { center.ability.max_highlighted } }
 	end,
 	cost = 5,
-	atlas = "atlasnotjokerstwo",
-	pos = { x = 0, y = 0 },
+	atlas = "atlasnotjokers",
+	pos = { x = 5, y = 1 },
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		for i = 1, #G.hand.highlighted do
@@ -717,11 +717,11 @@ local adversary = {
 	set = "Spectral",
 	name = "cry-Adversary",
 	key = "adversary",
-	pos = { x = 1, y = 0 },
+	pos = { x = 6, y = 1 },
 	config = {},
 	cost = 4,
 	order = 1,
-	atlas = "atlasnotjokerstwo",
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
 	end,
@@ -799,14 +799,14 @@ local chambered = {
 	set = "Spectral",
 	name = "cry-Chambered",
 	key = "chambered",
-	pos = { x = 2, y = 0 },
+	pos = { x = 5, y = 0 },
 	config = { extra = {num_copies = 3}},
 	loc_vars = function(self, info_queue, card)
 	  return { vars = { card.ability.extra.num_copies } }
 	end,
 	cost = 4,
 	order = 1,
-	atlas = "atlasnotjokerstwo",
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local filteredCons = {}
 
@@ -854,11 +854,11 @@ local conduit = {
 	set = "Spectral",
 	name = "cry-conduit",
 	key = "conduit",
-	pos = { x = 3, y = 0 },
+	pos = { x = 6, y = 0 },
 	config = { },
 	cost = 4,
 	order = 1,
-	atlas = "atlasnotjokerstwo",
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local combinedTable = {}
 

@@ -878,7 +878,7 @@ local eclipse = {
 	name = "cry-Eclipse",
 	key = "eclipse",
 	order = 1,
-	pos = { x = 1, y = 0 },
+	pos = { x = 4, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue)
