@@ -4829,7 +4829,7 @@ local foolhardy = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_ultpair") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	effect = "Cry Type Mult",
 	cost = 4,
@@ -5163,7 +5163,7 @@ local penetrating = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_clusterfuck") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -5194,7 +5194,7 @@ local treacherous = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_ultpair") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
