@@ -1368,8 +1368,8 @@ local green_seal = {
 	name = "cry-Green-Seal",
 	key = "green",
 	badge_colour = HEX("12f254"), --same as code cards
-	atlas = "green_atlas",
-	pos = { x = 0, y = 0 },
+	atlas = "cry_misc",
+	pos = { x = 1, y = 2 },
 
 	calculate = function(self, card, context)
 		if context.unscoring then
@@ -1390,13 +1390,6 @@ local green_seal = {
 	end,
 }
 
-local green_seal_sprite = {
-	object_type = "Atlas",
-	key = "green_atlas",
-	path = "s_cry_green_seal.png",
-	px = 71,
-	py = 95,
-}
 local source = {
 	object_type = "Consumable",
 	set = "Spectral",

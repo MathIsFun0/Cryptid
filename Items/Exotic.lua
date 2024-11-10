@@ -50,13 +50,6 @@ local gateway = {
 		delay(0.6)
 	end,
 }
-local gateway_sprite = {
-	object_type = "Atlas",
-	key = "gateway",
-	path = "c_cry_gateway.png",
-	px = 71,
-	py = 95,
-}
 local iterum = {
 	object_type = "Joker",
 	name = "cry-Iterum",
@@ -1234,7 +1227,6 @@ local formidiulosus = {
 	},
 }
 local items = {
-	gateway_sprite,
 	gateway,
 	iterum,
 	universum,

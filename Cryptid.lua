@@ -3065,6 +3065,13 @@ SMODS.Atlas({
 	px = 34,
 	py = 34,
 }):register()
+--Enchancements, seals, other misc things etc
+SMODS.Atlas({
+	key = "cry_misc",
+	path = "cry_misc.png",
+	px = 71,
+	py = 95,
+}):register()
 SMODS.Sticker:take_ownership("perishable", {
 	atlas = "sticker",
 	pos = { x = 4, y = 4 },
