@@ -4765,7 +4765,7 @@ local bonkers = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_bulwark") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	effect = "Cry Type Mult",
 	cost = 4,
