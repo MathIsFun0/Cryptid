@@ -336,12 +336,13 @@ return {
                     "{C:cry_code,E:1}Don't.",
                 },
             },
-	    c_cry_ctrl_v = {
-		name = "://CTRL+V",
-		text = {
-			"Create a copy of a {C:cry_code}selected{} card or consumable."
-		},
-	    },
+            c_cry_ctrl_v = {
+                name = "://CTRL+V",
+                text = {
+                    "Create a {C:cry_code}copy{} of a selected",
+                    "{C:cry_code}Joker{}, playing card, or consumable"
+                },
+            },
             c_cry_delete = {
                 name = "://DELETE",
                 text = {
@@ -2258,8 +2259,7 @@ return {
             c_cry_adversary = {
                 name = "Adversary",
                 text = {
-                    "{C:red}All{} of your {C:attention}Jokers{}",
-                    "become {C:dark_edition}Negative{},",
+                    "{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}Negative{},",
                     "{C:red}all{} {C:attention}Jokers{} in the shop cost",
                     "{C:red}double{} for the rest of the run",
                 },
@@ -2277,16 +2277,15 @@ return {
                 text = {
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
                     "copies of a",
-                    "random {C:attention}Consumable{}",
+                    "{C:attention}random{} consumable",
                     "{C:inactive,s:0.8}Does not copy Chambered{}"
                 },
             },
             c_cry_conduit = {
                 name = "Conduit",
                 text = {
-                    "Swap the {C:attention}Edition(s){} of",
-                    "{C:attention}Two{} selected {C:attention}Playing Card(s){}",
-                    "and/or {C:attention}Joker(s){}",
+                    "Swap the {C:attention}editions{} of",
+                    "{C:attention}2{} selected cards or {C:attention}Jokers{}",
                 },
             },
             c_cry_gateway = {
