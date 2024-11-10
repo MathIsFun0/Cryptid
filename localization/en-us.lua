@@ -336,6 +336,13 @@ return {
                     "{C:cry_code,E:1}Don't.",
                 },
             },
+            c_cry_ctrl_v = {
+                name = "://CTRL+V",
+                text = {
+                    "Create a {C:cry_code}copy{} of a selected",
+                    "{C:cry_code}Joker{}, playing card, or consumable"
+                },
+            },
             c_cry_delete = {
                 name = "://DELETE",
                 text = {
@@ -598,6 +605,14 @@ return {
             j_cry_apjoker = {
                 name = "AP Joker",
                 text = { "{X:mult,C:white} X#1# {} Mult against {C:attention}Boss Blinds{}" },
+            },
+            j_cry_astral_bottle = {
+                name = "Astral in a Bottle",
+                text = {
+                    "When sold, apply {C:dark_edition}Astral{}",
+                    "and {C:attention}Perishable{} to",
+                    "a random {C:attention}Joker{}",
+                }
             },
             j_cry_big_cube = {
                 name = "Big Cube",
@@ -1965,6 +1980,13 @@ return {
                     "a {C:attention}#2#",
                 },
             },
+            j_cry_universe = {
+                name = "Universe",
+                text = {
+                    "{C:dark_edition}Astral{} cards",
+                    "each give {X:dark_edition,C:white}^#1#{} Mult",
+                },
+            },
             j_cry_universum = {
                 name = "Universum",
                 text = {
@@ -2234,12 +2256,36 @@ return {
             },
         },
         Spectral = {
+            c_cry_adversary = {
+                name = "Adversary",
+                text = {
+                    "{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}Negative{},",
+                    "{C:red}all{} {C:attention}Jokers{} in the shop cost",
+                    "{C:red}double{} for the rest of the run",
+                },
+            },
             c_cry_analog = {
                 name = "Analog",
                 text = {
                     "Create {C:attention}#1#{} copies of a",
                     "random {C:attention}Joker{}, destroy",
                     "all other Jokers, {C:attention}+#2#{} Ante",
+                },
+            },
+            c_cry_chambered = {
+                name = "Chambered",
+                text = {
+                    "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
+                    "copies of a",
+                    "{C:attention}random{} consumable",
+                    "{C:inactive,s:0.8}Does not copy Chambered{}"
+                },
+            },
+            c_cry_conduit = {
+                name = "Conduit",
+                text = {
+                    "Swap the {C:attention}editions{} of",
+                    "{C:attention}2{} selected cards or {C:attention}Jokers{}",
                 },
             },
             c_cry_gateway = {
@@ -2282,6 +2328,14 @@ return {
                     "held in hand",
                     "to a {C:attention}random{}",
                     "card held in hand",
+                },
+            },
+            c_cry_ritual = {
+                name = "Ritual",
+                text = {
+                    "Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{},",
+                    "or {C:dark_edition}Astral{} to {C:attention}#1#{}",
+                    "selected card in hand",
                 },
             },
             c_cry_source = {
