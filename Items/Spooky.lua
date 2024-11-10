@@ -1278,6 +1278,7 @@ local candy_sticks = {
 		return { vars = { center.ability.extra.hands} }
 	end,
 }
+
 items = {
 	cotton_candy,
 	wrapped,

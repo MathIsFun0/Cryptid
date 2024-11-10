@@ -95,6 +95,7 @@ cry_consumeable_rental_rate = 2,
 cry_voucher_banana_odds = 12,
 cry_consumeable_banana_odds = 4,
 cry_pinned_consumeables = 0,
+cry_shop_joker_price_modifier = 1,
 '''
 match_indent = true
 
