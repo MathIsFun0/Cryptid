@@ -830,8 +830,11 @@ local chambered = {
 		target = pseudorandom_element(filteredCons, pseudoseed('chambered'))
 		for i=1,card.ability.extra.num_copies do
 			G.E_MANAGER:add_event(Event({
-				func = function() 
+				func = function()
 					local card_copy = copy_card(target, nil)
+					if Incantation then
+						card_copy:setQty(1)
+					end
 					card_copy:set_edition({negative = true}, true)
 					card_copy:add_to_deck()
 					G.consumeables:emplace(card_copy)
