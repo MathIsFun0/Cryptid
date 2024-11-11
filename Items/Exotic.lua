@@ -962,6 +962,9 @@ local energia = {
 		code = {"Math"}
 	},
 }
+
+--why is this an exotic???
+--[[
 local verisimile = {
 	object_type = "Joker",
 	name = "cry-verisimile",
@@ -1058,7 +1061,7 @@ local verisimile = {
 		code = {"Jevonn"}
 	},
 }
-
+]]
 
 local duplicare = {
     object_type = "Joker",
@@ -1245,7 +1248,7 @@ local items = {
 	facile,
 	gemino,
 	energia,
-	verisimile,
+	--verisimile, WHY IS THIS AN EXOTIC????????????????????
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
 }
