@@ -655,11 +655,20 @@ local ritual = {
 	set = "Spectral",
 	name = "cry-Ritual",
 	key = "ritual",
-	order = 8,
+	order = 9,
 	config = {
 		max_highlighted = 1,
 	},
 	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_mosaic) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_mosaic
+		end
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
 		return { vars = { center.ability.max_highlighted } }
 	end,
 	cost = 5,
@@ -720,8 +729,13 @@ local adversary = {
 	pos = { x = 6, y = 1 },
 	config = {},
 	cost = 4,
-	order = 1,
+	order = 10,
 	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
+	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
 	end,
@@ -805,7 +819,7 @@ local chambered = {
 	  return { vars = { card.ability.extra.num_copies } }
 	end,
 	cost = 4,
-	order = 1,
+	order = 11,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local filteredCons = {}
@@ -857,7 +871,7 @@ local conduit = {
 	pos = { x = 6, y = 0 },
 	config = { },
 	cost = 4,
-	order = 1,
+	order = 12,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local combinedTable = {}
