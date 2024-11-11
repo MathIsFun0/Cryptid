@@ -963,24 +963,37 @@ local energia = {
 	},
 }
 
---why is this an exotic???
---[[
 local verisimile = {
 	object_type = "Joker",
 	name = "cry-verisimile",
 	key = "verisimile",
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
-	config = { extra = { xmult = 1 } },
+	config = { extra = { Emult = 1 } },
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 516,
 	blueprint_compat = true,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.xmult } }
+		info_queue[#info_queue + 1] = {
+			set = "Code",
+			key = "c_cry_seed",
+		}
+		return { vars = { center.ability.extra.Emult } }
 	end,
 	calculate = function(self, card, context)
+		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+			play_sound("timpani")
+			local card = create_card("Code", G.consumables, nil, nil, nil, nil, "c_cry_seed")
+			card:set_edition({
+				negative = true,
+			})
+			card:add_to_deck()
+			G.consumeables:emplace(card)
+			card:juice_up(0.3, 0.5)
+			return nil, true
+		end
 		if context.post_trigger and not context.blueprint then
 			--Todo: Gros Michel, Cavendish, Planet.lua
 			--Bus driver is ignored because it always triggers anyway
@@ -989,14 +1002,14 @@ local verisimile = {
 			or context.other_joker.ability.name == "Business Card"
 			or context.other_joker.ability.name == "Hallucination" then
 				local variable = context.other_joker
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
+				card.ability.extra.Emult = card.ability.extra.Emult + ( variable.ability.extra / 10 )
 				card_eval_status_text(
 					card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+					{ message = localize({ type = "variable", key = "a_Emult", vars = { card.ability.extra.Emult } }) }
 				)
 			elseif
 				context.other_joker.ability.name == "Reserved Parking"
@@ -1008,60 +1021,59 @@ local verisimile = {
 				or context.other_joker.ability.name == "cry-scrabble"
 			then
 				local variable = context.other_joker
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
+				card.ability.extra.Emult = card.ability.extra.Emult + ( variable.ability.extra.odds / 10 )
 				card_eval_status_text(
 					card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+					{ message = localize({ type = "variable", key = "a_Emult", vars = { card.ability.extra.Emult } }) }
 				)
 			elseif context.other_joker.ability.name == "cry-notebook" then
 				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
 				local variable = context.other_joker
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
+				card.ability.extra.Emult = card.ability.extra.Emult + ( variable.ability.extra.odds / 10 )
 				card_eval_status_text(
 					card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+					{ message = localize({ type = "variable", key = "a_Emult", vars = { card.ability.extra.Emult } }) }
 				)
 			end
 			return nil, true
 		elseif context.consumeable and not context.blueprint then
 			if context.consumeable.ability.name == "The Wheel of Fortune" and context.consumeable.cry_wheel_success then
 				local variable = context.consumeable
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra --Doesn't account for misprintizing for some reason
+				card.ability.extra.Emult = card.ability.extra.Emult + ( variable.ability.extra / 10 ) --Doesn't account for misprintizing for some reason
 				card_eval_status_text(
 					card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+					{ message = localize({ type = "variable", key = "a_Emult", vars = { card.ability.extra.Emult } }) }
 				)
 			end
 		elseif
 			context.cardarea == G.jokers
-			and (to_big(card.ability.extra.xmult) > to_big(1))
+			and (to_big(card.ability.extra.Emult) > to_big(1))
 			and not context.before
 			and not context.after
 		then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
-				Xmult_mod = card.ability.extra.xmult,
+				message = localize({ type = "variable", key = "a_Emult", vars = { card.ability.extra.Emult } }),
+				Emult_mod = card.ability.extra.Emult,
 			}
 		end
 	end,
 	cry_credits = {
-		idea = {"Enemui"},
-		code = {"Jevonn"}
+		idea = {"MathIsFun_"},
+		code = {"Kailen"}
 	},
 }
-]]
 
 local duplicare = {
     object_type = "Joker",
@@ -1248,7 +1260,7 @@ local items = {
 	facile,
 	gemino,
 	energia,
-	--verisimile, WHY IS THIS AN EXOTIC????????????????????
+	verisimile,
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
 }
