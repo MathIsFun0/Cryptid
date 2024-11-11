@@ -3444,7 +3444,6 @@ local code_cards = {
 	console,
 	automaton,
 	green_seal,
-	green_seal_sprite,
 	source,
 	pointer,
 	cut,
