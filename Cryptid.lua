@@ -3042,12 +3042,6 @@ SMODS.Atlas({
 	py = 95,
 }):register()
 SMODS.Atlas({
-	key = "atlascryptichandjokers",
-	path = "atlascryptichandjokers.png",
-	px = 71,
-	py = 95,
-}):register()
-SMODS.Atlas({
 	key = "atlasspooky",
 	path = "atlasspooky.png",
 	px = 71,
@@ -3071,15 +3065,10 @@ SMODS.Atlas({
 	px = 34,
 	py = 34,
 }):register()
+--Enchancements, seals, other misc things etc
 SMODS.Atlas({
-	key = "atlasnotjokerstwo",
-	path = "atlasnotjokerstwo.png",
-	px = 71,
-	py = 95,
-}):register()
-SMODS.Atlas({
-	key = "atlasfour",
-	path = "atlasfour.png",
+	key = "cry_misc",
+	path = "cry_misc.png",
 	px = 71,
 	py = 95,
 }):register()

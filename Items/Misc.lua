@@ -856,17 +856,11 @@ local double_sided = {
 		return G.GAME.edition_rate * self.weight * (G.GAME.used_vouchers.v_cry_double_vision and 4 or 1)
 	end,
 }
-local echo_atlas = {
-	object_type = "Atlas",
-	key = "echo_atlas",
-	path = "m_cry_echo.png",
-	px = 71,
-	py = 95,
-}
 local echo = {
 	object_type = "Enhancement",
 	key = "echo",
-	atlas = "echo_atlas",
+	atlas = "cry_misc",
+	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.retriggers, G.GAME.probabilities.normal, self.config.extra } }
@@ -878,7 +872,7 @@ local eclipse = {
 	name = "cry-Eclipse",
 	key = "eclipse",
 	order = 1,
-	pos = { x = 1, y = 0 },
+	pos = { x = 4, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue)
@@ -931,10 +925,8 @@ local azure_seal = {
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.planets_amount } }
 	end,
-	atlas = "azure_atlas",
-	pos = { x = 0, y = 0 },
-
-	-- Requires latest Steamodded version (as of 7/9/24)
+	atlas = "cry_misc",
+	pos = { x = 0, y = 2 },
 	calculate = function(self, card, context)
 		if context.destroying_card then
 			G.E_MANAGER:add_event(Event({
@@ -966,14 +958,6 @@ local azure_seal = {
 			return true
 		end
 	end,
-}
-
-local azure_seal_sprite = {
-	object_type = "Atlas",
-	key = "azure_atlas",
-	path = "s_cry_azure_seal.png",
-	px = 71,
-	py = 95,
 }
 
 local typhoon = {
@@ -1098,11 +1082,9 @@ local miscitems = {
 	oversat,
 	blurred,
 	astral,
-	echo_atlas,
 	echo,
 	eclipse,
 	blessing,
-	azure_seal_sprite,
 	typhoon,
 	azure_seal,
 	double_sided,

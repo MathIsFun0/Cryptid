@@ -481,7 +481,7 @@ local analog = {
 	set = "Spectral",
 	name = "cry-Analog",
 	key = "analog",
-	pos = { x = 0, y = 0 },
+	pos = { x = 3, y = 0 },
 	config = { copies = 2, ante = 1 },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.copies, center.ability.ante } }
@@ -655,16 +655,25 @@ local ritual = {
 	set = "Spectral",
 	name = "cry-Ritual",
 	key = "ritual",
-	order = 8,
+	order = 9,
 	config = {
 		max_highlighted = 1,
 	},
 	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_mosaic) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_mosaic
+		end
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
 		return { vars = { center.ability.max_highlighted } }
 	end,
 	cost = 5,
-	atlas = "atlasnotjokerstwo",
-	pos = { x = 0, y = 0 },
+	atlas = "atlasnotjokers",
+	pos = { x = 5, y = 1 },
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		for i = 1, #G.hand.highlighted do
@@ -717,11 +726,16 @@ local adversary = {
 	set = "Spectral",
 	name = "cry-Adversary",
 	key = "adversary",
-	pos = { x = 1, y = 0 },
+	pos = { x = 6, y = 1 },
 	config = {},
 	cost = 4,
-	order = 1,
-	atlas = "atlasnotjokerstwo",
+	order = 10,
+	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
+	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
 	end,
@@ -799,14 +813,15 @@ local chambered = {
 	set = "Spectral",
 	name = "cry-Chambered",
 	key = "chambered",
-	pos = { x = 2, y = 0 },
+	pos = { x = 5, y = 0 },
 	config = { extra = {num_copies = 3}},
 	loc_vars = function(self, info_queue, card)
+	  info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
 	  return { vars = { card.ability.extra.num_copies } }
 	end,
 	cost = 4,
-	order = 1,
-	atlas = "atlasnotjokerstwo",
+	order = 11,
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local filteredCons = {}
 
@@ -840,7 +855,7 @@ local chambered = {
 					G.consumeables:emplace(card_copy)
 					return true
 				end}))
-			card_eval_status_text(target, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+			card_eval_status_text(target, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex'), colour = G.C.SECONDARY_SET.Spectral})
 		end
 	end,
 }
@@ -854,11 +869,11 @@ local conduit = {
 	set = "Spectral",
 	name = "cry-conduit",
 	key = "conduit",
-	pos = { x = 3, y = 0 },
+	pos = { x = 6, y = 0 },
 	config = { },
 	cost = 4,
-	order = 1,
-	atlas = "atlasnotjokerstwo",
+	order = 12,
+	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local combinedTable = {}
 
@@ -960,13 +975,15 @@ local spectrals = {
 	trade,
 	analog,
 	replica,
-	ritual,
 	adversary,
 	chambered,
 	conduit,
 }
 if Cryptid.enabled["Epic Jokers"] then
 	spectrals[#spectrals + 1] = summoning
+end
+if Cryptid.enabled["Misc."] then
+	spectrals[#spectrals + 1] = ritual
 end
 return {
 	name = "Spectrals",
