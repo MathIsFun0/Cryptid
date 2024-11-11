@@ -2012,7 +2012,7 @@ return {
                     "is {C:green}successfully{} triggered,",
                     "this Joker gains {X:dark_edition,C:white} ^ {} Mult",
                     "equal to a tenth of its {C:attention}denominator.",
-                    "Create a {C:cry_code}://SEED{} when blind selected",
+                    "Create a {C:dark_edition}Negative{} {C:cry_code}://SEED{} when blind selected",
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#1# {C:inactive} Mult)",
                 },
             },
