@@ -816,6 +816,7 @@ local chambered = {
 	pos = { x = 5, y = 0 },
 	config = { extra = {num_copies = 3}},
 	loc_vars = function(self, info_queue, card)
+	  info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
 	  return { vars = { card.ability.extra.num_copies } }
 	end,
 	cost = 4,
@@ -854,7 +855,7 @@ local chambered = {
 					G.consumeables:emplace(card_copy)
 					return true
 				end}))
-			card_eval_status_text(target, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+			card_eval_status_text(target, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex'), colour = G.C.SECONDARY_SET.Spectral})
 		end
 	end,
 }
@@ -974,13 +975,15 @@ local spectrals = {
 	trade,
 	analog,
 	replica,
-	ritual,
 	adversary,
 	chambered,
 	conduit,
 }
 if Cryptid.enabled["Epic Jokers"] then
 	spectrals[#spectrals + 1] = summoning
+end
+if Cryptid.enabled["Misc."] then
+	spectrals[#spectrals + 1] = ritual
 end
 return {
 	name = "Spectrals",
