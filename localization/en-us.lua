@@ -829,6 +829,14 @@ return {
                     "an {C:attention}#2#",
                 },
             },
+	    j_cry_clicked_cookie = {
+                name = "Clicked Cookie",
+                text = {
+                    "{C:chips}+#1#{} Chips",
+                    "{C:chips}-#2#{} Chips when",
+                    "you {C:attention}click",
+                },
+            },
             j_cry_CodeJoker = {
                 name = "Code Joker",
                 text = {
@@ -1666,6 +1674,23 @@ return {
                     "if all cards in played hand are",
                     "{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
                     "{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+                },
+            },
+	    j_cry_pumpkin = {
+                name = "Pumpkin",
+                text = {
+                    "Prevents Death if chips scored",
+                    "are atleast {C:attention}50%{} of required chips",
+                    "{C:attention}Turns into Carved Pumpkin",
+                    "{C:attention}when{} {C:red}destroyed"
+                },
+            },
+            j_cry_carved_pumpkin = {
+                name = "Carved Pumpkin",
+                text = {
+                    "The next {C:attention}#1#{} Boss Blinds",
+                    'will have their abilities',
+                    '{C:attention}disabled'
                 },
             },
             j_cry_python = {
