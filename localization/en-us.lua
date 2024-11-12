@@ -1524,6 +1524,14 @@ return {
                     "{C:inactive}(Must have room)",
                 },
             },
+	    j_cry_necromancer = {
+	    	name = "Necromancer",
+		text = {
+		    "When a Joker is {C:attention}sold{} for a price greater than {C:attention}$0{}",
+		    "Gain a {C:attention}random{} Joker {C:attention}sold{} this run",
+		    "and set its {C:attention}sell value{} to {C:attention}$0{}",
+		},
+	    },
             j_cry_negative = {
                 name = "Negative Joker",
                 text = {
