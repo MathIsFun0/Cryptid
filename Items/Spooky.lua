@@ -465,6 +465,7 @@ local spy = {
 	atlas = "atlasspooky",
 	config = {x_mult = 0.5, extra = {secret_card = "", revealed = false}},
 	immutable = true,
+	source_gate = "sho",
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { localize({ type = "name_text", set = "Joker", key = center.ability and center.ability.extra and center.ability.extra.secret_card }), center.ability.x_mult } }
@@ -1278,6 +1279,7 @@ local candy_sticks = {
 		return { vars = { center.ability.extra.hands} }
 	end,
 }
+
 items = {
 	cotton_candy,
 	wrapped,
