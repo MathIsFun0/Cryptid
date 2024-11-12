@@ -27,6 +27,7 @@ local mod_path = "" .. SMODS.current_mod.path
 Cryptid_config = SMODS.current_mod.config
 -- This will save the current state even when settings are modified
 Cryptid.enabled = copy_table(Cryptid_config)
+Cryptid.mod_path = mod_path
 --backwards compat moment
 cry_enable_jokers = Cryptid.enabled["Misc. Jokers"]
 cry_enable_epics = Cryptid.enabled["Epic Jokers"]
@@ -50,34 +51,6 @@ function Game:update_round_eval(dt)
 	gure(self, dt)
 end
 
---Changes main menu colors and stuff
-if Cryptid.enabled["Menu"] then
-	local oldfunc = Game.main_menu
-	Game.main_menu = function(change_context)
-		local ret = oldfunc(change_context)
-        -- adds a Cryptid spectral to the main menu
-		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
-		-- recenter the title
-        G.title_top.T.w = G.title_top.T.w*1.7675
-		G.title_top.T.x = G.title_top.T.x - 0.8
-		G.title_top:emplace(newcard)
-        -- make the card look the same way as the title screen Ace of Spades
-		newcard.T.w = newcard.T.w * 1.1*1.2
-		newcard.T.h = newcard.T.h *1.1*1.2
-		newcard.no_ui = true
-
-        -- make the title screen use different background colors
-		G.SPLASH_BACK:define_draw_steps({{
-			shader = 'splash',
-			send = {
-				{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL_SHADER'},
-				{name = 'vort_speed', val = 0.4},
-				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
-				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
-			}}})
-		return ret
-	end
-end
 
 --todo: move to Rigged
 -- deal wirh Rigged on Consumables
