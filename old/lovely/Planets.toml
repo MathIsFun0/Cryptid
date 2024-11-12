@@ -1,0 +1,27 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Lapio softlock mechanic
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if (not v.config.softlock or G.GAME.hands[v.config.hand_type].played > 0) then"
+position = "at"
+payload = '''
+local softlocked = true
+if not v.config.softlock then
+    softlocked = false
+elseif v.config.hand_type then
+    softlocked = G.GAME.hands[v.config.hand_type].played == 0
+elseif v.config.hand_types then
+    for _, h in pairs(v.config.hand_types) do
+        if G.GAME.hands[h].played > 0 then
+            softlocked = false
+        end
+    end
+end
+if not softlocked then
+'''
+match_indent = true

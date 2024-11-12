@@ -1,0 +1,30 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# non-pack scaling in pack slots
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.used_packs[i]], {bypass_discovery_center = true, bypass_discovery_ui = true})"
+position = "at"
+payload = "G.shop_booster.T.y, G.CARD_W*(G.P_CENTERS[G.GAME.current_round.used_packs[i]].set == 'Booster' and 1.27 or 1), G.CARD_H*(G.P_CENTERS[G.GAME.current_round.used_packs[i]].set == 'Booster' and 1.27 or 1), G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.used_packs[i]], {bypass_discovery_center = true, bypass_discovery_ui = true})"
+match_indent = true
+
+# scaling issues when reclaiming Overstock
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "G.GAME.shop.joker_max*1.02*G.CARD_W,"
+position = "at"
+payload = "math.min(G.GAME.shop.joker_max,4)*1.02*G.CARD_W,"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.shop_jokers.T.w = G.GAME.shop.joker_max*1.01*G.CARD_W"
+position = "at"
+payload = "G.shop_jokers.T.w = math.min(G.GAME.shop.joker_max,4)*1.02*G.CARD_W"
+match_indent = true

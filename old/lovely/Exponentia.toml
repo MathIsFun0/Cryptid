@@ -1,0 +1,116 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Increment Exponentia on Joker XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "card_eval_status_text(_card, 'jokers', nil, percent, nil, effects.jokers)"
+position = "after"
+payload = '''
+if effects.jokers.Xmult_mod and effects.jokers.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true
+
+# Increment Exponentia on Joker-on-Joker XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, effect) end"
+position = "after"
+payload = '''
+if effect.Xmult_mod and effect.Xmult_mod ~= 1 and next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true
+
+
+# Increment Exponentia on Misc XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if extras.mult or extras.hand_chips then card_eval_status_text(v, 'jokers', nil, percent, nil, effect) end"
+position = "after"
+payload = '''
+if effects.Xmult_mod and next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true
+
+
+# Increment Exponentia on Enhancement XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "card_eval_status_text(scoring_hand[i], 'x_mult', effects[ii].x_mult, percent)"
+position = "after"
+payload = '''
+if next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true
+
+
+# Increment Exponentia on Held-in-Hand XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "card_eval_status_text(G.hand.cards[i], 'x_mult', effects[ii].x_mult, percent)"
+position = "after"
+payload = '''
+if next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true
+
+
+# Increment Exponentia on Edition XMult
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "edition = true})"
+position = "after"
+payload = '''
+if (effects and effects[ii] and effects[ii].edition and effects[ii].edition.x_mult_mod or edition_effects and edition_effects.jokers and edition_effects.jokers.x_mult_mod) and next(find_joker("cry-Exponentia")) then
+    for _, v in pairs(find_joker("cry-Exponentia")) do
+        local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+    end
+end
+'''
+match_indent = true

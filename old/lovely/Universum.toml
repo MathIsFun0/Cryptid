@@ -1,0 +1,44 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Level up modifier
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "amount = amount or 1"
+position = "after"
+payload = "if not next(find_joker('cry-Universum')) then"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)"
+position = "at"
+payload = "G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult*amount, 1)"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)"
+position = "at"
+payload = '''
+G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount, 1)
+else
+    universum_mod = 1
+    for i = 1, #G.jokers.cards do
+        local effects = G.jokers.cards[i]:calculate_joker({cry_universum = true, callback = function(card, effects)
+            universum_mod = universum_mod * (effects and effects.mod or 1)
+        end})
+    end
+    G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
+    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * (universum_mod)^amount, 1)
+    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips * (universum_mod)^amount, 1)
+end
+'''
+match_indent = true

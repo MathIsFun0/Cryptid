@@ -1,0 +1,108 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# what in ze fuck am i cooking
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.states.collide.can = true'''
+position = "after"
+payload = '''
+if self.key == 'tag_cry_cat' then tag_sprite.states.click.can = true; tag_sprite.states.drag.can = true end
+'''
+match_indent = true
+
+# m
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Node.stop_hover(_self); _self.hover_tilt = 0 end'''
+position = "after"
+payload = '''
+tag_sprite.click = function(_self)
+        if self.key == 'tag_cry_cat' and self.HUD_tag then
+		for i = 1, #G.GAME.tags do
+			local other_cat = G.GAME.tags[i]
+			if other_cat.key == 'tag_cry_cat' then
+				if not self.ability.level then self.ability.level = 1 end
+				if not other_cat.ability.level then other_cat.ability.level = 1 end	-- setting ability just doesn't seem to be working... so you get this
+				if (self.ability.level == other_cat.ability.level) and (other_cat ~= self) and not cry_too_fast_kitty then
+					cry_too_fast_kitty = true
+					local perc = (other_cat.ability.level + 1)/10
+					if perc > 1 then perc = 1 end
+					G.E_MANAGER:add_event(Event({
+						delay = 0.0,
+						trigger = 'immediate',
+						func = (function()
+							attention_text({
+								text = ""..other_cat.ability.level,
+								colour = G.C.WHITE,
+								scale = 1, 
+								hold = 0.3/G.SETTINGS.GAMESPEED,
+								cover = other_cat.HUD_tag,
+								cover_colour = G.C.DARK_EDITION,
+								align = 'cm',
+							})
+							play_sound('generic1', 0.8 + perc/2, 0.6)
+							play_sound('multhit1', 0.9 + perc/2, 0.4)
+							return true
+						end)
+					}))
+					G.E_MANAGER:add_event(Event({
+						delay = 0.0,
+						trigger = 'immediate',
+						func = (function()
+							attention_text({
+								text = "-",
+								colour = G.C.WHITE,
+								scale = 1, 
+								hold = 0.3/G.SETTINGS.GAMESPEED,
+								cover = self.HUD_tag,
+								cover_colour = G.C.RED,
+								align = 'cm',
+							})
+							return true
+						end)
+					}))
+					G.E_MANAGER:add_event(Event({
+						func = (function()
+							self.HUD_tag.states.visible = false
+							return true
+						end)
+					}))
+					G.E_MANAGER:add_event(Event({		-- i have no idea what this does but i'm not messing with it
+						func = func
+					}))
+					
+					other_cat.ability.level = other_cat.ability.level + 1
+					
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.7,
+						func = (function()
+							self:remove()
+							cry_too_fast_kitty = nil
+							return true
+						end)
+					}))
+					break
+				end
+			end
+		end
+	end
+end
+'''
+match_indent = true
+
+# copied from rework patch
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''elseif name_to_check == 'Economy Tag' then loc_vars = {self.config.max}'''
+position = "after"
+payload = '''
+elseif name_to_check == "cry-Cat Tag" then loc_vars = {self.ability.level or 1}
+'''
+match_indent = true

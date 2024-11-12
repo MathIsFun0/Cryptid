@@ -1,0 +1,74 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Show edition on Edition Decks
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.children.back:draw(overlay)"
+position = "after"
+payload = '''
+local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
+if currentBack.effect.config.cry_force_edition and not currentBack.effect.config.cry_antimatter then
+	if currentBack.effect.config.cry_force_edition_shader then
+		self.children.back:draw_shader(currentBack.effect.config.cry_force_edition_shader , nil, self.ARGS.send_to_shader, true)
+	else
+		self.children.back:draw_shader(currentBack.effect.config.cry_force_edition , nil, self.ARGS.send_to_shader, true)
+	end
+end
+if currentBack.effect.config.cry_force_seal and not currentBack.effect.config.hide_seal and not currentBack.effect.config.cry_antimatter then
+    G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader('dissolve', nil, nil, true, self.children.center)
+    if currentBack.effect.config.cry_force_seal == 'Gold' then G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center) end
+end
+if currentBack.effect.config.cry_force_sticker and not currentBack.effect.config.cry_antimatter then
+    for k, v in pairs(SMODS.Stickers) do
+        if currentBack.effect.config.cry_force_sticker == v.key then
+            if v and v.draw and type(v.draw) == 'function' then
+                v:draw(self)
+            else
+                G.shared_stickers[v.key].role.draw_major = self
+                G.shared_stickers[v.key]:draw_shader('dissolve', nil, nil, true, self.children.center)
+                G.shared_stickers[v.key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center)
+            end
+        end
+    end
+end
+if currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
+    self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
+    self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
+end
+'''
+match_indent = true
+
+# Antimatter Deck
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.children.back:draw_shader('dissolve')"
+position = "at"
+payload = '''
+local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
+if currentBack and currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
+    self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader)
+    self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader)
+else
+    self.children.back:draw_shader('dissolve')
+end
+'''
+match_indent = true
+
+# Created cards match suits of suit deck
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "card.playing_card = G.playing_card"
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_force_suit) end
+if G.GAME.modifiers.cry_force_enhancement then card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]) end
+if G.GAME.modifiers.cry_force_edition then card:set_edition({[G.GAME.modifiers.cry_force_edition]=true},true,true) end
+if G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
+'''
+match_indent = true

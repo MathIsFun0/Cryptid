@@ -1,0 +1,70 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Remove voucher at start of run (also for Crimson Stake)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()"
+position = "at"
+payload = '''
+if not self.GAME.modifiers.cry_no_vouchers then
+    if not G.GAME.modifiers.cry_voucher_restock_antes or G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 then
+        self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()
+    end
+else
+    very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
+end
+'''
+match_indent = true
+
+
+# Remove voucher when defeating boss (also for Crimson Stake)
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.current_round.voucher = get_next_voucher_key()"
+position = "at"
+payload = '''
+if not G.GAME.modifiers.cry_no_vouchers then
+    if not G.GAME.modifiers.cry_voucher_restock_antes or G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 then
+        G.GAME.current_round.voucher = get_next_voucher_key()
+    end
+else
+    very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
+end
+'''
+match_indent = true
+
+
+# Change empty voucher text on Very Fair Deck
+# This ain't localized, but that's a vanilla issue anyway
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={text = 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.cry_no_vouchers and (very_fair_quip[1] or '') or 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={text = 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.cry_no_vouchers and (very_fair_quip[2] or '') or G.GAME.modifiers.cry_voucher_restock_antes and G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 and 'TWO BOSS BLINDS' or 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={text = 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.cry_no_vouchers and (very_fair_quip[3] or '') or 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
+match_indent = true
+
+

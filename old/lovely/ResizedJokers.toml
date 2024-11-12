@@ -1,0 +1,126 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Wee Fibonacci rendering
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'if center.name == "Wee Joker" and (center.discovered or self.bypass_discovery_center) then'
+position = "before"
+payload = '''
+if (center.name == "cry-Wee Fibonacci" or center.name == "cry-reverse") and (center.discovered or self.bypass_discovery_center) then 
+    H = H*0.7
+    W = W*0.7
+    self.T.h = H
+    self.T.w = W
+end
+if center.name == "cry-biggestm" and (center.discovered or self.bypass_discovery_center) then 
+    H = H*1.7
+    W = W*1.7
+    self.T.h = H
+    self.T.w = W
+end
+if center.name == "cry-Booster Joker" and (center.discovered or self.bypass_discovery_center) then 
+    H = H*1.17
+    W = W*1.17
+    self.T.h = H
+    self.T.w = W
+end
+if center.name == "cry-Cube" and (center.discovered or self.bypass_discovery_center) then 
+    H = H*0.1
+    W = W*0.1
+    self.T.h = H
+    self.T.w = W
+end
+if center.name == "cry-Potion" and (center.discovered or self.bypass_discovery_center) then 
+    H = W
+    self.T.h = H
+    H = H*35/69
+    W = W*35/69
+    self.T.h = H
+    self.T.w = W
+end
+if center.name == "cry-Jimball" and (center.discovered or self.bypass_discovery_center) then 
+    H = W
+    self.T.h = H
+    H = H*57/69
+    W = W*57/69
+    self.T.h = H
+    self.T.w = W
+end
+if center.name == "cry-magnet" and (center.discovered or self.bypass_discovery_center) then 
+    H = W
+    self.T.h = H
+    H = H*35/71
+    W = W*35/71
+    self.T.h = H
+    self.T.w = W
+end
+'''
+match_indent = true
+
+
+# Wee Fibonacci rendering
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if _center.name == 'Photograph' and (_center.discovered or self.bypass_discovery_center) then"
+position = "before"
+payload = '''
+if _center.name == "cry-Cube" and (_center.discovered or self.bypass_discovery_center) then
+    self.children.center.scale.y = self.children.center.scale.y*0.1
+    self.children.center.scale.x = self.children.center.scale.x*0.1
+end
+if _center.name == 'cry-Jimball' and (_center.discovered or self.bypass_discovery_center) then 
+    self.children.center.scale.y = self.children.center.scale.x
+    self.children.center.scale.y = self.children.center.scale.y*57/69
+    self.children.center.scale.x = self.children.center.scale.x*57/69
+end
+if _center.name == 'cry-Potion' and (_center.discovered or self.bypass_discovery_center) then 
+    self.children.center.scale.y = self.children.center.scale.x
+    self.children.center.scale.y = self.children.center.scale.y*35/69
+    self.children.center.scale.x = self.children.center.scale.x*35/69
+end
+if _center.name == 'cry-magnet' and (_center.discovered or self.bypass_discovery_center) then 
+    self.children.center.scale.y = self.children.center.scale.x
+    self.children.center.scale.y = self.children.center.scale.y*35/71
+    self.children.center.scale.x = self.children.center.scale.x*35/71
+end
+'''
+match_indent = true
+
+# Cube rendering
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'elseif self.config.center.name == "Wee Joker" then'
+position = "before"
+payload = '''
+elseif self.config.center.name == "cry-Wee Fibonacci" or self.config.center.name == "cry-reverse" then 
+    self.T.h = H*scale*0.7*scale
+    self.T.w = W*scale*0.7*scale
+elseif self.config.center.name == "cry-biggestm" then 
+    self.T.h = H*scale*1.7*scale
+    self.T.w = W*scale*1.7*scale
+elseif self.config.center.name == "cry-Booster Joker" then 
+    self.T.h = H*scale*1.17*scale
+    self.T.w = W*scale*1.17*scale
+elseif self.config.center.name == "cry-Cube" then 
+    self.T.h = H*scale*0.1*scale
+    self.T.w = W*scale*0.1*scale
+elseif self.config.center.name == "cry-Jimball" then 
+    H = W 
+    self.T.h = H*scale*57/69*scale
+    self.T.w = W*scale*57/69*scale
+elseif self.config.center.name == "cry-Potion" then 
+    H = W 
+    self.T.h = H*scale*35/69*scale
+    self.T.w = W*scale*35/69*scale
+elseif self.config.center.name == "cry-magnet" then 
+    H = W 
+    self.T.h = H*scale*35/71*scale
+    self.T.w = W*scale*35/71*scale
+'''
+match_indent = true

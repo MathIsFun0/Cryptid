@@ -1,0 +1,312 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# ok it seems i still have to use the dumb fix for pinned, smods please overwrite
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''if self\.pinned then badges\[\#badges \+ 1\] \= 'pinned_left' end'''
+position = "at"
+payload = '''
+if self.pinned then
+	if self.ability.set == 'Booster' then
+		badges[#badges + 1] = 'cry_pinned_booster'
+	elseif self.ability.set == 'Voucher' then
+		badges[#badges + 1] = 'cry_pinned_voucher'
+	elseif self.ability.consumeable then
+		badges[#badges + 1] = 'cry_pinned_consumeable'
+	else
+		badges[#badges + 1] = 'pinned_left'
+	end
+end
+'''
+
+# sigh
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if AUT.badges then"
+position = "before"
+payload = '''
+local function is_bad_badge(string)
+	local bad_badges = {'cry_pinned_booster', 'cry_pinned_voucher', 'cry_pinned_consumeable'}
+	for i = 1, #bad_badges do
+		if string == bad_badges[i] then return true end
+	end
+	return false
+end
+'''
+match_indent = true
+
+# lmao wtf is this shit
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v))'''
+position = "at"
+payload = '''
+if not is_bad_badge(v) then badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v)) end
+'''
+match_indent = true
+
+# this no longer just moves mod badges... it DUPES them, so now it's commented out (fml...)
+# pinned badges should now no longer exist for non-jokers due to whatever the fuck is happening here
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''if AUT.info then'''
+position = "before"
+payload = '''
+-- if AUT.badges then
+--	for k, v in ipairs(AUT.badges) do
+--		local replaced = false
+--		if v == 'cry_pinned_booster' or v == 'cry_pinned_voucher' or v == 'cry_pinned_consumeable' then replaced = true; v = 'pinned_left' end
+--		if replaced == true then badges[#badges + 1] = create_badge(localize(v, "labels"), get_badge_colour(v)) end
+--	end
+--end
+'''
+match_indent = true
+
+# fucking hell
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if v == 'negative_consumable' then info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}} end"
+position = "after"
+payload = '''
+if v == 'cry_pinned_booster' then info_queue[#info_queue+1] = {key = 'cry_pinned_booster', set = 'Other'} end
+if v == 'cry_pinned_voucher' then info_queue[#info_queue+1] = {key = 'cry_pinned_voucher', set = 'Other'} end
+if v == 'cry_pinned_consumeable' then info_queue[#info_queue+1] = {key = 'cry_pinned_consumeable', set = 'Other'} end
+'''
+match_indent = true
+
+# initiate variables
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "rental_rate = 3,"
+position = "after"
+payload = '''
+cry_voucher_perishable_rounds = 8,
+cry_voucher_rental_rate = 2,
+cry_consumeable_rental_rate = 2,
+cry_voucher_banana_odds = 12,
+cry_consumeable_banana_odds = 4,
+cry_pinned_consumeables = 0,
+cry_shop_joker_price_modifier = 1,
+'''
+match_indent = true
+
+# do more than just get voucher key
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()"
+position = "after"
+payload = '''
+self.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition()
+self.GAME.current_round.cry_voucher_stickers = cry_get_next_voucher_stickers()
+'''
+match_indent = true
+
+# again, also check for pinned
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.current_round.voucher = get_next_voucher_key()"
+position = "at"
+payload = '''
+if G.GAME.current_round.cry_voucher_stickers.pinned == false then
+	G.GAME.current_round.voucher = get_next_voucher_key()
+	G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition()
+	G.GAME.current_round.cry_voucher_stickers = cry_get_next_voucher_stickers()
+end
+'''
+match_indent = true
+
+# remove stickers if voucher is redeemed
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self:apply_to_run()"
+position = "before"
+payload = '''
+G.GAME.current_round.cry_voucher_edition = nil
+G.GAME.current_round.cry_voucher_stickers = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
+'''
+match_indent = true
+
+# this is dumb but it saves overwrites + mod compat
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not G.GAME.used_vouchers[v.key] then"
+position = "at"
+payload = '''
+if not G.GAME.cry_owned_vouchers[v.key] then
+'''
+match_indent = true
+
+# again
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not G.GAME.used_vouchers[vv] then"
+position = "at"
+payload = '''
+if not G.GAME.cry_owned_vouchers[vv] then
+'''
+match_indent = true
+
+# add on redeem
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.GAME.used_vouchers[self.config.center_key] = true"
+position = "before"
+payload = '''
+G.GAME.cry_owned_vouchers[self.config.center_key] = true
+'''
+match_indent = true
+
+# initialise
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "used_vouchers = {},"
+position = "after"
+payload = '''
+cry_owned_vouchers = {},
+'''
+match_indent = true
+
+# for challenge starting vouchers
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.GAME.used_vouchers[v.id] = true"
+position = "after"
+payload = '''
+G.GAME.cry_owned_vouchers[v.id] = true
+'''
+match_indent = true
+
+# for deck starting vouchers (no idea why there's a space here?)
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "G.GAME.used_vouchers[v ] = true"
+position = "after"
+payload = '''
+G.GAME.cry_owned_vouchers[v ] = true
+'''
+match_indent = true
+
+# for deck starting vouchers pt.2 apparently (is this part of the code even used? seems redundant)
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "G.GAME.used_vouchers[self.effect.config.voucher] = true"
+position = "after"
+payload = '''
+G.GAME.cry_owned_vouchers[self.effect.config.voucher] = true
+'''
+match_indent = true
+
+# consumeable sticker checking
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "local used_tarot = copier or self"
+position = "after"
+payload = '''
+if self.ability.rental then
+	G.E_MANAGER:add_event(Event({
+		trigger = 'immediate',
+		blocking = false,
+		blockable = false,
+		func = (function()
+			ease_dollars(-G.GAME.cry_consumeable_rental_rate)
+		return true
+	end)}))
+end
+local gone = false
+if self.ability.banana then
+    if not self.ability.extinct then
+        if (pseudorandom('oops_it_banana') < G.GAME.probabilities.normal/G.GAME.cry_consumeable_banana_odds) then
+	    local gone = true
+            self.ability.extinct = true
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    self.T.r = -0.2
+                    self:juice_up(0.3, 0.4)
+                    self.states.drag.is = true
+                    self.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                        func = function()
+                                if self.area then self.area:remove_card(self) end
+                                self:remove()
+                                self = nil
+                            return true; end})) 
+                    return true
+                end
+            }))
+            card_eval_status_text(self, 'jokers', nil, nil, nil, {message = localize('k_extinct_ex'), delay = 0.1})
+            return true
+        end
+    end
+end
+if gone == false then
+'''
+match_indent = true
+
+# end the wrap
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:can_use_consumeable(any_state, skip_check)"
+position = "before"
+payload = '''
+end
+'''
+match_indent = true
+
+# check for pinned
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT or any_state then"
+position = "before"
+payload = '''
+if G.GAME.cry_pinned_consumeables > 0 and not self.pinned then
+	return false
+end
+'''
+match_indent = true
+
+# pinned consumeable remove, counterpart is in cryptid's create_card
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.queue_negative_removal then"
+position = "before"
+payload = '''
+if self.ability.consumeable and self.pinned and (G.GAME.cry_pinned_consumeables > 0) then
+	G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables - 1
+end
+'''
+match_indent = true
+
+# rental jank
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.rental then self.cost = 1 end"
+position = "at"
+payload = '''
+if self.ability.rental and (not (self.ability.set == "Planet" and #find_joker('Astronomer') > 0) and self.ability.set ~= "Booster") then self.cost = 1 end
+'''
+match_indent = true

@@ -1,0 +1,485 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+
+# Yellow Stake - perishable and rental effects on consumable
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
+position = "before"
+payload = '''
+local i = 1
+while i <= #G.jokers.cards do
+    local gone = G.jokers.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
+end
+i = 1
+while i <= #G.consumeables.cards do
+    G.consumeables.cards[i]:cry_calculate_consumeable_rental()
+    G.consumeables.cards[i]:cry_calculate_consumeable_perishable()
+    local gone = nil
+    if not gone then i = i + 1 end
+end
+'''
+match_indent = true
+
+# Yellow Stake - perishable and rental effects on cards held in hand
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "local effects = {G.hand.cards[i]:get_end_of_round_effect()}"
+position = "after"
+payload = '''
+G.hand.cards[i]:calculate_rental()
+G.hand.cards[i]:calculate_perishable()
+'''
+match_indent = true
+
+# Yellow Stake - perishable and rental effects on cards in deck and discard pile
+# Double Down
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.FUNCS.draw_from_hand_to_discard()"
+position = "before"
+payload = '''
+local i = 1
+while i <= #G.hand.cards do
+    local gone = G.hand.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
+end
+for i = 1, #G.discard.cards do
+    G.discard.cards[i]:calculate_perishable()
+end
+i = 1
+while i <= #G.deck.cards do
+    G.deck.cards[i]:calculate_perishable()
+    local gone = G.deck.cards[i]:calculate_banana()
+    if not gone then i = i + 1 end
+end
+if G.GAME.used_vouchers.v_cry_double_down then
+    local function update_dbl(area)
+        for i = 1, #area.cards do
+            if area.cards[i].dbl_side then
+                --tweak to do deck effects with on the flip side
+                cry_misprintize(area.cards[i].dbl_side, {min = 1.5, max = 1.5}, nil, true)
+                card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+            end
+        end
+    end
+    update_dbl(G.jokers)
+    update_dbl(G.consumeables)
+    update_dbl(G.hand)
+    update_dbl(G.discard)
+    update_dbl(G.deck)
+end
+'''
+match_indent = true
+
+# Yellow Stake - Hanged Man can't be used on Eternal cards, Death can't remove Eternal
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'The Hermit' or self.ability.consumeable.hand_type or self.ability.name == 'Temperance' or self.ability.name == 'Black Hole' then"
+position = "before"
+payload = '''
+if self.ability.name == "The Hanged Man" then
+    for i = 1, #G.hand.highlighted do
+        if G.hand.highlighted[i].ability.eternal then return false end
+    end
+end
+if self.ability.name == "Death" then
+    local rightmost = G.hand.highlighted[1]
+    for i=1, #G.hand.highlighted-1 do if G.hand.highlighted[i].T.x > rightmost.T.x then rightmost = G.hand.highlighted[i] end end
+    for i=1, #G.hand.highlighted do if G.hand.highlighted[i].ability.eternal and rightmost ~= G.hand.highlighted[i] then return false end end
+end
+'''
+match_indent = true
+
+
+# Yellow Stake - Immolate can't be used on Eternal cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end"
+position = "at"
+payload = '''
+for k, v in ipairs(G.hand.cards) do 
+    if not v.ability.eternal then
+        temp_hand[#temp_hand+1] = v
+    end
+end
+'''
+match_indent = true
+
+
+# Yellow Stake - Death can't modify Eternal cards (redundant, but may help if Death can be used on more cards)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.hand.highlighted[i] ~= rightmost then"
+position = "at"
+payload = "if G.hand.highlighted[i] ~= rightmost and not G.hand.highlighted[i].ability.eternal then"
+match_indent = true
+
+
+# Yellow Stake - Trading Card can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 then"
+position = "at"
+payload = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 and not context.other_card.ability.eternal then"
+match_indent = true
+
+
+# Yellow Stake - Sixth Sense can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 then"
+position = "at"
+payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not context.full_hand[1].ability.eternal and G.GAME.current_round.hands_played == 0 then"
+match_indent = true
+
+
+# Yellow Stake - Glass can't destroy Eternals
+# Glass Stake - Any card can shatter
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
+position = "at"
+payload = "if ((scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra) or (G.GAME.modifiers.cry_shatter_rate and pseudorandom('cry_shatter') < 1/G.GAME.modifiers.cry_shatter_rate)) and not scoring_hand[i].ability.eternal then"
+match_indent = true
+
+
+# Yellow Stake - enhancement tarots don't remove stickers
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "perma_bonus = self.ability and self.ability.perma_bonus or 0,"
+position = "after"
+payload = '''
+eternal = self.ability and self.ability.eternal,
+perishable = self.ability and self.ability.perishable,
+perish_tally = self.ability and self.ability.perish_tally,
+rental = self.ability and self.ability.rental
+'''
+match_indent = true
+
+
+# Amber Stake - edit number of booster packs
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "for i = 1, 2 do"
+position = "at"
+payload = "for i = 1, G.GAME.modifiers.cry_no_boosters and 0 or G.GAME.modifiers.cry_booster_packs or 2 do"
+match_indent = true
+
+
+# Quartz Stake - pinned effect applies in every type of slot
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 < b.T.x + b.T.w/2 end)"
+position = "at"
+payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(a.pinned and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*(b.pinned and b.sort_id or 0) end)"
+match_indent = true
+
+
+# Quartz Stake - render pinned sticker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.sprite_facing == 'back' then"
+position = "before"
+payload = '''
+if self.pinned then
+    G.shared_stickers['pinned'].role.draw_major = self
+    G.shared_stickers['pinned']:draw_shader('dissolve', nil, nil, nil, self.children.center)
+    G.shared_stickers['pinned']:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+end
+'''
+match_indent = true
+
+
+# Ruby Stake - big blind bosses
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.round_resets.blind_choices.Boss = get_new_boss()"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
+    self.GAME.round_resets.blind_choices.Big = get_new_boss()
+elseif G.GAME.modifiers.cry_rush_hour_ii then
+    self.GAME.round_resets.blind_choices.Small = get_new_boss()
+    self.GAME.round_resets.blind_choices.Big = get_new_boss()
+else
+    self.GAME.round_resets.blind_choices.Big = 'bl_big'
+end
+'''
+match_indent = true
+
+
+# Ruby Stake - big blind bosses
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_choices.Boss = get_new_boss()"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
+    G.GAME.round_resets.blind_choices.Big = get_new_boss()
+elseif G.GAME.modifiers.cry_rush_hour_ii then
+    G.GAME.round_resets.blind_choices.Small = get_new_boss()
+    G.GAME.round_resets.blind_choices.Big = get_new_boss()
+else
+    G.GAME.round_resets.blind_choices.Big = 'bl_big'
+end
+'''
+match_indent = true
+
+
+# Ruby Stake - big blind doesn't increase ante
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.blind:get_type() == 'Boss' then"
+position = "at"
+payload = "if G.GAME.blind_on_deck == 'Boss' then"
+match_indent = true
+
+# Ruby Stake - smaller showdown blinds don't win
+# Win on any ante above win_ante
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
+position = "at"
+payload = "if G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then"
+match_indent = true
+
+
+# Rush Hour - mark small blind as defeated
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then"
+position = "at"
+payload = "if G.GAME.blind_on_deck == 'Small' then"
+match_indent = true
+
+# Ruby Stake - mark big blind as defeated
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then"
+position = "at"
+payload = "elseif G.GAME.blind_on_deck == 'Big' then"
+match_indent = true
+
+
+# Sapphire Stake - ante tax
+# The Joke boss effect
+# Save game state for Revert
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+position = "at"
+payload = "delay(0.4); ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1); cry_apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+match_indent = true
+
+
+# Emerald Stake - Permanently flipped cards
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "if card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then"
+position = "at"
+payload = '''if card.cry_flipped then card.facing = 'back'; card.sprite_facing = 'back' end
+if not (card.cry_flipped and (self == G.shop_jokers or self == G.shop_vouchers or self == G.shop_booster)) and card.facing == 'back' and self.config.type ~= 'discard' and self.config.type ~= 'deck' and not stay_flipped then'''
+match_indent = true
+
+
+# Emerald Stake - flipped packs
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_pack'..G.GAME.round_resets.ante) > 0.7 then
+    card.cry_flipped = true
+end'''
+match_indent = true
+
+
+# Emerald Stake - flipped vouchers
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+    card.cry_flipped = true
+end'''
+match_indent = true
+
+
+# Platinum Stake - start with big blind ready to be selected
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.blind_on_deck = 'Small'"
+position = "at"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
+match_indent = true
+
+
+# Platinum Stake - start with big blind ready to be selected
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "G.GAME.blind_on_deck = 'Small'"
+position = "at"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
+match_indent = true
+
+
+# Platinum Stake - hide Small Blind
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
+position = "at"
+payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
+match_indent = true
+
+# Ember Stake - grant no money on sell
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
+position = "at"
+payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
+match_indent = true
+
+# Ember Stake - give no money for selling
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''ease_dollars(self.sell_cost)'''
+position = "at"
+payload = '''if not G.GAME.modifiers.cry_no_sell_value then ease_dollars(self.sell_cost) end'''
+match_indent = true
+
+# Ember Stake - don't play coin sound
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''play_sound('coin2')'''
+position = "at"
+payload = '''if not G.GAME.modifiers.cry_no_sell_value then play_sound('coin2') end'''
+match_indent = true
+
+# Ember Stake - red dissolve for swag points
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self:start_dissolve({G.C.GOLD})'''
+position = "at"
+payload = '''if G.GAME.modifiers.cry_no_sell_value then self:start_dissolve({G.C.RED}) else self:start_dissolve({G.C.GOLD}) end'''
+match_indent = true
+
+# Ember Stake - remove sell price visually
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost'''
+position = "at"
+payload = '''self.sell_cost_label = (self.facing == 'back' and '?') or (G.GAME.modifiers.cry_no_sell_value and 0) or self.sell_cost'''
+match_indent = true
+
+# Dawn Stake - change maximum allowed highlights (i have no idea what this code is meant to be doing?? whatever it is, it doesn't seem to be working -toneblock)
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''local cfg = (card and card.ability) or _c['config']'''
+position = "after"
+payload = '''if cfg and G.GAME.modifiers.cry_consumable_reduce and cfg.max_highlighted and (cfg.max_highlighted > 1) then
+    local new_table = {}
+    for i0, j0 in pairs(cfg) do
+        new_table[i0] = j0
+    end
+    new_table.max_highlighted = new_table.max_highlighted - 1
+    cfg = new_table
+end'''
+match_indent = true
+
+# Horizon Stake - create random card at start of blind
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.GAME.blind:set_blind(G.GAME.round_resets.blind)'''
+position = "after"
+payload = '''if G.GAME.modifiers.cry_card_each_round then
+    G.E_MANAGER:add_event(Event({
+        func = function() 
+            local front = pseudorandom_element(G.P_CARDS, pseudoseed('cry_horizon'))
+            G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+            local edition = G.P_CENTERS.c_base
+            local card = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
+            card:start_materialize()
+            if G.GAME.selected_back.effect.config.cry_force_edition and G.GAME.selected_back.effect.config.cry_force_edition ~= "random" then
+                local edition = {}
+                edition[G.GAME.selected_back.effect.config.cry_force_edition] = true
+                card:set_edition(edition, true, true);
+            end
+            G.play:emplace(card)
+            table.insert(G.playing_cards, card)
+            playing_card_joker_effects({true})
+            return true
+        end}))
+    G.E_MANAGER:add_event(Event({
+        func = function() 
+            G.deck.config.card_limit = G.deck.config.card_limit + 1
+            return true
+        end}))
+    draw_card(G.play,G.deck, 90,'up', nil) 
+end'''
+match_indent = true
+
+# Blossom Stake - showdown blinds before the winning ante
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
+position = "at"
+payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
+match_indent = true
+
+# inject into vanilla calculate_perishable to prevent nil index bug (i don't know where it fails so i'm just patching every part of it...)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable and self.ability.perish_tally > 0 then'''
+position = "before"
+payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
+match_indent = true
+
+# again in set_debuff
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable and self.ability.perish_tally <= 0 then'''
+position = "before"
+payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
+match_indent = true

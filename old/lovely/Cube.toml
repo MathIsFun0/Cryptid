@@ -1,0 +1,27 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Joker Lock
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif v.enhancement_gate then"
+position = "before"
+payload = '''
+elseif v.source_gate then
+    if v.source_gate ~= _append then
+        add = nil 
+    else
+        add = true
+    end
+elseif v.joker_gate then
+    add = nil
+    for kk, vv in pairs(G.jokers.cards) do
+        if vv.ability.name == v.joker_gate then
+            add = true
+        end
+    end 
+'''
+match_indent = true

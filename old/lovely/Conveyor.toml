@@ -1,0 +1,29 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Don't sort cards
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(a.pinned and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*(b.pinned and b.sort_id or 0) end)"
+position = "at"
+payload = "if not G.GAME.modifiers.cry_conveyor then table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(a.pinned and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*(b.pinned and b.sort_id or 0) end) end"
+match_indent = true
+
+# Start of round effects
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.blind:set_blind(G.GAME.round_resets.blind)"
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_conveyor and #G.jokers.cards>0 then
+    local duplicated_joker = copy_card(G.jokers.cards[#G.jokers.cards])
+    duplicated_joker:add_to_deck()
+    G.jokers:emplace(duplicated_joker)
+    G.jokers.cards[1]:start_dissolve()
+end
+'''
+match_indent = true
