@@ -149,14 +149,14 @@ SMODS.Sound({
 	sync = false,
 	pitch = 1,
 	select_music_track = function()
-		return next(find_joker("cry-Jimball")) and Cryptid_config.Cryptid.jimball_music and 1.57e308
+		return next(find_joker("cry-Jimball")) and Cryptid_config.Cryptid and Cryptid_config.Cryptid.jimball_music and 1.57e308
 	end,
 })
 SMODS.Sound({
 	key = "music_code",
 	path = "music_code.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid.code_music
+		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.code_music
 			and (
 				(
 					G.pack_cards
@@ -171,7 +171,7 @@ SMODS.Sound({
 	key = "music_big",
 	path = "music_big.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid.big_music and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
+		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.big_music and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 	end,
 })
 --Used to check to play the exotic music
@@ -189,7 +189,7 @@ SMODS.Sound({
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
+		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
 	end,
 })
 SMODS.Atlas({
