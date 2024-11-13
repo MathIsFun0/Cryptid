@@ -1598,6 +1598,13 @@ return {
                     "a {C:attention}#2#"
                 }
             },
+	    j_cry_oil_lamp = {
+		name = "Oil Lamp",
+		text = {
+			"At the end of round",
+			"Increase the values of Joker {C:attention}to the right{} by {C:attention}x#1#{}"
+		},
+	    },
             j_cry_oldblueprint = {
                 name = "Old Blueprint",
                 text = {

@@ -6293,6 +6293,45 @@ local necromancer = {
 		}
 	},
 }
+local oil_lamp = { --You want it? It's yours my friend
+	object_type = "Joker",
+	name = "cry-Oil-Lamp",
+	key = "oil_lamp",
+	pos = { x = 4, y = 5 },
+	config = { extra = { increase = 1.2 } },
+	rarity = 3,
+	cost = 10,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.increase } }
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.individual then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					if i < #G.jokers.cards then
+						if not Card.no(G.jokers.cards[i+1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i+1], "immutable", true) then
+							cry_with_deck_effects(G.jokers.cards[i+1], function(cards)
+								cry_misprintize(cards, { min = card.ability.extra.increase, max = card.ability.extra.increase }, nil, true)
+							end)
+						end
+					end
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"AlexZGreat"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6393,6 +6432,7 @@ local miscitems =  {
 	mask,
 	tropical_smoothie,
 	necromancer,
+	oil_lamp,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
