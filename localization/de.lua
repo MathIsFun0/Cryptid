@@ -1570,6 +1570,13 @@ return {
                     "einen {C:attention}#2#{} enthält"
                 }
             },
+	    j_cry_oil_lamp = {
+		name = "Öl Lampe",
+		text = {
+			"Am Ende der Runde",
+			"werden alle Werte des {C:attention}rechten{} Joker um {C:attention}x#1#{} erhöht",
+		},
+	    },
             j_cry_oldblueprint = {
                 name = "Alter Bauplan",
                 text = {
