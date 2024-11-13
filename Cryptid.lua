@@ -2609,6 +2609,46 @@ function init_localization()
 	end
 end
 
+-- this is a hook to make funny "x of a kind"/"flush x" display text
+local pokerhandinforef = G.FUNCS.get_poker_hand_info
+function G.FUNCS.get_poker_hand_info(_cards)
+	local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+	if G.SETTINGS.language == "en-us" then
+		if #scoring_hand > 5 and (text == 'Flush Five' or text == 'Five of a Kind') then
+			local function create_num_chunk(int)	-- maybe useful enough to not be local? but tbh this function is probably some common coding exercise
+				if int >= 1000 then int = 999 end	
+				local ones = {["1"] = "One", ["2"] = "Two", ["3"] = "Three", ["4"] = "Four", ["5"] = "Five", ["6"] = "Six", ["7"] = "Seven", ["8"] = "Eight", ["9"] = "Nine"}
+				local tens = {["1"] = "Ten", ["2"] = "Twenty", ["3"] = "Thirty", ["4"] = "Forty", ["5"] = "Fifty", ["6"] = "Sixty", ["7"] = "Seventy", ["8"] = "Eighty", ["9"] = "Ninety"}
+				local str_int = string.reverse(int.."")	-- ehhhh whatever
+				local str_ret = ""
+				for i = 1, string.len(str_int) do
+					local place = str_int:sub(i, i)
+					if place ~= "0" then
+						if i == 1 then str_ret = ones[place]
+						elseif i == 2 then
+							if place == "1" and str_ret ~= "" then -- admittedly not my smartest moment, i dug myself into a hole here...
+								if str_ret == "One" then str_ret = "Eleven"
+								elseif str_ret == "Two" then str_ret = "Twelve"
+								elseif str_ret == "Three" then str_ret = "Thirteen"
+								elseif str_ret == "Five" then str_ret = "Fifteen"
+								elseif str_ret == "Eight" then str_ret = "Eighteen"
+								else str_ret = str_ret.."teen" end
+							else
+								str_ret = tens[place]..((string.len(str_ret) > 0 and " " or "")..str_ret)
+							end
+						elseif i == 3 then str_ret = ones[place]..(" Hundred"..((string.len(str_ret) > 0 and " and " or "")..str_ret)) end -- this line is wild
+					end
+				end
+				return str_ret
+			end
+			-- some nerd's gonna make a 1k+ card hand and i'm gonna have to update this... for now it's capped at 999
+			-- text gets stupid small at 100+ anyway
+			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..(create_num_chunk(#scoring_hand)..(text == 'Five of a Kind' and " of a Kind" or ""))
+		end
+	end
+	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
+end
+
 --Will be moved to D20 file when that gets added
 function roll_dice(seed, min, max, config)
 	local val
