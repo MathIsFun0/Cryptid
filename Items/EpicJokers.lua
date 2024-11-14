@@ -866,7 +866,6 @@ local curse_sob = {
 		if 
 			context.selling_card
 			and context.card.ability.name == "Obelisk"
-			and #G.jokers.cards + G.GAME.joker_buffer - (context.card.ability.set == "Joker" and 1 or 0) < G.jokers.config.card_limit
 			and not context.retrigger_joker
 			and not context.blueprint
 		then
