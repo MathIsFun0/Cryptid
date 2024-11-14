@@ -7,7 +7,7 @@ local code = {
 	collection_rows = { 4, 4 }, -- 4 pages for all code cards
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = (SMODS.jen or {}).can_load and "c_cry_oboe" or "c_cry_crash",
+	default = (SMODS.Mods['jen'] or {}).can_load and "c_cry_oboe" or "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
 }
