@@ -875,7 +875,7 @@ local curse_sob = {
 					message = localize("cry_curse_ex"),
 					colour = G.C.FILTER,
 				}),
-			}	
+			}
 		elseif
 			(-- Compacting all the elseifs into one block for space and readability also maintablity
 				context.selling_self 
@@ -893,7 +893,7 @@ local curse_sob = {
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
 			and not context.blueprint
-		then 
+		then
 			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
