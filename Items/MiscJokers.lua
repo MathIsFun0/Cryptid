@@ -6273,7 +6273,7 @@ local necromancer = {
 		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
-		if context.selling_card and context.card.sell_cost > 0 and G.GAME.jokers_sold then
+		if context.selling_card and context.card.sell_cost > 0 and context.card.config.center.set == 'Joker' and G.GAME.jokers_sold then
 			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, G.GAME.jokers_sold[pseudorandom('cry_necromancer', 1, #G.GAME.jokers_sold)])
 			card.sell_cost = 0
 			card:add_to_deck()
