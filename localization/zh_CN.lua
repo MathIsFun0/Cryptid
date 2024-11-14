@@ -688,7 +688,7 @@ return {
 				name = "://偏差1",
 				text = {
 					"下一包 {C:cry_code}增强包{} 有",
-					"{C:cry_code}#1#{} 张额外卡片和",
+					"{C:cry_code}#1#{} 张额外卡牌和",
 					"{C:cry_code}#1#{} 次额外选择",
 					"{C:inactive}(当前为 {C:cry_code}+#2#{C:inactive})"
 				}
@@ -928,6 +928,14 @@ return {
 				name = "AP 弹小丑",
 				text = {
 					"对boss盲注提供{X:mult,C:white} X#1# {} 倍率"
+				}
+			},
+			j_cry_astral_bottle = {
+				name = "瓶中星球",
+				text = {
+					"当出售时, 应用 {C:dark_edition}界星{}",
+					"和{C:attention}易腐{} 到一张",
+					"随机的 {C:attention}小丑牌{}"
 				}
 			},
 			j_cry_big_cube = {
@@ -2161,6 +2169,13 @@ return {
 					"一个{C:attention}#2#"
 				}
 			},
+			j_cry_universe = {
+				name = "宇宙",
+				text = {
+					"每张{C:dark_edition}界星{} ",
+					"提供 {X:dark_edition,C:white}^#1#{} 倍率"
+				}
+			},
 			j_cry_universum = {
 				name = "宇宙",
 				text = {
@@ -2557,28 +2572,28 @@ return {
 				name = "巨型代码包",
 				text = {
 					"选择 {C:attention}#1#{} 张最多",
-					"{C:attention}#2#{C:cry_code} 代码{} 卡片"
+					"{C:attention}#2#{C:cry_code} 代码{} 卡牌"
 				}
 			},
 			p_cry_code_mega_1 = {
 				name = "超级代码包",
 				text = {
 					"选择 {C:attention}#1#{} 张最多",
-					"{C:attention}#2#{C:cry_code} 代码{} 卡片"
+					"{C:attention}#2#{C:cry_code} 代码{} 卡牌"
 				}
 			},
 			p_cry_code_normal_1 = {
 				name = "代码补充包",
 				text = {
 					"选择 {C:attention}#1#{} 张最多",
-					"{C:attention}#2#{C:cry_code} 代码{} 卡片"
+					"{C:attention}#2#{C:cry_code} 代码{} 卡牌"
 				}
 			},
 			p_cry_code_normal_2 = {
 				name = "代码补充包",
 				text = {
 					"选择 {C:attention}#1#{} 张最多",
-					"{C:attention}#2#{C:cry_code} 代码{} 卡片"
+					"{C:attention}#2#{C:cry_code} 代码{} 卡牌"
 				}
 			},
 			p_cry_empowered = {
@@ -2705,7 +2720,7 @@ return {
 			sleeve_cry_ccd_sleeve = {
 				name = "CCD 牌套",
 				text = {
-					"每张卡片也是",
+					"每张卡牌也是",
 					"一张 {C:attention}随机{} 消耗牌"
 				}
 			},
@@ -2737,7 +2752,7 @@ return {
 			sleeve_cry_equilibrium_sleeve = {
 				name = "平衡牌套",
 				text = {
-					"所有卡片在",
+					"所有卡牌在",
 					"商店中的 {C:attention}出现几率相同{}",
 					"开始时拥有",
 					"{C:attention,T:v_overstock_plus}+2 商店栏位"
@@ -2747,7 +2762,7 @@ return {
 				name = "无限牌套",
 				text = {
 					"你可以选择 {C:attention}任意数量",
-					"的卡片"
+					"的卡牌"
 				}
 			},
 			sleeve_cry_legendary_sleeve = {
@@ -2762,7 +2777,7 @@ return {
 			sleeve_cry_misprint_sleeve = {
 				name = "错印牌套",
 				text = {
-					"卡片的数值",
+					"卡牌的数值",
 					"是 {C:attention}随机{} 的"
 				}
 			},
@@ -2784,12 +2799,33 @@ return {
 			}
 		},
 		Spectral = {
+			c_cry_adversary = {
+				name = "对敌者",
+				text = {
+					"{C:red}所有{}  {C:attention}小丑牌{} 变为 {C:dark_edition}负片{},",
+					"本局游戏的小丑牌购买价格{C:red}翻倍{}"
+				}
+			},
 			c_cry_analog = {
 				name = "模拟",
 				text = {
 					"复制 {C:attention}#1#{} 张",
 					"随机 {C:attention}小丑{}",
 					"摧毁所有其他小丑，{C:attention}+#2#{} 底注"
+				}
+			},
+			c_cry_chambered = {
+				name = "腔体",
+				text = {
+					"复制 {C:attention}#1#{}张 {C:attention}随机{}",
+					"的{C:dark_edition}负片{}",
+					"消耗牌",
+				}
+			},
+			c_cry_conduit = {
+				name = "导水管",
+				text = {
+					"交换两张所选择的（小丑）牌的 {C:attention}版本{}"
 				}
 			},
 			c_cry_gateway = {
@@ -2819,7 +2855,7 @@ return {
 				name = "://指针",
 				text = {
 					"创造一张",
-					"任选 {C:cry_code}卡片",
+					"任选 {C:cry_code}卡牌",
 					"{C:inactive,s:0.8}(域外小丑 #1# 排除)",
 					"（输入对应名字）"
 				}
@@ -2832,11 +2868,19 @@ return {
 					"手牌"
 				}
 			},
+			c_cry_ritual = {
+				name = "仪典",
+				text = {
+					"增强 {C:attention}#1#{} 张选定的卡牌",
+					"为  {C:dark_edition}负片{}, {C:dark_edition}马赛克{}",
+					"或 {C:dark_edition}星界{} "
+				}
+			},
 			c_cry_source = {
 				name = "源码",
 				text = {
 					"向你手中的",
-					"{C:attention}#1#{} 选定卡片",
+					"{C:attention}#1#{} 选定卡牌",
 					"添加一个 {C:cry_code}绿色蜡封{}"
 				}
 			},
@@ -3301,7 +3345,7 @@ return {
 			c_cry_eclipse = {
 				name = "日食",
 				text = {
-					"增强 {C:attention}#1#{} 选定的卡片",
+					"增强 {C:attention}#1#{} 选定的卡牌",
 					"为 {C:attention}回响卡"
 				}
 			},
