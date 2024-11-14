@@ -1496,6 +1496,14 @@ return {
                     "{C:inactive}(Muss Platz haben)",
                 },
             },
+	    j_cry_necromancer = {
+		name = "Totenbeschwörer",
+		text = {
+		    "Wenn ein Joker für mehr als {C:attention}$0 verkauft{} wird",
+		    "Erhalte einen {C:attention}zufälligen{} Joker der in diesem Durchlauf {C:attention}verkauft{} wurde",
+		    "und setzte seinen {C:attention}Verkaufspreis{} zu {C:attention}$0{}",
+		},
+	    },
             j_cry_negative = {
                 name = "Negativer Joker",
                 text = {
@@ -1562,6 +1570,13 @@ return {
                     "einen {C:attention}#2#{} enthält"
                 }
             },
+	    j_cry_oil_lamp = {
+		name = "Öl Lampe",
+		text = {
+			"Am Ende der Runde",
+			"werden alle Werte des {C:attention}rechten{} Joker um {C:attention}x#1#{} erhöht",
+		},
+	    },
             j_cry_oldblueprint = {
                 name = "Alter Bauplan",
                 text = {

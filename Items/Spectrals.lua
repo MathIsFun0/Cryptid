@@ -481,7 +481,7 @@ local analog = {
 	set = "Spectral",
 	name = "cry-Analog",
 	key = "analog",
-	pos = { x = 0, y = 0 },
+	pos = { x = 3, y = 0 },
 	config = { copies = 2, ante = 1 },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.copies, center.ability.ante } }
@@ -645,6 +645,328 @@ local replica = {
 		delay(0.5)
 	end,
 }
+local ritual = {
+	cry_credits = {
+		idea = {"Mystic Misclick"},
+		art = {"spire_winder"},
+		code = {"spire_winder"}
+	},
+	object_type = "Consumable",
+	set = "Spectral",
+	name = "cry-Ritual",
+	key = "ritual",
+	order = 9,
+	config = {
+		max_highlighted = 1,
+	},
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_mosaic) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_mosaic
+		end
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
+		return { vars = { center.ability.max_highlighted } }
+	end,
+	cost = 5,
+	atlas = "atlasnotjokers",
+	pos = { x = 5, y = 1 },
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		for i = 1, #G.hand.highlighted do
+			local highlighted = G.hand.highlighted[i]
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					highlighted:juice_up(0.3, 0.5)
+					return true
+				end,
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.1,
+				func = function()
+					if highlighted then
+						local random_result = pseudorandom(pseudoseed("cry-Ritual"))
+						if random_result >= 5 / 6 then
+							highlighted:set_edition({cry_astral = true})
+						else
+							if random_result >= 1 / 2 then
+								highlighted:set_edition({cry_mosaic = true})
+							else
+								highlighted:set_edition({negative = true})
+							end
+						end
+					end
+					return true
+				end,
+			}))
+			delay(0.5)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
+		end
+	end,
+}
+local adversary = {
+	cry_credits = {
+		idea = {"y_not_tony"},
+		art = {"Pyrocreep"},
+		code = {"spire_winder"}
+	},
+	object_type = "Consumable",
+	set = "Spectral",
+	name = "cry-Adversary",
+	key = "adversary",
+	pos = { x = 6, y = 1 },
+	config = {},
+	cost = 4,
+	order = 10,
+	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
+	end,
+	can_use = function(self, card)
+		return #G.jokers.cards > 0
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("tarot1")
+				used_consumable:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		for i = 1, #G.jokers.cards do
+			local percent = 1.15 - (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					G.jokers.cards[i]:flip()
+					play_sound("card1", percent)
+					G.jokers.cards[i]:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		delay(0.2)
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			local percent = 0.85 + (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.15,
+				func = function()
+					CARD:flip()
+					CARD:set_edition({negative = true})
+					play_sound("card1", percent)
+					CARD:juice_up(0.3, 0.3)
+					return true
+				end,
+			}))
+		end
+		delay(0.2)
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("tarot2")
+				used_consumable:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier * 2
+				for k, v in pairs(G.I.CARD) do
+					if v.set_cost then
+						v:set_cost()
+					end
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local chambered = {
+	cry_credits = {
+		idea = {"y_not_tony"},
+		art = {"Pyrocreep"},
+		code = {"spire_winder"}
+	},
+	object_type = "Consumable",
+	set = "Spectral",
+	name = "cry-Chambered",
+	key = "chambered",
+	pos = { x = 5, y = 0 },
+	config = { extra = {num_copies = 3}},
+	loc_vars = function(self, info_queue, card)
+	  info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+	  return { vars = { card.ability.extra.num_copies } }
+	end,
+	cost = 4,
+	order = 11,
+	atlas = "atlasnotjokers",
+	can_use = function(self, card)
+		local filteredCons = {}
+
+		-- Copy consumables that aren't Chambered
+		for _, item in ipairs(G.consumeables.cards) do
+			if item.ability.name ~= "cry-Chambered" then
+				table.insert(filteredCons, item)
+			end
+		end
+		return #filteredCons > 0
+	end,
+	use = function(self, card, area, copier)
+		local filteredCons = {}
+
+		-- Copy consumables that aren't Chambered
+		for _, item in ipairs(G.consumeables.cards) do
+			if item.ability.name ~= "cry-Chambered" then
+				table.insert(filteredCons, item)
+			end
+		end
+		target = pseudorandom_element(filteredCons, pseudoseed('chambered'))
+		for i=1,card.ability.extra.num_copies do
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card_copy = copy_card(target, nil)
+					if Incantation then
+						card_copy:setQty(1)
+					end
+					card_copy:set_edition({negative = true}, true)
+					card_copy:add_to_deck()
+					G.consumeables:emplace(card_copy)
+					return true
+				end}))
+			card_eval_status_text(target, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex'), colour = G.C.SECONDARY_SET.Spectral})
+		end
+	end,
+}
+local conduit = {
+	cry_credits = {
+		idea = {"Knockback1 (Oiiman)"},
+		art = {"Knockback1 (Oiiman)"},
+		code = {"spire_winder"}
+	},
+	object_type = "Consumable",
+	set = "Spectral",
+	name = "cry-conduit",
+	key = "conduit",
+	pos = { x = 6, y = 0 },
+	config = { },
+	cost = 4,
+	order = 12,
+	atlas = "atlasnotjokers",
+	can_use = function(self, card)
+		local combinedTable = {}
+
+		for _, value in ipairs(G.hand.highlighted) do
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
+		end
+
+		for _, value in ipairs(G.jokers.highlighted) do
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
+		end
+		return (#combinedTable == 2)
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		local combinedTable = {}
+
+		for _, value in ipairs(G.hand.highlighted) do
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
+		end
+
+		for _, value in ipairs(G.jokers.highlighted) do
+			if value ~= card then
+				table.insert(combinedTable, value)
+			end
+		end
+		local highlighted_1 = combinedTable[1]
+		local highlighted_2 = combinedTable[2]
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("tarot1")
+				used_consumable:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		local percent = 1.15 - (1 - 0.999) / (1 - 0.998) * 0.3
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.15,
+			func = function()
+				highlighted_1:flip()
+				highlighted_2:flip()
+				play_sound("card1", percent)
+				highlighted_1:juice_up(0.3, 0.3)
+				highlighted_2:juice_up(0.3, 0.3)
+				return true
+			end,
+		}))
+		delay(0.2)
+		local percent = 0.85 + (1 - 0.999) / (1 - 0.998) * 0.3
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.15,
+			func = function()
+				local one_edition = highlighted_1.edition
+				highlighted_1:flip()
+				highlighted_1:set_edition(highlighted_2.edition)
+				highlighted_2:flip()
+				highlighted_2:set_edition(one_edition)
+				play_sound("card1", percent)
+				highlighted_1:juice_up(0.3, 0.3)
+				highlighted_2:juice_up(0.3, 0.3)
+				return true
+			end,
+		}))
+		delay(0.2)
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("tarot2")
+				used_consumable:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				G.hand:unhighlight_all()
+				G.jokers:unhighlight_all()
+				return true
+			end,
+		}))
+	end,
+}
 local spectrals = {
 	white_hole,
 	vacuum,
@@ -653,9 +975,15 @@ local spectrals = {
 	trade,
 	analog,
 	replica,
+	adversary,
+	chambered,
+	conduit,
 }
 if Cryptid.enabled["Epic Jokers"] then
 	spectrals[#spectrals + 1] = summoning
+end
+if Cryptid.enabled["Misc."] then
+	spectrals[#spectrals + 1] = ritual
 end
 return {
 	name = "Spectrals",

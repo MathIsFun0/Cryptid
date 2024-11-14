@@ -4342,12 +4342,12 @@ local stronghold = {
 	name = "cry-stronghold",
 	key = "stronghold",
 	order = 114,
-	pos = { x = 0, y = 0 },
+	pos = { x = 8, y = 4 },
 	config = { Xmult = 5, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize("cry_hand_bulwark") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 3,
 	cost = 8,
 	blueprint_compat = true,
@@ -4379,12 +4379,12 @@ local wtf = {
 	name = "cry-wtf",
 	key = "wtf",
 	order = 115,
-	pos = { x = 1, y = 0 },
+	pos = { x = 7, y = 1 },
 	config = { Xmult = 10, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize("cry_hand_clusterfuck") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 3,
 	cost = 8,
 	blueprint_compat = true,
@@ -4416,12 +4416,12 @@ local clash = {
 	name = "cry-clash",
 	key = "clash",
 	order = 116,
-	pos = { x = 2, y = 0 },
+	pos = { x = 8, y = 1 },
 	config = { Xmult = 12, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize("cry_hand_ultpair") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 3,
 	cost = 8,
 	blueprint_compat = true,
@@ -4759,13 +4759,13 @@ local bonkers = {
 	object_type = "Joker",
 	name = "cry-Bonkers Joker",
 	key = "bonkers",
-	pos = { x = 0, y = 1 },
+	pos = { x = 8, y = 5 },
 	order = 108,
 	config = { t_mult = 20, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_bulwark") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	effect = "Cry Type Mult",
 	cost = 4,
@@ -4791,13 +4791,13 @@ local fuckedup = {
 	object_type = "Joker",
 	name = "cry-Fucked-Up Joker",
 	key = "fuckedup",
-	pos = { x = 1, y = 1 },
+	pos = { x = 7, y = 2 },
 	order = 109,
 	config = { t_mult = 37, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_clusterfuck") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	effect = "Cry Type Mult",
 	cost = 4,
@@ -4823,13 +4823,13 @@ local foolhardy = {
 	object_type = "Joker",
 	name = "cry-Foolhardy Joker",
 	key = "foolhardy",
-	pos = { x = 2, y = 1 },
+	pos = { x = 8, y = 2 },
 	order = 110,
 	config = { t_mult = 42, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_ultpair") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	effect = "Cry Type Mult",
 	cost = 4,
@@ -5125,14 +5125,14 @@ local adroit = {
 	object_type = "Joker",
 	name = "cry-Adroit Joker",
 	key = "adroit",
-	pos = { x = 0, y = 2 },
+	pos = { x = 7, y = 4 },
 	effect = "Cry Type Chips",
 	order = 111,
 	config = { t_chips = 170, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_bulwark") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -5156,14 +5156,14 @@ local penetrating = {
 	object_type = "Joker",
 	name = "cry-Penetrating Joker",
 	key = "penetrating",
-	pos = { x = 1, y = 2 },
+	pos = { x = 7, y = 3 },
 	effect = "Cry Type Chips",
 	order = 112,
 	config = { t_chips = 270, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_clusterfuck") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -5187,14 +5187,14 @@ local treacherous = {
 	object_type = "Joker",
 	name = "cry-Treacherous Joker",
 	key = "treacherous",
-	pos = { x = 2, y = 2 },
+	pos = { x = 8, y = 3 },
 	effect = "Cry Type Chips",
 	order = 113,
 	config = { t_chips = 300, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_ultpair") } }
 	end,
-	atlas = "atlascryptichandjokers",
+	atlas = "atlasthree",
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -5924,6 +5924,121 @@ local fractal = {
 		}
 	},
 }
+local universe = {
+	cry_credits = {
+		idea = {"Mystic Misclick"},
+		art = {"spire_winder"},
+		code = {"spire_winder"}
+	},
+	object_type = "Joker",
+	name = "cry-universe",
+	key = "universe",
+	pos = { x = 8, y = 0 },
+	atlas = "atlasthree",
+	config = { extra = { emult = 1.2 } },
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
+		return { vars = { center.ability.extra.emult } }
+	end,
+	rarity = 3,
+	cost = 6,
+	order = 40,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if
+			context.other_joker
+			and context.other_joker.edition
+			and context.other_joker.edition.cry_astral == true
+			and card ~= context.other_joker
+		then
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
+			return {
+				message = localize({ type = "variable", key = "a_powmult", vars = { card.ability.extra.emult } }),
+				Emult_mod = card.ability.extra.emult,
+				colour = G.C.DARK_EDITION
+			}
+		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.cry_astral == true then
+				return {
+					e_mult = card.ability.extra.emult,
+					colour = G.C.DARK_EDITION,
+					card = card
+				}
+			end
+		end
+		if
+			context.individual
+			and context.cardarea == G.hand
+			and context.other_card.edition
+			and context.other_card.edition.cry_astral == true
+			and not context.end_of_round
+		then
+			if context.other_card.debuff then
+				return {
+					message = localize("k_debuffed"),
+					colour = G.C.RED,
+					card = card,
+				}
+			else
+				return {
+					e_mult = card.ability.extra.emult,
+					colour = G.C.DARK_EDITION,
+					card = card
+				}
+			end
+		end
+	end,
+}
+local astral_bottle = {
+	cry_credits = {
+		idea = {"AlexZGreat"},
+		art = {"spire_winder"},
+		code = {"spire_winder"}
+	},
+	object_type = "Joker",
+	name = "cry-astral_bottle",
+	key = "astral_bottle",
+	pos = { x = 7, y = 0 },
+	atlas = "atlasthree",
+	rarity = 2,
+	cost = 6,
+	blueprint_compat = false,
+	loc_vars = function(self, info_queue, center)
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.selling_self and not context.retrigger_joker and not context.blueprint then
+			local jokers = {}
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff and not G.jokers.cards[i].edition then
+					jokers[#jokers + 1] = G.jokers.cards[i]
+				end
+			end
+			if #jokers > 0 then
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_duplicated_ex") })
+				local chosen_joker = pseudorandom_element(jokers, pseudoseed("trans"))
+				chosen_joker:set_edition{cry_astral = true}
+				chosen_joker.ability.perishable = true -- Done manually to bypass perish compat
+				chosen_joker.ability.perish_tally = G.GAME.perishable_rounds
+				return nil, true
+			else
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers") })
+			end
+		end
+	end,
+}
 local kidnap = {
 	object_type = "Joker",
 	name = "cry-kidnap",
@@ -6145,6 +6260,78 @@ local tropical_smoothie = {
 		end
 	end,
 }
+local necromancer = {
+	object_type = "Joker",
+	name = "cry-Necromancer",
+	key = "necromancer",
+	pos = { x = 3, y = 5 },
+	config = {},
+	rarity = 2,
+	cost = 5,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_card and context.card.sell_cost > 0 and G.GAME.jokers_sold then
+			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, G.GAME.jokers_sold[pseudorandom('cry_necromancer', 1, #G.GAME.jokers_sold)])
+			card.sell_cost = 0
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			card:start_materialize()
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Pyrocreep"
+		},
+		art = {
+			"Pyrocreep"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local oil_lamp = { --You want it? It's yours my friend
+	object_type = "Joker",
+	name = "cry-Oil-Lamp",
+	key = "oil_lamp",
+	pos = { x = 4, y = 5 },
+	config = { extra = { increase = 1.2 } },
+	rarity = 3,
+	cost = 10,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.increase } }
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.individual then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					if i < #G.jokers.cards then
+						if not Card.no(G.jokers.cards[i+1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i+1], "immutable", true) then
+							cry_with_deck_effects(G.jokers.cards[i+1], function(cards)
+								cry_misprintize(cards, { min = card.ability.extra.increase, max = card.ability.extra.increase }, nil, true)
+							end)
+						end
+					end
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"AlexZGreat"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6244,9 +6431,13 @@ local miscitems =  {
 	exposed,
 	mask,
 	tropical_smoothie,
+	necromancer,
+	oil_lamp,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
+	miscitems[#miscitems+1] = universe
+	miscitems[#miscitems+1] = astral_bottle
 end
 return {
 	name = "Misc. Jokers",

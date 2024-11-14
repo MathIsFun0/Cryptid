@@ -1265,6 +1265,7 @@ local ctrl_v = {
 				func = function()
 					local card = copy_card(G.hand.highlighted[1])
 					card:add_to_deck()
+					table.insert(G.playing_cards, card)
 					G.hand:emplace(card)
 					return true
 				end,
@@ -1275,6 +1276,9 @@ local ctrl_v = {
 				func = function()
 					local card = copy_card(G.consumeables.highlighted[1])
 					card:add_to_deck()
+					if Incantation then
+						card_copy:setQty(1)
+					end
 					G.consumeables:emplace(card)
 					return true
 				end,
@@ -1311,6 +1315,9 @@ local ctrl_v = {
 					func = function()
 						local card = copy_card(G.consumeables.highlighted[1])
 						card:add_to_deck()
+						if Incantation then
+							card_copy:setQty(1)
+						end
 						G.consumeables:emplace(card)
 						return true
 					end,
@@ -1361,8 +1368,8 @@ local green_seal = {
 	name = "cry-Green-Seal",
 	key = "green",
 	badge_colour = HEX("12f254"), --same as code cards
-	atlas = "green_atlas",
-	pos = { x = 0, y = 0 },
+	atlas = "cry_misc",
+	pos = { x = 1, y = 2 },
 
 	calculate = function(self, card, context)
 		if context.unscoring then
@@ -1383,13 +1390,6 @@ local green_seal = {
 	end,
 }
 
-local green_seal_sprite = {
-	object_type = "Atlas",
-	key = "green_atlas",
-	path = "s_cry_green_seal.png",
-	px = 71,
-	py = 95,
-}
 local source = {
 	object_type = "Consumable",
 	set = "Spectral",
@@ -2789,7 +2789,7 @@ G.FUNCS.pointer_apply = function()
 		if
 			G.P_CENTERS[current_card].set == "Joker"
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
-			and (type(G.P_CENTERS[current_card].rarity) ~= "number" or G.P_CENTERS[current_card].rarity < 5)
+			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
 			card:add_to_deck()
@@ -3444,7 +3444,6 @@ local code_cards = {
 	console,
 	automaton,
 	green_seal,
-	green_seal_sprite,
 	source,
 	pointer,
 	cut,
