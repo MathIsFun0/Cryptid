@@ -1278,6 +1278,17 @@ local candy_sticks = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.hands} }
 	end,
+	cry_credits = {
+		idea = {
+			"Squiddy"
+		},
+		art = {
+			"lolxddj"
+		},
+		code = {
+			"Foegro"
+		}
+	},
 }
 
 items = {
