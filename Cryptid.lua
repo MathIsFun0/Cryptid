@@ -2331,7 +2331,10 @@ function add_tag(tag, from_skip, no_copy)
 		at2(tag)
 	end
 	for i = 2, added_tags do
-		at2(Tag(tag.key))
+		local tag_table = tag:save()
+		local new_tag = Tag(tag.key)
+		new_tag:load(tag_table)
+		at2(new_tag)
 	end
 end
 
