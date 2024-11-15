@@ -5833,7 +5833,7 @@ local oldinvisible = {
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == "Joker"
 		and not context.blueprint and not context.retrigger_joker then
-			if card.ability.extra == 3 then
+			if card.ability.extra >= 3 then
 				card.ability.extra = 0
 				local eligibleJokers = {}
 				for i = 1, #G.jokers.cards do
