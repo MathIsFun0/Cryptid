@@ -863,182 +863,12 @@ local curse_sob = {
 	perishable_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if
-			context.selling_self
-			and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.discard
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.pre_discard
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.reroll_shop
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.open_booster
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.buying_card
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.skip_blind
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.cardarea == G.jokers
-			and context.before
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.using_consumeable
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
+		if 
 			context.selling_card
-			and context.card.ability.name ~= "Obelisk"
-			and #G.jokers.cards + G.GAME.joker_buffer - (context.card.ability.set == "Joker" and 1 or 0) < G.jokers.config.card_limit
+			and context.card.ability.name == "Obelisk"
 			and not context.retrigger_joker
 			and not context.blueprint
 		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("cry_curse_ex"),
@@ -1046,25 +876,19 @@ local curse_sob = {
 				}),
 			}
 		elseif
-			context.setting_blind
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-			and not context.blueprint
-		then
-			local createjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + createjoker
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			G.GAME.joker_buffer = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
-		elseif
-			context.skipping_booster
+			(-- Compacting all the elseifs into one block for space and readability also maintablity
+				context.selling_self 
+				or context.discard 
+				or context.pre_discard -- We want 2 obilisks per discard? dunno just copying what was there
+				or context.reroll_shop 
+				or context.buying_card 
+				or context.skip_blind 
+				or context.using_consumeable
+				or context.selling_card 
+				or context.setting_blind 
+				or context.skipping_booster 
+				or context.open_booster 
+			)
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			and not context.retrigger_joker
 			and not context.blueprint
