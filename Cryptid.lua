@@ -427,7 +427,7 @@ function cry_voucher_pinned(name)
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
-function get_random_consumable(seed, excluded_flags, unbalanced)
+function get_random_consumable(seed, excluded_flags, unbalanced, pool)
     -- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
 	excluded_flags = excluded_flags or unbalanced and { "no_doe", "no_grc" } or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
@@ -437,7 +437,7 @@ function get_random_consumable(seed, excluded_flags, unbalanced)
 		tries = tries - 1
 		passes = 0
         -- create a random consumable naively
-		local key = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
+		local key = pseudorandom_element(pool or G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
         -- check if it is valid
 		for k, v in pairs(excluded_flags) do
