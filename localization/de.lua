@@ -3650,6 +3650,11 @@ return {
                 "um auf #2##1#",
                 "#2#Einsatz#3# Schwieringkeit tu gewinnen"
             },
+			
+
+            cry_art = {"Bild: #1#"},
+            cry_code = {"Code: #1#"},
+            cry_idea = {"Idee: #1#"},
         },
         v_text = {
             ch_c_cry_all_perishable = {"Alle Joker sind {C:eternal}Verderblich{}"},
