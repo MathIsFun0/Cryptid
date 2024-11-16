@@ -869,18 +869,13 @@ local curse_sob = {
 			and not context.retrigger_joker
 			and not context.blueprint
 		then
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("cry_curse_ex"),
-					colour = G.C.FILTER,
-				}),
-			}
+			return {}
 		elseif
 			(-- Compacting all the elseifs into one block for space and readability also maintablity
 				context.selling_self 
 				or context.discard 
 				or context.pre_discard -- We want 2 obilisks per discard? dunno just copying what was there
-				or context.reroll_shop 
+				or context.reroll_shop --Yes
 				or context.buying_card 
 				or context.skip_blind 
 				or context.using_consumeable
@@ -889,7 +884,7 @@ local curse_sob = {
 				or context.skipping_booster 
 				or context.open_booster 
 			)
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and #G.jokers.cards + G.GAME.joker_buffer < (context.selling_self and (G.jokers.config.card_limit + 1) or G.jokers.config.card_limit)
 			and not context.retrigger_joker
 			and not context.blueprint
 		then
