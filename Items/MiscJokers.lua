@@ -6332,6 +6332,42 @@ local oil_lamp = { --You want it? It's yours my friend
 		}
 	},
 }
+local tax_fraud = {
+	object_type = "Joker",
+	name = "cry-Tax-Fraud",
+	key = "tax_fraud",
+	pos = { x = 0, y = 0 },
+	config = { extra = { money = 6 } },
+	rarity = 3,
+	cost = 10,
+	atlas = "placeholders",
+	in_pool = function(self)
+		if G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.rental then return true end
+			end
+		end
+		return false
+	end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.money } }
+	end,
+	calc_dollar_bonus = function(self, card)
+		local rentals = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.rental then rentals = rentals+1 end
+		end
+		return rentals*card.ability.extra.money
+	end,
+	cry_credits = {
+		idea = {
+			"DoNotSus"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6433,6 +6469,7 @@ local miscitems =  {
 	tropical_smoothie,
 	necromancer,
 	oil_lamp,
+	tax_fraud,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

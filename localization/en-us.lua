@@ -1931,6 +1931,13 @@ return {
                     "{C:inactive,s:0.8}Hey! I've seen this one before!",
                 },
             },
+			j_cry_tax_fraud = {
+				name = "Tax Fraud",
+				text = {
+					"At the end of round",
+					"Gain {C:attention}$#1#{} per {C:attention}Rental Joker",
+				},
+			},
             j_cry_tenebris = {
                 name = "Tenebris",
                 text = {
