@@ -6336,7 +6336,7 @@ local tax_fraud = {
 	object_type = "Joker",
 	name = "cry-Tax-Fraud",
 	key = "tax_fraud",
-	pos = { x = 0, y = 0 },
+	pos = { x = 2, y = 0 },
 	config = { extra = { money = 6 } },
 	rarity = 3,
 	cost = 10,
