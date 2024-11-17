@@ -24,6 +24,13 @@ return {
                     "{C:inactive,E:1}Tut nichts?",
                 },
             },
+			b_cry_bountiful = {
+				name = "Größzügiges Deck",
+				text = {
+					"Ziehe immer 5 Karten nach",
+					"{C:attention}Gespielter Hand{} oder {C:attention}Abwurf{}",
+				},
+			},
             b_cry_CCD = {
                 name = "CCD Deck",
                 text = {

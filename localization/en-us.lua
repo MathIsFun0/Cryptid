@@ -25,6 +25,13 @@ return {
                     "{C:inactive,E:1}Does nothing?",
                 },
             },
+			b_cry_bountiful = {
+				name = "Bountiful Deck",
+				text = {
+					"Always draw 5 cards after every",
+					"{C:attention}played hand{} or {C:attention}discard{}",
+				},
+			},
             b_cry_CCD = {
                 name = "CCD Deck",
                 text = {
