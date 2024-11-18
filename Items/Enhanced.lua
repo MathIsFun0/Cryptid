@@ -554,6 +554,11 @@ return {
 				else
 					G.GAME.modifiers.cry_force_random_edition = true
 				end
+				for k, v in pairs(G.P_TAGS) do
+					if v.config and v.config.edition then
+						G.GAME.banned_keys[k] = true
+					end
+				end
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						for c = #G.playing_cards, 1, -1 do
