@@ -1340,7 +1340,9 @@ local abelt = {
     pos = {x = 1, y = 5 },
     atlas = 'atlasnotjokers',
 		aurinko = true,
-    set_card_type_badge = disc,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize('Circumstellar Disc'), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
         SMODS.Consumable.process_loc_text(self)
@@ -1364,7 +1366,9 @@ local void = {
     pos = {x = 0, y = 5 },
     atlas = 'atlasnotjokers',
 		aurinko = true,
-    set_card_type_badge = nothingness,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize('Circumstellar Disc'), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
         SMODS.Consumable.process_loc_text(self)
@@ -1388,7 +1392,9 @@ local marsmoons = {
     pos = {x = 2, y = 5 },
     atlas = 'atlasnotjokers',
 		aurinko = true,
-    set_card_type_badge = moons,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize('Circumstellar Disc'), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
         SMODS.Consumable.process_loc_text(self)
@@ -1412,7 +1418,9 @@ local universe = {
     pos = {x = 4, y = 5 },
     atlas = 'atlasnotjokers',
 		aurinko = true,
-    set_card_type_badge = actualuniverse,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize('Circumstellar Disc'), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
         SMODS.Consumable.process_loc_text(self)
@@ -1425,6 +1433,7 @@ local universe = {
         }
     }
 }
+--[[
 local disc = function(self, card, badges)
 	badges[#badges + 1] = create_badge('Circumstellar Disc', get_type_colour(self or card.config, card), nil, 1.2)
 end
@@ -1440,7 +1449,7 @@ end
 local actualuniverse = function(self, card, badges)
 	badges[#badges + 1] = create_badge('The Actual Fucking Universe', get_type_colour(self or card.config, card), nil, 1.2)
 end
-
+--]]
 local miscitems = {
 	memepack_atlas,
   	meme_object_type,
