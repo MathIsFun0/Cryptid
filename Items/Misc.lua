@@ -1060,7 +1060,8 @@ local meld = {
 	end
 }
 
-local bwark = SMODS.PokerHand{
+local bwark = {
+    object_type = "PokerHand",
     key = 'Bulwark',
     visible = false,
     chips = 100,
@@ -1096,7 +1097,8 @@ local bwark = SMODS.PokerHand{
 		  return #stones >= 5 and {stones} or {}
 		end,
 }
-local cluster = SMODS.PokerHand{
+local cluster = {
+    object_type = "PokerHand",
     key = 'Clusterfuck',
     visible = false,
     chips = 200,
@@ -1136,7 +1138,8 @@ local cluster = SMODS.PokerHand{
       end
     end,
 }
-local upair = SMODS.PokerHand{
+local upair = {
+    object_type = "PokerHand",
     key = 'UltPair',
     visible = false,
     chips = 220,
@@ -1210,7 +1213,8 @@ local upair = SMODS.PokerHand{
 		end
 end,
 }
-local fulldeck = SMODS.PokerHand{
+local fulldeck = {
+    object_type = "PokerHand",
     key = 'WholeDeck',
     visible = false,
     chips = 5200,
