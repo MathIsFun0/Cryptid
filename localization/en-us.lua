@@ -2200,6 +2200,19 @@ return {
                     "and {C:attention}#3#{}",
                 },
             },
+            c_cry_marsmoons = {
+                name = 'Phobos & Deimos'
+            },
+            c_cry_void = {
+                name = 'Void'
+            },
+            c_cry_asteroidbelt = {
+                name = 'Asteroid Belt'
+            },
+            --Im kinda eh on this one but whatever
+            c_cry_universe = {
+                name = 'The Universe In Its Fucking Entirety'
+            },
         },
         Sleeve = {
             sleeve_cry_ccd_sleeve = {
@@ -3437,6 +3450,31 @@ return {
         }
     },
     misc = {
+        poker_hands = {
+            ['cry_Bulwark'] = "Bulwark",
+            ['cry_Clusterfuck'] = "Clusterfuck",
+            ['cry_UltPair'] = "Ultimate Pair",
+            ['cry_WholeDeck'] = "The Entire Fucking Deck",
+        },
+        poker_hand_descriptions = {
+            ['cry_Bulwark'] = {
+                '5 rankless, suitless cards',
+            },
+            ['cry_Clusterfuck'] = {
+                'At least 8 cards that do not',
+                'contain a Pair, Flush, or Straight',
+            },
+            ['cry_UltPair'] = {
+                'Two Two Pairs, where each',
+                'Two Pair is a single suit, for a',
+				'total of two suits between them',
+            },
+            ['cry_WholeDeck'] = {
+                'A hand that contains every single',
+                'card found in a 52-card deck.',
+                'Are you insane?',
+            },
+        },
         achievement_names = {
             ach_cry_ace_in_crash = "Pocket ACE",
             ach_cry_blurred_blurred_joker = "Legally Blind",

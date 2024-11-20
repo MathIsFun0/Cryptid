@@ -914,8 +914,6 @@ local blessing = {
 		delay(0.6)
 	end,
 }
---note: seal colors are also used in lovely.toml for spectral descriptions
--- and must be modified in both places
 local azure_seal = {
 	object_type = "Seal",
 	name = "cry-Azure-Seal",
@@ -1075,20 +1073,6 @@ local bwark = {
         { 'S_A',    true, 'm_stone' },
         { 'S_A',    true, 'm_stone' },
     },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Bulwark',
-            description = {
-                '5 rankless, suitless cards played together.',
-            }
-        },
-	['de'] = {
-		name = 'Bollwerk',
-        	description = {
-                '5 ranglose, farbenlose Karten zusammen gespielt.',
-            }
-	}
-    },
 		evaluate = function(parts, hand)
 		  local stones = {}
 		  for i, card in ipairs(hand) do
@@ -1115,22 +1099,6 @@ local cluster = {
         { 'S_6',    true },
         { 'C_5',    true },
     },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Clusterfuck',
-            description = {
-                'At least 8 cards that do not',
-                'contain a Pair, Flush, or Straight.',
-            }
-        },
-	['de'] = {
-		name = 'Clusterfuck',
-        	description = {
-                'Mindestens 8 Karten, welche nicht',
-		'Paar, Flush oder Straße enthalten.'
-            }
-	}
-    },
     evaluate = function(parts, hand)
     local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
     if #hand > 7 then
@@ -1155,24 +1123,6 @@ local upair = {
         { 'H_K',    true },
         { 'H_7',    true },
         { 'H_7',    true },
-    },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Ultimate Pair',
-            description = {
-                'Two Two Pairs, where each',
-                'Two Pair is a single suit, for a',
-								'total of two suits between them.',
-            }
-        },
-	['de'] = {
-	    name = 'Ultimatives Paar',
-            description = {
-                'Zwei zwei Paare, bei denen jedes',
-		'von ihnen von einer Farbe ist,',
-		'was insgesammt 2 Farben ergibt.'
-            }
-	}
     },
 		evaluate = function(parts, hand)
 		local scoring_pairs = {}
@@ -1275,16 +1225,6 @@ local fulldeck = {
                 { 'C_2',    true },
                 { 'D_2',    true },
     },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'The Entire Fucking Deck',
-            description = {
-                'A hand that contains every single',
-                'card found in a 52-card deck.',
-                                'Are you insane?',
-            }
-        }
-    },
 		evaluate = function(parts, hand)
 		    if #hand >= 52 then
 		        local deck_booleans = {}
@@ -1349,14 +1289,6 @@ local abelt = {
         G.localization.descriptions[self.set][self.key].text = target_text
     end,
     generate_ui = 0,
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Asteroid Belt'
-        },
-	['de'] = {
-            name = 'Asteroidengürtel'
-        }
-    }
 }
 local void = {
     object_type = "Consumable",
@@ -1375,14 +1307,6 @@ local void = {
         G.localization.descriptions[self.set][self.key].text = target_text
     end,
     generate_ui = 0,
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Void'
-        },
-        ['de'] = {
-                name = 'Leere'
-        }
-    }
 }
 local marsmoons = {
     object_type = "Consumable",
@@ -1401,14 +1325,6 @@ local marsmoons = {
         G.localization.descriptions[self.set][self.key].text = target_text
     end,
     generate_ui = 0,
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Phobos & Deimos'
-        },
-	['de'] = {
-            name = 'Phobos & Deimos'
-        }
-    }
 }
 local universe = {
     object_type = "Consumable",
@@ -1427,11 +1343,6 @@ local universe = {
         G.localization.descriptions[self.set][self.key].text = target_text
     end,
     generate_ui = 0,
-    loc_txt = {
-        ['en-us'] = {
-            name = 'The Universe In Its Fucking Entirety'
-        }
-    }
 }
 local miscitems = {
 	memepack_atlas,
