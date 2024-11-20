@@ -1751,6 +1751,14 @@ return {
 					"（必须有空间）"
 				}
 			},
+			j_cry_necromancer = {
+				name = "死灵法师",
+				text = {
+					"当{C:attention}售出{}一张小丑且其售价大于 {C:attention}$0{} ",
+					"获得一张 {C:attention}本局游戏售出过的{} {C:attention}随机小丑牌{} ",
+					"并将其 {C:attention}售价{} 变为 {C:attention}$0{}"
+				}
+			},
 			j_cry_negative = {
 				name = "负片小丑",
 				text = {
@@ -1811,6 +1819,13 @@ return {
 				text = {
 					"如果出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
+				}
+			},
+			j_cry_oil_lamp = {
+				name = "油灯",
+				text = {
+					"回合结束后",
+					"右边 {C:attention}小丑牌{}的售价 {C:attention}x#1#{}"
 				}
 			},
 			j_cry_oldblueprint = {
@@ -2819,7 +2834,7 @@ return {
 				text = {
 					"复制 {C:attention}#1#{}张 {C:attention}随机{}",
 					"的{C:dark_edition}负片{}",
-					"消耗牌",
+					"消耗牌"
 				}
 			},
 			c_cry_conduit = {
