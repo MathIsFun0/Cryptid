@@ -1283,10 +1283,21 @@ local abelt = {
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
-    process_loc_text = function(self)
-        local target_text = G.localization.descriptions[self.set]['c_earth'].text
-        SMODS.Consumable.process_loc_text(self)
-        G.localization.descriptions[self.set][self.key].text = target_text
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Bulwark"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_hand_bulwark"),
+                G.GAME.hands["cry_Bulwark"].level,
+				G.GAME.hands["cry_Bulwark"].l_mult,
+				G.GAME.hands["cry_Bulwark"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
     end,
     generate_ui = 0,
 }
@@ -1301,11 +1312,6 @@ local void = {
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
     end,
-    process_loc_text = function(self)
-        local target_text = G.localization.descriptions[self.set]['c_mercury'].text
-        SMODS.Consumable.process_loc_text(self)
-        G.localization.descriptions[self.set][self.key].text = target_text
-    end,
     generate_ui = 0,
 }
 local marsmoons = {
@@ -1319,11 +1325,6 @@ local marsmoons = {
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
-    process_loc_text = function(self)
-        local target_text = G.localization.descriptions[self.set]['c_mercury'].text
-        SMODS.Consumable.process_loc_text(self)
-        G.localization.descriptions[self.set][self.key].text = target_text
-    end,
     generate_ui = 0,
 }
 local universe = {
@@ -1336,11 +1337,6 @@ local universe = {
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
-    end,
-    process_loc_text = function(self)
-        local target_text = G.localization.descriptions[self.set]['c_mercury'].text
-        SMODS.Consumable.process_loc_text(self)
-        G.localization.descriptions[self.set][self.key].text = target_text
     end,
     generate_ui = 0,
 }

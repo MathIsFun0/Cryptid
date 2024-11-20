@@ -2210,7 +2210,12 @@ return {
             },
             c_cry_asteroidbelt = {
                 name = 'Asteroid Belt',
-                text = {},
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#2#{S:0.8}){} Level up",
+                    "{C:attention}#1#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
             },
             c_cry_universe = {
                 name = 'The Universe In Its Fucking Entirety',
