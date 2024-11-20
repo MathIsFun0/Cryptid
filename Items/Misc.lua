@@ -1367,7 +1367,7 @@ local void = {
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_empty"), get_type_colour(self or card.config, card), nil, 1.2)
+		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
     end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
@@ -1433,23 +1433,6 @@ local universe = {
         }
     }
 }
---[[
-local disc = function(self, card, badges)
-	badges[#badges + 1] = create_badge('Circumstellar Disc', get_type_colour(self or card.config, card), nil, 1.2)
-end
-
-local nothingness = function(self, card, badges)
-	badges[#badges + 1] = create_badge('          ', get_type_colour(self or card.config, card), nil, 1.2)
-end
-
-local moons = function(self, card, badges)
-	badges[#badges + 1] = create_badge('Natural Satellites', get_type_colour(self or card.config, card), nil, 1.2)
-end
-
-local actualuniverse = function(self, card, badges)
-	badges[#badges + 1] = create_badge('The Actual Fucking Universe', get_type_colour(self or card.config, card), nil, 1.2)
-end
---]]
 local miscitems = {
 	memepack_atlas,
   	meme_object_type,

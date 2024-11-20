@@ -3596,6 +3596,9 @@ return {
             k_cry_exotic = "Exotic",
             k_cry_candy = "Candy",
             k_cry_cursed  = "Cursed",
+            k_planet_disc = "Circumstellar Disc",
+            k_planet_satellite = "Natural Satellites",
+            k_planet_universe = "The Actual Fucking Universe",
 
             cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Notice",
