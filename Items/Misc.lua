@@ -1341,10 +1341,10 @@ local abelt = {
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
+		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
     process_loc_text = function(self)
-        local target_text = G.localization.descriptions[self.set]['c_mercury'].text
+        local target_text = G.localization.descriptions[self.set]['c_earth'].text
         SMODS.Consumable.process_loc_text(self)
         G.localization.descriptions[self.set][self.key].text = target_text
     end,
@@ -1367,7 +1367,7 @@ local void = {
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
+		badges[1] = create_badge(localize("k_empty"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
@@ -1393,7 +1393,7 @@ local marsmoons = {
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
+		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
@@ -1419,7 +1419,7 @@ local universe = {
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
+		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
     process_loc_text = function(self)
         local target_text = G.localization.descriptions[self.set]['c_mercury'].text
