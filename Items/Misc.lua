@@ -1278,6 +1278,7 @@ local abelt = {
     key = 'asteroidbelt',
     config = { hand_type = 'cry_Bulwark', softlock = true },
     pos = {x = 1, y = 5 },
+    order = 2,
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
@@ -1305,6 +1306,7 @@ local void = {
     object_type = "Consumable",
     set = 'Planet',
     key = 'void',
+    order = 3,
     config = { hand_type = 'cry_Clusterfuck', softlock = true },
     pos = {x = 0, y = 5 },
     atlas = 'atlasnotjokers',
@@ -1334,6 +1336,7 @@ local marsmoons = {
     object_type = "Consumable",
     set = 'Planet',
     key = 'marsmoons',
+    order = 4,
     config = { hand_type = 'cry_UltPair', softlock = true },
     pos = {x = 2, y = 5 },
     atlas = 'atlasnotjokers',
@@ -1365,6 +1368,7 @@ local universe = {
     key = 'universe',
     config = { hand_type = 'cry_WholeDeck', softlock = true },
     pos = {x = 4, y = 5 },
+    order = 5,
     atlas = 'atlasnotjokers',
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
