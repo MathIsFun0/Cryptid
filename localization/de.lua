@@ -24,6 +24,13 @@ return {
                     "{C:inactive,E:1}Tut nichts?",
                 },
             },
+			b_cry_bountiful = {
+				name = "Größzügiges Deck",
+				text = {
+					"Ziehe immer 5 Karten nach",
+					"{C:attention}Gespielter Hand{} oder {C:attention}Abwurf{}",
+				},
+			},
             b_cry_CCD = {
                 name = "CCD Deck",
                 text = {
@@ -1903,6 +1910,13 @@ return {
                     "{C:inactive,s:0.8}Hey! Das habe ich schonmal gesehen!",
                 },
             },
+			j_cry_tax_fraud = {
+				name = "Steuerbetrug",
+				text = {
+					"Am Ende der Runde",
+					"Erhalte {C:attention}$#1#{} für jeden {C:attention}Gemieteten Joker",
+				},
+			},
             j_cry_tenebris = {
                 name = "Tenebris",
                 text = {
@@ -3650,6 +3664,11 @@ return {
                 "um auf #2##1#",
                 "#2#Einsatz#3# Schwieringkeit tu gewinnen"
             },
+			
+
+            cry_art = {"Bild: #1#"},
+            cry_code = {"Code: #1#"},
+            cry_idea = {"Idee: #1#"},
         },
         v_text = {
             ch_c_cry_all_perishable = {"Alle Joker sind {C:eternal}Verderblich{}"},

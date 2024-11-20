@@ -428,3 +428,16 @@ pattern = '''local card = Card(0,0, 0.5*G.CARD_W, 0.5*G.CARD_H, G.P_CARDS[v[1]],
 position = "at"
 payload = '''local card = Card(0,0, 0.5*G.CARD_W, 0.5*G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS[v[3] or 'c_base'])'''
 match_indent = true
+
+# Adds G.GAME.modifiers.cry_forced_draw_amount
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'local hand_space = e or math.min(#G.deck.cards, G.hand.config.card_limit - #G.hand.cards)'
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) then
+	hand_space = math.min(#G.deck.cards, G.GAME.modifiers.cry_forced_draw_amount)
+end
+'''
+match_indent = true
