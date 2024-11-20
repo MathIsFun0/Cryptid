@@ -1312,6 +1312,22 @@ local void = {
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
     end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Clusterfuck"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_Clusterfuck"),
+                G.GAME.hands["cry_Clusterfuck"].level,
+				G.GAME.hands["cry_Clusterfuck"].l_mult,
+				G.GAME.hands["cry_Clusterfuck"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
     generate_ui = 0,
 }
 local marsmoons = {
@@ -1325,6 +1341,22 @@ local marsmoons = {
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
     end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_UltPair"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_UltPair"),
+                G.GAME.hands["cry_UltPair"].level,
+				G.GAME.hands["cry_UltPair"].l_mult,
+				G.GAME.hands["cry_UltPair"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
     generate_ui = 0,
 }
 local universe = {
@@ -1337,6 +1369,22 @@ local universe = {
 		aurinko = true,
     set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_WholeDeck"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_UltPair"),
+                G.GAME.hands["cry_WholeDeck"].level,
+				G.GAME.hands["cry_WholeDeck"].l_mult,
+				G.GAME.hands["cry_WholeDeck"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
     end,
     generate_ui = 0,
 }

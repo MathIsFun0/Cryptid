@@ -2202,24 +2202,39 @@ return {
             },
             c_cry_marsmoons = {
                 name = 'Phobos & Deimos',
-                text = {},
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
             },
             c_cry_void = {
                 name = 'Void',
-                text = {},
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
             },
             c_cry_asteroidbelt = {
                 name = 'Asteroid Belt',
                 text = {
-                    "{S:0.8}({S:0.8,V:1}lvl.#2#{S:0.8}){} Level up",
-                    "{C:attention}#1#",
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
                     "{C:mult}+#3#{} Mult and",
                     "{C:chips}+#4#{} chips"
                 }
             },
             c_cry_universe = {
                 name = 'The Universe In Its Fucking Entirety',
-                text = {},
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
             },
         },
         Sleeve = {
