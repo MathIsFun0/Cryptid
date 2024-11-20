@@ -7,7 +7,7 @@ local code = {
 	collection_rows = { 4, 4 }, -- 4 pages for all code cards
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_cry_crash",
+	default = (SMODS.Mods['jen'] or {}).can_load and "c_cry_oboe" or "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
 }
@@ -1094,7 +1094,6 @@ local rework_tag = {
 	end,
 }
 
---todo: smods stickers (i know right now this won't work for flickering/possessed)
 local patch = {
 	object_type = "Consumable",
 	set = "Code",
@@ -1168,6 +1167,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1191,6 +1192,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1214,6 +1217,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -2523,6 +2528,7 @@ end
 
 local aliases = {
 	jimbo = "joker",
+	["gary mccready"] = "joker",
 	greedy = "greedy joker",
 	lusty = "lusty joker",
 	wrathful = "wrathful joker",

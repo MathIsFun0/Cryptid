@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1103a]
---- VERSION: 0.5.2~1114a
+--- VERSION: 0.5.2~1115a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -183,14 +183,16 @@ function loc_colour(_c, _default)
 	if not G.ARGS.LOC_COLOURS then
 		lc()
 	end
-	G.ARGS.LOC_COLOURS.cry_azure = HEX("1d4fd7")
 	G.ARGS.LOC_COLOURS.cry_code = G.C.SET.Code
 	G.ARGS.LOC_COLOURS.heart = G.C.SUITS.Hearts
 	G.ARGS.LOC_COLOURS.diamond = G.C.SUITS.Diamonds
 	G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
 	G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
-	G.ARGS.LOC_COLOURS.cry_ascendant = G.C.CRY_ASCENDANT
-	G.ARGS.LOC_COLOURS.cry_jolly = G.C.CRY_JOLLY
+	for k, v in pairs(G.C) do
+		if string.len(k) > 4 and string.sub(k, 1, 4) == 'CRY_' then
+			G.ARGS.LOC_COLOURS[string.lower(k)] = v
+		end
+	end
 	return lc(_c, _default)
 end
 
@@ -427,7 +429,7 @@ function cry_voucher_pinned(name)
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
-function get_random_consumable(seed, excluded_flags, unbalanced)
+function get_random_consumable(seed, excluded_flags, unbalanced, pool)
     -- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
 	excluded_flags = excluded_flags or unbalanced and { "no_doe", "no_grc" } or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
@@ -437,7 +439,7 @@ function get_random_consumable(seed, excluded_flags, unbalanced)
 		tries = tries - 1
 		passes = 0
         -- create a random consumable naively
-		local key = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
+		local key = pseudorandom_element(pool or G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
         -- check if it is valid
 		for k, v in pairs(excluded_flags) do
@@ -654,6 +656,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 		and self.ability.name ~= "cry-mstack"
 		and self.ability.name ~= "cry-notebook"
 		and self.ability.name ~= "Invisible Joker"
+		and self.ability.name ~= "cry-Old Invisible Joker"
 	then
 		local jkr = self
 		if jkr.ability and type(jkr.ability) == "table" then
@@ -1790,6 +1793,7 @@ function SMODS.create_mod_badges(obj, badges)
 			end
 			for i = 1, #badges do
 				if eq_col(badges[i].nodes[1].config.colour,HEX("708b91")) then
+					badges[i].nodes[1].nodes[2].config.object:remove()
 					badges[i] = cry_badge
 					break
 				end
@@ -2330,7 +2334,10 @@ function add_tag(tag, from_skip, no_copy)
 		at2(tag)
 	end
 	for i = 2, added_tags do
-		at2(Tag(tag.key))
+		local tag_table = tag:save()
+		local new_tag = Tag(tag.key)
+		new_tag:load(tag_table)
+		at2(new_tag)
 	end
 end
 

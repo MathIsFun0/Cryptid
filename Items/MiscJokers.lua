@@ -5833,7 +5833,7 @@ local oldinvisible = {
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == "Joker"
 		and not context.blueprint and not context.retrigger_joker then
-			if card.ability.extra == 3 then
+			if card.ability.extra >= 3 then
 				card.ability.extra = 0
 				local eligibleJokers = {}
 				for i = 1, #G.jokers.cards do
@@ -6273,7 +6273,7 @@ local necromancer = {
 		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
-		if context.selling_card and context.card.sell_cost > 0 and G.GAME.jokers_sold then
+		if context.selling_card and context.card.sell_cost > 0 and context.card.config.center.set == 'Joker' and G.GAME.jokers_sold then
 			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, G.GAME.jokers_sold[pseudorandom('cry_necromancer', 1, #G.GAME.jokers_sold)])
 			card.sell_cost = 0
 			card:add_to_deck()
@@ -6326,6 +6326,42 @@ local oil_lamp = { --You want it? It's yours my friend
 		},
 		art = {
 			"AlexZGreat"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local tax_fraud = {
+	object_type = "Joker",
+	name = "cry-Tax-Fraud",
+	key = "tax_fraud",
+	pos = { x = 2, y = 0 },
+	config = { extra = { money = 6 } },
+	rarity = 3,
+	cost = 10,
+	atlas = "placeholders",
+	in_pool = function(self)
+		if G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.rental then return true end
+			end
+		end
+		return false
+	end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.money } }
+	end,
+	calc_dollar_bonus = function(self, card)
+		local rentals = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.rental then rentals = rentals+1 end
+		end
+		return rentals*card.ability.extra.money
+	end,
+	cry_credits = {
+		idea = {
+			"DoNotSus"
 		},
 		code = {
 			"Foegro"
@@ -6433,6 +6469,7 @@ local miscitems =  {
 	tropical_smoothie,
 	necromancer,
 	oil_lamp,
+	tax_fraud,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
