@@ -3460,6 +3460,12 @@ return {
                     "{C:red}destroy{} this card",
                 },
             },
+            blurred_sdm0 = {
+                name = "a",
+                text = {
+                    "{C:inactive,s:0.8}\"I hate this card\" - SDM0, 2024{}",
+                },
+            },
         },
         Unique = {
             c_cry_potion = {

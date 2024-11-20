@@ -602,6 +602,7 @@ if update_cry_member_count then update_cry_member_count() end
 match_indent = true
 
 # notice if https is disabled (by default)
+# also does some other things since this is patching in the same spot
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -629,6 +630,15 @@ if _c.name == 'cry-translucent Joker' then
                 end
         end 
 end 
+if _c.name == 'cry-blurred Joker' then
+	if (SMODS.Mods["sdm0sstuff"] or {}).can_load then
+		if G.localization.descriptions.Other.blurred_sdm0 then 
+			main_end = {}
+			localize{type = 'other', key = 'blurred_sdm0', nodes = main_end, vars = {}}
+			main_end = main_end[1]
+		end
+	end
+end
 '''
 match_indent = true
 
