@@ -2201,17 +2201,20 @@ return {
                 },
             },
             c_cry_marsmoons = {
-                name = 'Phobos & Deimos'
+                name = 'Phobos & Deimos',
+                text = {},
             },
             c_cry_void = {
-                name = 'Void'
+                name = 'Void',
+                text = {},
             },
             c_cry_asteroidbelt = {
-                name = 'Asteroid Belt'
+                name = 'Asteroid Belt',
+                text = {},
             },
-            --Im kinda eh on this one but whatever
             c_cry_universe = {
-                name = 'The Universe In Its Fucking Entirety'
+                name = 'The Universe In Its Fucking Entirety',
+                text = {},
             },
         },
         Sleeve = {

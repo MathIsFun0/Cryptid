@@ -2158,16 +2158,20 @@ return {
                 },
             },
             c_cry_marsmoons = {
-                name = 'Phobos & Deimos'
+                name = 'Phobos & Deimos',
+                text = {},
             },
             c_cry_void = {
-                name = 'Leere'
+                name = 'Leere',
+                text = {},
             },
             c_cry_asteroidbelt = {
-                name = 'Asteroidengürtel'
+                name = 'Asteroidengürtel',
+                text = {},
             },
             c_cry_universe = {
-                name = 'The Universe In Its Fucking Entirety'
+                name = 'The Universe In Its Fucking Entirety',
+                text = {},
             },
         },
         Sleeve = {
