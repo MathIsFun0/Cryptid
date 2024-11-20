@@ -594,9 +594,7 @@ local commit = {
 		elseif rarity == 4 then
 			rarity = nil
 			legendary = true
-		elseif rarity == "cry_epic" then
-			rarity = 1
-		end
+		end -- Deleted check for "cry epic" it was giving rare jokers by setting rarity to 1
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
