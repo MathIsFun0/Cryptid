@@ -2159,19 +2159,39 @@ return {
             },
             c_cry_marsmoons = {
                 name = 'Phobos & Deimos',
-                text = {},
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
             },
             c_cry_void = {
                 name = 'Leere',
-                text = {},
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
             },
             c_cry_asteroidbelt = {
                 name = 'Asteroidengürtel',
-                text = {},
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
             },
             c_cry_universe = {
-                name = 'The Universe In Its Fucking Entirety',
-                text = {},
+                name = 'Das Universum in seiner verfickten Gesamtheit.',
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
             },
         },
         Sleeve = {
@@ -3387,7 +3407,7 @@ return {
             ['cry_Bulwark'] = "Bollwerk",
             ['cry_Clusterfuck'] = "Clusterfuck",
             ['cry_UltPair'] = "Ultimatives Paar",
-            ['cry_WholeDeck'] = "The Entire Fucking Deck",
+            ['cry_WholeDeck'] = "Das ganze verfickte Deck",
         },
         poker_hand_descriptions = {
             ['cry_Bulwark'] = {
@@ -3403,9 +3423,9 @@ return {
 		        'was insgesammt 2 Farben ergibt.'
             },
             ['cry_WholeDeck'] = {
-                'A hand that contains every single',
-                'card found in a 52-card deck.',
-                'Are you insane?',
+                'Eine Hand, die jede Karte in',
+                'in einem 52-Karten Deck enthält.',
+                'Bist du verrückt?',
             },
         },
         achievement_names = {
