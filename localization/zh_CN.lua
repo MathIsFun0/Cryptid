@@ -28,6 +28,13 @@ return {
 					"{C:inactive,E:1}无作用？{}"
 				}
 			},
+			b_cry_bountiful = {
+				name = "丰饶的露台",
+				text = {
+					"每次{C:attention}出牌{} 或 {C:attention}弃牌{}后",
+					"固定抽五张牌"
+				}
+			},
 			b_cry_conveyor = {
 				name = "传送带牌组",
 				text = {
@@ -2120,6 +2127,14 @@ return {
 				text = {
 					"平衡 {C:chips}筹码{} 和 {C:mult}倍率{}",
 					"{C:inactive,s:0.8}嘿！我之前见过这个！（等离子牌组效果）"
+				}
+			},
+			j_cry_tax_fraud = {
+				name = "逃税",
+				text = {
+					"回合结束后",
+					"每有一个 {C:attention}租用小丑{}",
+					"获得 {C:attention}$#1#{}"
 				}
 			},
 			j_cry_tenebris = {
