@@ -6434,7 +6434,6 @@ local miscitems =  {
 	busdriver,
 	oldblueprint,
 	morse,
-	translucent,
 	membershipcard,
 	kscope,
 	cryptidmoment,
@@ -6475,6 +6474,9 @@ if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = bonkers
 	miscitems[#miscitems+1] = fuckedup
 	miscitems[#miscitems+1] = foolhardy
+end
+if Cryptid.enabled["More Stakes"] then
+	miscitems[#miscitems+1] = translucent
 end
 return {
 	name = "Misc. Jokers",
