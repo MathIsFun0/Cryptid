@@ -6428,9 +6428,6 @@ local miscitems =  {
 	quintet,
 	unity,
 	swarm,
-	stronghold,
-	wtf,
-	clash,
 	coin,
 	wheelhope,
 	night,
@@ -6450,9 +6447,6 @@ local miscitems =  {
 	delirious,
 	wacky,
 	kooky,
-	bonkers,
-	fuckedup,
-	foolhardy,
 	dubious,
 	shrewd,
 	tricksy,
@@ -6460,9 +6454,6 @@ local miscitems =  {
 	savvy,
 	subtle,
 	discreet,
-	adroit,
-	penetrating,
-	treacherous,
 	kidnap,
 	exposed,
 	mask,
@@ -6475,6 +6466,15 @@ if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
 	miscitems[#miscitems+1] = universe
 	miscitems[#miscitems+1] = astral_bottle
+	miscitems[#miscitems+1] = stronghold
+	miscitems[#miscitems+1] = wtf
+	miscitems[#miscitems+1] = clash
+	miscitems[#miscitems+1] = adroit
+	miscitems[#miscitems+1] = penetrating
+	miscitems[#miscitems+1] = treacherous
+	miscitems[#miscitems+1] = bonkers
+	miscitems[#miscitems+1] = fuckedup
+	miscitems[#miscitems+1] = foolhardy
 end
 return {
 	name = "Misc. Jokers",
