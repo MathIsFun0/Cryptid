@@ -5833,7 +5833,7 @@ local oldinvisible = {
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == "Joker"
 		and not context.blueprint and not context.retrigger_joker then
-			if card.ability.extra == 3 then
+			if card.ability.extra >= 3 then
 				card.ability.extra = 0
 				local eligibleJokers = {}
 				for i = 1, #G.jokers.cards do
@@ -6260,6 +6260,114 @@ local tropical_smoothie = {
 		end
 	end,
 }
+local necromancer = {
+	object_type = "Joker",
+	name = "cry-Necromancer",
+	key = "necromancer",
+	pos = { x = 3, y = 5 },
+	config = {},
+	rarity = 2,
+	cost = 5,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_card and context.card.sell_cost > 0 and context.card.config.center.set == 'Joker' and G.GAME.jokers_sold then
+			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, G.GAME.jokers_sold[pseudorandom('cry_necromancer', 1, #G.GAME.jokers_sold)])
+			card.sell_cost = 0
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			card:start_materialize()
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Pyrocreep"
+		},
+		art = {
+			"Pyrocreep"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local oil_lamp = { --You want it? It's yours my friend
+	object_type = "Joker",
+	name = "cry-Oil-Lamp",
+	key = "oil_lamp",
+	pos = { x = 4, y = 5 },
+	config = { extra = { increase = 1.2 } },
+	rarity = 3,
+	cost = 10,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.increase } }
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.individual then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					if i < #G.jokers.cards then
+						if not Card.no(G.jokers.cards[i+1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i+1], "immutable", true) then
+							cry_with_deck_effects(G.jokers.cards[i+1], function(cards)
+								cry_misprintize(cards, { min = card.ability.extra.increase, max = card.ability.extra.increase }, nil, true)
+							end)
+						end
+					end
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"AlexZGreat"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local tax_fraud = {
+	object_type = "Joker",
+	name = "cry-Tax-Fraud",
+	key = "tax_fraud",
+	pos = { x = 2, y = 0 },
+	config = { extra = { money = 6 } },
+	rarity = 3,
+	cost = 10,
+	atlas = "placeholders",
+	in_pool = function(self)
+		if G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.rental then return true end
+			end
+		end
+		return false
+	end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.money } }
+	end,
+	calc_dollar_bonus = function(self, card)
+		local rentals = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.rental then rentals = rentals+1 end
+		end
+		return rentals*card.ability.extra.money
+	end,
+	cry_credits = {
+		idea = {
+			"DoNotSus"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6320,16 +6428,12 @@ local miscitems =  {
 	quintet,
 	unity,
 	swarm,
-	stronghold,
-	wtf,
-	clash,
 	coin,
 	wheelhope,
 	night,
 	busdriver,
 	oldblueprint,
 	morse,
-	translucent,
 	membershipcard,
 	kscope,
 	cryptidmoment,
@@ -6342,9 +6446,6 @@ local miscitems =  {
 	delirious,
 	wacky,
 	kooky,
-	bonkers,
-	fuckedup,
-	foolhardy,
 	dubious,
 	shrewd,
 	tricksy,
@@ -6352,18 +6453,30 @@ local miscitems =  {
 	savvy,
 	subtle,
 	discreet,
-	adroit,
-	penetrating,
-	treacherous,
 	kidnap,
 	exposed,
 	mask,
 	tropical_smoothie,
+	necromancer,
+	oil_lamp,
+	tax_fraud,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
 	miscitems[#miscitems+1] = universe
 	miscitems[#miscitems+1] = astral_bottle
+	miscitems[#miscitems+1] = stronghold
+	miscitems[#miscitems+1] = wtf
+	miscitems[#miscitems+1] = clash
+	miscitems[#miscitems+1] = adroit
+	miscitems[#miscitems+1] = penetrating
+	miscitems[#miscitems+1] = treacherous
+	miscitems[#miscitems+1] = bonkers
+	miscitems[#miscitems+1] = fuckedup
+	miscitems[#miscitems+1] = foolhardy
+end
+if Cryptid.enabled["More Stakes"] then
+	miscitems[#miscitems+1] = translucent
 end
 return {
 	name = "Misc. Jokers",

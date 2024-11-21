@@ -8,7 +8,7 @@ local timantti = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 3,
+	order = 7,
 	can_use = function(self, card)
 		return true
 	end,
@@ -75,7 +75,7 @@ local klubi = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 4,
+	order = 8,
 	can_use = function(self, card)
 		return true
 	end,
@@ -142,7 +142,7 @@ local sydan = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 5,
+	order = 9,
 	can_use = function(self, card)
 		return true
 	end,
@@ -209,7 +209,7 @@ local lapio = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 6,
+	order = 10,
 	can_use = function(self, card)
 		return true
 	end,
@@ -276,7 +276,7 @@ local kaikki = {
     cost = 4,
     aurinko = true,
     atlas = "atlasnotjokers",
-    order = 7,
+    order = 11,
     can_use = function(self, card)
         return true
     end,
@@ -565,7 +565,7 @@ local nstar = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 2,
+	order = 6,
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
@@ -700,7 +700,10 @@ function neutronstarrandomhand(ignore, seed, allowhidden)
 	end
 	return chosen_hand
 end
-local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio, kaikki }
+local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio }
+if Cryptid.enabled["Misc."] then
+	planet_cards[#planet_cards + 1] = kaikki
+end
 if not (SMODS.Mods["jen"] or {}).can_load then
 end
 return { name = "Planets", init = function() end, items = planet_cards }

@@ -47,6 +47,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 		and self.ability.name ~= "cry-mstack"
 		and self.ability.name ~= "cry-notebook"
 		and self.ability.name ~= "Invisible Joker"
+		and self.ability.name ~= "cry-Old Invisible Joker"
 	then
 		local jkr = self
 		if jkr.ability and type(jkr.ability) == "table" then

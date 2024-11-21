@@ -221,6 +221,15 @@ local beta = {
 	order = 13,
 	atlas = "atlasdeck",
 }
+local bountiful = {
+	object_type = "Back",
+	name = "cry-Bountiful",
+	key = "bountiful",
+	config = { cry_forced_draw_amount = 5 },
+	pos = { x = 4, y = 2 },
+	order = 14,
+	atlas = "placeholders",
+}
 return {
 	name = "Misc. Decks",
 	init = function()
@@ -281,6 +290,9 @@ return {
 			end
 			if self.effect.config.cry_redeemed then
 				G.GAME.modifiers.cry_redeemed = true
+			end
+			if self.effect.config.cry_forced_draw_amount then
+				G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
 			end
 		end
 		--equilibrium deck patches
@@ -449,5 +461,6 @@ return {
 		atlasglowing,
 		glowing,
 		beta,
+		bountiful,
 	},
 }

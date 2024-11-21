@@ -7,7 +7,7 @@ local code = {
 	collection_rows = { 4, 4 }, -- 4 pages for all code cards
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_cry_crash",
+	default = (SMODS.Mods['jen'] or {}).can_load and "c_cry_oboe" or "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
 }
@@ -594,9 +594,7 @@ local commit = {
 		elseif rarity == 4 then
 			rarity = nil
 			legendary = true
-		elseif rarity == "cry_epic" then
-			rarity = 1
-		end
+		end -- Deleted check for "cry epic" it was giving rare jokers by setting rarity to 1
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
@@ -1094,7 +1092,6 @@ local rework_tag = {
 	end,
 }
 
---todo: smods stickers (i know right now this won't work for flickering/possessed)
 local patch = {
 	object_type = "Consumable",
 	set = "Code",
@@ -1168,6 +1165,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1191,6 +1190,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1214,6 +1215,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1241,24 +1244,13 @@ local ctrl_v = {
 		return { }
 	end,
 	can_use = function(self, card)
-		return #G.jokers.highlighted
-				+ #G.hand.highlighted
+		return #G.hand.highlighted
 				+ #G.consumeables.highlighted
 			== 2
 	end,
 	use = function(self, card, area, copier)
 		if area then
 			area:remove_from_highlighted(card)
-		end
-		if G.jokers.highlighted[1] then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.jokers.highlighted[1])
-					card:add_to_deck()
-					G.jokers:emplace(card)
-					return true
-				end,
-			}))
 		end
 		if G.hand.highlighted[1] then
 			G.E_MANAGER:add_event(Event({
@@ -1277,7 +1269,7 @@ local ctrl_v = {
 					local card = copy_card(G.consumeables.highlighted[1])
 					card:add_to_deck()
 					if Incantation then
-						card_copy:setQty(1)
+						card:setQty(1) 
 					end
 					G.consumeables:emplace(card)
 					return true
@@ -1289,16 +1281,6 @@ local ctrl_v = {
 		for i = 1, number do
 			if area then
 				area:remove_from_highlighted(card)
-			end
-			if G.jokers.highlighted[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card = copy_card(G.jokers.highlighted[1])
-						card:add_to_deck()
-						G.jokers:emplace(card)
-						return true
-					end,
-				}))
 			end
 			if G.hand.highlighted[1] then
 				G.E_MANAGER:add_event(Event({
@@ -1322,6 +1304,60 @@ local ctrl_v = {
 						return true
 					end,
 				}))
+			end
+		end
+	end,
+}
+
+
+
+local inst = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "inst",
+	name = "cry-Inst",
+	atlas = "code",
+	order = 28,
+	config = {  },
+	pos = {
+		x = 3,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		return #G.hand.highlighted == 1
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+				break
+			end
+		end
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+				break
+			end
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, number do
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+					break
+				end
+			end
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+					break
+				end
 			end
 		end
 	end,
@@ -2523,6 +2559,7 @@ end
 
 local aliases = {
 	jimbo = "joker",
+	["gary mccready"] = "joker",
 	greedy = "greedy joker",
 	lusty = "lusty joker",
 	wrathful = "wrathful joker",
@@ -2673,6 +2710,8 @@ local aliases = {
 	ctrlv = "://ctrl+v",
 	["ctrl+v"] = "://ctrl+v",
 	["ctrl v"] = "://ctrl+v",
+	instantiate = "://INSTANTIATE",
+	inst = "://INSTANTIATE",
 	spaghetti = "://spaghetti",
 	topuptag = "top-up tag",
 	gamblerstag = "gambler's tag",
@@ -3474,6 +3513,7 @@ local code_cards = {
 	rework_tag,
 	patch,
 	ctrl_v,
+	inst,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti

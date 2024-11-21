@@ -90,6 +90,7 @@ function SMODS.create_mod_badges(obj, badges)
 			end
 			for i = 1, #badges do
 				if eq_col(badges[i].nodes[1].config.colour, HEX("708b91")) then
+					badges[i].nodes[1].nodes[2].config.object:remove()
 					badges[i] = cry_badge
 					break
 				end
@@ -635,7 +636,10 @@ function add_tag(tag, from_skip, no_copy)
 		at2(tag)
 	end
 	for i = 2, added_tags do
-		at2(Tag(tag.key))
+		local tag_table = tag:save()
+		local new_tag = Tag(tag.key)
+		new_tag:load(tag_table)
+		at2(new_tag)
 	end
 end
 

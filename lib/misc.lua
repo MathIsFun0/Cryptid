@@ -4,14 +4,16 @@ function loc_colour(_c, _default)
 	if not G.ARGS.LOC_COLOURS then
 		lc()
 	end
-	G.ARGS.LOC_COLOURS.cry_azure = HEX("1d4fd7")
 	G.ARGS.LOC_COLOURS.cry_code = G.C.SET.Code
 	G.ARGS.LOC_COLOURS.heart = G.C.SUITS.Hearts
 	G.ARGS.LOC_COLOURS.diamond = G.C.SUITS.Diamonds
 	G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
 	G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
-	G.ARGS.LOC_COLOURS.cry_ascendant = G.C.CRY_ASCENDANT
-	G.ARGS.LOC_COLOURS.cry_jolly = G.C.CRY_JOLLY
+	for k, v in pairs(G.C) do
+		if string.len(k) > 4 and string.sub(k, 1, 4) == 'CRY_' then
+			G.ARGS.LOC_COLOURS[string.lower(k)] = v
+		end
+	end
 	return lc(_c, _default)
 end
 
@@ -87,7 +89,7 @@ function cry_poll_random_edition()
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
-function get_random_consumable(seed, excluded_flags, unbalanced)
+function get_random_consumable(seed, excluded_flags, unbalanced, pool)
 	-- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
 	excluded_flags = excluded_flags or unbalanced and { "no_doe", "no_grc" } or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
@@ -97,7 +99,7 @@ function get_random_consumable(seed, excluded_flags, unbalanced)
 		tries = tries - 1
 		passes = 0
 		-- create a random consumable naively
-		local key = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
+		local key = pseudorandom_element(pool or G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
 		-- check if it is valid
 		for k, v in pairs(excluded_flags) do
