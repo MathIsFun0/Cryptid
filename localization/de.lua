@@ -24,6 +24,13 @@ return {
                     "{C:inactive,E:1}Tut nichts?",
                 },
             },
+			b_cry_bountiful = {
+				name = "Größzügiges Deck",
+				text = {
+					"Ziehe immer 5 Karten nach",
+					"{C:attention}Gespielter Hand{} oder {C:attention}Abwurf{}",
+				},
+			},
             b_cry_CCD = {
                 name = "CCD Deck",
                 text = {
@@ -372,6 +379,14 @@ return {
                     "die {C:cry_code}Verhackt{} werden",
                 },
             },
+			c_cry_inst = {
+				name = "://INSTANTIATE",
+				text = {
+					"Ziehe eine Karte mit dem {C:attention}Rang{} einer ausgewählten Karte",
+					"und eine mit der {C:attention}Farbe{} der ausgewählten Karte",
+					"{C:inactive}(Wenn möglich){}",
+				},
+			},
             c_cry_machinecode = {
                 name = "://MACHINECODE",
                 text = {
@@ -1496,6 +1511,14 @@ return {
                     "{C:inactive}(Muss Platz haben)",
                 },
             },
+	    j_cry_necromancer = {
+		name = "Totenbeschwörer",
+		text = {
+		    "Wenn ein Joker für mehr als {C:attention}$0 verkauft{} wird",
+		    "Erhalte einen {C:attention}zufälligen{} Joker der in diesem Durchlauf {C:attention}verkauft{} wurde",
+		    "und setzte seinen {C:attention}Verkaufspreis{} zu {C:attention}$0{}",
+		},
+	    },
             j_cry_negative = {
                 name = "Negativer Joker",
                 text = {
@@ -1562,6 +1585,13 @@ return {
                     "einen {C:attention}#2#{} enthält"
                 }
             },
+	    j_cry_oil_lamp = {
+		name = "Öl Lampe",
+		text = {
+			"Am Ende der Runde",
+			"werden alle Werte des {C:attention}rechten{} Joker um {C:attention}x#1#{} erhöht",
+		},
+	    },
             j_cry_oldblueprint = {
                 name = "Alter Bauplan",
                 text = {
@@ -1888,6 +1918,13 @@ return {
                     "{C:inactive,s:0.8}Hey! Das habe ich schonmal gesehen!",
                 },
             },
+			j_cry_tax_fraud = {
+				name = "Steuerbetrug",
+				text = {
+					"Am Ende der Runde",
+					"Erhalte {C:attention}$#1#{} für jeden {C:attention}Gemieteten Joker",
+				},
+			},
             j_cry_tenebris = {
                 name = "Tenebris",
                 text = {
@@ -2127,6 +2164,42 @@ return {
                     "{C:attention}#2#{},",
                     "und {C:attention}#3#{}",
                 },
+            },
+            c_cry_marsmoons = {
+                name = 'Phobos & Deimos',
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
+            },
+            c_cry_void = {
+                name = 'Leere',
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
+            },
+            c_cry_asteroidbelt = {
+                name = 'Asteroidengürtel',
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
+            },
+            c_cry_universe = {
+                name = 'Das Universum in seiner verfickten Gesamtheit.',
+                text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult und",
+                    "{C:chips}+#4#{} chips",
+				},
             },
         },
         Sleeve = {
@@ -3338,6 +3411,31 @@ return {
         },
     },
     misc = {
+        poker_hands = {
+            ['cry_Bulwark'] = "Bollwerk",
+            ['cry_Clusterfuck'] = "Clusterfuck",
+            ['cry_UltPair'] = "Ultimatives Paar",
+            ['cry_WholeDeck'] = "Das ganze verfickte Deck",
+        },
+        poker_hand_descriptions = {
+            ['cry_Bulwark'] = {
+                '5 ranglose, farbenlose Karten zusammen gespielt',
+            },
+            ['cry_Clusterfuck'] = {
+                'Mindestens 8 Karten, welche nicht',
+		        'Paar, Flush oder Straße enthalten'
+            },
+            ['cry_UltPair'] = {
+                'Zwei zwei Paare, bei denen jedes',
+		        'von ihnen von einer Farbe ist,',
+		        'was insgesammt 2 Farben ergibt.'
+            },
+            ['cry_WholeDeck'] = {
+                'Eine Hand, die jede Karte in',
+                'in einem 52-Karten Deck enthält.',
+                'Bist du verrückt?',
+            },
+        },
         achievement_names = {
             ach_cry_ace_in_crash = "Pocket ACE",
             ach_cry_blurred_blurred_joker = "Gesetzlich blind",
@@ -3635,6 +3733,11 @@ return {
                 "um auf #2##1#",
                 "#2#Einsatz#3# Schwieringkeit tu gewinnen"
             },
+			
+
+            cry_art = {"Bild: #1#"},
+            cry_code = {"Code: #1#"},
+            cry_idea = {"Idee: #1#"},
         },
         v_text = {
             ch_c_cry_all_perishable = {"Alle Joker sind {C:eternal}Verderblich{}"},
