@@ -1244,24 +1244,13 @@ local ctrl_v = {
 		return { }
 	end,
 	can_use = function(self, card)
-		return #G.jokers.highlighted
-				+ #G.hand.highlighted
+		return #G.hand.highlighted
 				+ #G.consumeables.highlighted
 			== 2
 	end,
 	use = function(self, card, area, copier)
 		if area then
 			area:remove_from_highlighted(card)
-		end
-		if G.jokers.highlighted[1] then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.jokers.highlighted[1])
-					card:add_to_deck()
-					G.jokers:emplace(card)
-					return true
-				end,
-			}))
 		end
 		if G.hand.highlighted[1] then
 			G.E_MANAGER:add_event(Event({
@@ -1292,16 +1281,6 @@ local ctrl_v = {
 		for i = 1, number do
 			if area then
 				area:remove_from_highlighted(card)
-			end
-			if G.jokers.highlighted[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card = copy_card(G.jokers.highlighted[1])
-						card:add_to_deck()
-						G.jokers:emplace(card)
-						return true
-					end,
-				}))
 			end
 			if G.hand.highlighted[1] then
 				G.E_MANAGER:add_event(Event({

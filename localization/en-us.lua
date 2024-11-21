@@ -347,7 +347,7 @@ return {
                 name = "://CTRL+V",
                 text = {
                     "Create a {C:cry_code}copy{} of a selected",
-                    "{C:cry_code}Joker{}, playing card, or consumable"
+                    "playing card or consumable"
                 },
             },
             c_cry_delete = {
