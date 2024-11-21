@@ -345,7 +345,7 @@ return {
 	    c_cry_ctrl_v = {
 		name = "://CTRL+V",
 		text = {
-			"Erstelle eine Kopie einer {C:cry_code}gewälten{} Karte oder Gebrauchsgegenstand."
+			"Erstelle eine Kopie einer {C:cry_code}gewälten{} Spielkarte oder Gebrauchsgegenstand."
 		},
 	    },
             c_cry_delete = {
