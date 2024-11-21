@@ -379,6 +379,14 @@ return {
                     "die {C:cry_code}Verhackt{} werden",
                 },
             },
+			c_cry_inst = {
+				name = "://INSTANTIATE",
+				text = {
+					"Ziehe eine Karte mit dem {C:attention}Rang{} einer ausgewählten Karte",
+					"und eine mit der {C:attention}Farbe{} der ausgewählten Karte",
+					"{C:inactive}(Wenn möglich){}",
+				},
+			},
             c_cry_machinecode = {
                 name = "://MACHINECODE",
                 text = {

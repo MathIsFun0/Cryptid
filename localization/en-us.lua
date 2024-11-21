@@ -383,6 +383,14 @@ return {
                     "{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
                 },
             },
+			c_cry_inst = {
+				name = "://INSTANTIATE",
+				text = {
+					"Draw a card with a selected card's {C:attention}Rank{}",
+					"and one with a selected card's {C:attention}Suit{}",
+					"{C:inactive}(If possible){}",
+				},
+			},
             c_cry_machinecode = {
                 name = "://MACHINECODE",
                 text = {
