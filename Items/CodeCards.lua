@@ -1309,6 +1309,60 @@ local ctrl_v = {
 	end,
 }
 
+
+
+local inst = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "inst",
+	name = "cry-Inst",
+	atlas = "code",
+	order = 28,
+	config = {  },
+	pos = {
+		x = 3,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		return #G.hand.highlighted == 1
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+				break
+			end
+		end
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+				break
+			end
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, number do
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+					break
+				end
+			end
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+					break
+				end
+			end
+		end
+	end,
+}
+
 local automaton = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -2656,6 +2710,8 @@ local aliases = {
 	ctrlv = "://ctrl+v",
 	["ctrl+v"] = "://ctrl+v",
 	["ctrl v"] = "://ctrl+v",
+	instantiate = "://INSTANTIATE",
+	inst = "://INSTANTIATE",
 	spaghetti = "://spaghetti",
 	topuptag = "top-up tag",
 	gamblerstag = "gambler's tag",
@@ -3457,6 +3513,7 @@ local code_cards = {
 	rework_tag,
 	patch,
 	ctrl_v,
+	inst,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
