@@ -1137,8 +1137,8 @@ return {
                     "{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)",
                 },
             },
-            j_cry_fuckedup = {")..
-                name = Cryptid.enabled["Clean"] and "Messed Up" or "Fucked-Up Joker",
+            j_cry_fuckedup = {
+                name = Cryptid.enabled["Clean"] and "MEs" or "Fucked-Up Joker",
                 text = {
                     "{C:red}+#1#{} Mult if played",
                     "hand contains",
