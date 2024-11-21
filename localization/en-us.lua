@@ -1137,8 +1137,8 @@ return {
                     "{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)",
                 },
             },
-            j_cry_fuckedup = {
-                name = "Fucked-Up Joker",
+            j_cry_fuckedup = {")..
+                name = Cryptid.enabled["Clean"] and "Messed Up" or "Fucked-Up Joker",
                 text = {
                     "{C:red}+#1#{} Mult if played",
                     "hand contains",
@@ -2121,7 +2121,7 @@ return {
                 },
             },
             j_cry_wtf = {
-                name = "The Fuck!?",
+                name = Cryptid.enabled["Clean"] and "What the!?" or "The Fuck!?",
                 text = {
                     "{X:mult,C:white} X#1# {} Mult if played",
                     "hand contains",
@@ -2228,7 +2228,7 @@ return {
                 }
             },
             c_cry_universe = {
-                name = 'The Universe In Its Fucking Entirety',
+                name = 'The Universe In Its'..(Cryptid.enabled["Clean"] and "" or " Fucking")..'Entirety',
                 text = {
                     "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
                     "{C:attention}#2#",
@@ -3475,9 +3475,9 @@ return {
     misc = {
         poker_hands = {
             ['cry_Bulwark'] = "Bulwark",
-            ['cry_Clusterfuck'] = "Clusterfuck",
+            ['cry_Clusterfuck'] = Cryptid.enabled["Clean"] and "A Mess" or "ClusterFuck",
             ['cry_UltPair'] = "Ultimate Pair",
-            ['cry_WholeDeck'] = "The Entire Fucking Deck",
+            ['cry_WholeDeck'] = Cryptid.enabled["Clean"] and "THE DECK" or "The Entire Fucking Deck",
         },
         poker_hand_descriptions = {
             ['cry_Bulwark'] = {
@@ -3572,6 +3572,7 @@ return {
             ["cry_feat_epic jokers"] = "Epic Jokers",
             ["cry_feat_exotic jokers"] = "Exotic Jokers",
             ["cry_feat_m jokers"] = "M Jokers",
+            ["cry_feat_clean"] = "Disable Profanity",
             cry_feat_menu = "Custom Main Menu",
             ["cry_feat_misc."] = "Misc.",
             ["cry_feat_misc. jokers"] = "Misc. Jokers",
@@ -3630,7 +3631,7 @@ return {
             b_merge = "MERGE",
 
             cry_hand_bulwark = "Bulwark",
-            cry_hand_clusterfuck = "Clusterfuck",
+            cry_hand_clusterfuck =  Cryptid.enabled["Clean"] and "A Mess" or "ClusterFuck",
             cry_hand_ultpair = "Ultimate Pair",
 
             cry_again_q = "Again?",
@@ -3659,7 +3660,7 @@ return {
             k_cry_cursed  = "Cursed",
             k_planet_disc = "Circumstellar Disc",
             k_planet_satellite = "Natural Satellites",
-            k_planet_universe = "The Actual Fucking Universe",
+            k_planet_universe =  "The Actual"..(Cryptid.enabled["Clean"] and "" or " Fucking").." Universe",
 
             cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Notice",
