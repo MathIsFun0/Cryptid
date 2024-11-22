@@ -964,7 +964,6 @@ local energia = {
 }
 
 --why is this an exotic???
---[[
 local verisimile = {
 	object_type = "Joker",
 	name = "cry-verisimile",
@@ -1061,7 +1060,6 @@ local verisimile = {
 		code = {"Jevonn"}
 	},
 }
-]]
 
 local duplicare = {
     object_type = "Joker",
@@ -1174,7 +1172,7 @@ local formidiulosus = {
 	config = { extra = { candy = 3, Emult_mod = 0.01, Emult = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { center.ability.extra.candy, center.ability.extra.Emult_mod, center.ability.extra.Emult },
+			vars = { 3, center.ability.extra.Emult_mod, center.ability.extra.Emult },
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1182,7 +1180,17 @@ local formidiulosus = {
 	order = 518,
 	atlas = "atlasexotic",
 	no_dbl = true,
-	immutable = true,
+	update = function(self, card, front)
+		local value = 0
+		if G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
+					value = value + 1
+				end
+			end
+		end
+		card.ability.extra.Emult = 1 + (card.ability.extra.Emult_mod * value)
+	end,
 	calculate = function(self, card, context)
 		if (context.buying_card or context.cry_creating_card) and context.card.ability.set == "Joker" and context.card.config.center.rarity == "cry_cursed" and not context.blueprint and not (context.card == card) then
 			G.E_MANAGER:add_event(Event({
@@ -1197,17 +1205,11 @@ local formidiulosus = {
 			}))
 		end
 		if context.ending_shop then
-			for i = 1, card.ability.extra.candy do
+			for i = 1, 3 do
 				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
 				card:set_edition({ negative = true }, true)
 				card:add_to_deck()
 				G.jokers:emplace(card)
-			end
-		end
-		card.ability.extra.Emult = 1
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].config.center.rarity == "cry_candy" then
-				card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
 			end
 		end
 		if
