@@ -35,10 +35,20 @@ G.FUNCS.cry_intro_part = function(_part)
     local step = 1
     G.SETTINGS.paused = true
     if _part == 'start' then
-        G.gateway = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
+        G.gateway = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W*1.5, G.CARD_H*1.5, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
         G.gateway.states.visible = false
-        G.yawetag = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
+        G.gateway.states.collide.can = true
+        G.gateway.states.focus.can = false
+        G.gateway.states.hover.can = true
+        G.gateway.states.drag.can = false
+        G.gateway.hover = Node.hover
+        G.yawetag = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W*1.5, G.CARD_H*1.5, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
         G.yawetag.states.visible = false
+        G.yawetag.states.collide.can = true
+        G.yawetag.states.focus.can = false
+        G.yawetag.states.hover.can = true
+        G.yawetag.states.drag.can = false
+        G.yawetag.hover = Node.hover
         step = cry_intro_info({
             text_key = 'cry_intro_1',
             attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 0}},
@@ -61,11 +71,54 @@ G.FUNCS.cry_intro_part = function(_part)
                 G.gateway.states.visible = true
                 G.gateway.children.center.atlas = G.ASSET_ATLAS['cry_atlasnotjokers']
                 G.gateway.children.center:set_sprite_pos({x = 2, y = 0})
-                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -2, y = -3}}
+                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -2.5, y = -3}}
                 G.yawetag.states.visible = true
                 G.yawetag.children.center.atlas = G.ASSET_ATLAS['cry_atlasnotjokers']
-                G.yawetag.children.center:set_sprite_pos({x = 2, y = 0})
-                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 2, y = -3}}
+                G.yawetag.children.center:set_sprite_pos({x = 6, y = 5})
+                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 2.5, y = -3}}
+            end
+        })
+        step = cry_intro_info({
+            text_key = 'cry_intro_4',
+            attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
+            step = step,
+            highlight = {
+                G.gateway,
+                G.yawetag
+            },
+        })
+        G.modestBtn = UIBox{
+            definition = create_UIBox_character_button({button = "Modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3}),
+            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = -3, y = 2}}
+        }
+        G.mainlineBtn = UIBox{
+            definition = create_UIBox_character_button({button = "Mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3}),
+            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 2}}
+        }
+        G.madnessBtn = UIBox{
+            definition = create_UIBox_character_button({button = "Madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3}),
+            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 3, y = 2}}
+        }
+        G.modestBtn.states.visible = false
+        G.mainlineBtn.states.visible = false
+        G.madnessBtn.states.visible = false
+        step = cry_intro_info({
+            text_key = 'cry_intro_5',
+            attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
+            step = step,
+            highlight = {
+                G.gateway,
+                G.yawetag,
+                G.modestBtn,
+                G.mainlineBtn,
+                G.madnessBtn,
+            },
+            on_start = function()
+                G.modestBtn.states.visible = true
+                G.mainlineBtn.states.visible = true
+                G.madnessBtn.states.visible = true
+                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -4.8, y = 1.8}}
+                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 4.8, y = 1.8}}
             end
         })
     end

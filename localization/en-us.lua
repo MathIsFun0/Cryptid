@@ -3491,7 +3491,8 @@ return {
             cry_intro_1 = {
                 "Hello, I'm {C:attention}Jolly Joker{}!",
                 "Welcome to {C:cry_exotic,E:1}Cryptid{}!",
-                "{s:0.8}Note: You are currently playing an early version of the refactor. Expect issues!"
+                "{s:0.8}Note: You are currently playing an early version",
+                "{s:0.8}of the refactor. Expect issues!"
             },
             cry_intro_2 = {
                 "It looks like you've never",
@@ -3500,6 +3501,17 @@ return {
             },
             cry_intro_3 = {
                 "*grows hands*"
+            },
+            cry_intro_4 = {
+                "It's hard to quickly describe this mod, and",
+                "the many ways you can enjoy it.",
+                "Just know that this isn't the same Joker Poker",
+                "that your grandparents showed you!"
+            },
+            cry_intro_5 = {
+                "You can see I like the letter M",
+                "by what I named these {C:cry_ascendant}gamesets{}!",
+                "Let me describe them one-by-one..."
             },
         },
         poker_hands = {
