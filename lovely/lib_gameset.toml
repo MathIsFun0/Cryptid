@@ -1,0 +1,21 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Turn Jimbo into Jolly Joker
+[[patches]]
+[patches.pattern]
+target = "card_character.lua"
+pattern = 'self.children.card.states.visible = false'
+position = "before"
+payload = "self.children.card:set_ability(G.P_CENTERS.j_jolly)"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card_character.lua"
+pattern = 'colours = {G.C.RED, G.C.BLUE, G.C.ORANGE},'
+position = "at"
+payload = 'colours = {G.C.CRY_EXOTIC, G.C.BLUE, G.C.CRY_JOLLY},'
+match_indent = true

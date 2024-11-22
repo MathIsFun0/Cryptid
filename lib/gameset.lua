@@ -35,15 +35,20 @@ G.FUNCS.cry_intro_part = function(_part)
     local step = 1
     G.SETTINGS.paused = true
     if _part == 'start' then
-        step = cry_tutorial_info({
-            text_key = 'bb_1',
+        step = cry_intro_info({
+            text_key = 'cry_intro_1',
             attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 0}},
+            step = step,
+        })
+        step = cry_intro_info({
+            text_key = 'cry_intro_2',
+            attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
             step = step,
         })
     end
 end
 
-function cry_tutorial_info(args)
+function cry_intro_info(args)
     local overlay_colour = {0.32,0.36,0.41,0}
     ease_value(overlay_colour, 4, 0.6, nil, 'REAL', true,0.4)
     G.OVERLAY_TUTORIAL = G.OVERLAY_TUTORIAL or UIBox{
@@ -76,7 +81,6 @@ function cry_tutorial_info(args)
             not G.OVERLAY_TUTORIAL.step_complete then
                 G.CONTROLLER.interrupt.focus = true
                 G.OVERLAY_TUTORIAL.Jimbo = G.OVERLAY_TUTORIAL.Jimbo or Card_Character(pos)
-                G.OVERLAY_TUTORIAL.Jimbo.children.card:set_ability(G.P_CENTERS.j_jolly)
                 if type(args.highlight) == 'function' then args.highlight = args.highlight() end
                 args.highlight[#args.highlight+1] = G.OVERLAY_TUTORIAL.Jimbo
                 G.OVERLAY_TUTORIAL.Jimbo:add_speech_bubble(args.text_key, align, args.loc_vars)

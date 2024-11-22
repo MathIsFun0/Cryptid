@@ -3487,6 +3487,18 @@ return {
         }
     },
     misc = {
+        tutorial = {
+            cry_intro_1 = {
+                "Hello, I'm {C:attention}Jolly Joker{}!",
+                "Welcome to {C:cry_exotic,E:1}Cryptid{}!",
+                "{s:0.8}Note: You are currently playing an early version of the refactor. Expect issues!"
+            },
+            cry_intro_2 = {
+                "I can give you the power to",
+                "break the game in ways never seen before.",
+                "But it's up to you how much you want to break it."
+            }
+        },
         poker_hands = {
             ['cry_Bulwark'] = "Bulwark",
             ['cry_Clusterfuck'] = "Clusterfuck",
