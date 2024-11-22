@@ -867,7 +867,7 @@ local spaghetti = {
 			nil,
 			nil,
 			nil,
-			pseudorandom_element(Cryptid.food, pseudoseed("cry_spaghetti"))
+			Cryptid.get_food("cry_spaghetti")
 		)
 		card:set_edition({
 			cry_glitched = true,

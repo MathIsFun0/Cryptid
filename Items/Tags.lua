@@ -750,7 +750,7 @@ local gourmand = {
 				nil,
 				nil,
 				nil,
-				pseudorandom_element(Cryptid.food, pseudoseed("cry_gourmand_tag"))
+				Cryptid.get_food("cry_gourmand_tag")
 			)
 			create_shop_card_ui(card, "Joker", context.area)
 			card.states.visible = false
