@@ -148,9 +148,10 @@ local sync_catalyst = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.cardarea == G.jokers and not context.before
+		 and not context.after and not context.debuffed_hand
+		  and hand_chips and mult then
 			local tot = hand_chips + mult
-			if not context.debuffed_hand then -- Adding Guard clause to protect against unallowed hands
 				if not tot.array or #tot.array < 2 or tot.array[2] < 2 then --below eXeY notation
 					hand_chips = mod_chips(math.floor(tot / 2))
 					mult = mod_mult(math.floor(tot / 2))
@@ -169,8 +170,7 @@ local sync_catalyst = {
 					colour = { 0.8, 0.45, 0.85, 1 },
 				}
 			end
-		end
-	end,
+		end,
 	cry_credits = {
 		idea = {
 			"Project666"

@@ -81,7 +81,7 @@ local wrapped = {
 					nil,
 					nil,
 					nil,
-					pseudorandom_element(Cryptid.food, pseudoseed("cry_wrapped"))
+					Cryptid.get_food("cry_wrapped")
 				)
 				card:add_to_deck()
 				G.jokers:emplace(card)
