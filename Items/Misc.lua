@@ -881,6 +881,17 @@ local eclipse = {
 		return { vars = { self.config.max_highlighted } }
 	end,
 }
+local oil = {
+	object_type = "Enhancement",
+	key = "oil",
+	atlas = "cry_misc",
+	pos = { x = 0, y = 1 },
+	calculate = function(self, card, context, effect)
+		if context.discard then
+		ease_discard(1)
+	end
+end
+}
 local blessing = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -1416,6 +1427,7 @@ local miscitems = {
 	astral,
 	echo,
 	eclipse,
+	oil,
 	blessing,
 	typhoon,
 	azure_seal,
