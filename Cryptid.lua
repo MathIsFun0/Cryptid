@@ -2892,12 +2892,13 @@ for i = 1, #jokers do
 	Cryptid.food[#Cryptid.food+1] = jokers[i]
 end
 function Cryptid.get_food(seed)
-	local food_key = nil
-	for _=1,#Cryptid.food do
-		food_key = pseudorandom_element(Cryptid.food, pseudoseed(seed))
-		if not(food_key and  G.GAME.banned_keys[food_key] ) then return food_key  end
+	local food_keys = nil
+	for k in Cryptid.food do
+		if not G.GAME.banned_keys[k] then
+			food_keys.insert(k)
+		end
 	end
-	return "j_joker" -- 
+	return pseudorandom_element(food_keys, pseudoseed(seed))
 end
 SMODS.Sound({
 	key = "meow1",
