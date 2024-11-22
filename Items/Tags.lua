@@ -879,7 +879,7 @@ local booster = {
         name = "cry-Booster Tag",
 	order = 28,
         atlas = "tag_cry",
-        pos = { x = 4, y = 2 },
+        pos = { x = 5, y = 3 },
         config = { type = "immediate" },
         key = "booster",
 	loc_vars = function(self, info_queue)
