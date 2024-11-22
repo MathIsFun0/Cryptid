@@ -1269,7 +1269,7 @@ local ctrl_v = {
 					local card = copy_card(G.consumeables.highlighted[1])
 					card:add_to_deck()
 					if Incantation then
-						card:setQty(1) 
+						card:setQty(1)
 					end
 					G.consumeables:emplace(card)
 					return true
@@ -2349,18 +2349,22 @@ G.FUNCS.exploit_apply_previous = function()
 end
 G.FUNCS.exploit_apply = function()
 	local hand_table = {
-		["High Card"] = { "high card", "high" },
-		["Pair"] = { "pair", "2oak" },
-		["Two Pair"] = { "two pair", "2 pair" },
-		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips" },
-		["Straight"] = { "straight" },
-		["Flush"] = { "flush" },
-		["Full House"] = { "full house", "full" },
-		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak" },
+		["High Card"] = { "high card", "high", "1oak", "1 of a kind", "haha one" },
+		["Pair"] = { "pair", "2oak", "2 of a kind", "m" },
+		["Two Pair"] = { "two pair", "2 pair", "mm" },
+		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips", "triangle" },
+		["Straight"] = { "straight", "lesbian", "gay", "bisexual", "asexual" },
+		["Flush"] = { "flush", "skibidi", "toilet", "floosh" },
+		["Full House"] = { "full house", "full", "that 70s show", "modern family", "family matters", "the middle" },
+		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak", "22oakoak", "quads", "four to the floor" },
 		["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
-		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak" },
-		["Flush House"] = { "flush house", "flouse" },
-		["Flush Five"] = { "flush five", "fish" },
+		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak", "quints" },
+		["Flush House"] = { "flush house", "flouse", "outhouse" },
+		["Flush Five"] = { "flush five", "fish", "you know what that means", "five of a flush" },
+		["cry_Bulwark"] = { "bulwark", "flush rock", "stoned", "stone flush", "flush stone" },
+		["cry_Clusterfuck"] = { "clusterfuck", "fuck", "wtf" },
+		["cry_UltPair"] = { "ultimate pair", "ultpair", "ult pair", "pairpairpair" },
+		["cry_WholeDeck"] = { "the entire fucking deck", "deck", "tefd", "fifty-two", "you are fuck deck" },
 	}
 	local current_hand = nil
 	for k, v in pairs(SMODS.PokerHands) do
