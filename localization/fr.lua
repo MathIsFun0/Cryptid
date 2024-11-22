@@ -50,6 +50,13 @@ return {
                     "{C:inactive,E:1}Ne fait rien?",
                 },
             },
+            b_cry_bontiful = {
+                name = "Jeu généreux",
+                text = {
+                    "Après avoir utilisé une {C:blue}main{} ou une {C:red}défausse{},",
+                    "{C:attention}5{} cartes sont toujours tirées"
+                }
+            },
             b_cry_CCD = {
                 name = "Jeu CCD",
                 text = {
@@ -366,8 +373,8 @@ return {
             c_cry_ctrl_v = {
                 name = "://CTRL+V",
                 text = {
-                    "Crée une {C:cry_code}copie{} d'un {C:cry_code}Joker{},",
-                    "d'une carte à jouer ou d'un consommable",
+                    "Crée une {C:cry_code}copie{} d'une",
+                    "carte à jouer ou d'un consommable",
                     "sélectionné"
                 }
             },
@@ -403,6 +410,14 @@ return {
                     "{C:inactive,s:0.8}Ne marche seulement si les Jokers se déclenchent dans le même contexte,",
                     "{C:inactive,s:0.8}comme Joker et Le Duo (les deux après le compte)"
                 },
+            },
+            c_cry_inst = {
+                name = "://INSTANCIER",
+                text = {
+                    "Tire une carte avec la {C:cry_code}couleur{} de la carte sélectionnée",
+                    "et une carte avec le {C:cry_code}rang{} de la carte sélectionnée",
+                    "{C:inactive}(si possible){}"
+                }
             },
             c_cry_machinecode = {
                 name = "://MACHINECODE",
@@ -1559,7 +1574,7 @@ return {
             j_cry_necromancer = {
                 name = "Nécromancien",
                 text = {
-                    "Lorsqu'un Joker est {C:attention}vendu{} pour un prix supérieur à {C:attention}$0{}",
+                    "Lorsqu'un Joker est {C:attention}vendu{} pour plus de {C:attention}$0{},",
                     "gagne un Joker {C:attention}aléatoire{} {C:attention}vendu{} durant cette partie",
                     "et fixe sa {C:attention}valeur de vente{} à {C:attention}$0{}",
                 },
@@ -1632,9 +1647,8 @@ return {
             j_cry_oil_lamp = {
                 name = "Lampe à huile",
                 text = {
-                    "À la fin de la manche",
                     "Augmente les valeurs du Joker {C:attention}à la droite{} de celui-ci",
-                    "de {C:attention}x#1#{}"
+                    "de {C:attention}x#1#{} à la fin de la manche",
                 },
             },
             j_cry_oldblueprint = {
@@ -1966,6 +1980,13 @@ return {
                     "{C:inactive,s:0.8}Hey! I've seen this one before!",
                 },
             },
+            j_cry_tax_fraud = {
+                name = "Évasion Fiscale",
+                text = {
+                    "Octroie {C:attention}#1#${} par {C:attention}Joker en Location",
+                    "à la fin de la manche"
+                }
+            },
             j_cry_tenebris = {
                 name = "Tenebris",
                 text = {
@@ -2219,6 +2240,42 @@ return {
                     "{C:attention}#2#{},",
                     "et {C:attention}#3#{}",
                 },
+            },
+            c_cry_marsmoons = {
+                name = "Phobos & Déimos",
+                text = {
+                    "{S:0.8}({S:0.8,V:1}niv.#1#{S:0.8}){} Améliore",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Multi et",
+                    "{C:chips}+#4#{} Jetons"
+                }
+            },
+            c_cry_void = {
+                name = "Vide",
+                text = {
+                    "{S:0.8}({S:0.8,V:1}niv.#1#{S:0.8}){} Améliore",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Multi et",
+                    "{C:chips}+#4#{} Jetons"
+                }
+            },
+            c_cry_asteroidbelt = {
+                name = "Ceinture d'astéroïdes",
+                text = {
+                    "{S:0.8}({S:0.8,V:1}niv.#1#{S:0.8}){} Améliore",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Multi et",
+                    "{C:chips}+#4#{} Jetons"
+                }
+            },
+            c_cry_universe = {
+                name = "l'entièreté du putain d'univers",
+                text = {
+                    "{S:0.8}({S:0.8,V:1}niv.#1#{S:0.8}){} Améliore",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Multi et",
+                    "{C:chips}+#4#{} Jetons"
+                }
             },
         },
         Sleeve = {
@@ -3447,6 +3504,13 @@ return {
                     "puis {C:red}détruit{} cette carte",
                 },
             },
+            blurred_sdm0 = {
+                name = "a",
+                text = {
+                    "{C:inactive,s:0.8}\"I hate this card\" - SDM0, 2024{}",
+                    "{C:inactive,s:0.5}\"Je déteste cette carte\"{}",
+                }
+            }
         },
         Unique = {
             c_cry_potion = {
@@ -3460,6 +3524,31 @@ return {
         }
     },
     misc = {
+        poker_hands = {
+            ['cry_Bulwark'] = "Rempart",
+            ['cry_Clusterfuck'] = "Foutoir",
+            ['cry_UltPair'] = "Super Paire",
+            ['cry_WholeDeck'] = "un putain de jeu complet",
+        },
+        poker_hand_descriptions = {
+            ['cry_Bulwark'] = {
+                '5 cartes sans rang ni couleur'
+            },
+            ['cry_Clusterfuck'] = {
+                'Au moins 8 cartes sans',
+                'Paire, Couleur, ou Quinte'
+            },
+            ['cry_UltPair'] = {
+                'Deux Doubles Paires, où chaque',
+                'Double Paire est une couleur unique,',
+                'pour un total de deux couleurs entre elles'
+            },
+            ['cry_WholeDeck'] = {
+                'Une main qui contient toutes les cartes',
+                "d'un jeu standard de 52 cartes.",
+                "Je sais pas quoi dire, mais tu es fou."
+            }
+        },
         achievement_names = {
             ach_cry_ace_in_crash = "ACE de poche",
             ach_cry_blurred_blurred_joker = "Cécité totale",
@@ -3620,6 +3709,9 @@ return {
             k_cry_exotic = "Exotique",
             k_cry_candy = "Bonbon",
             k_cry_cursed = "Maudit",
+            k_planet_disc = "Disque Circumstellaire",
+            k_planet_satellite = "Satellites Naturels",
+            k_planet_universe = "Le putain d'univers",
 
             cry_notif_jimball_1 = "Jimboule",
             cry_notif_jimball_2 = "Notice de droits d'auteur",
