@@ -380,7 +380,8 @@ return {
                 name = "ENGANCHAR://",
                 text = {
                     "Selecciona dos comodines para {C:cry_code}engancharlos",
-                    "{C:inactive,s:0.8}Sólo funciona correctamente si los comodines se activan en el mismo contexto,",
+                    "{C:inactive,s:0.8}Sólo funciona correctamente si los",
+                    "{C:inactive,s:0.8}comodines se activan en el mismo contexto,",
                     "{C:inactive,s:0.8}(ej. Comodín y El dúo (ambos después de puntuar))",
                 },
             },
@@ -445,7 +446,7 @@ return {
             c_cry_revert = {
                 name = "://REVERTIR",
                 text = {
-                    "Establese el {C:cry_code}estado de juego{} al",
+                    "Establece el {C:cry_code}estado de juego{} al",
                     "inicio de {C:cry_code}esta apuesta{}",
                 },
             },
@@ -1438,7 +1439,7 @@ return {
                 text = {
                     "Vende esta carta para {C:attention}multiplicar",
                     "el valor de venta de todos los",
-                    "{C:attention}consumibles{} por {C:attention}X#1#"
+                    "{C:attention}consumibles{} por {X:attention,C:white}X#1#"
                 }
             },
             j_cry_membershipcard = {
@@ -1618,7 +1619,7 @@ return {
                 name = "Lámpara de aceite",
                 text = {
                     "Al final de la ronda, aumenta los valores",
-                    "del comodín del {C:attention}extremo derecho{} por {C:attention}x#1#{}"
+                    "del comodín del {C:attention}extremo derecho{} por {X:attention,C:white}x#1#{}"
                 },
             },
     
@@ -2009,7 +2010,7 @@ return {
                 text = {
                     "Vende esta carta para",
 		            "{C:attention}multiplicar{} los valores de los",
-                    "comodines conseguidos por {C:attention}X1.5{}",
+                    "comodines conseguidos por {X:attention,C:white}X1.5{}",
                 },
             },
 
@@ -2133,7 +2134,7 @@ return {
                 },
             },
             j_cry_wtf = {
-                name = "¿¡Qué rayos?!",
+                name = "¡¿Qué rayos?!",
                 text = {
                     "{X:mult,C:white} X#1# {} multi",
                     "si la mano contiene",
@@ -2211,6 +2212,42 @@ return {
                     "{C:attention}#2#{},",
                     "y {C:attention}#3#{}",
                 },
+            },
+            c_cry_marsmoons = {
+                name = 'Phobos y Deimos',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}nvl. #1#{S:0.8}){} Aumento de nivel",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} multi y",
+                    "{C:chips}+#4#{} fichas",
+                }
+            },
+            c_cry_void = {
+                name = 'Vacío',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}nvl. #1#{S:0.8}){} Aumento de nivel",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} multi y",
+                    "{C:chips}+#4#{} fichas",
+                }
+            },
+            c_cry_asteroidbelt = {
+                name = 'Cinturón de asteroides',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}nvl. #1#{S:0.8}){} Aumento de nivel",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} multi y",
+                    "{C:chips}+#4#{} fichas",
+                }
+            },
+            c_cry_universe = {
+                name = 'El universo en su puta totalidad',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}nvl. #1#{S:0.8}){} Aumento de nivel",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} multi y",
+                    "{C:chips}+#4#{} fichas",
+                }
             },
         },
         Sleeve = {
@@ -3454,6 +3491,31 @@ return {
         }
     },
     misc = {
+        poker_hands = {
+            ['cry_Bulwark'] = "Baluarte",
+            ['cry_Clusterfuck'] = "Lío de mierda",
+            ['cry_UltPair'] = "Pareja suprema",
+            ['cry_WholeDeck'] = "Toda la puta baraja",
+        },
+        poker_hand_descriptions = {
+            ['cry_Bulwark'] = {
+                '5 cartas, sin categoría ni palo',
+            },
+            ['cry_Clusterfuck'] = {
+                'Al menos 8 cartas que no',
+                'contengan una Pareja, Color o Escalera',
+            },
+            ['cry_UltPair'] = {
+                'Dos Doble pareja, donde cada',
+                'Doble pareja es un palo único, por un total',
+				'de 2 palos entre las dos',
+            },
+            ['cry_WholeDeck'] = {
+                'Una mano que contenga cada',
+                'carta en una baraja de 52 cartas.',
+                '¿Estás loco?',
+            },
+        },
         achievement_names = {
             ach_cry_ace_in_crash = "Un ACE En Mi Bolsillo",
             ach_cry_blurred_blurred_joker = "Legalmente Ciego",
@@ -3613,6 +3675,9 @@ return {
             k_cry_exotic = "Exótico",
             k_cry_candy = "Dulce",
             k_cry_cursed = "Maldito",
+            k_planet_disc = "Disco circunestelar",
+            k_planet_satellite = "Satélites naturales",
+            k_planet_universe = "El puto Universo Real",
 
             cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Nota de copyright",
