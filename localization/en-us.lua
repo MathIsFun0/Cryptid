@@ -3494,10 +3494,13 @@ return {
                 "{s:0.8}Note: You are currently playing an early version of the refactor. Expect issues!"
             },
             cry_intro_2 = {
-                "I can give you the power to",
-                "break the game in ways never seen before.",
-                "But it's up to you how much you want to break it."
-            }
+                "It looks like you've never",
+                "played Cryptid on this profile before.",
+                "Let me show you how things work!"
+            },
+            cry_intro_3 = {
+                "*grows hands*"
+            },
         },
         poker_hands = {
             ['cry_Bulwark'] = "Bulwark",

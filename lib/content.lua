@@ -197,65 +197,65 @@ SMODS.Atlas({
 	path = "cry_icon.png",
 	px = 32,
 	py = 32,
-}):register()
+})
 SMODS.Atlas({
 	key = "placeholders",
 	path = "placeholders.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlasepic",
 	path = "atlasepic.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlasone",
 	path = "atlasone.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlastwo",
 	path = "atlastwo.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlasthree",
 	path = "atlasthree.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlasspooky",
 	path = "atlasspooky.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlasexotic",
 	path = "atlasexotic.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "atlasnotjokers", --this is easier to spell then consumables
 	path = "atlasnotjokers.png",
 	px = 71,
 	py = 95,
-}):register()
+})
 SMODS.Atlas({
 	key = "tag_cry",
 	path = "tag_cry.png",
 	px = 34,
 	py = 34,
-}):register()
+})
 --Enchancements, seals, other misc things etc
 SMODS.Atlas({
 	key = "cry_misc",
 	path = "cry_misc.png",
 	px = 71,
 	py = 95,
-}):register()
+})

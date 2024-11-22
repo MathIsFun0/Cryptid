@@ -35,6 +35,10 @@ G.FUNCS.cry_intro_part = function(_part)
     local step = 1
     G.SETTINGS.paused = true
     if _part == 'start' then
+        G.gateway = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
+        G.gateway.states.visible = false
+        G.yawetag = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
+        G.yawetag.states.visible = false
         step = cry_intro_info({
             text_key = 'cry_intro_1',
             attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 0}},
@@ -44,6 +48,25 @@ G.FUNCS.cry_intro_part = function(_part)
             text_key = 'cry_intro_2',
             attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
             step = step,
+        })
+        step = cry_intro_info({
+            text_key = 'cry_intro_3',
+            attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
+            step = step,
+            highlight = {
+                G.gateway,
+                G.yawetag
+            },
+            on_start = function()
+                G.gateway.states.visible = true
+                G.gateway.children.center.atlas = G.ASSET_ATLAS['cry_atlasnotjokers']
+                G.gateway.children.center:set_sprite_pos({x = 2, y = 0})
+                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -2, y = -3}}
+                G.yawetag.states.visible = true
+                G.yawetag.children.center.atlas = G.ASSET_ATLAS['cry_atlasnotjokers']
+                G.yawetag.children.center:set_sprite_pos({x = 2, y = 0})
+                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 2, y = -3}}
+            end
         })
     end
 end
@@ -79,6 +102,7 @@ function cry_intro_info(args)
         func = function()
             if G.OVERLAY_TUTORIAL and G.OVERLAY_TUTORIAL.step == step and
             not G.OVERLAY_TUTORIAL.step_complete then
+                if args.on_start then args.on_start() end
                 G.CONTROLLER.interrupt.focus = true
                 G.OVERLAY_TUTORIAL.Jimbo = G.OVERLAY_TUTORIAL.Jimbo or Card_Character(pos)
                 if type(args.highlight) == 'function' then args.highlight = args.highlight() end
