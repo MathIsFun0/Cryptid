@@ -1217,6 +1217,7 @@ local candy_sticks = {
 	atlas = "atlasspooky",
 	blueprint_compat = false,
 	eternal_compat = false,
+	no_dbl = true,
 	calculate = function(self, card, context)
 		if context.setting_blind and not self.getting_sliced and not context.blueprint and context.blind.boss then
 			card.ability.extra.boss = G.GAME.blind:save()
