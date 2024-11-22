@@ -98,6 +98,7 @@ local legendary = {
 	config = { cry_legendary = true, cry_legendary_rate = 0.2 },
 	pos = { x = 0, y = 6 },
 	atlas = "atlasdeck",
+	order = 15,
 	trigger_effect = function(self, args)
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
 			if G.jokers then
@@ -395,7 +396,8 @@ return {
 								else
 									area = G.play
 								end
-								if not G.cry_redeemed_buffer[v.key] then
+								if not G.cry_redeemed_buffer[v.key]
+								and v.unlocked then
 									local card = create_card("Voucher", area, nil, nil, nil, nil, v.key)
 									G.cry_redeemed_buffer[v.key] = true
 									card:start_materialize()
