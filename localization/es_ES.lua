@@ -1,5 +1,5 @@
--- temporary replacement for mexican spanish
--- until someone does it, the other version should do
+--I couldn't get Meme Packs to work without crashing
+--yes somehow that was harder than RNJoker
 return {
     descriptions = {
         Back = {
