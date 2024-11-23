@@ -441,3 +441,12 @@ if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_playe
 end
 '''
 match_indent = true
+
+# Hopefully makes Enhancements check discards_used
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'G.hand.highlighted[i]:calculate_seal({discard = true})'
+position = "after"
+payload = 'eval_card(G.hand.highlighted[i],{discard = true})'
+match_indent = true
