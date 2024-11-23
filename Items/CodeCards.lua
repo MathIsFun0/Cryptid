@@ -1304,7 +1304,7 @@ local ctrl_v = {
 						local card = copy_card(G.consumeables.highlighted[1])
 						card:add_to_deck()
 						if Incantation then
-							card_copy:setQty(1)
+							card:setQty(1)
 						end
 						G.consumeables:emplace(card)
 						return true
