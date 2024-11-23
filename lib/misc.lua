@@ -256,3 +256,16 @@ if true then --Cryptid.enabled["Menu"] then
 		return ret
 	end
 end
+function Cryptid.get_food(seed)
+    local food_keys = {}  
+    for k, v in pairs(Cryptid.food) do  
+        if v.unlocked and not G.GAME.banned_keys[v] then
+            table.insert(food_keys, v)  
+        end
+    end
+    if #food_keys <= 0 then
+		return "j_reserved_parking"
+    else
+    	return pseudorandom_element(food_keys, pseudoseed(seed)) 
+    end
+end
