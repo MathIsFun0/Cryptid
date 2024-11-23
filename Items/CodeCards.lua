@@ -2837,6 +2837,7 @@ G.FUNCS.pointer_apply = function()
 		local created = false
 		if
 			G.P_CENTERS[current_card].set == "Joker"
+			and G.P_CENTERS[current_card].unlocked
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2851,7 +2852,7 @@ G.FUNCS.pointer_apply = function()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" then
+		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
