@@ -317,13 +317,13 @@ return {
 						local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 						for _, id in ipairs(valid_pools) do
 							for k, v in pairs(G.P_CENTER_POOLS[id]) do
-								if not center_no(v, "doe", k) then
+								if v.unlocked == true and not center_no(v, "doe", k) then
 									P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 								end
 							end
 						end
 						for k, v in pairs(G.P_CARDS) do
-							if not center_no(v, "doe", k) then
+							if v.unlocked == true and not center_no(v, "doe", k) then
 								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 							end
 						end

@@ -1304,7 +1304,7 @@ local ctrl_v = {
 						local card = copy_card(G.consumeables.highlighted[1])
 						card:add_to_deck()
 						if Incantation then
-							card_copy:setQty(1)
+							card:setQty(1)
 						end
 						G.consumeables:emplace(card)
 						return true
@@ -1335,7 +1335,11 @@ local inst = {
 		return { }
 	end,
 	can_use = function(self, card)
-		return #G.hand.highlighted == 1
+		local selected_cards = {}
+		for i = 1, #G.hand.highlighted do
+			if G.hand.highlighted[i] ~= card then selected_cards[#selected_cards+1] = G.hand.highlighted[i] end
+		end
+		return #selected_cards == 1
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, #G.deck.cards do
@@ -2837,6 +2841,7 @@ G.FUNCS.pointer_apply = function()
 		local created = false
 		if
 			G.P_CENTERS[current_card].set == "Joker"
+			and G.P_CENTERS[current_card].unlocked
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2851,7 +2856,7 @@ G.FUNCS.pointer_apply = function()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" then
+		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
