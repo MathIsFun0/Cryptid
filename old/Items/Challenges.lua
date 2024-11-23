@@ -448,6 +448,7 @@ if Cryptid.enabled["Tags"] then
 end
 if Cryptid.enabled["Misc."] then
 	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_cry_eclipse" }
+	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = {id = 'p_cry_meme_1', ids = {'p_cry_meme_1','p_cry_meme_two','p_cry_meme_three'}}
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {id = 'p_cry_meme_1', ids = {'p_cry_meme_1','p_cry_meme_two','p_cry_meme_three'}}
 end
 if Cryptid.enabled["Misc. Jokers"] then

@@ -867,7 +867,7 @@ local spaghetti = {
 			nil,
 			nil,
 			nil,
-			pseudorandom_element(Cryptid.food, pseudoseed("cry_spaghetti"))
+			Cryptid.get_food("cry_spaghetti")
 		)
 		card:set_edition({
 			cry_glitched = true,
@@ -1165,8 +1165,10 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					CARD.ability.cry_possessed = nil
-					SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1190,8 +1192,10 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					CARD.ability.cry_possessed = nil
-					SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1215,8 +1219,10 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					CARD.ability.cry_possessed = nil
-					SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1269,7 +1275,7 @@ local ctrl_v = {
 					local card = copy_card(G.consumeables.highlighted[1])
 					card:add_to_deck()
 					if Incantation then
-						card:setQty(1) 
+						card:setQty(1)
 					end
 					G.consumeables:emplace(card)
 					return true
@@ -2349,18 +2355,22 @@ G.FUNCS.exploit_apply_previous = function()
 end
 G.FUNCS.exploit_apply = function()
 	local hand_table = {
-		["High Card"] = { "high card", "high" },
-		["Pair"] = { "pair", "2oak" },
-		["Two Pair"] = { "two pair", "2 pair" },
-		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips" },
-		["Straight"] = { "straight" },
-		["Flush"] = { "flush" },
-		["Full House"] = { "full house", "full" },
-		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak" },
+		["High Card"] = { "high card", "high", "1oak", "1 of a kind", "haha one" },
+		["Pair"] = { "pair", "2oak", "2 of a kind", "m" },
+		["Two Pair"] = { "two pair", "2 pair", "mm" },
+		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips", "triangle" },
+		["Straight"] = { "straight", "lesbian", "gay", "bisexual", "asexual" },
+		["Flush"] = { "flush", "skibidi", "toilet", "floosh" },
+		["Full House"] = { "full house", "full", "that 70s show", "modern family", "family matters", "the middle" },
+		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak", "22oakoak", "quads", "four to the floor" },
 		["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
-		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak" },
-		["Flush House"] = { "flush house", "flouse" },
-		["Flush Five"] = { "flush five", "fish" },
+		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak", "quints" },
+		["Flush House"] = { "flush house", "flouse", "outhouse" },
+		["Flush Five"] = { "flush five", "fish", "you know what that means", "five of a flush" },
+		["cry_Bulwark"] = { "bulwark", "flush rock", "stoned", "stone flush", "flush stone" },
+		["cry_Clusterfuck"] = { "clusterfuck", "fuck", "wtf" },
+		["cry_UltPair"] = { "ultimate pair", "ultpair", "ult pair", "pairpairpair" },
+		["cry_WholeDeck"] = { "the entire fucking deck", "deck", "tefd", "fifty-two", "you are fuck deck" },
 	}
 	local current_hand = nil
 	for k, v in pairs(SMODS.PokerHands) do
@@ -2827,6 +2837,7 @@ G.FUNCS.pointer_apply = function()
 		local created = false
 		if
 			G.P_CENTERS[current_card].set == "Joker"
+			and G.P_CENTERS[current_card].unlocked
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2841,7 +2852,7 @@ G.FUNCS.pointer_apply = function()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" then
+		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then

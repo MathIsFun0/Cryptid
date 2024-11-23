@@ -28,8 +28,8 @@ return {
 			b_cry_bountiful = {
 				name = "Bountiful Deck",
 				text = {
-					"Always draw 5 cards after every",
-					"{C:attention}played hand{} or {C:attention}discard{}",
+                    "After {C:blue}Play{} or {C:red}Discard{},",
+                    "always draw {C:attention}5{} cards"
 				},
 			},
             b_cry_CCD = {
@@ -386,9 +386,9 @@ return {
 			c_cry_inst = {
 				name = "://INSTANTIATE",
 				text = {
-					"Draw a card with a selected card's {C:attention}Rank{}",
-					"and one with a selected card's {C:attention}Suit{}",
-					"{C:inactive}(If possible){}",
+					"Draw a card with selected card's {C:cry_code}rank{}",
+					"and one with selected card's {C:cry_code}suit{}",
+					"{C:inactive}(if possible){}",
 				},
 			},
             c_cry_machinecode = {
@@ -1542,9 +1542,9 @@ return {
 	    j_cry_necromancer = {
 	    	name = "Necromancer",
 		text = {
-		    "When a Joker is {C:attention}sold{} for a price greater than {C:attention}$0{}",
-		    "Gain a {C:attention}random{} Joker {C:attention}sold{} this run",
-		    "and set its {C:attention}sell value{} to {C:attention}$0{}",
+		    "When a Joker is {C:attention}sold{} for more than {C:attention}$0{},",
+		    "gain a {C:attention}random{} Joker {C:attention}sold{} this run",
+		    "with {C:money}$0{} sell value",
 		},
 	    },
             j_cry_negative = {
@@ -1616,8 +1616,8 @@ return {
 	    j_cry_oil_lamp = {
 		name = "Oil Lamp",
 		text = {
-			"At the end of round",
-			"Increase the values of Joker {C:attention}to the right{} by {C:attention}x#1#{}"
+			"Increase values of {C:attention}Joker{} to the right",
+			"by {C:attention}X#1#{} at end of round",
 		},
 	    },
             j_cry_oldblueprint = {
@@ -1949,8 +1949,8 @@ return {
 			j_cry_tax_fraud = {
 				name = "Tax Fraud",
 				text = {
-					"At the end of round",
 					"Gain {C:attention}$#1#{} per {C:attention}Rental Joker",
+					"at end of round",
 				},
 			},
             j_cry_tenebris = {
