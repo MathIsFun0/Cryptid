@@ -1335,7 +1335,11 @@ local inst = {
 		return { }
 	end,
 	can_use = function(self, card)
-		return #G.hand.highlighted == 1
+		local selected_cards = {}
+		for i = 1, #G.hand.highlighted do
+			if G.hand.highlighted[i] ~= card then selected_cards[#selected_cards+1] = G.hand.highlighted[i] end
+		end
+		return #selected_cards == 1
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, #G.deck.cards do
