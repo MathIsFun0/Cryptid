@@ -31,6 +31,26 @@ G.FUNCS.cry_intro_controller = function()
     end
 end
 
+function create_UIBox_character_button_with_sprite(args) 
+    local button = args.button or "NONE"
+    local func = args.func or nil
+    local colour = args.colour or G.C.RED
+    local update_func = args.update_func or nil
+    local sprite = args.sprite or nil
+  
+    local t = {n=G.UIT.ROOT, config = {align = "cm", padding = 0.1, colour = G.C.CLEAR}, nodes={
+      {n=G.UIT.C, config={align = "tm", minw = 1.9, padding = 0.2, minh = 1.2, r = 0.1, hover = true, colour = colour, button = func, func = update_func, shadow = true, maxw = args.maxw}, nodes={
+        {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+          {n=G.UIT.T, config={text = button, scale = 0.55, colour = G.C.UI.TEXT_LIGHT, focus_args = {button = 'x', orientation = 'bm'}, func = 'set_button_pip'}},
+        }},
+        {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+            {n=G.UIT.O, config={object=sprite}}
+          }},
+      }},
+      }}
+    return t
+end
+
 G.FUNCS.cry_intro_part = function(_part)
     local step = 1
     G.SETTINGS.paused = true
@@ -87,16 +107,19 @@ G.FUNCS.cry_intro_part = function(_part)
                 G.yawetag
             },
         })
+        local modestSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS['cry_gameset'], {x = 0, y = 0})
         G.modestBtn = UIBox{
-            definition = create_UIBox_character_button({button = "Modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3}),
+            definition = create_UIBox_character_button_with_sprite({sprite = modestSprite, button = "Modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3}),
             config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = -3, y = 2}}
         }
+        local mainlineSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS['cry_gameset'], {x = 1, y = 0})
         G.mainlineBtn = UIBox{
-            definition = create_UIBox_character_button({button = "Mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3}),
+            definition = create_UIBox_character_button_with_sprite({sprite = mainlineSprite, button = "Mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3}),
             config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 2}}
         }
+        local madnessSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS['cry_gameset'], {x = 2, y = 0})
         G.madnessBtn = UIBox{
-            definition = create_UIBox_character_button({button = "Madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3}),
+            definition = create_UIBox_character_button_with_sprite({sprite = madnessSprite, button = "Madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3}),
             config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 3, y = 2}}
         }
         G.modestBtn.states.visible = false
@@ -117,8 +140,8 @@ G.FUNCS.cry_intro_part = function(_part)
                 G.modestBtn.states.visible = true
                 G.mainlineBtn.states.visible = true
                 G.madnessBtn.states.visible = true
-                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -4.8, y = 1.8}}
-                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 4.8, y = 1.8}}
+                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -5, y = 1.8}}
+                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 5, y = 1.8}}
             end
         })
     end

@@ -199,6 +199,12 @@ SMODS.Atlas({
 	py = 32,
 })
 SMODS.Atlas({
+	key = "gameset",
+	path = "cry_gameset.png",
+	px = 39,
+	py = 39,
+})
+SMODS.Atlas({
 	key = "placeholders",
 	path = "placeholders.png",
 	px = 71,
