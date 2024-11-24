@@ -6368,6 +6368,48 @@ local tax_fraud = {
 		}
 	},
 }
+local pity_prize = {
+	object_type = "Joker",
+	name = "cry-Pity-Prize",
+	key = "pity_prize",
+	pos = { x = 5, y = 5 },
+	config = { },
+	rarity = 1,
+	cost = 4,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { } }
+	end,
+	calculate = function(self, card, context)
+		if context.skipping_booster then
+			local tag
+			repeat 
+				tag = Tag(get_next_tag_key("cry_pity_prize"))
+			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+			if tag.name == "Orbital Tag" then
+				local _poker_hands = {}
+				for k, v in pairs(G.GAME.hands) do
+					if v.visible then
+						_poker_hands[#_poker_hands + 1] = k
+					end
+				end
+				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
+			end
+			add_tag(tag)
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Pyrocreep"
+		},
+		art = {
+			"Pyrocreep"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6460,6 +6502,7 @@ local miscitems =  {
 	necromancer,
 	oil_lamp,
 	tax_fraud,
+	pity_prize,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

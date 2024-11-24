@@ -1653,6 +1653,13 @@ return {
                     "{C:inactive}(Momentan {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
+			
+			j_cry_pity_prize = {
+				name = "Trostpreis",
+				text = {
+					"Wenn ein {C:attention}Booster Pack{} übersprungen wird, erhalte einen zufälligen {C:attention}Tag{}"
+				},
+			},
             j_cry_pot_of_jokes = {
                 name = "Topf der Witze",
                 text = {
