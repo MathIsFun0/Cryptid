@@ -113,7 +113,7 @@ function cry_misprintize(card, override, force_reset, stack)
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 			and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 			and not stack
-		or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
+		or not Card.no(card, "immutable", true)
 	then
 		if card.ability.name == "Ace Aequilibrium" then
 			return
