@@ -3517,7 +3517,22 @@ return {
             cry_intro_5 = {
                 "You can see I like the letter M",
                 "by what I named these {C:cry_ascendant}gamesets{}!",
-                "Let me describe them one by one..."
+                "Select one for me to explain..."
+            },
+            cry_modest_1 = {
+                "Seeking an experience close to vanilla?",
+                "Then the {C:cry_ascendant}Modest{} gameset is for you!",
+            },
+            cry_modest_2 = {
+                "Still, be careful of the gimmicks hiding",
+                "throughout Cryptid! You never know",
+                "what you'll find on the next round..."
+            },
+            cry_mainline_1 = {
+                "Add {C:cry_ascendant}Mainline{} description here..."
+            },
+            cry_madness_1 = {
+                "Add {C:cry_ascendant}Madness{} description here..."
             },
         },
         poker_hands = {

@@ -39,7 +39,7 @@ function create_UIBox_character_button_with_sprite(args)
     local sprite = args.sprite or nil
   
     local t = --{n=G.UIT.ROOT, config = {align = "cm", padding = 0.1, colour = G.C.CLEAR}, nodes={
-      {n=G.UIT.C, config={align = "tm", minw = 2.5, padding = 0.2, minh = 1.2, r = 0.1, hover = true, colour = colour, button = func, func = update_func, shadow = true, maxw = args.maxw}, nodes={
+      {n=G.UIT.C, config={align = "tm", minw = 2.5, padding = 0.2, minh = 1.2, r = 0.1, hover = true, colour = colour, button = func, func = update_func, shadow = true, maxw = args.maxw, id = args.id}, nodes={
         {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
           {n=G.UIT.T, config={text = button, scale = 0.55, colour = G.C.UI.TEXT_LIGHT, focus_args = {button = 'x', orientation = 'bm'}, func = 'set_button_pip'}},
         }},
@@ -118,10 +118,14 @@ G.FUNCS.cry_intro_part = function(_part)
             {shader = 'dissolve', shadow_height = 0.05},
             {shader = 'dissolve'}
         })
+        --TODO: localize
+        G.modestBtn = create_UIBox_character_button_with_sprite({sprite = modestSprite, button = "Modest", id = "modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3})
+        G.mainlineBtn = create_UIBox_character_button_with_sprite({sprite = mainlineSprite, button = "Mainline", id = "mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3})
+        G.madnessBtn = create_UIBox_character_button_with_sprite({sprite = madnessSprite, button = "Madness", id = "madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3})
         local gamesetUI = create_UIBox_generic_options({infotip = false, contents ={
-            create_UIBox_character_button_with_sprite({sprite = modestSprite, button = "Modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3}),
-            create_UIBox_character_button_with_sprite({sprite = mainlineSprite, button = "Mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3}),
-            create_UIBox_character_button_with_sprite({sprite = madnessSprite, button = "Madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3}),
+            G.modestBtn,
+            G.mainlineBtn,
+            G.madnessBtn,
         },
         back_label = "Confirm",
         back_colour = G.C.BLUE,
@@ -152,9 +156,61 @@ G.FUNCS.cry_intro_part = function(_part)
                 G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 4.5, y = 2.2}}
                 G.yawetag.T.w = G.yawetag.T.w * 3
                 G.yawetag.T.h = G.yawetag.T.h * 3
-            end
+            end,
+            no_button = true
         })
     end
+    if _part == 'modest' or _part == 'mainline' or _part == 'madness' then
+        local desc_length = { --number of times Jolly Joker speaks for each gameset
+            modest = 2,
+            mainline = 1,
+            madness = 1
+        }
+        G.E_MANAGER:clear_queue('tutorial')
+        if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end
+        G.OVERLAY_TUTORIAL.Jimbo:remove_button()
+        G.OVERLAY_TUTORIAL.Jimbo:remove_speech_bubble()
+        G.OVERLAY_TUTORIAL.step = nil
+        for i = 1, desc_length[_part] do
+            step = cry_intro_info({
+                text_key = 'cry_'.._part..'_'..i,
+                attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
+                step = step,
+                highlight = {
+                    G.gamesetUI:get_UIE_by_ID(_part)
+                },
+            })
+        end
+        step = cry_intro_info({
+            no_button = true,
+            attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
+            step = step,
+            highlight = {
+                G.gateway,
+                G.yawetag,
+                G.gamesetUI
+            },
+        })
+    end
+end
+
+G.FUNCS.cry_modest = function(e)
+    G.modestBtn.config.colour = G.C.CRY_ASCENDANT
+    G.mainlineBtn.config.colour = G.C.RED
+    G.madnessBtn.config.colour = G.C.CRY_EXOTIC
+    G.FUNCS.cry_intro_part("modest")
+end
+G.FUNCS.cry_mainline = function(e)
+    G.modestBtn.config.colour = G.C.GREEN
+    G.mainlineBtn.config.colour = G.C.CRY_ASCENDANT
+    G.madnessBtn.config.colour = G.C.CRY_EXOTIC
+    G.FUNCS.cry_intro_part("mainline")
+end
+G.FUNCS.cry_madness = function(e)
+    G.modestBtn.config.colour = G.C.GREEN
+    G.mainlineBtn.config.colour = G.C.RED
+    G.madnessBtn.config.colour = G.C.CRY_ASCENDANT
+    G.FUNCS.cry_intro_part("madness")
 end
 
 function cry_intro_info(args)
@@ -190,7 +246,7 @@ function cry_intro_info(args)
                 G.OVERLAY_TUTORIAL.Jimbo = G.OVERLAY_TUTORIAL.Jimbo or Card_Character(pos)
                 if type(args.highlight) == 'function' then args.highlight = args.highlight() end
                 args.highlight[#args.highlight+1] = G.OVERLAY_TUTORIAL.Jimbo
-                G.OVERLAY_TUTORIAL.Jimbo:add_speech_bubble(args.text_key, align, args.loc_vars)
+                if args.text_key then G.OVERLAY_TUTORIAL.Jimbo:add_speech_bubble(args.text_key, align, args.loc_vars) end
                 G.OVERLAY_TUTORIAL.Jimbo:set_alignment(attach)
                 if args.hard_set then G.OVERLAY_TUTORIAL.Jimbo:hard_set_VT() end
                 G.OVERLAY_TUTORIAL.button_listen = nil
