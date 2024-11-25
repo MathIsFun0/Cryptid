@@ -3669,6 +3669,7 @@ return {
             cry_sobbing = "Help me...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
+            k_good_luck_ex = "Good luck!",
             cry_sus_ex = "Impostor!",
             cry_jolly_ex = "Jolly Up!",
             cry_m_minus = "m",
