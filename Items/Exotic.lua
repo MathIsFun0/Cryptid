@@ -794,7 +794,7 @@ local aequilibrium = {
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if not from_debuff then
+		if not from_debuff and card.ability.extra.card then
 			card.ability.extra.card:start_dissolve()
 		end
 	end,
