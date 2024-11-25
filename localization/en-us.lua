@@ -1860,6 +1860,16 @@ return {
                     "{C:attention}+#1#{} card in shop",
                 },
             },
+            j_cry_fleshpanopticon = {
+                name = "Flesh Panopticon",
+                text = {
+                    "{C:red}X#1#{} {C:attention}Boss Blind{} size",
+                    "When {C:attention}Boss Blind{} is defeated,",
+                    "{C:red}self destructs{}, and creates",
+                    "a {C:dark_edition}Negative{} {C:spectral}Gateway{} card",
+                    "{C:inactive,s:0.8}\"This prison... to hold... me?\""
+                },
+            },
             j_cry_spaceglobe = {
                 name = "Celestial Globe",
                 text = {
