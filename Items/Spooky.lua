@@ -130,7 +130,7 @@ local choco_dice = {
 		if not from_debuff then
 			SMODS.Events["ev_cry_choco"..card.ability.extra.roll]:finish()
 		end
-		
+
 	end,
 }
 local choco_base_event = {
@@ -350,7 +350,7 @@ local choco5 = { --bloodsucker
 	calculate = function(self, context)
 		if context.pre_jokers and context.before and not context.repetition and not context.blueprint and not context.retrigger_joker then
 			for k, v in ipairs(context.scoring_hand) do
-				if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then 
+				if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
 					v:set_ability(G.P_CENTERS.c_base, nil, true)
 					v.vampired = true
 					G.E_MANAGER:add_event(Event({
@@ -359,7 +359,7 @@ local choco5 = { --bloodsucker
 							v.vampired = nil
 							return true
 						end
-					})) 
+					}))
 				end
 			end
 		end
@@ -535,7 +535,7 @@ local spy = {
 			if desc_nodes == full_UI_table.main and not full_UI_table.name then
 				full_UI_table.name = localize { type = 'name', set = target.set, key = target.key, nodes = full_UI_table.name }
 			elseif desc_nodes ~= full_UI_table.main and not desc_nodes.name then
-				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set } 
+				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set }
 			end
 			if specific_vars and specific_vars.debuffed and not res.replace_debuff then
 				target = { type = 'other', key = 'debuffed_' ..
@@ -569,7 +569,7 @@ local spy = {
 			if desc_nodes == full_UI_table.main and not full_UI_table.name then
 				full_UI_table.name = localize { type = 'name', set = target.set, key = target.key, nodes = full_UI_table.name }
 			elseif desc_nodes ~= full_UI_table.main and not desc_nodes.name then
-				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set } 
+				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set }
 			end
 			if specific_vars and specific_vars.debuffed and not res.replace_debuff then
 				target = { type = 'other', key = 'debuffed_' ..
@@ -918,7 +918,7 @@ local candy_cane = {
 						context.other_card.candy_caned = nil
 						return true
 					end
-				})) 
+				}))
 			else
 				ease_dollars(card.ability.extra.dollars)
 			end
@@ -1098,7 +1098,7 @@ local mellowcreme = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			for k, v in ipairs(G.consumeables.cards) do
-				if v.set_cost then 
+				if v.set_cost then
 					v.ability.extra_value = (v.ability.extra_value or 0) + (math.max(1, math.floor(v.cost/2)) + (v.ability.extra_value or 0))*(card.ability.extra.sell_mult-1)
 					v:set_cost()
 				end
@@ -1135,7 +1135,7 @@ local brittle = {
 						_card.brittled = nil
 						return true
 					end
-				})) 
+				}))
 				if card.ability.extra.rounds > 0 then
 					return nil, true
 				else
@@ -1257,7 +1257,7 @@ local candy_sticks = {
                                     G.jokers:remove_card(card)
                                     card:remove()
                                     card = nil
-                                return true; end})) 
+                                return true; end}))
                         return true
                     end
                 }))
@@ -1276,7 +1276,7 @@ local candy_sticks = {
                                     G.jokers:remove_card(card)
                                     card:remove()
                                     card = nil
-                                return true; end})) 
+                                return true; end}))
                         return true
                     end
                 }))
@@ -1296,6 +1296,58 @@ local candy_sticks = {
 			"Foegro"
 		}
 	},
+}
+
+local storage_area_config = {
+    type = "play",
+    card_w = G.CARD_W * 0.5,
+}
+
+local buttercup = {
+    object_type = "Joker",
+    key = "buttercup",
+    name = "cry-Buttercup",
+    pos = {x=1, y=3},
+    config = { extra = { slots = 1 } },
+    rarity = "cry_candy",
+    cost = 3,
+    atlas = "atlasspooky",
+    blueprint_compat = false,
+    eternal_compat = false,
+    no_dbl = true,
+    cry_credits = {
+        idea = { "Squiddy" },
+        art = { "lolxddj" },
+        code = { "#Guigui" }
+    },
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = { center.ability.extra.slots, },
+        }
+    end,
+    add_to_deck = function(self, card, from_debuff)
+        if card.cry_storage == nil then
+            card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+        end
+        if G.GAME.next_shop_cards == nil then
+            G.GAME.next_shop_cards = {}
+        end
+    end,
+    calculate = function(self, card, context)
+        if card.cry_storage == nil then
+            card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+        end
+        if context.selling_self and not context.blueprint then
+            if #card.cry_storage.cards > 0 then
+                for i, jok in ipairs(card.cry_storage.cards) do
+                    jok.T.scale = jok.T.scale / 0.5
+                    G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+                    jok:remove()
+                end
+            end
+            card.cry_storage:remove()
+        end
+    end,
 }
 
 items = {
@@ -1330,10 +1382,11 @@ items = {
 	brittle,
 	monopoly_money,
 	candy_sticks,
+	buttercup,
 }
 --order is temporary so we can more easily test these out
-return { name = "Spooky", order = 1e300, init = function() 
-	
+return { name = "Spooky", order = 1e300, init = function()
+
 	local sc = Card.set_cost
 	function Card:set_cost()
 		sc(self)
@@ -1342,11 +1395,62 @@ return { name = "Spooky", order = 1e300, init = function()
 			self.sell_cost_label = 0
 		end
 	end
-	
+
 	--Really hacky patch to remove sell button for cursed jokers
+	-- modified by #Guigui to add buttercup shenanigans
 	local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 	function G.UIDEF.use_and_sell_buttons(card)
 		local m = G_UIDEF_use_and_sell_buttons_ref(card)
+		if
+            card.area
+            and card.area == G.jokers
+            and card.config.center.key == "j_cry_buttercup"
+        then
+            local use = {
+                n = G.UIT.C,
+                config = { align = "cr" },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = {
+                            ref_table = card,
+                            align = "cr",
+                            maxw = 1.25,
+                            padding = 0.1,
+                            r = 0.05,
+                            hover = true,
+                            shadow = true,
+                            colour = G.C.UI.BACKGROUND_INACTIVE,
+                            one_press = true,
+                            button = "store",
+                            func = "can_store_card",
+                        },
+                        nodes = {
+                            { n = G.UIT.B, config = { w = 0.1, h = 0.3 } },
+                            {
+                                n = G.UIT.T,
+                                config = {
+                                    text = localize("b_store"),
+                                    colour = G.C.UI.TEXT_LIGHT,
+                                    scale = 0.3,
+                                    shadow = true,
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+            local n = m.nodes[1]
+            if not card.added_to_deck then
+                use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+            end
+            n.nodes = n.nodes or {}
+            table.insert(n.nodes, {
+                n = G.UIT.R,
+                config = { align = "cl" },
+                nodes = { use, }
+            })
+        end
 		if card.area and card.area.config.type == 'joker' and card.config and card.config.center and card.config.center.rarity == "cry_cursed" and card.ability.name ~= "cry-Monopoly" then
 			table.remove(m.nodes[1].nodes, 1)
 		end
@@ -1395,6 +1499,131 @@ return { name = "Spooky", order = 1e300, init = function()
 			end
 		end
 		return catd(self, debuff)
+	end
+
+	-- for buttercup
+	function G.FUNCS.can_store_card(e)
+        -- get shop highlighted
+        -- only from the jokers spot for now, might expand later
+        -- (to accomodate for DoE probably?)
+        local shop_area = G.shop_jokers
+        if shop_area == nil then
+            e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+            e.config.button = nil
+            return
+        end
+        local jok = e.config.ref_table
+        -- WHERES THE FUCKING STORAGE :boom:
+        -- sendInfoMessage(tprint(jok), "Buttercup - CaroleCryptid")
+        if #shop_area.highlighted == 1 and jok:can_use_storage() then
+            e.config.colour = G.C.BLUE
+            e.config.button = "store_card"
+        else
+            e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+            e.config.button = nil
+        end
+	end
+
+	function G.FUNCS.store_card(e)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                local shop_area = G.shop_jokers
+                local got_joker = shop_area.highlighted[1]
+                local jok = e.config.ref_table
+                got_joker.T.original_scale = got_joker.T.scale
+                got_joker.T.scale = got_joker.T.scale * 0.5
+                if got_joker.children.price then got_joker.children.price:remove() end
+                got_joker.children.price = nil
+                if got_joker.children.buy_button then got_joker.children.buy_button:remove() end
+                got_joker.children.buy_button = nil
+                shop_area:remove_card(got_joker)
+                jok.cry_storage:emplace(got_joker)
+                return true
+            end
+        }))
+	end
+
+	function Card:can_use_storage()
+        if self.cry_storage ~= nil then
+            return #self.cry_storage.cards < self.ability.extra.slots
+        elseif self.config.center.key == "j_cry_buttercup" then -- "where did my fucking storage go"
+            sendInfoMessage("creating missing card area")
+            self.cry_storage = CardArea(0.5, 0.5, 1, 1, storage_area_config)
+        end
+        return false
+	end
+
+	local carmv = Card.move
+	function Card:move(dt)
+        carmv(self,dt)
+        if self.cry_storage ~= nil then
+            --sendInfoMessage(self.cry_storage, "buttercup")
+            self.cry_storage.T.w = G.CARD_W*0.45
+            self.cry_storage.T.x = self.T.x
+            self.cry_storage.T.y = self.T.y
+            self.cry_storage.VT.x = self.VT.x
+            self.cry_storage.VT.y = self.VT.y
+        end
+	end
+
+	local carsv = Card.save
+	function Card:save()
+        local saved_table = carsv(self)
+        if self.cry_storage then
+            saved_table.cry_storage = self.cry_storage:save()
+        end
+        return saved_table
+	end
+
+	local carld = Card.load
+	function Card:load(cardTable, other_card)
+        carld(self, cardTable, other_card)
+
+        if cardTable.cry_storage then
+            self.cry_storage = CardArea(self.T.x, 2, 1, 1, storage_area_config)
+            self.cry_storage:load(cardTable.cry_storage)
+            for i, card in ipairs(self.cry_storage.cards) do
+                card.T.original_scale = card.T.scale
+                card.T.scale = card.T.scale * 0.5
+            end
+        end
+	end
+
+	local ccfs = create_card_for_shop
+	function create_card_for_shop(area)
+        if area == G.shop_jokers and G.GAME.next_shop_cards and #G.GAME.next_shop_cards > 0 then
+            local guaranteed_card = Card(
+                area.x,
+                area.y,
+                G.CARD_W,
+                G.CARD_H,
+                nil,
+                G.P_CENTERS.j_jolly,
+                {bypass_discovery_center = true, bypass_discovery_ui = true}
+            )
+            guaranteed_card:load(G.GAME.next_shop_cards[1], nil)
+            sendInfoMessage(tprint(guaranteed_card), "guaranteed card")
+            -- guaranteed_card.T.h = G.CARD_H
+            guaranteed_card.VT.h = guaranteed_card.T.h
+            table.remove(G.GAME.next_shop_cards, 1)
+            create_shop_card_ui(guaranteed_card, "Joker", area)
+            guaranteed_card.states.visible = false
+            G.E_MANAGER:add_event(Event({
+                delay = 0.4,
+                trigger = 'after',
+                func = (
+                    function()
+                        guaranteed_card:start_materialize()
+                        guaranteed_card:set_cost()
+                        return true
+                    end)
+            }))
+            guaranteed_card:set_cost()
+            return guaranteed_card
+        end
+        return ccfs(area)
 	end
 
 	--antique can only be bought as last item

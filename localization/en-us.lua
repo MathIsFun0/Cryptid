@@ -740,6 +740,14 @@ return {
                     "for {C:mult}-#2#{} Mult",
                 },
             },
+            j_cry_buttercup = {
+                name = "Buttercup",
+                text = {
+                    "Can store {C:attention}#1#{} selected shop item",
+                    "When sold: Add the stored item",
+                    "to the next shop"
+                }
+            },
             j_cry_candy_basket = {
                 name = "Candy Basket",
                 text = {
