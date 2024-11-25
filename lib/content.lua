@@ -192,6 +192,16 @@ SMODS.Sound({
 		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
 	end,
 })
+SMODS.Sound({
+	key = "music_theme",
+	path = "music_theme.ogg",
+	volume = 0.7,
+	sync = false,
+	pitch = 1,
+	select_music_track = function()
+		return --[[Cryptid_config.Cryptid and Cryptid_config.Cryptid.theme_music and --]] G.STAGE == G.STAGES.MAIN_MENU
+	end,
+})
 SMODS.Atlas({
 	key = "modicon",
 	path = "cry_icon.png",

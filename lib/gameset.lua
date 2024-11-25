@@ -38,16 +38,16 @@ function create_UIBox_character_button_with_sprite(args)
     local update_func = args.update_func or nil
     local sprite = args.sprite or nil
   
-    local t = {n=G.UIT.ROOT, config = {align = "cm", padding = 0.1, colour = G.C.CLEAR}, nodes={
-      {n=G.UIT.C, config={align = "tm", minw = 1.9, padding = 0.2, minh = 1.2, r = 0.1, hover = true, colour = colour, button = func, func = update_func, shadow = true, maxw = args.maxw}, nodes={
+    local t = --{n=G.UIT.ROOT, config = {align = "cm", padding = 0.1, colour = G.C.CLEAR}, nodes={
+      {n=G.UIT.C, config={align = "tm", minw = 2.5, padding = 0.2, minh = 1.2, r = 0.1, hover = true, colour = colour, button = func, func = update_func, shadow = true, maxw = args.maxw}, nodes={
         {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
           {n=G.UIT.T, config={text = button, scale = 0.55, colour = G.C.UI.TEXT_LIGHT, focus_args = {button = 'x', orientation = 'bm'}, func = 'set_button_pip'}},
         }},
         {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
             {n=G.UIT.O, config={object=sprite}}
           }},
-      }},
-      }}
+      }}--,
+      --}}
     return t
 end
 
@@ -55,14 +55,14 @@ G.FUNCS.cry_intro_part = function(_part)
     local step = 1
     G.SETTINGS.paused = true
     if _part == 'start' then
-        G.gateway = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W*1.5, G.CARD_H*1.5, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
+        G.gateway = Sprite(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W*1.5, G.CARD_H*1.5, G.ASSET_ATLAS['cry_atlasnotjokers'], {x=2, y=0})
         G.gateway.states.visible = false
         G.gateway.states.collide.can = true
         G.gateway.states.focus.can = false
         G.gateway.states.hover.can = true
         G.gateway.states.drag.can = false
         G.gateway.hover = Node.hover
-        G.yawetag = Card(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W*1.5, G.CARD_H*1.5, G.P_CARDS.empty, G.P_CENTERS.j_joker, {bypass_discovery_center = true})
+        G.yawetag = Sprite(G.ROOM_ATTACH.T.x + G.ROOM_ATTACH.T.w/2 - 1, G.ROOM_ATTACH.T.y + G.ROOM_ATTACH.T.h/2 - 4, G.CARD_W*1.5, G.CARD_H*1.5, G.ASSET_ATLAS['cry_atlasnotjokers'], {x=6, y=5})
         G.yawetag.states.visible = false
         G.yawetag.states.collide.can = true
         G.yawetag.states.focus.can = false
@@ -89,12 +89,8 @@ G.FUNCS.cry_intro_part = function(_part)
             },
             on_start = function()
                 G.gateway.states.visible = true
-                G.gateway.children.center.atlas = G.ASSET_ATLAS['cry_atlasnotjokers']
-                G.gateway.children.center:set_sprite_pos({x = 2, y = 0})
                 G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -2.5, y = -3}}
                 G.yawetag.states.visible = true
-                G.yawetag.children.center.atlas = G.ASSET_ATLAS['cry_atlasnotjokers']
-                G.yawetag.children.center:set_sprite_pos({x = 6, y = 5})
                 G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 2.5, y = -3}}
             end
         })
@@ -108,23 +104,36 @@ G.FUNCS.cry_intro_part = function(_part)
             },
         })
         local modestSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS['cry_gameset'], {x = 0, y = 0})
-        G.modestBtn = UIBox{
-            definition = create_UIBox_character_button_with_sprite({sprite = modestSprite, button = "Modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3}),
-            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = -3, y = 2}}
-        }
+        modestSprite:define_draw_steps({
+            {shader = 'dissolve', shadow_height = 0.05},
+            {shader = 'dissolve'}
+        })
         local mainlineSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS['cry_gameset'], {x = 1, y = 0})
-        G.mainlineBtn = UIBox{
-            definition = create_UIBox_character_button_with_sprite({sprite = mainlineSprite, button = "Mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3}),
-            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 2}}
-        }
+        mainlineSprite:define_draw_steps({
+            {shader = 'dissolve', shadow_height = 0.05},
+            {shader = 'dissolve'}
+        })
         local madnessSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS['cry_gameset'], {x = 2, y = 0})
-        G.madnessBtn = UIBox{
-            definition = create_UIBox_character_button_with_sprite({sprite = madnessSprite, button = "Madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3}),
-            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 3, y = 2}}
+        madnessSprite:define_draw_steps({
+            {shader = 'dissolve', shadow_height = 0.05},
+            {shader = 'dissolve'}
+        })
+        local gamesetUI = create_UIBox_generic_options({infotip = false, contents ={
+            create_UIBox_character_button_with_sprite({sprite = modestSprite, button = "Modest", func = "cry_modest", colour = G.C.GREEN, maxw = 3}),
+            create_UIBox_character_button_with_sprite({sprite = mainlineSprite, button = "Mainline", func = "cry_mainline", colour = G.C.RED, maxw = 3}),
+            create_UIBox_character_button_with_sprite({sprite = madnessSprite, button = "Madness", func = "cry_madness", colour = G.C.CRY_EXOTIC, maxw = 3}),
+        },
+        back_label = "Confirm",
+        back_colour = G.C.BLUE,
+        --back_func = "cry_gameset_confirm"
+        })
+        gamesetUI.nodes[2] = nil
+        gamesetUI.config.colour = G.C.CLEAR
+        G.gamesetUI = UIBox{
+            definition = gamesetUI,
+            config = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 2.5}}
         }
-        G.modestBtn.states.visible = false
-        G.mainlineBtn.states.visible = false
-        G.madnessBtn.states.visible = false
+        G.gamesetUI.states.visible = false
         step = cry_intro_info({
             text_key = 'cry_intro_5',
             attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = -3}},
@@ -132,16 +141,17 @@ G.FUNCS.cry_intro_part = function(_part)
             highlight = {
                 G.gateway,
                 G.yawetag,
-                G.modestBtn,
-                G.mainlineBtn,
-                G.madnessBtn,
+                G.gamesetUI
             },
             on_start = function()
-                G.modestBtn.states.visible = true
-                G.mainlineBtn.states.visible = true
-                G.madnessBtn.states.visible = true
-                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -5, y = 1.8}}
-                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 5, y = 1.8}}
+                --the scaling should be eased later...
+                G.gamesetUI.states.visible = true
+                G.gateway:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = -4.5, y = 2.2}}
+                G.gateway.T.w = G.gateway.T.w * 3
+                G.gateway.T.h = G.gateway.T.h * 3
+                G.yawetag:set_alignment{major = G.ROOM_ATTACH, type = 'cm', offset = {x = 4.5, y = 2.2}}
+                G.yawetag.T.w = G.yawetag.T.w * 3
+                G.yawetag.T.h = G.yawetag.T.h * 3
             end
         })
     end
@@ -152,9 +162,6 @@ function cry_intro_info(args)
     ease_value(overlay_colour, 4, 0.6, nil, 'REAL', true,0.4)
     G.OVERLAY_TUTORIAL = G.OVERLAY_TUTORIAL or UIBox{
         definition = {n=G.UIT.ROOT, config = {align = "cm", padding = 32.05, r=0.1, colour = overlay_colour, emboss = 0.05}, nodes={
-            {n=G.UIT.R, config={align = "tr", minh = G.ROOM.T.h, minw = G.ROOM.T.w}, nodes={
-                UIBox_button{label = {localize('b_skip').." >"}, button = "skip_tutorial_section", minw = 1.3, scale = 0.45, colour = G.C.JOKER_GREY}
-            }}
         }},
         config = {
             align = "cm",

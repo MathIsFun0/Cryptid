@@ -3517,7 +3517,7 @@ return {
             cry_intro_5 = {
                 "You can see I like the letter M",
                 "by what I named these {C:cry_ascendant}gamesets{}!",
-                "Let me describe them one-by-one..."
+                "Let me describe them one by one..."
             },
         },
         poker_hands = {
