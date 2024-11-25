@@ -1279,7 +1279,7 @@ local fleshpanopticon = {
           play_sound('timpani')
           delay(0.4)
           return true end }))
-        card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize("k_good_luck_ex")})
+        card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize("cry_good_luck_ex")})
       return true end }))
     end
     if context.end_of_round and not context.individual and not context.repetition and not context.blueprint and G.GAME.blind.boss and not card.gone then
