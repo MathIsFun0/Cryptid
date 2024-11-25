@@ -89,7 +89,7 @@ local happyhouse = {
 	pos = { x = 2, y = 4 },
 	order = 2,
 	config = { extra = { mult = 4, check = 0 } },
-	immune_to_chemach = true,
+	immutable = true,
     pools = {["Meme"] = true},
 	rarity = 2,
 	cost = 2,
@@ -179,7 +179,7 @@ local potofjokes = {
 	key = "pot_of_jokes",
 	config = { extra = { h_size = -2, h_mod = 1 } },
 	pos = { x = 5, y = 0 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 3,
 	order = 104,
 	cost = 10,
@@ -508,7 +508,7 @@ local pickle = {
 	key = "pickle",
 	config = { extra = { tags = 3, tags_mod = 1 } },
 	pos = { x = 3, y = 3 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	order = 45,
 	cost = 6,
@@ -691,7 +691,7 @@ local booster = {
 	config = { extra = { booster_slots = 1 } },
 	pos = { x = 2, y = 0 },
 	order = 34,
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	cost = 6,
 	blueprint_compat = false,
@@ -1033,7 +1033,7 @@ local chad = {
 	pos = { x = 0, y = 3 },
 	order = 71,
 	config = { extra = { retriggers = 2 } },
-	immune_to_chemach = true,
+	immutable = true,
     pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 10,
@@ -1389,7 +1389,7 @@ local mario = {
 	order = 85,
 	cost = 20,
 	blueprint_compat = true,
-	immune_to_chemach = true,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.retriggers } }
 	end,
@@ -1811,7 +1811,7 @@ local redbloon = {
 	key = "redbloon",
 	config = { extra = { money = 20, rounds_remaining = 2 } },
 	pos = { x = 5, y = 1 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 1,
 	cost = 4,
 	order = 97,
@@ -2365,7 +2365,7 @@ local sapling = {
 	key = "sapling",
 	pos = { x = 3, y = 2 },
 	config = { extra = { score = 0, req = 18, check = nil } },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	cost = 6,
 	order = 42,
@@ -5492,7 +5492,7 @@ local busdriver = {
 	key = "busdriver",
 	config = { extra = { mult = 50, odds = 4 } },
 	pos = { x = 5, y = 1 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	cost = 7,
 	order = 46,
@@ -6240,7 +6240,7 @@ local tropical_smoothie = {
 		if context.selling_self then
 			local check = false
 			for i, v in pairs (G.jokers.cards) do
-				if not Card.no(v, "immune_to_chemach", true) and not Card.no(v, "immutable", true) then
+				if not Card.no(v, "immutable", true) then
 					cry_with_deck_effects(G.jokers.cards[1], function(card)
 						cry_misprintize(v, { min = 1.5, max = 1.5}, nil, true)
 					end)
@@ -6310,7 +6310,7 @@ local oil_lamp = { --You want it? It's yours my friend
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if i < #G.jokers.cards then
-						if not Card.no(G.jokers.cards[i+1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[i+1], "immutable", true) then
+						if not Card.no(G.jokers.cards[i+1], "immutable", true) then
 							cry_with_deck_effects(G.jokers.cards[i+1], function(cards)
 								cry_misprintize(cards, { min = card.ability.extra.increase, max = card.ability.extra.increase }, nil, true)
 							end)
@@ -6362,6 +6362,48 @@ local tax_fraud = {
 	cry_credits = {
 		idea = {
 			"DoNotSus"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local pity_prize = {
+	object_type = "Joker",
+	name = "cry-Pity-Prize",
+	key = "pity_prize",
+	pos = { x = 5, y = 5 },
+	config = { },
+	rarity = 1,
+	cost = 4,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { } }
+	end,
+	calculate = function(self, card, context)
+		if context.skipping_booster then
+			local tag
+			repeat 
+				tag = Tag(get_next_tag_key("cry_pity_prize"))
+			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+			if tag.name == "Orbital Tag" then
+				local _poker_hands = {}
+				for k, v in pairs(G.GAME.hands) do
+					if v.visible then
+						_poker_hands[#_poker_hands + 1] = k
+					end
+				end
+				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
+			end
+			add_tag(tag)
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Pyrocreep"
+		},
+		art = {
+			"Pyrocreep"
 		},
 		code = {
 			"Foegro"
@@ -6460,6 +6502,7 @@ local miscitems =  {
 	necromancer,
 	oil_lamp,
 	tax_fraud,
+	pity_prize,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

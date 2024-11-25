@@ -1681,6 +1681,12 @@ return {
                     "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
+			j_cry_pity_prize = {
+				name = "Pity Prize",
+				text = {
+					"When you skip a {C:attention}Booster Pack{} gain a random {C:attention}Tag{}"
+				},
+			},
             j_cry_pot_of_jokes = {
                 name = "Pot of Jokes",
                 text = {
