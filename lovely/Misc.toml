@@ -243,7 +243,7 @@ position = "at"
 payload = '''
 if self.config.center.key == 'j_cry_gemino' then
 other_joker = G.jokers.cards[1]
-if other_joker and other_joker ~= self and not (Card.no(other_joker, "immune_to_chemach", true) or Card.no(other_joker, "immutable", true)) then
+if other_joker and other_joker ~= self and not (Card.no(other_joker, "immutable", true)) then
     self.ability.blueprint_compat = 'compatible'
 else
     self.ability.blueprint_compat = 'incompatible'
