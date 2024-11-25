@@ -126,8 +126,8 @@ local choco_dice = {
 			}
 		end
 	end,
-	remove_from_deck = function(self, card, form_debuff)
-		if not form_debuff then
+	remove_from_deck = function(self, card, from_debuff)
+		if not from_debuff then
 			SMODS.Events["ev_cry_choco"..card.ability.extra.roll]:finish()
 		end
 		
