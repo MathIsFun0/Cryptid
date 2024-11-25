@@ -163,8 +163,8 @@ G.FUNCS.cry_intro_part = function(_part)
     if _part == 'modest' or _part == 'mainline' or _part == 'madness' then
         local desc_length = { --number of times Jolly Joker speaks for each gameset
             modest = 2,
-            mainline = 1,
-            madness = 1
+            mainline = 3,
+            madness = 3
         }
         G.E_MANAGER:clear_queue('tutorial')
         if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end
@@ -195,21 +195,21 @@ G.FUNCS.cry_intro_part = function(_part)
 end
 
 G.FUNCS.cry_modest = function(e)
-    G.modestBtn.config.colour = G.C.CRY_ASCENDANT
+    G.modestBtn.config.colour = G.C.CRY_SELECTED
     G.mainlineBtn.config.colour = G.C.RED
     G.madnessBtn.config.colour = G.C.CRY_EXOTIC
     G.FUNCS.cry_intro_part("modest")
 end
 G.FUNCS.cry_mainline = function(e)
     G.modestBtn.config.colour = G.C.GREEN
-    G.mainlineBtn.config.colour = G.C.CRY_ASCENDANT
+    G.mainlineBtn.config.colour = G.C.CRY_SELECTED
     G.madnessBtn.config.colour = G.C.CRY_EXOTIC
     G.FUNCS.cry_intro_part("mainline")
 end
 G.FUNCS.cry_madness = function(e)
     G.modestBtn.config.colour = G.C.GREEN
     G.mainlineBtn.config.colour = G.C.RED
-    G.madnessBtn.config.colour = G.C.CRY_ASCENDANT
+    G.madnessBtn.config.colour = G.C.CRY_SELECTED
     G.FUNCS.cry_intro_part("madness")
 end
 

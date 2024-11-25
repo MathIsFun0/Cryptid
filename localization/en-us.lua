@@ -3495,7 +3495,7 @@ return {
     misc = {
         tutorial = {
             cry_intro_1 = {
-                "Hello, I'm {C:attention}Jolly Joker{}!",
+                "Hello, I'm {C:attention}Joseph J. Joker{}!",
                 "Welcome to {C:cry_exotic,E:1}Cryptid{}!",
                 "{s:0.8}Note: You are currently playing an early version",
                 "{s:0.8}of the refactor. Expect issues!"
@@ -3529,10 +3529,33 @@ return {
                 "what you'll find on the next round..."
             },
             cry_mainline_1 = {
-                "Add {C:cry_ascendant}Mainline{} description here..."
+                "Wanna {E:1,C:attention}break{} the game? Good news, you can",
+                "do it without going off the deep end!",
+            },
+            cry_mainline_2 = {
+                "Things are still nuts here, but you'll have",
+                "the chance to experience the {C:cry_ascendant}progression{}",
+                "system. Just don't get too comfortable..."
+            },
+            cry_mainline_3 = {
+                "Because you'll definitely be stronger, but",
+                "I've crafted some {E:1,C:dark_edition}bosses{} that",
+                "might make you regret selecting this {C:cry_ascendant}gameset{}..."
             },
             cry_madness_1 = {
-                "Add {C:cry_ascendant}Madness{} description here..."
+                "You lookin' to completely {C:red,E:1}annihilate{} your hard drive?",
+                "Oh, how fun! The {C:cry_ascendant}Madness{} gameset says",
+                "'Balance? {E:1,C:red}WHAT'S THAT!?{}'"
+            },
+            cry_madness_2 = {
+                "I've spent weeks of sleepless, {C:green}Mountain Dew{}-fueled",
+                "nights working to ensure this gameset is",
+                "{C:cry_ascendant}PERFECTLY BALANCED{}, just for you!"
+            },
+            cry_madness_3 = {
+                "You'll start with everything unlocked, so you",
+                "can unleash the {C:red,E:1}full power{} of Cryptid!",
+                "Just be careful not to {C:attention,E:1}crash{} the game..."
             },
         },
         poker_hands = {

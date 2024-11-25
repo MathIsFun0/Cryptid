@@ -770,6 +770,7 @@ Cryptid.C = {
 	AZURE = { HEX("0409ff"), HEX("63dcff") },
 	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
 	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
+	SELECTED = { HEX("3db85d"), HEX("309fc7") },
 }
 function Game:update(dt)
 	upd(self, dt)
