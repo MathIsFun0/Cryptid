@@ -6181,14 +6181,23 @@ local exposed = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
-	calculate = function(self, card, context)
-		if context.setting_blind and not context.blueprint then
+	update = function(self, card, dt)
+		if G.deck then
 			for i, v in pairs (G.deck.cards) do
 				if v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
+		if G.hand then
+			for i, v in pairs (G.hand.cards) do
+				if v:is_face() then
+					v:set_debuff(true)
+				end
+			end
+		end
+	end,
+	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			if not context.other_card:is_face() then
                 return {
@@ -6213,14 +6222,23 @@ local mask = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
-	calculate = function(self, card, context)
-		if context.setting_blind and not context.blueprint then
+	update = function(self, card, dt)
+		if G.deck then
 			for i, v in pairs (G.deck.cards) do
 				if not v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
+		if G.hand then
+			for i, v in pairs (G.hand.cards) do
+				if not v:is_face() then
+					v:set_debuff(true)
+				end
+			end
+		end
+	end,
+	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			if context.other_card:is_face() then
                 return {
