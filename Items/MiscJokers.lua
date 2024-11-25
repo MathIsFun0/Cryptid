@@ -984,7 +984,7 @@ local seal_the_deal = {
 	object_type = "Joker",
 	name = "cry-Seal The Deal",
 	key = "seal_the_deal",
-	config = { extra = { x_chips = 6 } },
+	config = { extra = nil },
 	pos = { x = 2, y = 4 },
 	rarity = 2,
 	cost = 5,
@@ -992,8 +992,8 @@ local seal_the_deal = {
 	immutable = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play then
-			if G.GAME.current_round.hands_left == 0 then
+		if context.individual and context.cardarea == G.play and not context.blueprint and not context.retrigger_joker then
+			if G.GAME.current_round.hands_left == 0 and not context.other_card.seal then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local seal_type = pseudorandom(pseudoseed("seal_the_deal"))
@@ -1015,6 +1015,25 @@ local seal_the_deal = {
 				delay(0.5)
 				return nil, true
 			end
+		end
+	end,
+	set_ability = function(self, card, initial, delay_sprites)
+		local sealtable = { "blue", "red", "purple" }
+		if Cryptid.enabled["Misc."] then sealtable[#sealtable + 1] = "azure" end
+		if Cryptid.enabled["Code Cards"] then sealtable[#sealtable + 1] = "green" end
+		card.ability.extra = pseudorandom_element(sealtable, pseudoseed('abc'))
+		--Gold (ULTRA RARE!!!!!!!!)
+		if pseudorandom('xyz') <= 0.000001 and not (card.area and card.area.config.collection) then
+			card.children.center:set_sprite_pos({x = 6, y = 4})
+		--Others
+		elseif card.ability.extra == "red" then
+			card.children.center:set_sprite_pos({x = 6, y = 0})
+		elseif card.ability.extra == "azure" then
+			card.children.center:set_sprite_pos({x = 6, y = 2})
+		elseif card.ability.extra == "purple" then
+			card.children.center:set_sprite_pos({x = 6, y = 3})
+		elseif card.ability.extra == "green" then
+			card.children.center:set_sprite_pos({x = 6, y = 1})
 		end
 	end,
 	cry_credits = {
