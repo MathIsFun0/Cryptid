@@ -1349,8 +1349,7 @@ items = {
 	monopoly_money,
 	candy_sticks,
 }
---order is temporary so we can more easily test these out
-return { name = "Spooky", order = 1e300, init = function() 
+return { name = "Spooky", init = function() 
 	
 	local sc = Card.set_cost
 	function Card:set_cost()
