@@ -4366,7 +4366,7 @@ local stronghold = {
 	object_type = "Joker",
 	name = "cry-stronghold",
 	key = "stronghold",
-	order = 114,
+	order = 119,
 	pos = { x = 8, y = 4 },
 	config = { Xmult = 5, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
@@ -4403,7 +4403,7 @@ local wtf = {
 	object_type = "Joker",
 	name = "cry-wtf",
 	key = "wtf",
-	order = 115,
+	order = 120,
 	pos = { x = 7, y = 1 },
 	config = { Xmult = 10, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
@@ -4440,7 +4440,7 @@ local clash = {
 	object_type = "Joker",
 	name = "cry-clash",
 	key = "clash",
-	order = 116,
+	order = 121,
 	pos = { x = 8, y = 1 },
 	config = { Xmult = 12, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
@@ -4785,7 +4785,7 @@ local bonkers = {
 	name = "cry-Bonkers Joker",
 	key = "bonkers",
 	pos = { x = 8, y = 5 },
-	order = 108,
+	order = 113,
 	config = { t_mult = 20, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_bulwark") } }
@@ -4817,7 +4817,7 @@ local fuckedup = {
 	name = "cry-Fucked-Up Joker",
 	key = "fuckedup",
 	pos = { x = 7, y = 2 },
-	order = 109,
+	order = 114,
 	config = { t_mult = 37, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_clusterfuck") } }
@@ -4849,7 +4849,7 @@ local foolhardy = {
 	name = "cry-Foolhardy Joker",
 	key = "foolhardy",
 	pos = { x = 8, y = 2 },
-	order = 110,
+	order = 115,
 	config = { t_mult = 42, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_ultpair") } }
@@ -5152,7 +5152,7 @@ local adroit = {
 	key = "adroit",
 	pos = { x = 7, y = 4 },
 	effect = "Cry Type Chips",
-	order = 111,
+	order = 116,
 	config = { t_chips = 170, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_bulwark") } }
@@ -5183,7 +5183,7 @@ local penetrating = {
 	key = "penetrating",
 	pos = { x = 7, y = 3 },
 	effect = "Cry Type Chips",
-	order = 112,
+	order = 117,
 	config = { t_chips = 270, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_clusterfuck") } }
@@ -5214,7 +5214,7 @@ local treacherous = {
 	key = "treacherous",
 	pos = { x = 8, y = 3 },
 	effect = "Cry Type Chips",
-	order = 113,
+	order = 118,
 	config = { t_chips = 300, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_ultpair") } }
@@ -5972,7 +5972,7 @@ local universe = {
 	end,
 	rarity = 3,
 	cost = 6,
-	order = 40,
+	order = 121,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
@@ -6040,6 +6040,7 @@ local astral_bottle = {
 	atlas = "atlasthree",
 	rarity = 2,
 	cost = 6,
+	order = 122,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.cry_astral) then
@@ -6195,6 +6196,7 @@ local exposed = {
 	config = { extra = 2 },
 	rarity = 3,
 	cost = 8,
+	order = 123,
 	atlas = "atlastwo",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -6237,6 +6239,7 @@ local mask = {
 	rarity = 3,
 	cost = 7,
 	atlas = "atlastwo",
+	order = 124,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -6277,6 +6280,7 @@ local tropical_smoothie = {
 	config = {},
 	rarity = 3,
 	cost = 5,
+	order = 125,
 	atlas = "atlastwo",
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
@@ -6315,6 +6319,7 @@ local necromancer = {
 	rarity = 2,
 	cost = 5,
 	atlas = "atlastwo",
+	order = 126,
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -6348,6 +6353,7 @@ local oil_lamp = { --You want it? It's yours my friend
 	config = { extra = { increase = 1.2 } },
 	rarity = 3,
 	cost = 10,
+	order = 127,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.increase } }
@@ -6387,6 +6393,7 @@ local tax_fraud = {
 	config = { extra = { money = 6 } },
 	rarity = 3,
 	cost = 10,
+	order = 128,
 	atlas = "placeholders",
 	in_pool = function(self)
 		if G.jokers then
@@ -6424,6 +6431,7 @@ local pity_prize = {
 	rarity = 1,
 	cost = 4,
 	atlas = "atlastwo",
+	order = 129,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { } }
 	end,
