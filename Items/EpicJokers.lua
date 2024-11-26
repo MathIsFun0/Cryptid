@@ -1264,6 +1264,7 @@ local fleshpanopticon = {
 	immutable = true,
 	rarity = "cry_epic",
 	cost = 15,
+	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.boss_size } }
