@@ -1,5 +1,5 @@
 -- gameset.lua: functions for gameset UI and logic
-
+G.SETTINGS.cry_intro_complete = false
 -- Based on vanilla tutorial system - add a system where Jolly Joker talks to the player
 local gu = Game.update
 function Game:update(dt)
@@ -129,8 +129,16 @@ G.FUNCS.cry_intro_part = function(_part)
         },
         back_label = "Confirm",
         back_colour = G.C.BLUE,
-        --back_func = "cry_gameset_confirm"
+        back_func = "cry_gameset_confirm"
         })
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            blocking = false, blockable = false,
+            func = function()
+                G.madnessBtn.config.colour = G.C.CRY_EXOTIC
+                return true
+            end
+        }))
         gamesetUI.nodes[2] = nil
         gamesetUI.config.colour = G.C.CLEAR
         G.gamesetUI = UIBox{
@@ -199,18 +207,33 @@ G.FUNCS.cry_modest = function(e)
     G.mainlineBtn.config.colour = G.C.RED
     G.madnessBtn.config.colour = G.C.CRY_EXOTIC
     G.FUNCS.cry_intro_part("modest")
+    G.selectedGameset = "modest"
 end
 G.FUNCS.cry_mainline = function(e)
     G.modestBtn.config.colour = G.C.GREEN
     G.mainlineBtn.config.colour = G.C.CRY_SELECTED
     G.madnessBtn.config.colour = G.C.CRY_EXOTIC
     G.FUNCS.cry_intro_part("mainline")
+    G.selectedGameset = "mainline"
 end
 G.FUNCS.cry_madness = function(e)
     G.modestBtn.config.colour = G.C.GREEN
     G.mainlineBtn.config.colour = G.C.RED
     G.madnessBtn.config.colour = G.C.CRY_SELECTED
     G.FUNCS.cry_intro_part("madness")
+    G.selectedGameset = "madness"
+end
+G.FUNCS.cry_gameset_confirm = function(e) --temporary
+    G.SETTINGS.cry_intro_complete = true
+    G.SETTINGS.paused = false
+    G.gamesetUI:remove()
+    G.gateway:remove()
+    G.yawetag:remove()
+    G.E_MANAGER:clear_queue('tutorial')
+    G.OVERLAY_TUTORIAL.Jimbo:remove()
+    if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end 
+    G.OVERLAY_TUTORIAL:remove()
+    G.OVERLAY_TUTORIAL = nil
 end
 
 function cry_intro_info(args)
