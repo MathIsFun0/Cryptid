@@ -69,21 +69,15 @@ match_indent = true
 
 # Semicolon - don't lose
 [[patches]]
-[patches.regex]
+[patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''game_over = false
-(?<indent>[\t ]*)end
-[\t ]*for i = 1, #G.jokers.cards do'''
-position = 'at'
-# match_indent = true
-line_prepend = '$indent'
+pattern = '''G.RESET_JIGGLES = true'''
+position = 'after'
+match_indent = true
 payload = '''
-game_over = false
-end
-if G.GAME.current_round.semicolon and game_over then
+if G.GAME.current_round.semicolon then
     game_over = false
 end
-for i = 1, #G.jokers.cards do
 '''
 
 # Semicolon - end screen text
