@@ -445,7 +445,7 @@ local lucky_joker = {
 			"Jevonn"
 		},
 		code = {
-			"Wilsonthewolf"
+			"WilsontheWolf"
 		}
 	},
 }
