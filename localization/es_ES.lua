@@ -348,7 +348,7 @@ return {
                 name = "://CTRL+V",
                 text = {
                     "Crea una {C:cry_code}copia{} de un {C:cry_code}comodín{},",
-                    "carta de juego, o consumible"
+                    "carta de juego, o consumible seleccionado"
                 },
             },
             c_cry_delete = {
@@ -385,6 +385,15 @@ return {
                     "{C:inactive,s:0.8}(ej. Comodín y El dúo (ambos después de puntuar))",
                 },
             },
+			c_cry_inst = {
+				name = "://INSTANCIAR",
+				text = {
+					"Saca una carta con una {C:cry_code}categoría{} seleccionada",
+					"y otra carta con un {C:cry_code}palo{} seleccionado",
+					"{C:inactive}(si es posible){}",
+				},
+			},
+
             c_cry_machinecode = {
                 name = "://CÓDIGOMÁQUINA",
                 text = {
@@ -1619,7 +1628,7 @@ return {
                 name = "Lámpara de aceite",
                 text = {
                     "Al final de la ronda, aumenta los valores",
-                    "del comodín del {C:attention}extremo derecho{} por {X:attention,C:white}x#1#{}"
+                    "del comodín a la {C:attention}derecha{} por {X:attention,C:white}X#1#{}"
                 },
             },
     
@@ -1684,6 +1693,14 @@ return {
                     "{C:inactive}(Actual: {X:chips,C:white} X#1# {C:inactive} fichas)",
                 },
             },
+			j_cry_pity_prize = {
+				name = "Premio de compasión",
+				text = {
+					"Al saltar un {C:attention}paquete potenciador{},",
+                    "gana una {C:attention}etiqueta{} al azar"
+				},
+			},
+
             j_cry_pot_of_jokes = {
                 name = "Olla de las bromas",
                 text = {
@@ -1857,6 +1874,17 @@ return {
                     "{C:attention}+#1#{} ranura de carta en la tienda",
                 },
             },
+            j_cry_fleshpanopticon = {
+                name = "Panóptico de carne",
+                text = {
+                    "{C:red}X#1#{} tamaño de {C:attention}ciegas jefe{}",
+                    "Al derrotar una {C:attention}ciega jefe{},",
+                    "{C:red}se autodestruye{}, y crea",
+                    "una carta de {C:spectral}Portal{} {C:dark_edition}negativa{}",
+                    "{C:inactive,s:0.8}\"Esta prisión... para mantenerme...?\""
+                },
+            },
+
             j_cry_spaceglobe = {
                 name = "Esfera celestial",
                 text = {
@@ -1953,8 +1981,8 @@ return {
 			j_cry_tax_fraud = {
 				name = "Evasión fiscal",
 				text = {
-					"Al final de la ronda, gana",
-					"{C:attention}$#1#{} por cada comodín {C:attention}de alquiler",
+					"Gana {C:attention}$#1#{} por cada comodín {C:attention}de alquiler",
+					"al final de la ronda",
 				},
 			},
             j_cry_tenebris = {
@@ -2357,7 +2385,7 @@ return {
                     "Crea {C:attention}#1#{} copias",
                     "{C:dark_edition}negativas{} de un",
                     "consumible {C:attention}al azar{}",
-                    "{C:inactive,s:0.8}No copia otros __{}"
+                    "{C:inactive,s:0.8}No copia otros Recámara{}"
                 },
             },
             c_cry_conduit = {
@@ -2470,7 +2498,7 @@ return {
         Stake = {
             stake_cry_pink = {
                 name = "Pozo rosa",
-                colour = "Rosa", --this is used for auto-generated sticker localization
+                colour = "rosa", --this is used for auto-generated sticker localization
                 text = {
                     "Escalas de puntos requeridas más rápidas",
                     "para cada {C:attention}apuesta inicial",
@@ -2478,7 +2506,7 @@ return {
             },
             stake_cry_brown = {
                 name = "Pozo marrón",
-                colour = "Marrón",
+                colour = "marrón",
                 text = {
                     "Todas las {C:attention}pegatinas{} son",
                     "compatibles entre sí",
@@ -2486,22 +2514,22 @@ return {
             },
             stake_cry_yellow = {
                 name = "Pozo amarillo",
-                colour = "Amarillo",
+                colour = "amarilla",
                 text = {
-                    "{C:attention}Stickers{} can appear on",
-                    "all purchasable items",
+                    "Las {C:attention}pegatinas{} pueden aparecer",
+                    "en todos los objetos comprables",
                 },
             },
             stake_cry_jade = {
                 name = "Pozo jade",
-                colour = "Jade",
+                colour = "jade",
                 text = {
                     "Las cartas pueden sacarse {C:attention}boca abajo{}",
                 },
             },
             stake_cry_cyan = {
                 name = "Pozo celeste",
-                colour = "Celeste",
+                colour = "celeste",
                 text = {
                     "Comodines {C:green}inusuales{} y {C:red}raros{} son",
                     "menos probables de aparecer",
@@ -2509,42 +2537,42 @@ return {
             },
             stake_cry_gray = {
                 name = "Pozo gris",
-                colour = "Gris",
+                colour = "gris",
                 text = {
                     "Las renovaciones aumentan por {C:attention}$2{} cada una",
                 },
             },
             stake_cry_crimson = {
                 name = "Pozo carmesí",
-                colour = "Carmesí",
+                colour = "carmesí",
                 text = {
                     "Los vales reaparecen en apuestas {C:attention}pares{}",
                 },
             },
             stake_cry_diamond = {
                 name = "Pozo diamante",
-                colour = "Diamante",
+                colour = "diamante",
                 text = {
                     "Debes vencer la apuesta {C:attention}10{} para ganar",
                 },
             },
             stake_cry_amber = {
                 name = "Pozo ámbar",
-                colour = "Ámbar",
+                colour = "ambar",
                 text = {
                     "{C:attention}-1{} ranuras de paquete potenciador",
                 },
             },
             stake_cry_bronze = {
                 name = "Pozo bronce",
-                colour = "Bronce",
+                colour = "bronce",
                 text = {
                     "Los vales son {C:attention}50%{} más caros",
                 },
             },
             stake_cry_quartz = {
                 name = "Pozo cuarzo",
-                colour = "Cuarzo",
+                colour = "cuarzo",
                 text = {
                     "Los comodines pueden ser {C:attention}Fijados{}",
                     "{s:0.8,C:inactive}(Se queda fijado al extremo izquierdo){}",
@@ -2552,7 +2580,7 @@ return {
             },
             stake_cry_ruby = {
                 name = "Pozo rubí",
-                colour = "Rubí",
+                colour = "rubí",
                 text = {
                     "Ciegas {C:attention}grandes{} pueden ser",
                     "ciegas {C:attention}jefes{}",
@@ -2560,14 +2588,14 @@ return {
             },
             stake_cry_glass = {
                 name = "Pozo de vidrio",
-                colour = "Vidrio",
+                colour = "de vidrio",
                 text = {
                     "Las cartas pueden {C:attention}destruirse{} al puntuar",
                 },
             },
             stake_cry_sapphire = {
                 name = "Pozo safiro",
-                colour = "Safiro",
+                colour = "safiro",
                 text = {
                     "Pierde {C:attention}25%{} del dinero actual",
                     "al final de la apuesta",
@@ -2576,7 +2604,7 @@ return {
             },
             stake_cry_emerald = {
                 name = "Pozo esmeralda",
-                colour = "Esmeralda",
+                colour = "esmeralda",
                 text = {
                     "Cartas, paquetes y vales",
                     "pueden estar {C:attention}boca abajo{}",
@@ -2585,14 +2613,14 @@ return {
             },
             stake_cry_platinum = {
                 name = "Pozo platino",
-                colour = "Platino",
+                colour = "platina",
                 text = {
                     "Las ciegas pequeñas son {C:attention}removidas{}",
                 },
             },
             stake_cry_twilight = {
                 name = "Pozo crepúsculo",
-                colour = "Crepúsculo",
+                colour = "crepúsculo",
                 text = {
                     "Las cartas pueden ser {C:attention}Banana{}",
                     "{s:0.8,C:inactive}(1 en 10 probabilidades de ser destruidas cada ronda){}",
@@ -2600,7 +2628,7 @@ return {
             },
             stake_cry_verdant = {
                 name = "Pozo verdoso",
-                colour = "Verdoso",
+                colour = "verdosa",
                 text = {
                     "Escalas de puntos requeridas más rápidas",
                     "para cada {C:attention}apuesta inicial",
@@ -2608,14 +2636,14 @@ return {
             },
             stake_cry_ember = {
                 name = "Pozo ascua",
-                colour = "Ascua",
+                colour = "ascua",
                 text = {
                     "Todos los objetos no entregan dinero al venderse",
                 },
             },
             stake_cry_dawn = {
                 name = "Pozo alba",
-                colour = "Alba",
+                colour = "alba",
                 text = {
                     "Cartas tarot y espectrales seleccionan {C:attention}1",
                     "carta menos",
@@ -2624,7 +2652,7 @@ return {
             },
             stake_cry_horizon = {
                 name = "Pozo del horizonte",
-                colour = "Horizonte",
+                colour = "del horizonte",
                 text = {
                     "Agrega una {C:attention}carta al azar{}",
                     "a tu baraja al",
@@ -2633,7 +2661,7 @@ return {
             },
             stake_cry_blossom = {
                 name = "Pozo florido",
-                colour = "Florido",
+                colour = "florida",
                 text = {
                     "Las ciegas {C:attention}finales{} pueden aparecer",
                     "en {C:attention}cualquier{} apuesta",
@@ -2641,7 +2669,7 @@ return {
             },
             stake_cry_azure = {
                 name = "Pozo azur",
-                colour = "Azur",
+                colour = "azur",
                 text = {
                     "Los valores en comodines se reducen",
                     "por {C:attention}20%{}",
@@ -2649,7 +2677,7 @@ return {
             },
             stake_cry_ascendant = {
                 name = "Pozo ascendente",
-                colour = "Ascendente",
+                colour = "ascendente",
                 text = {
                     "{C:attention}-1{} ranura de carta en la tienda",
                 },
@@ -3478,6 +3506,13 @@ return {
                     "jugada, y {C:red}destruye{} esta carta",
                 },
             },
+            blurred_sdm0 = {
+                name = "a",
+                text = {
+                    "{C:inactive,s:0.8}\"Odio esta carta\" - SDM0, 2024{}",
+                },
+            },
+
         },
         Unique = {
             c_cry_potion = {
@@ -3656,7 +3691,8 @@ return {
             cry_curse_ex = "¡Maldición!",
             cry_sobbing = "Ayúdame...",
             cry_gaming = "Gaming",
-            cry_gaming_ex = "Gaming!",
+            cry_gaming_ex = "¡Gaming!",
+            cry_good_luck_ex = "¡Buena suerte!",
             cry_sus_ex = "Impostor!",
             cry_jolly_ex = "Jolly Up!",
             cry_m_minus = "m",
@@ -3664,7 +3700,7 @@ return {
             cry_m_ex = "M!",
             cry_minus_round = "-1 ronda",
             cry_plus_cryptid = "+1 críptido",
-            cry_no_triggers = "Sin activaciones restantes!",
+            cry_no_triggers = "¡Sin activaciones restantes!",
             cry_unredeemed = "Desredimido...",
             cry_active = "Activo",
             cry_inactive = "Inactivo",
@@ -3843,77 +3879,77 @@ return {
         -- There's too many to credit so just go here: https://discord.com/channels/1116389027176787968/1209506360987877408/1237971471146553406
         -- And here: https://discord.com/channels/1116389027176787968/1219749193204371456/1240468252325318667
         very_fair_quips = {
-            { "L", "NO VOUCHERS", "FOR YOU" },
-            { "BOZO", "DID YOU THINK I WOULD", "GIVE YOU A VOUCHER?" },
-            { "NOPE!", "NO VOUCHERS HERE!", "(SLUMPAGE EDITION)" },
-            { "SKILL ISSUE", "IMAGINE BEING GOOD ENOUGH", "FOR A VOUCHER" },
-            { "JIMBO", "FROM MANAGEMENT", "FORGOT TO RESTOCK" },
-            { "OOPS!", "NO VOUCHERS", "" },
-            { "YOU JOKER,", "WHY ARE YOU LOOKING", "OVER HERE? LOL" },
-            { "THE VOUCHER", "IS IN", "ANOTHER CASTLE" },
-            { "$0", "BLANK VOUCHER", "(GET IT?)" },
+            { "L", "NO HAY VALES", "PARA TÍ" },
+            { "BOZO", "¿PENSASTE QUE TE", "DARÍA UN VALE?" },
+            { "¡NO!", "¡NO HAY VALES AQUÍ!", "(EDICIÓN SLUMPAGE)" },
+            { "SKILL ISSUE", "IMAGINA SER SUFICIENTE", "PARA UN VALE" },
+            { "JIMBO", "DE LA GERENCIA", "OLVIDÓ REABASTECER" },
+            { "¡UPS!", "SIN VALES", "" },
+            { "BUFÓN,", "¿POR QUÉ MIRAS", "AQUÍ? LMAO" },
+            { "EL VALE", "ESTÁ EN", "OTRO CASTILLO" },
+            { "VALE EN BLANCO", "POR $0", "(¿LO PILLAS?)" },
             { "ERROR", "CANNOT DO ARITHMETIC ON A NIL VALUE", "(tier4vouchers.lua)" },
-            { "100% OFF", "ON ALL VOUCHERS", "(SOMEONE ALREADY BOUGHT THEM)" },
-            { "TRY AGAIN LATER", "HINT: YOU WON'T HAVE", "ENOUGH MONEY ANYWAYS" },
-            { "HUH?", '"VOUCHER"?', "THAT'S NOT EVEN A WORD..." },
-            { 'HOLD "R"', "TO RESTOCK", "ALL VOUCHERS" },
-            { "DID YOU KNOW?", "PRESSING ALT+F4", "GIVES FREE VOUCHERS!" },
-            { "SORRY,", "THERE ARE NO VOUCHERS", "DUE TO BUDGET CUTS" },
-            { "CALL 1-600-JIMBO", "TO RATE YOUR", "VOUCHER EXPERIENCE" },
-            { "DEFEAT", "ANTE 39 BOSS BLIND", "TO RESTOCK" },
-            { "MAGIC TRICK", "I MADE THIS VOUCHER", "DISAPPEAR" },
-            { "WHY IS A", "VOUCHER LIKE", "A WRITING DESK?" },
-            { "WE HAVE RETRACTED", "YOUR VOUCHERS, THEY WOULD BE", "BETTER USED IN OTHER RUNS" },
-            { "WHY DO THEY CALL IT VOUCHER", "WHEN MULT OUT THE HOT", "IN COLD EAT EAT THE CHIP" },
-            { "SORRY", "THE VOUCHERS ARE EXPERIENCING", "VOUCHIFIA ABORTUS" },
-            { "UNFORTUNATELY", "THE VOUCHRX REWRITE UPDATE", "HAS BEEN CANCELLED" },
-            { "DEFEAT", "BOSS BLIND", "TO CHANGE NOTHING" },
-            { "BIRDS ARE SINGING", "FLOWERS ARE BLOOMING", "KIDS LIKE YOU..." },
-            { "WE ARE SORRY TO SAY", "ALL VOUCHERS HAVE BEEN RECALLED", "DUE TO SALMONELLA EXPOSURE" },
-            { "VOUCHERS COULDN'T ARRIVE", "DUE TO SHOP LAYOUT BEING", "200% OVERBUDGET" },
-            { "YOU LIKE", "BUYING VOUCHERS, DON'T YOU", "YOU'RE A VOUCHERBUYER" },
-            { "VOUCHERS", "!E", "VOUCHER POOL" },
-            { "THERE", "IS NO", "VOUCHER" },
-            { "THERE IS", "NO SANTA", "AND THERE ARE NO VOUCHERS" },
-            { "", "VOUCHERN'T", "" },
-            { "YOU", "JUST LOST", "THE GAME" },
-            { "CAN I OFFER YOU", "A NICE EGG", "IN THESE TRYING TIMES?" },
-            { "GO TOUCH GRASS", "INSTEAD OF USING", "THIS DECK" },
-            { "YOU COULD BE", "PLAYING ON BLUE DECK", "RIGHT NOW" },
-            { "FREE EXOTICS", "GET THEM BEFORE ITS", "TOO LATE (sold out)" },
-            { "PROVE THEM WRONG", "BUY BUYING AN INVISIBLE", "VOUCHER FOR $10" },
-            { "", "no vouchers?", "" },
-            { "see this ad?", "if you are, then it's working", "and you could have it for your own" },
-            { "YOU'RE MISSING OUT ON", "AT LEAST 5 VOUCHERS RIGHT NOW", "tonktonktonktonktonk" },
-            { "10", "20 NO VOUCHER XD", "30 GOTO 10" },
-            { "VOUCHERS", "ARE A PREMIUM FEATURE", "$199.99 JOLLARS TO UNLOCK" },
-            { "TRUE VOUCHERLESS!?!?", "ASCENDANT STAKE ONLY", "VERY FAIR DECK" },
-            { "ENJOYING YOUR", "VOUCHER EXPERIENCE? GIVE US A", "FIVE STAR RATING ON JESTELP" },
-            { "FREE VOUCHERS", "HOT VOUCHERS NEAR YOU", "GET VOUCHERS QUICK WITH THIS ONE TRICK" },
-            { "INTRODUCING", "THE VERY FIRST TIER 0 VOUCHER!", "(coming to Cryptid 1.0 soon)" },
-            { "A VOUCHER!", "IT'S JUST IMAGINARY", "WE IMAGINED YOU WOULD WANT IT, THAT IS" },
-            { "TURN OFF ADBLOCKER", "WITHOUT ADS, WE WOULDN'T", "BE ABLE TO SELL YOU VOUCHERS" },
-            { "IF YOU HAVE", "A PROBLEM WITH THIS", "EMAIL IT TO US AT NORESPONSE@JMAIL.COM" },
-            { "NOT ENOUGH MONEY", "TO BUY THIS VOUCHER", "SO WHY WOULD WE PUT IT HERE?" },
-            { "WANT A VOUCHER?", "WELL SHUT UP", "YOU CAN'T HAVE ANY LOL" },
-            { "^$%& NO", "VOUCHERS ^%&% %&$^% FOR", "$%&%%$ %&$&*%$^ YOU" },
-            { "A VOUCHER (TRUST)", "|\\/|", "|/\\|" },
+            { "100% DE DESCUENTO", "EN TODOS LOS VALES", "(ALGUIEN YA LOS COMPRÓ)" },
+            { "INTENTA DESPUÉS", "PISTA: IGUAL NO TENDRÁS", "EL DINERO SUFICIENTE" },
+            { "¿EH?", '¿"VALE"?', "ESO NI ES UNA PALABRA..." },
+            { 'MANTÉN "R"', "PARA REABASTECER", "TODOS LOS VALES" },
+            { "¿SABÍAS QUE?", "¡PRESIONANDO ALT+F4", "DA VALES GRATIS!" },
+            { "PERDÓN,", "NO HAY VALES POR", "CORTES DE PRESUPUESTO" },
+            { "LLAMA A 1-600-JIMBO", "PARA CALIFICAR TU", "EXPERIENCIA DE VALES" },
+            { "DERROTA LA CIEGA", "JEFE DE APUESTA 39", "PARA RESTABLECER" },
+            { "TRUCO DE MAGIA", "HICE ESTE VALE", "DESAPARECER" },
+            { "¿POR QUÉ ES", "UN VALE COMO", "UN ESCRITORIO?" },
+            { "HEMOS RETRAÍDO", "TUS VALES, SERÍAN MEJOR", "USADOS EN OTRAS PARTIDAS" },
+            { "EL TRADUCTOR NI QUISO", "TRADUCIR ESTE MENSAJE", "NO HAY VALES PARA TI CABRÓN" },
+            { "PERDÓN", "LOS VALES ESTÁN EXPERIMENTANDO", "VOUCHIFIA ABORTUS" },
+            { "DESAFORTUNADAMENTE", "LA ACTUALIZACIÓN DE VALES", "HA SIDO CANCELADA" },
+            { "DERROTA LA", "CIEGA JEFE PARA", "NO HACER NADA" },
+            { "LAS AVES CANTAN", "LAS FLORES FLORECEN", "NIÑOS COMO TÚ..." },
+            { "SENTIMOS DECIR QUE", "TODOS LOS VALES HAN SIDO DEVUELTOS", "POR EXPOSICIÓN A SALMONELLA" },
+            { "LOS VALES NO PUDIERON LLEGAR POR", "LA DISPOSICIÓN DE LA TIENDA SIENDO", "200% SOBRE EL PRESUPUESTO" },
+            { "TE GUSTA", "COMPRAR VALES, ¿NO?", "ERES UN COMPRADOR DE VALES" },
+            { "VALES", "!E", "LISTA DE VALES" },
+            { "NO", "HAY", "VALES" },
+            { "NO EXISTE", "SANTA", "Y NO EXISTEN LOS VALES" },
+            { "", "NO VALE", "" },
+            { "ACABAS DE", "PERDER", "EL JUEGO" },
+            { "¿PUEDO OFRECERTE", "UN BUEN HUEVO", "EN ESTOS TIEMPOS?" },
+            { "VE A TOCAR PASTO", "EN VEZ DE USAR", "ESTA BARAJA" },
+            { "PODRÍAS ESTAR", "JUGANDO EN LA BARAJA AZUL", "AHORA MISMO" },
+            { "EXÓTICOS GRATIS", "CONSÍGUELOS ANTES DE QUE", "SEA DEMASIADO TARDE (se acabaron)" },
+            { "PRUÉBALOS MAL", "COMPRA UN VALE", "INVISIBLE POR $10" },
+            { "", "¿sin vales?", "" },
+            { "¿ves este anuncio?", "si lo ves, está funcionando", "y lo puedes tener como tuyo" },
+            { "TE ESTÁS PERDIENDO EN", "AL MENOS 5 VALES AHORA", "tonktonktonktonktonk" },
+            { "10", "20 SIN VALES XD", "30 GOTO 10" },
+            { "LOS VALES", "SON ARTÍCULOS PREMIUM", "$199.99 JÓLARES PARA DESBLOQUEAR" },
+            { "¡¿SIN VALES?!", "SÓLO EN POZO ASCENDENTE", "BARAJA MUY JUSTA" },
+            { "¿DISFRUTANDO TU", "EXPERIENCIA DE VALES? DÁNOS UNA CALIFICACIÓN", "DE CINCO ESTRELLAS EN JESTELP" },
+            { "VALES GRATIS", "VALES CERCA DE TÍ", "CONSIGUE VALES RÁPIDO CON ESTE TRUCO" },
+            { "INTRODUCIENDO", "¡EL PRIMER VALE NIVEL 0!", "(llegando pronto a Cryptid 1.0)" },
+            { "¡UN VALE!", "ES SÓLO IMAGINARIO", "IMAGINAMOS QUE LO QUERÍAS, ESO SÍ" },
+            { "DESACTIVA TU ADBLOCKER", "SIN ANUNCIOS, NO PODRÍAMOS", "VENDERTE NINGÚN VALE" },
+            { "SI TIENES", "UN PROBLEMA CON ESTO", "ENVÍA UN CORREO A NORESPONSE@JMAIL.COM" },
+            { "SIN DINERO SUFICIENTE", "PARA COMPRAR ESTE VALE", "¿PARA QUÉ PONERLO AQUÍ?" },
+            { "¿QUIERES UN VALE?", "ENTONCES CÁLLATE", "NO PUEDES TENER NINGUNO LOL" },
+            { "^$%& NINGÚN", "VALE ^%&% %&$^% PARA", "$%&%%$ %&$&*%$^ TÍ" },
+            { "UN VALE (CONFÍA)", "|\\/|", "|/\\|" },
             {
                 "... --- ...",
-                ".--. .-.. .- -.-- . .-. -.. . -.-. --- -.. . -.. -- --- .-. ... .",
-                "-.-. --- -.. . - --- ..-. .. -. -.. .- ...- --- ..- -.-. .... . .-.",
+                ".--- ..- --. .- -.. --- .-. -.. . ... -.-. .. ..-. .-. .- -.-. --- -.. .. --. ---",
+                "-- --- .-. ... . .--. .- .-. .- . -. -.-. --- -. - .-. .- .-. ...- .- .-.. .",
             },
-            { "RUN > NEW", "STARE AT NOTHING", "FOR AN HOUR OR TWO" },
-            { "WE'RE VERY SORRY", "THE LAST GUY PANIC BOUGHT", "ALL THE VOUCHERS" },
-            { "HOW IT FEELS", "TO BUY NO", "VOUCHERS" },
-            { "JIMBO GOT A NAT 1", "AND DUMPED ALL THE", "VOUCHERS IN A DITCH" },
+            { "RUN > NEW", "MIRAR A NADA", "POR UNA HORA O DOS" },
+            { "LO SENTIMOS,", "EL ÚLTIMO CHICO COMPRÓ EN PÁNICO", "TODOS LOS VALES" },
+            { "CÓMO SE SIENTE", "NO COMPRAR", "VALES" },
+            { "JIMBO TUVO UN NAT 1", "Y TIRÓ TODOS LOS", "VALES EN UNA ZANJA" },
             { "ATTEMPT TO INDEX", "FIELD 'VOUCHER'", "(A NIL VALUE)" },
             {
-                "OH YOU REALLY THOUGHT THAT READING ALL THESE LINES WOULD BRING YOUR VOUCHERS BACK?",
-                "SORRY TO TELL YOU, BUT THIS DECK DOESN'T CONTAIN THE VOUCHERS YOU SEEK.",
-                "THIS ABNORMALLY LONG TEXT IS HERE AND DESIGNED TO WASTE YOUR TIME AND EFFORT WHILE YOU READ IT.",
+                "AH, ¿DE VERAS PENSASTE QUE LEYENDO TODAS ESTAS LÍNEAS TE DEVOLVERÍA TUS VALES?",
+                "PERDÓN POR DECÍRTELO, PERO ESTA BARAJA NO CONTIENE QUE TÚ BUSCAS.",
+                "ESTE TEXTO ANORMALMENTE LARGO ESTÁ AQUÍ Y ESTÁ DISEÑADO PARA GASTAR TU TIEMPO Y ESFUERZO MIENTRAS LO LEES.",
             },
-            { "GO TO", "https://youtu.be/p7YXXieghto", "FOR FREE VOUCHERS" },
+            { "VE A", "https://youtu.be/p7YXXieghto", "PARA VALES GRATIS" },
         }
     }
 }
