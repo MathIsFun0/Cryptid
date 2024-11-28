@@ -1681,6 +1681,12 @@ return {
                     "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
+			j_cry_pity_prize = {
+				name = "Pity Prize",
+				text = {
+					"When you skip a {C:attention}Booster Pack{} gain a random {C:attention}Tag{}"
+				},
+			},
             j_cry_pot_of_jokes = {
                 name = "Pot of Jokes",
                 text = {
@@ -1852,6 +1858,16 @@ return {
                     "{C:attention}+#1#{} hand size",
                     "{C:attention}+#1#{} consumable slot",
                     "{C:attention}+#1#{} card in shop",
+                },
+            },
+            j_cry_fleshpanopticon = {
+                name = "Flesh Panopticon",
+                text = {
+                    "{C:red}X#1#{} {C:attention}Boss Blind{} size",
+                    "When {C:attention}Boss Blind{} is defeated,",
+                    "{C:red}self destructs{}, and creates",
+                    "a {C:dark_edition}Negative{} {C:spectral}Gateway{} card",
+                    "{C:inactive,s:0.8}\"This prison... to hold... me?\""
                 },
             },
             j_cry_spaceglobe = {
@@ -3653,6 +3669,7 @@ return {
             cry_sobbing = "Help me...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
+            cry_good_luck_ex = "Good luck!",
             cry_sus_ex = "Impostor!",
             cry_jolly_ex = "Jolly Up!",
             cry_m_minus = "m",

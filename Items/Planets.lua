@@ -447,100 +447,147 @@ local planetlua = {
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
 		local quota = 0
-		for i = 1, number do
-			quota = quota
-				+ (pseudorandom("planetlua") < G.GAME.probabilities.normal / card.ability.extra.odds and 1 or 0)
-		end
-		if quota > 0 then
-			update_hand_text(
-				{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-				{ handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
-			)
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.2,
-				func = function()
-					play_sound("tarot1")
-					used_consumable:juice_up(0.8, 0.5)
-					G.TAROT_INTERRUPT_PULSE = true
-					return true
-				end,
-			}))
-			update_hand_text({ delay = 0 }, { mult = "+", StatusText = true })
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.9,
-				func = function()
-					play_sound("tarot1")
-					used_consumable:juice_up(0.8, 0.5)
-					return true
-				end,
-			}))
-			update_hand_text({ delay = 0 }, { chips = "+", StatusText = true })
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.9,
-				func = function()
-					play_sound("tarot1")
-					used_consumable:juice_up(0.8, 0.5)
-					G.TAROT_INTERRUPT_PULSE = nil
-					return true
-				end,
-			}))
-			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+" .. quota })
-			delay(1.3)
-			for k, v in pairs(G.GAME.hands) do
-				level_up_hand(card, k, true, quota)
-			end
-			update_hand_text(
-				{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
-				{ mult = 0, chips = 0, handname = "", level = "" }
-			)
+		if card.ability.cry_rigged then
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+					{ handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
+				)
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("tarot1")
+						used_consumable:juice_up(0.8, 0.5)
+						G.TAROT_INTERRUPT_PULSE = true
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 0 }, { mult = "+", StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.9,
+					func = function()
+						play_sound("tarot1")
+						used_consumable:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 0 }, { chips = "+", StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.9,
+					func = function()
+						play_sound("tarot1")
+						used_consumable:juice_up(0.8, 0.5)
+						G.TAROT_INTERRUPT_PULSE = nil
+						return true
+					end,
+				}))
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+" .. number })
+				delay(1.3)
+				for k, v in pairs(G.GAME.hands) do
+					level_up_hand(card, k, true, number)
+				end
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+					{ mult = 0, chips = 0, handname = "", level = "" }
+				)
 		else
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.4,
-				func = function()
-					attention_text({
-						text = localize("k_nope_ex"),
-						scale = 1.3,
-						hold = 1.4,
-						major = used_consumable,
-						backdrop_colour = G.C.SECONDARY_SET.Planet,
-						align = (
-							G.STATE == G.STATES.TAROT_PACK
-							or G.STATE == G.STATES.SPECTRAL_PACK
-							or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
-						)
-								and "tm"
-							or "cm",
-						offset = {
-							x = 0,
-							y = (
+			for i = 1, number do
+				quota = quota
+					+ (pseudorandom("planetlua") < G.GAME.probabilities.normal / card.ability.extra.odds and 1 or 0)
+			end
+			if quota > 0 then
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+					{ handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
+				)
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("tarot1")
+						used_consumable:juice_up(0.8, 0.5)
+						G.TAROT_INTERRUPT_PULSE = true
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 0 }, { mult = "+", StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.9,
+					func = function()
+						play_sound("tarot1")
+						used_consumable:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 0 }, { chips = "+", StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.9,
+					func = function()
+						play_sound("tarot1")
+						used_consumable:juice_up(0.8, 0.5)
+						G.TAROT_INTERRUPT_PULSE = nil
+						return true
+					end,
+				}))
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+" .. quota })
+				delay(1.3)
+				for k, v in pairs(G.GAME.hands) do
+					level_up_hand(card, k, true, quota)
+				end
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+					{ mult = 0, chips = 0, handname = "", level = "" }
+				)
+			else
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.4,
+					func = function()
+						attention_text({
+							text = localize("k_nope_ex"),
+							scale = 1.3,
+							hold = 1.4,
+							major = used_consumable,
+							backdrop_colour = G.C.SECONDARY_SET.Planet,
+							align = (
 								G.STATE == G.STATES.TAROT_PACK
 								or G.STATE == G.STATES.SPECTRAL_PACK
 								or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
 							)
-									and -0.2
-								or 0,
-						},
-						silent = true,
-					})
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.06 * G.SETTINGS.GAMESPEED,
-						blockable = false,
-						blocking = false,
-						func = function()
-							play_sound("tarot2", 0.76, 0.4)
-							return true
-						end,
-					}))
-					play_sound("tarot2", 1, 0.4)
-					used_consumable:juice_up(0.3, 0.5)
-					return true
-				end,
-			}))
+									and "tm"
+								or "cm",
+							offset = {
+								x = 0,
+								y = (
+									G.STATE == G.STATES.TAROT_PACK
+									or G.STATE == G.STATES.SPECTRAL_PACK
+									or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+								)
+										and -0.2
+									or 0,
+							},
+							silent = true,
+						})
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.06 * G.SETTINGS.GAMESPEED,
+							blockable = false,
+							blocking = false,
+							func = function()
+								play_sound("tarot2", 0.76, 0.4)
+								return true
+							end,
+						}))
+						play_sound("tarot2", 1, 0.4)
+						used_consumable:juice_up(0.3, 0.5)
+						return true
+					end,
+				}))
+			end
 		end
 	end,
 	calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for (G.P_CENTERS.v_observatory.config.extra) Mult

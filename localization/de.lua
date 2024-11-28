@@ -1653,6 +1653,13 @@ return {
                     "{C:inactive}(Momentan {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
+			
+			j_cry_pity_prize = {
+				name = "Trostpreis",
+				text = {
+					"Wenn ein {C:attention}Booster Pack{} übersprungen wird, erhalte einen zufälligen {C:attention}Tag{}"
+				},
+			},
             j_cry_pot_of_jokes = {
                 name = "Topf der Witze",
                 text = {
@@ -1824,6 +1831,16 @@ return {
                     "{C:attention}+#1#{} Handgröße",
                     "{C:attention}+#1#{} Verbrauchsgegenstand Slot",
                     "{C:attention}+#1#{} Karte im Shop",
+                },
+            },
+			j_cry_fleshpanopticon = {
+                name = "Fleischpanoptikum",
+                text = {
+                    "{C:red}X#1#{} {C:attention}Boss Blind{} größe",
+                    "Wenn eine {C:attention}Boss Blind{} besiegt wurde,",
+                    "{C:red}zerstört sich selbst{}, und erstellt",
+                    "eine {C:dark_edition}Negative{} {C:spectral}Portal{} Karte",
+                    "{C:inactive,s:0.8}\"Ein Gefängnis... zum halten von... mir?\""
                 },
             },
             j_cry_spaceglobe = {
@@ -3576,6 +3593,7 @@ return {
             cry_sobbing = "Hilf mir...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
+			cry_good_luck_ex = "Viel Glück!",
             cry_sus_ex = "Verräter!",
             cry_jolly_ex = "Jolly Up!",
             cry_m_minus = "m",

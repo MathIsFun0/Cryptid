@@ -12,6 +12,7 @@ local epic_tag = {
 	pos = { x = 3, y = 0 },
 	name = "cry-Epic Tag",
 	order = 1,
+	min_ante = 2,
 	requires = 'j_cry_googol_play',
 	config = { type = "store_joker_create" },
 	key = "epic",
