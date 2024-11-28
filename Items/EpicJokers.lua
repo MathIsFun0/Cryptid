@@ -1267,10 +1267,18 @@ local fleshpanopticon = {
 	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
+		if Cryptid.enabled["Exotic Jokers"] then
+			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
+		end
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
 		return { vars = { center.ability.extra.boss_size } }
 	end,
   calculate = function(self, card, context)
     if context.setting_blind and not context.blueprint and context.blind.boss and not card.getting_sliced then
+      local eval = function(card) return not card.REMOVED and not G.RESET_JIGGLES end
+      juice_card_until(card, eval, true)
       card.gone = false
       G.GAME.blind.chips = G.GAME.blind.chips * card.ability.extra.boss_size
       G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
@@ -1288,7 +1296,7 @@ local fleshpanopticon = {
         trigger = 'before',
         delay = 0.0,
         func = (function()
-            local card = create_card(nil,G.consumeables, nil, nil, nil, nil, 'c_cry_gateway', 'sup')
+            local card = create_card(nil,G.consumeables, nil, nil, nil, nil, Cryptid.enabled["Exotic Jokers"] and 'c_cry_gateway' or 'c_soul', 'sup')
             card:set_edition({negative = true}, true)
             card:add_to_deck()
             G.consumeables:emplace(card)
