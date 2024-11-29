@@ -193,13 +193,42 @@ SMODS.Sound({
 	end,
 })
 SMODS.Sound({
-	key = "music_theme",
-	path = "music_theme.ogg",
+	key = "music_mainline",
+	path = "music_mainline.ogg",
 	volume = 0.7,
-	sync = false,
+	sync = {
+		cry_music_modest = true,
+		cry_music_madness = true
+	},
 	pitch = 1,
 	select_music_track = function()
-		return --[[Cryptid_config.Cryptid and Cryptid_config.Cryptid.theme_music and --]] G.STAGE == G.STAGES.MAIN_MENU
+		return G.STAGE == G.STAGES.MAIN_MENU and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness"
+	end,
+})
+SMODS.Sound({
+	key = "music_madness",
+	path = "music_madness.ogg",
+	volume = 0.7,
+	sync = {
+		cry_music_modest = true,
+		cry_music_mainline = true
+	},
+	pitch = 1,
+	select_music_track = function()
+		return G.STAGE == G.STAGES.MAIN_MENU and G.selectedGameset == "madness"
+	end,
+})
+SMODS.Sound({
+	key = "music_modest",
+	path = "music_modest.ogg",
+	volume = 0.7,
+	sync = {
+		cry_music_mainline = true,
+		cry_music_madness = true
+	},
+	pitch = 1,
+	select_music_track = function()
+		return G.STAGE == G.STAGES.MAIN_MENU and G.selectedGameset == "modest"
 	end,
 })
 SMODS.Atlas({
