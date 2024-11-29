@@ -367,7 +367,7 @@ local crustulum = {
 	end,
 	cry_credits = {
 		idea = {"AlexZGreat"},
-		art = {"Jevonn"},
+		art = {"lolxddj"},
 		code = {"Jevonn"}
 	},
 }
