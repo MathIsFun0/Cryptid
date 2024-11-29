@@ -664,6 +664,14 @@ return {
 					"使它们 {C:cry_code}钩住{}"
 				}
 			},
+			c_cry_inst = {
+				name = "://实例化",
+				text = {
+					"抽取与选中的牌同{C:cry_code}点数{}",
+					"以及{C:cry_code}同花色{}的牌各一张",
+					"{C:inactive}(如果有可能的话){}"
+				}
+			},
 			c_cry_machinecode = {
 				name = "://机器码",
 				text = {
@@ -1350,6 +1358,16 @@ return {
 					"如果出的牌中包含{C:attention}#2# 提供{X:mult,C:white} X#1# {} 倍率"
 				}
 			},
+			j_cry_fleshpanopticon = {
+				name = "肉体监狱",
+				text = {
+					"{C:red}X#1#{} {C:attention}Boss 盲注{} 需求",
+					"当 {C:attention}Boss 盲注{} 被击败后,",
+					"{C:red}自毁{}, 然后创建",
+					"一张 {C:dark_edition}负片{} {C:spectral}真理之门{} ",
+					"{C:inactive,s:0.8}This prison... to hold... me?"
+				}
+			},
 			j_cry_flip_side = {
 				name = "两副面孔",
 				text = {
@@ -1889,6 +1907,12 @@ return {
 					"{C:inactive}(当前{X:chips,C:white} X#1# {C:inactive} 筹码)"
 				}
 			},
+			j_cry_pity_prize = {
+				name = "遗憾奖",
+				text = {
+					"当你跳过 {C:attention}补充包{} 获得一个随机的 {C:attention}标签{}"
+				}
+			},
 			j_cry_pot_of_jokes = {
 				name = "小丑之壶",
 				text = {
@@ -2324,6 +2348,12 @@ return {
 					"摧毁"
 				}
 			},
+			blurred_sdm0 = {
+				name = "a",
+				text = {
+					"{C:inactive,s:0.8}我讨厌这张牌- SDM0, 2024{}"
+				}
+			},
 			cry_azure_seal = {
 				name = "蔚蓝火漆",
 				text = {
@@ -2728,6 +2758,24 @@ return {
 					"（芬兰语Diamond）"
 				}
 			},
+			c_cry_asteroidbelt = {
+				name = "小行星带",
+				text = {
+					"{S:0.8}({S:0.8,V:1}等级.#1#{S:0.8}){} 升级",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} 倍率和",
+					"{C:chips}+#4#{} 筹码"
+				}
+			},
+			c_cry_marsmoons = {
+				name = "火卫一和土卫二",
+				text = {
+					"{S:0.8}({S:0.8,V:1}等级.#1#{S:0.8}){} 升级",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} 倍率和",
+					"{C:chips}+#4#{} 筹码"
+				}
+			},
 			c_cry_nstar = {
 				name = "中子星",
 				text = {
@@ -2743,6 +2791,24 @@ return {
 					"{C:green}#1# / #2#{} 的几率",
 					"升级所有种类",
 					"{C:legendary,E:1}扑克牌型{} {C:attention}1{} 级"
+				}
+			},
+			c_cry_universe = {
+				name = "该死的宇宙",
+				text = {
+					"{S:0.8}({S:0.8,V:1}等级.#1#{S:0.8}){} 升级",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} 倍率和",
+					"{C:chips}+#4#{} 筹码"
+				}
+			},
+			c_cry_void = {
+				name = "空",
+				text = {
+					"{S:0.8}({S:0.8,V:1}等级.#1#{S:0.8}){} 升级",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} 倍率和",
+					"{C:chips}+#4#{} 筹码"
 				}
 			}
 		},
@@ -3731,6 +3797,7 @@ return {
 			cry_feat_vouchers = "优惠券",
 			cry_gaming = "游戏中",
 			cry_gaming_ex = "开赌!",
+			cry_good_luck_ex = "祝你好运!",
 			cry_hand_bulwark = "碉堡",
 			cry_hand_clusterfuck = "一坨",
 			cry_hand_ultpair = "至尊对子",
@@ -3771,6 +3838,9 @@ return {
 			k_disable_music = "禁用音乐",
 			k_end_blind = "结束盲注",
 			k_hooked_ex = "钩住了！",
+			k_planet_disc = "恒星环盘",
+			k_planet_satellite = "人造卫星",
+			k_planet_universe = "真实的宇宙",
 			k_unique = "特殊"
 		},
 		labels = {
@@ -3800,6 +3870,31 @@ return {
 			k_cry_epic = "史诗",
 			k_cry_exotic = "域外",
 			unique = "特殊"
+		},
+		poker_hand_descriptions = {
+			cry_Bulwark = {
+				"5 张无等级，无花色的牌"
+			},
+			cry_Clusterfuck = {
+				"至少 8 张不包含",
+				"对子、同花或顺子的牌"
+			},
+			cry_UltPair = {
+				"两个两对，其中，他们之间共有两种花色",
+				"每对两对是一种花色",
+				"他们之间共有两种花色"
+			},
+			cry_WholeDeck = {
+				"在一次出牌中，包含",
+				"52张牌的牌组中的每一张牌",
+				"你疯了?"
+			}
+		},
+		poker_hands = {
+			cry_Bulwark = "碉堡",
+			cry_Clusterfuck = "一坨",
+			cry_UltPair = "至尊对子",
+			cry_WholeDeck = "一整副牌"
 		},
 		rnj_loc_txts = {
 			actions = {

@@ -5,6 +5,7 @@ local cotton_candy = {
 	rarity = "cry_candy",
 	cost = 10,
 	atlas = "atlasspooky",
+	order = 130,
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
@@ -32,6 +33,7 @@ local wrapped = {
 	atlas = "atlasspooky",
 	eternal_compat = false,
 	perishable_compat = false,
+	order = 131,
 	immune_to_chemach = true,
 	config = {extra = {rounds = 2}},
 	loc_vars = function(self, info_queue, center)
@@ -99,6 +101,7 @@ local choco_dice = {
 	pos = { x = 1, y = 0 },
 	rarity = 3,
 	cost = 10,
+	order = 132,
 	atlas = "atlasspooky",
 	config = {extra = {roll = 0}},
 	immutable = true,
@@ -126,8 +129,8 @@ local choco_dice = {
 			}
 		end
 	end,
-	remove_from_deck = function(self, card, form_debuff)
-		if not form_debuff then
+	remove_from_deck = function(self, card, from_debuff)
+		if not from_debuff then
 			SMODS.Events["ev_cry_choco"..card.ability.extra.roll]:finish()
 		end
 		
@@ -254,6 +257,7 @@ local potion = {
 	cost = 4,
 	no_doe = true,
 	no_ccd = true,
+	order = 1,
 	immutable = true,
 	no_dbl = true,
 	no_grc = true,
@@ -472,6 +476,7 @@ local spy = {
 	config = {x_mult = 0.5, extra = {secret_card = "", revealed = false}},
 	immutable = true,
 	source_gate = "sho",
+	order = 133,
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { localize({ type = "name_text", set = "Joker", key = center.ability and center.ability.extra and center.ability.extra.secret_card }), center.ability.x_mult } }
@@ -641,6 +646,7 @@ local trick_or_treat = {
 	pos = { x = 2, y = 1 },
 	rarity = 2,
 	cost = 5,
+	order = 134,
 	atlas = "atlasspooky",
 	blueprint_compat = true,
 	eternal_compat = false,
@@ -670,6 +676,7 @@ local candy_basket = {
 	pos = { x = 4, y = 0 },
 	rarity = 2,
 	cost = 6,
+	order = 135,
 	atlas = "atlasspooky",
 	blueprint_compat = false,
 	eternal_compat = false,
@@ -705,6 +712,7 @@ local blacklist = {
 	rarity = "cry_cursed",
 	cost = 0,
 	atlas = "atlasspooky",
+	order = 136,
 	config = {extra = {blacklist = {}}},
 	blueprint_compat = false,
 	eternal_compat = false,
@@ -771,6 +779,7 @@ local ghost = {
 	config = {extra = {possess_rate = 2, destroy_rate = 6}},
 	rarity = "cry_cursed",
 	cost = 0,
+	order = 137,
 	atlas = "atlasspooky",
 	blueprint_compat = false,
 	eternal_compat = false,
@@ -832,6 +841,7 @@ local spookydeck = {
 	key = "spooky",
 	config = { cry_spooky = true, cry_curse_rate = 0.25 },
 	pos = { x = 3, y = 1 },
+	order = 16,
 	atlas = "atlasspooky",
 }
 local candy_dagger = {
@@ -841,6 +851,7 @@ local candy_dagger = {
     pos = { x = 4, y = 2 },
     rarity = 2,
     cost = 8,
+    order = 138,
     atlas = "atlasspooky",
     blueprint_compat = true,
     calculate = function(self, card, context)
@@ -904,6 +915,7 @@ local candy_cane = {
     rarity = "cry_candy",
 	config = { extra = { rounds = 11, dollars = 4 } },
     cost = 10,
+    order = 139,
     atlas = "atlasspooky",
     blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -972,6 +984,7 @@ local candy_buttons = {
     key = "candy_buttons",
 	name = "cry-candybuttons",
     pos = { x = 1, y = 2 },
+    order = 140,
     rarity = "cry_candy",
 	config = { extra = { rerolls = 15 } },
     cost = 10,
@@ -1027,6 +1040,7 @@ local jawbreaker = {
     pos = { x = 3, y = 2 },
     rarity = "cry_candy",
     cost = 10,
+    order = 141,
     atlas = "atlasspooky",
     blueprint_compat = false,
 	calculate = function(self, card, context)
@@ -1089,6 +1103,7 @@ local mellowcreme = {
     pos = { x = 0, y = 2 },
     rarity = "cry_candy",
     cost = 10,
+    order = 142,
     atlas = "atlasspooky",
 	config = {extra = {sell_mult = 4}},
 	loc_vars = function(self, info_queue, center)
@@ -1113,6 +1128,7 @@ local brittle = {
     rarity = "cry_candy",
     cost = 10,
     atlas = "atlasspooky",
+    order = 143,
 	config = {extra = {rounds = 9}},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
@@ -1175,6 +1191,7 @@ local monopoly_money = {
 	name = "cry-Monopoly",
 	pos = { x = 4, y = 1 },
 	config = {extra = {fail_rate = 4}},
+	order = 144,
 	rarity = "cry_cursed",
 	cost = 0,
 	atlas = "atlasspooky",
@@ -1217,6 +1234,7 @@ local candy_sticks = {
 	key = "candy_sticks",
 	name = "cry-Candy-Sticks",
 	pos = { x = 5, y = 2 },
+	order = 145,
 	config = {extra = { boss = {}, hands = 1, clockscore = 0}},
 	rarity = "cry_candy",
 	cost = 3,
@@ -1331,8 +1349,7 @@ items = {
 	monopoly_money,
 	candy_sticks,
 }
---order is temporary so we can more easily test these out
-return { name = "Spooky", order = 1e300, init = function() 
+return { name = "Spooky", init = function() 
 	
 	local sc = Card.set_cost
 	function Card:set_cost()

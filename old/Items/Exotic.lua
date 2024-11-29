@@ -159,6 +159,7 @@ local speculo = {
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
+	immutable = true,
 	atlas = "atlasexotic",
 	order = 504,
 	soul_pos = { x = 4, y = 1, extra = { x = 5, y = 1 } },
@@ -220,7 +221,7 @@ local redeo = {
 		}
 	end,
 	pos = { x = 3, y = 0 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 506,
@@ -282,7 +283,7 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
-	immune_to_chemach = true,
+	immutable = true,
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
@@ -366,7 +367,7 @@ local crustulum = {
 	end,
 	cry_credits = {
 		idea = {"AlexZGreat"},
-		art = {"Jevonn"},
+		art = {"lolxddj"},
 		code = {"Jevonn"}
 	},
 }
@@ -490,7 +491,7 @@ local scalae = {
 	key = "Scalae",
 	pos = { x = 3, y = 4 },
 	soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
-	immune_to_chemach = false,
+	immutable = false,
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
@@ -700,7 +701,7 @@ local aequilibrium = {
 	cost = 50,
 	order = 512,
 	blueprint_compat = true,
-	immune_to_chemach = true,
+	immutable = true,
 	eternal_compat = true,
 	perishable_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -793,7 +794,7 @@ local aequilibrium = {
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if not from_debuff then
+		if not from_debuff and card.ability.extra.card then
 			card.ability.extra.card:start_dissolve()
 		end
 	end,
@@ -882,7 +883,7 @@ local gemino = {
 	key = "gemino",
 	pos = { x = 6, y = 1 },
 	soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
-	immune_to_chemach = true,
+	immutable = true,
 	cry_credits = {
 		jolly = {
 			"Jolly Open Winner",
@@ -900,7 +901,7 @@ local gemino = {
 		if context.end_of_round and not context.repetition and not context.individual then
 			local check = false
 			local card = G.jokers.cards[1]
-			if not Card.no(G.jokers.cards[1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[1], "immutable", true) then
+			if not Card.no(G.jokers.cards[1], "immutable", true) then
 				cry_with_deck_effects(G.jokers.cards[1], function(card)
 					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
@@ -974,6 +975,7 @@ local verisimile = {
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 516,
+	immutable = true,
 	blueprint_compat = true,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
