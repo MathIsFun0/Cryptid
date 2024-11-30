@@ -5813,15 +5813,9 @@ local flipside = {
 			end
 		end
 	end,
-	cry_credits = {
-		jolly = {
-			"Jolly Open Winner",
-			"Axolotolus",
-		},
-	},
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_context.dbl_side then
+			if context.other_context and context.other_context.dbl_side then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
