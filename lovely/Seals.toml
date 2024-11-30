@@ -12,7 +12,7 @@ pattern = '(?<indent>[\t ]*)if destroyed then \n'
 position = 'before'
 line_prepend = '$indent'
 payload = '''
-if scoring_hand[i]:calculate_seal({destroying_card = scoring_hand[i], full_hand = G.play.cards}) then
+if scoring_hand[i]:calculate_seal({destroying_card = scoring_hand[i], full_hand = G.play.cards}) and not scoring_hand[i].ability.eternal then
     destroyed = true
 end
 

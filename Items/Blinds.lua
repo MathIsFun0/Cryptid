@@ -1279,7 +1279,7 @@ function get_new_boss()
 		end
 	end
 	local bl = gnb()
-	if G.GAME.modifiers.cry_beta then
+	if G.GAME.modifiers.cry_beta and Cryptid.enabled["Blinds"] then
 		local bl_key = string.sub(bl,4)
 		local nostalgicblinds = {
 			arm = true,

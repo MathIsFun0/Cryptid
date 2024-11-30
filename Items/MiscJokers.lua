@@ -6203,14 +6203,14 @@ local exposed = {
 		return { vars = { center.ability.extra } }
 	end,
 	update = function(self, card, dt)
-		if G.deck then
+		if G.deck and not (card.area and card.area.config.collection) then
 			for i, v in pairs (G.deck.cards) do
 				if v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
-		if G.hand then
+		if G.hand and not (card.area and card.area.config.collection) then
 			for i, v in pairs (G.hand.cards) do
 				if v:is_face() then
 					v:set_debuff(true)
@@ -6245,14 +6245,14 @@ local mask = {
 		return { vars = { center.ability.extra } }
 	end,
 	update = function(self, card, dt)
-		if G.deck then
+		if G.deck and not (card.area and card.area.config.collection) then
 			for i, v in pairs (G.deck.cards) do
 				if not v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
-		if G.hand then
+		if G.hand and not (card.area and card.area.config.collection) then
 			for i, v in pairs (G.hand.cards) do
 				if not v:is_face() then
 					v:set_debuff(true)
