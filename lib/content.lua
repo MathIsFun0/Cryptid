@@ -202,7 +202,7 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness"
+		return G.STAGE == G.STAGES.MAIN_MENU and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
 	end,
 })
 SMODS.Sound({
@@ -215,7 +215,7 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU and G.selectedGameset == "madness"
+		return G.STAGE == G.STAGES.MAIN_MENU and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
 	end,
 })
 SMODS.Sound({
@@ -228,7 +228,7 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU and G.selectedGameset == "modest"
+		return G.STAGE == G.STAGES.MAIN_MENU and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
 	end,
 })
 SMODS.Atlas({

@@ -4,28 +4,19 @@ G.SETTINGS.cry_intro_complete = false
 local gu = Game.update
 function Game:update(dt)
     gu(self, dt)
-    if not G.SETTINGS.cry_intro_complete then G.FUNCS.cry_intro_controller() end
-end
-
-local gi = Game.init
-function Game:init()
-    local ret = gi(self)
-    --temporarily remove all cryptid intro stuff
-    G.SETTINGS.cry_intro_complete = nil
-    G.cry_intro_progress = nil
-    return ret
+    if not G.PROFILES[G.SETTINGS.profile].cry_intro_complete then G.FUNCS.cry_intro_controller() end
 end
 
 G.FUNCS.cry_intro_controller = function()
-    G.cry_intro_progress = G.cry_intro_progress or {
+    G.PROFILES[G.SETTINGS.profile].cry_intro_progress = G.PROFILES[G.SETTINGS.profile].cry_intro_progress or {
         state = "start",
         completed = {}
     }
-    if not G.SETTINGS.paused and not G.SETTINGS.cry_intro_complete then
-        if G.STATE == G.STATES.MENU and not G.cry_intro_progress.completed.start then
-            G.cry_intro_progress.section = 'start'
+    if not G.SETTINGS.paused and not G.PROFILES[G.SETTINGS.profile].cry_intro_complete then
+        if G.STATE == G.STATES.MENU and not G.PROFILES[G.SETTINGS.profile].cry_intro_progress.completed.start then
+            G.PROFILES[G.SETTINGS.profile].cry_intro_progress.section = 'start'
             G.FUNCS.cry_intro_part('start')
-            G.cry_intro_progress.completed.start  = true
+            G.PROFILES[G.SETTINGS.profile].cry_intro_progress.completed.start  = true
             G:save_progress()
         end
     end
@@ -223,17 +214,20 @@ G.FUNCS.cry_madness = function(e)
     G.FUNCS.cry_intro_part("madness")
     G.selectedGameset = "madness"
 end
-G.FUNCS.cry_gameset_confirm = function(e) --temporary
-    G.SETTINGS.cry_intro_complete = true
-    G.SETTINGS.paused = false
-    G.gamesetUI:remove()
-    G.gateway:remove()
-    G.yawetag:remove()
-    G.E_MANAGER:clear_queue('tutorial')
-    G.OVERLAY_TUTORIAL.Jimbo:remove()
-    if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end 
-    G.OVERLAY_TUTORIAL:remove()
-    G.OVERLAY_TUTORIAL = nil
+G.FUNCS.cry_gameset_confirm = function(e) --WIP
+    if G.selectedGameset then
+        G.PROFILES[G.SETTINGS.profile].cry_intro_complete = true
+        G.PROFILES[G.SETTINGS.profile].cry_gameset = G.selectedGameset
+        G.SETTINGS.paused = false
+        G.gamesetUI:remove()
+        G.gateway:remove()
+        G.yawetag:remove()
+        G.E_MANAGER:clear_queue('tutorial')
+        G.OVERLAY_TUTORIAL.Jimbo:remove()
+        if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end 
+        G.OVERLAY_TUTORIAL:remove()
+        G.OVERLAY_TUTORIAL = nil
+    end
 end
 
 function cry_intro_info(args)
@@ -312,4 +306,49 @@ function cry_intro_info(args)
         end
     }), 'tutorial') 
     return step+1
+end
+
+-- Profile stuff: all profiles start with M to separate from vanilla
+function G.UIDEF.profile_select()
+    G.focused_profile = G.focused_profile or G.SETTINGS.profile or (Cryptid.profile_prefix .. "1")
+  
+    local t =   create_UIBox_generic_options({padding = 0,contents ={
+        {n=G.UIT.R, config={align = "cm", padding = 0, draw_layer = 1, minw = 4}, nodes={
+          create_tabs(
+          {tabs = {
+              {
+                label = Cryptid.profile_prefix .. "1",
+                chosen = G.focused_profile == (Cryptid.profile_prefix .. "1"),
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix .. "1"
+              },
+              {
+                label = Cryptid.profile_prefix .. "2",
+                chosen = G.focused_profile == (Cryptid.profile_prefix .. "2"),
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix .. "2"
+              },
+              {
+                label = Cryptid.profile_prefix .. "3",
+                chosen = G.focused_profile == (Cryptid.profile_prefix .. "3"),
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix .. "3"
+              }
+          },
+          snap_to_nav = true}),
+        }},
+    }})
+    return t
+  end
+
+-- Gets gameset sprite of current profile
+function gameset_sprite(scale, profile)
+    gameset = G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
+    scale = scale or 1
+    local sprite = Sprite(0, 0, scale, scale, G.ASSET_ATLAS['cry_gameset'], {x = (gameset == 'madness' and 2 or gameset == 'modest' and 0 or 1), y = 0})
+    sprite:define_draw_steps({
+        {shader = 'dissolve', shadow_height = 0.05},
+        {shader = 'dissolve'}
+    })
+    return sprite
 end
