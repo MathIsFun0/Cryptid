@@ -2220,6 +2220,13 @@ return {
             },
         },
         Sleeve = {
+			sleeve_cry_bountiful_sleeve = {
+				name = "Größzügige Hülle",
+				text = {
+					"Ziehe immer 5 Karten nach",
+					"{C:attention}Gespielter Hand{} oder {C:attention}Abwurf{}",
+				},
+			},
             sleeve_cry_ccd_sleeve = {
                 name = "CCD Hülle",
                 text = {
@@ -2284,6 +2291,14 @@ return {
                     "Wenn ein {C:attention}Gutschein{} gekauft wird,",
                     "bekomme seine {C:attention}verbesserten Versionen",
                 },
+            },
+			sleeve_cry_spooky_sleeve = {
+                name = "Gruselige Hülle",
+                text = {
+                    "Starte mit einem {C:eternal}Ewigen{} {C:attention,T:j_cry_chocolate_dice}Schokoladenwürfel",
+                    "Nach jeder {C:attention}Ante{}, erstelle eine",
+                    "{C:cry_candy}Süßigkeit{} oder einen {X:cry_cursed,C:white}Verfluchten{} Joker",
+                }
             },
             sleeve_cry_wormhole_sleeve = {
                 name = "Wurmlochhülle",
