@@ -37,15 +37,33 @@ for _, file in ipairs(files) do
 	f()
 end
 
+--Temporarily load everything in the items folderlocal files = NFS.getDirectoryItems(mod_path .. "lib")
+local files = NFS.getDirectoryItems(mod_path .. "items")
+for _, file in ipairs(files) do
+	print("[CRYPTID] Loading file " .. file)
+	local f, err = SMODS.load_file("items/" .. file)
+	if err then
+		error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+	end
+	local ret = f()
+	if ret.init then ret:init() end
+	if ret.items then
+		for _, item in ipairs(ret.items) do
+			if item.init then item:init() end
+			SMODS[item.object_type](item)
+		end
+	end
+end
+
 -- A list of content sets. These can be toggled individually to determine what types of content are enabled.
 -- Consider it like the old file system, but with more flexibility.
 Cryptid.CONTENT_SETS = {
 	M = "m",
 	DAGGER = "dagger",
 	ULTRAVIOLENCE = "ultraviolence",
-	MUSHROOM_KINGDOM = "mushroom_kingdom",
 	CODE = "code",
 	FOOD = "food",
 	CELESTIALS = "celestials",
 	D20 = "d20",
+	PARTICLE = "particle"
 }
