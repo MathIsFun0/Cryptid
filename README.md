@@ -13,7 +13,7 @@ Cryptid currently adds:
 ### [Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
 
 ### Frequently asked questions
-* Credit to (JenWalter)[https://ko-fi.com/jenwalter] from Discord
+* Credit to @jenwalter666 for creating this FAQ (forwarded from Cryptid Discord)
 
 ## General
 
