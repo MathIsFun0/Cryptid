@@ -33,6 +33,11 @@ local meme1 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
+                if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
+            		if pseudorandom('meme1_'..G.GAME.round_resets.ante) > 0.997 then 
+				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+			end
+		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
 	end,
 	ease_background_colour = function(self)
@@ -67,6 +72,11 @@ local meme2 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
+		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
+            		if pseudorandom('memetwo_'..G.GAME.round_resets.ante) > 0.997 then 
+				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+			end
+		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memetwo")
 	end,
 	ease_background_colour = function(self)
@@ -101,6 +111,11 @@ local meme3 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
+		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
+            		if pseudorandom('memethree_'..G.GAME.round_resets.ante) > 0.997 then 
+				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+			end
+		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memethree")
 	end,
 	ease_background_colour = function(self)
