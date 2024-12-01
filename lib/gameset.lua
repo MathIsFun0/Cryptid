@@ -347,8 +347,10 @@ function gameset_sprite(scale, profile)
     scale = scale or 1
     local sprite = Sprite(0, 0, scale, scale, G.ASSET_ATLAS['cry_gameset'], {x = (gameset == 'madness' and 2 or gameset == 'modest' and 0 or 1), y = 0})
     sprite:define_draw_steps({
-        {shader = 'dissolve', shadow_height = 0.05},
+        {shader = 'dissolve', shadow_height = 0.09},
         {shader = 'dissolve'}
     })
+    sprite.states.collide.can = true
+    sprite.states.drag.can = true
     return sprite
 end
