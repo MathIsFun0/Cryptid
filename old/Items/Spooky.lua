@@ -1200,7 +1200,7 @@ local monopoly_money = {
 	perishable_compat = false,
 	no_dbl = true,
 	calculate = function(self, card, context)
-		if context.buying_card and not context.blueprint_card and not context.retrigger_joker then
+		if context.buying_card and not context.blueprint_card and not context.retrigger_joker and not (context.card == card) then
 			if pseudorandom(pseudoseed("cry_monopoly")) < G.GAME.probabilities.normal/card.ability.extra.fail_rate then
 				G.E_MANAGER:add_event(Event({
 					func = function()
