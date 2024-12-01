@@ -1300,7 +1300,7 @@ local candy_sticks = {
 
 local storage_area_config = {
     type = "play",
-    card_w = G.CARD_W * 0.5,
+    card_w = G.CARD_W,
 }
 
 local buttercup = {
@@ -1340,7 +1340,9 @@ local buttercup = {
         if context.selling_self and not context.blueprint then
             if #card.cry_storage.cards > 0 then
                 for i, jok in ipairs(card.cry_storage.cards) do
-                    jok.T.scale = jok.T.scale / 0.5
+                    jok.T.w = jok.T.orig.w
+                    jok.T.h = jok.T.orig.h
+                    local save = jok:save()
                     G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
                     jok:remove()
                 end
@@ -1506,16 +1508,24 @@ return { name = "Spooky", order = 1e300, init = function()
         -- get shop highlighted
         -- only from the jokers spot for now, might expand later
         -- (to accomodate for DoE probably?)
-        local shop_area = G.shop_jokers
-        if shop_area == nil then
-            e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-            e.config.button = nil
-            return
-        end
+        local highlighted_shop_cards = {}
+        local areas_to_check = {
+            shop_jokers = G.shop_jokers,
+            shop_vouchers = G.shop_vouchers,
+            shop_booster = G.shop_booster
+        }
         local jok = e.config.ref_table
-        -- WHERES THE FUCKING STORAGE :boom:
-        -- sendInfoMessage(tprint(jok), "Buttercup - CaroleCryptid")
-        if #shop_area.highlighted == 1 and jok:can_use_storage() then
+
+        for key, value in pairs(areas_to_check) do
+            if value == nil then
+                e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+                e.config.button = nil
+                return
+            elseif #value.highlighted == 1 and #highlighted_shop_cards == 0 then
+                highlighted_shop_cards[1] = value.highlighted[1]
+            end
+        end
+        if #highlighted_shop_cards == 1 and jok:can_use_storage() then
             e.config.colour = G.C.BLUE
             e.config.button = "store_card"
         else
@@ -1529,17 +1539,29 @@ return { name = "Spooky", order = 1e300, init = function()
             trigger = 'after',
             delay = 0.1,
             func = function()
-                local shop_area = G.shop_jokers
-                local got_joker = shop_area.highlighted[1]
-                local jok = e.config.ref_table
-                got_joker.T.original_scale = got_joker.T.scale
-                got_joker.T.scale = got_joker.T.scale * 0.5
-                if got_joker.children.price then got_joker.children.price:remove() end
-                got_joker.children.price = nil
-                if got_joker.children.buy_button then got_joker.children.buy_button:remove() end
-                got_joker.children.buy_button = nil
-                shop_area:remove_card(got_joker)
-                jok.cry_storage:emplace(got_joker)
+                local areas_to_check = {
+                    shop_jokers = G.shop_jokers,
+                    shop_vouchers = G.shop_vouchers,
+                    shop_booster = G.shop_booster
+                }
+                local this_card = e.config.ref_table
+                -- This doesn't take into account the possibility that multiple cards might be selected in different areas
+                -- but can_store_card already does that for us, so who cares tbh
+                for shop_name, shop_area in pairs(areas_to_check) do
+                    if #shop_area.highlighted == 1 then
+                        local new_card = shop_area.highlighted[1]
+                        new_card.T.orig = {w = new_card.T.w, h=new_card.T.h}
+                        new_card.T.w = new_card.T.w * 0.5
+                        new_card.T.h = new_card.T.h * 0.5
+                        new_card.cry_from_shop = shop_name
+                        if new_card.children.price then new_card.children.price:remove() end
+                        new_card.children.price = nil
+                        if new_card.children.buy_button then new_card.children.buy_button:remove() end
+                        new_card.children.buy_button = nil
+                        shop_area:remove_card(new_card)
+                        this_card.cry_storage:emplace(new_card)
+                    end
+                end
                 return true
             end
         }))
@@ -1558,10 +1580,11 @@ return { name = "Spooky", order = 1e300, init = function()
 	local carmv = Card.move
 	function Card:move(dt)
         carmv(self,dt)
-        if self.cry_storage ~= nil then
+        if self.cry_storage ~= nil and self.cry_storage.cards ~= nil then
             --sendInfoMessage(self.cry_storage, "buttercup")
-            self.cry_storage.T.w = G.CARD_W*0.45
-            self.cry_storage.T.x = self.T.x
+            self.cry_storage.config.card_limit = #self.cry_storage.cards + 1
+            self.cry_storage.T.w = G.CARD_W*2
+            self.cry_storage.T.x = self.T.x - (G.CARD_W*0.5)
             self.cry_storage.T.y = self.T.y
             self.cry_storage.VT.x = self.VT.x
             self.cry_storage.VT.y = self.VT.y
@@ -1574,6 +1597,9 @@ return { name = "Spooky", order = 1e300, init = function()
         if self.cry_storage then
             saved_table.cry_storage = self.cry_storage:save()
         end
+        if self.cry_from_shop then
+            saved_table.cry_from_shop = self.cry_from_shop
+        end
         return saved_table
 	end
 
@@ -1585,29 +1611,53 @@ return { name = "Spooky", order = 1e300, init = function()
             self.cry_storage = CardArea(self.T.x, 2, 1, 1, storage_area_config)
             self.cry_storage:load(cardTable.cry_storage)
             for i, card in ipairs(self.cry_storage.cards) do
-                card.T.original_scale = card.T.scale
-                card.T.scale = card.T.scale * 0.5
+                card.T.orig = { w = card.T.w, h = card.T.h }
+                card.T.w = card.T.w * 0.5
+                card.T.h = card.T.h * 0.5
+                -- card.states.hover.can = false
             end
+        end
+        if cardTable.cry_from_shop then
+            self.cry_from_shop = cardTable.cry_from_shop
         end
 	end
 
 	local ccfs = create_card_for_shop
 	function create_card_for_shop(area)
-        if area == G.shop_jokers and G.GAME.next_shop_cards and #G.GAME.next_shop_cards > 0 then
-            local guaranteed_card = Card(
-                area.x,
-                area.y,
-                G.CARD_W,
-                G.CARD_H,
-                nil,
-                G.P_CENTERS.j_jolly,
-                {bypass_discovery_center = true, bypass_discovery_ui = true}
-            )
-            guaranteed_card:load(G.GAME.next_shop_cards[1], nil)
-            sendInfoMessage(tprint(guaranteed_card), "guaranteed card")
+	    local guaranteed_card = Card(
+            area.x,
+            area.y,
+            G.CARD_W,
+            G.CARD_H,
+            nil,
+            G.P_CENTERS.j_jolly,
+            {bypass_discovery_center = true, bypass_discovery_ui = true}
+        )
+        local areas_to_check = {
+            shop_jokers = G.shop_jokers,
+            shop_vouchers = G.shop_vouchers,
+            shop_booster = G.shop_booster
+        }
+        local loaded_card_data = nil
+        local loaded_card_pos = -1
+        -- check if there's a card for `area` within `next_shop_cards`,
+        -- then put its data in `loaded_card_data` and its index in the table in `loaded_card_pos`
+        if G.GAME.next_shop_cards and #G.GAME.next_shop_cards > 0 then
+            for i, card in ipairs(G.GAME.next_shop_cards) do
+                sendInfoMessage(card.cry_from_shop, "next_shop_cards")
+                -- if not card.cry_from_shop then card.cry_from_shop = "shop_jokers" end -- failsafe :3
+                if areas_to_check[card.cry_from_shop] == area and loaded_card_pos == -1 then
+                    loaded_card_data = card
+                    loaded_card_pos = i
+                    break
+                end
+            end
+        end
+        if loaded_card_data then
             -- guaranteed_card.T.h = G.CARD_H
+            guaranteed_card:load(loaded_card_data, nil)
             guaranteed_card.VT.h = guaranteed_card.T.h
-            table.remove(G.GAME.next_shop_cards, 1)
+            table.remove(G.GAME.next_shop_cards, loaded_card_pos)
             create_shop_card_ui(guaranteed_card, "Joker", area)
             guaranteed_card.states.visible = false
             G.E_MANAGER:add_event(Event({
@@ -1622,6 +1672,8 @@ return { name = "Spooky", order = 1e300, init = function()
             }))
             guaranteed_card:set_cost()
             return guaranteed_card
+        else
+            guaranteed_card:remove()
         end
         return ccfs(area)
 	end
