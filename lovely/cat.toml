@@ -106,3 +106,16 @@ payload = '''
 elseif name_to_check == "cry-Cat Tag" then loc_vars = {self.ability.level or 1}
 '''
 match_indent = true
+
+# make the cat tag meow (can probably do this without injecting?)
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)'''
+position = "before"
+payload = '''if self.key == 'tag_cry_cat' then
+local rand = math.random(4)
+play_sound('cry_meow'..rand, 1.26, 0.25)
+end
+'''
+match_indent = true
