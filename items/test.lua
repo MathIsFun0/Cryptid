@@ -54,7 +54,7 @@ local test2 = {
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker and (Card.get_gameset(self, center) == "modest" and not context.blueprint) then
 			local modestcheck = nil
-			if Card.get_gameset(self, center) == "modest" then modestcheck == true end
+			if Card.get_gameset(self, center) == "modest" then modestcheck = true end
 			local jokers = {}
                 	for i=1, #G.jokers.cards do 
                     		if G.jokers.cards[i] ~= card then
