@@ -6,7 +6,7 @@ local test = {
         madness = {extra = {chips = 100}},
     },
 	config = {extra = {chips = 10}},
-	pos = { x = 0, y = 0 },
+	pos = { x = 1, y = 0 },
 	rarity = 1,
 	order = 11,
 	cost = 1,
@@ -21,6 +21,8 @@ local test = {
 				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
 				chip_mod = card.ability.extra.chips,
 			}
+		elseif context.first_hand_drawn and G.PROFILES[G.SETTINGS.profile].cry_gameset ~= "modest" then
+			ease_dollars(G.PROFILES[G.SETTINGS.profile].cry_gameset ~= "mainline" and 44444 or 44)
 		end
 	end,
 	cry_credits = {
@@ -31,7 +33,7 @@ local test = {
 			"m"
 		},
 		code = {
-			"m"
+			"Jevonn"
 		}
 	},
 }
