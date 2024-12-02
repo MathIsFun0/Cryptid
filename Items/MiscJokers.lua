@@ -2478,7 +2478,7 @@ local spaceglobe = {
 					func = function()
 						local _type = {}
 						for k, v in pairs(G.GAME.hands) do
-							if v.visible and k ~= card.ability.to_do_type then
+							if v.visible and k ~= card.ability.extra.type then
 								_type[#_type + 1] = k
 							end
 						end
@@ -5813,15 +5813,9 @@ local flipside = {
 			end
 		end
 	end,
-	cry_credits = {
-		jolly = {
-			"Jolly Open Winner",
-			"Axolotolus",
-		},
-	},
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_context.dbl_side then
+			if context.other_context and context.other_context.dbl_side then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
