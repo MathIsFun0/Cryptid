@@ -358,6 +358,8 @@ end
 -- set_ability accounts for gamesets
 function Card:get_gameset(center)
     if not center then center = card.config.center end
+    if self.force_gameset then return self.force_gameset end
+    if center.force_gameset then return center.force_gameset end
     return G.PROFILES[G.SETTINGS.profile].cry_gameset --individual config will work later
 end
 local csa = Card.set_ability
@@ -368,4 +370,54 @@ function Card:set_ability(center, y, z)
             self.ability[k] = v
         end
     end
+end
+
+--open gameset config UI when clicking on a card in the Cryptid collection
+local ccl = Card.click
+function Card:click()
+    ccl(self)
+    if G.your_collection then
+        for k, v in pairs(G.your_collection) do
+            if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+                cry_gameset_config_UI(self.config.center)
+            end
+        end
+    end
+end
+
+-- gameset config UI
+function cry_gameset_config_UI(center)
+    G.SETTINGS.paused = true
+    G.your_collection = {}
+    G.your_collection[1] = CardArea(
+        G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h,
+        5.3*G.CARD_W,
+        1.03*G.CARD_H, 
+        {card_limit = 5, type = 'title', highlight_limit = 0, collection = true})
+    local deck_tables = 
+    {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
+        {n=G.UIT.O, config={object = G.your_collection[1]}}
+    }}
+
+    local gamesets = {'disabled', 'modest', 'mainline', 'madness'}
+
+    for i = 1, #gamesets do
+        local _center = cry_deep_copy(center)
+        _center.force_gameset = gamesets[i]
+        local card = Card(G.your_collection[1].T.x + G.your_collection[1].T.w/2, G.your_collection[1].T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, _center)
+        card:start_materialize()
+        if gamesets[i] == 'disabled' then
+            card.debuff = true
+        end
+        G.your_collection[1]:emplace(card)
+    end
+
+    INIT_COLLECTION_CARD_ALERTS()
+    
+    local t = create_UIBox_generic_options({ infotip = localize('cry_gameset_explanation'), back_func = 'your_collection', snap_back = true, contents = {
+                {n=G.UIT.R, config={align = "cm", minw = 2.5, padding = 0.1, r = 0.1, colour = G.C.BLACK, emboss = 0.05}, nodes={deck_tables}},
+            }})
+    G.FUNCS.overlay_menu{
+        definition = t
+    }
 end

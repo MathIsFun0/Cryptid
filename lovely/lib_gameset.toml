@@ -128,3 +128,13 @@ pattern = '''\{n=G\.UIT\.R, config=\{align = "cm", padding = 0\.1\}, nodes=\{\s+
 position = "at"
 payload = '''{n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
 {n=G.UIT.R, config={id = 'from_game_over','''
+
+# Disabled UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif specific_vars and specific_vars.debuffed then"
+position = "before"
+payload = '''elseif _c.force_gameset and _c.force_gameset == 'disabled' then
+localize{type = 'other', key = 'disabled', set = _c.set, nodes = desc_nodes}'''
+match_indent = true

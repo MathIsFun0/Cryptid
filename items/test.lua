@@ -3,9 +3,9 @@ local test = {
 	key = "test",
     gameset_config = {
         modest = {extra = {chips = 1}},
-        mainline = {extra = {chips = 10}},
         madness = {extra = {chips = 100}},
     },
+	config = {extra = {chips = 10}},
 	pos = { x = 0, y = 0 },
 	rarity = 1,
 	order = 11,

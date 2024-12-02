@@ -3145,6 +3145,13 @@ return {
             },
         },
         Other = {
+            disabled = {
+                name = "Disabled",
+                text = {
+                    "No longer appears",
+                    "during a run"
+                }
+            },
             banana = {
                 name = "Banana",
                 text = {
@@ -3675,7 +3682,7 @@ return {
             --Settings Menu
             cry_set_features = "Features",
             cry_set_music = "Music",
-            cry_set_enable_features = "Select features to enable (applies on game restart):",
+            cry_set_enable_features = "Select features to configure (also use Additions Tab)",
             cry_feat_achievements = "Achievements",
             ["cry_feat_antimatter deck"] = "Antimatter Deck",
             cry_feat_blinds = "Blinds",
@@ -3783,6 +3790,11 @@ return {
             cry_notif_jimball_d1 = "Jimball plays the song \"Funkytown\",",
             cry_notif_jimball_d2 = "which is copyrighted and can't be",
             cry_notif_jimball_d3 = "used for streams and videos.",
+
+            cry_gameset_explanation = {
+                "Select a config option to",
+                "apply to this card."
+            }
         },
         labels = {
             food_jokers = "Food Jokers",
