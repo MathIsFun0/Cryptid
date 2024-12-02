@@ -138,3 +138,24 @@ position = "before"
 payload = '''elseif _c.force_gameset and _c.force_gameset == 'disabled' then
 localize{type = 'other', key = 'disabled', set = _c.set, nodes = desc_nodes}'''
 match_indent = true
+
+# render gameset as sticker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.sticker and G.shared_stickers[self.sticker] then"
+position = "before"
+payload = '''
+if not Cryptid.shared_gamesets then
+    Cryptid.shared_gamesets = {
+        modest = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 0,y = 0}),
+        mainline = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 1,y = 0}),
+        madness = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 2,y = 0}),
+    }
+end
+if self.gameset_select and Cryptid.shared_gamesets[self.config.center.force_gameset] then
+Cryptid.shared_gamesets[self.config.center.force_gameset].role.draw_major = self
+Cryptid.shared_gamesets[self.config.center.force_gameset]:draw_shader('dissolve', nil, nil, nil, self.children.center)
+Cryptid.shared_gamesets[self.config.center.force_gameset]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+end'''
+match_indent = true

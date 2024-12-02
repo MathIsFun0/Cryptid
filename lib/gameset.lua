@@ -342,8 +342,8 @@ function G.UIDEF.profile_select()
   end
 
 -- Gets gameset sprite of current profile
-function gameset_sprite(scale, profile)
-    gameset = G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
+function gameset_sprite(scale, profile, force_gameset)
+    gameset = force_gameset or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
     scale = scale or 1
     local sprite = Sprite(0, 0, scale, scale, G.ASSET_ATLAS['cry_gameset'], {x = (gameset == 'madness' and 2 or gameset == 'modest' and 0 or 1), y = 0})
     sprite:define_draw_steps({
@@ -406,8 +406,10 @@ function cry_gameset_config_UI(center)
         _center.force_gameset = gamesets[i]
         local card = Card(G.your_collection[1].T.x + G.your_collection[1].T.w/2, G.your_collection[1].T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, _center)
         card:start_materialize()
+        card.gameset_select = true
         if gamesets[i] == 'disabled' then
             card.debuff = true
+            --todo: replace sprite with ://DELETE?
         end
         G.your_collection[1]:emplace(card)
     end
