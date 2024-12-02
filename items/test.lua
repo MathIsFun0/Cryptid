@@ -66,9 +66,9 @@ local test2 = {
 					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								for i = 1, (2 - (modestcheck and 1 or 0)  do
+								for i = 1, (2 - (modestcheck and 1 or 0))  do
 									local chosen_joker = G.jokers.cards[1]
-									local card = copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
+									local card = copy_card(chosen_joker, nil, nil, nil, (modestcheck and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
 									card:add_to_deck()
 									G.jokers:emplace(card)
 								end
