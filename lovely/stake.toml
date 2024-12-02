@@ -412,8 +412,8 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''local cfg = (card and card.ability) or _c['config']'''
-position = "after"
+pattern = '''if _c.set == 'Other' then'''
+position = "before"
 payload = '''if cfg and G.GAME.modifiers.cry_consumable_reduce and cfg.max_highlighted and (cfg.max_highlighted > 1) then
     local new_table = {}
     for i0, j0 in pairs(cfg) do

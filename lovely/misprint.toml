@@ -141,9 +141,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
-pattern = "{card_limit = _size, type = 'consumeable', highlight_limit = 1}"
+pattern = "{card_limit = _size, type = 'consumeable', highlight_limit = 1})"
 position = "at"
-payload = "{card_limit = math.max(1,_size), type = 'consumeable', highlight_limit = 1}"
+payload = "{card_limit = math.max(1,_size), type = 'consumeable', highlight_limit = 1})"
 match_indent = true
 
 # Death and a CCD Patch
