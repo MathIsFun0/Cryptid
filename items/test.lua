@@ -53,7 +53,7 @@ local test2 = {
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker and (Card.get_gameset(self, center) == "modest" and not context.blueprint) then
-			local modestcheck == nil
+			local modestcheck = nil
 			if Card.get_gameset(self, center) == "modest" then modestcheck == true end
 			local jokers = {}
                 	for i=1, #G.jokers.cards do 
