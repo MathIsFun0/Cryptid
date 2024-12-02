@@ -465,4 +465,5 @@ return {
 		beta,
 		bountiful,
 	},
+	disabled = true
 }

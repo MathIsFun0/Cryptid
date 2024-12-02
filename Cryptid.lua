@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1103a]
---- VERSION: 0.5.2-REFACTOR~1121a
+--- VERSION: 0.5.2-REFACTOR~1202a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -46,11 +46,13 @@ for _, file in ipairs(files) do
 		error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
 	end
 	local ret = f()
-	if ret.init then ret:init() end
-	if ret.items then
-		for _, item in ipairs(ret.items) do
-			if item.init then item:init() end
-			SMODS[item.object_type](item)
+	if not ret.disabled then
+		if ret.init then ret:init() end
+		if ret.items then
+			for _, item in ipairs(ret.items) do
+				if item.init then item:init() end
+				SMODS[item.object_type](item)
+			end
 		end
 	end
 end

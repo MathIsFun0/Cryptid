@@ -354,3 +354,18 @@ function gameset_sprite(scale, profile)
     sprite.states.drag.can = true
     return sprite
 end
+
+-- set_ability accounts for gamesets
+function Card:get_gameset(center)
+    if not center then center = card.config.center end
+    return G.PROFILES[G.SETTINGS.profile].cry_gameset --individual config will work later
+end
+local csa = Card.set_ability
+function Card:set_ability(center, y, z)
+    csa(self, center, y, z)
+    if center.gameset_config and center.gameset_config[self:get_gameset(center)] then
+        for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
+            self.ability[k] = v
+        end
+    end
+end

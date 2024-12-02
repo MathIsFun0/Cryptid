@@ -592,6 +592,27 @@ return {
             },
         },
         Joker = {
+            j_cry_test_modest = {
+                name = "Test Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips",
+                    "{C:cry_ascendant}Modest{} Gameset"
+                },
+            },
+            j_cry_test_mainline = {
+                name = "Test Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips",
+                    "{C:cry_ascendant}Mainline{} Gameset"
+                },
+            },
+            j_cry_test_madness = {
+                name = "Test Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips",
+                    "{C:cry_ascendant}Madness{} Gameset"
+                },
+            },
             j_cry_adroit = {
                 name = "Adroit Joker",
                 text = {

@@ -187,4 +187,5 @@ return {
 	name = "Antimatter Deck",
 	init = function() end,
 	items = { blank_sprite, blank, antimatter },
+	disabled = true
 }

@@ -1992,4 +1992,4 @@ if JokerDisplay then
 
 	--end of Jokerdisplays
 end
-return { name = "JokerDisplay" }
+return { name = "JokerDisplay", disabled = true }

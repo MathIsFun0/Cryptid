@@ -4172,4 +4172,5 @@ return {
 		end
 	end,
 	items = code_cards,
+	disabled = true
 }

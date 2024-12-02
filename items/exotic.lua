@@ -1388,4 +1388,5 @@ return {
 		end
 	end,
 	items = items,
+	disabled = true
 }

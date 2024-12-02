@@ -1447,4 +1447,4 @@ return { name = "Spooky", init = function()
 				}))
 			end
 		end
-end, items = items }
+end, items = items, disabled = true }

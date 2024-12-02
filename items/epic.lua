@@ -1525,4 +1525,5 @@ return {
 		soccer,
 		fleshpanopticon,
 	},
+	disabled = true
 }

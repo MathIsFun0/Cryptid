@@ -968,4 +968,5 @@ return {
 		end
 	end,
 	items = voucheritems,
+	disabled = true
 }
