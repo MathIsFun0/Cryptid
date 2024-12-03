@@ -4173,10 +4173,12 @@ return {
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].hook_id == self.sort_id then
-					G.jokers.cards[i].ability.cry_hooked = false
-					G.jokers.cards[i].hook_id = nil
+			if G.jokers then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].hook_id == self.sort_id then
+						G.jokers.cards[i].ability.cry_hooked = false
+						G.jokers.cards[i].hook_id = nil
+					end
 				end
 			end
 		end
