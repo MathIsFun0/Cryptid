@@ -379,6 +379,9 @@ function Card:click()
     if G.your_collection then
         for k, v in pairs(G.your_collection) do
             if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+                if self.gameset_select then
+                    Card.cry_set_gameset(self, card, card.config.center.force_gameset)
+                end
                 cry_gameset_config_UI(self.config.center)
             end
         end
@@ -400,6 +403,11 @@ function cry_gameset_config_UI(center)
     }}
 
     local gamesets = {'disabled', 'modest', 'mainline', 'madness'}
+    if center.extra_gamesets then
+        for i = 1, #center.extra_gamesets do
+            gamesets[#gamesets+1] = center.extra_gamesets[i]
+        end
+    end
 
     for i = 1, #gamesets do
         local _center = cry_deep_copy(center)
@@ -422,4 +430,22 @@ function cry_gameset_config_UI(center)
     G.FUNCS.overlay_menu{
         definition = t
     }
+end
+
+-- change the rarity sticker's color for gameset selection on an item
+local gtc = get_type_colour
+function get_type_colour(center, card)
+    local color = gtc(center, card)
+    if card.gameset_select then
+        if center.force_gameset == 'modest' then
+            color = G.C.GREEN
+        elseif center.force_gameset == 'mainline' then
+            color = G.C.RED
+        elseif center.force_gameset == 'madness' then
+            color = G.C.CRY_EXOTIC
+        elseif center.force_gameset ~= 'disabled' then
+            color = G.C.CRY_ASCENDANT
+        end
+    end
+    return color
 end

@@ -595,22 +595,28 @@ return {
             j_cry_test_modest = {
                 name = "Test Joker",
                 text = {
-                    "{C:chips}+#1#{} Chips",
-                    "{C:cry_ascendant}Modest{} Gameset"
+                    "{C:chips}+#1#{} Chip"
                 },
             },
             j_cry_test_mainline = {
                 name = "Test Joker",
                 text = {
                     "{C:chips}+#1#{} Chips",
-                    "{C:cry_ascendant}Mainline{} Gameset"
+                    "{C:money}+$44{} at start of {C:attention}Blind{}"
                 },
             },
             j_cry_test_madness = {
                 name = "Test Joker",
                 text = {
                     "{C:chips}+#1#{} Chips",
-                    "{C:cry_ascendant}Madness{} Gameset"
+                    "{C:money}+$44444{} at start of {C:attention}Blind{}"
+                },
+            },
+            j_cry_test_cryptid_in_2025 = {
+                name = "Test Joker",
+                text = {
+                    "{C:chips}+#1#{} Chips",
+                    "{C:money}+$44444{} at start of {C:attention}Blind{}"
                 },
             },
             j_cry_adroit = {
@@ -3792,9 +3798,14 @@ return {
             cry_notif_jimball_d3 = "used for streams and videos.",
 
             cry_gameset_explanation = {
-                "Select a config option to",
-                "apply to this card."
-            }
+                "Select a gameset config option",
+                "to apply to this card."
+            },
+            cry_gameset_disabled = "Disabled",
+            cry_gameset_modest = "Modest",
+            cry_gameset_mainline = "Mainline",
+            cry_gameset_madness = "Madness",
+            cry_gameset_custom = "Modified",
         },
         labels = {
             food_jokers = "Food Jokers",

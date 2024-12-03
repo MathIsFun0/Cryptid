@@ -4,7 +4,9 @@ local test = {
     gameset_config = {
         modest = {extra = {chips = 1}},
         madness = {extra = {chips = 100}},
+		cryptid_in_2025 = {extra = {chips = 1e308}},
     },
+	extra_gamesets = {"cryptid_in_2025"},
 	config = {extra = {chips = 10}},
 	pos = { x = 1, y = 0 },
 	rarity = 1,

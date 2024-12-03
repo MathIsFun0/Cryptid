@@ -151,11 +151,34 @@ if not Cryptid.shared_gamesets then
         modest = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 0,y = 0}),
         mainline = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 1,y = 0}),
         madness = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 2,y = 0}),
+        custom = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], {x = 3,y = 4}),
     }
 end
-if self.gameset_select and Cryptid.shared_gamesets[self.config.center.force_gameset] then
-Cryptid.shared_gamesets[self.config.center.force_gameset].role.draw_major = self
-Cryptid.shared_gamesets[self.config.center.force_gameset]:draw_shader('dissolve', nil, nil, nil, self.children.center)
-Cryptid.shared_gamesets[self.config.center.force_gameset]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+local gameset_key
+if self.config.center.force_gameset then
+    gameset_key = self.config.center.force_gameset
+    if gameset_key ~= "disabled" and gameset_key ~= "modest" and gameset_key ~= "mainline" and gameset_key ~= "madness" then
+        gameset_key = "custom"
+    end
+end
+if self.gameset_select and Cryptid.shared_gamesets[gameset_key] then
+Cryptid.shared_gamesets[gameset_key].role.draw_major = self
+Cryptid.shared_gamesets[gameset_key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
+Cryptid.shared_gamesets[gameset_key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+end'''
+match_indent = true
+
+# replace rarity badge with gameset
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "card_type = (debuffed and AUT.card_type ~= 'Enhanced') and localize('k_debuffed') or card_type"
+position = "after"
+payload = '''
+if card.gameset_select then
+    card_type = localize('cry_gameset_'..card.config.center.force_gameset)
+    if card_type == "ERROR" then
+        card_type = localize('cry_gameset_custom')
+    end
 end'''
 match_indent = true
