@@ -49,3 +49,9 @@ Talisman may be configured to be on **BigNum** mode, which has a maximum limit o
 
 Be sure to give us as much information about the bug/crash as possible. A way to reproduce the bug/crash is also especially useful information to help us fix it.
 Remember; just saying you're crashing doesn't tell us anything. We need to know the details!
+
+> *How can I disable a specific boss blind?*
+
+In your balatro mods folder, navigate to `\Cryptid\Items` and find `Blinds.lua`.  
+
+Towards the end of the file, there's an array named `items_togo`, near line 1230.  You can disable specific blinds by deleting the relevant lines here.  These settings will take effect on a restart.  
