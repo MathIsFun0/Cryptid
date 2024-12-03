@@ -4170,6 +4170,16 @@ return {
 				G.GAME.code_rate = 1e100
 			end
 		end
+		local sell_card = G.FUNCS.sell_card
+		function G.FUNCS.sell_card(e)
+			sell_card(e)
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].hook_id == e.config.ref_table.sort_id then
+					G.jokers.cards[i].ability.cry_hooked = false
+					G.jokers.cards[i].hook_id = nil
+				end
+			end
+		end
 	end,
 	items = code_cards,
 }
