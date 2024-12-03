@@ -4170,11 +4170,11 @@ return {
 				G.GAME.code_rate = 1e100
 			end
 		end
-		local sell_card = G.FUNCS.sell_card
-		function G.FUNCS.sell_card(e)
-			sell_card(e)
+		local Cardstart_dissolveRef = Card.start_dissolve
+		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].hook_id == e.config.ref_table.sort_id then
+				if G.jokers.cards[i].hook_id == self.sort_id then
 					G.jokers.cards[i].ability.cry_hooked = false
 					G.jokers.cards[i].hook_id = nil
 				end
