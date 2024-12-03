@@ -15,16 +15,19 @@ local test = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.chips }, key = "j_cry_test_"..Card.get_gameset(self, center) }
+		local gameset = Card.get_gameset(center)
+		if gameset == 'disabled' then gameset = 'mainline' end --still show description
+		return { vars = { center.ability.extra.chips }, key = "j_cry_test_"..gameset }
 	end,
 	calculate = function(self, card, context)
+		local gameset = Card.get_gameset(card)
 		if context.cardarea == G.jokers and not context.before and not context.after then
 			return {
 				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
 				chip_mod = card.ability.extra.chips,
 			}
-		elseif context.first_hand_drawn and Card.get_gameset(self, center) ~= "modest" then
-			ease_dollars(Card.get_gameset(self, center) ~= "mainline" and 44444 or 44)
+		elseif context.first_hand_drawn and gameset ~= "modest" then
+			ease_dollars(gameset ~= "mainline" and 44444 or 44)
 		end
 	end,
 	cry_credits = {
@@ -54,9 +57,10 @@ local test2 = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	calculate = function(self, card, context)
-		if context.selling_self and not context.retrigger_joker and (Card.get_gameset(self, center) == "modest" and not context.blueprint) then
+		local gameset = Card.get_gameset(card)
+		if context.selling_self and not context.retrigger_joker and (gameset == "modest" and not context.blueprint) then
 			local modestcheck = nil
-			if Card.get_gameset(self, center) == "modest" then modestcheck = true end
+			if gameset == "modest" then modestcheck = true end
 			local jokers = {}
                 	for i=1, #G.jokers.cards do 
                     		if G.jokers.cards[i] ~= card then

@@ -357,9 +357,12 @@ end
 
 -- set_ability accounts for gamesets
 function Card:get_gameset(center)
-    if not center then center = card.config.center end
+    if not center then center = self.config.center end
     if self.force_gameset then return self.force_gameset end
     if center.force_gameset then return center.force_gameset end
+    if G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides and G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key] then
+        return G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
+    end
     return G.PROFILES[G.SETTINGS.profile].cry_gameset --individual config will work later
 end
 local csa = Card.set_ability
@@ -369,6 +372,10 @@ function Card:set_ability(center, y, z)
         for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
             self.ability[k] = v
         end
+    end
+    if self:get_gameset(center) == 'disabled' then
+        self.debuff = true
+        self.force_gameset = 'disabled'
     end
 end
 
@@ -380,7 +387,7 @@ function Card:click()
         for k, v in pairs(G.your_collection) do
             if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
                 if self.gameset_select then
-                    Card.cry_set_gameset(self, card, card.config.center.force_gameset)
+                    Card.cry_set_gameset(self, self.config.center, self.config.center.force_gameset)
                 end
                 cry_gameset_config_UI(self.config.center)
             end
@@ -424,7 +431,7 @@ function cry_gameset_config_UI(center)
 
     INIT_COLLECTION_CARD_ALERTS()
     
-    local t = create_UIBox_generic_options({ infotip = localize('cry_gameset_explanation'), back_func = 'your_collection', snap_back = true, contents = {
+    local t = create_UIBox_generic_options({ infotip = localize('cry_gameset_explanation'), back_func = 'openModUI_Cryptid', snap_back = true, contents = {
                 {n=G.UIT.R, config={align = "cm", minw = 2.5, padding = 0.1, r = 0.1, colour = G.C.BLACK, emboss = 0.05}, nodes={deck_tables}},
             }})
     G.FUNCS.overlay_menu{
@@ -448,4 +455,18 @@ function get_type_colour(center, card)
         end
     end
     return color
+end
+
+function Card:cry_set_gameset(center, gameset)
+    if G.PROFILES[G.SETTINGS.profile].cry_gameset == gameset and not G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides then
+        return
+    end
+    if not G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides then
+        G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides = {}
+    end
+    G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key] = gameset
+    if G.PROFILES[G.SETTINGS.profile].cry_gameset == gameset then
+        G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key] = nil
+    end
+    G:save_progress()
 end

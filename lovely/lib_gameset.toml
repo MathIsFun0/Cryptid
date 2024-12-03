@@ -130,13 +130,14 @@ payload = '''{n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
 {n=G.UIT.R, config={id = 'from_game_over','''
 
 # Disabled UI
+# Right now, this causes the card name to not appear. Not sure of the cause.
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
 pattern = "elseif specific_vars and specific_vars.debuffed then"
 position = "before"
 payload = '''elseif _c.force_gameset and _c.force_gameset == 'disabled' then
-localize{type = 'other', key = 'disabled', set = _c.set, nodes = desc_nodes}'''
+localize{type = 'other', key = 'disabled', nodes = desc_nodes}'''
 match_indent = true
 
 # render gameset as sticker
@@ -152,6 +153,7 @@ if not Cryptid.shared_gamesets then
         mainline = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 1,y = 0}),
         madness = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 2,y = 0}),
         custom = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], {x = 3,y = 4}),
+        selected = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], {x = 0,y = 4}),
     }
 end
 local gameset_key
@@ -165,7 +167,13 @@ if self.gameset_select and Cryptid.shared_gamesets[gameset_key] then
 Cryptid.shared_gamesets[gameset_key].role.draw_major = self
 Cryptid.shared_gamesets[gameset_key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
 Cryptid.shared_gamesets[gameset_key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
-end'''
+end
+if self.gameset_select and Card.get_gameset(G.P_CENTERS[self.config.center.key], G.P_CENTERS[self.config.center.key]) == gameset_key then
+Cryptid.shared_gamesets.selected.role.draw_major = self
+Cryptid.shared_gamesets.selected:draw_shader('dissolve', nil, nil, nil, self.children.center)
+Cryptid.shared_gamesets.selected:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+end
+'''
 match_indent = true
 
 # replace rarity badge with gameset
