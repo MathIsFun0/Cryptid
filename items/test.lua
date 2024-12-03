@@ -1,6 +1,7 @@
 local test = {
 	object_type = "Joker",
 	key = "test",
+	discovered = true,
     gameset_config = {
         modest = {extra = {chips = 1}},
         madness = {extra = {chips = 100}},
@@ -47,6 +48,7 @@ local test2 = {
 	object_type = "Joker",
 	name = "cry-altgoogol",
 	key = "altgoogol",
+	discovered = true,
 	pos = { x = 4, y = 3 },
 	immutable = true,
 	rarity = "cry_epic",
@@ -58,7 +60,7 @@ local test2 = {
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
-		if context.selling_self and not context.retrigger_joker and (gameset == "modest" and not context.blueprint) then
+		if context.selling_self and not context.retrigger_joker and (gameset == "madness" or not context.blueprint) then
 			local modestcheck = nil
 			if gameset == "modest" then modestcheck = true end
 			local jokers = {}
