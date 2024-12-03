@@ -1332,7 +1332,7 @@ items = {
 	choco8,
 	choco9,
 	choco10,
-	spy,
+	--spy,
 	flickering,
 	trick_or_treat,
 	candy_basket,
