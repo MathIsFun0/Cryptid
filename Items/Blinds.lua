@@ -1237,6 +1237,8 @@ local nostalgia_sprites = {
 	frames = 21,
 }
 
+--this list contains all of the blinds to be registered, if Blinds are enabled--
+--to disable a blind, comment it out or remove it from this list--
 local items_togo = {
 	oldox,
 	oldhouse,
