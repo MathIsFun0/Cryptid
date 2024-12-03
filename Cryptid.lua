@@ -2389,6 +2389,7 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 				if
 					is_number(tbl[k])
 					and not (k == "id")
+					and not (k == "perish_tally")
 					and not (k == "colour")
 					and not (k == "suit_nominal")
 					and not (k == "base_nominal")
@@ -2421,6 +2422,7 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
+						and not (k == "perish_tally")
 						and not (k == "colour")
 						and not (_k == "suit_nominal")
 						and not (_k == "base_nominal")
@@ -2493,7 +2495,6 @@ function cry_misprintize(card, override, force_reset, stack)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 		and not stack or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
 	then
-		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}

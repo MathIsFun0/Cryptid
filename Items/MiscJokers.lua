@@ -2478,7 +2478,7 @@ local spaceglobe = {
 					func = function()
 						local _type = {}
 						for k, v in pairs(G.GAME.hands) do
-							if v.visible and k ~= card.ability.to_do_type then
+							if v.visible and k ~= card.ability.extra.type then
 								_type[#_type + 1] = k
 							end
 						end

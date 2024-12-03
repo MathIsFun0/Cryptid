@@ -3526,7 +3526,7 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
-	patch,
+	--patch,
 	ctrl_v,
 	inst,
 }
