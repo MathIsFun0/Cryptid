@@ -1,5 +1,58 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+-- All the scattered set_cost hook from all the pre refactor files moved into one hook
+local sc = Card.set_cost
+function Card:set_cost()
+	-- Makes the edition cost increase usually present not apply if this variable is true
+	-- Used for some of the Jen's almanac edition decks because having the price increase apply was "unfun"
+	if self.edition and G.GAME.modifiers.cry_no_edition_price then
+		local m = cry_deep_copy(self.edition)
+		self.edition = nil
+		sc(self)
+		self.edition = m
+	else
+		sc(self)
+	end
+	--Makes cube and Big Cube always cost a set amount
+	if self.ability.name == "cry-Cube" then
+		self.cost = -27
+	end
+	if self.ability.name == "cry-Big Cube" then
+		self.cost = 27
+	end
+
+	--Multiplies voucher cost by G.GAME.modifiers.cry_voucher_price_hike
+	--Used by bronze stake to make vouchers %50 more expensive
+	if self.ability.set == "Voucher" and G.GAME.modifiers.cry_voucher_price_hike then
+		self.cost = math.floor(self.cost * G.GAME.modifiers.cry_voucher_price_hike)
+		--Update related costs
+		self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
+		if
+			self.area
+			and self.ability.couponed
+			and (self.area == G.shop_jokers or self.area == G.shop_booster)
+		then
+			self.cost = 0
+		end
+		self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
+	end
+
+	--Makes Cursed Jokers always sell for $0
+	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
+		self.sell_cost = 0
+		self.sell_cost_label = 0
+	end
+	
+	--Makes Tarots free if Tarot Acclimator is redeemed
+	--Makes Planets free if Planet Acclimator is redeemed
+	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then --Make Tarots free when Tarot Acclimator is redeemed
+		self.cost = 0
+	end
+	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then --Make Planets free when Planet Acclimator is redeemed
+		self.cost = 0
+	end
+end
+
 -- Modify to display badges for credits
 -- todo: make this optional
 -- todo: fix memory leak (it's easy to see in main menu collection, unhovering doesn't remove credit dynatext)
