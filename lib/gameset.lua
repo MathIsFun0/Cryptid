@@ -373,6 +373,10 @@ function Card:set_ability(center, y, z)
             self.ability[k] = v
         end
     end
+    if center.gameset_cost and center.gameset_cost[self:get_gameset(center)] then
+        print(center.gameset_cost[self:get_gameset(center)])
+        self.base_cost = center.gameset_cost[self:get_gameset(center)]
+    end
     if self:get_gameset(center) == 'disabled' then
         self.debuff = true
         self.force_gameset = 'disabled'
