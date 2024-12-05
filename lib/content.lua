@@ -297,6 +297,62 @@ SMODS.Atlas({
 	px = 34,
 	py = 34,
 })
+SMODS.Atlas({
+	key = "atlasdeck",
+	path = "atlasdeck.png",
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
+	key = "effarcire",
+	path = "goofy.png",
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
+	key = "code",
+	path = "c_cry_code.png",
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
+	key = "pack",
+	path = "pack_cry.png",
+	px = 71,
+	py = 95,
+})
+SMODS.UndiscoveredSprite({
+	key = "Code",
+	atlas = "code",
+	path = "c_cry_code.png",
+	pos = { x = 2, y = 5 },
+	px = 71,
+	py = 95,
+})
+SMODS.UndiscoveredSprite({
+	key = "Unique",
+	atlas = "code",
+	path = "c_cry_code.png",
+	pos = { x = 2, y = 5 },
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
+	key = "blinds",
+	atlas_table = "ANIMATION_ATLAS",
+	path = "bl_cry.png",
+	px = 34,
+	py = 34,
+	frames = 21,
+})
+SMODS.Atlas({
+	key = "nostalgia",
+	atlas_table = "ANIMATION_ATLAS",
+	path = "bl_nostalgia.png",
+	px = 34,
+	py = 34,
+	frames = 21,
+})
 --Enchancements, seals, other misc things etc
 SMODS.Atlas({
 	key = "cry_misc",
