@@ -5345,7 +5345,7 @@ local oldblueprint = {
 	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
 	rarity = 1,
-	cost = 5,
+	cost = 6,
 	order = 83,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
@@ -5377,6 +5377,7 @@ local oldblueprint = {
 								G.jokers:remove_card(card)
 								card:remove()
 								card = nil
+								if G.P_CENTERS["j_blueprint"].unlocked then G.GAME.oldbpfactor = (G.GAME.oldbpfactor or 1)*3 end
 								return true
 							end,
 						}))
