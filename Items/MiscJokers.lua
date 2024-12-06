@@ -5377,7 +5377,7 @@ local oldblueprint = {
 								G.jokers:remove_card(card)
 								card:remove()
 								card = nil
-								G.GAME.oldbpfactor = (G.GAME.oldbpfactor or 1)*3
+								if G.P_CENTERS["j_blueprint"].unlocked then G.GAME.oldbpfactor = (G.GAME.oldbpfactor or 1)*3 end
 								return true
 							end,
 						}))
