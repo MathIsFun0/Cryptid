@@ -609,6 +609,7 @@ local noisy = {
 									.. (
 										G.deck
 											and G.deck.cards[1]
+											and G.deck.cards[#G.deck.cards].base.suit
 											and G.deck.cards[#G.deck.cards].base.suit:sub(1, 1)
 										or "D"
 									),
