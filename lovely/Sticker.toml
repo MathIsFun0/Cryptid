@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # ok it seems i still have to use the dumb fix for pinned, smods please overwrite
 [[patches]]
