@@ -3529,6 +3529,7 @@ local code_cards = {
 	--patch,
 	ctrl_v,
 	inst,
+	encoded,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
@@ -3537,7 +3538,6 @@ if Cryptid.enabled["Enhanced Decks"] then
 	code_cards[#code_cards + 1] = source_deck
 end
 if Cryptid.enabled["Epic Jokers"] then
-	code_cards[#code_cards + 1] = encoded
 	code_cards[#code_cards + 1] = CodeJoker
 	code_cards[#code_cards + 1] = copypaste
 end
