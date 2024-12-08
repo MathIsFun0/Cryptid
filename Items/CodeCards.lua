@@ -986,6 +986,9 @@ local oboe = {
 	cost = 4,
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
+		if not card then
+			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		end
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
 	can_use = function(self, card)
