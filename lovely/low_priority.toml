@@ -1,0 +1,23 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 114
+
+# Patches that have to run later to be injected in the correct spot
+
+# Joker collection - deal with Cryptid's item disabling
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''for i = 1, math.ceil(#joker_pool/(5*#G.your_collection)) do'''
+position = "before"
+payload = '''
+if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+    joker_pool = {}
+    for k, v in pairs(SMODS.Center.obj_table) do
+        if v.set == "Joker" and v.mod and G.ACTIVE_MOD_UI.id == v.mod.id then 
+            joker_pool[#joker_pool+1] = v 
+        end
+    end
+end'''
+match_indent = true

@@ -130,12 +130,14 @@ payload = "if not G.SAVED_GAME or not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSI
 match_indent = true
 
 # Register banned bosses for rush hour
+# Also initializes disabled/enabled cards
 [[patches]]
 [patches.pattern]
 target = "game.lua"
 pattern = "set_profile_progress()"
 position = "before"
 payload = '''
+G.cuor() --for some reason it doesn't let me use this function here unless I put it in G...
 for i = 1, #G.CHALLENGES do
     if (G.CHALLENGES[i].id == 'c_cry_rush_hour' or G.CHALLENGES[i].id == 'c_cry_rush_hour_ii' or G.CHALLENGES[i].id == 'c_cry_rush_hour_iii') and #G.CHALLENGES[i].restrictions.banned_other == 0 then
         for k, v in pairs(G.P_BLINDS) do

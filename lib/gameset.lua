@@ -1,6 +1,10 @@
 -- gameset.lua: functions for gameset UI and logic
 G.SETTINGS.cry_intro_complete = false
--- Based on vanilla tutorial system - add a system where Jolly Joker talks to the player
+
+-------------------------
+---- TUTORIAL SYSTEM ----
+-------------------------
+
 local gu = Game.update
 function Game:update(dt)
     gu(self, dt)
@@ -341,6 +345,10 @@ function G.UIDEF.profile_select()
     return t
   end
 
+------------------------
+---- GAMESET SYSTEM ----
+------------------------
+
 -- Gets gameset sprite of current profile
 function gameset_sprite(scale, profile, force_gameset)
     gameset = force_gameset or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
@@ -355,15 +363,19 @@ function gameset_sprite(scale, profile, force_gameset)
     return sprite
 end
 
--- set_ability accounts for gamesets
-function Card:get_gameset(center)
-    if not center then center = self.config.center end
-    if self.force_gameset then return self.force_gameset end
+-- designed to work on any object type
+function cry_get_gameset(card, center)
+    if not center then center = card.config and card.config.center or card end
+    if card.force_gameset then return card.force_gameset end
     if center.force_gameset then return center.force_gameset end
     if G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides and G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key] then
         return G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
     end
-    return G.PROFILES[G.SETTINGS.profile].cry_gameset --individual config will work later
+    return G.PROFILES[G.SETTINGS.profile].cry_gameset
+end
+-- set_ability accounts for gamesets
+function Card:get_gameset(center)
+    return cry_get_gameset(self, center)
 end
 local csa = Card.set_ability
 function Card:set_ability(center, y, z)
@@ -392,6 +404,7 @@ function Card:click()
             if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
                 if self.gameset_select then
                     Card.cry_set_gameset(self, self.config.center, self.config.center.force_gameset)
+                    cry_update_obj_registry()
                 end
                 cry_gameset_config_UI(self.config.center)
             end
@@ -428,7 +441,8 @@ function cry_gameset_config_UI(center)
         card.gameset_select = true
         if gamesets[i] == 'disabled' then
             card.debuff = true
-            --todo: replace sprite with ://DELETE?
+        else
+            card.debuff = false
         end
         G.your_collection[1]:emplace(card)
     end
@@ -473,4 +487,79 @@ function Card:cry_set_gameset(center, gameset)
         G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key] = nil
     end
     G:save_progress()
+end
+
+function cry_card_enabled(key, iter)
+    if not iter then iter = 0 end --iter is used to prevent infinite loops from freezing on startup
+    if iter > 10 then print("Warning: Circular dependency with " .. key); return true end
+    return cry_get_gameset(cry_get_center(key)) ~= "disabled" --todo: dependency system
+end
+
+function cry_get_center(key, m)
+    if not m then 
+        m = SMODS.GameObject
+        if m.subclasses then
+            for k, v in pairs(m.subclasses) do
+                local c = cry_get_center(key, v)
+                if c then return c end
+            end
+        end
+    end
+    return m.obj_table and m.obj_table[key]
+end
+
+local cinit = Card.init
+function Card:init(a,b,c,d,e,f,g)
+    cinit(self, a,b,c,d,e,f,g)
+    if self.config.center and self.config.center.cry_disabled then
+        self.debuff = true
+    end
+end
+
+------------------------------
+---- CARD ENABLING SYSTEM ----
+------------------------------
+
+SMODS.Center.disable = function(self, reason)
+    self.cry_disabled = reason or {type = "manual"} --used to display more information that can be used later
+    SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+    G.P_CENTERS[self.key] = nil
+end
+SMODS.Center.enable = function(self)
+    self.cry_disabled = nil
+    SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+    G.P_CENTERS[self.key] = self
+end
+
+function cry_update_obj_registry(m)
+    if not m then 
+        m = SMODS.GameObject
+        if m.subclasses then
+            for k, v in pairs(m.subclasses) do
+                cry_update_obj_registry(v)
+            end
+        end
+    end
+    if m.obj_table then
+        for k, v in pairs(m.obj_table) do
+            if v.mod and v.mod.id == "Cryptid" then
+                local en = cry_card_enabled(k)
+                if en == true then
+                    if v.cry_disabled then
+                        v:enable()
+                    end
+                else
+                    if not v.cry_disabled then
+                        v:disable(en)
+                    end
+                end
+            end
+        end
+    end
+end
+G.cuor = cry_update_obj_registry
+local init_item_prototypes_ref = Game.init_item_prototypes
+function Game:init_item_prototypes()
+    init_item_prototypes_ref(self)
+    cry_update_obj_registry()
 end

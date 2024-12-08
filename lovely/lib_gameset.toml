@@ -130,14 +130,15 @@ payload = '''{n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
 {n=G.UIT.R, config={id = 'from_game_over','''
 
 # Disabled UI
-# Right now, this causes the card name to not appear. Not sure of the cause.
+# Show disabled tooltip
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = "elseif specific_vars and specific_vars.debuffed then"
-position = "before"
-payload = '''elseif _c.force_gameset and _c.force_gameset == 'disabled' then
-localize{type = 'other', key = 'disabled', nodes = desc_nodes}'''
+pattern = "local info_queue = {}"
+position = "after"
+payload = '''if (not _c.force_gameset and _c.cry_disabled) or (_c.force_gameset and _c.force_gameset == 'disabled') then
+    info_queue[#info_queue+1] = {key = 'disabled', set = 'Other'}
+end'''
 match_indent = true
 
 # render gameset as sticker
@@ -168,7 +169,7 @@ Cryptid.shared_gamesets[gameset_key].role.draw_major = self
 Cryptid.shared_gamesets[gameset_key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
 Cryptid.shared_gamesets[gameset_key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
 end
-if self.gameset_select and Card.get_gameset(G.P_CENTERS[self.config.center.key], G.P_CENTERS[self.config.center.key]) == gameset_key then
+if self.gameset_select and Card.get_gameset(cry_get_center(self.config.center.key), cry_get_center(self.config.center.key)) == gameset_key then
 Cryptid.shared_gamesets.selected.role.draw_major = self
 Cryptid.shared_gamesets.selected:draw_shader('dissolve', nil, nil, nil, self.children.center)
 Cryptid.shared_gamesets.selected:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
@@ -188,5 +189,9 @@ if card.gameset_select then
     if card_type == "ERROR" then
         card_type = localize('cry_gameset_custom')
     end
-end'''
+end
+if not card.gameset_select and card.config.center and card.config.center.cry_disabled then
+    card_type = localize('cry_gameset_disabled')
+end
+'''
 match_indent = true
