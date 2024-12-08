@@ -3146,6 +3146,14 @@ return {
                     "destroyed each round",
                 },
             },
+            cry_absolute = {
+                name = "Absolute",
+                text = {
+                    "Can't be sold",
+                    "or destroyed",
+                    "{C:attention}Unremovable{}",
+                },
+            },
             cry_rigged = {
                 name = "Rigged",
                 text = {
@@ -3716,6 +3724,7 @@ return {
         labels = {
             food_jokers = "Food Jokers",
             banana = "Banana",
+            cry_absolute = "Absolute",
             code = "Code",
             unique = "Unique",
             cry_rigged = "Rigged",
