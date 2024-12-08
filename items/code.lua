@@ -986,6 +986,9 @@ local oboe = {
 	cost = 4,
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
+		if not card then
+			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		end
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
 	can_use = function(self, card)
@@ -3526,9 +3529,10 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
-	patch,
+	--patch,
 	ctrl_v,
 	inst,
+	encoded,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
@@ -3537,7 +3541,6 @@ if Cryptid.enabled["Enhanced Decks"] then
 	code_cards[#code_cards + 1] = source_deck
 end
 if Cryptid.enabled["Epic Jokers"] then
-	code_cards[#code_cards + 1] = encoded
 	code_cards[#code_cards + 1] = CodeJoker
 	code_cards[#code_cards + 1] = copypaste
 end
@@ -4150,14 +4153,19 @@ return {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
+							-- Adding a before spawning becuase jen banned copy_paste
+							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
+							if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
 							return true
 						end
 					end,
@@ -4170,7 +4178,18 @@ return {
 				G.GAME.code_rate = 1e100
 			end
 		end
+		local Cardstart_dissolveRef = Card.start_dissolve
+		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
+			if G.jokers then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].hook_id == self.sort_id then
+						G.jokers.cards[i].ability.cry_hooked = false
+						G.jokers.cards[i].hook_id = nil
+					end
+				end
+			end
+		end
 	end,
 	items = code_cards,
-	disabled = true
 }

@@ -2289,6 +2289,13 @@ return {
             },
         },
         Sleeve = {
+			sleeve_cry_bountiful_sleeve = {
+				name = "Bountiful Sleeve",
+				text = {
+                    "After {C:blue}Play{} or {C:red}Discard{},",
+                    "always draw {C:attention}5{} cards"
+				},
+			},
             sleeve_cry_ccd_sleeve = {
                 name = "CCD Sleeve",
                 text = {
@@ -2352,6 +2359,14 @@ return {
                     "When a {C:attention}Voucher{} is purchased,",
                     "gain its {C:attention}extra tiers",
                 },
+            },
+			sleeve_cry_spooky_sleeve = {
+                name = "Spooky Sleeve",
+                text = {
+                    "Start with an {C:eternal}Eternal{} {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
+                    "After each {C:attention}Ante{}, create a",
+                    "{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
+                }
             },
             sleeve_cry_wormhole_sleeve = {
                 name = "Wormhole Sleeve",
