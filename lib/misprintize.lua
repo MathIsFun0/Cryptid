@@ -42,6 +42,7 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
+						and not (k == "perish_tally")
 						and not (k == "colour")
 						and not (_k == "suit_nominal")
 						and not (_k == "base_nominal")

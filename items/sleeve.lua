@@ -364,4 +364,4 @@ if CardSleeves then
 		sleeveitems[#sleeveitems + 1] = bountifulsleeve
 	end
 end
-return { name = "Sleeves", init = function() end, items = { sleeveitems } }
+return { name = "Sleeves", init = function() end, items = { sleeveitems }, disabled = true }
