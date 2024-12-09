@@ -2617,6 +2617,9 @@ function init_localization()
 	end
 end
 
+G.FUNCS.cry_asc_UI_set = function(e)
+end
+
 -- this is a hook to make funny "x of a kind"/"flush x" display text
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
@@ -2649,11 +2652,51 @@ function G.FUNCS.get_poker_hand_info(_cards)
 				end
 				return str_ret
 			end
+			-- some nerd's gonna make a 1k+ card hand and i'm gonna have to update this... for now it's capped at 999
 			-- text gets stupid small at 100+ anyway
-			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..((#scoring_hand < 1000 and create_num_chunk(#scoring_hand) or "Thousand")..(text == 'Five of a Kind' and " of a Kind" or ""))
+			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..(create_num_chunk(#scoring_hand)..(text == 'Five of a Kind' and " of a Kind" or ""))
 		end
 	end
+
+
+
+
+
+
+	local hand_table = {
+		['High Card'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 1 or nil,
+		['Pair'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 2 or nil,
+		['Two Pair'] = 4,
+		['Three of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 3 or nil,
+		['Straight'] = 5,
+		['Flush'] = 5,
+		['Full House'] = 5,
+		['Four of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 4 or nil,
+		['Straight Flush'] = 5,
+		['cry_Bulwark'] = 5,
+		['Five of a Kind'] = 5,
+		['Flush House'] = 5,
+		['Flush Five'] = 5,
+		['cry_Clusterfuck'] = 8,
+		['cry_UltPair'] = 8,
+		['cry_WholeDeck'] = 52,
+	}
+	
+	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
+	if hand_table[text] then
+		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspace_tether and #_cards - hand_table[text] or #scoring_hand - hand_table[text]
+	else
+		G.GAME.current_round.current_hand.cry_asc_num = 0
+	end
+	
+	
+	
+	G.GAME.current_round.current_hand.cry_asc_num_text = (G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0) and " (+"..G.GAME.current_round.current_hand.cry_asc_num..")" or ""
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
+end
+
+function cry_ascend(num)	-- edit this function at your leisure
+	return num*(1.2^G.GAME.current_round.current_hand.cry_asc_num or 0)
 end
 
 --Will be moved to D20 file when that gets added
