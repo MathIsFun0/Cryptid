@@ -195,3 +195,15 @@ if not card.gameset_select and card.config.center and card.config.center.cry_dis
 end
 '''
 match_indent = true
+
+
+# make disabled cards visually debuffed
+# warning: this also patches a lot of extra stuff, but that shouldn't matter
+#          since you shouldn't be able to access them outside of the collection anyway
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.debuff then"
+position = "at"
+payload = "if self.debuff or cry_get_gameset(self) == 'disabled' then"
+match_indent = true

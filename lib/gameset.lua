@@ -384,14 +384,9 @@ function Card:set_ability(center, y, z)
         for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
             self.ability[k] = v
         end
-    end
-    if center.gameset_cost and center.gameset_cost[self:get_gameset(center)] then
-        print(center.gameset_cost[self:get_gameset(center)])
-        self.base_cost = center.gameset_cost[self:get_gameset(center)]
-    end
-    if self:get_gameset(center) == 'disabled' then
-        self.debuff = true
-        self.force_gameset = 'disabled'
+        if center.gameset_config[self:get_gameset(center)].cost then
+            self.cost = center.gameset_config[self:get_gameset(center)].cost
+        end
     end
 end
 
@@ -439,11 +434,6 @@ function cry_gameset_config_UI(center)
         local card = Card(G.your_collection[1].T.x + G.your_collection[1].T.w/2, G.your_collection[1].T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, _center)
         card:start_materialize()
         card.gameset_select = true
-        if gamesets[i] == 'disabled' then
-            card.debuff = true
-        else
-            card.debuff = false
-        end
         G.your_collection[1]:emplace(card)
     end
 
@@ -471,6 +461,9 @@ function get_type_colour(center, card)
         elseif center.force_gameset ~= 'disabled' then
             color = G.C.CRY_ASCENDANT
         end
+    end
+    if cry_get_gameset(card, center) == 'disabled' then
+        color = mix_colours(G.C.RED, G.C.GREY, 0.7)
     end
     return color
 end
@@ -508,13 +501,6 @@ function cry_get_center(key, m)
     return m.obj_table and m.obj_table[key]
 end
 
-local cinit = Card.init
-function Card:init(a,b,c,d,e,f,g)
-    cinit(self, a,b,c,d,e,f,g)
-    if self.config.center and self.config.center.cry_disabled then
-        self.debuff = true
-    end
-end
 
 ------------------------------
 ---- CARD ENABLING SYSTEM ----

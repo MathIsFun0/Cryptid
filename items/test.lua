@@ -159,8 +159,8 @@ local test3 = {
 	rarity = 1,
 	cost = 2,
 	discovered = true,
-	gameset_cost = {
-        	modest = 5,
+	gameset_config = {
+        	modest = {cost = 5},
     	},
 	order = 63,
 	blueprint_compat = true,
