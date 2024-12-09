@@ -2682,7 +2682,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	}
 
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
-	if hand_table[text] and G.GAME.used_vouchers.v_cry_hyperspacetether then
+	if hand_table[text] then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether and #_cards - hand_table[text] or #scoring_hand - hand_table[text]
 	else
 		G.GAME.current_round.current_hand.cry_asc_num = 0
@@ -2695,7 +2695,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 end
 
 function cry_ascend(num)	-- edit this function at your leisure
-	return num*(1.25^G.GAME.current_round.current_hand.cry_asc_num or 0)
+	return num*((1.25 + (0.05 * (G.GAME.sunnumber or 0)))^G.GAME.current_round.current_hand.cry_asc_num or 0)
 end
 
 --Will be moved to D20 file when that gets added

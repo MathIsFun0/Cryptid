@@ -2260,6 +2260,13 @@ return {
                     "{C:chips}+#4#{} chips"
                 }
             },
+	    c_cry_sunplanet = {
+                name = 'Sol',
+                text = {
+                    "Increase power of",
+		    "{C:attention}Ascended{} hands"
+                }
+            },
         },
         Sleeve = {
 			sleeve_cry_bountiful_sleeve = {

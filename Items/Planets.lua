@@ -8,7 +8,7 @@ local timantti = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 7,
+	order = 8,
 	can_use = function(self, card)
 		return true
 	end,
@@ -75,7 +75,7 @@ local klubi = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 8,
+	order = 9,
 	can_use = function(self, card)
 		return true
 	end,
@@ -142,7 +142,7 @@ local sydan = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 9,
+	order = 10,
 	can_use = function(self, card)
 		return true
 	end,
@@ -209,7 +209,7 @@ local lapio = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 10,
+	order = 11,
 	can_use = function(self, card)
 		return true
 	end,
@@ -276,7 +276,7 @@ local kaikki = {
     cost = 4,
     aurinko = true,
     atlas = "atlasnotjokers",
-    order = 11,
+    order = 12,
     can_use = function(self, card)
         return true
     end,
@@ -704,6 +704,40 @@ local nstar = {
 		end
 	end,
 }
+local sunplanet = {
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-sunplanet",
+	key = "sunplanet",
+	pos = { x = 5, y = 2 },
+	cost = 4,
+	aurinko = true,
+	atlas = "atlasnotjokers",
+	order = 7,
+	set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + 1 or 1
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local used_consumable = copier or card
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number or number
+	end,
+	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand 
+		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 then
+			local value = G.P_CENTERS.v_observatory.config.extra
+            		return {
+                		message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+                		Xmult_mod = value,
+            		}
+		end
+	end,
+}
 function suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
 	for _, v in pairs(card.config.center.config.hand_types) do
@@ -747,7 +781,7 @@ function neutronstarrandomhand(ignore, seed, allowhidden)
 	end
 	return chosen_hand
 end
-local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio }
+local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio, sunplanet }
 if Cryptid.enabled["Misc."] then
 	planet_cards[#planet_cards + 1] = kaikki
 end
