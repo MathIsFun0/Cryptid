@@ -1,0 +1,126 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# gonna use a separate file for this because it'll be a lot
+# golden text
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+{n=G.UIT.O, config={id = 'hand_name', func = 'hand_text_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "handname_text"}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, float = true, scale = scale*1.4})}},
+'''
+position = "after"
+payload = '''
+{n=G.UIT.O, config={id = 'cry_asc', func = 'cry_asc_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "cry_asc_num_text"}}, colours = {G.C.GOLD}, shadow = true, float = true, scale = scale*1})}},
+'''
+match_indent = true
+
+# state events moment
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+                delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+'''
+position = "at"
+payload = '''
+                delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = cry_ascend(G.GAME.hands[text].mult), chips = cry_ascend(G.GAME.hands[text].chips)})
+'''
+match_indent = true
+
+# even worse
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+        mult = mod_mult(G.GAME.hands[text].mult)
+'''
+position = "at"
+payload = '''
+        mult = mod_mult(cry_ascend(G.GAME.hands[text].mult))
+'''
+match_indent = true
+
+# again
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+        hand_chips = mod_chips(G.GAME.hands[text].chips)
+'''
+position = "at"
+payload = '''
+        hand_chips = mod_chips(cry_ascend(G.GAME.hands[text].chips))
+'''
+match_indent = true
+
+# b
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+        update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].chips, StatusText = true})
+'''
+position = "at"
+payload = '''
+update_hand_text({delay = 0}, {chips = cry_ascend(G.GAME.hands[text].chips), StatusText = true})
+'''
+match_indent = true
+
+# same old
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+        update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].mult, StatusText = true})
+'''
+position = "at"
+payload = '''
+update_hand_text({delay = 0}, {chips = cry_ascend(G.GAME.hands[text].mult), StatusText = true})
+'''
+match_indent = true
+
+# the removal (this is slightly invasive, should switch to regex)
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+check_and_set_high_score('hand', hand_chips*mult)
+'''
+position = "before"
+payload = '''
+    G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = (function() G.GAME.current_round.current_hand.cry_asc_num_text = '';G.GAME.current_round.current_hand.cry_asc_num_text = 0;return true end)
+    }))
+'''
+match_indent = true
+
+# the rare cardarea inject
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = '''
+update_hand_text({immediate = true, nopulse = nil, delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+'''
+position = "at"
+payload = '''
+update_hand_text({immediate = true, nopulse = nil, delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = cry_ascend(G.GAME.hands[text].mult), chips = cry_ascend(G.GAME.hands[text].chips)})
+'''
+match_indent = true
+
+# initialise variables
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+                chip_total_text = '',
+'''
+position = "at"
+payload = '''
+                cry_asc_num = '',
+                cry_asc_num_text = '',
+'''
+match_indent = true
