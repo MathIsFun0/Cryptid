@@ -2652,9 +2652,8 @@ function G.FUNCS.get_poker_hand_info(_cards)
 				end
 				return str_ret
 			end
-			-- some nerd's gonna make a 1k+ card hand and i'm gonna have to update this... for now it's capped at 999
 			-- text gets stupid small at 100+ anyway
-			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..(create_num_chunk(#scoring_hand)..(text == 'Five of a Kind' and " of a Kind" or ""))
+			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..((#scoring_hand < 1000 and create_num_chunk(#scoring_hand) or "Thousand")..(text == 'Five of a Kind' and " of a Kind" or ""))
 		end
 	end
 
