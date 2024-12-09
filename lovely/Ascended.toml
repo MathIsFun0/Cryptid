@@ -111,6 +111,19 @@ update_hand_text({immediate = true, nopulse = nil, delay = 0}, {handname=disp_te
 '''
 match_indent = true
 
+# hyperspace splasher
+[[patches]]
+[patches.pattern]
+target = "state_events.lua"
+pattern = '''
+if next(find_joker('Splash')) then
+'''
+position = "at"
+payload = '''
+if next(find_joker('Splash')) or G.GAME.used_vouchers.v_cry_hyperspacetether then
+'''
+match_indent = true
+
 # initialise variables
 [[patches]]
 [patches.pattern]

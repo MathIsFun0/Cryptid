@@ -3134,7 +3134,8 @@ return {
                 name = "Hyperspace Tether",
                 text = {
                     "{C:attention}+#1#{} card selection limit",
-                    "{C:inactive,s:0.7}NOTE: Will have extra functionality later{}",
+                    "All selected cards contribute power",
+                    "to {C:attention}Ascended Hands{}",
                 },
             },
         },

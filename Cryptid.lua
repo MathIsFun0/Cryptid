@@ -592,7 +592,7 @@ function update_cry_member_count()
 			end
 		end
 	else
-        -- Use a fallback value if HTTPS is disabled (you all are awesome) 
+        -- Use a fallback value if HTTPS is disabled (you all are awesome)
 		GLOBAL_cry_member_count = 5624
 	end
 end
@@ -2627,7 +2627,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == 'Flush Five' or text == 'Five of a Kind') then
 			local function create_num_chunk(int)	-- maybe useful enough to not be local? but tbh this function is probably some common coding exercise
-				if int >= 1000 then int = 999 end	
+				if int >= 1000 then int = 999 end
 				local ones = {["1"] = "One", ["2"] = "Two", ["3"] = "Three", ["4"] = "Four", ["5"] = "Five", ["6"] = "Six", ["7"] = "Seven", ["8"] = "Eight", ["9"] = "Nine"}
 				local tens = {["1"] = "Ten", ["2"] = "Twenty", ["3"] = "Thirty", ["4"] = "Forty", ["5"] = "Fifty", ["6"] = "Sixty", ["7"] = "Seventy", ["8"] = "Eighty", ["9"] = "Ninety"}
 				local str_int = string.reverse(int.."")	-- ehhhh whatever
@@ -2663,14 +2663,14 @@ function G.FUNCS.get_poker_hand_info(_cards)
 
 
 	local hand_table = {
-		['High Card'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 1 or nil,
-		['Pair'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 2 or nil,
+		['High Card'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 1 or nil,
+		['Pair'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		['Two Pair'] = 4,
-		['Three of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 3 or nil,
+		['Three of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
 		['Straight'] = 5,
 		['Flush'] = 5,
 		['Full House'] = 5,
-		['Four of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspace_tether and 4 or nil,
+		['Four of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
 		['Straight Flush'] = 5,
 		['cry_Bulwark'] = 5,
 		['Five of a Kind'] = 5,
@@ -2680,22 +2680,22 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		['cry_UltPair'] = 8,
 		['cry_WholeDeck'] = 52,
 	}
-	
+
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
 	if hand_table[text] then
-		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspace_tether and #_cards - hand_table[text] or #scoring_hand - hand_table[text]
+		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether and #_cards - hand_table[text] or #scoring_hand - hand_table[text]
 	else
 		G.GAME.current_round.current_hand.cry_asc_num = 0
 	end
-	
-	
-	
+
+
+
 	G.GAME.current_round.current_hand.cry_asc_num_text = (G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0) and " (+"..G.GAME.current_round.current_hand.cry_asc_num..")" or ""
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 
 function cry_ascend(num)	-- edit this function at your leisure
-	return num*(1.2^G.GAME.current_round.current_hand.cry_asc_num or 0)
+	return num*(1.25^G.GAME.current_round.current_hand.cry_asc_num or 0)
 end
 
 --Will be moved to D20 file when that gets added
@@ -2974,16 +2974,16 @@ for i = 1, #jokers do
 	Cryptid.food[#Cryptid.food+1] = jokers[i]
 end
 function Cryptid.get_food(seed)
-    local food_keys = {}  
-    for k, v in pairs(Cryptid.food) do  
+    local food_keys = {}
+    for k, v in pairs(Cryptid.food) do
         if not G.GAME.banned_keys[v] then
-            table.insert(food_keys, v)  
+            table.insert(food_keys, v)
         end
     end
     if #food_keys <= 0 then
 	return "j_reserved_parking"
     else
-    	return pseudorandom_element(food_keys, pseudoseed(seed)) 
+    	return pseudorandom_element(food_keys, pseudoseed(seed))
     end
 end
 SMODS.Sound({
