@@ -8,6 +8,11 @@ local test = {
 		cryptid_in_2025 = {extra = {chips = 1e308}},
     },
 	extra_gamesets = {"cryptid_in_2025"},
+	dependencies = {
+		items = {
+			"j_cry_happy"
+		},
+	},
 	config = {extra = {chips = 10}},
 	pos = { x = 1, y = 0 },
 	rarity = 1,

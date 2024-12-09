@@ -3173,6 +3173,12 @@ return {
                     "during a run"
                 }
             },
+            disabled_card_dependency = {
+                name = "Disabled",
+                text = {
+                    "Requires {C:attention}#1#"
+                }
+            },
             banana = {
                 name = "Banana",
                 text = {

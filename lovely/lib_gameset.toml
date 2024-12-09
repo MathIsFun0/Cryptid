@@ -136,8 +136,19 @@ payload = '''{n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
 target = "functions/common_events.lua"
 pattern = "local info_queue = {}"
 position = "after"
-payload = '''if (not _c.force_gameset and _c.cry_disabled) or (_c.force_gameset and _c.force_gameset == 'disabled') then
-    info_queue[#info_queue+1] = {key = 'disabled', set = 'Other'}
+payload = '''if _c.cry_disabled or (_c.force_gameset and _c.force_gameset == 'disabled') then
+    if _c.cry_disabled then
+        if _c.cry_disabled.type == "card_dependency" then
+            local name = localize{type = 'name_text', set = cry_get_center(_c.cry_disabled.key).set, key = _c.cry_disabled.key}
+            info_queue[#info_queue+1] = {key = 'disabled_card_dependency', set = 'Other', specific_vars = {name}}
+        else
+            if not (_c.force_gameset and _c.force_gameset ~= 'disabled') then
+                info_queue[#info_queue+1] = {key = 'disabled', set = 'Other'}
+            end
+        end
+    else
+        info_queue[#info_queue+1] = {key = 'disabled', set = 'Other'}
+    end
 end'''
 match_indent = true
 
@@ -205,5 +216,5 @@ match_indent = true
 target = "card.lua"
 pattern = "if self.debuff then"
 position = "at"
-payload = "if self.debuff or cry_get_gameset(self) == 'disabled' then"
+payload = "if self.debuff or cry_get_gameset(self) == 'disabled' or (self.config.center.cry_disabled and not self.gameset_select) then"
 match_indent = true

@@ -462,7 +462,7 @@ function get_type_colour(center, card)
             color = G.C.CRY_ASCENDANT
         end
     end
-    if cry_get_gameset(card, center) == 'disabled' then
+    if cry_get_gameset(card, center) == 'disabled' or (center.cry_disabled and (not card.gameset_select or center.cry_disabled.type ~= "manual")) then
         color = mix_colours(G.C.RED, G.C.GREY, 0.7)
     end
     return color
@@ -485,7 +485,20 @@ end
 function cry_card_enabled(key, iter)
     if not iter then iter = 0 end --iter is used to prevent infinite loops from freezing on startup
     if iter > 10 then print("Warning: Circular dependency with " .. key); return true end
-    return cry_get_gameset(cry_get_center(key)) ~= "disabled" --todo: dependency system
+    local card = cry_get_center(key)
+    if cry_get_gameset(card) == "disabled" then
+        return {type = "manual"}
+    end
+    if card.dependencies then
+        if card.dependencies.items then
+            for i = 1, #card.dependencies.items do
+                if cry_card_enabled(card.dependencies.items[i], iter + 1) ~= true then
+                    return {type = "card_dependency", key = card.dependencies.items[i]}
+                end
+            end
+        end
+    end
+    return true
 end
 
 function cry_get_center(key, m)
