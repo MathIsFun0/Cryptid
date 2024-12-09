@@ -93,7 +93,7 @@ position = "before"
 payload = '''
     G.E_MANAGER:add_event(Event({
       trigger = 'immediate',
-      func = (function() G.GAME.current_round.current_hand.cry_asc_num_text = '';G.GAME.current_round.current_hand.cry_asc_num_text = 0;return true end)
+      func = (function() G.GAME.current_round.current_hand.cry_asc_num = 0;G.GAME.current_round.current_hand.cry_asc_num_text = '';return true end)
     }))
 '''
 match_indent = true
@@ -118,9 +118,9 @@ target = "game.lua"
 pattern = '''
                 chip_total_text = '',
 '''
-position = "at"
+position = "after"
 payload = '''
-                cry_asc_num = '',
+                cry_asc_num = 0,
                 cry_asc_num_text = '',
 '''
 match_indent = true
