@@ -141,6 +141,12 @@ payload = '''if _c.cry_disabled or (_c.force_gameset and _c.force_gameset == 'di
         if _c.cry_disabled.type == "card_dependency" then
             local name = localize{type = 'name_text', set = cry_get_center(_c.cry_disabled.key).set, key = _c.cry_disabled.key}
             info_queue[#info_queue+1] = {key = 'disabled_card_dependency', set = 'Other', specific_vars = {name}}
+        elseif _c.cry_disabled.type == "mod_dependency" then
+            local name = Cryptid.cross_mod_names[_c.cry_disabled.key] or _c.cry_disabled.key
+            info_queue[#info_queue+1] = {key = 'disabled_mod_dependency', set = 'Other', specific_vars = {name}}
+        elseif _c.cry_disabled.type == "mod_conflict" then
+            local name = SMODS.Mods[_c.cry_disabled.key].name
+            info_queue[#info_queue+1] = {key = 'disabled_mod_conflict', set = 'Other', specific_vars = {name}}
         else
             if not (_c.force_gameset and _c.force_gameset ~= 'disabled') then
                 info_queue[#info_queue+1] = {key = 'disabled', set = 'Other'}
@@ -195,6 +201,9 @@ target = "functions/UI_definitions.lua"
 pattern = "card_type = (debuffed and AUT.card_type ~= 'Enhanced') and localize('k_debuffed') or card_type"
 position = "after"
 payload = '''
+if AUT.card_type == "Content Set" then
+    card_type = localize('k_content_set')
+end
 if card.gameset_select then
     card_type = localize('cry_gameset_'..card.config.center.force_gameset)
     if card_type == "ERROR" then

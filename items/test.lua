@@ -10,7 +10,8 @@ local test = {
 	extra_gamesets = {"cryptid_in_2025"},
 	dependencies = {
 		items = {
-			"j_cry_happy"
+			"j_cry_happy",
+			"set_cry_m"
 		},
 	},
 	config = {extra = {chips = 10}},

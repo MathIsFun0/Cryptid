@@ -999,6 +999,7 @@ function Game:update(dt)
 		end
 	end
 	G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
+	G.C.SECONDARY_SET["Content Set"] = G.C.CRY_ASCENDANT
 	if Incantation and not CryptidIncanCompat then
 		AllowStacking("Code")
 		AllowDividing("Code")

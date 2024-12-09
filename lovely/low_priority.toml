@@ -6,6 +6,7 @@ priority = 114
 # Patches that have to run later to be injected in the correct spot
 
 # Joker collection - deal with Cryptid's item disabling
+# TODO: Also patch this with the collection page function
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"

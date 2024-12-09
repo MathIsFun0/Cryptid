@@ -497,6 +497,16 @@ return {
                 },
             },
         },
+        ["Content Set"] = {
+            set_cry_m = {
+                name = "M Jokers",
+                text = {
+                    "Jokers related to",
+                    "the letter {C:attention}M{}",
+                    "and {C:attention}Jolly Joker"
+                }
+            }
+        },
         Edition = {
             e_cry_astral = {
                 name = "Astral",
@@ -3179,6 +3189,20 @@ return {
                     "Requires {C:attention}#1#"
                 }
             },
+            disabled_mod_dependency = {
+                name = "Disabled",
+                text = {
+                    "Requires mod:",
+                    "{C:attention}#1#"
+                }
+            },
+            disabled_mod_conflict = {
+                name = "Disabled",
+                text = {
+                    "Incompatible with mod:",
+                    "{C:attention}#1#"
+                }
+            },
             banana = {
                 name = "Banana",
                 text = {
@@ -3709,7 +3733,7 @@ return {
             --Settings Menu
             cry_set_features = "Features",
             cry_set_music = "Music",
-            cry_set_enable_features = "Select features to configure (also use Additions Tab)",
+            cry_set_enable_features = "Use this section to enable or disable entire Content Sets.",
             cry_feat_achievements = "Achievements",
             ["cry_feat_antimatter deck"] = "Antimatter Deck",
             cry_feat_blinds = "Blinds",
@@ -3756,6 +3780,8 @@ return {
             cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
 
             k_code = "Code",
+            k_content_set = "Content Set",
+            b_content_sets = "Content Sets",
             k_unique = "Unique",
             b_code_cards = "Code Cards",
             b_unique_cards = "Unique Cards",

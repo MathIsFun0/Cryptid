@@ -89,7 +89,7 @@ local cryptidTabs = function() return {
 			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 			cry_nodes[#cry_nodes + 1] = config
-			cry_nodes[#cry_nodes + 1] = UIBox_button({button = 'your_collection_jokers', label = {"Content set stuff will go here..."}, count = {tally = 0, of = 0},  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'})
+			cry_nodes[#cry_nodes + 1] = UIBox_button({button = 'your_collection_content_sets', label = {localize('b_content_sets')}, count = {tally = 0, of = 0},  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'})
 			return {
 				n = G.UIT.ROOT,
 				config = {
