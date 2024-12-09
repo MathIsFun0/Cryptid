@@ -728,6 +728,12 @@ local loss = {
                     		card.cost = 0
                     		card.from_tag = true
                     		G.FUNCS.use_card({config = {ref_table = card}})
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
                     		card:start_materialize()
                     		G.CONTROLLER.locks[lock] = nil
                     		return true
