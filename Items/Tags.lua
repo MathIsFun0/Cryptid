@@ -12,6 +12,7 @@ local epic_tag = {
 	pos = { x = 3, y = 0 },
 	name = "cry-Epic Tag",
 	order = 1,
+	min_ante = 2,
 	requires = 'j_cry_googol_play',
 	config = { type = "store_joker_create" },
 	key = "epic",
@@ -78,7 +79,8 @@ local empoweredPack = {
 	key = "empowered",
 	kind = "Spectral",
 	no_doe = true,
-	pos = { x = 0, y = 4 },
+	atlas = "empowered",
+	pos = { x = 3, y = 1 },
 	config = { extra = 2, choose = 1 },
 	cost = 0,
 	weight = 0,
@@ -115,6 +117,13 @@ local empoweredPack = {
 		end
 	end,
 	group_key = "k_spectral_pack",
+}
+local empoweredpack_sprite = {
+	object_type = "Atlas",
+	key = "empowered",
+	path = "pack_cry.png",
+	px = 71,
+	py = 95,
 }
 local empowered = {
 	object_type = "Tag",
@@ -750,7 +759,7 @@ local gourmand = {
 				nil,
 				nil,
 				nil,
-				pseudorandom_element(Cryptid.food, pseudoseed("cry_gourmand_tag"))
+				Cryptid.get_food("cry_gourmand_tag")
 			)
 			create_shop_card_ui(card, "Joker", context.area)
 			card.states.visible = false
@@ -766,41 +775,40 @@ local gourmand = {
 	end,
 }
 local better_top_up = {
-        object_type = "Tag",
-        name = "cry-Better Top-up Tag",
+    object_type = "Tag",
+    name = "cry-Better Top-up Tag",
 	order = 15,
-        atlas = "tag_cry",
-        pos = { x = 4, y = 3 },
-        config = { type = "immediate", spawn_jokers = 2 },
-        key = "bettertop_up",
+    atlas = "tag_cry",
+    pos = { x = 4, y = 3 },
+    config = { type = "immediate", spawn_jokers = 2 },
+    key = "bettertop_up",
 	loc_vars = function(self, info_queue)
 		return { vars = {self.config.spawn_jokers} }
 	end,
-        min_ante = 5,
-        apply = function(tag, context)
-                if context.type == "immediate" then
+    min_ante = 5,
+    apply = function(tag, context)
+        if context.type == "immediate" then
 			if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
 				local lock = tag.ID
-                        	G.CONTROLLER.locks[lock] = true
-                        	tag:yep('+', G.C.GREEN, function()
-					if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then --Needs another check here because that's how tags work :0:0:0:)):0
-						for i = 1, tag.config.spawn_jokers do
-                                        		local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, 'bettertop')
-                                        		card:add_to_deck()
-                                        		G.jokers:emplace(card)
+                G.CONTROLLER.locks[lock] = true
+                tag:yep('+', G.C.GREEN, function()
+					for i = 1, tag.config.spawn_jokers do
+						if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+                           	local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, 'bettertop')
+                       		card:add_to_deck()
+                            G.jokers:emplace(card)
 						end
 					end
-                                	G.CONTROLLER.locks[lock] = nil
-                                	return true
-                        	end)
+                G.CONTROLLER.locks[lock] = nil
+                return true
+                end)
 			else
 				tag:nope()
 			end
-                        tag.triggered = true
-                        return true
+            tag.triggered = true
+            return true
 		end
-			
-        end
+	end
 }
 local better_voucher = {
 	object_type = "Tag",
@@ -871,7 +879,7 @@ local booster = {
         name = "cry-Booster Tag",
 	order = 28,
         atlas = "tag_cry",
-        pos = { x = 4, y = 2 },
+        pos = { x = 5, y = 3 },
         config = { type = "immediate" },
         key = "booster",
 	loc_vars = function(self, info_queue)
@@ -906,6 +914,7 @@ local tagitems = {
 	gourmand,
 	better_top_up,
 	booster,
+	empoweredpack_sprite,
 }
 if Cryptid.enabled["Vouchers"] then
 	tagitems[#tagitems + 1] = better_voucher

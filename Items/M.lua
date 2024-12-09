@@ -10,6 +10,7 @@ local jollysus = {
 	order = 267,
 	blueprint_compat = true,
 	eternal_compat = false,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = { center.ability.extra.active } }
@@ -88,6 +89,7 @@ local bubblem = {
 	rarity = 1,
 	cost = 2,
 	eternal_compat = false,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -408,7 +410,7 @@ local notebook = {
 		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "" },
 		jolly = { t_mult = 8, type = "Pair" },
 	},
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 3,
 	cost = 9,
 	perishable_compat = false,
@@ -589,7 +591,7 @@ local loopy = {
 	pos = { x = 4, y = 1 },
 	order = 257,
 	atlas = "atlastwo",
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 1,
 	cost = 4,
 	joker_gate = "Jolly Joker",
@@ -667,7 +669,6 @@ local scrabble = {
 	config = { extra = { odds = 4 } },
 	pos = { x = 0, y = 2 },
 	order = 258,
-	immune_to_chemach = true,
 	rarity = 2,
 	cost = 8,
 	blueprint_compat = true,
@@ -718,7 +719,7 @@ local sacrifice = {
 	config = { extra = { text = localize("k_active_ex"), spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 5, y = 2 },
 	order = 259,
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -789,6 +790,7 @@ local reverse = {
 	order = 260,
 	cost = 4,
 	eternal_compat = false,
+	immutable = true,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
@@ -869,7 +871,7 @@ local doodlem = {
 	effect = "M Joker",
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 2, y = 0 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = "cry_epic",
 	cost = 13,
 	order = 266,
@@ -1223,6 +1225,7 @@ local macabre = {
 	effect = "M Joker",
 	order = 263,
 	pos = { x = 1, y = 2 },
+	immutable = true,
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {

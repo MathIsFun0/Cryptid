@@ -130,6 +130,16 @@
 --Ace Aequilibrium
 --Duplicare
 --Queen's Gambit
+--Formidiulosus
+--The Stronghold
+--The Fuck!?
+--The Clash
+--Bonkers Joker
+--Fucked Up Joker
+--Foolhardy Joker
+--Adroit Joker
+--Penetrating Joker
+--Treacherous Joker
 
 if JokerDisplay then
 
@@ -1902,11 +1912,16 @@ if JokerDisplay then
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page9 = {}
 
-	--[[JokerDisplay.Definitions["j_cry_duplicare"] = {
-		mod_function = function(card, mod_joker)
-			return { e_mult = mod_joker.ability.extra.Emult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
-		end,
-	}--]] --add later
+	JokerDisplay.Definitions["j_cry_duplicare"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+	}
 	JokerDisplay.Definitions["j_cry_equilib"] = {
 		text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
@@ -1934,7 +1949,47 @@ if JokerDisplay then
 			card.joker_display_values.localized_text = localize("Royal Flush", "poker_hands")
 		end,
 	}
-	
+	JokerDisplay.Definitions["j_cry_duplicare"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_formidiulosus"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{
+						ref_table = "card.ability.extra",
+						ref_value = "Emult",
+						retrigger_type = function(number, triggers)
+							local num = number
+							for i = 1, triggers - 1 do
+								num = num ^ number
+							end
+							return num
+						end,
+					},
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_stronghold"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_wtf"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_clash"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_bonkers"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_fuckedup"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_foolhardy"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_adroit"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_penetrating"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_treacherous"] = hand_tchips_jd
+
 	--end of Jokerdisplays
 end
 return { name = "JokerDisplay" }

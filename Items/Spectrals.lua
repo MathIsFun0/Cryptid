@@ -277,6 +277,10 @@ local lock = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true

@@ -7,7 +7,7 @@ local code = {
 	collection_rows = { 4, 4 }, -- 4 pages for all code cards
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_cry_crash",
+	default = (SMODS.Mods['jen'] or {}).can_load and "c_cry_oboe" or "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
 }
@@ -594,9 +594,7 @@ local commit = {
 		elseif rarity == 4 then
 			rarity = nil
 			legendary = true
-		elseif rarity == "cry_epic" then
-			rarity = 1
-		end
+		end -- Deleted check for "cry epic" it was giving rare jokers by setting rarity to 1
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
@@ -869,7 +867,7 @@ local spaghetti = {
 			nil,
 			nil,
 			nil,
-			pseudorandom_element(Cryptid.food, pseudoseed("cry_spaghetti"))
+			Cryptid.get_food("cry_spaghetti")
 		)
 		card:set_edition({
 			cry_glitched = true,
@@ -988,6 +986,9 @@ local oboe = {
 	cost = 4,
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
+		if not card then
+			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		end
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
 	can_use = function(self, card)
@@ -1094,7 +1095,6 @@ local rework_tag = {
 	end,
 }
 
---todo: smods stickers (i know right now this won't work for flickering/possessed)
 local patch = {
 	object_type = "Consumable",
 	set = "Code",
@@ -1168,6 +1168,10 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1191,6 +1195,10 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1214,6 +1222,10 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
+					if Cryptid.enabled["Spooky"] then
+						CARD.ability.cry_possessed = nil
+						SMODS.Stickers.cry_flickering:apply(CARD, nil)
+					end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -1241,24 +1253,13 @@ local ctrl_v = {
 		return { }
 	end,
 	can_use = function(self, card)
-		return #G.jokers.highlighted
-				+ #G.hand.highlighted
+		return #G.hand.highlighted
 				+ #G.consumeables.highlighted
 			== 2
 	end,
 	use = function(self, card, area, copier)
 		if area then
 			area:remove_from_highlighted(card)
-		end
-		if G.jokers.highlighted[1] then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.jokers.highlighted[1])
-					card:add_to_deck()
-					G.jokers:emplace(card)
-					return true
-				end,
-			}))
 		end
 		if G.hand.highlighted[1] then
 			G.E_MANAGER:add_event(Event({
@@ -1277,7 +1278,7 @@ local ctrl_v = {
 					local card = copy_card(G.consumeables.highlighted[1])
 					card:add_to_deck()
 					if Incantation then
-						card_copy:setQty(1)
+						card:setQty(1)
 					end
 					G.consumeables:emplace(card)
 					return true
@@ -1289,16 +1290,6 @@ local ctrl_v = {
 		for i = 1, number do
 			if area then
 				area:remove_from_highlighted(card)
-			end
-			if G.jokers.highlighted[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card = copy_card(G.jokers.highlighted[1])
-						card:add_to_deck()
-						G.jokers:emplace(card)
-						return true
-					end,
-				}))
 			end
 			if G.hand.highlighted[1] then
 				G.E_MANAGER:add_event(Event({
@@ -1316,12 +1307,70 @@ local ctrl_v = {
 						local card = copy_card(G.consumeables.highlighted[1])
 						card:add_to_deck()
 						if Incantation then
-							card_copy:setQty(1)
+							card:setQty(1)
 						end
 						G.consumeables:emplace(card)
 						return true
 					end,
 				}))
+			end
+		end
+	end,
+}
+
+
+
+local inst = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "inst",
+	name = "cry-Inst",
+	atlas = "code",
+	order = 28,
+	config = {  },
+	pos = {
+		x = 3,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		return { }
+	end,
+	can_use = function(self, card)
+		local selected_cards = {}
+		for i = 1, #G.hand.highlighted do
+			if G.hand.highlighted[i] ~= card then selected_cards[#selected_cards+1] = G.hand.highlighted[i] end
+		end
+		return #selected_cards == 1
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+				break
+			end
+		end
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+				break
+			end
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		for i = 1, number do
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+					break
+				end
+			end
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
+					break
+				end
 			end
 		end
 	end,
@@ -2313,18 +2362,22 @@ G.FUNCS.exploit_apply_previous = function()
 end
 G.FUNCS.exploit_apply = function()
 	local hand_table = {
-		["High Card"] = { "high card", "high" },
-		["Pair"] = { "pair", "2oak" },
-		["Two Pair"] = { "two pair", "2 pair" },
-		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips" },
-		["Straight"] = { "straight" },
-		["Flush"] = { "flush" },
-		["Full House"] = { "full house", "full" },
-		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak" },
+		["High Card"] = { "high card", "high", "1oak", "1 of a kind", "haha one" },
+		["Pair"] = { "pair", "2oak", "2 of a kind", "m" },
+		["Two Pair"] = { "two pair", "2 pair", "mm" },
+		["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips", "triangle" },
+		["Straight"] = { "straight", "lesbian", "gay", "bisexual", "asexual" },
+		["Flush"] = { "flush", "skibidi", "toilet", "floosh" },
+		["Full House"] = { "full house", "full", "that 70s show", "modern family", "family matters", "the middle" },
+		["Four of a Kind"] = { "four of a kind", "4 of a kind", "4oak", "22oakoak", "quads", "four to the floor" },
 		["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
-		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak" },
-		["Flush House"] = { "flush house", "flouse" },
-		["Flush Five"] = { "flush five", "fish" },
+		["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak", "quints" },
+		["Flush House"] = { "flush house", "flouse", "outhouse" },
+		["Flush Five"] = { "flush five", "fish", "you know what that means", "five of a flush" },
+		["cry_Bulwark"] = { "bulwark", "flush rock", "stoned", "stone flush", "flush stone" },
+		["cry_Clusterfuck"] = { "clusterfuck", "fuck", "wtf" },
+		["cry_UltPair"] = { "ultimate pair", "ultpair", "ult pair", "pairpairpair" },
+		["cry_WholeDeck"] = { "the entire fucking deck", "deck", "tefd", "fifty-two", "you are fuck deck" },
 	}
 	local current_hand = nil
 	for k, v in pairs(SMODS.PokerHands) do
@@ -2523,6 +2576,7 @@ end
 
 local aliases = {
 	jimbo = "joker",
+	["gary mccready"] = "joker",
 	greedy = "greedy joker",
 	lusty = "lusty joker",
 	wrathful = "wrathful joker",
@@ -2673,6 +2727,8 @@ local aliases = {
 	ctrlv = "://ctrl+v",
 	["ctrl+v"] = "://ctrl+v",
 	["ctrl v"] = "://ctrl+v",
+	instantiate = "://INSTANTIATE",
+	inst = "://INSTANTIATE",
 	spaghetti = "://spaghetti",
 	topuptag = "top-up tag",
 	gamblerstag = "gambler's tag",
@@ -2788,6 +2844,7 @@ G.FUNCS.pointer_apply = function()
 		local created = false
 		if
 			G.P_CENTERS[current_card].set == "Joker"
+			and G.P_CENTERS[current_card].unlocked
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2802,7 +2859,7 @@ G.FUNCS.pointer_apply = function()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" then
+		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
@@ -3472,8 +3529,10 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
-	patch,
+	--patch,
 	ctrl_v,
+	inst,
+	encoded,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
@@ -3482,7 +3541,6 @@ if Cryptid.enabled["Enhanced Decks"] then
 	code_cards[#code_cards + 1] = source_deck
 end
 if Cryptid.enabled["Epic Jokers"] then
-	code_cards[#code_cards + 1] = encoded
 	code_cards[#code_cards + 1] = CodeJoker
 	code_cards[#code_cards + 1] = copypaste
 end
@@ -4095,14 +4153,19 @@ return {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
+							-- Adding a before spawning becuase jen banned copy_paste
+							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
+							if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
 							return true
 						end
 					end,
@@ -4113,6 +4176,18 @@ return {
 				G.GAME.planet_rate = 0
 				G.GAME.tarot_rate = 0
 				G.GAME.code_rate = 1e100
+			end
+		end
+		local Cardstart_dissolveRef = Card.start_dissolve
+		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
+			if G.jokers then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].hook_id == self.sort_id then
+						G.jokers.cards[i].ability.cry_hooked = false
+						G.jokers.cards[i].hook_id = nil
+					end
+				end
 			end
 		end
 	end,

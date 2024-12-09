@@ -202,7 +202,7 @@ target = "functions/misc_functions.lua"
 pattern = "function localize(args, misc_cat)"
 position = "after"
 payload = '''
-if args.vars then
+if args and args.vars then
     local reset = {}
     for i, j in pairs(args.vars) do
         if type(j) == 'table' then
@@ -243,7 +243,7 @@ position = "at"
 payload = '''
 if self.config.center.key == 'j_cry_gemino' then
 other_joker = G.jokers.cards[1]
-if other_joker and other_joker ~= self and not (Card.no(other_joker, "immune_to_chemach", true) or Card.no(other_joker, "immutable", true)) then
+if other_joker and other_joker ~= self and not (Card.no(other_joker, "immutable", true)) then
     self.ability.blueprint_compat = 'compatible'
 else
     self.ability.blueprint_compat = 'incompatible'
@@ -427,4 +427,45 @@ target = "functions/UI_definitions.lua"
 pattern = '''local card = Card(0,0, 0.5*G.CARD_W, 0.5*G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS.c_base)'''
 position = "at"
 payload = '''local card = Card(0,0, 0.5*G.CARD_W, 0.5*G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS[v[3] or 'c_base'])'''
+match_indent = true
+
+# Adds G.GAME.modifiers.cry_forced_draw_amount
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'local hand_space = e or math.min(#G.deck.cards, G.hand.config.card_limit - #G.hand.cards)'
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) then
+	hand_space = math.min(#G.deck.cards, G.GAME.modifiers.cry_forced_draw_amount)
+end
+'''
+match_indent = true
+
+# adds oldbp blueprint corruption
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'if _pool_size == 0 then'
+position = "before"
+payload = '''
+if G.GAME.oldbpfactor and G.GAME.oldbpfactor >= 2 then
+	if _type == 'Joker' and (_rarity == nil or type(_rarity) ~= "string") and not _legendary and not (G.GAME.used_jokers["j_blueprint"] and not next(find_joker("Showman"))) then
+		for i = 1, math.floor(G.GAME.oldbpfactor - 1) do
+			_pool[#_pool + 1] = "j_blueprint"
+		end
+	end
+end
+'''
+match_indent = true
+
+# end of shop decrement
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = 'G.SHOP_SIGN.alignment.offset.y = -15'
+position = "after"
+payload = '''
+if G.GAME.oldbpfactor then G.GAME.oldbpfactor = math.max(G.GAME.oldbpfactor - G.GAME.oldbpfactor/8, 1) end
+'''
 match_indent = true

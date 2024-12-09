@@ -98,6 +98,7 @@ local legendary = {
 	config = { cry_legendary = true, cry_legendary_rate = 0.2 },
 	pos = { x = 0, y = 6 },
 	atlas = "atlasdeck",
+	order = 15,
 	trigger_effect = function(self, args)
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
 			if G.jokers then
@@ -221,6 +222,15 @@ local beta = {
 	order = 13,
 	atlas = "atlasdeck",
 }
+local bountiful = {
+	object_type = "Back",
+	name = "cry-Bountiful",
+	key = "bountiful",
+	config = { cry_forced_draw_amount = 5 },
+	pos = { x = 4, y = 2 },
+	order = 14,
+	atlas = "placeholders",
+}
 return {
 	name = "Misc. Decks",
 	init = function()
@@ -282,6 +292,9 @@ return {
 			if self.effect.config.cry_redeemed then
 				G.GAME.modifiers.cry_redeemed = true
 			end
+			if self.effect.config.cry_forced_draw_amount then
+				G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
+			end
 		end
 		--equilibrium deck patches
 		local gcp = get_current_pool
@@ -304,13 +317,13 @@ return {
 						local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 						for _, id in ipairs(valid_pools) do
 							for k, v in pairs(G.P_CENTER_POOLS[id]) do
-								if not center_no(v, "doe", k) then
+								if v.unlocked == true and not center_no(v, "doe", k) then
 									P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 								end
 							end
 						end
 						for k, v in pairs(G.P_CARDS) do
-							if not center_no(v, "doe", k) then
+							if v.unlocked == true and not center_no(v, "doe", k) then
 								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 							end
 						end
@@ -383,7 +396,8 @@ return {
 								else
 									area = G.play
 								end
-								if not G.cry_redeemed_buffer[v.key] then
+								if not G.cry_redeemed_buffer[v.key]
+								and v.unlocked then
 									local card = create_card("Voucher", area, nil, nil, nil, nil, v.key)
 									G.cry_redeemed_buffer[v.key] = true
 									card:start_materialize()
@@ -449,5 +463,6 @@ return {
 		atlasglowing,
 		glowing,
 		beta,
+		bountiful,
 	},
 }

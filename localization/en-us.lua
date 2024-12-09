@@ -25,6 +25,13 @@ return {
                     "{C:inactive,E:1}Does nothing?",
                 },
             },
+			b_cry_bountiful = {
+				name = "Bountiful Deck",
+				text = {
+                    "After {C:blue}Play{} or {C:red}Discard{},",
+                    "always draw {C:attention}5{} cards"
+				},
+			},
             b_cry_CCD = {
                 name = "CCD Deck",
                 text = {
@@ -340,7 +347,7 @@ return {
                 name = "://CTRL+V",
                 text = {
                     "Create a {C:cry_code}copy{} of a selected",
-                    "{C:cry_code}Joker{}, playing card, or consumable"
+                    "playing card or consumable"
                 },
             },
             c_cry_delete = {
@@ -376,6 +383,14 @@ return {
                     "{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
                 },
             },
+			c_cry_inst = {
+				name = "://INSTANTIATE",
+				text = {
+					"Draw a card with selected card's {C:cry_code}rank{}",
+					"and one with selected card's {C:cry_code}suit{}",
+					"{C:inactive}(if possible){}",
+				},
+			},
             c_cry_machinecode = {
                 name = "://MACHINECODE",
                 text = {
@@ -1527,9 +1542,9 @@ return {
 	    j_cry_necromancer = {
 	    	name = "Necromancer",
 		text = {
-		    "When a Joker is {C:attention}sold{} for a price greater than {C:attention}$0{}",
-		    "Gain a {C:attention}random{} Joker {C:attention}sold{} this run",
-		    "and set its {C:attention}sell value{} to {C:attention}$0{}",
+		    "When a Joker is {C:attention}sold{} for more than {C:attention}$0{},",
+		    "gain a {C:attention}random{} Joker {C:attention}sold{} this run",
+		    "with {C:money}$0{} sell value",
 		},
 	    },
             j_cry_negative = {
@@ -1598,6 +1613,13 @@ return {
                     "a {C:attention}#2#"
                 }
             },
+	    j_cry_oil_lamp = {
+		name = "Oil Lamp",
+		text = {
+			"Increase values of {C:attention}Joker{} to the right",
+			"by {C:attention}X#1#{} at end of round",
+		},
+	    },
             j_cry_oldblueprint = {
                 name = "Old Blueprint",
                 text = {
@@ -1659,6 +1681,12 @@ return {
                     "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
+			j_cry_pity_prize = {
+				name = "Pity Prize",
+				text = {
+					"When you skip a {C:attention}Booster Pack{} gain a random {C:attention}Tag{}"
+				},
+			},
             j_cry_pot_of_jokes = {
                 name = "Pot of Jokes",
                 text = {
@@ -1832,6 +1860,16 @@ return {
                     "{C:attention}+#1#{} card in shop",
                 },
             },
+            j_cry_fleshpanopticon = {
+                name = "Flesh Panopticon",
+                text = {
+                    "{C:red}X#1#{} {C:attention}Boss Blind{} size",
+                    "When {C:attention}Boss Blind{} is defeated,",
+                    "{C:red}self destructs{}, and creates",
+                    "a {C:dark_edition}Negative{} {C:spectral}Gateway{} card",
+                    "{C:inactive,s:0.8}\"This prison... to hold... me?\""
+                },
+            },
             j_cry_spaceglobe = {
                 name = "Celestial Globe",
                 text = {
@@ -1924,6 +1962,13 @@ return {
                     "{C:inactive,s:0.8}Hey! I've seen this one before!",
                 },
             },
+			j_cry_tax_fraud = {
+				name = "Tax Fraud",
+				text = {
+					"Gain {C:attention}$#1#{} per {C:attention}Rental Joker",
+					"at end of round",
+				},
+			},
             j_cry_tenebris = {
                 name = "Tenebris",
                 text = {
@@ -2179,8 +2224,51 @@ return {
                     "and {C:attention}#3#{}",
                 },
             },
+            c_cry_marsmoons = {
+                name = 'Phobos & Deimos',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
+            },
+            c_cry_void = {
+                name = 'Void',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
+            },
+            c_cry_asteroidbelt = {
+                name = 'Asteroid Belt',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
+            },
+            c_cry_universe = {
+                name = 'The Universe In Its Fucking Entirety',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+                    "{C:attention}#2#",
+                    "{C:mult}+#3#{} Mult and",
+                    "{C:chips}+#4#{} chips"
+                }
+            },
         },
         Sleeve = {
+			sleeve_cry_bountiful_sleeve = {
+				name = "Bountiful Sleeve",
+				text = {
+                    "After {C:blue}Play{} or {C:red}Discard{},",
+                    "always draw {C:attention}5{} cards"
+				},
+			},
             sleeve_cry_ccd_sleeve = {
                 name = "CCD Sleeve",
                 text = {
@@ -2244,6 +2332,14 @@ return {
                     "When a {C:attention}Voucher{} is purchased,",
                     "gain its {C:attention}extra tiers",
                 },
+            },
+			sleeve_cry_spooky_sleeve = {
+                name = "Spooky Sleeve",
+                text = {
+                    "Start with an {C:eternal}Eternal{} {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
+                    "After each {C:attention}Ante{}, create a",
+                    "{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
+                }
             },
             sleeve_cry_wormhole_sleeve = {
                 name = "Wormhole Sleeve",
@@ -3403,6 +3499,12 @@ return {
                     "{C:red}destroy{} this card",
                 },
             },
+            blurred_sdm0 = {
+                name = "a",
+                text = {
+                    "{C:inactive,s:0.8}\"I hate this card\" - SDM0, 2024{}",
+                },
+            },
         },
         Unique = {
             c_cry_potion = {
@@ -3416,6 +3518,31 @@ return {
         }
     },
     misc = {
+        poker_hands = {
+            ['cry_Bulwark'] = "Bulwark",
+            ['cry_Clusterfuck'] = "Clusterfuck",
+            ['cry_UltPair'] = "Ultimate Pair",
+            ['cry_WholeDeck'] = "The Entire Fucking Deck",
+        },
+        poker_hand_descriptions = {
+            ['cry_Bulwark'] = {
+                '5 rankless, suitless cards',
+            },
+            ['cry_Clusterfuck'] = {
+                'At least 8 cards that do not',
+                'contain a Pair, Flush, or Straight',
+            },
+            ['cry_UltPair'] = {
+                'Two Two Pairs, where each',
+                'Two Pair is a single suit, for a',
+				'total of two suits between them',
+            },
+            ['cry_WholeDeck'] = {
+                'A hand that contains every single',
+                'card found in a 52-card deck.',
+                'Are you insane?',
+            },
+        },
         achievement_names = {
             ach_cry_ace_in_crash = "Pocket ACE",
             ach_cry_blurred_blurred_joker = "Legally Blind",
@@ -3557,6 +3684,7 @@ return {
             cry_sobbing = "Help me...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
+            cry_good_luck_ex = "Good luck!",
             cry_sus_ex = "Impostor!",
             cry_jolly_ex = "Jolly Up!",
             cry_m_minus = "m",
@@ -3575,6 +3703,9 @@ return {
             k_cry_exotic = "Exotic",
             k_cry_candy = "Candy",
             k_cry_cursed  = "Cursed",
+            k_planet_disc = "Circumstellar Disc",
+            k_planet_satellite = "Natural Satellites",
+            k_planet_universe = "The Actual Fucking Universe",
 
             cry_notif_jimball_1 = "Jimball",
             cry_notif_jimball_2 = "Copyright Notice",
