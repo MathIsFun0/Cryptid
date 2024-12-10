@@ -1082,7 +1082,7 @@ local chad = {
 			"Jevonn"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
 			"Math"
@@ -5608,13 +5608,13 @@ local translucent = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM0"
+			"SDM_0"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -6433,7 +6433,7 @@ local pity_prize = {
 	calculate = function(self, card, context)
 		if context.skipping_booster then
 			local tag
-			repeat 
+			repeat
 				tag = Tag(get_next_tag_key("cry_pity_prize"))
 			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
 			if tag.name == "Orbital Tag" then
