@@ -2263,8 +2263,10 @@ return {
 	    c_cry_sunplanet = {
                 name = 'Sol',
                 text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
                     "Increase power of",
-		    "{C:attention}Ascended{} hands"
+		    "{C:attention}Ascended{} hands by {X:gold,C:white}0.05{}",
+		    "{C:inactive}(Currently {X:gold,C:white}X(#2#^asc){C:inactive})"
                 }
             },
         },
@@ -3685,6 +3687,9 @@ return {
             cry_hand_bulwark = "Bulwark",
             cry_hand_clusterfuck = "Clusterfuck",
             cry_hand_ultpair = "Ultimate Pair",
+
+            cry_asc_hands = "Asc. Hands",
+            cry_p_star = "Star",
 
             cry_again_q = "Again?",
             cry_curse = "Curse",

@@ -715,14 +715,25 @@ local sunplanet = {
 	atlas = "atlasnotjokers",
 	order = 7,
 	set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_q"), get_type_colour(self or card.config, card), nil, 1.2)
+		badges[1] = create_badge(localize("cry_p_star"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	can_use = function(self, card)
 		return true
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		delay(0.4)
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('cry_asc_hands'),chips = '...', mult = '...', level=(G.GAME.sunnumber and G.GAME.sunnumber or 0)+1})
+		delay(1.0)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('cry_e_golden', 0.35+(math.random()/7), 0.7)
+			play_sound('tarot1')
+			used_consumable:juice_up(0.8, 0.5)
+			return true end }))
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=((G.GAME.sunnumber and G.GAME.sunnumber or 0)+1)+1})	-- greatest math equation of all time
+        	delay(2.6)
 		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + 1 or 1
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
@@ -736,6 +747,26 @@ local sunplanet = {
                 		Xmult_mod = value,
             		}
 		end
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levelone = (G.GAME.sunnumber and G.GAME.sunnumber or 0)+1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		if levelone == 1 then 
+			planetcolourone = G.C.UI.TEXT_DARK
+		end
+		return {
+			vars = {
+				(G.GAME.sunnumber and G.GAME.sunnumber or 0)+1,
+				((G.GAME.sunnumber and G.GAME.sunnumber or 0)/20) + 1.25,
+				colours = { planetcolourone },
+			},
+		}
+	end,
+	in_pool = function(self)
+		if G.GAME.cry_asc_played and G.GAME.cry_asc_played > 0 then
+			return true
+		end
+		return false
 	end,
 }
 function suit_level_up(center, card, area, copier, number)
