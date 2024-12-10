@@ -65,7 +65,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-update_hand_text({delay = 0}, {chips = cry_ascend(G.GAME.hands[text].chips), StatusText = true})
+update_hand_text({delay = 0}, {chips = cry_ascend(G.GAME.hands[hand].chips), StatusText = true})
 '''
 match_indent = true
 
@@ -74,11 +74,11 @@ match_indent = true
 [patches.pattern]
 target = "functions/common_events.lua"
 pattern = '''
-        update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].mult, StatusText = true})
+        update_hand_text({delay = 0}, {mult = G.GAME.hands[hand].mult, StatusText = true})
 '''
 position = "at"
 payload = '''
-update_hand_text({delay = 0}, {chips = cry_ascend(G.GAME.hands[text].mult), StatusText = true})
+update_hand_text({delay = 0}, {mult = cry_ascend(G.GAME.hands[hand].mult), StatusText = true})
 '''
 match_indent = true
 
