@@ -3502,7 +3502,7 @@ return {
             blurred_sdm0 = {
                 name = "a",
                 text = {
-                    "{C:inactive,s:0.8}\"I hate this card\" - SDM0, 2024{}",
+                    "{C:inactive,s:0.8}\"I hate this card\" - SDM_0, 2024{}",
                 },
             },
         },

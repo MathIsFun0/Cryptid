@@ -2351,7 +2351,7 @@ return {
 			blurred_sdm0 = {
 				name = "a",
 				text = {
-					"{C:inactive,s:0.8}我讨厌这张牌- SDM0, 2024{}"
+					"{C:inactive,s:0.8}我讨厌这张牌- SDM_0, 2024{}"
 				}
 			},
 			cry_azure_seal = {

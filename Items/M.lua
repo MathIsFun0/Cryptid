@@ -582,7 +582,7 @@ local bonk = {
 		}
 	},
 }
-local loopy = { 
+local loopy = {
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
@@ -1166,11 +1166,11 @@ local mprime = {
 					if mjoker > 0 then
 						local card = create_card(
 							"Joker",
-							G.jokers, 
-							nil, 
-							nil, 
-							nil, 
-							nil, 
+							G.jokers,
+							nil,
+							nil,
+							nil,
+							nil,
 							pseudorandom_element(loyalservants, pseudoseed("mprime"))
 						)
 						card:add_to_deck()
@@ -1279,13 +1279,13 @@ local macabre = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM0"
+			"SDM_0"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -1349,7 +1349,7 @@ local megg = {
 			"Watermelon Lover"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -1402,7 +1402,7 @@ local longboi = {
 		if (not from_debuff and card.ability.extra.mult == nil) or card.checkmonster then
 			--Stops Things like Gemini from updating mult when it isn't supposed to
 			if card.checkmonster then card.checkmonster = nil end
-			
+
 			card.ability.extra.mult = G.GAME.monstermult or 1
 		end
 	end,
@@ -1477,13 +1477,13 @@ return {
 			end
 		end
 		--there must be a better way than this
-		if Cryptid.enabled["Misc."] and Cryptid.enabled["Epic Jokers"] and Cryptid.enabled["Tags"] then 
+		if Cryptid.enabled["Misc."] and Cryptid.enabled["Epic Jokers"] and Cryptid.enabled["Tags"] then
 			for _, jkr in pairs({ smallestm }) do
 				ret_items[#ret_items + 1] = jkr
 			end
 		end
 		--end of cryptid config loading
-		
+
 		for i = 1, #ret_items do
 			Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
 			local vc = ret_items[i].calculate
