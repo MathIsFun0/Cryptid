@@ -765,6 +765,13 @@ end
 ---- CARD ENABLING SYSTEM ----
 ------------------------------
 
+SMODS.GameObject.disable = function(self, reason)
+	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+end
+SMODS.GameObject.enable = function(self)
+	self.cry_disabled = nil
+end
+
 SMODS.Center.disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
@@ -774,6 +781,63 @@ SMODS.Center.enable = function(self)
 	self.cry_disabled = nil
 	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
 	G.P_CENTERS[self.key] = self
+end
+
+SMODS.Joker.enable = function(self)
+	SMODS.Center.enable(self)
+	SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
+	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
+	if vanilla_rarities[self.rarity] then
+		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
+	end
+end
+SMODS.Joker.disable = function(self, reason)
+	SMODS.Center.disable(self, reason)
+	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
+	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
+	if vanilla_rarities[self.rarity] then
+		SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self.key)
+	end
+end
+
+SMODS.Consumable.enable = function(self)
+	SMODS.Center.enable(self)
+	SMODS.insert_pool(G.P_CENTER_POOLS['Consumeables'], self)
+end
+SMODS.Consumable.disable = function(self, reason)
+	SMODS.Center.disable(self, reason)
+	SMODS.remove_pool(G.P_CENTER_POOLS['Consumeables'], self.key)
+end
+
+SMODS.Tag.disable = function(self, reason)
+	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+	G.P_TAGS[self.key] = nil
+end
+SMODS.Tag.enable = function(self)
+	self.cry_disabled = nil
+	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+	G.P_TAGS[self.key] = self
+end
+
+SMODS.Blind.disable = function(self, reason)
+	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+	G.P_BLINDS[self.key] = nil
+end
+SMODS.Blind.enable = function(self)
+	self.cry_disabled = nil
+	G.P_BLINDS[self.key] = self
+end
+
+SMODS.Seal.disable = function(self, reason)
+	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+	G.P_SEALS[self.key] = nil
+end
+SMODS.Seal.enable = function(self)
+	self.cry_disabled = nil
+	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+	G.P_SEALS[self.key] = self
 end
 
 function cry_update_obj_registry(m)
