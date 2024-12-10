@@ -522,7 +522,7 @@ end
 -- designed to work on any object type
 function cry_get_gameset(card, center)
 	if not center then
-		center = card.config and card.config.center or card
+		center = card.config and card.config.center or card.effect and card.effect.center or card
 	end
 	if card.force_gameset then
 		return card.force_gameset
@@ -530,16 +530,20 @@ function cry_get_gameset(card, center)
 	if center.force_gameset then
 		return center.force_gameset
 	end
+	if not center.key then
+		error("Could not find key for center: "..tprint(center))
+	end
+	local gameset = G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 	if
 		G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides
 		and G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
 	then
 		return G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
 	end
-	if Cryptid.gameset_overrides[G.PROFILES[G.SETTINGS.profile].cry_gameset][center.key] then
-		return Cryptid.gameset_overrides[G.PROFILES[G.SETTINGS.profile].cry_gameset][center.key]
+	if Cryptid.gameset_overrides[gameset][center.key] then
+		return Cryptid.gameset_overrides[gameset][center.key]
 	end
-	return G.PROFILES[G.SETTINGS.profile].cry_gameset
+	return gameset
 end
 -- set_ability accounts for gamesets
 function Card:get_gameset(center)
@@ -573,10 +577,17 @@ function Card:click()
 			end
 		end
 	end
+	if G.GAME.viewed_back and self.config.center.key == 'c_base' then
+		cry_gameset_config_UI(G.GAME.viewed_back.effect.center)
+	end
 end
 
 -- gameset config UI
 function cry_gameset_config_UI(center)
+	local is_back = false
+	if center.set == "Back" then
+		is_back = true
+	end
 	G.SETTINGS.paused = true
 	G.your_collection = {}
 	G.your_collection[1] = CardArea(
@@ -607,17 +618,32 @@ function cry_gameset_config_UI(center)
 	for i = 1, #gamesets do
 		local _center = cry_deep_copy(center)
 		_center.force_gameset = gamesets[i]
-		local card = Card(
-			G.your_collection[1].T.x + G.your_collection[1].T.w / 2,
-			G.your_collection[1].T.y,
-			G.CARD_W,
-			G.CARD_H,
-			G.P_CARDS.empty,
-			_center
-		)
-		card:start_materialize()
-		card.gameset_select = true
-		G.your_collection[1]:emplace(card)
+		if not is_back then
+			local card = Card(
+				G.your_collection[1].T.x + G.your_collection[1].T.w / 2,
+				G.your_collection[1].T.y,
+				G.CARD_W,
+				G.CARD_H,
+				G.P_CARDS.empty,
+				_center
+			)
+			card:start_materialize()
+			card.gameset_select = true
+			G.your_collection[1]:emplace(card)
+		else
+			local fake_center = {
+				set = "Back",
+				force_gameset = gamesets[i],
+				pos = center.pos,
+				atlas = center.atlas,
+				key = center.key,
+				config = {}
+			}
+			local card = Card(G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h, G.CARD_W, G.CARD_H, G.P_CARDS.empty, fake_center)		
+			card:start_materialize()
+			card.gameset_select = true
+			G.your_collection[1]:emplace(card)
+		end
 	end
 
 	INIT_COLLECTION_CARD_ALERTS()

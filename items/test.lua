@@ -340,4 +340,19 @@ local rework_tag = {
 		return false
 	end,
 }
-return {items = {test, test2, test3, rework, rework_tag}}
+local blank = {
+	object_type = "Back",
+	name = "cry-Blank",
+	key = "blank",
+	order = 75,
+	pos = { x = 1, y = 0 },
+	atlas = "blank",
+}
+local blank_sprite = {
+	object_type = "Atlas",
+	key = "blank",
+	path = "atlasdeck.png",
+	px = 71,
+	py = 95,
+}
+return {items = {test, test2, test3, rework, rework_tag, blank, blank_sprite}}

@@ -227,3 +227,12 @@ pattern = "if self.debuff then"
 position = "at"
 payload = "if self.debuff or cry_get_gameset(self) == 'disabled' or (self.config.center.cry_disabled and not self.gameset_select) then"
 match_indent = true
+
+# Descriptions for Backs in gameset UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif _c.set == 'Tag' then"
+position = "before"
+payload = "elseif _c.set == 'Back' then localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = specific_vars or {}}"
+match_indent = true
