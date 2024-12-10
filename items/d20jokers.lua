@@ -36,3 +36,6 @@ local d20 = {
 		end
 	end,
 }
+local d20items =  {
+	d20,
+}
