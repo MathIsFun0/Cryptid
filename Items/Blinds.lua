@@ -1410,7 +1410,7 @@ return {
 		function Blind:defeat(s)
 			dft(self, s)
 			local obj = self.config.blind
-			if obj.boss and (obj.boss.no_orb or obj.boss.epic) then
+			if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
 				return
 			end
 			if
