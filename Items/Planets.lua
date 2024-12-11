@@ -727,7 +727,6 @@ local sunplanet = {
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('cry_asc_hands'),chips = '...', mult = '...', level=sunlevel})
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-			local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0)+1
 			play_sound('tarot1')
                 	ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
                 	ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
@@ -745,7 +744,7 @@ local sunplanet = {
 			end)
 			}))
 		return true end }))
-        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=sunlevel+1})	-- greatest math equation of all time
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=sunlevel+1})
         	delay(2.6)
 		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + 1 or 1
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
