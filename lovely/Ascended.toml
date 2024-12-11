@@ -150,3 +150,48 @@ payload = '''
                 cry_asc_num_text = '',
 '''
 match_indent = true
+
+# i hope this is worth it
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''
+G.ARGS.score_intensity.required_score = G.GAME.blind and G.GAME.blind.chips or 0
+'''
+position = "after"
+payload = '''
+if G.cry_flame_override and G.cry_flame_override['duration'] > 0 then
+	G.cry_flame_override['duration'] = math.max(0, G.cry_flame_override['duration'] - dt)
+	sendDebugMessage("flame")
+	sendDebugMessage(G.cry_flame_override['duration'])
+	sendDebugMessage(G.cry_flame_override['intensity'])
+end
+'''
+match_indent = true
+
+# overwrite the value for better pulsing
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+_F.real_intensity = math.max(0, _F.real_intensity + _F.intensity_vel)
+'''
+position = "after"
+payload = '''
+
+_F.real_intensity = (G.cry_flame_override and G.cry_flame_override['duration'] > 0) and ((_F.real_intensity + G.cry_flame_override['intensity'])/2) or _F.real_intensity
+'''
+match_indent = true
+
+# again (this is messy, don't really know how these lines even work)
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+_F.change = (_F.change or 0)*(1 - 4.*G.real_dt) + ( 4.*G.real_dt)*(_F.real_intensity < _F.intensity - 0.0 and 1 or 0)*_F.real_intensity
+'''
+position = "after"
+payload = '''
+_F.change = (G.cry_flame_override and G.cry_flame_override['duration'] > 0) and ((_F.change + G.cry_flame_override['intensity'])/2) or _F.change
+'''
+match_indent = true

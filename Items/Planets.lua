@@ -722,22 +722,62 @@ local sunplanet = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0)+1
 		delay(0.4)
-		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('cry_asc_hands'),chips = '...', mult = '...', level=(G.GAME.sunnumber and G.GAME.sunnumber or 0)+1})
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('cry_asc_hands'),chips = '...', mult = '...', level=sunlevel})
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-			play_sound('cry_e_golden', 0.35+(math.random()/7), 0.7)
+			local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0)+1
 			play_sound('tarot1')
+                	ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+                	ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+			cry_pulse_flame(0.01, sunlevel)
 			used_consumable:juice_up(0.8, 0.5)
-			return true end }))
-        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=((G.GAME.sunnumber and G.GAME.sunnumber or 0)+1)+1})	-- greatest math equation of all time
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				blockable = false,
+				blocking = false,
+				delay =  2.3,
+				func = (function() 
+					ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2)
+					ease_colour(G.C.UI_MULT, G.C.RED, 2)
+				return true
+			end)
+			}))
+		return true end }))
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=sunlevel+1})	-- greatest math equation of all time
         	delay(2.6)
 		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + 1 or 1
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
+		local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0)+1
+		delay(0.4)
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('cry_asc_hands'),chips = '...', mult = '...', level=sunlevel})
+		delay(1.0)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+                	ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+                	ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+			cry_pulse_flame(0.01, (sunlevel-1)+number)
+			used_consumable:juice_up(0.8, 0.5)
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				blockable = false,
+				blocking = false,
+				delay =  2.3,
+				func = (function() 
+					ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2)
+					ease_colour(G.C.UI_MULT, G.C.RED, 2)
+				return true
+			end)
+			}))
+		return true end }))
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=sunlevel+number})
+        	delay(2.6)
 		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number or number
+        	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand 
 		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 then

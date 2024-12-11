@@ -2698,6 +2698,12 @@ function cry_ascend(num)	-- edit this function at your leisure
 	return num*((1.25 + (0.05 * (G.GAME.sunnumber or 0)))^G.GAME.current_round.current_hand.cry_asc_num or 0)
 end
 
+function cry_pulse_flame(duration, intensity)
+	G.cry_flame_override = G.cry_flame_override or {}
+	G.cry_flame_override["duration"] = duration or 0.01
+	G.cry_flame_override["intensity"] = intensity or 2
+end
+
 --Will be moved to D20 file when that gets added
 function roll_dice(seed, min, max, config)
 	local val
