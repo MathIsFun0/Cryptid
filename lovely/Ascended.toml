@@ -162,9 +162,6 @@ position = "after"
 payload = '''
 if G.cry_flame_override and G.cry_flame_override['duration'] > 0 then
 	G.cry_flame_override['duration'] = math.max(0, G.cry_flame_override['duration'] - dt)
-	sendDebugMessage("flame")
-	sendDebugMessage(G.cry_flame_override['duration'])
-	sendDebugMessage(G.cry_flame_override['intensity'])
 end
 '''
 match_indent = true

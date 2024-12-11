@@ -2698,7 +2698,7 @@ function cry_ascend(num)	-- edit this function at your leisure
 	return num*((1.25 + (0.05 * (G.GAME.sunnumber or 0)))^G.GAME.current_round.current_hand.cry_asc_num or 0)
 end
 
-function cry_pulse_flame(duration, intensity)
+function cry_pulse_flame(duration, intensity)	-- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
 	G.cry_flame_override = G.cry_flame_override or {}
 	G.cry_flame_override["duration"] = duration or 0.01
 	G.cry_flame_override["intensity"] = intensity or 2
