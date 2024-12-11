@@ -2895,7 +2895,7 @@ end
 function Cryptid.get_food(seed)
     local food_keys = {}  
     for k, v in pairs(Cryptid.food) do  
-        if not G.GAME.banned_keys[v] then
+        if not G.GAME.banned_keys[v] and G.P_CENTERS[v] then
             table.insert(food_keys, v)  
         end
     end
