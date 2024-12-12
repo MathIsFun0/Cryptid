@@ -429,7 +429,6 @@ end
 --Add banned cards when specific features/mods are enabled here
 --TODO other mods
 if Cryptid.enabled["Blinds"] then
-	--WHY DOES THIS SHOW UP AS THE FISH????????
 	joker_poker.restrictions.banned_other[#joker_poker.restrictions.banned_other + 1] = { id = 'bl_cry_oldmanacle', type = 'blind' }
 end
 if Cryptid.enabled["Tags"] then
