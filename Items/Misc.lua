@@ -212,7 +212,7 @@ local oversat = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
+			cry_misprintize(card, {min = 1, max = 1}, true) -- 
 			cry_misprintize(card)
 		end)
 	end,
@@ -306,8 +306,8 @@ local glitched = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
-			cry_misprintize(card)
+			cry_misprintize(card, {min = 1, max = 1}, true)
+			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 	end,
 }
