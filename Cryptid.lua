@@ -36,20 +36,28 @@ for _, file in ipairs(files) do
 	end
 	f()
 end
-
-Cryptid.object_registry = {}
-local files = NFS.getDirectoryItems(mod_path .. "items")
-for _, file in ipairs(files) do
-	print("[CRYPTID] Loading file " .. file)
-	local f, err = SMODS.load_file("items/" .. file)
-	if err then
-		error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
-	end
+local function process_items(f, mod)
 	local ret = f()
 	if not ret.disabled then
 		if ret.init then ret:init() end
 		if ret.items then
 			for _, item in ipairs(ret.items) do
+				if mod then
+					-- make the mod use its own prefixes
+					item.prefix_config = {
+						key = false,
+						atlas = false,
+					}
+					if item.key then
+						item.key = mod.prefix .. "_" .. item.key
+					end
+					if item.atlas then
+						item.atlas = mod.prefix .. "_" .. item.atlas
+					end
+					-- this will also display the mod's own badge
+					if not item.dependencies then item.dependencies = {} end
+					item.dependencies[#item.dependencies + 1] = mod.id
+				end
 				if item.init then item:init() end
 				if not Cryptid.object_registry[item.object_type] then
 					Cryptid.object_registry[item.object_type] = {}
@@ -60,6 +68,49 @@ for _, file in ipairs(files) do
 		end
 	end
 end
+
+--Todo: re-add the ordering system
+Cryptid.object_registry = {}
+local files = NFS.getDirectoryItems(mod_path .. "items")
+for _, file in ipairs(files) do
+	print("[CRYPTID] Loading file " .. file)
+	local f, err = SMODS.load_file("items/" .. file)
+	if err then
+		error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+	end
+	process_items(f)
+end
+
+-- Check for files in other mods
+-- either in [Mod]/Cryptid.lua or [Mod]/Cryptid/*.lua
+for _, mod in pairs(SMODS.Mods) do
+	if mod.path and mod.id ~= "Cryptid" then
+		local path = mod.path
+		local files = NFS.getDirectoryItems(path)
+		for _, file in ipairs(files) do
+			if file == "Cryptid.lua" then
+				print("[CRYPTID] Loading Cryptid.lua from " .. mod.id)
+				local f, err = SMODS.load_file("Cryptid.lua", mod.id)
+				if err then
+					error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+				end
+				process_items(f, mod)
+			end
+			if file == "Cryptid" then
+				local files = NFS.getDirectoryItems(path .. "Cryptid")
+				for _, file in ipairs(files) do
+					print("[CRYPTID] Loading file " .. file .. " from " .. mod.id)
+					local f, err = SMODS.load_file("Cryptid/" .. file, mod.id)
+					if err then
+						error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+					end
+					process_items(f, mod)
+				end
+			end
+		end
+	end
+end
+
 
 local cryptidTabs = function() return {
 	{
