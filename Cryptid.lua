@@ -62,7 +62,17 @@ local function process_items(f, mod)
 				if not Cryptid.object_registry[item.object_type] then
 					Cryptid.object_registry[item.object_type] = {}
 				end
-				SMODS[item.object_type](item)
+				if not item.take_ownership then
+					SMODS[item.object_type](item)
+				else
+					item.key = SMODS[item.object_type].class_prefix .. "_" .. item.key
+					SMODS[item.object_type].obj_table[item.key].mod = SMODS.Mods.Cryptid
+					for k, v in pairs(item) do
+						if k ~= "key" then
+							SMODS[item.object_type].obj_table[item.key][k] = v
+						end
+					end
+				end
 				Cryptid.object_registry[item.object_type][item.key] = item
 			end
 		end
