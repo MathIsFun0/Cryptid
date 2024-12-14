@@ -1887,6 +1887,8 @@ end
 --Unrelated but kind of related side note: this prevents top gear from showing up in collection, not sure what's up with that
 --Is it due to how TWEWJ is Coded? Is it an issue with Steamodded itself? Might be worth looking into, just sayin
 
+--Ok it's definitely something with steamodded
+
 if (SMODS.Mods["TWEWY"] or {}).can_load then
 	SMODS.Joker:take_ownership('twewy_topGear', {
 		name = "Cry-topGear",
@@ -3024,6 +3026,16 @@ if (SMODS.Mods["malverk"] or {}).can_load then
         		}
     		}
 	}
+end
+--Make Ortalab's Locked jokers not show up on Deck of Equilibrium and Antimatter Deck
+if (SMODS.Mods["ortalab"] or {}).can_load then
+	for i = 1, 150 do
+		print(i)
+		SMODS.Joker:take_ownership('ortalab_temp_' .. i, {
+			name = "Cry-skibidi",
+			no_doe = true
+		})
+	end
 end
 SMODS.Atlas({
 	key = "modicon",
