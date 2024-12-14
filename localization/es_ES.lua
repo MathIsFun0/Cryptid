@@ -1631,7 +1631,7 @@ return {
                     "del comodín a la {C:attention}derecha{} por {X:attention,C:white}X#1#{}"
                 },
             },
-    
+
             j_cry_oldblueprint = {
                 name = "Plano viejo",
                 text = {
@@ -3509,7 +3509,7 @@ return {
             blurred_sdm0 = {
                 name = "a",
                 text = {
-                    "{C:inactive,s:0.8}\"Odio esta carta\" - SDM0, 2024{}",
+                    "{C:inactive,s:0.8}\"Odio esta carta\" - SDM_0, 2024{}",
                 },
             },
 

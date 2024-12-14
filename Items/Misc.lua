@@ -212,7 +212,7 @@ local oversat = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
+			cry_misprintize(card, {min = 1, max = 1}, true) -- 
 			cry_misprintize(card)
 		end)
 	end,
@@ -306,8 +306,8 @@ local glitched = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
-			cry_misprintize(card)
+			cry_misprintize(card, {min = 1, max = 1}, true)
+			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 	end,
 }
@@ -414,7 +414,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
 	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
 	if not instant then
-		for i = 1, math.random(6, 10) do
+		for i = 1, math.random(2, 4) do
 			update_hand_text(
 				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
 				{ chips = obfuscatedtext(3) }
@@ -434,7 +434,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
-		for i = 1, math.random(6, 10) do
+		for i = 1, math.random(2, 4) do
 			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
 		end
 		G.E_MANAGER:add_event(Event({
@@ -546,6 +546,16 @@ local noisy_shader = {
 	key = "noisy",
 	path = "noisy.fs",
 }
+local noisy_stats = {
+	min = {
+		mult = 0,
+		chips = 0
+	},
+	max = {
+		mult = 30,
+		chips = 150
+	}
+}
 local noisy = {
 	object_type = "Edition",
 	key = "noisy",
@@ -554,7 +564,7 @@ local noisy = {
 	shader = "noisy",
 	in_shop = true,
 	extra_cost = 4,
-	config = { min_mult = 0, max_mult = 30, min_chips = 0, max_chips = 150 },
+	config = { min_mult = noisy_stats.min.mult, max_mult = noisy_stats.max.mult, min_chips = noisy_stats.min.chips, max_chips = noisy_stats.max.chips },
 	sound = {
 		sound = "cry_e_noisy",
 		per = 1,
@@ -609,6 +619,7 @@ local noisy = {
 									.. (
 										G.deck
 											and G.deck.cards[1]
+											and G.deck.cards[#G.deck.cards].base.suit
 											and G.deck.cards[#G.deck.cards].base.suit:sub(1, 1)
 										or "D"
 									),
@@ -697,6 +708,74 @@ local noisy = {
 		desc_nodes[#desc_nodes + 1] = chip_ui
 	end,
 }
+
+AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
+	local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
+	local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+	if not instant then
+		for i = 1, math.random(2, 4) do
+			update_hand_text(
+				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+				{ chips = obfuscatedtext(3) }
+			)
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				play_sound("chips1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ delay = 0 },
+			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+		)
+		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
+		for i = 1, math.random(2, 4) do
+			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				play_sound("multhit1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ delay = 0 },
+			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+		)
+		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("chips1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("multhit1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+	end
+end
+
 local jollyeditionshader = {
 	object_type = "Shader",
 	key = "m",
@@ -1741,7 +1820,7 @@ return {
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
 				self.dbl_side:set_ability(G.P_CENTERS.c_base)
-				self.dbl_side:set_base(G.P_CARDS.empty)
+				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
 					self.dbl_side.config.center = cry_deep_copy(self.dbl_side.config.center)
 					self.dbl_side.config.center.no_rank = true

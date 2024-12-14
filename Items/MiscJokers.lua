@@ -1082,7 +1082,7 @@ local chad = {
 			"Jevonn"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
 			"Math"
@@ -5345,7 +5345,7 @@ local oldblueprint = {
 	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
 	rarity = 1,
-	cost = 5,
+	cost = 6,
 	order = 83,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
@@ -5377,6 +5377,7 @@ local oldblueprint = {
 								G.jokers:remove_card(card)
 								card:remove()
 								card = nil
+								if G.P_CENTERS["j_blueprint"].unlocked then G.GAME.oldbpfactor = (G.GAME.oldbpfactor or 1)*3 end
 								return true
 							end,
 						}))
@@ -5607,13 +5608,13 @@ local translucent = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM0"
+			"SDM_0"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -6432,7 +6433,7 @@ local pity_prize = {
 	calculate = function(self, card, context)
 		if context.skipping_booster then
 			local tag
-			repeat 
+			repeat
 				tag = Tag(get_next_tag_key("cry_pity_prize"))
 			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
 			if tag.name == "Orbital Tag" then

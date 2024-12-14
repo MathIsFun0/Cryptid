@@ -441,3 +441,31 @@ if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_playe
 end
 '''
 match_indent = true
+
+# adds oldbp blueprint corruption
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'if _pool_size == 0 then'
+position = "before"
+payload = '''
+if G.GAME.oldbpfactor and G.GAME.oldbpfactor >= 2 then
+	if _type == 'Joker' and (_rarity == nil or type(_rarity) ~= "string") and not _legendary and not (G.GAME.used_jokers["j_blueprint"] and not next(find_joker("Showman"))) then
+		for i = 1, math.floor(G.GAME.oldbpfactor - 1) do
+			_pool[#_pool + 1] = "j_blueprint"
+		end
+	end
+end
+'''
+match_indent = true
+
+# end of shop decrement
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = 'G.SHOP_SIGN.alignment.offset.y = -15'
+position = "after"
+payload = '''
+if G.GAME.oldbpfactor then G.GAME.oldbpfactor = math.max(G.GAME.oldbpfactor - G.GAME.oldbpfactor/8, 1) end
+'''
+match_indent = true

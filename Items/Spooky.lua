@@ -269,7 +269,11 @@ local potion = {
 		return false
 	end,
 	use = function(self, card, area, copier)
-		G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] = (G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] or 0)+1
+		if not (G.GAME.events and G.GAME.events.ev_cry_choco3) then
+			return
+		end -- Just in case a potion is found out side of the event 
+		G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] 
+			= (G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] or 0)+1
 		--Announce event
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -391,7 +395,10 @@ local choco6 = { --please take one
 				func = function()
 					local key = get_pack('cry_take_one').key
 					local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
-					G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+						G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2,
+						 G.CARD_W*1.27, G.CARD_H*1.27,
+						  G.P_CARDS.empty, G.P_CENTERS[key],
+						   {bypass_discovery_center = true, bypass_discovery_ui = true})
 					card.cost = 0
 					card.from_tag = true
 					G.FUNCS.use_card({config = {ref_table = card}})
@@ -610,7 +617,11 @@ local flickering = {
 			if context.post_trigger and context.other_joker == card then
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
-					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_remaining',vars={card.ability.flick_tally}},colour = G.C.FILTER, delay = 0.45})
+					card_eval_status_text(
+						card, 'extra', nil, nil, nil,
+						{message = localize{type='variable',key='a_remaining',vars={card.ability.flick_tally}},
+						colour = G.C.FILTER,
+						delay = 0.45})
 				else
 					card.will_shatter = true
 					G.E_MANAGER:add_event(Event({
@@ -626,7 +637,13 @@ local flickering = {
 			if next(context.ret) ~= nil then
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
-					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_remaining',vars={card.ability.flick_tally}},colour = G.C.FILTER, delay = 0.45})
+					card_eval_status_text(
+						card, 'extra', nil, nil, nil, 
+						{
+							message = localize{type='variable',key='a_remaining',vars={card.ability.flick_tally}},
+							colour = G.C.FILTER,
+							delay = 0.45
+						})
 				else
 					card.will_shatter = true
 					G.E_MANAGER:add_event(Event({

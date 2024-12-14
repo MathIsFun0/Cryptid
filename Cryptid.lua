@@ -5,7 +5,7 @@
 --- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1103a]
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1212a]
 --- VERSION: 0.5.2~1115a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
@@ -2234,7 +2234,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		cry_misprintize(card)
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
-		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
 		if card.ability.name ~= "cry-meteor"
@@ -2895,7 +2895,7 @@ end
 function Cryptid.get_food(seed)
     local food_keys = {}  
     for k, v in pairs(Cryptid.food) do  
-        if not G.GAME.banned_keys[v] then
+        if not G.GAME.banned_keys[v] and G.P_CENTERS[v] then
             table.insert(food_keys, v)  
         end
     end

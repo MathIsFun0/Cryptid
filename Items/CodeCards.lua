@@ -158,6 +158,12 @@ local console = {
 				card.cost = 0
 				card.from_tag = true
 				G.FUNCS.use_card({ config = { ref_table = card } })
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
 				card:start_materialize()
 				return true
 			end)
@@ -986,6 +992,9 @@ local oboe = {
 	cost = 4,
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
+		if not card then
+			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		end
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
 	can_use = function(self, card)
@@ -3529,6 +3538,7 @@ local code_cards = {
 	--patch,
 	ctrl_v,
 	inst,
+	encoded,
 }
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
@@ -3537,7 +3547,6 @@ if Cryptid.enabled["Enhanced Decks"] then
 	code_cards[#code_cards + 1] = source_deck
 end
 if Cryptid.enabled["Epic Jokers"] then
-	code_cards[#code_cards + 1] = encoded
 	code_cards[#code_cards + 1] = CodeJoker
 	code_cards[#code_cards + 1] = copypaste
 end
@@ -4150,14 +4159,19 @@ return {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
+							-- Adding a before spawning becuase jen banned copy_paste
+							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
+							if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
 							return true
 						end
 					end,

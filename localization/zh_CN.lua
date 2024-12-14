@@ -2351,7 +2351,7 @@ return {
 			blurred_sdm0 = {
 				name = "a",
 				text = {
-					"{C:inactive,s:0.8}我讨厌这张牌- SDM0, 2024{}"
+					"{C:inactive,s:0.8}我讨厌这张牌- SDM_0, 2024{}"
 				}
 			},
 			cry_azure_seal = {
@@ -2813,6 +2813,13 @@ return {
 			}
 		},
 		Sleeve = {
+			sleeve_cry_bountiful_sleeve = {
+				name = "丰饶的露台牌套",
+				text = {
+					"每次{C:attention}出牌{} 或 {C:attention}弃牌{}后",
+					"固定抽五张牌"
+				}
+			},
 			sleeve_cry_ccd_sleeve = {
 				name = "CCD 牌套",
 				text = {
@@ -2882,6 +2889,14 @@ return {
 				text = {
 					"当购买{C:attention}优惠券{} 时，",
 					"会获得对应 {C:attention}高级{} 版"
+				}
+			},
+			sleeve_cry_spooky_sleeve = {
+				name = "万圣节牌套",
+				text = {
+					"以一张{C:eternal}永恒{} {C:attention,T:j_cry_chocolate_dice}巧克力骰{}开始",
+					"每次{C:attention}底注{}之后 ",
+					"创建一个{C:cry_candy}糖果{}或 {X:cry_cursed,C:white}诅咒{}"
 				}
 			},
 			sleeve_cry_wormhole_sleeve = {

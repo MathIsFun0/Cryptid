@@ -728,6 +728,12 @@ local loss = {
                     		card.cost = 0
                     		card.from_tag = true
                     		G.FUNCS.use_card({config = {ref_table = card}})
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
                     		card:start_materialize()
                     		G.CONTROLLER.locks[lock] = nil
                     		return true
@@ -775,41 +781,40 @@ local gourmand = {
 	end,
 }
 local better_top_up = {
-        object_type = "Tag",
-        name = "cry-Better Top-up Tag",
+    object_type = "Tag",
+    name = "cry-Better Top-up Tag",
 	order = 15,
-        atlas = "tag_cry",
-        pos = { x = 4, y = 3 },
-        config = { type = "immediate", spawn_jokers = 2 },
-        key = "bettertop_up",
+    atlas = "tag_cry",
+    pos = { x = 4, y = 3 },
+    config = { type = "immediate", spawn_jokers = 2 },
+    key = "bettertop_up",
 	loc_vars = function(self, info_queue)
 		return { vars = {self.config.spawn_jokers} }
 	end,
-        min_ante = 5,
-        apply = function(tag, context)
-                if context.type == "immediate" then
+    min_ante = 5,
+    apply = function(tag, context)
+        if context.type == "immediate" then
 			if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
 				local lock = tag.ID
-                        	G.CONTROLLER.locks[lock] = true
-                        	tag:yep('+', G.C.GREEN, function()
-					if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then --Needs another check here because that's how tags work :0:0:0:)):0
-						for i = 1, tag.config.spawn_jokers do
-                                        		local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, 'bettertop')
-                                        		card:add_to_deck()
-                                        		G.jokers:emplace(card)
+                G.CONTROLLER.locks[lock] = true
+                tag:yep('+', G.C.GREEN, function()
+					for i = 1, tag.config.spawn_jokers do
+						if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+                           	local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, 'bettertop')
+                       		card:add_to_deck()
+                            G.jokers:emplace(card)
 						end
 					end
-                                	G.CONTROLLER.locks[lock] = nil
-                                	return true
-                        	end)
+                G.CONTROLLER.locks[lock] = nil
+                return true
+                end)
 			else
 				tag:nope()
 			end
-                        tag.triggered = true
-                        return true
+            tag.triggered = true
+            return true
 		end
-			
-        end
+	end
 }
 local better_voucher = {
 	object_type = "Tag",
