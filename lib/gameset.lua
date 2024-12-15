@@ -500,7 +500,7 @@ end
 
 -- Gets gameset sprite of current profile
 function gameset_sprite(scale, profile, force_gameset)
-	gameset = force_gameset or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
+	gameset = force_gameset or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset_overrides and "modified" or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
 	scale = scale or 1
 	local sprite = Sprite(
 		0,
@@ -508,7 +508,7 @@ function gameset_sprite(scale, profile, force_gameset)
 		scale,
 		scale,
 		G.ASSET_ATLAS["cry_gameset"],
-		{ x = (gameset == "madness" and 2 or gameset == "modest" and 0 or 1), y = 0 }
+		{ x = (gameset == "modified" and 3 or gameset == "madness" and 2 or gameset == "modest" and 0 or 1), y = 0 }
 	)
 	sprite:define_draw_steps({
 		{ shader = "dissolve", shadow_height = 0.09 },
@@ -555,6 +555,9 @@ function Card:set_ability(center, y, z)
 	if center.gameset_config and center.gameset_config[self:get_gameset(center)] then
 		for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
 			self.ability[k] = v
+		end
+		if center.gameset_config[self:get_gameset(center)].disabled then
+			self.cry_disabled = true
 		end
 		if center.gameset_config[self:get_gameset(center)].cost then
 			self.cost = center.gameset_config[self:get_gameset(center)].cost
@@ -616,33 +619,35 @@ function cry_gameset_config_UI(center)
     end
 
 	for i = 1, #gamesets do
-		local _center = cry_deep_copy(center)
-		_center.force_gameset = gamesets[i]
-		if not is_back then
-			local card = Card(
-				G.your_collection[1].T.x + G.your_collection[1].T.w / 2,
-				G.your_collection[1].T.y,
-				G.CARD_W,
-				G.CARD_H,
-				G.P_CARDS.empty,
-				_center
-			)
-			card:start_materialize()
-			card.gameset_select = true
-			G.your_collection[1]:emplace(card)
-		else
-			local fake_center = {
-				set = "Back",
-				force_gameset = gamesets[i],
-				pos = center.pos,
-				atlas = center.atlas,
-				key = center.key,
-				config = {}
-			}
-			local card = Card(G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h, G.CARD_W, G.CARD_H, G.P_CARDS.empty, fake_center)		
-			card:start_materialize()
-			card.gameset_select = true
-			G.your_collection[1]:emplace(card)
+		if not (center.gameset_config and center.gameset_config[gamesets[i]] and center.gameset_config[gamesets[i]].disabled) then
+			local _center = cry_deep_copy(center)
+			_center.force_gameset = gamesets[i]
+			if not is_back then
+				local card = Card(
+					G.your_collection[1].T.x + G.your_collection[1].T.w / 2,
+					G.your_collection[1].T.y,
+					G.CARD_W,
+					G.CARD_H,
+					G.P_CARDS.empty,
+					_center
+				)
+				card:start_materialize()
+				card.gameset_select = true
+				G.your_collection[1]:emplace(card)
+			else
+				local fake_center = {
+					set = "Back",
+					force_gameset = gamesets[i],
+					pos = center.pos,
+					atlas = center.atlas,
+					key = center.key,
+					config = {}
+				}
+				local card = Card(G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h, G.CARD_W, G.CARD_H, G.P_CARDS.empty, fake_center)		
+				card:start_materialize()
+				card.gameset_select = true
+				G.your_collection[1]:emplace(card)
+			end
 		end
 	end
 
@@ -703,6 +708,14 @@ function Card:cry_set_gameset(center, gameset)
 	if G.PROFILES[G.SETTINGS.profile].cry_gameset == gameset then
 		G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key] = nil
 	end
+	local empty = true
+	for _, _ in pairs(G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides) do
+		empty = false
+		break
+	end
+	if empty then
+		G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides = nil
+	end
 	G:save_progress()
 end
 
@@ -715,7 +728,7 @@ function cry_card_enabled(key, iter)
 		return true
 	end
 	local card = cry_get_center(key)
-	if cry_get_gameset(card) == "disabled" then
+	if cry_get_gameset(card) == "disabled" or card.gameset_config and card.gameset_config[cry_get_gameset(card)] and card.gameset_config[cry_get_gameset(card)].disabled then
 		return { type = "manual" }
 	end
 	if card.dependencies then
@@ -878,7 +891,8 @@ end
 ------------------------
 
 -- Content sets are used to group cards together in the settings menu, to bulk enable/disable things
--- These include CSL content sets (which are thematic/effect base), as well as others which are categorical (blinds, epic jokers, etc.)
+-- These include CSL content sets, as well as others which are categorical (nostalgic items, epic jokers, etc.)
+-- Because of this, they are referred to as Thematic Sets in-game
 
 SMODS.ContentSet = SMODS.Center:extend({
 	set = "Content Set",
@@ -888,6 +902,12 @@ SMODS.ContentSet = SMODS.Center:extend({
 	required_params = {
 		"key",
 	},
+	inject = function(self)
+		if not G.P_CENTER_POOLS[self.set] then
+			G.P_CENTER_POOLS[self.set] = {}
+		end
+		SMODS.Center.inject(self)
+	end,
 })
 G.P_CENTER_POOLS["Content Set"] = {}
 SMODS.ContentSet({
