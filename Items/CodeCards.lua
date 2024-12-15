@@ -2896,6 +2896,7 @@ G.FUNCS.pointer_apply = function()
 		end
 		if
 			G.P_CENTERS[current_card].set == "Booster"
+			and G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack"
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
 			and G.STATE ~= G.STATES.STANDARD_PACK
