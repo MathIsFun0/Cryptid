@@ -6460,6 +6460,122 @@ local pity_prize = {
 		}
 	},
 }
+local digitalhallucinations = {
+	object_type = "Joker",
+	name = "cry-Digital Hallucinations",
+	key = "digitalhallucinations",
+	pos = { x = 0, y = 7 },
+	order = 130,
+	config = { odds = 2 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { G.GAME and G.GAME.probabilities.normal or 1, card.ability.odds } }
+	end,
+	atlas = "atlasthree",
+	rarity = 2,
+	cost = 8,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		
+		-- you know, i was totally ready to do something smart here but vanilla hardcodes this stuff, so i will too
+		-- some cards need to be handled slightly differently anyway, adding mod support can't really be automatic in some circumstances
+		
+		if context.open_booster and (pseudorandom("digi") < G.GAME.probabilities.normal/card.ability.odds) then
+			local boosty = context.card
+			for k, v in pairs(boosty.ability) do
+				sendDebugMessage(k)
+				sendDebugMessage(boosty.ability.type)
+			end
+			local consums = {'Arcana', 'Celestial', 'Spectral'}
+			local short1 = {'tarot', 'planet', 'spectral'}
+			local short2 = {'Tarot', 'Planet', 'Spectral'}
+			for i = 1, #consums do
+				if boosty.ability.name:find(consums[i]) then
+					G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.0,
+						func = (function()
+							local ccard = create_card(short2[i], G.consumables, nil, nil, nil, nil, nil, "diha")
+							ccard:set_edition({ negative = true }, true)
+							ccard:add_to_deck()
+							G.consumeables:emplace(ccard)
+							return true
+						end)
+					}))
+					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_'..short1[i]), colour = G.C.SECONDARY_SET[short2[i]]})
+					return true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
+				end
+			end
+			if boosty.ability.name:find('code') then
+				G.E_MANAGER:add_event(Event({
+					trigger = 'before',
+					delay = 0.0,
+					func = function()
+						local ccard = create_card("Code", G.consumables, nil, nil, nil, nil, nil, "diha")
+						ccard:set_edition({ negative = true }, true)
+						ccard:add_to_deck()
+						G.consumeables:emplace(ccard)
+						return true
+					end
+				}))
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('cry_plus_code'), colour = G.C.SET.Code})
+				return true
+			end
+			if boosty.ability.name:find('Buffoon') then
+				G.E_MANAGER:add_event(Event({
+					trigger = 'before',
+					delay = 0.0,
+					func = function()
+						local ccard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "diha")
+						ccard:set_edition({ negative = true }, true)
+						ccard:add_to_deck()
+						G.jokers:emplace(ccard)
+						ccard:start_materialize()
+						return true
+					end
+				}))
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.FILTER})
+				return true
+			end
+			if boosty.ability.name:find('Standard') then
+				G.E_MANAGER:add_event(Event({
+					func = function() 
+						local front = pseudorandom_element(G.P_CARDS, pseudoseed('diha_p'))
+						G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+						local ccard = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
+						ccard:set_edition({ negative = true }, true)
+						ccard:start_materialize({G.C.SECONDARY_SET.Enhanced})
+						G.play:emplace(ccard)
+						table.insert(G.playing_cards, ccard)
+						return true
+					end
+				}))
+				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('cry_plus_card'), colour = G.C.FILTER})
+
+				G.E_MANAGER:add_event(Event({
+					func = function() 
+						G.deck.config.card_limit = G.deck.config.card_limit + 1
+						return true
+					end
+				}))
+				draw_card(G.play,G.deck, 90,'up', nil)  
+
+				playing_card_joker_effects({true})	-- who knows what most this stuff does, i just copied it from marble jonkler
+				return true
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"lolxddj"
+		},
+		art = {
+			"lolxddj"
+		},
+		code = {
+			"toneblock"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6553,6 +6669,7 @@ local miscitems =  {
 	oil_lamp,
 	tax_fraud,
 	pity_prize,
+	digitalhallucinations,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

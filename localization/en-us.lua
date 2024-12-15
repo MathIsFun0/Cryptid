@@ -943,6 +943,15 @@ return {
                     "a {C:attention}#2#"
                 }
             },
+            j_cry_digitalhallucinations = {
+                name = "Digital Hallucinations",
+                text = {
+                    "When a {C:attention}Booster Pack{} is opened,",
+                    "{C:green}#1# in #2#{} chance to create",
+                    "a random {C:dark_edition}Negative{} card",
+                    "corresponding to its {C:attention}type{}",
+                },
+            },
             j_cry_discreet = {
                 name = "Discreet Joker",
                 text = {
@@ -960,7 +969,7 @@ return {
                     "for each {C:attention}Jolly Joker{}",
                 },
             },
-            ["j_cry_Double Scale"] = {
+            ["j_cry_Double Scale"] = {	-- ?????????????
                 name = "Double Scale",
                 text = {
                     "Scaling {C:attention}Jokers{}",
@@ -1681,12 +1690,13 @@ return {
                     "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
-			j_cry_pity_prize = {
-				name = "Pity Prize",
-				text = {
-					"When you skip a {C:attention}Booster Pack{} gain a random {C:attention}Tag{}"
-				},
-			},
+            j_cry_pity_prize = {
+                name = "Pity Prize",
+                text = {
+                    "On skipping a {C:attention}Booster Pack{},",
+                    "gain a random {C:attention}Tag{}",
+                },
+            },
             j_cry_pot_of_jokes = {
                 name = "Pot of Jokes",
                 text = {
@@ -3692,6 +3702,8 @@ return {
             cry_m_ex = "M!",
             cry_minus_round = "-1 Round",
             cry_plus_cryptid = "+1 Cryptid",
+            cry_plus_card = "+1 Card",
+            cry_plus_code = "+1 Code",
             cry_no_triggers = "No triggers left!",
             cry_unredeemed = "Unredeemed...",
             cry_active = "Active",
