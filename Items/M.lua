@@ -620,22 +620,6 @@ local loopy = {
 			}
 		end
 		if
-			context.end_of_round
-			and card.ability.extra.retrigger ~= 0
-			and not context.blueprint
-			and not context.retrigger_joker
-			and not context.individual
-			and not context.repetition
-		then
-			card.ability.extra.retrigger = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("k_reset"),
-					colour = G.C.GREEN,
-				}),
-			}
-		end
-		if
 			context.retrigger_joker_check
 			and not context.retrigger_joker
 			and context.other_card ~= self
