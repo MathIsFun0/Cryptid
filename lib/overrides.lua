@@ -32,22 +32,6 @@ function reset_castle_card()
 		G.GAME.current_round.cry_nb_card.rank = castle_card_two.base.value
 		G.GAME.current_round.cry_nb_card.id = castle_card_two.base.id
 	end
-	G.GAME.current_round.cry_nb_card = { rank = "Ace" }
-			local valid_castle_cards = {}
-			for k, v in ipairs(G.playing_cards) do
-				if v.ability.effect ~= "Stone Card" then
-					valid_castle_cards[#valid_castle_cards + 1] = v
-				end
-			end
-			if valid_castle_cards[1] then
-				local castle_card =
-					pseudorandom_element(valid_castle_cards, pseudoseed("cry_nb" .. G.GAME.round_resets.ante))
-				if not G.GAME.current_round.cry_nb_card then
-					G.GAME.current_round.cry_nb_card = {}
-				end
-				G.GAME.current_round.cry_nb_card.rank = castle_card.base.value
-				G.GAME.current_round.cry_nb_card.id = castle_card.base.id
-			end
 end
 
 -- Back.apply_to_run Hook for decks
