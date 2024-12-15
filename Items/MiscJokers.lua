@@ -6481,10 +6481,6 @@ local digitalhallucinations = {
 		
 		if context.open_booster and (pseudorandom("digi") < G.GAME.probabilities.normal/card.ability.odds) then
 			local boosty = context.card
-			for k, v in pairs(boosty.ability) do
-				sendDebugMessage(k)
-				sendDebugMessage(boosty.ability.type)
-			end
 			local consums = {'Arcana', 'Celestial', 'Spectral'}
 			local short1 = {'tarot', 'planet', 'spectral'}
 			local short2 = {'Tarot', 'Planet', 'Spectral'}
