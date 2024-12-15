@@ -531,7 +531,11 @@ function cry_get_gameset(card, center)
 		return center.force_gameset
 	end
 	if not center.key then
-		error("Could not find key for center: "..tprint(center))
+		if center.tag and center.tag.key then --dumb fix for tags
+			center = center.tag
+		else
+			error("Could not find key for center: "..tprint(center))
+		end
 	end
 	local gameset = G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 	if
@@ -554,13 +558,21 @@ function Card:set_ability(center, y, z)
 	csa(self, center, y, z)
 	if center.gameset_config and center.gameset_config[self:get_gameset(center)] then
 		for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
-			self.ability[k] = v
+			if k ~= "disabled" and k ~= "center" then
+				self.ability[k] = v
+			end
 		end
 		if center.gameset_config[self:get_gameset(center)].disabled then
 			self.cry_disabled = true
 		end
-		if center.gameset_config[self:get_gameset(center)].cost then
-			self.cost = center.gameset_config[self:get_gameset(center)].cost
+		if center.gameset_config[self:get_gameset(center)].center and not self.gameset_select then
+			for k, v in pairs(center.gameset_config[self:get_gameset(center)].center) do
+				center[k] = v
+				self[k] = v
+				if k == "rarity" then
+					center:set_rarity(v)
+				end
+			end
 		end
 	end
 end
@@ -795,7 +807,7 @@ SMODS.Center.enable = function(self)
 	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
 	G.P_CENTERS[self.key] = self
 end
-
+--todo: properly deal with rarity pools being changed by gamesets
 SMODS.Joker.enable = function(self)
 	SMODS.Center.enable(self)
 	SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
@@ -810,6 +822,15 @@ SMODS.Joker.disable = function(self, reason)
 	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
 	if vanilla_rarities[self.rarity] then
 		SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self.key)
+	end
+end
+SMODS.Joker.set_rarity = function(self, rarity)
+	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
+	self.rarity = rarity
+	SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
+	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
+	if vanilla_rarities[self.rarity] then
+		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
 	end
 end
 

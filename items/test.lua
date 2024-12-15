@@ -3,9 +3,10 @@ local test = {
 	key = "test",
 	discovered = true,
     gameset_config = {
-        modest = {extra = {chips = 1}},
-        madness = {extra = {chips = 100}},
-		cryptid_in_2025 = {extra = {chips = 1e308}},
+        modest = {extra = {chips = 1}, center = {rarity = 1}},
+		mainline = {center = {rarity = 2}},
+        madness = {extra = {chips = 100}, center = {rarity = 3}},
+		cryptid_in_2025 = {extra = {chips = 1e308}, center = {rarity = "cry_exotic"}},
     },
 	extra_gamesets = {"cryptid_in_2025"},
 	dependencies = {
@@ -16,7 +17,7 @@ local test = {
 	},
 	config = {extra = {chips = 10}},
 	pos = { x = 1, y = 0 },
-	rarity = 1,
+	rarity = 2,
 	order = 11,
 	cost = 1,
 	blueprint_compat = true,
