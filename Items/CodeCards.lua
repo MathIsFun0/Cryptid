@@ -142,7 +142,7 @@ local console = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_code_normal_1", specific_vars = { 1, 2 } }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			tag:yep("+", G.C.SECONDARY_SET.Code, function()
 				local key = "p_cry_code_normal_" .. math.random(1, 2)
@@ -1074,7 +1074,7 @@ local rework_tag = {
 	config = { type = "store_joker_create" },
 	key = "rework",
 	ability = { rework_edition = nil, rework_key = nil },
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
 			create_shop_card_ui(card, "Joker", context.area)

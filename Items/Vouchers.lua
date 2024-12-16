@@ -631,7 +631,7 @@ local triple = { --Copies voucher triple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -677,7 +677,7 @@ local quadruple = { --Tag printer voucher quadruple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -723,7 +723,7 @@ local quintuple = { --Clone machine voucher quintuple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
