@@ -659,8 +659,8 @@ local triple = { --Copies voucher triple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_copies
@@ -705,8 +705,8 @@ local quadruple = { --Tag printer voucher quadruple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_tag_printer
@@ -751,8 +751,8 @@ local quintuple = { --Clone machine voucher quintuple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_clone_machine
