@@ -2626,6 +2626,13 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == 'Flush Five' or text == 'Five of a Kind') then
+			local rank_array = {}
+			local county = 0
+			for i = 1, #scoring_hand do
+				local val = scoring_hand[i]:get_id()
+				rank_array[val] = (rank_array[val] or 0) + 1
+				if rank_array[val] > county then county = rank_array[val] end
+			end
 			local function create_num_chunk(int)	-- maybe useful enough to not be local? but tbh this function is probably some common coding exercise
 				if int >= 1000 then int = 999 end
 				local ones = {["1"] = "One", ["2"] = "Two", ["3"] = "Three", ["4"] = "Four", ["5"] = "Five", ["6"] = "Six", ["7"] = "Seven", ["8"] = "Eight", ["9"] = "Nine"}
@@ -2653,7 +2660,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 				return str_ret
 			end
 			-- text gets stupid small at 100+ anyway
-			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..((#scoring_hand < 1000 and create_num_chunk(#scoring_hand) or "Thousand")..(text == 'Five of a Kind' and " of a Kind" or ""))
+			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..((county < 1000 and create_num_chunk(county) or "Thousand")..(text == 'Five of a Kind' and " of a Kind" or ""))
 		end
 	end
 
