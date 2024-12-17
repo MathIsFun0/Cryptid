@@ -275,8 +275,8 @@ local memory = {
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.cry_last_tag_used and true
