@@ -142,7 +142,7 @@ local console = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_code_normal_1", specific_vars = { 1, 2 } }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			tag:yep("+", G.C.SECONDARY_SET.Code, function()
 				local key = "p_cry_code_normal_" .. math.random(1, 2)
@@ -158,6 +158,12 @@ local console = {
 				card.cost = 0
 				card.from_tag = true
 				G.FUNCS.use_card({ config = { ref_table = card } })
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
 				card:start_materialize()
 				return true
 			end)
@@ -1068,7 +1074,7 @@ local rework_tag = {
 	config = { type = "store_joker_create" },
 	key = "rework",
 	ability = { rework_edition = nil, rework_key = nil },
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
 			create_shop_card_ui(card, "Joker", context.area)
@@ -2890,6 +2896,7 @@ G.FUNCS.pointer_apply = function()
 		end
 		if
 			G.P_CENTERS[current_card].set == "Booster"
+			and G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack"
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
 			and G.STATE ~= G.STATES.STANDARD_PACK

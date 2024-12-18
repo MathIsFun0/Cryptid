@@ -469,3 +469,20 @@ payload = '''
 if G.GAME.oldbpfactor then G.GAME.oldbpfactor = math.max(G.GAME.oldbpfactor - G.GAME.oldbpfactor/8, 1) end
 '''
 match_indent = true
+
+# Make Loopy reset here so it retriggers everything before resetting regardless of position
+# TODO make Old Blueprint self destruct check happen here also so it can properly copy end of round effects
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''if G.GAME.round_resets.temp_reroll_cost then G.GAME.round_resets.temp_reroll_cost = nil; calculate_reroll_cost(true) end'''
+position = "after"
+payload = '''
+for _, v in pairs(find_joker("cry-loopy")) do
+	if v.ability.extra.retrigger ~= 0 then 
+		v.ability.extra.retrigger = 0
+		card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize("k_reset"), colour = G.C.GREEN})
+	end
+end
+'''
+match_indent = true

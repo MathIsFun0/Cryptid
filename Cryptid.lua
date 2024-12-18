@@ -5,8 +5,8 @@
 --- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1103a]
---- VERSION: 0.5.2~1115a
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1216c]
+--- VERSION: 0.5.2~1216a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -1887,6 +1887,8 @@ end
 --Unrelated but kind of related side note: this prevents top gear from showing up in collection, not sure what's up with that
 --Is it due to how TWEWJ is Coded? Is it an issue with Steamodded itself? Might be worth looking into, just sayin
 
+--Ok it's definitely something with steamodded
+
 if (SMODS.Mods["TWEWY"] or {}).can_load then
 	SMODS.Joker:take_ownership('twewy_topGear', {
 		name = "Cry-topGear",
@@ -2234,7 +2236,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		cry_misprintize(card)
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
-		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
 		if card.ability.name ~= "cry-meteor"
@@ -2987,10 +2989,10 @@ for i = 1, #jokers do
 	Cryptid.food[#Cryptid.food+1] = jokers[i]
 end
 function Cryptid.get_food(seed)
-    local food_keys = {}
-    for k, v in pairs(Cryptid.food) do
-        if not G.GAME.banned_keys[v] then
-            table.insert(food_keys, v)
+    local food_keys = {}  
+    for k, v in pairs(Cryptid.food) do  
+        if not G.GAME.banned_keys[v] and G.P_CENTERS[v] then
+            table.insert(food_keys, v)  
         end
     end
     if #food_keys <= 0 then
@@ -3118,6 +3120,16 @@ if (SMODS.Mods["malverk"] or {}).can_load then
         		}
     		}
 	}
+end
+--Make Ortalab's Locked jokers not show up on Deck of Equilibrium and Antimatter Deck
+if (SMODS.Mods["ortalab"] or {}).can_load then
+	for i = 1, 150 do
+		print(i)
+		SMODS.Joker:take_ownership('ortalab_temp_' .. i, {
+			name = "Cry-skibidi",
+			no_doe = true
+		})
+	end
 end
 SMODS.Atlas({
 	key = "modicon",

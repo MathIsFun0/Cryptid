@@ -777,7 +777,7 @@ local adversary = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					CARD:set_edition({negative = true})
+					if not CARD.edition then CARD:set_edition({negative = true}) end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
