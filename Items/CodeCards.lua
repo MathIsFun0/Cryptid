@@ -2851,6 +2851,7 @@ G.FUNCS.pointer_apply = function()
 		if
 			G.P_CENTERS[current_card].set == "Joker"
 			and G.P_CENTERS[current_card].unlocked
+			and not G.GAME.banned_keys[current_card]
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2859,13 +2860,21 @@ G.FUNCS.pointer_apply = function()
 			G.jokers:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].consumeable and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" then
+		if 
+			G.P_CENTERS[current_card].consumeable 
+			and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" 
+			and not G.GAME.banned_keys[current_card] 
+		then
 			local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
+		if 
+			G.P_CENTERS[current_card].set == "Voucher"
+			and G.P_CENTERS[current_card].unlocked 
+			and not G.GAME.banned_keys[current_card]
+		then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
@@ -2896,6 +2905,7 @@ G.FUNCS.pointer_apply = function()
 		end
 		if
 			G.P_CENTERS[current_card].set == "Booster"
+			and not G.GAME.banned_keys[current_card]
 			and G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack"
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
@@ -2929,7 +2939,11 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] then
+	if 
+		current_card 
+		and not G.P_CENTERS[current_card]
+		and not G.GAME.banned_keys[current_card]
+	then
 		local created = false
 		local t = Tag(current_card, nil, "Big")
 		add_tag(t)
@@ -2964,7 +2978,7 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] then
+	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] and not G.GAME.banned_keys[current_card] then
 		local created = false
 		if not G.GAME.blind or (G.GAME.blind.name == "" or not G.GAME.blind.blind_set) then
 			--from debugplus

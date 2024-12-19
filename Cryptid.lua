@@ -1932,7 +1932,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		ps = predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
