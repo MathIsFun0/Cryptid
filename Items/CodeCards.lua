@@ -2488,15 +2488,24 @@ G.FUNCS.class_apply = function()
 				}))
 			end
 		elseif enh_suffix == "null" then
+			local destroyed_cards = {}
 			check_for_unlock({ type = "cheat_used" })
 			for i = #G.hand.highlighted, 1, -1 do
 				local card = G.hand.highlighted[i]
-				if card.ability.name == "Glass Card" then
-					card:shatter()
-				else
-					card:start_dissolve(nil, i == #G.hand.highlighted)
+				if not card.ability.eternal then
+					destroyed_cards[#destroyed_cards + 1] = G.hand.highlighted[i]
+					if card.ability.name == "Glass Card" then
+						card:shatter()
+					else
+						card:start_dissolve(nil, i == #G.hand.highlighted)
+					end
 				end
 			end
+			if destroyed_cards[1] then 
+            			for j=1, #G.jokers.cards do
+                			eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = destroyed_cards})
+            			end
+        		end
 			G.CHOOSE_ENH:remove()
 			return
 		else
