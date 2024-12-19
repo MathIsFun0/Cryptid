@@ -471,7 +471,7 @@ if G.GAME.oldbpfactor then G.GAME.oldbpfactor = math.max(G.GAME.oldbpfactor - G.
 match_indent = true
 
 # Make Loopy reset here so it retriggers everything before resetting regardless of position
-# TODO make Old Blueprint self destruct check happen here also so it can properly copy end of round effects
+# Makes Old Blueprint self-destruct after triggering other end of round effects
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
