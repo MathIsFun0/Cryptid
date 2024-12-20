@@ -691,7 +691,7 @@ return {
 			or center.name == "Chicot"
 			or center.name == "Perkeo"
 			then 
-				self.immutable = true 
+				self.config.center.immutable = true
 			end
 			
 			if center and center.set == "Enhanced" then

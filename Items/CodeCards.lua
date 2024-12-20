@@ -142,7 +142,7 @@ local console = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_code_normal_1", specific_vars = { 1, 2 } }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			tag:yep("+", G.C.SECONDARY_SET.Code, function()
 				local key = "p_cry_code_normal_" .. math.random(1, 2)
@@ -1074,7 +1074,7 @@ local rework_tag = {
 	config = { type = "store_joker_create" },
 	key = "rework",
 	ability = { rework_edition = nil, rework_key = nil },
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
 			create_shop_card_ui(card, "Joker", context.area)
@@ -2488,15 +2488,24 @@ G.FUNCS.class_apply = function()
 				}))
 			end
 		elseif enh_suffix == "null" then
+			local destroyed_cards = {}
 			check_for_unlock({ type = "cheat_used" })
 			for i = #G.hand.highlighted, 1, -1 do
 				local card = G.hand.highlighted[i]
-				if card.ability.name == "Glass Card" then
-					card:shatter()
-				else
-					card:start_dissolve(nil, i == #G.hand.highlighted)
+				if not card.ability.eternal then
+					destroyed_cards[#destroyed_cards + 1] = G.hand.highlighted[i]
+					if card.ability.name == "Glass Card" then
+						card:shatter()
+					else
+						card:start_dissolve(nil, i == #G.hand.highlighted)
+					end
 				end
 			end
+			if destroyed_cards[1] then 
+            			for j=1, #G.jokers.cards do
+                			eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = destroyed_cards})
+            			end
+        		end
 			G.CHOOSE_ENH:remove()
 			return
 		else
@@ -2851,6 +2860,7 @@ G.FUNCS.pointer_apply = function()
 		if
 			G.P_CENTERS[current_card].set == "Joker"
 			and G.P_CENTERS[current_card].unlocked
+			and not G.GAME.banned_keys[current_card]
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2859,13 +2869,21 @@ G.FUNCS.pointer_apply = function()
 			G.jokers:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].consumeable and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" then
+		if 
+			G.P_CENTERS[current_card].consumeable 
+			and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" 
+			and not G.GAME.banned_keys[current_card] 
+		then
 			local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
+		if 
+			G.P_CENTERS[current_card].set == "Voucher"
+			and G.P_CENTERS[current_card].unlocked 
+			and not G.GAME.banned_keys[current_card]
+		then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
@@ -2896,6 +2914,8 @@ G.FUNCS.pointer_apply = function()
 		end
 		if
 			G.P_CENTERS[current_card].set == "Booster"
+			and not G.GAME.banned_keys[current_card]
+			and G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack"
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
 			and G.STATE ~= G.STATES.STANDARD_PACK
@@ -2928,7 +2948,11 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] then
+	if 
+		current_card 
+		and not G.P_CENTERS[current_card]
+		and not G.GAME.banned_keys[current_card]
+	then
 		local created = false
 		local t = Tag(current_card, nil, "Big")
 		add_tag(t)
@@ -2963,7 +2987,7 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] then
+	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] and not G.GAME.banned_keys[current_card] then
 		local created = false
 		if not G.GAME.blind or (G.GAME.blind.name == "" or not G.GAME.blind.blind_set) then
 			--from debugplus

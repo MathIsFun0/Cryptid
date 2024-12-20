@@ -142,11 +142,9 @@ local antimatter = {
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
 			--Glowing Deck
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.name ~= "Ace Aequilibrium" then --Same Reason as Gemini/Multiply
-					cry_with_deck_effects(G.jokers.cards[i], function(card)
-						cry_misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
-					end)
-				end
+				cry_with_deck_effects(G.jokers.cards[i], function(card)
+					cry_misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+				end)
 			end
 			--Legendary Deck
 			if G.jokers then
@@ -180,7 +178,32 @@ local antimatter = {
 					)
 				end
 			end
+			--Anaglyph Deck
+			G.E_MANAGER:add_event(Event({
+            			func = (function()
+                			add_tag(Tag('tag_double'))
+                			play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
+                			play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+                			return true
+            			end)
+        		}))
 		end
+	end,
+	apply = function(self)
+		--Checkered Deck
+		G.E_MANAGER:add_event(Event({
+           		func = function()
+                		for k, v in pairs(G.playing_cards) do
+                    			if v.base.suit == 'Clubs' then 
+                        			v:change_suit('Spades')
+                    			end
+                    			if v.base.suit == 'Diamonds' then 
+			                	v:change_suit('Hearts')
+                    			end
+                		end
+            		return true
+            		end
+        	}))
 	end,
 	atlas = "blank",
 }

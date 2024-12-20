@@ -996,7 +996,7 @@ local blessing = {
 			func = function()
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
-					local forced_key = get_random_consumable("blessing")
+					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
 					_card:add_to_deck()
 					G.consumeables:emplace(_card)

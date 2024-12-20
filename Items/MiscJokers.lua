@@ -5355,7 +5355,7 @@ local oldblueprint = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if
-			context.end_of_round
+			context.end_of_round2
 			and not context.individual
 			and not context.repetition
 			and not context.blueprint
@@ -5384,15 +5384,23 @@ local oldblueprint = {
 						return true
 					end,
 				}))
-				return {
-					message = { localize("k_extinct_ex") },
-					colour = G.C.FILTER,
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
+				)
 			else
-				return {
-					message = { localize("k_safe_ex") },
-					colour = G.C.FILTER,
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_safe_ex"), colour = G.C.FILTER }
+				)
 			end
 		end
 		local other_joker = nil
