@@ -66,14 +66,14 @@ local iterum = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_mult, center.ability.extra.repetitions } }
+		return { vars = { center.ability.extra.x_mult, math.min(40, center.ability.extra.repetitions) } }
 	end,
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra.repetitions,
+					repetitions = math.min(40, card.ability.extra.repetitions),
 					card = card,
 				}
 			end
