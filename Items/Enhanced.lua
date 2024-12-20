@@ -82,7 +82,7 @@ local typed_decks = {
 	{ "cry", "Sticker", nil, "Banana", "banana", nil, "atlasenhanced", 5, 4, "" },
 }
 
-if cry_minvasion then -- Crashes the game if M jokers are disabled if we don't add this separately
+if Cryptid.enabled["M Jokers"] then -- Crashes the game if M jokers are disabled if we don't add this separately
 	table.insert(typed_decks, 31, { "cry", "Edition", "Meck", "Jolly", "m", nil, nil, 5, 2, "" })
 end
 
@@ -182,7 +182,7 @@ if (SMODS.Mods["jen"] or {}).can_load then
 	}
 
 	for i = 1, #jen_additions do
-		typed_decks[#typed_decks + 1] = jen_additions[i]
+		-- typed_decks[#typed_decks + 1] = jen_additions[i]
 	end
 end
 --[[
