@@ -26,14 +26,14 @@ local antimatter = {
 		extra_hand_bonus = 2,
 		extra_discard_bonus = 1, --Green Deck
 		joker_slot = 1, --Black Deck: 1
-		--vouchers = {
-			--"v_crystal_ball",
-			--"v_telescope",
-			--"v_tarot_merchant",
-			--"v_planet_merchant",
-			--"v_overstock_norm",
-			--"v_overstock_plus",
-		--}, --Vouchers from all decks
+		vouchers = {
+			"v_crystal_ball",
+			"v_telescope",
+			"v_tarot_merchant",
+			"v_planet_merchant",
+			"v_overstock_norm",
+			"v_overstock_plus",
+		}, --Vouchers from all decks
 		consumables = { "c_fool", "c_fool", "c_hex" }, --Consumables from all decks
 		spectral_rate = 2, --Ghost Deck
 		remove_faces = true, --Abandoned Deck
