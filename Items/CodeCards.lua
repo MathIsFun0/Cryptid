@@ -2915,7 +2915,7 @@ G.FUNCS.pointer_apply = function()
 		if
 			G.P_CENTERS[current_card].set == "Booster"
 			and not G.GAME.banned_keys[current_card]
-			and G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack"
+			and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card("j_jen_p03") ~= 0)
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
 			and G.STATE ~= G.STATES.STANDARD_PACK
