@@ -23,4 +23,5 @@ return {
 	["PokerHands"] = true,
 	["Spooky"] = true,
 	["Menu"] = true,
+	["Clean"] = true
 }
