@@ -1022,18 +1022,20 @@ local seal_the_deal = {
 		if Cryptid.enabled["Misc."] then sealtable[#sealtable + 1] = "azure" end
 		if Cryptid.enabled["Code Cards"] then sealtable[#sealtable + 1] = "green" end
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed('abc'))
-		--Gold (ULTRA RARE!!!!!!!!)
-		if pseudorandom('xyz') <= 0.000001 and not (card.area and card.area.config.collection) then
-			card.children.center:set_sprite_pos({x = 6, y = 4})
-		--Others
-		elseif card.ability.extra == "red" then
-			card.children.center:set_sprite_pos({x = 6, y = 0})
-		elseif card.ability.extra == "azure" then
-			card.children.center:set_sprite_pos({x = 6, y = 2})
-		elseif card.ability.extra == "purple" then
-			card.children.center:set_sprite_pos({x = 6, y = 3})
-		elseif card.ability.extra == "green" then
-			card.children.center:set_sprite_pos({x = 6, y = 1})
+		if G.P_CENTERS["j_cry_seal_the_deal"].discovered then
+			--Gold (ULTRA RARE!!!!!!!!)
+			if pseudorandom('xyz') <= 0.000001 and not (card.area and card.area.config.collection) then
+				card.children.center:set_sprite_pos({x = 6, y = 4})
+			--Others
+			elseif card.ability.extra == "red" then
+				card.children.center:set_sprite_pos({x = 6, y = 0})
+			elseif card.ability.extra == "azure" then
+				card.children.center:set_sprite_pos({x = 6, y = 2})
+			elseif card.ability.extra == "purple" then
+				card.children.center:set_sprite_pos({x = 6, y = 3})
+			elseif card.ability.extra == "green" then
+				card.children.center:set_sprite_pos({x = 6, y = 1})
+			end
 		end
 	end,
 	cry_credits = {
