@@ -2494,6 +2494,7 @@ function cry_sanity_check(val)
 	return val
 end
 function cry_misprintize(card, override, force_reset, stack)
+	if Card.no(card, "immutable", true) then force_reset = true end
 	--infinifusion compat
 	if card.infinifusion then
 		if card.config.center == card.infinifusion_center or card.config.center.key == 'j_infus_fused' then
@@ -2505,7 +2506,7 @@ function cry_misprintize(card, override, force_reset, stack)
 	if
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
-		and not stack or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
+		and not stack or not Card.no(card, "immutable", true)
 	then
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
