@@ -6,7 +6,7 @@
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1216c]
---- VERSION: 0.5.3
+--- VERSION: 0.5.3a
 --- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
 
 ----------------------------------------------
@@ -609,7 +609,7 @@ end
 -- deal with Rigged and Fragile when scoring a playing card
 local ec = eval_card
 function eval_card(card, context)
-	if card.will_shatter then
+	if not card or card.will_shatter then
 		return
 	end
     -- Store old probability for later reference
@@ -3271,7 +3271,7 @@ SMODS.Sticker:take_ownership("rental", {
 local ec = eval_card
 function eval_card(card, context)
 	local ret = ec(card, context)
-	if card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck then
+	if card and card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck then
 		for k, v in pairs(SMODS.Stickers) do
 			if card.ability[k] and v.calculate and type(v.calculate) == "function" then
 				context.from_playing_card = true

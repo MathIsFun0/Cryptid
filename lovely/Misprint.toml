@@ -291,7 +291,8 @@ payload = '''
 G.GAME.cry_voucher_centers = {}
 for k, v in pairs(G.P_CENTERS) do
 	if v.set == 'Voucher' then
-		G.GAME.cry_voucher_centers[k] = v
+		G.GAME.cry_voucher_centers[k] = {config = {}}
+		G.GAME.cry_voucher_centers[k].config = copy_table(v.config)
 	end
 end
 '''
