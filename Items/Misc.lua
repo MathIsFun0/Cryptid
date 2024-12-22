@@ -1119,11 +1119,18 @@ local meld = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if #G.jokers.highlighted
-				+ #G.hand.highlighted
-				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
-			== 1 then
-			if #G.jokers.highlighted == 1 and Card.no(G.jokers.highlighted[1], "dbl") then return false end
+		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
+			if 
+				#G.jokers.highlighted == 1 and 
+				(
+					Card.no(G.jokers.highlighted[1], "dbl") 
+					or G.jokers.highlighted[1].edition
+				) 
+			then return false end
+			if 
+				#G.hand.highlighted == 1 
+				and G.hand.highlighted[1].edition 
+			then return false end
 			return true
 		end
 	end,
