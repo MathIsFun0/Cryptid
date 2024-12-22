@@ -969,10 +969,10 @@ local eclipse = {
 	pos = { x = 4, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
-	loc_vars = function(self, info_queue)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
 
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
 local blessing = {
