@@ -587,7 +587,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 5624
+		local old = GLOBAL_cry_member_count or 8830
         -- get the HTTPS thread's value for Cryptid members
         local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
@@ -603,7 +603,7 @@ function update_cry_member_count()
 		end
 	else
         -- Use a fallback value if HTTPS is disabled (you all are awesome)
-		GLOBAL_cry_member_count = 5624
+		GLOBAL_cry_member_count = 8830
 	end
 end
 -- deal with Rigged and Fragile when scoring a playing card

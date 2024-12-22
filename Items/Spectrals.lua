@@ -678,10 +678,21 @@ local ritual = {
 	cost = 5,
 	atlas = "atlasnotjokers",
 	pos = { x = 5, y = 1 },
+	can_use = function(self, card)
+		--TODO: CCD card compat
+		if #G.hand.highlighted > card.ability.max_highlighted then return false end
+		for _, v in ipairs(G.hand.highlighted) do
+			if v.edition then
+				return false
+			end
+		end
+		return true
+	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
+			if highlighted ~= card then
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")
@@ -717,6 +728,7 @@ local ritual = {
 					return true
 				end,
 			}))
+			end
 		end
 	end,
 }
