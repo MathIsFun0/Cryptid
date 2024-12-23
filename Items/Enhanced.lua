@@ -436,6 +436,7 @@ return {
 			or center.name == "Burnt Joker"
 			or center.name == "Chicot"
 			or center.name == "Perkeo"
+			or center.set == "Booster"
 			then 
 				self.config.center.immutable = true
 			end
