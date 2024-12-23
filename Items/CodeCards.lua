@@ -3232,6 +3232,7 @@ G.FUNCS.pointer_apply = function()
 					_card:start_materialize()
 					G.play:emplace(_card)
 					table.insert(G.playing_cards, _card)
+					playing_card_joker_effects({ _card })
 				return true
                     	end}))
 			G.E_MANAGER:add_event(Event({
