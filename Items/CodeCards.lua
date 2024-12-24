@@ -457,6 +457,7 @@ local hook = {
 	cost = 4,
 	atlas = "code",
 	order = 14,
+	no_pool_flag = "beta_deck",
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 2
 	end,
@@ -1014,6 +1015,7 @@ local rework = {
 	name = "cry-Rework",
 	atlas = "code",
 	order = 25,
+	no_pool_flag = "beta_deck",
 	pos = {
 		x = 3,
 		y = 3,
