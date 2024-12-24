@@ -699,7 +699,7 @@ local aequilibrium = {
 	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
-	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
+	soul_pos = { x = 6, y = 0, extra = { x = 8, y = 0 } },
 	atlas = "atlasexotic",
 	cost = 50,
 	order = 512,
@@ -732,6 +732,7 @@ local aequilibrium = {
 			return nil, true
 		end
 	end,
+	--[[
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
 			if card.ability.extra.card then
@@ -801,6 +802,7 @@ local aequilibrium = {
 			card.ability.extra.card:start_dissolve()
 		end
 	end,
+	]]--
 	cry_credits = {
 		idea = {"Elial2"},
 		art = {"Elial2"},
