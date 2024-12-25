@@ -2274,7 +2274,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
 
 	--Debuff jokers if certain boss blinds are active
-	if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
+	if _type == "Joker" and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
 		if G.GAME.blind.name == "cry-box"
 		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_box"] == true) then
 			if card.config.center.rarity == 1 and not card.debuff then
