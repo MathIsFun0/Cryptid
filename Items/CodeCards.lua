@@ -896,10 +896,31 @@ local machinecode = {
 		return true
 	end,
 	can_bulk_use = true,
+	loc_vars = function(self, info_queue, center)
+		return {  
+			main_start = {
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+       				randomchar(codechars6),
+			}
+		} 
+	end,
 	use = function(self, card, area, copier)
 		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_machinecode")
 		card:set_edition({ cry_glitched = true })
 		card:add_to_deck()
+		G.consumeables:emplace(card)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_machinecode")
+		card:set_edition({ cry_glitched = true })
+		card:add_to_deck()
+		if Incantation then
+			card:setQty(number)
+		end
 		G.consumeables:emplace(card)
 	end,
 }

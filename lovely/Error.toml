@@ -35,23 +35,3 @@ match_indent = true
 # position = "at"
 # payload = "local rarity = _rarity or pseudorandom(_G[gcparea == 'ERROR' and 'predict_pseudoseed' or 'pseudoseed']('rarity'..G.GAME.round_resets.ante..(_append or '')))"
 # match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "local main_start, main_end = nil,nil"
-position = "after"
-payload = '''
-if self.ability.name == 'cry-Machine Code' then
-    --"Create a random // glitched consumable"
-    main_start = {
-        randomchar(codechars6),
-        randomchar(codechars6),
-        randomchar(codechars6),
-        randomchar(codechars6),
-        randomchar(codechars6),
-        randomchar(codechars6),
-    }
-end
-'''
-match_indent = true
