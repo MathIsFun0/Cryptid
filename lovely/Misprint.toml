@@ -461,7 +461,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and'''
 position = "at"
 payload = '''
-if ((G.GAME.dollars-G.GAME.bankrupt_at) - cry_cheapest_boss_reroll() >= 0) and
+if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(cry_cheapest_boss_reroll()) >= to_big(0)) and
 '''
 match_indent = true
 
