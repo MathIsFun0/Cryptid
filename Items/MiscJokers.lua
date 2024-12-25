@@ -350,36 +350,55 @@ local whip = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
+			local two = false
+			local seven = false
+			local twosuits = {}
+			local sevensuits = {}
 			for i = 1, #context.full_hand do
-				if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
-					for j = 1, #context.full_hand do
-						if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
-							--Different suits
-							for k, v in pairs(SMODS.Suits) do
-								if
-									context.full_hand[i]:is_suit(k, nil, true)
-									and context.full_hand[j]:is_suit(k, nil, true)
-								then
-									return
+				if context.full_hand[i]:get_id() == 2 or context.full_hand[i]:get_id() == 7 then
+					if context.full_hand[i]:get_id() == 2 then
+						if not two then two = true end
+						for k, v in pairs(SMODS.Suits) do
+							if context.full_hand[i]:is_suit(k, nil, true) then
+								local contained = false
+								for i = 1, #twosuits do
+									if k == twosuits[i] then contained = true end
 								end
+								if not contained then twosuits[#twosuits + 1] = k end
 							end
-							card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
-							card_eval_status_text(
-								card,
-								"extra",
-								nil,
-								nil,
-								nil,
-								{
-									message = localize({
-										type = "variable",
-										key = "a_xmult",
-										vars = { card.ability.extra.x_mult },
-									}),
-								}
-							)
-							return nil, true
 						end
+					else
+						if not seven then seven = true end
+						for k, v in pairs(SMODS.Suits) do
+							if context.full_hand[i]:is_suit(k, nil, true) then
+								local contained = false
+								for i = 1, #sevensuits do
+									if k == sevensuits[i] then contained = true end
+								end
+								if not contained then sevensuits[#sevensuits + 1] = k end
+							end
+						end
+					end
+				end
+				if two and seven then
+					if (#twosuits > 1 or #sevensuits > 1)
+					or (#twosuits == 1 and #sevensuits == 1 and twosuits[1] ~= sevensuits[1]) then
+						card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
+						card_eval_status_text(
+							card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{
+								message = localize({
+								type = "variable",
+								key = "a_xmult",
+								vars = { card.ability.extra.x_mult },
+								}),
+							}
+						)
+						return nil, true
 					end
 				end
 			end
