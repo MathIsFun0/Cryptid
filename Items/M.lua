@@ -1473,13 +1473,15 @@ return {
 			local vc = ret_items[i].calculate
 			ret_items[i].calculate = function(self, card, context)
 				local ret, trig = vc(self, card, context)
-				local reps = get_m_retriggers(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
-					return {
-						message = localize("k_again_ex"),
-						repetitions = reps + (ret and ret.repetitions or 0),
-						card = card,
-					}
+				if context.retrigger_joker_check and context.other_card == card then
+					local reps = get_m_retriggers(self, card, context)
+					if reps > 0 then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = reps + (ret and ret.repetitions or 0),
+							card = card,
+						}
+					end
 				end
 				return ret, trig
 			end
