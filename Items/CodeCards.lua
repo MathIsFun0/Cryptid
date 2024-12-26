@@ -909,19 +909,36 @@ local machinecode = {
 		} 
 	end,
 	use = function(self, card, area, copier)
-		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_machinecode")
+		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, get_random_consumable("cry_machinecode", nil, "c_cry_machinecode").key, c_cry_machinecode)
 		card:set_edition({ cry_glitched = true })
 		card:add_to_deck()
 		G.consumeables:emplace(card)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_machinecode")
-		card:set_edition({ cry_glitched = true })
-		card:add_to_deck()
-		if Incantation then
-			card:setQty(number)
+		local a = {}
+		local b
+		for i = 1, number do
+			b = get_random_consumable("cry_machinecode", nil, "c_cry_machinecode")
+			a[b] = (a[b] or 0) + 1
 		end
-		G.consumeables:emplace(card)
+		for k, v in pairs(a) do
+			local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, k.key)
+			card:set_edition({ cry_glitched = true })
+			card:add_to_deck()
+			if Incantation then
+				card:setQty(v)
+			end
+			G.consumeables:emplace(card)
+		end
+		G.E_MANAGER:add_event(
+			Event({
+				trigger = "after",
+				func = function()
+					a = nil
+					return true
+				end,
+			})
+		)
 	end,
 }
 local run = {
