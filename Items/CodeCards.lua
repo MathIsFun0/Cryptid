@@ -1322,7 +1322,7 @@ local ctrl_v = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local card = copy_card(G.consumeables.highlighted[1])
-					if card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
+					if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 					card:add_to_deck()
 					if Incantation then
 						card:setQty(1)
@@ -1342,7 +1342,6 @@ local ctrl_v = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(G.hand.highlighted[1])
-						if card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 						card:add_to_deck()
 						G.hand:emplace(card)
 						return true
@@ -1353,6 +1352,7 @@ local ctrl_v = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(G.consumeables.highlighted[1])
+						if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 						card:add_to_deck()
 						if Incantation then
 							card:setQty(1)
@@ -2917,7 +2917,7 @@ G.FUNCS.pointer_apply = function()
 			and not G.GAME.banned_keys[current_card] 
 		then
 			local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
-			if card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
+			if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			created = true
