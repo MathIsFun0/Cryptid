@@ -1342,6 +1342,7 @@ local ctrl_v = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(G.hand.highlighted[1])
+						if card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 						card:add_to_deck()
 						G.hand:emplace(card)
 						return true
@@ -3604,8 +3605,10 @@ local code_cards = {
 	--patch,
 	ctrl_v,
 	inst,
-	encoded,
 }
+if Cryptid.enabled["Misc. Decks"] then
+	code_cards[#code_cards + 1] = encoded
+end
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
 end
