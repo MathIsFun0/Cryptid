@@ -28,6 +28,9 @@ local gateway = {
 				delay = 0.75,
 				func = function()
 					for k, v in pairs(deletable_jokers) do
+						if v.config.center.rarity == "cry_exotic" then
+							check_for_unlock({ type = "what_have_you_done" })
+						end
 						v:start_dissolve(nil, _first_dissolve)
 						_first_dissolve = true
 					end
@@ -63,14 +66,14 @@ local iterum = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_mult, center.ability.extra.repetitions } }
+		return { vars = { center.ability.extra.x_mult, math.min(40, center.ability.extra.repetitions) } }
 	end,
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra.repetitions,
+					repetitions = math.min(40, card.ability.extra.repetitions),
 					card = card,
 				}
 			end
@@ -696,7 +699,7 @@ local aequilibrium = {
 	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
-	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
+	soul_pos = { x = 6, y = 0, extra = { x = 8, y = 0 } },
 	atlas = "atlasexotic",
 	cost = 50,
 	order = 512,
@@ -729,6 +732,7 @@ local aequilibrium = {
 			return nil, true
 		end
 	end,
+	--[[
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
 			if card.ability.extra.card then
@@ -798,6 +802,7 @@ local aequilibrium = {
 			card.ability.extra.card:start_dissolve()
 		end
 	end,
+	]]--
 	cry_credits = {
 		idea = {"Elial2"},
 		art = {"Elial2"},

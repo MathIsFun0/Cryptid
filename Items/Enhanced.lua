@@ -82,263 +82,9 @@ local typed_decks = {
 	{ "cry", "Sticker", nil, "Banana", "banana", nil, "atlasenhanced", 5, 4, "" },
 }
 
-if cry_minvasion then -- Crashes the game if M jokers are disabled if we don't add this separately
+if Cryptid.enabled["M Jokers"] then -- Crashes the game if M jokers are disabled if we don't add this separately
 	table.insert(typed_decks, 31, { "cry", "Edition", "Meck", "Jolly", "m", nil, nil, 5, 2, "" })
 end
-
-if (SMODS.Mods["jen"] or {}).can_load then
-	local jen_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{ "jen", "Edition", nil, "Prismatic", "prismatic", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Ionised", "ionized", nil, nil, 5, 2, "" }, -- ionised vs ionized, jen why
-		{
-			"jen",
-			"Edition",
-			"Misprint Deck*",
-			"Misprint",
-			"misprint",
-			nil,
-			nil,
-			5,
-			2,
-			"*no, not that one",
-		},
-		{ "jen", "Edition", nil, "Blaze", "blaze", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Wavy", "wavy", nil, nil, 5, 2, "" },
-		{
-			"jen",
-			"Edition",
-			"Encoded Deck*",
-			"Encoded",
-			"encoded",
-			nil,
-			nil,
-			5,
-			2,
-			"*no, not that one",
-		},
-		{ "jen", "Edition", nil, "Diplopia", "diplopia", nil, nil, 5, 2, "" }, -- Works, but shader does nothing in pack menu
-		{ "jen", "Edition", nil, "Sequin", "sequin", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Laminated", "laminated", nil, nil, 5, 2, "", true },
-		{ "jen", "Edition", nil, "Crystal", "crystal", "laminated", nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Sepia", "sepia", nil, nil, 5, 2, "", true },
-		{ "jen", "Edition", nil, "Ink", "ink", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Polygloss", "polygloss", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Gilded", "gilded", nil, nil, 5, 2, "", true },
-		{ "jen", "Edition", nil, "Chromatic", "chromatic", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Watercoloured", "watered", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Dithered", "dithered", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Sharpened", "sharpened", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Reversed", "reversed", nil, nil, 5, 2, "" },
-		{
-			"jen",
-			"Edition",
-			nil,
-			"Missing Textures",
-			"missingtexture",
-			nil,
-			nil,
-			5,
-			2,
-			"Alright, who forgot to install Counter-Strike: Source?",
-		},
-		{ "jen", "Edition", nil, "Bloodfoil", "bloodfoil", nil, nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Blood", "blood", "cosmic", nil, 5, 2, "" },
-		{ "jen", "Edition", nil, "Moire", "moire", nil, nil, 5, 2, "" },
-
-		{ "jen", "Enhancement", nil, "Astro", "astro", nil, "jen_jenenhance", 0, 0, "" },
-		--		{'jen', 			'Enhancement',	nil,						'Multichip',			'xchip',			nil,				'jen_jenenhance',	1,		0,		''},
-		--		{'jen', 			'Enhancement',	nil,						'Powerchip',			'echip',			nil,				'jen_jenenhance',	2,		0,		''},
-		--		{'jen', 			'Enhancement',	nil,						'Multimult',			'xmult',			nil,				'jen_jenenhance',	3,		0,		''},
-		--		{'jen', 			'Enhancement',	nil,						'Powermult',			'emult',			nil,				'jen_jenenhance',	5,		0,		''},
-		--		{'jen', 			'Enhancement',	nil,						'Supercharged',			'power',			nil,				'jen_jenenhance',	4,		0,		''},
-		{
-			"jen",
-			"Enhancement",
-			nil,
-			"Surreal",
-			"surreal",
-			nil,
-			"jen_jenenhance",
-			6,
-			1,
-			"Wait, isn't this just Infinite Deck?",
-		},
-		{ "jen", "Enhancement", nil, "Fortune", "fortune", nil, "jen_jenenhance", 6, 0, "" },
-		{ "jen", "Enhancement", nil, "Osmium", "osmium", nil, "jen_jenenhance", 8, 0, "" },
-		{ "jen", "Enhancement", nil, "Fizzy", "fizzy", nil, "jen_jenenhance", 8, 1, "" },
-		{ "jen", "Enhancement", nil, "Blue", "blue", nil, "jen_jenenhance", 9, 0, "" },
-		{ "jen", "Enhancement", nil, "Handy", "handy", nil, "jen_jenenhance", 1, 1, "" },
-		{ "jen", "Enhancement", nil, "Tossy", "tossy", nil, "jen_jenenhance", 3, 1, "" },
-
-		--		{'jen', 			'Enhancement',	nil,						'Canio\'s',				'canios',			nil,				nil,				5,		2,		''},	-- Not yet implemented
-		--		{'jen', 			'Enhancement',	nil,						'Triboulet\'s',			'triboulets',		nil,				nil,				5,		2,		''},	-- Not yet implemented
-	}
-
-	for i = 1, #jen_additions do
-		typed_decks[#typed_decks + 1] = jen_additions[i]
-	end
-end
---[[
-if (SMODS.Mods["SnowMods"] or {}).can_load then
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'snow',			'Enhancement',	nil,						'Platinum',				'platinum_card',	nil,				'snow_Enhancers',	0,		0,		''},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["BetmmaVouchers"] or {}).can_load then
-	--todo: check if editions are enabled
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'betm_vouchers',	'Edition',		nil,						'Phantom',				'phantom',			nil,			nil,				5,		2,		'', no_prefix = true},
-		{'betm_vouchers',	'Edition',		nil,						'Tentacle',				'tentacle',			nil,			nil,				5,		2,		'', no_prefix = true},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["Bunco"] or {}).can_load then
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'bunc',			'Edition',		nil,						'Glitter',				'glitter',			nil,				nil,				5,		2,		''},
-		{'bunc',			'Edition',		nil,						'Fluorescent',			'fluorescent',		nil,				nil,				5,		2,		''},
-		{'bunc',			'Sticker',		nil,						'Scattering',			'scattering',		nil,				nil,				5,		2,		''},
-		{'bunc',			'Sticker',		nil,						'Hindered',				'hindered',			nil,				nil,				5,		2,		''},
-		{'bunc',			'Sticker',		nil,						'Reactive',				'reactive',			nil,				nil,				5,		2,		''},
-		{'bunc',			'Suit',			'Deck of the Sky',			'Fleurons',				nil,				nil,				'bunc_bunco_tarots',0,		0,		''},
-		{'bunc',			'Suit',			'Deck of the Abyss',		'Halberds',				nil,				nil,				'bunc_bunco_tarots',1,		0,		''},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["ceres"] or {}).can_load then
-	local mod_additions = {}
-	if Ceres.SETTINGS.card_effects.enhancements.enabled and Ceres.SETTINGS.card_effects.enhancements.illusion.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Enhancement',	nil,						'Illusion',				'illusion',			nil,				'cere_enhancement_atlas',	0,		0,		''}
-	end
-	if Ceres.SETTINGS.card_effects.enhancements.enabled and Ceres.SETTINGS.card_effects.enhancements.cobalt.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Enhancement',	nil,						'Cobalt',				'cobalt',			nil,				'cere_enhancement_atlas',	1,		0,		''}
-	end
-	if Ceres.SETTINGS.card_effects.editions.enabled and Ceres.SETTINGS.card_effects.editions.colourblind.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Edition',		nil,						'Colourblind',			'colourblind',		nil,				nil,				5,		2,		''}
-	end
-	if Ceres.SETTINGS.card_effects.editions.enabled and Ceres.SETTINGS.card_effects.editions.sneaky.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Edition',		nil,						'Sneaky',				'sneaky',			nil,				nil,				5,		2,		''}
-	end
-	if Ceres.SETTINGS.suits.enabled and Ceres.SETTINGS.suits.leaves.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Suit',			'Deck of the Reversed Sun',	'Leaves',				'fall',				nil,				'cere_reversed_tarots',		9,		1,		''}
-	end
-	if Ceres.SETTINGS.suits.enabled and Ceres.SETTINGS.suits.crowns.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Suit',			'Deck of the Reversed World','Crowns',				'french',			nil,				'cere_reversed_tarots',		1,		2,		''}
-	end
-	if Ceres.SETTINGS.suits.enabled and Ceres.SETTINGS.suits.coins.enabled then
-		mod_additions[#mod_additions+1] = {'cere',			'Suit',			'Deck of the Reversed Star','Coins',				'bill',				nil,				'cere_reversed_tarots',		7,		1,		''}
-	end
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["SixSuits"] or {}).can_load then
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'six',				'Suit',			'Deck of The Star?',		'Stars',				'eclipse',			nil,				'six_Tarot',		2,		1,		''},
-		{'six',				'Suit',			'Deck of The Moon?',		'Moons',				'void',				nil,				'six_Tarot',		1,		1,		''},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["InkAndColor"] or {}).can_load then
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'ink',				'Suit',			'Deck of The Blob',			'Inks',					'bleach',			nil,				'ink_Consumables',	1,		0,		''},
-		{'ink',				'Suit',			'Deck of The Paint',		'Colors',				'drain',			nil,				'ink_Consumables',	0,		0,		''},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["familiar"] or {}).can_load then
-	--note: Familiar added their Edition decks already
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'fam',				'Enhancement',	"The Bishop's Deck",		'Penalty',				'penalty',			nil,				'fam_Consumables',	5,		0,		''},
-		{'fam',				'Enhancement',	"The Queen's Deck",			'Div',					'div',				nil,				'fam_Consumables',	3,		0,		''},
-		{'fam',				'Enhancement',	"Humanity's Deck",			'Gilded',				'gilded',			nil,				'fam_Consumables',	5,		1,		''},
-		{'fam',				'Seal',			"Playback Deck",			'Maroon',				'maroon_seal',		nil,				'fam_Consumables',	1,		5,		''},
-		{'fam',				'Seal',			"Mesmer Deck",				'Sapphire',				'sapphire_seal',	nil,				'fam_Consumables',	3,		5,		''},
-		{'fam',				'Seal',			"Forge Deck",				'Gilded',				'gilded_seal',		nil,				'fam_Consumables',	3,		4,		''},
-		{'fam',				'Seal',			"Oracle Deck",				'Familiar',				'familiar_seal',	nil,				'fam_Consumables',	4,		5,		''},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
-if (SMODS.Mods["CBL"] or {}).can_load then
-	local mod_additions = {
-		--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-		--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-		--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-		--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-		--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-		--   				Suit                                   								on Suit decks
-
-		{'cruel',			'Sticker',		"Washed Deck",				'Wash',					'wash',				nil,				nil,				5,		2,		''},
-		{'cruel',			'Sticker',		"Overpriced Deck",			'Overpriced',			'overpriced',		nil,				nil,				5,		2,		''},
-	}
-	for i = 1, #mod_additions do
-		typed_decks[#typed_decks + 1] = mod_additions[i]
-	end
-end
---]]
---todo
--- When released: Ortalab, Sigil
 
 for i = 1, #typed_decks do
 	local deck = typed_decks[i]
@@ -646,6 +392,54 @@ return {
 		end
 		local sa = Card.set_ability
 		function Card:set_ability(center, y, z)
+			--adding immutable to cards because
+			-- A they are hardcoded and unaffected by misprintize but still have a description that changes because of it
+			-- B so they ignore misprintize in order to keep vanilla descripton accurate (ex hack shouldn't be able to trigger more than once)
+			-- C so Gemini doesn't say they are compatible when they are not
+			-- D Invisible Joker
+			
+			if center.name == "Fortune Teller" 
+			or center.name == "Shoot the Moon" 
+			or center.name == "Riff-raff" 
+			or center.name == "Business Card"
+			or center.name == "Chaos the Clown"
+			or center.name == "Dusk"
+			or center.name == "Mime"
+			or center.name == "Hack"
+			or center.name == "Sock and Buskin"
+			or center.name == "Invisible Joker"
+			or center.name == "Swashbuckler"
+			or center.name == "Smeared Joker"
+			or center.name == "Certificate"
+			or center.name == "Mr. Bones"
+			or center.name == "Diet Cola"
+			or center.name == "Luchador"
+			or center.name == "Midas Mask"
+			or center.name == "Shortcut"
+			or center.name == "Seance"
+			or center.name == "Superposition"
+			or center.name == "Sixth Sense"
+			or center.name == "DNA"
+			or center.name == "Splash"
+			or center.name == "Supernova"
+			or center.name == "Pareidolia"
+			or center.name == "Raised Fist"
+			or center.name == "Marble Joker"
+			or center.name == "Four Fingers"
+			or center.name == "Joker Stencil"
+			or center.name == "Showman"
+			or center.name == "Blueprint"
+			or center.name == "Oops! All 6s"
+			or center.name == "Brainstorm"
+			or center.name == "Cartomancer"
+			or center.name == "Astronomer"
+			or center.name == "Burnt Joker"
+			or center.name == "Chicot"
+			or center.name == "Perkeo"
+			then 
+				self.config.center.immutable = true
+			end
+			
 			if center and center.set == "Enhanced" then
 				return sa(
 					self,

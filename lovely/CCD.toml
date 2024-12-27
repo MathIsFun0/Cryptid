@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # This is sacrilegious
 [[patches]]
@@ -12,7 +12,7 @@ position = "before"
 payload = '''
 if G.GAME.modifiers.cry_ccd then
     for k, v in pairs(G.playing_cards) do
-        v:set_ability(get_random_consumable('cry_ccd', nil, true), true, nil)
+        v:set_ability(get_random_consumable('cry_ccd',{"no_doe", "no_grc"}, nil, nil, true), true, nil)
     end
 end
 '''

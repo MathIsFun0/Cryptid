@@ -429,14 +429,9 @@ end
 --Add banned cards when specific features/mods are enabled here
 --TODO other mods
 if Cryptid.enabled["Blinds"] then
-	--WHY DOES THIS SHOW UP AS THE FISH????????
 	joker_poker.restrictions.banned_other[#joker_poker.restrictions.banned_other + 1] = { id = 'bl_cry_oldmanacle', type = 'blind' }
 end
 if Cryptid.enabled["Tags"] then
-	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_schematic" }
-	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_gourmand" }
-	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_banana" }
-	rng.restrictions.banned_tags[#rng.restrictions.banned_tags + 1] = { id = "tag_cry_double_m" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_bundle" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_loss" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_gambler" }
@@ -477,10 +472,7 @@ end
 if Cryptid.enabled["Code Cards"] then
 	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_cry_class" }
 	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_cry_delete" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_cry_spaghetti" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_cry_pointer" }
 	onlycard.restrictions.banned_tags[#onlycard.restrictions.banned_tags + 1] = { id = "tag_cry_console" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_cry_pointer" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = {id = 'p_cry_code_normal_1', ids = {'p_cry_code_normal_1','p_cry_code_normal_2','p_cry_code_jumbo_1','p_cry_code_mega_1',}}
 	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_cut" }
 	joker_poker.restrictions.banned_cards[#joker_poker.restrictions.banned_cards + 1] = { id = "j_cry_CodeJoker" }

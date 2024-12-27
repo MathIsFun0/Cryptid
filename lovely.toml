@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # Make the splash screen more jolly
 # Requires "Custom Main Menu" config to be enabled
@@ -22,12 +22,12 @@ if Cryptid.enabled["Menu"] then
  		local option = math.random(#mcard)
    		local chosenoption = mcard[option]
        		if chosenoption == "j_cry_biggestm" or chosenoption == "j_cry_reverse" then --These don't render properly; replace these with loopy instead
-			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_cry_loopy'])
+			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_cry_loopy'],{bypass_discovery_center = true, bypass_discovery_ui = true})
    		else
-     			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[chosenoption])
+     			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[chosenoption],{bypass_discovery_center = true, bypass_discovery_ui = true})
      		end
   	else
-   		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'])
+   		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'],{bypass_discovery_center = true, bypass_discovery_ui = true})
 	end
 end
 '''
@@ -41,7 +41,7 @@ target = "game.lua"
 pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
 position = "before"
 payload = '''
-if Cryptid.enabled["Menu"] then card:set_ability(get_random_consumable('cry_ccd', nil, true), true, nil) end
+if Cryptid.enabled["Menu"] then card:set_ability(get_random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
 '''
 match_indent = true
 
@@ -291,6 +291,7 @@ target = "functions/UI_definitions.lua"
 pattern = "voucher_areas[#voucher_areas]:emplace(card)"
 position = "before"
 payload = '''
+if not G.GAME.voucher_edition_index then G.GAME.voucher_edition_index = {} end
 if G.GAME.voucher_edition_index[card.ability.name] then		-- i just made it a function so i can look at it less
 	local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
 	if edition then

@@ -271,6 +271,21 @@ local error_joker = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	atlas = "atlasepic",
+	loc_vars = function(self, info_queue, center)
+		if G.GAME and G.GAME.pseudorandom and G.STAGE == G.STAGES.RUN then
+        		cry_error_msgs[#cry_error_msgs].string = "%%" .. predict_card_for_shop()
+    		else
+        		cry_error_msgs[#cry_error_msgs].string = "%%J6"
+   		end
+		return {  
+			main_start = {
+        			{n=G.UIT.O, config={object = DynaText({string = cry_error_operators, colours = {G.C.DARK_EDITION,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.30, scale = 0.32, min_cycle_time = 0})}},
+        			{n=G.UIT.O, config={object = DynaText({string = cry_error_numbers, colours = {G.C.DARK_EDITION,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.33, scale = 0.32, min_cycle_time = 0})}},
+       				{n=G.UIT.O, config={object = DynaText({string = cry_error_msgs,
+        			colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.4011, scale = 0.32, min_cycle_time = 0})}},
+			}
+		} 
+	end,
 	add_to_deck = function(self, card, from_debuff)
 		if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_edition_from_deck then
 			G.GAME.modifiers.cry_force_edition_from_deck = G.GAME.modifiers.cry_force_edition
@@ -1363,6 +1378,13 @@ return {
 			"pi",
 			"1e9",
 			"???",
+			"114",
+			"leet",
+			"666",
+			"eee6",
+			"21",
+			"365",
+			"2024",
 		}
 		cry_error_msgs = {
 			{ string = "rand()", colour = G.C.RARITY["cry_exotic"] },
@@ -1377,7 +1399,11 @@ return {
 			{ string = "ERROR", colour = G.C.UI.TEXT_INACTIVE },
 			{ string = "Tarots", colour = G.C.SECONDARY_SET.Tarot },
 			{ string = "Planets", colour = G.C.SECONDARY_SET.Planet },
+			{ string = "Codes", colour = G.C.SECONDARY_SET.Code },
 			{ string = "Specls", colour = G.C.SECONDARY_SET.Spectral },
+			{ string = "Jolly", colour = G.C.CRY_JOLLY },
+			{ string = "Tags", colour = G.C.RED },
+			{ string = "Cryptids", colour = G.C.SECONDARY_SET.Spectral },
 			{ string = "%%ERROR", colour = G.C.CRY_ASCENDANT }, --temp string, this will be modified
 		}
 

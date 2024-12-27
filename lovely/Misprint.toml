@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # Randomize poker hands after RNG is set up
 [[patches]]
@@ -291,7 +291,8 @@ payload = '''
 G.GAME.cry_voucher_centers = {}
 for k, v in pairs(G.P_CENTERS) do
 	if v.set == 'Voucher' then
-		G.GAME.cry_voucher_centers[k] = v
+		G.GAME.cry_voucher_centers[k] = {config = {}}
+		G.GAME.cry_voucher_centers[k].config = copy_table(v.config)
 	end
 end
 '''
@@ -460,7 +461,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and'''
 position = "at"
 payload = '''
-if ((G.GAME.dollars-G.GAME.bankrupt_at) - cry_cheapest_boss_reroll() >= 0) and
+if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(cry_cheapest_boss_reroll()) >= to_big(0)) and
 '''
 match_indent = true
 
