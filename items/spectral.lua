@@ -1283,4 +1283,5 @@ return {
 		end
 	end,
 	items = spectrals,
+	disabled = true
 }

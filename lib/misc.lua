@@ -89,27 +89,37 @@ function cry_poll_random_edition()
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
-function get_random_consumable(seed, excluded_flags, unbalanced, pool)
-	-- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
-	excluded_flags = excluded_flags or unbalanced and { "no_doe", "no_grc" } or { "hidden", "no_doe", "no_grc" }
+function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undiscovered)
+    -- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
+	excluded_flags = excluded_flags or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
 	local passes = 0
 	local tries = 500
 	while true do
 		tries = tries - 1
 		passes = 0
-		-- create a random consumable naively
+        -- create a random consumable naively
 		local key = pseudorandom_element(pool or G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
-		-- check if it is valid
-		for k, v in pairs(excluded_flags) do
-			if not center_no(selection, v, key, true) then
-				passes = passes + 1
+        -- check if it is valid
+		if selection.discovered or not no_undiscovered then
+			for k, v in pairs(excluded_flags) do
+				if not center_no(selection, v, key, true) then
+					--Makes the consumable invalid if it's a specific card unless it's set to 
+					--I use this so cards don't create copies of themselves (eg potential inf Blessing chain, Hammerspace from Hammerspace...)
+					if not banned_card or (banned_card and banned_card ~= key) then
+						passes = passes + 1
+					end
+				end
 			end
 		end
-		-- use it if it's valid or we've run out of attempts
+        -- use it if it's valid or we've run out of attempts
 		if passes >= #excluded_flags or tries <= 0 then
-			return selection
+			if tries <= 0 and no_undiscovered then
+				return G.P_CENTERS["c_strength"]
+			else
+				return selection
+			end
 		end
 	end
 end
@@ -259,7 +269,7 @@ end
 function Cryptid.get_food(seed)
     local food_keys = {}  
     for k, v in pairs(Cryptid.food) do  
-        if G.GAME.banned_keys[v] then
+        if G.GAME.banned_keys[v] and G.P_CENTERS[v] then
             table.insert(food_keys, v)  
         end
     end

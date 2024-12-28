@@ -857,4 +857,4 @@ if Cryptid.enabled["Misc."] then
 end
 if not (SMODS.Mods["jen"] or {}).can_load then
 end
-return { name = "Planets", init = function() end, items = planet_cards }
+return { name = "Planets", init = function() end, items = planet_cards, disabled = true }

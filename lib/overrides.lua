@@ -666,7 +666,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		ps = predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
@@ -986,7 +986,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		cry_misprintize(card)
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
-		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
 		if
@@ -1016,7 +1016,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
 
 	--Debuff jokers if certain boss blinds are active
-	if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
+	if _type == "Joker" and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
 		if
 			G.GAME.blind.name == "cry-box"
 			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_box"] == true)

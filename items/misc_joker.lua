@@ -6694,4 +6694,5 @@ return {
 		end
 	end,
 	items = miscitems,
+	disabled = true
 }

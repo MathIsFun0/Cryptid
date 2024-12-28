@@ -24,6 +24,17 @@ if (SMODS.Mods["TWEWY"] or {}).can_load then
 	})
 end
 
+--Make Ortalab's Locked jokers not show up on Deck of Equilibrium and Antimatter Deck
+if (SMODS.Mods["ortalab"] or {}).can_load then
+	for i = 1, 150 do
+		print(i)
+		SMODS.Joker:take_ownership('ortalab_temp_' .. i, {
+			name = "Cry-skibidi",
+			no_doe = true
+		})
+	end
+end
+
 --Requires Malverk Mod
 if (SMODS.Mods["malverk"] or {}).can_load then
 	AltTexture({
