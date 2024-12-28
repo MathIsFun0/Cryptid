@@ -219,37 +219,8 @@ end
 match_indent = true
 
 # Compat UI for Old Blueprint and Gemini
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "elseif self.ability.name == 'Blueprint' then"
-position = "at"
-payload = '''elseif self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' then'''
-match_indent = true
 
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "elseif self.ability.name == 'Brainstorm' then"
-position = "at"
-payload = '''elseif self.ability.name == 'Brainstorm' or self.config.center.key == 'j_cry_gemino' then'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
-position = "at"
-payload = '''
-if self.config.center.key == 'j_cry_gemino' then
-other_joker = G.jokers.cards[1]
-if other_joker and other_joker ~= self and not (Card.no(other_joker, "immutable", true)) then
-    self.ability.blueprint_compat = 'compatible'
-else
-    self.ability.blueprint_compat = 'incompatible'
-end end
-if self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' or self.ability.name == 'Brainstorm' then'''
-match_indent = true
+# I deleted the patches --Jevonn (test)
 
 # calculate wheel fail (for Wheel of Hope)
 [[patches]]
