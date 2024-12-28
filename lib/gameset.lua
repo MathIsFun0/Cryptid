@@ -607,10 +607,6 @@ end
 
 -- gameset config UI
 function cry_gameset_config_UI(center)
-	local is_back = false
-	if center.set == "Back" then
-		is_back = true
-	end
 	G.SETTINGS.paused = true
 	G.your_collection = {}
 	G.your_collection[1] = CardArea(
@@ -642,7 +638,10 @@ function cry_gameset_config_UI(center)
 		if not (center.gameset_config and center.gameset_config[gamesets[i]] and center.gameset_config[gamesets[i]].disabled) then
 			local _center = cry_deep_copy(center)
 			_center.force_gameset = gamesets[i]
-			if not is_back then
+			local card = create_generic_card(_center)
+			card.gameset_select = true
+			G.your_collection[1]:emplace(card)
+			--[[if not is_back then
 				local card = Card(
 					G.your_collection[1].T.x + G.your_collection[1].T.w / 2,
 					G.your_collection[1].T.y,
@@ -667,7 +666,7 @@ function cry_gameset_config_UI(center)
 				card:start_materialize()
 				card.gameset_select = true
 				G.your_collection[1]:emplace(card)
-			end
+			end--]]
 		end
 	end
 
@@ -1076,4 +1075,155 @@ G.FUNCS.your_collection_content_set_page = function(args)
 		end
 	end
 	INIT_COLLECTION_CARD_ALERTS()
+end
+
+------------------------------
+---- GENERIC COLLECTIONS -----
+------------------------------
+
+G.FUNCS.your_collection_generic = function(e)
+	G.SETTINGS.paused = true
+	G.FUNCS.overlay_menu({
+		definition = create_UIBox_your_collection_generic(),
+	})
+end
+
+function create_generic_card(center)
+	local card = Card(
+		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
+		G.ROOM.T.h,
+		G.CARD_W,
+		G.CARD_H,
+		nil,
+		center
+	)
+	return card
+end
+
+function create_UIBox_your_collection_generic()
+	local deck_tables = {}
+
+	G.your_collection = {}
+	for j = 1, 3 do
+		G.your_collection[j] = CardArea(
+			G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
+			G.ROOM.T.h,
+			5 * G.CARD_W,
+			0.95 * G.CARD_H,
+			{ card_limit = 5, type = "title", highlight_limit = 0, collection = true }
+		)
+		table.insert(
+			deck_tables,
+			{
+				n = G.UIT.R,
+				config = { align = "cm", padding = 0.07, no_fill = true },
+				nodes = {
+					{ n = G.UIT.O, config = { object = G.your_collection[j] } },
+				},
+			}
+		)
+	end
+
+	local joker_options = {}
+	for i = 1, math.ceil(#G.generic_collection_pool / (5 * #G.your_collection)) do
+		table.insert(
+			joker_options,
+			localize("k_page")
+				.. " "
+				.. tostring(i)
+				.. "/"
+				.. tostring(math.ceil(#G.generic_collection_pool / (5 * #G.your_collection)))
+		)
+	end
+
+	for i = 1, 5 do
+		for j = 1, #G.your_collection do
+			local center = G.generic_collection_pool[i + (j - 1) * 5]
+			if center then G.your_collection[j]:emplace(create_generic_card(center)) end
+		end
+	end
+
+	INIT_COLLECTION_CARD_ALERTS()
+
+	local t = create_UIBox_generic_options({
+		back_func = G.ACTIVE_MOD_UI and "openModUI_" .. G.ACTIVE_MOD_UI.id or "your_collection",
+		contents = {
+			{ n = G.UIT.R, config = { align = "cm", r = 0.1, colour = G.C.BLACK, emboss = 0.05 }, nodes = deck_tables },
+			{
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					create_option_cycle({
+						options = joker_options,
+						w = 4.5,
+						cycle_shoulders = true,
+						opt_callback = "your_collection_generic_page",
+						current_option = 1,
+						colour = G.C.RED,
+						no_pips = true,
+						focus_args = { snap_to = true, nav = "wide" },
+					}),
+				},
+			},
+		},
+	})
+	return t
+end
+
+G.FUNCS.your_collection_generic_page = function(args)
+	if not args or not args.cycle_config then
+		return
+	end
+	for j = 1, #G.your_collection do
+		for i = #G.your_collection[j].cards, 1, -1 do
+			local c = G.your_collection[j]:remove_card(G.your_collection[j].cards[i])
+			c:remove()
+			c = nil
+		end
+	end
+	for i = 1, 5 do
+		for j = 1, #G.your_collection do
+			local center =
+				G.generic_collection_pool[i + (j - 1) * 5 + (5 * #G.your_collection * (args.cycle_config.current_option - 1))]
+			if not center then
+				break
+			end
+			G.your_collection[j]:emplace(create_generic_card(center))
+		end
+	end
+	INIT_COLLECTION_CARD_ALERTS()
+end
+
+-- Hooks for all collection types
+local uijkr = create_UIBox_your_collection_jokers
+function create_UIBox_your_collection_jokers()
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		G.generic_collection_pool = {}
+		for k, v in pairs(SMODS.Center.obj_table) do
+			if v.set == "Joker" and v.mod and v.mod.id == "Cryptid" then
+				print(k)
+				table.insert(G.generic_collection_pool, v)
+			end
+		end
+		G.generic_collection_set = "Joker"
+		return create_UIBox_your_collection_generic()
+	else
+		return uijkr()
+	end
+end
+
+local uibk = create_UIBox_your_collection_decks
+function create_UIBox_your_collection_decks()
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		G.generic_collection_pool = {}
+		for k, v in pairs(SMODS.Center.obj_table) do
+			if v.set == "Back" and v.mod and v.mod.id == "Cryptid" then
+				table.insert(G.generic_collection_pool, v)
+			end
+		end
+		G.generic_collection_set = "Back"
+		return create_UIBox_your_collection_generic()
+	else
+		return uibk()
+	end
 end
