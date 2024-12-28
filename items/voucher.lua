@@ -631,7 +631,7 @@ local triple = { --Copies voucher triple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -659,8 +659,8 @@ local triple = { --Copies voucher triple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_copies
@@ -677,7 +677,7 @@ local quadruple = { --Tag printer voucher quadruple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -705,8 +705,8 @@ local quadruple = { --Tag printer voucher quadruple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_tag_printer
@@ -723,7 +723,7 @@ local quintuple = { --Clone machine voucher quintuple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -751,8 +751,8 @@ local quintuple = { --Clone machine voucher quintuple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_clone_machine

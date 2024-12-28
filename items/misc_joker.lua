@@ -350,36 +350,55 @@ local whip = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
+			local two = false
+			local seven = false
+			local twosuits = {}
+			local sevensuits = {}
 			for i = 1, #context.full_hand do
-				if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
-					for j = 1, #context.full_hand do
-						if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
-							--Different suits
-							for k, v in pairs(SMODS.Suits) do
-								if
-									context.full_hand[i]:is_suit(k, nil, true)
-									and context.full_hand[j]:is_suit(k, nil, true)
-								then
-									return
+				if context.full_hand[i]:get_id() == 2 or context.full_hand[i]:get_id() == 7 then
+					if context.full_hand[i]:get_id() == 2 then
+						if not two then two = true end
+						for k, v in pairs(SMODS.Suits) do
+							if context.full_hand[i]:is_suit(k, nil, true) then
+								local contained = false
+								for i = 1, #twosuits do
+									if k == twosuits[i] then contained = true end
 								end
+								if not contained then twosuits[#twosuits + 1] = k end
 							end
-							card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
-							card_eval_status_text(
-								card,
-								"extra",
-								nil,
-								nil,
-								nil,
-								{
-									message = localize({
-										type = "variable",
-										key = "a_xmult",
-										vars = { card.ability.extra.x_mult },
-									}),
-								}
-							)
-							return nil, true
 						end
+					else
+						if not seven then seven = true end
+						for k, v in pairs(SMODS.Suits) do
+							if context.full_hand[i]:is_suit(k, nil, true) then
+								local contained = false
+								for i = 1, #sevensuits do
+									if k == sevensuits[i] then contained = true end
+								end
+								if not contained then sevensuits[#sevensuits + 1] = k end
+							end
+						end
+					end
+				end
+				if two and seven then
+					if (#twosuits > 1 or #sevensuits > 1)
+					or (#twosuits == 1 and #sevensuits == 1 and twosuits[1] ~= sevensuits[1]) then
+						card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
+						card_eval_status_text(
+							card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{
+								message = localize({
+								type = "variable",
+								key = "a_xmult",
+								vars = { card.ability.extra.x_mult },
+								}),
+							}
+						)
+						return nil, true
 					end
 				end
 			end
@@ -1022,18 +1041,20 @@ local seal_the_deal = {
 		if Cryptid.enabled["Misc."] then sealtable[#sealtable + 1] = "azure" end
 		if Cryptid.enabled["Code Cards"] then sealtable[#sealtable + 1] = "green" end
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed('abc'))
-		--Gold (ULTRA RARE!!!!!!!!)
-		if pseudorandom('xyz') <= 0.000001 and not (card.area and card.area.config.collection) then
-			card.children.center:set_sprite_pos({x = 6, y = 4})
-		--Others
-		elseif card.ability.extra == "red" then
-			card.children.center:set_sprite_pos({x = 6, y = 0})
-		elseif card.ability.extra == "azure" then
-			card.children.center:set_sprite_pos({x = 6, y = 2})
-		elseif card.ability.extra == "purple" then
-			card.children.center:set_sprite_pos({x = 6, y = 3})
-		elseif card.ability.extra == "green" then
-			card.children.center:set_sprite_pos({x = 6, y = 1})
+		if G.P_CENTERS["j_cry_seal_the_deal"].discovered then
+			--Gold (ULTRA RARE!!!!!!!!)
+			if pseudorandom('xyz') <= 0.000001 and not (card.area and card.area.config.collection) then
+				card.children.center:set_sprite_pos({x = 6, y = 4})
+			--Others
+			elseif card.ability.extra == "red" then
+				card.children.center:set_sprite_pos({x = 6, y = 0})
+			elseif card.ability.extra == "azure" then
+				card.children.center:set_sprite_pos({x = 6, y = 2})
+			elseif card.ability.extra == "purple" then
+				card.children.center:set_sprite_pos({x = 6, y = 3})
+			elseif card.ability.extra == "green" then
+				card.children.center:set_sprite_pos({x = 6, y = 1})
+			end
 		end
 	end,
 	cry_credits = {
@@ -1082,7 +1103,7 @@ local chad = {
 			"Jevonn"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
 			"Math"
@@ -5355,7 +5376,7 @@ local oldblueprint = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if
-			context.end_of_round
+			context.end_of_round2
 			and not context.individual
 			and not context.repetition
 			and not context.blueprint
@@ -5384,15 +5405,23 @@ local oldblueprint = {
 						return true
 					end,
 				}))
-				return {
-					message = { localize("k_extinct_ex") },
-					colour = G.C.FILTER,
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
+				)
 			else
-				return {
-					message = { localize("k_safe_ex") },
-					colour = G.C.FILTER,
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_safe_ex"), colour = G.C.FILTER }
+				)
 			end
 		end
 		local other_joker = nil
@@ -5608,13 +5637,13 @@ local translucent = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM0"
+			"SDM_0"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -6198,14 +6227,14 @@ local exposed = {
 		return { vars = { center.ability.extra } }
 	end,
 	update = function(self, card, dt)
-		if G.deck and not (card.area and card.area.config.collection) then
+		if G.deck and card.added_to_deck then
 			for i, v in pairs (G.deck.cards) do
 				if v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
-		if G.hand and not (card.area and card.area.config.collection) then
+		if G.hand and card.added_to_deck then
 			for i, v in pairs (G.hand.cards) do
 				if v:is_face() then
 					v:set_debuff(true)
@@ -6240,14 +6269,14 @@ local mask = {
 		return { vars = { center.ability.extra } }
 	end,
 	update = function(self, card, dt)
-		if G.deck and not (card.area and card.area.config.collection) then
+		if G.deck and card.added_to_deck then
 			for i, v in pairs (G.deck.cards) do
 				if not v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
-		if G.hand and not (card.area and card.area.config.collection) then
+		if G.hand and card.added_to_deck then
 			for i, v in pairs (G.hand.cards) do
 				if not v:is_face() then
 					v:set_debuff(true)
@@ -6433,7 +6462,7 @@ local pity_prize = {
 	calculate = function(self, card, context)
 		if context.skipping_booster then
 			local tag
-			repeat 
+			repeat
 				tag = Tag(get_next_tag_key("cry_pity_prize"))
 			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
 			if tag.name == "Orbital Tag" then
@@ -6665,5 +6694,4 @@ return {
 		end
 	end,
 	items = miscitems,
-	disabled = true
 }

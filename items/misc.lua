@@ -212,7 +212,7 @@ local oversat = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
+			cry_misprintize(card, {min = 1, max = 1}, true) -- 
 			cry_misprintize(card)
 		end)
 	end,
@@ -306,8 +306,8 @@ local glitched = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
-			cry_misprintize(card)
+			cry_misprintize(card, {min = 1, max = 1}, true)
+			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 	end,
 }
@@ -414,7 +414,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
 	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
 	if not instant then
-		for i = 1, math.random(6, 10) do
+		for i = 1, math.random(2, 4) do
 			update_hand_text(
 				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
 				{ chips = obfuscatedtext(3) }
@@ -434,7 +434,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
-		for i = 1, math.random(6, 10) do
+		for i = 1, math.random(2, 4) do
 			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
 		end
 		G.E_MANAGER:add_event(Event({
@@ -546,6 +546,16 @@ local noisy_shader = {
 	key = "noisy",
 	path = "noisy.fs",
 }
+local noisy_stats = {
+	min = {
+		mult = 0,
+		chips = 0
+	},
+	max = {
+		mult = 30,
+		chips = 150
+	}
+}
 local noisy = {
 	object_type = "Edition",
 	key = "noisy",
@@ -554,7 +564,7 @@ local noisy = {
 	shader = "noisy",
 	in_shop = true,
 	extra_cost = 4,
-	config = { min_mult = 0, max_mult = 30, min_chips = 0, max_chips = 150 },
+	config = { min_mult = noisy_stats.min.mult, max_mult = noisy_stats.max.mult, min_chips = noisy_stats.min.chips, max_chips = noisy_stats.max.chips },
 	sound = {
 		sound = "cry_e_noisy",
 		per = 1,
@@ -698,6 +708,74 @@ local noisy = {
 		desc_nodes[#desc_nodes + 1] = chip_ui
 	end,
 }
+
+AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
+	local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
+	local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+	if not instant then
+		for i = 1, math.random(2, 4) do
+			update_hand_text(
+				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+				{ chips = obfuscatedtext(3) }
+			)
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				play_sound("chips1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ delay = 0 },
+			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+		)
+		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
+		for i = 1, math.random(2, 4) do
+			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				play_sound("multhit1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ delay = 0 },
+			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+		)
+		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("chips1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("multhit1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+	end
+end
+
 local jollyeditionshader = {
 	object_type = "Shader",
 	key = "m",
@@ -891,10 +969,10 @@ local eclipse = {
 	pos = { x = 4, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
-	loc_vars = function(self, info_queue)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
 
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
 local blessing = {
@@ -918,7 +996,7 @@ local blessing = {
 			func = function()
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
-					local forced_key = get_random_consumable("blessing")
+					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
 					_card:add_to_deck()
 					G.consumeables:emplace(_card)
@@ -1041,11 +1119,18 @@ local meld = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if #G.jokers.highlighted
-				+ #G.hand.highlighted
-				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
-			== 1 then
-			if #G.jokers.highlighted == 1 and Card.no(G.jokers.highlighted[1], "dbl") then return false end
+		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
+			if 
+				#G.jokers.highlighted == 1 and 
+				(
+					Card.no(G.jokers.highlighted[1], "dbl") 
+					or G.jokers.highlighted[1].edition
+				) 
+			then return false end
+			if 
+				#G.hand.highlighted == 1 
+				and G.hand.highlighted[1].edition 
+			then return false end
 			return true
 		end
 	end,
