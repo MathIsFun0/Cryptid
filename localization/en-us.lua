@@ -3792,6 +3792,10 @@ return {
             k_code = "Code",
             k_content_set = "Thematic Set",
             b_content_sets = "Thematic Sets",
+            --Why aren't these in vanilla?
+            b_tag = "Tag",
+            b_blind = "Blind",
+            
             k_unique = "Unique",
             b_code_cards = "Code Cards",
             b_unique_cards = "Unique Cards",

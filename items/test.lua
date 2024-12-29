@@ -337,6 +337,10 @@ local rework_tag = {
 			return card
 		end
 	end,
+	--This is temporary to prevent crashes, we should implement proper loc_vars handling here later
+	loc_vars = function(self, info_queue)
+		return { vars = { "[edition]", "[joker]" } }
+	end,
 	in_pool = function()
 		return false
 	end,
@@ -356,4 +360,36 @@ local blank_sprite = {
 	px = 71,
 	py = 95,
 }
-return {items = {test, test2, test3, rework, rework_tag, blank, blank_sprite}}
+local oldmark = {
+	object_type = "Blind",
+	name = "cry-oldmark",
+	key = "oldmark",
+	pos = { x = 0, y = 1 },
+	boss = {
+		min = 4,
+		max = 10,
+	},
+	atlas = "nostalgia",
+	order = 12,
+	boss_colour = HEX("4f6367"),
+	debuff_hand = function(self, cards, hand, handname, check)
+		if next(hand["Pair"]) then
+			G.GAME.blind.triggered = true
+			return true
+		end
+		return false
+	end,
+	get_loc_debuff_text = function(self)
+		return localize("cry_debuff_oldmark")
+	end,
+}
+local nostalgia_sprites = {
+	object_type = "Atlas",
+	key = "nostalgia",
+	atlas_table = "ANIMATION_ATLAS",
+	path = "bl_nostalgia.png",
+	px = 34,
+	py = 34,
+	frames = 21,
+}
+return {items = {test, test2, test3, rework, rework_tag, blank, blank_sprite, oldmark, nostalgia_sprites}}

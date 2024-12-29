@@ -201,6 +201,15 @@ target = "functions/UI_definitions.lua"
 pattern = "card_type = (debuffed and AUT.card_type ~= 'Enhanced') and localize('k_debuffed') or card_type"
 position = "after"
 payload = '''
+if AUT.card_type == "Back" then
+    card_type = localize('b_deck')
+end
+if AUT.card_type == "Tag" then
+    card_type = localize('b_tag')
+end
+if AUT.card_type == "Blind" then
+    card_type = localize('b_blind')
+end
 if AUT.card_type == "Content Set" then
     card_type = localize('k_content_set')
 end
@@ -228,11 +237,11 @@ position = "at"
 payload = "if self.debuff or cry_get_gameset(self) == 'disabled' or (self.config.center.gameset_config and self.config.center.gameset_config[cry_get_gameset(self)] and self.config.center.gameset_config[cry_get_gameset(self)].disabled) or (self.config.center.cry_disabled and not self.gameset_select) then"
 match_indent = true
 
-# Descriptions for Backs in gameset UI
+# Descriptions for Backs and Blinds in gameset UI
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
 pattern = "elseif _c.set == 'Tag' then"
 position = "before"
-payload = "elseif _c.set == 'Back' then localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = specific_vars or {}}"
+payload = "elseif _c.set == 'Back' or _c.set == 'Blind' then localize{type = 'descriptions', key = _c.key, set = _c.set, nodes = desc_nodes, vars = specific_vars or {}}"
 match_indent = true

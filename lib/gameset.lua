@@ -693,6 +693,9 @@ end
 local gtc = get_type_colour
 function get_type_colour(center, card)
 	local color = gtc(center, card)
+	if center.set == "Back" or center.set == "Tag" or center.set == "Blind" then
+		color = G.C.CRY_SELECTED
+	end
 	if card.gameset_select then
 		if center.force_gameset == "modest" then
 			color = G.C.GREEN
@@ -1092,138 +1095,114 @@ function create_generic_card(center)
 	local card = Card(
 		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
 		G.ROOM.T.h,
-		G.CARD_W,
-		G.CARD_H,
+		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.45 * G.CARD_W or G.CARD_W,
+		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.45 * G.CARD_W or G.CARD_H,
 		nil,
 		center
 	)
 	return card
 end
 
-function create_UIBox_your_collection_generic()
-	local deck_tables = {}
-
-	G.your_collection = {}
-	for j = 1, 3 do
-		G.your_collection[j] = CardArea(
-			G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
-			G.ROOM.T.h,
-			5 * G.CARD_W,
-			0.95 * G.CARD_H,
-			{ card_limit = 5, type = "title", highlight_limit = 0, collection = true }
-		)
-		table.insert(
-			deck_tables,
-			{
-				n = G.UIT.R,
-				config = { align = "cm", padding = 0.07, no_fill = true },
-				nodes = {
-					{ n = G.UIT.O, config = { object = G.your_collection[j] } },
-				},
-			}
-		)
-	end
-
-	local joker_options = {}
-	for i = 1, math.ceil(#G.generic_collection_pool / (5 * #G.your_collection)) do
-		table.insert(
-			joker_options,
-			localize("k_page")
-				.. " "
-				.. tostring(i)
-				.. "/"
-				.. tostring(math.ceil(#G.generic_collection_pool / (5 * #G.your_collection)))
-		)
-	end
-
-	for i = 1, 5 do
-		for j = 1, #G.your_collection do
-			local center = G.generic_collection_pool[i + (j - 1) * 5]
-			if center then G.your_collection[j]:emplace(create_generic_card(center)) end
+-- Hooks for all collection types
+local smcp = SMODS.collection_pool
+SMODS.collection_pool = function(m)
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		-- use SMODS pools instead of vanilla pools, so disabled cards appear
+		if m[1] and m[1].set and G.P_CENTER_POOLS[m[1].set] == m then
+			local set = m[1].set
+			m = {}
+			for k, v in pairs(SMODS.Center.obj_table) do
+				if v.set == set and v.mod and v.mod.id == "Cryptid" then
+					table.insert(m, v)
+				end
+			end
+		end
+		-- Fix blind issues
+		for k, v in pairs(m) do
+			if v.set == "Blind" and v.mod and v.mod.id == "Cryptid" then
+				v.config = {}
+			end
 		end
 	end
+	
+	return smcp(m)
+end
 
-	INIT_COLLECTION_CARD_ALERTS()
-
-	local t = create_UIBox_generic_options({
-		back_func = G.ACTIVE_MOD_UI and "openModUI_" .. G.ACTIVE_MOD_UI.id or "your_collection",
-		contents = {
-			{ n = G.UIT.R, config = { align = "cm", r = 0.1, colour = G.C.BLACK, emboss = 0.05 }, nodes = deck_tables },
-			{
-				n = G.UIT.R,
-				config = { align = "cm" },
-				nodes = {
-					create_option_cycle({
-						options = joker_options,
-						w = 4.5,
-						cycle_shoulders = true,
-						opt_callback = "your_collection_generic_page",
-						current_option = 1,
-						colour = G.C.RED,
-						no_pips = true,
-						focus_args = { snap_to = true, nav = "wide" },
-					}),
-				},
-			},
-		},
-	})
+-- Make Cryptid show all collection boxes (kinda silly)
+local mct = modsCollectionTally
+function modsCollectionTally(...)
+	local t = mct(...)
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		return {tally = 10^400, of = 10^400}
+	end
 	return t
 end
 
-G.FUNCS.your_collection_generic_page = function(args)
-	if not args or not args.cycle_config then
-		return
-	end
-	for j = 1, #G.your_collection do
-		for i = #G.your_collection[j].cards, 1, -1 do
-			local c = G.your_collection[j]:remove_card(G.your_collection[j].cards[i])
-			c:remove()
-			c = nil
-		end
-	end
-	for i = 1, 5 do
-		for j = 1, #G.your_collection do
-			local center =
-				G.generic_collection_pool[i + (j - 1) * 5 + (5 * #G.your_collection * (args.cycle_config.current_option - 1))]
-			if not center then
-				break
-			end
-			G.your_collection[j]:emplace(create_generic_card(center))
-		end
-	end
-	INIT_COLLECTION_CARD_ALERTS()
-end
-
--- Hooks for all collection types
-local uijkr = create_UIBox_your_collection_jokers
-function create_UIBox_your_collection_jokers()
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		G.generic_collection_pool = {}
-		for k, v in pairs(SMODS.Center.obj_table) do
-			if v.set == "Joker" and v.mod and v.mod.id == "Cryptid" then
-				print(k)
-				table.insert(G.generic_collection_pool, v)
-			end
-		end
-		G.generic_collection_set = "Joker"
-		return create_UIBox_your_collection_generic()
-	else
-		return uijkr()
-	end
-end
-
+-- Make non-center collections show all cards as centers
 local uibk = create_UIBox_your_collection_decks
 function create_UIBox_your_collection_decks()
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		G.generic_collection_pool = {}
+		local generic_collection_pool = {}
 		for k, v in pairs(SMODS.Center.obj_table) do
 			if v.set == "Back" and v.mod and v.mod.id == "Cryptid" then
-				table.insert(G.generic_collection_pool, v)
+				table.insert(generic_collection_pool, v)
 			end
 		end
-		G.generic_collection_set = "Back"
-		return create_UIBox_your_collection_generic()
+		return SMODS.card_collection_UIBox(generic_collection_pool, {5,5,5})
 	else
 		return uibk()
+	end
+end
+
+local uitag = create_UIBox_your_collection_tags
+function create_UIBox_your_collection_tags()
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		local generic_collection_pool = {}
+		for k, v in pairs(SMODS.Tag.obj_table) do
+			if v.set == "Tag" and v.mod and v.mod.id == "Cryptid" then
+				table.insert(generic_collection_pool, v)
+			end
+		end
+		return SMODS.card_collection_UIBox(generic_collection_pool, {6,6,6,6}, {
+			card_scale = 0.45,
+			h_mod = 0.25,
+			w_mod = 0.6,
+			modify_card = function(card, center, i, j)
+				card.T.h = card.T.w
+			end
+		})
+	else
+		return uitag()
+	end
+end
+
+local uibl = create_UIBox_your_collection_blinds
+function create_UIBox_your_collection_blinds()
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		local generic_collection_pool = {}
+		for k, v in pairs(SMODS.Blind.obj_table) do
+			if v.set == "Blind" and v.mod and v.mod.id == "Cryptid" then
+				table.insert(generic_collection_pool, v)
+			end
+		end
+		return SMODS.card_collection_UIBox(generic_collection_pool, {5,5,5,5,5}, {
+			card_scale = 0.70,
+			h_mod = 0.45,
+			w_mod = 0.70,
+			modify_card = function(card, center, i, j)
+				card.T.h = card.T.w
+			end
+		})
+	else
+		return uibl()
+	end
+end
+
+--hacky fix to get animated atlases visible for centers
+local smai = SMODS.Atlas.inject
+SMODS.Atlas.inject = function(self)
+	smai(self)
+	if self.atlas_table ~= 'ASSET_ATLAS' then
+		G.ASSET_ATLAS[self.key_noloc or self.key] = G[self.atlas_table][self.key_noloc or self.key]
 	end
 end
