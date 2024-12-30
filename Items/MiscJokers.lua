@@ -6357,6 +6357,125 @@ local tropical_smoothie = {
 		end
 	end,
 }
+local pumpkin = {
+	object_type = "Joker",
+	key = "pumpkin",
+	pos = { x = 0, y = 6 },
+	rarity = 3,
+	cost = 10,
+	atlas = "atlastwo",
+	config = {extra = {scoreReq = 50, enabled = true}},
+	blueprint_compat = true,
+	eternal_compat = false,
+	perishable_compat = false,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.scoreReq} }
+	end,
+	calculate = function(self, card, context)
+		if context.game_over and G.GAME.chips/G.GAME.blind.chips >= to_big(card.ability.extra.scoreReq/100) then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					G.hand_text_area.blind_chips:juice_up()
+					G.hand_text_area.game_chips:juice_up()
+					play_sound('tarot1')
+					return true
+				end
+			})) 
+			return {
+				message = localize('k_saved_ex'),
+				saved = true,
+				colour = G.C.RED
+			}
+		end
+
+		if context.selling_self then
+			card.ability.extra.enabled = false
+		end
+
+		if context.cry_start_dissolving and context.card == card and card.ability.extra.enabled == true then
+			local newcard = create_card(
+				"Joker",
+				G.jokers,
+				nil,
+				nil,
+				nil,
+				nil,
+				'j_cry_carved_pumpkin'
+			)
+			newcard:add_to_deck()
+			G.jokers:emplace(newcard)
+		end
+	end
+}
+local carved_pumpkin = {
+	object_type = "Joker",
+	key = "carved_pumpkin",
+	pos = { x = 1, y = 6 },
+	rarity = 3,
+	cost = 10,
+	atlas = "atlastwo",
+	config = {extra = {disables = 5}},
+	blueprint_compat = true,
+	eternal_compat = false,
+	perishable_compat = false,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.disables} }
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
+            if G.GAME.blind:get_type() == 'Boss' then
+                card.ability.extra.disables = card.ability.extra.disables - 1
+				card:juice_up()
+                if card.ability.extra.disables <= 0 then
+                    card:start_dissolve()
+                end
+            end
+        end
+		if context.setting_blind and G.GAME.blind:get_type() == 'Boss' and not G.GAME.blind.disabled then
+			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('ph_boss_disabled')})
+			G.GAME.blind:disable()
+		end
+	end,
+	in_pool = function(self,wawa,wawa2)
+        return false
+    end,
+}
+local cookie = {
+	object_type = "Joker",
+	key = "clicked_cookie",
+	pos = { x = 2, y = 6 },
+	rarity = 1,
+	cost = 4,
+	atlas = "atlastwo",
+	config = {extra = {chips = 150, chip_mod = 1}},
+	blueprint_compat = true,
+	eternal_compat = false,
+	perishable_compat = false,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.chips, center.ability.extra.chip_mod} }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return{
+				card = card,
+				chip_mod = card.ability.extra.chips,
+				message = '+' .. card.ability.extra.chips,
+				colour = G.C.CHIPS
+			}
+		end
+		if context.cry_press then
+			card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+			card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+				)
+		end
+	end,
+}
 local necromancer = {
 	object_type = "Joker",
 	name = "cry-Necromancer",
@@ -6635,6 +6754,9 @@ local miscitems =  {
 	exposed,
 	mask,
 	tropical_smoothie,
+	pumpkin,
+	carved_pumpkin,
+	cookie,
 	necromancer,
 	oil_lamp,
 	tax_fraud,
@@ -6746,6 +6868,26 @@ return {
 				elseif obj.pos.y < 6 then
 					obj.pos.x = 0
 					obj.pos.y = obj.pos.y + 1
+				end
+			end
+		end
+
+		local oldfunc = Card.start_dissolve
+		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+			if G and G.jokers and G.jokers.cards then
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({cry_start_dissolving = true, card = self})
+				end
+			end
+			return oldfunc(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
+		end
+
+		local lcpref = Controller.L_cursor_press
+		function Controller:L_cursor_press(x, y)
+			lcpref(self,x,y)
+			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({cry_press = true})
 				end
 			end
 		end
