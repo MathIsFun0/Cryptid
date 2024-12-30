@@ -522,6 +522,9 @@ end
 -- designed to work on any object type
 function cry_get_gameset(card, center)
 	if not center then
+		if not card then
+			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
+		end
 		center = card.config and card.config.center or card.effect and card.effect.center or card
 	end
 	if card.force_gameset then
@@ -561,12 +564,8 @@ function Card:set_ability(center, y, z)
 			if k ~= "disabled" and k ~= "center" then
 				if k == "cost" then
 					self.base_cost = v
-					--print(k)
-					--print(v)
 				else
 					self.ability[k] = v
-					--print(k)
-					--print(v)
 				end
 			end
 		end
@@ -592,6 +591,23 @@ function Card:click()
 	if G.your_collection then
 		for k, v in pairs(G.your_collection) do
 			if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+				if not self.config.center or self.config.center and self.config.center.set == "Default" then
+					--make a fake center
+					local old_force_gameset = self.config.center and self.config.center.force_gameset
+					if self.seal then
+						self.config.center = SMODS.Seal.obj_table[self.seal]
+						self.config.center.set = "Seal"
+					end
+					for k, v in pairs(SMODS.Stickers) do
+						if self.ability[k] then
+							self.config.center = SMODS.Sticker.obj_table[k]
+							self.config.center.set = "Sticker"
+						end
+					end
+					if self.config.center then
+						self.config.center.force_gameset = old_force_gameset
+					end
+				end
 				if self.gameset_select then
 					Card.cry_set_gameset(self, self.config.center, self.config.center.force_gameset)
 					cry_update_obj_registry()
@@ -783,6 +799,13 @@ end
 
 function cry_get_center(key, m)
 	if not m then
+		-- check for non game objects
+		if SMODS.Seals.obj_table and SMODS.Seals.obj_table[key] then
+			return SMODS.Seals.obj_table[key]
+		end
+		if SMODS.Stickers.obj_table and SMODS.Stickers.obj_table[key] then
+			return SMODS.Stickers.obj_table[key]
+		end
 		m = SMODS.GameObject
 		if m.subclasses then
 			for k, v in pairs(m.subclasses) do
@@ -873,15 +896,28 @@ SMODS.Blind.enable = function(self)
 	G.P_BLINDS[self.key] = self
 end
 
+--Removing seals from the center table causes issues
 SMODS.Seal.disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
-	G.P_SEALS[self.key] = nil
 end
 SMODS.Seal.enable = function(self)
 	self.cry_disabled = nil
 	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
-	G.P_SEALS[self.key] = self
+end
+
+--Removing editions from the center table causes issues, so instead we make them unable to spawn naturally
+SMODS.Edition.disable = function(self, reason)
+	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+	self.cry_get_weight = self.get_weight
+	self.get_weight = function() return 0 end
+end
+SMODS.Edition.enable = function(self)
+	self.cry_disabled = nil
+	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+	self.get_weight = self.cry_get_weight
+	self.cry_get_weight = nil
 end
 
 function cry_update_obj_registry(m)
@@ -1092,14 +1128,31 @@ G.FUNCS.your_collection_generic = function(e)
 end
 
 function create_generic_card(center)
+	--todo: make gameset stickers play nicely with resized sprites
 	local card = Card(
 		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
 		G.ROOM.T.h,
-		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.45 * G.CARD_W or G.CARD_W,
-		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.45 * G.CARD_W or G.CARD_H,
+		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.42 * G.CARD_W or G.CARD_W,
+		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.42 * G.CARD_W or G.CARD_H,
 		nil,
-		center
+		center.set ~= "Seal" and center.set ~= "Sticker" and center or G.P_CENTERS.c_base
 	)
+	--todo: make this work when the edition is disabled (although it's a good failsafe that it doesn't?)
+	if center.set == "Edition" then
+		card:set_edition(center.key, true, true)
+	end
+	if center.set == "Seal" then
+		card:set_seal(center.key, true, true)
+		card.config.center = cry_deep_copy(card.config.center)
+		card.config.center.force_gameset = center.force_gameset
+		card.config.center.key = center.key
+	end
+	if center.set == "Sticker" then
+		center:apply(card, true)
+		card.config.center = cry_deep_copy(card.config.center)
+		card.config.center.force_gameset = center.force_gameset
+		card.config.center.key = center.key
+	end
 	return card
 end
 
@@ -1108,7 +1161,21 @@ local smcp = SMODS.collection_pool
 SMODS.collection_pool = function(m)
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
 		-- use SMODS pools instead of vanilla pools, so disabled cards appear
-		if m[1] and m[1].set and G.P_CENTER_POOLS[m[1].set] == m then
+		if m[1] and m[1].set and m[1].set == "Seal" then
+			m = {}
+			for k, v in pairs(SMODS.Seal.obj_table) do
+				if v.mod and v.mod.id == "Cryptid" then
+					table.insert(m, v)
+				end
+			end
+		elseif m[1] and m[1].set and m[1].set == "Sticker" then
+			m = {}
+			for k, v in pairs(SMODS.Sticker.obj_table) do
+				if v.mod and v.mod.id == "Cryptid" then
+					table.insert(m, v)
+				end
+			end
+		elseif m[1] and m[1].set and G.P_CENTER_POOLS[m[1].set] == m then
 			local set = m[1].set
 			m = {}
 			for k, v in pairs(SMODS.Center.obj_table) do
@@ -1124,7 +1191,6 @@ SMODS.collection_pool = function(m)
 			end
 		end
 	end
-	
 	return smcp(m)
 end
 
@@ -1164,9 +1230,10 @@ function create_UIBox_your_collection_tags()
 			end
 		end
 		return SMODS.card_collection_UIBox(generic_collection_pool, {6,6,6,6}, {
-			card_scale = 0.45,
-			h_mod = 0.25,
-			w_mod = 0.6,
+			card_scale = 0.42,
+			h_mod = 0.3,
+			w_mod = 0.55,
+			area_type = "title_2",
 			modify_card = function(card, center, i, j)
 				card.T.h = card.T.w
 			end
@@ -1189,12 +1256,58 @@ function create_UIBox_your_collection_blinds()
 			card_scale = 0.70,
 			h_mod = 0.45,
 			w_mod = 0.70,
+			area_type = "title_2",
 			modify_card = function(card, center, i, j)
 				card.T.h = card.T.w
 			end
 		})
 	else
 		return uibl()
+	end
+end
+
+local uisl = create_UIBox_your_collection_seals
+function create_UIBox_your_collection_seals()
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, {5,5}, {
+			snap_back = true,
+			infotip = localize('ml_edition_seal_enhancement_explanation'),
+			hide_single_page = true,
+			collapse_single_page = true,
+			center = 'c_base',
+			h_mod = 1.03,
+			modify_card = function(card, center)
+				card:set_seal(center.key, true)
+				-- Make disabled UI appear
+				card.config.center = cry_deep_copy(card.config.center)
+				card.config.center.key = center.key
+			end,
+		})
+	else
+		return uisl()
+	end
+end
+
+local uist = create_UIBox_your_collection_stickers
+function create_UIBox_your_collection_stickers()
+	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+		return SMODS.card_collection_UIBox(SMODS.Stickers, {5,5}, {
+			snap_back = true,
+			hide_single_page = true,
+			collapse_single_page = true,
+			center = 'c_base',
+			h_mod = 1.03,
+			back_func = 'your_collection_other_gameobjects',
+			modify_card = function(card, center)
+				card.ignore_pinned = true
+				center:apply(card, true)
+				-- Make disabled UI appear
+				card.config.center = cry_deep_copy(card.config.center)
+				card.config.center.key = center.key
+			end,
+		})
+	else
+		return uist()
 	end
 end
 
