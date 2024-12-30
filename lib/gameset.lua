@@ -562,6 +562,8 @@ function Card:set_ability(center, y, z)
 				self[k] = v
 				if k == "rarity" then
 					center:set_rarity(v)
+				else
+					self.config.center[k] = v
 				end
 			end
 		end
