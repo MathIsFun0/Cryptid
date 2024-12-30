@@ -150,6 +150,11 @@ for set, objs in pairs(Cryptid.object_buffer) do
 		SMODS[set](objs[i])
 	end
 end
+local inj = SMODS.injectItems
+function SMODS.injectItems(...)
+	inj(...)
+	cry_update_obj_registry()
+end
 
 
 local cryptidTabs = function() return {
