@@ -1472,4 +1472,5 @@ return {
 		end
 	end,
 	items = items_togo,
+	disabled = true
 }

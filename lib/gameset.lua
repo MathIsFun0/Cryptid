@@ -12,21 +12,6 @@ Cryptid.cross_mod_names = {
 	Cryptid = "Cryptid",
 	jen = "Jen's Almanac",
 }
-
--- This is for any content that should override the gameset's default setting for its own default.
--- For instance if something is unstable it could be disabled by default in specific gamesets.
-Cryptid.gameset_overrides = {
-	modest = {
-		e_double_sided = "disabled",
-	},
-	mainline = {
-		e_double_sided = "disabled",
-	},
-	madness = {
-		e_double_sided = "disabled",
-	},
-}
-
 -------------------------
 ---- TUTORIAL SYSTEM ----
 -------------------------
@@ -546,9 +531,6 @@ function cry_get_gameset(card, center)
 		and G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
 	then
 		return G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
-	end
-	if Cryptid.gameset_overrides[gameset][center.key] then
-		return Cryptid.gameset_overrides[gameset][center.key]
 	end
 	return gameset
 end
