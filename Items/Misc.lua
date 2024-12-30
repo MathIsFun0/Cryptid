@@ -1502,6 +1502,12 @@ local absolute = {
 	pos = { x = 1, y = 5 },
 	should_apply = false,
 	no_sticker_sheet = true,
+	draw = function(self, card, layer)
+		G.shared_stickers["cry_absolute"].role.draw_major = card
+		G.shared_stickers["cry_absolute"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader('polychrome', nil, card.ARGS.send_to_shader, nil, card.children.center)
+	end,
 }
 local miscitems = {
 	memepack_atlas,
