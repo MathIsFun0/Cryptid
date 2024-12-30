@@ -498,6 +498,13 @@ return {
             },
         },
         ["Content Set"] = {
+            set_cry_epic = {
+                name = "Epic Jokers",
+                text = {
+                    "Jokers with",
+                    "{C:cry_epic}Epic{} rarity",
+                }
+            },
             set_cry_m = {
                 name = "M Jokers",
                 text = {

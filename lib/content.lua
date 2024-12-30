@@ -35,7 +35,7 @@ SMODS.Rarity({
 })
 
 --Add Unique consumable set - used for unique consumables that aren't normally obtained (e.g. Potion)
-SMODS.ConsumableType{
+SMODS.ConsumableType({
 	key = "Unique",
 	primary_colour = G.C.MONEY,
 	secondary_colour = G.C.MONEY,
@@ -45,7 +45,7 @@ SMODS.ConsumableType{
 	default = "c_cry_potion",
 	can_stack = false,
 	can_divide = false,
-}
+})
 
 --Stickers and modifiers used by Challenges+Stakes
 SMODS.Atlas({
@@ -149,14 +149,18 @@ SMODS.Sound({
 	sync = false,
 	pitch = 1,
 	select_music_track = function()
-		return next(find_joker("cry-Jimball")) and Cryptid_config.Cryptid and Cryptid_config.Cryptid.jimball_music and 1.57e308
+		return next(find_joker("cry-Jimball"))
+			and Cryptid_config.Cryptid
+			and Cryptid_config.Cryptid.jimball_music
+			and 1.57e308
 	end,
 })
 SMODS.Sound({
 	key = "music_code",
 	path = "music_code.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.code_music
+		return Cryptid_config.Cryptid
+			and Cryptid_config.Cryptid.code_music
 			and (
 				(
 					G.pack_cards
@@ -171,7 +175,9 @@ SMODS.Sound({
 	key = "music_big",
 	path = "music_big.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.big_music and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
+		return Cryptid_config.Cryptid
+			and Cryptid_config.Cryptid.big_music
+			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 	end,
 })
 --Used to check to play the exotic music
@@ -198,11 +204,16 @@ SMODS.Sound({
 	volume = 0.7,
 	sync = {
 		cry_music_modest = true,
-		cry_music_madness = true
+		cry_music_madness = true,
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
+		return G.STAGE == G.STAGES.MAIN_MENU
+			and (
+				G.PROFILES[G.SETTINGS.profile].cry_gameset
+					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline"
+				or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness"
+			)
 	end,
 })
 SMODS.Sound({
@@ -211,11 +222,16 @@ SMODS.Sound({
 	volume = 0.7,
 	sync = {
 		cry_music_modest = true,
-		cry_music_mainline = true
+		cry_music_mainline = true,
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
+		return G.STAGE == G.STAGES.MAIN_MENU
+			and (
+				G.PROFILES[G.SETTINGS.profile].cry_gameset
+					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness"
+				or G.selectedGameset == "madness"
+			)
 	end,
 })
 SMODS.Sound({
@@ -224,11 +240,16 @@ SMODS.Sound({
 	volume = 0.7,
 	sync = {
 		cry_music_mainline = true,
-		cry_music_madness = true
+		cry_music_madness = true,
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
+		return G.STAGE == G.STAGES.MAIN_MENU
+			and (
+				G.PROFILES[G.SETTINGS.profile].cry_gameset
+					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest"
+				or G.selectedGameset == "modest"
+			)
 	end,
 })
 SMODS.Atlas({

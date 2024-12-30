@@ -3,8 +3,8 @@ local test = {
 	key = "test",
 	discovered = true,
     gameset_config = {
-        modest = {extra = {chips = 1}, center = {rarity = 1}},
-		mainline = {center = {rarity = 2}},
+        modest = {extra = {chips = 1}, center = {rarity = 1, blueprint_compat = false, immutable = true, no_dbl = false}},
+		mainline = {center = {rarity = 2, blueprint_compat = true, immutable = true, no_dbl = true}},
         madness = {extra = {chips = 100}, center = {rarity = 3}},
 		cryptid_in_2025 = {extra = {chips = 1e308}, center = {rarity = "cry_exotic"}},
     },
@@ -44,114 +44,6 @@ local test = {
 		},
 		art = {
 			"m"
-		},
-		code = {
-			"Jevonn"
-		}
-	},
-}
---Note, did not update description yet
-local test2 = {
-	object_type = "Joker",
-	name = "cry-altgoogol",
-	key = "altgoogol",
-	discovered = true,
-	pos = { x = 4, y = 3 },
-	immutable = true,
-	rarity = "cry_epic",
-	cost = 13,
-	order = 60,
-	blueprint_compat = false,
-	eternal_compat = false,
-	atlas = "atlasepic",
-	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
-	calculate = function(self, card, context)
-		local gameset = Card.get_gameset(card)
-		if context.selling_self and not context.retrigger_joker and (gameset == "madness" or not context.blueprint) then
-			local modestcheck = nil
-			if gameset == "modest" then modestcheck = true end
-			local jokers = {}
-                	for i=1, #G.jokers.cards do 
-                    		if G.jokers.cards[i] ~= card then
-                        		jokers[#jokers+1] = G.jokers.cards[i]
-                    		end
-                	end
-                	if #jokers > 0 then
-				if not modestcheck or #G.jokers.cards <= G.jokers.config.card_limit then 
-					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								for i = 1, (2 - (modestcheck and 1 or 0))  do
-									local chosen_joker = G.jokers.cards[1]
-									local card = copy_card(chosen_joker, nil, nil, nil, (modestcheck and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
-									card:add_to_deck()
-									G.jokers:emplace(card)
-								end
-								return true
-							end,
-						}))
-						card_eval_status_text(
-							context.blueprint_card or card,
-							"extra",
-							nil,
-							nil,
-							nil,
-						{ 
-							message = localize("k_duplicated_ex"),
-							colour = G.C.RARITY.cry_epic,
-							}
-						)
-						return nil, true
-					else
-						card_eval_status_text(
-							context.blueprint_card or card,
-							"extra",
-							nil,
-							nil,
-							nil,
-							{ 
-							message = localize("k_nope_ex"),
-							colour = G.C.RARITY.cry_epic,
-							}
-						)
-						return nil, true
-					end
-				else
-					card_eval_status_text(
-							context.blueprint_card or card,
-							"extra",
-							nil,
-							nil,
-							nil,
-							{ 
-							message = localize("k_no_room_ex"),
-							colour = G.C.RARITY.cry_epic,
-							}
-					)
-					return nil, true
-				end
-			else
-				card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ 
-						message = localize("k_no_other_jokers"),
-						colour = G.C.RARITY.cry_epic,
-						}
-				)
-				return nil, true
-			end
-		end
-	end,
-	cry_credits = {
-		idea = {
-			"Jevonn"
-		},
-		art = {
-			"Jevonn"
 		},
 		code = {
 			"Jevonn"
@@ -247,102 +139,55 @@ local test3 = {
 		}
 	},
 }
-local rework = {
-	object_type = "Consumable",
-	set = "Tarot",
-	key = "rework",
-	discovered = true,
-	name = "cry-Rework",
-	order = 25,
-	pos = {
-		x = 3,
-		y = 3,
-	},
-	cost = 4,
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] =
-			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]" } }
-		return { vars = {} }
+local test4 = {
+	object_type = "Joker",
+	name = "skfjadfjk;ldsjfkerjiopghtwueihvefjhgrwjh",
+	key = "weuqyreuiyroiusdafgdbflhfiuowyqoiwufhjklfhioqhfh8393824774893fhjdhfkj",
+	pos = { x = 0, y = 0 },
+	rarity = 1,
+	cost = 404,
+	atlas = "atlasone",
+	config = {extra = {center = nil}},
+	loc_txt = {
+        	name = 'Allmighty Center Checker',
+     		text = {
+			"{C:attention}#1#",
+       			"{C:green}#2#",
+			"{C:inactive}1st joker slot btw"
+        	}
+    	},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (card.ability.blueprint_compat ~= nil and card.ability.blueprint_compat or "uh oh"), card.ability.extra.center } }
 	end,
-	can_use = function(self, card)
-		--todo: nostalgic deck compat
-		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
-		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
-		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
-		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
-		and G.jokers.highlighted[1].config.center.rarity ~= "cry_cursed"
-	end,
-	use = function(self, card, area, copier)
-		local jkr = G.jokers.highlighted[1]
-		local found_index = 1
-		if jkr.edition then
-			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
-				if v.key == jkr.edition.key then
-					found_index = i
-					break
+	update = function(self, card, front)
+		if G.STAGE == G.STAGES.RUN then
+			G.GAME.round_resets.discards = G.GAME.round_resets.discards + 1
+			other_joker = G.jokers.cards[1]
+			if other_joker then
+				if G.GAME.current_round.discards_used % 3 == 0 then
+					card.ability.extra.center = "blueprint_compat"
+					if other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat then
+                				card.ability.blueprint_compat = 'yes'
+            				else
+               					card.ability.blueprint_compat = 'nah'
+            				end
+				elseif G.GAME.current_round.discards_used % 3 == 1 then
+					card.ability.extra.center = "immutable"
+					if other_joker and other_joker ~= card and (Card.no(other_joker, "immutable", true)) then
+                				card.ability.blueprint_compat = 'yes'
+            				else	
+               					card.ability.blueprint_compat = 'nah'
+            				end
+				else
+					card.ability.extra.center = "no_dbl"
+					if other_joker and other_joker ~= card and (Card.no(other_joker, "no_dbl", true)) then
+                				card.ability.blueprint_compat = 'yes'
+            				else
+               					card.ability.blueprint_compat = 'nah'
+            				end
 				end
 			end
 		end
-		found_index = found_index + 1
-		if found_index > #G.P_CENTER_POOLS.Edition then
-			found_index = found_index - #G.P_CENTER_POOLS.Edition
-		end
-		local tag = Tag("tag_cry_rework")
-		if not tag.ability then
-			tag.ability = {}
-		end
-		tag.ability.rework_key = jkr.config.center.key
-		tag.ability.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
-		add_tag(tag)
-		--SMODS.Tags.tag_cry_rework.apply(tag, {type = "store_joker_create"})
-		G.E_MANAGER:add_event(Event({
-			trigger = "before",
-			delay = 0.75,
-			func = function()
-				jkr:start_dissolve()
-				return true
-			end,
-		}))
-	end,
-}
-local rework_tag = {
-	object_type = "Tag",
-	atlas = "tag_cry",
-	name = "cry-Rework Tag",
-	discovered = true,
-	order = 19,
-	pos = { x = 0, y = 3 },
-	config = { type = "store_joker_create" },
-	key = "rework",
-	ability = { rework_edition = nil, rework_key = nil },
-	apply = function(tag, context)
-		if context.type == "store_joker_create" then
-			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
-			create_shop_card_ui(card, "Joker", context.area)
-			card:set_edition((tag.ability.rework_edition or "e_foil"), true, nil, true)
-			card.states.visible = false
-			tag:yep("+", G.C.FILTER, function()
-				card:start_materialize()
-				return true
-			end)
-			tag.triggered = true
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.5,
-				func = function()
-					save_run() --fixes savescum bugs hopefully?
-					return true
-				end,
-			}))
-			return card
-		end
-	end,
-	--This is temporary to prevent crashes, we should implement proper loc_vars handling here later
-	loc_vars = function(self, info_queue)
-		return { vars = { "[edition]", "[joker]" } }
-	end,
-	in_pool = function()
-		return false
 	end,
 }
 local blank = {
@@ -519,4 +364,4 @@ local banana = {
 		end
 	end,
 }
-return {items = {test, test2, test3, rework, rework_tag, blank, blank_sprite, oldmark, nostalgia_sprites, echo, gold_shader, gold_edition, azure_seal, banana}}
+return {items = {test, test3, blank, blank_sprite, oldmark, nostalgia_sprites, echo, gold_shader, gold_edition, azure_seal, banana, test4}, disabled = false}

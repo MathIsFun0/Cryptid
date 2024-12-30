@@ -12,21 +12,6 @@ Cryptid.cross_mod_names = {
 	Cryptid = "Cryptid",
 	jen = "Jen's Almanac",
 }
-
--- This is for any content that should override the gameset's default setting for its own default.
--- For instance if something is unstable it could be disabled by default in specific gamesets.
-Cryptid.gameset_overrides = {
-	modest = {
-		e_double_sided = "disabled",
-	},
-	mainline = {
-		e_double_sided = "disabled",
-	},
-	madness = {
-		e_double_sided = "disabled",
-	},
-}
-
 -------------------------
 ---- TUTORIAL SYSTEM ----
 -------------------------
@@ -500,7 +485,9 @@ end
 
 -- Gets gameset sprite of current profile
 function gameset_sprite(scale, profile, force_gameset)
-	gameset = force_gameset or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset_overrides and "modified" or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
+	gameset = force_gameset
+		or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset_overrides and "modified"
+		or G.PROFILES[profile or G.SETTINGS.profile].cry_gameset
 	scale = scale or 1
 	local sprite = Sprite(
 		0,
@@ -537,7 +524,7 @@ function cry_get_gameset(card, center)
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
 		else
-			error("Could not find key for center: "..tprint(center))
+			error("Could not find key for center: " .. tprint(center))
 		end
 	end
 	local gameset = G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
@@ -546,9 +533,6 @@ function cry_get_gameset(card, center)
 		and G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
 	then
 		return G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
-	end
-	if Cryptid.gameset_overrides[gameset][center.key] then
-		return Cryptid.gameset_overrides[gameset][center.key]
 	end
 	return gameset
 end
@@ -578,6 +562,8 @@ function Card:set_ability(center, y, z)
 				self[k] = v
 				if k == "rarity" then
 					center:set_rarity(v)
+				else
+					self.config.center[k] = v
 				end
 			end
 		end
@@ -616,7 +602,7 @@ function Card:click()
 			end
 		end
 	end
-	if G.GAME.viewed_back and self.config.center.key == 'c_base' then
+	if G.GAME.viewed_back and self.config.center.key == "c_base" then
 		cry_gameset_config_UI(G.GAME.viewed_back.effect.center)
 	end
 end
@@ -646,12 +632,18 @@ function cry_gameset_config_UI(center)
 			gamesets[#gamesets + 1] = center.extra_gamesets[i]
 		end
 	end
-    if center.set == "Content Set" then
-        gamesets = { "disabled", G.PROFILES[G.SETTINGS.profile].cry_gameset }
-    end
+	if center.set == "Content Set" then
+		gamesets = { "disabled", G.PROFILES[G.SETTINGS.profile].cry_gameset }
+	end
 
 	for i = 1, #gamesets do
-		if not (center.gameset_config and center.gameset_config[gamesets[i]] and center.gameset_config[gamesets[i]].disabled) then
+		if
+			not (
+				center.gameset_config
+				and center.gameset_config[gamesets[i]]
+				and center.gameset_config[gamesets[i]].disabled
+			)
+		then
 			local _center = cry_deep_copy(center)
 			_center.force_gameset = gamesets[i]
 			local card = create_generic_card(_center)
@@ -766,7 +758,13 @@ function cry_card_enabled(key, iter)
 		return true
 	end
 	local card = cry_get_center(key)
-	if cry_get_gameset(card) == "disabled" or card.gameset_config and card.gameset_config[cry_get_gameset(card)] and card.gameset_config[cry_get_gameset(card)].disabled then
+	if
+		not card
+		or cry_get_gameset(card) == "disabled"
+		or card.gameset_config
+			and card.gameset_config[cry_get_gameset(card)]
+			and card.gameset_config[cry_get_gameset(card)].disabled
+	then
 		return { type = "manual" }
 	end
 	if card.dependencies then
@@ -844,7 +842,7 @@ end
 SMODS.Joker.enable = function(self)
 	SMODS.Center.enable(self)
 	SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
-	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
+	local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
 	if vanilla_rarities[self.rarity] then
 		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
 	end
@@ -852,7 +850,7 @@ end
 SMODS.Joker.disable = function(self, reason)
 	SMODS.Center.disable(self, reason)
 	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
-	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
+	local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
 	if vanilla_rarities[self.rarity] then
 		SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self.key)
 	end
@@ -861,7 +859,7 @@ SMODS.Joker.set_rarity = function(self, rarity)
 	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
 	self.rarity = rarity
 	SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
-	local vanilla_rarities = {["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4}
+	local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
 	if vanilla_rarities[self.rarity] then
 		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
 	end
@@ -869,11 +867,11 @@ end
 
 SMODS.Consumable.enable = function(self)
 	SMODS.Center.enable(self)
-	SMODS.insert_pool(G.P_CENTER_POOLS['Consumeables'], self)
+	SMODS.insert_pool(G.P_CENTER_POOLS["Consumeables"], self)
 end
 SMODS.Consumable.disable = function(self, reason)
 	SMODS.Center.disable(self, reason)
-	SMODS.remove_pool(G.P_CENTER_POOLS['Consumeables'], self.key)
+	SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], self.key)
 end
 
 SMODS.Tag.disable = function(self, reason)
@@ -911,7 +909,9 @@ SMODS.Edition.disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
 	self.cry_get_weight = self.get_weight
-	self.get_weight = function() return 0 end
+	self.get_weight = function()
+		return 0
+	end
 end
 SMODS.Edition.enable = function(self)
 	self.cry_disabled = nil
@@ -946,7 +946,6 @@ function cry_update_obj_registry(m)
 		end
 	end
 end
-G.cuor = cry_update_obj_registry
 local init_item_prototypes_ref = Game.init_item_prototypes
 function Game:init_item_prototypes()
 	init_item_prototypes_ref(self)
@@ -982,6 +981,11 @@ SMODS.ContentSet({
 	atlas = "atlasepic",
 	pos = { x = 3, y = 1 },
 })
+SMODS.ContentSet({
+	key = "epic",
+	atlas = "atlasepic",
+	pos = { x = 2, y = 1 },
+})
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)
@@ -1003,24 +1007,21 @@ function create_UIBox_your_collection_content_sets()
 			0.95 * G.CARD_H,
 			{ card_limit = 5, type = "title", highlight_limit = 0, collection = true }
 		)
-		table.insert(
-			deck_tables,
-			{
-				n = G.UIT.R,
-				config = { align = "cm", padding = 0.07, no_fill = true },
-				nodes = {
-					{ n = G.UIT.O, config = { object = G.your_collection[j] } },
-				},
-			}
-		)
+		table.insert(deck_tables, {
+			n = G.UIT.R,
+			config = { align = "cm", padding = 0.07, no_fill = true },
+			nodes = {
+				{ n = G.UIT.O, config = { object = G.your_collection[j] } },
+			},
+		})
 	end
 
 	local joker_pool = {}
-    for k, v in pairs(SMODS.ContentSet.obj_table) do
-        if v.set == "Content Set" then
-            table.insert(joker_pool, v)
-        end
-    end
+	for k, v in pairs(SMODS.ContentSet.obj_table) do
+		if v.set == "Content Set" then
+			table.insert(joker_pool, v)
+		end
+	end
 	local joker_options = {}
 	for i = 1, math.ceil(#joker_pool / (5 * #G.your_collection)) do
 		table.insert(
@@ -1090,11 +1091,11 @@ G.FUNCS.your_collection_content_set_page = function(args)
 		end
 	end
 	local joker_pool = {}
-    for k, v in pairs(SMODS.ContentSet.obj_table) do
-        if v.set == "Content Set" then
-            table.insert(joker_pool, v)
-        end
-    end
+	for k, v in pairs(SMODS.ContentSet.obj_table) do
+		if v.set == "Content Set" then
+			table.insert(joker_pool, v)
+		end
+	end
 	for i = 1, 5 do
 		for j = 1, #G.your_collection do
 			local center =
@@ -1199,7 +1200,7 @@ local mct = modsCollectionTally
 function modsCollectionTally(...)
 	local t = mct(...)
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		return {tally = 10^400, of = 10^400}
+		return { tally = 10 ^ 400, of = 10 ^ 400 }
 	end
 	return t
 end
@@ -1214,7 +1215,7 @@ function create_UIBox_your_collection_decks()
 				table.insert(generic_collection_pool, v)
 			end
 		end
-		return SMODS.card_collection_UIBox(generic_collection_pool, {5,5,5})
+		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 })
 	else
 		return uibk()
 	end
@@ -1229,14 +1230,14 @@ function create_UIBox_your_collection_tags()
 				table.insert(generic_collection_pool, v)
 			end
 		end
-		return SMODS.card_collection_UIBox(generic_collection_pool, {6,6,6,6}, {
+		return SMODS.card_collection_UIBox(generic_collection_pool, { 6, 6, 6, 6 }, {
 			card_scale = 0.42,
 			h_mod = 0.3,
 			w_mod = 0.55,
 			area_type = "title_2",
 			modify_card = function(card, center, i, j)
 				card.T.h = card.T.w
-			end
+			end,
 		})
 	else
 		return uitag()
@@ -1252,14 +1253,14 @@ function create_UIBox_your_collection_blinds()
 				table.insert(generic_collection_pool, v)
 			end
 		end
-		return SMODS.card_collection_UIBox(generic_collection_pool, {5,5,5,5,5}, {
+		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5, 5, 5 }, {
 			card_scale = 0.70,
 			h_mod = 0.45,
 			w_mod = 0.70,
 			area_type = "title_2",
 			modify_card = function(card, center, i, j)
 				card.T.h = card.T.w
-			end
+			end,
 		})
 	else
 		return uibl()
@@ -1269,12 +1270,12 @@ end
 local uisl = create_UIBox_your_collection_seals
 function create_UIBox_your_collection_seals()
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, {5,5}, {
+		return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, { 5, 5 }, {
 			snap_back = true,
-			infotip = localize('ml_edition_seal_enhancement_explanation'),
+			infotip = localize("ml_edition_seal_enhancement_explanation"),
 			hide_single_page = true,
 			collapse_single_page = true,
-			center = 'c_base',
+			center = "c_base",
 			h_mod = 1.03,
 			modify_card = function(card, center)
 				card:set_seal(center.key, true)
@@ -1291,13 +1292,13 @@ end
 local uist = create_UIBox_your_collection_stickers
 function create_UIBox_your_collection_stickers()
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		return SMODS.card_collection_UIBox(SMODS.Stickers, {5,5}, {
+		return SMODS.card_collection_UIBox(SMODS.Stickers, { 5, 5 }, {
 			snap_back = true,
 			hide_single_page = true,
 			collapse_single_page = true,
-			center = 'c_base',
+			center = "c_base",
 			h_mod = 1.03,
-			back_func = 'your_collection_other_gameobjects',
+			back_func = "your_collection_other_gameobjects",
 			modify_card = function(card, center)
 				card.ignore_pinned = true
 				center:apply(card, true)
@@ -1315,7 +1316,7 @@ end
 local smai = SMODS.Atlas.inject
 SMODS.Atlas.inject = function(self)
 	smai(self)
-	if self.atlas_table ~= 'ASSET_ATLAS' then
+	if self.atlas_table ~= "ASSET_ATLAS" then
 		G.ASSET_ATLAS[self.key_noloc or self.key] = G[self.atlas_table][self.key_noloc or self.key]
 	end
 end
