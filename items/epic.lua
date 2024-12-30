@@ -1,5 +1,23 @@
+--[[
+gameset_config = {
+        modest = {extra = {chips = 1}, center = {rarity = 1, blueprint_compat = false, immutable = true, no_dbl = false}},
+		mainline = {center = {rarity = 2, blueprint_compat = true, immutable = true, no_dbl = true}},
+        madness = {extra = {chips = 100}, center = {rarity = 3}},
+		cryptid_in_2025 = {extra = {chips = 1e308}, center = {rarity = "cry_exotic"}},
+ },
+-- Card.get_gameset(card) ~= "modest"
+
+--TODO Modest descriptions for
+Supercell 
+Old Membership card
+Canvas
+Nostalgic Googol Play Card
+One For all
+--]]
+
 -- Supercell
 -- +15 Chips, +15 Mult, X2 Chips, X2 Mult, earn $3 at end of round
+-- TODO: Modest description
 local supercell = {
 	object_type = "Joker",
 	name = "cry-supercell",
@@ -22,13 +40,21 @@ local supercell = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and not context.before and not context.after then
 			if card.ability.extra.stat2 > 1 then --misprint deck moment
-				return {
-					message = localize("cry_gaming_ex"),
-					chip_mod = card.ability.extra.stat1,
-					mult_mod = card.ability.extra.stat1,
-					Xchip_mod = card.ability.extra.stat2,
-					Xmult_mod = card.ability.extra.stat2,
-				}
+				if Card.get_gameset(card) ~= "modest" then
+					return {
+						message = localize("cry_gaming_ex"),
+						chip_mod = card.ability.extra.stat1,
+						mult_mod = card.ability.extra.stat1,
+						Xchip_mod = card.ability.extra.stat2,
+						Xmult_mod = card.ability.extra.stat2,
+					}
+				else
+					return {
+						message = localize("cry_gaming_ex"),
+						Xchip_mod = card.ability.extra.stat2,
+						Xmult_mod = card.ability.extra.stat2,
+					}
+				end
 			end
 		end
 	end,
@@ -62,6 +88,9 @@ local membershipcardtwo = {
 	name = "cry-membershipcardtwo",
 	key = "membershipcardtwo",
 	config = { extra = { chips = 1 } },
+	gameset_config = {
+        	modest = {cost = 20, center = {rarity = 4}},
+ 	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -74,7 +103,9 @@ local membershipcardtwo = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.chips, card.ability.extra.chips * GLOBAL_cry_member_count } }
+		local a = 1
+		if Card.get_gameset(card) == "modest" then a = 8 end
+		return { vars = { card.ability.extra.chips, card.ability.extra.chips * math.floor(GLOBAL_cry_member_count / a ) } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -83,13 +114,15 @@ local membershipcardtwo = {
 			and not context.after
 			and card.ability.extra.chips > 0
 		then
+			local a = 1
+			if Card.get_gameset(card) == "modest" then a = 8 end
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_chips",
-					vars = { card.ability.extra.chips * GLOBAL_cry_member_count },
+					vars = { card.ability.extra.chips * math.floor(GLOBAL_cry_member_count / a ) },
 				}),
-				chip_mod = card.ability.extra.chips * GLOBAL_cry_member_count,
+				chip_mod = card.ability.extra.chips * math.floor(GLOBAL_cry_member_count / a ),
 			}
 		end
 	end,
@@ -118,6 +151,9 @@ local googol_play = {
 			"set_cry_epic",
 		},
 	},
+	gameset_config = {
+       		modest = {extra = {Xmult = 9}},
+ 	},
 	pos = { x = 3, y = 0 },
 	rarity = "cry_epic",
 	cost = 10,
@@ -171,6 +207,9 @@ local sync_catalyst = {
 			"set_cry_epic",
 		},
 	},
+	gameset_config = {
+        	modest = {cost = 20, center = {rarity = 4}},
+ 	},
 	pos = { x = 5, y = 2 },
 	rarity = "cry_epic",
 	cost = 12,
@@ -233,6 +272,9 @@ local negative = {
 			"set_cry_epic",
 		},
 	},
+	gameset_config = {
+       		modest = {cost = 16},
+ 	},
 	rarity = "cry_epic",
 	cost = 10,
 	order = 70,
@@ -261,6 +303,7 @@ local negative = {
 
 -- Canvas
 -- Retrigger all Jokers to the left once for every non-Common Joker to the right of this Joker
+-- Still considering moving to Legendary - Jevonn
 local canvas = {
 	object_type = "Joker",
 	name = "cry-Canvas",
@@ -284,6 +327,7 @@ local canvas = {
 				if
 					card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2
 					and G.jokers.cards[i].config.center.rarity ~= 1
+					and (G.jokers.cards[i].config.center.rarity ~= "cry_candy" or Card.get_gameset(card) ~= "modest")
 				then
 					num_retriggers = num_retriggers + 1
 				end
@@ -291,7 +335,7 @@ local canvas = {
 			if card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2 then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = num_retriggers,
+					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
 					card = card,
 				}
 			end
@@ -589,7 +633,10 @@ local m = {
 	name = "cry-m",
 	key = "m",
 	pos = { x = 3, y = 1 },
-	config = { extra = { extra = 13, x_mult = 1 }, jolly = { t_mult = 8, type = "Pair" } },
+	config = { extra = { extra = 13, x_mult = 1 } },
+	gameset_config = {
+       		modest = {extra = {extra = 1}},
+ 	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -607,7 +654,7 @@ local m = {
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
 			key = "j_jolly",
-			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
+			specific_vars = { 8, localize("Pair", "poker_hands") },
 		}
 		return { vars = { center.ability.extra.extra, center.ability.extra.x_mult } }
 	end,
@@ -680,7 +727,6 @@ local M = {
 	key = "M",
 	pos = { x = 0, y = 0 },
 	order = 250,
-	config = { jolly = { t_mult = 8, type = "Pair" } },
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -696,7 +742,7 @@ local M = {
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
 			key = "j_jolly",
-			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
+			specific_vars = { 8, localize("Pair", "poker_hands") },
 		}
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
@@ -757,6 +803,9 @@ local boredom = {
 			"set_cry_epic",
 		},
 	},
+	gameset_config = {
+       		modest = {extra = {odds = 3}},
+ 	},
 	pools = { ["Meme"] = true },
 	rarity = "cry_epic",
 	order = 32,
@@ -869,31 +918,12 @@ local number_blocks = {
 		},
 	},
 	init = function(self)
+		--Todo move hook to lib/overrides
 		local gigo = Game.init_game_object
 		function Game:init_game_object()
 			local g = gigo(self)
 			g.current_round.cry_nb_card = { rank = "Ace" }
 			return g
-		end
-		local rcc = reset_castle_card
-		function reset_castle_card()
-			rcc()
-			G.GAME.current_round.cry_nb_card = { rank = "Ace" }
-			local valid_castle_cards = {}
-			for k, v in ipairs(G.playing_cards) do
-				if v.ability.effect ~= "Stone Card" then
-					valid_castle_cards[#valid_castle_cards + 1] = v
-				end
-			end
-			if valid_castle_cards[1] then
-				local castle_card =
-					pseudorandom_element(valid_castle_cards, pseudoseed("cry_nb" .. G.GAME.round_resets.ante))
-				if not G.GAME.current_round.cry_nb_card then
-					G.GAME.current_round.cry_nb_card = {}
-				end
-				G.GAME.current_round.cry_nb_card.rank = castle_card.base.value
-				G.GAME.current_round.cry_nb_card.id = castle_card.base.id
-			end
 		end
 	end,
 }
@@ -911,6 +941,9 @@ local double_scale = {
 			"set_cry_epic",
 		},
 	},
+	gameset_config = {
+       		modest = {cost = 20, center = {rarity = 4}},
+ 	},
 	order = 6,
 	rarity = "cry_epic",
 	cost = 18,
@@ -943,6 +976,9 @@ local oldcandy = {
 	pos = { x = 4, y = 1 },
 	order = 43,
 	config = { extra = { hand_size = 3 } },
+	gameset_config = {
+       		modest = {extra = {hand_size = 1}},
+ 	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1104,6 +1140,9 @@ local caramel = {
 	rarity = "cry_epic",
 	cost = 12,
 	order = 106,
+	gameset_config = {
+       		modest = {extra = { x_mult = 1.5 , rounds_remaining = 6 }},
+ 	},
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasepic",
@@ -1179,6 +1218,8 @@ local caramel = {
 -- you cannot run... you cannot hide... you cannot escape...
 -- Creates a Negative Absolute Eternal Obelisk when added
 -- Creates Obelisks (if room) when doing just about anything
+
+-- Still planning on making one more change to this later - Jevonn
 local curse_sob = {
 	object_type = "Joker",
 	name = "cry_curse_sob",
@@ -1190,6 +1231,9 @@ local curse_sob = {
 			"set_cry_epic",
 		},
 	},
+	gameset_config = {
+       		modest = {cost = 20, center = {rarity = 4}},
+ 	},
 	conflicts = {
 		mods = {
 			"jen"
@@ -1351,7 +1395,7 @@ local bonusjoker = {
 }
 
 -- Mult Joker
--- 1 in 3 chance for each played Mult Card to create a Cryptid when scored
+-- 1 in 3 chance for each played Mult Card to create a Cryptid when scored (Must have room)
 local multjoker = {
 	object_type = "Joker",
 	name = "cry-Mult Joker",
@@ -1498,48 +1542,91 @@ local altgoogol = {
 	rarity = "cry_epic",
 	cost = 10,
 	order = 60,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	eternal_compat = false,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
+	gameset_config = {
+       		modest = {cost = 15},
+		madness = {center = {blueprint_compat = true}},
+ 	},
 	calculate = function(self, card, context)
-		if context.selling_self and not context.retrigger_joker then
+		local gameset = Card.get_gameset(card)
+		if context.selling_self and not context.retrigger_joker and (gameset == "madness" or not context.blueprint) then
+			local modestcheck = nil
+			if gameset == "modest" then modestcheck = true end
 			local jokers = {}
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] ~= card then
-					jokers[#jokers + 1] = G.jokers.cards[i]
-				end
-			end
-			if #jokers > 0 then
-				if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
-					local spawn = { G.jokers.cards[1] }
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							for i = 1, 2 do
-								local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_ngpc")), nil)
-								card:add_to_deck()
-								G.jokers:emplace(card)
-							end
-							return true
-						end,
-					}))
-					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-						message = localize("k_duplicated_ex"),
-						colour = G.C.RARITY.cry_epic,
-					})
-					return nil, true
+                	for i=1, #G.jokers.cards do 
+                    		if G.jokers.cards[i] ~= card then
+                        		jokers[#jokers+1] = G.jokers.cards[i]
+                    		end
+                	end
+                	if #jokers > 0 then
+				if not modestcheck or #G.jokers.cards <= G.jokers.config.card_limit then 
+					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								for i = 1, (2 - (modestcheck and 1 or 0)) do
+									local chosen_joker = G.jokers.cards[1]
+									local card = copy_card(chosen_joker, nil, nil, nil, (modestcheck and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
+									card:add_to_deck()
+									G.jokers:emplace(card)
+								end
+								return true
+							end,
+						}))
+						card_eval_status_text(
+							context.blueprint_card or card,
+							"extra",
+							nil,
+							nil,
+							nil,
+						{ 
+							message = localize("k_duplicated_ex"),
+							colour = G.C.RARITY.cry_epic,
+							}
+						)
+						return nil, true
+					else
+						card_eval_status_text(
+							context.blueprint_card or card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{ 
+							message = localize("k_nope_ex"),
+							colour = G.C.RARITY.cry_epic,
+							}
+						)
+						return nil, true
+					end
 				else
-					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-						message = localize("k_nope_ex"),
-						colour = G.C.RARITY.cry_epic,
-					})
+					card_eval_status_text(
+							context.blueprint_card or card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{ 
+							message = localize("k_no_room_ex"),
+							colour = G.C.RARITY.cry_epic,
+							}
+					)
 					return nil, true
 				end
 			else
-				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-					message = localize("k_no_other_jokers"),
-					colour = G.C.RARITY.cry_epic,
-				})
+				card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ 
+						message = localize("k_no_other_jokers"),
+						colour = G.C.RARITY.cry_epic,
+						}
+				)
 				return nil, true
 			end
 		end
@@ -1580,7 +1667,7 @@ local soccer = {
 	end,
 	add_to_deck = function(self, card, from_debuff) --TODO: Card in booster packs, Voucher slots
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.holygrail
+		G.jokers.config.card_limit = G.jokers.config.card_limit + Card.get_gameset(card) == "modest" and 0 or card.ability.extra.holygrail
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.holygrail
 		G.hand:change_size(card.ability.extra.holygrail)
 		if not G.GAME.modifiers.cry_booster_packs then
@@ -1590,7 +1677,7 @@ local soccer = {
 		change_shop_size(card.ability.extra.holygrail)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.holygrail
+		G.jokers.config.card_limit = G.jokers.config.card_limit - Card.get_gameset(card) == "modest" and 0 or card.ability.extra.holygrail
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.holygrail
 		G.hand:change_size(-card.ability.extra.holygrail)
 		if not G.GAME.modifiers.cry_booster_packs then
