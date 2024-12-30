@@ -3057,8 +3057,9 @@ return {
             v_cry_overstock_multi = {
                 name = "Multistock",
                 text = {
-                    "{C:attention}+#1#{} card slot(s) and",
-                    "{C:attention}+#1#{} booster pack slot(s)",
+                    "{C:attention}+#1#{} card slot(s),",
+                    "{C:attention}+#1#{} booster pack slot(s),",
+                    "and {C:attention}+#1#{} voucher slot(s),",
                     "available in shop",
                 },
             },
