@@ -102,7 +102,9 @@ function cry_sanity_check(val)
 	return val
 end
 function cry_misprintize(card, override, force_reset, stack)
-	if Card.no(card, "immutable", true) then force_reset = true end
+	if Card.no(card, "immutable", true) then
+		force_reset = true
+	end
 	--infinifusion compat
 	if card.infinifusion then
 		if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then

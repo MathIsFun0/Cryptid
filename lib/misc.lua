@@ -10,7 +10,7 @@ function loc_colour(_c, _default)
 	G.ARGS.LOC_COLOURS.spade = G.C.SUITS.Spades
 	G.ARGS.LOC_COLOURS.club = G.C.SUITS.Clubs
 	for k, v in pairs(G.C) do
-		if string.len(k) > 4 and string.sub(k, 1, 4) == 'CRY_' then
+		if string.len(k) > 4 and string.sub(k, 1, 4) == "CRY_" then
 			G.ARGS.LOC_COLOURS[string.lower(k)] = v
 		end
 	end
@@ -90,7 +90,7 @@ end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
 function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undiscovered)
-    -- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
+	-- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
 	excluded_flags = excluded_flags or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
 	local passes = 0
@@ -98,14 +98,14 @@ function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undis
 	while true do
 		tries = tries - 1
 		passes = 0
-        -- create a random consumable naively
+		-- create a random consumable naively
 		local key = pseudorandom_element(pool or G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
-        -- check if it is valid
+		-- check if it is valid
 		if selection.discovered or not no_undiscovered then
 			for k, v in pairs(excluded_flags) do
 				if not center_no(selection, v, key, true) then
-					--Makes the consumable invalid if it's a specific card unless it's set to 
+					--Makes the consumable invalid if it's a specific card unless it's set to
 					--I use this so cards don't create copies of themselves (eg potential inf Blessing chain, Hammerspace from Hammerspace...)
 					if not banned_card or (banned_card and banned_card ~= key) then
 						passes = passes + 1
@@ -113,7 +113,7 @@ function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undis
 				end
 			end
 		end
-        -- use it if it's valid or we've run out of attempts
+		-- use it if it's valid or we've run out of attempts
 		if passes >= #excluded_flags or tries <= 0 then
 			if tries <= 0 and no_undiscovered then
 				return G.P_CENTERS["c_strength"]
@@ -199,7 +199,10 @@ function Card:no(m, no_no)
 		-- Infinifusion Compat
 		if self.infinifusion then
 			for i = 1, #self.infinifusion do
-				if G.P_CENTERS[self.infinifusion[i].key][m] or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key]) then
+				if
+					G.P_CENTERS[self.infinifusion[i].key][m]
+					or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key])
+				then
 					return true
 				end
 			end
@@ -212,16 +215,15 @@ function Card:no(m, no_no)
 
 		return self.config.center[m] or (G.GAME and G.GAME[m] and G.GAME[m][self.config.center_key]) or false
 	end
-	return Card.no(self, "no_"..m, true)
+	return Card.no(self, "no_" .. m, true)
 end
 
 function center_no(center, m, key, no_no)
 	if no_no then
 		return center[m] or (G.GAME and G.GAME[m] and G.GAME[m][key]) or false
 	end
-	return center_no(center, "no_"..m, key, true)
+	return center_no(center, "no_" .. m, key, true)
 end
-
 
 --todo: move to respective stake file
 --[from pre-refactor] make this always active to prevent crashes
@@ -243,39 +245,42 @@ if true then --Cryptid.enabled["Menu"] then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
-        -- adds a Cryptid spectral to the main menu
-		local newcard = create_card('Spectral',G.title_top, nil, nil, nil, nil, 'c_cryptid', 'elial1')
+		-- adds a Cryptid spectral to the main menu
+		local newcard = create_card("Spectral", G.title_top, nil, nil, nil, nil, "c_cryptid", "elial1")
 		-- recenter the title
-        G.title_top.T.w = G.title_top.T.w*1.7675
+		G.title_top.T.w = G.title_top.T.w * 1.7675
 		G.title_top.T.x = G.title_top.T.x - 0.8
 		G.title_top:emplace(newcard)
-        -- make the card look the same way as the title screen Ace of Spades
-		newcard.T.w = newcard.T.w * 1.1*1.2
-		newcard.T.h = newcard.T.h *1.1*1.2
+		-- make the card look the same way as the title screen Ace of Spades
+		newcard.T.w = newcard.T.w * 1.1 * 1.2
+		newcard.T.h = newcard.T.h * 1.1 * 1.2
 		newcard.no_ui = true
 
-        -- make the title screen use different background colors
-		G.SPLASH_BACK:define_draw_steps({{
-			shader = 'splash',
-			send = {
-				{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL_SHADER'},
-				{name = 'vort_speed', val = 0.4},
-				{name = 'colour_1', ref_table = G.C, ref_value = 'CRY_EXOTIC'},
-				{name = 'colour_2', ref_table = G.C, ref_value = 'DARK_EDITION'},
-			}}})
+		-- make the title screen use different background colors
+		G.SPLASH_BACK:define_draw_steps({
+			{
+				shader = "splash",
+				send = {
+					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
+					{ name = "vort_speed", val = 0.4 },
+					{ name = "colour_1", ref_table = G.C, ref_value = "CRY_EXOTIC" },
+					{ name = "colour_2", ref_table = G.C, ref_value = "DARK_EDITION" },
+				},
+			},
+		})
 		return ret
 	end
 end
 function Cryptid.get_food(seed)
-    local food_keys = {}  
-    for k, v in pairs(Cryptid.food) do  
-        if G.GAME.banned_keys[v] and G.P_CENTERS[v] then
-            table.insert(food_keys, v)  
-        end
-    end
-    if #food_keys <= 0 then
+	local food_keys = {}
+	for k, v in pairs(Cryptid.food) do
+		if G.GAME.banned_keys[v] and G.P_CENTERS[v] then
+			table.insert(food_keys, v)
+		end
+	end
+	if #food_keys <= 0 then
 		return "j_reserved_parking"
-    else
-    	return pseudorandom_element(food_keys, pseudoseed(seed)) 
-    end
+	else
+		return pseudorandom_element(food_keys, pseudoseed(seed))
+	end
 end

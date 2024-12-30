@@ -139,7 +139,7 @@ position = "after"
 payload = '''if _c.cry_disabled or (_c.force_gameset and _c.force_gameset == 'disabled') then
     if _c.cry_disabled then
         if _c.cry_disabled.type == "card_dependency" then
-            local name = localize{type = 'name_text', set = cry_get_center(_c.cry_disabled.key).set, key = _c.cry_disabled.key}
+            local name = cry_get_center(_c.cry_disabled.key) and localize{type = 'name_text', set = cry_get_center(_c.cry_disabled.key).set, key = _c.cry_disabled.key} or _c.cry_disabled.key
             info_queue[#info_queue+1] = {key = 'disabled_card_dependency', set = 'Other', specific_vars = {name}}
         elseif _c.cry_disabled.type == "mod_dependency" then
             local name = Cryptid.cross_mod_names[_c.cry_disabled.key] or _c.cry_disabled.key

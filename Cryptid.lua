@@ -59,11 +59,28 @@ local function process_items(f, mod)
 					item.dependencies[#item.dependencies + 1] = mod.id
 				end
 				if item.init then item:init() end
+				if G.PROFILES[G.SETTINGS.profile].all_unlocked then
+					item.alerted = true
+					item.discovered = true
+					item.unlocked = true
+				end
 				if not Cryptid.object_registry[item.object_type] then
 					Cryptid.object_registry[item.object_type] = {}
 				end
 				if not item.take_ownership then
-					SMODS[item.object_type](item)
+					if not item.order then
+						item.order = 0
+					end
+					if ret.order then
+						item.order = item.order + ret.order
+					end
+					if mod then
+						item.order = item.order + 1e9
+					end
+					if not Cryptid.object_buffer[item.object_type] then
+						Cryptid.object_buffer[item.object_type] = {}
+					end
+					Cryptid.object_buffer[item.object_type][#Cryptid.object_buffer[item.object_type] + 1] = item
 				else
 					item.key = SMODS[item.object_type].class_prefix .. "_" .. item.key
 					SMODS[item.object_type].obj_table[item.key].mod = SMODS.Mods.Cryptid
@@ -79,8 +96,8 @@ local function process_items(f, mod)
 	end
 end
 
---Todo: re-add the ordering system
 Cryptid.object_registry = {}
+Cryptid.object_buffer = {}
 local files = NFS.getDirectoryItems(mod_path .. "items")
 for _, file in ipairs(files) do
 	print("[CRYPTID] Loading file " .. file)
@@ -121,6 +138,19 @@ for _, mod in pairs(SMODS.Mods) do
 	end
 end
 
+-- Register all items
+for set, objs in pairs(Cryptid.object_buffer) do
+	table.sort(objs, function(a, b)
+		return a.order < b.order
+	end)
+	for i = 1, #objs do
+		if objs[i].post_process and type(objs[i].post_process) == "function" then
+			objs[i]:post_process()
+		end
+		SMODS[set](objs[i])
+	end
+end
+
 
 local cryptidTabs = function() return {
 	{
@@ -150,7 +180,7 @@ local cryptidTabs = function() return {
 			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 			cry_nodes[#cry_nodes + 1] = config
-			cry_nodes[#cry_nodes + 1] = UIBox_button({button = 'your_collection_content_sets', label = {localize('b_content_sets')}, count = {tally = 0, of = 0},  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'})
+			cry_nodes[#cry_nodes + 1] = UIBox_button({button = 'your_collection_content_sets', label = {localize('b_content_sets')}, count = {tally = 10^400, of = 10^400},  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'})
 			return {
 				n = G.UIT.ROOT,
 				config = {

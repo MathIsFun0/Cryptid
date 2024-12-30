@@ -17,8 +17,7 @@ function reset_castle_card()
 	end
 	if valid_castle_cards[1] then
 		--Dropshot
-		local castle_card =
-			pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
+		local castle_card = pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
 		if not G.GAME.current_round.cry_dropshot_card then
 			G.GAME.current_round.cry_dropshot_card = {}
 		end
@@ -40,7 +39,7 @@ function Back.apply_to_run(self)
 	Backapply_to_runRef(self)
 	if self.effect.config.cry_spooky then
 		G.GAME.modifiers.cry_spooky = true
-		G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate	or 0.25
+		G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate or 0.25
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
@@ -93,8 +92,7 @@ function Back.apply_to_run(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					local card = 
-					create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
+					local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
 					card:add_to_deck()
 					card:start_materialize()
 					G.jokers:emplace(card)
@@ -117,13 +115,19 @@ function Back.apply_to_run(self)
 			func = function()
 				if G.jokers then
 					-- Adding a before spawning becuase jen banned copy_paste
-					if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+					if
+						G.P_CENTERS["j_cry_CodeJoker"]
+						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
+					then
 						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
 						card:add_to_deck()
 						card:start_materialize()
 						G.jokers:emplace(card)
 					end
-					if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
+					if
+						G.P_CENTERS["j_cry_copypaste"]
+						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"])
+					then
 						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
 						card:add_to_deck()
 						card:start_materialize()
@@ -208,8 +212,7 @@ function Back.apply_to_run(self)
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
 					if self.effect.config.cry_force_seal == "random" then
-						local random_seal =
-							pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("cry_ant_seal"))
+						local random_seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("cry_ant_seal"))
 						G.playing_cards[c]:set_seal(random_seal.key, true)
 					else
 						G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true)
@@ -232,10 +235,7 @@ function Back.apply_to_run(self)
 					then
 						SMODS.Stickers[self.effect.config.cry_force_sticker]:apply(G.playing_cards[c], true)
 					else
-						G.playing_cards[c]["set_" .. self.effect.config.cry_force_sticker](
-							G.playing_cards[c],
-							true
-						)
+						G.playing_cards[c]["set_" .. self.effect.config.cry_force_sticker](G.playing_cards[c], true)
 					end
 				end
 				return true
@@ -270,7 +270,7 @@ cry_jimball_dt = 0
 cry_glowing_dt = 0
 function Game:update(dt)
 	upd(self, dt)
-	
+
 	cry_pointer_dt = cry_pointer_dt + dt
 	cry_jimball_dt = cry_jimball_dt + dt
 	cry_glowing_dt = cry_glowing_dt + dt
@@ -358,9 +358,7 @@ function Game:update(dt)
 				G.GAME.round_resets.blind_states[c] ~= "Current"
 				and G.GAME.round_resets.blind_states[c] ~= "Defeated"
 			then
-				G.GAME.CRY_BLINDS[c] = (
-					G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
-				)
+				G.GAME.CRY_BLINDS[c] = (G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult)
 					+ (
 						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
 							and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(
@@ -371,8 +369,7 @@ function Game:update(dt)
 				--Update UI
 				--todo: in blinds screen, too
 				if G.blind_select_opts then
-					local blind_UI =
-						G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
+					local blind_UI = G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
 					local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
 					if chip_text_node then
 						chip_text_node.config.text = number_format(
@@ -430,7 +427,7 @@ function Card:set_cost()
 	end
 	--Makes cube and Big Cube always cost a set amount
 	if self.ability.name == "cry-Cube" then
-		if Card.get_gameset(self) ~= "modest" then 
+		if Card.get_gameset(self) ~= "modest" then
 			self.cost = -27
 		else
 			self.cost = -12
@@ -446,11 +443,7 @@ function Card:set_cost()
 		self.cost = math.floor(self.cost * G.GAME.modifiers.cry_voucher_price_hike)
 		--Update related costs
 		self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
-		if
-			self.area
-			and self.ability.couponed
-			and (self.area == G.shop_jokers or self.area == G.shop_booster)
-		then
+		if self.area and self.ability.couponed and (self.area == G.shop_jokers or self.area == G.shop_booster) then
 			self.cost = 0
 		end
 		self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
@@ -461,7 +454,7 @@ function Card:set_cost()
 		self.sell_cost = 0
 		self.sell_cost_label = 0
 	end
-	
+
 	--Makes Tarots free if Tarot Acclimator is redeemed
 	--Makes Planets free if Planet Acclimator is redeemed
 	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then
@@ -647,7 +640,8 @@ function calculate_reroll_cost(skip_increment)
 	end
 	G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost)
 		+ G.GAME.current_round.reroll_cost_increase
-	]]--
+	]]
+	--
 
 	G.GAME.current_round.reroll_cost = 0
 end
@@ -670,7 +664,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
-		return center.unlocked and not center_no(center, "doe")
+		return center.unlocked
+			and not center_no(center, "doe")
 			and not center_no(center, "aeq")
 			and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
@@ -1153,22 +1148,22 @@ G.FUNCS.can_select_card = function(e)
 	end
 end
 
-
 --Cryptid (THE MOD) localization
 local function parse_loc_txt(center)
 	center.text_parsed = {}
-	if not center.text then else
+	if not center.text then
+	else
 		for _, line in ipairs(center.text) do
-			center.text_parsed[#center.text_parsed+1] = loc_parse_string(line)
+			center.text_parsed[#center.text_parsed + 1] = loc_parse_string(line)
 		end
 		center.name_parsed = {}
-		for _, line in ipairs(type(center.name) == 'table' and center.name or {center.name}) do
-			center.name_parsed[#center.name_parsed+1] = loc_parse_string(line)
+		for _, line in ipairs(type(center.name) == "table" and center.name or { center.name }) do
+			center.name_parsed[#center.name_parsed + 1] = loc_parse_string(line)
 		end
 		if center.unlock then
 			center.unlock_parsed = {}
 			for _, line in ipairs(center.unlock) do
-				center.unlock_parsed[#center.unlock_parsed+1] = loc_parse_string(line)
+				center.unlock_parsed[#center.unlock_parsed + 1] = loc_parse_string(line)
 			end
 		end
 	end
@@ -1195,11 +1190,15 @@ function init_localization()
 			local key = Cryptid.obj_buffer.Stake[i].key
 			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 			if color then
-				local sticker_key = key:sub(7).."_sticker"
+				local sticker_key = key:sub(7) .. "_sticker"
 				if not G.localization.descriptions.Other[sticker_key] then
 					G.localization.descriptions.Other[sticker_key] = {
-						name = localize{type='variable',key='cry_sticker_name',vars={color}}[1],
-						text = localize{type='variable',key='cry_sticker_desc',vars={color,"{C:attention}","{}"}},
+						name = localize({ type = "variable", key = "cry_sticker_name", vars = { color } })[1],
+						text = localize({ type = "variable", key = "cry_sticker_desc", vars = {
+							color,
+							"{C:attention}",
+							"{}",
+						} }),
 					}
 					parse_loc_txt(G.localization.descriptions.Other[sticker_key])
 				end
