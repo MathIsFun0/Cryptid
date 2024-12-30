@@ -3272,7 +3272,7 @@ SMODS.Sticker:take_ownership("rental", {
 local ec = eval_card
 function eval_card(card, context)
 	local ret = ec(card, context)
-	if card and card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck then
+	if card and (card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck) then
 		for k, v in pairs(SMODS.Stickers) do
 			if card.ability[k] and v.calculate and type(v.calculate) == "function" then
 				context.from_playing_card = true
