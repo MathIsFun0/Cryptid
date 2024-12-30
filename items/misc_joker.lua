@@ -5366,10 +5366,33 @@ local oldblueprint = {
 	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
 	rarity = 1,
+	immutable = true, -- No cheesing self destruct chance :)
 	cost = 6,
 	order = 83,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+	update = function(self, card, front)
+		if G.STAGE == G.STAGES.RUN then
+			for i = 1, #G.jokers.cards do
+                    		if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i+1] end
+                	end
+			if other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat then
+                		card.ability.blueprint_compat = 'compatible'
+            		else
+               			card.ability.blueprint_compat = 'incompatible'
+            		end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
+		return { 
+			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds },
+			main_end = (card.area and card.area == G.jokers) and {
+        			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                			{n=G.UIT.T, config={ref_table = card.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            				}}
+        			}}
+    			} or nil
+		}
 	end,
 	blueprint_compat = true,
 	eternal_compat = false,
@@ -5430,7 +5453,7 @@ local oldblueprint = {
 				other_joker = G.jokers.cards[i + 1]
 			end
 		end
-		if other_joker and other_joker ~= self then
+		if other_joker and other_joker ~= card then
 			context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
 			context.blueprint_card = context.blueprint_card or card
 
@@ -6379,21 +6402,55 @@ local oil_lamp = { --You want it? It's yours my friend
 	cost = 10,
 	order = 127,
 	atlas = "atlastwo",
-	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.increase } }
+	loc_vars = function(self, info_queue, card)
+		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
+		return { 
+			vars = { card.ability.extra.increase },
+			main_end = (card.area and card.area == G.jokers) and {
+        			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                			{n=G.UIT.T, config={ref_table = card.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            				}}
+        			}}
+    			} or nil
+		}
+	end,
+	update = function(self, card, front)
+		if G.STAGE == G.STAGES.RUN then
+			for i = 1, #G.jokers.cards do
+                    		if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i+1] end
+                	end
+			if other_joker and other_joker ~= card and not (Card.no(other_joker, "immutable", true)) then
+                		card.ability.blueprint_compat = 'compatible'
+            		else
+               			card.ability.blueprint_compat = 'incompatible'
+            		end
+		end
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.individual then
+		if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
+			local check = false
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i+1], "immutable", true) then
+							check = true
 							cry_with_deck_effects(G.jokers.cards[i+1], function(cards)
 								cry_misprintize(cards, { min = card.ability.extra.increase, max = card.ability.extra.increase }, nil, true)
 							end)
 						end
 					end
 				end
+			end
+			if check then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+				)
 			end
 		end
 	end,
@@ -6694,5 +6751,4 @@ return {
 		end
 	end,
 	items = miscitems,
-	disabled = true
 }

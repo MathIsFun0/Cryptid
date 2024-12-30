@@ -493,6 +493,7 @@ local shackle = {
 	order = 18,
 	boss_colour = HEX("010466"),
 	in_pool = function()
+		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then return false end
 		if not G.jokers then
 			return false
 		end
@@ -1471,5 +1472,4 @@ return {
 		end
 	end,
 	items = items_togo,
-	disabled = true
 }
