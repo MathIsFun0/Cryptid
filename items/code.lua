@@ -126,7 +126,7 @@ local console = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_code_normal_1", specific_vars = { 1, 2 } }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			tag:yep("+", G.C.SECONDARY_SET.Code, function()
 				local key = "p_cry_code_normal_" .. math.random(1, 2)
@@ -142,6 +142,12 @@ local console = {
 				card.cost = 0
 				card.from_tag = true
 				G.FUNCS.use_card({ config = { ref_table = card } })
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
 				card:start_materialize()
 				return true
 			end)
@@ -435,6 +441,7 @@ local hook = {
 	cost = 4,
 	atlas = "code",
 	order = 14,
+	no_pool_flag = "beta_deck",
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 2
 	end,
@@ -490,7 +497,7 @@ local variable = {
 	order = 8,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -524,7 +531,7 @@ local class = {
 	order = 16,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -873,11 +880,49 @@ local machinecode = {
 		return true
 	end,
 	can_bulk_use = true,
+	loc_vars = function(self, info_queue, center)
+		return {  
+			main_start = {
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+       				randomchar(codechars6),
+			}
+		} 
+	end,
 	use = function(self, card, area, copier)
-		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_machinecode")
+		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, get_random_consumable("cry_machinecode", nil, "c_cry_machinecode").key, c_cry_machinecode)
 		card:set_edition({ cry_glitched = true })
 		card:add_to_deck()
 		G.consumeables:emplace(card)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local a = {}
+		local b
+		for i = 1, number do
+			b = get_random_consumable("cry_machinecode", nil, "c_cry_machinecode")
+			a[b] = (a[b] or 0) + 1
+		end
+		for k, v in pairs(a) do
+			local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, k.key)
+			card:set_edition({ cry_glitched = true })
+			card:add_to_deck()
+			if Incantation then
+				card:setQty(v)
+			end
+			G.consumeables:emplace(card)
+		end
+		G.E_MANAGER:add_event(
+			Event({
+				trigger = "after",
+				func = function()
+					a = nil
+					return true
+				end,
+			})
+		)
 	end,
 }
 local run = {
@@ -992,6 +1037,7 @@ local rework = {
 	name = "cry-Rework",
 	atlas = "code",
 	order = 25,
+	no_pool_flag = "beta_deck",
 	pos = {
 		x = 3,
 		y = 3,
@@ -1052,7 +1098,7 @@ local rework_tag = {
 	config = { type = "store_joker_create" },
 	key = "rework",
 	ability = { rework_edition = nil, rework_key = nil },
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
 			create_shop_card_ui(card, "Joker", context.area)
@@ -1260,6 +1306,7 @@ local ctrl_v = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local card = copy_card(G.consumeables.highlighted[1])
+					if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 					card:add_to_deck()
 					if Incantation then
 						card:setQty(1)
@@ -1289,6 +1336,7 @@ local ctrl_v = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(G.consumeables.highlighted[1])
+						if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 						card:add_to_deck()
 						if Incantation then
 							card:setQty(1)
@@ -2466,15 +2514,24 @@ G.FUNCS.class_apply = function()
 				}))
 			end
 		elseif enh_suffix == "null" then
+			local destroyed_cards = {}
 			check_for_unlock({ type = "cheat_used" })
 			for i = #G.hand.highlighted, 1, -1 do
 				local card = G.hand.highlighted[i]
-				if card.ability.name == "Glass Card" then
-					card:shatter()
-				else
-					card:start_dissolve(nil, i == #G.hand.highlighted)
+				if not card.ability.eternal then
+					destroyed_cards[#destroyed_cards + 1] = G.hand.highlighted[i]
+					if card.ability.name == "Glass Card" then
+						card:shatter()
+					else
+						card:start_dissolve(nil, i == #G.hand.highlighted)
+					end
 				end
 			end
+			if destroyed_cards[1] then 
+            			for j=1, #G.jokers.cards do
+                			eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = destroyed_cards})
+            			end
+        		end
 			G.CHOOSE_ENH:remove()
 			return
 		else
@@ -2829,6 +2886,7 @@ G.FUNCS.pointer_apply = function()
 		if
 			G.P_CENTERS[current_card].set == "Joker"
 			and G.P_CENTERS[current_card].unlocked
+			and not G.GAME.banned_keys[current_card]
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2837,13 +2895,22 @@ G.FUNCS.pointer_apply = function()
 			G.jokers:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].consumeable and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" then
+		if 
+			G.P_CENTERS[current_card].consumeable 
+			and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" 
+			and not G.GAME.banned_keys[current_card] 
+		then
 			local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
+			if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
+		if 
+			G.P_CENTERS[current_card].set == "Voucher"
+			and G.P_CENTERS[current_card].unlocked 
+			and not G.GAME.banned_keys[current_card]
+		then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
@@ -2874,6 +2941,8 @@ G.FUNCS.pointer_apply = function()
 		end
 		if
 			G.P_CENTERS[current_card].set == "Booster"
+			and not G.GAME.banned_keys[current_card]
+			and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card("j_jen_p03") ~= 0)
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
 			and G.STATE ~= G.STATES.STANDARD_PACK
@@ -2906,7 +2975,11 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] then
+	if 
+		current_card 
+		and not G.P_CENTERS[current_card]
+		and not G.GAME.banned_keys[current_card]
+	then
 		local created = false
 		local t = Tag(current_card, nil, "Big")
 		add_tag(t)
@@ -2941,7 +3014,7 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] then
+	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] and not G.GAME.banned_keys[current_card] then
 		local created = false
 		if not G.GAME.blind or (G.GAME.blind.name == "" or not G.GAME.blind.blind_set) then
 			--from debugplus
@@ -3516,8 +3589,10 @@ local code_cards = {
 	--patch,
 	ctrl_v,
 	inst,
-	encoded,
 }
+if Cryptid.enabled["Misc. Decks"] then
+	code_cards[#code_cards + 1] = encoded
+end
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
 end

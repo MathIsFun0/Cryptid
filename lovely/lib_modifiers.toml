@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # Apply booster pack edition and stickers to contents - by Jen Walter
 [[patches]]
@@ -146,6 +146,7 @@ target = "functions/UI_definitions.lua"
 pattern = "voucher_areas[#voucher_areas]:emplace(card)"
 position = "before"
 payload = '''
+if not G.GAME.voucher_edition_index then G.GAME.voucher_edition_index = {} end
 if G.GAME.voucher_edition_index[card.ability.name] then		-- i just made it a function so i can look at it less
 	local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
 	if edition then

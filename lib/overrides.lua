@@ -1,5 +1,267 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+-- reset_castle_card hook for things like Dropshot and Number Blocks
+local rcc = reset_castle_card
+function reset_castle_card()
+	rcc()
+	G.GAME.current_round.cry_nb_card = { rank = "Ace" }
+	if not G.GAME.current_round.cry_dropshot_card then
+		G.GAME.current_round.cry_dropshot_card = {}
+	end
+	G.GAME.current_round.cry_dropshot_card.suit = "Spades"
+	local valid_castle_cards = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= "Stone Card" then
+			valid_castle_cards[#valid_castle_cards + 1] = v
+		end
+	end
+	if valid_castle_cards[1] then
+		--Dropshot
+		local castle_card =
+			pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
+		if not G.GAME.current_round.cry_dropshot_card then
+			G.GAME.current_round.cry_dropshot_card = {}
+		end
+		G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
+		--Number Blocks
+		local castle_card_two =
+			pseudorandom_element(valid_castle_cards, pseudoseed("cry_nb" .. G.GAME.round_resets.ante))
+		if not G.GAME.current_round.cry_nb_card then
+			G.GAME.current_round.cry_nb_card = {}
+		end
+		G.GAME.current_round.cry_nb_card.rank = castle_card_two.base.value
+		G.GAME.current_round.cry_nb_card.id = castle_card_two.base.id
+	end
+end
+
+-- Back.apply_to_run Hook for decks
+local Backapply_to_runRef = Back.apply_to_run
+function Back.apply_to_run(self)
+	Backapply_to_runRef(self)
+	if self.effect.config.cry_spooky then
+		G.GAME.modifiers.cry_spooky = true
+		G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate	or 0.25
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
+					card:add_to_deck()
+					card:start_materialize()
+					card:set_eternal(true)
+					G.jokers:emplace(card)
+					return true
+				end
+			end,
+		}))
+	end
+	if self.effect.config.cry_no_vouchers then
+		G.GAME.modifiers.cry_no_vouchers = true
+	end
+	if self.effect.config.cry_equilibrium then
+		G.GAME.modifiers.cry_equilibrium = true
+	end
+	if self.effect.config.cry_conveyor then
+		G.GAME.modifiers.cry_conveyor = true
+	end
+	if self.effect.config.cry_misprint_min then
+		G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
+		G.GAME.modifiers.cry_misprint_max = self.effect.config.cry_misprint_max
+	end
+	if self.effect.config.cry_highlight_limit then
+		G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
+	end
+	if self.effect.config.cry_ccd then
+		G.GAME.modifiers.cry_ccd = true
+	end
+	if self.effect.config.cry_beta then
+		G.GAME.modifiers.cry_beta = true
+	end
+	if self.effect.config.cry_legendary then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
+					card:add_to_deck()
+					card:start_materialize()
+					G.jokers:emplace(card)
+					return true
+				end
+			end,
+		}))
+	end
+	if self.effect.config.cry_wormhole then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local card = 
+					create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
+					card:add_to_deck()
+					card:start_materialize()
+					G.jokers:emplace(card)
+					return true
+				end
+			end,
+		}))
+	end
+	if self.effect.config.cry_negative_rate then
+		G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate
+	end
+	if self.effect.config.cry_redeemed then
+		G.GAME.modifiers.cry_redeemed = true
+	end
+	if self.effect.config.cry_forced_draw_amount then
+		G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
+	end
+	if self.effect.config.cry_encoded then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					-- Adding a before spawning becuase jen banned copy_paste
+					if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+					end
+					if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+					end
+					return true
+				end
+			end,
+		}))
+	end
+	if self.effect.config.cry_encoded_downside then
+		G.GAME.joker_rate = 0
+		G.GAME.planet_rate = 0
+		G.GAME.tarot_rate = 0
+		G.GAME.code_rate = 1e100
+	end
+	if self.effect.config.cry_force_enhancement then
+		if self.effect.config.cry_force_enhancement ~= "random" then
+			G.GAME.modifiers.cry_force_enhancement = self.effect.config.cry_force_enhancement
+		end
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					if self.effect.config.cry_force_enhancement == "random" then
+						local enh = {}
+						for i = 1, #G.P_CENTER_POOLS.Enhanced do
+							enh[#enh + 1] = G.P_CENTER_POOLS.Enhanced[i]
+						end
+						enh[#enh + 1] = "CCD"
+						local random_enhancement = pseudorandom_element(enh, pseudoseed("cry_ant_enhancement"))
+						if random_enhancement.key and G.P_CENTERS[random_enhancement.key] then
+							G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key])
+						else
+							G.playing_cards[c]:set_ability(get_random_consumable("cry_ant_ccd", nil, true))
+						end
+					else
+						G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement])
+					end
+				end
+				return true
+			end,
+		}))
+	end
+	if self.effect.config.cry_force_edition then
+		if self.effect.config.cry_force_edition ~= "random" then
+			G.GAME.modifiers.cry_force_edition = self.effect.config.cry_force_edition
+		else
+			G.GAME.modifiers.cry_force_random_edition = true
+		end
+		for k, v in pairs(G.P_TAGS) do
+			if v.config and v.config.edition then
+				G.GAME.banned_keys[k] = true
+			end
+		end
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					local ed_table = {}
+					if self.effect.config.cry_force_edition == "random" then
+						local random_edition =
+							pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
+						while random_edition.key == "e_base" do
+							random_edition =
+								pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
+						end
+						ed_table[random_edition.key:sub(3)] = true
+						G.playing_cards[c]:set_edition(ed_table, true, true)
+					else
+						ed_table[self.effect.config.cry_force_edition] = true
+						G.playing_cards[c]:set_edition(ed_table, true, true)
+					end
+				end
+				return true
+			end,
+		}))
+	end
+	if self.effect.config.cry_force_seal then
+		if self.effect.config.cry_force_seal ~= "random" then
+			G.GAME.modifiers.cry_force_seal = self.effect.config.cry_force_seal
+		end
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					if self.effect.config.cry_force_seal == "random" then
+						local random_seal =
+							pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("cry_ant_seal"))
+						G.playing_cards[c]:set_seal(random_seal.key, true)
+					else
+						G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true)
+					end
+				end
+				return true
+			end,
+		}))
+	end
+	if self.effect.config.cry_force_sticker then
+		G.GAME.modifiers.cry_force_sticker = self.effect.config.cry_force_sticker
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c].config.center.eternal_compat = true
+					G.playing_cards[c].config.center.perishable_compat = true
+					if
+						SMODS.Stickers[self.effect.config.cry_force_sticker]
+						and SMODS.Stickers[self.effect.config.cry_force_sticker].apply
+					then
+						SMODS.Stickers[self.effect.config.cry_force_sticker]:apply(G.playing_cards[c], true)
+					else
+						G.playing_cards[c]["set_" .. self.effect.config.cry_force_sticker](
+							G.playing_cards[c],
+							true
+						)
+					end
+				end
+				return true
+			end,
+		}))
+	end
+	if self.effect.config.cry_force_suit then
+		G.GAME.modifiers.cry_force_suit = self.effect.config.cry_force_suit
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:change_suit(self.effect.config.cry_force_suit)
+				end
+				return true
+			end,
+		}))
+	end
+	if self.effect.config.cry_boss_blocked then
+		for _, v in pairs(self.effect.config.cry_boss_blocked) do
+			G.GAME.bosses_used[v] = 1e308
+		end
+	end
+	if self.effect.config.cry_no_edition_price then
+		G.GAME.modifiers.cry_no_edition_price = true
+	end
+end
 
 --Game:update hook
 local upd = Game.update
@@ -404,7 +666,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		ps = predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
@@ -724,7 +986,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		cry_misprintize(card)
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
-		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
 		if
@@ -754,7 +1016,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
 
 	--Debuff jokers if certain boss blinds are active
-	if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
+	if _type == "Joker" and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
 		if
 			G.GAME.blind.name == "cry-box"
 			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_box"] == true)

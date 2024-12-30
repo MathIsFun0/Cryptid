@@ -159,9 +159,15 @@ local choco1 = {
 			end
 		end
 		--create a ghost
-		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_ghost")
-		card:add_to_deck()
-		G.jokers:emplace(card)
+		if not (SMODS.Mods["jen"] or {}).can_load then
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_ghost")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+		else
+			if G.GAME.dollars ~= 0 then
+                		ease_dollars(((-G.GAME.dollars) - 1e6), true)
+            		end
+		end
 	end
 }
 local choco2 = {

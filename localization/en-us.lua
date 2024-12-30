@@ -2297,6 +2297,15 @@ return {
                     "{C:chips}+#4#{} chips"
                 }
             },
+	    c_cry_sunplanet = {
+                name = 'Sol',
+                text = {
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
+                    "Increase power of",
+		    "{C:attention}Ascended{} hands by {X:gold,C:white}0.05{}",
+		    "{C:inactive}(Currently {X:gold,C:white}X(#2#^asc){C:inactive})"
+                }
+            },
         },
         Sleeve = {
 			sleeve_cry_bountiful_sleeve = {
@@ -3171,7 +3180,8 @@ return {
                 name = "Hyperspace Tether",
                 text = {
                     "{C:attention}+#1#{} card selection limit",
-                    "{C:inactive,s:0.7}NOTE: Will have extra functionality later{}",
+                    "All selected cards contribute power",
+                    "to {C:attention}Ascended Hands{}",
                 },
             },
         },
@@ -3566,7 +3576,7 @@ return {
             blurred_sdm0 = {
                 name = "a",
                 text = {
-                    "{C:inactive,s:0.8}\"I hate this card\" - SDM0, 2024{}",
+                    "{C:inactive,s:0.8}\"I hate this card\" - SDM_0, 2024{}",
                 },
             },
         },
@@ -3733,7 +3743,7 @@ return {
             --Settings Menu
             cry_set_features = "Features",
             cry_set_music = "Music",
-            cry_set_enable_features = "Use this section to enable or disable entire Content Sets.",
+            cry_set_enable_features = "Use this section to enable or disable entire Thematic Sets.",
             cry_feat_achievements = "Achievements",
             ["cry_feat_antimatter deck"] = "Antimatter Deck",
             cry_feat_blinds = "Blinds",
@@ -3780,8 +3790,12 @@ return {
             cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
 
             k_code = "Code",
-            k_content_set = "Content Set",
-            b_content_sets = "Content Sets",
+            k_content_set = "Thematic Set",
+            b_content_sets = "Thematic Sets",
+            --Why aren't these in vanilla?
+            b_tag = "Tag",
+            b_blind = "Blind",
+            
             k_unique = "Unique",
             b_code_cards = "Code Cards",
             b_unique_cards = "Unique Cards",
@@ -3808,6 +3822,9 @@ return {
             cry_hand_bulwark = "Bulwark",
             cry_hand_clusterfuck = "Clusterfuck",
             cry_hand_ultpair = "Ultimate Pair",
+
+            cry_asc_hands = "Asc. Hands",
+            cry_p_star = "Star",
 
             cry_again_q = "Again?",
             cry_curse = "Curse",

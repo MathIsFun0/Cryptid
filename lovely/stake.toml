@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 
 # Yellow Stake - perishable and rental effects on consumable
@@ -412,8 +412,8 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''if _c.set == 'Other' then'''
-position = "before"
+pattern = '''local cfg = (card and card.ability) or _c['config']'''
+position = "after"
 payload = '''if cfg and G.GAME.modifiers.cry_consumable_reduce and cfg.max_highlighted and (cfg.max_highlighted > 1) then
     local new_table = {}
     for i0, j0 in pairs(cfg) do

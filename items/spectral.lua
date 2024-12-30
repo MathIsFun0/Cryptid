@@ -214,7 +214,7 @@ local hammerspace = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					CARD:set_ability(get_random_consumable("cry_hammerspace"), true, nil)
+					CARD:set_ability(get_random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true))
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -678,10 +678,21 @@ local ritual = {
 	cost = 5,
 	atlas = "atlasnotjokers",
 	pos = { x = 5, y = 1 },
+	can_use = function(self, card)
+		--TODO: CCD card compat
+		if #G.hand.highlighted > card.ability.max_highlighted then return false end
+		for _, v in ipairs(G.hand.highlighted) do
+			if v.edition then
+				return false
+			end
+		end
+		return true
+	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
+			if highlighted ~= card then
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")
@@ -717,6 +728,7 @@ local ritual = {
 					return true
 				end,
 			}))
+			end
 		end
 	end,
 }
@@ -777,7 +789,7 @@ local adversary = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					CARD:set_edition({negative = true})
+					if not CARD.edition then CARD:set_edition({negative = true}) end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true

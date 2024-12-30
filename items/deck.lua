@@ -258,6 +258,7 @@ return {
 			end
 			if self.effect.config.cry_beta then
 				G.GAME.modifiers.cry_beta = true
+				G.GAME.pool_flags.beta_deck = true
 			end
 			if self.effect.config.cry_legendary then
 				G.E_MANAGER:add_event(Event({

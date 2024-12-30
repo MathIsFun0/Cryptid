@@ -3,9 +3,10 @@ local test = {
 	key = "test",
 	discovered = true,
     gameset_config = {
-        modest = {extra = {chips = 1}},
-        madness = {extra = {chips = 100}},
-		cryptid_in_2025 = {extra = {chips = 1e308}},
+        modest = {extra = {chips = 1}, center = {rarity = 1}},
+		mainline = {center = {rarity = 2}},
+        madness = {extra = {chips = 100}, center = {rarity = 3}},
+		cryptid_in_2025 = {extra = {chips = 1e308}, center = {rarity = "cry_exotic"}},
     },
 	extra_gamesets = {"cryptid_in_2025"},
 	dependencies = {
@@ -16,7 +17,7 @@ local test = {
 	},
 	config = {extra = {chips = 10}},
 	pos = { x = 1, y = 0 },
-	rarity = 1,
+	rarity = 2,
 	order = 11,
 	cost = 1,
 	blueprint_compat = true,
@@ -336,6 +337,10 @@ local rework_tag = {
 			return card
 		end
 	end,
+	--This is temporary to prevent crashes, we should implement proper loc_vars handling here later
+	loc_vars = function(self, info_queue)
+		return { vars = { "[edition]", "[joker]" } }
+	end,
 	in_pool = function()
 		return false
 	end,
@@ -355,4 +360,163 @@ local blank_sprite = {
 	px = 71,
 	py = 95,
 }
-return {items = {test, test2, test3, rework, rework_tag, blank, blank_sprite}}
+local oldmark = {
+	object_type = "Blind",
+	name = "cry-oldmark",
+	key = "oldmark",
+	pos = { x = 0, y = 1 },
+	boss = {
+		min = 4,
+		max = 10,
+	},
+	atlas = "nostalgia",
+	order = 12,
+	boss_colour = HEX("4f6367"),
+	debuff_hand = function(self, cards, hand, handname, check)
+		if next(hand["Pair"]) then
+			G.GAME.blind.triggered = true
+			return true
+		end
+		return false
+	end,
+	get_loc_debuff_text = function(self)
+		return localize("cry_debuff_oldmark")
+	end,
+}
+local nostalgia_sprites = {
+	object_type = "Atlas",
+	key = "nostalgia",
+	atlas_table = "ANIMATION_ATLAS",
+	path = "bl_nostalgia.png",
+	px = 34,
+	py = 34,
+	frames = 21,
+}
+local echo = {
+	object_type = "Enhancement",
+	key = "echo",
+	atlas = "cry_misc",
+	pos = { x = 2, y = 0 },
+	config = { retriggers = 2, extra = 2 },
+	loc_vars = function(self, info_queue)
+		return { vars = { self.config.retriggers, G.GAME.probabilities.normal, self.config.extra } }
+	end,
+}
+local gold_shader = {
+	object_type = "Shader",
+	key = "gold",
+	path = "gold.fs",
+	send_vars = function(sprite, card)
+		return {
+			lines_offset = card and card.edition and card.edition.cry_gold_seed or 0,
+		}
+	end,
+}
+local gold_edition = {
+	object_type = "Edition",
+	key = "gold",
+	order = 5,
+	shader = "gold",
+	weight = 7,
+	extra_cost = 2,
+	in_shop = true,
+	config = { dollars = 2 },
+	loc_vars = function(self, info_queue)
+		return { vars = { self.config.dollars } }
+	end,
+	sound = {
+		sound = "cry_e_golden",
+		per = 1,
+		vol = 0.3,
+	},
+	on_apply = function(card)
+		-- Randomize offset to -1..1
+		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
+	end,
+	calculate = function(self, card, context)
+		if
+			context.joker_triggered
+			or context.from_consumable
+			or (
+				context.from_playing_card
+				and context.cardarea
+				and context.cardarea == G.play
+				and not context.repetition
+			)
+		then
+			ease_dollars(self.config.dollars)
+			card_eval_status_text(
+				card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize("$") .. self.config.dollars, colour = G.C.MONEY }
+			)
+		end
+	end,
+}
+local azure_seal = {
+	object_type = "Seal",
+	name = "cry-Azure-Seal",
+	key = "azure",
+	badge_colour = HEX("1d4fd7"),
+	config = { planets_amount = 3 },
+	loc_vars = function(self, info_queue)
+		return { vars = { self.config.planets_amount } }
+	end,
+	atlas = "cry_misc",
+	pos = { x = 0, y = 2 },
+	calculate = function(self, card, context)
+		if context.destroying_card then
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.0,
+				func = function()
+					local card_type = "Planet"
+					local _planet = nil
+					if G.GAME.last_hand_played then
+						for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+							if v.config.hand_type == G.GAME.last_hand_played then
+								_planet = v.key
+								break
+							end
+						end
+					end
+
+					for i = 1, self.config.planets_amount do
+						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
+
+						card:set_edition({ negative = true }, true)
+						card:add_to_deck()
+						G.consumeables:emplace(card)
+					end
+					return true
+				end,
+			}))
+
+			return true
+		end
+	end,
+}
+local banana = {
+	object_type = "Sticker",
+	badge_colour = HEX("e8c500"),
+	prefix_config = { key = false },
+	key = "banana",
+	atlas = "sticker",
+	pos = { x = 5, y = 2 },
+	should_apply = false,
+	loc_vars = function(self, info_queue, card)
+		if card.ability.consumeable then
+			return { key = "cry_banana_consumeable", vars = { G.GAME.probabilities.normal or 1, 4 } }
+		elseif card.ability.set == "Voucher" then
+			return { key = "cry_banana_voucher", vars = { G.GAME.probabilities.normal or 1, 12 } }
+		elseif card.ability.set == "Booster" then
+			return { key = "cry_banana_booster" }
+		else
+			return { vars = { G.GAME.probabilities.normal or 1, 10 } }
+		end
+	end,
+}
+return {items = {test, test2, test3, rework, rework_tag, blank, blank_sprite, oldmark, nostalgia_sprites, echo, gold_shader, gold_edition, azure_seal, banana}}
