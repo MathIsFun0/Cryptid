@@ -1493,6 +1493,16 @@ local universe = {
     end,
     generate_ui = 0,
 }
+local absolute = {
+	object_type = "Sticker",
+	badge_colour = HEX('c75985'),
+	prefix_config = { key = false },
+	key = "cry_absolute",
+	atlas = "sticker",
+	pos = { x = 1, y = 5 },
+	should_apply = false,
+	no_sticker_sheet = true,
+}
 local miscitems = {
 	memepack_atlas,
   	meme_object_type,
@@ -1530,6 +1540,7 @@ local miscitems = {
 	void,
 	marsmoons,
 	universe,
+	absolute,
 }
 if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
@@ -1808,6 +1819,13 @@ return {
 					self.flipping = "b2f"
 				end
 				self:dbl_side_flip()
+			end
+			if self.ability.cry_absolute then	-- feedback loop... may be problematic
+				self.cry_absolute = true
+			end
+			if self.cry_absolute then
+				self.ability.cry_absolute = true
+				self.ability.eternal = true
 			end
 		end
 		function copy_dbl_card(C, c, deck_effects)
