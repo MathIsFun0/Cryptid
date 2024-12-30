@@ -6405,7 +6405,18 @@ local pumpkin = {
 			newcard:add_to_deck()
 			G.jokers:emplace(newcard)
 		end
-	end
+	end,
+	cry_credits = {
+		idea = {
+			"Squiddy"
+		},
+		art = {
+			"B"
+		},
+		code = {
+			"wawa person"
+		}
+	},
 }
 local carved_pumpkin = {
 	object_type = "Joker",
@@ -6439,6 +6450,17 @@ local carved_pumpkin = {
 	in_pool = function(self,wawa,wawa2)
         return false
     end,
+	cry_credits = {
+		idea = {
+			"Squiddy"
+		},
+		art = {
+			"B"
+		},
+		code = {
+			"wawa person"
+		}
+	},
 }
 local cookie = {
 	object_type = "Joker",
@@ -6475,6 +6497,17 @@ local cookie = {
 				)
 		end
 	end,
+	cry_credits = {
+		idea = {
+			"playerrWon"
+		},
+		art = {
+			"lolxDdj"
+		},
+		code = {
+			"wawa person"
+		}
+	},
 }
 local necromancer = {
 	object_type = "Joker",
