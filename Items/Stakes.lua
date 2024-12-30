@@ -5,6 +5,7 @@ local pink = {
 	pos = { x = 0, y = 0 },
 	atlas = "stake",
 	applied_stakes = { "gold" },
+	prefix_config = { applied_stakes = { mod = false } },
 	modifiers = function()
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
 	end,
@@ -61,8 +62,8 @@ local cyan = {
 	modifiers = function()
 		G.GAME.modifiers.cry_rarer_jokers = true
 		-- Note that this is not the exact rarity as the old lovely patch might be nerf/buff to the stake
-		G.GAME.uncommon_mod = 0.5
-		G.GAME.rare_mod = 0.5
+		G.GAME.uncommon_mod = 0.8
+		G.GAME.rare_mod = 0.8
 	end,
 	order = 13,
 	colour = HEX("39ffcc"),

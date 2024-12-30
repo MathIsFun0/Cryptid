@@ -33,6 +33,11 @@ local meme1 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
+                if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
+            		if pseudorandom('meme1_'..G.GAME.round_resets.ante) > 0.997 then 
+				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+			end
+		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
 	end,
 	ease_background_colour = function(self)
@@ -67,6 +72,11 @@ local meme2 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
+		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
+            		if pseudorandom('memetwo_'..G.GAME.round_resets.ante) > 0.997 then 
+				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+			end
+		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memetwo")
 	end,
 	ease_background_colour = function(self)
@@ -101,6 +111,11 @@ local meme3 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
+		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
+            		if pseudorandom('memethree_'..G.GAME.round_resets.ante) > 0.997 then 
+				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+			end
+		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memethree")
 	end,
 	ease_background_colour = function(self)
@@ -197,7 +212,7 @@ local oversat = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
+			cry_misprintize(card, {min = 1, max = 1}, true) -- 
 			cry_misprintize(card)
 		end)
 	end,
@@ -291,8 +306,8 @@ local glitched = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
-			cry_misprintize(card)
+			cry_misprintize(card, {min = 1, max = 1}, true)
+			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 	end,
 }
@@ -399,7 +414,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
 	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
 	if not instant then
-		for i = 1, math.random(6, 10) do
+		for i = 1, math.random(2, 4) do
 			update_hand_text(
 				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
 				{ chips = obfuscatedtext(3) }
@@ -419,7 +434,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
-		for i = 1, math.random(6, 10) do
+		for i = 1, math.random(2, 4) do
 			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
 		end
 		G.E_MANAGER:add_event(Event({
@@ -531,6 +546,16 @@ local noisy_shader = {
 	key = "noisy",
 	path = "noisy.fs",
 }
+local noisy_stats = {
+	min = {
+		mult = 0,
+		chips = 0
+	},
+	max = {
+		mult = 30,
+		chips = 150
+	}
+}
 local noisy = {
 	object_type = "Edition",
 	key = "noisy",
@@ -539,7 +564,7 @@ local noisy = {
 	shader = "noisy",
 	in_shop = true,
 	extra_cost = 4,
-	config = { min_mult = 0, max_mult = 30, min_chips = 0, max_chips = 150 },
+	config = { min_mult = noisy_stats.min.mult, max_mult = noisy_stats.max.mult, min_chips = noisy_stats.min.chips, max_chips = noisy_stats.max.chips },
 	sound = {
 		sound = "cry_e_noisy",
 		per = 1,
@@ -594,6 +619,7 @@ local noisy = {
 									.. (
 										G.deck
 											and G.deck.cards[1]
+											and G.deck.cards[#G.deck.cards].base.suit
 											and G.deck.cards[#G.deck.cards].base.suit:sub(1, 1)
 										or "D"
 									),
@@ -682,6 +708,74 @@ local noisy = {
 		desc_nodes[#desc_nodes + 1] = chip_ui
 	end,
 }
+
+AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
+	local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
+	local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
+	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+	if not instant then
+		for i = 1, math.random(2, 4) do
+			update_hand_text(
+				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+				{ chips = obfuscatedtext(3) }
+			)
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				play_sound("chips1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ delay = 0 },
+			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+		)
+		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
+		for i = 1, math.random(2, 4) do
+			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				play_sound("multhit1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ delay = 0 },
+			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+		)
+		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
+	elseif hand == G.handlist[#G.handlist] then
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("chips1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("multhit1")
+				card:juice_up(0.8, 0.5)
+				return true
+			end,
+		}))
+		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+	end
+end
+
 local jollyeditionshader = {
 	object_type = "Shader",
 	key = "m",
@@ -875,10 +969,10 @@ local eclipse = {
 	pos = { x = 4, y = 0 },
 	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
-	loc_vars = function(self, info_queue)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
 
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
 local blessing = {
@@ -902,7 +996,7 @@ local blessing = {
 			func = function()
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
-					local forced_key = get_random_consumable("blessing")
+					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
 					_card:add_to_deck()
 					G.consumeables:emplace(_card)
@@ -914,8 +1008,6 @@ local blessing = {
 		delay(0.6)
 	end,
 }
---note: seal colors are also used in lovely.toml for spectral descriptions
--- and must be modified in both places
 local azure_seal = {
 	object_type = "Seal",
 	name = "cry-Azure-Seal",
@@ -1027,11 +1119,18 @@ local meld = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if #G.jokers.highlighted
-				+ #G.hand.highlighted
-				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
-			== 1 then
-			if #G.jokers.highlighted == 1 and Card.no(G.jokers.highlighted[1], "dbl") then return false end
+		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
+			if 
+				#G.jokers.highlighted == 1 and 
+				(
+					Card.no(G.jokers.highlighted[1], "dbl") 
+					or G.jokers.highlighted[1].edition
+				) 
+			then return false end
+			if 
+				#G.hand.highlighted == 1 
+				and G.hand.highlighted[1].edition 
+			then return false end
 			return true
 		end
 	end,
@@ -1060,9 +1159,343 @@ local meld = {
 	end
 }
 
+local bwark = {
+    object_type = "PokerHand",
+    key = 'Bulwark',
+    visible = false,
+    chips = 100,
+    mult = 10,
+    l_chips = 50,
+    l_mult = 1,
+    example = {
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+        { 'S_A',    true, 'm_stone' },
+    },
+		evaluate = function(parts, hand)
+		  local stones = {}
+		  for i, card in ipairs(hand) do
+		    if card.config.center_key == 'm_stone' or (card.config.center.no_rank and card.config.center.no_suit) then stones[#stones+1] = card end
+		  end
+		  return #stones >= 5 and {stones} or {}
+		end,
+}
+local cluster = {
+    object_type = "PokerHand",
+    key = 'Clusterfuck',
+    visible = false,
+    chips = 200,
+    mult = 19,
+    l_chips = 40,
+    l_mult = 4,
+    example = {
+        { 'S_A',    true },
+        { 'C_K',    true },
+        { 'H_J',    true },
+        { 'S_T',    true },
+        { 'D_9',    true },
+        { 'D_8',    true },
+        { 'S_6',    true },
+        { 'C_5',    true },
+    },
+    evaluate = function(parts, hand)
+    local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
+    if #hand > 7 then
+      if not other_hands then return {hand} end
+      end
+    end,
+}
+local upair = {
+    object_type = "PokerHand",
+    key = 'UltPair',
+    visible = false,
+    chips = 220,
+    mult = 22,
+    l_chips = 40,
+    l_mult = 4,
+    example = {
+        { 'S_A',    true },
+        { 'S_A',    true },
+        { 'S_T',    true },
+        { 'S_T',    true },
+        { 'H_K',    true },
+        { 'H_K',    true },
+        { 'H_7',    true },
+        { 'H_7',    true },
+    },
+		evaluate = function(parts, hand)
+		local scoring_pairs = {}
+		local unique_suits = 0
+		for suit, _ in pairs(SMODS.Suits) do
+				local scoring_suit_pairs = {}
+				for i = 1, #parts._2 do
+						if parts._2[i][1]:is_suit(suit) and parts._2[i][2]:is_suit(suit) then
+								scoring_suit_pairs[#scoring_suit_pairs+1] = i
+						end
+				end
+				if #scoring_suit_pairs >= 2 then
+						unique_suits = unique_suits + 1
+						for i = 1, #scoring_suit_pairs do
+								scoring_pairs[scoring_suit_pairs[i]] = (scoring_pairs[scoring_suit_pairs[i]] or 0) + 1
+						end
+				end
+		end
+		if unique_suits < 2 then return end
+		local scored_cards = {}
+		local sc_max = 0
+		local sc_unique = 0
+		for i = 1, #parts._2 do
+				if scoring_pairs[i] then
+						if scoring_pairs[i] > 1 then
+								sc_unique = sc_unique + 1
+						end
+						sc_max = math.max(sc_max, scoring_pairs[i])
+						scored_cards[#scored_cards+1] = parts._2[i][1]
+						scored_cards[#scored_cards+1] = parts._2[i][2]
+				end
+		end
+		if sc_max == #scored_cards/2 - 1 and sc_unique == 1 then
+				return
+		end
+		if #scored_cards >= 8 then
+			return {scored_cards}
+		end
+end,
+}
+local fulldeck = {
+    object_type = "PokerHand",
+    key = 'WholeDeck',
+    visible = false,
+    chips = 5200,
+    mult = 520,
+    l_chips = 520,
+    l_mult = 52,
+    example = {
+        { 'S_A',    true },
+                { 'H_A',    true },
+                { 'C_A',    true },
+                { 'D_A',    true },
+                { 'S_K',    true },
+                { 'H_K',    true },
+                { 'C_K',    true },
+                { 'D_K',    true },
+                { 'S_Q',    true },
+                { 'H_Q',    true },
+                { 'C_Q',    true },
+                { 'D_Q',    true },
+                { 'S_J',    true },
+                { 'H_J',    true },
+                { 'C_J',    true },
+                { 'D_J',    true },
+                { 'S_T',    true },
+                { 'H_T',    true },
+                { 'C_T',    true },
+                { 'D_T',    true },
+                { 'S_9',    true },
+                { 'H_9',    true },
+                { 'C_9',    true },
+                { 'D_9',    true },
+                { 'S_8',    true },
+                { 'H_8',    true },
+                { 'C_8',    true },
+                { 'D_8',    true },
+                { 'S_7',    true },
+                { 'H_7',    true },
+                { 'C_7',    true },
+                { 'D_7',    true },
+                { 'S_6',    true },
+                { 'H_6',    true },
+                { 'C_6',    true },
+                { 'D_6',    true },
+                { 'S_5',    true },
+                { 'H_5',    true },
+                { 'C_5',    true },
+                { 'D_5',    true },
+                { 'S_4',    true },
+                { 'H_4',    true },
+                { 'C_4',    true },
+                { 'D_4',    true },
+                { 'S_3',    true },
+                { 'H_3',    true },
+                { 'C_3',    true },
+                { 'D_3',    true },
+                { 'S_2',    true },
+                { 'H_2',    true },
+                { 'C_2',    true },
+                { 'D_2',    true },
+    },
+		evaluate = function(parts, hand)
+		    if #hand >= 52 then
+		        local deck_booleans = {}
+		        local scored_cards = {}
+		        for i = 1, 52 do
+		            table.insert(deck_booleans, false)    -- i could write this out but nobody wants to see that
+		        end
+		        local wilds = {}
+		        for i, card in ipairs(hand) do
+		            if (card.config.center_key ~= 'm_wild' and not card.config.center.any_suit)
+		            and (card.config.center_key ~= 'm_stone' and not card.config.center.no_rank) then    -- i don't know if these are different... this could be completely redundant but redundant is better than broken
+		                local rank = card:get_id()
+		                local suit = card.base.suit
+		                local suit_int = 0
+		                suit_table = {"Spades", "Hearts", "Clubs", "Diamonds"}
+		                for i = 1, 4 do
+		                    if suit == suit_table[i] then suit_int = i end
+		                end
+		                if suit_int > 0 then    -- check for custom rank here to prevent breakage?
+		                    deck_booleans[suit_int+((rank-2)*4)] = true
+		                    table.insert(scored_cards, card)
+		                end
+		            elseif (card.config.center_key == 'm_wild' or card.config.center.any_suit) then
+		                table.insert(wilds, card)
+		            end
+		        end
+		        for i, card in ipairs(wilds) do    -- this 100% breaks with custom ranks
+		            local rank = card:get_id()
+		            for i = 1, 4 do
+		                if not deck_booleans[i+((rank-2)*4)] then
+		                    deck_booleans[i+((rank-2)*4)] = true
+		                    break
+		                end
+		            end
+		            table.insert(scored_cards, card)
+		        end
+		        local entire_fucking_deck = true
+		        for i = 1, #deck_booleans do
+		            if deck_booleans[i] == false then entire_fucking_deck = false break end
+		        end
+		        if entire_fucking_deck == true then
+		            return {scored_cards}
+		        end
+		    end
+		    return
+		end,
+}
+local abelt = {
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'asteroidbelt',
+    config = { hand_type = 'cry_Bulwark', softlock = true },
+    pos = {x = 1, y = 5 },
+    order = 2,
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Bulwark"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_hand_bulwark"),
+                G.GAME.hands["cry_Bulwark"].level,
+				G.GAME.hands["cry_Bulwark"].l_mult,
+				G.GAME.hands["cry_Bulwark"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
+local void = {
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'void',
+    order = 3,
+    config = { hand_type = 'cry_Clusterfuck', softlock = true },
+    pos = {x = 0, y = 5 },
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Clusterfuck"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_Clusterfuck"),
+                G.GAME.hands["cry_Clusterfuck"].level,
+				G.GAME.hands["cry_Clusterfuck"].l_mult,
+				G.GAME.hands["cry_Clusterfuck"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
+local marsmoons = {
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'marsmoons',
+    order = 4,
+    config = { hand_type = 'cry_UltPair', softlock = true },
+    pos = {x = 2, y = 5 },
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_UltPair"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_UltPair"),
+                G.GAME.hands["cry_UltPair"].level,
+				G.GAME.hands["cry_UltPair"].l_mult,
+				G.GAME.hands["cry_UltPair"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
+local universe = {
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'universe',
+    config = { hand_type = 'cry_WholeDeck', softlock = true },
+    pos = {x = 4, y = 5 },
+    order = 5,
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_WholeDeck"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_UltPair"),
+                G.GAME.hands["cry_WholeDeck"].level,
+				G.GAME.hands["cry_WholeDeck"].l_mult,
+				G.GAME.hands["cry_WholeDeck"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
 local miscitems = {
 	memepack_atlas,
-  meme_object_type,
+  	meme_object_type,
 	meme1,
 	meme2,
 	meme3,
@@ -1088,7 +1521,15 @@ local miscitems = {
 	typhoon,
 	azure_seal,
 	double_sided,
-	meld
+	meld,
+	bwark,
+	cluster,
+	upair,
+	fulldeck,
+	abelt,
+	void,
+	marsmoons,
+	universe,
 }
 if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
@@ -1386,7 +1827,7 @@ return {
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
 				self.dbl_side:set_ability(G.P_CENTERS.c_base)
-				self.dbl_side:set_base(G.P_CARDS.empty)
+				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
 					self.dbl_side.config.center = cry_deep_copy(self.dbl_side.config.center)
 					self.dbl_side.config.center.no_rank = true

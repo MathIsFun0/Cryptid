@@ -89,7 +89,7 @@ local happyhouse = {
 	pos = { x = 2, y = 4 },
 	order = 2,
 	config = { extra = { mult = 4, check = 0 } },
-	immune_to_chemach = true,
+	immutable = true,
     pools = {["Meme"] = true},
 	rarity = 2,
 	cost = 2,
@@ -160,6 +160,7 @@ local maximized = {
 	rarity = 3,
 	order = 13,
 	cost = 11,
+	immutable = true,
 	atlas = "atlastwo",
 	cry_credits = {
 		idea = {
@@ -179,7 +180,7 @@ local potofjokes = {
 	key = "pot_of_jokes",
 	config = { extra = { h_size = -2, h_mod = 1 } },
 	pos = { x = 5, y = 0 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 3,
 	order = 104,
 	cost = 10,
@@ -230,6 +231,7 @@ local queensgambit = {
 	rarity = 1,
 	order = 7,
 	cost = 7,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
@@ -348,36 +350,55 @@ local whip = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
+			local two = false
+			local seven = false
+			local twosuits = {}
+			local sevensuits = {}
 			for i = 1, #context.full_hand do
-				if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
-					for j = 1, #context.full_hand do
-						if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
-							--Different suits
-							for k, v in pairs(SMODS.Suits) do
-								if
-									context.full_hand[i]:is_suit(k, nil, true)
-									and context.full_hand[j]:is_suit(k, nil, true)
-								then
-									return
+				if context.full_hand[i]:get_id() == 2 or context.full_hand[i]:get_id() == 7 then
+					if context.full_hand[i]:get_id() == 2 then
+						if not two then two = true end
+						for k, v in pairs(SMODS.Suits) do
+							if context.full_hand[i]:is_suit(k, nil, true) then
+								local contained = false
+								for i = 1, #twosuits do
+									if k == twosuits[i] then contained = true end
 								end
+								if not contained then twosuits[#twosuits + 1] = k end
 							end
-							card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
-							card_eval_status_text(
-								card,
-								"extra",
-								nil,
-								nil,
-								nil,
-								{
-									message = localize({
-										type = "variable",
-										key = "a_xmult",
-										vars = { card.ability.extra.x_mult },
-									}),
-								}
-							)
-							return nil, true
 						end
+					else
+						if not seven then seven = true end
+						for k, v in pairs(SMODS.Suits) do
+							if context.full_hand[i]:is_suit(k, nil, true) then
+								local contained = false
+								for i = 1, #sevensuits do
+									if k == sevensuits[i] then contained = true end
+								end
+								if not contained then sevensuits[#sevensuits + 1] = k end
+							end
+						end
+					end
+				end
+				if two and seven then
+					if (#twosuits > 1 or #sevensuits > 1)
+					or (#twosuits == 1 and #sevensuits == 1 and twosuits[1] ~= sevensuits[1]) then
+						card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
+						card_eval_status_text(
+							card,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{
+								message = localize({
+								type = "variable",
+								key = "a_xmult",
+								vars = { card.ability.extra.x_mult },
+								}),
+							}
+						)
+						return nil, true
 					end
 				end
 			end
@@ -443,7 +464,7 @@ local lucky_joker = {
 			"Jevonn"
 		},
 		code = {
-			"Wilsonthewolf"
+			"WilsontheWolf"
 		}
 	},
 }
@@ -508,7 +529,7 @@ local pickle = {
 	key = "pickle",
 	config = { extra = { tags = 3, tags_mod = 1 } },
 	pos = { x = 3, y = 3 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	order = 45,
 	cost = 6,
@@ -691,7 +712,7 @@ local booster = {
 	config = { extra = { booster_slots = 1 } },
 	pos = { x = 2, y = 0 },
 	order = 34,
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	cost = 6,
 	blueprint_compat = false,
@@ -982,15 +1003,16 @@ local seal_the_deal = {
 	object_type = "Joker",
 	name = "cry-Seal The Deal",
 	key = "seal_the_deal",
-	config = { extra = { x_chips = 6 } },
+	config = { extra = nil },
 	pos = { x = 2, y = 4 },
 	rarity = 2,
 	cost = 5,
 	order = 101,
+	immutable = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play then
-			if G.GAME.current_round.hands_left == 0 then
+		if context.individual and context.cardarea == G.play and not context.blueprint and not context.retrigger_joker then
+			if G.GAME.current_round.hands_left == 0 and not context.other_card.seal then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local seal_type = pseudorandom(pseudoseed("seal_the_deal"))
@@ -1014,6 +1036,27 @@ local seal_the_deal = {
 			end
 		end
 	end,
+	set_ability = function(self, card, initial, delay_sprites)
+		local sealtable = { "blue", "red", "purple" }
+		if Cryptid.enabled["Misc."] then sealtable[#sealtable + 1] = "azure" end
+		if Cryptid.enabled["Code Cards"] then sealtable[#sealtable + 1] = "green" end
+		card.ability.extra = pseudorandom_element(sealtable, pseudoseed('abc'))
+		if G.P_CENTERS["j_cry_seal_the_deal"].discovered then
+			--Gold (ULTRA RARE!!!!!!!!)
+			if pseudorandom('xyz') <= 0.000001 and not (card.area and card.area.config.collection) then
+				card.children.center:set_sprite_pos({x = 6, y = 4})
+			--Others
+			elseif card.ability.extra == "red" then
+				card.children.center:set_sprite_pos({x = 6, y = 0})
+			elseif card.ability.extra == "azure" then
+				card.children.center:set_sprite_pos({x = 6, y = 2})
+			elseif card.ability.extra == "purple" then
+				card.children.center:set_sprite_pos({x = 6, y = 3})
+			elseif card.ability.extra == "green" then
+				card.children.center:set_sprite_pos({x = 6, y = 1})
+			end
+		end
+	end,
 	cry_credits = {
 		idea = {
 			"Zak"
@@ -1033,7 +1076,7 @@ local chad = {
 	pos = { x = 0, y = 3 },
 	order = 71,
 	config = { extra = { retriggers = 2 } },
-	immune_to_chemach = true,
+	immutable = true,
     pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 10,
@@ -1060,7 +1103,7 @@ local chad = {
 			"Jevonn"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
 			"Math"
@@ -1389,7 +1432,7 @@ local mario = {
 	order = 85,
 	cost = 20,
 	blueprint_compat = true,
-	immune_to_chemach = true,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.retriggers } }
 	end,
@@ -1811,7 +1854,7 @@ local redbloon = {
 	key = "redbloon",
 	config = { extra = { money = 20, rounds_remaining = 2 } },
 	pos = { x = 5, y = 1 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 1,
 	cost = 4,
 	order = 97,
@@ -1921,6 +1964,7 @@ local maze = {
 	rarity = 1,
 	cost = 1,
 	order = 61,
+	immutable = true,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.after and not context.blueprint and not context.retrigger_joker then
@@ -1979,6 +2023,7 @@ local panopticon = {
 	rarity = 1,
 	order = 47,
 	cost = 1,
+	immutable = true,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint and not context.retrigger_joker then
@@ -2365,7 +2410,7 @@ local sapling = {
 	key = "sapling",
 	pos = { x = 3, y = 2 },
 	config = { extra = { score = 0, req = 18, check = nil } },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	cost = 6,
 	order = 42,
@@ -2454,7 +2499,7 @@ local spaceglobe = {
 					func = function()
 						local _type = {}
 						for k, v in pairs(G.GAME.hands) do
-							if v.visible and k ~= card.ability.to_do_type then
+							if v.visible and k ~= card.ability.extra.type then
 								_type[#_type + 1] = k
 							end
 						end
@@ -2503,6 +2548,7 @@ local happy = {
 	rarity = 1,
 	cost = 2,
 	order = 63,
+	immutable = true,
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlastwo",
@@ -4341,7 +4387,7 @@ local stronghold = {
 	object_type = "Joker",
 	name = "cry-stronghold",
 	key = "stronghold",
-	order = 114,
+	order = 119,
 	pos = { x = 8, y = 4 },
 	config = { Xmult = 5, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
@@ -4378,7 +4424,7 @@ local wtf = {
 	object_type = "Joker",
 	name = "cry-wtf",
 	key = "wtf",
-	order = 115,
+	order = 120,
 	pos = { x = 7, y = 1 },
 	config = { Xmult = 10, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
@@ -4415,7 +4461,7 @@ local clash = {
 	object_type = "Joker",
 	name = "cry-clash",
 	key = "clash",
-	order = 116,
+	order = 121,
 	pos = { x = 8, y = 1 },
 	config = { Xmult = 12, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
@@ -4760,7 +4806,7 @@ local bonkers = {
 	name = "cry-Bonkers Joker",
 	key = "bonkers",
 	pos = { x = 8, y = 5 },
-	order = 108,
+	order = 113,
 	config = { t_mult = 20, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_bulwark") } }
@@ -4792,7 +4838,7 @@ local fuckedup = {
 	name = "cry-Fucked-Up Joker",
 	key = "fuckedup",
 	pos = { x = 7, y = 2 },
-	order = 109,
+	order = 114,
 	config = { t_mult = 37, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_clusterfuck") } }
@@ -4824,7 +4870,7 @@ local foolhardy = {
 	name = "cry-Foolhardy Joker",
 	key = "foolhardy",
 	pos = { x = 8, y = 2 },
-	order = 110,
+	order = 115,
 	config = { t_mult = 42, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_mult, localize("cry_hand_ultpair") } }
@@ -5127,7 +5173,7 @@ local adroit = {
 	key = "adroit",
 	pos = { x = 7, y = 4 },
 	effect = "Cry Type Chips",
-	order = 111,
+	order = 116,
 	config = { t_chips = 170, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_bulwark") } }
@@ -5158,7 +5204,7 @@ local penetrating = {
 	key = "penetrating",
 	pos = { x = 7, y = 3 },
 	effect = "Cry Type Chips",
-	order = 112,
+	order = 117,
 	config = { t_chips = 270, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_clusterfuck") } }
@@ -5189,7 +5235,7 @@ local treacherous = {
 	key = "treacherous",
 	pos = { x = 8, y = 3 },
 	effect = "Cry Type Chips",
-	order = 113,
+	order = 118,
 	config = { t_chips = 300, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.t_chips, localize("cry_hand_ultpair") } }
@@ -5320,17 +5366,40 @@ local oldblueprint = {
 	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
 	rarity = 1,
-	cost = 5,
+	immutable = true, -- No cheesing self destruct chance :)
+	cost = 6,
 	order = 83,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+	update = function(self, card, front)
+		if G.STAGE == G.STAGES.RUN then
+			for i = 1, #G.jokers.cards do
+                    		if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i+1] end
+                	end
+			if other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat then
+                		card.ability.blueprint_compat = 'compatible'
+            		else
+               			card.ability.blueprint_compat = 'incompatible'
+            		end
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
+		return { 
+			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds },
+			main_end = (card.area and card.area == G.jokers) and {
+        			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                			{n=G.UIT.T, config={ref_table = card.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            				}}
+        			}}
+    			} or nil
+		}
 	end,
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if
-			context.end_of_round
+			context.end_of_round2
 			and not context.individual
 			and not context.repetition
 			and not context.blueprint
@@ -5352,21 +5421,30 @@ local oldblueprint = {
 								G.jokers:remove_card(card)
 								card:remove()
 								card = nil
+								if G.P_CENTERS["j_blueprint"].unlocked then G.GAME.oldbpfactor = (G.GAME.oldbpfactor or 1)*3 end
 								return true
 							end,
 						}))
 						return true
 					end,
 				}))
-				return {
-					message = { localize("k_extinct_ex") },
-					colour = G.C.FILTER,
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
+				)
 			else
-				return {
-					message = { localize("k_safe_ex") },
-					colour = G.C.FILTER,
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_safe_ex"), colour = G.C.FILTER }
+				)
 			end
 		end
 		local other_joker = nil
@@ -5375,7 +5453,7 @@ local oldblueprint = {
 				other_joker = G.jokers.cards[i + 1]
 			end
 		end
-		if other_joker and other_joker ~= self then
+		if other_joker and other_joker ~= card then
 			context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
 			context.blueprint_card = context.blueprint_card or card
 
@@ -5492,7 +5570,7 @@ local busdriver = {
 	key = "busdriver",
 	config = { extra = { mult = 50, odds = 4 } },
 	pos = { x = 5, y = 1 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 2,
 	cost = 7,
 	order = 46,
@@ -5549,6 +5627,7 @@ local translucent = {
 	rarity = 1,
 	cost = 4,
 	order = 52,
+	immutable = true,
 	eternal_compat = false,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
@@ -5581,13 +5660,13 @@ local translucent = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM0"
+			"SDM_0"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -5687,6 +5766,7 @@ local kscope = {
 	cost = 7,
 	order = 55,
 	atlas = "atlasthree",
+	immutable = true,
 	calculate = function(self, card, context)
 		if context.end_of_round and G.GAME.blind.boss and not context.individual and not context.repetition then
 			local eligiblejokers = {}
@@ -5786,15 +5866,9 @@ local flipside = {
 			end
 		end
 	end,
-	cry_credits = {
-		jolly = {
-			"Jolly Open Winner",
-			"Axolotolus",
-		},
-	},
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_context.dbl_side then
+			if context.other_context and context.other_context.dbl_side then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -5827,13 +5901,14 @@ local oldinvisible = {
 	cost = 20,
 	order = 78,
 	atlas = "atlasthree",
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == "Joker"
 		and not context.blueprint and not context.retrigger_joker then
-			if card.ability.extra == 3 then
+			if card.ability.extra >= 3 then
 				card.ability.extra = 0
 				local eligibleJokers = {}
 				for i = 1, #G.jokers.cards do
@@ -5944,7 +6019,7 @@ local universe = {
 	end,
 	rarity = 3,
 	cost = 6,
-	order = 40,
+	order = 121,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
@@ -6012,6 +6087,7 @@ local astral_bottle = {
 	atlas = "atlasthree",
 	rarity = 2,
 	cost = 6,
+	order = 122,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.cry_astral) then
@@ -6167,19 +6243,29 @@ local exposed = {
 	config = { extra = 2 },
 	rarity = 3,
 	cost = 8,
+	order = 123,
 	atlas = "atlastwo",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
-	calculate = function(self, card, context)
-		if context.setting_blind and not context.blueprint then
+	update = function(self, card, dt)
+		if G.deck and card.added_to_deck then
 			for i, v in pairs (G.deck.cards) do
 				if v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
+		if G.hand and card.added_to_deck then
+			for i, v in pairs (G.hand.cards) do
+				if v:is_face() then
+					v:set_debuff(true)
+				end
+			end
+		end
+	end,
+	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			if not context.other_card:is_face() then
                 return {
@@ -6200,18 +6286,28 @@ local mask = {
 	rarity = 3,
 	cost = 7,
 	atlas = "atlastwo",
+	order = 124,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
-	calculate = function(self, card, context)
-		if context.setting_blind and not context.blueprint then
+	update = function(self, card, dt)
+		if G.deck and card.added_to_deck then
 			for i, v in pairs (G.deck.cards) do
 				if not v:is_face() then
 					v:set_debuff(true)
 				end
 			end
 		end
+		if G.hand and card.added_to_deck then
+			for i, v in pairs (G.hand.cards) do
+				if not v:is_face() then
+					v:set_debuff(true)
+				end
+			end
+		end
+	end,
+	calculate = function(self, card, context)
 		if context.repetition and context.cardarea == G.play then
 			if context.other_card:is_face() then
                 return {
@@ -6231,6 +6327,7 @@ local tropical_smoothie = {
 	config = {},
 	rarity = 3,
 	cost = 5,
+	order = 125,
 	atlas = "atlastwo",
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
@@ -6240,7 +6337,7 @@ local tropical_smoothie = {
 		if context.selling_self then
 			local check = false
 			for i, v in pairs (G.jokers.cards) do
-				if not Card.no(v, "immune_to_chemach", true) and not Card.no(v, "immutable", true) then
+				if not Card.no(v, "immutable", true) then
 					cry_with_deck_effects(G.jokers.cards[1], function(card)
 						cry_misprintize(v, { min = 1.5, max = 1.5}, nil, true)
 					end)
@@ -6260,9 +6357,6 @@ local tropical_smoothie = {
 		end
 	end,
 }
-
-
-
 local pumpkin = {
 	object_type = "Joker",
 	key = "pumpkin",
@@ -6313,7 +6407,6 @@ local pumpkin = {
 		end
 	end
 }
-
 local carved_pumpkin = {
 	object_type = "Joker",
 	key = "carved_pumpkin",
@@ -6347,7 +6440,6 @@ local carved_pumpkin = {
         return false
     end,
 }
-
 local cookie = {
 	object_type = "Joker",
 	key = "clicked_cookie",
@@ -6384,12 +6476,195 @@ local cookie = {
 		end
 	end,
 }
-
-
-
-
-
-
+local necromancer = {
+	object_type = "Joker",
+	name = "cry-Necromancer",
+	key = "necromancer",
+	pos = { x = 3, y = 5 },
+	config = {},
+	rarity = 2,
+	cost = 5,
+	atlas = "atlastwo",
+	order = 126,
+	immutable = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_card and context.card.sell_cost > 0 and context.card.config.center.set == 'Joker' and G.GAME.jokers_sold then
+			local card = create_card('Joker', G.jokers, nil, nil, nil, nil, G.GAME.jokers_sold[pseudorandom('cry_necromancer', 1, #G.GAME.jokers_sold)])
+			card.sell_cost = 0
+			card:add_to_deck()
+			G.jokers:emplace(card)
+			card:start_materialize()
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Pyrocreep"
+		},
+		art = {
+			"Pyrocreep"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local oil_lamp = { --You want it? It's yours my friend
+	object_type = "Joker",
+	name = "cry-Oil-Lamp",
+	key = "oil_lamp",
+	pos = { x = 4, y = 5 },
+	config = { extra = { increase = 1.2 } },
+	rarity = 3,
+	cost = 10,
+	order = 127,
+	atlas = "atlastwo",
+	loc_vars = function(self, info_queue, card)
+		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
+		return { 
+			vars = { card.ability.extra.increase },
+			main_end = (card.area and card.area == G.jokers) and {
+        			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                			{n=G.UIT.T, config={ref_table = card.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            				}}
+        			}}
+    			} or nil
+		}
+	end,
+	update = function(self, card, front)
+		if G.STAGE == G.STAGES.RUN then
+			for i = 1, #G.jokers.cards do
+                    		if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i+1] end
+                	end
+			if other_joker and other_joker ~= card and not (Card.no(other_joker, "immutable", true)) then
+                		card.ability.blueprint_compat = 'compatible'
+            		else
+               			card.ability.blueprint_compat = 'incompatible'
+            		end
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
+			local check = false
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					if i < #G.jokers.cards then
+						if not Card.no(G.jokers.cards[i+1], "immutable", true) then
+							check = true
+							cry_with_deck_effects(G.jokers.cards[i+1], function(cards)
+								cry_misprintize(cards, { min = card.ability.extra.increase, max = card.ability.extra.increase }, nil, true)
+							end)
+						end
+					end
+				end
+			end
+			if check then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+				)
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"AlexZGreat"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local tax_fraud = {
+	object_type = "Joker",
+	name = "cry-Tax-Fraud",
+	key = "tax_fraud",
+	pos = { x = 2, y = 0 },
+	config = { extra = { money = 6 } },
+	rarity = 3,
+	cost = 10,
+	order = 128,
+	atlas = "placeholders",
+	in_pool = function(self)
+		if G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.rental then return true end
+			end
+		end
+		return false
+	end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.money } }
+	end,
+	calc_dollar_bonus = function(self, card)
+		local rentals = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.rental then rentals = rentals+1 end
+		end
+		return rentals*card.ability.extra.money
+	end,
+	cry_credits = {
+		idea = {
+			"DoNotSus"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
+local pity_prize = {
+	object_type = "Joker",
+	name = "cry-Pity-Prize",
+	key = "pity_prize",
+	pos = { x = 5, y = 5 },
+	config = { },
+	rarity = 1,
+	cost = 4,
+	atlas = "atlastwo",
+	order = 129,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { } }
+	end,
+	calculate = function(self, card, context)
+		if context.skipping_booster then
+			local tag
+			repeat
+				tag = Tag(get_next_tag_key("cry_pity_prize"))
+			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+			if tag.name == "Orbital Tag" then
+				local _poker_hands = {}
+				for k, v in pairs(G.GAME.hands) do
+					if v.visible then
+						_poker_hands[#_poker_hands + 1] = k
+					end
+				end
+				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
+			end
+			add_tag(tag)
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Pyrocreep"
+		},
+		art = {
+			"Pyrocreep"
+		},
+		code = {
+			"Foegro"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6450,16 +6725,12 @@ local miscitems =  {
 	quintet,
 	unity,
 	swarm,
-	stronghold,
-	wtf,
-	clash,
 	coin,
 	wheelhope,
 	night,
 	busdriver,
 	oldblueprint,
 	morse,
-	translucent,
 	membershipcard,
 	kscope,
 	cryptidmoment,
@@ -6472,9 +6743,6 @@ local miscitems =  {
 	delirious,
 	wacky,
 	kooky,
-	bonkers,
-	fuckedup,
-	foolhardy,
 	dubious,
 	shrewd,
 	tricksy,
@@ -6482,9 +6750,6 @@ local miscitems =  {
 	savvy,
 	subtle,
 	discreet,
-	adroit,
-	penetrating,
-	treacherous,
 	kidnap,
 	exposed,
 	mask,
@@ -6492,11 +6757,27 @@ local miscitems =  {
 	pumpkin,
 	carved_pumpkin,
 	cookie,
+	necromancer,
+	oil_lamp,
+	tax_fraud,
+	pity_prize,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
 	miscitems[#miscitems+1] = universe
 	miscitems[#miscitems+1] = astral_bottle
+	miscitems[#miscitems+1] = stronghold
+	miscitems[#miscitems+1] = wtf
+	miscitems[#miscitems+1] = clash
+	miscitems[#miscitems+1] = adroit
+	miscitems[#miscitems+1] = penetrating
+	miscitems[#miscitems+1] = treacherous
+	miscitems[#miscitems+1] = bonkers
+	miscitems[#miscitems+1] = fuckedup
+	miscitems[#miscitems+1] = foolhardy
+end
+if Cryptid.enabled["More Stakes"] then
+	miscitems[#miscitems+1] = translucent
 end
 return {
 	name = "Misc. Jokers",

@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # Shine on Oversaturated to make it more noticable
 [[patches]]
@@ -202,7 +202,7 @@ target = "functions/misc_functions.lua"
 pattern = "function localize(args, misc_cat)"
 position = "after"
 payload = '''
-if args.vars then
+if args and args.vars then
     local reset = {}
     for i, j in pairs(args.vars) do
         if type(j) == 'table' then
@@ -219,37 +219,8 @@ end
 match_indent = true
 
 # Compat UI for Old Blueprint and Gemini
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "elseif self.ability.name == 'Blueprint' then"
-position = "at"
-payload = '''elseif self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' then'''
-match_indent = true
 
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "elseif self.ability.name == 'Brainstorm' then"
-position = "at"
-payload = '''elseif self.ability.name == 'Brainstorm' or self.config.center.key == 'j_cry_gemino' then'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
-position = "at"
-payload = '''
-if self.config.center.key == 'j_cry_gemino' then
-other_joker = G.jokers.cards[1]
-if other_joker and other_joker ~= self and not (Card.no(other_joker, "immune_to_chemach", true) or Card.no(other_joker, "immutable", true)) then
-    self.ability.blueprint_compat = 'compatible'
-else
-    self.ability.blueprint_compat = 'incompatible'
-end end
-if self.ability.name == 'Blueprint' or self.ability.name == 'cry-oldblueprint' or self.ability.name == 'Brainstorm' then'''
-match_indent = true
+# I deleted the patches --Jevonn (test)
 
 # calculate wheel fail (for Wheel of Hope)
 [[patches]]
@@ -427,4 +398,65 @@ target = "functions/UI_definitions.lua"
 pattern = '''local card = Card(0,0, 0.5*G.CARD_W, 0.5*G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS.c_base)'''
 position = "at"
 payload = '''local card = Card(0,0, 0.5*G.CARD_W, 0.5*G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS[v[3] or 'c_base'])'''
+match_indent = true
+
+# Adds G.GAME.modifiers.cry_forced_draw_amount
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'local hand_space = e or math.min(#G.deck.cards, G.hand.config.card_limit - #G.hand.cards)'
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) then
+	hand_space = math.min(#G.deck.cards, G.GAME.modifiers.cry_forced_draw_amount)
+end
+'''
+match_indent = true
+
+# adds oldbp blueprint corruption
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'if _pool_size == 0 then'
+position = "before"
+payload = '''
+if G.GAME.oldbpfactor and G.GAME.oldbpfactor >= 2 then
+	if _type == 'Joker' and (_rarity == nil or type(_rarity) ~= "string") and not _legendary and not (G.GAME.used_jokers["j_blueprint"] and not next(find_joker("Showman"))) then
+		for i = 1, math.floor(G.GAME.oldbpfactor - 1) do
+			_pool[#_pool + 1] = "j_blueprint"
+		end
+	end
+end
+'''
+match_indent = true
+
+# end of shop decrement
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = 'G.SHOP_SIGN.alignment.offset.y = -15'
+position = "after"
+payload = '''
+if G.GAME.oldbpfactor then G.GAME.oldbpfactor = math.max(G.GAME.oldbpfactor - G.GAME.oldbpfactor/8, 1) end
+'''
+match_indent = true
+
+# Make Loopy reset here so it retriggers everything before resetting regardless of position
+# Makes Old Blueprint self-destruct after triggering other end of round effects
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''if G.GAME.round_resets.temp_reroll_cost then G.GAME.round_resets.temp_reroll_cost = nil; calculate_reroll_cost(true) end'''
+position = "after"
+payload = '''
+for _, v in pairs(find_joker("cry-loopy")) do
+	if v.ability.extra.retrigger ~= 0 then 
+		v.ability.extra.retrigger = 0
+		card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize("k_reset"), colour = G.C.GREEN})
+	end
+end
+for i = 1, #G.jokers.cards do
+	G.jokers.cards[i]:calculate_joker({end_of_round2 = true})
+end
+'''
 match_indent = true

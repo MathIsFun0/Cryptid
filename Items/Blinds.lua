@@ -493,6 +493,7 @@ local shackle = {
 	order = 18,
 	boss_colour = HEX("010466"),
 	in_pool = function()
+		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then return false end
 		if not G.jokers then
 			return false
 		end
@@ -548,6 +549,7 @@ local pin = {
 }
 
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
+--Nvm they changed it
 
 local pinkbow = { --TODO: Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
 	object_type = "Blind",
@@ -576,7 +578,7 @@ local lavender_loop = {
 		showdown = true,
 	},
 	atlas = "blinds",
-	order = 2,
+	order = 91,
 	boss_colour = HEX("ae00ff"),
 	set_blind = function(self, reset, silent)
 		G.GAME.cry_ach_conditions.patience_virtue_timer = 120
@@ -613,7 +615,7 @@ local tornado = {
 		showdown = true,
 	},
 	atlas = "blinds",
-	order = 5,
+	order = 94,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
 		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
@@ -667,7 +669,7 @@ local vermillion_virus = {
 		showdown = true,
 	},
 	atlas = "blinds",
-	order = 1,
+	order = 90,
 	boss_colour = HEX("f65d34"),
 	cry_before_play = function(self)
 		if G.jokers.cards[1] then
@@ -702,7 +704,7 @@ local sapphire_stamp = {
 		showdown = true,
 	},
 	atlas = "blinds",
-	order = 3,
+	order = 92,
 	boss_colour = HEX("4057d6"),
 	cry_before_play = function(self)
 		local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
@@ -737,7 +739,7 @@ local obsidian_orb = {
 		showdown = true,
 	},
 	atlas = "blinds",
-	order = 4,
+	order = 93,
 	boss_colour = HEX("290759"),
 	set_blind = function(self, reset, silent)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
@@ -1236,6 +1238,8 @@ local nostalgia_sprites = {
 	frames = 21,
 }
 
+--this list contains all of the blinds to be registered, if Blinds are enabled--
+--to disable a blind, comment it out or remove it from this list--
 local items_togo = {
 	oldox,
 	oldhouse,
@@ -1278,7 +1282,7 @@ function get_new_boss()
 		end
 	end
 	local bl = gnb()
-	if G.GAME.modifiers.cry_beta then
+	if G.GAME.modifiers.cry_beta and Cryptid.enabled["Blinds"] then
 		local bl_key = string.sub(bl,4)
 		local nostalgicblinds = {
 			arm = true,
@@ -1407,7 +1411,7 @@ return {
 		function Blind:defeat(s)
 			dft(self, s)
 			local obj = self.config.blind
-			if obj.boss and (obj.boss.no_orb or obj.boss.epic) then
+			if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
 				return
 			end
 			if

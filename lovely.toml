@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # Make the splash screen more jolly
 # Requires "Custom Main Menu" config to be enabled
@@ -22,12 +22,12 @@ if Cryptid.enabled["Menu"] then
  		local option = math.random(#mcard)
    		local chosenoption = mcard[option]
        		if chosenoption == "j_cry_biggestm" or chosenoption == "j_cry_reverse" then --These don't render properly; replace these with loopy instead
-			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_cry_loopy'])
+			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_cry_loopy'],{bypass_discovery_center = true, bypass_discovery_ui = true})
    		else
-     			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[chosenoption])
+     			SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[chosenoption],{bypass_discovery_center = true, bypass_discovery_ui = true})
      		end
   	else
-   		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'])
+   		SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'],{bypass_discovery_center = true, bypass_discovery_ui = true})
 	end
 end
 '''
@@ -41,7 +41,7 @@ target = "game.lua"
 pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
 position = "before"
 payload = '''
-if Cryptid.enabled["Menu"] then card:set_ability(get_random_consumable('cry_ccd', nil, true), true, nil) end
+if Cryptid.enabled["Menu"] then card:set_ability(get_random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
 '''
 match_indent = true
 
@@ -107,24 +107,17 @@ position = "at"
 payload = "{card_limit = 1e308, type = 'discard'})"
 match_indent = true
 
-# Max out hand size at deck size
+# When hand size exceeds deck size, space the cards as if the hand size was equal to the deck size
 [[patches]]
 [patches.pattern]
 target = "cardarea.lua"
-pattern = "self.config.real_card_limit = (self.config.real_card_limit or self.config.card_limit) + delta"
-position = "at"
+pattern = "function CardArea:align_cards()"
+position = "after"
 payload = '''
-self.config.realer_card_limit = (self.config.realer_card_limit or self.config.real_card_limit or self.config.card_limit) + delta
-self.config.real_card_limit = self ~= G.hand and self.config.realer_card_limit or math.min((G.deck and G.deck.config.card_limit or 52), self.config.realer_card_limit)
+    if self.config.type == 'hand' then
+        self.config.temp_limit = math.min(self.config.card_limit, #G.playing_cards)
+    end
 '''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "cardarea.lua"
-pattern = "self.config.card_limit = math.max(0, self.config.real_card_limit)"
-position = "at"
-payload = "self.config.card_limit = math.max(0, self.config.real_card_limit)"
 match_indent = true
 
 # Crash fix
@@ -298,6 +291,7 @@ target = "functions/UI_definitions.lua"
 pattern = "voucher_areas[#voucher_areas]:emplace(card)"
 position = "before"
 payload = '''
+if not G.GAME.voucher_edition_index then G.GAME.voucher_edition_index = {} end
 if G.GAME.voucher_edition_index[card.ability.name] then		-- i just made it a function so i can look at it less
 	local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
 	if edition then
@@ -602,6 +596,7 @@ if update_cry_member_count then update_cry_member_count() end
 match_indent = true
 
 # notice if https is disabled (by default)
+# also does some other things since this is patching in the same spot
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -629,6 +624,15 @@ if _c.name == 'cry-translucent Joker' then
                 end
         end 
 end 
+if _c.name == 'cry-blurred Joker' then
+	if (SMODS.Mods["sdm0sstuff"] or {}).can_load then
+		if G.localization.descriptions.Other.blurred_sdm0 then 
+			main_end = {}
+			localize{type = 'other', key = 'blurred_sdm0', nodes = main_end, vars = {}}
+			main_end = main_end[1]
+		end
+	end
+end
 '''
 match_indent = true
 
@@ -710,6 +714,27 @@ payload = '''
 for i = 1, #G.playing_cards do
 	local CARD = G.playing_cards[i]
     CARD.cry_debuff_immune = false
+end
+'''
+match_indent = true
+
+# Joker Sell List
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'self:calculate_joker{selling_self = true}'
+position = "before"
+payload = '''
+if self.config.center.set == 'Joker' then
+	if G.GAME.jokers_sold then
+		local contained = false
+		for i = 1, #G.GAME.jokers_sold do
+			if self.config.center.key == G.GAME.jokers_sold[i] then contained = true end
+		end
+		if not contained then table.insert(G.GAME.jokers_sold, self.config.center.key) end
+	else
+		G.GAME.jokers_sold = {self.config.center.key}
+	end
 end
 '''
 match_indent = true

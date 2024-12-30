@@ -10,6 +10,7 @@ local jollysus = {
 	order = 267,
 	blueprint_compat = true,
 	eternal_compat = false,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = { center.ability.extra.active } }
@@ -88,6 +89,7 @@ local bubblem = {
 	rarity = 1,
 	cost = 2,
 	eternal_compat = false,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
@@ -408,7 +410,7 @@ local notebook = {
 		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "" },
 		jolly = { t_mult = 8, type = "Pair" },
 	},
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 3,
 	cost = 9,
 	perishable_compat = false,
@@ -580,7 +582,7 @@ local bonk = {
 		}
 	},
 }
-local loopy = { 
+local loopy = {
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
@@ -589,7 +591,7 @@ local loopy = {
 	pos = { x = 4, y = 1 },
 	order = 257,
 	atlas = "atlastwo",
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 1,
 	cost = 4,
 	joker_gate = "Jolly Joker",
@@ -613,22 +615,6 @@ local loopy = {
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("cry_m_ex"),
-					colour = G.C.GREEN,
-				}),
-			}
-		end
-		if
-			context.end_of_round
-			and card.ability.extra.retrigger ~= 0
-			and not context.blueprint
-			and not context.retrigger_joker
-			and not context.individual
-			and not context.repetition
-		then
-			card.ability.extra.retrigger = 0
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("k_reset"),
 					colour = G.C.GREEN,
 				}),
 			}
@@ -667,7 +653,6 @@ local scrabble = {
 	config = { extra = { odds = 4 } },
 	pos = { x = 0, y = 2 },
 	order = 258,
-	immune_to_chemach = true,
 	rarity = 2,
 	cost = 8,
 	blueprint_compat = true,
@@ -718,7 +703,7 @@ local sacrifice = {
 	config = { extra = { text = localize("k_active_ex"), spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 5, y = 2 },
 	order = 259,
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -789,6 +774,7 @@ local reverse = {
 	order = 260,
 	cost = 4,
 	eternal_compat = false,
+	immutable = true,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
@@ -869,7 +855,7 @@ local doodlem = {
 	effect = "M Joker",
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 2, y = 0 },
-	immune_to_chemach = true,
+	immutable = true,
 	rarity = "cry_epic",
 	cost = 13,
 	order = 266,
@@ -1164,11 +1150,11 @@ local mprime = {
 					if mjoker > 0 then
 						local card = create_card(
 							"Joker",
-							G.jokers, 
-							nil, 
-							nil, 
-							nil, 
-							nil, 
+							G.jokers,
+							nil,
+							nil,
+							nil,
+							nil,
 							pseudorandom_element(loyalservants, pseudoseed("mprime"))
 						)
 						card:add_to_deck()
@@ -1223,6 +1209,7 @@ local macabre = {
 	effect = "M Joker",
 	order = 263,
 	pos = { x = 1, y = 2 },
+	immutable = true,
 	config = { jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
@@ -1276,13 +1263,13 @@ local macabre = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM0"
+			"SDM_0"
 		},
 		art = {
-			"SDM0"
+			"SDM_0"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -1346,7 +1333,7 @@ local megg = {
 			"Watermelon Lover"
 		},
 		code = {
-			"SDM0"
+			"SDM_0"
 		}
 	},
 }
@@ -1399,7 +1386,7 @@ local longboi = {
 		if (not from_debuff and card.ability.extra.mult == nil) or card.checkmonster then
 			--Stops Things like Gemini from updating mult when it isn't supposed to
 			if card.checkmonster then card.checkmonster = nil end
-			
+
 			card.ability.extra.mult = G.GAME.monstermult or 1
 		end
 	end,
@@ -1474,25 +1461,27 @@ return {
 			end
 		end
 		--there must be a better way than this
-		if Cryptid.enabled["Misc."] and Cryptid.enabled["Epic Jokers"] and Cryptid.enabled["Tags"] then 
+		if Cryptid.enabled["Misc."] and Cryptid.enabled["Epic Jokers"] and Cryptid.enabled["Tags"] then
 			for _, jkr in pairs({ smallestm }) do
 				ret_items[#ret_items + 1] = jkr
 			end
 		end
 		--end of cryptid config loading
-		
+
 		for i = 1, #ret_items do
 			Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
 			local vc = ret_items[i].calculate
 			ret_items[i].calculate = function(self, card, context)
 				local ret, trig = vc(self, card, context)
-				local reps = get_m_retriggers(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
-					return {
-						message = localize("k_again_ex"),
-						repetitions = reps + (ret and ret.repetitions or 0),
-						card = card,
-					}
+				if context.retrigger_joker_check and context.other_card == card then
+					local reps = get_m_retriggers(self, card, context)
+					if reps > 0 then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = reps + (ret and ret.repetitions or 0),
+							card = card,
+						}
+					end
 				end
 				return ret, trig
 			end
