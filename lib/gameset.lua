@@ -944,7 +944,6 @@ function cry_update_obj_registry(m)
 		end
 	end
 end
-G.cuor = cry_update_obj_registry
 local init_item_prototypes_ref = Game.init_item_prototypes
 function Game:init_item_prototypes()
 	init_item_prototypes_ref(self)

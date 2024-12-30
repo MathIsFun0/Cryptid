@@ -137,7 +137,7 @@ target = "game.lua"
 pattern = "set_profile_progress()"
 position = "before"
 payload = '''
-G.cuor() --for some reason it doesn't let me use this function here unless I put it in G...
+cry_update_obj_registry()
 for i = 1, #G.CHALLENGES do
     if (G.CHALLENGES[i].id == 'c_cry_rush_hour' or G.CHALLENGES[i].id == 'c_cry_rush_hour_ii' or G.CHALLENGES[i].id == 'c_cry_rush_hour_iii') and #G.CHALLENGES[i].restrictions.banned_other == 0 then
         for k, v in pairs(G.P_BLINDS) do
