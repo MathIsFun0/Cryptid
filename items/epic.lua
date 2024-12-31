@@ -152,7 +152,7 @@ local googol_play = {
 		},
 	},
 	gameset_config = {
-       		modest = {extra = {Xmult = 9}},
+       		modest = {extra = {Xmult = 9, odds = 8}},
  	},
 	pos = { x = 3, y = 0 },
 	rarity = "cry_epic",
@@ -635,7 +635,7 @@ local m = {
 	pos = { x = 3, y = 1 },
 	config = { extra = { extra = 13, x_mult = 1 } },
 	gameset_config = {
-       		modest = {extra = {extra = 1}},
+       		modest = {extra = {extra = 1, x_mult = 1}},
  	},
 	dependencies = {
 		items = {
