@@ -979,6 +979,16 @@ return {
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
                 },
             },
+	    j_cry_d20 = {
+                name = "D20",
+                text = {
+                    "+(1-20) Mult
+		    "On a Natural 20, x2 Mult"
+		    "On a Natural 1, x0.5 Mult"
+		    "Unseedable"
+
+                },
+            },
             j_cry_delirious = {
                 name = "Delirious Joker",
                 text = {
