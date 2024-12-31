@@ -1011,29 +1011,23 @@ local seal_the_deal = {
 	immutable = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play and not context.blueprint and not context.retrigger_joker then
-			if G.GAME.current_round.hands_left == 0 and not context.other_card.seal then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local seal_type = pseudorandom(pseudoseed("seal_the_deal"))
-						if seal_type > 0.75 then
-							context.other_card:set_seal("Red", true)
-						elseif seal_type > 0.5 then
-							context.other_card:set_seal("Blue", true)
-						elseif seal_type > 0.25 then
-							context.other_card:set_seal("Gold", true)
-						else
-							context.other_card:set_seal("Purple", true)
+		if context.after and G.GAME.current_round.hands_left == 0 and not context.blueprint and not context.retrigger_joker then
+			G.E_MANAGER:add_event(Event({
+				trigger = 'before', 
+				delay = 1.3,
+				func = function()	-- i can't figure out how to split these events without making em look bad so you get this?
+					for j = 1, #context.scoring_hand do
+						if not context.scoring_hand[j].seal then
+							context.scoring_hand[j]:set_seal(SMODS.poll_seal({guaranteed = true, type_key = 'sealthedeal'}), true, false)
+							context.scoring_hand[j]:juice_up()
 						end
-						card:juice_up(0.3, 0.4)
-						context.other_card:juice_up(0.3, 0.3)
-						play_sound("gold_seal", 1.2, 0.4)
-						return true
-					end,
-				}))
-				delay(0.5)
-				return nil, true
-			end
+					end
+					play_sound('gold_seal', 1.2, 0.4)
+					card:juice_up()
+					return true
+				end,
+			}))
+			return nil, true
 		end
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
