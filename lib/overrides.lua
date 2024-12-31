@@ -1,5 +1,16 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+
+
+--Hook into Game.init_game_object to add initial dropshot and number blocks card
+local gigo = Game.init_game_object
+function Game:init_game_object()
+	local g = gigo(self)
+	g.current_round.cry_nb_card = { rank = "Ace" }
+	g.current_round.cry_dropshot_card = { suit = "Spades" }
+	return g
+end
+
 -- reset_castle_card hook for things like Dropshot and Number Blocks
 local rcc = reset_castle_card
 function reset_castle_card()

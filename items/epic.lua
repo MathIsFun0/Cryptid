@@ -917,15 +917,6 @@ local number_blocks = {
 			"Math",
 		},
 	},
-	init = function(self)
-		--Todo move hook to lib/overrides
-		local gigo = Game.init_game_object
-		function Game:init_game_object()
-			local g = gigo(self)
-			g.current_round.cry_nb_card = { rank = "Ace" }
-			return g
-		end
-	end,
 }
 
 -- Double Scale
