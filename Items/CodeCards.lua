@@ -2262,7 +2262,7 @@ G.FUNCS.variable_apply = function()
 		{ "J", "Jack" },
 		{ "Q", "Queen" },
 		{ "K", "King" },
-		{ "A", "Ace", "One" },
+		{ "A", "Ace", "One", "I" },
 		{ "M" },
 		{ "nil" },
 	}
