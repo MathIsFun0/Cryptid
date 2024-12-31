@@ -2936,14 +2936,14 @@ return {
 			c_cry_chambered = {
 				name = "腔室",
 				text = {
-					"复制 {C:attention}#1#{}张 {C:attention}随机{}消耗牌",
-					"的{C:dark_edition}负片{}版本"
+					"随机复制 {C:attention}#1#{}张 {C:dark_edition}负片{}版本",
+					"的{C:attention}持有{}的消耗牌"
 				}
 			},
 			c_cry_conduit = {
 				name = "渠道",
 				text = {
-					"交换两张所选择的（小丑）牌的 {C:attention}版本{}"
+					"交换两张所选择的小丑或手牌的 {C:attention}版本{}"
 				}
 			},
 			c_cry_gateway = {
