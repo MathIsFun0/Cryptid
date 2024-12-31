@@ -313,22 +313,26 @@ return {
 					and t ~= "Seal"
 					and t ~= "Stake"
 				then
-					if not P_CRY_ITEMS then
+					if true then	-- if not P_CRY_ITEMS then
+						-- we're regenerating the pool every time because of banned keys but it's fine tbh
 						P_CRY_ITEMS = {}
 						local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 						for _, id in ipairs(valid_pools) do
 							for k, v in pairs(G.P_CENTER_POOLS[id]) do
-								if v.unlocked == true and not center_no(v, "doe", k) then
+								if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
 									P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 								end
 							end
 						end
+						--[[	this doesn't seem to be working
 						for k, v in pairs(G.P_CARDS) do
 							if v.unlocked == true and not center_no(v, "doe", k) then
 								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 							end
 						end
+						]]
 					end
+					if #P_CRY_ITEMS <= 0 then P_CRY_ITEMS[#P_CRY_ITEMS + 1] = 'v_blank' end
 					return P_CRY_ITEMS, "cry_equilibrium" .. G.GAME.round_resets.ante
 				end
 			end
