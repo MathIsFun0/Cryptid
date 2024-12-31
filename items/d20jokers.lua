@@ -19,17 +19,23 @@ local d20 = {
 					message = localize({ type = "variable", key = "a_xmult", vars = { 2 * card.ability.extra.multiply } }),
 					Xmult_mod = 2 * card.ability.extra.multiply,
 					colour = G.C.MULT,
+					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.rollmult * card.ability.extra.multiply } }),
+					mult_mod = card.ability.extra.rollmult * card.ability.extra.multiply,
+					colour = G.C.MULT,
 				}
 			elseif rollnum.miss == true then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { 0.5 / card.ability.extra.multiply } }),
 					Xmult_mod = 0.5 / card.ability.extra.multiply,
 					colour = G.C.MULT,
+					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.rollmult * card.ability.extra.multiply } }),
+					mult_mod = card.ability.extra.rollmult * card.ability.extra.multiply,
+					colour = G.C.MULT,
 				}
 			else 
 				return {
-					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.rollmult } }),
-					card.ability.extra.rollmult,
+					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.rollmult * card.ability.extra.multiply } }),
+					mult_mod = card.ability.extra.rollmult * card.ability.extra.multiply,
 					colour = G.C.MULT,
 				}
 			}
