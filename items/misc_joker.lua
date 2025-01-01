@@ -6660,36 +6660,6 @@ end
 return {
 	name = "Misc. Jokers",
 	init = function()
-		cry_enable_jokers = true
-		--Dropshot Patches
-		local gigo = Game.init_game_object
-		function Game:init_game_object()
-			local g = gigo(self)
-			g.current_round.cry_dropshot_card = { suit = "Spades" }
-			return g
-		end
-		local rcc = reset_castle_card
-		function reset_castle_card()
-			rcc()
-			if not G.GAME.current_round.cry_dropshot_card then
-				G.GAME.current_round.cry_dropshot_card = {}
-			end
-			G.GAME.current_round.cry_dropshot_card.suit = "Spades"
-			local valid_castle_cards = {}
-			for k, v in ipairs(G.playing_cards) do
-				if v.ability.effect ~= "Stone Card" then
-					valid_castle_cards[#valid_castle_cards + 1] = v
-				end
-			end
-			if valid_castle_cards[1] then
-				local castle_card =
-					pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
-				if not G.GAME.current_round.cry_dropshot_card then
-					G.GAME.current_round.cry_dropshot_card = {}
-				end
-				G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
-			end
-		end
 
 		--Maximized Patches
 		local cgi_ref = Card.get_id
@@ -6717,38 +6687,7 @@ return {
 			override_maximized = false
 			return ret_value
 		end
-
-		--Cube Patches
-		local sc = Card.set_cost
-		function Card:set_cost()
-			sc(self)
-			if self.ability.name == "cry-Cube" then
-				self.cost = -27
-			end
-			if self.ability.name == "cry-Big Cube" then
-				self.cost = 27
-			end
-		end
-		--Jimball Patches
-		local upd = Game.update
-		cry_jimball_dt = 0
-		function Game:update(dt)
-			upd(self, dt)
-			cry_jimball_dt = cry_jimball_dt + dt
-			if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
-				cry_jimball_dt = 0
-				local obj = G.P_CENTERS.j_cry_jimball
-				if obj.pos.x == 5 and obj.pos.y == 6 then
-					obj.pos.x = 0
-					obj.pos.y = 0
-				elseif obj.pos.x < 8 then
-					obj.pos.x = obj.pos.x + 1
-				elseif obj.pos.y < 6 then
-					obj.pos.x = 0
-					obj.pos.y = obj.pos.y + 1
-				end
-			end
-		end
+		
 	end,
 	items = miscitems,
 	disabled = true
