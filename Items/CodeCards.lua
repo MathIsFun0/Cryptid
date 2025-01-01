@@ -4412,7 +4412,12 @@ return {
 			local results = evaluate_poker_hand_ref(hand)
 			if G.GAME.cry_exploit_override then
 				if not results[G.GAME.cry_exploit_override][1] then
-					results[G.GAME.cry_exploit_override] = results["High Card"]	-- i would do results.top here but it just doesn't work, if someone could get that working that would be great
+					for _, v in ipairs(G.handlist) do
+						if results[v][1] then
+							results[G.GAME.cry_exploit_override] = results[v]
+							break
+						end
+					end
 				end
 			end
 			return results
@@ -4452,7 +4457,6 @@ return {
 		end
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
-			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
 					if G.jokers.cards[i].hook_id == self.sort_id then
@@ -4461,6 +4465,7 @@ return {
 					end
 				end
 			end
+			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
 		end
 	end,
 	items = code_cards,
