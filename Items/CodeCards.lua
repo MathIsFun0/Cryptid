@@ -989,6 +989,7 @@ local run = {
 				G.GAME.shop_free = nil
 				G.GAME.shop_d6ed = nil
 				G.STATE_COMPLETE = false
+				G.GAME.current_round.used_packs = {}
 				return true
 			end,
 		}))
@@ -4296,8 +4297,7 @@ return {
 		local gfco = G.FUNCS.can_open
 		G.FUNCS.can_open = function(e)
 			if G.GAME.USING_RUN then
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
+				gfco(e)
 			else
 				gfco(e)
 			end
@@ -4323,6 +4323,7 @@ return {
 					trigger = "after",
 					delay = 0.5,
 					func = function()
+						G.GAME.current_round.used_packs = {}
 						G.cry_runarea:remove()
 						G.cry_runarea = nil
 						G.STATE = G.STATES.SELECTING_HAND
