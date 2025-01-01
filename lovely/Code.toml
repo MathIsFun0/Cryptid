@@ -181,7 +181,7 @@ end
 match_indent = true
 
 # Run - handle packs (this is incredibly invasive)
-# could probably just make something like "draw from run area to hand"
+# we can't do "draw from run to hand" because modded packs presumably don't get ovewritten like that
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -190,8 +190,7 @@ position = "before"
 payload = '''if not G.GAME.USING_RUN then'''
 match_indent = true
 
-# Run - handle packs (this is incredibly invasive)
-# we can't do "draw from run to hand" because modded packs presumably don't get ovewritten like that
+# the inconsistency hurts
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
