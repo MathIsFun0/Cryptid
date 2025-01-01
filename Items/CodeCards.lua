@@ -2262,7 +2262,7 @@ G.FUNCS.variable_apply = function()
 		{ "J", "Jack" },
 		{ "Q", "Queen" },
 		{ "K", "King" },
-		{ "A", "Ace", "One", "I" },
+		{ "A", "Ace", "One", "1", "I" },
 		{ "M" },
 		{ "nil" },
 	}
@@ -3121,7 +3121,7 @@ G.FUNCS.pointer_apply = function()
 			{ "J", "Jack" },
 			{ "Q", "Queen" },
 			{ "K", "King" },
-			{ "A", "Ace", "One", "1" },
+			{ "A", "Ace", "One", "1", "I" },
 		}	-- ty variable
 		local _rank = nil
 		for m = #words, 1, -1 do	-- the legendary TRIPLE LOOP, checking from end since rank is most likely near the end
