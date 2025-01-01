@@ -300,6 +300,7 @@ local wee_fib = {
 			local rank = SMODS.Ranks[context.other_card.base.value].key
 			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+				card:resize_wee_joker()
 
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },

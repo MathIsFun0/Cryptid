@@ -1151,6 +1151,36 @@ function Card:calculate_joker(context)
 	return ret, trig
 end
 
+function Card:resize_wee_joker()
+    -- taken from the base game
+    local wee_scale = 0.7
+
+    -- there's several places where we need to calculate a wee joker that do
+    -- not yet have abilities set up properly
+    print(self.config.center_key)
+    local value = 0
+    if self.ability ~= nil then
+        if self.ability.extra ~= nil then
+            if self.config.center_key == "j_wee" then
+                value = self.ability.extra.value
+            elseif self.config.center_key == "j_cry_wee_fib" then
+                value = self.ability.extra.mult
+            end
+        end
+    end
+    value = value or 0
+
+    local scale = 1
+    if scale > 0.07 then
+        local scale_pow = math.log10(math.max(100, value)) - 1
+        scale = math.max(0.07, wee_scale ^ scale_pow)
+    end
+    -- this looks like it's counting wee_scale twice but scale is adjusted
+    -- so that it is a modifier on the normal small scale so this is correct
+    self.T.w = G.CARD_W * wee_scale * scale
+    self.T.h = G.CARD_H * wee_scale * scale
+end
+
 function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
 	local jkr = self
 	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
