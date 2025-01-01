@@ -820,9 +820,14 @@ local delete = {
 		if not G.GAME.banned_keys then
 			G.GAME.banned_keys = {}
 		end -- i have no idea if this is always initialised already tbh
+		if not G.GAME.cry_banned_pcards then
+			G.GAME.cry_banned_pcards = {}
+		end
 		local a = nil
 		local c = nil
+		local _p = nil
 		if G.shop_jokers.highlighted[1] then
+			_p = not not G.shop_jokers.highlighted[1].base.value
 			a = G.shop_jokers
 			c = G.shop_jokers.highlighted[1]
 		end
@@ -844,6 +849,13 @@ local delete = {
 			check_for_unlock({ type = "what_have_you_done" })
 		end
 		G.GAME.banned_keys[c.config.center.key] = true
+		if _p then
+			for k, v in pairs(G.P_CARDS) do
+				if v.value == c.base.value and v.suit == c.base.suit then
+					G.GAME.cry_banned_pcards[k] = true
+				end
+			end
+		end
 		c:start_dissolve()
 	end,
 }
@@ -2250,7 +2262,7 @@ G.FUNCS.variable_apply = function()
 		{ "J", "Jack" },
 		{ "Q", "Queen" },
 		{ "K", "King" },
-		{ "A", "Ace", "One" },
+		{ "A", "Ace", "One", "1", "I" },
 		{ "M" },
 		{ "nil" },
 	}
