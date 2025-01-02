@@ -433,14 +433,25 @@ local seed = {
 local rigged = {
 	object_type = "Sticker",
 	atlas = "sticker",
-	pos = { x = 5, y = 1 },
+	pos = { x = 6, y = 1 },
 	key = "cry_rigged",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	draw = function(self, card) --don't draw shine
+		if not G.shared_stickers["cry_rigged2"] then 
+			G.shared_stickers["cry_rigged2"] = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 }) 
+		end	-- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+		
 		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers["cry_rigged2"].role.draw_major = card
+		
 		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		
+		card.hover_tilt = card.hover_tilt/2	-- call it spaghetti, but it's what hologram does so...
+		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_rigged2"]:draw_shader("hologram", nil, card.ARGS.send_to_shader, nil, card.children.center)	-- this doesn't really do much tbh, but the slight effect is nice
+		card.hover_tilt = card.hover_tilt*2
 	end,
 }
 
