@@ -43,6 +43,7 @@ target = "card.lua"
 pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
 position = "after"
 payload = '''
+G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
 if G.GAME.modifiers.cry_misprint_min then
     G.GAME.pack_size = self.ability.extra
     if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
