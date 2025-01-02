@@ -65,6 +65,8 @@ position = "after"
 payload = '''
 cry_bonusvouchercount = 0,
 cry_bonusvouchersused = {},
+voucher_edition_index = {}
+voucher_sticker_index = {eternal = {}, perishable = {}, rental = {}, pinned = {}, banana = {}}	-- might as well
 '''
 match_indent = true
 
