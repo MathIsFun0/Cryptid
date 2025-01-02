@@ -1667,7 +1667,7 @@ local copypaste = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2) },
+			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), math.max(2, (center and center.ability.extra.odds or 2)) },
 		}
 	end,
 	atlas = "atlasepic",
@@ -1678,7 +1678,7 @@ local copypaste = {
 			and not context.consumeable.beginning_end
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / math.max(2, card.ability.extra.odds) then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
@@ -3722,9 +3722,13 @@ crashes = {
 				blockable = false,
 				no_delete = true,
 				func = function()
-					local c = create_card("Code", nil, nil, nil, nil, nil, "c_cry_crash")
-					c.T.x = math.random(-G.CARD_W, G.TILE_W)
-					c.T.y = math.random(-G.CARD_H, G.TILE_H)
+					G.GAME.accel = G.GAME.accel or 1.1
+					for i = 1, G.GAME.accel do
+						local c = create_card("Code", nil, nil, nil, nil, nil, "c_cry_crash")
+						c.T.x = math.random(-G.CARD_W, G.TILE_W)
+						c.T.y = math.random(-G.CARD_H, G.TILE_H)
+					end
+					G.GAME.accel = G.GAME.accel^(1.005 + G.GAME.accel/20000)
 					return false
 				end,
 			}),
@@ -4298,6 +4302,8 @@ return {
 		G.FUNCS.can_open = function(e)
 			if G.GAME.USING_RUN then
 				gfco(e)
+				-- e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				-- e.config.button = nil
 			else
 				gfco(e)
 			end

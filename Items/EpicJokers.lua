@@ -955,8 +955,7 @@ local bonusjoker = {
 	name = "cry-Bonus Joker",
 	key = "bonusjoker",
 	pos = { x = 3, y = 2 },
-	config = { extra = { odds = 8, check = 0 } },
-	immutable = true,
+	config = { extra = { odds = 8, check = 0, add = 1 } },
 	rarity = "cry_epic",
 	cost = 11,
 	order = 75,
@@ -964,14 +963,14 @@ local bonusjoker = {
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.add } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.ability.effect == "Bonus Card" then
 				if
-					pseudorandom("bonusjoker") < G.GAME.probabilities.normal / card.ability.extra.odds
+					pseudorandom("bonusjoker") < G.GAME.probabilities.normal / math.min(1e8, card.ability.extra.odds)
 					and card.ability.extra.check < 2
 					and not context.retrigger_joker
 				then
@@ -980,12 +979,12 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.extra.check = card.ability.extra.check + 1
 						end
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+						G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
 					else
 						if not context.blueprint then
 							card.ability.extra.check = card.ability.extra.check + 1
 						end
-						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+						G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.add
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1142,8 +1141,8 @@ local altgoogol = {
 	object_type = "Joker",
 	name = "cry-altgoogol",
 	key = "altgoogol",
+	config = { extra = { jokers = 2 } },
 	pos = { x = 4, y = 3 },
-	immutable = true,
 	rarity = "cry_epic",
 	cost = 10,
 	order = 60,
@@ -1151,6 +1150,9 @@ local altgoogol = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { math.floor(math.min(20, card.ability.extra.jokers)) } }
+	end,
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker then
 			local jokers = {}
@@ -1164,7 +1166,7 @@ local altgoogol = {
 					local spawn = {G.jokers.cards[1]}
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							for i = 1, 2 do
+							for i = 1, math.floor(math.min(20, card.ability.extra.jokers)) do
 								local card = copy_card(pseudorandom_element(spawn, pseudoseed("cry_ngpc")), nil)
 								card:add_to_deck()
 								G.jokers:emplace(card)
@@ -1232,34 +1234,34 @@ local soccer = {
 	key = "soccer",
 	pos = { x = 1, y = 4 },
 	config = { extra = { holygrail = 1 } },
-	immutable = true,
 	rarity = "cry_epic",
 	order = 58,
 	cost = 20,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.holygrail } }
+		return { vars = { math.floor(math.min(15, center.ability.extra.holygrail)) } }
 	end,
 	add_to_deck = function(self, card, from_debuff) --TODO: Card in booster packs, Voucher slots
-		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.holygrail
-		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.holygrail
-		G.hand:change_size(card.ability.extra.holygrail)
+		local holy = math.floor(math.min(15, card.ability.extra.holygrail))
+		G.jokers.config.card_limit = G.jokers.config.card_limit + holy
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + holy
+		G.hand:change_size(holy)
 		if not G.GAME.modifiers.cry_booster_packs then
 			G.GAME.modifiers.cry_booster_packs = 2
 		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + card.ability.extra.holygrail
-		change_shop_size(card.ability.extra.holygrail)
+		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + holy
+		change_shop_size(holy)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.holygrail
-		G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.holygrail
-		G.hand:change_size(-card.ability.extra.holygrail)
+		local holy = math.floor(math.min(15, card.ability.extra.holygrail))
+		G.jokers.config.card_limit = G.jokers.config.card_limit - holy
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit - holy
+		G.hand:change_size(-holy)
 		if not G.GAME.modifiers.cry_booster_packs then
 			G.GAME.modifiers.cry_booster_packs = 2
 		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.holygrail
-		change_shop_size(card.ability.extra.holygrail * -1)
+		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - holy
+		change_shop_size(holy * -1)
 	end,
 	cry_credits = {
 		idea = {
@@ -1279,7 +1281,6 @@ local fleshpanopticon = {
 	key = "fleshpanopticon",
 	pos = { x = 0, y = 5 },
 	config = { extra = { boss_size = 20 } },
-	immutable = true,
 	rarity = "cry_epic",
 	cost = 15,
 	order = 146,
