@@ -14,6 +14,13 @@ return {
 					"拥有{C:legendary,E:1}所有牌组的{}增益效果"
 				}
 			},
+			b_cry_beige = {
+                name = "四重卡组",
+                text = {
+                    "{C:attention}普通{}小丑具有",
+                    "{C:attention}四倍{}的效果",
+                },
+            },
 			b_cry_beta = {
 				name = "怀旧牌组",
 				text = {
@@ -282,7 +289,7 @@ return {
 			b_cry_cryecho_deck = {
 				name = "日食牌组",
 				text = {
-					"所有的的牌都是{C:attention,T:m_cry_echo}回响版本{}",
+					"所有的的牌都是{C:attention,T:m_cry_echo}回响牌{}",
 					"不能更改增强类型",
 					"{s:0.8,C:inactive}"
 				}
@@ -308,6 +315,14 @@ return {
 				text = {
 					"所有的牌都是{C:dark_edition,T:cry_gold}鎏金版本{}",
 					"不能更改版本类型",
+					"{s:0.8,C:inactive}"
+				}
+			},
+			b_cry_crylight_deck = {
+				name = "明亮牌组",
+				text = {
+					"所有的的牌都是{C:attention,T:m_cry_light}明亮牌{}",
+					"不能更改增强类型",
 					"{s:0.8,C:inactive}"
 				}
 			},
@@ -869,7 +884,16 @@ return {
 					"{C:green}#2# / #3#{} 几率",
 					"{C:attention}重新触发{} #1# 次"
 				}
-			}
+			},
+	        m_cry_light = {
+                name = "明亮牌",
+                text = {
+                    "当该牌计分时，每有{C:attention}#4#{} {C:inactive}(剩余#3#){}张",
+                    "其他计分牌，获得{X:mult,C:white}X#1#{}倍率，并",
+                    "将下次提升所需的数字增加{C:attention}5{}",
+                    "{C:inactive}(当前 {X:mult,C:white}X#2#{C:inactive} 倍率)"
+                },
+            },
 		},
 		Joker = {
 			j_cry_CodeJoker = {
