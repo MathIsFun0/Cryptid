@@ -53,6 +53,8 @@ pattern = '''used_packs = {},'''
 position = "after"
 payload = '''
 cry_bonusvouchers = {},
+cry_voucher_stickers = {eternal = false, perishable = false, rental = false, pinned = false, banana = false}
+cry_voucher_edition = {}
 '''
 match_indent = true
 
