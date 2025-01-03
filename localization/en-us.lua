@@ -322,6 +322,14 @@ return {
             },
         },
         Code = {
+            c_cry_alttab = {
+                name = "://ALTTAB",
+                text = {
+                    "Create the {C:cry_code}current{}",
+                    "blind's skip tag",
+                    "{C:inactive}(Current: {C:cry_code}#1#{C:inactive})",
+                },
+            },
             c_cry_class = {
                 name = "://CLASS",
                 text = {
@@ -383,14 +391,14 @@ return {
                     "{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
                 },
             },
-			c_cry_inst = {
-				name = "://INSTANTIATE",
-				text = {
-					"Draw a card with selected card's {C:cry_code}rank{}",
-					"and one with selected card's {C:cry_code}suit{}",
-					"{C:inactive}(if possible){}",
-				},
-			},
+            c_cry_inst = {
+                name = "://INSTANTIATE",
+                text = {
+                    "Draw a card with selected card's {C:cry_code}rank{}",
+                    "and one with selected card's {C:cry_code}suit{}",
+                    "{C:inactive}(if possible){}",
+                },
+            },
             c_cry_machinecode = {
                 name = "://MACHINECODE",
                 text = {
@@ -1893,6 +1901,7 @@ return {
                     "{C:attention}+#1#{} hand size",
                     "{C:attention}+#1#{} consumable slot",
                     "{C:attention}+#1#{} card in shop",
+                    "{C:attention}+#1#{} voucher slot",
                 },
             },
             j_cry_fleshpanopticon = {
@@ -2426,6 +2435,7 @@ return {
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
                     "copies of a",
                     "{C:attention}random{} consumable",
+                    "in your possession",
                     "{C:inactive,s:0.8}Does not copy Chambered{}"
                 },
             },

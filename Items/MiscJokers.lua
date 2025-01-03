@@ -5828,11 +5828,11 @@ local flipside = {
 	object_type = "Joker",
 	name = "cry-Flip Side",
 	key = "flip_side",
-	pos = { x = 1, y = 0 },
+	pos = { x = 3, y = 6 },
 	rarity = 2,
 	cost = 7,
 	order = 107,
-	atlas = "placeholders",
+	atlas = "atlastwo",
 	no_dbl = true,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
@@ -5873,7 +5873,7 @@ local flipside = {
 			"Axolotus"
 		},
 		art = {
-			":("
+			"Pyrocreep"
 		},
 		code = {
 			"Math"

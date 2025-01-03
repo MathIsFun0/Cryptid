@@ -1451,6 +1451,74 @@ local inst = {
 		end
 	end,
 }
+local alttab = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "alttab",
+	name = "cry-Alttab",
+	atlas = "code",
+	order = 28,
+	config = {  },
+	pos = {
+		x = 4,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		local ret = localize("k_none")
+		if G.GAME and G.GAME.blind then
+			if G.GAME.blind:get_type() == 'Small' then
+				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Small, set = 'Tag'}
+			elseif G.GAME.blind:get_type() == 'Big' then
+				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Big, set = 'Tag'}
+			elseif G.GAME.blind:get_type() == 'Boss' then
+				ret = '???'
+			end
+		end
+		return { vars = { ret } }
+	end,
+	can_use = function(self, card)
+		return G.GAME and G.GAME.blind
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		delay(0.4)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+                	local tag = nil
+			local type = G.GAME.blind:get_type()
+			if type == 'Boss' then
+				tag = Tag(get_next_tag_key())
+			else
+				tag = Tag(G.GAME.round_resets.blind_tags[type])
+			end
+			add_tag(tag)
+			used_consumable:juice_up(0.8, 0.5)
+		return true end }))
+        	delay(1.2)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local used_consumable = copier or card
+		delay(0.4)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			for j = 1, number do
+				play_sound('tarot1')
+                		local tag = nil
+				local type = G.GAME.blind:get_type()
+				if type == 'Boss' then
+					tag = Tag(get_next_tag_key())
+				else
+					tag = Tag(G.GAME.round_resets.blind_tags[type])
+				end
+				add_tag(tag)
+				used_consumable:juice_up(0.8, 0.5)
+				delay(0.1)
+			end
+		return true end }))
+        	delay(1.1)
+	end,
+}
 
 local automaton = {
 	object_type = "Consumable",
@@ -3816,7 +3884,7 @@ local code_cards = {
 	malware,
 	seed,
 	rigged,
-	hook,
+	--hook,
 	hooked,
 	variable,
 	class,
@@ -3834,6 +3902,7 @@ local code_cards = {
 	--patch,
 	ctrl_v,
 	inst,
+	alttab,
 }
 if Cryptid.enabled["Misc. Decks"] then
 	code_cards[#code_cards + 1] = encoded
