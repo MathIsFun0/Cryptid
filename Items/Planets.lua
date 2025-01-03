@@ -691,15 +691,15 @@ local nstar = {
 			})
 		)
 	end,
-	calculate = function(self, card, context) --Observatory effect: X0.04 mult for each neutron star used this run
+	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
 		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil then
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { 1 + (0.04 * G.GAME.neutronstarsusedinthisrun) },
+					vars = { 1 + (0.10 * G.GAME.neutronstarsusedinthisrun) },
 				}),
-				Xmult_mod = 1 + (0.04 * G.GAME.neutronstarsusedinthisrun),
+				Xmult_mod = 1 + (0.10 * G.GAME.neutronstarsusedinthisrun),
 			}
 		end
 	end,
