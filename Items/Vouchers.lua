@@ -203,7 +203,7 @@ local double_down = { --After every round, X1.5 to all values on the back of Dou
 		},
 	},
 }
-local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] available in the shop
+local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 voucher slot[s] available in the shop
 	object_type = "Voucher",
 	key = "overstock_multi",
 	config = { extra = 1 },
@@ -226,6 +226,7 @@ local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] availabl
 				return true
 			end,
 		}))
+		cry_bonusvouchermod(math.floor(self.config.extra))
 	end,
 	unredeem = function(self)
 		if not G.GAME.modifiers.cry_booster_packs then
@@ -239,6 +240,7 @@ local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] availabl
 				return true
 			end,
 		}))
+		cry_bonusvouchermod(-1*math.floor(self.config.extra))
 	end,
 }
 local massproduct = { --All cards and packs in the shop cost $1
