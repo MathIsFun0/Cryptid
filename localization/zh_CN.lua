@@ -900,7 +900,7 @@ return {
 				name = "M蛋",
 				text = {
 					"出售这张小丑来创造",
-					"{C:attention}#2#{} 开心小丑",
+					"{C:attention}#2#{} 欢乐小丑",
 					"在回合结束时增加 {C:attention}#1#{}"
 				}
 			},
@@ -1538,7 +1538,7 @@ return {
 				}
 			},
 			j_cry_jollysus = {
-				name = "开心小丑…吗？",
+				name = "欢乐小丑…吗？",
 				text = {
 					"当一张小丑被{C:attention}出售{}时",
 					"创造一张{C:dark_edition}欢愉{}小丑",
@@ -1597,7 +1597,7 @@ return {
 			j_cry_loopy = {
 				name = "环弯欢愉",
 				text = {
-					"本回合每出售一张{C:attention}开心{}{C:attention}小丑{}",
+					"本回合每出售一张{C:attention}欢乐{}{C:attention}小丑{}",
 					"{C:attention}重新触发一次{}所有小丑",
 					"{C:inactive}(当前有{}{C:attention:} #1#{}{C:inactive} 次重新触发){}",
 					"{C:inactive,s:0.8}空间不够了...{}"
@@ -1628,8 +1628,8 @@ return {
 			j_cry_macabre = {
 				name = "毛骨悚然",
 				text = {
-					"当选择{C:attention}盲注{}时，除了{C:attention}开心小丑{}和{C:legendary}M系小丑{}",
-					"其余小丑全部摧毁，每摧毁一张小丑就获得一张{C:attention}开心小丑{}"
+					"当选择{C:attention}盲注{}时，除了{C:attention}欢乐小丑{}和{C:legendary}M 小丑{}",
+					"其余小丑全部摧毁，每摧毁一张小丑就获得一张{C:attention}欢乐小丑{}"
 				}
 			},
 			j_cry_magnet = {
@@ -1752,9 +1752,9 @@ return {
 				name = "使徒·十三",
 				text = {
 					"每回合结束时",
-					"创造一张{C:attention}M小丑{}",
-					"每个 {C:attention}开心小丑{}或者{C:attention}M小丑{} 提供 {X:dark_edition,C:white}^#1#{} 倍率",
-					"每 {C:attention}卖出{}一张 {C:attention}开心小丑{}",
+					"创造一张{C:attention}M 小丑{}",
+					"每个 {C:attention}欢乐小丑{}或者{C:attention}M 小丑{} 提供 {X:dark_edition,C:white}^#1#{} 倍率",
+					"每 {C:attention}卖出{}一张 {C:attention}欢乐小丑{}",
 					"额外提供 {X:dark_edition,C:white}^#2#{}倍率",
 					"{C:inactive,s:0.8}(使徒·十三 除外)"
 				}
@@ -1981,7 +1981,7 @@ return {
 				name = "反转牌",
 				text = {
 					"如果{C:attention}弃牌牌型{}是{C:attention}#1#{}",
-					"用{C:dark_edition}镭射{C:attention}开心小丑{}",
+					"用{C:dark_edition}镭射{C:attention}欢乐小丑{}",
 					"填满所有空的小丑槽位 {C:inactive}(最多 100){}",
 					"{C:red,E:2}自毁{}",
 					"{C:inactive,s:0.8}终极逆袭{}"
@@ -1998,7 +1998,7 @@ return {
 				text = {
 					"当使用一张{C:spectral}幻灵牌{}时",
 					"创造1个{C:green}罕见{}小丑",
-					"和3个{C:attention}开心小丑{}",
+					"和3个{C:attention}欢乐小丑{}",
 					"",
 					"{C:red}每回合生效一次{}",
 					"{C:inactive}#1#{}"
@@ -2263,7 +2263,7 @@ return {
 					"如果 {C:attention}果出牌牌型{} 包含一个 {C:attention}#2#{}",
 					"该小丑增加 {C:money}$#1#{}  {C:attention}售价{}",
 					"出售这张牌时",
-					"每 {C:money}$4{} 的 {C:attention}出售价值{}{C:dark_edition}创造一张多彩{} {C:attention}开心小丑{}，",
+					"每 {C:money}$4{} 的 {C:attention}出售价值{}{C:dark_edition}创造一张多彩{} {C:attention}欢乐小丑{}，",
 					" {C:inactive}(至少 1){}"
 				}
 			},

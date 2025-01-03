@@ -159,7 +159,6 @@ target = "game.lua"
 pattern = '''if self.STATE == self.STATES.SELECTING_HAND then'''
 position = "before"
 payload = '''
-sendDebugMessage(self.STATE)
 if G.GAME.USING_RUN then
 	if not (self.STATE == self.STATES.STANDARD_PACK or self.STATE == self.STATES.BUFFOON_PACK or self.STATE == self.STATES.PLANET_PACK or self.STATE == self.STATES.TAROT_PACK or self.STATE == self.STATES.SPECTRAL_PACK or self.STATE == self.STATES.SMODS_BOOSTER_OPENED) then -- do you are have stupid
 		self.STATE = self.STATES.SHOP

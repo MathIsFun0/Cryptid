@@ -6315,6 +6315,7 @@ local tropical_smoothie = {
 	pos = { x = 2, y = 5 },
 	config = { extra = 1.5 },
 	rarity = 3,
+	eternal_compat = false,
 	cost = 5,
 	order = 125,
 	atlas = "atlastwo",
