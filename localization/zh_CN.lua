@@ -3765,7 +3765,7 @@ return {
 			b_code_cards = "代码牌",
 			b_flip = "翻转",
 			b_merge = "融合",
-			b_pull = "拉",
+			b_pull = "拉取",
 			b_unique_cards = "独特牌",
 			cry_active = "激活",
 			cry_again_q = "再来？",
