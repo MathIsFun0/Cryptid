@@ -1380,10 +1380,10 @@ return {
 				name = "M当劳",
 				text = {
 					"{C:mult}+#1#{} 倍率",
-					"{C:red,E:2}在 {C:attention}#2#{} 回合#3#中自毁{}",
-					"当{C:attention}欢乐小丑{}被{C:attention}出售{}时增加{C:attention}#4#{}回合",
-					"{C:inactive,s:0.8}2 麦双层，2 麦鸡{}",
-					"{C:inactive,s:0.8}大薯条，20 块和大蛋糕{}"
+					"在 {C:attention}#2#{} 回合中{C:red,E:2}自毁{}",
+					"当{C:attention}欢乐小丑{}被{C:attention}出售{}时增加{C:attention}#3#{}回合",
+					"{C:inactive,s:0.8}2 双层芝士，2 麦香鸡{}",
+					"{C:inactive,s:0.8}1 大薯条，20 大蛋糕{}"
 				}
 			},
 			j_cry_foolhardy = {
