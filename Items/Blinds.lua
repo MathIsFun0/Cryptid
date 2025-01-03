@@ -270,6 +270,12 @@ local tax = {
 	atlas = "blinds",
 	order = 2,
 	boss_colour = HEX("40ff40"),
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante)*2*G.GAME.starting_params.ante_scaling } }	-- no bignum?
+	end,
+        collection_loc_vars = function(self)
+            return { vars = { localize("cry_tax_placeholder") }}
+        end,
 	cry_cap_score = function(self, score)
 		return math.floor(math.min(0.4 * G.GAME.blind.chips, score) + 0.5)
 	end,
@@ -369,9 +375,12 @@ local joke = {
 	atlas = "blinds",
 	order = 15,
 	boss_colour = HEX("00ffaa"),
-	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME.win_ante or 8 } }
+	loc_vars = function(self)
+		return { vars = { G.GAME.win_ante or 8, (G.GAME.win_ante and G.GAME.round_resets.ante) and math.floor(G.GAME.round_resets.ante + (G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante)) or 8 } }
 	end,
+        collection_loc_vars = function(self)
+            return { vars = { '8', localize('cry_joke_placeholder') }}
+        end,
 	cry_calc_ante_gain = function(self)
 		if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
 			if G.GAME.round_resets.ante == 1 then

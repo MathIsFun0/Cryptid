@@ -1175,7 +1175,10 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	if next(SMODS.find_card('j_cry_Double Scale')) or next(SMODS.find_card('j_cry_Scalae')) then	
+		-- it's not these joker's faults that it's crashing, but we literally just need a way for this function to not be used. this needs to be fixed but i don't know how
+		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	end
 	--Calculate events
 	if self == G.jokers.cards[#G.jokers.cards] then
 		for k, v in pairs(SMODS.Events) do
