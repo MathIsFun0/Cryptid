@@ -1251,6 +1251,7 @@ local soccer = {
 		end
 		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + holy
 		change_shop_size(holy)
+		cry_bonusvouchermod(holy)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		local holy = math.floor(math.min(15, card.ability.extra.holygrail))
@@ -1262,6 +1263,7 @@ local soccer = {
 		end
 		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - holy
 		change_shop_size(holy * -1)
+		cry_bonusvouchermod(-1*holy)
 	end,
 	cry_credits = {
 		idea = {
