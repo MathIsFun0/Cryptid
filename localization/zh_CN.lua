@@ -725,9 +725,9 @@ return {
 			c_cry_reboot = {
 				name = "://重启",
 				text = {
-					"补充 {C:blue}手牌{} 和 {C:red}弃牌{},",
-					"将 {C:cry_code}所有{} 牌返回牌堆",
-					"并抽取一组 {C:cry_code}新的{} 手牌"
+					"补充 {C:blue}手牌{} 和 {C:red}弃牌{} 次数,",
+					"将{C:cry_code}所有{}牌返回牌堆",
+					"并抽取一组{C:cry_code}新的{}手牌"
 				}
 			},
 			c_cry_revert = {
@@ -1657,9 +1657,8 @@ return {
 			j_cry_mask = {
 				name = "面具",
 				text = {
-					"重新触发 {C:attention}人头牌{} cards",
-					"{C:attention}#1#{} additional 次",
-					"所有{C:attention}非人头牌{} 被削弱"
+					"{C:attention}人头牌{}额外触发 {C:attention}#1#{} 次",
+					"所有{C:attention}非人头牌{}被削弱"
 				}
 			},
 			j_cry_maximized = {
