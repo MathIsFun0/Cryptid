@@ -1,0 +1,134 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# first we need to fix what on earth is going on with card.shop_voucher
+# for some reason it's not saved/loaded so... that's what's gonna happen
+# also adding another variable here that will be useful later
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''ability = self.ability,'''
+position = "before"
+payload = '''
+shop_voucher = self.shop_voucher,
+shop_cry_bonusvoucher = self.shop_cry_bonusvoucher,
+'''
+match_indent = true
+
+# water is wet
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self.ability = cardTable.ability'''
+position = "before"
+payload = '''
+self.shop_voucher = cardTable.shop_voucher
+self.shop_cry_bonusvoucher = cardTable.shop_cry_bonusvoucher
+'''
+match_indent = true
+
+
+
+
+# get rid of this dumb hackfix in :redeem()
+# also track vouchers redeemed
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.current_round.voucher = nil'''
+position = "at"
+payload = '''
+-- G.GAME.current_round.voucher = nil
+if self.shop_cry_bonusvoucher then G.GAME.cry_bonusvouchersused[self.shop_cry_bonusvoucher] = true end
+'''
+match_indent = true
+
+# create the table
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''used_packs = {},'''
+position = "after"
+payload = '''
+cry_bonusvouchers = {},
+cry_voucher_stickers = {eternal = false, perishable = false, rental = false, pinned = false, banana = false},
+cry_voucher_edition = {},
+'''
+match_indent = true
+
+# initialise the other helpful variables
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ecto_minus = 1,'''
+position = "after"
+payload = '''
+cry_bonusvouchercount = 0,
+cry_bonusvouchersused = {},
+voucher_edition_index = {},
+voucher_sticker_index = {eternal = {}, perishable = {}, rental = {}, pinned = {}, banana = {}},	-- might as well
+'''
+match_indent = true
+
+# populate the table with keys
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.GAME.current_round.voucher = get_next_voucher_key()'''
+position = "after"
+payload = '''
+G.GAME.current_round.cry_bonusvouchers = {}
+G.GAME.cry_bonusvouchersused = {}	-- i'm not sure why i'm putting these in two separate tables but it doesn't matter much
+for i = 1, G.GAME.cry_bonusvouchercount do
+	G.GAME.current_round.cry_bonusvouchers[i] = get_next_voucher_key()
+end
+'''
+match_indent = true
+
+# fire is hot
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()'''
+position = "after"
+payload = '''
+for i = 1, self.GAME.cry_bonusvouchercount do
+	self.GAME.current_round.cry_bonusvouchers[i] = get_next_voucher_key()
+end
+'''
+match_indent = true
+
+# add the vouchers to the shop. couldn't be more simple
+# use a simple regex to snipe the correct position
+[[patches]]
+[patches.regex]
+target = "game.lua"
+pattern = '''end\n\s+G\.shop_vouchers\:emplace\(card\)\n\s+end'''
+position = "after"
+payload = '''
+for i = 1, #G.GAME.current_round.cry_bonusvouchers do
+	if not G.GAME.cry_bonusvouchersused[i] then
+		local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
+			G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})
+		card.shop_cry_bonusvoucher = i
+		cry_misprintize(card)
+		if G.GAME.events.ev_cry_choco2 then
+			card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+			card:set_cost()
+		end
+		if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+			card.cry_flipped = true
+		end
+		create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+		card:start_materialize()
+		if G.GAME.current_round.cry_voucher_edition then	-- eh why not
+			card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
+		end
+		G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1	-- does this actually matter/even get reset??? i'm confused but whatever
+		G.shop_vouchers:emplace(card)
+	end
+end
+'''
+match_indent = true
