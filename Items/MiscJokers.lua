@@ -6325,12 +6325,14 @@ local tropical_smoothie = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			local check = false
-			for i, v in pairs (G.jokers.cards) do
-				if not Card.no(v, "immutable", true) then
-					cry_with_deck_effects(G.jokers.cards[1], function(card)
-						cry_misprintize(v, { min = card.ability.extra, max = card.ability.extra}, nil, true)
-					end)
-					check = true
+			for i, v in pairs(G.jokers.cards) do
+				if v ~= card then
+					if not Card.no(v, "immutable", true) then
+						cry_with_deck_effects(v, function(card)
+							cry_misprintize(v, { min = card.ability.extra, max = card.ability.extra}, nil, true)
+						end)
+						check = true
+					end
 				end
 			end
 			if check then
