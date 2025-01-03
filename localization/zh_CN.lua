@@ -725,9 +725,9 @@ return {
 			c_cry_reboot = {
 				name = "://重启",
 				text = {
-					"补充 {C:blue}手牌{} 和 {C:red}弃牌{},",
-					"将 {C:cry_code}所有{} 牌返回牌堆",
-					"并抽取一组 {C:cry_code}新的{} 手牌"
+					"补充 {C:blue}手牌{} 和 {C:red}弃牌{} 次数,",
+					"将{C:cry_code}所有{}牌返回牌堆",
+					"并抽取一组{C:cry_code}新的{}手牌"
 				}
 			},
 			c_cry_revert = {
@@ -1380,10 +1380,10 @@ return {
 				name = "M当劳",
 				text = {
 					"{C:mult}+#1#{} 倍率",
-					"{C:red,E:2}在 {C:attention}#2#{} 回合#3#中自毁{}",
-					"当{C:attention}欢乐小丑{}被{C:attention}出售{}时增加{C:attention}#4#{}回合",
-					"{C:inactive,s:0.8}2 麦双层，2 麦鸡{}",
-					"{C:inactive,s:0.8}大薯条，20 块和大蛋糕{}"
+					"在 {C:attention}#2#{} 回合中{C:red,E:2}自毁{}",
+					"当{C:attention}欢乐小丑{}被{C:attention}出售{}时增加{C:attention}#3#{}回合",
+					"{C:inactive,s:0.8}2 双层芝士，2 麦香鸡{}",
+					"{C:inactive,s:0.8}1 大薯条，20 大蛋糕{}"
 				}
 			},
 			j_cry_foolhardy = {
@@ -1657,9 +1657,8 @@ return {
 			j_cry_mask = {
 				name = "面具",
 				text = {
-					"重新触发 {C:attention}人头牌{} cards",
-					"{C:attention}#1#{} additional 次",
-					"所有{C:attention}非人头牌{} 被削弱"
+					"{C:attention}人头牌{}额外触发 {C:attention}#1#{} 次",
+					"所有{C:attention}非人头牌{}被削弱"
 				}
 			},
 			j_cry_maximized = {
@@ -3766,7 +3765,7 @@ return {
 			b_code_cards = "代码牌",
 			b_flip = "翻转",
 			b_merge = "融合",
-			b_pull = "拉",
+			b_pull = "拉取",
 			b_unique_cards = "独特牌",
 			cry_active = "激活",
 			cry_again_q = "再来？",
