@@ -167,7 +167,7 @@ return {
                 name = "The Joke",
                 text = {
                     "If score is >2X requirements,",
-                    "set ante to multiple of #1#",
+                    "set ante to #2#",
                 },
             },
             bl_cry_magic = {
@@ -288,8 +288,8 @@ return {
             bl_cry_tax = {
                 name = "The Tax",
                 text = {
-                    "Score per hand capped at",
-                    "0.4X blind requirements",
+                    "Score per hand capped",
+                    "at #1#",
                 },
             },
             bl_cry_tornado = {
@@ -322,6 +322,14 @@ return {
             },
         },
         Code = {
+            c_cry_alttab = {
+                name = "://ALTTAB",
+                text = {
+                    "Create the {C:cry_code}current{}",
+                    "blind's skip tag",
+                    "{C:inactive}(Current: {C:cry_code}#1#{C:inactive})",
+                },
+            },
             c_cry_class = {
                 name = "://CLASS",
                 text = {
@@ -383,14 +391,14 @@ return {
                     "{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
                 },
             },
-			c_cry_inst = {
-				name = "://INSTANTIATE",
-				text = {
-					"Draw a card with selected card's {C:cry_code}rank{}",
-					"and one with selected card's {C:cry_code}suit{}",
-					"{C:inactive}(if possible){}",
-				},
-			},
+            c_cry_inst = {
+                name = "://INSTANTIATE",
+                text = {
+                    "Draw a card with selected card's {C:cry_code}rank{}",
+                    "and one with selected card's {C:cry_code}suit{}",
+                    "{C:inactive}(if possible){}",
+                },
+            },
             c_cry_machinecode = {
                 name = "://MACHINECODE",
                 text = {
@@ -604,7 +612,7 @@ return {
                 name = "Nostalgic Googol Play Card",
                 text = {
                     "Sell this card to create",
-                    "{C:attention}2{} copies of the leftmost {C:attention}Joker{}",
+                    "{C:attention}#1#{} copies of the leftmost {C:attention}Joker{}",
                     "{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
                 },
             },
@@ -693,7 +701,7 @@ return {
                     "{C:green}#1# in #2#{} chance for each",
                     "played {C:attention}Bonus{} card to increase",
                     "{C:attention}Joker{} or {C:attention}Consumable slots",
-                    "by {C:dark_edition}1{} when scored",
+                    "by {C:dark_edition}#3#{} when scored",
                     "{C:red}Works twice per round",
                     "{C:inactive,s:0.8}(Equal chance for each){}",
                 },
@@ -736,7 +744,7 @@ return {
                 text = {
                     "{C:green}#1# in #3#{} chance",
                     "for {C:mult}+#2#{} Mult",
-                    "{C:green}1 in 4{} chance",
+                    "{C:green}#4# in #3#{} chance",
                     "for {C:mult}-#2#{} Mult",
                 },
             },
@@ -971,9 +979,9 @@ return {
             j_cry_doodlem = {
                 name = "Doodle M",
                 text = {
-                    "Create 2 {C:dark_edition}Negative{} {C:attention}consumables{}",
+                    "Create #2# {C:dark_edition}Negative{} {C:attention}consumables{}",
                     "when {C:attention}Blind{} is selected",
-                    "Create 1 more {C:attention}consumable",
+                    "Create #1# more {C:attention}consumable",
                     "for each {C:attention}Jolly Joker{}",
                 },
             },
@@ -1388,7 +1396,7 @@ return {
                     "When {C:attention}Blind{} is selected,",
                     "destroys each {C:attention}Joker{} except",
                     "{C:legendary}M Jokers{} and {C:attention}Jolly Jokers{}",
-                    "and create 1 {C:attention}Jolly Joker{}",
+                    "and create #1# {C:attention}Jolly Joker{}",
                     "for each destroyed card",
                 },
             },
@@ -1597,7 +1605,7 @@ return {
             j_cry_notebook = {
                 name = "Notebook",
                 text = {
-                    "{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
+                    "{C:green} #1# in #2#{} chance to gain {C:dark_edition}+#6#{} Joker",
                     "slot per {C:attention}reroll{} in the shop",
                     "{C:green}Always triggers{} if there are",
                     "{C:attention}#5#{} or more {C:attention}Jolly Jokers{}",
@@ -1810,8 +1818,8 @@ return {
             j_cry_sacrifice = {
                 name = "Sacrifice",
                 text = {
-                    "Create an {C:green}Uncommon{} Joker",
-                    "and 3 {C:attention}Jolly Jokers{} when",
+                    "Create #3# {C:green}Uncommon{} Joker",
+                    "and #2# {C:attention}Jolly Jokers{} when",
                     "a {C:spectral}Spectral{} card is used",
                     "{C:red}Works once per round{}",
                     "{C:inactive}#1#{}",
@@ -1893,6 +1901,7 @@ return {
                     "{C:attention}+#1#{} hand size",
                     "{C:attention}+#1#{} consumable slot",
                     "{C:attention}+#1#{} card in shop",
+                    "{C:attention}+#1#{} voucher slot",
                 },
             },
             j_cry_fleshpanopticon = {
@@ -2057,7 +2066,7 @@ return {
                 text = {
                     "Sell this card",
 		    "to {C:attention}multiply{} values",
-                    "of owned jokers by {C:attention}X1.5{}",
+                    "of owned jokers by {C:attention}X#1#{}",
                 },
             },
             j_cry_unity = {
@@ -2426,6 +2435,7 @@ return {
                     "Create {C:attention}#1#{} {C:dark_edition}Negative{}",
                     "copies of a",
                     "{C:attention}random{} consumable",
+                    "in your possession",
                     "{C:inactive,s:0.8}Does not copy Chambered{}"
                 },
             },
@@ -3703,6 +3713,9 @@ return {
             cry_debuff_oldflint = "No Flushes",
             cry_debuff_oldmark = "No hands containing a Pair",
             cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
+
+            cry_tax_placeholder = "(X0.4 blind requirement)",
+            cry_joke_placeholder = "(multiple of 8)",
 
             k_code = "Code",
             k_unique = "Unique",

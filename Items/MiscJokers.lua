@@ -180,7 +180,6 @@ local potofjokes = {
 	key = "pot_of_jokes",
 	config = { extra = { h_size = -2, h_mod = 1 } },
 	pos = { x = 5, y = 0 },
-	immutable = true,
 	rarity = 3,
 	order = 104,
 	cost = 10,
@@ -189,15 +188,15 @@ local potofjokes = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				center.ability.extra.h_size < 0 and center.ability.extra.h_size or "+" .. center.ability.extra.h_size,
+				center.ability.extra.h_size < 0 and center.ability.extra.h_size or "+" .. math.min(1000, center.ability.extra.h_size),
 				center.ability.extra.h_mod,
 			},
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+			G.hand:change_size(math.min(1000-card.ability.extra.h_size, card.ability.extra.h_mod))
 			card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
-			G.hand:change_size(card.ability.extra.h_mod)
 			return {
 				message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
 				colour = G.C.FILTER,
@@ -206,10 +205,10 @@ local potofjokes = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.hand:change_size(card.ability.extra.h_size)
+		G.hand:change_size(math.min(1000, card.ability.extra.h_size))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-card.ability.extra.h_size)
+		G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
 	end,
 	cry_credits = {
 		idea = {
@@ -529,7 +528,6 @@ local pickle = {
 	key = "pickle",
 	config = { extra = { tags = 3, tags_mod = 1 } },
 	pos = { x = 3, y = 3 },
-	immutable = true,
 	rarity = 2,
 	order = 45,
 	cost = 6,
@@ -712,25 +710,24 @@ local booster = {
 	config = { extra = { booster_slots = 1 } },
 	pos = { x = 2, y = 0 },
 	order = 34,
-	immutable = true,
 	rarity = 2,
 	cost = 6,
 	blueprint_compat = false,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.booster_slots } }
+		return { vars = { math.min(25, center.ability.extra.booster_slots) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not G.GAME.modifiers.cry_booster_packs then
 			G.GAME.modifiers.cry_booster_packs = 2
 		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + card.ability.extra.booster_slots
+		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + math.min(25, card.ability.extra.booster_slots)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if not G.GAME.modifiers.cry_booster_packs then
 			G.GAME.modifiers.cry_booster_packs = 2
 		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.booster_slots
+		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - math.min(25, card.ability.extra.booster_slots)
 	end,
 	cry_credits = {
 		idea = {
@@ -1070,13 +1067,12 @@ local chad = {
 	pos = { x = 0, y = 3 },
 	order = 71,
 	config = { extra = { retriggers = 2 } },
-	immutable = true,
     pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 10,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.retriggers } }
+		return { vars = { math.min(25, center.ability.extra.retriggers) } }
 	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -1084,7 +1080,7 @@ local chad = {
 			if context.other_card == G.jokers.cards[1] then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra.retriggers,
+					repetitions = math.min(25, card.ability.extra.retriggers),
 					card = card,
 				}
 			else
@@ -1426,16 +1422,15 @@ local mario = {
 	order = 85,
 	cost = 20,
 	blueprint_compat = true,
-	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.retriggers } }
+		return { vars = { math.min(25, center.ability.extra.retriggers) } }
 	end,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
 			return {
 				message = localize("k_again_ex"),
-				repetitions = card.ability.extra.retriggers,
+				repetitions = math.min(25, card.ability.extra.retriggers),
 				card = card,
 			}
 		end
@@ -1848,7 +1843,6 @@ local redbloon = {
 	key = "redbloon",
 	config = { extra = { money = 20, rounds_remaining = 2 } },
 	pos = { x = 5, y = 1 },
-	immutable = true,
 	rarity = 1,
 	cost = 4,
 	order = 97,
@@ -2404,7 +2398,6 @@ local sapling = {
 	key = "sapling",
 	pos = { x = 3, y = 2 },
 	config = { extra = { score = 0, req = 18, check = nil } },
-	immutable = true,
 	rarity = 2,
 	cost = 6,
 	order = 42,
@@ -5360,7 +5353,6 @@ local oldblueprint = {
 	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
 	rarity = 1,
-	immutable = true, -- No cheesing self destruct chance :)
 	cost = 6,
 	order = 83,
 	update = function(self, card, front)
@@ -5564,18 +5556,20 @@ local busdriver = {
 	key = "busdriver",
 	config = { extra = { mult = 50, odds = 4 } },
 	pos = { x = 5, y = 1 },
-	immutable = true,
 	rarity = 2,
 	cost = 7,
 	order = 46,
 	atlas = "atlasthree",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
+		local prob = (G.GAME and G.GAME.probabilities.normal or 1)
+		local oddy = math.max(1, center.ability.extra.odds)
 		return {
 			vars = {
-				"" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 3),
+				"" .. ( oddy - 1/prob ),
 				center.ability.extra.mult,
-				center.ability.extra.odds,
+				oddy,
+				"" .. ( 1/prob ),
 			},
 		}
 	end,
@@ -5586,7 +5580,8 @@ local busdriver = {
 			and not context.before
 			and not context.after
 		then
-			if pseudorandom("busdriver") < G.GAME.probabilities.normal / card.ability.extra.odds * 3 then
+			local oddy = math.max(1, card.ability.extra.odds)
+			if pseudorandom("busdriver") < 1-(1/(G.GAME.probabilities.normal*oddy)) then
 				return {
 					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
 					mult_mod = card.ability.extra.mult,
@@ -5833,11 +5828,11 @@ local flipside = {
 	object_type = "Joker",
 	name = "cry-Flip Side",
 	key = "flip_side",
-	pos = { x = 1, y = 0 },
+	pos = { x = 3, y = 6 },
 	rarity = 2,
 	cost = 7,
 	order = 107,
-	atlas = "placeholders",
+	atlas = "atlastwo",
 	no_dbl = true,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
@@ -5878,7 +5873,7 @@ local flipside = {
 			"Axolotus"
 		},
 		art = {
-			":("
+			"Pyrocreep"
 		},
 		code = {
 			"Math"
@@ -6318,25 +6313,26 @@ local tropical_smoothie = {
 	name = "cry-Tropical Smoothie",
 	key = "tropical_smoothie",
 	pos = { x = 2, y = 5 },
-	config = {},
+	config = { extra = 1.5 },
 	rarity = 3,
 	eternal_compat = false,
 	cost = 5,
 	order = 125,
 	atlas = "atlastwo",
-	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
 		if context.selling_self then
 			local check = false
-			for i, v in pairs (G.jokers.cards) do
-				if not Card.no(v, "immutable", true) then
-					cry_with_deck_effects(v, function(card)
-						cry_misprintize(v, { min = 1.5, max = 1.5}, nil, true)
-					end)
-					check = true
+			for i, v in pairs(G.jokers.cards) do
+				if v ~= card then
+					if not Card.no(v, "immutable", true) then
+						cry_with_deck_effects(v, function(card)
+							cry_misprintize(v, { min = card.ability.extra, max = card.ability.extra}, nil, true)
+						end)
+						check = true
+					end
 				end
 			end
 			if check then

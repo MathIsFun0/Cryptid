@@ -433,14 +433,25 @@ local seed = {
 local rigged = {
 	object_type = "Sticker",
 	atlas = "sticker",
-	pos = { x = 5, y = 1 },
+	pos = { x = 6, y = 1 },
 	key = "cry_rigged",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	draw = function(self, card) --don't draw shine
+		if not G.shared_stickers["cry_rigged2"] then 
+			G.shared_stickers["cry_rigged2"] = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 }) 
+		end	-- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+		
 		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers["cry_rigged2"].role.draw_major = card
+		
 		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		
+		card.hover_tilt = card.hover_tilt/2	-- call it spaghetti, but it's what hologram does so...
+		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_rigged2"]:draw_shader("hologram", nil, card.ARGS.send_to_shader, nil, card.children.center)	-- this doesn't really do much tbh, but the slight effect is nice
+		card.hover_tilt = card.hover_tilt*2
 	end,
 }
 
@@ -1406,34 +1417,106 @@ local inst = {
 		return #selected_cards == 1
 	end,
 	use = function(self, card, area, copier)
+		local same = 0
 		for i = 1, #G.deck.cards do
 			if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+				same = i
 				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 				break
 			end
 		end
 		for i = 1, #G.deck.cards do
-			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit and i ~= same then
 				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 				break
 			end
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		for i = 1, number do
+		for j = 1, number do
+			local same = 0
 			for i = 1, #G.deck.cards do
 				if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+					same = i
 					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 					break
 				end
 			end
 			for i = 1, #G.deck.cards do
-				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit and i ~= same then
 					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 					break
 				end
 			end
 		end
+	end,
+}
+local alttab = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "alttab",
+	name = "cry-Alttab",
+	atlas = "code",
+	order = 28,
+	config = {  },
+	pos = {
+		x = 4,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		local ret = localize("k_none")
+		if G.GAME and G.GAME.blind then
+			if G.GAME.blind:get_type() == 'Small' then
+				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Small, set = 'Tag'}
+			elseif G.GAME.blind:get_type() == 'Big' then
+				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Big, set = 'Tag'}
+			elseif G.GAME.blind:get_type() == 'Boss' then
+				ret = '???'
+			end
+		end
+		return { vars = { ret } }
+	end,
+	can_use = function(self, card)
+		return G.GAME and G.GAME.blind
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		delay(0.4)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+                	local tag = nil
+			local type = G.GAME.blind:get_type()
+			if type == 'Boss' then
+				tag = Tag(get_next_tag_key())
+			else
+				tag = Tag(G.GAME.round_resets.blind_tags[type])
+			end
+			add_tag(tag)
+			used_consumable:juice_up(0.8, 0.5)
+		return true end }))
+        	delay(1.2)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local used_consumable = copier or card
+		delay(0.4)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			for j = 1, number do
+				play_sound('tarot1')
+                		local tag = nil
+				local type = G.GAME.blind:get_type()
+				if type == 'Boss' then
+					tag = Tag(get_next_tag_key())
+				else
+					tag = Tag(G.GAME.round_resets.blind_tags[type])
+				end
+				add_tag(tag)
+				used_consumable:juice_up(0.8, 0.5)
+				delay(0.1)
+			end
+		return true end }))
+        	delay(1.1)
 	end,
 }
 
@@ -1447,7 +1530,7 @@ local automaton = {
 	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.create } }
+		return { vars = { card and card.ability and card.ability.create or self.config.create } }
 	end,
 	can_use = function(self, card)
 		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
@@ -1667,7 +1750,7 @@ local copypaste = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2) },
+			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), math.max(2, (center and center.ability.extra.odds or 2)) },
 		}
 	end,
 	atlas = "atlasepic",
@@ -1678,7 +1761,7 @@ local copypaste = {
 			and not context.consumeable.beginning_end
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / math.max(2, card.ability.extra.odds) then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
@@ -3722,9 +3805,13 @@ crashes = {
 				blockable = false,
 				no_delete = true,
 				func = function()
-					local c = create_card("Code", nil, nil, nil, nil, nil, "c_cry_crash")
-					c.T.x = math.random(-G.CARD_W, G.TILE_W)
-					c.T.y = math.random(-G.CARD_H, G.TILE_H)
+					G.GAME.accel = G.GAME.accel or 1.1
+					for i = 1, G.GAME.accel do
+						local c = create_card("Code", nil, nil, nil, nil, nil, "c_cry_crash")
+						c.T.x = math.random(-G.CARD_W, G.TILE_W)
+						c.T.y = math.random(-G.CARD_H, G.TILE_H)
+					end
+					G.GAME.accel = G.GAME.accel^(1.005 + G.GAME.accel/20000)
 					return false
 				end,
 			}),
@@ -3797,7 +3884,7 @@ local code_cards = {
 	malware,
 	seed,
 	rigged,
-	hook,
+	--hook,
 	hooked,
 	variable,
 	class,
@@ -3815,6 +3902,7 @@ local code_cards = {
 	--patch,
 	ctrl_v,
 	inst,
+	alttab,
 }
 if Cryptid.enabled["Misc. Decks"] then
 	code_cards[#code_cards + 1] = encoded
@@ -4298,6 +4386,8 @@ return {
 		G.FUNCS.can_open = function(e)
 			if G.GAME.USING_RUN then
 				gfco(e)
+				-- e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				-- e.config.button = nil
 			else
 				gfco(e)
 			end

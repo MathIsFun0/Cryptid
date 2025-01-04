@@ -397,7 +397,7 @@ function cry_bonusvouchermod(mod)
 	if G.shop_jokers and G.shop_jokers.cards then
 		G.shop:recalculate()
 		if mod > 0 then		-- not doing minus mod because it'd be janky and who really cares
-			for i = 1, G.GAME.cry_bonusvouchercount - #G.shop_vouchers.cards do
+			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
 				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
 				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
 				
@@ -1175,7 +1175,10 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	if next(SMODS.find_card('j_cry_Double Scale')) or next(SMODS.find_card('j_cry_Scalae')) then	
+		-- it's not these joker's faults that it's crashing, but we literally just need a way for this function to not be used. this needs to be fixed but i don't know how
+		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	end
 	--Calculate events
 	if self == G.jokers.cards[#G.jokers.cards] then
 		for k, v in pairs(SMODS.Events) do
