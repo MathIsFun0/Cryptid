@@ -400,8 +400,7 @@ return {
 			
 			if center.name == "Fortune Teller" 
 			or center.name == "Shoot the Moon" 
-			or center.name == "Riff-raff" 
-			or center.name == "Business Card"
+			or center.name == "Riff-raff"
 			or center.name == "Chaos the Clown"
 			or center.name == "Dusk"
 			or center.name == "Mime"
