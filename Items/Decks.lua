@@ -231,6 +231,15 @@ local bountiful = {
 	order = 14,
 	atlas = "placeholders",
 }
+local beige = {
+	object_type = "Back",
+	name = "cry-Beige",
+	key = "beige",
+	config = { cry_common_value_quad = true },
+	pos = { x = 1, y = 6 },
+	order = 15,
+	atlas = "atlasdeck",
+}
 return {
 	name = "Misc. Decks",
 	init = function()
@@ -295,6 +304,9 @@ return {
 			end
 			if self.effect.config.cry_forced_draw_amount then
 				G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
+			end
+			if self.effect.config.cry_common_value_quad then
+				G.GAME.modifiers.cry_common_value_quad = true
 			end
 		end
 		--equilibrium deck patches
@@ -469,5 +481,6 @@ return {
 		glowing,
 		beta,
 		bountiful,
+		beige,
 	},
 }
