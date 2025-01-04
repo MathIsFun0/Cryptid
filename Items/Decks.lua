@@ -227,9 +227,9 @@ local bountiful = {
 	name = "cry-Bountiful",
 	key = "bountiful",
 	config = { cry_forced_draw_amount = 5 },
-	pos = { x = 4, y = 2 },
+	pos = { x = 2, y = 6 },
 	order = 14,
-	atlas = "placeholders",
+	atlas = "atlasdeck",
 }
 local beige = {
 	object_type = "Back",
