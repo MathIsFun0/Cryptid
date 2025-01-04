@@ -397,7 +397,7 @@ function cry_bonusvouchermod(mod)
 	if G.shop_jokers and G.shop_jokers.cards then
 		G.shop:recalculate()
 		if mod > 0 then		-- not doing minus mod because it'd be janky and who really cares
-			for i = 1, G.GAME.cry_bonusvouchercount - #G.shop_vouchers.cards do
+			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
 				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
 				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
 				
