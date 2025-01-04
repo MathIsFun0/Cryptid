@@ -717,7 +717,7 @@ local aequilibrium = {
 				key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
 			})
 		end
-		return { vars = { math.floor(math.min(25, card.ability.extra.jokers)), joker_generated } }
+		return { vars = { math.floor(math.min(25, center.ability.extra.jokers)), joker_generated } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
