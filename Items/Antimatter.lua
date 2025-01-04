@@ -58,6 +58,7 @@ local antimatter = {
 		cry_force_seal = "random",
 		cry_boss_blocked = { "bl_goad", "bl_window", "bl_club", "bl_head" },
 		cry_forced_draw_amount = 5,
+		cry_common_value_quad = true,
 	},
 	pos = { x = 2, y = 0 },
 	trigger_effect = function(self, args)
