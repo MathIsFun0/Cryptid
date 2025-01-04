@@ -6333,7 +6333,7 @@ local tropical_smoothie = {
 			local check = false
 			for i, v in pairs (G.jokers.cards) do
 				if not Card.no(v, "immutable", true) then
-					cry_with_deck_effects(G.jokers.cards[1], function(card)
+					cry_with_deck_effects(v, function(card)
 						cry_misprintize(v, { min = 1.5, max = 1.5}, nil, true)
 					end)
 					check = true
