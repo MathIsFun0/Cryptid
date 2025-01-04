@@ -975,6 +975,46 @@ local eclipse = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
+local light = {
+	object_type = "Enhancement",
+	key = "light",
+	atlas = "cry_misc",
+	pos = { x = 0, y = 3 },
+	config = {extra = {a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5}},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult, card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult, card and card.ability.extra.current or self.config.extra.current, card and card.ability.extra.req or self.config.extra.req } }
+	end,
+	calculate = function(self,card,context,effect)
+		if context.cardarea == G.play and not context.repetition then
+			if #context.scoring_hand == 5 then
+				card.ability.extra.current = card.ability.extra.current - 1
+				if card.ability.extra.current <= 0 then
+					card.ability.extra.req = card.ability.extra.req +5
+					card.ability.extra.current = card.ability.extra.req
+					card.ability.extra.current_x_mult = card.ability.extra.current_x_mult + card.ability.extra.a_x_mult
+				end
+			end
+			if card.ability.extra.current_x_mult > 1 then
+				effect.x_mult = card.ability.extra.current_x_mult
+			end
+		end
+	end,
+}
+local seraph = { 
+	object_type = "Consumable",
+	set = "Tarot",
+	name = "cry-Seraph",
+	key = "seraph",
+	order = 2,
+	pos = { x = 1, y = 2 },
+	config = { mod_conv = "m_cry_light", max_highlighted = 2 },
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
+
+		return { vars = { self.config.max_highlighted } }
+	end,
+}
 local blessing = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -1547,6 +1587,8 @@ local miscitems = {
 	marsmoons,
 	universe,
 	absolute,
+	light,
+	seraph,
 }
 if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
