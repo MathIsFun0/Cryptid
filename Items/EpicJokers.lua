@@ -1122,7 +1122,11 @@ local goldjoker = {
 	calc_dollar_bonus = function(self, card)
 		local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
 		if bonus > 0 then
-			return bonus
+			if G.GAME.dollars > 1e10 then
+				return 1
+			else
+				return bonus
+			end
 		end
 	end,
 	cry_credits = {
