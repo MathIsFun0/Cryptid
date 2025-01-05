@@ -660,6 +660,7 @@ match_indent = true
 
 # init Cryptid global through lovely
 # so other mods can add things to memepack pool
+# and define some stub functions so that the game does not immediately crash when talisman isn't loaded
 [[patches]]
 [patches.pattern]
 target = "main.lua"
@@ -667,11 +668,15 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Cryptid = {}
+Cryptid.enabled = {}
 Cryptid.memepack = {}
 Cryptid.aliases = {}
 Cryptid.food = {}
 Cryptid.M_jokers = {} 
 Cryptid.Megavouchers = {}
+function cry_format(...)
+    return ... 
+end
 '''
 match_indent = true
 
