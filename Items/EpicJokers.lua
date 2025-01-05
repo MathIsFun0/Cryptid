@@ -135,6 +135,18 @@ local googol_play = {
 			"Math"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'chip_score' and to_big(args.chips) >= to_big(1e100) then
+ 			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 local sync_catalyst = {
 	object_type = "Joker",
@@ -790,6 +802,27 @@ local circus = {
 			"Jevonn"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.jokers and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante < 9 then
+			local rarities = {
+
+			}
+			for i = 1, #G.jokers.cards do
+				local card = G.jokers.cards[i]
+				rarities[card.config.center.rarity .. '_rarity'] = true
+			end
+			if rarities['3_rarity'] and rarities['4_rarity'] and rarities['cry_epic_rarity'] then
+ 				unlock_card(self)
+			end
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 local caramel = {
 	object_type = "Joker",
@@ -949,6 +982,22 @@ local curse_sob = {
 			"Jevonn"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.key == 'j_obelisk' and G.jokers.cards[i].ability.eternal then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 local bonusjoker = {
 	object_type = "Joker",
@@ -1276,6 +1325,24 @@ local soccer = {
 			"Jevonn"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'win' then
+
+			for k,v in pairs(G.GAME.hands) do
+				if k ~= 'High Card' and G.GAME.hands[k].played ~= 0 then
+					return
+				end
+			end
+			return true
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 local fleshpanopticon = {
 	object_type = "Joker",
