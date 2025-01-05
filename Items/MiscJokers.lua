@@ -221,6 +221,18 @@ local potofjokes = {
 			"Math"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.hand and G.hand.config and G.hand.config.card_limit and G.hand.config.card_limit >= 12 then
+			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 local queensgambit = {
 	object_type = "Joker",
@@ -1155,6 +1167,28 @@ local jimball = {
 			"Math"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'win' then
+			local hand = nil
+			for k,v in pairs(G.GAME.hands) do
+				if G.GAME.hands[k].played ~= 0 then
+					if not hand then
+						hand = G.GAME.hands[k]
+					else
+						return
+					end
+				end
+			end
+			return true
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 G.FUNCS.notif_jimball = function()
 	Cryptid_config.Cryptid.jimball_music = false
