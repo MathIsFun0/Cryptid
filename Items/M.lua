@@ -421,7 +421,7 @@ local notebook = {
 		}
 		return {
 			vars = {
-				"" .. cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
 				card.ability.extra.slot,
 				card.ability.extra.active,
@@ -659,7 +659,7 @@ local scrabble = {
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
-		return { vars = { "" .. cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
