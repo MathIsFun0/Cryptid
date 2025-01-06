@@ -986,11 +986,11 @@ local light = {
 	end,
 	calculate = function(self,card,context,effect)
 		if context.cardarea == G.play and not context.repetition then
-			if #context.scoring_hand == 5 then
-				card.ability.extra.current = card.ability.extra.current - 1
-				if card.ability.extra.current <= 0 then
+			if #context.scoring_hand > 1 then
+				card.ability.extra.current = card.ability.extra.current - (#context.scoring_hand - 1)
+				while card.ability.extra.current <= 0 do
 					card.ability.extra.req = card.ability.extra.req +5
-					card.ability.extra.current = card.ability.extra.req
+					card.ability.extra.current = card.ability.extra.current + card.ability.extra.req
 					card.ability.extra.current_x_mult = card.ability.extra.current_x_mult + card.ability.extra.a_x_mult
 				end
 			end

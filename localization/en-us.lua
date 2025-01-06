@@ -605,13 +605,13 @@ return {
                     "times when scored",
                 },
             },
-	    m_cry_light = {
+	        m_cry_light = {
                 name = "Light Card",
                 text = {
-                    "When played and scoring in a hand with",
-                    "{C:attention}5{} scoring cards {C:attention}#4#{} times {C:inactive}(#3# left)",
-                    "Gains {X:mult,C:white}X#1#{} Mult and adds {C:attention}5{} to the",
-                    "requirement {C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+                    "When played with {C:attention}#4#{} {C:inactive}(#3#){} other",
+                    "scoring cards, gain {X:mult,C:white}X#1#{} Mult and",
+                    "increase requirement by {C:attention}5{}",
+                    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
                 },
             },
         },
