@@ -221,6 +221,18 @@ local potofjokes = {
 			"Math"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.hand and G.hand.config and G.hand.config.card_limit and G.hand.config.card_limit >= 12 then
+			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 local queensgambit = {
 	object_type = "Joker",
@@ -1159,6 +1171,28 @@ local jimball = {
 			"Math"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'win' then
+			local hand = nil
+			for k,v in pairs(G.GAME.hands) do
+				if G.GAME.hands[k].played ~= 0 then
+					if not hand then
+						hand = G.GAME.hands[k]
+					else
+						return
+					end
+				end
+			end
+			return true
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 G.FUNCS.notif_jimball = function()
 	Cryptid_config.Cryptid.jimball_music = false
@@ -4145,6 +4179,8 @@ local duos = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'Two Pair'},
 }
 local home = {
 	object_type = "Joker",
@@ -4187,6 +4223,8 @@ local home = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'Full House'},
 }
 local nuts = {
 	object_type = "Joker",
@@ -4229,6 +4267,8 @@ local nuts = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'Straight Flush'},
 }
 local quintet = {
 	object_type = "Joker",
@@ -4277,6 +4317,8 @@ local quintet = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'Five of a Kind'},
 }
 local unity = {
 	object_type = "Joker",
@@ -4325,6 +4367,8 @@ local unity = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'Flush House'},
 }
 local swarm = {
 	object_type = "Joker",
@@ -4373,6 +4417,8 @@ local swarm = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'Flush Five'},
 }
 local stronghold = {
 	object_type = "Joker",
@@ -4410,6 +4456,8 @@ local stronghold = {
 		end
 		return false
 	end,
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'cry_Bulwark'},
 }
 local wtf = {
 	object_type = "Joker",
@@ -4447,6 +4495,8 @@ local wtf = {
 		end
 		return false
 	end,
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'cry_Clusterfuck'},
 }
 local clash = {
 	object_type = "Joker",
@@ -4484,6 +4534,8 @@ local clash = {
 		end
 		return false
 	end,
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'cry_UltPair'},
 }
 local filler = {
 	object_type = "Joker",
@@ -4491,7 +4543,7 @@ local filler = {
 	key = "filler",
 	pos = { x = 0, y = 1 },
   pools = {["Meme"] = true},
-	config = { Xmult = 1.00000000000001, type = "High Card" },
+	config = { Xmult = 1.00000000000002, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -4520,6 +4572,8 @@ local filler = {
 			"Mathguy"
 		}
 	},
+	unlocked = false,
+	unlock_condition = {type = 'win_no_hand',extra = 'High Card'},
 }
 local giggly = {
 	object_type = "Joker",

@@ -1743,6 +1743,28 @@ local CodeJoker = {
 			"Kailen"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G.P_CENTER_POOLS['Code'] then
+			local count = 0
+			local count2 = 0
+			for k,v in pairs(G.P_CENTER_POOLS['Code']) do
+				count2 = count2+1
+				if v and v.discovered == true then
+					count = count + 1
+				end
+			end
+			if count == count2 then
+				unlock_card(self)
+			end
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 
 local copypaste = {
