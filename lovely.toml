@@ -762,3 +762,25 @@ if (not self.ability.orbital_hand) or (not G.GAME.hands[self.ability.orbital_han
 end
 '''
 match_indent = true
+
+# add check for unlock with winning hand
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''check_for_unlock({type = 'win'})'''
+position = "after"
+payload = '''
+check_for_unlock({type = 'cry_win_with_hand', hand = G.GAME.last_hand_played})
+'''
+match_indent = true
+
+# (scuffed) remove filler from rare tag pool
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if v.yes_pool_flag and not G.GAME.pool_flags[v.yes_pool_flag] then add = nil end'''
+position = "after"
+payload = '''
+if v.key == 'j_cry_filler' and _append == 'rta' then add = nil end
+'''
+match_indent = true

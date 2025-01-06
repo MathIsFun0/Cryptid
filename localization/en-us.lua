@@ -647,7 +647,12 @@ return {
             },
 	    j_cry_arsonist = {
                 name = "Arsonist",
-                text = { "Destroy all cards played in {C:attention}Full Houses", },
+                text = {
+                    "If played hand",
+                    "contains a {C:attention}Full House{},",
+                    "{C:red}destroy{} all cards",
+                    "after scoring",
+                }
             },
             j_cry_astral_bottle = {
                 name = "Astral in a Bottle",
@@ -887,8 +892,8 @@ return {
                     "an {C:attention}#2#",
                 },
 		unlock = {
-                    "Win a run",
-                    "without playing",
+                    "Win a run with",
+                    "your final hand being",
                     "an {E:1,C:attention}Ultimate Pair"
                 },
             },
@@ -1875,8 +1880,8 @@ return {
                     "a {C:attention}#2#",
                 },
 		unlock = {
-                    "Win a run",
-                    "without playing",
+                    "Win a run with",
+                    "your final hand being",
                     "a {E:1,C:attention}Five of a Kind"
                 },
             },
@@ -2088,8 +2093,8 @@ return {
                     "a {C:attention}#2#",
                 },
 		unlock = {
-                    "Win a run",
-                    "without playing",
+                    "Win a run with",
+                    "your final hand being",
                     "a {E:1,C:attention}Bulwark"
                 },
             },
@@ -2128,8 +2133,8 @@ return {
                     "a {C:attention}#2#",
                 },
 		unlock = {
-                    "Win a run",
-                    "without playing",
+                    "Win a run with",
+                    "your final hand being",
                     "a {E:1,C:attention}Flush Five"
                 },
             },
@@ -2211,8 +2216,8 @@ return {
                     "a {C:attention}#2#",
                 },
 		unlock = {
-                    "Win a run",
-                    "without playing",
+                    "Win a run with",
+                    "your final hand being",
                     "a {E:1,C:attention}Flush House"
                 },
             },
@@ -2335,24 +2340,25 @@ return {
                     "a {C:attention}#2#",
                 },
 		unlock = {
-                    "Win a run",
-                    "without playing",
+                    "Win a run with",
+                    "your final hand being",
                     "a {E:1,C:attention}Clusterfuck"
                 },
             },
 	    j_cry_zooble = {
                 name = "Zooble",
                 text = {
-                    "Gains {C:mult}+#2#{} Mult for every",
+                    "If played hand does",
+                    "{C:attention}not{} contain a {C:attention}Straight{},",
+                    "this Joker gains {C:mult}+#2#{} Mult for every",
                     "{C:attention}unique rank{} in scoring hand",
                     "{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
-                    "{C:inactive}(Excludes hands containing Straights)"
                 },
             },
         },
         Planet = {
             c_cry_Klubi = {
-                name = "Klubi",
+                name = "Risti",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
                     "Level up",
@@ -2412,7 +2418,7 @@ return {
                 },
             },
             c_cry_Timantti = {
-                name = "Timantti",
+                name = "Ruutu",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
                     "Level up",
