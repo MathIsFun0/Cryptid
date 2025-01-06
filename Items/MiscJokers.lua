@@ -6808,6 +6808,96 @@ local digitalhallucinations = {
 		}
 	},
 }
+local arsonist = {
+	object_type = "Joker",
+	name = "cry-Arsonist",
+	key = "arsonist",
+	pos = { x = 0, y = 5 },
+	config = { },
+	rarity = 3,
+	cost = 5,
+	atlas = "atlasone",
+	order = 131,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { } }
+	end,
+	calculate = function(self, card, context)
+		if context.destroying_card then
+			local eval = evaluate_poker_hand(context.full_hand)
+            if next(eval['Full House']) then
+                return true
+            end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"Darren_the_frog"
+		},
+		code = {
+			"AlexZGreat"
+		}
+	},
+}
+local zooble = {
+	object_type = "Joker",
+	name = "cry-Zooble",
+	key = "zooble",
+	pos = { x = 1, y = 5 },
+	config = {extra = {mult = 0, a_mult = 1}},
+	rarity = 2,
+	cost = 6,
+	atlas = "atlasone",
+	order = 132,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.mult,center.ability.extra.a_mult }}
+	end,
+	calculate = function(self, card, context)
+		if context.before and context.cardarea == G.jokers then
+			if not (next(context.poker_hands['Straight']) or next(context.poker_hands['Straight Flush'])) then
+				local unique_ranks = {}
+				for i, v in pairs (context.scoring_hand) do
+					local not_unique = false
+					for i = 1, #unique_ranks do
+						if unique_ranks[i] == v:get_id() then
+							not_unique = true
+						end
+					end
+					if not not_unique then
+						unique_ranks[#unique_ranks + 1] = v:get_id()
+					end
+				end
+				if #unique_ranks >= 1 then
+					card.ability.extra.mult = card.ability.extra.mult + (#unique_ranks * card.ability.extra.a_mult)
+					return {
+						message = localize('k_upgrade_ex'),
+						colour = G.C.RED,
+						card = card
+					}
+				end
+			end
+		end
+		if context.joker_main and context.cardarea == G.jokers then
+			return {
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+				mult_mod = card.ability.extra.mult
+			}
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"lolxDdj"
+		},
+		art = {
+			"lolxDdj"
+		},
+		code = {
+			"AlexZGreat"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6905,6 +6995,8 @@ local miscitems =  {
 	tax_fraud,
 	pity_prize,
 	digitalhallucinations,
+	arsonist,
+	zooble,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

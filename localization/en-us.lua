@@ -10,6 +10,13 @@ return {
                     "of {C:attention}every{} deck",
                 },
             },
+	    b_cry_beige = {
+                name = "Beige Deck",
+                text = {
+                    "{C:attention}Common{} Jokers have",
+                    "{C:attention}quadrupled{} values",
+                },
+            },
             b_cry_beta = {
                 name = "Nostalgic Deck",
                 text = {
@@ -598,6 +605,15 @@ return {
                     "times when scored",
                 },
             },
+	    m_cry_light = {
+                name = "Light Card",
+                text = {
+                    "When played and scoring in a hand with",
+                    "{C:attention}5{} scoring cards {C:attention}#4#{} times {C:inactive}(#3# left)",
+                    "Gains {X:mult,C:white}X#1#{} Mult and adds {C:attention}5{} to the",
+                    "requirement {C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+                },
+            },
         },
         Joker = {
             j_cry_adroit = {
@@ -628,6 +644,10 @@ return {
             j_cry_apjoker = {
                 name = "AP Joker",
                 text = { "{X:mult,C:white} X#1# {} Mult against {C:attention}Boss Blinds{}" },
+            },
+	    j_cry_arsonist = {
+                name = "Arsonist",
+                text = { "Destroy all cards played in {C:attention}Full Houses", },
             },
             j_cry_astral_bottle = {
                 name = "Astral in a Bottle",
@@ -1923,6 +1943,14 @@ return {
                     "{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}",
                 },
             },
+	    j_cry_spectrogram = {
+                name = "Spectrogram",
+                text = {
+                    "{C:attention}Retriggers{} rightmost Joker",
+                    "once for every {C:attention}Echo Card",
+                    "that is played and scored",
+                },
+            },
             j_cry_speculo = {
                 name = "Speculo",
                 text = {
@@ -2194,6 +2222,15 @@ return {
                     "{X:mult,C:white} X#1# {} Mult if played",
                     "hand contains",
                     "a {C:attention}#2#",
+                },
+            },
+	    j_cry_zooble = {
+                name = "Zooble",
+                text = {
+                    "Gains {C:mult}+#2#{} Mult for every",
+                    "{C:attention}unique rank{} in scoring hand",
+                    "{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
+                    "{C:inactive}(Excludes hands containing Straights)"
                 },
             },
         },
@@ -2973,6 +3010,13 @@ return {
                     "Creates {C:attention}1{}",
                     "random {C:attention}consumable{}",
                     "{C:inactive}(Must have room){}",
+                },
+            },
+	    c_cry_seraph = {
+                name = "The Seraph",
+                text = {
+                    "Enhances {C:attention}#1#{} selected card",
+                    "into a {C:attention}Light Card",
                 },
             },
         },

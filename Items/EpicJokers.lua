@@ -1360,6 +1360,54 @@ local fleshpanopticon = {
 		}
 	},
 }
+local spectrogram = {
+	object_type = "Joker",
+	name = "cry-Spectrogram",
+	key = "spectrogram",
+	pos = { x = 1, y = 5 },
+	config = { extra = {} },
+	rarity = "cry_epic",
+	cost = 9,
+	order = 133,
+	atlas = "atlasepic",
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
+
+		return { vars = {} }
+	end,
+    calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if context.other_context.scoring_hand then
+				if context.other_card == G.jokers.cards[#G.jokers.cards] then
+					local echonum = 0
+					for i, v in pairs (context.other_context.scoring_hand) do
+						if v.config.center_key == 'm_cry_echo' then
+							echonum = echonum + 1
+						end
+					end
+					if echonum > 0 then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = echonum,
+							card = card,
+						}
+					end
+				end
+			end
+		end
+    end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"SMG9000"
+		},
+		code = {
+			"AlexZGreat"
+		}
+	},
+}
 return {
 	name = "Epic Jokers",
 	init = function()
@@ -1560,5 +1608,6 @@ return {
 		altgoogol,
 		soccer,
 		fleshpanopticon,
+		spectrogram,
 	},
 }

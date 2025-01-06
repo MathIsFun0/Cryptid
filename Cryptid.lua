@@ -2299,6 +2299,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		cry_misprintize(card)
 	end
+	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
+		if card.config.center.rarity == 1 then
+			cry_misprintize(card,{min = 4, max = 4}, nil, true)
+		end
+	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
