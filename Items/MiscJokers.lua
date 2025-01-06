@@ -4306,6 +4306,9 @@ local quintet = {
 		end
 		return false
 	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'cry_win_with_hand' and args.hand == 'Five of a Kind' then return true end
+	end,
 	cry_credits = {
 		idea = {
 			"Mathguy"
@@ -4318,7 +4321,6 @@ local quintet = {
 		}
 	},
 	unlocked = false,
-	unlock_condition = {type = 'win_no_hand',extra = 'Five of a Kind'},
 }
 local unity = {
 	object_type = "Joker",
@@ -4356,6 +4358,9 @@ local unity = {
 		end
 		return false
 	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'cry_win_with_hand' and args.hand == 'Flush House' then return true end
+	end,
 	cry_credits = {
 		idea = {
 			"Mathguy"
@@ -4368,7 +4373,6 @@ local unity = {
 		}
 	},
 	unlocked = false,
-	unlock_condition = {type = 'win_no_hand',extra = 'Flush House'},
 }
 local swarm = {
 	object_type = "Joker",
@@ -4406,6 +4410,9 @@ local swarm = {
 		end
 		return false
 	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'cry_win_with_hand' and args.hand == 'Flush Five' then return true end
+	end,
 	cry_credits = {
 		idea = {
 			"Mathguy"
@@ -4418,7 +4425,6 @@ local swarm = {
 		}
 	},
 	unlocked = false,
-	unlock_condition = {type = 'win_no_hand',extra = 'Flush Five'},
 }
 local stronghold = {
 	object_type = "Joker",
@@ -4456,8 +4462,10 @@ local stronghold = {
 		end
 		return false
 	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'cry_win_with_hand' and args.hand == 'cry_Bulwark' then return true end
+	end,
 	unlocked = false,
-	unlock_condition = {type = 'win_no_hand',extra = 'cry_Bulwark'},
 }
 local wtf = {
 	object_type = "Joker",
@@ -4495,8 +4503,10 @@ local wtf = {
 		end
 		return false
 	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'cry_win_with_hand' and args.hand == 'cry_Clusterfuck' then return true end
+	end,
 	unlocked = false,
-	unlock_condition = {type = 'win_no_hand',extra = 'cry_Clusterfuck'},
 }
 local clash = {
 	object_type = "Joker",
@@ -4534,8 +4544,10 @@ local clash = {
 		end
 		return false
 	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'cry_win_with_hand' and args.hand == 'cry_UltPair' then return true end
+	end,
 	unlocked = false,
-	unlock_condition = {type = 'win_no_hand',extra = 'cry_UltPair'},
 }
 local filler = {
 	object_type = "Joker",

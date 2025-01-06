@@ -286,7 +286,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "G.GAME.chips_text = ''"
+pattern = "self.GAME.selected_back_key = selected_back"
 position = "after"
 payload = '''
 G.GAME.cry_voucher_centers = {}
@@ -318,7 +318,7 @@ target = "card.lua"
 pattern = "extra = center and center.config.extra or self and self.ability.extra"
 position = "at"
 payload = '''
-extra = self and self.config and self.config.center_key and G.GAME and G.GAME.cry_voucher_centers and G.GAME.cry_voucher_centers[self.config.center_key] and G.GAME.cry_voucher_centers[self.config.center_key].config.extra
+extra = self and G.GAME.cry_voucher_centers[self.config.center_key].config.extra or center and center.config.extra
 '''
 match_indent = true
 
