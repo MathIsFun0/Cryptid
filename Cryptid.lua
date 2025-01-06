@@ -3190,6 +3190,46 @@ if (SMODS.Mods["malverk"] or {}).can_load then
         		}
     		}
 	}
+	AltTexture({
+    		key = 'suit_planets',
+    		set = 'Planet',
+    		path = 'classic_planets.png',
+    		loc_txt = {
+        		name = 'Classic Suit Planets'
+			},
+			keys = {
+				"c_cry_Timantti",
+				"c_cry_Klubi",
+				"c_cry_Sydan",
+				"c_cry_Lapio"
+			},
+			localization = {
+				c_cry_Timantti = {
+					name = 'Timantti'
+				},
+				c_cry_Klubi = {
+					name = 'Klubi'
+				},
+				c_cry_Sydan = {
+					name = 'Sydan'
+				},
+				c_cry_Lapio = {
+					name = 'Lapio'
+				},
+			}
+	})
+	TexturePack{
+    		key = 'classic_planets',
+    		textures = {
+        		'cry_suit_planets',
+    		},
+    		loc_txt = {
+        		name = 'Classic Planets',
+        		text = {
+            			'Revert planet name changes'
+        		}
+    		}
+	}
 end
 --Make Ortalab's Locked jokers not show up on Deck of Equilibrium and Antimatter Deck
 if (SMODS.Mods["ortalab"] or {}).can_load then
