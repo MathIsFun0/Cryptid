@@ -2362,7 +2362,7 @@ return {
                 },
             },
             c_cry_Lapio = {
-                name = "Lapio",
+                name = "Pata",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
                     "Level up",
@@ -2402,7 +2402,7 @@ return {
                 },
             },
             c_cry_Sydan = {
-                name = "Sydan",
+                name = "Hertta",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
                     "Level up",
