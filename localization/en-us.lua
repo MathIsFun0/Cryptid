@@ -648,8 +648,8 @@ return {
 	    j_cry_arsonist = {
                 name = "Arsonist",
                 text = {
-                    "If played hand contains a",
-                    "a {C:attention}Full House{},",
+                    "If played hand",
+                    "contains a {C:attention}Full House{},",
                     "{C:red}destroy{} all cards",
                     "after scoring",
                 }
