@@ -956,8 +956,8 @@ local echo = {
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.retriggers, G.GAME.probabilities.normal, self.config.extra } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- idk how this works
 	end,
 }
 local eclipse = {
@@ -1605,7 +1605,7 @@ return {
 				local total_repetitions = ret and ret.repetitions or 0
 
 				if self.config.center == G.P_CENTERS.m_cry_echo then
-					if pseudorandom("echo") < G.GAME.probabilities.normal / (self.ability.extra or 2) then --hacky crash fix
+					if pseudorandom("echo") < cry_prob(self.ability.cry_prob, self.ability.extra or 2, self.ability.cry_rigged) / (self.ability.extra or 2) then --hacky crash fix
 						total_repetitions = total_repetitions + self.ability.retriggers
 					end
 				end

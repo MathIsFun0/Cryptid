@@ -413,7 +413,7 @@ local notebook = {
 	rarity = 3,
 	cost = 9,
 	perishable_compat = false,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
 			key = "j_jolly",
@@ -421,12 +421,12 @@ local notebook = {
 		}
 		return {
 			vars = {
-				"" .. (G.GAME and G.GAME.probabilities.normal or 1),
-				center.ability.extra.odds,
-				center.ability.extra.slot,
-				center.ability.extra.active,
-				center.ability.extra.jollies,
-				center.ability.extra.add,
+				"" .. cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				card.ability.extra.slot,
+				card.ability.extra.active,
+				card.ability.extra.jollies,
+				card.ability.extra.add,
 			},
 		}
 	end,
@@ -448,7 +448,7 @@ local notebook = {
 			end
 			if
 				jollycount >= card.ability.extra.jollies --if there are 5 or more jolly jokers
-				or pseudorandom("cry_notebook") < G.GAME.probabilities.normal / card.ability.extra.odds
+				or pseudorandom("cry_notebook") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
 				card.ability.extra.slot = card.ability.extra.slot + card.ability.extra.add
 				G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
@@ -657,20 +657,20 @@ local scrabble = {
 	cost = 8,
 	blueprint_compat = true,
 	atlas = "atlasone",
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+		return { vars = { "" .. cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
-			--if pseudorandom('scrabble') < G.GAME.probabilities.normal/card.ability.extra.odds then
+			--if pseudorandom('scrabble') < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)/card.ability.extra.odds then
 			--check = true
 			--local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
 			--card:add_to_deck()
 			--G.jokers:emplace(card)
 			--end
-			if pseudorandom("scrabbleother") < G.GAME.probabilities.normal / card.ability.extra.odds then
+			if pseudorandom("scrabbleother") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
 				card:set_edition({ cry_m = true })
