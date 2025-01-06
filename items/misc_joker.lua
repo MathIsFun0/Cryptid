@@ -4,6 +4,9 @@ local dropshot = {
 	key = "dropshot",
 	order = 3,
 	config = { extra = { Xmult_mod = 0.2, x_mult = 1 } },
+	gameset_config = {
+       		modest = {extra = {Xmult_mod = 0.1, x_mult = 1}},
+ 	},
 	pos = { x = 5, y = 0 },
 	rarity = 3,
 	cost = 8,
@@ -89,8 +92,11 @@ local happyhouse = {
 	pos = { x = 2, y = 4 },
 	order = 2,
 	config = { extra = { mult = 4, check = 0 } },
+	gameset_config = {
+       		modest = {extra = {mult = 2, check = 0}},
+ 	},
 	immutable = true,
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true},
 	rarity = 2,
 	cost = 2,
 	blueprint_compat = true,
@@ -160,6 +166,9 @@ local maximized = {
 	rarity = 3,
 	order = 13,
 	cost = 11,
+	gameset_config = {
+       		modest = {cost = 16, center = {rarity = "cry_epic"}},
+ 	},
 	immutable = true,
 	atlas = "atlastwo",
 	cry_credits = {
@@ -286,6 +295,9 @@ local wee_fib = {
 	name = "cry-Wee Fibonacci",
 	key = "wee_fib",
 	config = { extra = { mult = 0, mult_mod = 3 } },
+	gameset_config = {
+       		modest = {extra = {mult = 0, mult_mod = 1}},
+ 	},
 	pos = { x = 1, y = 5 },
 	rarity = 3,
 	cost = 9,
@@ -339,6 +351,9 @@ local whip = {
 	key = "whip",
 	pos = { x = 5, y = 3 },
 	config = { extra = { Xmult_mod = 0.5, x_mult = 1 } },
+	gameset_config = {
+       		modest = {extra = {Xmult_mod = 0.2, x_mult = 1}, center = {rarity = 3}},
+ 	},
 	rarity = 2,
 	cost = 8,
 	order = 15,
@@ -432,6 +447,9 @@ local lucky_joker = {
 	name = "cry-Lucky Joker",
 	key = "lucky_joker",
 	config = { extra = { dollars = 5 } },
+	gameset_config = {
+       		modest = {extra = {dollars = 4}},
+ 	},
 	pos = { x = 4, y = 3 },
 	rarity = 1,
 	cost = 4,
@@ -473,6 +491,9 @@ local cursor = {
 	name = "cry-Cursor",
 	key = "cursor",
 	config = { extra = { chips = 0, chip_mod = 8 } },
+	gameset_config = {
+       		modest = {extra = {chips = 0, chip_mod = 5}},
+ 	},
 	pos = { x = 4, y = 1 },
 	rarity = 1,
 	cost = 5,
@@ -638,7 +659,7 @@ local cube = {
 	cost = -27,
 	blueprint_compat = true,
 	atlas = "atlasone",
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true},
 	source_gate = "sho",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.chips } }
@@ -668,6 +689,9 @@ local triplet_rhythm = {
 	name = "cry-Triplet Rhythm",
 	key = "triplet_rhythm",
 	config = { extra = { Xmult = 3 } },
+	gameset_config = {
+       		modest = {extra = {Xmult = 2}},
+ 	},
 	pos = { x = 0, y = 4 },
 	rarity = 1,
 	order = 10,
@@ -749,6 +773,9 @@ local chili_pepper = {
 	name = "cry-Chili Pepper",
 	key = "chili_pepper",
 	config = { extra = { Xmult = 1, Xmult_mod = 0.5, rounds_remaining = 8 } },
+	gameset_config = {
+       		modest = {extra = {Xmult = 1, Xmult_mod = 0.5, rounds_remaining = 6}},
+ 	},
 	pos = { x = 0, y = 1 },
 	rarity = 2,
 	cost = 6,
@@ -870,6 +897,9 @@ local big_cube = {
 	key = "big_cube",
 	joker_gate = "cry-Cube",
 	config = { extra = { x_chips = 6 } },
+	gameset_config = {
+       		modest = {extra = {x_chips = 3}},
+ 	},
 	pos = { x = 4, y = 4 },
 	rarity = 1,
 	order = 105,
@@ -900,6 +930,7 @@ local big_cube = {
 		}
 	},
 }
+--Planned change: Make Eternal Flame only scale when cards are sold for at least x dollars
 local eternalflame = {
 	object_type = "Joker",
 	name = "cry-eternalflame",
@@ -956,9 +987,12 @@ local nice = {
 	object_type = "Joker",
 	name = "cry-Nice",
 	key = "nice",
-	config = { extra = { chips = 420, sixcount = 0, ninecount = 0 } },
+	config = { extra = { chips = 420} },
+	gameset_config = {
+       		modest = {extra = {chips = 200}, center = {rarity = 3}},
+ 	},
 	pos = { x = 2, y = 3 },
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true},
 	rarity = 3,
 	cost = 6.9,
 	order = 84,
@@ -968,18 +1002,18 @@ local nice = {
 		return { vars = { center.ability.extra.chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and not context.after then
-			card.ability.extra.sixcount = 0
-			card.ability.extra.ninecount = 0
+		-- Untested code shortening
+		if context.cardarea == G.jokers and not context.before and not context.after then
+			local nine = nil
+			local six = nil
 			for i, v in pairs(context.full_hand) do
 				if v:get_id() == 6 then
-					card.ability.extra.sixcount = card.ability.extra.sixcount + 1
+					six = true
 				elseif v:get_id() == 9 then
-					card.ability.extra.ninecount = card.ability.extra.ninecount + 1
+					nine = true
 				end
 			end
-		elseif context.cardarea == G.jokers and not context.before and not context.after then
-			if card.ability.extra.sixcount > 0 and card.ability.extra.ninecount > 0 then
+			if nine and six then
 				return {
 					message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips or 0 } }),
 					chip_mod = card.ability.extra.chips or 0,
@@ -1117,7 +1151,10 @@ local jimball = {
 	pos = { x = 0, y = 0 },
 	order = 8,
 	config = { x_mult = 1, extra = 0.15, override_x_mult_check = true },
-    pools = {["Meme"] = true},
+	gameset_config = {
+       		modest = { x_mult = 1, extra = 0.1, override_x_mult_check = true },
+ 	},
+    	pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra, center.ability.x_mult } }
 	end,
@@ -1179,13 +1216,17 @@ local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 	px = 71,
 	py = 95,
 }
+--Planning to do a "Madness(The Joker)-like" thing and make this only activate on specific blinds later
 local sus = {
 	object_type = "Joker",
 	name = "cry-SUS",
 	key = "sus",
 	pos = { x = 1, y = 3 },
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true},
 	rarity = 3,
+	gameset_config = {
+       		modest = {cost = 11, center = {rarity = "cry_epic"}},
+ 	},
 	cost = 7,
 	order = 79,
 	blueprint_compat = true,
@@ -1287,11 +1328,14 @@ local fspinner = {
 	key = "fspinner",
 	pos = { x = 4, y = 0 },
 	config = { extra = { chips = 0, chip_mod = 6 } },
+	gameset_config = {
+       		modest = {extra = {chips = 0, chip_mod = 5}},
+ 	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.chips, center.ability.extra.chip_mod } }
 	end,
 	rarity = 1,
-	cost = 6,
+	cost = 5,
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -1466,6 +1510,9 @@ local wario = {
 	pos = { x = 2, y = 3 },
 	soul_pos = { x = 3, y = 3 },
 	config = { extra = { money = 3 } },
+	gameset_config = {
+       		modest = {extra = {money = 1}},
+ 	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.money } }
 	end,
@@ -1514,7 +1561,7 @@ local krustytheclown = {
 	key = "krustytheclown",
 	pos = { x = 3, y = 4 },
 	config = { extra = { extra = 0.02, x_mult = 1 } },
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true},
 	rarity = 2,
 	order = 31,
 	cost = 7,
@@ -1562,7 +1609,7 @@ local blurred = {
 	name = "cry-blurred Joker",
 	key = "blurred",
 	pos = { x = 4, y = 4 },
-  pools = {["Meme"] = true},
+  	pools = {["Meme"] = true},
 	config = { extra = 1 },
 	rarity = 1,
 	cost = 4,
@@ -1644,6 +1691,9 @@ local lightupthenight = {
 	name = "cry-lightupthenight",
 	key = "lightupthenight",
 	config = { extra = { xmult = 1.5 } },
+	gameset_config = {
+       		modest = {cost = 9},
+ 	},
 	pos = { x = 1, y = 1 },
 	atlas = "atlasone",
 	rarity = 3,
@@ -1774,6 +1824,9 @@ local hunger = {
 	name = "cry-hunger",
 	key = "hunger",
 	config = { extra = { money = 3 } },
+	gameset_config = {
+       		modest = {extra = {money = 2}},
+ 	},
 	pos = { x = 3, y = 0 },
 	rarity = 2,
 	cost = 6,
@@ -1814,6 +1867,9 @@ local weegaming = {
 	key = "weegaming",
 	order = 62,
 	config = { extra = { retriggers = 2 } },
+	gameset_config = {
+       		modest = {extra = {retriggers = 1}},
+ 	},
 	pos = { x = 3, y = 4 },
 	atlas = "atlastwo",
 	rarity = 1,
@@ -1853,6 +1909,9 @@ local redbloon = {
 	name = "cry-redbloon",
 	key = "redbloon",
 	config = { extra = { money = 20, rounds_remaining = 2 } },
+	gameset_config = {
+       		modest = {extra = {money = 16, rounds_remaining = 2}},
+ 	},
 	pos = { x = 5, y = 1 },
 	immutable = true,
 	rarity = 1,
@@ -1927,6 +1986,9 @@ local apjoker = {
 	key = "apjoker",
 	pos = { x = 2, y = 0 },
 	config = { extra = { x_mult = 4 } },
+	gameset_config = {
+       		modest = {cost = 8, center = {rarity = 3}},
+ 	},
 	rarity = 2,
 	cost = 6,
 	order = 37,
@@ -2057,6 +2119,9 @@ local magnet = {
 	key = "magnet",
 	pos = { x = 4, y = 0 },
 	config = { extra = { money = 2, Xmoney = 5, slots = 4 } },
+	gameset_config = {
+       		modest = {extra = {money = 2, Xmoney = 3, slots = 3}},
+ 	},
 	rarity = 1,
 	cost = 6,
 	order = 96,
@@ -2545,6 +2610,9 @@ local happy = {
 	name = "cry-happy",
 	key = "happy",
 	pos = { x = 2, y = 1 },
+	gameset_config = {
+       		modest = {cost = 5},
+ 	},
 	rarity = 1,
 	cost = 2,
 	order = 63,
@@ -6690,5 +6758,5 @@ return {
 		
 	end,
 	items = miscitems,
-	disabled = true
+	disabled = false
 }
