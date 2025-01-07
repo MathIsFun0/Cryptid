@@ -5651,7 +5651,7 @@ local busdriver = {
 			and not context.after
 		then
 			local oddy = math.max(1, card.ability.extra.odds)
-			if pseudorandom("busdriver") < 1-(1/(cry_prob(card.ability.cry_prob, card.ability.extra.cond_value, card.ability.cry_rigged)*oddy)) then
+			if pseudorandom("busdriver") < 1-(1/(cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)*oddy)) then
 				return {
 					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
 					mult_mod = card.ability.extra.mult,
@@ -6781,7 +6781,7 @@ local digitalhallucinations = {
 		-- you know, i was totally ready to do something smart here but vanilla hardcodes this stuff, so i will too
 		-- some cards need to be handled slightly differently anyway, adding mod support can't really be automatic in some circumstances
 		
-		if context.open_booster and (pseudorandom("digi") < cry_prob(card.ability.cry_prob, card.ability.extra.cond_value, card.ability.cry_rigged)/card.ability.odds) then
+		if context.open_booster and (pseudorandom("digi") < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)/card.ability.odds) then
 			local boosty = context.card
 			local consums = {'Arcana', 'Celestial', 'Spectral'}
 			local short1 = {'tarot', 'planet', 'spectral'}
