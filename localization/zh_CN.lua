@@ -969,6 +969,10 @@ return {
 					"对boss盲注提供{X:mult,C:white} X#1# {} 倍率"
 				}
 			},
+			j_cry_arsonist = {
+                name = "纵火犯",
+                text = { "打出{C:attention}葫芦{}牌型时，摧毁所有计分牌", },
+            },
 			j_cry_astral_bottle = {
 				name = "瓶中星球",
 				text = {
@@ -2099,6 +2103,13 @@ return {
 					"{C:inactive}(当前{} {X:chips,C:white}X#1#{} {C:inactive}筹码){}"
 				}
 			},
+			j_cry_spectrogram = {
+                name = "频谱",
+                text = {
+                    "每当一张{C:attention}回响牌{}被打出并计分时",
+                    "{C:attention}重新触发{}最右边的小丑",
+                },
+            },
 			j_cry_speculo = {
 				name = "镜像",
 				text = {
@@ -2361,7 +2372,16 @@ return {
 					"一个 {C:attention}#2#",
 					"{X:mult,C:white} X#1# {} 倍率"
 				}
-			}
+			},
+			j_cry_zooble = {
+                name = "祖波",
+                text = {
+                    "打出并计分的牌中，",
+                    "每有一个{C:attention}不同点数{}，获得{C:mult}+#2#{}倍率",
+                    "{C:inactive}(当前{C:mult}+#1#{C:inactive}倍率)",
+                    "{C:inactive}(包含顺子的出牌不触发)"
+                },
+            },
 		},
 		Other = {
 			banana = {
