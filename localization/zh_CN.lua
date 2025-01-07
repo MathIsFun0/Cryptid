@@ -15,12 +15,12 @@ return {
 				}
 			},
 			b_cry_beige = {
-                name = "四重卡组",
-                text = {
-                    "{C:attention}普通{}小丑具有",
-                    "{C:attention}四倍{}的效果",
-                },
-            },
+				name = "四重卡组",
+				text = {
+					"{C:attention}普通{}小丑具有",
+					"{C:attention}四倍{}的效果",
+				},
+			},
 			b_cry_beta = {
 				name = "怀旧牌组",
 				text = {
@@ -885,15 +885,15 @@ return {
 					"{C:attention}重新触发{} #1# 次"
 				}
 			},
-	        m_cry_light = {
-                name = "明亮牌",
-                text = {
-                    "当该牌计分时，每有{C:attention}#4#{} {C:inactive}(剩余#3#){}张",
-                    "其他计分牌，获得{X:mult,C:white}X#1#{}倍率，并",
-                    "将下次提升所需的数字增加{C:attention}5{}",
-                    "{C:inactive}(当前 {X:mult,C:white}X#2#{C:inactive} 倍率)"
-                },
-            },
+			m_cry_light = {
+				name = "明亮牌",
+				text = {
+					"当该牌计分时，每有{C:attention}#4#{} {C:inactive}(剩余#3#){}张",
+					"其他计分牌，获得{X:mult,C:white}X#1#{}倍率，并",
+					"将下次提升所需的数字增加{C:attention}5{}",
+					"{C:inactive}(当前 {X:mult,C:white}X#2#{C:inactive} 倍率)"
+				},
+			},
 		},
 		Joker = {
 			j_cry_CodeJoker = {
@@ -970,9 +970,9 @@ return {
 				}
 			},
 			j_cry_arsonist = {
-                name = "纵火犯",
-                text = { "打出{C:attention}葫芦{}牌型时，摧毁所有计分牌", },
-            },
+				name = "纵火犯",
+				text = { "打出{C:attention}葫芦{}牌型时，摧毁所有计分牌", },
+			},
 			j_cry_astral_bottle = {
 				name = "瓶中星球",
 				text = {
@@ -2104,12 +2104,12 @@ return {
 				}
 			},
 			j_cry_spectrogram = {
-                name = "频谱",
-                text = {
-                    "每当一张{C:attention}回响牌{}被打出并计分时",
-                    "{C:attention}重新触发{}最右边的小丑",
-                },
-            },
+				name = "频谱",
+				text = {
+					"每当一张{C:attention}回响牌{}被打出并计分时",
+					"{C:attention}重新触发{}最右边的小丑",
+				},
+			},
 			j_cry_speculo = {
 				name = "镜像",
 				text = {
@@ -2374,14 +2374,14 @@ return {
 				}
 			},
 			j_cry_zooble = {
-                name = "祖波",
-                text = {
-                    "打出并计分的牌中，",
-                    "每有一个{C:attention}不同点数{}，获得{C:mult}+#2#{}倍率",
-                    "{C:inactive}(当前{C:mult}+#1#{C:inactive}倍率)",
-                    "{C:inactive}(包含顺子的出牌不触发)"
-                },
-            },
+				name = "祖波",
+				text = {
+					"打出并计分的牌中，",
+					"每有一个{C:attention}不同点数{}，获得{C:mult}+#2#{}倍率",
+					"{C:inactive}(当前{C:mult}+#1#{C:inactive}倍率)",
+					"{C:inactive}(包含顺子的出牌不触发)"
+				},
+			},
 		},
 		Other = {
 			banana = {
@@ -2860,7 +2860,7 @@ return {
 					"使{C:attention}晋升{}牌型的指数",
 					"增加{X:gold,C:white}0.05{}",
 					"{C:inactive}(目前指数 {X:gold,C:white}X(#2#^晋升数){C:inactive})"
-                		}
+				}
 			},
 		},
 		Sleeve = {
@@ -3867,7 +3867,7 @@ return {
 			cry_hand_clusterfuck = "一坨",
 			cry_hand_ultpair = "至尊对子",
 			cry_asc_hands = "晋升牌型",
-           		cry_p_star = "星星",
+			cry_p_star = "星星",
 			cry_hooked_ex = "被勾住!",
 			cry_inactive = "Inactive",
 			cry_jolly_ex = "红红火火恍恍惚惚红红火火恍恍惚惚!",
