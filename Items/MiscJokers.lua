@@ -853,16 +853,20 @@ local compound_interest = {
 		return { vars = { center.ability.extra.percent, center.ability.extra.percent_mod } }
 	end,
 	calc_dollar_bonus = function(self, card)
-		local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
-		local old = card.ability.extra.percent
-		card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
-		compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
-		if bonus > 0 then
-			if G.GAME.dollars > 1e10 then
-				return 1
-			else
-				return bonus
+		if G.GAME.dollars > 0 then
+			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
+			local old = card.ability.extra.percent
+			card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+			compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
+			if bonus > 0 then
+				if G.GAME.dollars > 1e10 then
+					return 1
+				else
+					return bonus
+				end
 			end
+		else 
+			return 0
 		end
 	end,
 	cry_credits = {
@@ -3393,7 +3397,7 @@ local rnjoker = {
 					or (card.ability.extra and card.ability.extra.value)
 					or 0,
 				card.ability.extra and card.ability.extra.cond_value or 0,
-				G.GAME and G.GAME.probabilities.normal or 1,
+				cry_prob(card.ability.cry_prob, card.ability.extra and card.ability.extra.cond_value or 0, card.ability.cry_rigged),
 			},
 		}
 		if card.ability.extra and card.ability.extra.color then
@@ -3626,7 +3630,7 @@ local rnjoker = {
 							elseif j.cond == "odds" then
 								if
 									pseudorandom("rnj")
-									< ((G.GAME and G.GAME.probabilities.normal or 1) / card.ability.extra.cond_value)
+									< (cry_prob(card.ability.cry_prob, card.ability.extra.cond_value, card.ability.cry_rigged) / card.ability.extra.cond_value)
 								then
 									cond_passed = true
 								end
@@ -3903,7 +3907,7 @@ local rnjoker = {
 						elseif j.cond == "odds" then
 							if
 								pseudorandom("rnj")
-								< ((G.GAME and G.GAME.probabilities.normal or 1) / card.ability.extra.cond_value)
+								< (cry_prob(card.ability.cry_prob, card.ability.extra.cond_value, card.ability.cry_rigged) / card.ability.extra.cond_value)
 							then
 								cond_passed = true
 							end
@@ -3987,7 +3991,7 @@ local rnjoker = {
 						elseif j.cond == "odds" then
 							if
 								pseudorandom("rnj")
-								< ((G.GAME and G.GAME.probabilities.normal or 1) / card.ability.extra.cond_value)
+								< (cry_prob(card.ability.cry_prob, card.ability.extra.cond_value, card.ability.cry_rigged) / card.ability.extra.cond_value)
 							then
 								cond_passed = true
 							end
@@ -4555,7 +4559,7 @@ local filler = {
 	key = "filler",
 	pos = { x = 0, y = 1 },
   pools = {["Meme"] = true},
-	config = { Xmult = 1.00000000000002, type = "High Card" },
+	config = { Xmult = 1.00000000000003, type = "High Card" },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
@@ -5440,7 +5444,7 @@ local oldblueprint = {
 	loc_vars = function(self, info_queue, card)
 		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
 		return { 
-			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds },
+			vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },
 			main_end = (card.area and card.area == G.jokers) and {
         			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
             				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
@@ -5461,7 +5465,7 @@ local oldblueprint = {
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			if pseudorandom("oldblueprint") < G.GAME.probabilities.normal / card.ability.extra.odds then
+			if pseudorandom("oldblueprint") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")
@@ -5631,15 +5635,15 @@ local busdriver = {
 	order = 46,
 	atlas = "atlasthree",
 	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		local prob = (G.GAME and G.GAME.probabilities.normal or 1)
-		local oddy = math.max(1, center.ability.extra.odds)
+	loc_vars = function(self, info_queue, card)
+		local prob = cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+		local oddy = math.max(1, card.ability.extra.odds)
 		return {
 			vars = {
-				"" .. ( oddy - 1/prob ),
-				center.ability.extra.mult,
+				( oddy - 1/prob ),
+				card.ability.extra.mult,
 				oddy,
-				"" .. ( 1/prob ),
+				( 1/prob ),
 			},
 		}
 	end,
@@ -5651,7 +5655,7 @@ local busdriver = {
 			and not context.after
 		then
 			local oddy = math.max(1, card.ability.extra.odds)
-			if pseudorandom("busdriver") < 1-(1/(G.GAME.probabilities.normal*oddy)) then
+			if pseudorandom("busdriver") < 1-(1/(cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)*oddy)) then
 				return {
 					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
 					mult_mod = card.ability.extra.mult,
@@ -6770,7 +6774,7 @@ local digitalhallucinations = {
 	order = 130,
 	config = { odds = 2 },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { G.GAME and G.GAME.probabilities.normal or 1, card.ability.odds } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged), card.ability.odds } }
 	end,
 	atlas = "atlasthree",
 	rarity = 2,
@@ -6781,7 +6785,7 @@ local digitalhallucinations = {
 		-- you know, i was totally ready to do something smart here but vanilla hardcodes this stuff, so i will too
 		-- some cards need to be handled slightly differently anyway, adding mod support can't really be automatic in some circumstances
 		
-		if context.open_booster and (pseudorandom("digi") < G.GAME.probabilities.normal/card.ability.odds) then
+		if context.open_booster and (pseudorandom("digi") < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)/card.ability.odds) then
 			local boosty = context.card
 			local consums = {'Arcana', 'Celestial', 'Spectral'}
 			local short1 = {'tarot', 'planet', 'spectral'}

@@ -1475,7 +1475,7 @@ local alttab = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		local ret = localize("k_none")
-		if G.GAME and G.GAME.blind then
+		if G.GAME and G.GAME.blind and G.GAME.blind.in_blind then
 			if G.GAME.blind:get_type() == 'Small' then
 				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Small, set = 'Tag'}
 			elseif G.GAME.blind:get_type() == 'Big' then
@@ -1487,7 +1487,7 @@ local alttab = {
 		return { vars = { ret } }
 	end,
 	can_use = function(self, card)
-		return G.GAME and G.GAME.blind
+		return G.GAME.blind and G.GAME.blind.in_blind
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -1774,13 +1774,13 @@ local copypaste = {
 	pos = { x = 3, y = 4 },
 	order = 110,
 	immune_to_chemach = true,
-	config = { extra = { odds = 2, ckt = 0 } },
+	config = { extra = { odds = 2, ckt = 0 } },	-- what is a ckt
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), math.max(2, (center and center.ability.extra.odds or 2)) },
+			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
 		}
 	end,
 	atlas = "atlasepic",
@@ -1791,7 +1791,7 @@ local copypaste = {
 			and not context.consumeable.beginning_end
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / math.max(2, card.ability.extra.odds) then
+				if pseudorandom("cry_copypaste_joker") < cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
