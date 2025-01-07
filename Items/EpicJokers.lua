@@ -102,12 +102,12 @@ local googol_play = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				"" .. (G.GAME and G.GAME.probabilities.normal or 1),
-				center.ability.extra.odds,
-				center.ability.extra.Xmult,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				card.ability.extra.Xmult,
 			},
 		}
 	end,
@@ -116,7 +116,7 @@ local googol_play = {
 			context.cardarea == G.jokers
 			and not context.before
 			and not context.after
-			and pseudorandom("cry_googol_play") < G.GAME.probabilities.normal / card.ability.extra.odds
+			and pseudorandom("cry_googol_play") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
@@ -540,13 +540,13 @@ local boredom = {
 	order = 32,
 	cost = 14,
 	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+			if pseudorandom("cry_boredom_joker") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -559,7 +559,7 @@ local boredom = {
 		if
 			context.repetition
 			and context.cardarea == G.play
-			and pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal / card.ability.extra.odds
+			and pseudorandom("cry_boredom_card") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
 				message = localize("k_again_ex"),
@@ -1010,16 +1010,16 @@ local bonusjoker = {
 	order = 75,
 	blueprint_compat = true,
 	enhancement_gate = "m_bonus",
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds, center.ability.extra.add } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds, card.ability.extra.add } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.ability.effect == "Bonus Card" then
 				if
-					pseudorandom("bonusjoker") < G.GAME.probabilities.normal / math.min(1e8, card.ability.extra.odds)
+					pseudorandom("bonusjoker") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 					and card.ability.extra.check < 2
 					and not context.retrigger_joker
 				then
@@ -1081,10 +1081,10 @@ local multjoker = {
 	cost = 11,
 	blueprint_compat = true,
 	enhancement_gate = "m_mult",
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_mult
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -1093,7 +1093,7 @@ local multjoker = {
 				context.other_card.ability.effect == "Mult Card"
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
-				if pseudorandom("multjoker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				if pseudorandom("multjoker") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
 						func = function()

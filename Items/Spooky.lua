@@ -810,7 +810,7 @@ local ghost = {
 	no_dbl = true,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint and not context.retrigger_joker then
-			if pseudorandom(pseudoseed("cry_ghost_destroy")) < G.GAME.probabilities.normal/card.ability.extra.destroy_rate then
+			if pseudorandom(pseudoseed("cry_ghost_destroy")) < cry_prob(card.ability.cry_prob, card.ability.extra.destroy_rate, card.ability.cry_rigged)/card.ability.extra.destroy_rate then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						card:start_dissolve()
@@ -829,7 +829,7 @@ local ghost = {
 				return
 			end
 			--todo: let multiple ghosts possess multiple jokers
-			if pseudorandom(pseudoseed("cry_ghost_possess")) < G.GAME.probabilities.normal/card.ability.extra.possess_rate then
+			if pseudorandom(pseudoseed("cry_ghost_possess")) < cry_prob(card.ability.cry_prob, card.ability.extra.possess_rate, card.ability.cry_rigged)/card.ability.extra.possess_rate then
 				for i = 1, #G.jokers.cards do
 					G.jokers.cards[i].ability.cry_possessed = nil
 				end
@@ -846,9 +846,9 @@ local ghost = {
 			end
 		end
 	end,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed"}
-		return { vars = { G.GAME.probabilities.normal or 1, center.ability.extra.possess_rate, center.ability.extra.destroy_rate } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.destroy_rate, card.ability.cry_rigged), card.ability.extra.possess_rate, card.ability.extra.destroy_rate } }
 	end,
 }
 local possessed = {
@@ -1224,7 +1224,7 @@ local monopoly_money = {
 	no_dbl = true,
 	calculate = function(self, card, context)
 		if context.buying_card and not context.blueprint_card and not context.retrigger_joker and not (context.card == card) then
-			if pseudorandom(pseudoseed("cry_monopoly")) < G.GAME.probabilities.normal/card.ability.extra.fail_rate then
+			if pseudorandom(pseudoseed("cry_monopoly")) < cry_prob(card.ability.cry_prob, card.ability.extra.fail_rate, card.ability.cry_rigged)/card.ability.extra.fail_rate then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						context.card:start_dissolve()
@@ -1248,8 +1248,8 @@ local monopoly_money = {
 			return nil, true
 		end
 	end,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { G.GAME.probabilities.normal or 1, center.ability.extra.fail_rate} }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.fail_rate, card.ability.cry_rigged), card.ability.extra.fail_rate} }
 	end,
 }
 local candy_sticks = {
