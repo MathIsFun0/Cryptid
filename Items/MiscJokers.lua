@@ -867,6 +867,7 @@ local compound_interest = {
 			end
 		else 
 			return 0
+		end
 	end,
 	cry_credits = {
 		idea = {
