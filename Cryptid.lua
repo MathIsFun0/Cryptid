@@ -3226,7 +3226,8 @@ if (SMODS.Mods["malverk"] or {}).can_load then
     		loc_txt = {
         		name = 'Classic Planets',
         		text = {
-            			'Revert planet name changes'
+            			'Revert planet',
+						'name changes'
         		}
     		}
 	}
