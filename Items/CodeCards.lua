@@ -1780,7 +1780,7 @@ local copypaste = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
 		}
 	end,
 	atlas = "atlasepic",
