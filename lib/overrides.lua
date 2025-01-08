@@ -276,12 +276,57 @@ end
 
 --Game:update hook
 local upd = Game.update
+
+--init colors so they have references
+G.C.CRY_TWILIGHT = { 0, 0, 0, 0 }
+G.C.CRY_VERDANT = { 0, 0, 0, 0 }
+G.C.CRY_EMBER = { 0, 0, 0, 0 }
+G.C.CRY_DAWN = { 0, 0, 0, 0 }
+G.C.CRY_HORIZON = { 0, 0, 0, 0 }
+G.C.CRY_BLOSSOM = { 0, 0, 0, 0 }
+G.C.CRY_AZURE = { 0, 0, 0, 0 }
+G.C.CRY_ASCENDANT = { 0, 0, 0, 0 }
+G.C.CRY_JOLLY = { 0, 0, 0, 0 }
+Cryptid.C = {
+	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
+	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
+	VERDANT = { HEX("00ff22"), HEX("f4ff57") },
+	EMBER = { HEX("ff0000"), HEX("ffae00") },
+	DAWN = { HEX("00aaff"), HEX("ff00e3") },
+	HORIZON = { HEX("c8fd09"), HEX("1ee7d9") },
+	BLOSSOM = { HEX("ff09da"), HEX("ffd121") },
+	AZURE = { HEX("0409ff"), HEX("63dcff") },
+	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
+	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
+	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
+}
+
 cry_pointer_dt = 0
 cry_jimball_dt = 0
 cry_glowing_dt = 0
 function Game:update(dt)
 	upd(self, dt)
 
+	--Gradients based on Balatrostuck code
+	local anim_timer = self.TIMERS.REAL * 1.5
+	local p = 0.5 * (math.sin(anim_timer) + 1)
+	for k, c in pairs(Cryptid.C) do
+		if not G.C["CRY_" .. k] then
+			G.C["CRY_" .. k] = { 0, 0, 0, 0 }
+		end
+		for i = 1, 4 do
+			G.C["CRY_" .. k][i] = c[1][i] * p + c[2][i] * (1 - p)
+		end
+	end
+	G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
+	G.C.SECONDARY_SET["Content Set"] = G.C.CRY_ASCENDANT
+	-- Idk what this is for
+	if Incantation and not CryptidIncanCompat then
+		AllowStacking("Code")
+		AllowDividing("Code")
+		CryptidIncanCompat = true
+	end
+	
 	cry_pointer_dt = cry_pointer_dt + dt
 	cry_jimball_dt = cry_jimball_dt + dt
 	cry_glowing_dt = cry_glowing_dt + dt
@@ -1240,41 +1285,4 @@ function Card:can_use_consumeable(any_state, skip_check)
 		return false
 	end
 	return cuc(self, any_state, skip_check)
-end
-
---Gradients based on Balatrostuck code
-G.C.CRY_JOLLY = { 0, 0, 0, 0 }
-local upd = Game.update
-Cryptid.C = {
-	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
-	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
-	VERDANT = { HEX("00ff22"), HEX("f4ff57") },
-	EMBER = { HEX("ff0000"), HEX("ffae00") },
-	DAWN = { HEX("00aaff"), HEX("ff00e3") },
-	HORIZON = { HEX("c8fd09"), HEX("1ee7d9") },
-	BLOSSOM = { HEX("ff09da"), HEX("ffd121") },
-	AZURE = { HEX("0409ff"), HEX("63dcff") },
-	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
-	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
-	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
-}
-function Game:update(dt)
-	upd(self, dt)
-	local anim_timer = self.TIMERS.REAL * 1.5
-	local p = 0.5 * (math.sin(anim_timer) + 1)
-	for k, c in pairs(Cryptid.C) do
-		if not G.C["CRY_" .. k] then
-			G.C["CRY_" .. k] = { 0, 0, 0, 0 }
-		end
-		for i = 1, 4 do
-			G.C["CRY_" .. k][i] = c[1][i] * p + c[2][i] * (1 - p)
-		end
-	end
-	G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
-	G.C.SECONDARY_SET["Content Set"] = G.C.CRY_ASCENDANT
-	if Incantation and not CryptidIncanCompat then
-		AllowStacking("Code")
-		AllowDividing("Code")
-		CryptidIncanCompat = true
-	end
 end
