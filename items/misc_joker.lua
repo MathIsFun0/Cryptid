@@ -930,7 +930,6 @@ local big_cube = {
 		}
 	},
 }
---Planned change: Make Eternal Flame only scale when cards are sold for at least x dollars
 local eternalflame = {
 	object_type = "Joker",
 	name = "cry-eternalflame",
@@ -943,7 +942,10 @@ local eternalflame = {
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.extra, center.ability.extra.x_mult } }
+		return { 
+			vars = { center.ability.extra.extra, center.ability.extra.x_mult },
+			key = Card.get_gameset(card) ~= "modest" and "j_cry_eternalflame2" or "j_cry_eternalflame" 
+		}
 	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -958,7 +960,7 @@ local eternalflame = {
 				Xmult_mod = card.ability.extra.x_mult,
 			}
 		end
-		if context.selling_card and not context.blueprint then
+		if context.selling_card and (context.card.sell_cost >= 3 or Card.get_gameset(card) ~= "modest") and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(
 				card,

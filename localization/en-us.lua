@@ -1086,6 +1086,15 @@ return {
                 name = "Eternal Flame",
                 text = {
                     "This Joker gains {X:mult,C:white} X#1# {} Mult",
+                    "for each card {C:attention}sold{} with",
+		    "at least {C:money}$3{} of {C:attention}sell value",
+                    "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+                },
+            },
+	    j_cry_eternalflame2 = {
+                name = "Eternal Flame",
+                text = {
+                    "This Joker gains {X:mult,C:white} X#1# {} Mult",
                     "for each card {C:attention}sold{}",
                     "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
                 },
