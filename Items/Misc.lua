@@ -957,7 +957,7 @@ local echo = {
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- idk how this works
+		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
 }
 local eclipse = {
