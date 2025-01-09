@@ -2747,11 +2747,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		['Pair'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		['Two Pair'] = 4,
 		['Three of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		['Straight'] = SMODS.find_card('j_four_fingers') and 4 or 5,
-		['Flush'] = SMODS.find_card('j_four_fingers') and 4 or 5,
+		['Straight'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,
+		['Flush'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,
 		['Full House'] = 5,
 		['Four of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		['Straight Flush'] = SMODS.find_card('j_four_fingers') and 4 or 5,	-- debatable
+		['Straight Flush'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,	-- debatable
 		['cry_Bulwark'] = 5,
 		['Five of a Kind'] = 5,
 		['Flush House'] = 5,
