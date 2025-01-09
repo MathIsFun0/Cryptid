@@ -88,11 +88,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["Pair"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		["Two Pair"] = 4,
 		["Three of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		["Straight"] = 5,
-		["Flush"] = 5,
+		["Straight"] = next(find_joker("Four Fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
+		["Flush"] = next(find_joker("Four Fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
 		["Full House"] = 5,
 		["Four of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		["Straight Flush"] = 5,
+		["Straight Flush"] = next(find_joker("Four Fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
 		["cry_Bulwark"] = 5,
 		["Five of a Kind"] = 5,
 		["Flush House"] = 5,
@@ -117,10 +117,20 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 function cry_ascend(num) -- edit this function at your leisure
-	return math.max(
-		num,
-		num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ G.GAME.current_round.current_hand.cry_asc_num or 0)
-	)
+	if cry_get_gameset() == "modest" then
+		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
+		if not G.GAME.current_round.current_hand.cry_asc_num then return num end
+		if G.GAME.current_round.current_hand.cry_asc_num <= 0 then return num end
+		return math.max(
+			num,
+			num * (1 + 0.1 + (0.05 * ( G.GAME.sunnumber or 0) ) + ( (0.1 + (0.05 * ( G.GAME.sunnumber or 0) ) ) * (G.GAME.current_round.current_hand.cry_asc_num or 0) ) )
+		)
+	else
+		return math.max(
+			num,
+			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ G.GAME.current_round.current_hand.cry_asc_num or 0)
+		)
+	end
 end
 function cry_pulse_flame(duration, intensity) -- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
 	G.cry_flame_override = G.cry_flame_override or {}
