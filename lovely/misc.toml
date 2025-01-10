@@ -404,8 +404,8 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = 'local hand_space = e or math.min(#G.deck.cards, G.hand.config.card_limit - #G.hand.cards)'
-position = "after"
+pattern = "if G.GAME.blind.name == 'The Serpent' and"
+position = "before"
 payload = '''
 if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) then
 	hand_space = math.min(#G.deck.cards, G.GAME.modifiers.cry_forced_draw_amount)

@@ -364,4 +364,4 @@ local banana = {
 		end
 	end,
 }
-return {items = {test, test3, blank, blank_sprite, oldmark, nostalgia_sprites, echo, gold_shader, gold_edition, azure_seal, banana, test4}, disabled = false}
+return {items = {test, test3, blank, blank_sprite, oldmark, nostalgia_sprites, echo, gold_shader, gold_edition, azure_seal, banana, test4}, disabled = true}
