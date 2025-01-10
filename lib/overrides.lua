@@ -673,7 +673,6 @@ end
 
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
-	--[[
 	if G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
@@ -696,10 +695,6 @@ function calculate_reroll_cost(skip_increment)
 	end
 	G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost)
 		+ G.GAME.current_round.reroll_cost_increase
-	]]
-	--
-
-	G.GAME.current_round.reroll_cost = 0
 end
 
 -- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
