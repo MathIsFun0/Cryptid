@@ -2434,6 +2434,7 @@ local mondrian = {
 		}
 	},
 }
+--TODO gate this joker behind epics
 local sapling = {
 	object_type = "Joker",
 	name = "cry-sapling",
@@ -2471,7 +2472,7 @@ local sapling = {
 		then
 			if card.ability.extra.score >= card.ability.extra.req then
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.RARITY["cry_epic"]})
-				local card = create_card("Joker", G.jokers, nil, cry_enable_epics and 'cry_epic' or 1, nil, nil, nil, "cry_sapling")
+				local card = create_card("Joker", G.jokers, nil, 'cry_epic', nil, nil, nil, "cry_sapling")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:start_materialize()
