@@ -953,6 +953,7 @@ return {
 				and self.key ~= "tag_cry_triple"
 				and self.key ~= "tag_cry_quadruple"
 				and self.key ~= "tag_cry_quintuple"
+				and self.key ~= "tag_ortalab_rewind"
 			then
 				G.GAME.cry_last_tag_used = self.key
 				G.GAME.cry_memory_orbital = self.ability.orbital_hand

@@ -28,16 +28,22 @@ target = "game.lua"
 pattern = '''if G.load_shop_booster then'''
 position = "before"
 payload = '''
-if G.GAME.events.ev_cry_choco10 and not G.load_shop_vouchers then
-    local card = create_card('Joker', G.jokers, true, nil, nil, nil, nil, 'cry_antique')
-    cry_misprintize(card)
-    card.misprint_cost_fac = 50/card.cost
-    card:set_cost()
-    create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
-    card:start_materialize()
-    card.ability.cry_antique = true
-    G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
-    G.shop_vouchers:emplace(card)
+if G.GAME.events.ev_cry_choco10 then
+    local add = true
+    for k, v in pairs(G.shop_vouchers.cards) do		-- G.load_shop_vouchers is already set to nil here, just do a normal check
+        if v.ability.cry_antique then add = false end
+    end
+    if add then
+        local card = create_card('Joker', G.jokers, true, nil, nil, nil, nil, 'cry_antique')
+        cry_misprintize(card)
+        card.misprint_cost_fac = 50/card.cost
+        card:set_cost()
+        create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+        card:start_materialize()
+        card.ability.cry_antique = true
+        G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+        G.shop_vouchers:emplace(card)
+    end
 end
 '''
 match_indent = true

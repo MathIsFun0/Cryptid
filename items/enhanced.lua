@@ -56,6 +56,7 @@ local typed_decks = {
 	-- todo: work with mod config better here
 
 	{ "cry", "Enhancement", "The Eclipse's Deck", "Echo", "echo", nil, "atlasenhanced", 1, 5, "" },
+	{ "cry", "Enhancement", "The Seraph's Deck", "Light", "light", nil, "cry_misc", 0, 3, "" },
 
 	{ "cry", "Edition", nil, "Fragile", "glass", nil, nil, 5, 2, "" },
 	{ "cry", "Edition", nil, "Golden", "gold", nil, nil, 5, 2, "" },
@@ -400,8 +401,7 @@ return {
 			
 			if center.name == "Fortune Teller" 
 			or center.name == "Shoot the Moon" 
-			or center.name == "Riff-raff" 
-			or center.name == "Business Card"
+			or center.name == "Riff-raff"
 			or center.name == "Chaos the Clown"
 			or center.name == "Dusk"
 			or center.name == "Mime"

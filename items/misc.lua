@@ -956,8 +956,8 @@ local echo = {
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.retriggers, G.GAME.probabilities.normal, self.config.extra } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
 }
 local eclipse = {
@@ -973,6 +973,46 @@ local eclipse = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
 
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+}
+local light = {
+	object_type = "Enhancement",
+	key = "light",
+	atlas = "cry_misc",
+	pos = { x = 0, y = 3 },
+	config = {extra = {a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5}},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult, card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult, card and card.ability.extra.current or self.config.extra.current, card and card.ability.extra.req or self.config.extra.req } }
+	end,
+	calculate = function(self,card,context,effect)
+		if context.cardarea == G.play and not context.repetition then
+			if #context.scoring_hand > 1 then
+				card.ability.extra.current = card.ability.extra.current - (#context.scoring_hand - 1)
+				while card.ability.extra.current <= 0 do
+					card.ability.extra.req = card.ability.extra.req +5
+					card.ability.extra.current = card.ability.extra.current + card.ability.extra.req
+					card.ability.extra.current_x_mult = card.ability.extra.current_x_mult + card.ability.extra.a_x_mult
+				end
+			end
+			if card.ability.extra.current_x_mult > 1 then
+				effect.x_mult = card.ability.extra.current_x_mult
+			end
+		end
+	end,
+}
+local seraph = { 
+	object_type = "Consumable",
+	set = "Tarot",
+	name = "cry-Seraph",
+	key = "seraph",
+	order = 2,
+	pos = { x = 1, y = 2 },
+	config = { mod_conv = "m_cry_light", max_highlighted = 2 },
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
+
+		return { vars = { self.config.max_highlighted } }
 	end,
 }
 local blessing = {
@@ -1268,10 +1308,10 @@ local fulldeck = {
     object_type = "PokerHand",
     key = 'WholeDeck',
     visible = false,
-    chips = 5200,
-    mult = 520,
-    l_chips = 520,
-    l_mult = 52,
+    chips = 525252525252525252525252525252,
+    mult = 52525252525252525252525252525,
+    l_chips = 52525252525252525252525252525,
+    l_mult = 5252525252525252525252525252,
     example = {
         { 'S_A',    true },
                 { 'H_A',    true },
@@ -1493,6 +1533,22 @@ local universe = {
     end,
     generate_ui = 0,
 }
+local absolute = {
+	object_type = "Sticker",
+	badge_colour = HEX('c75985'),
+	prefix_config = { key = false },
+	key = "cry_absolute",
+	atlas = "sticker",
+	pos = { x = 1, y = 5 },
+	should_apply = false,
+	no_sticker_sheet = true,
+	draw = function(self, card, layer)
+		G.shared_stickers["cry_absolute"].role.draw_major = card
+		G.shared_stickers["cry_absolute"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader('polychrome', nil, card.ARGS.send_to_shader, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+	end,
+}
 local miscitems = {
 	memepack_atlas,
   	meme_object_type,
@@ -1530,6 +1586,9 @@ local miscitems = {
 	void,
 	marsmoons,
 	universe,
+	absolute,
+	light,
+	seraph,
 }
 if Cryptid.enabled["M Jokers"] then
 	miscitems[#miscitems + 1] = jollyeditionshader
@@ -1546,7 +1605,7 @@ return {
 				local total_repetitions = ret and ret.repetitions or 0
 
 				if self.config.center == G.P_CENTERS.m_cry_echo then
-					if pseudorandom("echo") < G.GAME.probabilities.normal / (self.ability.extra or 2) then --hacky crash fix
+					if pseudorandom("echo") < cry_prob(self.ability.cry_prob, self.ability.extra or 2, self.ability.cry_rigged) / (self.ability.extra or 2) then --hacky crash fix
 						total_repetitions = total_repetitions + self.ability.retriggers
 					end
 				end
@@ -1808,6 +1867,13 @@ return {
 					self.flipping = "b2f"
 				end
 				self:dbl_side_flip()
+			end
+			if self.ability.cry_absolute then	-- feedback loop... may be problematic
+				self.cry_absolute = true
+			end
+			if self.cry_absolute then
+				self.ability.cry_absolute = true
+				self.ability.eternal = true
 			end
 		end
 		function copy_dbl_card(C, c, deck_effects)

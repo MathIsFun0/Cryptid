@@ -161,12 +161,12 @@ local googol_play = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				"" .. (G.GAME and G.GAME.probabilities.normal or 1),
-				center.ability.extra.odds,
-				center.ability.extra.Xmult,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				card.ability.extra.Xmult,
 			},
 		}
 	end,
@@ -175,7 +175,7 @@ local googol_play = {
 			context.cardarea == G.jokers
 			and not context.before
 			and not context.after
-			and pseudorandom("cry_googol_play") < G.GAME.probabilities.normal / card.ability.extra.odds
+			and pseudorandom("cry_googol_play") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
@@ -194,6 +194,18 @@ local googol_play = {
 			"Math",
 		},
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'chip_score' and to_big(args.chips) >= to_big(1e100) then
+ 			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 
 -- Sync Catalyst
@@ -1833,5 +1845,6 @@ return {
 		altgoogol,
 		soccer,
 		fleshpanopticon,
+		spectrogram,
 	},
 }

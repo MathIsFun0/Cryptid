@@ -407,14 +407,13 @@ local notebook = {
 	pos = { x = 1, y = 0 },
 	order = 255,
 	config = {
-		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "" },
+		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "", add = 1 },
 		jolly = { t_mult = 8, type = "Pair" },
 	},
-	immutable = true,
 	rarity = 3,
 	cost = 9,
 	perishable_compat = false,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
 			key = "j_jolly",
@@ -422,11 +421,12 @@ local notebook = {
 		}
 		return {
 			vars = {
-				"" .. (G.GAME and G.GAME.probabilities.normal or 1),
-				center.ability.extra.odds,
-				center.ability.extra.slot,
-				center.ability.extra.active,
-				center.ability.extra.jollies,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				card.ability.extra.slot,
+				card.ability.extra.active,
+				card.ability.extra.jollies,
+				card.ability.extra.add,
 			},
 		}
 	end,
@@ -448,10 +448,10 @@ local notebook = {
 			end
 			if
 				jollycount >= card.ability.extra.jollies --if there are 5 or more jolly jokers
-				or pseudorandom("cry_notebook") < G.GAME.probabilities.normal / card.ability.extra.odds
+				or pseudorandom("cry_notebook") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
-				card.ability.extra.slot = card.ability.extra.slot + 1
-				G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+				card.ability.extra.slot = card.ability.extra.slot + card.ability.extra.add
+				G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
 				return {
@@ -657,20 +657,20 @@ local scrabble = {
 	cost = 8,
 	blueprint_compat = true,
 	atlas = "atlasone",
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
-			--if pseudorandom('scrabble') < G.GAME.probabilities.normal/card.ability.extra.odds then
+			--if pseudorandom('scrabble') < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)/card.ability.extra.odds then
 			--check = true
 			--local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_jolly')
 			--card:add_to_deck()
 			--G.jokers:emplace(card)
 			--end
-			if pseudorandom("scrabbleother") < G.GAME.probabilities.normal / card.ability.extra.odds then
+			if pseudorandom("scrabbleother") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
 				card:set_edition({ cry_m = true })
@@ -700,10 +700,9 @@ local sacrifice = {
 	name = "cry-sacrifice",
 	key = "sacrifice",
 	effect = "M Joker",
-	config = { extra = { text = localize("k_active_ex"), spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
+	config = { extra = { jollies = 3, unc = 1, text = localize("k_active_ex"), spawn = true }, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 5, y = 2 },
 	order = 259,
-	immutable = true,
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = true,
@@ -714,27 +713,34 @@ local sacrifice = {
 			key = "j_jolly",
 			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
 		}
-		return { vars = { center.ability.extra.text } }
+		return { vars = { center.ability.extra.text, math.min(30, center.ability.extra.jollies), math.min(30, center.ability.extra.unc) } }
 	end,
 	calculate = function(self, card, context)
 		if context.using_consumeable and card.ability.extra.spawn and not context.retrigger_joker then
 			if context.consumeable.ability.set == "Spectral" then
 				if not context.blueprint then
-					card.ability.extra.spawn = false
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							card.ability.extra.spawn = false
+							return true
+						end,
+					}))
 				end
 				if not card.ability.extra.spawn then
-					card.ability.extra.text = localize("cry_no_triggers")
+					-- card.ability.extra.text = localize("cry_no_triggers")	what is going on here?
 				end
-				for i = 1, 3 do
+				for i = 1, math.min(30, card.ability.extra.jollies) do
 					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
 					jolly:add_to_deck()
 					G.jokers:emplace(jolly)
 				end
-				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "sacrifice")
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				card:start_materialize()
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.SPECTRAL })
+				for i = 1, math.min(30, card.ability.extra.unc) do
+					local unc = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "sacrifice")
+					unc:add_to_deck()
+					G.jokers:emplace(unc)
+					unc:start_materialize()
+				end
+				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.SPECTRAL })
 				return nil, true
 			end
 		end
@@ -853,9 +859,8 @@ local doodlem = {
 	key = "doodlem",
 	atlas = "atlasepic",
 	effect = "M Joker",
-	config = { jolly = { t_mult = 8, type = "Pair" } },
+	config = { extra = {add = 1, init = 2}, jolly = { t_mult = 8, type = "Pair" } },
 	pos = { x = 2, y = 0 },
-	immutable = true,
 	rarity = "cry_epic",
 	cost = 13,
 	order = 266,
@@ -867,19 +872,20 @@ local doodlem = {
 			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
 		}
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+		return { vars = { center.ability.extra.add, center.ability.extra.init } }
 	end,
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-			local jollycount = 2
+			local jollycount = card.ability.extra.init
 			for i = 1, #G.jokers.cards do
 				if
 					G.jokers.cards[i]:is_jolly()
 				then
-					jollycount = jollycount + 1
+					jollycount = jollycount + card.ability.extra.add
 				end
 			end
-			if jollycount > 18 then
-				jollycount = 18
+			if jollycount > 25 then
+				jollycount = 25
 			end --reduce excessive consumeable spam (Lag)
 			for i = 1, jollycount do
 				local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, nil, "cry_doodlem")
@@ -1209,14 +1215,14 @@ local macabre = {
 	effect = "M Joker",
 	order = 263,
 	pos = { x = 1, y = 2 },
-	immutable = true,
-	config = { jolly = { t_mult = 8, type = "Pair" } },
+	config = { extra = {add = 1}, jolly = { t_mult = 8, type = "Pair" } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
 			key = "j_jolly",
 			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
 		}
+		return { vars = { math.min(15, center.ability.extra.add) } }
 	end,
 	rarity = 1,
 	cost = 5,
@@ -1248,9 +1254,11 @@ local macabre = {
 						triggered = true
 						v.getting_sliced = true
 						v:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-						local jolly_card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-						jolly_card:add_to_deck()
-						G.jokers:emplace(jolly_card)
+						for i = 1, math.min(15, card.ability.extra.add) do
+							local jolly_card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+							jolly_card:add_to_deck()
+							G.jokers:emplace(jolly_card)
+						end
 					end
 					if triggered then
 						card:juice_up(0.8, 0.8)

@@ -3,7 +3,7 @@ if CardSleeves then
 		object_type = "Atlas",
 		key = "atlasSleeves",
 		path = "atlasSleeves.png",
-		px = 71,
+		px = 73,
 		py = 95,
 	})
 
@@ -369,4 +369,4 @@ if CardSleeves then
 		sleeveitems[#sleeveitems + 1] = bountifulsleeve
 	end
 end
-return { name = "Sleeves", init = function() end, items = { sleeveitems }, disabled = true }
+return { name = "Sleeves", init = function() end, items = { sleeveitems } }

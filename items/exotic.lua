@@ -224,7 +224,6 @@ local redeo = {
 		}
 	end,
 	pos = { x = 3, y = 0 },
-	immutable = true,
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 506,
@@ -704,7 +703,6 @@ local aequilibrium = {
 	cost = 50,
 	order = 512,
 	blueprint_compat = true,
-	immutable = true,
 	eternal_compat = true,
 	perishable_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -719,11 +717,11 @@ local aequilibrium = {
 				key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
 			})
 		end
-		return { vars = { center.ability.extra.jokers, joker_generated } }
+		return { vars = { math.floor(math.min(25, center.ability.extra.jokers)), joker_generated } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
-			for i = 1, math.min(200, card.ability.extra.jokers) do
+			for i = 1, math.floor(math.min(25, card.ability.extra.jokers)) do
 				local newcard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil)
 				newcard:add_to_deck()
 				G.jokers:emplace(newcard)

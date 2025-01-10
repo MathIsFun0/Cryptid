@@ -344,15 +344,15 @@ local planetlua = {
 	aurinko = true,
 	atlas = "atlasnotjokers",
 	order = 1,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), self.config.extra.odds } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or self.config.extra.odds} }
 	end,
 	can_use = function(self, card)
 		return true
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		if pseudorandom("planetlua") < G.GAME.probabilities.normal / card.ability.extra.odds then --Code "borrowed" from black hole
+		if pseudorandom("planetlua") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then --Code "borrowed" from black hole
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
 				{ handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
@@ -495,7 +495,7 @@ local planetlua = {
 		else
 			for i = 1, number do
 				quota = quota
-					+ (pseudorandom("planetlua") < G.GAME.probabilities.normal / card.ability.extra.odds and 1 or 0)
+					+ (pseudorandom("planetlua") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds and 1 or 0)
 			end
 			if quota > 0 then
 				update_hand_text(
@@ -593,7 +593,7 @@ local planetlua = {
 	calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for (G.P_CENTERS.v_observatory.config.extra) Mult
 		if
 			G.GAME.used_vouchers.v_observatory
-			and (pseudorandom("nstar") < G.GAME.probabilities.normal / card.ability.extra.odds)
+			and (pseudorandom("nstar") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
 			return {
@@ -691,15 +691,15 @@ local nstar = {
 			})
 		)
 	end,
-	calculate = function(self, card, context) --Observatory effect: X0.04 mult for each neutron star used this run
+	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
 		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil then
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { 1 + (0.04 * G.GAME.neutronstarsusedinthisrun) },
+					vars = { 1 + (0.10 * G.GAME.neutronstarsusedinthisrun) },
 				}),
-				Xmult_mod = 1 + (0.04 * G.GAME.neutronstarsusedinthisrun),
+				Xmult_mod = 1 + (0.10 * G.GAME.neutronstarsusedinthisrun),
 			}
 		end
 	end,
@@ -857,4 +857,4 @@ if Cryptid.enabled["Misc."] then
 end
 if not (SMODS.Mods["jen"] or {}).can_load then
 end
-return { name = "Planets", init = function() end, items = planet_cards, disabled = true }
+return { name = "Planets", init = function() end, items = planet_cards }
