@@ -447,4 +447,4 @@ local achievement_objects = {
 	traffic_jam,
 	perfectly_balanced,
 }
-return { name = "Achievements", init = function() end, items = achievement_objects, disabled = true }
+return { name = "Achievements", init = function() end, items = achievement_objects,  }

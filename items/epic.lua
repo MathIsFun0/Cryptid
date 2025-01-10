@@ -269,6 +269,26 @@ local sync_catalyst = {
 			"Math",
 		},
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.jokers and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante < 9 then
+			local rarities = {
+			}
+			for i = 1, #G.jokers.cards do
+				local card = G.jokers.cards[i]
+				rarities[card.config.center.rarity .. '_rarity'] = true
+			end
+			if rarities['3_rarity'] and rarities['4_rarity'] and rarities['cry_epic_rarity'] then
+ 				unlock_card(self)
+			end
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 
 -- Negative Joker
@@ -823,13 +843,13 @@ local boredom = {
 	order = 32,
 	cost = 14,
 	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if pseudorandom("cry_boredom_joker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+			if pseudorandom("cry_boredom_joker") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -842,7 +862,7 @@ local boredom = {
 		if
 			context.repetition
 			and context.cardarea == G.play
-			and pseudorandom("cry_boredom_card") < G.GAME.probabilities.normal / card.ability.extra.odds
+			and pseudorandom("cry_boredom_card") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
 				message = localize("k_again_ex"),
@@ -1314,6 +1334,22 @@ local curse_sob = {
 			"Jevonn",
 		},
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.jokers then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.key == 'j_obelisk' and G.jokers.cards[i].ability.eternal then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 
 -- Bonus Joker
@@ -1336,16 +1372,16 @@ local bonusjoker = {
 	order = 75,
 	blueprint_compat = true,
 	enhancement_gate = "m_bonus",
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds, card.ability.extra.add } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.ability.effect == "Bonus Card" then
 				if
-					pseudorandom("bonusjoker") < G.GAME.probabilities.normal / card.ability.extra.odds
+				pseudorandom("bonusjoker") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 					and card.ability.extra.check < 2
 					and not context.retrigger_joker
 				then
@@ -1415,10 +1451,10 @@ local multjoker = {
 	cost = 11,
 	blueprint_compat = true,
 	enhancement_gate = "m_mult",
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_mult
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
-		return { vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), center.ability.extra.odds } }
+		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -1427,7 +1463,7 @@ local multjoker = {
 				context.other_card.ability.effect == "Mult Card"
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
-				if pseudorandom("multjoker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				if pseudorandom("multjoker") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -1700,6 +1736,23 @@ local soccer = {
 			"Jevonn",
 		},
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == 'win' then
+			for k,v in pairs(G.GAME.hands) do
+				if k ~= 'High Card' and G.GAME.hands[k].played ~= 0 then
+					return
+				end
+			end
+			return true
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 
 -- Flesh Panopticon
@@ -1818,6 +1871,54 @@ local fleshpanopticon = {
 		code = {
 			"notmario",
 		},
+	},
+}
+-- Note: This one was NOT refactored yet!
+local spectrogram = {
+	object_type = "Joker",
+	name = "cry-Spectrogram",
+	key = "spectrogram",
+	pos = { x = 1, y = 5 },
+	config = { extra = {} },
+	rarity = "cry_epic",
+	cost = 9,
+	order = 133,
+	atlas = "atlasepic",
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
+		return { vars = {} }
+	end,
+    calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if context.other_context.scoring_hand then
+				if context.other_card == G.jokers.cards[#G.jokers.cards] then
+					local echonum = 0
+					for i, v in pairs (context.other_context.scoring_hand) do
+						if v.config.center_key == 'm_cry_echo' then
+							echonum = echonum + 1
+						end
+					end
+					if echonum > 0 then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = echonum,
+							card = card,
+						}
+					end
+				end
+			end
+		end
+    end,
+	cry_credits = {
+		idea = {
+			"AlexZGreat"
+		},
+		art = {
+			"SMG9000"
+		},
+		code = {
+			"AlexZGreat"
+		}
 	},
 }
 return {

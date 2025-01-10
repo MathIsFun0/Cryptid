@@ -573,4 +573,4 @@ for k, v in pairs(G.P_CENTERS) do
 	end
 end
 
-return { name = "Challenges", init = function() end, items = challenges, disabled = true }
+return { name = "Challenges", init = function() end, items = challenges,  }

@@ -59,7 +59,14 @@ local function process_items(f, mod)
 					item.dependencies[#item.dependencies + 1] = mod.id
 				end
 				if item.init then item:init() end
+				if not item.gameset_config then
+					-- by default, disable on modest
+					item.gameset_config = {
+						modest = {disabled = true},
+					}
+				end
 				if G.PROFILES[G.SETTINGS.profile].all_unlocked then
+					-- There's something a bit goofy about this, it shouldn't kick in this early
 					item.alerted = true
 					item.discovered = true
 					item.unlocked = true

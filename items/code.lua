@@ -18,22 +18,6 @@ local code_atlas = {
 	px = 71,
 	py = 95,
 }
-SMODS.UndiscoveredSprite({
-	key = "Code",
-	atlas = "code",
-	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
-	px = 71,
-	py = 95,
-}):register()
-SMODS.UndiscoveredSprite({ --todo change?
-	key = "Unique",
-	atlas = "code",
-	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
-	px = 71,
-	py = 95,
-}):register()
 local pack_atlas = {
 	object_type = "Atlas",
 	key = "pack",

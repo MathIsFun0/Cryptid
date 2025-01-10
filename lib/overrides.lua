@@ -794,11 +794,22 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		center = G.P_CENTERS[center]
 	end
 
+	-- handle banned keys for playing cards
+	-- can cache this if it's too much of a performance hit
+	local _cardlist = {}
+	for k, v in pairs(G.P_CARDS) do
+		local add = true
+		if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
+			add = false
+		end
+		if add then _cardlist[#_cardlist+1] = k end
+	end
+	if #_cardlist <= 0 then _cardlist[#_cardlist+1] = 'S_A' end
+
 	local front = (
 		(_type == "Base" or _type == "Enhanced")
-		and pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
+		and G.P_CARDS[pseudorandom_element(_cardlist, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))]
 	) or nil
-
 	if area == "ERROR" then
 		local ret = (front or center)
 		if not ret.config then
@@ -1003,7 +1014,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				end
 			end
 			if
-				G.GAME.modifiers.cry_enable_flipped_in_shop
+				not card.ability.eternal
+				and G.GAME.modifiers.cry_enable_flipped_in_shop
 				and pseudorandom("cry_flip" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
 			then
 				card.cry_flipped = true
@@ -1035,6 +1047,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		cry_misprintize(card)
+	end
+	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
+		if card.config.center.rarity == 1 then
+			cry_misprintize(card,{min = 4, max = 4}, nil, true)
+		end
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0

@@ -481,5 +481,5 @@ return {
 	end,
 	order = 1000000,
 	items = packs_to_add,
-	disabled = true
+	
 }

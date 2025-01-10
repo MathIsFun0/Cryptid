@@ -1,5 +1,10 @@
 -- gameset.lua: functions for gameset UI and logic
 
+-- Future changes I want to make to this:
+-- - Sort cards in the Cryptid additions tab in collection order
+-- - Give thematic sets a button to view content from just their set
+-- - Edition decks and similar display their editions in the gameset config UI
+
 -------------------------
 ------ MODS LIST --------
 -------------------------
@@ -821,14 +826,14 @@ end
 ---- CARD ENABLING SYSTEM ----
 ------------------------------
 
-SMODS.GameObject.disable = function(self, reason)
+SMODS.GameObject._disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 end
 SMODS.GameObject.enable = function(self)
 	self.cry_disabled = nil
 end
 
-SMODS.Center.disable = function(self, reason)
+SMODS.Center._disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
 	G.P_CENTERS[self.key] = nil
@@ -847,8 +852,8 @@ SMODS.Joker.enable = function(self)
 		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
 	end
 end
-SMODS.Joker.disable = function(self, reason)
-	SMODS.Center.disable(self, reason)
+SMODS.Joker._disable = function(self, reason)
+	SMODS.Center._disable(self, reason)
 	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
 	local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
 	if vanilla_rarities[self.rarity] then
@@ -869,12 +874,12 @@ SMODS.Consumable.enable = function(self)
 	SMODS.Center.enable(self)
 	SMODS.insert_pool(G.P_CENTER_POOLS["Consumeables"], self)
 end
-SMODS.Consumable.disable = function(self, reason)
-	SMODS.Center.disable(self, reason)
+SMODS.Consumable._disable = function(self, reason)
+	SMODS.Center._disable(self, reason)
 	SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], self.key)
 end
 
-SMODS.Tag.disable = function(self, reason)
+SMODS.Tag._disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
 	G.P_TAGS[self.key] = nil
@@ -885,7 +890,7 @@ SMODS.Tag.enable = function(self)
 	G.P_TAGS[self.key] = self
 end
 
-SMODS.Blind.disable = function(self, reason)
+SMODS.Blind._disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	G.P_BLINDS[self.key] = nil
 end
@@ -895,7 +900,7 @@ SMODS.Blind.enable = function(self)
 end
 
 --Removing seals from the center table causes issues
-SMODS.Seal.disable = function(self, reason)
+SMODS.Seal._disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
 end
@@ -905,7 +910,7 @@ SMODS.Seal.enable = function(self)
 end
 
 --Removing editions from the center table causes issues, so instead we make them unable to spawn naturally
-SMODS.Edition.disable = function(self, reason)
+SMODS.Edition._disable = function(self, reason)
 	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
 	self.cry_get_weight = self.get_weight
@@ -939,7 +944,7 @@ function cry_update_obj_registry(m)
 					end
 				else
 					if not v.cry_disabled then
-						v:disable(en)
+						v:_disable(en)
 					end
 				end
 			end

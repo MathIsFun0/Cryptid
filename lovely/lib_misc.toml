@@ -79,13 +79,14 @@ end
 '''
 match_indent = true
 
-
+# If your exotic sprites are getting screwed up, this is probably why
+# This really needs to be turned into a regex patch
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = '''if k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
+pattern = '''if not v.custom_draw and k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
 position = "at"
-payload = '''if k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k ~= 'floating_sprite2' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
+payload = '''if not v.custom_draw and k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k ~= 'floating_sprite2' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
 match_indent = true
 
 
@@ -181,7 +182,8 @@ end
 match_indent = true
 
 # init Cryptid global through lovely
-# so other mods can add things to memepack pool
+# so other mods can add things to obj pools
+# and define some stub functions so that the game does not immediately crash when talisman isn't loaded
 [[patches]]
 [patches.pattern]
 target = "main.lua"
@@ -189,11 +191,15 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Cryptid = {}
+Cryptid.enabled = {}
 Cryptid.memepack = {}
 Cryptid.aliases = {}
 Cryptid.food = {}
 Cryptid.M_jokers = {} 
 Cryptid.Megavouchers = {}
+function cry_format(...)
+	return ...
+end
 '''
 match_indent = true
 

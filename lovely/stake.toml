@@ -151,9 +151,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
+pattern = "if SMODS.has_enhancement(scoring_hand[i], 'm_glass') and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then"
 position = "at"
-payload = "if ((scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra) or (G.GAME.modifiers.cry_shatter_rate and pseudorandom('cry_shatter') < 1/G.GAME.modifiers.cry_shatter_rate)) and not scoring_hand[i].ability.eternal then"
+payload = "if ((SMODS.has_enhancement(scoring_hand[i], 'm_glass') and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra) or (G.GAME.modifiers.cry_shatter_rate and pseudorandom('cry_shatter') < 1/G.GAME.modifiers.cry_shatter_rate)) and not scoring_hand[i].ability.eternal then"
 match_indent = true
 
 

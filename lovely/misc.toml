@@ -460,3 +460,22 @@ for i = 1, #G.jokers.cards do
 end
 '''
 match_indent = true
+
+
+# fix crashing from the source
+# well, not from the real source, but close enough
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {'''
+position = "before"
+payload = '''
+if (not self.ability.orbital_hand) or (not G.GAME.hands[self.ability.orbital_hand]) then 
+	local _poker_hands = {}
+	for k, v in pairs(G.GAME.hands) do
+		if v.visible then _poker_hands[#_poker_hands+1] = k end
+	end
+	self.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('orbital'))
+end
+'''
+match_indent = true

@@ -158,7 +158,66 @@ match_indent = true
 target = "game.lua"
 pattern = '''if self.STATE == self.STATES.SELECTING_HAND then'''
 position = "before"
-payload = '''if G.GAME.USING_RUN then self.STATE = self.STATES.SHOP end'''
+payload = '''
+if G.GAME.USING_RUN then
+	if not (self.STATE == self.STATES.STANDARD_PACK or self.STATE == self.STATES.BUFFOON_PACK or self.STATE == self.STATES.PLANET_PACK or self.STATE == self.STATES.TAROT_PACK or self.STATE == self.STATES.SPECTRAL_PACK or self.STATE == self.STATES.SMODS_BOOSTER_OPENED) then -- do you are have stupid
+		self.STATE = self.STATES.SHOP
+	end
+	if G.GAME.blind then G.GAME.blind:change_colour() end	-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+	if G.load_cry_runarea then
+		G.cry_runarea = CardArea(
+			G.discard.T.x,
+			G.discard.T.y,
+			G.discard.T.w,
+			G.discard.T.h,
+			{ type = "discard", card_limit = 1e100 }
+		)
+		G.cry_runarea:load(G.load_cry_runarea)
+		G.load_cry_runarea = nil
+	end
+end
+'''
+match_indent = true
+
+# Run - handle packs (this is incredibly invasive)
+# we can't do "draw from run to hand" because modded packs presumably don't get ovewritten like that
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''for i=1, hand_space do --draw cards from deckL'''
+position = "before"
+payload = '''if not G.GAME.USING_RUN then'''
+match_indent = true
+# the inconsistency hurts
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.FUNCS.draw_from_hand_to_deck()'''
+position = "at"
+payload = '''if not G.GAME.USING_RUN then
+	G.FUNCS.draw_from_hand_to_deck()
+else
+	G.FUNCS.draw_from_hand_to_run()
+end'''
+match_indent = true
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '''end\n\s+G\.FUNCS\.discard_cards_from_highlighted \= function\(e, hook\)'''
+position = "before"
+payload = '''
+else
+	for i = 1, #G.cry_runarea.cards do
+		draw_card(G.cry_runarea,G.hand, i*100/#G.cry_runarea.cards,'up', true)
+	end
+end
+G.FUNCS.draw_from_hand_to_run = function(e)	-- might as well just slap this here
+	local hand_count = #G.hand.cards
+	for i=1, hand_count do --draw cards from deck
+		draw_card(G.hand, G.cry_runarea, i*100/hand_count,'down', nil, nil,  0.08)
+	end
+end
+'''
 match_indent = true
 
 [[patches]]
