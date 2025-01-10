@@ -2266,7 +2266,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				end
 			end
 			if
-				G.GAME.modifiers.cry_enable_flipped_in_shop
+				not card.ability.eternal
+				and G.GAME.modifiers.cry_enable_flipped_in_shop
 				and pseudorandom("cry_flip" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
 			then
 				card.cry_flipped = true
@@ -2746,11 +2747,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		['Pair'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		['Two Pair'] = 4,
 		['Three of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		['Straight'] = 5,
-		['Flush'] = 5,
+		['Straight'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,
+		['Flush'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,
 		['Full House'] = 5,
 		['Four of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		['Straight Flush'] = 5,
+		['Straight Flush'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,	-- debatable
 		['cry_Bulwark'] = 5,
 		['Five of a Kind'] = 5,
 		['Flush House'] = 5,
