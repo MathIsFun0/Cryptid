@@ -398,7 +398,7 @@ SMODS.Sticker:take_ownership("rental", {
 })
 
 --Sticker calc for playing cards
-local ec = eval_card
+--[[local ec = eval_card
 function eval_card(card, context)
 	local ret = ec(card, context)
 	if card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck then
@@ -411,4 +411,4 @@ function eval_card(card, context)
 		end
 	end
 	return ret
-end
+end--]]

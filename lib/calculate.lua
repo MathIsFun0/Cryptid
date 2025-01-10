@@ -1,7 +1,7 @@
 -- calculate.lua: modifications specifically for card calculation
 
 -- deal with Rigged and Fragile when scoring a playing card
-local ec = eval_card
+--[[local ec = eval_card
 function eval_card(card, context)
 	if card.will_shatter then
 		return
@@ -16,7 +16,7 @@ function eval_card(card, context)
 		G.GAME.probabilities.normal = ggpn
 	end
 	return ret
-end
+end--]]
 
 --some functions to minimize the load on calculate_joker itself
 function Card:cry_copy_ability()
@@ -427,7 +427,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
 end
 
-function Card:calculate_joker(context)
+--[[function Card:calculate_joker(context)
 	--Calculate events
 	if self == G.jokers.cards[1] then
 		for k, v in pairs(SMODS.Events) do
@@ -557,4 +557,4 @@ function Card:calculate_joker(context)
 		end
 	end
 	return ret, trig
-end
+end--]]

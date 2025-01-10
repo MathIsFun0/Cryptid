@@ -282,7 +282,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''if cards_destroyed[i].ability.name == 'Glass Card' then'''
+pattern = '''if SMODS.has_enhancement(cards_destroyed[i], 'm_glass') then'''
 position = "before"
 payload = '''if cards_destroyed[i].will_shatter then return true end'''
 match_indent = true

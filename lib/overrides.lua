@@ -462,7 +462,7 @@ function Game:update(dt)
 			and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
 		then
 			G.GAME.blind.chips = G.GAME.blind.chips
-				* G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
+				* (G.GAME.blind.cry_round_base_mod and G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)) or 1)
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		end
 	end
