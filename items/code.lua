@@ -1668,9 +1668,40 @@ local encoded = {
 	name = "cry-Encoded",
 	key = "encoded",
 	order = 11,
-	config = { cry_encoded = true, cry_encoded_downside = true },
 	pos = { x = 2, y = 5 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.joker_rate = 0
+		G.GAME.planet_rate = 0
+		G.GAME.tarot_rate = 0
+		G.GAME.code_rate = 1e100
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					-- Adding a before spawning becuase jen banned copy_paste
+					if
+						G.P_CENTERS["j_cry_CodeJoker"]
+						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
+					then
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+					end
+					if
+						G.P_CENTERS["j_cry_copypaste"]
+						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"])
+					then
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+					end
+					return true
+				end
+			end,
+		}))
+	end,
 }
 
 local source_deck = {

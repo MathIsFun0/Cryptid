@@ -1,31 +1,15 @@
-local atlasdeck = {
-	object_type = "Atlas",
-	key = "atlasdeck",
-	path = "atlasdeck.png",
-	px = 71,
-	py = 95,
-}
-local atlasglowing = {
-	object_type = "Atlas",
-	key = "glowing",
-	path = "b_cry_glowing.png",
-	px = 71,
-	py = 95,
-}
 local very_fair = {
 	object_type = "Back",
 	name = "Very Fair Deck",
 	key = "very_fair",
-	config = { hands = -2, discards = -2, cry_no_vouchers = true },
+	config = { hands = -2, discards = -2 },
 	pos = { x = 4, y = 0 },
 	order = 1,
-	--[[loc_vars = function(self, info_queue, center)
-        return {vars = {center.effect.config.hands, center.effect.config.discards}}
-    end,--]]
-	--this doesn't work, will fix later
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_no_vouchers = true
+	end,
 }
-
 very_fair_quip = {}
 
 local equilibrium = {
@@ -33,9 +17,12 @@ local equilibrium = {
 	name = "cry-Equilibrium",
 	key = "equilibrium",
 	order = 3,
-	config = { vouchers = { "v_overstock_norm", "v_overstock_plus" }, cry_equilibrium = true },
+	config = { vouchers = { "v_overstock_norm", "v_overstock_plus" } },
 	pos = { x = 0, y = 1 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_equilibrium = true
+	end,
 }
 local misprint = {
 	object_type = "Back",
@@ -45,6 +32,10 @@ local misprint = {
 	config = { cry_misprint_min = 0.1, cry_misprint_max = 10 },
 	pos = { x = 4, y = 2 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
+		G.GAME.modifiers.cry_misprint_max = self.effect.config.cry_misprint_max
+	end,
 }
 local infinite = {
 	object_type = "Back",
@@ -54,15 +45,20 @@ local infinite = {
 	config = { cry_highlight_limit = 1e20, hand_size = 1 },
 	pos = { x = 3, y = 0 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
+	end,
 }
 local conveyor = {
 	object_type = "Back",
 	name = "cry-Conveyor",
 	key = "conveyor",
 	order = 7,
-	config = { cry_conveyor = true },
 	pos = { x = 1, y = 1 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_conveyor = true
+	end,
 }
 local CCD = {
 	object_type = "Back",
@@ -72,24 +68,43 @@ local CCD = {
 	config = { cry_ccd = true },
 	pos = { x = 0, y = 0 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_ccd = true
+	end,
 }
 local wormhole = {
 	object_type = "Back",
 	name = "cry-Wormhole",
 	key = "wormhole",
 	order = 6,
-	config = { cry_wormhole = true, cry_negative_rate = 20, joker_slot = -2 },
+	config = { cry_negative_rate = 20, joker_slot = -2 },
 	pos = { x = 3, y = 4 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
+					card:add_to_deck()
+					card:start_materialize()
+					G.jokers:emplace(card)
+					return true
+				end
+			end,
+		}))
+	end,
 }
 local redeemed = {
 	object_type = "Back",
 	name = "cry-Redeemed",
 	key = "redeemed",
 	order = 8,
-	config = { cry_redeemed = true },
 	pos = { x = 4, y = 4 },
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_redeemed = true
+	end,
 }
 local legendary = {
 	object_type = "Back",
@@ -133,6 +148,19 @@ local legendary = {
 				end
 			end
 		end
+	end,
+	apply = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
+					card:add_to_deck()
+					card:start_materialize()
+					G.jokers:emplace(card)
+					return true
+				end
+			end,
+		}))
 	end,
 }
 local critical = {
@@ -194,6 +222,7 @@ local glowing = {
 	object_type = "Back",
 	name = "cry-Glowing",
 	key = "glowing",
+	-- is this config even used for anything
 	config = { cry_glowing = true },
 	pos = { x = 4, y = 2 },
 	order = 9,
@@ -221,6 +250,9 @@ local beta = {
 	pos = { x = 5, y = 5 },
 	order = 13,
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_beta = true
+	end,
 }
 local bountiful = {
 	object_type = "Back",
@@ -230,85 +262,24 @@ local bountiful = {
 	pos = { x = 2, y = 6 },
 	order = 14,
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
+	end,
 }
 local beige = {
 	object_type = "Back",
 	name = "cry-Beige",
 	key = "beige",
-	config = { cry_common_value_quad = true },
 	pos = { x = 1, y = 6 },
 	order = 15,
 	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_common_value_quad = true
+	end,
 }
 return {
 	name = "Misc. Decks",
 	init = function()
-		local Backapply_to_runRef = Back.apply_to_run
-		function Back.apply_to_run(self)
-			Backapply_to_runRef(self)
-			if self.effect.config.cry_no_vouchers then
-				G.GAME.modifiers.cry_no_vouchers = true
-			end
-			if self.effect.config.cry_equilibrium then
-				G.GAME.modifiers.cry_equilibrium = true
-			end
-			if self.effect.config.cry_conveyor then
-				G.GAME.modifiers.cry_conveyor = true
-			end
-			if self.effect.config.cry_misprint_min then
-				G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
-				G.GAME.modifiers.cry_misprint_max = self.effect.config.cry_misprint_max
-			end
-			if self.effect.config.cry_highlight_limit then
-				G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
-			end
-			if self.effect.config.cry_ccd then
-				G.GAME.modifiers.cry_ccd = true
-			end
-			if self.effect.config.cry_beta then
-				G.GAME.modifiers.cry_beta = true
-				G.GAME.pool_flags.beta_deck = true
-			end
-			if self.effect.config.cry_legendary then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-			end
-			if self.effect.config.cry_wormhole then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card =
-								create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-			end
-			if self.effect.config.cry_negative_rate then
-				G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate
-			end
-			if self.effect.config.cry_redeemed then
-				G.GAME.modifiers.cry_redeemed = true
-			end
-			if self.effect.config.cry_forced_draw_amount then
-				G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
-			end
-			if self.effect.config.cry_common_value_quad then
-				G.GAME.modifiers.cry_common_value_quad = true
-			end
-		end
 		--equilibrium deck patches
 		local gcp = get_current_pool
 		function get_current_pool(t, r, l, a, override_equilibrium_effect)
@@ -439,34 +410,8 @@ return {
 				end
 			end
 		end
-		--glowing deck patches
-		local upd = Game.update
-		cry_glowing_dt = 0
-		function Game:update(dt)
-			upd(self, dt)
-			cry_glowing_dt = cry_glowing_dt + dt
-			if G.P_CENTERS and G.P_CENTERS.b_cry_glowing and cry_glowing_dt > 0.1 then
-				cry_glowing_dt = 0
-				local obj = G.P_CENTERS.b_cry_glowing
-				if obj.pos.x == 1 and obj.pos.y == 4 then
-					obj.pos.x = 0
-					obj.pos.y = 0
-				elseif obj.pos.x < 4 then
-					obj.pos.x = obj.pos.x + 1
-				elseif obj.pos.y < 6 then
-					obj.pos.x = 0
-					obj.pos.y = obj.pos.y + 1
-				end
-			end
-			for k, v in pairs(G.I.CARD) do
-				if v.children.back and v.children.back.atlas.name == "cry_glowing" then
-					v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
-				end
-			end
-		end
 	end,
 	items = {
-		atlasdeck,
 		very_fair,
 		equilibrium,
 		misprint,
@@ -477,7 +422,6 @@ return {
 		redeemed,
 		legendary,
 		critical,
-		atlasglowing,
 		glowing,
 		beta,
 		bountiful,
