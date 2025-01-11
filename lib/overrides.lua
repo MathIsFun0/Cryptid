@@ -1058,7 +1058,8 @@ function add_tag(tag, from_skip, no_copy)
 		return
 	end
 	local added_tags = 1
-	local ret = SMODS.calculate_context{cry_add_tag = true}
+ local ret = {}
+	SMODS.calculate_context({cry_add_tag = true}, ret)
 	for i = 1, #ret do
 		added_tags = added_tags + (ret[i].tags or 0)
 	end
