@@ -171,80 +171,33 @@ function cry_get_next_voucher_edition() -- currently only for editions + sticker
 end
 -- code to generate Stickers for Vouchers, based on that for Jokers
 function cry_get_next_voucher_stickers()
-	local eternal_perishable_poll = pseudorandom("cry_vet" .. (key_append or "") .. G.GAME.round_resets.ante)
 	local ret = { eternal = false, perishable = false, rental = false, pinned = false, banana = false }
-	if
-		(G.GAME.modifiers.cry_force_sticker == "eternal")
-		or G.GAME.modifiers.cry_sticker_sheet_plus
-		or (
-			G.GAME.modifiers.cry_any_stickers
-			and (G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.8)
-		)
-	then
-		ret.eternal = true
+	local checks = { eternal = {}, perishable = {}, rental = {}, pinned = {}, banana = {} }
+	
+	-- first order of business is making this shit not suck lmao
+	-- i did this when i didn't know what i was doing so it contains a lot of pointless checks and bloat
+	for k, v in pairs(checks) do
+		v["poll"] = pseudorandom("cry_v" .. k .. G.GAME.round_resets.ante)
+		v["force"] = G.GAME.modifiers.cry_sticker_sheet_plus or (G.GAME.modifiers.cry_force_sticker and G.GAME.modifiers.cry_force_sticker == k)
 	end
-	if G.GAME.modifiers.enable_perishables_in_shop and G.GAME.modifiers.cry_any_stickers then -- bloated as shit
-		if
-			not G.GAME.modifiers.cry_eternal_perishable_compat
-			and ((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7))
-		then
+	if G.GAME.modifiers.cry_any_stickers or G.GAME.modifiers.cry_sticker_sheet_plus or G.GAME.modifiers.cry_force_sticker then
+		if (G.GAME.modifiers.enable_eternals_in_shop and checks.eternal.poll > 0.7) or checks.eternal.force then
+			ret.eternal = true
+		end
+		if (G.GAME.modifiers.cry_eternal_perishable_compat and (G.GAME.modifiers.enable_perishables_in_shop and checks.perishable.poll > 0.7)) or checks.perishable.force then	-- still ehh? but way more understandable
+			ret.perishable = true
+		elseif (not G.GAME.modifiers.cry_eternal_perishable_compat and (G.GAME.modifiers.enable_perishables_in_shop and checks.eternal.poll > 0.4 and checks.eternal.poll <= 0.7)) or checks.perishable.force then
 			ret.perishable = true
 		end
-		if
-			G.GAME.modifiers.cry_eternal_perishable_compat
-			and pseudorandom("cry_vper" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
-		then
-			ret.perishable = true
+		if (G.GAME.modifiers.enable_rentals_in_shop and checks.rental.poll > 0.7) or checks.rental.force then
+			ret.rental = true
 		end
-	end
-	if (G.GAME.modifiers.cry_force_sticker == "perishable") or G.GAME.modifiers.cry_sticker_sheet_plus then
-		ret.perishable = true
-	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "rental"
-		or G.GAME.modifiers.cry_sticker_sheet_plus
-		or (
-			G.GAME.modifiers.cry_any_stickers
-			and (
-				G.GAME.modifiers.enable_rentals_in_shop
-				and pseudorandom("cry_vssjr" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
-			)
-		)
-	then
-		ret.rental = true
-	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "pinned"
-		or G.GAME.modifiers.cry_sticker_sheet_plus
-		or (
-			G.GAME.modifiers.cry_any_stickers
-			and (
-				G.GAME.modifiers.cry_enable_pinned_in_shop
-				and pseudorandom("cry_vpin" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
-			)
-		)
-	then
-		ret.pinned = true
-	end
-	if G.GAME.modifiers.cry_force_sticker == "banana" or G.GAME.modifiers.cry_sticker_sheet_plus then
-		ret.banana = true
-	end
-	if
-		not G.GAME.modifiers.cry_eternal_perishable_compat
-		and G.GAME.modifiers.enable_banana
-		and G.GAME.modifiers.cry_any_stickers
-		and (pseudorandom("cry_bpbanana" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7)
-		and (eternal_perishable_poll <= 0.7)
-	then
-		ret.banana = true
-	end
-	if
-		G.GAME.modifiers.cry_eternal_perishable_compat
-		and G.GAME.modifiers.enable_banana
-		and G.GAME.modifiers.cry_any_stickers
-		and (pseudorandom("cry_bpbanana" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7)
-	then
-		ret.banana = true
+		if (G.GAME.modifiers.enable_pinned_in_shop and checks.pinned.poll > 0.7) or checks.pinned.force then
+			ret.pinned = true
+		end
+		if (G.GAME.modifiers.enable_banana_in_shop and checks.banana.poll > 0.7) or checks.banana.force then
+			ret.banana = true
+		end
 	end
 	return ret
 end
