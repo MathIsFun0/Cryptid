@@ -862,10 +862,26 @@ local possessed = {
 local spookydeck = {
 	object_type = "Back",
 	key = "spooky",
-	config = { cry_spooky = true, cry_curse_rate = 0.25 },
+	config = { cry_curse_rate = 0.25 },
 	pos = { x = 3, y = 1 },
 	order = 16,
 	atlas = "atlasspooky",
+	apply = function(self)
+		G.GAME.modifiers.cry_spooky = true
+		G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate or 0.25
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
+					card:add_to_deck()
+					card:start_materialize()
+					card:set_eternal(true)
+					G.jokers:emplace(card)
+					return true
+				end
+			end,
+		}))
+        end,
 }
 local candy_dagger = {
     object_type = "Joker",
