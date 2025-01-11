@@ -2,6 +2,11 @@
 --The Normal pos correponds to the background. use this for the layer that goes all the way in the back!
 --The soul_pos = {blahblahblah, extra = {blahblahblah}} correspomds to the other two layers. the value in the extra table is for the layer that goes in the middle, and the other value is the one that goes all the way in the front
 local gateway = {
+	dependencies = {
+		items = {
+			"set_cry_exotic",
+		},
+	},
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Gateway",
@@ -54,6 +59,11 @@ local gateway = {
 	end,
 }
 local iterum = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Iterum",
 	key = "iterum",
@@ -94,6 +104,11 @@ local iterum = {
 	},
 }
 local universum = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Universum",
 	key = "universum",
@@ -119,6 +134,11 @@ local universum = {
 	},
 }
 local exponentia = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
@@ -155,6 +175,11 @@ local exponentia = {
 	},
 }
 local speculo = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Speculo",
 	key = "speculo",
@@ -209,6 +234,11 @@ local speculo = {
 	},
 }
 local redeo = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Redeo",
 	key = "redeo",
@@ -252,6 +282,11 @@ local redeo = {
 	},
 }
 local tenebris = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Tenebris",
 	key = "tenebris",
@@ -281,6 +316,11 @@ local tenebris = {
 	},
 }
 local effarcire = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Effarcire",
 	key = "effarcire",
@@ -316,6 +356,11 @@ local effarcire_sprite = {
 	py = 95,
 }
 local crustulum = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-crustulum",
 	key = "crustulum",
@@ -375,6 +420,11 @@ local crustulum = {
 }
 --todo: make the Emult always prime
 local primus = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-primus",
 	key = "primus",
@@ -488,6 +538,11 @@ local big_num_whitelist = {
 	j_cry_mprime = true,
 }
 local scalae = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Scalae",
 	key = "Scalae",
@@ -564,6 +619,11 @@ local scalae = {
 	},
 }
 local stella_mortis = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Stella Mortis",
 	key = "stella_mortis",
@@ -646,6 +706,11 @@ local stella_mortis = {
 	},
 }
 local circulus_pistoris = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Circulus Pistoris",
 	key = "circulus_pistoris",
@@ -692,6 +757,11 @@ local circulus_pistoris = {
 	},
 }
 local aequilibrium = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
 	key = "equilib",
@@ -834,6 +904,11 @@ function copy_card(card, a, b, c, d)
 	return ret
 end
 local facile = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-facile",
 	key = "facile",
@@ -881,6 +956,11 @@ local facile = {
 	},
 }
 local gemino = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Gemino",
 	key = "gemino",
@@ -948,6 +1028,11 @@ local gemino = {
 }
 
 local energia = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Energia",
 	key = "energia",
@@ -991,6 +1076,11 @@ local energia = {
 
 --why is this an exotic???
 local verisimile = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-verisimile",
 	key = "verisimile",
@@ -1089,6 +1179,11 @@ local verisimile = {
 }
 
 local duplicare = {
+    dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+    },
     object_type = "Joker",
     name = "cry-duplicare",
     key = "duplicare",
@@ -1190,6 +1285,11 @@ local rescribere = {
 }
 
 local formidiulosus = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-Formidiulosus",
 	key = "formidiulosus",
