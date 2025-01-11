@@ -33,8 +33,8 @@ local misprint = {
 	pos = { x = 4, y = 2 },
 	atlas = "atlasdeck",
 	apply = function(self)
-		G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
-		G.GAME.modifiers.cry_misprint_max = self.effect.config.cry_misprint_max
+		G.GAME.modifiers.cry_misprint_min = self.config.cry_misprint_min
+		G.GAME.modifiers.cry_misprint_max = self.config.cry_misprint_max
 	end,
 }
 local infinite = {
@@ -46,7 +46,7 @@ local infinite = {
 	pos = { x = 3, y = 0 },
 	atlas = "atlasdeck",
 	apply = function(self)
-		G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
+		G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
 	end,
 }
 local conveyor = {
@@ -81,7 +81,7 @@ local wormhole = {
 	pos = { x = 3, y = 4 },
 	atlas = "atlasdeck",
 	apply = function(self)
-		G.GAME.modifiers.cry_negative_rate = self.effect.config.cry_negative_rate
+		G.GAME.modifiers.cry_negative_rate = self.config.cry_negative_rate
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
@@ -263,7 +263,7 @@ local bountiful = {
 	order = 14,
 	atlas = "atlasdeck",
 	apply = function(self)
-		G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
+		G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
 	end,
 }
 local beige = {

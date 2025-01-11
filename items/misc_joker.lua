@@ -1561,6 +1561,7 @@ local krustytheclown = {
 			and (to_big(card.ability.extra.x_mult) > to_big(1))
 			and not context.before
 			and not context.after
+			and context.joker_main
 		then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
@@ -7182,9 +7183,7 @@ return {
 		local oldfunc = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G and G.jokers and G.jokers.cards then
-				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i]:calculate_joker({cry_start_dissolving = true, card = self})
-				end
+				SMODS.calculate_context{cry_start_dissolving = true, card = self}
 			end
 			return oldfunc(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
 		end
@@ -7193,9 +7192,7 @@ return {
 		function Controller:L_cursor_press(x, y)
 			lcpref(self,x,y)
 			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
-				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i]:calculate_joker({cry_press = true})
-				end
+				SMODS.calculate_context{cry_press = true}
 			end
 		end
 	end,

@@ -137,7 +137,9 @@ local exponentia = {
 			and (to_big(card.ability.extra.Emult) > to_big(1))
 			and not context.before
 			and not context.after
+			and context.joker_main
 		then
+			print(tprint(context))
 			return {
 				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 				Emult_mod = card.ability.extra.Emult,
@@ -154,6 +156,22 @@ local exponentia = {
 		code = {"Math"}
 	},
 }
+
+-- Exponentia scaling
+local scie = SMODS.calculate_individual_effect
+function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+  local ret = scie(effect, scored_card, key, amount, from_edition)
+  if (key == 'x_mult' or key == 'xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
+	for _, v in pairs(find_joker("cry-Exponentia")) do
+		local old = v.ability.extra.Emult
+        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+	end
+  end
+  return ret
+end
+
 local speculo = {
 	object_type = "Joker",
 	name = "cry-Speculo",

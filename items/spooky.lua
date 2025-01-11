@@ -868,7 +868,7 @@ local spookydeck = {
 	atlas = "atlasspooky",
 	apply = function(self)
 		G.GAME.modifiers.cry_spooky = true
-		G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate or 0.25
+		G.GAME.modifiers.cry_curse_rate = self.config.cry_curse_rate or 0.25
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then

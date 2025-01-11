@@ -287,15 +287,6 @@ position = "before"
 payload = '''if cards_destroyed[i].will_shatter then return true end'''
 match_indent = true
 
-# fix random crashes
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = '''local edition_effects = eval_card(_card, {cardarea = G.jokers, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, edition = true})'''
-position = "after"
-payload = '''if not edition_effects then edition_effects = {} end'''
-match_indent = true
-
 # m
 [[patches]]
 [patches.pattern]
@@ -455,9 +446,7 @@ for _, v in pairs(find_joker("cry-loopy")) do
 		card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize("k_reset"), colour = G.C.GREEN})
 	end
 end
-for i = 1, #G.jokers.cards do
-	G.jokers.cards[i]:calculate_joker({end_of_round2 = true})
-end
+SMODS.calculate_context{end_of_round2 = true}
 '''
 match_indent = true
 

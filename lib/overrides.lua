@@ -1058,11 +1058,9 @@ function add_tag(tag, from_skip, no_copy)
 		return
 	end
 	local added_tags = 1
-	for i = 1, #G.jokers.cards do
-		local ret = G.jokers.cards[i]:calculate_joker({ cry_add_tag = true })
-		if ret and ret.tags then
-			added_tags = added_tags + ret.tags
-		end
+	local ret = SMODS.calculate_context{cry_add_tag = true}
+	for i = 1, #ret do
+		added_tags = added_tags + (ret[i].tags or 0)
 	end
 	if added_tags >= 1 then
 		at2(tag)

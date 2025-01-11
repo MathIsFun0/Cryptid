@@ -213,8 +213,6 @@ end
 '''
 position = "after"
 payload = '''
-for i = 1, #G.jokers.cards do
-    G.jokers.cards[i]:calculate_joker({cry_creating_card = true, card = card})
-end
+SMODS.calculate_context{cry_creating_card = true, card = card}
 '''
 match_indent = true

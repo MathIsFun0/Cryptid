@@ -1,7 +1,7 @@
 -- calculate.lua: modifications specifically for card calculation
 
 -- deal with Rigged and Fragile when scoring a playing card
---[[local ec = eval_card
+local ec = eval_card
 function eval_card(card, context)
 	if card.will_shatter then
 		return
@@ -11,12 +11,12 @@ function eval_card(card, context)
 	if card.ability.cry_rigged then
 		G.GAME.probabilities.normal = 1e9
 	end
-	local ret = ec(card, context)
+	local ret, post = ec(card, context)
 	if card.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	return ret
-end--]]
+	return ret, post
+end
 
 --some functions to minimize the load on calculate_joker itself
 function Card:cry_copy_ability()
@@ -427,17 +427,26 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
 end
 
---[[function Card:calculate_joker(context)
-	--Calculate events
-	if self == G.jokers.cards[1] then
-		for k, v in pairs(SMODS.Events) do
-			if G.GAME.events[k] then
-				context.pre_jokers = true
-				v:calculate(context)
-				context.pre_jokers = nil
-			end
+local smcc = SMODS.calculate_context
+function SMODS.calculate_context(context, return_table)
+	for k, v in pairs(SMODS.Events) do
+		if G.GAME.events and G.GAME.events[k] then
+			context.pre_jokers = true
+			v:calculate(context)
+			context.pre_jokers = nil
 		end
 	end
+	smcc(context, return_table)
+	for k, v in pairs(SMODS.Events) do
+		if G.GAME.events and G.GAME.events[k] then
+			context.post_jokers = true
+			v:calculate(context)
+			context.post_jokers = nil
+		end
+	end
+end
+
+function Card:calculate_joker(context)
 	local active_side = self
 	if
 		next(find_joker("cry-Flip Side"))
@@ -546,15 +555,315 @@ end
 		G.GAME.probabilities.normal = ggpn
 	end
 	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
-	--Calculate events
-	if self == G.jokers.cards[#G.jokers.cards] then
-		for k, v in pairs(SMODS.Events) do
-			if G.GAME.events[k] then
-				context.post_jokers = true
-				v:calculate(context)
-				context.post_jokers = nil
+	return ret, trig
+end
+
+function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+	local jkr = self
+	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+	if jkr.ability and type(jkr.ability) == "table" then
+		if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
+			if not G.GAME.cry_double_scale[jkr.sort_id] then
+				G.GAME.cry_double_scale[jkr.sort_id] = { ability = { double_scale = true } }
+			end
+			for k, v in pairs(jkr.ability) do
+				if type(jkr.ability[k]) ~= "table" then
+					G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+				else
+					G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+					for _k, _v in pairs(jkr.ability[k]) do
+						G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+					end
+				end
+			end
+		end
+		if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+			dbl_info.base = { "extra", "Emult" }
+			dbl_info.scaler = { "extra", "Emult_mod" }
+			dbl_info.scaler_base = jkr.ability.extra.Emult_mod
+			dbl_info.offset = 1
+		end
+	end
+	local true_base = dbl_info.scaler_base
+	if true_base then
+		for i = 1, #G.jokers.cards do
+			local obj = G.jokers.cards[i].config.center
+			if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
+				local ggpn = G.GAME.probabilities.normal
+				if G.jokers.cards[i].ability.cry_rigged then
+					G.GAME.probabilities.normal = 1e9
+				end
+				local o = obj:cry_scale_mod(
+					G.jokers.cards[i],
+					jkr,
+					orig_scale_scale,
+					true_base,
+					orig_scale_base,
+					new_scale_base
+				)
+				if G.jokers.cards[i].ability.cry_rigged then
+					G.GAME.probabilities.normal = ggpn
+				end
+				if o then
+					if #dbl_info.scaler == 2 then
+						if
+							not (
+								not jkr.ability[dbl_info.scaler[1]]
+								or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+							)
+						then
+							jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+							orig_scale_scale = o
+						end
+					else
+						if jkr.ability[dbl_info.scaler[1]] then
+							jkr.ability[dbl_info.scaler[1]] = o
+							orig_scale_scale = o
+						end
+					end
+					card_eval_status_text(
+						G.jokers.cards[i],
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_upgrade_ex") }
+					)
+				end
+				local reps = {}
+				for i2 = 1, #G.jokers.cards do
+					local _card = G.jokers.cards[i2]
+					local ggpn = G.GAME.probabilities.normal
+					if _card.ability.cry_rigged then
+						G.GAME.probabilities.normal = 1e9
+					end
+					local check =
+						cj(G.jokers.cards[i2], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
+					if _card.ability.cry_rigged then
+						G.GAME.probabilities.normal = ggpn
+					end
+					if type(check) == "table" then
+						reps[i2] = check and check.repetitions and check or 0
+					else
+						reps[i2] = 0
+					end
+					if
+						G.jokers.cards[i2] == G.jokers.cards[i]
+						and G.jokers.cards[i].edition
+						and G.jokers.cards[i].edition.retriggers
+					then
+						local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+						local check = false --G.jokers.cards[i]:calculate_retriggers()
+						if check and check.repetitions then
+							check.repetitions = check.repetitions + old_repetitions
+							reps[i] = check
+						end
+					end
+				end
+				for i0, j in ipairs(reps) do
+					if (type(j) == "table") and j.repetitions and (j.repetitions > 0) then
+						for r = 1, j.repetitions do
+							card_eval_status_text(j.card, "jokers", nil, nil, nil, j)
+							local ggpn = G.GAME.probabilities.normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = 1e9
+							end
+							local o = obj:cry_scale_mod(
+								G.jokers.cards[i],
+								jkr,
+								orig_scale_scale,
+								true_base,
+								orig_scale_base,
+								new_scale_base
+							)
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = ggpn
+							end
+							if o then
+								if #dbl_info.scaler == 2 then
+									if
+										not (
+											not jkr.ability[dbl_info.scaler[1]]
+											or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+										)
+									then
+										jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+										orig_scale_scale = o
+									end
+								else
+									if jkr.ability[dbl_info.scaler[1]] then
+										jkr.ability[dbl_info.scaler[1]] = o
+										orig_scale_scale = o
+									end
+								end
+								card_eval_status_text(
+									G.jokers.cards[i],
+									"extra",
+									nil,
+									nil,
+									nil,
+									{ message = localize("k_upgrade_ex") }
+								)
+							end
+						end
+					end
+				end
 			end
 		end
 	end
-	return ret, trig
-end--]]
+end
+
+function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+	local jkr = self
+	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+	if jkr.ability and type(jkr.ability) == "table" then
+		if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
+			if not G.GAME.cry_double_scale[jkr.sort_id] then
+				G.GAME.cry_double_scale[jkr.sort_id] = { ability = { double_scale = true } }
+			end
+			for k, v in pairs(jkr.ability) do
+				if type(jkr.ability[k]) ~= "table" then
+					G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
+				else
+					G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
+					for _k, _v in pairs(jkr.ability[k]) do
+						G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
+					end
+				end
+			end
+		end
+		if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
+			dbl_info.base = { "extra", "percent" }
+			dbl_info.scaler = { "extra", "percent_mod" }
+			dbl_info.scaler_base = jkr.ability.extra.percent_mod
+			dbl_info.offset = 1
+		end
+	end
+	local true_base = dbl_info.scaler_base
+	if true_base then
+		for i = 1, #G.jokers.cards do
+			local obj = G.jokers.cards[i].config.center
+			if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
+				local ggpn = G.GAME.probabilities.normal
+				if G.jokers.cards[i].ability.cry_rigged then
+					G.GAME.probabilities.normal = 1e9
+				end
+				local o = obj:cry_scale_mod(
+					G.jokers.cards[i],
+					jkr,
+					orig_scale_scale,
+					true_base,
+					orig_scale_base,
+					new_scale_base
+				)
+				if G.jokers.cards[i].ability.cry_rigged then
+					G.GAME.probabilities.normal = ggpn
+				end
+				if o then
+					if #dbl_info.scaler == 2 then
+						if
+							not (
+								not jkr.ability[dbl_info.scaler[1]]
+								or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+							)
+						then
+							jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+							orig_scale_scale = o
+						end
+					else
+						if jkr.ability[dbl_info.scaler[1]] then
+							jkr.ability[dbl_info.scaler[1]] = o
+							orig_scale_scale = o
+						end
+					end
+					card_eval_status_text(
+						G.jokers.cards[i],
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_upgrade_ex") }
+					)
+				end
+				local reps = {}
+				for i2 = 1, #G.jokers.cards do
+					local _card = G.jokers.cards[i2]
+					local ggpn = G.GAME.probabilities.normal
+					if _card.ability.cry_rigged then
+						G.GAME.probabilities.normal = 1e9
+					end
+					local check =
+						cj(G.jokers.cards[i2], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
+					if _card.ability.cry_rigged then
+						G.GAME.probabilities.normal = ggpn
+					end
+					if type(check) == "table" then
+						reps[i2] = check and check.repetitions and check or 0
+					else
+						reps[i2] = 0
+					end
+					if
+						G.jokers.cards[i2] == G.jokers.cards[i]
+						and G.jokers.cards[i].edition
+						and G.jokers.cards[i].edition.retriggers
+					then
+						local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+						local check = false --G.jokers.cards[i]:calculate_retriggers()
+						if check and check.repetitions then
+							check.repetitions = check.repetitions + old_repetitions
+							reps[i] = check
+						end
+					end
+				end
+				for i0, j in ipairs(reps) do
+					if (type(j) == "table") and j.repetitions and (j.repetitions > 0) then
+						for r = 1, j.repetitions do
+							card_eval_status_text(j.card, "jokers", nil, nil, nil, j)
+							local ggpn = G.GAME.probabilities.normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = 1e9
+							end
+							local o = obj:cry_scale_mod(
+								G.jokers.cards[i],
+								jkr,
+								orig_scale_scale,
+								true_base,
+								orig_scale_base,
+								new_scale_base
+							)
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = ggpn
+							end
+							if o then
+								if #dbl_info.scaler == 2 then
+									if
+										not (
+											not jkr.ability[dbl_info.scaler[1]]
+											or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+										)
+									then
+										jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+										orig_scale_scale = o
+									end
+								else
+									if jkr.ability[dbl_info.scaler[1]] then
+										jkr.ability[dbl_info.scaler[1]] = o
+										orig_scale_scale = o
+									end
+								end
+								card_eval_status_text(
+									G.jokers.cards[i],
+									"extra",
+									nil,
+									nil,
+									nil,
+									{ message = localize("k_upgrade_ex") }
+								)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end

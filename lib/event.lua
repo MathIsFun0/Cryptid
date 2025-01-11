@@ -31,11 +31,7 @@ SMODS.Event = SMODS.GameObject:extend({
 local gfco = G.FUNCS.cash_out
 G.FUNCS.cash_out = function(e)
 	local ret = gfco(e)
-	for k, v in pairs(SMODS.Events) do
-		if G.GAME.events[k] then
-			v:calculate({ cash_out = true })
-		end
-	end
+	SMODS.calculate_context{ cash_out = true }
 	return ret
 end
 
@@ -43,11 +39,7 @@ end
 local guis = G.UIDEF.shop
 G.UIDEF.shop = function(e)
 	local ret = guis(e)
-	for k, v in pairs(SMODS.Events) do
-		if G.GAME.events[k] then
-			v:calculate({ start_shop = true })
-		end
-	end
+	SMODS.calculate_context{ start_shop = true }
 	return ret
 end
 
