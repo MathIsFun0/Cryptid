@@ -58,7 +58,7 @@ local dropshot = {
 				return nil, true
 			end
 		end
-		if context.joker_main then
+		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
 				Xmult_mod = card.ability.extra.x_mult,
