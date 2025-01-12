@@ -6540,7 +6540,6 @@ local cookie = {
 	config = {extra = {chips = 150, chip_mod = 1}},
 	blueprint_compat = true,
 	eternal_compat = false,
-	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.chips, center.ability.extra.chip_mod} }
 	end,
@@ -6554,15 +6553,47 @@ local cookie = {
 			}
 		end
 		if context.cry_press then
-			card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
-			card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+			if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_eaten_ex") , colour = G.C.CHIPS }
 				)
+			else
+				card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+				card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+				)
+			end
 		end
 	end,
 	cry_credits = {
