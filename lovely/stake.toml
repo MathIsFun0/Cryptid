@@ -16,12 +16,6 @@ while i <= #G.jokers.cards do
     local gone = G.jokers.cards[i]:calculate_banana()
     if not gone then i = i + 1 end
 end
-i = 1
-while i <= #G.consumeables.cards do
-    G.consumeables.cards[i]:cry_calculate_consumeable_rental()	-- these are already calculated once
-    G.consumeables.cards[i]:cry_calculate_consumeable_perishable()	-- crashes, not due to perishable, but due to debuff
-    i = i + 1
-end
 '''
 match_indent = true
 
@@ -32,7 +26,8 @@ target = "functions/state_events.lua"
 pattern = "local effects = {[1] = {playing_card = G.hand.cards[i]:get_end_of_round_effect()}}"
 position = "after"
 payload = '''
--- these are already calculated once. it doesn't feel right to comment them out because idk what's going on but it doesn't seem to cause problems
+-- these are already calculated
+-- does mean this patch is pointless now, but i want to leave it here just so it's clear, maybe remove later
 -- G.hand.cards[i]:calculate_rental()
 -- G.hand.cards[i]:calculate_perishable()
 '''

@@ -153,7 +153,7 @@ function cry_voucher_debuffed(name) -- simple function but idk
 	return false
 end
 
-function cry_voucher_pinned(name)
+function cry_voucher_pinned(name) -- unused
 	if G.GAME.voucher_sticker_index then
 		if G.GAME.voucher_sticker_index.pinned[name] then
 			return true
@@ -162,7 +162,7 @@ function cry_voucher_pinned(name)
 	return false
 end
 
-function cry_get_next_voucher_edition() -- currently only for editions + sticker decks, can be modified if voucher stickering/editioning becomes more important
+function cry_get_next_voucher_edition() -- currently only for edition decks, can be modified if voucher editioning becomes more important
 	if G.GAME.modifiers.cry_force_edition then
 		return cry_edition_to_table(G.GAME.modifiers.cry_force_edition)
 	elseif G.GAME.modifiers.cry_force_random_edition then
@@ -312,6 +312,15 @@ SMODS.Sticker:take_ownership("perishable", {
 			return { vars = { G.GAME.perishable_rounds or 1, card.ability.perish_tally or G.GAME.perishable_rounds } }
 		end
 	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.individual then
+			if card.ability.consumeable then
+				card:cry_calculate_consumeable_perishable()
+			else
+				card:calculate_perishable()
+			end
+		end
+	end,
 })
 SMODS.Sticker:take_ownership("pinned", {
 	atlas = "sticker",
@@ -346,6 +355,15 @@ SMODS.Sticker:take_ownership("rental", {
 			return { key = "cry_rental_booster" }
 		else
 			return { vars = { G.GAME.rental_rate or 1 } }
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.individual then
+			if card.ability.consumeable then
+				card:cry_calculate_consumeable_rental()
+			else
+				card:calculate_rental()
+			end
 		end
 	end,
 })
