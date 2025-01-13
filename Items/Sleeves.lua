@@ -78,18 +78,10 @@ if CardSleeves then
 		config = { cry_misprint_min = 0.1, cry_misprint_max = 10 },
 		unlocked = true,
 		unlock_condition = { deck = "Misprint Deck", stake = 1 },
-		trigger_effect = function(self, args)
-			if args.context.create_card then
-				cry_misprintize(
-					args.context.card,
-					{ min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1), max = 10
-						* (G.GAME.modifiers.cry_misprint_max or 1) }
-				)
-			end
-		end,
 		apply = function(self)
 			G.GAME.modifiers.cry_misprint_min = self.config.cry_misprint_min
 			G.GAME.modifiers.cry_misprint_max = self.config.cry_misprint_max
+			if self.get_current_deck_key() == "b_cry_antimatter" then G.GAME.modifiers.cry_misprint_min = 1 end
 		end,
 	})
 
@@ -132,7 +124,6 @@ if CardSleeves then
 		name = "CCD Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 6, y = 0 },
-		config = { cry_conveyor = true },
 		unlocked = true,
 		unlock_condition = { deck = "CCD Deck", stake = 1 },
 		loc_vars = function(self)
