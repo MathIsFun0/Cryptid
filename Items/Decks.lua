@@ -256,7 +256,7 @@ return {
 				G.GAME.modifiers.cry_conveyor = true
 			end
 			if self.effect.config.cry_misprint_min then
-				G.GAME.modifiers.cry_misprint_min = (G.GAME.modifiers.cry_misprint_min or 1) / self.effect.config.cry_misprint_min
+				G.GAME.modifiers.cry_misprint_min = (G.GAME.modifiers.cry_misprint_min or 1) * self.effect.config.cry_misprint_min
 				G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.effect.config.cry_misprint_max
 			end
 			if self.effect.config.cry_highlight_limit then
