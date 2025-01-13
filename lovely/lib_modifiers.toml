@@ -185,7 +185,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then"
+pattern = "if center_table.name == 'Tarot Merchant' or center_table.name == 'Tarot Tycoon' then"
 position = "before"
 payload = '''
 if not G.GAME.voucher_edition_index then G.GAME.voucher_edition_index = {} end

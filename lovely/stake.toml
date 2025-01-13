@@ -16,13 +16,6 @@ while i <= #G.jokers.cards do
     local gone = G.jokers.cards[i]:calculate_banana()
     if not gone then i = i + 1 end
 end
-i = 1
-while i <= #G.consumeables.cards do
-    G.consumeables.cards[i]:cry_calculate_consumeable_rental()
-    G.consumeables.cards[i]:cry_calculate_consumeable_perishable()
-    local gone = nil
-    if not gone then i = i + 1 end
-end
 '''
 match_indent = true
 
@@ -33,8 +26,10 @@ target = "functions/state_events.lua"
 pattern = "local effects = {[1] = {playing_card = G.hand.cards[i]:get_end_of_round_effect()}}"
 position = "after"
 payload = '''
-G.hand.cards[i]:calculate_rental()
-G.hand.cards[i]:calculate_perishable()
+-- these are already calculated
+-- does mean this patch is pointless now, but i want to leave it here just so it's clear, maybe remove later
+-- G.hand.cards[i]:calculate_rental()
+-- G.hand.cards[i]:calculate_perishable()
 '''
 match_indent = true
 
