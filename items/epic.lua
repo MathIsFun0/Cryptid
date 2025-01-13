@@ -38,7 +38,7 @@ local supercell = {
 		return { vars = { center.ability.extra.stat1, center.ability.extra.stat2, center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.joker_main then
 			if card.ability.extra.stat2 > 1 then --misprint deck moment
 				if Card.get_gameset(card) ~= "modest" then
 					return {
@@ -109,9 +109,7 @@ local membershipcardtwo = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
-			and not context.before
-			and not context.after
+			context.joker_main
 			and card.ability.extra.chips > 0
 		then
 			local a = 1
@@ -172,9 +170,7 @@ local googol_play = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
-			and not context.before
-			and not context.after
+			context.joker_main
 			and pseudorandom("cry_googol_play") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
@@ -231,9 +227,7 @@ local sync_catalyst = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
-			and not context.before
-			and not context.after
+			context.joker_main
 			and not context.debuffed_hand
 			and hand_chips
 			and mult
@@ -693,10 +687,8 @@ local m = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.x_mult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),

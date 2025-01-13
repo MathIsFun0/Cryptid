@@ -991,6 +991,16 @@ SMODS.ContentSet({
 	atlas = "atlasepic",
 	pos = { x = 2, y = 1 },
 })
+SMODS.ContentSet({
+	key = "code",
+	atlas = "atlasepic",
+	pos = { x = 2, y = 2 },
+})
+SMODS.ContentSet({
+	key = "exotic",
+	atlas = "atlasepic",
+	pos = { x = 2, y = 3 },
+})
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)

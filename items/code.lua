@@ -1,5 +1,13 @@
 --note to self: refer to https://docs.google.com/document/d/1LNaIouU3vrtWIuPBdFCqLyjYAjVtq7t64xjHnckEY50/edit for order of remaining consumables
 local code = {
+	--[[
+	I'm assuming this won't work so it's commented out for now - Jevonn
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
+	]]--
 	object_type = "ConsumableType",
 	key = "Code",
 	primary_colour = HEX("14b341"),
@@ -11,21 +19,12 @@ local code = {
 	can_stack = true,
 	can_divide = true,
 }
-local code_atlas = {
-	object_type = "Atlas",
-	key = "code",
-	path = "c_cry_code.png",
-	px = 71,
-	py = 95,
-}
-local pack_atlas = {
-	object_type = "Atlas",
-	key = "pack",
-	path = "pack_cry.png",
-	px = 71,
-	py = 95,
-}
 local pack1 = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Booster",
 	key = "code_normal_1",
 	kind = "Code",
@@ -48,6 +47,11 @@ local pack1 = {
 	group_key = "k_cry_program_pack",
 }
 local pack2 = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Booster",
 	key = "code_normal_2",
 	kind = "Code",
@@ -70,6 +74,11 @@ local pack2 = {
 	group_key = "k_cry_program_pack",
 }
 local packJ = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Booster",
 	key = "code_jumbo_1",
 	kind = "Code",
@@ -92,6 +101,11 @@ local packJ = {
 	group_key = "k_cry_program_pack",
 }
 local packM = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Booster",
 	key = "code_mega_1",
 	kind = "Code",
@@ -114,6 +128,11 @@ local packM = {
 	group_key = "k_cry_program_pack",
 }
 local console = {
+	dependencies = {
+		items = {
+			"p_cry_code_normal_1"
+		},
+	},
 	object_type = "Tag",
 	atlas = "tag_cry",
 	name = "cry-Console Tag",
@@ -129,7 +148,7 @@ local console = {
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			tag:yep("+", G.C.SECONDARY_SET.Code, function()
-				local key = "p_cry_code_normal_" .. math.random(1, 2)
+				local key = "p_cry_code_normal_1"
 				local card = Card(
 					G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
 					G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
@@ -157,6 +176,11 @@ local console = {
 	end,
 }
 local crash = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Crash",
@@ -182,6 +206,11 @@ local crash = {
 }
 
 local payload = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Payload",
@@ -214,6 +243,11 @@ local payload = {
 	end,
 }
 local reboot = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Reboot",
@@ -252,6 +286,11 @@ local reboot = {
 }
 
 local revert = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Revert",
@@ -282,6 +321,11 @@ local revert = {
 }
 
 local semicolon = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Semicolon",
@@ -318,6 +362,11 @@ local semicolon = {
 }
 
 local malware = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Malware",
@@ -378,6 +427,11 @@ local malware = {
 }
 
 local seed = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Seed",
@@ -423,6 +477,11 @@ local seed = {
 	end,
 }
 local rigged = {
+	dependencies = {
+		items = {
+			"c_cry_seed",
+		},
+	},
 	object_type = "Sticker",
 	atlas = "sticker",
 	pos = { x = 6, y = 1 },
@@ -448,6 +507,11 @@ local rigged = {
 }
 
 local hook = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Hook",
@@ -475,6 +539,11 @@ local hook = {
 	end,
 }
 local hooked = {
+	dependencies = {
+		items = {
+			"c_cry_hook",
+		},
+	},
 	object_type = "Sticker",
 	atlas = "sticker",
 	pos = { x = 5, y = 3 },
@@ -503,6 +572,11 @@ local hooked = {
 }
 
 local variable = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "variable",
@@ -537,6 +611,11 @@ local variable = {
 	end,
 }
 local class = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "class",
@@ -571,6 +650,11 @@ local class = {
 	end,
 }
 local commit = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "commit",
@@ -633,6 +717,11 @@ local commit = {
 	end,
 }
 local merge = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "merge",
@@ -724,6 +813,11 @@ local merge = {
 	end,
 }
 local multiply = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "multiply",
@@ -749,6 +843,11 @@ local multiply = {
 	end,
 }
 local divide = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "divide",
@@ -800,6 +899,11 @@ local divide = {
 	end,
 }
 local delete = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "delete",
@@ -863,6 +967,11 @@ local delete = {
 	end,
 }
 local spaghetti = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "spaghetti",
@@ -899,6 +1008,11 @@ local spaghetti = {
 	end,
 }
 local machinecode = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Machine Code",
@@ -957,6 +1071,11 @@ local machinecode = {
 	end,
 }
 local run = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Run",
@@ -999,6 +1118,11 @@ local run = {
 	end,
 }
 local exploit = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "exploit",
@@ -1033,6 +1157,11 @@ local exploit = {
 	end,
 }
 local oboe = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "oboe",
@@ -1063,6 +1192,11 @@ local oboe = {
 	end,
 }
 local rework = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "rework",
@@ -1122,6 +1256,11 @@ local rework = {
 	end,
 }
 local rework_tag = {
+	dependencies = {
+		items = {
+			"c_cry_rework",
+		},
+	},
 	object_type = "Tag",
 	atlas = "tag_cry",
 	name = "cry-Rework Tag",
@@ -1158,6 +1297,11 @@ local rework_tag = {
 }
 
 local patch = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "patch",
@@ -1298,6 +1442,11 @@ local patch = {
 }
 
 local ctrl_v = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "ctrl_v",
@@ -1385,6 +1534,11 @@ local ctrl_v = {
 
 
 local inst = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "inst",
@@ -1444,6 +1598,11 @@ local inst = {
 	end,
 }
 local alttab = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Code",
 	key = "alttab",
@@ -1513,6 +1672,11 @@ local alttab = {
 }
 
 local automaton = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Tarot",
 	name = "cry-Automaton",
@@ -1549,6 +1713,11 @@ local automaton = {
 }
 
 local green_seal = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Seal",
 	name = "cry-Green-Seal",
 	key = "green",
@@ -1576,6 +1745,11 @@ local green_seal = {
 }
 
 local source = {
+	dependencies = {
+		items = {
+			"cry_green_seal",
+		},
+	},
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Source",
@@ -1628,6 +1802,11 @@ local source = {
 	end,
 }
 local pointer = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Pointer",
@@ -1664,6 +1843,11 @@ local pointer = {
 }
 
 local encoded = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Back",
 	name = "cry-Encoded",
 	key = "encoded",
@@ -1678,7 +1862,6 @@ local encoded = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					-- Adding a before spawning becuase jen banned copy_paste
 					if
 						G.P_CENTERS["j_cry_CodeJoker"]
 						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
@@ -1705,6 +1888,11 @@ local encoded = {
 }
 
 local source_deck = {
+	dependencies = {
+		items = {
+			"cry_green_seal",
+		},
+	},
 	object_type = "Back",
 	name = "cry-Source Deck",
 	key = "source_deck",
@@ -1722,6 +1910,12 @@ local source_deck = {
 }
 
 local CodeJoker = {
+	dependencies = {
+		items = {
+			"set_cry_epic",
+			"set_cry_code",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-CodeJoker",
 	key = "CodeJoker",
@@ -1783,6 +1977,12 @@ local CodeJoker = {
 }
 
 local copypaste = {
+	dependencies = {
+		items = {
+			"set_cry_epic",
+			"set_cry_code",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-copypaste",
 	key = "copypaste",
@@ -1840,6 +2040,11 @@ local copypaste = {
 	},
 }
 local cut = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-cut",
 	key = "cut",
@@ -1914,6 +2119,11 @@ local cut = {
 	},
 }
 local blender = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-blender",
 	key = "blender",
@@ -1949,6 +2159,11 @@ local blender = {
 	},
 }
 local python = {
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
 	object_type = "Joker",
 	name = "cry-python",
 	key = "python",
@@ -3907,8 +4122,6 @@ crashes = {
 
 local code_cards = {
 	code,
-	code_atlas,
-	pack_atlas,
 	pack1,
 	pack2,
 	packJ,
@@ -3948,20 +4161,12 @@ local code_cards = {
 	ctrl_v,
 	inst,
 	alttab,
+	encoded,
+	spaghetti,
+	source_deck,
+	CodeJoker,
+	copypaste,
 }
-if Cryptid.enabled["Misc. Decks"] then
-	code_cards[#code_cards + 1] = encoded
-end
-if Cryptid.enabled["Misc."] then
-	code_cards[#code_cards + 1] = spaghetti
-end
-if Cryptid.enabled["Enhanced Decks"] then
-	code_cards[#code_cards + 1] = source_deck
-end
-if Cryptid.enabled["Epic Jokers"] then
-	code_cards[#code_cards + 1] = CodeJoker
-	code_cards[#code_cards + 1] = copypaste
-end
 return {
 	name = "Code Cards",
 	init = function()
@@ -4489,33 +4694,6 @@ return {
 			end
 			return ret
 		end
-		--Pointer Patches
-		local upd = Game.update
-		cry_pointer_dt = 0
-		function Game:update(dt)
-			upd(self, dt)
-			cry_pointer_dt = cry_pointer_dt + dt
-			if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
-				cry_pointer_dt = 0
-				local obj = G.P_CENTERS.c_cry_pointer
-				obj.pos.x = (obj.pos.x == 4) and 5 or 4
-			end
-			if not G.OVERLAY_MENU and not G.CHOOSE_CARD and G.GAME.USING_POINTER then
-				G.CHOOSE_CARD = UIBox({
-					definition = create_UIBox_pointer(card),
-					config = {
-						align = "cm",
-						offset = { x = 0, y = 10 },
-						major = G.ROOM_ATTACH,
-						bond = "Weak",
-						instance_type = "POPUP",
-					},
-				})
-				G.CHOOSE_CARD.alignment.offset.y = 0
-				G.ROOM.jiggle = G.ROOM.jiggle + 1
-				G.CHOOSE_CARD:align_to_major()
-			end
-		end
 		local yc = G.FUNCS.your_collection
 		G.FUNCS.your_collection = function(e)
 			if G.CHOOSE_CARD then
@@ -4569,39 +4747,6 @@ return {
 				end
 			end
 			return results
-		end
-		--Encoded Deck patches
-		local Backapply_to_runRef = Back.apply_to_run
-		function Back.apply_to_run(self)
-			Backapply_to_runRef(self)
-			if self.effect.config.cry_encoded then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							-- Adding a before spawning becuase jen banned copy_paste
-							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
-								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
-								card:add_to_deck()
-								card:start_materialize()
-								G.jokers:emplace(card)
-							end
-							if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
-								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
-								card:add_to_deck()
-								card:start_materialize()
-								G.jokers:emplace(card)
-							end
-							return true
-						end
-					end,
-				}))
-			end
-			if self.effect.config.cry_encoded_downside then
-				G.GAME.joker_rate = 0
-				G.GAME.planet_rate = 0
-				G.GAME.tarot_rate = 0
-				G.GAME.code_rate = 1e100
-			end
 		end
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)

@@ -2,12 +2,15 @@
 
 
 
---Hook into Game.init_game_object to add initial dropshot and number blocks card
+--Init stuff at the start of the game
 local gigo = Game.init_game_object
 function Game:init_game_object()
 	local g = gigo(self)
+	-- Add initial dropshot and number blocks card
 	g.current_round.cry_nb_card = { rank = "Ace" }
 	g.current_round.cry_dropshot_card = { suit = "Spades" }
+	-- Create G.GAME.events when starting a run, so there's no errors
+	g.events = {}
 	return g
 end
 

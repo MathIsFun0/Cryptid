@@ -42,11 +42,3 @@ G.UIDEF.shop = function(e)
 	SMODS.calculate_context{ start_shop = true }
 	return ret
 end
-
--- Create G.GAME.events when starting a run, so there's no errors
-local gigo = Game.init_game_object
-function Game:init_game_object()
-	local g = gigo(self)
-	g.events = {}
-	return g
-end
