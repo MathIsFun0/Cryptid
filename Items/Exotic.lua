@@ -440,7 +440,7 @@ local primus = {
 }
 local big_num_whitelist = {
 	j_ride_the_bus = true,
-	j_egg = true,
+	j_egg = false,
 	j_runner = true,
 	j_ice_cream = true,
 	j_constellation = true,
