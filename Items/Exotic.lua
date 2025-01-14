@@ -28,6 +28,9 @@ local gateway = {
 				delay = 0.75,
 				func = function()
 					for k, v in pairs(deletable_jokers) do
+						if v.config.center.rarity == "cry_exotic" then
+							check_for_unlock({ type = "what_have_you_done" })
+						end
 						v:start_dissolve(nil, _first_dissolve)
 						_first_dissolve = true
 					end
@@ -63,14 +66,14 @@ local iterum = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_mult, center.ability.extra.repetitions } }
+		return { vars = { center.ability.extra.x_mult, math.min(40, center.ability.extra.repetitions) } }
 	end,
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra.repetitions,
+					repetitions = math.min(40, card.ability.extra.repetitions),
 					card = card,
 				}
 			end
@@ -159,6 +162,7 @@ local speculo = {
 	rarity = "cry_exotic",
 	cost = 50,
 	blueprint_compat = true,
+	immutable = true,
 	atlas = "atlasexotic",
 	order = 504,
 	soul_pos = { x = 4, y = 1, extra = { x = 5, y = 1 } },
@@ -220,7 +224,6 @@ local redeo = {
 		}
 	end,
 	pos = { x = 3, y = 0 },
-	immune_to_chemach = true,
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 506,
@@ -282,7 +285,7 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {},
-	immune_to_chemach = true,
+	immutable = true,
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0, extra = { x = 2, y = 0 } },
 	cost = 50,
@@ -366,7 +369,7 @@ local crustulum = {
 	end,
 	cry_credits = {
 		idea = {"AlexZGreat"},
-		art = {"Jevonn"},
+		art = {"lolxddj"},
 		code = {"Jevonn"}
 	},
 }
@@ -437,7 +440,7 @@ local primus = {
 }
 local big_num_whitelist = {
 	j_ride_the_bus = true,
-	j_egg = true,
+	j_egg = false,
 	j_runner = true,
 	j_ice_cream = true,
 	j_constellation = true,
@@ -490,7 +493,7 @@ local scalae = {
 	key = "Scalae",
 	pos = { x = 3, y = 4 },
 	soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
-	immune_to_chemach = false,
+	immutable = false,
 	rarity = "cry_exotic",
 	cost = 50,
 	atlas = "atlasexotic",
@@ -695,12 +698,11 @@ local aequilibrium = {
 	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
-	soul_pos = { x = 69, y = 0, extra = { x = 8, y = 0 } },
+	soul_pos = { x = 6, y = 0, extra = { x = 8, y = 0 } },
 	atlas = "atlasexotic",
 	cost = 50,
 	order = 512,
 	blueprint_compat = true,
-	immune_to_chemach = true,
 	eternal_compat = true,
 	perishable_compat = true,
 	loc_vars = function(self, info_queue, center)
@@ -715,11 +717,11 @@ local aequilibrium = {
 				key = G.P_CENTER_POOLS["Joker"][math.floor(G.GAME.aequilibriumkey or 1) - 1].key,
 			})
 		end
-		return { vars = { center.ability.extra.jokers, joker_generated } }
+		return { vars = { math.floor(math.min(25, center.ability.extra.jokers)), joker_generated } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
-			for i = 1, math.min(200, card.ability.extra.jokers) do
+			for i = 1, math.floor(math.min(25, card.ability.extra.jokers)) do
 				local newcard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil)
 				newcard:add_to_deck()
 				G.jokers:emplace(newcard)
@@ -728,6 +730,7 @@ local aequilibrium = {
 			return nil, true
 		end
 	end,
+	--[[
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
 			if card.ability.extra.card then
@@ -793,10 +796,11 @@ local aequilibrium = {
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if not from_debuff then
+		if not from_debuff and card.ability.extra.card then
 			card.ability.extra.card:start_dissolve()
 		end
 	end,
+	]]--
 	cry_credits = {
 		idea = {"Elial2"},
 		art = {"Elial2"},
@@ -882,7 +886,7 @@ local gemino = {
 	key = "gemino",
 	pos = { x = 6, y = 1 },
 	soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
-	immune_to_chemach = true,
+	immutable = true,
 	cry_credits = {
 		jolly = {
 			"Jolly Open Winner",
@@ -896,11 +900,33 @@ local gemino = {
 	cost = 50,
 	order = 515,
 	atlas = "atlasexotic",
+	loc_vars = function(self, info_queue, card)
+		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
+		return {
+			main_end = (card.area and card.area == G.jokers) and {
+        			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                			{n=G.UIT.T, config={ref_table = card.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            				}}
+        			}}
+    			} or nil
+		}
+	end,
+	update = function(self, card, front)
+		if G.STAGE == G.STAGES.RUN then
+			other_joker = G.jokers.cards[1]
+			if other_joker and other_joker ~= card and not (Card.no(other_joker, "immutable", true)) then
+                		card.ability.blueprint_compat = 'compatible'
+            		else
+               			card.ability.blueprint_compat = 'incompatible'
+            		end
+		end
+	end,
 	calculate = function(self, card2, context)
 		if context.end_of_round and not context.repetition and not context.individual then
 			local check = false
 			local card = G.jokers.cards[1]
-			if not Card.no(G.jokers.cards[1], "immune_to_chemach", true) and not Card.no(G.jokers.cards[1], "immutable", true) then
+			if not Card.no(G.jokers.cards[1], "immutable", true) then
 				cry_with_deck_effects(G.jokers.cards[1], function(card)
 					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
@@ -974,6 +1000,7 @@ local verisimile = {
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 516,
+	immutable = true,
 	blueprint_compat = true,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)

@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = 0
+priority = -1
 
 # ok it seems i still have to use the dumb fix for pinned, smods please overwrite
 [[patches]]
@@ -308,5 +308,16 @@ pattern = "if self.ability.rental then self.cost = 1 end"
 position = "at"
 payload = '''
 if self.ability.rental and (not (self.ability.set == "Planet" and #find_joker('Astronomer') > 0) and self.ability.set ~= "Booster") then self.cost = 1 end
+'''
+match_indent = true
+
+# hmm
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.eternal then badges[#badges + 1] = 'eternal' end"
+position = "at"
+payload = '''
+if self.ability.eternal and not self.ability.cry_absolute then badges[#badges + 1] = 'eternal' end
 '''
 match_indent = true

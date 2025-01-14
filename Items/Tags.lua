@@ -12,10 +12,11 @@ local epic_tag = {
 	pos = { x = 3, y = 0 },
 	name = "cry-Epic Tag",
 	order = 1,
+	min_ante = 2,
 	requires = 'j_cry_googol_play',
 	config = { type = "store_joker_create" },
 	key = "epic",
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local rares_in_posession = { 0 }
 			for k, v in ipairs(G.jokers.cards) do
@@ -56,20 +57,29 @@ local schematic = {
 		info_queue[#info_queue + 1] = { set = "Joker", key = "j_brainstorm" }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card
-			card = create_card("Joker", context.area, nil, nil, nil, nil, "j_brainstorm")
-			create_shop_card_ui(card, "Joker", context.area)
-			card.states.visible = false
-			tag:yep("+", G.C.RED, function()
-				card:start_materialize()
-				card:set_cost()
-				return true
-			end)
+			if not G.GAME.banned_keys["j_brainstorm"] then
+				card = create_card("Joker", context.area, nil, nil, nil, nil, "j_brainstorm")
+				create_shop_card_ui(card, "Joker", context.area)
+				card.states.visible = false
+				tag:yep("+", G.C.RED, function()
+					card:start_materialize()
+					card:set_cost()
+					return true
+				end)
+			else
+				tag:nope()
+			end
 			tag.triggered = true
 			return card
 		end
+	end,
+	in_pool = function()
+		if (G.GAME.used_jokers["j_brainstorm"] and not next(find_joker("Showman"))) then return false end
+		if G.GAME.banned_keys["j_brainstorm"] then return false end
+		return true
 	end,
 }
 local empoweredPack = {
@@ -140,30 +150,29 @@ local empowered = {
 		end
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
-			if G.STATE ~= G.STATES.SPECTRAL_PACK then
-				G.GAME.PACK_INTERRUPT = G.STATE
-			end
-			tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
-				local key = "p_cry_empowered"
-				local card = Card(
-					G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
-					G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
-					G.CARD_W * 1.27,
-					G.CARD_H * 1.27,
-					G.P_CARDS.empty,
-					G.P_CENTERS[key],
-					{ bypass_discovery_center = true, bypass_discovery_ui = true }
-				)
-				card.cost = 0
-				card.from_tag = true
-				G.FUNCS.use_card({ config = { ref_table = card } })
-				card:start_materialize()
-				return true
-			end)
-			tag.triggered = true
-			return true
+			local lock = tag.ID
+            		G.CONTROLLER.locks[lock] = true
+			tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+                    		local key = "p_cry_empowered"
+                    		local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                    		G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                    		card.cost = 0
+                    		card.from_tag = true
+                    		G.FUNCS.use_card({config = {ref_table = card}})
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
+                    		card:start_materialize()
+                    		G.CONTROLLER.locks[lock] = nil
+                    		return true
+                	end)
+                	tag.triggered = true
+                	return true
 		end
 	end,
 	in_pool = function()
@@ -183,31 +192,22 @@ local gambler = {
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_empowered" }
 		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "immediate" then
 			if pseudorandom("cry_gambler_tag") < G.GAME.probabilities.normal / tag.config.odds then
 				local lock = tag.ID
-				G.CONTROLLER.locks[lock] = true
-				tag:yep("+", G.C.RARITY.cry_exotic, function()
-					add_tag(Tag("tag_cry_empowered"))
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.3,
-						func = function()
-							if not G.GAME.PACK_INTERRUPT then
-								G.GAME.tags[#G.GAME.tags]:apply_to_run({ type = "new_blind_choice" })
-							end
-							G.CONTROLLER.locks[lock] = nil
-							return true
-						end,
-					}))
-					return true
-				end)
+            			G.CONTROLLER.locks[lock] = true
+				tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+                    			local tag = Tag("tag_cry_empowered")
+					add_tag(tag)
+                    			G.CONTROLLER.locks[lock] = nil
+                    			return true
+                		end)
 			else
 				tag:nope()
 			end
-			tag.triggered = true
-			return true
+                	tag.triggered = true
+                	return true
 		end
 	end,
 }
@@ -227,7 +227,7 @@ local bundle = {
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_buffoon" }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "immediate" then
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
@@ -260,7 +260,7 @@ local memory = {
 			or localize("k_none")
 		return { vars = { self.config.num, loc_tag } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "immediate" and G.GAME.cry_last_tag_used then
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
@@ -274,8 +274,8 @@ local memory = {
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.cry_last_tag_used and true
@@ -295,7 +295,7 @@ local glitched_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_glitched
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -330,7 +330,7 @@ local oversat_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_oversat
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -365,7 +365,7 @@ local mosaic_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_mosaic
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -400,7 +400,7 @@ local gold_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_gold
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -435,7 +435,7 @@ local glass_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_glass
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -470,7 +470,7 @@ local blur_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_blur
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -506,7 +506,7 @@ local astral_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -541,7 +541,7 @@ local m_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
@@ -562,8 +562,6 @@ local m_tag = {
 		end
 	end,
 }
---This is fully funcional but unobtainable without pointer at the moment
---I have plans for this soon, very soon...
 local double_m_tag = {
 	object_type = "Tag",
 	atlas = "tag_cry",
@@ -577,7 +575,7 @@ local double_m_tag = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card
 			local option = {}
@@ -650,7 +648,7 @@ local banana = {
 		return { vars = { banana } }
 	end,
         min_ante = 2,
-        apply = function(tag, context)
+        apply = function(self, tag, context)
                 if context.type == "immediate" then
 			if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
 				local lock = tag.ID
@@ -691,7 +689,7 @@ local scope = {
 	loc_vars = function(self, info_queue)
 		return { vars = {self.config.num} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == 'round_start_bonus' then 
                 	tag:yep('+', G.C.BLUE,function() 
                     		return true
@@ -716,7 +714,7 @@ local loss = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_meme_1", specific_vars = { 2, 5 } }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			local lock = tag.ID
             		G.CONTROLLER.locks[lock] = true
@@ -727,6 +725,12 @@ local loss = {
                     		card.cost = 0
                     		card.from_tag = true
                     		G.FUNCS.use_card({config = {ref_table = card}})
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
                     		card:start_materialize()
                     		G.CONTROLLER.locks[lock] = nil
                     		return true
@@ -748,7 +752,7 @@ local gourmand = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "food_jokers" }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card
 			card = create_card(
@@ -774,41 +778,40 @@ local gourmand = {
 	end,
 }
 local better_top_up = {
-        object_type = "Tag",
-        name = "cry-Better Top-up Tag",
+    object_type = "Tag",
+    name = "cry-Better Top-up Tag",
 	order = 15,
-        atlas = "tag_cry",
-        pos = { x = 4, y = 3 },
-        config = { type = "immediate", spawn_jokers = 2 },
-        key = "bettertop_up",
+    atlas = "tag_cry",
+    pos = { x = 4, y = 3 },
+    config = { type = "immediate", spawn_jokers = 2 },
+    key = "bettertop_up",
 	loc_vars = function(self, info_queue)
 		return { vars = {self.config.spawn_jokers} }
 	end,
-        min_ante = 5,
-        apply = function(tag, context)
-                if context.type == "immediate" then
+    min_ante = 5,
+    apply = function(self, tag, context)
+        if context.type == "immediate" then
 			if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
 				local lock = tag.ID
-                        	G.CONTROLLER.locks[lock] = true
-                        	tag:yep('+', G.C.GREEN, function()
-					if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then --Needs another check here because that's how tags work :0:0:0:)):0
-						for i = 1, tag.config.spawn_jokers do
-                                        		local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, 'bettertop')
-                                        		card:add_to_deck()
-                                        		G.jokers:emplace(card)
+                G.CONTROLLER.locks[lock] = true
+                tag:yep('+', G.C.GREEN, function()
+					for i = 1, tag.config.spawn_jokers do
+						if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+                           	local card = create_card("Joker", G.jokers, nil, 0.8, nil, nil, nil, 'bettertop')
+                       		card:add_to_deck()
+                            G.jokers:emplace(card)
 						end
 					end
-                                	G.CONTROLLER.locks[lock] = nil
-                                	return true
-                        	end)
+                G.CONTROLLER.locks[lock] = nil
+                return true
+                end)
 			else
 				tag:nope()
 			end
-                        tag.triggered = true
-                        return true
+            tag.triggered = true
+            return true
 		end
-			
-        end
+	end
 }
 local better_voucher = {
 	object_type = "Tag",
@@ -822,7 +825,7 @@ local better_voucher = {
 	loc_vars = function(self, info_queue)
 		return { vars = {(SMODS.Mods["Tier3Sub"] and 4 or 3)} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "voucher_add" then
 			tag:yep('+', G.C.SECONDARY_SET.Voucher,function() 
                     		G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
@@ -886,7 +889,7 @@ local booster = {
 		return { vars = {} }
 	end,
         min_ante = 4,
-        apply = function(tag, context)
+        apply = function(self, tag, context)
                 if context.type == "immediate" then
 			local lock = tag.ID
                         G.CONTROLLER.locks[lock] = true
@@ -950,6 +953,7 @@ return {
 				and self.key ~= "tag_cry_triple"
 				and self.key ~= "tag_cry_quadruple"
 				and self.key ~= "tag_cry_quintuple"
+				and self.key ~= "tag_ortalab_rewind"
 			then
 				G.GAME.cry_last_tag_used = self.key
 				G.GAME.cry_memory_orbital = self.ability.orbital_hand

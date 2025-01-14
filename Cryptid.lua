@@ -5,9 +5,9 @@
 --- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1103a]
---- VERSION: 0.5.2~1115a
---- PRIORITY: 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1225a]
+--- VERSION: 0.5.3c
+--- PRIORITY: 2147483647
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -389,6 +389,44 @@ function cry_edition_to_table(edition) -- look mom i figured it out (this does N
 	end
 end
 
+-- just dumping this garbage here
+-- this just ensures that extra voucher slots work as expected
+function cry_bonusvouchermod(mod)
+	if not G.GAME.shop then return end
+	G.GAME.cry_bonusvouchercount = G.GAME.cry_bonusvouchercount + mod
+	if G.shop_jokers and G.shop_jokers.cards then
+		G.shop:recalculate()
+		if mod > 0 then		-- not doing minus mod because it'd be janky and who really cares
+			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
+				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
+				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
+				
+				
+				-- this could be a function but it's done like what... 3 times? it doesn't matter rn
+				
+				local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
+					G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[curr_bonus[#curr_bonus]],{bypass_discovery_center = true, bypass_discovery_ui = true})
+				card.shop_cry_bonusvoucher = #curr_bonus
+				cry_misprintize(card)
+				if G.GAME.events.ev_cry_choco2 then
+					card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+					card:set_cost()
+				end
+				if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+					card.cry_flipped = true
+				end
+				create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+				card:start_materialize()
+				if G.GAME.current_round.cry_voucher_edition then
+					card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
+				end
+				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+				G.shop_vouchers:emplace(card)
+			end
+		end
+	end
+end
+
 -- check if Director's Cut or Retcon offers a cheaper reroll price
 function cry_cheapest_boss_reroll()
 	local dcut = G.GAME.cry_voucher_centers["v_directors_cut"].config.extra or 1e308
@@ -429,9 +467,9 @@ function cry_voucher_pinned(name)
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
-function get_random_consumable(seed, excluded_flags, unbalanced, pool)
+function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undiscovered)
     -- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
-	excluded_flags = excluded_flags or unbalanced and { "no_doe", "no_grc" } or { "hidden", "no_doe", "no_grc" }
+	excluded_flags = excluded_flags or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
 	local passes = 0
 	local tries = 500
@@ -442,14 +480,24 @@ function get_random_consumable(seed, excluded_flags, unbalanced, pool)
 		local key = pseudorandom_element(pool or G.P_CENTER_POOLS.Consumeables, pseudoseed(seed or "grc")).key
 		selection = G.P_CENTERS[key]
         -- check if it is valid
-		for k, v in pairs(excluded_flags) do
-			if not center_no(selection, v, key, true) then
-				passes = passes + 1
+		if selection.discovered or not no_undiscovered then
+			for k, v in pairs(excluded_flags) do
+				if not center_no(selection, v, key, true) then
+					--Makes the consumable invalid if it's a specific card unless it's set to 
+					--I use this so cards don't create copies of themselves (eg potential inf Blessing chain, Hammerspace from Hammerspace...)
+					if not banned_card or (banned_card and banned_card ~= key) then
+						passes = passes + 1
+					end
+				end
 			end
 		end
         -- use it if it's valid or we've run out of attempts
 		if passes >= #excluded_flags or tries <= 0 then
-			return selection
+			if tries <= 0 and no_undiscovered then
+				return G.P_CENTERS["c_strength"]
+			else
+				return selection
+			end
 		end
 	end
 end
@@ -577,7 +625,7 @@ function update_cry_member_count()
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
-		local old = GLOBAL_cry_member_count or 5624
+		local old = GLOBAL_cry_member_count or 8830
         -- get the HTTPS thread's value for Cryptid members
         local ret = love.thread.getChannel("member_count"):pop()
 		if ret then
@@ -592,14 +640,14 @@ function update_cry_member_count()
 			end
 		end
 	else
-        -- Use a fallback value if HTTPS is disabled (you all are awesome) 
-		GLOBAL_cry_member_count = 5624
+        -- Use a fallback value if HTTPS is disabled (you all are awesome)
+		GLOBAL_cry_member_count = 8830
 	end
 end
 -- deal with Rigged and Fragile when scoring a playing card
 local ec = eval_card
 function eval_card(card, context)
-	if card.will_shatter then
+	if not card or card.will_shatter then
 		return
 	end
     -- Store old probability for later reference
@@ -1127,7 +1175,9 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
+	
 	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	
 	--Calculate events
 	if self == G.jokers.cards[#G.jokers.cards] then
 		for k, v in pairs(SMODS.Events) do
@@ -1887,6 +1937,8 @@ end
 --Unrelated but kind of related side note: this prevents top gear from showing up in collection, not sure what's up with that
 --Is it due to how TWEWJ is Coded? Is it an issue with Steamodded itself? Might be worth looking into, just sayin
 
+--Ok it's definitely something with steamodded
+
 if (SMODS.Mods["TWEWY"] or {}).can_load then
 	SMODS.Joker:take_ownership('twewy_topGear', {
 		name = "Cry-topGear",
@@ -1920,7 +1972,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		ps = predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and not forced_key and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
@@ -1992,12 +2044,26 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
 		center = G.P_CENTERS[center]
 	end
-
+	
+	
+	
+	-- handle banned keys for playing cards
+	-- can cache this if it's too much of a performance hit
+	local _cardlist = {}
+	for k, v in pairs(G.P_CARDS) do
+		local add = true
+		if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
+			add = false
+		end
+		if add then _cardlist[#_cardlist+1] = k end
+	end
+	if #_cardlist <= 0 then _cardlist[#_cardlist+1] = 'S_A' end
+	
 	local front = (
 		(_type == "Base" or _type == "Enhanced")
-		and pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
+		and G.P_CARDS[pseudorandom_element(_cardlist, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))]
 	) or nil
-
+	
 	if area == "ERROR" then
 		local ret = (front or center)
 		if not ret.config then
@@ -2200,7 +2266,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				end
 			end
 			if
-				G.GAME.modifiers.cry_enable_flipped_in_shop
+				not card.ability.eternal
+				and G.GAME.modifiers.cry_enable_flipped_in_shop
 				and pseudorandom("cry_flip" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
 			then
 				card.cry_flipped = true
@@ -2233,8 +2300,13 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		cry_misprintize(card)
 	end
+	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
+		if card.config.center.rarity == 1 then
+			cry_misprintize(card,{min = 4, max = 4}, nil, true)
+		end
+	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
-		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 1
+		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
 	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
 		if card.ability.name ~= "cry-meteor"
@@ -2262,7 +2334,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
 
 	--Debuff jokers if certain boss blinds are active
-	if G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
+	if _type == "Joker" and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
 		if G.GAME.blind.name == "cry-box"
 		or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_box"] == true) then
 			if card.config.center.rarity == 1 and not card.debuff then
@@ -2389,6 +2461,7 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 				if
 					is_number(tbl[k])
 					and not (k == "id")
+					and not (k == "perish_tally")
 					and not (k == "colour")
 					and not (k == "suit_nominal")
 					and not (k == "base_nominal")
@@ -2421,6 +2494,7 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
+						and not (k == "perish_tally")
 						and not (k == "colour")
 						and not (_k == "suit_nominal")
 						and not (_k == "base_nominal")
@@ -2480,6 +2554,7 @@ function cry_sanity_check(val)
 	return val
 end
 function cry_misprintize(card, override, force_reset, stack)
+	if Card.no(card, "immutable", true) then force_reset = true end
 	--infinifusion compat
 	if card.infinifusion then
 		if card.config.center == card.infinifusion_center or card.config.center.key == 'j_infus_fused' then
@@ -2491,9 +2566,8 @@ function cry_misprintize(card, override, force_reset, stack)
 	if
 		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
 		and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
-		and not stack or (not Card.no(card, "immune_to_chemach", true) and not Card.no(card, "immutable", true))
+		and not stack or not Card.no(card, "immutable", true)
 	then
-		if card.ability.name == "Ace Aequilibrium" then return end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}
@@ -2614,6 +2688,100 @@ function init_localization()
 			end
 		end
 	end
+end
+
+G.FUNCS.cry_asc_UI_set = function(e)
+end
+
+-- this is a hook to make funny "x of a kind"/"flush x" display text
+local pokerhandinforef = G.FUNCS.get_poker_hand_info
+function G.FUNCS.get_poker_hand_info(_cards)
+	local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+	if G.SETTINGS.language == "en-us" then
+		if #scoring_hand > 5 and (text == 'Flush Five' or text == 'Five of a Kind') then
+			local rank_array = {}
+			local county = 0
+			for i = 1, #scoring_hand do
+				local val = scoring_hand[i]:get_id()
+				rank_array[val] = (rank_array[val] or 0) + 1
+				if rank_array[val] > county then county = rank_array[val] end
+			end
+			local function create_num_chunk(int)	-- maybe useful enough to not be local? but tbh this function is probably some common coding exercise
+				if int >= 1000 then int = 999 end
+				local ones = {["1"] = "One", ["2"] = "Two", ["3"] = "Three", ["4"] = "Four", ["5"] = "Five", ["6"] = "Six", ["7"] = "Seven", ["8"] = "Eight", ["9"] = "Nine"}
+				local tens = {["1"] = "Ten", ["2"] = "Twenty", ["3"] = "Thirty", ["4"] = "Forty", ["5"] = "Fifty", ["6"] = "Sixty", ["7"] = "Seventy", ["8"] = "Eighty", ["9"] = "Ninety"}
+				local str_int = string.reverse(int.."")	-- ehhhh whatever
+				local str_ret = ""
+				for i = 1, string.len(str_int) do
+					local place = str_int:sub(i, i)
+					if place ~= "0" then
+						if i == 1 then str_ret = ones[place]
+						elseif i == 2 then
+							if place == "1" and str_ret ~= "" then -- admittedly not my smartest moment, i dug myself into a hole here...
+								if str_ret == "One" then str_ret = "Eleven"
+								elseif str_ret == "Two" then str_ret = "Twelve"
+								elseif str_ret == "Three" then str_ret = "Thirteen"
+								elseif str_ret == "Five" then str_ret = "Fifteen"
+								elseif str_ret == "Eight" then str_ret = "Eighteen"
+								else str_ret = str_ret.."teen" end
+							else
+								str_ret = tens[place]..((string.len(str_ret) > 0 and " " or "")..str_ret)
+							end
+						elseif i == 3 then str_ret = ones[place]..(" Hundred"..((string.len(str_ret) > 0 and " and " or "")..str_ret)) end -- this line is wild
+					end
+				end
+				return str_ret
+			end
+			-- text gets stupid small at 100+ anyway
+			loc_disp_text = (text == 'Flush Five' and "Flush " or "")..((county < 1000 and create_num_chunk(county) or "Thousand")..(text == 'Five of a Kind' and " of a Kind" or ""))
+		end
+	end
+
+
+
+
+
+
+	local hand_table = {
+		['High Card'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 1 or nil,
+		['Pair'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
+		['Two Pair'] = 4,
+		['Three of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
+		['Straight'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,
+		['Flush'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,
+		['Full House'] = 5,
+		['Four of a Kind'] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
+		['Straight Flush'] = next(SMODS.find_card('j_four_fingers')) and 4 or 5,	-- debatable
+		['cry_Bulwark'] = 5,
+		['Five of a Kind'] = 5,
+		['Flush House'] = 5,
+		['Flush Five'] = 5,
+		['cry_Clusterfuck'] = 8,
+		['cry_UltPair'] = 8,
+		['cry_WholeDeck'] = 52,
+	}
+
+	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
+	if hand_table[text] then
+		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether and #_cards - hand_table[text] or #scoring_hand - hand_table[text]
+	else
+		G.GAME.current_round.current_hand.cry_asc_num = 0
+	end
+
+
+
+	G.GAME.current_round.current_hand.cry_asc_num_text = (G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0) and " (+"..G.GAME.current_round.current_hand.cry_asc_num..")" or ""
+	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
+end
+
+function cry_ascend(num)	-- edit this function at your leisure
+	return math.max(num, num*((1.25 + (0.05 * (G.GAME.sunnumber or 0)))^G.GAME.current_round.current_hand.cry_asc_num or 0))
+end
+
+function cry_pulse_flame(duration, intensity)	-- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
+	G.cry_flame_override = G.cry_flame_override or {}
+	G.cry_flame_override["duration"] = duration or 0.01
+	G.cry_flame_override["intensity"] = intensity or 2
 end
 
 --Will be moved to D20 file when that gets added
@@ -2894,14 +3062,14 @@ end
 function Cryptid.get_food(seed)
     local food_keys = {}  
     for k, v in pairs(Cryptid.food) do  
-        if not G.GAME.banned_keys[v] then
+        if not G.GAME.banned_keys[v] and G.P_CENTERS[v] then
             table.insert(food_keys, v)  
         end
     end
     if #food_keys <= 0 then
 	return "j_reserved_parking"
     else
-    	return pseudorandom_element(food_keys, pseudoseed(seed)) 
+    	return pseudorandom_element(food_keys, pseudoseed(seed))
     end
 end
 SMODS.Sound({
@@ -3023,6 +3191,16 @@ if (SMODS.Mods["malverk"] or {}).can_load then
         		}
     		}
 	}
+end
+--Make Ortalab's Locked jokers not show up on Deck of Equilibrium and Antimatter Deck
+if (SMODS.Mods["ortalab"] or {}).can_load then
+	for i = 1, 150 do
+		print(i)
+		SMODS.Joker:take_ownership('ortalab_temp_' .. i, {
+			name = "Cry-skibidi",
+			no_doe = true
+		})
+	end
 end
 SMODS.Atlas({
 	key = "modicon",
@@ -3154,7 +3332,7 @@ SMODS.Sticker:take_ownership("rental", {
 local ec = eval_card
 function eval_card(card, context)
 	local ret = ec(card, context)
-	if card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck then
+	if card and (card.area == G.hand or card.area == G.play or card.area == G.discard or card.area == G.deck) then
 		for k, v in pairs(SMODS.Stickers) do
 			if card.ability[k] and v.calculate and type(v.calculate) == "function" then
 				context.from_playing_card = true

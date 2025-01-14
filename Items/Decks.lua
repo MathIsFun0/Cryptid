@@ -204,7 +204,7 @@ local glowing = {
 	trigger_effect = function(self, args)
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.name ~= "Ace Aequilibrium" then --Same Reason as Gemini/Multiply
+				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					cry_with_deck_effects(G.jokers.cards[i], function(card)
 						cry_misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
 					end)
@@ -227,9 +227,18 @@ local bountiful = {
 	name = "cry-Bountiful",
 	key = "bountiful",
 	config = { cry_forced_draw_amount = 5 },
-	pos = { x = 4, y = 2 },
+	pos = { x = 2, y = 6 },
 	order = 14,
-	atlas = "placeholders",
+	atlas = "atlasdeck",
+}
+local beige = {
+	object_type = "Back",
+	name = "cry-Beige",
+	key = "beige",
+	config = { cry_common_value_quad = true },
+	pos = { x = 1, y = 6 },
+	order = 15,
+	atlas = "atlasdeck",
 }
 return {
 	name = "Misc. Decks",
@@ -247,8 +256,8 @@ return {
 				G.GAME.modifiers.cry_conveyor = true
 			end
 			if self.effect.config.cry_misprint_min then
-				G.GAME.modifiers.cry_misprint_min = self.effect.config.cry_misprint_min
-				G.GAME.modifiers.cry_misprint_max = self.effect.config.cry_misprint_max
+				G.GAME.modifiers.cry_misprint_min = (G.GAME.modifiers.cry_misprint_min or 1) * self.effect.config.cry_misprint_min
+				G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.effect.config.cry_misprint_max
 			end
 			if self.effect.config.cry_highlight_limit then
 				G.GAME.modifiers.cry_highlight_limit = self.effect.config.cry_highlight_limit
@@ -258,6 +267,7 @@ return {
 			end
 			if self.effect.config.cry_beta then
 				G.GAME.modifiers.cry_beta = true
+				G.GAME.pool_flags.beta_deck = true
 			end
 			if self.effect.config.cry_legendary then
 				G.E_MANAGER:add_event(Event({
@@ -295,6 +305,9 @@ return {
 			if self.effect.config.cry_forced_draw_amount then
 				G.GAME.modifiers.cry_forced_draw_amount = self.effect.config.cry_forced_draw_amount
 			end
+			if self.effect.config.cry_common_value_quad then
+				G.GAME.modifiers.cry_common_value_quad = true
+			end
 		end
 		--equilibrium deck patches
 		local gcp = get_current_pool
@@ -312,22 +325,26 @@ return {
 					and t ~= "Seal"
 					and t ~= "Stake"
 				then
-					if not P_CRY_ITEMS then
+					if true then	-- if not P_CRY_ITEMS then
+						-- we're regenerating the pool every time because of banned keys but it's fine tbh
 						P_CRY_ITEMS = {}
 						local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 						for _, id in ipairs(valid_pools) do
 							for k, v in pairs(G.P_CENTER_POOLS[id]) do
-								if v.unlocked == true and not center_no(v, "doe", k) then
+								if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
 									P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 								end
 							end
 						end
+						--[[	this doesn't seem to be working
 						for k, v in pairs(G.P_CARDS) do
 							if v.unlocked == true and not center_no(v, "doe", k) then
 								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 							end
 						end
+						]]
 					end
+					if #P_CRY_ITEMS <= 0 then P_CRY_ITEMS[#P_CRY_ITEMS + 1] = 'v_blank' end
 					return P_CRY_ITEMS, "cry_equilibrium" .. G.GAME.round_resets.ante
 				end
 			end
@@ -464,5 +481,6 @@ return {
 		glowing,
 		beta,
 		bountiful,
+		beige,
 	},
 }

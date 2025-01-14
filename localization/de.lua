@@ -1833,6 +1833,16 @@ return {
                     "{C:attention}+#1#{} Karte im Shop",
                 },
             },
+			j_cry_fleshpanopticon = {
+                name = "Fleischpanoptikum",
+                text = {
+                    "{C:red}X#1#{} {C:attention}Boss Blind{} größe",
+                    "Wenn eine {C:attention}Boss Blind{} besiegt wurde,",
+                    "{C:red}zerstört sich selbst{}, und erstellt",
+                    "eine {C:dark_edition}Negative{} {C:spectral}Portal{} Karte",
+                    "{C:inactive,s:0.8}\"Ein Gefängnis... zum halten von... mir?\""
+                },
+            },
             j_cry_spaceglobe = {
                 name = "Himmelsglobus",
                 text = {
@@ -2210,6 +2220,13 @@ return {
             },
         },
         Sleeve = {
+			sleeve_cry_bountiful_sleeve = {
+				name = "Größzügige Hülle",
+				text = {
+					"Ziehe immer 5 Karten nach",
+					"{C:attention}Gespielter Hand{} oder {C:attention}Abwurf{}",
+				},
+			},
             sleeve_cry_ccd_sleeve = {
                 name = "CCD Hülle",
                 text = {
@@ -2274,6 +2291,14 @@ return {
                     "Wenn ein {C:attention}Gutschein{} gekauft wird,",
                     "bekomme seine {C:attention}verbesserten Versionen",
                 },
+            },
+			sleeve_cry_spooky_sleeve = {
+                name = "Gruselige Hülle",
+                text = {
+                    "Starte mit einem {C:eternal}Ewigen{} {C:attention,T:j_cry_chocolate_dice}Schokoladenwürfel",
+                    "Nach jeder {C:attention}Ante{}, erstelle eine",
+                    "{C:cry_candy}Süßigkeit{} oder einen {X:cry_cursed,C:white}Verfluchten{} Joker",
+                }
             },
             sleeve_cry_wormhole_sleeve = {
                 name = "Wurmlochhülle",
@@ -3583,6 +3608,7 @@ return {
             cry_sobbing = "Hilf mir...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
+			cry_good_luck_ex = "Viel Glück!",
             cry_sus_ex = "Verräter!",
             cry_jolly_ex = "Jolly Up!",
             cry_m_minus = "m",

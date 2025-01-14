@@ -203,7 +203,7 @@ local double_down = { --After every round, X1.5 to all values on the back of Dou
 		},
 	},
 }
-local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] available in the shop
+local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 voucher slot[s] available in the shop
 	object_type = "Voucher",
 	key = "overstock_multi",
 	config = { extra = 1 },
@@ -226,6 +226,7 @@ local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] availabl
 				return true
 			end,
 		}))
+		cry_bonusvouchermod(math.floor(self.config.extra))
 	end,
 	unredeem = function(self)
 		if not G.GAME.modifiers.cry_booster_packs then
@@ -239,6 +240,7 @@ local overstock_multi = { --+1 card slot[s] and +1 booster pack slot[s] availabl
 				return true
 			end,
 		}))
+		cry_bonusvouchermod(-1*math.floor(self.config.extra))
 	end,
 }
 local massproduct = { --All cards and packs in the shop cost $1
@@ -495,6 +497,18 @@ local fabric = { --+2 Joker slot[s]
 			end,
 		}))
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G.PROFILES[G.SETTINGS.profile].voucher_usage['v_antimatter'] and G.PROFILES[G.SETTINGS.profile].voucher_usage['v_antimatter'].count >= 10 then
+			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 --Order 87 reserved for Fake-out (unimplemented)
 local function asteroglyph_ante()
@@ -529,7 +543,19 @@ local asteroglyph = { --Set Ante to 0
 				return true
 			end,
 		}))
-	end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante >= 36 then
+			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 --Order 89 reserved for Ivory Script (unimplemented)
 local blankcanvas = { --+2 hand size
@@ -548,6 +574,18 @@ local blankcanvas = { --+2 hand size
 	end,
 	unredeem = function(self)
 		G.hand:change_size(-1*math.max(1, math.floor(self.config.extra)))
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G and G.hand and G.hand.config and G.hand.config.card_limit and G.hand.config.card_limit <= 0 then
+			unlock_card(self)
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
 	end,
 }
 
@@ -631,7 +669,7 @@ local triple = { --Copies voucher triple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -659,8 +697,8 @@ local triple = { --Copies voucher triple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_copies
@@ -677,7 +715,7 @@ local quadruple = { --Tag printer voucher quadruple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -705,8 +743,8 @@ local quadruple = { --Tag printer voucher quadruple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_tag_printer
@@ -723,7 +761,7 @@ local quintuple = { --Clone machine voucher quintuple tag
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.num } }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
 			and context.tag.key ~= "tag_double"
@@ -751,8 +789,8 @@ local quintuple = { --Clone machine voucher quintuple tag
 				return true
 			end)
 			tag.triggered = true
+			return true
 		end
-		return true
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_clone_machine

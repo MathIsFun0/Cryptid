@@ -142,7 +142,7 @@ local console = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_code_normal_1", specific_vars = { 1, 2 } }
 		return { vars = {} }
 	end,
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			tag:yep("+", G.C.SECONDARY_SET.Code, function()
 				local key = "p_cry_code_normal_" .. math.random(1, 2)
@@ -158,6 +158,12 @@ local console = {
 				card.cost = 0
 				card.from_tag = true
 				G.FUNCS.use_card({ config = { ref_table = card } })
+				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
+					card:set_edition(nil, true, true)
+				elseif G.GAME.modifiers.cry_force_random_edition then
+					local edition = cry_poll_random_edition()
+					card:set_edition(edition, true, true)
+				end
 				card:start_materialize()
 				return true
 			end)
@@ -209,10 +215,18 @@ local payload = {
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
-		G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
+		if G.GAME.dollars > 1e10 then
+			G.GAME.cry_payload = 3
+		else
+			G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
+		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult ^ number
+		if G.GAME.dollars > 1e10 then
+			G.GAME.cry_payload = 3
+		else
+			G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult ^ number
+		end
 	end,
 }
 local reboot = {
@@ -427,14 +441,25 @@ local seed = {
 local rigged = {
 	object_type = "Sticker",
 	atlas = "sticker",
-	pos = { x = 5, y = 1 },
+	pos = { x = 6, y = 1 },
 	key = "cry_rigged",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	draw = function(self, card) --don't draw shine
+		if not G.shared_stickers["cry_rigged2"] then 
+			G.shared_stickers["cry_rigged2"] = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 }) 
+		end	-- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+		
 		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers["cry_rigged2"].role.draw_major = card
+		
 		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		
+		card.hover_tilt = card.hover_tilt/2	-- call it spaghetti, but it's what hologram does so...
+		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_rigged2"]:draw_shader("hologram", nil, card.ARGS.send_to_shader, nil, card.children.center)	-- this doesn't really do much tbh, but the slight effect is nice
+		card.hover_tilt = card.hover_tilt*2
 	end,
 }
 
@@ -451,6 +476,7 @@ local hook = {
 	cost = 4,
 	atlas = "code",
 	order = 14,
+	no_pool_flag = "beta_deck",
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 2
 	end,
@@ -506,7 +532,7 @@ local variable = {
 	order = 8,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -540,7 +566,7 @@ local class = {
 	order = 16,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.max_highlighted } }
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -813,9 +839,14 @@ local delete = {
 		if not G.GAME.banned_keys then
 			G.GAME.banned_keys = {}
 		end -- i have no idea if this is always initialised already tbh
+		if not G.GAME.cry_banned_pcards then
+			G.GAME.cry_banned_pcards = {}
+		end
 		local a = nil
 		local c = nil
+		local _p = nil
 		if G.shop_jokers.highlighted[1] then
+			_p = not not G.shop_jokers.highlighted[1].base.value
 			a = G.shop_jokers
 			c = G.shop_jokers.highlighted[1]
 		end
@@ -837,6 +868,13 @@ local delete = {
 			check_for_unlock({ type = "what_have_you_done" })
 		end
 		G.GAME.banned_keys[c.config.center.key] = true
+		if _p then
+			for k, v in pairs(G.P_CARDS) do
+				if v.value == c.base.value and v.suit == c.base.suit then
+					G.GAME.cry_banned_pcards[k] = true
+				end
+			end
+		end
 		c:start_dissolve()
 	end,
 }
@@ -889,11 +927,49 @@ local machinecode = {
 		return true
 	end,
 	can_bulk_use = true,
+	loc_vars = function(self, info_queue, center)
+		return {  
+			main_start = {
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+        			randomchar(codechars6),
+       				randomchar(codechars6),
+			}
+		} 
+	end,
 	use = function(self, card, area, copier)
-		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_machinecode")
+		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, get_random_consumable("cry_machinecode", nil, "c_cry_machinecode").key, c_cry_machinecode)
 		card:set_edition({ cry_glitched = true })
 		card:add_to_deck()
 		G.consumeables:emplace(card)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local a = {}
+		local b
+		for i = 1, number do
+			b = get_random_consumable("cry_machinecode", nil, "c_cry_machinecode")
+			a[b] = (a[b] or 0) + 1
+		end
+		for k, v in pairs(a) do
+			local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, k.key)
+			card:set_edition({ cry_glitched = true })
+			card:add_to_deck()
+			if Incantation then
+				card:setQty(v)
+			end
+			G.consumeables:emplace(card)
+		end
+		G.E_MANAGER:add_event(
+			Event({
+				trigger = "after",
+				func = function()
+					a = nil
+					return true
+				end,
+			})
+		)
 	end,
 }
 local run = {
@@ -932,6 +1008,7 @@ local run = {
 				G.GAME.shop_free = nil
 				G.GAME.shop_d6ed = nil
 				G.STATE_COMPLETE = false
+				G.GAME.current_round.used_packs = {}
 				return true
 			end,
 		}))
@@ -986,6 +1063,9 @@ local oboe = {
 	cost = 4,
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
+		if not card then
+			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		end
 		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
 	end,
 	can_use = function(self, card)
@@ -1005,6 +1085,7 @@ local rework = {
 	name = "cry-Rework",
 	atlas = "code",
 	order = 25,
+	no_pool_flag = "beta_deck",
 	pos = {
 		x = 3,
 		y = 3,
@@ -1065,7 +1146,7 @@ local rework_tag = {
 	config = { type = "store_joker_create" },
 	key = "rework",
 	ability = { rework_edition = nil, rework_key = nil },
-	apply = function(tag, context)
+	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
 			create_shop_card_ui(card, "Joker", context.area)
@@ -1273,6 +1354,7 @@ local ctrl_v = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local card = copy_card(G.consumeables.highlighted[1])
+					if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 					card:add_to_deck()
 					if Incantation then
 						card:setQty(1)
@@ -1302,6 +1384,7 @@ local ctrl_v = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(G.consumeables.highlighted[1])
+						if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 						card:add_to_deck()
 						if Incantation then
 							card:setQty(1)
@@ -1342,34 +1425,106 @@ local inst = {
 		return #selected_cards == 1
 	end,
 	use = function(self, card, area, copier)
+		local same = 0
 		for i = 1, #G.deck.cards do
 			if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+				same = i
 				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 				break
 			end
 		end
 		for i = 1, #G.deck.cards do
-			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit and i ~= same then
 				draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 				break
 			end
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		for i = 1, number do
+		for j = 1, number do
+			local same = 0
 			for i = 1, #G.deck.cards do
 				if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+					same = i
 					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 					break
 				end
 			end
 			for i = 1, #G.deck.cards do
-				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit then
+				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit and i ~= same then
 					draw_card(G.deck,G.hand,nil,nil,false,G.deck.cards[i])
 					break
 				end
 			end
 		end
+	end,
+}
+local alttab = {
+	object_type = "Consumable",
+	set = "Code",
+	key = "alttab",
+	name = "cry-Alttab",
+	atlas = "code",
+	order = 28,
+	config = {  },
+	pos = {
+		x = 4,
+		y = 4,
+	},
+	cost = 4,
+	can_bulk_use = true,
+	loc_vars = function(self, info_queue, card)
+		local ret = localize("k_none")
+		if G.GAME and G.GAME.blind and G.GAME.blind.in_blind then
+			if G.GAME.blind:get_type() == 'Small' then
+				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Small, set = 'Tag'}
+			elseif G.GAME.blind:get_type() == 'Big' then
+				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Big, set = 'Tag'}
+			elseif G.GAME.blind:get_type() == 'Boss' then
+				ret = '???'
+			end
+		end
+		return { vars = { ret } }
+	end,
+	can_use = function(self, card)
+		return G.GAME.blind and G.GAME.blind.in_blind
+	end,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		delay(0.4)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+                	local tag = nil
+			local type = G.GAME.blind:get_type()
+			if type == 'Boss' then
+				tag = Tag(get_next_tag_key())
+			else
+				tag = Tag(G.GAME.round_resets.blind_tags[type])
+			end
+			add_tag(tag)
+			used_consumable:juice_up(0.8, 0.5)
+		return true end }))
+        	delay(1.2)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local used_consumable = copier or card
+		delay(0.4)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			for j = 1, number do
+				play_sound('tarot1')
+                		local tag = nil
+				local type = G.GAME.blind:get_type()
+				if type == 'Boss' then
+					tag = Tag(get_next_tag_key())
+				else
+					tag = Tag(G.GAME.round_resets.blind_tags[type])
+				end
+				add_tag(tag)
+				used_consumable:juice_up(0.8, 0.5)
+				delay(0.1)
+			end
+		return true end }))
+        	delay(1.1)
 	end,
 }
 
@@ -1383,7 +1538,7 @@ local automaton = {
 	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.create } }
+		return { vars = { card and card.ability and card.ability.create or self.config.create } }
 	end,
 	can_use = function(self, card)
 		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
@@ -1588,6 +1743,28 @@ local CodeJoker = {
 			"Kailen"
 		}
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if G.P_CENTER_POOLS['Code'] then
+			local count = 0
+			local count2 = 0
+			for k,v in pairs(G.P_CENTER_POOLS['Code']) do
+				count2 = count2+1
+				if v and v.discovered == true then
+					count = count + 1
+				end
+			end
+			if count == count2 then
+				unlock_card(self)
+			end
+		end
+		if args.type == 'cry_lock_all' then
+			lock_card(self)
+		end
+		if args.type == 'cry_unlock_all' then
+			unlock_card(self)
+		end
+	end,
 }
 
 local copypaste = {
@@ -1597,13 +1774,13 @@ local copypaste = {
 	pos = { x = 3, y = 4 },
 	order = 110,
 	immune_to_chemach = true,
-	config = { extra = { odds = 2, ckt = 0 } },
+	config = { extra = { odds = 2, ckt = 0 } },	-- what is a ckt
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { "" .. (G.GAME and G.GAME.probabilities.normal or 1), (center and center.ability.extra.odds or 2) },
+			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
 		}
 	end,
 	atlas = "atlasepic",
@@ -1614,7 +1791,7 @@ local copypaste = {
 			and not context.consumeable.beginning_end
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				if pseudorandom("cry_copypaste_joker") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				if pseudorandom("cry_copypaste_joker") < cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
@@ -2199,7 +2376,7 @@ G.FUNCS.variable_apply = function()
 		{ "J", "Jack" },
 		{ "Q", "Queen" },
 		{ "K", "King" },
-		{ "A", "Ace", "One" },
+		{ "A", "Ace", "One", "1", "I" },
 		{ "M" },
 		{ "nil" },
 	}
@@ -2479,15 +2656,24 @@ G.FUNCS.class_apply = function()
 				}))
 			end
 		elseif enh_suffix == "null" then
+			local destroyed_cards = {}
 			check_for_unlock({ type = "cheat_used" })
 			for i = #G.hand.highlighted, 1, -1 do
 				local card = G.hand.highlighted[i]
-				if card.ability.name == "Glass Card" then
-					card:shatter()
-				else
-					card:start_dissolve(nil, i == #G.hand.highlighted)
+				if not card.ability.eternal then
+					destroyed_cards[#destroyed_cards + 1] = G.hand.highlighted[i]
+					if card.ability.name == "Glass Card" then
+						card:shatter()
+					else
+						card:start_dissolve(nil, i == #G.hand.highlighted)
+					end
 				end
 			end
+			if destroyed_cards[1] then 
+            			for j=1, #G.jokers.cards do
+                			eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = destroyed_cards})
+            			end
+        		end
 			G.CHOOSE_ENH:remove()
 			return
 		else
@@ -2842,6 +3028,7 @@ G.FUNCS.pointer_apply = function()
 		if
 			G.P_CENTERS[current_card].set == "Joker"
 			and G.P_CENTERS[current_card].unlocked
+			and not G.GAME.banned_keys[current_card]
 			and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 			and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 		then
@@ -2850,13 +3037,22 @@ G.FUNCS.pointer_apply = function()
 			G.jokers:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].consumeable and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" then
+		if 
+			G.P_CENTERS[current_card].consumeable 
+			and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" 
+			and not G.GAME.banned_keys[current_card] 
+		then
 			local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
+			if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			created = true
 		end
-		if G.P_CENTERS[current_card].set == "Voucher" and G.P_CENTERS[current_card].unlocked then
+		if 
+			G.P_CENTERS[current_card].set == "Voucher"
+			and G.P_CENTERS[current_card].unlocked 
+			and not G.GAME.banned_keys[current_card]
+		then
 			local area
 			if G.STATE == G.STATES.HAND_PLAYED then
 				if not G.redeemed_vouchers_during_hand then
@@ -2887,6 +3083,8 @@ G.FUNCS.pointer_apply = function()
 		end
 		if
 			G.P_CENTERS[current_card].set == "Booster"
+			and not G.GAME.banned_keys[current_card]
+			and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card("j_jen_p03") ~= 0)
 			and G.STATE ~= G.STATES.TAROT_PACK
 			and G.STATE ~= G.STATES.SPECTRAL_PACK
 			and G.STATE ~= G.STATES.STANDARD_PACK
@@ -2919,7 +3117,11 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] then
+	if 
+		current_card 
+		and not G.P_CENTERS[current_card]
+		and not G.GAME.banned_keys[current_card]
+	then
 		local created = false
 		local t = Tag(current_card, nil, "Big")
 		add_tag(t)
@@ -2954,7 +3156,7 @@ G.FUNCS.pointer_apply = function()
 			current_card = i
 		end
 	end
-	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] then
+	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] and not G.GAME.banned_keys[current_card] then
 		local created = false
 		if not G.GAME.blind or (G.GAME.blind.name == "" or not G.GAME.blind.blind_set) then
 			--from debugplus
@@ -3011,6 +3213,203 @@ G.FUNCS.pointer_apply = function()
 			G.CHOOSE_CARD:remove()
 			G.GAME.USING_CODE = false
 			G.GAME.USING_POINTER = false
+		end
+	end
+	if not current_card then	-- if card isn't created yet, try playing cards
+		local words = {}
+		for i in string.gmatch(string.lower(entered_card), "%S+") do	-- not using apply_lower because we actually want the spaces here
+			table.insert(words, i)
+		end
+		
+		local rank_table = {
+			{ "stone" },
+			{ "2", "Two", "II" },
+			{ "3", "Three", "III" },
+			{ "4", "Four", "IV" },
+			{ "5", "Five", "V" },
+			{ "6", "Six", "VI" },
+			{ "7", "Seven", "VII" },
+			{ "8", "Eight", "VIII" },
+			{ "9", "Nine", "IX" },
+			{ "10", "1O", "Ten", "X", "T" },
+			{ "J", "Jack" },
+			{ "Q", "Queen" },
+			{ "K", "King" },
+			{ "A", "Ace", "One", "1", "I" },
+		}	-- ty variable
+		local _rank = nil
+		for m = #words, 1, -1 do	-- the legendary TRIPLE LOOP, checking from end since rank is most likely near the end
+			for i, v in pairs(rank_table) do
+				for j, k in pairs(v) do
+					if words[m] == string.lower(k) then
+						_rank = i
+						break
+					end
+				end
+				if _rank then break end
+			end
+			if _rank then break end
+		end
+		if _rank then	-- a playing card is going to get created at this point, but we can find additional descriptors
+			local suit_table = {
+				["Spades"] = { "spades" },
+				["Hearts"] = { "hearts" },
+				["Clubs"] = { "clubs" },
+				["Diamonds"] = { "diamonds" },
+			}
+			for k, v in pairs(SMODS.Suits) do
+				local index = v.key
+				local current_name = G.localization.misc.suits_plural[index]
+				if not suit_table[v.key] then
+					suit_table[v.key] = { string.lower(current_name) }
+				end
+			end
+			-- i'd rather be pedantic and not forgive stuff like "spade", there's gonna be a lot of checks
+			-- can change that if need be
+			local enh_table = {
+				["m_lucky"] = { "lucky" },
+				["m_mult"] = { "mult" },
+				["m_bonus"] = { "bonus" },
+				["m_wild"] = { "wild" },
+				["m_steel"] = { "steel" },
+				["m_glass"] = { "glass" },
+				["m_gold"] = { "gold" },
+				["m_stone"] = { "stone" },
+				["m_cry_echo"] = { "echo" },
+			}
+			for k, v in pairs(G.P_CENTER_POOLS.Enhanced) do
+				local index = v.key
+				local current_name = G.localization.descriptions.Enhanced[index].name
+				current_name = current_name:gsub(" Card$", "")
+				if not enh_table[v.key] then
+					enh_table[v.key] = { string.lower(current_name) }
+				end
+			end
+			local ed_table = {
+				["e_base"] = { "base" },
+				["e_foil"] = { "foil" },
+				["e_holo"] = { "holo" },
+				["e_polychrome"] = { "polychrome" },
+				["e_negative"] = { "negative" },
+				["e_cry_mosaic"] = { "mosaic" },
+				["e_cry_oversat"] = { "oversat" },
+				["e_cry_glitched"] = { "glitched" },
+				["e_cry_astral"] = { "astral" },
+				["e_cry_blur"] = { "blurred" },
+				["e_cry_gold"] = { "golden" },
+				["e_cry_glass"] = { "fragile" },
+				["e_cry_m"] = { "jolly" },
+				["e_cry_noisy"] = { "noisy" },
+				["e_cry_double_sided"] = { "double-sided", "double_sided", "double" },	-- uhhh sure
+			}
+			for k, v in pairs(G.P_CENTER_POOLS.Edition) do
+				local index = v.key
+				local current_name = G.localization.descriptions.Edition[index].name
+				if not ed_table[v.key] then
+					ed_table[v.key] = { string.lower(current_name) }
+				end
+			end
+			local seal_table = {
+				["Red"] = { "red" },
+				["Blue"] = { "blue" },
+				["Purple"] = { "purple" },
+				["Gold"] = { "gold", "golden" },	-- don't worry we're handling seals differently
+				["cry_azure"] = { "azure" },
+				["cry_green"] = { "green" },
+			}
+			local sticker_table = {
+				["eternal"] = { "eternal" },
+				["perishable"] = { "perishable" },
+				["rental"] = { "rental" },
+				["pinned"] = { "pinned" },
+				["banana"] = { "banana" },
+				["cry_rigged"] = { "rigged" },
+			}
+			local function parsley(_table, _word)
+				for i, v in pairs(_table) do
+					for j, k in pairs(v) do
+						if _word == string.lower(k) then
+							return i
+						end
+					end
+				end
+				return ""
+			end
+			local function to_rank(rrank)
+				if rrank <= 10 then return tostring(rrank)
+				elseif rrank == 11 then return "Jack"
+				elseif rrank == 12 then return "Queen"
+				elseif rrank == 13 then return "King"
+				elseif rrank == 14 then return "Ace"
+				end
+			end
+			
+			-- ok with all that fluff out the way now we can figure out what on earth we're creating
+			
+			local _seal_att = false
+			local _suit = ""
+			local _enh = ""
+			local _ed = ""
+			local _seal = ""
+			local _stickers = {}
+			for m = #words, 1, -1 do
+				-- we have a word. figure out what that word is
+				-- this is dodgy spaghetti but w/ever
+				local wword = words[m]
+				if _suit == "" then _suit = parsley(suit_table, wword) end
+				if _enh == "" then 
+					_enh = parsley(enh_table, wword)
+					if _enh == "m_gold" and _seal_att == true then _enh = "" end
+				end
+				if _ed == "" then 
+					_ed = parsley(ed_table, wword)
+					if _ed == "e_cry_gold" and _seal_att == true then _ed = "" end
+				end
+				if _seal == "" then 
+					_seal = parsley(seal_table, wword)
+					if _seal == "Gold" and _seal_att == false then _seal = "" end
+				end
+				local _st = parsley(sticker_table, wword)
+				if _st then _stickers[#_stickers+1] = _st end
+				if wword == "seal" or wword == "sealed" then 
+					_seal_att = true 
+				else 
+					_seal_att = false 
+				end	-- from end so the next word should describe the seal
+			end
+
+			-- now to construct the playing card
+			-- i'm doing this by applying everything but maybe it's a bit janky?
+			
+			G.CHOOSE_CARD:remove()
+			G.GAME.USING_CODE = false
+			G.GAME.USING_POINTER = false
+			
+			G.E_MANAGER:add_event(Event({
+				func = function() 
+					G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+					local _card = create_card("Base", G.play, nil, nil, nil, nil, nil, "pointer")
+					SMODS.change_base(_card, _suit ~= "" and _suit or pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('sigil')), _rank > 1 and to_rank(_rank) or nil)
+					if _enh ~= "" then _card:set_ability(G.P_CENTERS[_enh]) end
+					if _rank == 1 then _card:set_ability(G.P_CENTERS['m_stone']) end
+					if _seal ~= "" then _card:set_seal(_seal, true, true) end
+					if _ed ~= "" then _card:set_edition(_ed, true, true) end
+					for i = 1, #_stickers do
+						_card.ability[_stickers[i]] = true
+						if _stickers[i] == "pinned" then _card.pinned = true end
+					end
+					_card:start_materialize()
+					G.play:emplace(_card)
+					table.insert(G.playing_cards, _card)
+					playing_card_joker_effects({ _card })
+				return true
+                    	end}))
+			G.E_MANAGER:add_event(Event({
+				func = function() 
+					G.deck.config.card_limit = G.deck.config.card_limit + 1
+				return true
+			end}))
+			draw_card(G.play,G.deck, 90,'up', nil)
 		end
 	end
 end
@@ -3436,9 +3835,13 @@ crashes = {
 				blockable = false,
 				no_delete = true,
 				func = function()
-					local c = create_card("Code", nil, nil, nil, nil, nil, "c_cry_crash")
-					c.T.x = math.random(-G.CARD_W, G.TILE_W)
-					c.T.y = math.random(-G.CARD_H, G.TILE_H)
+					G.GAME.accel = G.GAME.accel or 1.1
+					for i = 1, G.GAME.accel do
+						local c = create_card("Code", nil, nil, nil, nil, nil, "c_cry_crash")
+						c.T.x = math.random(-G.CARD_W, G.TILE_W)
+						c.T.y = math.random(-G.CARD_H, G.TILE_H)
+					end
+					G.GAME.accel = G.GAME.accel^(1.005 + G.GAME.accel/20000)
 					return false
 				end,
 			}),
@@ -3511,7 +3914,7 @@ local code_cards = {
 	malware,
 	seed,
 	rigged,
-	hook,
+	--hook,
 	hooked,
 	variable,
 	class,
@@ -3526,10 +3929,14 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
-	patch,
+	--patch,
 	ctrl_v,
 	inst,
+	alttab,
 }
+if Cryptid.enabled["Misc. Decks"] then
+	code_cards[#code_cards + 1] = encoded
+end
 if Cryptid.enabled["Misc."] then
 	code_cards[#code_cards + 1] = spaghetti
 end
@@ -3537,7 +3944,6 @@ if Cryptid.enabled["Enhanced Decks"] then
 	code_cards[#code_cards + 1] = source_deck
 end
 if Cryptid.enabled["Epic Jokers"] then
-	code_cards[#code_cards + 1] = encoded
 	code_cards[#code_cards + 1] = CodeJoker
 	code_cards[#code_cards + 1] = copypaste
 end
@@ -4009,8 +4415,9 @@ return {
 		local gfco = G.FUNCS.can_open
 		G.FUNCS.can_open = function(e)
 			if G.GAME.USING_RUN then
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
+				gfco(e)
+				-- e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				-- e.config.button = nil
 			else
 				gfco(e)
 			end
@@ -4036,6 +4443,7 @@ return {
 					trigger = "after",
 					delay = 0.5,
 					func = function()
+						G.GAME.current_round.used_packs = {}
 						G.cry_runarea:remove()
 						G.cry_runarea = nil
 						G.STATE = G.STATES.SELECTING_HAND
@@ -4137,7 +4545,12 @@ return {
 			local results = evaluate_poker_hand_ref(hand)
 			if G.GAME.cry_exploit_override then
 				if not results[G.GAME.cry_exploit_override][1] then
-					results[G.GAME.cry_exploit_override] = results["High Card"]	-- i would do results.top here but it just doesn't work, if someone could get that working that would be great
+					for _, v in ipairs(G.handlist) do
+						if results[v][1] then
+							results[G.GAME.cry_exploit_override] = results[v]
+							break
+						end
+					end
 				end
 			end
 			return results
@@ -4150,14 +4563,19 @@ return {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
+							-- Adding a before spawning becuase jen banned copy_paste
+							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
+							if G.P_CENTERS["j_cry_copypaste"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"]) then
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+							end
 							return true
 						end
 					end,
@@ -4169,6 +4587,18 @@ return {
 				G.GAME.tarot_rate = 0
 				G.GAME.code_rate = 1e100
 			end
+		end
+		local Cardstart_dissolveRef = Card.start_dissolve
+		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+			if G.jokers then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].hook_id == self.sort_id then
+						G.jokers.cards[i].ability.cry_hooked = false
+						G.jokers.cards[i].hook_id = nil
+					end
+				end
+			end
+			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
 		end
 	end,
 	items = code_cards,

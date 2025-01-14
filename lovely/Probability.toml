@@ -1,0 +1,288 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 5
+
+# there's gonna be a lot of this
+# init all cards with ability.cry_prob
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.base_cost = center.cost or 1"
+position = "before"
+payload = '''
+self.ability.cry_prob = 1
+'''
+match_indent = true
+
+# define function in lovely
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "function save_run()"
+position = "before"
+payload = '''
+function cry_prob(owned, den, rigged)
+	prob = G.GAME and G.GAME.probabilities.normal or 1
+	if rigged then 
+		return den
+	else
+		return prob*owned
+	end
+end
+'''
+match_indent = true
+
+# lucky
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.effect == 'Lucky Card' then loc_vars = {G.GAME.probabilities.normal, cfg.mult, 5, cfg.p_dollars, 15}'''
+position = "at"
+payload = '''
+elseif _c.effect == 'Lucky Card' then loc_vars = {cfg.cry_prob and cry_prob(cfg.cry_prob, 15, cfg.cry_rigged) or G.GAME.probabilities.normal, cfg.mult, 5, cfg.p_dollars, 15}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if pseudorandom('lucky_money') < G.GAME.probabilities.normal/15 then'''
+position = "at"
+payload = '''
+if pseudorandom('lucky_money') < cry_prob(self.ability.cry_prob, 15, self.ability.cry_rigged)/15 then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if pseudorandom('lucky_mult') < G.GAME.probabilities.normal/5 then'''
+position = "at"
+payload = '''
+if pseudorandom('lucky_mult') < cry_prob(self.ability.cry_prob, 5, self.ability.cry_rigged)/5 then
+'''
+match_indent = true
+
+# glass
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.effect == 'Glass Card' then loc_vars = {cfg.Xmult, G.GAME.probabilities.normal, cfg.extra}'''
+position = "at"
+payload = '''
+elseif _c.effect == 'Glass Card' then loc_vars = {cfg.Xmult, cfg.cry_prob and cry_prob(cfg.cry_prob, cfg.extra, cfg.cry_rigged) or G.GAME.probabilities.normal, cfg.extra}
+'''
+match_indent = true
+
+# wow this is a fat line
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''if SMODS.has_enhancement(scoring_hand[i], 'm_glass') and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/(scoring_hand[i].ability.name == 'Glass Card' and scoring_hand[i].ability.extra or G.P_CENTERS.m_glass.config.extra) then'''
+position = "at"
+payload = '''
+if SMODS.has_enhancement(scoring_hand[i], 'm_glass') and not scoring_hand[i].debuff and pseudorandom('glass') < cry_prob(scoring_hand[i].ability.cry_prob, scoring_hand[i].ability.extra or G.P_CENTERS.m_glass.config.extra, scoring_hand[i].ability.cry_rigged)/(scoring_hand[i].ability.name == 'Glass Card' and scoring_hand[i].ability.extra or G.P_CENTERS.m_glass.config.extra) then
+'''
+match_indent = true
+
+# wheeeeeeeeeeel
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == "The Wheel of Fortune" then loc_vars = {G.GAME.probabilities.normal, cfg.extra};  info_queue[#info_queue+1] = G.P_CENTERS.e_foil; info_queue[#info_queue+1] = G.P_CENTERS.e_holo; info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome;'''
+position = "at"
+payload = '''
+elseif _c.name == "The Wheel of Fortune" then loc_vars = {cfg.cry_prob and cry_prob(cfg.cry_prob, cfg.extra, cfg.cry_rigged) or G.GAME.probabilities.normal, cfg.extra};  info_queue[#info_queue+1] = G.P_CENTERS.e_foil; info_queue[#info_queue+1] = G.P_CENTERS.e_holo; info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome;
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex' or pseudorandom('wheel_of_fortune') < G.GAME.probabilities.normal/self.ability.extra then'''
+position = "at"
+payload = '''
+if self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex' or pseudorandom('wheel_of_fortune') < cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged)/self.ability.extra then
+'''
+match_indent = true
+
+# ok now onto jonklers
+
+# space
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Space Joker' then loc_vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Space Joker' then loc_vars = {cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged), self.ability.extra}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Space Joker' and pseudorandom('space') < G.GAME.probabilities.normal/self.ability.extra then'''
+position = "at"
+payload = '''
+if self.ability.name == 'Space Joker' and pseudorandom('space') < cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged)/self.ability.extra then
+'''
+match_indent = true
+
+# 8ball
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == '8 Ball' then loc_vars = {''..(G.GAME and G.GAME.probabilities.normal or 1),self.ability.extra}'''
+position = "at"
+payload = '''
+elseif self.ability.name == '8 Ball' then loc_vars = {cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged),self.ability.extra}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if (context.other_card:get_id() == 8) and (pseudorandom('8ball') < G.GAME.probabilities.normal/self.ability.extra) then'''
+position = "at"
+payload = '''
+if (context.other_card:get_id() == 8) and (pseudorandom('8ball') < cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged)/self.ability.extra) then
+'''
+match_indent = true
+
+# business
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Business Card' then loc_vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Business Card' then loc_vars = {cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged),self.ability.extra}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''pseudorandom('business') < G.GAME.probabilities.normal/self.ability.extra then'''
+position = "at"
+payload = '''
+pseudorandom('business') < cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged)/self.ability.extra then
+'''
+match_indent = true
+
+# gros michel + cavendish
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Gros Michel' then loc_vars = {self.ability.extra.mult, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Gros Michel' then loc_vars = {self.ability.extra.mult, cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged), self.ability.extra.odds}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Cavendish' then loc_vars = {self.ability.extra.Xmult, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Cavendish' then loc_vars = {self.ability.extra.Xmult, cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged), self.ability.extra.odds}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if pseudorandom(self.ability.name == 'Cavendish' and 'cavendish' or 'gros_michel') < G.GAME.probabilities.normal/self.ability.extra.odds then'''
+position = "at"
+payload = '''
+if pseudorandom(self.ability.name == 'Cavendish' and 'cavendish' or 'gros_michel') < cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged)/self.ability.extra.odds then
+'''
+match_indent = true
+
+# business
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Business Card' then loc_vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Business Card' then loc_vars = {cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged),self.ability.extra}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''pseudorandom('business') < G.GAME.probabilities.normal/self.ability.extra then'''
+position = "at"
+payload = '''
+pseudorandom('business') < cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged)/self.ability.extra then
+'''
+match_indent = true
+
+# bloodstone
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Bloodstone' then loc_vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds, self.ability.extra.Xmult}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Bloodstone' then loc_vars = {cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged), self.ability.extra.odds, self.ability.extra.Xmult}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''pseudorandom('bloodstone') < G.GAME.probabilities.normal/self.ability.extra.odds then'''
+position = "at"
+payload = '''
+pseudorandom('bloodstone') < cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged)/self.ability.extra.odds then
+'''
+match_indent = true
+
+# reserved parking
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Reserved Parking' then loc_vars = {self.ability.extra.dollars, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra.odds}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Reserved Parking' then loc_vars = {self.ability.extra.dollars, cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged), self.ability.extra.odds}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''pseudorandom('parking') < G.GAME.probabilities.normal/self.ability.extra.odds then'''
+position = "at"
+payload = '''
+pseudorandom('parking') < cry_prob(self.ability.cry_prob, self.ability.extra.odds, self.ability.cry_rigged)/self.ability.extra.odds then
+'''
+match_indent = true
+
+# hallucination
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Hallucination' then loc_vars = {G.GAME.probabilities.normal, self.ability.extra}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Hallucination' then loc_vars = {cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged), self.ability.extra}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if pseudorandom('halu'..G.GAME.round_resets.ante) < G.GAME.probabilities.normal/self.ability.extra then'''
+position = "at"
+payload = '''
+if pseudorandom('halu'..G.GAME.round_resets.ante) < cry_prob(self.ability.cry_prob, self.ability.extra, self.ability.cry_rigged)/self.ability.extra then
+'''
+match_indent = true
