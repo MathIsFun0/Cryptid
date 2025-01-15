@@ -5,9 +5,6 @@ local cat = {
 	key = "cat",
 	name = "cry-Cat Tag",
 	order = 12,
-	loc_vars = function(self, info_queue)
-		return { vars = {self.ability.level or 1} }
-	end,
 }
 local epic_tag = {
 	object_type = "Tag",
@@ -57,7 +54,7 @@ local schematic = {
 	config = { type = "store_joker_create" },
 	key = "schematic",
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = { set = "Joker", key = "j_brainstorm" }
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_brainstorm
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -91,7 +88,7 @@ local empoweredPack = {
 	key = "empowered",
 	kind = "Spectral",
 	no_doe = true,
-	atlas = "empowered",
+	atlas = "pack",
 	pos = { x = 3, y = 1 },
 	config = { extra = 2, choose = 1 },
 	cost = 0,
@@ -122,20 +119,13 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if i % 2 == 1 and Cryptid.enabled["Exotic Jokers"] then
+		if i % 2 == 1 and cry_card_enabled("c_cry_gateway") then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		else
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
 		end
 	end,
 	group_key = "k_spectral_pack",
-}
-local empoweredpack_sprite = {
-	object_type = "Atlas",
-	key = "empowered",
-	path = "pack_cry.png",
-	px = 71,
-	py = 95,
 }
 local empowered = {
 	object_type = "Tag",
@@ -147,9 +137,9 @@ local empowered = {
 	key = "empowered",
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
-		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
-		if Cryptid.enabled["Exotic Jokers"] then
-			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
+		info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
+		if cry_card_enabled("c_cry_gateway") then
+			info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_gateway
 		end
 		return { vars = {} }
 	end,
@@ -192,7 +182,7 @@ local gambler = {
 	min_ante = 2,
 	key = "gambler",
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_empowered" }
+		info_queue[#info_queue + 1] = G.P_CENTERS.tag_cry_empowered
 		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
 	end,
 	apply = function(self, tag, context)
@@ -224,10 +214,10 @@ local bundle = {
 	key = "bundle",
 	min_ante = 2,
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_standard" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_charm" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_meteor" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_buffoon" }
+		info_queue[#info_queue + 1] = G.P_CENTERS.tag_standard
+		info_queue[#info_queue + 1] = G.P_CENTERS.tag_charm
+		info_queue[#info_queue + 1] = G.P_CENTERS.tag_meteor
+		info_queue[#info_queue + 1] = G.P_CENTERS.tag_buffoon
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -631,22 +621,14 @@ local banana = {
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][61].key
 			})
-			info_queue[#info_queue + 1] = {
-				set = "Joker", 
-				key = "j_cavendish",
-				specific_vars = { 3, G.GAME.probabilities.normal or 1, 1000 }
-			}
+			info_queue[#info_queue + 1] = G.P_CENTERS.j_cavendish
 		else
 			banana = localize({ 
 				type = "name_text",
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][38].key
 			})
-			info_queue[#info_queue + 1] = {
-				set = "Joker", 
-				key = "j_gros_michel",
-				specific_vars = { 15, G.GAME.probabilities.normal or 1, 6 }
-			}
+			info_queue[#info_queue + 1] = G.P_CENTERS.j_gros_michel
 		end
 		return { vars = { banana } }
 	end,
@@ -714,7 +696,7 @@ local loss = {
 	key = "loss",
 	min_ante = 2,
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_meme_1", specific_vars = { 2, 5 } }
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_cry_meme_1
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -920,7 +902,6 @@ local tagitems = {
 	gourmand,
 	better_top_up,
 	booster,
-	empoweredpack_sprite,
 }
 if Cryptid.enabled["Vouchers"] then
 	tagitems[#tagitems + 1] = better_voucher
