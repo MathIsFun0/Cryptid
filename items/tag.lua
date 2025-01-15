@@ -5,6 +5,9 @@ local cat = {
 	key = "cat",
 	name = "cry-Cat Tag",
 	order = 12,
+	loc_vars = function(self, info_queue)
+		return { vars = {self.ability.level or 1} }
+	end,
 }
 local epic_tag = {
 	object_type = "Tag",
