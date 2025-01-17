@@ -35,7 +35,7 @@ SMODS.Joker:take_ownership("green_joker", {
 				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra } }),
 			}
 		end
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.joker_main then
 			return {
 				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.mult } }),
 				mult_mod = card.ability.mult,
