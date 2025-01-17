@@ -31,7 +31,7 @@ local white_hole = {
 		end
 		local removed_levels = 0
 		for k, v in ipairs(G.handlist) do
-			if G.GAME.hands[v].level > 1 then
+			if to_big(G.GAME.hands[v].level) > to_big(1)h then
 				local this_removed_levels = G.GAME.hands[v].level - 1
 				removed_levels = removed_levels + this_removed_levels
 				level_up_hand(used_consumable, v, true, -this_removed_levels)
@@ -75,7 +75,7 @@ local white_hole = {
 		end
 		local removed_levels = 0
 		for k, v in ipairs(G.handlist) do
-			if G.GAME.hands[v].level > 1 then
+			if to_big(G.GAME.hands[v].level) > to_big(1) then
 				local this_removed_levels = G.GAME.hands[v].level - 1
 				removed_levels = removed_levels + this_removed_levels
 				level_up_hand(used_consumable, v, true, -this_removed_levels)
