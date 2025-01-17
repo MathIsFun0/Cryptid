@@ -837,37 +837,48 @@ end
 ------------------------------
 
 SMODS.GameObject._disable = function(self, reason)
-	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+	if not self.cry_disabled then
+		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+	end
 end
 SMODS.GameObject.enable = function(self)
-	self.cry_disabled = nil
+	if self.cry_disabled then
+		self.cry_disabled = nil
+	end
 end
 
 SMODS.Center._disable = function(self, reason)
-	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
-	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
-	G.P_CENTERS[self.key] = nil
+	if not self.cry_disabled then
+		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+		G.P_CENTERS[self.key] = nil
+	end
 end
 SMODS.Center.enable = function(self)
-	self.cry_disabled = nil
-	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
-	G.P_CENTERS[self.key] = self
+	if self.cry_disabled then
+		self.cry_disabled = nil
+		SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+		G.P_CENTERS[self.key] = self
+	end
 end
---todo: properly deal with rarity pools being changed by gamesets
 SMODS.Joker.enable = function(self)
-	SMODS.Center.enable(self)
-	SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
-	local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
-	if vanilla_rarities[self.rarity] then
-		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
+	if self.cry_disabled then
+		SMODS.Center.enable(self)
+		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self)
+		local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
+		if vanilla_rarities[self.rarity] then
+			SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
+		end
 	end
 end
 SMODS.Joker._disable = function(self, reason)
-	SMODS.Center._disable(self, reason)
-	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
-	local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
-	if vanilla_rarities[self.rarity] then
-		SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self.key)
+	if not self.cry_disabled then
+		SMODS.Center._disable(self, reason)
+		SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
+		local vanilla_rarities = { ["Common"] = 1, ["Uncommon"] = 2, ["Rare"] = 3, ["Legendary"] = 4 }
+		if vanilla_rarities[self.rarity] then
+			SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self.key)
+		end
 	end
 end
 SMODS.Joker.set_rarity = function(self, rarity)
@@ -881,61 +892,81 @@ SMODS.Joker.set_rarity = function(self, rarity)
 end
 
 SMODS.Consumable.enable = function(self)
-	SMODS.Center.enable(self)
-	SMODS.insert_pool(G.P_CENTER_POOLS["Consumeables"], self)
+	if self.cry_disabled then
+		SMODS.Center.enable(self)
+		SMODS.insert_pool(G.P_CENTER_POOLS["Consumeables"], self)
+	end
 end
 SMODS.Consumable._disable = function(self, reason)
-	SMODS.Center._disable(self, reason)
-	SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], self.key)
+	if not self.cry_disabled then
+		SMODS.Center._disable(self, reason)
+		SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], self.key)
+	end
 end
 
 SMODS.Tag._disable = function(self, reason)
-	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
-	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
-	G.P_TAGS[self.key] = nil
+	if not self.cry_disabled then
+		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+		G.P_TAGS[self.key] = nil
+	end
 end
 SMODS.Tag.enable = function(self)
-	self.cry_disabled = nil
-	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
-	G.P_TAGS[self.key] = self
+	if self.cry_disabled then
+		self.cry_disabled = nil
+		SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+		G.P_TAGS[self.key] = self
+	end
 end
 
 SMODS.Blind._disable = function(self, reason)
-	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
-	G.P_BLINDS[self.key] = nil
+	if not self.cry_disabled then
+		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+		G.P_BLINDS[self.key] = nil
+	end
 end
 SMODS.Blind.enable = function(self)
-	self.cry_disabled = nil
-	G.P_BLINDS[self.key] = self
+	if self.cry_disabled then
+		self.cry_disabled = nil
+		G.P_BLINDS[self.key] = self
+	end
 end
 
 --Removing seals from the center table causes issues
 SMODS.Seal._disable = function(self, reason)
-	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
-	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+	if not self.cry_disabled then
+		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+	end
 end
 SMODS.Seal.enable = function(self)
-	self.cry_disabled = nil
-	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+	if self.cry_disabled then
+		self.cry_disabled = nil
+		SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+	end
 end
 
 --Removing editions from the center table causes issues, so instead we make them unable to spawn naturally
 SMODS.Edition._disable = function(self, reason)
-	self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
-	SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
-	self.cry_get_weight = self.get_weight
-	self.get_weight = function()
-		return 0
+	if not self.cry_disabled then
+		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
+		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+		self.cry_get_weight = self.get_weight
+		self.get_weight = function()
+			return 0
+		end
 	end
 end
 SMODS.Edition.enable = function(self)
-	self.cry_disabled = nil
-	SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
-	self.get_weight = self.cry_get_weight
-	self.cry_get_weight = nil
+	if self.cry_disabled then
+		self.cry_disabled = nil
+		SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+		self.get_weight = self.cry_get_weight
+		self.cry_get_weight = nil
+	end
 end
 
-function cry_update_obj_registry(m)
+function cry_update_obj_registry(m, force_enable)
 	if not m then
 		m = SMODS.GameObject
 		if m.subclasses then
@@ -947,7 +978,7 @@ function cry_update_obj_registry(m)
 	if m.obj_table then
 		for k, v in pairs(m.obj_table) do
 			if v.mod and v.mod.id == "Cryptid" then
-				local en = cry_card_enabled(k)
+				local en = force_enable or cry_card_enabled(k)
 				if en == true then
 					if v.cry_disabled then
 						v:enable()
@@ -963,6 +994,7 @@ function cry_update_obj_registry(m)
 end
 local init_item_prototypes_ref = Game.init_item_prototypes
 function Game:init_item_prototypes()
+	cry_update_obj_registry(nil, true) --force enable, to prevent issues with profile reloading
 	init_item_prototypes_ref(self)
 	cry_update_obj_registry()
 end
