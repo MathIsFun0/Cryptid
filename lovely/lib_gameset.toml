@@ -26,7 +26,7 @@ match_indent = true
 target = "game.lua"
 pattern = 'self:load_profile(G.SETTINGS.profile or 1)'
 position = "before"
-payload = '''Cryptid.profile_prefix = "M"
+payload = '''Cryptid.profile_prefix = Jen and "J" or "M"
 if type(G.SETTINGS.profile) ~= "string" or G.SETTINGS.profile:sub(1, #Cryptid.profile_prefix) ~= Cryptid.profile_prefix then
     G.SETTINGS.profile = Cryptid.profile_prefix .. "1"
 end

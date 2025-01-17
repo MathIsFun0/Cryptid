@@ -30,6 +30,10 @@ function Game:update(dt)
 end
 
 G.FUNCS.cry_intro_controller = function()
+	if Jen then
+		G.PROFILES[G.SETTINGS.profile].cry_intro_complete = true
+		G.PROFILES[G.SETTINGS.profile].cry_gameset = "madness"
+	end
 	G.PROFILES[G.SETTINGS.profile].cry_intro_progress = G.PROFILES[G.SETTINGS.profile].cry_intro_progress
 		or {
 			state = "start",
@@ -513,6 +517,9 @@ end
 
 -- designed to work on any object type
 function cry_get_gameset(card, center)
+	if Jen then
+		return "madness"
+	end
 	if not center then
 		if not card then
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
@@ -576,39 +583,42 @@ function Card:set_ability(center, y, z)
 end
 
 --open gameset config UI when clicking on a card in the Cryptid collection
-local ccl = Card.click
-function Card:click()
-	ccl(self)
-	if G.your_collection then
-		for k, v in pairs(G.your_collection) do
-			if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-				if not self.config.center or self.config.center and self.config.center.set == "Default" then
-					--make a fake center
-					local old_force_gameset = self.config.center and self.config.center.force_gameset
-					if self.seal then
-						self.config.center = SMODS.Seal.obj_table[self.seal]
-						self.config.center.set = "Seal"
-					end
-					for k, v in pairs(SMODS.Stickers) do
-						if self.ability[k] then
-							self.config.center = SMODS.Sticker.obj_table[k]
-							self.config.center.set = "Sticker"
+--disable this functionality for Jen's Almanac
+if not Jen then
+	local ccl = Card.click
+	function Card:click()
+		ccl(self)
+		if G.your_collection then
+			for k, v in pairs(G.your_collection) do
+				if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+					if not self.config.center or self.config.center and self.config.center.set == "Default" then
+						--make a fake center
+						local old_force_gameset = self.config.center and self.config.center.force_gameset
+						if self.seal then
+							self.config.center = SMODS.Seal.obj_table[self.seal]
+							self.config.center.set = "Seal"
+						end
+						for k, v in pairs(SMODS.Stickers) do
+							if self.ability[k] then
+								self.config.center = SMODS.Sticker.obj_table[k]
+								self.config.center.set = "Sticker"
+							end
+						end
+						if self.config.center then
+							self.config.center.force_gameset = old_force_gameset
 						end
 					end
-					if self.config.center then
-						self.config.center.force_gameset = old_force_gameset
+					if self.gameset_select then
+						Card.cry_set_gameset(self, self.config.center, self.config.center.force_gameset)
+						cry_update_obj_registry()
 					end
+					cry_gameset_config_UI(self.config.center)
 				end
-				if self.gameset_select then
-					Card.cry_set_gameset(self, self.config.center, self.config.center.force_gameset)
-					cry_update_obj_registry()
-				end
-				cry_gameset_config_UI(self.config.center)
 			end
 		end
-	end
-	if G.GAME.viewed_back and self.config.center.key == "c_base" then
-		cry_gameset_config_UI(G.GAME.viewed_back.effect.center)
+		if G.GAME.viewed_back and self.config.center.key == "c_base" then
+			cry_gameset_config_UI(G.GAME.viewed_back.effect.center)
+		end
 	end
 end
 
