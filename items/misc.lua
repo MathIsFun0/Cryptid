@@ -906,26 +906,24 @@ local gold_edition = {
 		-- Randomize offset to -1..1
 		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
 	end,
+	-- WIP
 	calculate = function(self, card, context)
 		if
-			context.joker_triggered
-			or context.from_consumable
+			(
+				context.post_trigger --this one is still a bit inconsistent I think
+				and context.other_card == card
+			)
 			or (
-				context.from_playing_card
-				and context.cardarea
-				and context.cardarea == G.play
-				and not context.repetition
+				context.using_consumeable --this doesn't always work, since it could be in a pack
+				and context.consumeable == card
 			)
 		then
-			ease_dollars(self.config.dollars)
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("$") .. self.config.dollars, colour = G.C.MONEY }
-			)
+			SMODS.calculate_effect({dollars = self.config.dollars}, card, true)
+		end
+		
+		if context.main_scoring and context.cardarea == G.play then
+			-- this has to be done differently to not double-trigger
+			return {dollars = self.config.dollars}
 		end
 	end,
 }
