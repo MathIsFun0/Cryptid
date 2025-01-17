@@ -959,6 +959,15 @@ local echo = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
+	calculate = function(self, card, context)
+		if context.repetition and pseudorandom("echo") < cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2) then
+			return {
+				message = localize("k_again_ex"),
+				repetitions = card.ability.retriggers,
+				card = card,
+			}
+		end
+	end,
 }
 local eclipse = {
 	object_type = "Consumable",
@@ -984,8 +993,8 @@ local light = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult, card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult, card and card.ability.extra.current or self.config.extra.current, card and card.ability.extra.req or self.config.extra.req } }
 	end,
-	calculate = function(self,card,context,effect)
-		if context.cardarea == G.play and not context.repetition then
+	calculate = function(self,card,context)
+		if context.cardarea == G.play and context.main_scoring then
 			if #context.scoring_hand > 1 then
 				card.ability.extra.current = card.ability.extra.current - (#context.scoring_hand - 1)
 				while card.ability.extra.current <= 0 do
@@ -995,7 +1004,9 @@ local light = {
 				end
 			end
 			if card.ability.extra.current_x_mult > 1 then
-				effect.x_mult = card.ability.extra.current_x_mult
+				return {
+					x_mult = card.ability.extra.current_x_mult
+				}
 			end
 		end
 	end,
@@ -1597,29 +1608,6 @@ end
 return {
 	name = "Misc.",
 	init = function()
-		--echo card
-		cs = Card.calculate_seal
-		function Card:calculate_seal(context)
-			local ret = cs(self, context)
-			if context.repetition then
-				local total_repetitions = ret and ret.repetitions or 0
-
-				if self.config.center == G.P_CENTERS.m_cry_echo then
-					if pseudorandom("echo") < cry_prob(self.ability.cry_prob, self.ability.extra or 2, self.ability.cry_rigged) / (self.ability.extra or 2) then --hacky crash fix
-						total_repetitions = total_repetitions + self.ability.retriggers
-					end
-				end
-
-				if total_repetitions > 0 then
-					return {
-						message = localize("k_again_ex"),
-						repetitions = total_repetitions,
-						card = self,
-					}
-				end
-			end
-			return ret
-		end
 		--Change name of cards with Jolly edition
 		local gcui = generate_card_ui
 		function generate_card_ui(

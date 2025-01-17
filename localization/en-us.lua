@@ -625,7 +625,7 @@ return {
 	        m_cry_light = {
                 name = "Light Card",
                 text = {
-                    "When played with {C:attention}#4#{} {C:inactive}(#3#){} other",
+                    "When triggered with {C:attention}#4#{} {C:inactive}(#3#){} other",
                     "scoring cards, gain {X:mult,C:white}X#1#{} Mult and",
                     "increase requirement by {C:attention}5{}",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
