@@ -174,8 +174,8 @@ local critical = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { G.GAME.probabilities.normal or 1 } }
 	end,
-	trigger_effect = function(self, args)
-		if args.context == "final_scoring_step" then
+	calculate = function(self, card, context)
+		if context.final_scoring_step then
 			local crit_poll = pseudorandom(pseudoseed("cry_critical"))
 			crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
 			if crit_poll < self.config.cry_crit_rate then
@@ -214,7 +214,7 @@ local critical = {
 				}))
 			end
 			delay(0.6)
-			return args.chips, args.mult
+			return context.chips, context.mult
 		end
 	end,
 }
