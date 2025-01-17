@@ -7098,26 +7098,6 @@ return {
 				self.cost = 27
 			end
 		end
-		--Jimball Patches
-		local upd = Game.update
-		cry_jimball_dt = 0
-		function Game:update(dt)
-			upd(self, dt)
-			cry_jimball_dt = cry_jimball_dt + dt
-			if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
-				cry_jimball_dt = 0
-				local obj = G.P_CENTERS.j_cry_jimball
-				if obj.pos.x == 5 and obj.pos.y == 6 then
-					obj.pos.x = 0
-					obj.pos.y = 0
-				elseif obj.pos.x < 8 then
-					obj.pos.x = obj.pos.x + 1
-				elseif obj.pos.y < 6 then
-					obj.pos.x = 0
-					obj.pos.y = obj.pos.y + 1
-				end
-			end
-		end
 
 		local oldfunc = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)

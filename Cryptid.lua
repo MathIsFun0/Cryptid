@@ -84,6 +84,7 @@ local function process_items(f, mod)
 					if mod then
 						item.order = item.order + 1e9
 					end
+					item.cry_order = item.order
 					if not Cryptid.object_buffer[item.object_type] then
 						Cryptid.object_buffer[item.object_type] = {}
 					end

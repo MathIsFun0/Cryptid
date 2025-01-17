@@ -1178,13 +1178,6 @@ end
 ---- GENERIC COLLECTIONS -----
 ------------------------------
 
-G.FUNCS.your_collection_generic = function(e)
-	G.SETTINGS.paused = true
-	G.FUNCS.overlay_menu({
-		definition = create_UIBox_your_collection_generic(),
-	})
-end
-
 function create_generic_card(center)
 	--todo: make gameset stickers play nicely with resized sprites
 	local card = Card(
@@ -1248,6 +1241,9 @@ SMODS.collection_pool = function(m)
 				v.config = {}
 			end
 		end
+		table.sort(m, function(a, b)
+			return a.cry_order < b.cry_order
+		end)
 	end
 	return smcp(m)
 end
