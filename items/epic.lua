@@ -1555,6 +1555,7 @@ local goldjoker = {
 
 -- Nostalgic Googol Play Card
 -- Sell this card to create 2 copies of the leftmost Joker
+-- Still needs updated description
 local altgoogol = {
 	object_type = "Joker",
 	name = "cry-altgoogol",
@@ -1574,14 +1575,16 @@ local altgoogol = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	gameset_config = {
-       		modest = {cost = 15},
-		madness = {center = {blueprint_compat = true}},
+       	modest = {cost = 15, copies = 1},
+		mainline = {copies = 2},
+		madness = {center = {blueprint_compat = true}, copies = 2},
  	},
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.copies } }
+	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
 		if context.selling_self and not context.retrigger_joker and (gameset == "madness" or not context.blueprint) then
-			local modestcheck = nil
-			if gameset == "modest" then modestcheck = true end
 			local jokers = {}
                 	for i=1, #G.jokers.cards do 
                     		if G.jokers.cards[i] ~= card then
@@ -1589,13 +1592,13 @@ local altgoogol = {
                     		end
                 	end
                 	if #jokers > 0 then
-				if not modestcheck or #G.jokers.cards <= G.jokers.config.card_limit then 
+				if not gameset == "modest" or #G.jokers.cards <= G.jokers.config.card_limit then 
 					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								for i = 1, (2 - (modestcheck and 1 or 0)) do
+								for i = 1, card.ability.copies do
 									local chosen_joker = G.jokers.cards[1]
-									local card = copy_card(chosen_joker, nil, nil, nil, (modestcheck and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
+									local card = copy_card(chosen_joker, nil, nil, nil, (gameset == "modest" and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
 									card:add_to_deck()
 									G.jokers:emplace(card)
 								end
