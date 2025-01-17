@@ -1083,8 +1083,10 @@ local azure_seal = {
 	end,
 	atlas = "cry_misc",
 	pos = { x = 0, y = 2 },
+	-- This is still quite jank
 	calculate = function(self, card, context)
-		if context.destroying_card then
+		if context.destroying_card and not card.will_shatter then
+			card.will_shatter = true
 			G.E_MANAGER:add_event(Event({
 				trigger = "before",
 				delay = 0.0,
@@ -1111,7 +1113,7 @@ local azure_seal = {
 				end,
 			}))
 
-			return true
+			return {remove = true}
 		end
 	end,
 }

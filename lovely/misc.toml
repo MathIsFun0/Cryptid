@@ -233,33 +233,6 @@ if self.ability.name == 'The Wheel of Fortune' then self.cry_wheel_success = tru
 '''
 match_indent = false
 
-# unscoring context (for Green Seal)
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "for i=1, #G.hand.cards do"
-position = "before"
-payload = '''
-if scoring_hand then
-    local unscoring_hand = {}
-    for i = 1, #G.play.cards do
-        local is_scoring = false
-        for j = 1, #scoring_hand do
-            if G.play.cards[i] == scoring_hand[j] then
-                is_scoring = true
-            end
-        end
-        if not is_scoring then
-            unscoring_hand[#unscoring_hand+1] = G.play.cards[i]
-        end
-    end
-    for i = 1, #unscoring_hand do
-        unscoring_hand[i]:calculate_seal{unscoring = true}
-    end
-end
-'''
-match_indent = true
-
 # no "Again!" text if a card will shatter
 [[patches]]
 [patches.pattern]

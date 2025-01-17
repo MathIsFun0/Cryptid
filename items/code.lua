@@ -1726,20 +1726,28 @@ local green_seal = {
 	pos = { x = 1, y = 2 },
 
 	calculate = function(self, card, context)
-		if context.unscoring then
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				func = function()
-					if G.consumeables.config.card_limit > #G.consumeables.cards then
-						local c = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
-						c:add_to_deck()
-						G.consumeables:emplace(c)
-						card:juice_up()
-					end
-					return true
-				end,
-			}))
-			return true
+		if context.before and not context.blueprint and card == context.scoring_hand[1] then
+			for k, v in ipairs(context.scoring_hand) do
+				v.cry_green_incompat = true
+			end
+			for k, v in ipairs(context.full_hand) do
+				if not v.cry_green_incompat then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.consumeables.config.card_limit > #G.consumeables.cards then
+								local c = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
+								c:add_to_deck()
+								G.consumeables:emplace(c)
+								v:juice_up()
+							end
+							return true
+						end,
+					}))
+				end
+			end
+			for k, v in ipairs(context.scoring_hand) do
+				v.cry_green_incompat = nil
+			end
 		end
 	end,
 }
@@ -1888,11 +1896,11 @@ local encoded = {
 }
 
 local source_deck = {
-	dependencies = {
+	--[[dependencies = {
 		items = {
 			"cry_green_seal",
 		},
-	},
+	},--]] --doesn't work for some reason
 	object_type = "Back",
 	name = "cry-Source Deck",
 	key = "source_deck",
