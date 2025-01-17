@@ -97,6 +97,7 @@ end
 match_indent = true
 
 # copied from rework patch
+# reverting this because I thought it would fix a crash but it just led to a different crash
 [[patches]]
 [patches.pattern]
 target = "tag.lua"

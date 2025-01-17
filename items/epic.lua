@@ -677,11 +677,7 @@ local m = {
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_jolly",
-			specific_vars = { 8, localize("Pair", "poker_hands") },
-		}
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return { vars = { center.ability.extra.extra, center.ability.extra.x_mult } }
 	end,
 	atlas = "atlasepic",
@@ -718,13 +714,15 @@ local m = {
 			local vc = self.calculate
 			self.calculate = function(self, card, context)
 				local ret, trig = vc(self, card, context)
-				local reps = get_m_retriggers(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
-					return {
-						message = localize("k_again_ex"),
-						repetitions = reps + (ret and ret.repetitions or 0),
-						card = card,
-					}
+				if context.retrigger_joker_check and context.other_card == card then
+					local reps = get_m_retriggers(self, card, context)
+					if reps > 0 then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = reps + (ret and ret.repetitions or 0),
+							card = card,
+						}
+					end
 				end
 				return ret, trig
 			end
@@ -763,11 +761,7 @@ local M = {
 	immutable = true,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_jolly",
-			specific_vars = { 8, localize("Pair", "poker_hands") },
-		}
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
@@ -789,13 +783,15 @@ local M = {
 			local vc = self.calculate
 			self.calculate = function(self, card, context)
 				local ret, trig = vc(self, card, context)
-				local reps = get_m_retriggers(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card and reps > 0 then
-					return {
-						message = localize("k_again_ex"),
-						repetitions = reps + (ret and ret.repetitions or 0),
-						card = card,
-					}
+				if context.retrigger_joker_check and context.other_card == card then
+					local reps = get_m_retriggers(self, card, context)
+					if reps > 0 then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = reps + (ret and ret.repetitions or 0),
+							card = card,
+						}
+					end
 				end
 				return ret, trig
 			end
