@@ -269,24 +269,6 @@ position = "at"
 payload = '''if reps[j] ~= 1 and (not scoring_hand or not scoring_hand[i] or not scoring_hand[i].will_shatter) then'''
 match_indent = true
 
-# properly remove destroyed playing cards from deck
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = '''if destroyed then'''
-position = "before"
-payload = '''if scoring_hand[i].will_shatter then destroyed = true end'''
-match_indent = true
-
-# sfx fixes with destroyed playing cards from fragile edition
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = '''if SMODS.has_enhancement(cards_destroyed[i], 'm_glass') then'''
-position = "before"
-payload = '''if cards_destroyed[i].will_shatter then return true end'''
-match_indent = true
-
 # m
 [[patches]]
 [patches.pattern]

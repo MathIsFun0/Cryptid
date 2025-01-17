@@ -171,6 +171,11 @@ local mosaic = {
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.x_chips } }
 	end,
+	calculate = function(self, card, context)
+		if context.main_scoring and context.cardarea == G.play then
+			return {x_chips = self.config.x_chips}
+		end
+	end,
 }
 local oversat_shader = {
 	object_type = "Shader",
@@ -287,6 +292,8 @@ local glitched = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
+	-- Note: This is happening even when it shouldn't (like in deck view)
+	-- Also messes with rank sort order a bit for some reason
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, nil, true)
@@ -846,12 +853,10 @@ local glass_edition = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.joker_triggered
+			context.post_trigger
 			or (
-				context.from_playing_card
-				and context.cardarea
+				context.main_scoring
 				and context.cardarea == G.play
-				and not context.repetition
 			)
 		then
 			if
@@ -859,15 +864,13 @@ local glass_edition = {
 				> G.GAME.probabilities.normal * (self.config.shatter_chance - 1) / self.config.shatter_chance
 				and not card.ability.eternal
 			then
-				card.will_shatter = true
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					func = function()
-						card:shatter()
-						return true
-					end,
-				}))
+				--card.will_shatter = true
+				--Currently crashes if this is called
 			end
+			return {x_mult = self.config.x_mult}
+		end
+		if context.destroying_card and context.destroying_card.will_shatter then
+			return {remove = true}
 		end
 	end,
 }
