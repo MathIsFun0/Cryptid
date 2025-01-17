@@ -910,7 +910,7 @@ local gold_edition = {
 	calculate = function(self, card, context)
 		if
 			(
-				context.post_trigger --this one is still a bit inconsistent I think
+				context.post_trigger
 				and context.other_card == card
 			)
 			or (
