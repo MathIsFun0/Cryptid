@@ -507,6 +507,11 @@ local astral = {
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.e_mult } }
 	end,
+	calculate = function(self, card, context)
+		if context.main_scoring and context.cardarea == G.play then
+			return {e_mult = self.config.e_mult}
+		end
+	end,
 }
 local blurred_shader = {
 	object_type = "Shader",
@@ -536,15 +541,15 @@ local blurred = {
 
 		return { vars = { G.GAME.probabilities.normal, chance, retriggers } }
 	end,
+	--Note: This doesn't always play the animations properly for Jokers
 	calculate = function(self, card, context)
-		if context.retrigger_edition_check then
-			if pseudorandom("cry_blurred") <= G.GAME.probabilities.normal / self.config.retrigger_chance then
-				return {
-					message = localize("cry_again_q"),
-					repetitions = self.config.extra_retriggers,
-					card = card,
-				}
-			end
+		if context.other_card == card and ((context.repetition and context.cardarea == G.play) or (context.retrigger_joker_check and not context.retrigger_joker)) then
+			local extra_retrigger = pseudorandom("cry_blurred") <= G.GAME.probabilities.normal / self.config.retrigger_chance
+			return {
+				message = localize("cry_again_q"),
+				repetitions = self.config.retriggers + (extra_retrigger and self.config.extra_retriggers or 0),
+				card = card,
+			}
 		end
 	end,
 }
@@ -578,9 +583,11 @@ local noisy = {
 		vol = 0.25,
 	},
 	calculate = function(self, card, context)
-		if context.edition_main and context.edition_val then
-			context.edition_val.mult_mod = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult)
-			context.edition_val.chip_mod = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
+		if context.main_scoring and context.cardarea == G.play then
+			return {
+				mult = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult),
+				chips = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
+			}
 		end
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
@@ -809,6 +816,11 @@ local jollyedition = {
 	disable_shadow = true,
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.mult } }
+	end,
+	calculate = function(self, card, context)
+		if context.main_scoring and context.cardarea == G.play then
+			return {mult = self.config.mult}
+		end
 	end,
 }
 
