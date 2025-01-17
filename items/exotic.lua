@@ -153,11 +153,8 @@ local exponentia = {
 	soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and not context.before
-			and not context.after
-			and context.joker_main
 		then
 			print(tprint(context))
 			return {
@@ -411,10 +408,8 @@ local crustulum = {
 			return nil, true
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and to_big(card.ability.extra.chips) > to_big(0)
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
@@ -485,10 +480,8 @@ local primus = {
 			end
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
@@ -508,7 +501,7 @@ local primus = {
 }
 local big_num_whitelist = {
 	j_ride_the_bus = true,
-	j_egg = true,
+	j_egg = false,
 	j_runner = true,
 	j_ice_cream = true,
 	j_constellation = true,
@@ -702,10 +695,8 @@ local stella_mortis = {
 			end
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
@@ -781,7 +772,7 @@ local aequilibrium = {
 		},
 	},
 	object_type = "Joker",
-	name = "Ace Aequilibrium", --WARNING!!!! if name is changed, the aeqactive function in Cryptid.lua's create_card must also be changed since it checks for this!
+	name = "Ace Aequilibrium",
 	key = "equilib",
 	config = { extra = { jokers = 2, card = nil } },
 	rarity = "cry_exotic",
@@ -950,10 +941,8 @@ local facile = {
 			end
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			if card.ability.extra.check2 <= card.ability.extra.check then
 				card.ability.extra.check2 = 0
@@ -1179,10 +1168,8 @@ local verisimile = {
 				)
 			end
 		elseif
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.xmult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
@@ -1224,10 +1211,8 @@ local duplicare = {
 			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Xmult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={number_format(card.ability.extra.Xmult)}},
@@ -1398,10 +1383,8 @@ local items = {
 	--verisimile, WHY IS THIS AN EXOTIC????????????????????
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
+	--formidiulosus
 }
-if Cryptid.enabled["Spooky"] then
-	items[#items + 1] = formidiulosus
-end
 return {
 	name = "Exotic Jokers",
 	init = function()
@@ -1531,5 +1514,4 @@ return {
 		end
 	end,
 	items = items,
-	
 }
