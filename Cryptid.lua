@@ -400,10 +400,10 @@ function cry_bonusvouchermod(mod)
 			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
 				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
 				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
-				
-				
+
+
 				-- this could be a function but it's done like what... 3 times? it doesn't matter rn
-				
+
 				local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
 					G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[curr_bonus[#curr_bonus]],{bypass_discovery_center = true, bypass_discovery_ui = true})
 				card.shop_cry_bonusvoucher = #curr_bonus
@@ -483,7 +483,7 @@ function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undis
 		if selection.discovered or not no_undiscovered then
 			for k, v in pairs(excluded_flags) do
 				if not center_no(selection, v, key, true) then
-					--Makes the consumable invalid if it's a specific card unless it's set to 
+					--Makes the consumable invalid if it's a specific card unless it's set to
 					--I use this so cards don't create copies of themselves (eg potential inf Blessing chain, Hammerspace from Hammerspace...)
 					if not banned_card or (banned_card and banned_card ~= key) then
 						passes = passes + 1
@@ -1175,9 +1175,9 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	
+
 	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
-	
+
 	--Calculate events
 	if self == G.jokers.cards[#G.jokers.cards] then
 		for k, v in pairs(SMODS.Events) do
@@ -2044,9 +2044,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
 		center = G.P_CENTERS[center]
 	end
-	
-	
-	
+
+
+
 	-- handle banned keys for playing cards
 	-- can cache this if it's too much of a performance hit
 	local _cardlist = {}
@@ -2058,12 +2058,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		if add then _cardlist[#_cardlist+1] = k end
 	end
 	if #_cardlist <= 0 then _cardlist[#_cardlist+1] = 'S_A' end
-	
+
 	local front = (
 		(_type == "Base" or _type == "Enhanced")
 		and G.P_CARDS[pseudorandom_element(_cardlist, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))]
 	) or nil
-	
+
 	if area == "ERROR" then
 		local ret = (front or center)
 		if not ret.config then
@@ -2184,6 +2184,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		)
 	then
 		card.ability.banana = true
+	end
+	if
+		G.GAME.modifiers.cry_force_sticker == "cry_rigged"
+	then
+		card.ability.cry_rigged = true
 	end
 	if G.GAME.modifiers.cry_sticker_sheet_plus and not (_type == "Base" or _type == "Enhanced") then
 		for k, v in pairs(SMODS.Stickers) do
@@ -3060,10 +3065,10 @@ for i = 1, #jokers do
 	Cryptid.food[#Cryptid.food+1] = jokers[i]
 end
 function Cryptid.get_food(seed)
-    local food_keys = {}  
-    for k, v in pairs(Cryptid.food) do  
+    local food_keys = {}
+    for k, v in pairs(Cryptid.food) do
         if not G.GAME.banned_keys[v] and G.P_CENTERS[v] then
-            table.insert(food_keys, v)  
+            table.insert(food_keys, v)
         end
     end
     if #food_keys <= 0 then
