@@ -6146,6 +6146,7 @@ local astral_bottle = {
 	object_type = "Joker",
 	name = "cry-astral_bottle",
 	key = "astral_bottle",
+	eternal_compat = false,
 	pos = { x = 7, y = 0 },
 	atlas = "atlasthree",
 	rarity = 2,
