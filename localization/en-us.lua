@@ -3899,22 +3899,22 @@ return {
             },
             cry_intro_2 = {
                 "It looks like you've never",
-                "played Cryptid on this profile before.",
+                "played {C:cry_exotic,E:1}Cryptid{} on this profile before.",
                 "Let me show you how things work!"
             },
             cry_intro_3 = {
                 "*grows hands*"
             },
             cry_intro_4 = {
-                "It's hard to quickly describe this mod, and",
-                "the many ways you can enjoy it.",
-                "Just know that this isn't the same Joker Poker",
-                "that your grandparents showed you!"
+                "It's hard to summarize this mod in",
+                "a few sentences, but what I will say",
+                "is that you're in for a {C:cry_exotic,E:1}wild{} ride!",
+                "This isn't the same {C:attention}Joker Poker{} you know...",
             },
             cry_intro_5 = {
-                "You can see I like the letter M",
-                "by what I named these {C:cry_ascendant}gamesets{}!",
-                "Select one for me to explain..."
+                "As you might be able to tell by these",
+                "{C:cry_ascendant}gamesets{}, I like the letter {C:attention}M{}.",
+                "Select a gameset for me to explain..."
             },
             cry_modest_1 = {
                 "Seeking an experience close to vanilla?",
@@ -3952,7 +3952,8 @@ return {
             cry_madness_3 = {
                 "You'll start with everything unlocked, so you",
                 "can unleash the {C:red,E:1}full power{} of Cryptid!",
-                "Just be careful not to {C:attention,E:1}crash{} the game..."
+                "Just be careful not to {C:attention,E:1}crash{} the game,",
+                "as that'll probably happen before you lose..."
             },
         },
         poker_hands = {

@@ -315,7 +315,7 @@ G.FUNCS.cry_madness = function(e)
 	G.FUNCS.cry_intro_part("madness")
 	G.selectedGameset = "madness"
 end
-G.FUNCS.cry_gameset_confirm = function(e) --WIP
+G.FUNCS.cry_gameset_confirm = function(e)
 	if G.selectedGameset then
 		G.PROFILES[G.SETTINGS.profile].cry_intro_complete = true
 		G.PROFILES[G.SETTINGS.profile].cry_gameset = G.selectedGameset
@@ -330,6 +330,35 @@ G.FUNCS.cry_gameset_confirm = function(e) --WIP
 		end
 		G.OVERLAY_TUTORIAL:remove()
 		G.OVERLAY_TUTORIAL = nil
+		if G.selectedGameset == "madness" then
+			--Unlock All by default in madness
+			G.PROFILES[G.SETTINGS.profile].all_unlocked = true
+			for k, v in pairs(G.P_CENTERS) do
+			if not v.demo and not v.wip then 
+				v.alerted = true
+				v.discovered = true
+				v.unlocked = true
+			end
+			end
+			for k, v in pairs(G.P_BLINDS) do
+			if not v.demo and not v.wip then 
+				v.alerted = true
+				v.discovered = true
+				v.unlocked = true
+			end
+			end
+			for k, v in pairs(G.P_TAGS) do
+			if not v.demo and not v.wip then 
+				v.alerted = true
+				v.discovered = true
+				v.unlocked = true
+			end
+			end
+			set_profile_progress()
+			set_discover_tallies()
+			G:save_progress()
+			G.FILE_HANDLER.force = true
+		end
 	end
 end
 
