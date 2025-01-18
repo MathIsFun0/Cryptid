@@ -1697,7 +1697,7 @@ local soccer = {
 	end,
 	add_to_deck = function(self, card, from_debuff) --TODO: Card in booster packs, Voucher slots
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + Card.get_gameset(card) == "modest" and 0 or card.ability.extra.holygrail
+		G.jokers.config.card_limit = G.jokers.config.card_limit + ((Card.get_gameset(card) == "modest") and 0 or card.ability.extra.holygrail)
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.holygrail
 		G.hand:change_size(card.ability.extra.holygrail)
 		if not G.GAME.modifiers.cry_booster_packs then

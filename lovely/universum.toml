@@ -34,7 +34,7 @@ else
     local effects = {}
     SMODS.calculate_context({cry_universum = true}, effects)
     for i = 1, #effects do
-        universum_mod = universum_mod * (effects[i] and effects[i].mod or 1)
+        universum_mod = universum_mod * (effects[i] and effects[i].jokers and effects[i].jokers.mod or 1)
     end
     G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
     G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult * (universum_mod)^amount, 1)

@@ -125,7 +125,11 @@ local universum = {
 	end,
 	calculate = function(self, card, context)
 		if context.cry_universum then
-			return { mod = to_big(card.ability.extra) }
+			return { 
+				mod = to_big(card.ability.extra),
+				colour = G.C.DARK_EDITION,
+				message = localize("k_upgrade_ex")
+			}
 		end
 	end,
 	cry_credits = {
@@ -1463,7 +1467,7 @@ return {
 									.. localize("k_lvl")
 									.. tostring(vals.level)
 								if is_number(vals.level) then
-									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[math.min(vals.level, 7)]
+									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[to_big(math.min(vals.level, 7)):to_number()]
 								else
 									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
 								end
