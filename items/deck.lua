@@ -176,11 +176,11 @@ local critical = {
 	end,
 	calculate = function(self, card, context)
 		if context.final_scoring_step then
+			local check
 			local crit_poll = pseudorandom(pseudoseed("cry_critical"))
 			crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
 			if crit_poll < self.config.cry_crit_rate then
-				args.mult = args.mult ^ 2
-				update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
+				check = 2
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("talisman_emult", 1)
@@ -196,8 +196,7 @@ local critical = {
 					end,
 				}))
 			elseif crit_poll < self.config.cry_crit_rate + self.config.cry_crit_miss_rate then
-				args.mult = args.mult ^ 0.5
-				update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
+				check = 0.5
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("timpani", 1)
@@ -214,7 +213,12 @@ local critical = {
 				}))
 			end
 			delay(0.6)
-			return context.chips, context.mult
+			if check then
+				return {
+					Emult_mod = check,
+					colour = G.C.DARK_EDITION,
+				}
+			end
 		end
 	end,
 }
