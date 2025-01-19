@@ -6124,66 +6124,21 @@ local kidnap = {
 	pos = { x = 1, y = 2 },
 	config = {
 		extra = { money = 1, money_mod = 3 },
-		jolly = { t_mult = 8, type = "Pair" },
-		zany = { t_mult = 12, type = "Three of a Kind" },
-		mad = { t_mult = 10, type = "Two Pair" },
-		crazy = { t_mult = 12, type = "Straight" },
-		droll = { t_mult = 10, type = "Flush" },
 	},
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_jolly",
-			specific_vars = { self.config.jolly.t_mult, localize(self.config.jolly.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_zany",
-			specific_vars = { self.config.zany.t_mult, localize(self.config.zany.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_mad",
-			specific_vars = { self.config.mad.t_mult, localize(self.config.mad.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_crazy",
-			specific_vars = { self.config.crazy.t_mult, localize(self.config.crazy.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_droll",
-			specific_vars = { self.config.droll.t_mult, localize(self.config.droll.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_sly",
-			specific_vars = { 50, localize(self.config.jolly.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_wily",
-			specific_vars = { 100, localize(self.config.zany.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_clever",
-			specific_vars = { 80, localize(self.config.mad.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_devious",
-			specific_vars = { 100, localize(self.config.crazy.type, "poker_hands") },
-		}
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_crafty",
-			specific_vars = { 80, localize(self.config.droll.type, "poker_hands") },
-		}
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_zany
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_mad
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_crazy
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_droll
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_sly
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_wily
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_clever
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_devious
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_crafty
 		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
 	end,
 	atlas = "atlasone",
