@@ -1482,27 +1482,24 @@ local wario = {
 	end,
 	calculate = function(self, card, context)
 		if context.post_trigger then
-			ease_dollars(card.ability.extra.money)
-			if not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						(context.blueprint_card or card):juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
-			end
-			card_eval_status_text(
-				context.other_context.blueprint_card or context.other_card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("$") .. card.ability.extra.money, colour = G.C.MONEY }
-			)
-			return nil, true
+			return {
+				dollars = card.ability.extra.money,
+				card = context.other_context.blueprint_card or context.other_card,
+				-- This function isn't working properly :sob:
+				--[[func = function()
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if not Talisman.config_file.disable_anims then
+								(context.blueprint_card or card):juice_up(0.5, 0.5)
+							end
+							return true
+						end,
+					}))
+					return true
+				end,--]]
+			}
 		end
 	end,
-
 	rarity = 4,
 	cost = 20,
 	blueprint_compat = true,
