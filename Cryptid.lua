@@ -26,6 +26,23 @@ Cryptid_config = SMODS.current_mod.config
 -- This will save the current state even when settings are modified
 Cryptid.enabled = copy_table(Cryptid_config)
 
+-- Enable optional features
+SMODS.current_mod.optional_features = {
+	retrigger_joker = true,
+	post_trigger = true,
+	-- Here are some other ones Steamodded has
+	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
+	--[[
+	quantum_enhancements = true,
+	-- These ones add new card areas that Steamodded will calculate through
+	-- Might already be useful for sticker calc
+	cardareas = {
+		deck = true,
+		discard = true,
+	}
+	]]
+}
+
 --Load Library Files
 local files = NFS.getDirectoryItems(mod_path .. "lib")
 for _, file in ipairs(files) do

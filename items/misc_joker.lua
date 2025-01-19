@@ -1492,7 +1492,7 @@ local wario = {
 				}))
 			end
 			card_eval_status_text(
-				context.other_context.blueprint_card or context.other_joker,
+				context.other_context.blueprint_card or context.other_card,
 				"extra",
 				nil,
 				nil,
