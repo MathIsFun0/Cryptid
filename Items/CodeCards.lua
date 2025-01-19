@@ -2599,6 +2599,7 @@ G.FUNCS.class_apply = function()
 		m_gold = { "gold", "money", "yellow" },
 		m_lucky = { "lucky", "rng" },
 		m_cry_echo = { "echo", "retrigger", "retriggers" },
+		m_cry_light = { "light" },
 		ccd = { "ccd" },
 		null = { "nil" },
 	}
