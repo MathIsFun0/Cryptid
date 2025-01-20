@@ -379,3 +379,15 @@ function is_card_big(joker)
 	return Cryptid.big_num_whitelist[center.key or "Nope!"] --[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
+
+--Utility function to check things without erroring
+function safe_get(t, ...)
+	local current = t
+	for _, k in ipairs({...}) do
+		if current[k] == nil then
+		return nil
+		end
+		current = current[k]
+	end
+	return current
+end

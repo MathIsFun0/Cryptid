@@ -319,41 +319,29 @@ local antimatter = {
 }
 
 function antimatter_apply()
-	--Checks for nils in the extremely nested thing i'm checking for 
-	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function nil_checker(t, ...)
-    		local current = t
-    		for _, k in ipairs({...}) do
-        		if current[k] == nil then
-				return nil
-        		end
-        		current = current[k]
-    		end
-    		return current
-	end
 
-	local bluecheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8)
-	local yellowcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8)
-	local abandonedcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_abandoned", "wins", 8)
-	local ghostcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
-	local redcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_red", "wins", 8)
-	local checkeredcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_checkered", "wins", 8)
-	local erraticcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_erratic", "wins", 8)
-	local blackcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_black", "wins", 8)
-	local paintedcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_painted", "wins", 8)
-	local greencheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8)
-	local spookycheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_spooky", "wins", 8)
-	local equilibriumcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
-	local misprintcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_misprint", "wins", 8)
-	local infinitecheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_infinite", "wins", 8)
-	local wormholecheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_wormhole", "wins", 8)
-	local redeemedcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_redeemed", "wins", 8)
-	local legendarycheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
-	local encodedcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_encoded", "wins", 8)
-	local world = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_world_deck", "wins", 8)
-	local sun = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_sun_deck", "wins", 8)
-	local star = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_star_deck", "wins", 8)
-	local moon = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_moon_deck", "wins", 8)
+	local bluecheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8)
+	local yellowcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8)
+	local abandonedcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_abandoned", "wins", 8)
+	local ghostcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
+	local redcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_red", "wins", 8)
+	local checkeredcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_checkered", "wins", 8)
+	local erraticcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_erratic", "wins", 8)
+	local blackcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_black", "wins", 8)
+	local paintedcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_painted", "wins", 8)
+	local greencheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8)
+	local spookycheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_spooky", "wins", 8)
+	local equilibriumcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
+	local misprintcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_misprint", "wins", 8)
+	local infinitecheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_infinite", "wins", 8)
+	local wormholecheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_wormhole", "wins", 8)
+	local redeemedcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_redeemed", "wins", 8)
+	local legendarycheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
+	local encodedcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_encoded", "wins", 8)
+	local world = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_world_deck", "wins", 8)
+	local sun = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_sun_deck", "wins", 8)
+	local star = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_star_deck", "wins", 8)
+	local moon = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_moon_deck", "wins", 8)
 	
 	--Blue Deck
 	if (bluecheck or 0) ~= 0 then
@@ -556,7 +544,7 @@ end
 function antimatter_trigger_effect_final_scoring_step(self, args)
 	--Checks for nils in the extremely nested thing i'm checking for 
 	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function nil_checker(t, ...)
+	local function safe_get(t, ...)
     		local current = t
     		for _, k in ipairs({...}) do
         		if current[k] == nil then
@@ -567,8 +555,8 @@ function antimatter_trigger_effect_final_scoring_step(self, args)
     		return current
 	end
 
-	local critcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
-	local plasmacheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
+	local critcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
+	local plasmacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
 	
 	if args.context == "final_scoring_step" then
 			local crit_poll = pseudorandom(pseudoseed("cry_critical"))
@@ -656,7 +644,7 @@ end
 function antimatter_trigger_effect(self, args)
 		--Checks for nils in the extremely nested thing i'm checking for 
 		-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-		local function nil_checker(t, ...)
+		local function safe_get(t, ...)
     			local current = t
     			for _, k in ipairs({...}) do
         			if current[k] == nil then
@@ -667,9 +655,9 @@ function antimatter_trigger_effect(self, args)
     			return current
 		end
 
-		local glowingcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_glowing", "wins", 8)
-		local legendarycheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
-		local anaglyphcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8)
+		local glowingcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_glowing", "wins", 8)
+		local legendarycheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
+		local anaglyphcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8)
 
 		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
 			--Glowing Deck
@@ -748,7 +736,7 @@ function get_antimatter_vouchers(voucher_table)
 
 	--Checks for nils in the extremely nested thing i'm checking for 
 	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function nil_checker(t, ...)
+	local function safe_get(t, ...)
     		local current = t
     		for _, k in ipairs({...}) do
         		if current[k] == nil then
@@ -759,10 +747,10 @@ function get_antimatter_vouchers(voucher_table)
     		return current
 	end
 
-	local nebulacheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
-	local magiccheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
-	local zodiaccheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
-	local equilibriumcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
+	local nebulacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
+	local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
+	local zodiaccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
+	local equilibriumcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
 	
 	--Nebula Deck
 	if (nebulacheck or 0) ~= 0 then
@@ -790,7 +778,7 @@ end
 function get_antimatter_consumables(consumable_table)
 	--Checks for nils in the extremely nested thing i'm checking for 
 	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function nil_checker(t, ...)
+	local function safe_get(t, ...)
     		local current = t
     		for _, k in ipairs({...}) do
         		if current[k] == nil then
@@ -805,8 +793,8 @@ function get_antimatter_consumables(consumable_table)
 	
 	-- Add Consumables into the table by key
 
-	local magiccheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
-	local ghostcheck = nil_checker(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
+	local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
+	local ghostcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
 	
 	if (magiccheck or 0) ~= 0 then
 		table.insert(consumable_table, "c_fool")

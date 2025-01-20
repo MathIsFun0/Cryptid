@@ -6050,16 +6050,6 @@ local kidnap = {
 	cost = 4,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_zany
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_mad
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_crazy
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_droll
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_sly
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_wily
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_clever
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_devious
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_crafty
 		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
 	end,
 	atlas = "atlasone",

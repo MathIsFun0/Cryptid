@@ -536,8 +536,8 @@ local blurred = {
 	end,
 	config = { retrigger_chance = 2, retriggers = 1, extra_retriggers = 1 },
 	loc_vars = function(self, info_queue, center)
-		local chance = center and center.edition.retrigger_chance or self.config.retrigger_chance
-		local retriggers = center and center.edition.retriggers or self.config.retriggers
+		local chance = center and center.edition and center.edition.retrigger_chance or self.config.retrigger_chance
+		local retriggers = center and center.edition and center.edition.retriggers or self.config.retriggers
 
 		return { vars = { G.GAME.probabilities.normal, chance, retriggers } }
 	end,
