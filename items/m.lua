@@ -774,7 +774,7 @@ local reverse = {
 	config = { extra = { type = "Pair", spawn = 0 } },
     pools = {["Meme"] = true},
 	pos = { x = 0, y = 0 },
-	display_size = { w = 0.7 * G.CARD_W, h = 0.7 * G.CARD_H },
+	display_size = { w = 0.7 * 71, h = 0.7 * 95 },
 	rarity = 2,
 	order = 260,
 	cost = 4,
@@ -1051,7 +1051,7 @@ local biggestm = {
 	key = "biggestm",
 	config = { extra = { x_mult = 7, type = "Pair", check = false, text = "Inactive" } },
 	pos = { x = 3, y = 3 },
-	display_size = { w = 1.7 * G.CARD_W, h = 1.7 * G.CARD_H },
+	display_size = { w = 1.7 * 71, h = 1.7 * 95 },
 	dependencies = {
 		items = {
 			"set_cry_m",
