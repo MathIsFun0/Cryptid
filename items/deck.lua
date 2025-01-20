@@ -33,8 +33,8 @@ local misprint = {
 	pos = { x = 4, y = 2 },
 	atlas = "atlasdeck",
 	apply = function(self)
-		G.GAME.modifiers.cry_misprint_min = self.config.cry_misprint_min
-		G.GAME.modifiers.cry_misprint_max = self.config.cry_misprint_max
+		G.GAME.modifiers.cry_misprint_min = (G.GAME.modifiers.cry_misprint_min or 1) * self.config.cry_misprint_min
+			G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.config.cry_misprint_max
 	end,
 }
 local infinite = {

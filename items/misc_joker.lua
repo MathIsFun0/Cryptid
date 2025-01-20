@@ -1346,50 +1346,6 @@ local fspinner = {
 		}
 	},
 }
-local luigi = {
-	object_type = "Joker",
-	name = "cry-luigi",
-	key = "luigi",
-	pos = { x = 0, y = 3 },
-	soul_pos = { x = 1, y = 3 },
-	config = { extra = { x_chips = 3 } },
-	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_chips } }
-	end,
-	rarity = 4,
-	cost = 20,
-	order = 86,
-	blueprint_compat = true,
-	calculate = function(self, card, context)
-		if context.other_joker and context.other_joker.ability.set == "Joker" then
-			if not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						context.other_joker:juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
-			end
-			return {
-				message = localize({ type = "variable", key = "a_xchips", vars = { card.ability.extra.x_chips } }),
-				colour = G.C.CHIPS,
-				Xchip_mod = card.ability.extra.x_chips,
-			}
-		end
-	end,
-	atlas = "atlasthree",
-	cry_credits = {
-		idea = {
-			"Auto Watto"
-		},
-		art = {
-			"Linus Goof Balls"
-		},
-		code = {
-			"Auto Watto"
-		}
-	},
-}
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -1430,42 +1386,6 @@ local waluigi = {
 		},
 		code = {
 			"Math"
-		}
-	},
-}
-local mario = {
-	object_type = "Joker",
-	name = "cry-mario",
-	key = "mario",
-	config = { extra = { retriggers = 2 } },
-	pos = { x = 4, y = 3 },
-	soul_pos = { x = 5, y = 3 },
-	rarity = 4,
-	order = 85,
-	cost = 20,
-	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { math.min(25, center.ability.extra.retriggers) } }
-	end,
-	atlas = "atlasthree",
-	calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			return {
-				message = localize("k_again_ex"),
-				repetitions = math.min(25, card.ability.extra.retriggers),
-				card = card,
-			}
-		end
-	end,
-	cry_credits = {
-		idea = {
-			"Auto Watto"
-		},
-		art = {
-			"Linus Goof Balls"
-		},
-		code = {
-			"Auto Watto"
 		}
 	},
 }
@@ -6084,6 +6004,7 @@ local astral_bottle = {
 	object_type = "Joker",
 	name = "cry-astral_bottle",
 	key = "astral_bottle",
+	eternal_compat = false,
 	pos = { x = 7, y = 0 },
 	atlas = "atlasthree",
 	rarity = 2,
@@ -6447,15 +6368,47 @@ local cookie = {
 			}
 		end
 		if context.cry_press then
-			card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
-			card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+			if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_eaten_ex") , colour = G.C.CHIPS }
 				)
+			else
+				card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+				card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+				)
+			end
 		end
 	end,
 	cry_credits = {
@@ -6883,9 +6836,7 @@ local miscitems =  {
 	sus,
 	chad,
 	jimball,
-	luigi,
 	waluigi,
-	mario,
 	wario,
 	eternalflame,
 	seal_the_deal,
