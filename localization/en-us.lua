@@ -513,11 +513,55 @@ return {
             },
         },
         ["Content Set"] = {
+            set_cry_blind = {
+                name = "Blinds",
+                text = {
+                    "{C:attention}Boss Blinds{} added",
+                    "by Cryptid"
+                }
+            },
+            set_cry_code = {
+                name = "Code Cards",
+                text = {
+                    "{C:cry_code}Code Cards{} and",
+                    "related content"
+                }
+            },
+            set_cry_cursed = {
+                name = "Cursed Jokers",
+                text = {
+                    "Harmful Jokers with",
+                    "{X:cry_cursed,C:white}Cursed{} rarity",
+                }
+            },
+            set_cry_deck = {
+                name = "Misc. Decks",
+                text = {
+                    "Gimmicky {C:attention}Decks{} added",
+                    "by Cryptid"
+                }
+            },
+            set_cry_enhanced = {
+                name = "Enhanced Decks",
+                text = {
+                    "{C:attention}Decks{} where all cards",
+                    "have the same {C:attention}Enhancement{}, {C:attention}Edition{},",
+                    "{C:attention}Seal{}, {C:attention}Suit{}, or {C:attention}Sticker{}",
+                }
+            },
             set_cry_epic = {
                 name = "Epic Jokers",
                 text = {
                     "Jokers with",
                     "{C:cry_epic}Epic{} rarity",
+                    "{C:inactive,s:0.8}(Between Rare and Legendary)"
+                }
+            },
+            set_cry_exotic = {
+                name = "Exotic Jokers",
+                text = {
+                    "Powerful Jokers with",
+                    "{C:cry_exotic}Exotic{} rarity",
                 }
             },
             set_cry_m = {
@@ -527,7 +571,72 @@ return {
                     "the letter {C:attention}M{}",
                     "and {C:attention}Jolly Joker"
                 }
-            }
+            },
+            set_cry_misc = {
+                name = "Misc.",
+                text = {
+                    "Things that don't",
+                    "fit in any other",
+                    "{C:cry_ascendant}Thematic Set"
+                }
+            },
+            set_cry_misc_joker = {
+                name = "Misc. Jokers",
+                text = {
+                    "{C:attention}Jokers{} that don't",
+                    "fit in any other",
+                    "{C:cry_ascendant}Thematic Set"
+                }
+            },
+            set_cry_planet = {
+                name = "Planet Cards",
+                text = {
+                    "Miscellaneous {C:planet}Planet{} Cards",
+                    "added by Cryptid"
+                }
+            },
+            set_cry_spectral = {
+                name = "Spectral Cards",
+                text = {
+                    "{C:spectral}Spectral{} Cards added",
+                    "by Cryptid"
+                }
+            },
+            set_cry_spooky = {
+                name = "Spooky Update",
+                text = {
+                    "Spooky Update content,",
+                    "including {C:cry_candy}Candy{} Jokers"
+                }
+            },
+            set_cry_tag = {
+                name = "Tags",
+                text = {
+                    "{C:attention}Tags{} added",
+                    "by Cryptid"
+                }
+            },
+            set_cry_tier3 = {
+                name = "Tier 3 Vouchers",
+                text = {
+                    "An extra {C:attention}tier{}",
+                    "of Vouchers"
+                }
+            },
+            set_cry_timer = {
+                name = "Timer Mechanics",
+                text = {
+                    "Items with {C:attention}time-based",
+                    "effects and mechanics"
+                }
+            },
+            set_cry_voucher = {
+                name = "Misc. Vouchers",
+                text = {
+                    "Tier 1 and 2 {C:attention}Vouchers{}",
+                    "added by Cryptid"
+                }
+            },
         },
         Edition = {
             e_cry_astral = {

@@ -1055,22 +1055,91 @@ G.P_CENTER_POOLS["Content Set"] = {}
 SMODS.ContentSet({
 	key = "m",
 	atlas = "atlasepic",
-	pos = { x = 3, y = 1 },
+	pos = { x = 3, y = 1 }, --m
 })
 SMODS.ContentSet({
 	key = "epic",
 	atlas = "atlasepic",
-	pos = { x = 2, y = 1 },
+	pos = { x = 2, y = 1 }, --Canvas
 })
 SMODS.ContentSet({
 	key = "code",
-	atlas = "atlasepic",
-	pos = { x = 2, y = 2 },
+	atlas = "code",
+	pos = { x = 0, y = 0 }, --://CRASH
 })
 SMODS.ContentSet({
 	key = "exotic",
-	atlas = "atlasepic",
-	pos = { x = 2, y = 3 },
+	atlas = "atlasexotic",
+	pos = { x = 0, y = 1 }, --Iterum
+	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
+})
+SMODS.ContentSet({
+	key = "blind",
+	atlas = "blinds",
+	pos = { x = 0, y = 4 }, --The Joke
+	cry_blind = true
+})
+SMODS.ContentSet({
+	key = "deck",
+	atlas = "atlasdeck",
+	pos = { x = 4, y = 5 }, --Critical Deck
+})
+SMODS.ContentSet({
+	key = "spooky",
+	atlas = "atlasspooky",
+	pos = { x = 1, y = 0 }, --Chocolate Dice
+})
+SMODS.ContentSet({
+	key = "cursed",
+	atlas = "atlasspooky",
+	pos = { x = 3, y = 0 }, --Ghost
+})
+SMODS.ContentSet({
+	key = "timer",
+	atlas = "blinds",
+	pos = { x = 0, y = 1 }, --The Clock
+	cry_blind = true
+})
+SMODS.ContentSet({
+	key = "enhanced",
+	atlas = "atlasenhanced",
+	pos = { x = 2, y = 3 }, --The Empress' Deck
+})
+SMODS.ContentSet({
+	key = "misc",
+	atlas = "cry_misc",
+	pos = { x = 2, y = 0 }, --Echo Card
+})
+SMODS.ContentSet({
+	key = "misc_joker",
+	atlas = "atlasone",
+	pos = { x = 2, y = 3 }, --Nice
+})
+SMODS.ContentSet({
+	key = "planet",
+	atlas = "atlasnotjokers",
+	pos = { x = 4, y = 2 }, --Planet.lua
+})
+SMODS.ContentSet({
+	key = "spectral",
+	atlas = "atlasnotjokers",
+	pos = { x = 1, y = 1 }, --Replica
+})
+SMODS.ContentSet({
+	key = "tag",
+	atlas = "tag_cry",
+	pos = { x = 0, y = 2 }, --Cat Tag
+	cry_tag = true
+})
+SMODS.ContentSet({
+	key = "tier3",
+	atlas = "atlasvoucher",
+	pos = { x = 5, y = 2 }, --Asteroglyph
+})
+SMODS.ContentSet({
+	key = "voucher",
+	atlas = "atlasvoucher",
+	pos = { x = 1, y = 2 }, --Tag Printer
 })
 
 -- these are mostly copy/paste from vanilla code
@@ -1126,14 +1195,7 @@ function create_UIBox_your_collection_content_sets()
 			if not center then
 				break
 			end
-			local card = Card(
-				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
-				G.your_collection[j].T.y,
-				G.CARD_W,
-				G.CARD_H,
-				nil,
-				center
-			)
+			local card = create_generic_card(center)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1189,14 +1251,7 @@ G.FUNCS.your_collection_content_set_page = function(args)
 			if not center then
 				break
 			end
-			local card = Card(
-				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
-				G.your_collection[j].T.y,
-				G.CARD_W,
-				G.CARD_H,
-				G.P_CARDS.empty,
-				center
-			)
+			local card = create_generic_card(center)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1209,11 +1264,13 @@ end
 
 function create_generic_card(center)
 	--todo: make gameset stickers play nicely with resized sprites
+	local is_blind = center.set == "Blind" or center.cry_blind
+	local is_tag = center.set == "Tag" or center.cry_tag
 	local card = Card(
 		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
 		G.ROOM.T.h,
-		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.42 * G.CARD_W or G.CARD_W,
-		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.42 * G.CARD_W or G.CARD_H,
+		is_blind and 0.7 * G.CARD_W or is_tag and 0.42 * G.CARD_W or G.CARD_W,
+		is_blind and 0.7 * G.CARD_W or is_tag and 0.42 * G.CARD_W or G.CARD_H,
 		nil,
 		center.set ~= "Seal" and center.set ~= "Sticker" and center or G.P_CENTERS.c_base
 	)
