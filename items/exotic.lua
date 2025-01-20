@@ -682,7 +682,7 @@ local circulus_pistoris = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				center.edition and center.edition.cry_oversat and "tau" or "pi",
+				safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
 				center.ability.extra.hands_remaining,
 			},
 		}
@@ -696,13 +696,13 @@ local circulus_pistoris = {
 			)
 		then
 			local pi = math.pi
-			if card.edition and card.edition.cry_oversat then
+			if safe_get(card, "edition", "cry_oversat") then
 				pi = 2 * pi
 			end
 			return {
 				Echip_mod = pi,
 				Emult_mod = pi,
-				message = localize{type='variable',key='a_powmultchips',vars={(card.edition and card.edition.cry_oversat and "tau" or "pi")}},
+				message = localize{type='variable',key='a_powmultchips',vars={(safe_get(card, "edition", "cry_oversat") and "tau" or "pi")}},
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
 		end

@@ -302,7 +302,7 @@ return {
 					G.GAME.modifiers.cry_force_random_edition = true
 				end
 				for k, v in pairs(G.P_TAGS) do
-					if v.config and v.config.edition then
+					if safe_get(v, "config", "edition") then
 						G.GAME.banned_keys[k] = true
 					end
 				end
@@ -440,7 +440,7 @@ return {
 				self.config.center.immutable = true
 			end
 			
-			if center and center.set == "Enhanced" then
+			if safe_get(center, "set") == "Enhanced" then
 				return sa(
 					self,
 					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement) and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]

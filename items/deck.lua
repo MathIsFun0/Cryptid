@@ -115,7 +115,7 @@ local legendary = {
 	atlas = "atlasdeck",
 	order = 15,
 	trigger_effect = function(self, args)
-		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
+		if args.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
 			if G.jokers then
 				if #G.jokers.cards < G.jokers.config.card_limit then
 					local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
@@ -235,7 +235,7 @@ local glowing = {
 	end,
 	atlas = "glowing",
 	trigger_effect = function(self, args)
-		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
+		if args.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					cry_with_deck_effects(G.jokers.cards[i], function(card)
@@ -542,18 +542,6 @@ function antimatter_apply()
 end
 
 function antimatter_trigger_effect_final_scoring_step(self, args)
-	--Checks for nils in the extremely nested thing i'm checking for 
-	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function safe_get(t, ...)
-    		local current = t
-    		for _, k in ipairs({...}) do
-        		if current[k] == nil then
-				return nil
-        		end
-        		current = current[k]
-    		end
-    		return current
-	end
 
 	local critcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
 	local plasmacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
@@ -642,24 +630,12 @@ function antimatter_trigger_effect_final_scoring_step(self, args)
 end
 
 function antimatter_trigger_effect(self, args)
-		--Checks for nils in the extremely nested thing i'm checking for 
-		-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-		local function safe_get(t, ...)
-    			local current = t
-    			for _, k in ipairs({...}) do
-        			if current[k] == nil then
-					return nil
-        			end
-        			current = current[k]
-    			end
-    			return current
-		end
 
 		local glowingcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_glowing", "wins", 8)
 		local legendarycheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
 		local anaglyphcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8)
 
-		if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
+		if args.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
 			--Glowing Deck
 			if (glowingcheck or 0) ~= 0 then
 				for i = 1, #G.jokers.cards do
@@ -735,17 +711,6 @@ function get_antimatter_vouchers(voucher_table)
 	end
 
 	--Checks for nils in the extremely nested thing i'm checking for 
-	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function safe_get(t, ...)
-    		local current = t
-    		for _, k in ipairs({...}) do
-        		if current[k] == nil then
-				return nil
-        		end
-        		current = current[k]
-    		end
-    		return current
-	end
 
 	local nebulacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
 	local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
@@ -777,17 +742,6 @@ end
 --Does this even need to be a function idk
 function get_antimatter_consumables(consumable_table)
 	--Checks for nils in the extremely nested thing i'm checking for 
-	-- (pretty sure it's just the deck key since that's what the error messages kept throwing but might as well check all of them)
-	local function safe_get(t, ...)
-    		local current = t
-    		for _, k in ipairs({...}) do
-        		if current[k] == nil then
-				return nil
-        		end
-        		current = current[k]
-    		end
-    		return current
-	end
 	-- Create a table or use one that is passed into the function
 	if not consumable_table or type(consumable_table) ~= "table" then consumable_table = {} end
 	

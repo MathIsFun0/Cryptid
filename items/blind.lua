@@ -507,14 +507,14 @@ local shackle = {
 			return false
 		end
 		for i, j in pairs(G.jokers.cards) do
-			if j.edition and j.edition.negative == true then
+			if safe_get(j, "edition", "negative") == true then
 				return true
 			end
 		end
 		return false
 	end,
 	recalc_debuff = function(self, card, from_blind)
-		if (card.area == G.jokers) and not G.GAME.blind.disabled and card.edition and card.edition.negative == true then
+		if (card.area == G.jokers) and not G.GAME.blind.disabled and safe_get(card, "edition", "negative") == true then
 			return true
 		end
 		return false
@@ -627,7 +627,7 @@ local tornado = {
 	order = 94,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
-		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
+		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
@@ -646,7 +646,7 @@ local tornado = {
 		return true
 	end,
 	collection_loc_vars = function(self)
-		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
+		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
 		if

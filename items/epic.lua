@@ -265,7 +265,7 @@ local sync_catalyst = {
 	},
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if G and G.jokers and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante < 9 then
+		if safe_get(G, "jokers") and safe_get(G.GAME, "round_resets", "ante") and G.GAME.round_resets.ante < 9 then
 			local rarities = {
 			}
 			for i = 1, #G.jokers.cards do
@@ -411,7 +411,7 @@ local error_joker = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		if G.GAME and G.GAME.pseudorandom and G.STAGE == G.STAGES.RUN then
+		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN then
 			cry_error_msgs[#cry_error_msgs].string = "%%" .. predict_card_for_shop()
 		else
 			cry_error_msgs[#cry_error_msgs].string = "%%J6"
@@ -517,7 +517,7 @@ local error_joker = {
 			and not context.blueprint
 		then
 			local eval = function(card)
-				return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES
+				return (safe_get(card, "ability", "loyalty_remaining") == 0) and not G.RESET_JIGGLES
 			end
 			juice_card_until(card, eval, true)
 			local jokers = {}
@@ -719,7 +719,7 @@ local m = {
 					if reps > 0 then
 						return {
 							message = localize("k_again_ex"),
-							repetitions = reps + (ret and ret.repetitions or 0),
+							repetitions = reps + (safe_get(ret, "repetitions") or 0),
 							card = card,
 						}
 					end
@@ -788,7 +788,7 @@ local M = {
 					if reps > 0 then
 						return {
 							message = localize("k_again_ex"),
-							repetitions = reps + (ret and ret.repetitions or 0),
+							repetitions = reps + (safe_get(ret, "repetitions") or 0),
 							card = card,
 						}
 					end
@@ -894,7 +894,7 @@ local number_blocks = {
 			vars = {
 				center.ability.extra.money,
 				center.ability.extra.money_mod,
-				localize(G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace", "ranks"),
+				localize(safe_get(G.GAME, "current_round", "cry_nb_card", "rank") or "Ace", "ranks"),
 			},
 		}
 	end,
@@ -1324,7 +1324,7 @@ local curse_sob = {
 	},
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if G and G.jokers then
+		if safe_get(G, "jokers") then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.center.key == 'j_obelisk' and G.jokers.cards[i].ability.eternal then
 					unlock_card(self)
@@ -1598,7 +1598,7 @@ local altgoogol = {
 							func = function()
 								for i = 1, card.ability.copies do
 									local chosen_joker = G.jokers.cards[1]
-									local card = copy_card(chosen_joker, nil, nil, nil, (gameset == "modest" and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
+									local card = copy_card(chosen_joker, nil, nil, nil, (gameset == "modest" and (safe_get(chosen_joker, "edition", "negative")) or nil))
 									card:add_to_deck()
 									G.jokers:emplace(card)
 								end

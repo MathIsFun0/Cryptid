@@ -385,7 +385,7 @@ function safe_get(t, ...)
 	local current = t
 	for _, k in ipairs({...}) do
 		if current[k] == nil then
-		return nil
+		return false
 		end
 		current = current[k]
 	end

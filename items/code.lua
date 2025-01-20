@@ -471,7 +471,7 @@ local seed = {
 		if G.consumeables.highlighted[1] then
 			G.consumeables.highlighted[1].ability.cry_rigged = true
 		end
-		if G.pack_cards and G.pack_cards.highlighted[1] then
+		if safe_get(G, "pack_cards", "highlighted", 1) then
 			G.pack_cards.highlighted[1].ability.cry_rigged = true
 		end
 	end,
@@ -590,7 +590,7 @@ local variable = {
 	order = 8,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+		return { vars = { safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -629,7 +629,7 @@ local class = {
 	order = 16,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+		return { vars = { safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -1085,7 +1085,7 @@ local run = {
 	atlas = "code",
 	order = 6,
 	can_use = function(self, card)
-		return G.GAME.blind and G.GAME.blind.in_blind
+		return safe_get(G.GAME, "blind", "in_blind")
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
@@ -1177,9 +1177,9 @@ local oboe = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		if not card then
-			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+			return { vars = { self.config.extra.choices, (safe_get(G.GAME, "cry_oboe") or 0) } }
 		end
-		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		return { vars = { card.ability.extra.choices, (safe_get(G.GAME, "cry_oboe") or 0) } }
 	end,
 	can_use = function(self, card)
 		return true
@@ -1618,7 +1618,7 @@ local alttab = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		local ret = localize("k_none")
-		if G.GAME and G.GAME.blind and G.GAME.blind.in_blind then
+		if safe_get(G.GAME, "blind", "in_blind") then
 			if G.GAME.blind:get_type() == 'Small' then
 				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Small, set = 'Tag'}
 			elseif G.GAME.blind:get_type() == 'Big' then
@@ -1630,7 +1630,7 @@ local alttab = {
 		return { vars = { ret } }
 	end,
 	can_use = function(self, card)
-		return G.GAME.blind and G.GAME.blind.in_blind
+		return safe_get(G.GAME, "blind", "in_blind")
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -1686,7 +1686,7 @@ local automaton = {
 	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability and card.ability.create or self.config.create } }
+		return { vars = { safe_get(card, "ability", "create") or self.config.create } }
 	end,
 	can_use = function(self, card)
 		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
@@ -1967,7 +1967,7 @@ local CodeJoker = {
 			local count2 = 0
 			for k,v in pairs(G.P_CENTER_POOLS['Code']) do
 				count2 = count2+1
-				if v and v.discovered == true then
+				if safe_get(v, "discovered") == true then
 					count = count + 1
 				end
 			end
@@ -2003,7 +2003,7 @@ local copypaste = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, safe_get(card,"ability","extra","odds") or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
 		}
 	end,
 	atlas = "atlasepic",
