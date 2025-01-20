@@ -2,7 +2,7 @@
 
 --Redefine these here because they're always used
 Cryptid.base_values = {}
-function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
+function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big)
 	if name and ref_tbl and ref_value then
 		tbl = cry_deep_copy(ref_tbl[ref_value])
 		for k, v in pairs(tbl) do
@@ -34,7 +34,8 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 										override and override.max or G.GAME.modifiers.cry_misprint_max
 									),
 								"%.2g"
-							)
+							),
+						big
 					)
 				end
 			else
@@ -70,7 +71,8 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 											override and override.max or G.GAME.modifiers.cry_misprint_max
 										),
 									"%.2g"
-								)
+								),
+							big
 						)
 					end
 				end
@@ -79,7 +81,7 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack)
 		ref_tbl[ref_value] = tbl
 	end
 end
-function cry_misprintize_val(val, override)
+function cry_misprintize_val(val, override, big)
 	if is_number(val) then
 		val = cry_sanity_check(
 			cry_format(
@@ -90,12 +92,22 @@ function cry_misprintize_val(val, override)
 						override and override.max or G.GAME.modifiers.cry_misprint_max
 					),
 				"%.2g"
-			)
+			),
+			big
 		)
 	end
 	return val
 end
-function cry_sanity_check(val)
+function cry_sanity_check(val, is_big)
+	if is_big then
+		if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
+			val = 1e300
+		end
+		if type(val) == "table" then return val end
+		if val > 1e100 or val < -1e100 then
+			return to_big(val)
+		end
+	end
 	if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 		return 1e300
 	end
@@ -132,9 +144,9 @@ function cry_misprintize(card, override, force_reset, stack)
 			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
-			cry_misprintize_tbl(card.config.center_key, card, "ability", nil, override, stack)
+			cry_misprintize_tbl(card.config.center_key, card, "ability", nil, override, stack, is_card_big(card))
 			if card.base then
-				cry_misprintize_tbl(card.config.card_key, card, "base", nil, override, stack)
+				cry_misprintize_tbl(card.config.card_key, card, "base", nil, override, stack, is_card_big(card))
 			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then
@@ -148,7 +160,7 @@ function cry_misprintize(card, override, force_reset, stack)
 			card:set_cost()
 		end
 	else
-		cry_misprintize_tbl(card.config.center_key, card, "ability", true)
+		cry_misprintize_tbl(card.config.center_key, card, "ability", true, nil, nil, is_card_big(card))
 	end
 	if card.ability.consumeable then
 		for k, v in pairs(card.ability.consumeable) do
