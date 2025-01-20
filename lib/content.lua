@@ -9,7 +9,7 @@ SMODS.Rarity({
 SMODS.Rarity({
 	key = "epic",
 	loc_txt = {},
-	badge_colour = HEX("571d91"),
+	badge_colour = HEX("ef0098"),
 	default_weight = 0.003,
 	pools = { ["Joker"] = true },
 	get_weight = function(self, weight, object_type)
@@ -25,7 +25,7 @@ SMODS.Rarity({
 SMODS.Rarity({
 	key = "candy",
 	loc_txt = {},
-	badge_colour = HEX("e91ff0"),
+	badge_colour = HEX("e275e6"),
 })
 
 SMODS.Rarity({
