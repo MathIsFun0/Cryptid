@@ -1,13 +1,126 @@
 -- Code to handle stickers, debuffs, etc.
 -- Warning: this is a bit of a mess
 
---anyway this function basically hardcodes unredeeming a voucher
-function cry_debuff_voucher(center) -- sorry for all the mess here...
-	local new_center = G.GAME.cry_voucher_centers[center]
+-- moved unredeem and unapply functions outside of spectrals
+function Card:unredeem()
+	if self.ability.set == "Voucher" then
+		stop_use()
+		if not self.config.center.discovered then
+			discover_card(self.config.center)
+		end
+
+		self.states.hover.can = false
+		if G.GAME.used_vouchers[self.config.center_key] then
+			G.GAME.used_vouchers[self.config.center_key] = nil
+		end
+		G.GAME.cry_owned_vouchers[self.config.center_key] = nil
+		local top_dynatext = nil
+		local bot_dynatext = nil
+
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				top_dynatext = DynaText({
+					string = localize({
+						type = "name_text",
+						set = self.config.center.set,
+						key = self.config.center.key,
+					}),
+					colours = { G.C.RED },
+					rotate = 1,
+					shadow = true,
+					bump = true,
+					float = true,
+					scale = 0.9,
+					pop_in = 0.6 / G.SPEEDFACTOR,
+					pop_in_rate = 1.5 * G.SPEEDFACTOR,
+				})
+				bot_dynatext = DynaText({
+					string = localize("cry_unredeemed"),
+					colours = { G.C.RED },
+					rotate = 2,
+					shadow = true,
+					bump = true,
+					float = true,
+					scale = 0.9,
+					pop_in = 1.4 / G.SPEEDFACTOR,
+					pop_in_rate = 1.5 * G.SPEEDFACTOR,
+					pitch_shift = 0.25,
+				})
+				self:juice_up(0.3, 0.5)
+				play_sound("card1")
+				play_sound("timpani")
+				self.children.top_disp = UIBox({
+					definition = {
+						n = G.UIT.ROOT,
+						config = { align = "tm", r = 0.15, colour = G.C.CLEAR, padding = 0.15 },
+						nodes = {
+							{ n = G.UIT.O, config = { object = top_dynatext } },
+						},
+					},
+					config = { align = "tm", offset = { x = 0, y = 0 }, parent = self },
+				})
+				self.children.bot_disp = UIBox({
+					definition = {
+						n = G.UIT.ROOT,
+						config = { align = "tm", r = 0.15, colour = G.C.CLEAR, padding = 0.15 },
+						nodes = {
+							{ n = G.UIT.O, config = { object = bot_dynatext } },
+						},
+					},
+					config = { align = "bm", offset = { x = 0, y = 0 }, parent = self },
+				})
+				return true
+			end,
+		}))
+
+		if not self.debuff then self:unapply_to_run() end
+
+		delay(0.6)
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 2.6,
+			func = function()
+				top_dynatext:pop_out(4)
+				bot_dynatext:pop_out(4)
+				return true
+			end,
+		}))
+
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.5,
+			func = function()
+				self.children.top_disp:remove()
+				self.children.top_disp = nil
+				self.children.bot_disp:remove()
+				self.children.bot_disp = nil
+				return true
+			end,
+		}))
+	end
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			cry_update_used_vouchers()
+			return true
+		end,
+	}))
+end
+
+
+
+function Card:unapply_to_run(center)
 	local center_table = {
-		name = new_center and new_center.name,
-		extra = new_center and new_center.config.extra,
+		name = center and center.name or self and self.ability.name,
+		extra = self and self.ability.extra or center and center.config.extra,
 	}
+	local obj = center or self.config.center
+	if obj.unredeem and type(obj.unredeem) == "function" then
+		obj:unredeem(self)
+		return
+	end
+
 	if center_table.name == "Overstock" or center_table.name == "Overstock Plus" then
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -72,7 +185,8 @@ function cry_debuff_voucher(center) -- sorry for all the mess here...
 	if center_table.name == "Liquidation" then
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.discount_percent = 25
+				G.GAME.discount_percent = 25 -- no idea why the below returns nil, so it's hardcoded now
+				-- G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
@@ -85,8 +199,9 @@ function cry_debuff_voucher(center) -- sorry for all the mess here...
 	if center_table.name == "Reroll Surplus" or center_table.name == "Reroll Glut" then
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + center_table.extra
-				G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + center_table.extra)
+				G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra
+				G.GAME.current_round.reroll_cost =
+					math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra)
 				return true
 			end,
 		}))
@@ -102,7 +217,11 @@ function cry_debuff_voucher(center) -- sorry for all the mess here...
 	if center_table.name == "Money Tree" then
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = G.P_CENTERS.v_seed_money.extra
+				if G.GAME.used_vouchers.v_seed_money then
+					G.GAME.interest_cap = 50
+				else
+					G.GAME.interest_cap = 25
+				end
 				return true
 			end,
 		}))
@@ -144,6 +263,72 @@ function cry_debuff_voucher(center) -- sorry for all the mess here...
 	end
 end
 
+local setabilityref = Card.set_ability
+function Card:set_ability(center, initial, delay_sprites)
+	setabilityref(self, center, initial, delay_sprites)
+	self.ignore_base_shader = self.ignore_base_shader or {}
+	self.ignore_shadow = self.ignore_shadow or {}
+	local function repeatcheck(comp, table)
+		for _, v in ipairs(table) do
+			if comp == v then return true end
+		end
+		return false
+	end
+	local edition = nil
+	local sticker = nil
+	local random = nil
+	if safe_get(G, 'GAME', 'modifiers', 'cry_force_edition') then edition = G.GAME.modifiers.cry_force_edition end
+	if safe_get(G, 'GAME', 'modifiers', 'cry_force_sticker') then sticker = G.GAME.modifiers.cry_force_sticker end
+	if safe_get(G, 'GAME', 'modifiers', 'cry_force_random_edition') then random = true end
+	if repeatcheck(self.ability.set, {'Joker', 'Voucher', 'Booster', 'Base', 'Enhanced'}) or self.ability.consumeable then
+		if edition and not random then
+			self:set_edition({[edition] = true}, true, true)
+		elseif random then
+			self:set_edition(cry_poll_random_edition(), true, true)
+		end
+		if sticker then
+			self.ability[sticker] = true
+			self:set_cost()
+		end
+	end
+	if self.ability.set == 'Voucher' then
+		if self.ability.perishable and not self.ability.perish_tally then 
+			self.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds 
+		end
+	end
+end
+
+local setdebuffref = Card.set_debuff
+function Card:set_debuff(should_debuff)
+	local is_debuffed = self.debuff
+	setdebuffref(self, should_debuff)
+	if self.debuff == true and is_debuffed ~= self.debuff then
+		if self.ability.set == 'Voucher' then
+			self:unapply_to_run()
+		end
+	end
+end
+
+local dissolveref = Card.start_dissolve
+function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+	dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			cry_update_used_vouchers()
+			return true
+		end,
+	}))
+end
+
+function cry_update_used_vouchers()
+	if G and G.GAME and G.vouchers then
+		G.GAME.used_vouchers = {}
+		for i, v in ipairs(G.vouchers.cards) do
+			G.GAME.used_vouchers[v.config.center_key] = true
+		end
+	end
+end
+
 function cry_voucher_debuffed(name) -- simple function but idk
 	if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.perishable[name] then
 		if G.GAME.voucher_sticker_index.perishable[name] == 0 then
@@ -160,6 +345,49 @@ function cry_voucher_pinned(name) -- unused
 		end
 	end
 	return false
+end
+
+-- check if Director's Cut or Retcon offers a cheaper reroll price
+function cry_cheapest_boss_reroll()
+	local cheapest = 1e300
+	local vouchers = {
+		SMODS.find_card('v_directors_cut'),
+		SMODS.find_card('v_retcon'),
+	}
+	for _, table in ipairs(vouchers) do
+		for i, v in ipairs(table) do
+			if v.ability.extra <= cheapest then
+				cheapest = v.ability.extra
+			end
+		end
+	end
+	return cheapest
+end
+
+-- check for best interest cap. better than what's done with redeems/unredeems
+-- unfortunately this still sucks
+-- make seed money/other vouchers better at some point?
+function cry_best_interest_cap()
+	local best = 25
+	local vouchers = {
+		SMODS.find_card('v_seed_money'),
+		SMODS.find_card('v_money_tree'),
+		SMODS.find_card('v_cry_money_beanstalk'),
+	}
+	for _, table in ipairs(vouchers) do
+		for i, v in ipairs(table) do
+			if v.ability.extra >= best then
+				best = v.ability.extra
+			end
+		end
+	end
+	return best
+end
+
+local evaluateroundref = G.FUNCS.evaluate_round
+G.FUNCS.evaluate_round = function()
+	G.GAME.interest_cap = cry_best_interest_cap()	-- blehhhhhh
+	evaluateroundref()
 end
 
 function cry_get_next_voucher_edition() -- currently only for edition decks, can be modified if voucher editioning becomes more important
@@ -209,6 +437,13 @@ function Card:cry_calculate_consumeable_rental()
 		card_eval_status_text(self, "dollars", -G.GAME.cry_consumeable_rental_rate)
 	end
 end
+-- Calculates Rental sticker for Vouchers
+function Card:cry_calculate_voucher_rental()
+	if self.ability.rental then
+		ease_dollars(-G.GAME.cry_voucher_rental_rate)
+		card_eval_status_text(self, "dollars", -G.GAME.cry_voucher_rental_rate)
+	end
+end
 
 -- Calculates Perishable sticker for Consumables
 function Card:cry_calculate_consumeable_perishable()
@@ -226,6 +461,22 @@ function Card:cry_calculate_consumeable_perishable()
 			{ message = localize("k_disabled_ex"), colour = G.C.FILTER, delay = 0.45 }
 		)
 		self:set_debuff()
+	end
+end
+
+-- Calculates Perishable sticker for Consumables
+function Card:cry_calculate_voucher_perishable()
+
+	if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds end
+	if self.ability.perishable and self.ability.perish_tally > 0 then
+		if self.ability.perish_tally == 1 then
+			self.ability.perish_tally = 0
+			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
+			self:set_debuff()
+		else
+			self.ability.perish_tally = self.ability.perish_tally - 1
+			card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_remaining',vars={self.ability.perish_tally}},colour = G.C.FILTER, delay = 0.45})
+		end
 	end
 end
 
@@ -316,6 +567,8 @@ SMODS.Sticker:take_ownership("perishable", {
 		if context.end_of_round and not context.repetition and not context.individual then
 			if card.ability.consumeable then
 				card:cry_calculate_consumeable_perishable()
+			elseif card.ability.set == "Voucher" then
+				card:cry_calculate_voucher_perishable()
 			else
 				card:calculate_perishable()
 			end
@@ -358,12 +611,91 @@ SMODS.Sticker:take_ownership("rental", {
 		end
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.individual then
+		if context.end_of_round and not context.repetition and not context.playing_card_end_of_round and not context.individual then
+			for k, v in pairs(context) do
+				print(k)
+			end
+			print("context above here lmao")
 			if card.ability.consumeable then
 				card:cry_calculate_consumeable_rental()
+			elseif card.ability.set == "Voucher" then
+				card:cry_calculate_voucher_rental()
 			else
 				card:calculate_rental()
 			end
 		end
+		if context.playing_card_end_of_round and not context.repetition and not context.end_of_round and not context.individual then
+			card:calculate_rental()
+		end
 	end,
 })
+
+-- temp crappy overwrite for voucher ui until smods does stuff
+
+function G.UIDEF.used_vouchers()
+
+  local silent = false
+  local keys_used = {}
+  local area_count = 0
+  local voucher_areas = {}
+  local voucher_tables = {}
+  local voucher_table_rows = {}
+  table.sort(G.vouchers.cards, function (a, b) return a.config.center.order < b.config.center.order end)
+  for k, v in ipairs(G.vouchers.cards) do
+    local key = k
+    keys_used[key] = keys_used[key] or {}
+    keys_used[key][#keys_used[key]+1] = v
+  end
+  for k, v in ipairs(keys_used) do
+    if next(v) then
+      area_count = area_count + 1
+    end
+  end
+  for k, v in ipairs(keys_used) do 
+    if next(v) then
+      if #voucher_areas == 18 or #voucher_areas == 36 or #voucher_areas == 54 then 
+        table.insert(voucher_table_rows, 
+        {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes=voucher_tables}
+        )
+        voucher_tables = {}
+      end
+      voucher_areas[#voucher_areas + 1] = CardArea(
+      G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h,
+      (#v == 1 and 0.5 or 1.33)*G.CARD_W,
+      (area_count >=10 and 0.75 or 1.07)*G.CARD_H, 
+      {card_limit = 2, type = 'voucher', highlight_limit = 0})
+      for kk, vv in ipairs(v) do
+        local card = copy_card(vv)
+	card.ability.extra = copy_table(vv.ability.extra)
+	if card.facing == 'back' then card:flip() end
+        card:start_materialize(nil, silent)
+        silent = true
+        voucher_areas[#voucher_areas]:emplace(card)
+      end
+      table.insert(voucher_tables, 
+      {n=G.UIT.C, config={align = "cm", padding = 0, no_fill = true}, nodes={
+        {n=G.UIT.O, config={object = voucher_areas[#voucher_areas]}}
+      }}
+      )
+    end
+  end
+  table.insert(voucher_table_rows,
+          {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes=voucher_tables}
+        )
+
+  
+  local t = silent and {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
+    {n=G.UIT.R, config={align = "cm"}, nodes={
+      {n=G.UIT.O, config={object = DynaText({string = {localize('ph_vouchers_redeemed')}, colours = {G.C.UI.TEXT_LIGHT}, bump = true, scale = 0.6})}}
+    }},
+    {n=G.UIT.R, config={align = "cm", minh = 0.5}, nodes={
+    }},
+    {n=G.UIT.R, config={align = "cm", colour = G.C.BLACK, r = 1, padding = 0.15, emboss = 0.05}, nodes={
+      {n=G.UIT.R, config={align = "cm"}, nodes=voucher_table_rows},
+    }}
+  }} or 
+  {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
+    {n=G.UIT.O, config={object = DynaText({string = {localize('ph_no_vouchers')}, colours = {G.C.UI.TEXT_LIGHT}, bump = true, scale = 0.6})}}
+  }}
+  return t
+end
