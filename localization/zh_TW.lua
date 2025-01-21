@@ -1172,7 +1172,7 @@ return {
                 },
             },
             j_cry_macabre = {
-                name = "Macabre Joker",
+                name = "悚小丑",
                 text = {
                     "When {C:attention}Blind{} is selected,",
                     "destroys each {C:attention}Joker{} except",
