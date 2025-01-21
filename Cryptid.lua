@@ -5,7 +5,7 @@
 --- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.0-beta8, Steamodded>=1.0.0~ALPHA-1225a]
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8<<2.1.0, Steamodded>=1.0.0~ALPHA-1225a<=1.0.0~ALPHA-1304a]
 --- VERSION: 0.5.3c
 --- PRIORITY: 2147483647
 
