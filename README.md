@@ -1,7 +1,7 @@
 # Cryptid
 An unbalanced Balatro mod.
 
-Note: Cryptid requires [Steamodded **1.0.0-Alpha**](https://github.com/Steamopollys/Steamodded/archive/refs/heads/main.zip) and [Talisman](https://github.com/MathIsFun0/Talisman/releases/latest).
+Note: Cryptid requires [Steamodded **1.0.0-Alpha** (old calc)](https://github.com/Steamodded/smods/archive/refs/tags/old-calc.zip) and [Talisman](https://github.com/MathIsFun0/Talisman/releases/latest).
 
 Cryptid currently adds:
 ![image](https://github.com/user-attachments/assets/0a03d6b2-d57f-4f92-9f42-a9ff201c5f2f)
