@@ -1872,6 +1872,14 @@ return {
                     "{C:dark_edition}Negative {}{C:red}Rare{}{C:attention} Joker{}",
                 },
             },
+	    j_cry_quietgame = {
+                name = "The Quiet Game",
+                text = {
+                    "When Bought gain {x:mult,C:white}X#1#{}Mult per second",
+                    "When you click stop scaling permanently",
+                    "{C:inactive}(Currently{} {X:mult,C:white}X#1#{} {C:inactive}Mult){}",
+                },
+            },
             j_cry_quintet = {
                 name = "The Quintet",
                 text = {
