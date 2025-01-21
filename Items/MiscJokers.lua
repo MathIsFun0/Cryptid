@@ -6964,9 +6964,18 @@ local quietgame = {
 			}
 		end
 		if start_timer == true then
-			if card.ability.extra.timer == card.ability.extra.timer_counter then
+			if card.ability.extra.timer >= card.ability.extra.timer_counter then
 				card.ability.extra.timer_counter = card.ability.extra.timer_counter + 1
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod 
+				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }) }
+				)
+				return nil, true
 			end
 		end
 			
