@@ -24,9 +24,6 @@ for _, v in ipairs(stickers) do
 		card.ability[v] = self.ability[v]
 	end
 end
-if self.pinned then
-	card.pinned = self.pinned
-end
 '''
 match_indent = true
 
@@ -41,7 +38,60 @@ card_to_save.ability.extra = self and self.ability.extra or card_to_save.ability
 '''
 match_indent = true
 
+# patch for stickers in challenge ui
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if v.eternal then card:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(card, true)
+	end
+end
+'''
+match_indent = true
 
+# same deal for actual game
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if v.eternal then _joker:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(_joker, true)
+	end
+end
+'''
+match_indent = true
+
+# remove eternal badge
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.eternal then badges[#badges + 1] = 'eternal' end"
+position = "at"
+payload = '''
+if not self.ability.cry_absolute then
+	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
+end
+'''
+match_indent = true
+
+# remove old pinned badge
+# i am fully aware that these badge removals may break stuff since they are good targets
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.pinned then badges[#badges + 1] = 'pinned_left' end"
+position = "at"
+payload = '''
+-- if self.pinned then badges[#badges + 1] = 'pinned_left' end
+'''
+match_indent = true
 
 # don't draw old perishable texture
 [[patches]]

@@ -112,6 +112,7 @@ position = "at"
 payload = '''
 	for k, v in pairs(G.GAME.current_round.cry_voucher_stickers) do
 		card.ability[k] = v
+		card:set_cost()
 	end
 	if G.GAME.current_round.cry_voucher_edition then
 		card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)

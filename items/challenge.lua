@@ -53,7 +53,7 @@ local ballin = {
 		},
 	},
 	jokers = {
-		{ id = "j_cry_jimball", eternal = true },
+		{ id = "j_cry_jimball", stickers = {'cry_absolute'} },
 	},
 	deck = {
 		type = "Challenge Deck",
@@ -140,7 +140,7 @@ local rush_hour_iii = {
 		modifiers = {},
 	},
 	jokers = {
-		{ id = "j_hit_the_road", eternal = true, edition = "negative" },
+		{ id = "j_hit_the_road", stickers = {'cry_absolute'}, edition = "negative" },
 	},
 	deck = {
 		type = "Challenge Deck",
@@ -227,7 +227,7 @@ local boss_rush = {
 		modifiers = {},
 	},
 	jokers = {
-		{ id = "j_cry_apjoker", eternal = true },
+		{ id = "j_cry_apjoker", stickers = {'cry_absolute'} },
 	},
 	deck = {
 		type = "Challenge Deck",
@@ -285,10 +285,10 @@ local dagger_war = {
 		{ id = "j_cry_cryptidmoment", edition = "negative" },
 		{ id = "j_gift", edition = "negative" },
 		{ id = "j_gift", edition = "negative" },
-		{ id = "j_ceremonial", eternal = true },
-		{ id = "j_cry_unjust_dagger", eternal = true },
-		{ id = "j_cry_monkey_dagger", eternal = true },
-		{ id = "j_cry_pirate_dagger", eternal = true },
+		{ id = "j_ceremonial", stickers = {'cry_absolute'} },
+		{ id = "j_cry_unjust_dagger", stickers = {'cry_absolute'} },
+		{ id = "j_cry_monkey_dagger", stickers = {'cry_absolute'} },
+		{ id = "j_cry_pirate_dagger", stickers = {'cry_absolute'} },
 	},
 	deck = {
 		type = "Challenge Deck",
@@ -483,7 +483,6 @@ end
 if Cryptid.enabled["Spectrals"] then
 	sticker_sheet.restrictions.banned_cards[#sticker_sheet.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
 	sticker_sheet_plus.restrictions.banned_cards[#sticker_sheet_plus.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
-	dagger_war.restrictions.banned_cards[#dagger_war.restrictions.banned_cards + 1] = { id = "c_cry_lock" }
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_cry_replica" }
 end
 if Cryptid.enabled["Vouchers"] then

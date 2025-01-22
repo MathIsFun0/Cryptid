@@ -272,6 +272,7 @@ local lock = {
 					CARD:flip()
 					CARD.ability.perishable = nil
 					CARD.pinned = nil
+					CARD.ability.pinned = nil
 					CARD:set_rental(nil)
 					if not CARD.sob then
 						CARD:set_eternal(nil)

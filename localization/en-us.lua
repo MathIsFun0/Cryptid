@@ -3877,8 +3877,8 @@ return {
             cry_pinned_consumeable = {
                 name = "Pinned",
                 text = {
-                    "Can't use other",
-                    "non-{C:attention}Pinned{} consumables",
+                    "{C:inactive}Does nothing...",
+                    "{C:inactive}for now",
                 },
             },
             cry_banana_consumeable = {
@@ -4287,6 +4287,7 @@ return {
         labels = {
             food_jokers = "Food Jokers",
             banana = "Banana",
+            pinned = "Pinned",
             cry_absolute = "Absolute",
             code = "Code",
             unique = "Unique",

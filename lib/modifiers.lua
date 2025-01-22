@@ -298,6 +298,13 @@ function Card:set_ability(center, initial, delay_sprites)
 	end
 end
 
+local updateref = Card.update
+function Card:update(dt)
+	updateref(self, dt)
+	if self.ability.pinned then self.pinned = true end	-- gluing these variables together
+	if self.pinned then self.ability.pinned = true end
+end
+
 local setdebuffref = Card.set_debuff
 function Card:set_debuff(should_debuff)
 	local is_debuffed = self.debuff
@@ -327,24 +334,6 @@ function cry_update_used_vouchers()
 			G.GAME.used_vouchers[v.config.center_key] = true
 		end
 	end
-end
-
-function cry_voucher_debuffed(name) -- simple function but idk
-	if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.perishable[name] then
-		if G.GAME.voucher_sticker_index.perishable[name] == 0 then
-			return true
-		end
-	end
-	return false
-end
-
-function cry_voucher_pinned(name) -- unused
-	if G.GAME.voucher_sticker_index then
-		if G.GAME.voucher_sticker_index.pinned[name] then
-			return true
-		end
-	end
-	return false
 end
 
 -- check if Director's Cut or Retcon offers a cheaper reroll price
@@ -397,33 +386,40 @@ function cry_get_next_voucher_edition() -- currently only for edition decks, can
 		return cry_poll_random_edition()
 	end
 end
--- code to generate Stickers for Vouchers, based on that for Jokers
-function cry_get_next_voucher_stickers()
+-- code to generate Stickers for Vouchers (and boosters), based on that for Jokers
+function cry_get_next_voucher_stickers(booster)
+	
+	local rate = 0.3
+	if booster then rate = 0.2 end
+	local suff = 'v'
+	if booster then suff = 'b' end
+	local odds = 1-rate
+	
 	local ret = { eternal = false, perishable = false, rental = false, pinned = false, banana = false }
 	local checks = { eternal = {}, perishable = {}, rental = {}, pinned = {}, banana = {} }
 	
 	-- first order of business is making this shit not suck lmao
 	-- i did this when i didn't know what i was doing so it contains a lot of pointless checks and bloat
 	for k, v in pairs(checks) do
-		v["poll"] = pseudorandom("cry_v" .. k .. G.GAME.round_resets.ante)
+		v["poll"] = pseudorandom("cry_".. suff .. k .. G.GAME.round_resets.ante)
 		v["force"] = G.GAME.modifiers.cry_sticker_sheet_plus or (G.GAME.modifiers.cry_force_sticker and G.GAME.modifiers.cry_force_sticker == k)
 	end
 	if G.GAME.modifiers.cry_any_stickers or G.GAME.modifiers.cry_sticker_sheet_plus or G.GAME.modifiers.cry_force_sticker then
-		if (G.GAME.modifiers.enable_eternals_in_shop and checks.eternal.poll > 0.7) or checks.eternal.force then
+		if (G.GAME.modifiers.enable_eternals_in_shop and checks.eternal.poll > odds) or checks.eternal.force then
 			ret.eternal = true
 		end
-		if (G.GAME.modifiers.cry_eternal_perishable_compat and (G.GAME.modifiers.enable_perishables_in_shop and checks.perishable.poll > 0.7)) or checks.perishable.force then	-- still ehh? but way more understandable
+		if (G.GAME.modifiers.cry_eternal_perishable_compat and (G.GAME.modifiers.enable_perishables_in_shop and checks.perishable.poll > odds)) or checks.perishable.force then	-- still ehh? but way more understandable
 			ret.perishable = true
-		elseif (not G.GAME.modifiers.cry_eternal_perishable_compat and (G.GAME.modifiers.enable_perishables_in_shop and checks.eternal.poll > 0.4 and checks.eternal.poll <= 0.7)) or checks.perishable.force then
+		elseif (not G.GAME.modifiers.cry_eternal_perishable_compat and (G.GAME.modifiers.enable_perishables_in_shop and checks.eternal.poll > odds-rate and checks.eternal.poll <= odds)) or checks.perishable.force then
 			ret.perishable = true
 		end
-		if (G.GAME.modifiers.enable_rentals_in_shop and checks.rental.poll > 0.7) or checks.rental.force then
+		if (G.GAME.modifiers.enable_rentals_in_shop and checks.rental.poll > odds) or checks.rental.force then
 			ret.rental = true
 		end
-		if (G.GAME.modifiers.enable_pinned_in_shop and checks.pinned.poll > 0.7) or checks.pinned.force then
+		if (G.GAME.modifiers.enable_pinned_in_shop and checks.pinned.poll > odds) or checks.pinned.force then
 			ret.pinned = true
 		end
-		if (G.GAME.modifiers.enable_banana_in_shop and checks.banana.poll > 0.7) or checks.banana.force then
+		if (G.GAME.modifiers.enable_banana_in_shop and checks.banana.poll > odds) or checks.banana.force then
 			ret.banana = true
 		end
 	end
@@ -463,8 +459,7 @@ function Card:cry_calculate_consumeable_perishable()
 		self:set_debuff()
 	end
 end
-
--- Calculates Perishable sticker for Consumables
+-- Calculates Perishable sticker for Vouchers
 function Card:cry_calculate_voucher_perishable()
 
 	if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds end
@@ -539,7 +534,7 @@ function Card:set_banana(_banana)
 	self.ability.banana = _banana
 end
 function Card:set_pinned(_pinned)
-	self.pinned = _pinned
+	self.ability.pinned = _pinned
 end
 
 SMODS.Sticker:take_ownership("perishable", {
@@ -564,7 +559,7 @@ SMODS.Sticker:take_ownership("perishable", {
 		end
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.individual then
+		if context.end_of_round and context.main_eval then	-- perishable is calculated seperately across G.playing_cards i believe
 			if card.ability.consumeable then
 				card:cry_calculate_consumeable_perishable()
 			elseif card.ability.set == "Voucher" then
@@ -581,11 +576,13 @@ SMODS.Sticker:take_ownership("pinned", {
 	prefix_config = { key = false },
 	loc_vars = function(self, info_queue, card)
 		if card.ability.consumeable then
-			return { key = "cry_pinned_consumeable" } -- this doesn't work. i want this to work :(
+			return { key = "cry_pinned_consumeable" }
 		elseif card.ability.set == "Voucher" then
 			return { key = "cry_pinned_voucher" }
 		elseif card.ability.set == "Booster" then
 			return { key = "cry_pinned_booster" }
+		else
+			return { key = "pinned_left" }
 		end
 	end,
 })
@@ -611,11 +608,7 @@ SMODS.Sticker:take_ownership("rental", {
 		end
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.playing_card_end_of_round and not context.individual then
-			for k, v in pairs(context) do
-				print(k)
-			end
-			print("context above here lmao")
+		if context.end_of_round and context.main_eval then
 			if card.ability.consumeable then
 				card:cry_calculate_consumeable_rental()
 			elseif card.ability.set == "Voucher" then
@@ -624,12 +617,67 @@ SMODS.Sticker:take_ownership("rental", {
 				card:calculate_rental()
 			end
 		end
-		if context.playing_card_end_of_round and not context.repetition and not context.end_of_round and not context.individual then
+		if context.playing_card_end_of_round then
 			card:calculate_rental()
 		end
 	end,
 })
-
+SMODS.Sticker({
+	badge_colour = HEX("e8c500"),
+	prefix_config = { key = false },
+	key = "banana",
+	atlas = "sticker",
+	pos = { x = 5, y = 2 },
+	should_apply = false,
+	loc_vars = function(self, info_queue, card)
+		if card.ability.consumeable then
+			return { key = "cry_banana_consumeable", vars = { G.GAME.probabilities.normal or 1, 4 } }
+		elseif card.ability.set == "Voucher" then
+			return { key = "cry_banana_voucher", vars = { G.GAME.probabilities.normal or 1, 12 } }
+		elseif card.ability.set == "Booster" then
+			return { key = "cry_banana_booster" }
+		else
+			return { vars = { G.GAME.probabilities.normal or 1, 10 } }
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.repetition and not context.playing_card_end_of_round and not context.individual then
+			if card.ability.set == "Voucher" then
+				if (pseudorandom('byebyevoucher') < G.GAME.probabilities.normal/G.GAME.cry_voucher_banana_odds) then
+					local area
+					if G.STATE == G.STATES.HAND_PLAYED then
+						if not G.redeemed_vouchers_during_hand then
+							G.redeemed_vouchers_during_hand =
+								CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+						end
+						area = G.redeemed_vouchers_during_hand
+					else
+						area = G.play
+					end
+					
+					local _card = copy_card(card)
+					_card.ability.extra = copy_table(card.ability.extra)
+					if _card.facing == 'back' then _card:flip() end
+					
+					_card:start_materialize()
+					area:emplace(_card)
+					_card.cost = 0
+					_card.shop_voucher = false
+					_card:unredeem()
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0,
+						func = function()
+							_card:start_dissolve()
+							card:start_dissolve()
+							return true
+						end,
+					}))
+				end
+			end
+		end
+	end,			
+})
 -- temp crappy overwrite for voucher ui until smods does stuff
 
 function G.UIDEF.used_vouchers()
