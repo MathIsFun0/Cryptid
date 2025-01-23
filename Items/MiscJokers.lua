@@ -6932,29 +6932,23 @@ local quietgame = {
 	cost = 6,
 	atlas = "atlasone",
 	order = 132,
-	local keysdown = 0
-
-	function love.keypressed(key, unicode)
-	    keysdown = keysdown + 1
-	end
-	
-	function love.keyreleased(key)
-	    keysdown = keysdown - 1
-	end
-	
-	function love.update(dt)
-	    if keysdown > 0 then
-	        local start_timer = false
-	    end
-	end
-	
 	loc_vars = function(self, info_queue, center)
 		return { vars = {center.ability.extra.xmult,center.ability.extra.xmult_mod }}
 	end,
+
+	Scale_it = function(self, card,)
+		card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+		card_eval_status_text(
+			card,
+			"extra",
+			nil,
+			nil,
+			nil,
+			{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+		)
+		return nil
+	end	
 	calculate = function(self, card, context)
-		if context.cry_press then
-			start_timer = false
-		end
 		if context.joker_main then
 			return{
 				card = card,
@@ -6963,9 +6957,7 @@ local quietgame = {
 				colour = G.C.MULT
 			}
 		end
-		if start_timer == true then
-			if card.ability.extra.timer >= card.ability.extra.timer_counter then
-				card.ability.extra.timer_counter = card.ability.extra.timer_counter + 1
+		if context.Scale_quiet and not context.retrigger_joker and not context.blueprint_card then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 				card_eval_status_text(
 					card,
@@ -6973,17 +6965,22 @@ local quietgame = {
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }) }
+					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
 				)
-				return nil, true
-			end
+				return nil
 		end
 			
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			local start_timer = true
-		end
+			G.E_MANAGER:add_event(Event({
+					delay = 1
+					func = function()
+						if card.ability.extra.timer_stop == true then
+							return true
+						end
+					end,
+				}))
 	end,
 	cry_credits = {
 		idea = {
@@ -7203,10 +7200,6 @@ return {
 					obj.pos.x = 0
 					obj.pos.y = obj.pos.y + 1
 				end
-			end
-			if G.P_CENTERS and G.P_CENTERS.j_cry_quietgame then
-				local _obj = G.P_CENTERS.j_cry_quietgame
-				_obj.ability.extra.timer = dt
 			end
 		end
 
