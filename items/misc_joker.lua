@@ -6533,22 +6533,16 @@ local tax_fraud = {
 	order = 128,
 	atlas = "placeholders",
 	in_pool = function(self)
-		if G.jokers then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.rental then return true end
-			end
-		end
-		return false
+		if not G.GAME.modifiers.enable_rentals_in_shop then return false end
+		return true
 	end,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.money } }
 	end,
 	calc_dollar_bonus = function(self, card)
-		local rentals = 0
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.rental then rentals = rentals+1 end
+		if #advanced_find_joker(nil, nil, nil, {"rental"}, true) ~= 0 then
+			return card.ability.extra.money * #advanced_find_joker(nil, nil, nil, {"rental"}, true)
 		end
-		return rentals*card.ability.extra.money
 	end,
 	cry_credits = {
 		idea = {

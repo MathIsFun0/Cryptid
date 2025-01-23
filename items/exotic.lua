@@ -1259,15 +1259,7 @@ local formidiulosus = {
 	atlas = "atlasexotic",
 	no_dbl = true,
 	update = function(self, card, front)
-		local value = 0
-		if G.jokers then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
-					value = value + 1
-				end
-			end
-		end
-		card.ability.extra.Emult = 1 + (card.ability.extra.Emult_mod * value)
+		card.ability.extra.Emult = 1 + ( card.ability.extra.Emult_mod * #advanced_find_joker(nil,"cry_candy",nil,nil,true) )
 	end,
 	calculate = function(self, card, context)
 		if (context.buying_card or context.cry_creating_card) and context.card.ability.set == "Joker" and context.card.config.center.rarity == "cry_cursed" and not context.blueprint and not (context.card == card) then

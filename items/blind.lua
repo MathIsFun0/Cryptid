@@ -503,15 +503,7 @@ local shackle = {
 	boss_colour = HEX("010466"),
 	in_pool = function()
 		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then return false end
-		if not G.jokers then
-			return false
-		end
-		for i, j in pairs(G.jokers.cards) do
-			if safe_get(j, "edition", "negative") == true then
-				return true
-			end
-		end
-		return false
+		return #advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if (card.area == G.jokers) and not G.GAME.blind.disabled and safe_get(card, "edition", "negative") == true then
@@ -532,18 +524,10 @@ local pin = {
 	atlas = "blinds",
 	order = 17,
 	boss_colour = HEX("452703"),
+	--Todo: whitelist candy jokers
 	in_pool = function()
-		if not G.jokers then
-			return false
-		end
-		for i, j in pairs(G.jokers.cards) do
-			if
-				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3) or (j.config.center.rarity == 5))
-			then
-				return true
-			end
-		end
-		return false
+		if not G.jokers or not G.jokers.cards then return false end
+		return #advanced_find_joker(nil, {1,2,3}, nil, nil, true) < #G.jokers.cards
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if
@@ -560,20 +544,6 @@ local pin = {
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 
-local pinkbow = { --TODO: Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
-	object_type = "Blind",
-	name = "cry-pinkbow",
-	key = "pinkbow",
-	pos = { x = 0, y = 11 },
-	dollars = 8,
-	boss = {
-		min = 3,
-		max = 10,
-		showdown = true,
-	},
-	atlas = "blinds",
-	boss_colour = HEX("ff00cc"),
-}
 local lavender_loop = {
 	object_type = "Blind",
 	name = "cry-Lavender Loop",
@@ -635,15 +605,7 @@ local tornado = {
 		end
 	end,
 	in_pool = function()
-		if not G.jokers then
-			return true
-		end
-		for i, j in pairs(G.jokers.cards) do
-			if j.ability.name == "Oops! All 6s" and j.ability.eternal == true then
-				return false
-			end
-		end
-		return true
+		return #advanced_find_joker("Oops! All 6s", nil, nil, {"eternal"}, nil) == 0
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
@@ -1314,95 +1276,6 @@ end
 return {
 	name = "Blinds",
 	init = function()
-		--Clock Patches
-		local upd = Game.update
-		function Game:update(dt)
-			upd(self, dt)
-			local choices = { "Small", "Big", "Boss" }
-			G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
-			for _, c in pairs(choices) do
-				if
-					G.GAME
-					and G.GAME.round_resets
-					and G.GAME.round_resets.blind_choices
-					and G.GAME.round_resets.blind_choices[c]
-					and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
-				then
-					if
-						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult ~= 0
-						and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante ~= G.GAME.round_resets.ante
-					then
-						if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].name == "cry-Obsidian Orb" then
-							for i = 1, #G.GAME.defeated_blinds do
-								G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
-									* G.P_BLINDS[G.GAME.defeated_blinds[i]]
-									/ 2
-							end
-						else
-							G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = 0
-						end
-						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante = G.GAME.round_resets.ante
-					end
-					if
-						G.GAME.round_resets.blind_states[c] ~= "Current"
-						and G.GAME.round_resets.blind_states[c] ~= "Defeated"
-					then
-						G.GAME.CRY_BLINDS[c] = (
-							G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
-						)
-							+ (
-								G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
-									and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(
-										dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)
-									)
-								or 0
-							)
-						--Update UI
-						--todo: in blinds screen, too
-						if G.blind_select_opts then
-							local blind_UI =
-								G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
-							local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-							if chip_text_node then
-								chip_text_node.config.text = number_format(
-									get_blind_amount(G.GAME.round_resets.blind_ante)
-										* G.GAME.starting_params.ante_scaling
-										* G.GAME.CRY_BLINDS[c]
-								)
-								chip_text_node.config.scale = score_number_scale(
-									0.9,
-									get_blind_amount(G.GAME.round_resets.blind_ante)
-										* G.GAME.starting_params.ante_scaling
-										* G.GAME.CRY_BLINDS[c]
-								)
-							end
-							G.blind_select_opts[string.lower(c)]:recalculate()
-						end
-					elseif
-						G.GAME.round_resets.blind_states[c] ~= "Defeated"
-						and not G.GAME.blind.disabled
-						and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
-					then
-						G.GAME.blind.chips = G.GAME.blind.chips
-							+ G.GAME.blind:cry_ante_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
-								* get_blind_amount(G.GAME.round_resets.ante)
-								* G.GAME.starting_params.ante_scaling
-						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-					end
-				end
-				if
-					G.GAME.round_resets.blind_states[c] == "Current"
-					and G.GAME
-					and G.GAME.blind
-					and not G.GAME.blind.disabled
-					and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
-				then
-					G.GAME.blind.chips = G.GAME.blind.chips
-						* G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
-					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-				end
-			end
-		end
 		--Trick Patches
 		local gfep = G.FUNCS.evaluate_play
 		function G.FUNCS.evaluate_play(e)
