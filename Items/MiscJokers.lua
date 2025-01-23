@@ -6927,7 +6927,7 @@ local quietgame = {
 	name = "cry-The Quiet Game",
 	key = "quietgame",
 	pos = { x = 1, y = 5 },
-	config = {extra = {xmult = 1 xmult_mod = 0.02, timer = 0 timer_check=0}},
+	config = {extra = {xmult = 1 xmult_mod = 0.02, end_the_timer = false, start_the_timer = true}},
 	rarity = 2,
 	cost = 6,
 	atlas = "atlasone",
@@ -6941,6 +6941,7 @@ local quietgame = {
 				G.SETTINGS.FASTFORWARD = setting1
 			end
 			G.SETTINGS.GAMESPEED = settings2
+		end
 		if context.joker_main then
 			return{
 				card = card,
@@ -6956,23 +6957,38 @@ local quietgame = {
 				end
 				local setting2 = G.SETTINGS.GAMESPEED
 				G.SETTINGS.GAMESPEED = 1
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-				)
-				return nil
+				local event 
+				event = Event {
+					blockable = false,
+					blocking = false,
+					trigger = "after",
+					delay = 1,
+					timer = "TOTAL",		
+					func = function()
+						if card.ability.extra.end_the_timer  or card.removed then
+							card.ability.extra.start_the_timer = false
+							return true
+						end
+							card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+							card_eval_status_text(
+								card,
+								"extra",
+								nil,
+								nil,
+								nil,
+								{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+								)
+						event.start_timer = false
+					end
+				}
+				G.E_MANAGER:add_event(event) 
 		end
 			
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			
 			card:calculate(card, {key = scale_quiet})
+		end
 	end,
 	cry_credits = {
 		idea = {
