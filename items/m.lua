@@ -193,10 +193,8 @@ local foodm = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (card.ability.extra.mult > 0)
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
