@@ -6935,19 +6935,6 @@ local quietgame = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = {center.ability.extra.xmult,center.ability.extra.xmult_mod }}
 	end,
-
-	Scale_it = function(self, card,)
-		card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-		card_eval_status_text(
-			card,
-			"extra",
-			nil,
-			nil,
-			nil,
-			{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-		)
-		return nil
-	end	
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return{
@@ -6957,7 +6944,8 @@ local quietgame = {
 				colour = G.C.MULT
 			}
 		end
-		if context.Scale_quiet and not context.retrigger_joker and not context.blueprint_card then
+		if context.scale_quiet and not context.retrigger_joker and not context.blueprint_card then
+			
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 				card_eval_status_text(
 					card,
@@ -6973,14 +6961,7 @@ local quietgame = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			G.E_MANAGER:add_event(Event({
-					delay = 1
-					func = function()
-						if card.ability.extra.timer_stop == true then
-							return true
-						end
-					end,
-				}))
+			card:calculate(card, {key = scale_quiet})
 	end,
 	cry_credits = {
 		idea = {
