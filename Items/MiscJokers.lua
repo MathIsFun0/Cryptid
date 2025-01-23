@@ -6936,6 +6936,11 @@ local quietgame = {
 		return { vars = {center.ability.extra.xmult,center.ability.extra.xmult_mod }}
 	end,
 	calculate = function(self, card, context)
+		if context.cry_press then
+			if (SMODS.Mods.nopeus or {}).can_load thenn
+				G.SETTINGS.FASTFORWARD = setting1
+			end
+			G.SETTINGS.GAMESPEED = settings2
 		if context.joker_main then
 			return{
 				card = card,
@@ -6945,7 +6950,12 @@ local quietgame = {
 			}
 		end
 		if context.scale_quiet and not context.retrigger_joker and not context.blueprint_card then
-			
+				if (SMODS.Mods.nopeus or {}).can_load then
+					local setting1 = G.SETTINGS.FASTFORWARD
+					G.SETTINGS.FASTFORWARD = 0
+				end
+				local setting2 = G.SETTINGS.GAMESPEED
+				G.SETTINGS.GAMESPEED = 1
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 				card_eval_status_text(
 					card,
@@ -6961,6 +6971,7 @@ local quietgame = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
+			
 			card:calculate(card, {key = scale_quiet})
 	end,
 	cry_credits = {
