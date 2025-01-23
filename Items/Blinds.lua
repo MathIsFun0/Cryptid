@@ -1425,6 +1425,7 @@ return {
 			end
 			if
 				self.name ~= "cry-Obsidian Orb"
+				and self.name ~= "The Sink"
 				and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
 				and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
 				and (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"])
