@@ -343,6 +343,31 @@ function antimatter_apply()
 	local star = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_star_deck", "wins", 8)
 	local moon = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_moon_deck", "wins", 8)
 	
+	if cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
+		bluecheck = 1
+		yellowcheck = 1
+		abandonedcheck = 1
+		ghostcheck = 1
+		redcheck = 1
+		checkeredcheck = 1
+		erraticcheck = 1
+		blackcheck = 1
+		paintedcheck = 1
+		greencheck = 1
+		spookycheck = 1
+		equilibriumcheck = 1
+		misprintcheck = 1
+		infinitecheck = 1
+		wormholecheck = 1
+		redeemedcheck = 1
+		legendarycheck = 1
+		encodedcheck = 1
+		world = 1
+		sun = 1
+		star = 1
+		moon = 1
+	end
+
 	--Blue Deck
 	if (bluecheck or 0) ~= 0 then
 		G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
