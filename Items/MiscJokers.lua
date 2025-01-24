@@ -6927,7 +6927,7 @@ local quietgame = {
 	name = "cry-The Quiet Game",
 	key = "quietgame",
 	pos = { x = 1, y = 5 },
-	config = {extra = {xmult = 1 xmult_mod = 0.02, end_the_timer = false, start_the_timer = true}},
+	config = {extra = {xmult = 1 xmult_mod = 0.02, quiet_timer_enabled = false, quiet_timer_disabled = false, quietgame_dt = 0}},
 	rarity = 2,
 	cost = 6,
 	atlas = "atlasone",
@@ -6935,12 +6935,24 @@ local quietgame = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = {center.ability.extra.xmult,center.ability.extra.xmult_mod }}
 	end,
+	update = function(self, card, dt)
+	if card.ability.extra.quiet_timer_enabled == true and not card.ability.extra.quiet_timer_disabled == true then
+		card.ability.extra.quietgame_dt = card.ability.extra.quietgame_dt + dt
+		if card.ability.extra.quietgame_dt > 1 then
+			card.ability.extra.quietgame_dt = 0
+			card:calculate_joker(card, {scale_quiet = true})
+		end
+	end
+
+	end
 	calculate = function(self, card, context)
 		if context.cry_press then
 			if (SMODS.Mods.nopeus or {}).can_load thenn
 				G.SETTINGS.FASTFORWARD = setting1
 			end
 			G.SETTINGS.GAMESPEED = settings2
+			card.ability.extra.quiet_timer_enabled = false
+			card.ability.extra.quiet_timer_disabled = true
 		end
 		if context.joker_main then
 			return{
@@ -6951,43 +6963,29 @@ local quietgame = {
 			}
 		end
 		if context.scale_quiet and not context.retrigger_joker and not context.blueprint_card then
-				if (SMODS.Mods.nopeus or {}).can_load then
-					local setting1 = G.SETTINGS.FASTFORWARD
-					G.SETTINGS.FASTFORWARD = 0
-				end
-				local setting2 = G.SETTINGS.GAMESPEED
-				G.SETTINGS.GAMESPEED = 1
-				local event 
-				event = Event {
-					blockable = false,
-					blocking = false,
-					trigger = "after",
-					delay = 1,
-					timer = "TOTAL",		
-					func = function()
-						if card.ability.extra.end_the_timer  or card.removed then
-							card.ability.extra.start_the_timer = false
-							return true
-						end
-							card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-							card_eval_status_text(
-								card,
-								"extra",
-								nil,
-								nil,
-								nil,
-								{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-								)
-						event.start_timer = false
-					end
-				}
-				G.E_MANAGER:add_event(event) 
+			
+	
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+			card_eval_status_text(
+				card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+				)
 		end
 			
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			card:calculate(card, {key = scale_quiet})
+			local setting2 = G.SETTINGS.GAMESPEED
+			G.SETTINGS.GAMESPEED = 1
+			if (SMODS.Mods.nopeus or {}).can_load then
+				local setting1 = G.SETTINGS.FASTFORWARD
+				G.SETTINGS.FASTFORWARD = 0
+			end
+			card.ability.extra.quiet_timer_enabled = true
 		end
 	end,
 	cry_credits = {
@@ -6995,7 +6993,7 @@ local quietgame = {
 			"HexaCryonic"
 		},
 		art = {
-			"NA"
+			"SMG9000"
 		},
 		code = {
 			"SMG9000"
@@ -7224,6 +7222,15 @@ return {
 		local lcpref = Controller.L_cursor_press
 		function Controller:L_cursor_press(x, y)
 			lcpref(self,x,y)
+			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({cry_press = true})
+				end
+			end
+		end
+		local rcpref = Controller.R_cursor_press
+		function Controller:R_cursor_press(x, y)
+			rcpref(self,x,y)
 			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
 				for i = 1, #G.jokers.cards do
 					G.jokers.cards[i]:calculate_joker({cry_press = true})
