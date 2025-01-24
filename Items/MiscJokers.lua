@@ -6926,14 +6926,14 @@ local quietgame = {
 	object_type = "Joker",
 	name = "cry-The Quiet Game",
 	key = "quietgame",
-	pos = { x = 1, y = 5 },
+	pos = { x = 4, y = 6 },
 	config = {extra = {xmult = 1 xmult_mod = 0.02, quiet_timer_enabled = false, quiet_timer_disabled = false, quietgame_dt = 0}},
 	rarity = 2,
 	cost = 6,
-	atlas = "atlasone",
+	atlas = "atlastwo",
 	order = 132,
 	loc_vars = function(self, info_queue, center)
-		return { vars = {center.ability.extra.xmult,center.ability.extra.xmult_mod }}
+		return { vars = {center.ability.extra.xmult, center.ability.extra.xmult_mod }}
 	end,
 	update = function(self, card, dt)
 	if card.ability.extra.quiet_timer_enabled == true and not card.ability.extra.quiet_timer_disabled == true then
@@ -6946,7 +6946,7 @@ local quietgame = {
 
 	end
 	calculate = function(self, card, context)
-		if context.cry_press then
+		if (context.cry_press or context.cry_rpress or context.cry_key_press) then
 			if (SMODS.Mods.nopeus or {}).can_load thenn
 				G.SETTINGS.FASTFORWARD = setting1
 			end
@@ -6963,8 +6963,6 @@ local quietgame = {
 			}
 		end
 		if context.scale_quiet and not context.retrigger_joker and not context.blueprint_card then
-			
-	
 			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 			card_eval_status_text(
 				card,
@@ -7233,7 +7231,7 @@ return {
 			rcpref(self,x,y)
 			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
 				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i]:calculate_joker({cry_press = true})
+					G.jokers.cards[i]:calculate_joker({cry_rpress = true})
 				end
 			end
 		end
@@ -7241,7 +7239,7 @@ return {
 		function love.keypressed(key)
 			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
 				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i]:calculate_joker({cry_press = true})
+					G.jokers.cards[i]:calculate_joker({cry_key_press = true})
 				end
 			end
 			anypref(key)
