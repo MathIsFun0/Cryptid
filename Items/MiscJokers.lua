@@ -7237,6 +7237,16 @@ return {
 				end
 			end
 		end
+		local anypref = love.keypressed
+		function love.keypressed(key)
+			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({cry_press = true})
+				end
+			end
+			anypref(key)
+		end
+			
 	end,
 	items = miscitems,
 }
