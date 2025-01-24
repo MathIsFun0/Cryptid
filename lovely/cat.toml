@@ -32,6 +32,14 @@ tag_sprite.click = function(_self)
 					cry_too_fast_kitty = true
 					local perc = (other_cat.ability.level + 1)/10
 					if perc > 1 then perc = 1 end
+					
+					local edition = nil
+					for k, v in pairs(G.P_CENTER_POOLS.Edition) do
+						if v.order == other_cat.ability.level + 1 then
+							edition = v
+						end
+					end
+					
 					G.E_MANAGER:add_event(Event({
 						delay = 0.0,
 						trigger = 'immediate',
@@ -82,6 +90,9 @@ tag_sprite.click = function(_self)
 						trigger = 'after',
 						delay = 0.7,
 						func = (function()
+							other_cat:juice_up(0.25, 0.1)
+							other_cat.ability.edshader = edition.shader
+							play_sound(edition.sound.sound, (edition.sound.per or 1)*1.3, (edition.sound.vol or 0.25)*0.6)
 							self:remove()
 							cry_too_fast_kitty = nil
 							return true
@@ -106,4 +117,74 @@ position = "after"
 payload = '''
 elseif name_to_check == "cry-Cat Tag" then loc_vars = {self.ability.level or 1}
 '''
+match_indent = true
+
+# tag_sprite draw
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Node.stop_hover(_self); _self.hover_tilt = 0 end'''
+position = "after"
+payload = '''
+tag_sprite.draw = function(_self)
+	if not _self.states.visible then return end
+	
+	_self.tilt_var = self.tilt_var or {mx = 0, my = 0, dx = _self.tilt_var.dx or 0, dy = _self.tilt_var.dy or 0, amt = 0}
+	_self.tilt_var.mx, _self.tilt_var.my = G.CONTROLLER.cursor_position.x, G.CONTROLLER.cursor_position.y
+        _self.tilt_var.amt = math.abs(_self.hover_offset.y + _self.hover_offset.x - 10)*0.3
+	
+        _self.ARGS.send_to_shader = _self.ARGS.send_to_shader or {}
+        _self.ARGS.send_to_shader[1] = math.min(_self.VT.r*3, 1) + G.TIMERS.REAL/(28) + (_self.juice and _self.juice.r*10 or 0) + _self.tilt_var.amt
+        _self.ARGS.send_to_shader[2] = G.TIMERS.REAL*2
+	
+	_self.tilt_var = _self.tilt_var or {}
+	_self.tilt_var.mx, _self.tilt_var.my =G.CONTROLLER.cursor_position.x,G.CONTROLLER.cursor_position.y
+
+	_self.role.draw_major = _self
+	_self:draw_shader('dissolve', 0.1)
+	local ed = _self.config.tag.ability.edshader
+	if ed then
+		if ed == 'foil' or ed == 'cry_noisy' then
+			_self:draw_shader('dissolve')
+		end
+		_self:draw_shader(ed, nil, _self.ARGS.send_to_shader)
+		if ed == 'negative' or ed == 'cry_oversat' then
+			_self:draw_shader('negative_shine', nil, _self.ARGS.send_to_shader)
+		end
+	else
+		_self:draw_shader('dissolve')
+	end
+	add_to_drawhash(_self)
+end
+'''
+match_indent = true
+
+# add editions to edition tags and init tilt_var
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.T.scale = 1'''
+position = "before"
+payload = '''
+if self.config.edition then
+	for k, v in pairs(G.P_CENTER_POOLS.Edition) do
+		print(v.shader and v.shader..','..v.order or ','..v.order)
+		if self.config.edition == v.key:sub(3) then
+			self.ability.edshader = v.shader
+		end
+	end
+end
+tag_sprite.tilt_var = {mx = 0, my = 0, dx = 0, dy = 0, amt = 0}
+'''
+match_indent = true
+
+# make the cat tag meow (can probably do this without injecting?)
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)'''
+position = "before"
+payload = '''if self.key == 'tag_cry_cat' then
+	play_sound('cry_meow'..math.random(4), 1.26, 0.18)
+end'''
 match_indent = true
