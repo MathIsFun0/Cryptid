@@ -5366,7 +5366,7 @@ local oldblueprint = {
 	loc_vars = function(self, info_queue, card)
 		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
 		return { 
-			vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },
+			vars = { cry_	(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },
 			main_end = (card.area and card.area == G.jokers) and {
         			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
             				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
@@ -6927,32 +6927,29 @@ local quietgame = {
 	name = "cry-The Quiet Game",
 	key = "quietgame",
 	pos = { x = 4, y = 6 },
-	config = {extra = {xmult = 1 xmult_mod = 0.02, quiet_timer_enabled = false, quiet_timer_disabled = false, quietgame_dt = 0}},
-	rarity = 2,
-	cost = 6,
+	config = {extra = {xmult = 1, xmult_mod = 0.02, quiet_timer_enabled = false, quiet_timer_disabled = false, quietgame_dt = 0, speed = nil}},
+	rarity = 3,
+	cost = 10,
 	atlas = "atlastwo",
 	order = 132,
 	loc_vars = function(self, info_queue, center)
 		return { vars = {center.ability.extra.xmult, center.ability.extra.xmult_mod }}
 	end,
 	update = function(self, card, dt)
-	if card.ability.extra.quiet_timer_enabled == true and not card.ability.extra.quiet_timer_disabled == true then
-		card.ability.extra.quietgame_dt = card.ability.extra.quietgame_dt + dt
-		if card.ability.extra.quietgame_dt > 1 then
-			card.ability.extra.quietgame_dt = 0
-			card:calculate_joker(card, {scale_quiet = true})
-		end
-	end
-
-	end
-	calculate = function(self, card, context)
-		if (context.cry_press or context.cry_rpress or context.cry_key_press) then
-			if (SMODS.Mods.nopeus or {}).can_load thenn
-				G.SETTINGS.FASTFORWARD = setting1
+		if card.ability.extra.quiet_timer_enabled == true and not card.ability.extra.quiet_timer_disabled == true then
+			card.ability.extra.quietgame_dt = card.ability.extra.quietgame_dt + (dt/G.SPEEDFACTOR)
+			if card.ability.extra.quietgame_dt > 1 then
+				card.ability.extra.quietgame_dt = 0
+				card:calculate_joker(	{scale_quiet = true})
 			end
-			G.SETTINGS.GAMESPEED = settings2
+		end
+
+	end,
+	calculate = function(self, card, context)
+		if (context.cry_press or context.cry_rpress or context.cry_key_press ) then
 			card.ability.extra.quiet_timer_enabled = false
-			card.ability.extra.quiet_timer_disabled = true
+			
+			G.SETTINGS.SOUND.volume = 100
 		end
 		if context.joker_main then
 			return{
@@ -6976,15 +6973,14 @@ local quietgame = {
 			
 	end,
 	add_to_deck = function(self, card, from_debuff)
+	
 		if not from_debuff then
-			local setting2 = G.SETTINGS.GAMESPEED
-			G.SETTINGS.GAMESPEED = 1
-			if (SMODS.Mods.nopeus or {}).can_load then
-				local setting1 = G.SETTINGS.FASTFORWARD
-				G.SETTINGS.FASTFORWARD = 0
+			G.SETTINGS.SOUND.volume = 0
+			card.ability.extra.speed = G.SETTINGS.GAMESPEED
+			
+				
+					card.ability.extra.quiet_timer_enabled = true
 			end
-			card.ability.extra.quiet_timer_enabled = true
-		end
 	end,
 	cry_credits = {
 		idea = {
