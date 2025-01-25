@@ -6953,10 +6953,8 @@ local quietgame = {
 		end
 		if context.joker_main then
 			return{
-				card = card,
-				xmult_mod = card.ability.extra.xmult,
-				message = 'x' .. card.ability.extra.xmult,
-				colour = G.C.MULT
+				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
+				Xmult_mod = card.ability.extra.xmult,
 			}
 		end
 		if context.scale_quiet and not context.retrigger_joker and not context.blueprint_card then
