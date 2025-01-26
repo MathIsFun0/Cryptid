@@ -119,7 +119,7 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if i % 2 == 1 and cry_card_enabled("c_cry_gateway") then
+		if i % 2 == 1 and cry_card_enabled("c_cry_gateway") == true then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		else
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
@@ -138,7 +138,7 @@ local empowered = {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
-		if cry_card_enabled("c_cry_gateway") then
+		if cry_card_enabled("c_cry_gateway") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_gateway
 		end
 		return { vars = {} }

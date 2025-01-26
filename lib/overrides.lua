@@ -13,15 +13,15 @@ function get_new_boss()
 	if G.GAME.modifiers.cry_beta then
 		local bl_key = string.sub(bl,4)
 		local nostalgicblinds = {
-			arm = cry_card_enabled("bl_cry_oldarm"),
-			fish = cry_card_enabled("bl_cry_oldfish"),
-			flint = cry_card_enabled("bl_cry_oldflint"),
-			house = cry_card_enabled("bl_cry_oldhouse"),
-			manacle = cry_card_enabled("bl_cry_oldmanacle"),
-			mark = cry_card_enabled("bl_cry_oldmark"),
-			ox = cry_card_enabled("bl_cry_oldox"),
-			pillar = cry_card_enabled("bl_cry_oldpillar"),
-			serpent = cry_card_enabled("bl_cry_oldserpent")
+			arm = (cry_card_enabled("bl_cry_oldarm") == true),
+			fish = (cry_card_enabled("bl_cry_oldfish") == true),
+			flint = (cry_card_enabled("bl_cry_oldflint") == true),
+			house = (cry_card_enabled("bl_cry_oldhouse") == true),
+			manacle = (cry_card_enabled("bl_cry_oldmanacle") == true),
+			mark = (cry_card_enabled("bl_cry_oldmark") == true),
+			ox = (cry_card_enabled("bl_cry_oldox") == true),
+			pillar = (cry_card_enabled("bl_cry_oldpillar") == true),
+			serpent = (cry_card_enabled("bl_cry_oldserpent") == true)
 		}
 		if nostalgicblinds[bl_key] then
 			return "bl_cry_old"..bl_key
@@ -334,11 +334,11 @@ function Game:update(dt)
 		AllowDividing("Code")
 		CryptidIncanCompat = true
 	end
-	
-	cry_pointer_dt = cry_pointer_dt + dt
-	cry_jimball_dt = cry_jimball_dt + dt
-	cry_glowing_dt = cry_glowing_dt + dt
-
+	if cry_card_enabled("set_cry_timer") == true then
+		cry_pointer_dt = cry_pointer_dt + dt
+		cry_jimball_dt = cry_jimball_dt + dt
+		cry_glowing_dt = cry_glowing_dt + dt
+	end
 	--Update sprite positions each frame on certain cards to give the illusion of an animated card
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
 		cry_pointer_dt = 0

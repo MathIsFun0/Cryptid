@@ -15,7 +15,7 @@ local jollysus = {
 	},
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		if cry_card_enabled("e_cry_m") then
+		if cry_card_enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
 		return { vars = { center.ability.extra.active } }
@@ -39,7 +39,7 @@ local jollysus = {
 					card.ability.extra.spawn = false
 				end
 				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
-				if cry_card_enabled("e_cry_m") then
+				if cry_card_enabled("e_cry_m") == true then
 					card:set_edition({ cry_m = true })
 				end
 				card:add_to_deck()
@@ -58,7 +58,7 @@ local jollysus = {
 				card.ability.extra.spawn = false
 			end
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
-			if cry_card_enabled("e_cry_m") then
+			if cry_card_enabled("e_cry_m") == true then
 				card:set_edition({ cry_m = true })
 			end
 			card:add_to_deck()
@@ -657,7 +657,7 @@ local scrabble = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, card)
-		if cry_card_enabled("e_cry_m") then
+		if cry_card_enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
 		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
@@ -668,7 +668,7 @@ local scrabble = {
 			if pseudorandom("scrabbleother") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
-				if cry_card_enabled("e_cry_m") then
+				if cry_card_enabled("e_cry_m") == true then
 					card:set_edition({ cry_m = true })
 				end
 				card:add_to_deck()
@@ -1467,7 +1467,7 @@ end
 return {
 	name = "M Jokers",
 	init = function()
-		if cry_card_enabled("set_cry_epic") then
+		if cry_card_enabled("set_cry_epic") == true then
 			Cryptid.M_jokers["j_cry_m"] = true
 			Cryptid.M_jokers["j_cry_M"] = true
 		end
@@ -1489,7 +1489,7 @@ return {
 				return ret, trig
 			end
 		end
-		if cry_card_enabled("j_cry_mprime") then
+		if cry_card_enabled("j_cry_mprime") == true then
 			Cryptid.M_jokers.j_cry_mprime = nil
 		end
 	end,
