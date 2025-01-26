@@ -1,5 +1,3 @@
---I couldn't get Meme Packs to work without crashing
---yes somehow that was harder than RNJoker
 return {
     descriptions = {
         Back = {
@@ -4179,6 +4177,7 @@ return {
             cry_mus_code = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
             cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
             cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
+	    cry_mus_alt_bg = "Background Music",
 
             k_cry_program_pack = "Program Pack",
             k_cry_meme_pack = "Meme Pack",

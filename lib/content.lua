@@ -180,22 +180,12 @@ SMODS.Sound({
 			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 	end,
 })
---Used to check to play the exotic music
-function cry_has_exotic()
-	if G.jokers then
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].config.center.rarity == "cry_exotic" then
-				return true
-			end
-		end
-	end
-end
 SMODS.Sound({
 	key = "music_exotic",
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.exotic_music and cry_has_exotic()
+		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.exotic_music and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
 SMODS.Sound({
@@ -214,6 +204,7 @@ SMODS.Sound({
 					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline"
 				or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness"
 			)
+			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
 SMODS.Sound({
@@ -232,6 +223,7 @@ SMODS.Sound({
 					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness"
 				or G.selectedGameset == "madness"
 			)
+			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
 SMODS.Sound({
@@ -250,6 +242,7 @@ SMODS.Sound({
 					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest"
 				or G.selectedGameset == "modest"
 			)
+			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
 SMODS.Atlas({

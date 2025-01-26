@@ -267,6 +267,11 @@ local cryptidTabs = function() return {
 				ref_table = Cryptid_config.Cryptid,
 				ref_value = "big_music",
 			})
+			settings.nodes[#settings.nodes + 1] = create_toggle({
+				label = localize("cry_mus_alt_bg"),
+				ref_table = Cryptid_config.Cryptid,
+				ref_value = "alt_bg_music",
+			})
 			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
 			cry_nodes[#cry_nodes + 1] = config
 			return {
