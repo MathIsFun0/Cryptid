@@ -1,7 +1,119 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+local gnb = get_new_boss
+function get_new_boss()
+	--Fix an issue with adding bosses mid-run
+	for k, v in pairs(G.P_BLINDS) do
+		if not G.GAME.bosses_used[k] then
+			G.GAME.bosses_used[k] = 0
+		end
+	end
+	--This is how nostalgic deck replaces the boss blinds with Nostalgic versions
+	local bl = gnb()
+	if G.GAME.modifiers.cry_beta then
+		local bl_key = string.sub(bl,4)
+		local nostalgicblinds = {
+			arm = cry_card_enabled("bl_cry_oldarm"),
+			fish = cry_card_enabled("bl_cry_oldfish"),
+			flint = cry_card_enabled("bl_cry_oldflint"),
+			house = cry_card_enabled("bl_cry_oldhouse"),
+			manacle = cry_card_enabled("bl_cry_oldmanacle"),
+			mark = cry_card_enabled("bl_cry_oldmark"),
+			ox = cry_card_enabled("bl_cry_oldox"),
+			pillar = cry_card_enabled("bl_cry_oldpillar"),
+			serpent = cry_card_enabled("bl_cry_oldserpent")
+		}
+		if nostalgicblinds[bl_key] then
+			return "bl_cry_old"..bl_key
+		end
+	end
+	return bl
+end
 
+--Add context for after cards are played
+local gfep = G.FUNCS.evaluate_play
+function G.FUNCS.evaluate_play(e)
+	gfep(e)
+	G.GAME.blind:cry_after_play()
+end
 
+--Add context for Just before cards are played
+local pcfh = G.FUNCS.play_cards_from_highlighted
+function G.FUNCS.play_cards_from_highlighted(e)
+	G.GAME.blind:cry_before_play()
+	pcfh(e)
+end
+
+--Track defeated blinds for Obsidian Orb
+local dft = Blind.defeat
+function Blind:defeat(s)
+	dft(self, s)
+	local obj = self.config.blind
+	-- Ignore blinds with loc_vars because orb does not properly work with them yet
+	if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
+		return
+	end
+	if
+		self.name ~= "cry-Obsidian Orb"
+		--Stop impossible blind combinations from happening
+		and self.name ~= "The Sink"
+		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
+		and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
+		and (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"])
+		and (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"])
+		and (self.name ~= "cry-Lavender Loop" or not G.GAME.defeated_blinds["bl_cry_tax"])
+		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_cry_lavender_loop"])
+		and (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"])
+		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
+	then
+		G.GAME.defeated_blinds[self.config.blind.key] = true
+	end
+end
+
+local sr = Game.start_run
+function Game:start_run(args)
+	sr(self, args)
+	if G.P_BLINDS.bl_cry_clock then
+		G.P_BLINDS.bl_cry_clock.mult = 0
+	end
+	if not G.GAME.defeated_blinds then
+		G.GAME.defeated_blinds = {}
+	end
+end
+
+--patch for multiple Clocks to tick separately and load separately
+local bsb = Blind.set_blind
+function Blind:set_blind(blind, y, z)
+	local c = "Boss"
+	if string.sub(G.GAME.subhash or "", -1) == "S" then
+		c = "Small"
+	end
+	if string.sub(G.GAME.subhash or "", -1) == "B" then
+		c = "Big"
+	end
+	if
+		G.GAME.CRY_BLINDS
+		and G.GAME.CRY_BLINDS[c]
+		and not y
+		and blind
+		and blind.mult
+		and blind.cry_ante_base_mod
+	then
+		blind.mult = G.GAME.CRY_BLINDS[c]
+	end
+	bsb(self, blind, y, z)
+end
+
+local rb = reset_blinds
+function reset_blinds()
+	if G.GAME.round_resets.blind_states.Boss == "Defeated" then
+		G.GAME.CRY_BLINDS = {}
+		if G.P_BLINDS.bl_cry_clock then
+			G.P_BLINDS.bl_cry_clock.mult = 0
+		end
+	end
+	rb()
+end
 --Init stuff at the start of the game
 local gigo = Game.init_game_object
 function Game:init_game_object()
@@ -419,7 +531,6 @@ end
 
 -- Modify to display badges for credits
 -- todo: make this optional
--- todo: fix memory leak (it's easy to see in main menu collection, unhovering doesn't remove credit dynatext)
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
 	smcmb(obj, badges)
