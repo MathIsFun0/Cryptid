@@ -1141,6 +1141,11 @@ SMODS.ContentSet({
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 }, --Tag Printer
 })
+SMODS.ContentSet({
+	key = "poker_hand_stuff",
+	atlas = "atlasvoucher",
+	pos = { x = 1, y = 2 }, --Tag Printer
+})
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)

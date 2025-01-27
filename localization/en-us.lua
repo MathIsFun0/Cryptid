@@ -593,6 +593,13 @@ return {
                     "added by Cryptid"
                 }
             },
+	    set_cry_poker_hand_stuff = {
+                name = "Poker Hand Stuff",
+                text = {
+                    "Add 4 new {C:attention}poker hands",
+                    "and enable {C:attention}Ascended hands"
+                }
+            },
             set_cry_spectral = {
                 name = "Spectral Cards",
                 text = {

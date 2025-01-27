@@ -102,7 +102,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_WholeDeck"] = 52,
 	}
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
-	if hand_table[text] then
+	if hand_table[text] and cry_card_enabled("set_cry_poker_hand_stuff") == true then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
 				and #_cards - hand_table[text]
 			or #scoring_hand - hand_table[text]
@@ -117,6 +117,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 function cry_ascend(num) -- edit this function at your leisure
+	if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return num end
 	if cry_get_gameset() == "modest" then
 		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
 		if not G.GAME.current_round.current_hand.cry_asc_num then return num end
