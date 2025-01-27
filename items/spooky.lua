@@ -267,6 +267,7 @@ local potion = {
 	immutable = true,
 	no_dbl = true,
 	no_grc = true,
+	no_collection = true,
 	atlas = "atlasspooky",
 	can_use = function(self, card)
 		return true
@@ -610,7 +611,7 @@ local flickering = {
 	key = "flickering",
 	badge_colour = HEX("747474"),
 	loc_vars = function(self, info_queue, card)
-		return { vars = { 5, card.ability.flick_tally } }
+		return { vars = { 5, card.ability.flick_tally or 5 } }
 	end,
 	apply = function(self, card, val)
 		if not card.ability.eternal or G.GAME.modifiers.cry_sticker_sheet then
@@ -619,6 +620,7 @@ local flickering = {
 		end
 	end,
 	calculate = function(self, card, context)
+		if not card.ability.flick_tally then card.ability.flick_tally = 5 end
 		if card.ability.set == "Joker" then
 			if context.post_trigger and context.other_joker == card then
 				card.ability.flick_tally = card.ability.flick_tally - 1
@@ -854,7 +856,7 @@ local ghost = {
 local possessed = {
 	object_type = "Sticker",
 	atlas = "sticker",
-	pos = { x = 2, y = 2 }, --todo
+	pos = { x = 6, y = 0 }, --todo
 	key = "possessed",
 	no_sticker_sheet = true,
 	badge_colour = HEX("aaaaaa"),

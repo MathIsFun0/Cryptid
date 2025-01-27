@@ -3553,8 +3553,11 @@ G.FUNCS.pointer_apply = function()
 				["perishable"] = { "perishable" },
 				["rental"] = { "rental" },
 				["pinned"] = { "pinned" },
-				["banana"] = { "banana" },
+				["banana"] = { "banana" },	-- no idea why this evades prefixing
 				["cry_rigged"] = { "rigged" },
+				["cry_flickering"] = { "flickering" },
+				["cry_possessed"] = { "possessed" },
+				["cry_absolute"] = { "absolute" },
 			}
 			local function parsley(_table, _word)
 				for i, v in pairs(_table) do

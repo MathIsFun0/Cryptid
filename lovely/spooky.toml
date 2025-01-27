@@ -47,3 +47,14 @@ if G.GAME.events.ev_cry_choco10 then
 end
 '''
 match_indent = true
+
+# hackfix for flickering thing
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if not card then'''
+position = "at"
+payload = '''
+if cfg and not card then
+'''
+match_indent = true
