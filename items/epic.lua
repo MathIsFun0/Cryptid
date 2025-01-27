@@ -1536,7 +1536,7 @@ local goldjoker = {
 	end,
 	calc_dollar_bonus = function(self, card)
 		local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
-		if bonus > 0 then
+		if bonus > to_big(0) then
 			return bonus
 		end
 	end,
