@@ -272,6 +272,7 @@ local lock = {
 					CARD:flip()
 					CARD.ability.perishable = nil
 					CARD.pinned = nil
+					CARD.ability.pinned = nil
 					CARD:set_rental(nil)
 					if not CARD.sob then
 						CARD:set_eternal(nil)
@@ -341,16 +342,9 @@ local trade = {
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local usable_count = 0
-		for _, v in pairs(G.GAME.used_vouchers) do
-			if v then
+		for _, v in pairs(G.vouchers.cards) do
+			if not v.ability.eternal then
 				usable_count = usable_count + 1
-			end
-		end
-		if G.GAME.voucher_sticker_index and G.GAME.voucher_sticker_index.eternal then
-			for _, v in pairs(G.GAME.voucher_sticker_index.eternal) do
-				if v then
-					usable_count = usable_count - 1
-				end
 			end
 		end
 		if usable_count > 0 then
@@ -362,28 +356,22 @@ local trade = {
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		local usable_vouchers = {}
-		for k, _ in pairs(G.GAME.used_vouchers) do
+		for k, v in ipairs(G.vouchers.cards) do
 			local can_use = true
-			for kk, __ in pairs(G.GAME.used_vouchers) do
-				local v = G.P_CENTERS[kk]
-				if v.requires then
-					for _, vv in pairs(v.requires) do
-						if vv == k then
+			for kk, vv in ipairs(G.vouchers.cards) do
+				local center = G.P_CENTERS[vv.config.center.key]
+				if center.requires then
+					for _, vvv in pairs(center.requires) do
+						if vvv == v.config.center.key then
 							can_use = false
 							break
 						end
 					end
 				end
-				if
-					G.GAME.voucher_sticker_index
-					and G.GAME.voucher_sticker_index.eternal
-					and G.GAME.voucher_sticker_index.eternal[v.name]
-				then
-					can_use = false
-				end
 			end
+			if v.ability.eternal then can_use = false end
 			if can_use then
-				usable_vouchers[#usable_vouchers + 1] = k
+				usable_vouchers[#usable_vouchers + 1] = v
 			end
 		end
 		local unredeemed_voucher = pseudorandom_element(usable_vouchers, pseudoseed("cry_trade"))
@@ -398,36 +386,11 @@ local trade = {
 		else
 			area = G.play
 		end
-		local card = create_card("Voucher", area, nil, nil, nil, nil, unredeemed_voucher)
-
-		if G.GAME.voucher_edition_index[card.ability.name] then
-			local edition = cry_edition_to_table(G.GAME.voucher_edition_index[card.ability.name])
-			if edition then
-				card:set_edition(edition, true, true)
-			end
-		end
-		if G.GAME.voucher_sticker_index.eternal[card.ability.name] then
-			card:set_eternal(true)
-			card.ability.eternal = true
-		end
-		if G.GAME.voucher_sticker_index.perishable[card.ability.name] then
-			card:set_perishable(true)
-			card.ability.perish_tally = G.GAME.voucher_sticker_index.perishable[card.ability.name]
-			card.ability.perishable = true
-			if G.GAME.voucher_sticker_index.perishable[card.ability.name] == 0 then
-				card.debuff = true
-			end
-		end
-		if G.GAME.voucher_sticker_index.rental[card.ability.name] then
-			card:set_rental(true)
-			card.ability.rental = true
-		end
-		if G.GAME.voucher_sticker_index.pinned[card.ability.name] then
-			card.pinned = true
-		end
-		if G.GAME.voucher_sticker_index.banana[card.ability.name] then
-			card.ability.banana = true
-		end
+		
+		local card = copy_card(unredeemed_voucher)
+		card.ability.extra = copy_table(unredeemed_voucher.ability.extra)
+		if card.facing == 'back' then card:flip() end
+		
 		card:start_materialize()
 		area:emplace(card)
 		card.cost = 0
@@ -440,6 +403,7 @@ local trade = {
 			delay = 0,
 			func = function()
 				card:start_dissolve()
+				unredeemed_voucher:start_dissolve()
 				return true
 			end,
 		}))
@@ -1003,285 +967,6 @@ if Cryptid.enabled["Misc."] then
 end
 return {
 	name = "Spectrals",
-	init = function()
-		--Trade - undo redeeming vouchers
-		function Card:unredeem()
-			if self.ability.set == "Voucher" then
-				stop_use()
-				if not self.config.center.discovered then
-					discover_card(self.config.center)
-				end
-
-				self.states.hover.can = false
-				if G.GAME.used_vouchers[self.config.center_key] then
-					G.GAME.used_vouchers[self.config.center_key] = nil
-				end
-				G.GAME.cry_owned_vouchers[self.config.center_key] = nil
-				local top_dynatext = nil
-				local bot_dynatext = nil
-
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.4,
-					func = function()
-						top_dynatext = DynaText({
-							string = localize({
-								type = "name_text",
-								set = self.config.center.set,
-								key = self.config.center.key,
-							}),
-							colours = { G.C.RED },
-							rotate = 1,
-							shadow = true,
-							bump = true,
-							float = true,
-							scale = 0.9,
-							pop_in = 0.6 / G.SPEEDFACTOR,
-							pop_in_rate = 1.5 * G.SPEEDFACTOR,
-						})
-						bot_dynatext = DynaText({
-							string = localize("cry_unredeemed"),
-							colours = { G.C.RED },
-							rotate = 2,
-							shadow = true,
-							bump = true,
-							float = true,
-							scale = 0.9,
-							pop_in = 1.4 / G.SPEEDFACTOR,
-							pop_in_rate = 1.5 * G.SPEEDFACTOR,
-							pitch_shift = 0.25,
-						})
-						self:juice_up(0.3, 0.5)
-						play_sound("card1")
-						play_sound("timpani")
-						self.children.top_disp = UIBox({
-							definition = {
-								n = G.UIT.ROOT,
-								config = { align = "tm", r = 0.15, colour = G.C.CLEAR, padding = 0.15 },
-								nodes = {
-									{ n = G.UIT.O, config = { object = top_dynatext } },
-								},
-							},
-							config = { align = "tm", offset = { x = 0, y = 0 }, parent = self },
-						})
-						self.children.bot_disp = UIBox({
-							definition = {
-								n = G.UIT.ROOT,
-								config = { align = "tm", r = 0.15, colour = G.C.CLEAR, padding = 0.15 },
-								nodes = {
-									{ n = G.UIT.O, config = { object = bot_dynatext } },
-								},
-							},
-							config = { align = "bm", offset = { x = 0, y = 0 }, parent = self },
-						})
-						return true
-					end,
-				}))
-				G.GAME.current_round.voucher = nil
-
-				self:unapply_to_run()
-
-				delay(0.6)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 2.6,
-					func = function()
-						top_dynatext:pop_out(4)
-						bot_dynatext:pop_out(4)
-						return true
-					end,
-				}))
-
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.5,
-					func = function()
-						self.children.top_disp:remove()
-						self.children.top_disp = nil
-						self.children.bot_disp:remove()
-						self.children.bot_disp = nil
-						return true
-					end,
-				}))
-			end
-		end
-		function Card:unapply_to_run(center)
-			local center_table = {
-				name = center and center.name or self and self.ability.name,
-				extra = self and G.GAME.cry_voucher_centers[self.config.center_key].config.extra,
-			}
-			local obj = center or self.config.center
-			if obj.unredeem and type(obj.unredeem) == "function" then
-				obj:unredeem(self)
-				return
-			end
-			local is_debuffed = false
-			if
-				G.GAME.voucher_sticker_index.perishable[center_table.name]
-				and G.GAME.voucher_sticker_index.perishable[center_table.name] == 0
-			then
-				is_debuffed = true
-			end
-			if G.GAME.voucher_sticker_index.eternal[center_table.name] then
-				G.GAME.voucher_sticker_index.eternal[center_table.name] = nil
-			end
-			if G.GAME.voucher_sticker_index.perishable[center_table.name] then
-				G.GAME.voucher_sticker_index.perishable[center_table.name] = nil
-			end
-			if G.GAME.voucher_sticker_index.rental[center_table.name] then
-				G.GAME.voucher_sticker_index.rental[center_table.name] = nil
-			end
-			if G.GAME.voucher_sticker_index.pinned[center_table.name] then
-				G.GAME.voucher_sticker_index.pinned[center_table.name] = nil
-			end
-			if G.GAME.voucher_sticker_index.banana[center_table.name] then
-				G.GAME.voucher_sticker_index.banana[center_table.name] = nil
-			end
-
-			if is_debuffed == false then
-				if center_table.name == "Overstock" or center_table.name == "Overstock Plus" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							change_shop_size(-center_table.extra)
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Tarot Merchant" or center_table.name == "Tarot Tycoon" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.tarot_rate = G.GAME.tarot_rate / center_table.extra
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Planet Merchant" or center_table.name == "Planet Tycoon" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.planet_rate = G.GAME.planet_rate / center_table.extra
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Hone" or center_table.name == "Glow Up" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.edition_rate = G.GAME.edition_rate / center_table.extra
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Magic Trick" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.playing_card_rate = 0
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Crystal Ball" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.consumeables.config.card_limit = G.consumeables.config.card_limit - center_table.extra
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Clearance Sale" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.discount_percent = 0
-							for k, v in pairs(G.I.CARD) do
-								if v.set_cost then
-									v:set_cost()
-								end
-							end
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Liquidation" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.discount_percent = 25 -- no idea why the below returns nil, so it's hardcoded now
-							-- G.GAME.discount_percent = G.P_CENTERS.v_clearance_sale.extra
-							for k, v in pairs(G.I.CARD) do
-								if v.set_cost then
-									v:set_cost()
-								end
-							end
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Reroll Surplus" or center_table.name == "Reroll Glut" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost + self.ability.extra
-							G.GAME.current_round.reroll_cost =
-								math.max(0, G.GAME.current_round.reroll_cost + self.ability.extra)
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Seed Money" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							G.GAME.interest_cap = 25 --note: does not account for potential deck effects
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Money Tree" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if G.GAME.used_vouchers.v_seed_money then
-								G.GAME.interest_cap = 50
-							else
-								G.GAME.interest_cap = 25
-							end
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Grabber" or center_table.name == "Nacho Tong" then
-					G.GAME.round_resets.hands = G.GAME.round_resets.hands - center_table.extra
-					ease_hands_played(-center_table.extra)
-				end
-				if center_table.name == "Paint Brush" or center_table.name == "Palette" then
-					G.hand:change_size(-center_table.extra)
-				end
-				if center_table.name == "Wasteful" or center_table.name == "Recyclomancy" then
-					G.GAME.round_resets.discards = G.GAME.round_resets.discards - center_table.extra
-					ease_discard(-center_table.extra)
-				end
-				if center_table.name == "Antimatter" then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if G.jokers then
-								G.jokers.config.card_limit = G.jokers.config.card_limit - center_table.extra
-							end
-							return true
-						end,
-					}))
-				end
-				if center_table.name == "Hieroglyph" or center_table.name == "Petroglyph" then
-					ease_ante(center_table.extra)
-					G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
-					G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + center_table.extra
-
-					if center_table.name == "Hieroglyph" then
-						G.GAME.round_resets.hands = G.GAME.round_resets.hands + center_table.extra
-						ease_hands_played(center_table.extra)
-					end
-					if center_table.name == "Petroglyph" then
-						G.GAME.round_resets.discards = G.GAME.round_resets.discards + center_table.extra
-						ease_discard(center_table.extra)
-					end
-				end
-			end
-		end
-	end,
 	items = spectrals,
 	
 }

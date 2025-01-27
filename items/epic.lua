@@ -1299,8 +1299,7 @@ local curse_sob = {
 		if not from_debuff then
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
 			card:set_edition("e_negative", true, nil, true)
-			card.sob = true
-			card:set_eternal(true)
+			card.ability.cry_absolute = true
 			card:add_to_deck()
 			G.jokers:emplace(card)
 			return {
