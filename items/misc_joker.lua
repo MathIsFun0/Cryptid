@@ -844,11 +844,7 @@ local compound_interest = {
 			card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
 			compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
 			if bonus > 0 then
-				if G.GAME.dollars > 1e10 then
-					return 1
-				else
-					return bonus
-				end
+				return bonus
 			end
 		else 
 			return 0
