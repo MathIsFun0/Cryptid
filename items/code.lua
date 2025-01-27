@@ -228,18 +228,10 @@ local payload = {
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
-		if G.GAME.dollars > 1e10 then
-			G.GAME.cry_payload = 3
-		else
-			G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
-		end
+		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		if G.GAME.dollars > 1e10 then
-			G.GAME.cry_payload = 3
-		else
-			G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult ^ number
-		end
+		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult) ^ to_big(number)
 	end,
 }
 local reboot = {
