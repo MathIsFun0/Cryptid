@@ -1015,6 +1015,75 @@ local seraph = {
 		return { vars = { self.config.max_highlighted } }
 	end,
 }
+local solar = {
+	object_type = "Enhancement",
+	name = "cry-Solar Card",
+	key = 'solar',
+    loc_txt = {
+        name = 'Solar Card',
+        text = {
+            "{C:gold}+#1#{} card selection limit",
+            'while selected',
+            'Retriggered if hand',
+            'is {C:gold}Ascended'
+        }
+    },
+    pos = {x = 0, y = 0}, 
+    atlas = 'placeholders', 
+    config = {cry_select_limit = 1,},
+    discovered = false,
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card and card.ability and card.ability.cry_select_limit or 1} }
+    end,
+	cry_credits = {
+		idea = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local enlighten = {
+	object_type = "Consumable",
+	loc_txt = {
+        name = 'Enlighten',
+        text = {
+            "Enhances up to {C:attention}#1#",
+            'selected cards to',
+            '{C:gold}Solar Cards{}',
+        }
+    },
+	set = "Spectral",
+	name = "cry-Enlighten",
+	key = "enlighten",
+	pos = { x = 2, y = 2 },
+	config = { mod_conv = "m_cry_solar", max_highlighted = 3 },
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_solar
+
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+	cry_credits = {
+		idea = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
 local blessing = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -1573,6 +1642,8 @@ local miscitems = {
 	astral,
 	echo,
 	eclipse,
+	solar,
+	enlighten,
 	blessing,
 	typhoon,
 	azure_seal,
