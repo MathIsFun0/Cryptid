@@ -33,7 +33,7 @@ tag_sprite.click = function(_self)
 					local perc = (other_cat.ability.level + 1)/10
 					if perc > 1 then perc = 1 end
 					
-					local edition = nil
+					local edition = G.P_CENTER_POOLS.Edition[1]
 					for k, v in pairs(G.P_CENTER_POOLS.Edition) do
 						if v.order == other_cat.ability.level + 1 then
 							edition = v
