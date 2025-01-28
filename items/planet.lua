@@ -56,6 +56,7 @@ local timantti = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "High Card"
 				or context.scoring_name == "Pair"
@@ -128,6 +129,7 @@ local klubi = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "Three of a Kind"
 				or context.scoring_name == "Straight"
@@ -200,6 +202,7 @@ local sydan = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "Full House"
 				or context.scoring_name == "Four of a Kind"
@@ -272,6 +275,7 @@ local lapio = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "Five of a Kind"
 				or context.scoring_name == "Flush House"
@@ -345,6 +349,7 @@ local kaikki = {
     	calculate = function(self, card, context)
         	if
             	G.GAME.used_vouchers.v_observatory
+		and context.joker_main
             	and (
                 	context.scoring_name == "cry_Bulwark"
                 	or context.scoring_name == "cry_Clusterfuck"
@@ -624,6 +629,7 @@ local planetlua = {
 	calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for (G.P_CENTERS.v_observatory.config.extra) Mult
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (pseudorandom("nstar") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
@@ -728,7 +734,7 @@ local nstar = {
 		)
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
-		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil then
+		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil and context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
@@ -821,7 +827,7 @@ local sunplanet = {
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand 
-		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 then
+		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 and context.joker_main then
 			local value = G.P_CENTERS.v_observatory.config.extra
             		return {
                 		message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
