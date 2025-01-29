@@ -1140,6 +1140,7 @@ local light = {
 	object_type = "Enhancement",
 	key = "light",
 	atlas = "cry_misc",
+	cry_noshadow = true,
 	pos = { x = 0, y = 3 },
 	config = {extra = {a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5}},
 	loc_vars = function(self, info_queue, card)
@@ -1816,6 +1817,16 @@ return {
 			  end
 			end
 			G:save_settings()
+		end
+		local setabilityref = Card.set_ability
+		function Card:set_ability(center, initial, delay_sprites)
+			setabilityref(self, center, initial, delay_sprites)
+			
+			if self.config.center.cry_noshadow then
+				self.ignore_shadow['cry_noshadow'] = true
+			elseif self.ignore_shadow['cry_noshadow'] then
+				self.ignore_shadow['cry_noshadow'] = nil
+			end
 		end
 	end,
 	items = miscitems,	
