@@ -202,14 +202,13 @@ end
 
 -- checks for Jolly Jokers or cards that are supposed to be treated as jolly jokers
 function Card:is_jolly()
-	local check = false
 	if self.ability.name == "Jolly Joker" then
-		check = true
+		return true
 	end
 	if self.edition and self.edition.key == "e_cry_m" then
-		check = true
+		return true
 	end
-	return check
+	return false
 end
 
 function cry_with_deck_effects(card, func)
