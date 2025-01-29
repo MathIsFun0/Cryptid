@@ -1347,7 +1347,7 @@ local bonusjoker = {
 	name = "cry-Bonus Joker",
 	key = "bonusjoker",
 	pos = { x = 3, y = 2 },
-	config = { extra = { odds = 8, check = 0 } },
+	config = { extra = { odds = 8, check = 0, add = 1 } },
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1377,12 +1377,12 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.extra.check = card.ability.extra.check + 1
 						end
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+						G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
 					else
 						if not context.blueprint then
 							card.ability.extra.check = card.ability.extra.check + 1
 						end
-						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+						G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.add
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
