@@ -31,11 +31,6 @@ cry_enable_exotics = Cryptid.enabled["Exotic Jokers"]
 cry_minvasion = Cryptid.enabled["M Jokers"]
 
 -- Gradient isn't included since other logic seems to also handle 
-SMODS.Language{
-	key = "vi",
-	lable = "Vietnamese",
-	font = 1,
-}
 SMODS.Rarity{
     key = "exotic",
     loc_txt = {},
