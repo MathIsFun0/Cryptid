@@ -137,7 +137,7 @@ local oldserpent = {
 	order = 9,
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-		if G.GAME.hands[text].level > 1 then
+		if G.GAME.hands[text].level > to_big(1) then
 			G.GAME.blind.triggered = true
 			return math.floor(mult / G.GAME.hands[text].level), hand_chips, true
 		end

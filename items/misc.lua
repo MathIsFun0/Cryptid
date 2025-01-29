@@ -159,7 +159,7 @@ local mosaic = {
 	shader = "mosaic",
 	in_shop = true,
 	extra_cost = 6,
-	config = { x_chips = 2.5 },
+	config = { x_chips = 2.5, trigger = nil },
 	sound = {
 		sound = "cry_e_mosaic",
 		per = 1,
@@ -172,8 +172,33 @@ local mosaic = {
 		return { vars = { self.config.x_chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.main_scoring and context.cardarea == G.play then
-			return {x_chips = self.config.x_chips}
+		if
+			(
+				context.edition			 -- for when on jonklers
+				and context.cardarea == G.jokers -- checks if should trigger
+				and card.config.trigger      	 -- fixes double trigger
+			)
+			or (
+				context.main_scoring		 -- for when on playing cards
+				and context.cardarea == G.play
+			)
+		then
+			return {x_chips = self.config.x_chips}   -- updated value
+		end
+		if
+			(
+				context.joker_main
+			)
+		then
+			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		end
+			
+		if
+			(
+				context.after
+			)
+		then
+			card.config.trigger = nil
 		end
 	end,
 }
@@ -503,16 +528,42 @@ local astral = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	config = { e_mult = 1.1 },
+	config = { e_mult = 1.1, trigger = nil },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.e_mult } }
 	end,
 	calculate = function(self, card, context)
-		if context.main_scoring and context.cardarea == G.play then
-			return {e_mult = self.config.e_mult}
+		if
+			(
+				context.edition			 -- for when on jonklers
+				and context.cardarea == G.jokers -- checks if should trigger
+				and card.config.trigger      	 -- fixes double trigger
+			)
+			or (
+				context.main_scoring		 -- for when on playing cards
+				and context.cardarea == G.play
+			)
+		then
+			return {e_mult = self.config.e_mult}   -- updated value
+		end
+		if
+			(
+				context.joker_main
+			)
+		then
+			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		end
+			
+		if
+			(
+				context.after
+			)
+		then
+			card.config.trigger = nil
 		end
 	end,
 }
+
 local blurred_shader = {
 	object_type = "Shader",
 	key = "blur",
@@ -576,18 +627,43 @@ local noisy = {
 	shader = "noisy",
 	in_shop = true,
 	extra_cost = 4,
-	config = { min_mult = noisy_stats.min.mult, max_mult = noisy_stats.max.mult, min_chips = noisy_stats.min.chips, max_chips = noisy_stats.max.chips },
+	config = { min_mult = noisy_stats.min.mult, max_mult = noisy_stats.max.mult, min_chips = noisy_stats.min.chips, max_chips = noisy_stats.max.chips, trigger = nil },
 	sound = {
 		sound = "cry_e_noisy",
 		per = 1,
 		vol = 0.25,
 	},
 	calculate = function(self, card, context)
-		if context.main_scoring and context.cardarea == G.play then
+		if
+			(
+				context.edition			 -- for when on jonklers
+				and context.cardarea == G.jokers -- checks if should trigger
+				and card.config.trigger      	 -- fixes double trigger
+			)
+			or (
+				context.main_scoring		 -- for when on playing cards
+				and context.cardarea == G.play
+			)
+		then
 			return {
 				mult = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult),
 				chips = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
-			}
+			}   -- updated value
+		end
+		if
+			(
+				context.joker_main
+			)
+		then
+			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		end
+			
+		if
+			(
+				context.after
+			)
+		then
+			card.config.trigger = nil
 		end
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
@@ -808,7 +884,7 @@ local jollyedition = {
 		vol = 0.3,
 	},
 	extra_cost = 0,
-	config = { mult = 8 },
+	config = { mult = 8, trigger = nil },
 	apply_to_float = true,
 	key = "m",
 	shader = "m",
@@ -818,8 +894,33 @@ local jollyedition = {
 		return { vars = { self.config.mult } }
 	end,
 	calculate = function(self, card, context)
-		if context.main_scoring and context.cardarea == G.play then
-			return {mult = self.config.mult}
+		if
+			(
+				context.edition			 -- for when on jonklers
+				and context.cardarea == G.jokers -- checks if should trigger
+				and card.config.trigger      	 -- fixes double trigger
+			)
+			or (
+				context.main_scoring		 -- for when on playing cards
+				and context.cardarea == G.play
+			)
+		then
+			return {mult = self.config.mult}   -- updated value
+		end
+		if
+			(
+				context.joker_main
+			)
+		then
+			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		end
+			
+		if
+			(
+				context.after
+			)
+		then
+			card.config.trigger = nil
 		end
 	end,
 }
@@ -853,7 +954,7 @@ local glass_edition = {
 	},
 	weight = 7,
 	extra_cost = 2,
-	config = { x_mult = 3, shatter_chance = 8 },
+	config = { x_mult = 3, shatter_chance = 8, trigger = nil },
 	loc_vars = function(self, info_queue)
 		return {
 			vars = {
@@ -864,25 +965,63 @@ local glass_edition = {
 		}
 	end,
 	calculate = function(self, card, context)
+		
 		if
-			context.post_trigger
+			(
+				context.edition
+				and context.cardarea == G.jokers
+				and card.config.trigger
+			)
 			or (
 				context.main_scoring
 				and context.cardarea == G.play
 			)
 		then
 			if
-				pseudorandom("cry_fragile")
-				> G.GAME.probabilities.normal * (self.config.shatter_chance - 1) / self.config.shatter_chance
-				and not card.ability.eternal
+				(pseudorandom("cry_fragile") -- BUGGED: ALWAYS SHATTERS
+				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance))) -- TODO: fix eternal interaction, currently ignores?
 			then
-				--card.will_shatter = true
-				--Currently crashes if this is called
+				self.config.will_shatter = true
 			end
 			return {x_mult = self.config.x_mult}
 		end
-		if context.destroying_card and context.destroying_card.will_shatter then
-			return {remove = true}
+		if
+			(
+				context.joker_main
+			)
+		then
+			card.config.trigger = true
+		end
+			
+		if
+			(
+				context.after
+			)
+		then
+			card.config.trigger = nil
+		end
+		
+		if context.destroying_card and self.config.will_shatter == true
+		then
+			G.E_MANAGER:add_event(Event({ 
+				func = function()
+					play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
+					card.states.drag.is = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.3,
+						blockable = false,
+						func = function()
+							G.jokers:remove_card(card)
+							card:remove()
+							card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+							card = nil
+							return true
+						end,
+					}))
+					return true
+				end
+    			}))
 		end
 	end,
 }
