@@ -5645,9 +5645,11 @@ local membershipcard = {
 	blueprint_compat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod * GLOBAL_cry_member_count } }
+		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
+		return { vars = { GLOBAL_cry_member_count } }
 	end,
 	calculate = function(self, card, context)
+		--[[
 		if
 			context.joker_main
 			and card.ability.extra.Xmult_mod * GLOBAL_cry_member_count > 1
@@ -5661,10 +5663,26 @@ local membershipcard = {
 				Xmult_mod = card.ability.extra.Xmult_mod * GLOBAL_cry_member_count,
 			}
 		end
+		]]
+		if context.cry_join_inc then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					G.E_MANAGER:add_event(Event({
+						func = function() 
+							SMODS.add_card({key = 'c_cryptid', area = G.consumeables})
+							return true
+						end
+					}))   
+					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_spectral'), colour = G.C.SECONDARY_SET.Spectral})                       
+					return true
+                 	   end
+			}))
+			return nil, true
+		end
 	end,
 	cry_credits = {
 		idea = {
-			"Toneblock"
+			"Maratby"
 		},
 		art = {
 			"HexaCryonic"

@@ -11,11 +11,41 @@ pattern = '''if G.FILE_HANDLER and G.FILE_HANDLER and G.FILE_HANDLER.update_queu
 position = "before"
 payload = '''
 if not GLOBAL_cry_member_count_delay then GLOBAL_cry_member_count_delay = 0 end
+if not GLOBAL_cry_misc_count_delay then GLOBAL_cry_misc_count_delay = 0 end
+
 if (GLOBAL_cry_member_count_delay > 5) or not GLOBAL_cry_member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
-	if update_cry_member_count then update_cry_member_count() end	-- i honestly hate nil checks like this, wish there was a shorthand
+	update_cry_member_count()
 	GLOBAL_cry_member_count_delay = 0
 else
 	GLOBAL_cry_member_count_delay = GLOBAL_cry_member_count_delay + dt
+end
+
+if (GLOBAL_cry_misc_count_delay > 1) then
+
+	local old_join = GLOBAL_cry_highest_join_count or 0
+	local old_m = GLOBAL_cry_highest_m_count or 0
+
+	update_cry_misc_counts()
+	
+	-- hackfix weird threading issue
+	GLOBAL_cry_highest_join_count = math.max(GLOBAL_cry_highest_join_count or 0, GLOBAL_cry_join_count or 0)
+	GLOBAL_cry_highest_m_count = math.max(GLOBAL_cry_highest_m_count or 0, GLOBAL_cry_m_count or 0)
+	
+	local join_diff = (GLOBAL_cry_highest_join_count or 0) - old_join
+	local m_diff = (GLOBAL_cry_highest_m_count or 0) - old_m
+	
+	if G.jokers and G.jokers.cards and (old_join > 0 and old_m > 0) then
+		for i = 1, join_diff do
+			SMODS.calculate_context({cry_join_inc = true})
+		end
+		for i = 1, m_diff do
+			SMODS.calculate_context({cry_m_inc = true})
+		end
+	end
+
+	GLOBAL_cry_misc_count_delay = 0
+else
+	GLOBAL_cry_misc_count_delay = GLOBAL_cry_misc_count_delay + dt
 end
 '''
 match_indent = true
