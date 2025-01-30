@@ -87,7 +87,7 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 				if abilitycheck then check = check + 1 end
 			end
 			--Consumables don't have a rarity, so this should ignore it in that case (untested lmfao)
-			if check == filter - (rarity and 1 or 0) then table.insert(jokers, v) end
+			if check == filter then table.insert(jokers, v) end
 		end
 	end
 	return jokers
