@@ -463,7 +463,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+			{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 		for i = 1, math.random(2, 4) do
@@ -480,7 +480,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+			{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 	elseif hand == G.handlist[#G.handlist] then
@@ -822,7 +822,7 @@ AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+			{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 		for i = 1, math.random(2, 4) do
@@ -839,7 +839,7 @@ AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+			{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 	elseif hand == G.handlist[#G.handlist] then
