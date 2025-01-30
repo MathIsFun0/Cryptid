@@ -1475,6 +1475,57 @@ local spectrogram = {
 		}
 	},
 }
+jtron = {
+	object_type = "Joker",
+	name = "cry-jtron",
+	key = "jtron",
+	config = { extra = { bonus = 1, current = 1 } },
+	rarity = "cry_epic",
+	cost = 14,
+	order = 64,
+	blueprint_compat = true,
+	atlas = "placeholders",
+	pos = { x = 1, y = 1 },
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.bonus, center.ability.extra.current } }
+	end,
+	calculate = function(self, card, context)
+		if
+			context.cardarea == G.jokers
+			and not context.before
+			and not context.after
+		then
+			for i = 1, #G.jokers.cards do
+				print(i)
+				local other_joker = G.jokers.cards[i]
+				if string.match(other_joker.ability.name, "Joker")
+				then
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.5,
+						func = function()
+							print(other_joker.ability.name)
+							other_joker:juice_up(0.4, 0.4)
+							card:juice_up(0.4, 0.4)
+							return true
+						end,
+					}))
+					card.ability.extra.current = card.ability.extra.current + card.ability.extra.bonus
+				end
+			end
+			return {
+				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.current)}},
+				Emult_mod = card.ability.extra.current,
+				colour = G.C.DARK_EDITION,
+			}
+		end
+	end,
+	cry_credits = {
+		idea = { "AlexZGreat" },
+		art = { "Darren_the_frog" },
+		code = { "candycanearter" },
+	}
+}
 return {
 	name = "Epic Jokers",
 	init = function()
@@ -1676,5 +1727,6 @@ return {
 		soccer,
 		fleshpanopticon,
 		spectrogram,
+		jtron,
 	},
 }

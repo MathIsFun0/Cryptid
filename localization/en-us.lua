@@ -2052,6 +2052,14 @@ return {
                     "that is played and scored",
                 },
             },
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+                    "This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"for each Joker with Joker in the name",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)"
+				},
+			},
             j_cry_speculo = {
                 name = "Speculo",
                 text = {
