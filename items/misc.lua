@@ -1057,24 +1057,13 @@ local gold_edition = {
 		-- Randomize offset to -1..1
 		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
 	end,
-	-- WIP
 	calculate = function(self, card, context)
 		if
 			(
 				context.post_trigger
-				and context.other_card == card
-			)
-			or (
-				context.using_consumeable --this doesn't always work, since it could be in a pack
-				and context.consumeable == card
 			)
 		then
 			SMODS.calculate_effect({dollars = self.config.dollars}, card, true)
-		end
-		
-		if context.main_scoring and context.cardarea == G.play then
-			-- this has to be done differently to not double-trigger
-			return {dollars = self.config.dollars}
 		end
 	end,
 }
