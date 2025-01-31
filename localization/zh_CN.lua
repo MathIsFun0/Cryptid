@@ -1058,7 +1058,7 @@ return {
 				name = "无聊小丑",
 				text = {
 					"{C:green}#1# / #2#{} 概率",
-					"率重新触发{C:attention}所有小丑牌{}和{C:attention}计分牌{}",
+					"重新触发{C:attention}所有小丑牌{}和{C:attention}计分牌{}",
 					"{C:inactive,s:0.8}无法触发{C:attention}无聊小丑{}{}"
 				}
 			},
@@ -1081,7 +1081,7 @@ return {
 				name = "巴士司机",
 				text = {
 					"{C:green}#1# / #3#{} 概率 {C:mult}+#2#{} 倍率",
-					"或{C:green}1 /4{} 概率 {C:mult}-#2#{} 倍率"
+					"或{C:green}1 / 4{} 概率 {C:mult}-#2#{} 倍率"
 				}
 			},
 			j_cry_candy_basket = {
@@ -1110,7 +1110,7 @@ return {
 				name = "糖果匕首",
 				text = {
 					"选择 {C:attention}盲注{} 后",
-					"摧毁它左边的小丑,创造一张{C:cry_candy}糖果{}小丑"
+					"摧毁它右边的小丑,创造一张{C:cry_candy}糖果{}小丑"
 				}
 			},
 			j_cry_candy_sticks = {
@@ -1186,10 +1186,10 @@ return {
 				}
 			},
 			j_cry_clicked_cookie = {
-				name = "被点击的饼干",
+				name = "饼干计数器",
 				text = {
 					"{C:chips}+#1#{} 筹码",
-					"每当该小丑被{C:attention}点击{}时，{C:chips}-#2#{} 筹码",
+					"每次鼠标{C:attention}点击{}后，{C:chips}-#2#{} 筹码",
 				},
 			},
 			j_cry_coin = {
@@ -1393,8 +1393,8 @@ return {
 			j_cry_filler = {
 				name = "填充物",
 				text = {
-					"",
-					"如果出的牌中包含{C:attention}#2# 提供{X:mult,C:white} X#1# {} 倍率"
+					"如果打出的牌中包含{C:attention}#2#",
+					"{X:mult,C:white} X#1# {} 倍率"
 				}
 			},
 			j_cry_fleshpanopticon = {
@@ -1445,7 +1445,7 @@ return {
 			j_cry_foxy = {
 				name = "奸猾小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:chips}+#1#{} 筹码"
 				}
 			},
@@ -1500,7 +1500,7 @@ return {
 			j_cry_giggly = {
 				name = "荒谬小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
 				}
 			},
@@ -1540,9 +1540,8 @@ return {
 			j_cry_home = {
 				name = "家园",
 				text = {
+					"如果打出的牌中包含一个{C:attention}#2#",
 					"{X:mult,C:white} X#1# {} 倍率",
-					"如果打出的手牌包含",
-					"一个{C:attention}#2#"
 				}
 			},
 			j_cry_hunger = {
@@ -1596,7 +1595,7 @@ return {
 			j_cry_kooky = {
 				name = "怪诞小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
 				}
 			},
@@ -1681,7 +1680,7 @@ return {
 			j_cry_manic = {
 				name = "狂躁小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
 				}
 			},
@@ -1879,7 +1878,7 @@ return {
 			j_cry_nutty = {
 				name = "疯癫小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
 				}
 			},
@@ -2052,7 +2051,7 @@ return {
 			j_cry_savvy = {
 				name = "精明小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:chips}+#1#{} 筹码"
 				}
 			},
@@ -2074,14 +2073,14 @@ return {
 			j_cry_shrewd = {
 				name = "敏锐小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:chips}+#1#{} 筹码"
 				}
 			},
 			j_cry_silly = {
 				name = "傻傻小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
 				}
 			},
@@ -2161,7 +2160,7 @@ return {
 			j_cry_subtle = {
 				name = "微妙小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:chips}+#1#{} 筹码"
 				}
 			},
@@ -2239,7 +2238,7 @@ return {
 			j_cry_tricksy = {
 				name = "诡诈小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:chips}+#1#{} 筹码"
 				}
 			},
@@ -2313,7 +2312,7 @@ return {
 			j_cry_wacky = {
 				name = "搞怪小丑",
 				text = {
-					"如果出的牌中包含 {C:attention}#2#",
+					"如果打出的牌中包含 {C:attention}#2#",
 					"{C:red}+#1#{} 倍率"
 				}
 			},
@@ -2955,16 +2954,15 @@ return {
 				name = "万圣节牌套",
 				text = {
 					"以一张{C:eternal}永恒{} {C:attention,T:j_cry_chocolate_dice}巧克力骰{}开始",
-					"每次{C:attention}底注{}之后 ",
-					"创建一个{C:cry_candy}糖果{}或 {X:cry_cursed,C:white}诅咒{}"
+					"每个{C:attention}底注{}结束后，",
+					"创建一个{C:cry_candy}糖果{}或{X:cry_cursed,C:white}诅咒{}"
 				}
 			},
 			sleeve_cry_wormhole_sleeve = {
 				name = "虫洞牌套",
 				text = {
 					"开始时获得一张 {C:cry_exotic}域外{C:attention} 小丑卡",
-					"小丑卡 {C:attention}20倍{} 更有可能",
-					"成为 {C:dark_edition}负片{} 卡",
+					"小丑牌 {C:attention}20倍{} 更有可能成为 {C:dark_edition}负片{}",
 					"{C:attention}-2{} 小丑卡插槽"
 				}
 			}
@@ -2980,8 +2978,7 @@ return {
 			c_cry_analog = {
 				name = "模拟",
 				text = {
-					"复制 {C:attention}#1#{} 张",
-					"随机 {C:attention}小丑{}",
+					"为一个随机{C:attention}小丑{}生成{C:attention}#1#{}张复制",
 					"摧毁所有其他小丑，{C:attention}+#2#{} 底注"
 				}
 			},
@@ -3049,9 +3046,8 @@ return {
 			c_cry_source = {
 				name = "源码",
 				text = {
-					"向你手中的",
-					"{C:attention}#1#{} 选定卡牌",
-					"添加一个 {C:cry_code}绿色蜡封{}"
+					"向你手中的 {C:attention}#1#{} 张选定的牌",
+					"添加 {C:cry_code}绿色蜡封{}"
 				}
 			},
 			c_cry_summoning = {
@@ -3072,8 +3068,8 @@ return {
 			c_cry_typhoon = {
 				name = "台风",
 				text = {
-					"向手中 {C:attention}#1#{} 选择的",
-					"牌中添加 {C:cry_azure}蔚蓝蜡封{}"
+					"向你手中的 {C:attention}#1#{} 张选定的牌",
+					"添加 {C:cry_azure}蔚蓝蜡封{}"
 				}
 			},
 			c_cry_vacuum = {
@@ -3126,8 +3122,7 @@ return {
 				text = {
 					"{C:attention}最终{}Boss版盲注可以出现在",
 					"{C:attention}任何{}底注中",
-					"{s:0.8,C:inactive}之前所有赌注也都起效{}",
-					""
+					"{s:0.8,C:inactive}之前所有赌注也都起效{}"
 				}
 			},
 			stake_cry_bronze = {
@@ -3150,7 +3145,7 @@ return {
 				colour = "Crimson",
 				name = "猩红注",
 				text = {
-					"优惠券只会在 {C:attention}双数{} 底注 时刷新",
+					"优惠券只会在 {C:attention}双数{} 底注时刷新",
 					"{s:0.8,C:inactive}之前所有赌注也都起效{}"
 				}
 			},
@@ -3158,8 +3153,8 @@ return {
 				colour = "Cyan",
 				name = "靛青注",
 				text = {
-					"{C:green}罕见的{} 和 {C:red}稀有的{} 小丑牌出现概率",
-					"减少",
+					"{C:green}罕见{} 和 {C:red}稀有{} 小丑牌出现",
+					"概率降低",
 					"{s:0.8,C:inactive}之前所有赌注也都起效{}"
 				}
 			},
