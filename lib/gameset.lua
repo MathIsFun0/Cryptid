@@ -564,6 +564,11 @@ function cry_get_gameset(card, center)
 	if not center.key then
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
+		elseif card.atlas and (
+				card.atlas.original_key == "modicon" or
+				card.atlas.original_key == "mod_tags" or
+				card.atlas.name == "tags") then  -- dumber fix for modicons
+			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 		else
 			error("Could not find key for center: " .. tprint(center))
 		end
