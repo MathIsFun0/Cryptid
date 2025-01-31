@@ -1498,7 +1498,7 @@ jtron = {
 			for i = 1, #G.jokers.cards do
 				print(i)
 				local other_joker = G.jokers.cards[i]
-				if string.match(other_joker.ability.name, "Joker")
+				if other_joker.ability.name == "Joker"
 				then
 					G.E_MANAGER:add_event(Event({
 						trigger = "after",
