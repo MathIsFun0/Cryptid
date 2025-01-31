@@ -6922,6 +6922,470 @@ local zooble = {
 		}
 	},
 }
+local darkmatter = {
+	object_type = "Joker",
+	name = "cry-Dark_Matter",
+	key = "dark_matter",
+	loc_txt = {
+        name = 'Dark Matter',
+        text = {
+            "{C:attention}Steel{} and {C:money}Gold{} cards",
+            'give {C:attention}+#1#{} handsize',
+            'while held',
+        }
+    },
+	pos = { x = 2, y = 4 },
+	config = { extra = { handsize = 1 } },
+	rarity = 3,
+	cost = 10,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.handsize } }
+	end,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.cry_emplace and context.area == G.hand and context.card then
+			if SMODS.has_enhancement(context.card, 'm_steel') or SMODS.has_enhancement(context.card, 'm_gold') then
+				G.hand:change_size(card.ability.extra.handsize)
+			end
+		end
+		if context.cry_emplace and context.card.area == G.hand then
+			if SMODS.has_enhancement(context.card, 'm_steel') or SMODS.has_enhancement(context.card, 'm_gold') then
+				G.hand:change_size(-card.ability.extra.handsize)
+			end
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		for i = 1, #G.hand.cards do
+			if SMODS.has_enhancement(G.hand.cards[i], 'm_steel') or SMODS.has_enhancement(G.hand.cards[i], 'm_gold') then
+				G.hand:change_size(card.ability.extra.handsize)
+			end
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		for i = 1, #G.hand.cards do
+			if SMODS.has_enhancement(G.hand.cards[i], 'm_steel') or SMODS.has_enhancement(G.hand.cards[i], 'm_gold') then
+				G.hand:change_size(-card.ability.extra.handsize)
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"MathIsFun_",
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local aether = {
+	object_type = "Joker",
+	name = "cry-Aether",
+	key = "aether",
+	loc_txt = {
+        name = 'Aether',
+        text = {
+            "{C:gold}Solar{} cards give",
+            '{C:attention}+#1#{} handsize',
+            'while held',
+        }
+    },
+	pos = { x = 0, y = 0 },
+	config = { extra = { handsize = 1 } },
+	rarity = 3,
+	cost = 10,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.handsize } }
+	end,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if context.cry_emplace and context.area == G.hand and context.card then
+			if SMODS.has_enhancement(context.card, 'm_cry_solar') then
+				G.hand:change_size(card.ability.extra.handsize)
+			end
+		end
+		if context.cry_emplace and context.card.area == G.hand then
+			if SMODS.has_enhancement(context.card, 'm_cry_solar') then
+				G.hand:change_size(-card.ability.extra.handsize)
+			end
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		for i = 1, #G.hand.cards do
+			if SMODS.has_enhancement(G.hand.cards[i], 'm_cry_solar') then
+				G.hand:change_size(card.ability.extra.handsize)
+			end
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		for i = 1, #G.hand.cards do
+			if SMODS.has_enhancement(G.hand.cards[i], 'm_cry_solar') then
+				G.hand:change_size(-card.ability.extra.handsize)
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local shoppingcart = { --spaghetti code
+	object_type = "Joker",
+	name = "cry-Shopping Cart",
+	key = "shopping_cart",
+	loc_txt = {
+        name = 'Shopping Cart',
+        text = {
+            "{C:attention}Shop items{} persist ",
+			'between shops and',
+			'cost {C:attention}#1#%{} less'
+        }
+    },
+	pos = { x = 6, y = 4 },
+	config = { 
+		extra = {
+			price = 25,
+			jokers = {},
+			active = true,
+			active2 = true,
+		} 
+	},
+	rarity = 1,
+	cost = 7,
+	atlas = "atlasthree",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.price } }
+	end,
+	calculate = function(self, card, context)
+		if context.cry_emplace and G.shop_jokers and context.area == G.shop_jokers and context.card and (not context.card.ability.shoppingcart) and card.ability.extra.active == true then
+			context.card:remove()
+			if card.ability.extra.active2 == true then
+				card.ability.extra.active2 = false
+				for i = 1, #card.ability.extra.jokers do
+					local k = card.ability.extra.jokers[i]
+					local _card = nil
+					if G.P_CENTERS[k] then
+						_card = create_card('Joker', G.shop_jokers,nil, nil, nil, nil, k)
+					else
+						_card = create_card('Joker', G.shop_jokers,nil, nil, nil, nil, 'j_joker')
+					end
+					_card.ability.shoppingcart = true
+					_card.cost = _card.cost * ((100-card.ability.extra.price)/100)
+					G.shop_jokers:emplace(_card)
+					create_shop_card_ui(_card)
+				end
+			end
+			return{
+				no_area = true,
+			}
+		end
+
+		if context.cry_emplace and G.shop_jokers and context.area == G.shop_jokers and context.card then
+			context.card.cost = context.card.cost * ((100-card.ability.extra.price)/100)
+		end
+
+
+		if context.end_of_round then
+			card.ability.extra.active = true
+			card.ability.extra.active2 = true
+		end
+		if context.cry_prereroll then
+			card.ability.extra.active = false
+		end
+		if context.ending_shop then
+			card.ability.extra.jokers = {}
+			for i = 1, #G.shop_jokers.cards do
+				local _card = G.shop_jokers.cards[i]
+				card.ability.extra.jokers[#card.ability.extra.jokers+1] = _card.config.center.key
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Inspector_B"
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local makeshift = {
+	object_type = "Joker",
+	name = "cry-MakeshiftFinger",
+	key = "makeshift",
+	loc_txt = {
+        name = 'Makeshift Finger',
+        text = {
+            "{C:gold}+#1#{} card selection limit",
+			'{C:red}Debuff{} leftmost card',
+			'played'
+        }
+    },
+	pos = { x = 6, y = 4 },
+	config = { extra = 1 },
+	rarity = 1,
+	cost = 7,
+	atlas = "atlasthree",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and context.before then
+			if G.play.cards[1] then
+				G.play.cards[1]:set_debuff(true)
+				G.play.cards[1]:juice_up()
+				card:juice_up()
+			end
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		card.ability.extra = math.floor(card.ability.extra)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
+		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
+		G.hand:unhighlight_all()
+	end,
+	cry_credits = {
+		idea = {
+			"Arnideus"
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local stairway = {
+	object_type = "Joker",
+	name = "cry-Stairway",
+	key = "stairway",
+	loc_txt = {
+        name = 'Stairway',
+        text = {
+            "All hands have",
+            '{C:gold}+#1# Ascension Power',
+        }
+    },
+	pos = { x = 0, y = 0 },
+	config = { extra = {ascpow = 1,} },
+	rarity = 3,
+	--immutable = true,
+	cost = 8,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.ascpow} }
+	end,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if context.before then
+			G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num + card.ability.extra.ascpow or card.ability.extra.ascpow
+			local ascnum = G.GAME.current_round.current_hand.cry_asc_num
+			G.E_MANAGER:add_event(Event {
+				blocking = true,
+				blockable = true,
+				trigger = "after",
+				delay = 1 / G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.current_round.current_hand.cry_asc_num_text = " (+"..ascnum..")" or ""
+					play_sound("gong", 0.94, 0.3)
+					play_sound("gong", 0.94 * 1.5, 0.2)
+					play_sound("tarot1", 1.5)
+					card_eval_status_text(
+						card,
+						'extra',
+						nil, nil, nil,
+						{message = 'Ascend', colour = G.C.GOLD, instant = true}
+					)
+					return true
+				end
+			})
+			G.E_MANAGER:add_event(Event {
+				blocking = true,
+				blockable = true,
+				trigger = "after",
+				delay = 1 / G.SETTINGS.GAMESPEED,
+				func = function()
+					
+					return true
+				end
+			})
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"arnideus",
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local jar_fireflies = {
+	object_type = "Joker",
+	name = "cry-Jar Of Fireflies",
+	key = "jar_of_fireflies",
+	loc_txt = {
+        name = 'Jar of Fireflies',
+        text = {
+            "This Joker gains {C:mult}+Mult{} equal",
+			'to the {C:gold}Ascension Power',
+			'of played hand',
+			"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
+        }
+    },
+	pos = { x = 0, y = 0 },
+	config = {mult = 0},
+	rarity = 2,
+	cost = 7,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.mult or 0} }
+	end,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if context.joker_main then
+			card.ability.mult = card.ability.mult + (G.GAME.current_round.current_hand.cry_asc_num or 0)
+			if G.GAME.current_round.current_hand.cry_asc_num then
+				return{
+					card = card,
+					message = 'Upgrade!',
+					colour = G.C.GOLD,
+				}
+			end
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.cry_asc_played and G.GAME.cry_asc_played > 0 then
+			return true
+		end
+		return false
+	end,
+	cry_credits = {
+		idea = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local dysonsphere = {
+	object_type = "Joker",
+	name = "cry-Dyson Sphere",
+	key = "dyson_sphere",
+	loc_txt = {
+        name = 'Dyson Sphere',
+        text = {
+			"{C:planet}Planet{} cards in your",
+			"{C:attention}consumable{} area give",
+			"{C:gold}+#1# Ascension Power{} for",
+			"their specified {C:attention}poker hand"
+		},
+    },
+	pos = { x = 0, y = 0 },
+	config = { extra = {ascpow = 1} },
+	rarity = 'cry_epic',
+	--immutable = true,
+	cost = 5,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.ascpow} }
+	end,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if context.before then
+			local ascnum = G.GAME.current_round.current_hand.cry_asc_num or 0
+			
+			for i = 1, #G.consumeables.cards do
+				local newcard = G.consumeables.cards[i]
+				if newcard and newcard.ability.set == 'Planet' and newcard.ability.consumeable.hand_type and newcard.ability.consumeable.hand_type == context.scoring_name then
+					G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num + card.ability.extra.ascpow or card.ability.extra.ascpow
+					G.E_MANAGER:add_event(Event {
+						blocking = true,
+						blockable = true,
+						trigger = "after",
+						delay = 0.5 / G.SETTINGS.GAMESPEED,
+						func = function()
+							ascnum = ascnum + card.ability.extra.ascpow 
+							--G.GAME.current_round.current_hand.chip_text = math.max(hand_chips, hand_chips*((1.25 + (0.05 * (G.GAME.sunnumber or 0)))^ascnum or 0))
+							--G.hand_text_area.chips:update(0)
+							--G.GAME.current_round.current_hand.mult_text = math.max(mult, mult*((1.25 + (0.05 * (G.GAME.sunnumber or 0)))^ascnum or 0))
+							--G.hand_text_area.mult:update(0)
+							G.GAME.current_round.current_hand.cry_asc_num_text = (ascnum and ascnum > 0) and " (+"..ascnum..")" or ""
+							play_sound("gong", 0.94, 0.3)
+							play_sound("gong", 0.94 * 1.5, 0.2)
+							play_sound("tarot1", 1.5)
+		
+							card_eval_status_text(
+								newcard,
+								'extra',
+								nil, nil, nil,
+								{message = 'Ascend', colour = G.C.GOLD, instant = true}
+							)
+							return true
+						end
+					})
+				end
+			end
+			
+			G.E_MANAGER:add_event(Event {
+				blocking = true,
+				blockable = true,
+				trigger = "after",
+				delay = 0.5 / G.SETTINGS.GAMESPEED,
+				func = function()
+					return true
+				end
+			})
+			
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Elial2",
+			'Cassknows'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -7019,6 +7483,11 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	shoppingcart,
+	makeshift,
+	stairway,
+	jar_fireflies,
+	dysonsphere,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
@@ -7033,6 +7502,8 @@ if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = bonkers
 	miscitems[#miscitems+1] = fuckedup
 	miscitems[#miscitems+1] = foolhardy
+	miscitems[#miscitems+1] = aether
+	miscitems[#miscitems+1] = darkmatter
 end
 if Cryptid.enabled["More Stakes"] then
 	miscitems[#miscitems+1] = translucent
@@ -7040,6 +7511,35 @@ end
 return {
 	name = "Misc. Jokers",
 	init = function()
+
+
+		local oldfunc = G.FUNCS.reroll_shop
+		G.FUNCS.reroll_shop = function(e) 
+			for i = 1, #G.jokers.cards do
+				local effect = G.jokers.cards[i]:calculate_joker({cry_prereroll = true,})
+			end
+			
+			local ret = oldfunc(e)
+			return ret
+		end
+
+		local oldfunc = CardArea.emplace
+	        function CardArea:emplace(card, location, stay_flipped)
+	            if G and G.jokers then
+					for i = 1, #G.jokers.cards do
+						local effect = G.jokers.cards[i]:calculate_joker({cry_emplace = true, area = self, card = card})
+						if effect then
+	
+							if effect.area then return oldfunc(effect.area, card, location, stay_flipped) end
+							if effect.no_area then return end
+	
+						end
+					end
+				end
+	            local ret = oldfunc(self,card,location, stay_flipped)
+	            return ret
+	        end
+
 		cry_enable_jokers = true
 		--Dropshot Patches
 		local gigo = Game.init_game_object

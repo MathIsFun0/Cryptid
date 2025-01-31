@@ -1015,6 +1015,75 @@ local seraph = {
 		return { vars = { self.config.max_highlighted } }
 	end,
 }
+local solar = {
+	object_type = "Enhancement",
+	name = "cry-Solar Card",
+	key = 'solar',
+    loc_txt = {
+        name = 'Solar Card',
+        text = {
+            "{C:gold}+#1#{} card selection limit",
+            'while selected',
+            'Retriggered if hand',
+            'is {C:gold}Ascended'
+        }
+    },
+    pos = {x = 0, y = 0}, 
+    atlas = 'placeholders', 
+    config = {cry_select_limit = 1,},
+    discovered = false,
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card and card.ability and card.ability.cry_select_limit or 1} }
+    end,
+	cry_credits = {
+		idea = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
+local enlighten = {
+	object_type = "Consumable",
+	loc_txt = {
+        name = 'Enlighten',
+        text = {
+            "Enhances up to {C:attention}#1#",
+            'selected cards to',
+            '{C:gold}Solar Cards{}',
+        }
+    },
+	set = "Spectral",
+	name = "cry-Enlighten",
+	key = "enlighten",
+	pos = { x = 2, y = 2 },
+	config = { mod_conv = "m_cry_solar", max_highlighted = 3 },
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_solar
+
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+	cry_credits = {
+		idea = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		},
+		art = {
+			"Placeholder"
+		},
+		code = {
+			"DoomAndDesire",
+			'AKA Elial2'
+		}
+	},
+}
 local blessing = {
 	object_type = "Consumable",
 	set = "Tarot",
@@ -1573,6 +1642,8 @@ local miscitems = {
 	astral,
 	echo,
 	eclipse,
+	solar,
+	enlighten,
 	blessing,
 	typhoon,
 	azure_seal,
@@ -1609,6 +1680,11 @@ return {
 						total_repetitions = total_repetitions + self.ability.retriggers
 					end
 				end
+				if self.config.center == G.P_CENTERS.m_cry_solar then
+					if (G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0) then
+						total_repetitions = total_repetitions + 1
+					end
+				end
 
 				if total_repetitions > 0 then
 					return {
@@ -1620,6 +1696,40 @@ return {
 			end
 			return ret
 		end
+
+		--solar
+		local oldfunc = CardArea.add_to_highlighted
+	        function CardArea:add_to_highlighted(card, silent)
+	            if card and card.ability and card.ability.cry_select_limit and G.hand and self == G.hand then
+	                self.config.highlighted_limit = self.config.highlighted_limit + card.ability.cry_select_limit
+	            end
+	            local ret = oldfunc(self,card,silent)
+	
+	            return ret
+	        end
+	        local oldfunc = CardArea.remove_from_highlighted
+	        function CardArea:remove_from_highlighted(card, force)
+	            if card and card.ability and card.ability.cry_select_limit then
+	                self.config.highlighted_limit = self.config.highlighted_limit - card.ability.cry_select_limit
+	            end
+	            local ret = oldfunc(self,card,force)
+	            return ret
+	        end
+		local oldfunc = CardArea.unhighlight_all
+		function CardArea:unhighlight_all()
+			for i = #self.highlighted,1,-1 do
+				if self.highlighted[i].ability.forced_selection and self == G.hand then
+					
+				else
+					if self.highlighted[i] and self.highlighted[i].ability and self.highlighted[i].ability.cry_select_limit then
+						self.config.highlighted_limit = self.config.highlighted_limit - self.highlighted[i].ability.cry_select_limit
+					end
+				end
+			end
+			local ret = oldfunc(self)
+	            return ret
+		end
+		
 		--Change name of cards with Jolly edition
 		local gcui = generate_card_ui
 		function generate_card_ui(
