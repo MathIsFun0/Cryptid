@@ -1095,9 +1095,17 @@ return {
             j_cry_copypaste = {
                 name = "Copy/Paste",
                 text = {
-                    "When a {C:cry_code}Code{} card is used,",
-                    "{C:green}#1# in #2#{} chance to add a copy",
-                    "to your consumable area",
+                    "{C:green}#1# in #2#{} chance to duplicate",
+                    "used {C:cry_code}Code{} cards",
+		    "{C:red}Works once per round{}",
+                    "{C:inactive}(Must have room)",
+                },
+            },
+	    j_cry_copypaste2 = {
+                name = "Copy/Paste",
+                text = {
+                    "{C:green}#1# in #2#{} chance to duplicate",
+                    "used {C:cry_code}Code{} cards",
                     "{C:inactive}(Must have room)",
                 },
             },

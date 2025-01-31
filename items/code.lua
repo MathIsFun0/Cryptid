@@ -1975,7 +1975,6 @@ local CodeJoker = {
 		end
 	end,
 }
-
 local copypaste = {
 	dependencies = {
 		items = {
@@ -1989,13 +1988,14 @@ local copypaste = {
 	pos = { x = 3, y = 4 },
 	order = 110,
 	immune_to_chemach = true,
-	config = { extra = { odds = 2, ckt = 0 } },	-- what is a ckt
+	config = { extra = { odds = 2, ckt = nil } },	-- what is a ckt
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, safe_get(card,"ability","extra","odds") or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			key = Card.get_gameset(card) ~= "madness" and "j_cry_copypaste" or "j_cry_copypaste2"
 		}
 	end,
 	atlas = "atlasepic",
@@ -2004,6 +2004,7 @@ local copypaste = {
 			context.using_consumeable
 			and context.consumeable.ability.set == "Code"
 			and not context.consumeable.beginning_end
+			and not card.ability.extra.ckt
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				if pseudorandom("cry_copypaste_joker") < cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
@@ -2023,9 +2024,17 @@ local copypaste = {
 						nil,
 						{ message = localize("k_copied_ex") }
 					)
+					if Card.get_gameset(card) ~= "madness" then card.ability.extra.ckt = true end
 				end
 			end
+		elseif context.end_of_round and not context.retrigger_joker and not context.blueprint and card.ability.extra.ckt then
+			card.ability.extra.ckt = nil
+			return {
+				message = localize("k_reset"),
+				card = card,
+			}
 		end
+		
 	end,
 	cry_credits = {
 		idea = {

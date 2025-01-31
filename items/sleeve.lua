@@ -1,12 +1,4 @@
 if CardSleeves then
-	local atlasSleeves = SMODS.Atlas({
-		object_type = "Atlas",
-		key = "atlasSleeves",
-		path = "atlasSleeves.png",
-		px = 73,
-		py = 95,
-	})
-
 	local encodedsleeve = CardSleeves.Sleeve({
 		key = "encoded_sleeve",
 		name = "Encoded Sleeve",
@@ -345,20 +337,22 @@ if CardSleeves then
 			G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
 		end,
 	})
-	local sleeveitems = { atlasSleeves }
-	if CardSleeves and Cryptid.enabled["Misc. Decks"] then
-		sleeveitems[#sleeveitems + 1] = encodedsleeve
-		sleeveitems[#sleeveitems + 1] = equilibriumsleeve
-		sleeveitems[#sleeveitems + 1] = misprintsleeve
-		sleeveitems[#sleeveitems + 1] = infinitesleeve
-		sleeveitems[#sleeveitems + 1] = conveyorsleeve
-		sleeveitems[#sleeveitems + 1] = CCDsleeve
-		sleeveitems[#sleeveitems + 1] = wormholesleeve
-		sleeveitems[#sleeveitems + 1] = redeemedsleeve
-		sleeveitems[#sleeveitems + 1] = criticalsleeve
-		sleeveitems[#sleeveitems + 1] = legendarysleeve
-		sleeveitems[#sleeveitems + 1] = spookysleeve
-		sleeveitems[#sleeveitems + 1] = bountifulsleeve
+	local sleeveitems = {}
+	if CardSleeves then
+		sleeveitems = {
+			encodedsleeve,
+			equilibriumsleeve,
+			misprintsleeve,
+			infinitesleeve,
+			conveyorsleeve,
+			CCDsleeve,
+			wormholesleeve,
+			redeemedsleeve,
+			criticalsleeve,
+			legendarysleeve,
+			spookysleeve,
+			bountifulsleeve
+		}
 	end
 end
 return { name = "Sleeves", init = function() end, items = { sleeveitems } }
