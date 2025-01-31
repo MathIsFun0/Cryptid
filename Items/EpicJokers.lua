@@ -1496,7 +1496,6 @@ jtron = {
 			and not context.after
 		then
 			for i = 1, #G.jokers.cards do
-				print(i)
 				local other_joker = G.jokers.cards[i]
 				if other_joker.ability.name == "Joker"
 				then
