@@ -1244,7 +1244,6 @@ local function parse_loc_txt(center)
 end
 local il = init_localization
 function init_localization()
-	il()
 	if G.SETTINGS.language == "en-us" then
 		G.localization.descriptions.Spectral.c_cryptid.text[2] = "{C:attention}#2#{} selected card"
 		G.localization.descriptions.Spectral.c_talisman.text[2] = "to {C:attention}#1#{} selected"
@@ -1252,7 +1251,7 @@ function init_localization()
 		G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
-		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"	-- why is this done THREE times???
 		G.localization.descriptions.Voucher.v_antimatter.text[1] = "{C:dark_edition}+#1#{} Joker Slot"
 		G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
 		G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
@@ -1279,6 +1278,7 @@ function init_localization()
 			end
 		end
 	end
+	il()
 end
 
 --Fix a corrupted game state

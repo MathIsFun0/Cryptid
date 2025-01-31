@@ -195,9 +195,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = "elseif _c.name == 'Cryptid' then loc_vars = {_c.config.extra}"
+pattern = "elseif _c.name == 'Cryptid' then loc_vars = {cfg.extra}"
 position = "at"
-payload = '''elseif _c.name == 'Cryptid' then loc_vars = {_c.config.extra, _c.config.max_highlighted}
+payload = '''elseif _c.name == 'Cryptid' then loc_vars = {cfg.extra, cfg.max_highlighted}
 '''
 match_indent = true
 
@@ -232,7 +232,7 @@ line_prepend = '$indent    '
 payload = '''
 
 if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then 
-    loc_vars = {_c.config.max_highlighted}
+    loc_vars = {cfg.max_highlighted}
 end
 '''
 
@@ -365,10 +365,10 @@ payload = '''
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''elseif _c.name == "Clearance Sale" or _c.name == "Liquidation" then loc_vars = {_c.config.extra}'''
+pattern = '''elseif _c.name == "Clearance Sale" or _c.name == "Liquidation" then loc_vars = {cfg.extra}'''
 position = "after"
 payload = '''
-elseif _c.name == "Crystal Ball" or _c.name == "Omen Globe" then loc_vars = {_c.config.extra}
+elseif _c.name == "Crystal Ball" or _c.name == "Omen Globe" then loc_vars = {cfg.extra}
 '''
 match_indent = true
 
@@ -379,7 +379,7 @@ target = "functions/common_events.lua"
 pattern = '''if _c.name == "Overstock" or _c.name == 'Overstock Plus' then'''
 position = "at"
 payload = '''
-if _c.name == "Overstock" or _c.name == "Overstock Plus" then loc_vars = {_c.config.extra}
+if _c.name == "Overstock" or _c.name == "Overstock Plus" then loc_vars = {cfg.extra}
 '''
 match_indent = true
 
@@ -390,7 +390,7 @@ target = "functions/common_events.lua"
 pattern = '''elseif _c.name == "Blank" or _c.name == "Antimatter" then'''
 position = "at"
 payload = '''
-elseif _c.name == "Blank" or _c.name == "Antimatter" then loc_vars = {_c.config.extra}
+elseif _c.name == "Blank" or _c.name == "Antimatter" then loc_vars = {cfg.extra}
 '''
 match_indent = true
 
