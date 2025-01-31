@@ -18,6 +18,11 @@
 -- Enables debug features (I think this is currently useless.)
 --Cryptid.debug = true
 
+-- Initialize some important variables (taken from refactor)
+if not Cryptid then
+	Cryptid = {}
+end
+
 -- Save the mod path permanently.
 local mod_path = "" .. SMODS.current_mod.path
 -- Load Options
