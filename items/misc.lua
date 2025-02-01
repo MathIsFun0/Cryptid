@@ -442,7 +442,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+			{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 		for i = 1, math.random(2, 4) do
@@ -459,7 +459,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+			{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 	elseif hand == G.handlist[#G.handlist] then
@@ -472,7 +472,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 				return true
 			end,
 		}))
-		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		update_hand_text({ delay = 1.3 }, { chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.2,
@@ -482,7 +482,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 				return true
 			end,
 		}))
-		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		update_hand_text({ delay = 1.3 }, { mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
 	end
 end
 
@@ -801,7 +801,7 @@ AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ chips = (amount > 0 and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+			{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 		for i = 1, math.random(2, 4) do
@@ -818,7 +818,7 @@ AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
 		}))
 		update_hand_text(
 			{ delay = 0 },
-			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+			{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 	elseif hand == G.handlist[#G.handlist] then
@@ -1036,24 +1036,13 @@ local gold_edition = {
 		-- Randomize offset to -1..1
 		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
 	end,
-	-- WIP
 	calculate = function(self, card, context)
 		if
 			(
 				context.post_trigger
-				and context.other_card == card
-			)
-			or (
-				context.using_consumeable --this doesn't always work, since it could be in a pack
-				and context.consumeable == card
 			)
 		then
 			SMODS.calculate_effect({dollars = self.config.dollars}, card, true)
-		end
-		
-		if context.main_scoring and context.cardarea == G.play then
-			-- this has to be done differently to not double-trigger
-			return {dollars = self.config.dollars}
 		end
 	end,
 }
