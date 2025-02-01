@@ -493,7 +493,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 				return true
 			end,
 		}))
-		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		update_hand_text({ delay = 1.3 }, { chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.2,
@@ -503,7 +503,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 				return true
 			end,
 		}))
-		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+		update_hand_text({ delay = 1.3 }, { mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
 	end
 end
 
