@@ -42,7 +42,7 @@ local pack1 = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -69,7 +69,7 @@ local pack2 = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -96,7 +96,7 @@ local packJ = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -123,7 +123,7 @@ local packM = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
