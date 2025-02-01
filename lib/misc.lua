@@ -336,17 +336,60 @@ if true then --Cryptid.enabled["Menu"] then
 		return ret
 	end
 end
+
+-- blatant copypasting from old Cryptid.lua's food joker handling
+local jokers = {
+	"j_gros_michel",
+	"j_egg",
+	"j_ice_cream",
+	"j_cavendish",
+	"j_turtle_bean",
+	"j_diet_cola",
+	"j_popcorn",
+	"j_ramen",
+	"j_selzer",
+}
+
+food = {}
+
+-- these may not be effective, as configs aren't done yet, to my knowledge
+-- however, from some minor testing, they still get added, therefore, are OK to be left for when it *eventually* gets added
+if Cryptid.enabled["Misc. Jokers"] then
+	jokers[#jokers + 1] = "j_cry_pickle"
+	jokers[#jokers + 1] = "j_cry_chili_pepper"
+end
+if Cryptid.enabled["Epic Jokers"] then
+	jokers[#jokers + 1] = "j_cry_oldcandy"
+	jokers[#jokers + 1] = "j_cry_caramel"
+end
+if Cryptid.enabled["M Jokers"] then
+	jokers[#jokers + 1] = "j_cry_foodm"
+end
+if Cryptid.enabled["Spooky"] then
+	jokers[#jokers + 1] = "j_cry_cotton_candy"
+	jokers[#jokers + 1] = "j_cry_wrapped"
+	jokers[#jokers + 1] = "j_cry_candy_cane"
+	jokers[#jokers + 1] = "j_cry_candy_buttons"
+	jokers[#jokers + 1] = "j_cry_jawbreaker"
+	jokers[#jokers + 1] = "j_cry_mellowcreme"
+	jokers[#jokers + 1] = "j_cry_brittle"
+end
+
+for i = 1, #jokers do
+	food[#food+1] = jokers[i]
+end
+
 function Cryptid.get_food(seed)
-	local food_keys = {"j_ice_cream","j_popcorn","j_selzer","j_ramen"}
-	--[[
-	for k, v in pairs(Cryptid.food) do
-		if G.GAME.banned_keys[v] and G.P_CENTERS[v] then
+	local food_keys = {}
+
+	for k, v in pairs(food) do
+		if not G.GAME.banned_keys[v] and G.P_CENTERS[v] then
 			table.insert(food_keys, v)
 		end
 	end
-	--]]
+
 	if #food_keys <= 0 then
-		return "j_reserved_parking"
+		return "j_gros_michel" -- in honor of Nova
 	else
 		return pseudorandom_element(food_keys, pseudoseed(seed))
 	end
