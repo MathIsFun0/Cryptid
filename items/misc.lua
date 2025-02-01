@@ -45,15 +45,8 @@ local meme1 = {
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.config.center.config.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
-	end, --For some reason, I need to keep the loc_txt or else it crashes
-	loc_txt = {
-		name = "Meme Pack",
-		text = {
-			"Choose {C:attention}#1#{} of",
-			"up to {C:attention}#2# Meme Jokers{}",
-		},
-	},
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
+	end,
 	update_pack = function(self, dt)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
@@ -84,15 +77,8 @@ local meme2 = {
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
-	loc_txt = {
-		name = "Meme Pack",
-		text = {
-			"Choose {C:attention}#1#{} of",
-			"up to {C:attention}#2# Meme Jokers{}",
-		},
-	},
 	update_pack = function(self, dt)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
@@ -123,15 +109,8 @@ local meme3 = {
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
-	loc_txt = {
-		name = "Meme Pack",
-		text = {
-			"Choose {C:attention}#1#{} of",
-			"up to {C:attention}#2# Meme Jokers{}",
-		},
-	},
 	update_pack = function(self, dt)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
