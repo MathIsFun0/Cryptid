@@ -944,7 +944,7 @@ local glass_edition = {
 		}
 	end,
 	calculate = function(self, card, context)
-		
+		--todo: make jokers use post_trigger
 		if
 			(
 				context.edition
@@ -957,10 +957,10 @@ local glass_edition = {
 			)
 		then
 			if
-				(pseudorandom("cry_fragile") -- BUGGED: ALWAYS SHATTERS
-				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance))) -- TODO: fix eternal interaction, currently ignores?
+				not card.ability.eternal and (pseudorandom(pseudoseed("cry_fragile"))
+				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
 			then
-				self.config.will_shatter = true
+				card.config.will_shatter = true
 			end
 			return {x_mult = self.config.x_mult}
 		end
@@ -980,7 +980,7 @@ local glass_edition = {
 			card.config.trigger = nil
 		end
 		
-		if context.destroying_card and self.config.will_shatter == true
+		if context.destroying_card and card.config.will_shatter
 		then
 			G.E_MANAGER:add_event(Event({ 
 				func = function()
@@ -1001,6 +1001,7 @@ local glass_edition = {
 					return true
 				end
     			}))
+			return {remove = true}
 		end
 	end,
 }

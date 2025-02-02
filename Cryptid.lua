@@ -136,6 +136,7 @@ end
 -- Check for files in other mods
 -- either in [Mod]/Cryptid.lua or [Mod]/Cryptid/*.lua
 for _, mod in pairs(SMODS.Mods) do
+	-- Note: Crashes with lone lua files
 	if mod.path and mod.id ~= "Cryptid" then
 		local path = mod.path
 		local files = NFS.getDirectoryItems(path)
