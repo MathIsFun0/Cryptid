@@ -279,7 +279,7 @@ local redeo = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	calculate = function(self, card, context)
-		if context.cry_ease_dollars and context.cry_ease_dollars < 0 and not context.blueprint then
+		if context.cry_ease_dollars and context.cry_ease_dollars < to_big(0) and not context.blueprint then
 			card.ability.extra.money_remaining = card.ability.extra.money_remaining - context.cry_ease_dollars
 			local ante_mod = 0
 			while card.ability.extra.money_remaining >= card.ability.extra.money_req do
