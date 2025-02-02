@@ -204,25 +204,23 @@ local oversat = {
 	end,
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
 			cry_misprintize(card, {
-				min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
-				max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
-			})
+				min = 2,
+				max = 2
+			}, nil, true)
 		end)
 		if card.config.center.apply_oversat then
 			card.config.center:apply_oversat(card, 	function(val)
 				return cry_misprintize_val(val, {
-					min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
-					max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card))
+					min = 2,
+					max = 2,
+				}, is_card_big(card), true)
 			end)
 		end
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {min = 1, max = 1}, true) -- 
-			cry_misprintize(card)
+			cry_misprintize(card, {min = 0.5, max = 0.5}, nil, true)
 		end)
 	end,
 }
@@ -300,18 +298,17 @@ local glitched = {
 	-- Also messes with rank sort order a bit for some reason
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
 			cry_misprintize(card, {
-				min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-				max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-			})
+				min = 0.1,
+				max = 10
+			}, nil, true)
 		end)
 		if card.config.center.apply_glitched then
 			card.config.center:apply_glitched(card, function(val)
 				return cry_misprintize_val(val, {
 					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card))
+				}, is_card_big(card), true)
 			end)
 		end
 	end,
