@@ -362,10 +362,10 @@ local threers = { --Permanently gain +2 discard[s] each round
 		ease_discard(-1*(card and card.ability.extra or self.config.extra))
 	end,
 }
-local tacclimator = { --Tarot cards appear X2 more frequently in the shop   All future Tarot cards are free
+local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All future Tarot cards are free
 	object_type = "Voucher",
 	key = "tacclimator",
-	config = { extra = 8 / 4, extra_disp = 2 },
+	config = { extra = 24 / 4, extra_disp = 6 },
 	atlas = "atlasvoucher",
 	order = 83,
 	pos = { x = 1, y = 4 },
@@ -390,10 +390,10 @@ local tacclimator = { --Tarot cards appear X2 more frequently in the shop   All 
 		}))
 	end,
 }
-local pacclimator = { --Planet cards appear X2 more frequently in the shop   All future Planet cards are free
+local pacclimator = { --Planet cards appear X6 more frequently in the shop   All future Planet cards are free
 	object_type = "Voucher",
 	key = "pacclimator",
-	config = { extra = 8 / 4, extra_disp = 2 },
+	config = { extra = 24 / 4, extra_disp = 6 },
 	atlas = "atlasvoucher",
 	order = 84,
 	pos = { x = 0, y = 4 },
@@ -973,16 +973,6 @@ return {
 				tag = "tag_cry_quintuple"
 			end
 			return tinit(self, tag, y, z)
-		end
-		local sc = Card.set_cost
-		function Card:set_cost()
-			sc(self)
-			if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then --Make Tarots free when Tarot Acclimator is redeemed
-				self.cost = 0
-			end
-			if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then --Make Planets free when Planet Acclimator is redeemed
-				self.cost = 0
-			end
 		end
 	end,
 	items = voucheritems,

@@ -59,6 +59,7 @@ cry_voucher_edition = {},
 match_indent = true
 
 # initialise the other helpful variables
+# tarot/planet percrates appear here too because why not
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -67,6 +68,7 @@ position = "after"
 payload = '''
 cry_bonusvouchercount = 0,
 cry_bonusvouchersused = {},
+cry_percrate = {tarot = 100, planet = 100},
 '''
 match_indent = true
 
@@ -142,6 +144,37 @@ for i = 1, #G.GAME.current_round.cry_bonusvouchers do
 		G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1	-- does this actually matter/even get reset??? i'm confused but whatever
 		G.shop_vouchers:emplace(card)
 	end
+end
+'''
+
+# control the planet/tarot rates
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+            {type = 'Tarot', val = G.GAME.tarot_rate},
+            {type = 'Planet', val = G.GAME.planet_rate},
+'''
+position = "at"
+payload = '''
+{type = 'Tarot', val = G.GAME.tarot_rate*(G.GAME.cry_percrate.tarot/100)},
+{type = 'Planet', val = G.GAME.planet_rate*(G.GAME.cry_percrate.planet/100)},
+'''
+match_indent = true
+
+# fix total rate
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+total_rate = total_rate + G.GAME[v:lower()..'_rate']
+'''
+position = "at"
+payload = '''
+if not (v:lower() == 'tarot' or v:lower() == 'planet') then
+	total_rate = total_rate + G.GAME[v:lower()..'_rate']
+else
+	total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
 end
 '''
 match_indent = true
