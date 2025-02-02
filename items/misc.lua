@@ -941,14 +941,49 @@ local glass_edition = {
 		}
 	end,
 	calculate = function(self, card, context)
-		--todo: make jokers use post_trigger
 		if
 			(
 				context.edition
 				and context.cardarea == G.jokers
 				and card.config.trigger
 			)
-			or (
+		then
+			return {x_mult = self.config.x_mult}
+		end
+
+		if
+			(
+				context.cardarea == G.jokers
+				and context.post_trigger --appears that post_trigger itself is janky
+			)
+		then
+			if
+				not card.ability.eternal and (pseudorandom(pseudoseed("cry_fragile"))
+				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
+			then
+				-- this event call might need to be pushed later to make more sense
+				G.E_MANAGER:add_event(Event({ 
+					func = function()
+						play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
+						card.states.drag.is = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end
+					}))
+			end
+		end
+		if (
 				context.main_scoring
 				and context.cardarea == G.play
 			)
@@ -961,12 +996,13 @@ local glass_edition = {
 			end
 			return {x_mult = self.config.x_mult}
 		end
+
 		if
 			(
 				context.joker_main
 			)
 		then
-			card.config.trigger = true
+			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 			
 		if
