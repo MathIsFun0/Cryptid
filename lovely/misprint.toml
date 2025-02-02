@@ -283,28 +283,20 @@ payload = '''
 match_indent = true
 
 # the d in disp stands for disparity (match internal values to display values)
-# i honestly have no idea if this works?
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then"
-position = "before"
+pattern = "function Card:apply_to_run(center)"
+position = "after"
 payload = '''
-if not center_table.extra then center_table.extra = center and center.config.extra end	-- catch
-if self and self.ability and self.ability.extra_disp then
-	local up = false
-	if center_table.name == 'Tarot Tycoon' or center_table.name == 'Planet Tycoon' then
-		up = true
-	end
-	local og_extra = 9.6/4
-	local og_disp = 2
-	if up == true then
-		og_extra = 32/4
-		og_disp = 4
-	end
-	local misprint_diff = self.ability.extra_disp / og_disp
-	self.ability.extra = og_extra*misprint_diff
-	center_table.extra = og_extra*misprint_diff
+if (self and self.ability and self.ability.extra_disp) then	-- redeeming through centers isn't misprinted
+	local self_disp = self.ability.extra_disp
+	local orig_disp = self.config.center.config.extra_disp
+	local self_extra = self.ability.extra
+	local orig_extra = self.config.center.config.extra
+	
+	local new_fac = self_disp / orig_disp
+	self.ability.extra = new_fac*orig_extra
 end
 '''
 match_indent = true
@@ -465,5 +457,47 @@ pattern = '''v_antimatter=       {order = 24,    discovered = false, unlocked = 
 position = "at"
 payload = '''
 v_antimatter=       {order = 24,    discovered = false, unlocked = false, available = true, cost = 10, name = "Antimatter", pos = {x=7,y=1}, set = "Voucher", config = {extra = 1}, requires = {'v_blank'},unlock_condition = {type = 'blank_redeems', extra = 10}},
+'''
+match_indent = true
+
+# whyyyyyyyyy
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.tarot_rate = 4*center_table.extra'''
+position = "at"
+payload = '''
+G.GAME.tarot_rate = G.GAME.tarot_rate*center_table.extra
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.planet_rate = 4*center_table.extra'''
+position = "at"
+payload = '''
+G.GAME.planet_rate = G.GAME.planet_rate*center_table.extra
+'''
+match_indent = true
+
+# keep vanilla rates by modifying tycoons
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_tarot_tycoon=     {order = 18,     discovered = false, unlocked = false, available = true,cost = 10, name = "Tarot Tycoon", pos = {x=1,y=1}, set = "Voucher", config = {extra = 32/4, extra_disp = 4}, requires = {'v_tarot_merchant'},unlock_condition = {type = 'c_tarots_bought', extra = 50}},'''
+position = "at"
+payload = '''
+v_tarot_tycoon=     {order = 18,     discovered = false, unlocked = false, available = true,cost = 10, name = "Tarot Tycoon", pos = {x=1,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_tarot_merchant'},unlock_condition = {type = 'c_tarots_bought', extra = 50}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/4, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},'''
+position = "at"
+payload = '''
+v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},
 '''
 match_indent = true

@@ -212,17 +212,17 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 	pos = { x = 4, y = 1 },
 	requires = { "v_overstock_plus" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
 		if not G.GAME.modifiers.cry_booster_packs then
 			G.GAME.modifiers.cry_booster_packs = 2
 		end
 		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			+ math.max(1, math.floor(card and card.ability.extra or self.config.extra)) --Booster slots
+			+ math.floor(card and card.ability.extra or self.config.extra) --Booster slots
 		G.E_MANAGER:add_event(Event({
 			func = function() --card slot
-				change_shop_size(math.max(1, math.floor(card and card.ability.extra or self.config.extra)))
+				change_shop_size(math.floor(card and card.ability.extra or self.config.extra))
 				return true
 			end,
 		}))
@@ -233,10 +233,10 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 			G.GAME.modifiers.cry_booster_packs = 2
 		end
 		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			- math.max(1, math.floor(card and card.ability.extra or self.config.extra)) --Booster slots
+			- math.floor(card and card.ability.extra or self.config.extra) --Booster slots
 		G.E_MANAGER:add_event(Event({
 			func = function() --card slot
-				change_shop_size(math.min(-1, -1*math.floor(card and card.ability.extra or self.config.extra)))
+				change_shop_size(-1*math.floor(card and card.ability.extra or self.config.extra))
 				return true
 			end,
 		}))
@@ -334,22 +334,12 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
 	end,
 	redeem = function(self, card)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.round_resets.hands = G.GAME.round_resets.hands + math.max(1, math.floor(card and card.ability.extra or self.config.extra))
-				ease_hands_played(math.max(1, math.floor(card and card.ability.extra or self.config.extra)))
-				return true
-			end,
-		}))
+		G.GAME.round_resets.hands = G.GAME.round_resets.hands + (card and card.ability.extra or self.config.extra)
+		ease_hands_played((card and card.ability.extra or self.config.extra))
 	end,
 	unredeem = function(self, card)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.round_resets.hands = G.GAME.round_resets.hands - math.max(1, math.floor(card and card.ability.extra or self.config.extra))
-				ease_hands_played(math.min(-1, -1*math.floor(card and card.ability.extra or self.config.extra)))
-				return true
-			end,
-		}))
+		G.GAME.round_resets.hands = G.GAME.round_resets.hands - (card and card.ability.extra or self.config.extra)
+		ease_hands_played(-1*(card and card.ability.extra or self.config.extra))
 	end,
 }
 local threers = { --Permanently gain +2 discard[s] each round
@@ -361,31 +351,21 @@ local threers = { --Permanently gain +2 discard[s] each round
 	pos = { x = 5, y = 0 },
 	requires = { "v_recyclomancy" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.round_resets.discards = G.GAME.round_resets.discards + math.max(1, math.floor(card and card.ability.extra or self.config.extra))
-				ease_discard(math.max(1, math.floor(card and card.ability.extra or self.config.extra)))
-				return true
-			end,
-		}))
+		G.GAME.round_resets.discards = G.GAME.round_resets.discards + (card and card.ability.extra or self.config.extra)
+		ease_discard((card and card.ability.extra or self.config.extra))
 	end,
 	unredeem = function(self, card)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.round_resets.discards = G.GAME.round_resets.discards - math.max(1, math.floor(card and card.ability.extra or self.config.extra))
-				ease_discard(math.min(-1, math.floor(-1*card and card.ability.extra or self.config.extra)))
-				return true
-			end,
-		}))
+		G.GAME.round_resets.discards = G.GAME.round_resets.discards - (card and card.ability.extra or self.config.extra)
+		ease_discard(-1*(card and card.ability.extra or self.config.extra))
 	end,
 }
-local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All future Tarot cards are free
+local tacclimator = { --Tarot cards appear X2 more frequently in the shop   All future Tarot cards are free
 	object_type = "Voucher",
 	key = "tacclimator",
-	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
+	config = { extra = 8 / 4, extra_disp = 2 },
 	atlas = "atlasvoucher",
 	order = 83,
 	pos = { x = 1, y = 4 },
@@ -396,7 +376,7 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 	redeem = function(self, card)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.tarot_rate = 4 * card and card.ability.extra or self.config.extra
+				G.GAME.tarot_rate = G.GAME.tarot_rate * (card and card.ability.extra or self.config.extra)
 				return true
 			end,
 		}))
@@ -404,16 +384,16 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 	unredeem = function(self, card)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.tarot_rate = G.GAME.tarot_rate / card and card.ability.extra or self.config.extra * (56/4) / 6	-- why are these unredeems asymmetric?
+				G.GAME.tarot_rate = G.GAME.tarot_rate / (card and card.ability.extra or self.config.extra)
 				return true
 			end,
 		}))
 	end,
 }
-local pacclimator = { --Planet cards appear X6 more frequently in the shop   All future Planet cards are free
+local pacclimator = { --Planet cards appear X2 more frequently in the shop   All future Planet cards are free
 	object_type = "Voucher",
 	key = "pacclimator",
-	config = { extra = 56 / 4, extra_disp = 6 }, --blame thunk for this extra value
+	config = { extra = 8 / 4, extra_disp = 2 },
 	atlas = "atlasvoucher",
 	order = 84,
 	pos = { x = 0, y = 4 },
@@ -424,7 +404,7 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 	redeem = function(self, card)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.planet_rate = 4 * card and card.ability.extra or self.config.extra
+				G.GAME.planet_rate = G.GAME.planet_rate * (card and card.ability.extra or self.config.extra)
 				return true
 			end,
 		}))
@@ -432,7 +412,7 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 	unredeem = function(self, card)
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.planet_rate = G.GAME.planet_rate / card and card.ability.extra or self.config.extra * (56/4) / 6
+				G.GAME.planet_rate = G.GAME.planet_rate / (card and card.ability.extra or self.config.extra)
 				return true
 			end,
 		}))
@@ -447,12 +427,12 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	pos = { x = 5, y = 1 },
 	requires = { "v_money_tree" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.extra or self.config.extra / 5 } }
+		return { vars = { (card and card.ability.extra or self.config.extra) / 5 } }
 	end,
-	redeem = function(self, card)
+	redeem = function(self, card)	-- this doesn't really matter with the whole interest overwrite
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = card and card.ability.extra or self.config.extra
+				G.GAME.interest_cap = (card and card.ability.extra or self.config.extra)
 				return true
 			end,
 		}))
@@ -475,13 +455,13 @@ local fabric = { --+2 Joker slot[s]
 	pos = { x = 6, y = 0 },
 	requires = { "v_antimatter" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					G.jokers.config.card_limit = G.jokers.config.card_limit + math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+					G.jokers.config.card_limit = G.jokers.config.card_limit + (card and card.ability.extra or self.config.extra)
 				end
 				return true
 			end,
@@ -491,7 +471,7 @@ local fabric = { --+2 Joker slot[s]
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					G.jokers.config.card_limit = G.jokers.config.card_limit - math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+					G.jokers.config.card_limit = G.jokers.config.card_limit - (card and card.ability.extra or self.config.extra)
 				end
 				return true
 			end,
@@ -567,13 +547,13 @@ local blankcanvas = { --+2 hand size
 	pos = { x = 2, y = 4 },
 	requires = { "v_palette" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-		G.hand:change_size(math.max(1, math.floor(card and card.ability.extra or self.config.extra)))
+		G.hand:change_size((card and card.ability.extra or self.config.extra))
 	end,
 	unredeem = function(self, card)
-		G.hand:change_size(-1*math.max(1, math.floor(card and card.ability.extra or self.config.extra)))
+		G.hand:change_size(-1*(card and card.ability.extra or self.config.extra))
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -597,15 +577,15 @@ local stickyhand = { --+1 card selection limit
 	order = 9,
 	pos = { x = 0, y = 5 },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		+ math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			+ (card and card.ability.extra or self.config.extra)
 	end,
 	unredeem = function(self, card)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		- math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			- (card and card.ability.extra or self.config.extra)
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
 		G.hand:unhighlight_all()
 	end,
@@ -620,15 +600,15 @@ local grapplinghook = { --+1 card selection limit (replace me when "extra functi
 	pos = { x = 1, y = 5 },
 	requires = { "v_cry_stickyhand" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		+ math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			+ (card and card.ability.extra or self.config.extra)
 	end,
 	unredeem = function(self, card)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		- math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			- (card and card.ability.extra or self.config.extra)
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
 		G.hand:unhighlight_all()
 	end,
@@ -643,15 +623,15 @@ local hyperspacetether = { --+2 card selection limit (replace me when "extra fun
 	order = 95,
 	requires = { "v_cry_grapplinghook" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		+ math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+	G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		+ (card and card.ability.extra or self.config.extra)
 	end,
 	unredeem = function(self, card)
-  G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-		- math.max(1, math.floor(card and card.ability.extra or self.config.extra))
+	G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+		- (card and card.ability.extra or self.config.extra)
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
 		G.hand:unhighlight_all()
 	end,
@@ -855,7 +835,7 @@ function megavoucherpool(_type, _rarity, legendary, key_append)
 	for k, v in ipairs(_starting_pool) do
 		local add = false
 
-		if not G.GAME.cry_owned_vouchers[v.key] then
+		if not G.GAME.used_vouchers[v.key] then
                 	local check = true
 			if G.shop_vouchers and G.shop_vouchers.cards then
                             for kk, vv in ipairs(G.shop_vouchers.cards) do
