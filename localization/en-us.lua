@@ -1120,9 +1120,11 @@ return {
             j_cry_cryptidmoment = {
                 name = "M Chain",
                 text = {
-                    "Sell this card to",
-                    "add {C:money}$#1#{} of {C:attention}sell value{}",
-                    "to every {C:attention}Joker{} card",
+                    "This card gains {C:mult}+#2#{} Mult for",
+                    "each {C:attention}consecutive{} message",
+                    "in the {C:attention}Cryptid Discord's {C:blue}#3#m",
+                    "channel that contains {C:attention}m{}",
+                    "{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
                 },
             },
             j_cry_cube = {
@@ -3991,6 +3993,15 @@ return {
                 name = "a",
                 text = {
                     "{C:inactive,s:0.8}\"I hate this card\" - SDM_0, 2024{}",
+                },
+            },
+            cry_mchainrules = {
+                name = "M Chain Rules",
+                text = {
+                    "Message must contain the {C:attention}letter M",
+                    "If message does not contain {C:attention}m{}, {C:red}reset",
+                    "{C:attention}Repeat{} messages won't be {C:blue}registered{} until",
+                    "{C:attention}two{} other users have sent messages",
                 },
             },
         },

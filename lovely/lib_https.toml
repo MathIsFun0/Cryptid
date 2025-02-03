@@ -21,18 +21,33 @@ else
 end
 
 if (GLOBAL_cry_misc_count_delay > 1) then
-
+	
 	local old_join = GLOBAL_cry_highest_join_count or 0
 	local old_m = GLOBAL_cry_highest_m_count or 0
-
+	local old_m_chain = GLOBAL_cry_highest_m_chain or 0
+	
 	update_cry_misc_counts()
 	
 	-- hackfix weird threading issue
 	GLOBAL_cry_highest_join_count = math.max(GLOBAL_cry_highest_join_count or 0, GLOBAL_cry_join_count or 0)
+	
 	GLOBAL_cry_highest_m_count = math.max(GLOBAL_cry_highest_m_count or 0, GLOBAL_cry_m_count or 0)
+	GLOBAL_cry_highest_m_chain = math.max(GLOBAL_cry_highest_m_chain or 0, GLOBAL_cry_m_chain or 0)
 	
 	local join_diff = (GLOBAL_cry_highest_join_count or 0) - old_join
+	
 	local m_diff = (GLOBAL_cry_highest_m_count or 0) - old_m
+	local chain_diff = (GLOBAL_cry_highest_m_chain or 0) - old_m_chain
+	
+	-- this is asssssssssssssssssssssss
+	-- i'm not putting this on my resume
+	
+	if chain_diff > 0 then
+		if G.jokers and G.jokers.cards and old_m_chain > 0 then
+			m_diff = GLOBAL_cry_highest_m_count
+			SMODS.calculate_context({cry_m_chainbreak = true})
+		end
+	end
 	
 	if G.jokers and G.jokers.cards and (old_join > 0 and old_m > 0) then
 		for i = 1, join_diff do
@@ -42,7 +57,7 @@ if (GLOBAL_cry_misc_count_delay > 1) then
 			SMODS.calculate_context({cry_m_inc = true})
 		end
 	end
-
+	
 	GLOBAL_cry_misc_count_delay = 0
 else
 	GLOBAL_cry_misc_count_delay = GLOBAL_cry_misc_count_delay + dt

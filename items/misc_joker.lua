@@ -5737,16 +5737,18 @@ local cryptidmoment = {
 	name = "cry_cryptidmoment",
 	key = "cryptidmoment",
 	pos = { x = 6, y = 0 },
-	config = { extra = { money = 1 } },
-	loc_vars = function(self, info_queue, center)
-		return { vars = { math.max(1, math.floor(center.ability.extra.money)) } }
+	config = { extra = { money = 1, mult = 0, mult_scale = 8 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {key = 'cry_mchainrules', set = 'Other'}
+		return { vars = { card.ability.extra.mult, card.ability.extra.mult_scale, "#" } }
 	end,
-	rarity = 1,
-	cost = 4,
+	rarity = 3,
+	cost = 8,
 	order = 65,
 	eternal_compat = false,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
+		--[[
 		if context.selling_self and not context.blueprint then
 			for k, v in ipairs(G.jokers.cards) do
 				if v.set_cost then
@@ -5757,6 +5759,27 @@ local cryptidmoment = {
 			end
 			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
 		end
+		]]
+		if context.cry_m_inc then
+			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_scale
+			return {
+				card = card,
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult_scale}}
+                        }
+		end
+		if context.cry_m_chainbreak then
+			card.ability.extra.mult = 0
+			return {
+				card = card,
+				message = localize('k_reset')
+			}
+		end
+		if context.joker_main then
+			return {
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+				mult_mod = card.ability.extra.mult
+			}
+		end
 	end,
 	cry_credits = {
 		idea = {
@@ -5766,7 +5789,7 @@ local cryptidmoment = {
 			"Yamper"
 		},
 		code = {
-			"Jevonn"
+			"toneblock"
 		}
 	},
 }

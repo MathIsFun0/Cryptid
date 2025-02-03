@@ -37,7 +37,7 @@ function update_cry_misc_counts()
 			GLOBAL_cry_join_count = tonumber(join_ret)
 		end
 		if m_ret then
-			GLOBAL_cry_m_count = tonumber(m_ret)
+			GLOBAL_cry_m_chain, GLOBAL_cry_m_count = m_ret:match("%[(%d+),%s*(%d+)%]")
 		end
 	else
 		GLOBAL_cry_join_count = 0
