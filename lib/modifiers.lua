@@ -729,6 +729,16 @@ function G.UIDEF.used_vouchers()
 
   
   local t = silent and {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
+
+	-- tarot/planet acclimator sliders
+     next(SMODS.find_card('v_cry_tacclimator')) and {n=G.UIT.R, config={align = "cm"}, nodes={
+      create_slider({label = localize('b_tarot_rate'),label_scale = 0.4,text_scale = 0.3,w = 4, h = 0.4, ref_table = G.GAME.cry_percrate, ref_value = 'tarot', colour = G.C.SECONDARY_SET.Tarot, min = 0, max = 100}),
+    }} or nil,
+     next(SMODS.find_card('v_cry_pacclimator')) and {n=G.UIT.R, config={align = "cm"}, nodes={
+      create_slider({label = localize('b_planet_rate'),label_scale = 0.4,text_scale = 0.3,w = 4, h = 0.4, ref_table = G.GAME.cry_percrate, ref_value = 'planet', colour = G.C.SECONDARY_SET.Planet, min = 0, max = 100}),
+    }} or nil,
+
+
     {n=G.UIT.R, config={align = "cm"}, nodes={
       {n=G.UIT.O, config={object = DynaText({string = {localize('ph_vouchers_redeemed')}, colours = {G.C.UI.TEXT_LIGHT}, bump = true, scale = 0.6})}}
     }},

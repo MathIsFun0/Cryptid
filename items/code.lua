@@ -825,10 +825,10 @@ local multiply = {
 		return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true) and not Card.no(G.jokers.highlighted[1], "immutable", true)
 	end,
 	use = function(self, card, area, copier)
-		if not G.jokers.highlighted[1].cry_multiply then
-			G.jokers.highlighted[1].cry_multiply = 1
+		if not G.jokers.highlighted[1].config.cry_multiply then
+			G.jokers.highlighted[1].config.cry_multiply = 1
 		end
-		G.jokers.highlighted[1].cry_multiply = G.jokers.highlighted[1].cry_multiply * 2
+		G.jokers.highlighted[1].config.cry_multiply = G.jokers.highlighted[1].config.cry_multiply * 2
 		cry_with_deck_effects(G.jokers.highlighted[1], function(card)
 			cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 		end)
@@ -4333,12 +4333,12 @@ return {
 		function end_round()
 			er()
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].cry_multiply then
-					m = G.jokers.cards[i].cry_multiply
+				if G.jokers.cards[i].config.cry_multiply then
+					m = G.jokers.cards[i].config.cry_multiply
 					cry_with_deck_effects(G.jokers.cards[i], function(card)
 						cry_misprintize(card, { min = 1 / m, max = 1 / m }, nil, true)
 					end)
-					G.jokers.cards[i].cry_multiply = nil
+					G.jokers.cards[i].config.cry_multiply = nil
 				end
 			end
 		end

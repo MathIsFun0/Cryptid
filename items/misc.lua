@@ -204,25 +204,23 @@ local oversat = {
 	end,
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
 			cry_misprintize(card, {
-				min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
-				max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
-			})
+				min = 2,
+				max = 2
+			}, nil, true)
 		end)
 		if card.config.center.apply_oversat then
 			card.config.center:apply_oversat(card, 	function(val)
 				return cry_misprintize_val(val, {
-					min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
-					max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card))
+					min = 2,
+					max = 2,
+				}, is_card_big(card), true)
 			end)
 		end
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {min = 1, max = 1}, true) -- 
-			cry_misprintize(card)
+			cry_misprintize(card, {min = 0.5, max = 0.5}, nil, true)
 		end)
 	end,
 }
@@ -300,18 +298,17 @@ local glitched = {
 	-- Also messes with rank sort order a bit for some reason
 	on_apply = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, nil, true)
 			cry_misprintize(card, {
-				min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-				max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-			})
+				min = 0.1,
+				max = 10
+			}, nil, true)
 		end)
 		if card.config.center.apply_glitched then
 			card.config.center:apply_glitched(card, function(val)
 				return cry_misprintize_val(val, {
 					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card))
+				}, is_card_big(card), true)
 			end)
 		end
 	end,
@@ -944,32 +941,68 @@ local glass_edition = {
 		}
 	end,
 	calculate = function(self, card, context)
-		
 		if
 			(
 				context.edition
 				and context.cardarea == G.jokers
 				and card.config.trigger
 			)
-			or (
+		then
+			return {x_mult = self.config.x_mult}
+		end
+
+		if
+			(
+				context.cardarea == G.jokers
+				and context.post_trigger --appears that post_trigger itself is janky
+			)
+		then
+			if
+				not card.ability.eternal and (pseudorandom(pseudoseed("cry_fragile"))
+				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
+			then
+				-- this event call might need to be pushed later to make more sense
+				G.E_MANAGER:add_event(Event({ 
+					func = function()
+						play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
+						card.states.drag.is = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end
+					}))
+			end
+		end
+		if (
 				context.main_scoring
 				and context.cardarea == G.play
 			)
 		then
 			if
-				(pseudorandom("cry_fragile") -- BUGGED: ALWAYS SHATTERS
-				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance))) -- TODO: fix eternal interaction, currently ignores?
+				not card.ability.eternal and (pseudorandom(pseudoseed("cry_fragile"))
+				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
 			then
-				self.config.will_shatter = true
+				card.config.will_shatter = true
 			end
 			return {x_mult = self.config.x_mult}
 		end
+
 		if
 			(
 				context.joker_main
 			)
 		then
-			card.config.trigger = true
+			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 			
 		if
@@ -980,7 +1013,7 @@ local glass_edition = {
 			card.config.trigger = nil
 		end
 		
-		if context.destroying_card and self.config.will_shatter == true
+		if context.destroying_card and card.config.will_shatter
 		then
 			G.E_MANAGER:add_event(Event({ 
 				func = function()
@@ -1001,6 +1034,7 @@ local glass_edition = {
 					return true
 				end
     			}))
+			return {remove = true}
 		end
 	end,
 }

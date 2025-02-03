@@ -3465,8 +3465,9 @@ return {
                     "{C:planet}Planet{} cards appear",
                     "{C:attention}X#1#{} more frequently",
                     "in the shop",
-                    "All future {C:planet}Planet{}",
-                    "cards are {C:green}free{}",
+                    "Allows control of the",
+                    "shop's {C:planet}Planet Rate{}",
+                    "{C:inactive}(Check {C:attention}Run Info{C:inactive})",
                 },
 		unlock = {
                     "Buy {C:attention}100{} {C:planet}Planet",
@@ -3545,8 +3546,9 @@ return {
                     "{C:tarot}Tarot{} cards appear",
                     "{C:attention}X#1#{} more frequently",
                     "in the shop",
-                    "All future {C:tarot}Tarot{}",
-                    "cards are {C:green}free{}",
+                    "Allows control of the",
+                    "shop's {C:tarot}Tarot Rate{}",
+                    "{C:inactive}(Check {C:attention}Run Info{C:inactive})",
                 },
 		unlock = {
                     "Buy {C:attention}100{} {C:tarot}Tarot",
@@ -4220,6 +4222,9 @@ return {
             --Why aren't these in vanilla?
             b_tag = "Tag",
             b_blind = "Blind",
+            
+            b_tarot_rate = "Tarot Rate",
+            b_planet_rate = "Planet Rate",
             
             k_unique = "Unique",
             b_code_cards = "Code Cards",

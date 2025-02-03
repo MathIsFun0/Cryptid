@@ -1037,7 +1037,7 @@ local obsidian_orb = {
 			end
 			if s.name == "The Arm" then
 				G.GAME.blind.triggered = false
-				if G.GAME.hands[handname].level > 1 then
+				if to_big(G.GAME.hands[handname].level) > to_big(1) then
 					G.GAME.blind.triggered = true
 					if not check then
 						level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
