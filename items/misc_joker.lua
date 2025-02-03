@@ -5745,21 +5745,9 @@ local cryptidmoment = {
 	rarity = 3,
 	cost = 8,
 	order = 65,
-	eternal_compat = false,
+	eternal_compat = true,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
-		--[[
-		if context.selling_self and not context.blueprint then
-			for k, v in ipairs(G.jokers.cards) do
-				if v.set_cost then
-					v.ability.extra_value = (v.ability.extra_value or 0)
-						+ math.max(1, math.floor(card.ability.extra.money))
-					v:set_cost()
-				end
-			end
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
-		end
-		]]
 		if context.cry_m_inc then
 			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_scale
 			return {
@@ -5790,6 +5778,48 @@ local cryptidmoment = {
 		},
 		code = {
 			"toneblock"
+		}
+	},
+}
+local squares = {
+	object_type = "Joker",
+	name = "cry-Square Pair",
+	key = "squares",
+	pos = { x = 7, y = 5 },
+	config = { extra = 1 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra } }
+	end,
+	rarity = 1,
+	cost = 4,
+	order = 177, -- Temp value until all the duplicate joker orders are handled
+	eternal_compat = false,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+			for k, v in ipairs(G.jokers.cards) do
+				if v.set_cost and (v ~= card or Card.get_gameset(card) == "madness") then
+					v.ability.extra_value = (v.ability.extra_value or 0)
+						+ math.max(1, math.floor(card.ability.extra))
+					v:set_cost()
+				end
+			end
+			if (#G.jokers.cards - 1) > 0 or Card.get_gameset(card) == "madness" then
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
+			else
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers"), colour = G.C.MONEY })
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
+		},
+		code = {
+			"Jevonn"
 		}
 	},
 }
@@ -6932,6 +6962,7 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	squares,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

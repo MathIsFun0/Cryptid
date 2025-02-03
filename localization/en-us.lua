@@ -2239,6 +2239,14 @@ return {
                     "{C:inactive}That #1# is a spy!",
                 },
             },
+            j_cry_squares = {
+                name = "Square Pair",
+                text = {
+                    "Sell this card to",
+                    "add {C:money}$#1#{} of {C:attention}sell value{}",
+                    "to every {C:attention}Joker{} card",
+                }
+            },
             j_cry_stardust = {
                 name = "Stardust",
                 text = {
