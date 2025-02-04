@@ -48,7 +48,7 @@ local timantti = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier, 1)
+		suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -121,7 +121,7 @@ local klubi = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier, 1)
+		suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -194,7 +194,7 @@ local sydan = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier, 1)
+		suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -267,7 +267,7 @@ local lapio = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier, 1)
+		suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -341,7 +341,7 @@ local kaikki = {
         	}
     	end,
     	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier, 1)
+		suit_level_up(self, card, area, copier)
     	end,
    	bulk_use = function(self, card, area, copier, number)
         	suit_level_up(self, card, area, copier, number)
@@ -998,6 +998,8 @@ local universe = {
 }
 function suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
+	if not number then
+		number = 1
 	for _, v in pairs(card.config.center.config.hand_types) do
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
