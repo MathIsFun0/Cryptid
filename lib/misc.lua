@@ -143,15 +143,23 @@ function cry_edition_to_table(edition) -- look mom i figured it out (this does N
 	end
 end
 
--- check if Director's Cut or Retcon offers a cheaper reroll price
-function cry_cheapest_boss_reroll()
-	local dcut = G.GAME.cry_voucher_centers["v_directors_cut"].config.extra or 1e308
-	local retc = G.GAME.cry_voucher_centers["v_retcon"].config.extra or 1e308
-	if dcut < retc then
-		return dcut
-	else
-		return retc
+-- simple plural s function for localisation
+function cry_pls(str, vars)
+	if string.sub(str, 1, 1) == 'p' 
+	or string.sub(str, 1, 1) == 's' 
+	or string.sub(str, 1, 1) == 'y' then
+		num = vars[tonumber(string.sub(str, 2, -1))]
+		if num then
+			if math.abs(to_big(num) - 1) > to_big(0.001) then
+				return string.sub(str, 1, 1) == 'y' and 'ies' 
+				or 's'
+			else
+				return string.sub(str, 1, 1) == 'y' and 'y' 
+				or ''
+			end
+		end
 	end
+	return false -- idk it doesn't really matter
 end
 
 -- generate a random edition (e.g. Antimatter Deck)
