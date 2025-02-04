@@ -48,7 +48,7 @@ local timantti = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		suit_level_up(self, card, area, copier, 1)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -121,7 +121,7 @@ local klubi = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		suit_level_up(self, card, area, copier, 1)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -194,7 +194,7 @@ local sydan = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		suit_level_up(self, card, area, copier, 1)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -267,7 +267,7 @@ local lapio = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		suit_level_up(self, card, area, copier, 1)
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		suit_level_up(self, card, area, copier, number)
@@ -341,7 +341,7 @@ local kaikki = {
         	}
     	end,
     	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		suit_level_up(self, card, area, copier, 1)
     	end,
    	bulk_use = function(self, card, area, copier, number)
         	suit_level_up(self, card, area, copier, number)
