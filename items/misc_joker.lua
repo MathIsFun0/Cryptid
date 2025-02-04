@@ -6630,7 +6630,7 @@ local digitalhallucinations = {
 						end)
 					}))
 					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_'..short1[i]), colour = G.C.SECONDARY_SET[short2[i]]})
-					return true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
+					return nil, true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
 				end
 			end
 			if boosty.ability.name:find('code') then
@@ -6646,7 +6646,7 @@ local digitalhallucinations = {
 					end
 				}))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('cry_plus_code'), colour = G.C.SET.Code})
-				return true
+				return nil, true
 			end
 			if boosty.ability.name:find('Buffoon') then
 				G.E_MANAGER:add_event(Event({
@@ -6662,7 +6662,7 @@ local digitalhallucinations = {
 					end
 				}))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.FILTER})
-				return true
+				return nil, true
 			end
 			if boosty.ability.name:find('Standard') then
 				G.E_MANAGER:add_event(Event({
@@ -6688,7 +6688,7 @@ local digitalhallucinations = {
 				draw_card(G.play,G.deck, 90,'up', nil)  
 
 				playing_card_joker_effects({true})	-- who knows what most this stuff does, i just copied it from marble jonkler
-				return true
+				return nil, true
 			end
 		end
 	end,
