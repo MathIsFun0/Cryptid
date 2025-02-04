@@ -963,7 +963,7 @@ local nice = {
 		return { vars = { center.ability.extra.chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and not context.after then
+		if context.cardarea == G.jokers and context.before then
 			card.ability.extra.sixcount = 0
 			card.ability.extra.ninecount = 0
 			for i, v in pairs(context.full_hand) do
@@ -973,7 +973,7 @@ local nice = {
 					card.ability.extra.ninecount = card.ability.extra.ninecount + 1
 				end
 			end
-		elseif context.cardarea == G.jokers and not context.before and not context.after then
+		elseif context.cardarea == G.jokers and context.joker_main then
 			if card.ability.extra.sixcount > 0 and card.ability.extra.ninecount > 0 then
 				return {
 					message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips or 0 } }),
