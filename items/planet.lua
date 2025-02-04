@@ -1000,6 +1000,7 @@ function suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
 	if not number then
 		number = 1
+	end
 	for _, v in pairs(card.config.center.config.hand_types) do
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
