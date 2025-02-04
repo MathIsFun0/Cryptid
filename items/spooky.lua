@@ -966,9 +966,10 @@ local candy_cane = {
 		if context.individual and context.cardarea == G.play then
 			if not context.other_card.candy_caned then
 				context.other_card.candy_caned = true
+				local c = context.other_card
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						context.other_card.candy_caned = nil
+						if c then c.candy_caned = nil end
 						return true
 					end
 				})) 

@@ -954,7 +954,7 @@ local glass_edition = {
 		if
 			(
 				context.cardarea == G.jokers
-				and context.post_trigger --appears that post_trigger itself is janky
+				and context.post_trigger --animation-wise this looks weird sometimes
 			)
 		then
 			if
@@ -1074,6 +1074,11 @@ local gold_edition = {
 		if
 			(
 				context.post_trigger
+			)
+			or
+			(
+				context.using_consumeable
+				and context.consumeable == card
 			)
 		then
 			SMODS.calculate_effect({dollars = self.config.dollars}, card, true)
