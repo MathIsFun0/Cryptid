@@ -1,13 +1,5 @@
 require "love.system"
 
--- mac/linux support?
-
-local script_path = debug.getinfo(1, "S").source:sub(2)
-local script_dir = script_path:match("(.*/)")
-
-package.path = script_dir .. "?.lua;" .. package.path
-package.cpath = script_dir .. "?.so;" .. package.cpath
-
 local index_os = love.system.getOS()
 
 if index_os == 'OS X' then
@@ -19,7 +11,9 @@ else
 end
 
 local last_update_time = 0
+local gist_update_time = 0
 local initial = true
+local gist_initial = true
 while true do
 	if (os.time() - last_update_time >= 60) or initial then
 		initial = nil
@@ -29,6 +23,22 @@ while true do
 			love.thread.getChannel('member_count'):push(txt)
 		else
 			love.thread.getChannel('member_error'):push("Failed to get count: "..resp)
+		end
+	end
+	if (os.time() - gist_update_time >= 1) or gist_initial then	-- gist is fast and shouldn't get rate limited... i hope
+		gist_initial = nil
+		gist_update_time = os.time()
+		
+		local join_resp, join_txt = loc_https.request("https://gist.githubusercontent.com/Toneblock/e8fe8fa766052e521cf7e500569d0a34/raw/join.txt".."?v=" .. tostring(os.time()))
+		local m_resp, m_txt = loc_https.request("https://gist.githubusercontent.com/Toneblock/e8fe8fa766052e521cf7e500569d0a34/raw/m.txt".."?v=" .. tostring(os.time()))
+		
+		-- lmao wtf am i doing here... i'm just copypasting code
+		
+		if join_resp == 200 then
+			love.thread.getChannel('join_count'):push(join_txt)
+		end
+		if m_resp == 200 then
+			love.thread.getChannel('m_count'):push(m_txt)
 		end
 	end
 end

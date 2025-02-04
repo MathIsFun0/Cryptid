@@ -1868,6 +1868,14 @@ return {
                     "{C:inactive}Dieser #1# ist ein Spion!",
                 },
             },
+            j_cry_squares = {
+                name = "Square Pair",
+                text = {
+                    "Verkaufe diese Karte um",
+                    "{C:money}$#1#{} {C:attention}Verkaufswert{} zu jeder",
+                    "{C:attention}Joker{} Karte hinzuzufügen",
+                }
+            },
             j_cry_stardust = {
                 name = "Sternstaub",
                 text = {

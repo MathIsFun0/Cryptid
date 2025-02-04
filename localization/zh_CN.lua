@@ -2134,6 +2134,13 @@ return {
 					"{C:inactive} #1# 是间谍!"
 				}
 			},
+			j_cry_squares = {
+                name = "Square Pair",
+                text = {
+					"",
+					"卖掉这张卡时，每张{C:attention}小丑牌{}的售价增加 {C:money}$#1#{}"
+                }
+            },
 			j_cry_stardust = {
 				name = "星尘",
 				text = {

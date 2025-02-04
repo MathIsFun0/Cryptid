@@ -5645,9 +5645,11 @@ local membershipcard = {
 	blueprint_compat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.Xmult_mod, card.ability.extra.Xmult_mod * GLOBAL_cry_member_count } }
+		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
+		return { vars = { GLOBAL_cry_member_count } }
 	end,
 	calculate = function(self, card, context)
+		--[[
 		if
 			context.joker_main
 			and card.ability.extra.Xmult_mod * GLOBAL_cry_member_count > 1
@@ -5661,10 +5663,26 @@ local membershipcard = {
 				Xmult_mod = card.ability.extra.Xmult_mod * GLOBAL_cry_member_count,
 			}
 		end
+		]]
+		if context.cry_join_inc then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					G.E_MANAGER:add_event(Event({
+						func = function() 
+							SMODS.add_card({key = 'c_cryptid', area = G.consumeables})
+							return true
+						end
+					}))   
+					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_spectral'), colour = G.C.SECONDARY_SET.Spectral})                       
+					return true
+                 	   end
+			}))
+			return nil, true
+		end
 	end,
 	cry_credits = {
 		idea = {
-			"Toneblock"
+			"Maratby"
 		},
 		art = {
 			"HexaCryonic"
@@ -5719,25 +5737,36 @@ local cryptidmoment = {
 	name = "cry_cryptidmoment",
 	key = "cryptidmoment",
 	pos = { x = 6, y = 0 },
-	config = { extra = { money = 1 } },
-	loc_vars = function(self, info_queue, center)
-		return { vars = { math.max(1, math.floor(center.ability.extra.money)) } }
+	config = { extra = { money = 1, mult = 0, mult_scale = 8 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {key = 'cry_mchainrules', set = 'Other'}
+		return { vars = { card.ability.extra.mult, card.ability.extra.mult_scale, "#" } }
 	end,
-	rarity = 1,
-	cost = 4,
+	rarity = 3,
+	cost = 8,
 	order = 65,
-	eternal_compat = false,
+	eternal_compat = true,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
-		if context.selling_self and not context.blueprint then
-			for k, v in ipairs(G.jokers.cards) do
-				if v.set_cost then
-					v.ability.extra_value = (v.ability.extra_value or 0)
-						+ math.max(1, math.floor(card.ability.extra.money))
-					v:set_cost()
-				end
-			end
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
+		if context.cry_m_inc then
+			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_scale
+			return {
+				card = card,
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult_scale}}
+                        }
+		end
+		if context.cry_m_chainbreak then
+			card.ability.extra.mult = 0
+			return {
+				card = card,
+				message = localize('k_reset')
+			}
+		end
+		if context.joker_main then
+			return {
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+				mult_mod = card.ability.extra.mult
+			}
 		end
 	end,
 	cry_credits = {
@@ -5746,6 +5775,48 @@ local cryptidmoment = {
 		},
 		art = {
 			"Yamper"
+		},
+		code = {
+			"toneblock"
+		}
+	},
+}
+local squares = {
+	object_type = "Joker",
+	name = "cry-Square Pair",
+	key = "squares",
+	pos = { x = 7, y = 5 },
+	config = { extra = 1 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra } }
+	end,
+	rarity = 1,
+	cost = 4,
+	order = 177, -- Temp value until all the duplicate joker orders are handled
+	eternal_compat = false,
+	atlas = "atlasthree",
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+			for k, v in ipairs(G.jokers.cards) do
+				if v.set_cost and (v ~= card or Card.get_gameset(card) == "madness") then
+					v.ability.extra_value = (v.ability.extra_value or 0)
+						+ math.max(1, math.floor(card.ability.extra))
+					v:set_cost()
+				end
+			end
+			if (#G.jokers.cards - 1) > 0 or Card.get_gameset(card) == "madness" then
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
+			else
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers"), colour = G.C.MONEY })
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Jevonn"
+		},
+		art = {
+			"Jevonn"
 		},
 		code = {
 			"Jevonn"
@@ -6891,6 +6962,7 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	squares,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside

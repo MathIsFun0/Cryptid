@@ -281,8 +281,6 @@ local dagger_war = {
 		banned_other = {},
 	},
 	jokers = {
-		{ id = "j_cry_cryptidmoment", edition = "negative" },
-		{ id = "j_cry_cryptidmoment", edition = "negative" },
 		{ id = "j_gift", edition = "negative" },
 		{ id = "j_gift", edition = "negative" },
 		{ id = "j_ceremonial", stickers = {'cry_absolute'} },
