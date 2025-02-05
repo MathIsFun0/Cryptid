@@ -342,6 +342,7 @@ local onlycard = {
 		},
 		banned_other = {
 			{ id = 'bl_house', type = 'blind' },
+			{ id = 'bl_psychic', type = 'blind' },
 		},
 	},
 	jokers = {
