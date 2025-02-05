@@ -710,6 +710,7 @@ local m = {
 		end
 	end,
 	post_process = function(self)
+		Cryptid.M_jokers["j_cry_m"] = true
 		if get_m_retriggers then
 			local vc = self.calculate
 			self.calculate = function(self, card, context)
@@ -779,6 +780,7 @@ local M = {
 		end
 	end,
 	post_process = function(self)
+		Cryptid.M_jokers["j_cry_M"] = true
 		if get_m_retriggers then
 			local vc = self.calculate
 			self.calculate = function(self, card, context)

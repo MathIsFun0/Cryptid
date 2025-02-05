@@ -1467,10 +1467,6 @@ end
 return {
 	name = "M Jokers",
 	init = function()
-		if cry_card_enabled("set_cry_epic") == true then
-			Cryptid.M_jokers["j_cry_m"] = true
-			Cryptid.M_jokers["j_cry_M"] = true
-		end
 		for i = 1, #ret_items do
 			Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
 			local vc = ret_items[i].calculate
