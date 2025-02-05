@@ -9,24 +9,21 @@ local white_hole = {
 	atlas = "atlasnotjokers",
 	hidden = true, --default soul_rate of 0.3% in spectral packs is used
 	soul_set = "Planet",
+	loc_vars = function(self, info_queue, card)
+		return { key = Card.get_gameset(card) == "modest" and "c_cry_white_hole" or "c_cry_white_hole2" }
+	end,
 	can_use = function(self, card)
 		return true
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		local modest = Card.get_gameset(used_consumable) == "modest"
 		--Get most played hand type (logic yoinked from Telescope)
-		local _planet, _hand, _tally = nil, nil, -1
+		local _hand, _tally = nil, -1
 		for k, v in ipairs(G.handlist) do
 			if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
 				_hand = v
 				_tally = G.GAME.hands[v].played
-			end
-		end
-		if _hand then
-			for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-				if v.config.hand_type == _hand then
-					_planet = v.key
-				end
 			end
 		end
 		local removed_levels = 0
@@ -34,7 +31,9 @@ local white_hole = {
 			if to_big(G.GAME.hands[v].level) > to_big(1) then
 				local this_removed_levels = G.GAME.hands[v].level - 1
 				removed_levels = removed_levels + this_removed_levels
-				level_up_hand(used_consumable, v, true, -this_removed_levels)
+				if v ~= _hand or not modest then
+					level_up_hand(used_consumable, v, true, -this_removed_levels)
+				end
 			end
 		end
 		update_hand_text(
@@ -46,7 +45,11 @@ local white_hole = {
 				level = G.GAME.hands[_hand].level,
 			}
 		)
-		level_up_hand(used_consumable, _hand, false, 3 * removed_levels)
+		if modest then
+			level_up_hand(used_consumable, _hand, false, 4)
+		else
+			level_up_hand(used_consumable, _hand, false, 3 * removed_levels)
+		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
@@ -58,19 +61,13 @@ local white_hole = {
 	can_bulk_use = true,
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
+		local modest = Card.get_gameset(used_consumable) == "modest"
 		--Get most played hand type (logic yoinked from Telescope)
-		local _planet, _hand, _tally = nil, nil, -1
+		local _hand, _tally = nil, -1
 		for k, v in ipairs(G.handlist) do
 			if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
 				_hand = v
 				_tally = G.GAME.hands[v].played
-			end
-		end
-		if _hand then
-			for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-				if v.config.hand_type == _hand then
-					_planet = v.key
-				end
 			end
 		end
 		local removed_levels = 0
@@ -78,7 +75,9 @@ local white_hole = {
 			if to_big(G.GAME.hands[v].level) > to_big(1) then
 				local this_removed_levels = G.GAME.hands[v].level - 1
 				removed_levels = removed_levels + this_removed_levels
-				level_up_hand(used_consumable, v, true, -this_removed_levels)
+				if v ~= _hand or not modest then
+					level_up_hand(used_consumable, v, true, -this_removed_levels)
+				end
 			end
 		end
 		update_hand_text(
@@ -90,7 +89,11 @@ local white_hole = {
 				level = G.GAME.hands[_hand].level,
 			}
 		)
-		level_up_hand(used_consumable, _hand, false, removed_levels * 3 ^ number)
+		if modest then
+			level_up_hand(used_consumable, _hand, false, 4 * number)
+		else
+			level_up_hand(used_consumable, _hand, false, removed_levels * 3 ^ number)
+		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }

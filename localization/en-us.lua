@@ -2875,6 +2875,14 @@ return {
                 name = "White Hole",
                 text = {
                     "{C:attention}Remove{} all hand levels,",
+                    "upgrade {C:legendary,E:1}most played{}",
+                    "poker hand by {C:attention}4{}",
+                },
+            },
+	    c_cry_white_hole2 = {
+                name = "White Hole",
+                text = {
+                    "{C:attention}Remove{} all hand levels,",
                     "upgrade {C:legendary,E:1}most played{} poker hand",
                     "by {C:attention}3{} for each removed level",
                 },
