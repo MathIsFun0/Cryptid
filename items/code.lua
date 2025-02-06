@@ -1019,13 +1019,14 @@ local spaghetti = {
 	end,
 	use = function(self, card, area, copier)
 		local card = create_card(
-			"Joker",
+			"Food",
 			G.jokers,
 			nil,
 			nil,
 			nil,
 			nil,
-			Cryptid.get_food("cry_spaghetti")
+			nil,
+			"cry_spaghetti"
 		)
 		card:set_edition({
 			cry_glitched = true,
