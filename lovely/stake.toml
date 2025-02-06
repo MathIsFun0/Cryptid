@@ -348,6 +348,7 @@ payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_smal
 match_indent = true
 
 # Ember Stake - grant no money on sell
+# this is NOT ember stake grant no money on sell wtf
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -362,7 +363,9 @@ match_indent = true
 target = "card.lua"
 pattern = '''ease_dollars(self.sell_cost)'''
 position = "at"
-payload = '''if not G.GAME.modifiers.cry_no_sell_value then ease_dollars(self.sell_cost) end'''
+payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then 
+	ease_dollars(self.sell_cost) 
+end'''
 match_indent = true
 
 # Ember Stake - don't play coin sound
@@ -371,7 +374,9 @@ match_indent = true
 target = "card.lua"
 pattern = '''play_sound('coin2')'''
 position = "at"
-payload = '''if not G.GAME.modifiers.cry_no_sell_value then play_sound('coin2') end'''
+payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then 
+	play_sound('coin2') 
+end'''
 match_indent = true
 
 # Ember Stake - red dissolve for swag points
@@ -380,7 +385,11 @@ match_indent = true
 target = "card.lua"
 pattern = '''self:start_dissolve({G.C.GOLD})'''
 position = "at"
-payload = '''if G.GAME.modifiers.cry_no_sell_value then self:start_dissolve({G.C.RED}) else self:start_dissolve({G.C.GOLD}) end'''
+payload = '''if G.GAME.modifiers.cry_no_sell_value or self.sell_cost == 0 then 
+	self:start_dissolve({G.C.RED}) 
+else 
+	self:start_dissolve({G.C.GOLD}) 
+end'''
 match_indent = true
 
 # Ember Stake - remove sell price visually

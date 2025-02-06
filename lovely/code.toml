@@ -169,11 +169,13 @@ position = "before"
 payload = '''
 if cry_muse then
 	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+	card:set_cost()
 	delay(0.4)
-	card:juice_up()
-
+	
 	-- i make my own card eval status text :D
 	
+	card:juice_up()
 	play_sound('generic1')
 	attention_text({
 		text = format_ui_value(card.ability.cry_multiuse),
