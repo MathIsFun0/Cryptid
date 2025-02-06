@@ -518,15 +518,6 @@ function Card:set_cost()
 		self.sell_cost = 0
 		self.sell_cost_label = 0
 	end
-
-	--Makes Tarots free if Tarot Acclimator is redeemed
-	--Makes Planets free if Planet Acclimator is redeemed
-	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then
-		self.cost = 0
-	end
-	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
-		self.cost = 0
-	end
 end
 
 -- Modify to display badges for credits
