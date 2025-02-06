@@ -36,6 +36,7 @@ local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 	atlas = "atlasvoucher",
 	order = 91,
 	pos = { x = 1, y = 3 },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue+1] = {set = "Tag", key = "tag_double"}
 		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_quintuple", specific_vars = {4}}
@@ -86,6 +87,7 @@ local quantum_computing = { --Code cards can spawn with Negative addition
 	order = 92,
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 3 },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
 	end,
@@ -139,6 +141,7 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 	order = 93,
 	pos = { x = 6, y = 5 },
 	requires = { "v_cry_repair_man" },
+    pools = {["Tier3"] = true},
 	cry_credits = {
 		jolly = {
 			"Jolly Open Winner",
@@ -193,6 +196,7 @@ local double_down = { --After every round, X1.5 to all values on the back of Dou
 	order = 94,
 	pos = { x = 4, y = 4 },
 	requires = { "v_cry_double_slit" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
@@ -211,6 +215,7 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 	order = 75,
 	pos = { x = 4, y = 1 },
 	requires = { "v_overstock_plus" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
@@ -250,6 +255,7 @@ local massproduct = { --All cards and packs in the shop cost $1
 	order = 76,
 	pos = { x = 6, y = 4 },
 	requires = { "v_liquidation" },
+    pools = {["Tier3"] = true},
 	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -285,6 +291,7 @@ local curate = { --All cards appear with an Edition
 	order = 77,
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
+    pools = {["Tier3"] = true},
 }
 local rerollexchange = { --All rerolls cost $2
 	object_type = "Voucher",
@@ -293,6 +300,7 @@ local rerollexchange = { --All rerolls cost $2
 	order = 78,
 	pos = { x = 6, y = 2 },
 	requires = { "v_reroll_glut" },
+    pools = {["Tier3"] = true},
 	redeem = function(self)
 		--most of the code for this (one line) is in cryptid.lua, check out the reroll function there
 		G.E_MANAGER:add_event(Event({
@@ -321,6 +329,7 @@ local scope = { --Also unimplemented
 	order = 80,
 	pos = { x = 2, y = 0 },
 	requires = { "v_observatory" },
+    pools = {["Tier3"] = true},
 }
 local dexterity = { --Permanently gain +2 hand[s] each round
 	object_type = "Voucher",
@@ -330,6 +339,7 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 	order = 81,
 	pos = { x = 6, y = 3 },
 	requires = { "v_nacho_tong" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { math.max(1, math.floor(card and card.ability.extra or self.config.extra)) } }
 	end,
@@ -350,6 +360,7 @@ local threers = { --Permanently gain +2 discard[s] each round
 	order = 82,
 	pos = { x = 5, y = 0 },
 	requires = { "v_recyclomancy" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
@@ -370,6 +381,7 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 	order = 83,
 	pos = { x = 1, y = 4 },
 	requires = { "v_tarot_tycoon" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card and card.ability.extra_disp or self.config.extra_disp } }
 	end,
@@ -398,6 +410,7 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 	order = 84,
 	pos = { x = 0, y = 4 },
 	requires = { "v_planet_tycoon" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card and card.ability.extra or self.config.extra_disp } }
 	end,
@@ -426,6 +439,7 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	order = 85,
 	pos = { x = 5, y = 1 },
 	requires = { "v_money_tree" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card and card.ability.extra or self.config.extra) / 5 } }
 	end,
@@ -454,6 +468,7 @@ local fabric = { --+2 Joker slot[s]
 	order = 86,
 	pos = { x = 6, y = 0 },
 	requires = { "v_antimatter" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
@@ -508,6 +523,7 @@ local asteroglyph = { --Set Ante to 0
 	order = 88,
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue)
 		return { vars = { asteroglyph_ante() } }
 	end,
@@ -546,6 +562,7 @@ local blankcanvas = { --+2 hand size
 	order = 90,
 	pos = { x = 2, y = 4 },
 	requires = { "v_palette" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
@@ -622,6 +639,7 @@ local hyperspacetether = { --+2 card selection limit (replace me when "extra fun
 	pos = { x = 2, y = 5 },
 	order = 95,
 	requires = { "v_cry_grapplinghook" },
+    pools = {["Tier3"] = true},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
@@ -795,82 +813,16 @@ if SMODS.Mods["Tier3Sub"] then
 end
 
 --Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
---I am sorry in advance (this is extremely cursed)
+-- Uncursed this -Math
 
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_overstock_multi"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_massproduct"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_curate"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_rerollexchange"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_dexterity"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_threers"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_tacclimator"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_pacclimator"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_moneybean"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_fabric"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_asteroglyph"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_blankcanvas"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_hyperspacetether"
-Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_clone_machine"
-
-if Cryptid.enabled["M Jokers"] then
-	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_pairamount_plus"
-end
-if Cryptid.enabled["Code Cards"] then
-	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_quantum_computing"
-end
-if Cryptid.enabled["Misc."] then
-	Cryptid.Megavouchers[#Cryptid.Megavouchers + 1] = "v_cry_double_down"
-end
-
-function megavoucherpool(_type, _rarity, legendary, key_append)
-	G.ARGS.TEMP_POOL = EMPTY(G.ARGS.TEMP_POOL)
-	local _pool, _starting_pool, _pool_key, _pool_size = G.ARGS.TEMP_POOL, {}, "megavoucher", 0
-
-	for k, v in pairs(Cryptid.Megavouchers) do
-		if v then
-			_starting_pool[#_starting_pool + 1] = G.P_CENTERS[v]
-		end
-	end
-
-	for k, v in ipairs(_starting_pool) do
-		local add = false
-
-		if not G.GAME.used_vouchers[v.key] then
-                	local check = true
-			if G.shop_vouchers and G.shop_vouchers.cards then
-                            for kk, vv in ipairs(G.shop_vouchers.cards) do
-                                if vv.config.center.key == v.key then check = false end
-                            end
-                        end
-			if check then
-                            add = true
-                        end
-		end
-
-		if add and not G.GAME.banned_keys[v.key] then
-			_pool[#_pool + 1] = v.key
-			_pool_size = _pool_size + 1
-		end
-
-		if _pool_size == 0 then
-			_pool = EMPTY(G.ARGS.TEMP_POOL)
-			_pool[#_pool + 1] = "v_blank"
-		end
-	end
-
-	return _pool, _pool_key .. G.GAME.round_resets.ante
-end
-
-local megavouchergetcurrentpool = get_current_pool
-function get_current_pool(_type, _rarity, _legendary, _append)
-	if _type == "megavoucher" then
-		return megavoucherpool(_type, _rarity, _legendary, _append)
-	end
-	return megavouchergetcurrentpool(_type, _rarity, _legendary, _append)
-end
-
+local t3_object_type = {
+	object_type = "ObjectType",
+    key = "Tier3",
+    default = "v_blank",
+	cards = {},
+}
 function get_next_megavoucher_key(_from_tag)
-    local _pool, _pool_key = get_current_pool('megavoucher')
+    local _pool, _pool_key = get_current_pool('Tier3')
     if _from_tag then _pool_key = 'Voucher_fromtag' end
     local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
     local it = 1
@@ -904,23 +856,18 @@ local voucheritems = {
 	clone_machine,
 	stickyhand,
 	grapplinghook,
-	hyperspacetether
+	hyperspacetether,
+	t3_object_type,
+	command_prompt,
+	satellite_uplink,
+	quantum_computing,
+	pairing,
+	repair_man,
+	pairamount_plus,
+	double_vision,
+	double_slit,
+	double_down,
 }
-if Cryptid.enabled["Code Cards"] then
-	voucheritems[#voucheritems + 1] = command_prompt
-	voucheritems[#voucheritems + 1] = satellite_uplink
-	voucheritems[#voucheritems + 1] = quantum_computing
-end
-if Cryptid.enabled["M Jokers"] then
-	voucheritems[#voucheritems + 1] = pairing
-	voucheritems[#voucheritems + 1] = repair_man
-	voucheritems[#voucheritems + 1] = pairamount_plus
-end
-if Cryptid.enabled["Misc."] then
-	voucheritems[#voucheritems + 1] = double_vision
-	voucheritems[#voucheritems + 1] = double_slit
-	voucheritems[#voucheritems + 1] = double_down
-end
 return {
 	name = "Vouchers",
 	init = function()

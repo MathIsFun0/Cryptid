@@ -255,7 +255,7 @@ function get_m_jokers()
 	local mcount = 0
 	if G.jokers then
 		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.effect == "M Joker" then
+			if safe_get(G.jokers.cards[i], "pools", "M") then
 				mcount = mcount + 1
 			end
 			if G.jokers.cards[i].ability.name == "cry-mprime" then
@@ -529,4 +529,24 @@ function Blind:cry_calc_ante_gain()
 		end
 	end
 	return 1
+end
+
+function Cryptid.post_process(center)
+	if center.pools and center.pools.M then
+		local vc = center.calculate
+		center.calculate = function(self, card, context)
+			local ret, trig = vc(self, card, context)
+			if context.retrigger_joker_check and context.other_card == card then
+				local reps = get_m_retriggers(self, card, context)
+				if reps > 0 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = reps + (ret and ret.repetitions or 0),
+						card = card,
+					}
+				end
+			end
+			return ret, trig
+		end
+	end
 end

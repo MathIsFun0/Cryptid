@@ -178,3 +178,12 @@ else
 end
 '''
 match_indent = true
+
+# don't check voucher requirements for forced tier 3 voucher pool
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if v.requires then"
+position = "at"
+payload = "if v.requires and _type ~= 'Tier3' then"
+match_indent = true

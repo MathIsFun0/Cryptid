@@ -533,6 +533,7 @@ local pickle = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasone",
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tags_mod } }
 	end,
@@ -753,6 +754,7 @@ local chili_pepper = {
 	eternal_compat = false,
 	perishable_compat = false,
 	atlas = "atlastwo",
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = { center.ability.extra.Xmult, center.ability.extra.Xmult_mod, center.ability.extra.rounds_remaining },

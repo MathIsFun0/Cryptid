@@ -572,19 +572,15 @@ local double_m_tag = {
 		if context.type == "store_joker_create" then
 			local card
 			local option = {}
-			for k, _ in pairs(Cryptid.M_jokers) do
-				if G.P_CENTERS[k] then
-					option[#option + 1] = k
-				end
-			end
 			card = create_card(
-				"Joker",
+				"M",
 				context.area,
 				nil,
 				nil,
 				nil,
 				nil,
-				pseudorandom_element(option, pseudoseed("M_is_love_M_is_life"))
+				nil,
+				"M_is_love_M_is_life"
 			)
 			card:set_edition({
 				cry_m = true,

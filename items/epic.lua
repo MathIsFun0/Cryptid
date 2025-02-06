@@ -709,26 +709,7 @@ local m = {
 			return nil, true
 		end
 	end,
-	post_process = function(self)
-		Cryptid.M_jokers["j_cry_m"] = true
-		if get_m_retriggers then
-			local vc = self.calculate
-			self.calculate = function(self, card, context)
-				local ret, trig = vc(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card then
-					local reps = get_m_retriggers(self, card, context)
-					if reps > 0 then
-						return {
-							message = localize("k_again_ex"),
-							repetitions = reps + (safe_get(ret, "repetitions") or 0),
-							card = card,
-						}
-					end
-				end
-				return ret, trig
-			end
-		end
-	end,
+	pools = { ["M"] = true },
 	cry_credits = {
 		idea = {
 			"Jevonn",
@@ -779,26 +760,7 @@ local M = {
 			return nil, true
 		end
 	end,
-	post_process = function(self)
-		Cryptid.M_jokers["j_cry_M"] = true
-		if get_m_retriggers then
-			local vc = self.calculate
-			self.calculate = function(self, card, context)
-				local ret, trig = vc(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card then
-					local reps = get_m_retriggers(self, card, context)
-					if reps > 0 then
-						return {
-							message = localize("k_again_ex"),
-							repetitions = reps + (safe_get(ret, "repetitions") or 0),
-							card = card,
-						}
-					end
-				end
-				return ret, trig
-			end
-		end
-	end,
+	pools = { ["M"] = true },
 	cry_credits = {
 		idea = {
 			"Jevonn",
@@ -997,6 +959,7 @@ local oldcandy = {
 			"set_cry_epic",
 		},
 	},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.max(1, math.floor(center.ability.extra.hand_size)) } }
 	end,
@@ -1156,6 +1119,7 @@ local caramel = {
 	gameset_config = {
        		modest = {extra = { x_mult = 1.5 , rounds_remaining = 6 }},
  	},
+	pools = {["Food"] = true},
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasepic",

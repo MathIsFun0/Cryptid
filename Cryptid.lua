@@ -173,6 +173,7 @@ for set, objs in pairs(Cryptid.object_buffer) do
 		if objs[i].post_process and type(objs[i].post_process) == "function" then
 			objs[i]:post_process()
 		end
+		Cryptid.post_process(objs[i])
 		SMODS[set](objs[i])
 	end
 end

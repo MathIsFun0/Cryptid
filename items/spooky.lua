@@ -9,6 +9,7 @@ local cotton_candy = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
+    pools = {["Food"] = true},
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
 			for i = 1, #G.jokers.cards do
@@ -34,8 +35,9 @@ local wrapped = {
 	eternal_compat = false,
 	perishable_compat = false,
 	order = 131,
-	immune_to_chemach = true,
+	immutable = true,
 	config = {extra = {rounds = 2}},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { set = "Other", key = "food_jokers" }
 		return { vars = { center.ability.extra.rounds } }
@@ -959,6 +961,7 @@ local candy_cane = {
     order = 139,
     atlas = "atlasspooky",
     blueprint_compat = true,
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.rounds, center.ability.extra.dollars } }
 	end,
@@ -1032,6 +1035,7 @@ local candy_buttons = {
     cost = 10,
     atlas = "atlasspooky",
     blueprint_compat = true,
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.rerolls } }
 	end,
@@ -1085,6 +1089,7 @@ local jawbreaker = {
     order = 141,
     atlas = "atlasspooky",
     blueprint_compat = false,
+    pools = {["Food"] = true},
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not context.blueprint_card and not context.retrigger_joker then
 			for i = 1, #G.jokers.cards do
@@ -1148,6 +1153,7 @@ local mellowcreme = {
     order = 142,
     atlas = "atlasspooky",
 	config = {extra = {sell_mult = 4}},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.sell_mult } }
 	end,
@@ -1172,6 +1178,7 @@ local brittle = {
     atlas = "atlasspooky",
     order = 143,
 	config = {extra = {rounds = 9}},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold

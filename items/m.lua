@@ -176,6 +176,7 @@ local foodm = {
 	dependencies = {
 		items = {"set_cry_m"},
 	},
+    pools = {["Food"] = true},
 	order = 252,
 	cost = 5,
 	atlas = "atlasone",
@@ -373,7 +374,7 @@ local mneon = {
 			for i = 1, #G.jokers.cards do
 				if
 					G.jokers.cards[i]:is_jolly()
-					or G.jokers.cards[i].ability.effect == "M Joker"
+					or safe_get(G.jokers.cards[i], "pools", "M")
 				then
 					jollycount = jollycount + 1
 				end
@@ -1154,25 +1155,20 @@ local mprime = {
 		elseif context.end_of_round and not context.individual and not context.repetition
 		and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 	    	and not context.retrigger_joker then
-			local loyalservants = {}
-			for k, _ in pairs(Cryptid.M_jokers) do
-				if G.P_CENTERS[k] then
-					loyalservants[#loyalservants + 1] = k
-				end
-			end
 			local mjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + mjoker
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					if mjoker > 0 then
 						local card = create_card(
-							"Joker",
+							"M",
 							G.jokers,
 							nil,
 							nil,
 							nil,
 							nil,
-							pseudorandom_element(loyalservants, pseudoseed("mprime"))
+							nil,
+							"mprime"
 						)
 						card:add_to_deck()
 						G.jokers:emplace(card)
@@ -1187,7 +1183,7 @@ local mprime = {
 				context.other_joker
 				and (
 					context.other_joker:is_jolly()
-					or context.other_joker.ability.effect == "M Joker"
+					or safe_get(context.other_joker, "pools", "M")
 				)
 			then
 				if not Talisman.config_file.disable_anims then
@@ -1253,7 +1249,7 @@ local macabre = {
 							and not (
 								v.ability.eternal
 								or v.getting_sliced
-								or Cryptid.M_jokers[v.config.center.key]
+								or safe_get(v, "pools", "M")
 							)
 						then
 							destroyed_jokers[#destroyed_jokers + 1] = v
@@ -1422,6 +1418,12 @@ local longboi = {
 		}
 	},
 }
+local m_object_type = {
+	object_type = "ObjectType",
+    key = "M",
+    default = "j_cry_m",
+	cards = {},
+}
 local ret_items = {
 	bubblem,
 	foodm,
@@ -1440,6 +1442,7 @@ local ret_items = {
 	smallestm,
 	biggestm,
 	mprime,
+	m_object_type,
 }
 --retriggering system for M Vouchers
 function get_m_retriggers(self, card, context)
@@ -1467,26 +1470,13 @@ end
 return {
 	name = "M Jokers",
 	init = function()
-		for i = 1, #ret_items do
-			Cryptid.M_jokers["j_cry_" .. ret_items[i].key] = true
-			local vc = ret_items[i].calculate
-			ret_items[i].calculate = function(self, card, context)
-				local ret, trig = vc(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card then
-					local reps = get_m_retriggers(self, card, context)
-					if reps > 0 then
-						return {
-							message = localize("k_again_ex"),
-							repetitions = reps + (ret and ret.repetitions or 0),
-							card = card,
-						}
-					end
+		for _, item in pairs(ret_items) do
+			if item.object_type == "Joker" and item.key ~= "mprime" then
+				if not item.pools then
+					item.pools = {}
 				end
-				return ret, trig
+				item.pools["M"] = true
 			end
-		end
-		if cry_card_enabled("j_cry_mprime") == true then
-			Cryptid.M_jokers.j_cry_mprime = nil
 		end
 	end,
 	items = ret_items,

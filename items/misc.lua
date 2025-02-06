@@ -17,9 +17,6 @@ local meme_object_type = {
         self:inject_card(G.P_CENTERS.j_obelisk)
         self:inject_card(G.P_CENTERS.j_jolly)
         self:inject_card(G.P_CENTERS.j_space)
-		for i, v in ipairs(Cryptid.memepack) do
-			self.cards[v] = true
-		end
     end
 }
 local meme1 = {

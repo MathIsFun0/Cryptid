@@ -877,10 +877,16 @@ SMODS.GameObject.enable = function(self)
 	end
 end
 
+-- Note: For custom pools, these only support Center.pools, not ObjectType.cards
+-- That could cause issues with mod compat in the future
+-- Potential improvement: automatic pool detection from gamesets?
 SMODS.Center._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+		for k, v in pairs(self.pools or {}) do
+			SMODS.ObjectTypes[k]:delete_card(self)
+		end
 		G.P_CENTERS[self.key] = nil
 	end
 end
@@ -889,6 +895,9 @@ SMODS.Center.enable = function(self)
 		self.cry_disabled = nil
 		SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
 		G.P_CENTERS[self.key] = self
+		for k, v in pairs(self.pools or {}) do
+			SMODS.ObjectTypes[k]:inject_card(self)
+		end
 	end
 end
 SMODS.Joker.enable = function(self)
