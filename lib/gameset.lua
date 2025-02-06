@@ -1284,17 +1284,30 @@ function create_generic_card(center)
 	if center.set == "Edition" then
 		card:set_edition(center.key, true, true)
 	end
+	if center.config.cry_antimatter then
+		card:set_edition("e_negative", true, true)
+		return card
+	end
+	if center.config.cry_force_edition then
+		card:set_edition({[center.config.cry_force_edition] = true}, true, true)
+	end
 	if center.set == "Seal" then
 		card:set_seal(center.key, true, true)
 		card.config.center = cry_deep_copy(card.config.center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
 	end
+	if center.config.cry_force_seal then
+		card:set_seal(center.config.cry_force_seal, true, true)
+	end
 	if center.set == "Sticker" then
 		center:apply(card, true)
 		card.config.center = cry_deep_copy(card.config.center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
+	end
+	if center.config.cry_force_sticker then
+		SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
 	end
 	return card
 end
@@ -1360,7 +1373,24 @@ function create_UIBox_your_collection_decks()
 				table.insert(generic_collection_pool, v)
 			end
 		end
-		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 })
+		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 },
+		{
+			modify_card = function(card, center, i, j)
+				if center.config.cry_antimatter then
+					card:set_edition("e_negative", true, true)
+					return card
+				end
+				if center.config.cry_force_edition then
+					card:set_edition({[center.config.cry_force_edition] = true}, true, true)
+				end
+				if center.config.cry_force_seal then
+					card:set_seal(center.config.cry_force_seal, true, true)
+				end
+				if center.config.cry_force_sticker then
+					SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
+				end
+			end
+		})
 	else
 		return uibk()
 	end
