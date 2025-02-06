@@ -1,6 +1,13 @@
 -- ascended.lua - Used for Ascended Hands
 
-G.FUNCS.cry_asc_UI_set = function(e) end
+G.FUNCS.cry_asc_UI_set = function(e) 
+	if G.GAME.cry_exploit_override then
+		e.config.object.colours = {darken(G.C.SECONDARY_SET.Code, 0.2)}
+	else
+		e.config.object.colours = {G.C.GOLD}
+	end
+	e.config.object:update_text()
+end
 -- this is a hook to make funny "x of a kind"/"flush x" display text
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
@@ -101,6 +108,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
 	}
+	
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
 	if hand_table[text] and cry_card_enabled("set_cry_poker_hand_stuff") == true then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
@@ -109,6 +117,12 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	else
 		G.GAME.current_round.current_hand.cry_asc_num = 0
 	end
+	
+	G.GAME.current_round.current_hand.cry_asc_num = math.max(0, G.GAME.current_round.current_hand.cry_asc_num)
+	if G.GAME.cry_exploit_override then
+		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + 1
+	end
+	
 	G.GAME.current_round.current_hand.cry_asc_num_text = (
 		G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0
 	)
