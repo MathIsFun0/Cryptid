@@ -2873,9 +2873,9 @@ return {
             c_cry_white_hole = {
                 name = "White Hole",
                 text = {
-                    "{C:attention}Remove{} all hand levels,",
-                    "upgrade {C:legendary,E:1}most played{}",
+                    "Upgrade {C:legendary,E:1}most played{}",
                     "poker hand by {C:attention}4{}",
+		    "{C:attention}Remove{} all other hand levels",
                 },
             },
 	    c_cry_white_hole2 = {

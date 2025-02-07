@@ -723,8 +723,8 @@ local sacrifice = {
 						end,
 					}))
 				end
-				if card.ability.extra.jollies < 1 then card.ability.extra.jollies == 1 end
-				if card.ability.extra.unc < 1 then card.ability.extra.unc == 1 end
+				if card.ability.extra.jollies < 1 then card.ability.extra.jollies = 1 end
+				if card.ability.extra.unc < 1 then card.ability.extra.unc = 1 end
 				for i = 1, math.min(30, card.ability.extra.jollies) do
 					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
 					jolly:add_to_deck()
@@ -1239,7 +1239,7 @@ local macabre = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint or context.retrigger_joker) and not card.getting_sliced then
-			if card.ability.extra.add < 1 then card.ability.extra.add == 1 end
+			if card.ability.extra.add < 1 then card.ability.extra.add = 1 end
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local triggered = false
