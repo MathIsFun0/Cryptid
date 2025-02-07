@@ -3077,7 +3077,7 @@ return {
                 name = "Nhãn Sơ Đồ",
                 text = {
                     "Shop có một Joker",
-                    "{C:attention}Động não",
+                    "{C:attention}Động Não",
                 },
             },
             tag_cry_scope = {
