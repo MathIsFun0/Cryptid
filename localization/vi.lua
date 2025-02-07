@@ -1,5 +1,3 @@
---I couldn't get Meme Packs to work without crashing
---yes somehow that was harder than RNJoker
 return {
     descriptions = {
         Back = {
