@@ -119,7 +119,7 @@ return {
                 text = {
                     "Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla {C:eternal}Vĩnh Hằng",
                     "Sau mỗi {C:attention}Ante{}, tạo ra",
-                    "{C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền rủa",
+                    "{C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền Rủa",
                 }
             },
             b_cry_very_fair = {
@@ -343,7 +343,7 @@ return {
                 name = "://CLASS",
                 text = {
                     "Biến đổi {C:cry_code}#1#{} lá bài đã chọn",
-                    "thành phép cường hoá{C:cry_code}mong muốn{}",
+                    "thành phép cường hoá {C:cry_code}mong muốn{}",
                 },
             },
             c_cry_commit = {
@@ -610,7 +610,7 @@ return {
                 name = "Dạ Quang",
                 text = {
                     "Khi chơi với {C:attention}#4#{} {C:inactive}(#3#){}",
-                    "lá bài tính điểm khác, nhận {X:mult,C:white}X#1#{} Nhân và",
+                    "lá bài tính điểm khác, thêm {X:mult,C:white}X#1#{} Nhân và",
                     "tăng yêu cầu thêm {C:attention}5{}",
                     "{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân)"
                 },
@@ -1219,7 +1219,7 @@ return {
 	    j_cry_formidiulosus = {
 		    name = "Formidiulosus",
 		    text = {
-		    	"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền rủa{}, phá hủy nó",
+		    	"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền Rủa{}, phá hủy nó",
 			"Tạo {C:attention}#1#{} {C:cry_candy}Kẹo {C:dark_edition}Âm bản{} vào cuối Shop",
 			"Thêm {X:dark_edition,C:white}^#2#{} Nhân cho mỗi {C:cry_candy}Kẹo{} đang sở hữu",
 			"{C:inactive}(Hiện tại lạ {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
@@ -2398,8 +2398,8 @@ return {
             c_cry_planetlua = {
                 name = "Planet.lua",
                 text = {
-                    "Xác suất {C:green}#1# trên #2#{} để",
-                    "nâng level mọi",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "để nâng level mọi",
                     "{C:legendary,E:1}tay bài poker{}",
                     "lên {C:attention}1{} cấp",
                 },
@@ -2548,7 +2548,7 @@ return {
                 text = {
                     "Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla {C:eternal}Vĩnh Hằng",
                     "Sau mỗi {C:attention}Ante{}, tạo ra",
-                    "{C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền rủa",
+                    "{C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền Rủa",
                 }
             },
             sleeve_cry_wormhole_sleeve = {
@@ -2608,7 +2608,7 @@ return {
                 text = {
                     "Tạo một {C:attention}Joker{}",
                     "{C:cry_exotic,E:1}Ngoại Lai{} ngẫu nhiên,",
-                    "phá huỷ các lá Joker khác",
+                    "phá huỷ mọi Joker khác",
                 },
             },
             c_cry_hammerspace = {
@@ -2633,7 +2633,7 @@ return {
                 text = {
                     "Tạo một lá bài",
                     "theo {C:cry_code}mong muốn",
-                    "{C:inactive,s:0.8}(#1# ngoại trừ Joker Ngoại Lai)",
+                    "{C:inactive,s:0.8}(#1#ngoại trừ Joker Ngoại Lai)",
                 },
             },
             c_cry_replica = {
@@ -3127,8 +3127,8 @@ return {
             c_cry_theblessing = {
                 name = "Phước lành",
                 text = {
-                    "Tạo {C:attention}1{}",
-                    "{C:attention}lá tiêu thụ{} ngẫu nhiên",
+                    "Tạo {C:attention}1 lá{}",
+                    "{C:attention}tiêu thụ{} ngẫu nhiên",
                     "{C:inactive}(Phải có ô trống){}",
                 },
             },
@@ -3147,7 +3147,7 @@ return {
                     "Đặt Ante về {C:attention}#1#{}",
                 },
 		unlock = {
-                    'Đạ Ante {C:attention}36'
+                    'Đạt Ante {C:attention}36'
                 },
             },
             v_cry_blankcanvas = {
@@ -3171,7 +3171,7 @@ return {
             v_cry_command_prompt = {
                 name = "Cửa Sổ Lệnh",
                 text = {
-                    "Các lá {C:cry_code}Code{}",
+                    "Lá {C:cry_code}Code{}",
                     "có thể xuất hiện",
                     "trong {C:attention}shop{}",
                 },
@@ -3222,7 +3222,7 @@ return {
                 text = {
                     "{C:attention}Pha Trộn{} có thể suất hiện",
                     "trong shop hoặc",
-                    "các Gói Thần Bí",
+                    "các {C:tarot}Gói Thần Bí",
                 },
             },
             v_cry_double_vision = {
@@ -3233,7 +3233,7 @@ return {
                 },
             },
             v_cry_fabric = {
-                name = "Vải Đã Năng",
+                name = "Vải Đa Năng",
                 text = {
                     "{C:dark_edition}+#1#{} ô Joker",
                 },
@@ -3272,7 +3272,7 @@ return {
                 text = {
                     "{C:attention}+#1#{} ô lá bài,",
                     "{C:attention}+#1#{} ô gói bài,",
-                    "and {C:attention}+#1#{} ô phiếu,",
+                    "và {C:attention}+#1#{} ô phiếu,",
                     "có sẵn trong shop",
                 },
 		unlock = {
@@ -3307,8 +3307,8 @@ return {
             v_cry_pairing = {
                 name = "Theo Đôi",
                 text = {
-                    "{C:attention}Tái kích hoạt{} mọi lá Joker M{} nếu",
-                    "tay bài đã chơi là {C:attention}Đôi",
+                    "{C:attention}Tái kích hoạt{} mọi lá Joker M{}",
+                    "nếu tay bài đã chơi là {C:attention}Đôi",
                 },
             },
             v_cry_quantum_computing = {
@@ -3429,7 +3429,7 @@ return {
                 name = "Tuyệt Đối",
                 text = {
                     "Không thể bán",
-                    "hoặc phá hủy",
+                    "hoặc bị phá hủy",
                     "{C:attention}Không thể ruồng bỏ{}",
                 },
             },
@@ -3997,7 +3997,7 @@ return {
             k_cry_epic = "Sử Thi",
             k_cry_exotic = "Ngoại Lai",
             k_cry_candy = "Kẹo",
-            k_cry_cursed  = "Bị Nguyền Rủa",
+            k_cry_cursed  = "Nguyền Rủa",
             k_planet_disc = "Đĩa Cận Sao",
             k_planet_satellite = "Vệ Tinh Tự Nhiên",
             k_planet_universe = "Đệch Mịa Cả Cái Vũ Trụ",
@@ -4036,7 +4036,7 @@ return {
             k_cry_epic = "Sử Thi",
             k_cry_exotic = "Ngoại Lai",
             k_cry_candy = "Kẹo",
-            k_cry_cursed  = "Bị Nguyền Rủa",
+            k_cry_cursed  = "Nguyền Rủa",
         },
         rnj_loc_txts = {
             stats = {
