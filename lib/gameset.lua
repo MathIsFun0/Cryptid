@@ -1153,8 +1153,8 @@ SMODS.ContentSet({
 })
 SMODS.ContentSet({
 	key = "poker_hand_stuff",
-	atlas = "atlasvoucher",
-	pos = { x = 1, y = 2 }, --Tag Printer
+	atlas = "atlasthree",
+	pos = { x = 7, y = 1 }, --The Fuck!? (Clusterfuck's XMult Joker)
 })
 
 -- these are mostly copy/paste from vanilla code

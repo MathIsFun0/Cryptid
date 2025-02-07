@@ -1731,9 +1731,7 @@ local fleshpanopticon = {
 	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		if false then -- This is TEMPORARILY disabled because Exotics aren't enabled yet
-			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
-		end
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
@@ -1829,7 +1827,8 @@ local fleshpanopticon = {
 		},
 	},
 }
--- Note: This one was NOT refactored yet!
+-- Spectrogram
+-- Retrigger rightmost Joker once for every Echo Card played and scored
 local spectrogram = {
 	object_type = "Joker",
 	name = "cry-Spectrogram",
@@ -1840,6 +1839,12 @@ local spectrogram = {
 	cost = 9,
 	order = 133,
 	atlas = "atlasepic",
+	dependencies = {
+		items = {
+			"set_cry_epic",
+			"m_cry_echo"
+		},
+	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
 		return { vars = {} }
