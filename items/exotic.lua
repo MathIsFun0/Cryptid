@@ -160,7 +160,6 @@ local exponentia = {
 			context.joker_main
 			and (to_big(card.ability.extra.Emult) > to_big(1))
 		then
-			print(tprint(context))
 			return {
 				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 				Emult_mod = card.ability.extra.Emult,
