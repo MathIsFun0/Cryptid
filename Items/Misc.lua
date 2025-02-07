@@ -242,7 +242,7 @@ AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
 			end,
 		}))
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-	elseif hand == G.handlist[#G.handlist] then
+	elseif Aurinko.VerboseMode then
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.2,
@@ -385,7 +385,7 @@ local randtext = {
 	"[",
 	"]",
 	"(",
-	")",
+	")"
 }
 
 local function obfuscatedtext(length)
@@ -451,7 +451,7 @@ AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-	elseif hand == G.handlist[#G.handlist] then
+	elseif Aurinko.VerboseMode then
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.2,
@@ -752,7 +752,7 @@ AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
 			{ mult = (amount > 0 and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
 		)
 		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-	elseif hand == G.handlist[#G.handlist] then
+	elseif Aurinko.VerboseMode then
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.2,

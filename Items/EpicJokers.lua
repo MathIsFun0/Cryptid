@@ -802,8 +802,10 @@ local circus = {
 			"Jevonn"
 		}
 	},
-	unlocked = false,
+	unlocked = true,
 	check_for_unlock = function(self, args)
+		--[[
+		Causes too many crashes. Need to reimplenemt this in a way that won't crash all the time
 		if G and G.jokers and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante < 9 then
 			local rarities = {
 
@@ -816,6 +818,7 @@ local circus = {
  				unlock_card(self)
 			end
 		end
+		]]--
 		if args.type == 'cry_lock_all' then
 			lock_card(self)
 		end
