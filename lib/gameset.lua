@@ -1293,11 +1293,11 @@ function create_generic_card(center)
 	if center.set == "Edition" then
 		card:set_edition(center.key, true, true)
 	end
-	if center.config.cry_antimatter then
+	if safe_get(center, "config", "cry_antimatter") then
 		card:set_edition("e_negative", true, true)
 		return card
 	end
-	if center.config.cry_force_edition then
+	if safe_get(center, "config", "cry_force_edition") then
 		card:set_edition({[center.config.cry_force_edition] = true}, true, true)
 	end
 	if center.set == "Seal" then
@@ -1306,7 +1306,7 @@ function create_generic_card(center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
 	end
-	if center.config.cry_force_seal then
+	if safe_get(center, "config", "cry_force_seal") then
 		card:set_seal(center.config.cry_force_seal, true, true)
 	end
 	if center.set == "Sticker" then
@@ -1315,7 +1315,7 @@ function create_generic_card(center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
 	end
-	if center.config.cry_force_sticker then
+	if safe_get(center, "config", "cry_force_sticker") then
 		SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
 	end
 	return card
@@ -1364,10 +1364,40 @@ end
 
 -- Make Cryptid show all collection boxes (kinda silly)
 local mct = modsCollectionTally
-function modsCollectionTally(...)
-	local t = mct(...)
+function modsCollectionTally(pool, set)
+	local t = mct(pool, set)
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		return { tally = 10 ^ 400, of = 10 ^ 400 }
+		local obj_tally = {tally = 0, of = 0}
+		--infer pool
+		local _set = set or safe_get(pool, 1, "set")
+		--general consumable UI breaks w/ this
+		if _set then
+			if _set == "Seal" then
+				pool = SMODS.Seal.obj_table
+				set = _set
+			elseif G.P_CENTER_POOLS[_set] then
+				pool = SMODS.Center.obj_table
+				set = _set
+			end
+		end
+		for _, v in pairs(pool) do
+			if v.mod and G.ACTIVE_MOD_UI.id == v.mod.id and not v.no_collection then
+				if set then
+					if v.set and v.set == set then
+						obj_tally.of = obj_tally.of+1
+						if cry_get_gameset(v) ~= "disabled" then 
+							obj_tally.tally = obj_tally.tally+1
+						end
+					end
+				else
+					obj_tally.of = obj_tally.of+1
+					if cry_get_gameset(v) ~= "disabled" then 
+						obj_tally.tally = obj_tally.tally+1
+					end
+				end
+			end
+		end
+		return obj_tally
 	end
 	return t
 end
