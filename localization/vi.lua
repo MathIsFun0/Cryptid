@@ -638,12 +638,12 @@ return {
                 text = {
                     "Joker này thêm {X:chips,C:white} X#1# {} Chip cho mỗi",
                     "lá {C:attention}7{} hoặc {C:attention}4{} đã chơi ghi điểm",
-                    "{C:inactive}(Hiện tại là {X:chips,C:white}X#2# {C:inactive}Chip)",
+                    "{C:inactive}(Hiện tại là {X:chips,C:white} X#2# {C:inactive} Chip)",
                 },
             },
             j_cry_apjoker = {
                 name = "Joker Xuyên Giáp",
-                text = { "{X:mult,C:white} X#1# {} Nhân khi đánh {C:attention)Boss Blind{}" },
+                text = { "{X:mult,C:white} X#1# {} Nhân khi đánh {C:attention}Boss Blind{}" },
             },
 	    j_cry_arsonist = {
                 name = "Kẻ Đốt Phá",
@@ -782,7 +782,7 @@ return {
                 text = {
                     "Bán lá bài này để tạo ra {C:attention}#1#{} {C:cry_candy}Kẹo",
                     "{C:attention}+#2#{} {C:cry_candy}Kẹo{} mỗi {C:attention}2{} Blind đã đánh bại",
-                    "{C:attention}+#3#{} {C:cry_candy}Kẹo{} mỗi {C:attention)Boss Blind{} đã đánh bại"
+                    "{C:attention}+#3#{} {C:cry_candy}Kẹo{} mỗi {C:attention}Boss Blind{} đã đánh bại"
                 }
             },
             j_cry_candy_buttons = {
@@ -856,7 +856,7 @@ return {
                 name = "Xúc Sắc Sôcôla",
                 text = {
                     "Gieo {C:green}Xúc Sắc 10{} khi",
-                    "{C:attention)Boss Blind{} bị đánh bại",
+                    "{C:attention}Boss Blind{} bị đánh bại",
                     "để bắt đầu {C:cry_ascendant,E:1}sự kiện",
                     "{C:inactive}(Hiện tại là: #1#)"
                 },
@@ -1355,7 +1355,7 @@ return {
             j_cry_jawbreaker = {
                 name = "Máy Nghiền",
                 text = {
-                    "Khi {C:attention)Boss Blind{} bị đánh bại,",
+                    "Khi {C:attention}Boss Blind{} bị đánh bại,",
                     "{C:attention}nhân đôi{} giá trị của các Joker liền kề",
                     "rồi {E:2,C:red}tự hủy{}",
                 }
@@ -1416,10 +1416,10 @@ return {
                 text = {
                     "Thêm {C:dark_edition}Đa sắc{} cho",
                     "một {C:attention}Joker{} ngẫu nhiên khi",
-                    "{C:attention)Boss Blind{} bị đánh bại",
+                    "{C:attention}Boss Blind{} bị đánh bại",
                 },
 		unlock = {
-                    "Đánh bại {C:attention)Boss Blind",
+                    "Đánh bại {C:attention}Boss Blind",
                     'với {C:attention}5 Lá Bài Ấn Bản{} hoặc',
                     '{C:attention}Joker Ấn Bản',
                     'trở lên'
@@ -1570,7 +1570,7 @@ return {
                 },
             },
             j_cry_membershipcardtwo = {
-                name = "Thẻ thành viên mục nát", --Could probably have a diff Name imo
+                name = "Thẻ Thành Viên Mục Nát", --Could probably have a diff Name imo
                 text = {
                     "{C:chips}+#1#{} Chip cho mỗi thành viên",
                     "ở trong {C:attention}Cryptid Discord{}",
@@ -1655,7 +1655,7 @@ return {
                 text = {
                     "Xác suất {C:green}#1# trên #2#{} cho mỗi",
                     "lá {C:attention}Nhân{} đã chơi để tạo",
-                    "một lá {C:spectral}Cryptid{} khi tính điểm",
+                    "một lá {C:spectral}Dị Chủng{} khi tính điểm",
                     "{C:inactive}(Phải có ô trống)",
                 },
             },
@@ -1670,7 +1670,7 @@ return {
             j_cry_negative = {
                 name = "Joker Âm Bản",
                 text = {
-                    "{C:dark_edition}+#1#{} ô {C:attention} Joker{}",
+                    "{C:dark_edition}+#1#{} ô {C:attention}Joker{}",
                 },
             },
             j_cry_nice = {
@@ -1946,7 +1946,7 @@ return {
                     "bán lá này để tạo một",
                     "{C:attention}Joker{} {C:cry_epic}Sử Thi{}",
                     "{C:inactive,s:0.8}Sẽ tạo một {C:attention,s:0.8}Joker{} {C:red,s:0.8}Hiếm{}",
-                    "{C:inactive,s:0.8}nếu như {C:inactive,s:0.8}Joker{} {C:cry_epic,s:0.8}Sử Thi{} bị tắt",
+                    "{C:inactive,s:0.8}nếu như Joker{} {C:cry_epic,s:0.8}Sử Thi{} {C:inactive,s:0.8}bị tắt",
                 },
             },
             j_cry_savvy = {
@@ -2025,8 +2025,8 @@ return {
             j_cry_fleshpanopticon = {
                 name = "Nhà Tù Thịt",
                 text = {
-                    "{C:red}X#1#{} điểm {C:attention)Boss Blind{}",
-                    "Khi {C:attention)Boss Blind{} bị đánh bại,",
+                    "{C:red}X#1#{} điểm {C:attention}Boss Blind{}",
+                    "Khi {C:attention}Boss Blind{} bị đánh bại,",
                     "{C:red}tự hủy{} và tạo ra",
                     "một lá {C:spectral}Cánh Cổng{} {C:dark_edition}Âm Bản{}",
                     "{C:inactive,s:0.8}\"Nhà tù này... đang giam giữ... tôi sao?\""
@@ -2044,7 +2044,7 @@ return {
 	    j_cry_spectrogram = {
                 name = "Ảnh Phổ",
                 text = {
-                    "{C:attention}Tái kích {} Joker ở tít bên phải",
+                    "{C:attention}Tái kích{} Joker ở tít bên phải",
                     "mỗt lần cho mỗi {C:attention}Lá Vang Vọng",
                     "được chơi và ghi điểm",
                 },
@@ -2152,7 +2152,7 @@ return {
             j_cry_tenebris = {
                 name = "U Ám",
                 text = {
-                    "{C:dark_edition}+#1#{} ô {C:attention} Joker{}",
+                    "{C:dark_edition}+#1#{} ô {C:attention}Joker{}",
                     "Nhận {C:money}$#2#{} ở cuối ván",
                 },
             },
@@ -2790,7 +2790,7 @@ return {
                 colour = "Hồng Ngọc",
                 text = {
                     "{C:attention}Big{} Blind có thể",
-                    "trở thành {C:attention)Boss{} Blind",
+                    "trở thành {C:attention}Boss{} Blind",
                 },
             },
             stake_cry_glass = {
@@ -2958,7 +2958,7 @@ return {
                 name = "Nhãn M Đôi",
                 text = {
                     "Shop có một",
-                    "{C:legendary}Joker M{C:dark_edition}Vui Nhộn{} ",
+                    "{C:legendary}Joker M {C:dark_edition}Vui Nhộn{} ",
                 },
             },
             tag_cry_empowered = {
@@ -4154,7 +4154,7 @@ return {
             ch_c_all_rnj = {"Mọi Joker đều là {C:attention}RNJoker{}"},
             ch_c_cry_sticker_sheet_plus = {"Tất cả lá b2i có thể mua đều có nhãn"},
             ch_c_cry_rush_hour = {"Mọi Boss Blind đều là {C:attention}The Clock{} hoặc {C:attention}Lavender Loop"},
-            ch_c_cry_rush_hour_ii = {"Mọi Blind đều là {C:attention)Boss Blind{}"},
+            ch_c_cry_rush_hour_ii = {"Mọi Blind đều là {C:attention}Boss Blind{}"},
             ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} và {C:attention}Lavender Loop{} tăng trưởng nhanh hơn {C:attention}gấp đôi{}"},
             ch_c_cry_no_tags = {"Khả năng  bở qua bị {C:attention}vô hiệu hóa{}"},
             ch_c_cry_no_vouchers = {"{C:attention}Phiếu{} không còn xuất hiện trong shop"},
