@@ -142,7 +142,7 @@ return {
                 name = "Bộ Bài Huyền Thoại",
                 text = {
                     "Bắt đầu với một Joker {C:legendary}Huyền Thoại",
-                    "Xác suất {C:green}1 trên 5{}tạo ra thêm một lá nữa",
+                    "Xác suất {C:green}1 trên 5{} tạo ra thêm một lá nữa",
 					"khi Boss Blind bị đánh bại {C:inactive}(Phải có ô trống)",
                 },
             },
@@ -930,7 +930,7 @@ return {
                 },
             },
             j_cry_copypaste = {
-                name = "Copy/Paste",
+                name = "SaoChép/Dán",
                 text = {
                     "Khi một lá {C:cry_code}Code{} được dùng,",
                     "Xác suất {C:green}#1# trên #2#{} tạo ra bản sao",
@@ -1216,7 +1216,7 @@ return {
 		    name = "Formidiulosus",
 		    text = {
 		    	"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền Rủa{}, phá hủy nó",
-			"Tạo ra {C:attention}#1#{} {C:cry_candy}Kẹo {C:dark_edition}Âm bản{} vào cuối Shop",
+			"Tạo ra {C:attention}#1#{} viên {C:cry_candy}Kẹo {C:dark_edition}Âm Bản{} vào cuối Shop",
 			"Thêm {X:dark_edition,C:white}^#2#{} Nhân cho mỗi viên {C:cry_candy}Kẹo{} đang sở hữu",
 			"{C:inactive}(Hiện tại lạ {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
 		    },
@@ -2173,7 +2173,7 @@ return {
                 name = "Cho Kẹo Hay Bị Ghẹo",
                 text = {
                     "Khi {C:attention}bán{}:",
-                    "Xác suất {C:green}#1# trên #2#{} để tạo ra {C:attention}2{} {C:cry_candy}Kẹo",
+                    "Xác suất {C:green}#1# trên #2#{} để tạo ra {C:attention}2{} viên {C:cry_candy}Kẹo",
                     "Nếu trật, tạo ra một Joker {X:cry_cursed,C:white}Nguyền Rủa{}",
                     "{C:inactive}(Có thể tràn ô Joker)"
                 }
