@@ -369,7 +369,7 @@ return {
                     "{C:cry_code}Banish{} any {C:cry_code}selected{}",
                     "shop item, it will no longer",
                     "appear normally this run",
-                    "{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive}/{C:cry_code}#2#{C:inactive} use#s2#)",
+                    "{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
                 },
             },
             c_cry_divide = {
@@ -382,11 +382,10 @@ return {
             c_cry_exploit = {
                 name = "://EXPLOIT",
                 text = {
-                    "Any played hand is considered",
-                    "to {C:cry_code}contain{} a {C:cry_code}chosen{} poker hand,",
-                    "resets at end of round",
-                    "{C:inactive,s:0.8}Secret hands must be",
-                    "{C:inactive,s:0.8}discovered to be valid",
+                    "{C:cry_code}Choose{} a {C:cry_code}currently visible{} poker hand,",
+                    "next hand is {C:cry_code}calculated{} as that hand,",
+                    "and gains {C:cry_code}one{} temp {C:cry_code}Ascension Power{}",
+                    "{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
                 },
             },
             c_cry_hook = {

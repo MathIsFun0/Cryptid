@@ -196,6 +196,12 @@ Cryptid.aliases = {}
 function cry_format(...)
 	return ...
 end
+
+-- These ones are deprecated, they do not do anything and are just here to prevent crashes
+Cryptid.memepack = {}
+Cryptid.food = {}
+Cryptid.M_jokers = {} 
+Cryptid.Megavouchers = {}
 '''
 match_indent = true
 

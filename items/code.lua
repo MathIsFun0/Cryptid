@@ -907,6 +907,10 @@ local delete = {
 		y = 2,
 	},
 	cost = 4,
+	config = { cry_multiuse = 3 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 			and card.area == G.consumeables
@@ -947,16 +951,47 @@ local delete = {
 		if c.config.center.rarity == "cry_exotic" then
 			check_for_unlock({ type = "what_have_you_done" })
 		end
-		G.GAME.banned_keys[c.config.center.key] = true
+		
+		G.GAME.cry_banished_keys[c.config.center.key] = true
+		
+		-- blanket ban all boosters of a specific type
+		if a == G.shop_booster then
+			local _center = c.config.center
+			for k, v in pairs(G.P_CENTER_POOLS.Booster) do
+				if _center.kind == v.kind 
+				and _center.config.extra == v.config.extra 
+				and _center.config.choose == v.config.choose then
+					G.GAME.cry_banished_keys[v.key] = true
+				end
+			end
+		end
+		
 		if _p then
 			for k, v in pairs(G.P_CARDS) do
-				if v.value == c.base.value and v.suit == c.base.suit then
+				-- blanket banning ranks here, probably more useful
+				if v.value == c.base.value then	-- and v.suit == c.base.suit
 					G.GAME.cry_banned_pcards[k] = true
 				end
 			end
 		end
 		c:start_dissolve()
 	end,
+	-- i was gonna use this function and all but... i don't like the way it does things
+	-- leaving it here so nobody screams at me
+	--[[
+	keep_on_use = function(self, card)
+		if card.ability.cry_multiuse <= 1 then
+			return false
+		else
+			card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+			delay(0.3)
+			card:juice_up()
+			play_sound('tarot1')
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = card.ability.cry_multiuse, colour = G.C.SECONDARY_SET.Code})
+			return true
+		end
+	end,
+	]]
 }
 local spaghetti = {
 	dependencies = {
@@ -1127,7 +1162,10 @@ local exploit = {
 	},
 	cost = 4,
 	order = 28,
-	config = { extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
+	config = { cry_multiuse = 2, extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
+	loc_vars = function(self, info_queue, card)
+		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+	end,
 	can_use = function(self, card)
 		return true
 	end,
@@ -4747,6 +4785,9 @@ return {
 			end
 			return ret, trig
 		end
+		
+		-- exploit: mess with poker hand evaluation
+		
 		local evaluate_poker_hand_ref = evaluate_poker_hand
 		function evaluate_poker_hand(hand)
 			local results = evaluate_poker_hand_ref(hand)
@@ -4762,6 +4803,16 @@ return {
 			end
 			return results
 		end
+		local htuis = G.FUNCS.hand_text_UI_set
+		G.FUNCS.hand_text_UI_set = function(e)
+			htuis(e)
+			if G.GAME.cry_exploit_override then
+				e.config.object.colours = {G.C.SECONDARY_SET.Code}
+			else
+				e.config.object.colours = {G.C.UI.TEXT_LIGHT}
+			end
+			e.config.object:update_text()
+		end
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G.jokers then
@@ -4773,6 +4824,21 @@ return {
 				end
 			end
 			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
+		end
+
+		-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
+		-- very inefficient
+		-- maybe smods should overwrite the function and make it more targetable?
+		
+		local getpackref = get_pack
+		function get_pack(_key, _type)
+			local temp_banned = copy_table(G.GAME.banned_keys)
+			for k, v in pairs(G.GAME.cry_banished_keys) do
+				G.GAME.banned_keys[k] = v
+			end
+			local ret = getpackref(_key, _type)
+			G.GAME.banned_keys = copy_table(temp_banned)
+			return ret
 		end
 	end,
 	items = code_cards,
