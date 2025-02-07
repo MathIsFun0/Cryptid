@@ -4,327 +4,329 @@ return {
     descriptions = {
         Back = {
             b_cry_antimatter = {
-                name = "Bộ bài Phản vật chất",
+                name = "Bộ Bài Phản Vật Chất",
                 text = {
-                    "Sở hữu {C:legendary,E:1}ưu điểm{}",
-                    "của {C:attention}mọi{} bộ bài",
+                    "Áp dụng {C:legendary,E:1}ưu năng{}",
+                    "của {C:attention}mọi{} bộ bài khác",
                 },
             },
 	    b_cry_beige = {
-                name = "Bộ bài màu Be",
+                name = "Bộ Bài Be",
                 text = {
-                    "Các Joker {C:attention}Thường{} có",
-                    "giá trị {C:attention}tăng gấp bốn lần{}",
+                    "Joker {C:attention}Thường{} có",
+                    "giá trị {C:attention}X4 lần{}",
                 },
             },
             b_cry_beta = {
-                name = "Bộ bài Cổ đại",
+                name = "Bộ Bài Hoài Niệm",
                 text = {
-                    "Các ô chứa của",
-                    "Lá {C:attention}Joker{} và {C:attention}Vật phẩm{} được {C:attention}Gộp lại",
-                    "Những khoản tiền cược mang hiệu ứng {C:attention}cổ đại{} sẽ thay đổi",
-                    "những khoản tiền cược đã được cập nhật trước đó"
+                    "Gộp ô {C:attention}Joker{} và ô",
+                    "{C:attention}Tiêu Thụ{} lại thành một",
+                    "{C:attention}Nostalgic{} Blind thay thế",
+                    "Boss Blind tương ứng của chúng",
+                    "{s:0.8}Nostalgic = Hoài Niệm"
                 },
             },
             b_cry_blank = {
-                name = "Bộ bài Trắng",
+                name = "Bộ Bài Trống",
                 text = {
-                    "{C:inactive,E:1}Làm cái vẹo gì nhỉ?",
+                    "{C:inactive,E:1}Vô dụng?",
                 },
             },
 			b_cry_bountiful = {
-				name = "Bộ bài Phong phú",
+				name = "Bộ Bài Phong phú",
 				text = {
-                    "Sau khi {C:blue}Chơi{} hoặc {C:red}Bỏ{},",
-                    "luôn rút {C:attention}5{} lá bài"
+                    "Sau khi {C:blue}Chơi{} hoặc {C:red}Bỏ Bài{},",
+                    "luôn bốc {C:attention}5{} lá"
 				},
 			},
             b_cry_CCD = {
-                name = "Bộ bài CCD",
+                name = "Bộ Bài CCD",
                 text = {
                     "Mỗi lá bài đều là",
-                    "một vật phẩm tiêu thụ {C:attention}ngẫu nhiên{}",
+                    "một lá tiêu thụ",
+                    "{C:attention}ngẫu nhiên{}"
                 },
             },
             b_cry_conveyor = {
-                name = "Bộ bài Băng chuyền",
+                name = "Bộ Bài Băng Chuyền",
                 text = {
-                    "Các lá Joker {C:attention}không thể{} di chuyển",
-                    "Tại đầu mỗi vòng đấu,",
-                    "{C:attention}nhân đôi{} lá Joker phía bên phải xa nhất",
-                    "và {C:attention}phá hủy{} Lá Joker phía bên trái xa nhất",
+                    "{C:attention}Không thể{} di chuyển các lá Joker",
+                    "Vào mỗi đầu ván,",
+                    "{C:attention}nhân đôi{} Joker ở tít bên phải",
+                    "và {C:attention}phá hủy{} Joker ở tít bên trái",
                 },
             },
             b_cry_critical = {
-                name = "Bộ bài Chí mạng",
+                name = "Bộ Bài Chí Mạng",
                 text = {
-                    "Sau mọi tay bài đã chơi,",
-                    "{C:green}#1# trên 4{} khả năng cho {X:dark_edition,C:white} ^2 {} Điểm nhân",
-                    "{C:green}#1# trên 8{} khả năng cho {X:dark_edition,C:white} ^0.5 {} điểm nhân",
+                    "Sau mỗi tay bài đã chơi,",
+                    "Xác suất {C:green}#1# trên 4{} cho {X:dark_edition,C:white} ^2 {} Nhân",
+                    "Xác suất {C:green}#1# trên 8{} cho {X:dark_edition,C:white} ^0.5 {} Nhân",
                 },
             },
             b_cry_encoded = {
-                name = "Bộ bài Mã hóa",
+                name = "Bộ Bài Mã Hóa",
                 text = {
-                    "Bắt đầu với một lá {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
-                    "và một {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
-                    "Chỉ có các {C:cry_code}bài Code{} xuất hiện trong shop",
+                    "Bắt đầu với {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+                    "và {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+                    "Chỉ có {C:cry_code}Lá Code{} xuất hiện trong shop",
                 },
             },
             b_cry_equilibrium = {
-                name = "Bộ bài Bình đẳng",
+                name = "Bộ Bài Cân Bằng",
                 text = {
                     "Mọi lá bài đều có",
-                    "{C:attention}cùng tỉ lệ{}",
+                    "{C:attention}cùng xác suất{}",
                     "xuất hiện trong shop,",
                     "bắt đầu với",
-                    "{C:attention,T:v_overstock_plus}Hàng tồn kho bổ sung <Overstock Plus>",
+                    "{C:attention,T:v_overstock_plus}Siêu Quá Trữ",
                 },
             },
             b_cry_glowing = {
-                name = "Bộ bài Dạ quang",
+                name = "Bộ Bài Dạ Quang",
                 text = {
-                    "Nhân các giá trị của",
-                    "mọi lá Joker lên {X:dark_edition,C:white} X1.25 {}",
-                    "khi)Trùm cược tiền tiền cược bị đánh bại",
+                    "Nhân giá trị của",
+                    "mọi Joker lên {X:dark_edition,C:white} X1.25 {}",
+                    "khi Boss Blind bị đánh bại",
                     "{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
                 },
             },
             b_cry_infinite = {
-                name = "Bộ bài Vô cực",
+                name = "Bộ Bài Vô Cực",
                 text = {
                     "Bạn có thể chọn {C:attention}bất kỳ",
-                    "số lượng bài có trên tay",
-                    "{C:attention}+1{} kích thước tay bài",
+                    "số lượng lá bài nào",
+                    "{C:attention}+1{} lá giữ trên tay",
                 },
             },
             b_cry_misprint = {
-                name = "Bộ bài Lỗi in ấn",
+                name = "Bộ Bài Lỗi In",
                 text = {
-                    "Tất cả giá trị lá bài",
-                    "đồng thời cả các lá Joker",
-                    "đều {C:attention}ngẫu nhiên",
+                    "{C:attention}Ngẫu nhiên hoá{} giá trị",
+                    "của mọi lá bài và tay poker",
                 },
             },
             b_cry_redeemed = {
-                name = "Bộ bài thưởng",
+                name = "Bộ Bài Quy Đổi",
                 text = {
-                    "Khi một {C:attention}Voucher{} được mua,",
-                    "sẽ nhận được {C:attention}các cấp độ bổ sung{} của nó",
+                    "Khi mua một {C:attention}Phiếu{},",
+                    "nhận ngay {C:attention}các cấp bổ sung{} của nó",
                 },
             },
             b_cry_spooky = {
-                name = "Bộ bài Ma quái",
+                name = "Bộ Bài Ma Quái",
                 text = {
-                    "Bắt đầu với một {C:attention,T:j_cry_chocolate_dice}Xúc sắc socola {C:eternal}Vĩnh cửu",
-                    "Sau mỗi {C:attention}Ante{}, tạo một",
+                    "Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla {C:eternal}Vĩnh Hằng",
+                    "Sau mỗi {C:attention}Ante{}, tạo ra",
                     "{C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền rủa",
                 }
             },
             b_cry_very_fair = {
-                name = "Bộ bài rất công tâm",
+                name = "Bộ Bài Siêu Công Bằng",
                 text = {
-                    "{C:blue}-2{} tay bài, {C:red}-2{} bỏ bài",
-                    "mỗi vòng",
-                    "Các {C:attention}Voucher{} không còn",
+                    "{C:blue}-2{} tay bài, {C:red}-2{} lượt bỏ bài",
+                    "mỗi ván",
+                    "{C:attention}Phiếu{} không còn",
                     "xuất hiện trong shop",
                 },
             },
             b_cry_wormhole = {
-                name = "Bộ bài Lỗ giun",
+                name = "Bộ Bài Lỗ Giun",
                 text = {
-                    "Bắt đầu với một Joker {C:cry_exotic}Kì lạ{C:attention}",
-                    "Các lá Joker sẽ thêm {C:attention}20X",
-                    "khả năng trở thành {C:dark_edition}Âm bản",
+                    "Bắt đầu với một {C:attention}Joker {C:cry_exotic}Ngoại Lai",
+                    "Tăng xác suất xuất hiện Joker",
+                    "{C:dark_edition}Âm bản lên {C:attention}20 lần",
                     "{C:attention}-2{} ô Joker",
                 },
             },
             b_cry_legendary = {
-                name = "Bộ bài Huyền thoại",
+                name = "Bộ Bài Huyền Thoại",
                 text = {
-                    "Bắt đầu với lá bài Joker {C:legendary}Huyền thoại{C:legendary}",
-                    "{C:green}1 trên 5{} khả năng tạo một lá khác",
-					"khi)Trùm cược tiền cược bị hạ gục {C:inactive}(phải có chỗ trống){}",
+                    "Bắt đầu với một Joker {C:legendary}Huyền Thoại",
+                    "Xác suất {C:green}1 trên 5{}tạo thêm một lá nữa",
+					"khi Boss Blind bị đánh bại {C:inactive}(Phải có ô trống)",
                 },
             },
         },
         Blind = {
             bl_cry_box = {
-                name = "Hình Hộp",
+                name = "The Box",
                 text = {
-                    "Mọi lá Joker thường",
-                    "đều bị debuff",
+                    "Mọi Joker thường",
+                    "bị vô hiệu hoá",
                 },
             },
             bl_cry_clock = {
-                name = "Đồng hồ",
+                name = "The Clock",
                 text = {
-                    "+0.1X tiền tiền cược yêu cầu mỗi",
-                    "3 giây trong ante này",
+                    "+0.1X điểm yêu cầu mỗi 3 giây",
+                    "đã trôi trong ante này",
                 },
             },
             bl_cry_hammer = {
-                name = "Cái búa",
+                name = "The Hammer",
                 text = {
-                    "Mọi lá bài hạng kì quặc",
-                    "đều sẽ bị debuff",
+                    "Mọi lá bậc lẻ",
+                    "bị vô hiệu hoá",
                 },
             },
             bl_cry_joke = {
-                name = "Trò đùa",
+                name = "The Joke",
                 text = {
-                    "Nếu điểm >2X yêu cầu,",
-                    "thiết lập ante về #2#",
+                    "Nếu ghi điểm lớn hơn",
+                    "X2 yêu cầu, đặt ante thành #2#",
                 },
             },
             bl_cry_magic = {
-                name = "Phép thuật",
+                name = "The Magic",
                 text = {
-                    "Mọi lá bài các hạng",
-                    "đều bị debuff",
+                    "Mọi lá bậc chẵn",
+                    "bị vô hiệu hoá",
                 },
             },
             bl_cry_lavender_loop = {
-                name = "Vòng oải hương",
+                name = "Lavender Loop",
                 text = {
-                    "1.25X tiền tiền cược yêu cầu mỗi",
-                    "1.5 giây trôi qua trong vòng này",
+                    "1.25X điểm yêu cầu mỗi 1.5 giây",
+                    "đã trôi trong ván này",
                 },
             },
             bl_cry_obsidian_orb = {
-                name = "Hòn hắc ám",
+                name = "Obsidian Orb",
                 text = {
-                    "Áp dụng mọi cơ chế",
-                    "của mọi con trùm bị đánh bại",
+                    "Áp dụng khả năng của mọi",
+                    "Boss Blind bị đánh bại",
                 },
             },
             bl_cry_oldarm = {
-                name = "Tay cổ đại",
+                name = "Nostalgic Arm",
                 text = {
-                    "Phải chơi 4",
-                    "hoặc ít hơn lá bài",
+                    "Phải chơi 4 lá bài",
+                    "hoặc ít hơn",
                 },
             },
             bl_cry_oldfish = {
-                name = "Cá cổ đại",
+                name = "Nostalgic Fish",
                 text = {
-                    "Tất cả tay bài bắt đầu",
-                    "với một điểm nhân",
+                    "Tất cả tay bài",
+                    "bắt đầu với 1 Nhân",
                 },
             },
             bl_cry_oldflint = {
-                name = "Đá lửa cổ đại",
+                name = "Nostalgic Flint",
                 text = {
-                    "Không dùng Thùng",
+                    "Không chơi Thùng",
                 },
             },
             bl_cry_oldhouse = {
-                name = "Nhà cổ đại",
+                name = "Nostalgic House",
                 text = {
-                    "Không dùng Cù lũ",
+                    "Không chơi Cù Lũ",
                 },
             },
             bl_cry_oldmanacle = {
-                name = "Còng tay cổ đại",
+                name = "Nostalgic Manacle",
                 text = {
-                    "Điểm nhân sẽ bị chia bởi số lần bỏ bài",
+                    "Chia hệ số Nhân bởi",
+                    "số lượt bỏ bài",
                 },
             },
             bl_cry_oldmark = {
-                name = "Dấu cổ đại",
+                name = "Nostalgic Mark",
                 text = {
-                    "Không tay bài nào được",
-                    "chứa một cặp",
+                    "Không chơi tay bài",
+                    "chứa Đôi",
                 },
             },
             bl_cry_oldox = {
-                name = "Trâu cổ đại",
+                name = "Nostalgic Ox",
                 text = {
-                    "Mọi tay bài bắt đầu",
-                    "với 0 chip",
+                    "Tất cả tay bài",
+                    "bắt đầu với 0 Chip",
                 },
             },
             bl_cry_oldpillar = {
-                name = "Trụ cột cổ đại",
+                name = "Nostalgic Pillar",
                 text = {
-                    "Không chứa sảnh",
+                    "Không chơi Sảnh",
                 },
             },
             bl_cry_oldserpent = {
-                name = "Rắn cổ đại",
+                name = "Nostalgic Serpent",
                 text = {
-                    "Chia điểm nhân cho mỗi",
-                    "tay Poker đã chơi",
+                    "Chia hệ số Nhân bởi level",
+                    "của tay Poker đã chơi",
                 },
             },
             bl_cry_pin = {
-                name = "Cái Ghim",
+                name = "The Pin",
                 text = {
-                    "Các lá Joker có độ hiếm từ Epic trở lên",
-                    "đều sẽ bị debuff",
+                    "Joker từ Sử Thi trở lên",
+                    "bị vô hiệu hoá",
                 },
             },
             bl_cry_pinkbow = {
-                name = "Cung Hồng",
+                name = "Pink Bow",
                 text = {
-                    "Làm ngẫu nhiên các hạng trong các lá bài",
-                    "đang cầm khi chơi",
+                    "Ngẫu nhiên hoá bậc của các lá bài",
+                    "đang giữ trong tay khi chơi",
                 },
             },
             bl_cry_sapphire_stamp = {
-                name = "Ấn Ngọc bích",
+                name = "Sapphire Stamp",
                 text = {
-                    "Chọn thêm một lá bài, bỏ chọn",
-                    "lá bài ngẫu nhiên trước khi tính điểm",
+                    "Chọn thêm một lá, bỏ chọn",
+                    "1 lá ngẫu nhiên trước khi tính điểm",
                 },
             },
             bl_cry_shackle = {
-                name = "Xích tay",
+                name = "The Shackle",
                 text = {
-                    "Mọi lá bài Joker âm bản",
-                    "đều bị debuff",
+                    "Mọi Joker Âm Bản",
+                    "bị vô hiệu hoá",
                 },
             },
             bl_cry_striker = {
-                name = "Tướng Quân",
+                name = "The Striker",
                 text = {
-                    "Mọi lá Joker Quý",
-                    "đều bị debuff",
+                    "Mọi Joker Hiếm",
+                    "bị vô hiệu hoá",
                 },
             },
             bl_cry_tax = {
-                name = "Đánh Thuế",
+                name = "The Tax",
                 text = {
                     "Điểm số mỗi tay bài",
                     "bị giới hạn ở mức #1#",
                 },
             },
             bl_cry_tornado = {
-                name = "Lốc Ngọc lam",
+                name = "Turquoise Tornado",
                 text = {
-                    "#1# trên #2# khả năng cho",
-                    "các tay bài đã chơi sẽ không tính điểm",
+                    "Xác suất #1# trên #2#",
+                    "tay bài đã chơi không tính điểm",
                 },
             },
             bl_cry_trick = {
-                name = "Mẹo vặt",
+                name = "The Trick",
                 text = {
-                    "Mọi lá đều lật xuống",
-                    "Chỉ lật lên khi cầm trên tay",
+                    "Lật úp các lá bài ngửa giữ trong tay",
+                    "sau mỗi tay bài đã chơi",
                 },
             },
             bl_cry_vermillion_virus = {
-                name = "Vi rút Châu sa",
+                name = "Vermillion Virus",
                 text = {
-                    "Một lá Joker ngẫu nhiên",
+                    "Một Joker ngẫu nhiên",
                     "bị thay thế sau mỗi tay bài",
                 },
             },
             bl_cry_windmill = {
-                name = "Cối xoay gió",
+                name = "The Windmill",
                 text = {
-                    "Mọi lá joker hiếm",
-                    "sẽ bị debuff",
+                    "Mọi Joker Ít Phổ Biến",
+                    "bị vô hiệu hoá",
                 },
             },
         },
@@ -332,77 +334,77 @@ return {
             c_cry_alttab = {
                 name = "://ALTTAB",
                 text = {
-                    "Tạo một thẻ bỏ qua",
-                    "cho tiền cược {C:cry_code}hiện tại",
+                    "Tạo ra nhãn của",
+                    "Blind {C:cry_code}hiện tại",
                     "{C:inactive}(Hiện tại: {C:cry_code}#1#{C:inactive})",
                 },
             },
             c_cry_class = {
                 name = "://CLASS",
                 text = {
-                    "Chuyển đổi {C:cry_code}#1#{} lá bài được chọn",
-                    "một {C:cry_code}lựa chọn{} cường hóa",
+                    "Biến đổi {C:cry_code}#1#{} lá bài đã chọn",
+                    "thành phép cường hoá{C:cry_code}mong muốn{}",
                 },
             },
             c_cry_commit = {
                 name = "://COMMIT",
                 text = {
-                    "Phá hủy một lá Joker {C:cry_code}được chọn{},",
-                    "để tạo thành một lá Joker {C:cry_code}mới{}",
-                    "với {C:cry_code}độ hiếm như nhau",
+                    "Phá hủy Joker {C:cry_code}đã chọn{},",
+                    "tạo một Joker {C:cry_code}mới{}",
+                    "với {C:cry_code}cùng độ hiếm",
                 },
             },
             c_cry_crash = {
                 name = "://CRASH",
                 text = {
-                    "{C:cry_code,E:1}Đừng có đú.",
+                    "{C:cry_code,E:1}Đừng nghịch dại.",
                 },
             },
             c_cry_ctrl_v = {
                 name = "://CTRL+V",
                 text = {
-                    "Tạo một {C:cry_code}bản sao{} cho lá bài được chọn",
-                    "tay bài chơi hoặc vật phẩm"
+                    "Tạo một {C:cry_code}bản sao{} của lá bài thường",
+                    "hoặc lá tiêu thụ đã chọn"
                 },
             },
             c_cry_delete = {
                 name = "://DELETE",
                 text = {
                     "{C:cry_code}Vĩnh viễn{} loại bỏ một",
-                    "vật phẩm trong shop {C:cry_code}được lựa chọn",
+                    "vật phẩm trong shop {C:cry_code}đã chọn",
                     "{C:inactive,s:0.8}Các con hàng sẽ không còn xuất hiện trong trận này",
                 },
             },
             c_cry_divide = {
                 name = "://DIVIDE",
                 text = {
-                    "{C:cry_code}Chia nửa{} mọi giá trị",
-                    "trong cửa hàng hiện tại",
+                    "{C:cry_code}Chia đôi{} giá tiền mua đang",
+                    "hiển thị trong shop hiện tại",
                 },
             },
             c_cry_exploit = {
                 name = "://EXPLOIT",
                 text = {
                     "Mọi tay bài đã chơi đều được coi là",
-                    "{C:cry_code}chứa{} một tay bài {C:cry_code}được chọn{},",
-                    "sẽ đặt lại sau khi hết một hàng",
-                    "{C:inactive,s:0.8}Các tay bài bí mật cần phải",
-                    "{C:inactive,s:0.8}khám phá để trở nên có giá trị",
+                    "{C:cry_code}chứa{} một tay poker {C:cry_code}đã chọn{},",
+                    "đặt lại sau khi hết ván",
+                    "{C:inactive,s:0.8}Các tay poker bí mật cần được",
+                    "{C:inactive,s:0.8}khám phá để dùng hợp lệ",
                 },
             },
             c_cry_hook = {
                 name = "HOOK://",
                 text = {
-                    "Chọn hai lá Joker để {C:cry_code}Kết nối",
-                    "{C:inactive,s:0.8}Chỉ hoạt động khi các lá bài kết nối giống nhau về bối cảnh,",
-                    "{C:inactive,s:0.8}ví như là Joker và The Duo <bộ đôi> (cả hai sau khi ghi bàn)",
+                    "Chọn hai Joker để {C:cry_code}Kết nối",
+                    "{C:inactive,s:0.8}Chỉ hoạt động khi các Joker kết nối giống nhau về bối cảnh,",
+                    "{C:inactive,s:0.8}ví dụ như Joker và Chuẩn Nhị (kích sau khi tính điểm)",
                 },
             },
             c_cry_inst = {
                 name = "://INSTANTIATE",
                 text = {
-                    "Đánh một lá bài với {C:cry_code}hạng{} lá bài được chọn",
-                    "và một lá bài với {C:cry_code}chất{} lá bài được chọn",
+                    "Bốc một lá cùng {C:cry_code}bậc{} và một",
+                    "lá cùng {C:cry_code}chất{} với lá bài được chọn",
                     "{C:inactive}(nếu có thể){}",
                 },
             },
@@ -414,180 +416,179 @@ return {
             },
             c_cry_malware = {
                 name = "://MALWARE",
-                text = { "Thêm gây {C:dark_edition}Nhiễu loạn{} cho tất cả", "các lá bài {C:cry_code}cầm trên tay" },
+                text = { "Thêm {C:dark_edition}Nhiễu Loạn{} cho mọi", "lá bài {C:cry_code}giữ trong tay" },
             },
             c_cry_merge = {
                 name = "://MERGE",
                 text = {
-                    "Hợp nhất {C:cry_code}vật phẩm{} đã chọn",
-                    "với một {C:cry_code}lá bài chơi{} đã chọn",
+                    "Hợp nhất {C:cry_code}lá tiêu thụ{} đã chọn",
+                    "với {C:cry_code}lá bài thường{} đã chọn",
                 },
             },
             c_cry_multiply = {
                 name = "://MULTIPLY",
                 text = {
                     "{C:cry_code}Nhân đôi{} mọi giá trị của",
-                    "một lá {C:cry_code}Joker{} đã chọn cho tới khi",
-                    "hết một vòng đấu",
+                    "{C:cry_code}Joker{} đã chọn cho đến",
+                    "khi hết ván",
                 },
             },
 	    c_cry_patch = {
 		name = "://PATCH",
 		text = {
-			"Loại bỏ mọi debuff và sticker",
-			"cho mọi lá bài đã được nhìn thấy",
+			"Loại bỏ phép vô hiệu và nhãn khỏi",
+			"mọi lá bài có thể nhìn thấy",
 	    	},
 	    },
             c_cry_payload = {
                 name = "://PAYLOAD",
                 text = {
-                    "Cho tới tiền cược kế tiếp",
-                    "Mang lại {C:cry_code}X#1#{} lợi tức",
+                    "Blind kế tiếp",
+                    "cho {C:cry_code}X#1#{} lãi",
                 },
             },
             c_cry_oboe = {
                 name = "://OFFBYONE",
                 text = {
-                    "{C:cry_code}Gói tăng cường{} kế nghiệm có",
-                    "{C:cry_code}#1#{} thêm lá bài và",
-                    "{C:cry_code}#1#{} lựa chọn",
-                    "{C:inactive}(Hiện tại {C:cry_code}+#2#{C:inactive})",
+                    "{C:cry_code}Gói Bài{} kế tiếp có",
+                    "thêm {C:cry_code}#1#{} lá bài và",
+                    "thêm {C:cry_code}#1#{} lựa chọn",
+                    "{C:inactive}(Hiện tại là {C:cry_code}+#2#{C:inactive})",
                 },
             },
             c_cry_reboot = {
                 name = "://REBOOT",
                 text = {
-                    "Bổ sung {C:blue}Tay bài{} và {C:red}Lượt bỏ{},",
-                    "{C:cry_code}mọi{} lá bài được quay lại bộ bài",
-                    "và đánh một tay bài {C:cry_code}mới{}",
+                    "Làm mới {C:blue}Tay Bài{} và {C:red}Lượt Bỏ Bài{},",
+                    "trả {C:cry_code}mọi{} lá bài về bộ bài",
+                    "và bốc một đợt bài {C:cry_code}mới{}",
                 },
             },
             c_cry_revert = {
                 name = "://REVERT",
                 text = {
-                    "Thiết lập {C:cry_code}trạng thái game{} thành",
-                    "bắt đầu từ {C:cry_code}Ante này{}",
+                    "Đặt {C:cry_code}trạng thái game{} về",
+                    "khởi đầu của {C:cry_code}Ante này{}",
                 },
             },
             c_cry_rework = {
                 name = "://REWORK",
                 text = {
-                    "Phá hủy một lá Joker {C:cry_code}được chọn,",
-                    "tạo ra một {C:cry_code}Nhãn tái làm việc{} với",
-                    "một phiên bản đã được {C:cry_code}nâng cấp{}",
+                    "Phá hủy Joker {C:cry_code}được chọn,",
+                    "tạo ra một {C:cry_code}Nhãn Chế Mới{}",
+                    "với phiên bản đã {C:cry_code}nâng cấp{}",
                     "{C:inactive,s:0.8}Nâng cấp bằng cách sử dụng thứ tự trong bộ sưu tập.",
                 },
             },
             c_cry_run = {
                 name = "://RUN",
                 text = {
-                    "Ghé thăm một {C:cry_code}cửa hàng",
-                    "xuyên suốt {C:cry_code}tiền cược",
+                    "Ghé thăm {C:cry_code}shop",
+                    "khi đang đánh {C:cry_code}Blind",
                 },
             },
             c_cry_seed = {
                 name = "://SEED",
                 text = {
-                    "Chọn một lá Joker",
-                    "hoặc một lá đang chơi",
-                    "để trở thành {C:cry_code}Gian lận",
+                    "Chọn một Joker hoặc",
+                    "một lá bài thường",
+                    "để áp nhãn {C:cry_code}Gian Lận",
                 },
             },
             c_cry_semicolon = {
                 name = ";//",
-                text = { "Kết thúc lượt {C:cry_code}tiền cược{} no)Trùm cược hiện tại", "{C:cry_code}không cần{} tốn phí qua" },
+                text = { "Kết thúc {C:cry_code}Blind{} không-phải-Boss hiện tại", "{C:cry_code}mà không{} nhận tiền" },
             },
             c_cry_spaghetti = {
                 name = "://SPAGHETTI",
                 text = {
-                    "Tạo một lá Joker đồ ăn",
-                    "{C:cry_code}Nhiễu loạn",
+                    "Tạo ra một Joker Thực Phẩm",
+                    "{C:cry_code}Nhiễu Loạn",
                 },
             },
             c_cry_variable = {
                 name = "://VARIABLE",
                 text = {
-                    "Chuyển đổi {C:cry_code}#1#{} lá bài được chọn",
-                    "thành một hạng {C:cry_code}mong muốn",
+                    "Biến đổi {C:cry_code}#1#{} lá bài đã chọn",
+                    "thành bậc {C:cry_code}mong muốn",
                 },
             },
         },
         Edition = {
             e_cry_astral = {
-                name = "tinh tú",
+                name = "Thiên Tú",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Điểm nhân",
+                    "{X:dark_edition,C:white}^#1#{} Nhân",
                 },
             },
             e_cry_blur = {
-                name = "Mờ ảo",
+                name = "Mờ Ảo",
                 text = {
-                    "{C:attention}Tái kích hoạt",
-                    "lá bài này thêm {C:attention}1{} lần",
-                    "{C:green}#1# trên #2#{} khả năng",
-                    "tái kích hoạt tiếp tới lần",
-                    "thứ {C:attention}#3#{}",
+                    "{C:attention}Tái kích{} lá bài này",
+                    "thêm {C:attention}1{} lần",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "tái kích thêm {C:attention}#3#{} lần nữa",
                 },
             },
             e_cry_double_sided = {
-                name = "Hai mặt",
+                name = "Hai Mặt",
                 text = {
                     "Lá bài này có thể",
                     "{C:attention}lật ngược{} để trở thành",
                     "một lá bài khác",
                     "{C:inactive}(Bên trống có thể kết hợp",
-					"{C:inactive}với lá bài khác)",
+					"{C:inactive}với một lá bài khác)",
                 },
             },
             e_cry_glass = {
-                name = "Dễ vỡ",
-                label = "Dễ vỡ",
+                name = "Mỏng Manh",
+                label = "Mỏng Manh",
                 text = {
-                    "{C:white,X:mult} X#3# {} Điểm nhân",
-                    "{C:green}#1# trên #2#{} thay đổi nó",
-                    "lá bài không thể bị {C:red}phá hủy",
-                    "khi tái kích hoạt",
+                    "{C:white,X:mult} X#3# {} Nhân",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "lá bài không bị {C:red}phá hủy",
+                    "khi kích hoạt",
                 },
             },
             e_cry_glitched = {
-                name = "Nhiễu loạn",
+                name = "Nhiễu Loạn",
                 text = {
                     "Mọi giá trị của lá bài này",
-                    "đều {C:dark_edition}ngẫu nhiên{}",
-                    "trong khoảng {C:attention}X0.1{} và {C:attention}X10{}",
+                    "là {C:dark_edition}ngẫu nhiên{}",
+                    "trong khoảng từ {C:attention}X0.1{} đến {C:attention}X10{}",
                     "{C:inactive}(Nếu có thể){}",
                 },
             },
             e_cry_gold = {
-                name = "Mạ vàng",
-                label = "Mạ vàng",
+                name = "Mạ Vàng",
+                label = "Mạ Vàng",
                 text = {
-                    "Nhận {C:money}$#1#{} khi sử dụng",
-                    "hoặc được kích hoạt",
+                    "Nhận {C:money}$#1#{} khi dùng",
+                    "hoặc kích hoạt",
                 },
             },
             e_cry_m = {
-                name = "Vui vẻ",
+                name = "Vui Nhộn",
                 text = {
-                    "{C:mult}+#1#{} Điểm nhân",
+                    "{C:mult}+#1#{} Nhân",
                     "Lá bài này trông có vẻ",
-                    "khá là {C:attention}Vui vẻ{}",
+                    "khá là {C:attention}Vui Nhộn{}",
                 },
             },
             e_cry_mosaic = {
-                name = "Khảm mảnh",
+                name = "Khảm Mảnh",
                 text = {
                     "{X:chips,C:white} X#1# {} Chip",
                 },
             },
             e_cry_noisy = {
-                name = "Ồn ào",
+                name = "Ồn Ào",
                 text = {
                     "???",
                 },
             },
             e_cry_oversat = {
-                name = "Quá bão hòa",
+                name = "Siêu Bão Hòa",
                 text = {
                     "Mọi giá trị",
                     "của lá bài này",
@@ -598,233 +599,231 @@ return {
         },
         Enhanced = {
             m_cry_echo = {
-                name = "Vang vọng",
+                name = "Vang Vọng",
                 text = {
-                    "{C:green}#2# trên #3#{} khả năng để",
-                    "{C:attention}tái kích hoạt{} #1# lần nữa",
+                    "Xác suất {C:green}#2# trên #3#{} để",
+                    "{C:attention}tái kích{} #1# lần",
                     "khi tính điểm",
                 },
             },
 	        m_cry_light = {
-                name = "Dạ quang",
+                name = "Dạ Quang",
                 text = {
                     "Khi chơi với {C:attention}#4#{} {C:inactive}(#3#){}",
-                    "lá bài khác được tính điểm, nhận {X:mult,C:white}X#1#{} Điểm nhân và",
-                    "tăng cường yêu cầu lên {C:attention}5{}",
-                    "{C:inactive}(Hiện tại {X:mult,C:white}X#2#{C:inactive} Điểm nhân)"
+                    "lá bài tính điểm khác, nhận {X:mult,C:white}X#1#{} Nhân và",
+                    "tăng yêu cầu thêm {C:attention}5{}",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân)"
                 },
             },
         },
         Joker = {
             j_cry_adroit = {
-                name = "Joker khéo léo",
+                name = "Joker Khéo Léo",
                 text = {
-                    "{C:chips}+#1#{} Chip nếu được chơi",
-                    "khi tay chứa",
-                    "{C:attention}#2# lá bài"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_altgoogol = {
-                name = "Thẻ bài Googol Play cổ đại",
+                name = "Thẻ Googol Play Hoài Niệm",
                 text = {
-                    "Bán lá bài này đi để tạo",
-                    "{C:attention}#1#{} bản sao cho lá {C:attention}Joker{} trái xa nhất",
-                    "{C:inactive,s:0.8}Không thể tạo bản sao cho Thẻ bài Googol Play cổ đại{}",
+                    "Bán lá này để tạo",
+                    "{C:attention}#1#{} bản sao của lá {C:attention}Joker{} ở tít bên trái",
+                    "{C:inactive,s:0.8}Không sao chép Thẻ Googol Play Hoài Niệm{}",
                 },
             },
             j_cry_antennastoheaven = {
                 name = "...Like Antennas to Heaven",
                 text = {
-                    "Lá Joker này sẽ tạo",
-                    "{X:chips,C:white} X#1# {} Chip cho mỗi",
-                    "lần {C:attention}7{} hoặc {C:attention}4{} được chơi và ghi điểm",
-                    "{C:inactive}(Hiện tại {X:chips,C:white}X#2# {C:inactive}Chip)",
+                    "Joker này thêm {X:chips,C:white} X#1# {} Chip cho mỗi",
+                    "lá {C:attention}7{} hoặc {C:attention}4{} đã chơi ghi điểm",
+                    "{C:inactive}(Hiện tại là {X:chips,C:white}X#2# {C:inactive}Chip)",
                 },
             },
             j_cry_apjoker = {
-                name = "AP Joker",
-                text = { "{X:mult,C:white} X#1# {} Điểm nhân khi đối mặt {C:attention)Trùm cược{}" },
+                name = "Joker Xuyên Giáp",
+                text = { "{X:mult,C:white} X#1# {} Nhân khi đánh {C:attention)Boss Blind{}" },
             },
 	    j_cry_arsonist = {
-                name = "Kẻ đốt phá",
+                name = "Kẻ Đốt Phá",
                 text = {
-                    "Nếu chơi bài mà",
-                    "có {C:attention}Cù lũ{},",
-                    "{C:red}phá hủy{} toàn bộ các lá bài",
+                    "Nếu tay bài đã chơi",
+                    "chứa {C:attention}Cù lũ{},",
+                    "{C:red}phá hủy{} mọi lá bài",
                     "sau khi tính điểm",
                 }
             },
             j_cry_astral_bottle = {
-                name = "tinh tú đóng chai",
+                name = "Thiên Tú Đóng Chai",
                 text = {
-                    "Khi bán, nhận {C:dark_edition}tinh tú{}",
-                    "và {C:attention}Dễ hỏng{} cho",
-                    "một lá {C:attention}Joker{} bất kì",
+                    "Khi bán lá này, áp dụng",
+                    "{C:dark_edition}Thiên Tú{} và {C:attention}Ngắn Hạn{}",
+                    "cho một {C:attention}Joker{} ngẫu nhiên",
                 }
             },
             j_cry_big_cube = {
-                name = "Khối vuông lớn",
+                name = "Khối Vuông Lớn",
                 text = {
                     "{X:chips,C:white} X#1# {} Chip",
                 },
             },
             j_cry_biggestm = {
-                name = "Khổng lồ",
+                name = "Khổng Lồ",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân cho tới khi kết thúc",
-                    "vòng đấu nếu như {C:attention}tay bài Poker{}",
+                    "{X:mult,C:white} X#1# {} Nhân cho tới khi",
+                    "hết ván nếu {C:attention}tay Poker{}",
                     "là {C:attention}#2#{}",
-                    "{C:inactive}(Hiện tại {C:attention}#3#{}{C:inactive}){}",
-                    "{C:inactive,s:0.8}không hề béo, chỉ là xương to thôi",
+                    "{C:inactive}(Hiện tại là {C:attention}#3#{}{C:inactive}){}",
+                    "{C:inactive,s:0.8}không hề béo, chỉ là xương to thôi.",
                 },
             },
             j_cry_blacklist = {
-                name = "Sổ đen",
+                name = "Sổ Đen",
                 text = {
-                    "Nếu một {C:attention}#1#{} được giữ trong tay hoặc chơi,",
-                    "thiết lập số {C:chips}Chip{} và {C:mult}Điểm nhân{} về 0",
-                    "{C:red,E:2}Tự hủy{} nếu không có {C:attention}#1#{} trong bộ bài",
-                    "{C:inactive,s:0.8}Hạng bậc không thay đổi"
+                    "Nếu {C:attention}#1#{} được giữ trong tay hoặc được chơi,",
+                    "đặt {C:chips}Chip{} và {C:mult}Nhân{} về 0",
+                    "{C:red,E:2}Tự hủy{} nếu không còn {C:attention}#1#{} trong bộ bài",
+                    "{C:inactive,s:0.8}Bậc không thay đổi"
                 }
             },
             j_cry_blender = {
-                name = "Sinh tố",
+                name = "Blender",
                 text = {
-                    "Tạo một vật phẩm {C:attention}ngẫu nhiên{}",
-                    "khi mà một lá bài",
-                    "{C:cry_code}Code{} được sử dụng",
+                    "Tạo một lá tiêu thu {C:attention}ngẫu nhiên{}",
+                    "khi một {C:cry_code}Lá Code{} được sử dụng",
                     "{C:inactive}(Phải có ô trống){}",
                 },
             },
             j_cry_blurred = {
-                name = "Joker mờ ảo",
+                name = "Joker Mờ Ảo",
                 text = {
-                    "Thêm {C:blue}+#1#{} tay bài khi",
-                    "{C:attention}tiền cược{} được lựa chọn",
+                    "Nhận {C:blue}+#1#{} tay bài khi",
+                    "{C:attention}Blind{} được chọn",
                 },
             },
             j_cry_bonk = {
                 name = "Bonk",
                 text = {
-                    "Mỗi lá {C:attention}Joker{} cho {C:chips}+#1#{} Chip",
+                    "Mỗi {C:attention}Joker{} cho {C:chips}+#1#{} Chip",
                     "Tăng số lượng chip lên {C:chips}+#2#{} nếu",
-                    "{C:attention} tay bài Poker{} là {C:attention}#3#{}",
-                    "{C:inactive,s:0.8}Các Joker Vui vẻ{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip{}",
+                    "{C:attention} tay poker{} là {C:attention}#3#{}",
+                    "{C:inactive,s:0.8}Joker Vui Nhộn cho{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip{}",
                 },
             },
             j_cry_bonkers = {
-                name = "Bonkers Joker",
+                name = "Joker Đập Đá",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân nếu như",
-                    "tay bài đã chơi có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_bonusjoker = {
-                name = "Bonus Joker",
+                name = "Joker Thưởng",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng cho mỗi ",
-                    "Lá bài{C:attention}Bonus{} được chơi để cải thiện",
-                    "ô chứa lá {C:attention}Joker{} hoặc {C:attention}vật phẩm",
+                    "Xác suất {C:green}#1# trên #2#{} cho mỗi",
+                    "lá {C:attention}Thưởng{} đã chơi để tăng",
+                    "số ô {C:attention}Joker{} hoặc {C:attention}tiêu thụ",
                     "lên {C:dark_edition}#3#{} khi tính điểm",
-                    "{C:red}Dùng được hai lần cho mỗi vòng chơi",
-                    "{C:inactive,s:0.8}(Cơ hội bình đẳng cho mỗi lượt){}",
+                    "{C:red}Dùng được hai lần mỗi ván",
+                    "{C:inactive,s:0.8}(Cơ hội bình đẳng cho mỗi loại){}",
                 },
             },
             j_cry_booster = {
-                name = "Joker Tăng cường",
+                name = "Joker Gói Bài",
                 text = {
-                    "{C:attention}+#1#{} thêm một gói tăng cường",
+                    "{C:attention}+#1#{} ô gói bài",
                     "có trong shop",
                 },
             },
             j_cry_boredom = {
-                name = "Buồn bực",
+                name = "Buồn Chán",
                 text = {
-                    "{C:green}#1# trong #2#{} khả năng để",
-                    "{C:attention}tái kích hoạt{} cho mỗi lá {C:attention}Joker{}",
+                    "Xác suất {C:green}#1# trong #2#{} để",
+                    "{C:attention}tái kích{} mỗi lá {C:attention}Joker{}",
                     "hoặc {C:attention}lá bài đã chơi{}",
-                    "{C:inactive,s:0.8}Không có hiệu quả với các lá bài Buồn bực khác{}",
+                    "{C:inactive,s:0.8}Không tác dụng lên lá Buồn Chán khác{}",
                 },
 		unlock = {
-                    "AFK ở đầu menu",
-                    'khoảng',
+                    "AFK ở màn hình",
+                    'tiêu đề trong',
                     '{C:attention}10 phút'
                 },
             },
             j_cry_brittle = {
-                name = "Kẹo giòn",
+                name = "Kẹo Giòn",
                 text = {
-                    "Cho tới {C:attention}#1#{} tay bài tiếp theo,",
+                    "Trong {C:attention}#1#{} tay sắp tới,",
                     "thêm {C:attention}Đá{}, {C:attention}Vàng{}, hoặc {C:attention}Thép{} cho",
-                    "thẻ bài có ghi điểm bên phải xa nhất"
+                    "lá ghi điểm ở tít bên phải"
                 }
             },
             j_cry_bubblem = {
-                name = "Bong bóng M",
+                name = "Bong Bóng M",
                 text = {
-                    "Tạo một {C:attention}Joker Vui vẻ {C:dark_edition}Tráng bạc{}",
+                    "Tạo một {C:attention}Joker Vui Nhộn {C:dark_edition}Ánh Kim{}",
                     "Nếu tay bài đã chơi chứa",
-                    "một {C:attention}#1#{}",
-                    "sẽ {C:red,E:2}tự hủy{}",
+                    "{C:attention}#1#{}",
+                    "rồi {C:red,E:2}tự hủy{}",
                 },
             },
             j_cry_busdriver = {
-                name = "Tài xế xe bus",
+                name = "Tài Xế Xe Buýt",
                 text = {
-                    "{C:green}#1# trên #3#{} khả năng",
-                    "cho {C:mult}+#2#{} Điểm nhân",
-                    "{C:green}#4# trên #3#{} Khả năng",
-                    "cho {C:mult}-#2#{} Điểm nhân",
+                    "Xác suất {C:green}#1# trên #3#{}",
+                    "cho {C:mult}+#2#{} Nhân",
+                    "Xác suất {C:green}#4# trên #3#{}",
+                    "cho {C:mult}-#2#{} Nhân",
                 },
             },
             j_cry_candy_basket = {
-                name = "Giỏ kẹo",
+                name = "Giỏ Kẹo",
                 text = {
-                    "Bán lá bài này để được nhận {C:attention}#1#{} {C:cry_candy}Kẹo",
-                    "{C:attention}+#2#{} {C:cry_candy}Kẹo{} mỗi {C:attention}2{} tiền cược được đánh bại",
-                    "{C:attention}+#3#{} {C:cry_candy}Kẹo{} khi {C:attention)Trùm cược{} được đánh bại"
+                    "Bán lá bài này để tạo ra {C:attention}#1#{} {C:cry_candy}Kẹo",
+                    "{C:attention}+#2#{} {C:cry_candy}Kẹo{} mỗi {C:attention}2{} Blind đã đánh bại",
+                    "{C:attention}+#3#{} {C:cry_candy}Kẹo{} mỗi {C:attention)Boss Blind{} đã đánh bại"
                 }
             },
             j_cry_candy_buttons = {
-                name = "Kẹo nút",
+                name = "Kẹo Nút",
                 text = {
-                    "{C:attention}#1#{} tiếp theo được reroll",
-                    "tốn {C:money}$1{}",
+                    "{C:attention}#1#{} lượt Gieo lại",
+                    "tiếp theo tốn {C:money}$1{}",
                 }
             },
             j_cry_candy_cane = {
-                name = "Kẹo ngô",
+                name = "Kẹo Que",
                 text = {
-                    "Cho tới vòng {C:attention}#1#{} tiếp theo,",
-                    "các lá bài chơi sẽ cho {C:money}$#2#",
-                    "khi được {C:attention}tái kích hoạt"
+                    "Trong {C:attention}#1#{} ván sắp tới,",
+                    "các lá bài thường cho {C:money}$#2#",
+                    "khi được {C:attention}tái kích"
                 }
             },
             j_cry_candy_dagger = {
-                name = "Kẹo dao găm",
+                name = "Dao Găm Kẹo",
                 text = {
-                    "Khi {C:attention}tiền cược{} được lựa chọn,",
-                    "Tiêu diệt Joker bên phải",
-                    "để tạo một {C:cry_candy}Kẹo{}",
+                    "Khi {C:attention}Blind{} được chọn,",
+                    "phá huỷ Joker liền phải",
+                    "để tạo 1 {C:cry_candy}Kẹo{}",
                 }
             },
 	    j_cry_candy_sticks = {
-		name = "Kẹo que",
+		name = "Que Kẹo",
 		text = {
-			"Trùm cược kế tiếp sẽ không áp dụng hiệu ứng bất lợi",
-			"cho đến khi bạn đánh {C:attention}#1#{} tay bài",
+			"Hiệu ứng Boss Blind kế tiếp sẽ không áp dụng",
+			"cho đến khi bạn đã chơi {C:attention}#1#{} tay bài",
 	   	}
 	    },
             j_cry_canvas = {
-                name = "Vải thuồng",
+                name = "Tranh Sơn Dầu",
                 text = {
-                    "{C:attention}Tái kích hoạt{} mọi lá {C:attention}Joker{} về bên trái",
-                    "một lần cho {C:attention}tất cả{} các lá {C:attention}Joker{} khác độ hiếm {C:blue}Thường{}",
-                    "cho tới lá Joker phía bên phải",
+                    "{C:attention}Tái kích{} mọi {C:attention}Joker{} ở bên trái",
+                    "một lần cho {C:attention}mỗi{} {C:attention}Joker{} không-phải-{C:blue}Thường{}",
+                    "ở bên phải Joker này",
                 },
 		unlock = {
-                    "Tải kích hoạt một lá {C:attention}Joker",
+                    "Tải kích một {C:attention}Joker",
                     '{C:attention}114{} lần',
                     'trong một tay bài'
                 },
@@ -832,143 +831,143 @@ return {
             j_cry_caramel = {
                 name = "Caramel",
                 text = {
-                    "Mọi lá bài đã chơi cho",
-                    "{X:mult,C:white}X#1#{} Điểm nhân khi tính",
-                    "cho vòng {C:attention}#2#{} kế nghiệm",
+                    "Mỗi lá bài đã chơi ghi thêm",
+                    "{X:mult,C:white}X#1#{} Nhân khi tính điểm",
+                    "cho {C:attention}#2#{} ván sắp tới",
                 },
             },
             j_cry_chad = {
                 name = "Chad",
                 text = {
-                    "Tái kích hoạt lá Joker {C:attention}trái ngoài cùng{}",
+                    "Tái kích Joker {C:attention}tít bên trái{}",
                     "thêm {C:attention}#1#{} lần",
                 },
             },
             j_cry_chili_pepper = {
-                name = "Ớt cay",
+                name = "Ớt Cay",
                 text = {
-                    "Lá Joker này cho {X:mult,C:white} X#2# {} Điểm nhân",
-                    "vào kết thúc vòng đấu,",
-                    "{C:red,E:2}tự hủy{} sau {C:attention}#3#{} vòng đấu",
-                    "{C:inactive}(Hiện tại{} {X:mult,C:white} X#1# {} {C:inactive}Điểm nhân){}",
+                    "Lá Joker này thêm {X:mult,C:white} X#2# {} Nhân",
+                    "ở cuối ván,",
+                    "{C:red,E:2}tự hủy{} sau {C:attention}#3#{} ván",
+                    "{C:inactive}(Hiện tại là{} {X:mult,C:white} X#1# {} {C:inactive}Nhân){}",
                 },
             },
             j_cry_chocolate_dice = {
-                name = "Xúc sắc sô cô la",
+                name = "Xúc Sắc Sôcôla",
                 text = {
-                    "Reo một {C:green}d10{} khi",
-                    "{C:attention)Trùm cược{} bị đánh bại",
-                    "để bắt đầu {C:cry_ascendant,E:1}event",
-                    "{C:inactive}(Hiện tại: #1#)"
+                    "Gieo {C:green}Xúc Sắc 10{} khi",
+                    "{C:attention)Boss Blind{} bị đánh bại",
+                    "để bắt đầu {C:cry_ascendant,E:1}sự kiện",
+                    "{C:inactive}(Hiện tại là: #1#)"
                 },
             },
             j_cry_circulus_pistoris = {
-                name = "Vòng tròn của thợ làm bánh",
+                name = "Vòng Tròn Bánh \"Pi\"",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Chip và {X:dark_edition,C:white}^#1#{} Điểm nhân",
-                    "nếu {C:attention}chỉ có{} #2#",
-                    "tay bài còn lại",
+                    "{X:dark_edition,C:white}^#1#{} Chip và {X:dark_edition,C:white}^#1#{} Nhân",
+                    "nếu {C:attention}còn lại",
+                    "{C:attention}đúng{} #2# tay bài",
                 },
             },
             j_cry_circus = {
-                name = "Rạp xiếc",
+                name = "Rạp Xiếc",
                 text = {
-                    "Các lá Joker {C:red}Quý{} sẽ cho {X:mult,C:white} X#1# {} Điểm nhân",
-                    "Các lá Joker {C:cry_epic}Sử thi{} sẽ cho {X:mult,C:white} X#2# {} Điểm nhân",
-                    "Các lá Joker {C:legendary}Huyền thoại{} sẽ cho {X:mult,C:white} X#3# {} Điểm nhân",
-                    "Các lá Joker {C:cry_exotic}Kì lạ{} sẽ cho {X:mult,C:white} X#4# {} Điểm nhân",
+                    "Mỗi Joker {C:red}Hiếm{} cho {X:mult,C:white} X#1# {} Nhân",
+                    "Mỗi Joker {C:cry_epic}Sử Thi{} cho {X:mult,C:white} X#2# {} Nhân",
+                    "Mỗi Joker {C:legendary}Huyền Thoại{} cho {X:mult,C:white} X#3# {} Nhân",
+                    "Mỗi Joker {C:cry_exotic}Ngoại Lai{} cho {X:mult,C:white} X#4# {} Nhân",
                 },
 		unlock = {
-                    'Có được một Joker {C:red}Quý{},',
-                    '{C:cry_epic}Sử thi{} và {C:legendary}Huyền thoại{}',
-                    'trước khi đến {C:attention}Ante 9'
+                    'Sở hữu Joker {C:red}Hiếm{},',
+                    '{C:cry_epic}Sử Thi{} và {C:legendary}Huyền Thoại{}',
+                    'trước {C:attention}Ante 9'
                 }
             },
             j_cry_clash = {
-                name = "Cuộc xung đột",
+                name = "Chuẩn Xung Đột",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân nếu chơi",
+                    "{X:mult,C:white} X#1# {} Nhân nếu chơi",
                     "một tay bài có chứa",
                     "một {C:attention}#2#",
                 },
 		unlock = {
-                    "Chiến thắng một trận với",
-                    "tay bài cuối cùng trong tay có",
-                    "một {E:1,C:attention}Đôi tối thượng"
+                    "Thắng một trận với",
+                    "tay bài cuối cùng là",
+                    "một {E:1,C:attention}Đôi Tối Thượng"
                 },
             },
 	    j_cry_clicked_cookie = {
-                name = "Bánh quy nhấp chuột",
+                name = "Bánh Quy Nhấp Chuột",
                 text = {
                     "{C:chips}+#1#{} Chip",
-                    "{C:chips}-#2#{} Chip nếu như",
-                    "bạn {C:attention}nhấp chuột vào",
+                    "{C:chips}-#2#{} Chip khi",
+                    "bạn {C:attention}nhấp chuột",
                 },
             },
             j_cry_CodeJoker = {
                 name = "Code Joker",
                 text = {
-                    "Tạo một lá bài {C:cry_code}Lá bài Code{}",
-                    "{C:dark_edition}Âm bản{} khi",
-                    "{C:attention}tiền cược{} được chọn",
+                    "Tạo ra một {C:cry_code}Lá Code{}",
+                    "{C:dark_edition}Âm Bản{} khi",
+                    "{C:attention}Blind{} được chọn",
                 },
 		unlock = {
                     "Khám phá {C:attention}mọi",
-                    '{C:cry_code}lá bài code'
+                    '{C:cry_code}Lá code'
                 },
             },
             j_cry_coin = {
                 name = "Đồng Crypto",
                 text = {
-                    "Nhận đâu đó khoảng từ",
-                    "{C:money}$#1#{} và {C:money}$#2#{} cho",
-                    "mỗi lá Joker {C:attention}đã bán{}",
+                    "Nhận trong khoảng từ",
+                    "{C:money}$#1#{} đến {C:money}$#2#{} cho",
+                    "mỗi Joker {C:attention}đã bán{}",
                 },
             },
             j_cry_compound_interest = {
                 name = "Lãi Kép",
                 text = {
-                    "Thu về {C:money}#1#%{} tổng só tiền",
-                    "ở cuối mỗi vòng đấu,",
-                    "tăng lên {C:money}#2#%{} mỗi",
-                    "thanh toán kế tiếp",
+                    "Thu về {C:money}#1#%{} tổng số tiền",
+                    "ở cuối ván,",
+                    "tăng thêm {C:money}#2#%{} mỗi",
+                    "thanh toán liên tiếp",
                 },
             },
             j_cry_copypaste = {
-                name = "Copy/Paste",
+                name = "SaoChép/Dán",
                 text = {
-                    "Khi một lá bài {C:cry_code}Code{} được sử dụng,",
-                    "{C:green}#1# trên #2#{} khả năng sẽ tạo ra một bản sao",
-                    "vào hàng vật phẩm",
+                    "Khi một lá {C:cry_code}Code{} được dùng,",
+                    "Xác suất {C:green}#1# trên #2#{} tạo ra bản sao",
+                    "vào ô tiêu thụ",
                     "{C:inactive}(Phải có ô trống)",
                 },
             },
             j_cry_cotton_candy = {
-                name = "Kẹo bông gòn",
+                name = "Kẹo Bông Gòn",
                 text = {
-                    "Khi bán,",
-                    "lá {C:attention}Jokers{} liền kề trở thành {C:dark_edition}Âm bản{}"
+                    "Khi bán, các {C:attention}Joker{}",
+                    "liền kề trở thành {C:dark_edition}Âm Bản{}"
                 },
             },
             j_cry_crustulum = {
-                name = "Vỏ bọc",
+                name = "Vỏ Bánh",
                 text = {
-                    "Lá Joker này sẽ tạo {C:chips}+#2#{} Chip",
-                    "mỗi lần {C:attention}reroll{} trong cửa hàng",
-                    "{C:green}Mọi Reroll đều miễn phí{}",
-                    "{C:inactive}(Hiện tại {C:chips}+#1#{C:inactive} chip)",
+                    "Joker này thêm {C:chips}+#2#{} Chip",
+                    "mỗi lần {C:attention}gieo lại{} trong shop",
+                    "{C:green}Mọi lượt Gieo lại đều miễn phí{}",
+                    "{C:inactive}(Hiện tại là {C:chips}+#1#{C:inactive} Chip)",
                 },
             },
             j_cry_cryptidmoment = {
                 name = "Chuỗi M",
                 text = {
-                    "Bán lá bài này để",
-                    "nhận thêm {C:money}$#1# {C:attention}giá trị bán ra{}",
-                    "cho mọi lá {C:attention}Joker{}",
+                    "Bán lá này để thêm",
+                    "{C:money}$#1# {C:attention}giá bán{}",
+                    "cho mọi {C:attention}Joker{}",
                 },
             },
             j_cry_cube = {
-                name = "Hình khối",
+                name = "Khối Vuông",
                 text = {
                     "{C:chips}+#1#{} Chip",
                 },
@@ -977,147 +976,147 @@ return {
                 name = "Khóc",
                 text = {
                     "{C:edition,E:1}mày không thể{} {C:cry_ascendant,E:1}chạy...{}",
-                    "{C:edition,E:1}mày không thể{} {C:cry_ascendant,E:1}chốn...{}",
+                    "{C:edition,E:1}mày không thể{} {C:cry_ascendant,E:1}trốn...{}",
                     "{C:dark_edition,E:1}mày không thể thoát...{}",
                     "{C:inactive}(Phải có ô trống){}",
                 },
 		unlock = {
-                    "Có được một {C:attention}Đài tưởng niệm", 
-                    "{C:purple}Vĩnh Cửu"
+                    "Sở hữu {C:attention}Đài Tưởng Niệm", 
+                    "{C:purple}Vĩnh Hằng"
                 },
             },
             j_cry_cursor = {
-                name = "Con trỏ",
+                name = "Con Trỏ",
                 text = {
-                    "Lá Joker này sẽ {C:chips}+#2#{} Chip",
-                    "cho mỗi lá được {C:attention}bán{}",
-                    "{C:inactive}(Hiện tại {C:chips}+#1#{C:inactive} Chip)",
+                    "Joker này thêm {C:chips}+#2#{} Chip",
+                    "cho mỗi lá {C:attention}đã mua{}",
+                    "{C:inactive}(Hiện tại là {C:chips}+#1#{C:inactive} Chip)",
                 },
             },
             j_cry_cut = {
                 name = "Cắt",
                 text = {
-                    "Lá Joker này phá hủy",
-                    "một lá bài {C:cry_code}Code{} ngẫu nhiên",
-                    "và nhận lại {X:mult,C:white} X#1# {} Điểm nhân",
-                    "vào cuối {C:attention}cửa hàng{}",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Joker này phá hủy",
+                    "một lá {C:cry_code}Code{} ngẫu nhiên",
+                    "và thêm {X:mult,C:white} X#1# {} Nhân",
+                    "ở cuối {C:attention}shop{}",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_delirious = {
-                name = "Joker mê sảng",
+                name = "Joker Mê Sảng",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi đã chơi",
-                    "tay bày có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_digitalhallucinations = {
-                name = "Ảo giác kỹ thuật số",
+                name = "Ảo Giác Kỹ Thuật Số",
                 text = {
-                    "Khi một {C:attention}Gói tăng cường{} được mở,",
-                    "{C:green}#1# trên #2#{} khả năng sẽ tạo ra",
-                    "ngẫu nhiên một lá bài {C:dark_edition}Âm Bản{}",
+                    "Khi một {C:attention}Gói Bài{} được mở,",
+                    "Xác suất {C:green}#1# trên #2#{} tạo ra",
+                    "một lá {C:dark_edition}Âm Bản{} ngẫu nhiên",
                     "tương ứng với {C:attention}loại{} của nó",
                 },
             },
             j_cry_discreet = {
-                name = "Joker khép kín",
+                name = "Joker Khép Kín",
                 text = {
-                    "{C:chips}+#1#{} Chip khi chơi",
-                    "lá bài có chuắ",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_doodlem = {
-                name = "M nguệch ngoạc",
+                name = "M Nguệch Ngoạc",
                 text = {
-                    "Tạo ra #2# lá bài {C:attention}Vật phẩm tiêu thụ{} dạng {C:dark_edition}Âm bản{}",
-                    "Khi mà {C:attention}tiền cược{} được chọn",
-                    "Tạo ra #1# lá {C:attention}tiêu thụ{} nữa",
-                    "cho mỗi lá {C:attention}Joker Vui vẻ{}",
+                    "Tạo ra #2# lá {C:attention}Tiêu Thụ {C:dark_edition}Âm Bản{}",
+                    "Khi {C:attention}Blind{} được chọn",
+                    "Tạo thêm #1# lá {C:attention}Tiêu Thụ{}",
+                    "cho mỗi {C:attention}Joker Vui Nhộn{}",
                 },
             },
             ["j_cry_Double Scale"] = {	-- ?????????????
-                name = "Tăng trưởng gấp đôi",
+                name = "Tăng Trưởng Kép",
                 text = {
-                    "Các lá bài {C:attention}Joker{}",
-                    "có sự tăng trưởng theo cấp số cộng {C:attention}bậc hai",
-                    "{C:inactive,s:0.8}(ví dụ. +1, +3, +6, +10)",
-                    "{C:inactive,s:0.8}(phát triển bởi. +1, +2, +3)",
+                    "{C:attention}Joker{} tăng trưởng",
+                    "sẽ tăng trưởng theo hàm {C:attention}bậc hai",
+                    "{C:inactive,s:0.8}(VD: +1, +3, +6, +10)",
+                    "{C:inactive,s:0.8}(tăng bởi +1, +2, +3)",
                 },
             },
             j_cry_dropshot = {
-                name = "Cú bỏ nhỏ",
+                name = "Thả Đạn",
                 text = {
-                    "Lá bài Joker này sẽ tạo {X:mult,C:white} X#1# {} Điểm nhân cho",
-                    "mỗi lá bài được đánh,lá bài {V:1}#2#{} sẽ {C:attention}không tính điểm{},",
-                    "chất sẽ thay đổi theo mỗi màn chơi",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#3# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:mult,C:white} X#1# {} Nhân cho mỗi lá bài",
+                    "chất {V:1}#2#{} {C:attention}không tính điểm{} đã chơi,",
+                    "chất thay đổi sau mỗi ván",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#3# {C:inactive} Nhân)",
                 },
 		unlock = {
-                    "Chơi một {C:attention}Mẫu thầu{}",
+                    "Chơi {C:attention}Mậu Thầu{}",
                     'với {C:attention}4{} lá bài',
-                    '{C:attention}cùng chất'
+                    '{C:attention}đồng chất'
                 },
             },
             j_cry_dubious = {
-                name = "Joker đáng nghi",
+                name = "Joker Mơ Hồ",
                 text = {
-                    "{C:chips}+#1#{} Chip khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_duos = {
-                name = "Các Bộ đôi",
+                name = "Chuẩn Song Nhị",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu",
-                    "mà không phải chơi",
-                    "{E:1,C:attention}Hai đôi"
+                "Thắng một trận",
+                "mà không chơi",
+                "{E:1,C:attention}Thú{} nào"
                 },
             },
             j_cry_duplicare = {
-                name = 'Nhân bản',
+                name = '"Nhân" Bản',
                 text = {
-                    "Lá Joker này sẽ {X:mult,C:white} X#2# {} Điểm nhân",
-                    "Khi một lá {C:attention}Joker{} hoặc",
-                    "chơi các lá bài có tính điểm",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#1# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:mult,C:white} X#2# {} Nhân",
+                    "Khi một {C:attention}Joker{} kích hoạt",
+                    "hoặc lá bài thường ghi điểm",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#1# {C:inactive} Nhân)",
                 }
             },
             j_cry_effarcire = {
-                name = "Lấp đầy",
+                name = "Lấp Đầy",
                 text = {
-                    "Rút {C:green}toàn bộ bộ bài{} lên tay",
-                    "khi mà {C:attention}tiền cược{} được lựa chọn",
-                    "{C:inactive,s:0.8}\"Nếu bạn không tận dụng tôi ở mức 1x,",
-                    "{C:inactive,s:0.8}bạn không xứng đáng có được tôi ở mức 2x\"",
+                    "Bốc {C:green}cả bộ bài{} lên tay",
+                    "khi {C:attention}Blind{} được chọn",
+                    "{C:inactive,s:0.8}\"Nếu tôi ở mức 1x quá xấu,",
+                    "{C:inactive,s:0.8}bạn không xứng đáng dùng tôi ở mức 2x\"",
                 },
             },
             j_cry_energia = {
-                name = "Năng lượng",
+                name = "Năng Lượng",
                 text = {
-                    "Khi có được một {C:attention}Nhãn{},",
+                    "Khi nhận được {C:attention}Nhãn{},",
                     "tạo ra {C:attention}#1#{} bản sao của nó",
-                    "và {C:attention}tăng trưởng{} số lượng của",
-                    "các bản sao lên {C:attention}#2#",
+                    "và {C:attention}tăng{} số lượng",
+                    "bản sao lên {C:attention}#2#",
                 },
             },
             j_cry_equilib = {
-                name = "Át bình đẳng",
+                name = "Át Bình Đẳng",
                 text = {
-                    "Các lá Joker sẽ xuất hiện them",
-                    "thứ tự trong {C:attention}Bộ sưu tập{}",
-                    "Tạo {C:attention}#1#{} Joker {C:dark_edition}Âm bản{}",
-                    "khi một tay bài được đánh",
-                    "Các lá Joker {C:cry_exotic,s:0.8}Kì lạ {C:inactive,s:0.8}hoặc tốt hơn sẽ không thể xuất hiện",
-                    "{s:0.8}Lá Joker cuối được tạo: {C:attention,s:0.8}#2#",
+                    "Các Joker sẽ xuất hiện theo",
+                    "thứ tự trong {C:attention}Bộ Sưu Tập{}",
+                    "Tạo {C:attention}#1#{} Joker {C:dark_edition}Âm Bản{}",
+                    "khi một tay bài được chơi",
+                    "Các Joker {C:cry_exotic,s:0.8}Ngoại Lai{C:inactive,s:0.8}hoặc tốt hơn không thể xuất hiện",
+                    "{s:0.8}Joker Được Tạo Gần Nhất: {C:attention,s:0.8}#2#",
                 },
             },
             j_cry_error = {
@@ -1129,444 +1128,444 @@ return {
             j_cry_eternalflame = {
                 name = "Ngọn lửa Vĩnh hằng",
                 text = {
-                    "Lá Joker này tạo ra {X:mult,C:white} X#1# {} Điểm nhân",
-                    "cho mỗi lá được {C:attention}bán{}",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:mult,C:white} X#1# {} Nhân",
+                    "cho mỗi lá đã {C:attention}bán{}",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_exoplanet = {
-                name = "Ngoại tinh hệ",
+                name = "Ngoại Nhân Tinh",
                 text = {
-                    "Mỗi lá bài {C:dark_edition}Óng Ánh{}",
-                    "sẽ cho {C:mult}+#1#{} Điểm nhân",
+                    "Mỗi lá bài {C:dark_edition}Lấp Lánh{}",
+                    "cho {C:mult}+#1#{} Nhân",
                 },
             },
             j_cry_exponentia = {
-                name = "Lũy thừa",
+                name = "Lũy Thừa",
                 text = {
-                    "Lá Joker này tạo {X:dark_edition,C:white} ^#1# {} Điểm nhân",
-                    "Khi {X:red,C:white} X Điểm nhân {} được kích hoạt",
-                    "{C:inactive}(Hiện tại {X:dark_edition,C:white} ^#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
+                    "khi {X:red,C:white} XNhân {} được kích hoạt",
+                    "{C:inactive}(Hiện tại là {X:dark_edition,C:white} ^#2# {C:inactive} Nhân)",
                 },
             },
 	    j_cry_exposed = {
-                name = "Phát giác",
+                name = "Phát Giác",
                 text = {
-                    "Tái kích hoạt lại mọi lá bài không {C:attention}mặt{}",
-		            "{C:attention}#1#{} lần bổ sung",
-                    "Mọi lá bài chứa {C:attention}mặt{} sẽ bị debuff",
+                    "Tái kích mọi lá bài không-phải-{C:attention}mặt{}",
+		            "thêm {C:attention}#1#{} lần",
+                    "Mọi lá {C:attention}mặt{} bị vô hiệu hoá",
                 },
             },
             j_cry_facile = {
                 name = "Dễ dàng",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Điểm nhân nếu",
-                    "các lá bài chơi đã tính điểm",
-                    "{C:attention}#2#{} or ít hơn",
+                    "{X:dark_edition,C:white}^#1#{} Nhân nếu",
+                    "các lá bài đã chơi tính điểm",
+                    "{C:attention}#2#{} lần hoặc ít hơn",
                 },
             },
             j_cry_filler = {
-                name = "Chất làm đầy",
+                name = "Chuẩn Lấp",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân nếu như",
-                    "tay bài chơi có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu",
-                    "mà không phải chơi",
-                    "{E:1,C:attention}Mẫu thầu"
+                "Thắng một trận",
+                "mà không chơi",
+                "{E:1,C:attention}Mậu Thầu{} nào"
                 },
             },
             j_cry_fractal = {
-                name = "Ngón tay Fractal",
+                name = "Ngón Tay Phân Dạng",
                 text = {
-                    "Được đánh thêm {C:attention}+#1#{} lá",
+                    "{C:attention}+#1#{} số lá có thể chọn",
                 },
 		unlock = {
-                    "Chơi một {C:attention}Thùng phá Sảnh{}",
-                    'Mà {C:attention}Sảnh',
-                    'không cần tới {C:attention}Thùng{}:>'
+                    "Chơi {C:attention}Thùng phá Sảnh{}",
+                    'mà phần {C:attention}Sảnh',
+                    'không trùng phần {C:attention}Thùng{}'
                 },
             },
             j_cry_flip_side = {
                 name = "Mặt Khác",
                 text = {
-                    "Những lá Joker {C:dark_edition}Hai mặt{} sử dụng",
-                    "những mặt đằng sau để lấy hiệu ứng",
+                    "Joker {C:dark_edition}Hai Mặt{} dùng",
+                    "hiệu ứng mặt sau",
                     "thay vì mặt trước",
-                    "{C:attention}Tái kích hoạt{} mọi lá Joker {C:dark_edition}Hai mặt"
+                    "{C:attention}Tái kích{} mọi Joker {C:dark_edition}Hai Mặt"
                 },
             },
             j_cry_foodm = {
-                name = "M Thức ăn nhanh",
+                name = "Thức Ăn Nhanh M",
                 text = {
-                    "{C:mult}+#1#{} Điểm nhân",
-                    "{C:red,E:2}tự hủy{} trong {C:attention}#2#{} vòng đấu",
-                    "Cải thiện tại vòng đấu thứ {C:attention}#3#{} khi lá",
-                    "{C:attention}Joker Vui vẻ{} được {C:attention}bán{}",
-                    "{C:inactive,s:0.8}2 McDoubles, 2 McChickens{}",
-                    "{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
+                    "{C:mult}+#1#{} Nhân",
+                    "{C:red,E:2}tự hủy{} trong {C:attention}#2#{} ván",
+                    "Tăng thêm {C:attention}#3#{} ván khi",
+                    "{C:attention}Joker Vui Nhộn{} được {C:attention}bán{}",
+                    "{C:inactive,s:0.8}2 McDouble, 2 McChicken, Khoai{}",
+                    "{C:inactive,s:0.8}Chiên Lớn, 20 Miếng & Bánh Lớn{}",
                 },
             },
             j_cry_foolhardy = {
                 name = "Joker liều lĩnh",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
 	    j_cry_formidiulosus = {
 		    name = "Formidiulosus",
 		    text = {
-		    	"Khi một lá Joker {X:cry_cursed,C:white}Nguyền rủa{} được thu, phá hủy nó",
-			"Tạo {C:attention}#1#{} {C:cry_candy}Những cái kẹo {C:dark_edition}Âm bản{} vào cuối Shop",
-			"Nhận được {X:dark_edition,C:white}^#2#{} Điểm nhân cho mỗi {C:cry_candy}Cái kẹo{} trong quá trình",
-			"{C:inactive}(Hiện tại {X:dark_edition,C:white}^#3#{C:inactive} Điểm nhân)",
+		    	"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền rủa{}, phá hủy nó",
+			"Tạo {C:attention}#1#{} {C:cry_candy}Kẹo {C:dark_edition}Âm bản{} vào cuối Shop",
+			"Thêm {X:dark_edition,C:white}^#2#{} Nhân cho mỗi {C:cry_candy}Kẹo{} đang sở hữu",
+			"{C:inactive}(Hiện tại lạ {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
 		    },
 	    },
             j_cry_foxy = {
-                name = "Joker cáo",
+                name = "Joker Cáo",
                 text = {
-                    "{C:chips}+#1#{} Chip khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_fspinner = {
-                name = "Con quay Fidget",
+                name = "Con Quay Fidget",
                 text = {
-                    "Mỗi lá Joker nhận {C:chips}+#2#{} Chip",
+                    "Joker này thêm {C:chips}+#2#{} Chip",
                     "nếu tay bài đã chơi {C:attention}không phải{}",
                     "là {C:attention}tay poker{} chơi nhiều nhất",
-                    "{C:inactive}(Hiện tại {C:chips}+#1#{C:inactive} Chip)",
+                    "{C:inactive}(Hiện tại là {C:chips}+#1#{C:inactive} Chip)",
                 },
             },
             j_cry_fuckedup = {
-                name = "Fucked-Up Joker",
+                name = "Joker \"Hết Cứu\"",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân nếu",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_gardenfork = {
-                name = "Khu vườn của những con đường rẽ nhánh",
+                name = "Vườn Rẽ Nhánh",
                 text = {
                     "Nhận {C:money}$#1#{} nếu {C:attention}tay bài đã chơi{}",
-                    "có chứa một {C:attention}Át{} và một {C:attention}7{}",
+                    "chứa một con {C:attention}Át{} và một con {C:attention}7{}",
                 },
             },
             j_cry_gemino = {
-                name = "Song tử",
+                name = "Song Tử",
                 text = {
                     "{C:attention}Nhân đôi{} mọi giá trị",
-                    "của lá bài {C:attention}Joker{} bên trái xa nhất",
-                    "vào cuối mỗi vòng chơi",
+                    "của {C:attention}Joker{} ở tít bên trái",
+                    "vào cuối mỗi ván",
                 },
             },
             j_cry_ghost = {
-                name = "Ma",
+                name = "Con Ma",
                 text = {
-                    "Vào cuối mỗi vòng:",
-                    "{C:green}#1# trên #2#{} khả năng để",
-                    "{C:attention}sở hữu{} một lá {C:attention}Joker{} ngẫu nhiên",
-                    "{C:green}#1# trên #3#{} khả năng để",
+                    "Vào cuối mỗi ván:",
+                    "Xác suất {C:green}#1# trên #2#{} để",
+                    "{C:attention}ám{} một {C:attention}Joker{} ngẫu nhiên",
+                    "Xác suất {C:green}#1# trên #3#{} để",
                     "{E:2,C:red}tự hủy"
                 }
             },
             j_cry_giggly = {
-                name = "Joker ngớ ngẩn",
+                name = "Joker Ngớ Ngẩn",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_goldjoker = {
-                name = "Joker hoàng kim",
+                name = "Joker Hoàng Kim",
                 text = {
-                    "Nhận {C:money}#1#%{} của tổng",
-                    "số tiền vào cuối mỗi vòng chơi",
-                    "Giá bán sẽ tăng lên {C:money}#2#%{}",
-                    "khi mỗi lá bài {C:attention}Gold{} đã chơi ",
+                    "Nhận {C:money}#1#%{} của",
+                    "tổng tiền ở cuối ván",
+                    "Giá trị tăng thêm {C:money}#2#%{}",
+                    "khi mỗi lá {C:attention}Vàng{} đã chơi",
                     "được tính điểm",
                 },
             },
             j_cry_googol_play = {
-                name = "Bài Googol Play",
+                name = "Thẻ Googol Play",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng cho",
-                    "{X:red,C:white} X#3# {} Điểm nhân",
+                    "Xác suất {C:green}#1# trên #2#{} cho",
+                    "{X:red,C:white} X#3# {} Nhân",
                 },
 		unlock = {
-                    "Có số Chip bằng {C:attention}1.0e100{}", 
-                    "trong một lượt đánh"
+                    "Đạt {E:1,C:attention}#1.0e100#{} Chip",
+                    "trong một tay bài",
                 },
             },
             j_cry_happy = {
                 name = ":D",
                 text = {
-                    "Tạo ngẫu nhiên một lá {C:attention}Joker{}",
-                    "vào cuối mỗi vòng đấu",
-                    "Bán lá này đi để",
-                    "tạo ngẫu nhiên một lá {C:attention}Joker{}",
+                    "Tạo một {C:attention}Joker{}",
+                    "ngẫu nhiên ở cuối ván",
+                    "Bán lá này để tạo một",
+                    "{C:attention}Joker{} ngẫu nhiên",
                     "{C:inactive}(Cần ô trống){}",
                 },
             },
             j_cry_happyhouse = {
-                name = "Ngôi nhà vui vẻ",
+                name = "Ngôi Nhà Vui Vẻ",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Điểm nhân chỉ khi",
+                    "{X:dark_edition,C:white}^#1#{} Nhân chỉ sau khi",
                     "chơi {C:attention}114{} tay bài{}",
-                    "{C:inactive}(Hiện tại #2#/114){}",
+                    "{C:inactive}(Hiện tại là #2#/114){}",
                     "{C:inactive,s:0.8}Không nơi đâu bằng nhà!{}",
                 },
             },
             j_cry_home = {
-                name = "Ngôi nhà",
+                name = "Chuẩn Nhà",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Chiến thắng một trận",
-                    "mà không phải chơi",
-                    "{E:1,C:attention}Cù lũ"
+                "Thắng một trận",
+                "mà không chơi",
+                "{E:1,C:attention}Cù Lũ{} nào"
                 },
             },
             j_cry_hunger = {
-                name = "Vật P-hẩm",
+                name = "\"Tiêu\" Thụ",
                 text = {
-                    "Nhận {C:money}$#1#{} khi",
-                    "sử dụng một {C:attention}vật phẩm{}",
+                    "Nhận {C:money}$#1#{} khi dùng",
+                    "một {C:attention}lá tiêu thụ{}",
                 },
             },
             j_cry_iterum = {
-                name = "Lại tiếp tục",
+                name = "Nhắc Lại",
                 text = {
-                    "Tái kích hoạt mọi lá bài đã chơi",
-                    "{C:attention}#2#{} lần,",
-                    "mỗi lá bài nhận lại",
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi tính điểm",
+                    "Tái kích mọi lá bài đã chơi",
+                    "{C:attention}#2#{} lần, mỗi lá bài",
+                    "đã chơi ghi thêm",
+                    "{X:mult,C:white} X#1# {} Nhân khi tính điểm",
                 },
             },
             j_cry_jawbreaker = {
-                name = "Máy bẻ hàm",
+                name = "Máy Nghiền",
                 text = {
-                    "Khi {C:attention)Trùm cược{} bị đánh bại,",
-                    "{C:attention}nhân đôi{} giá trị của những Joker lân cận",
-                    "{E:2,C:red}tự hủy{}",
+                    "Khi {C:attention)Boss Blind{} bị đánh bại,",
+                    "{C:attention}nhân đôi{} giá trị của các Joker liền kề",
+                    "rồi {E:2,C:red}tự hủy{}",
                 }
             },
             j_cry_jimball = {
                 name = "Jimball",
                 text = {
-                    "Lá Joker này nhận {X:mult,C:white} X#1# {} Điểm nhân",
-                    "cho mỗi lá bài {C:attention}liên tiếp{} được đánh",
-                    "khi chơi tay bài {C:attention}Poker{} nhiều nhất",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:mult,C:white} X#1# {} Nhân",
+                    "cho mỗi tay bài {C:attention}liên tiếp{} đã chơi",
+                    "khi chơi {C:attention}tay poker{} nhiều nhất",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
 		unlock = {
-                    "Thắng một trận đấu",
-                    "khi đang chơi một",
-                    " {C:attention}một kiểu{}",
-                    '{C:attention}tay bài Poker'
+                    "Thắng một trận",
+                    "mà chỉ chơi một",
+                    " {C:attention}loại tay",
+                    '{C:attention}poker{} duy nhất'
                 },
             },
             j_cry_jollysus = {
-                name = "Joker Vui vẻ?",
+                name = "Joker Vui Nhộn?",
                 text = {
-                    "Tạo ra một lá Joker {C:dark_edition}Vui vẻ{}",
-                    "khi một lá Joker được {C:attention}bán{}",
-                    "{C:red}Chỉ tác dụng một lần mỗi trận đấu{}",
+                    "Tạo ra Joker {C:dark_edition}Vui Nhộn{}",
+                    "khi một Joker được {C:attention}bán{}",
+                    "{C:red}Dùng được một lần mỗi ván{}",
                     "{C:inactive}#1#{}",
                     "{C:inactive,s:0.8}Nghe có vẻ không sao...{}",
                 },
             },
             j_cry_kidnap = {
-                name = "Bắt cóc",
+                name = "Bắt Cóc",
                 text = {
-                    "Nhận {C:money}$#2#{} vào cuối mỗi vòng đấu",
-                    "Tăng giá bán lên {C:money}$#1#{}",
-                    "nếu như mỗi lá Joker {C:attention}dạng có điểm nhân{} hoặc",
-                    "{C:attention}dạng tạo ra chip{} được bán",
+                    "Nhận {C:money}$#2#{} ở cuối ván",
+                    "Tiền thưởng tăng thêm {C:money}$#1#{}",
+                    "khi một Joker {C:attention}+Nhân Tay Bài{} hoặc",
+                    "{C:attention}+Chip Tay Bài{} được bán",
                 },
             },
             j_cry_kooky = {
-                name = "Joker Kì quặc",
+                name = "Joker Kì Quặc",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_krustytheclown = {
                 name = "Chú hề Krusty",
                 text = {
-                    "Lá Joker này cho",
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "mọi {C:attention}lá bài{} đánh ra được tính điểm",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Lá Joker này thêm",
+                    "{X:mult,C:white} X#1# {} Nhân mỗi",
+                    "{C:attention}lá bài{} đã chơi được ghi điểm",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_kscope = {
-                name = "Kính vạn hoa",
+                name = "Kính Vạn Hoa",
                 text = {
-                    "Nhận một hiệu ứng {C:dark_edition}Đa sắc{} cho",
-                    "một lá {C:attention}Joker{} ngẫu nhiên khi",
-                    "đánh bại {C:attention)Trùm cược{}",
+                    "Thêm {C:dark_edition}Đa sắc{} cho",
+                    "một {C:attention}Joker{} ngẫu nhiên khi",
+                    "{C:attention)Boss Blind{} bị đánh bại",
                 },
 		unlock = {
-                    "Đánh bại {C:attention)Trùm cược",
-                    'với {C:attention}5{} nhiều hơn',
-                    '{C:attention}Các lá bài được ấn bản{} hoặc',
-                    '{C:attention}lá Joker'
+                    "Đánh bại {C:attention)Boss Blind",
+                    'với {C:attention}5 Lá Bài Ấn Bản{} hoặc',
+                    '{C:attention}Joker Ấn Bản',
+                    'trở lên'
                 },
             },
             j_cry_lightupthenight = {
-                name = "Thắp sáng trời đêm",
+                name = "Thắp Sáng Trời Đêm",
                 text = {
-                    "Với mỗi {C:attention}7{} hoặc {C:attention}2{} đã chơi",
-                    "nhận {X:mult,C:white}X#1#{} Điểm nhân khi tính điểm",
+                    "Mỗi con {C:attention}7{} hoặc {C:attention}2{} đã chơi",
+                    "ghi {X:mult,C:white}X#1#{} Nhân khi tính điểm",
                 },
             },
             j_cry_longboi = {
-                name = "Quái vật",
+                name = "Quái Vật",
                 text = {
-                    "Cho mỗi bản sao sau này của",
-                    "lá Joker này {X:mult,C:white}X#1#{} Điểm nhân",
-                    "vào cuối mỗi vòng đấu",
-                    "{C:inactive}(Hiện tại {X:mult,C:white}X#2#{C:inactive} Điểm nhân){}",
+                    "Cho bản sao tương lai của",
+                    "Joker này thêm {X:mult,C:white}X#1#{} Nhân",
+                    "ở cuối ván",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân){}",
                 },
             },
             j_cry_loopy = {
-                name = "Lặp lại điên loạn",
+                name = "Lặpặpặpặpặp",
                 text = {
-                    "{C:attention}Tái kích hoạt{} mọi lá Joker",
-                    "cho mỗi lá {C:attention}Joker{}",
-                    "{C:attention}Vui vẻ{} được bán ở vòng đấu này",
-                    "{C:inactive}(Hiện tại{}{C:attention:} #1#{}{C:inactive} Tái kích hoạt){}",
+                    "{C:attention}Tái kích{} mọi Joker",
+                    "cho mỗi {C:attention}Joker{}",
+                    "{C:attention}Vui Nhộn{} đã bán ở ván này",
+                    "{C:inactive}(Hiện tại là {}{C:attention:}#1#{}{C:inactive} Lượt tái kích){}",
                     "{C:inactive,s:0.8}Thực sự không đủ chỗ...{}",
                 },
             },
             j_cry_lucky_joker = {
-                name = "Joker May mắn",
+                name = "Joker May Mắn",
                 text = {
-                    "Nhận {C:money}$#1#{} cho mỗi lần",
-                    "Lá bài {C:attention}May mắn{} kích hoạt {C:green}thành công{}",
+                    "Nhận {C:money}$#1#{} mỗi lần",
+                    "Lá {C:attention}May Mắn{} kích hoạt {C:green}thành công{}",
                 },
             },
             j_cry_luigi = {
                 name = "Luigi",
                 text = {
-                    "Mọi lá Joker cho",
+                    "Mọi Joker đều cho",
                     "{X:chips,C:white} X#1# {} Chip",
                 },
             },
             j_cry_m = {
                 name = "m",
                 text = {
-                    "Lá Joker này nhận {X:mult,C:white} X#1# {} Điểm nhân",
-                    "khi {C:attention}Joker vui vẻ{} được bán",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Lá Joker này thêm {X:mult,C:white} X#1# {} Nhân",
+                    "khi {C:attention}Joker Vui Nhộn{} được bán",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_M = {
                 name = "M",
                 text = {
-                    "Tạo một lá {C:attention}Joker Vui vẻ{}",
-                    "{C:dark_edition}Âm bản{} khi",
-                    "{C:attention}tiền cược{} được lựa chọn",
+                    "Tạo một {C:attention}Joker Vui Nhộn{}",
+                    "{C:dark_edition}Âm Bản{} khi",
+                    "{C:attention}Blind{} được chọn",
                 },
             },
             j_cry_macabre = {
-                name = "Joker Rùng rợn",
+                name = "Joker Rùng Rợn",
                 text = {
-                    "Khi một {C:attention}tiền cược{} được lựa chọn,",
-                    "phá hủy mỗi lá {C:attention}Joker{} ngoại trừ",
-                    "{C:legendary}M Jokers{} và {C:attention}Các lá Joker vui vẻ{}",
-                    "và tạo #1# {C:attention}Joker vui vẻ{}",
-                    "cho mỗi lá bài bị phá hủy",
+                    "Khi {C:attention}Blind{} được chọn,",
+                    "phá hủy mọi {C:attention}Joker{} ngoại trừ",
+                    "{C:legendary}Joker M{} và {C:attention}Joker Vui Nhộn{}",
+                    "và tạo #1# {C:attention}Joker Vui Nhộn{}",
+                    "cho mỗi lá bị phá hủy",
                 },
             },
             j_cry_magnet = {
-                name = "Nam châm lạnh",
+                name = "Nam Châm Tủ Lạnh",
                 text = {
-                    "Nhận {C:money}$#1#{} cuối mỗi vòng đấu",
-                    "Nó sẽ nhận {X:money,C:white} X#2# {} nếu như có",
-                    "{C:attention}#3#{} hoặc ít hơn các lá {C:attention}Joker{}",
+                    "Nhận {C:money}$#1#{} ở cuối ván",
+                    "Nhận {X:money,C:white} X#2# {} số tiền nếu có",
+                    "{C:attention}#3#{} {C:attention}Joker{} hoặc ít hơn",
                 },
             },
             j_cry_manic = {
-                name = "Joker Hưng cảm",
+                name = "Joker Hưng Cảm",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân mỗi khi chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_mario = {
                 name = "Mario",
                 text = {
-                    "Mọi Joker sẽ được tái kích hoạt",
+                    "Tái kích mọi Joker",
                     "thêm {C:attention}#1#{} lần",
                 },
             },
             j_cry_mask = {
-                name = "Mặt nạ",
+                name = "Mặt Nạ",
                 text = {
-                    "Tái kích hoạt mọi lá bài chứa {C:attention}mặt{}",
+                    "Tái kích hoạt mọi lá {C:attention}mặt{}",
                     "thêm {C:attention}#1#{} lần",
-		    "Mọi lá bài {C:attention}không chứa mặt{} sẽ bị debuff",
+		    "Mọi lá bài không-phải-{C:attention}mặt{} bị vô hiệu hoá",
                 },
             },
             j_cry_maximized = {
-                name = "Tối đa hóa",
+                name = "Tối Đa Hóa",
                 text = {
-                    "Mọi lá bài chứa {C:attention}mặt{}",
-                    "sẽ được xem là {C:attention}K{},",
-                    "mọi lá bài {C:attention}đánh số{}",
-                    "sẽ được xem là {C:attention}10{}",
+                    "Mọi lá {C:attention}mặt{}",
+                    "được coi như {C:attention}Già{},",
+                    "mọi lá {C:attention}số{}",
+                    "được coi như {C:attention}10{}",
                 },
 		unlock = {
                     "Chơi một {C:attention}Thùng Ngũ Quý{}",
-                    'của các lá {C:attention}K'
+                    'chứa {C:attention}Già'
                 },
             },
             j_cry_maze = {
-                name = "Mê cung",
+                name = "Mê Cung",
                 text = {
                     "Mọi tay bài sẽ được coi là",
-                    "{C:attention}tay đầu tiên{} ở mỗi vòng đấu,",
+                    "{C:attention}tay đầu tiên{} của mỗi ván,",
                     "mọi lượt bỏ sẽ được coi là",
-                    "{C:attention}lượt bỏ đầu tiên{} ở mỗi vòng đấu",
+                    "{C:attention}lượt bỏ đầu tiên{} của mỗi ván",
                 },
             },
             j_cry_Megg = {
-                name = "Megg",
+                name = "Mrứng",
                 text = {
-                    "Bán lá bài này đi để tạo ra",
-                    "{C:attention}#2#{} #3# Vui vẻ, tăng lên",
-                    "{C:attention}#1#{} vào cuối mỗi vòng đấu",
+                    "Bán lá này để tạo ra",
+                    "{C:attention}#2#{} #3# Vui Nhộn, tăng thêm",
+                    "{C:attention}#1#{} ở cuối ván",
                 },
             },
             j_cry_mellowcreme = {
-                name = "Kẹo dẻo mềm",
+                name = "Kẹo Dẻo Mềm",
                 text = {
-                    "Bán lá bài này đi để {C:attention}nhân",
-                    "giá trị của mỗi",
-                    "{C:attention}vật phẩm{} lên {C:attention}X#1#"
+                    "Bán lá này để {C:attention}nhân",
+                    "giá trị của mọi",
+                    "{C:attention}lá tiêu thụ{} lên {C:attention}X#1#"
                 }
             },
             j_cry_membershipcard = {
-                name = "Thẻ thành viên",
+                name = "Thẻ Thành Viên",
                 text = {
-                    "{X:mult,C:white}X#1#{} Cho mỗi thành viên",
+                    "{X:mult,C:white}X#1#{} Nhân cho mỗi thành viên",
                     "ở trong {C:attention}Cryptid Discord{}",
-                    "{C:inactive}(Hiện tại {X:mult,C:white}X#2#{C:inactive} Điểm nhân)",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân)",
                     "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
                 },
             },
@@ -1575,50 +1574,50 @@ return {
                 text = {
                     "{C:chips}+#1#{} Chip cho mỗi thành viên",
                     "ở trong {C:attention}Cryptid Discord{}",
-                    "{C:inactive}(Hiện tại {C:chips}+#2#{C:inactive} Chip)",
+                    "{C:inactive}(Hiện tại là {C:chips}+#2#{C:inactive} Chip)",
                     "{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
                 },
             },
             j_cry_meteor = {
-                name = "Mưa sao băng",
+                name = "Mưa Sao Băng",
                 text = {
-                    "Mỗi lá bài {C:dark_edition}Tráng bạc{}",
-                    "sẽ cho {C:chips}+#1#{} Chip",
+                    "Mỗi lá {C:dark_edition}Ánh Kim{}",
+                    "cho {C:chips}+#1#{} Chip",
                 },
             },
             j_cry_mneon = {
-                name = "Neon M",
+                name = "M Neon",
                 text = {
-                    "Nhận {C:money}$#2#{} vào cuối mỗi vòng chơi",
-                    "tăng giá bán lên",
-                    "{C:money}$#1#{} cho mỗi lá {C:attention}Joker Vui vẻ{}",
-                    "hoặc {C:legendary}M Joker{} tại",
-                    "cuối vòng đấu",
+                    "Nhận {C:money}$#2#{} ở cuối ván",
+                    "Tiền thưởng tăng thêm {C:money}$#1#{}",
+                    "cho mỗi lá {C:attention}Joker Vui Nhộn{}",
+                    "hoặc {C:legendary}Joker M{}",
+                    "ở cuối ván",
                 },
             },
             j_cry_mondrian = {
                 name = "Mondrian",
                 text = {
-                    "Lá Joker này nhận {X:mult,C:white} X#1# {} Điểm nhân",
-                    "nếu như không có {C:attention}lượt bỏ{} nào dùng",
-                    "trong vòng này",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:mult,C:white} X#1# {} Nhân",
+                    "nếu không có {C:attention}lượt bỏ bài{} nào",
+                    "được dùng trong ván này",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_monkey_dagger = {
-                name = "Dao găm Khỉ",
+                name = "Dao Găm Khỉ",
                 text = {
-                    "Khi {C:attention}tiền cược{} được lựa chọn,",
-                    "phá hủy lá Joker phía bên trái",
-                    "và đồng thời nhận {C:attention}mười lần{}",
-                    "giá trị bán của nó thành {C:chips}Chip{}",
-                    "{C:inactive}(Hiện tại {C:chips}+#1#{C:inactive} Chip)",
+                    "Khi {C:attention}Blind{} được chọn,",
+                    "phá hủy Joker liền trái",
+                    "và vĩnh viện thêm {C:attention}mười lần{}",
+                    "giá bán của nó vào {C:chips}Chip{}",
+                    "{C:inactive}(Hiện tại là {C:chips}+#1#{C:inactive} Chip)",
                 },
             },
             j_cry_monopoly_money = {
-                name = "Tiền độc quyền",
+                name = "Tiền Độc Quyền",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng",
+                    "Xác suất {C:green}#1# trên #2#{}",
                     "{C:attention}phá hủy{} những vật phẩm đã mua",
                     "Chia đôi số tiền {C:attention}khi bán",
                 }
@@ -1626,731 +1625,731 @@ return {
             j_cry_morse = {
                 name = "Mã Morse",
                 text = {
-                    "Nhận {C:money}$#2#{} vào cuối mỗi vòng đấu",
-                    "Tăng giá bán lên {C:money}$#1#{} khi",
-                    "một lá bài {C:attention}Ấn bản{} được bán",
+                    "Nhận {C:money}$#2#{} ở cuối ván",
+                    "Tiền thưởng tăng thêm {C:money}$#1#{} khi",
+                    "một lá bài {C:attention}Ấn Bản{} được bán",
                 },
             },
             j_cry_mprime = {
                 name = "Tredecim",
                 text = {
-                    "Tạo một lá {C:legendary}M Joker{} vào cuối mỗi vòng đấu",
-                    "Nhận lá {C:attention}Joker Vui Vẻ{} hoặc {C:legendary}M Joker",
-                    "cho {X:dark_edition,C:white}^#1#{} Điểm nhân",
-                    "Tăng cường số lượng lên {X:dark_edition,C:white}^#2#{}",
-                    "khi một lá {C:attention}Joker Vui vẻ{} được {C:attention}bán",
+                    "Tạo ra một {C:legendary}Joker M{} ở cuối ván",
+                    "Mỗi lá {C:attention}Joker Vui Nhộn{} hoặc {C:legendary}Joker M",
+                    "ghi {X:dark_edition,C:white}^#1#{} Nhân",
+                    "Tăng trưởng thêm {X:dark_edition,C:white}^#2#{}",
+                    "khi một {C:attention}Joker Vui Nhộn{} được {C:attention}bán",
                     "{C:inactive,s:0.8}(Loại trừ Tredecim)",
                 },
             },
             j_cry_mstack = {
-                name = "M Xếp",
+                name = "Chồng M",
                 text = {
-                    "Tái kích hoạt mọi lá bài đã chơi",
-                    "một lần cho tất cả",
-                    "{C:attention}#2#{} {C:inactive}[#3#]{} lá {C:attention}Joker Vui vẻ{} được bán",
-                    "{C:inactive}(Hiện tại{}{C:attention:} #1#{}{C:inactive} tái kích hoạt){}",
+                    "Tái kích mọi lá bài đã chơi",
+                    "một lần cho mỗi",
+                    "{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Joker Vui Nhộn{} được bán",
+                    "{C:inactive}(Hiện tại là{}{C:attention:} #1#{}{C:inactive} lượt tái kích){}",
                 },
             },
             j_cry_multjoker = {
-                name = "Joker Điểm nhân",
+                name = "Joker Nhân",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng cho mỗi",
-                    "lá bài {C:attention}Mult{} đã chơi để tạo",
-                    "một lá bài {C:spectral}Cryptid{} khi tính điểm",
-                    "{C:inactive}(Cần ô trống)",
+                    "Xác suất {C:green}#1# trên #2#{} cho mỗi",
+                    "lá {C:attention}Nhân{} đã chơi để tạo",
+                    "một lá {C:spectral}Cryptid{} khi tính điểm",
+                    "{C:inactive}(Phải có ô trống)",
                 },
             },
 	    j_cry_necromancer = {
-	    	name = "Triệu hồi sư",
+	    	name = "Chiêu Hồn Sư",
 		text = {
-		    "Khi một lá Joker được {C:attention}bán{} nhiều hơn {C:attention}$0{},",
-		    "tạo ra một lá Joker  {C:attention}đã bán{} {C:attention}ngẫu nhiên{} trong trận này",
-		    "với giá trị bằng {C:money}$0{}",
+		    "Khi một Joker được {C:attention}bán{} với giá lớn hơn {C:attention}$0{},",
+		    "tạo ra một lá Joker {C:attention}đã bán{} {C:attention}ngẫu nhiên{} trong trận này",
+		    "với giá bán bằng {C:money}$0{}",
 		},
 	    },
             j_cry_negative = {
-                name = "Joker Âm bản",
+                name = "Joker Âm Bản",
                 text = {
-                    "Thêm {C:dark_edition}+#1#{C:attention} ô trống cho Joker{}",
+                    "{C:dark_edition}+#1#{} ô {C:attention} Joker{}",
                 },
             },
             j_cry_nice = {
-                name = "Tuyệt",
+                name = "Toẹt Vòi",
                 text = {
-                    "{C:chips}+#1#{} Chip khi tay bài đã chơi",
-                    "có chứa một {C:attention}6{} và một {C:attention}9",
-                    "{C:inactive,s:0.8}Nice.{}",
+                    "{C:chips}+#1#{} Chip nếu tay bài đã chơi",
+                    "chứa một con {C:attention}6{} và một con {C:attention}9",
+                    "{C:inactive,s:0.8}Toẹt Vòi.{}",
                 },
             },
             j_cry_night = {
-                name = "Đêm",
+                name = "Màn Đêm",
                 text = {
-                    "{X:dark_edition,C:white}^#1#{} Điểm nhân cho",
-                    "tay bài cuối cùng của vòng đấu này",
+                    "{X:dark_edition,C:white}^#1#{} Nhân cho",
+                    "tay bài cuối cùng của ván này",
                     "{E:2,C:red}tự hủy{}",
                     "tại tay bài cuối cùng",
                 },
             },
             j_cry_nosound = {
-                name = "Điếc, mất trí nhớ",
+                name = "Điếc, Mất Trí",
                 text = {
-                    "Tái kích hoạt mọi lá {C:attention}7{} đã chơi",
+                    "Tái kích mỗi lá {C:attention}7{} đã chơi",
                     "thêm {C:attention:}#1#{} lần",
                 },
             },
             j_cry_notebook = {
-                name = "Vở ghi chép",
+                name = "Vở Ghi Chép",
                 text = {
-                    "{C:green} #1# trên #2#{} khả năng để nhận {C:dark_edition}+#6#{} ô Joker",
-                    "mỗi lần {C:attention}reroll{} trong shop",
-                    "{C:green}Luôn được kích hoạt{} nếu như có",
-                    "{C:attention}#5#{} hoặc nhiều hơn các lá {C:attention}Joker Vui vẻ{}",
-                    "{C:red}Chỉ dùng một lần mỗi vòng đấu{}",
-                    "{C:inactive}(Hiện tại {C:dark_edition}+#3#{}{C:inactive} và #4#){}",
+                    "Xác suất {C:green} #1# trên #2#{} để nhận {C:dark_edition}+#6#{} ô Joker",
+                    "mỗi lần {C:attention}gieo lại{} trong shop",
+                    "{C:green}Luôn kích hoạt{} nếu có",
+                    "{C:attention}#5#{} {C:attention}Joker Vui vẻ{} hoặc nhiều hơn",
+                    "{C:red}Dùng được một lần mỗi ván{}",
+                    "{C:inactive}(Hiện tại là {C:dark_edition}+#3#{}{C:inactive} và #4#){}",
                 },
             },
             j_cry_number_blocks = {
-                name = "Khối số liệu",
+                name = "Khối Số Liệu",
                 text = {
-                    "Nhận {C:money}$#1#{} vào cuối mỗi vòng đấu",
-                    "tăng giá trị bán lên {C:money}$#2#{}",
-                    "cho mỗi {C:attention}#3#{} cầm trên tay,",
-                    "hạng bậc sẽ thay đổi theo từng vòng chơi",
+                    "Nhận {C:money}$#1#{} ở cuối ván",
+                    "Tiền thưởng tăng thêm {C:money}$#2#{}",
+                    "cho mỗi lá {C:attention}#3#{} cầm trên tay,",
+                    "bậc thay đổi sau mỗi ván",
                 },
             },
             j_cry_nuts = {
-                name = "Đống hạt",
+                name = "Chuẩn Rồ",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
-                },
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
+                    },
 		unlock = {
-                    "Thắng một trận đấu",
-                    "Mà không phải chơi",
-                    "một {E:1,C:attention}Thùng phá Sảnh"
+                "Thắng một trận",
+                "mà không chơi",
+                "{E:1,C:attention}Thùng Phá Sảnh{} nào"
                 },
             },
             j_cry_nutty = {
-                name = "Joker hạt",
+                name = "Joker Phát Rồ",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
 	    j_cry_oil_lamp = {
-		name = "Đèn dầu",
+		name = "Đèn Dầu",
 		text = {
-			"Tăng giá trị của lá {C:attention}Joker{} ở bên phải",
-			"lên {C:attention}X#1#{} vào cuối mỗi vòng đấu",
+			"Tăng giá trị của lá {C:attention}Joker{} liền phải",
+			"thêm {C:attention}X#1#{} ở cuối ván",
 		},
 	    },
             j_cry_oldblueprint = {
-                name = "Bản thiết kế cũ",
+                name = "Bản Thiết Kế Cũ",
                 text = {
-                    "Sao chép mọi tính năng của",
-                    "{C:attention}Joker{} phía bên phải",
-                    "{C:green}#1# trên #2#{} khả năng",
-                    "lá bài này sẽ bị phá hủy",
-                    "vào cuối mỗi vòng đấu",
+                    "Sao chép khả năng của",
+                    "{C:attention}Joker{} liền phải",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "lá này bị phá hủy",
+                    "ở cuối ván",
                 },
             },
             j_cry_oldcandy = {
-                name = "Kẹo cổ đại",
+                name = "Kẹo Hoài Niệm",
                 text = {
-                    "Bác cái lá bài này đi",
-                    "để nhận được vĩnh viễn",
-                    "{C:attention}+#1#{} kích thước tay bài",
+                    "Bác lá này để",
+                    "nhận vĩnh viễn",
+                    "{C:attention}+#1#{} lá giữ trong tay",
                 },
             },
             j_cry_oldinvisible = {
-                name = "Joker tàng hình cổ đại",
+                name = "Joker Tàng Hình Hoài Niệm",
                 text = {
-                    "{C:attention}Nhân đôi{} ngẫu nhiên một lá",
-                    "{C:attention}Joker{} cho tất cả {C:attention}4",
-                    "lá Joker đã bán,
-                    "{s:0.8}Ngoại trừ chính nó và bản sao của nó{}",
-                    "{C:inactive}(Hiện tại #1#/4){}",
+                    "{C:attention}Nhân bản{} một lá {C:attention}Joker{}",
+                    "ngẫu nhiên cho mỗi",
+                    "{C:attention}4{} lá Joker đã bán",
+                    "{s:0.8}Ngoại trừ chính nó{}",
+                    "{C:inactive}(Hiện tại là #1#/4){}",
                 },
             },
             j_cry_panopticon = {
-                name = "Toàn cảnh",
+                name = "Nhà Tù",
                 text = {
-                    "Mọi tay bài được coi là",
-                    "{C:attention}tay bài cuối cùng{} của mỗi vòng đấu", -- +$4
+                    "Mọi tay bài được coi như",
+                    "{C:attention}tay bài cuối cùng{} của mỗi ván", -- +$4
                 },
             },
             j_cry_penetrating = {
-                name = "Joker thâm nhập",
+                name = "Joker Đâm Thủng",
                 text = {
-                    "{C:chips}+#1#{} Chip nếu như các tay bài",
-                    "đã chơi có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_pickle = {
-                name = "Dưa chuột",
+                name = "Dưa Chua",
                 text = {
-                    "Khi {C:attention}tiền cược{} được skip, tạo",
-                    "{C:attention}#1#{} nhãn, giảm xuống còn",
-                    "{C:red}#2#{} khi {C:attention}tiền cược{} được chọn",
+                    "Khi {C:attention}Blind{} bị bỏ qua, tạo",
+                    "ra {C:attention}#1#{} nhãn, giảm số nhãn",
+                    "đi {C:red}#2#{} khi {C:attention}Blind{} được chọn",
                 },
             },
             j_cry_pirate_dagger = {
-                name = "Dao găm cướp biển",
+                name = "Dao Găm Cướp Biển",
                 text = {
-                    "Khi {C:attention}tiền cược{} được lựa chọn,",
-                    "Phá hủy lá Joker ở phía bên phải",
-                    "và nhận được {C:attention}1/4{} giá trị bán",
-                    "của nó thành điểm {X:chips,C:white} XChip {}",
-                    "{C:inactive}(Hiện tại {X:chips,C:white} X#1# {C:inactive} Chip)",
+                    "Khi {C:attention}Blind{} được chọn,",
+                    "Phá hủy Joker liền phải",
+                    "và thêm {C:attention}1/4{} giá bán",
+                    "của nó vào {X:chips,C:white} XChip {}",
+                    "{C:inactive}(Hiện tại là {X:chips,C:white} X#1# {C:inactive} Chip)",
                 },
             },
             j_cry_pity_prize = {
-                name = "Giải động viên",
+                name = "Giải Động Viên",
                 text = {
-                    "Nếu như skip một {C:attention}Gói tăng cường{},",
-                    "nhận ngẫu nhiên một {C:attention}Nhãn{}",
+                    "Nếu bỏ qua một {C:attention}Gói Bài{},",
+                    "nhận một {C:attention}Nhãn{} ngẫu nhiên",
                 },
             },
             j_cry_pot_of_jokes = {
-                name = "Nồi chuyện cười",
+                name = "Chiếc Hũ Tham Cười",
                 text = {
-                    "{C:attention}#1#{} kích thước tay bài,",
-                    "tăng lên mỗi",
-                    "{C:blue}#2#{} vòng đấu",
+                    "{C:attention}#1#{} lá giữ trong tay,",
+                    "tăng thêm {C:blue}#2#{}",
+                    "sau mỗi ván",
                 },
 		unlock = {
-                    'tăng cường {C:attention}kích thước tay bài',
+                    'Tăng {C:attention}số lá giữ trong tay',
                     'lên {C:attention}12'
                 },
             },
             j_cry_primus = {
-                name = "Nguyên thủy",
+                name = "\"Nguyên\" Tố",
                 text = {
-                    "Lá Joker này nhận {X:dark_edition,C:white} ^#1# {} Điểm nhân",
-                    "nếu như tất cả các lá được chơi trên tay là",
-                    "{C:attention}Các lá Át{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, or {C:attention}7{}",
-                    "{C:inactive}(Hiện tại {X:dark_edition,C:white} ^#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
+                    "nếu như tất cả lá đã chơi là",
+                    "{C:attention}Át{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, hoặc {C:attention}7{}",
+                    "{C:inactive}(Hiện tại là {X:dark_edition,C:white} ^#2# {C:inactive} Nhân)",
                 },
             },
 	    j_cry_pumpkin = {
-                name = "Bí ngô",
+                name = "Bí Ngô",
                 text = {
-                    "Tránh thua nếu như tổng số điểm",
-                    "khoảng {C:attention}50%{} số chip yêu cầu thì",
-                    "{C:attention}Thì sẽ trở thành bí ngô được khoét",
+                    "Ngăn thua trận nếu chip đạt được",
+                    "ít nhất {C:attention}50%{} so với chip yêu cầu",
+                    "{C:attention}Biến thành Bí Ngô Được Khoét",
                     "{C:attention}khi{} bị {C:red}phá hủy"
                 },
             },
             j_cry_carved_pumpkin = {
-                name = "Bí ngô được khoét",
+                name = "Bí Ngô Được Khoét",
                 text = {
-                    "{C:attention}#1#{})Trùm cược cược tiếp theo",
-                    'sẽ bị {C:attention}disabled{}',
+                    "{C:attention}#1#{} Boss Blind sắp tới",
+                    'sẽ bị {C:attention}vô hiệu hoá{}',
                     'khả năng của nó'
                 },
             },
             j_cry_python = {
                 name = "Python",
                 text = {
-                    "Lá Joker này cho",
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi một",
-                    "lá bài {C:cry_code}Code{} được sử dụng",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm",
+                    "{X:mult,C:white} X#1# {} Nhân khi một",
+                    "lá {C:cry_code}Code{} được dùng",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_queens_gambit = {
-                name = "Queen's Gambit",
+                name = "Thí Quân Hậu",
                 text = {
-                    "Nếu {C:attention}tay bài Poker{} là một",
-                    "{C:attention}Sảnh Rồng{}, hủy số điểm của",
-                    "{C:attention}Q{} và tạo một",
-                    "{C:attention}Joker {C:red}Quý {C:dark_edition}Âm bản{}",
+                    "Nếu {C:attention}tay poker{} là",
+                    "{C:attention}Sảnh Rồng{}, phá huỷ",
+                    "{C:attention}Đầm{} và tạo ra một",
+                    "{C:attention}Joker {C:red}Hiếm {C:dark_edition}Âm bản{}",
                 },
             },
             j_cry_quintet = {
-                name = "Bộ ngũ tấu",
+                name = "Chuẩn Ngũ",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu với",
-                    "tay bài cuối cùng có",
-                    "một {E:1,C:attention}Ngũ quý K"
+                    "Thắng một trận",
+                    "với tay bài cuối cùng",
+                    "là {E:1,C:attention}Ngũ quý Già"
                 },
             },
             j_cry_redbloon = {
-                name = "Bông hoa đỏ",
+                name = "Bóng Đỏ",
                 text = {
-                    "Nhận {C:money}$#1#{} trên {C:attention}#2#{} vòng đấu",
-                    "{C:red,E:2}Tự hủy{}",
+                    "Nhận {C:money}$#1#{} trong {C:attention}#2#{} ván",
+                    "{C:red,E:2}tự hủy{}",
                 },
             },
             j_cry_redeo = {
-                name = "Quay lại",
+                name = "Tua Lại",
                 text = {
                     "{C:attention}-#1#{} Ante khi",
-                    "{C:money}$#2#{} {C:inactive}($#3#){} được chi",
-                    "{s:0.8}Yêu cầu tiền cược tăng lên",
-                    "{C:attention,s:0.8}nhanh chóng{s:0.8} sau mỗi lần dùng",
-                    "{C:money,s:0.8}Lần tăng cược tiếp theo: {s:1,c:money}$#4#",
+                    "đã tiêu {C:money}$#2#{} {C:inactive}($#3#){}",
+                    "{s:0.8}Yêu cầu tiêu tiền tăng thêm",
+                    "{C:attention,s:0.8}theo cấp số nhân{s:0.8} sau mỗi lần dùng",
+                    "{C:money,s:0.8}Lần tăng tiếp theo: {s:1,c:money}$#4#",
                 },
             },
             j_cry_rescribere = {
-                name = 'Viết lại',
+                name = 'Viết Lại',
                 text = {
-                    "Khi một lá bài {C:attention}Joker{} được bán,",
-                    "thêm hiệu năng của nó cho",
-                    "các lá Joker khác",
-                    "{C:inactive,s:0.8}Không có tác dụng cho các lá bài Viết lại{}"
+                    "Khi một {C:attention}Joker{} được bán,",
+                    "thêm khả năng của nó cho",
+                    "mọi lá Joker khác",
+                    "{C:inactive,s:0.8}Không ảnh hưởng lên Viết Lại{}"
                 }
             },
             j_cry_reverse = {
-                name = "Bài đảo ngược",
+                name = "Lá Đảo Ngược",
                 text = {
-                    "Làm đầy các ô Joker còn trống {C:inactive}(Max 100){}",
-                    "với các lá {C:attention}Joker Vui vẻ{} {C:dark_edition}Óng Ánh{} nếu",
-                    "{C:attention}bỏ đi một{} {C:attention}#1#{}",
-                    "{C:red,E:2}Tự hủy{}",
+                    "Lấp đầy các ô Joker còn trống {C:inactive}(Tối đa 100){}",
+                    "bằng {C:attention}Joker Vui Nhộn{} {C:dark_edition}Lấp Lánh{} nếu",
+                    "{C:attention}tay bài bỏ{} là {C:attention}#1#{}",
+                    "{C:red,E:2}tự hủy{}",
                     "{C:inactive,s:0.8}Cú trở lại SIÊU CẤP PRO MAX{}",
                 },
             },
             j_cry_rnjoker = {
                 name = "RNJoker",
                 text = {
-                    "Ngẫu nhiên các hiệu năng mỗi {C:attention}Ante{}",
+                    "Nhận khả năng ngẫu nhiên mỗi {C:attention}Ante{}",
                 },
 		unlock = {
-                    "{C:green}1 trên 20{} khả năng",
+                    "Xác suất {C:green}1 trên 20{}",
                     'mở khóa lá bài này',
-                    'tại màn hình {C:attention}Kết thúc'
+                    'ở màn hình {C:attention}Thua Cuộc'
                 },
             },
             j_cry_sacrifice = {
-                name = "Hi sinh",
+                name = "Hi Sinh",
                 text = {
-                    "Tạo #3# lá bài Joker {C:green}Hiếm{}",
-                    "và #2# {C:attention}Joker Vui vẻ{} khi",
-                    "một lá bài {C:spectral}Quang phổ{} được sử dụng",
-                    "{C:red}Chỉ hoạt động mỗi vòng chơi{}",
+                    "Tạo #3# Joker {C:green}Ít Phổ Biến{}",
+                    "và #2# {C:attention}Joker Vui Nhộn{} khi",
+                    "một lá {C:spectral}Siêu Linh{} được dùng",
+                    "{C:red}Dùng được một lần mỗi ván{}",
                     "{C:inactive}#1#{}",
                 },
             },
             j_cry_sapling = {
-                name = "Chồi non",
+                name = "Chồi Non",
                 text = {
-                    "Sau khi ghi điểm {C:attention}#2#{} lá bài {C:inactive}[#1#]{} Cường hóa",
-                    "bán lá bài này để",
-                    "tạo một lá  {C:attention}Joker{} {C:cry_epic}Sử thi{}",
-                    "{C:inactive,s:0.8}Có thể sẽ tạo ra {C:attention,s:0.8}Joker{} {C:red,s:0.8}Quý{}",
-                    "{C:inactive,s:0.8}nếu như các lá {C:inactive,s:0.8}Joker{} {C:cry_epic,s:0.8}Epic{} bị tắt",
+                    "Sau khi ghi điểm {C:attention}#2#{} {C:inactive}[#1#]{} lá Cường Hóa,",
+                    "bán lá này để tạo một",
+                    "{C:attention}Joker{} {C:cry_epic}Sử Thi{}",
+                    "{C:inactive,s:0.8}Sẽ tạo một {C:attention,s:0.8}Joker{} {C:red,s:0.8}Hiếm{}",
+                    "{C:inactive,s:0.8}nếu như {C:inactive,s:0.8}Joker{} {C:cry_epic,s:0.8}Sử Thi{} bị tắt",
                 },
             },
             j_cry_savvy = {
-                name = "Joker hiểu biết",
+                name = "Joker Lương Tri",
                 text = {
-                    "{C:chips}+#1#{} Chip nếu như",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_Scalae = {
-                name = "Phóng đại",
+                name = "Phóng Đại",
                 text = {
-                    "Các lá {C:attention}Joker{} đa thức hệ sẽ phóng đại lên",
-                    "đa thức bậc {C:attention}#1#{}",
-                    "tăng bậc lên là {C:attention}#2#{}",
-                    "ở cuối mỗi vòng",
+                    "{C:attention}Joker{} tăng trưởng sẽ tăng trưởng",
+                    "theo đa thức bậc {C:attention}#1#{}",
+                    "tăng bậc đa thức lên {C:attention}#2#{}",
+                    "ở cuối ván",
                     "{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} bị ngoại trừ)",
                 },
             },
             j_cry_scrabble = {
-                name = "Ngói xếp",
+                name = "Ô Scrabble",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng tạo ra",
-                    "một lá Joker {C:dark_edition}Vui vẻ {C:green}Hiếm{}",
-                    "Khi tay bài đã chơi",
+                    "Xát Xuất {C:green}#1# trên #2#{} tạo ra một Joker",
+                    "{C:green}Ít Phổ Biển{} phiên bản {C:dark_edition}Vui Nhộn",
+                    "khi chơi một tay bài",
                 },
             },
             j_cry_seal_the_deal = {
-                name = "Niêm phong thỏa thuận",
+                name = "Đóng Dấu Thỏa Thuận",
                 text = {
-                    "Thêm một {C:attention}niêm phong ngẫu nhiên{} cho mỗi lá bài",
-                    "ghi điểm ở {C:attention}tay chơi cuối cùng{} của vòng đấu",
+                    "Thêm một {C:attention}con dấu ngẫu nhiên{} cho mỗi lá bài",
+                    "ghi điểm ở {C:attention}tay chơi cuối cùng{} của ván",
                 },
             },
             j_cry_shrewd = {
-                name = "Joker Không ngoan",
+                name = "Joker Lanh Lợi",
                 text = {
-                    "{C:chips}+#1#{} Chip nếu như chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_silly = {
-                name = "Joker xấu hổ",
+                name = "Joker Lố Bịch",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_smallestm = {
-                name = "Tí hon",
+                name = "Tí Hon",
                 text = {
-                    "Tạo ra một nhãn {C:cry_jolly}M Đôi",
-                    "nếu {C:attention}tay bài poker{}",
-                    "là một {C:attention}#1#{}",
-                    "{C:inactive,s:0.8}được rồi, về cơ bản là tôi rất tí hon,ok?",
+                    "Tạo ra nhãn {C:cry_jolly}M Đôi",
+                    "nếu {C:attention}tay poker{}",
+                    "là {C:attention}#1#{}",
+                    "{C:inactive,s:0.8}được rồi, về cơ bản là tôi rất tí hon, ok?",
                 },
             },
             j_cry_soccer = {
-                name = "Một vì tất cả", --changed the name from latin because this isn't exotic
+                name = "Một Vì Tất Cả", --changed the name from latin because this isn't exotic
                 text = {
-                    "{C:attention}+#1#{} Ô Joker",
-                    "{C:attention}+#1#{} Ô Gói tăng cường",
-                    "{C:attention}+#1#{} Kích thước tay bài",
-                    "{C:attention}+#1#{} Ô vật phẩm",
-                    "{C:attention}+#1#{} Thẻ bài trong Shop",
-                    "{C:attention}+#1#{} Ô Voucher",
+                    "{C:attention}+#1#{} ô Joker",
+                    "{C:attention}+#1#{} ô Gói Bài",
+                    "{C:attention}+#1#{} lá giữ trong tay",
+                    "{C:attention}+#1#{} ô vật phẩm",
+                    "{C:attention}+#1#{} ô lá bài trong shop",
+                    "{C:attention}+#1#{} ô Phiếu",
                 },
 		unlock = {
-                    'Thắng một trận đấu với',
-                    'chỉ dùng {C:attention}Mậu thầu'
+                    'Thắng một trận',
+                    'mà chỉ dùng {C:attention}Mậu Thầu'
                 },
             },
             j_cry_fleshpanopticon = {
-                name = "Flesh Panopticon",
+                name = "Nhà Tù Thịt",
                 text = {
-                    "{C:red}X#1#{} kích thước {C:attention)Trùm cược{}",
-                    "Khi {C:attention)Trùm cược{} bị đánh bại,",
-                    "{C:red}tự hủy{}, và tạo ra",
-                    "một lá bài {C:spectral}Cổng vào{} {C:dark_edition}Âm bản{}",
+                    "{C:red}X#1#{} điểm {C:attention)Boss Blind{}",
+                    "Khi {C:attention)Boss Blind{} bị đánh bại,",
+                    "{C:red}tự hủy{} và tạo ra",
+                    "một lá {C:spectral}Cánh Cổng{} {C:dark_edition}Âm Bản{}",
                     "{C:inactive,s:0.8}\"Nhà tù này... đang giam giữ... tôi sao?\""
                 },
             },
             j_cry_spaceglobe = {
-                name = "Thiên cầu",
+                name = "Thiên Cầu",
                 text = {
-                    "Lá Joker này tạo {X:chips,C:white}X#2#{} Chip",
-                    "nếu như {C:attention}tay bài poker{} là một {C:attention}#3#{},",
-                    "Tay bài sẽ thay đổi mỗi lần cải thiện{}",
-                    "{C:inactive}(Hiện tại{} {X:chips,C:white}X#1#{} {C:inactive}Chip){}",
+                    "Joker này thêm {X:chips,C:white}X#2#{} Chip",
+                    "nếu {C:attention}tay poker{} là một {C:attention}#3#{},",
+                    "Tay bài sẽ thay đổi mỗi lần tăng{}",
+                    "{C:inactive}(Hiện tại là{} {X:chips,C:white}X#1#{} {C:inactive}Chip){}",
                 },
             },
 	    j_cry_spectrogram = {
-                name = "Quang phổ",
+                name = "Ảnh Phổ",
                 text = {
-                    "{C:attention}Tái kích hoạt{} lá Joker bên phải xa nhất",
-                    "mỗt lần cho mỗi {C:attention}bài Vọng",
-                    "Đó mới là chơi và ghi điểm",
+                    "{C:attention}Tái kích {} Joker ở tít bên phải",
+                    "mỗt lần cho mỗi {C:attention}Lá Vang Vọng",
+                    "được chơi và ghi điểm",
                 },
             },
             j_cry_speculo = {
-                name = "Suy đoán",
+                name = "Suy Đoán",
                 text = {
-                    "Tạo một bản sao {C:dark_edition}Âm bản{}",
-                    "cho một lá {C:attention}Joker{} ngẫu nhiên",
-                    "ở phía cuối {C:attention}shop",
-                    "{C:inactive,s:0.8}Không thể copy các lá Suy đoán{}",
+                    "Tạo một bản sao {C:dark_edition}Âm Bản{}",
+                    "của một lá {C:attention}Joker{} ngẫu nhiên",
+                    "ở cuối {C:attention}shop",
+                    "{C:inactive,s:0.8}Không copy Suy Đoán{}",
                 },
             },
             j_cry_spy = {
-                name = "Gián điệp",
+                name = "Gián Điệp",
                 text = {
-                    "{X:mult,C:white} X#2# {} Điểm nhân, {C:dark_edition}+1{} ô {C:attention} Joker{}",
+                    "{X:mult,C:white} X#2# {} Nhân, {C:dark_edition}+1{} ô {C:attention}Joker{}",
                     "{C:inactive}#1# HẮN là gián điệp!",
                 },
             },
             j_cry_stardust = {
-                name = "Bụi sao",
+                name = "Bụi Sao",
                 text = {
-                    "Các lá bài {C:dark_edition}Đa sắc{}",
-                    "sẽ cho {X:mult,C:white}X#1#{} Điểm nhân",
+                    "Các lá {C:dark_edition}Đa Sắc{}",
+                    "cho {X:mult,C:white}X#1#{} Nhân",
                 },
             },
             j_cry_stella_mortis = {
-                name = "Ngôi sao chết",
+                name = "Sao Tử Thần",
                 text = {
-                    "Lá Joker này sẽ phá hủy",
-                    "ngẫu nhiên một lá bài {C:planet}Hành tinh{}",
-                    "và nhận lại {X:dark_edition,C:white} ^#1# {} Điểm nhân",
-                    "vào cuối mỗi {C:attention}shop{}",
-                    "{C:inactive}(Hiện tại {X:dark_edition,C:white} ^#2# {C:inactive} Điểm nhân)",
+                    "Joker này phá hủy một lá",
+                    "{C:planet}Hành tinh{} ngẫu nhiên",
+                    "và thêm {X:dark_edition,C:white} ^#1# {} Nhân",
+                    "ở cuối {C:attention}shop{}",
+                    "{C:inactive}(Hiện tại là {X:dark_edition,C:white} ^#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_stronghold = {
-                name = "Thành trì",
+                name = "Chuẩn Thành Trì",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu với",
-                    "tay bài cuối cùng của bạn",
-                    "một {E:1,C:attention} Bờ Lũy"
+                    "Thắng một trận",
+                    "với tay bài cuối cùng",
+                    "là {E:1,C:attention} Tường Thành"
                 },
             },
             j_cry_subtle = {
-                name = "Joker Tinh tế",
+                name = "Joker Tinh Tế",
                 text = {
-                    "{C:chips}+#1#{} Chips nếu chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_supercell = {
-                name = "Tế bào siêu cấp",
+                name = "Supercell",
                 text = {
-                    "{C:chips}+#1#{} Chip, {C:mult}+#1#{} Điểm nhân,",
-                    "{X:chips,C:white}X#2#{} Chip, {X:mult,C:white}X#2#{} Điểm nhân",
-                    "Nhận lại {C:money}$#3#{} vào",
-                    "cuối vòng đấu",
+                    "{C:chips}+#1#{} Chip, {C:mult}+#1#{} Nhân,",
+                    "{X:chips,C:white}X#2#{} Chip, {X:mult,C:white}X#2#{} Nhân",
+                    "Nhận {C:money}$#3#{}",
+                    "ở cuối ván",
                 },
             },
             j_cry_sus = {
-                name = "SUS",
+                name = "SÚ",
                 text = {
-                    "Vào cuối mỗi vòng đấu, tạo",
-                    "một {C:attention}bản sao{} cho một",
-                    "lá bài bất kì {C:attention}giữ trên tay{},",
+                    "Ở cuối ván, tạo",
+                    "một {C:attention}bản sao{} của một",
+                    "lá bất kì {C:attention}giữ trên tay{},",
                     "phá hủy toàn bộ lá bài khác",
-                    "{C:attention,s:0.8}K{s:0.8} {C:hearts,s:0.8}Cơ{s:0.8} được ưu tiên",
+                    "{C:attention,s:0.8}Già{s:0.8} {C:hearts,s:0.8}Cơ{s:0.8} được ưu tiên",
                 },
             },
             j_cry_swarm = {
-                name = "Bầy đàn",
+                name = "Chuẩn Bầy",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu với",
-                    "tay bài cuối cùng của bạn",
+                    "Thắng một trận",
+                    "với tay bài cuối cùng",
                     "là {E:1,C:attention}Thùng Ngũ Quý"
                 },
             },
             j_cry_sync_catalyst = {
-                name = "Chất xúc tác đồng bộ",
+                name = "Xúc Tác Đồng Bộ",
                 text = {
-                    "Cân bằng số {C:chips}Chip{} và {C:mult}Điểm nhân{}",
-                    "{C:inactive,s:0.8}Này! Có vẻ tôi đã từng nhìn thứ đó lần nào đó rồi!",
+                    "Cân bằng {C:chips}Chip{} và {C:mult}Nhân{}",
+                    "{C:inactive,s:0.8}Này! Tôi đã từng nhìn thấy nó lần nào đó rồi!",
                 },
             },
 			j_cry_tax_fraud = {
-				name = "Gian lần Thuế",
+				name = "Gian Lận Thuế",
 				text = {
-					"Nhận {C:attention}$#1#{} mỗi {C:attention}Joker cho thuê",
-					"vào cuối mỗi vòng đấu",
+					"Nhận {C:attention}$#1#{} mỗi {C:attention}Joker Cho Thuê",
+					"ở cuối ván",
 				},
 			},
             j_cry_tenebris = {
-                name = "Tenebris",
+                name = "U Ám",
                 text = {
                     "{C:dark_edition}+#1#{} ô {C:attention} Joker{}",
-                    "Nhận {C:money}$#2#{} cuối mỗi vòng đấu",
+                    "Nhận {C:money}$#2#{} ở cuối ván",
                 },
             },
             j_cry_translucent = {
-                name = "Joker mờ ảo",
+                name = "Joker Trong Suốt",
                 text = {
-                    "Bán lá bài này để tạo",
-                    "một bản sao {C:attention}Chuối dễ hỏng{}",
-                    "cho một lá bài {C:attention}Joker{} ngẫu nhiên",
-                    "{s:0.8,C:inactive}(Sao chép bỏ qua tính tương thích của dễ hỏng )",
+                    "Bán lá này để tạo",
+                    "một bản sao {C:attention}Chuối Ngắn Hạn{}",
+                    "của một {C:attention}Joker{} ngẫu nhiên",
+                    "{s:0.8,C:inactive}(Bản sao bỏ qua tương thích Ngắn Hạn)",
                 },
             },
             j_cry_treacherous = {
-                name = "Joker phản bội",
+                name = "Joker Phản Bội",
                 text = {
-                    "{C:chips}+#1#{} Chip nếu chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_trick_or_treat = {
-                name = "Cho kẹo hay bị ghẹo",
+                name = "Cho Kẹo Hay Bị Ghẹo",
                 text = {
                     "Khi {C:attention}bán{}:",
-                    "{C:green}#1# trên #2#{} khả năng sẽ tạo {C:attention}2{} {C:cry_candy}Kẹo",
-                    "Bên cạnh đó, tạo ra lá Joker {X:cry_cursed,C:white}Nguyền rủa{}",
-                    "{C:inactive}(Có thể Overflow)"
+                    "Xác suất {C:green}#1# trên #2#{} để tạo {C:attention}2{} {C:cry_candy}Kẹo",
+                    "Nếu trật, tạo một Joker {X:cry_cursed,C:white}Nguyền Rủa{}",
+                    "{C:inactive}(Có thể tràn ô Joker)"
                 }
             },
             j_cry_tricksy = {
-                name = "Joker xảo quyệt",
+                name = "Joker Tinh Nghịch",
                 text = {
-                    "{C:chips}+#1#{} Chip nếu chơi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:chips}+#1#{} Chip nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_triplet_rhythm = {
-                name = "Nhịp điệu ba",
+                name = "Nhịp Điệu Ba",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi tay bài ghi điểm",
-                    "chứa {C:attention}duy nhất{} ba lá {C:attention}3",
+                    "{X:mult,C:white} X#1# {} Nhân khi tay bài ghi điểm",
+                    "chứa {C:attention}đúng{} ba lá {C:attention}3",
                 },
             },
             j_cry_tropical_smoothie = {
-                name = "Sinh tố nhiệt đới",
+                name = "Sinh Tố Nhiệt Đới",
                 text = {
-                    "Bán lá bài này",
+                    "Bán lá này",
 		    "để {C:attention}nhân{} giá trị",
-                    "các lá bài joker đang sử dụng lên {C:attention}X#1#{}",
+                    "của các joker đang sở hữu lên {C:attention}X#1#{}",
                 },
             },
             j_cry_unity = {
-                name = "Sự đoàn kết",
+                name = "Chuẩn Đoàn Kết",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu with",
-                    "tay bài cuối cùng của bạn",
-                    "một {E:1,C:attention}Thùng Cù lũ"
+                    "Thắng một trận đấu",
+                    "với tay bài cuối cùng",
+                    "là {E:1,C:attention}Thùng Cù lũ"
                 },
             },
             j_cry_universe = {
-                name = "Vũ trụ",
+                name = "Vũ Trụ",
                 text = {
-                    "Các lá bài {C:dark_edition}tinh tú{}",
-                    "sẽ cho {X:dark_edition,C:white}^#1#{} Điểm nhân",
+                    "Các lá bài {C:dark_edition}Thiên Tú{}",
+                    "cho {X:dark_edition,C:white}^#1#{} Nhân",
                 },
             },
             j_cry_universum = {
-                name = "Toàn diện vật",
+                name = "Toàn Diện Vật",
                 text = {
-                    "{C:attention}Tay bài Poker{} nhận",
-                    "{X:red,C:white} X#1# {} Điểm nhân và {X:blue,C:white} X#1# {} Chip",
+                    "Các {C:attention}tay Poker{} nhận",
+                    "{X:red,C:white} X#1# {} Nhân và {X:blue,C:white} X#1# {} Chip",
                     "khi lên cấp",
                 },
             },
             j_cry_unjust_dagger = {
-                name = "Con dao bất công",
+                name = "Dao Găm Bất Công",
                 text = {
-                    "Khi {C:attention}tiền cược{} được lựa chọn,",
-                    "phá hủy lá Joker ở phía bên trái",
-                    "và nhận {C:attention}1/5{} của",
-                    "giá trị của nó rồi biến thành {X:mult,C:white} X Điểm nhân {}",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#1# {C:inactive} Điểm nhân)",
+                    "Khi {C:attention}Blind{} được chọn,",
+                    "phá hủy Joker liền trái",
+                    "và thêm {C:attention}1/5{} của",
+                    "giá bán của nó vào {X:mult,C:white} XNhân {}",
+                    "{C:inactive}(Hiện tại {X:mult,C:white} X#1# {C:inactive} Nhân)",
                 },
             },
             j_cry_verisimile = {
                 name = "Không xác thực",
                 text = {
                     "Khi có bất kỳ xác suất nào",
-                    "mà nó kích hoạt {C:green}thành công{},",
-                    "lá Joker này nhận {X:red,C:white}X Điểm nhân{}",
-                    "bằng với {C:attention}tỷ lệ{} cược được liệt kê của nó",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#1# {C:inactive} Điểm nhân)",
+                    "kích hoạt {C:green}thành công{},",
+                    "Joker này nhận {X:red,C:white}XNhân{}",
+                    "bằng với {C:attention}tỷ lệ{} được liệt kê của nó",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#1# {C:inactive} Nhân)",
                 },
             },
             j_cry_virgo = {
                 name = "Xử Nữ",
                 text = {
-                    "Joker này cho {C:money}$#1#{} của {C:attention}giá trị bán ra{}",
-                    "nếu {C:attention}tay bài poker{} chứa một {C:attention}#2#{}",
-                    "Bán lá bài này đi để tạo",
-                    "{C:attention}Joker Vui vẻ{} {C:dark_edition}Đa sắc{} cho",
-                    "mọi {C:money}$4{} của {C:attention}giá trị bán ra{} {C:inactive}(Min 1){}",
+                    "Joker này tăng {C:money}$#1#{} {C:attention}giá bán{}",
+                    "nếu {C:attention}tay poker{} chứa {C:attention}#2#{}",
+                    "Bán lá này để tạo một",
+                    "{C:attention}Joker Vui Nhộn{} {C:dark_edition}Đa Sắc{} cho",
+                    "mỗi {C:money}$4{} {C:attention}giá bán{} {C:inactive}(Tối thiểu 1){}",
                 },
             },
             j_cry_wacky = {
-                name = "Joker lập dị",
+                name = "Joker Lập Dị",
                 text = {
-                    "{C:red}+#1#{} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#"
+                    "{C:red}+#1#{} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 }
             },
             j_cry_waluigi = {
                 name = "Waluigi",
                 text = {
-                    "Tất cả lá Joker cho",
-                    "{X:mult,C:white} X#1# {} Điểm nhân",
+                    "Mọi Joker đều cho",
+                    "{X:mult,C:white} X#1# {} Nhân",
                 },
             },
             j_cry_wario = {
                 name = "Wario",
                 text = {
-                    "Tất cả lá Joker cho",
+                    "Mọi Joker đều cho",
                     "{C:money}$#1#{} khi kích hoạt",
                 },
             },
             j_cry_wee_fib = {
                 name = "Weebonacci",
                 text = {
-                    "Lá Joker này nhận",
-                    "{C:mult}+#2#{} Điểm nhân khi chơi",
-                    "{C:attention}Át{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, or {C:attention}8{}",
-                    "is scored",
-                    "{C:inactive}(Hiện tại {C:mult}+#1#{C:inactive} Điểm nhân)",
+                    "Joker này thêm",
+                    "{C:mult}+#2#{} Nhân khi lá",
+                    "{C:attention}Át{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, hoặc {C:attention}8{}",
+                    "ghi điểm",
+                    "{C:inactive}(Hiện tại là {C:mult}+#1#{C:inactive} Nhân)",
                 },
             },
             j_cry_weegaming = {
                 name = "2D",
                 text = {
-                    "Tái kích hoạt lá {C:attention}2{}", --wee gaming
+                    "Tái kích lá {C:attention}2{}", --wee gaming
                     "thêm {C:attention:}#1#{} lần", --wee gaming?
                     "{C:inactive,s:0.8}Wee Gaming?{}",
                 },
             },
             j_cry_wheelhope = {
-                name = "Wheel of Hope",
+                name = "Bánh Xe Hi Vọng",
                 text = {
-                    "Lá Joker này nhận",
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi mà bị thua",
-                    "một {C:attention}Wheel of Fortune{}",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "Joker này thêm",
+                    "{X:mult,C:white} X#1# {} Nhân khi xoay",
+                    "{C:attention}Bánh Xe Số Phận{} bị thục lắc",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_whip = {
-                name = "The WHIP",
+                name = "WHIP",
                 text = {
-                    "Lá Joker này nhận {X:mult,C:white} X#1# {} Điểm nhân",
+                    "Joker này thêm {X:mult,C:white} X#1# {} Nhân",
                     "nếu {C:attention}tay bài đã chơi{} chứa một",
-                    "{C:attention}2{} và {C:attention}7{} khác chất",
-                    "{C:inactive}(Hiện tại {X:mult,C:white} X#2# {C:inactive} Điểm nhân)",
+                    "con {C:attention}2{} và con {C:attention}7{} khác chất",
+                    "{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
                 },
             },
             j_cry_wrapped = {
-                name = "Kẹo gói",
+                name = "Kẹo Gói",
                 text = {
-                    "Tạo ngẫu nhiên một {C:attention}Joker Đồ ăn{}",
-                    "trong {C:attention}#1#{} vòng đấu",
-                    "{C:red,E:2}lá tự hủy{}",
+                    "Tạo một {C:attention}Joker Thực Phẩm{} ngẫu nhiên",
+                    "trong {C:attention}#1#{} ván",
+                    "{C:red,E:2}tự hủy{}",
                 },
             },
             j_cry_wtf = {
-                name = "CÁI ĐỆCH!?",
+                name = "CHUẨN ĐỆCH!?",
                 text = {
-                    "{X:mult,C:white} X#1# {} Điểm nhân khi",
-                    "tay bài có chứa",
-                    "một {C:attention}#2#",
+                    "{X:mult,C:white} X#1# {} Nhân nếu",
+                    "tay bài đã chơi",
+                    "chứa {C:attention}#2#"
                 },
 		unlock = {
-                    "Thắng một trận đấu với",
-                    "tay bài cuối cùng của bạn",
-                    "một {E:1,C:attention}Mớ chết tiệt"
+                    "Thắng một trận",
+                    "với tay bài cuối cùng",
+                    "là {E:1,C:attention}Mớ Đệch"
                 },
             },
 	    j_cry_zooble = {
                 name = "Zooble",
                 text = {
-                    "nếu chơi tay bài mà",
-                    "{C:attention}không{} chứa một {C:attention}Sảnh{},",
-                    "Lá Joker này nhận {C:mult}+#2#{} Điểm nhân cho mỗi",
-                    "{C:attention}thứ bậc độc quyền{} trong tay bài đang tính điểm",
-                    "{C:inactive}(Hiện tại {C:mult}+#1#{C:inactive} Điểm nhân)",
+                    "nếu tay bài đã chơi",
+                    "{C:attention}không{} chứa {C:attention}Sảnh{},",
+                    "Joker này thêm {C:mult}+#2#{} Nhân cho mỗi",
+                    "{C:attention}bậc riêng biệt{} trong tay bài tính điểm",
+                    "{C:inactive}(Hiện tại là {C:mult}+#1#{C:inactive} Nhân)",
                 },
             },
         },
@@ -2359,7 +2358,7 @@ return {
                 name = "Risti",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Thăng cấp",
+                    "Nâng level",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
                     "và {C:attention}#3#{}",
@@ -2369,7 +2368,7 @@ return {
                 name = "Pata",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Thăng cấp",
+                    "Năng level",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
                     "và {C:attention}#3#{}",
@@ -2379,7 +2378,7 @@ return {
                 name = "Kaikki",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Thăng cấp",
+                    "Nâng level",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
                     "và {C:attention}#3#{}",
@@ -2388,19 +2387,19 @@ return {
             c_cry_nstar = {
                 name = "Sao Neutron",
                 text = {
-                    "Nâng cấp ngẫu nhiên",
-                    "tay bài bất kì lên",
+                    "Nâng level một tay bài",
+                    "ngẫu nhiên lên",
                     "{C:attention}1{} cấp cho mỗi lá",
-                    "{C:attention}Sao Neutron{} được sử dụng",
+                    "{C:attention}Sao Neutron{} được dùng",
                     "trong trận này",
-                    "{C:inactive}(Hiện tại{C:attention} #1#{C:inactive}){}",
+                    "{C:inactive}(Hiện tại là{C:attention} #1#{C:inactive}){}",
                 },
             },
             c_cry_planetlua = {
                 name = "Planet.lua",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng để",
-                    "nâng cấp toàn bộ",
+                    "Xác suất {C:green}#1# trên #2#{} để",
+                    "nâng level mọi",
                     "{C:legendary,E:1}tay bài poker{}",
                     "lên {C:attention}1{} cấp",
                 },
@@ -2409,7 +2408,7 @@ return {
                 name = "Hertta",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Thăng cấp",
+                    "Nâng level",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
                     "và {C:attention}#3#{}",
@@ -2419,7 +2418,7 @@ return {
                 name = "Ruutu",
                 text = {
                     "({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-                    "Thăng cấp",
+                    "Nâng level",
                     "{C:attention}#1#{},",
                     "{C:attention}#2#{},",
                     "và {C:attention}#3#{}",
@@ -2428,203 +2427,204 @@ return {
             c_cry_marsmoons = {
                 name = 'Phobos & Deimos',
                 text = {
-                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Thăng cấp",
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Nâng level",
                     "{C:attention}#2#",
-                    "{C:mult}+#3#{} Điểm nhân và",
+                    "{C:mult}+#3#{} Nhân và",
                     "{C:chips}+#4#{} chip"
                 }
             },
             c_cry_void = {
-                name = 'Hư vô',
+                name = 'Hư Vô',
                 text = {
-                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Thăng cấp",
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Nâng level",
                     "{C:attention}#2#",
-                    "{C:mult}+#3#{} Điểm nhân và",
+                    "{C:mult}+#3#{} Nhân và",
                     "{C:chips}+#4#{} chip"
                 }
             },
             c_cry_asteroidbelt = {
-                name = 'Vành đai tiểu hành tinh',
+                name = 'Vành Đai Tiểu Hành Tinh',
                 text = {
-                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Thăng cấp",
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Nâng level",
                     "{C:attention}#2#",
-                    "{C:mult}+#3#{} Điểm nhân và",
+                    "{C:mult}+#3#{} Nhân và",
                     "{C:chips}+#4#{} chip"
                 }
             },
             c_cry_universe = {
-                name = 'Toàn bộ thực thể chết tiệt trong vũ trụ',
+                name = 'Toàn Bộ Cái Vũ Trụ Chết Tiệt',
                 text = {
-                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Thăng cấp",
+                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Nâng level",
                     "{C:attention}#2#",
-                    "{C:mult}+#3#{} Điểm nhân và",
+                    "{C:mult}+#3#{} Nhân và",
                     "{C:chips}+#4#{} chip"
                 }
             },
 	    c_cry_sunplanet = {
-                name = 'Sol',
+                name = 'Mặt Trời',
                 text = {
                     "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
-                    "Thăng cấp sức mạnh cho",
-		    "các tay bài {C:attention}Thăng thiên{} lên {X:gold,C:white}0.05{}",
-		    "{C:inactive}(Hiện tại {X:gold,C:white}X(#2#^asc){C:inactive})"
+                    "Nâng sức mạnh cho",
+		    "các tay bài {C:attention}Thăng Thiên{} lên {X:gold,C:white}0.05{}",
+		    "{C:inactive}(Hiện tại là {X:gold,C:white}X(#2#^asc){C:inactive})"
                 }
             },
         },
         Sleeve = {
 			sleeve_cry_bountiful_sleeve = {
-				name = "Bọc Phong phú",
+				name = "Bọc Phong Phú",
 				text = {
-                    "Sau khi {C:blue}Chơi{} hoặc {C:red}Bỏ{},",
-                    "luôn rút {C:attention}5{} lá bài"
+                    "Sau khi {C:blue}Chơi{} hoặc {C:red}Bỏ Bài{},",
+                    "luôn bốc {C:attention}5{} lá"
 				},
 			},
             sleeve_cry_ccd_sleeve = {
                 name = "Bọc CCD",
                 text = {
-                    "Every card is also",
-                    "a {C:attention}random{} consumable",
+                    "Mỗi lá bài đều là",
+                    "một lá tiêu thụ",
+                    "{C:attention}ngẫu nhiên{}"
                 },
             },
             sleeve_cry_conveyor_sleeve = {
-                name = "Bọc Băng tải",
+                name = "Bọc Băng Chuyền",
                 text = {
-                    "Các Joker có thể {C:attention}không{} di chuyển được",
-                    "vào đầu mỗi vòng đấu,",
-                    "{C:attention}nhân đôi{} lá Joker bên phải xa nhất",
-                    "và {C:attention}phá hủy{} lá Joker bên trái xa nhất",
+                    "{C:attention}Không thể{} di chuyển các lá Joker",
+                    "Vào mỗi đầu ván,",
+                    "{C:attention}nhân đôi{} Joker ở tít bên phải",
+                    "và {C:attention}phá hủy{} Joker ở tít bên trái",
                 },
             },
             sleeve_cry_critical_sleeve = {
-                name = "Bọc Thiết yếu",
+                name = "Bọc Chí Mạng",
                 text = {
                     "Sau mỗi tay bài đã chơi,",
-                    "{C:green}1 trên 4{} khả năng cho {X:dark_edition,C:white} ^2 {} Điểm nhân",
-                    "{C:green}1 trên 8{} khả năng cho {X:dark_edition,C:white} ^0.5 {} Điểm nhân",
+                    "Xác suất {C:green}#1# trên 4{} cho {X:dark_edition,C:white} ^2 {} Nhân",
+                    "Xác suất {C:green}#1# trên 8{} cho {X:dark_edition,C:white} ^0.5 {} Nhân",
                 },
             },
             sleeve_cry_encoded_sleeve = {
-                name = "Bọc Được mã hóa",
+                name = "Bọc Mã Hóa",
                 text = {
-                    "Bắt đầu với lá {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
-                    "và một lá {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
-                    "Chỉ có lá bài {C:cry_code}Code{} xuất hiện trong cửa hàng",
+                    "Bắt đầu với {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+                    "và {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+                    "Chỉ có {C:cry_code}Lá Code{} xuất hiện trong shop",
                 },
             },
             sleeve_cry_equilibrium_sleeve = {
-                name = "Bọc Bình đẳng",
+                name = "Bọc Cân Bằng",
                 text = {
                     "Mọi lá bài đều có",
-                    "{C:attention}chung tỉ lệ{}",
+                    "{C:attention}cùng xác suất{}",
                     "xuất hiện trong shop,",
                     "bắt đầu với",
-                    "{C:attention,T:v_overstock_plus}+2 ô Shop",
+                    "{C:attention,T:v_overstock_plus}Siêu Quá Trữ",
                 },
             },
             sleeve_cry_infinite_sleeve = {
-                name = "Bọc Không giới hạn",
+                name = "Bọc Vộ Cực",
                 text = {
-                    "Bạn có thể chọn {C:attention}bất kì",
-                    "số lượng lá bài",
+                    "Bạn có thể chọn {C:attention}bất kỳ",
+                    "số lượng lá bài nào",
                     --someone do the hand size thing for me
                 },
             },
             sleeve_cry_misprint_sleeve = {
-                name = "Bọc In lỗi",
+                name = "Bọc Lỗi In",
                 text = {
-                    "Các giá trị của các lá bài",
-                    "đều {C:attention}ngẫu nhiên",
+                    "{C:attention}Ngẫu nhiên hoá{} giá trị",
+                    "của mọi lá bài",
                 },
             },
             sleeve_cry_redeemed_sleeve = {
-                name = "Bọc Đổi thưởng",
+                name = "Bọc Quy Đổi",
                 text = {
-                    "Khi một {C:attention}Voucher{} được bán,",
-                    "tăng nó thêm một {C:attention}mức độ cao hơn",
+                    "Khi mua một {C:attention}Phiếu{},",
+                    "nhận ngay {C:attention}các cấp bổ sung{} của nó",
                 },
             },
 			sleeve_cry_spooky_sleeve = {
-                name = "Bọc Ma quái",
+                name = "Bọc Ma Quái",
                 text = {
-                    "Bắt đầu với một {C:attention,T:j_cry_chocolate_dice}Xúc xắc sô cô la{} {C:eternal}Vĩnh cửu",
-                    "Sau mỗi {C:attention}Ante{}, tạo một",
-                    "{C:cry_candy}Kẹo{} và lá Joker bị {X:cry_cursed,C:white}Bị nguyền{}",
+                    "Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla {C:eternal}Vĩnh Hằng",
+                    "Sau mỗi {C:attention}Ante{}, tạo ra",
+                    "{C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền rủa",
                 }
             },
             sleeve_cry_wormhole_sleeve = {
-                name = "Bọc Lỗ giun",
+                name = "Bọc Lỗ Giun",
                 text = {
-                    "Bắt đầu với một lá Joker {C:cry_exotic}Sử thi{C:attention}",
-                    "Các lá Joker thêm {C:attention}20X{} tỉ lệ",
-                    "trở nên {C:dark_edition}Âm bản",
-                    "{C:attention}-2{} Ô Joker",
+                    "Bắt đầu với một {C:attention}Joker {C:cry_exotic}Ngoại Lai",
+                    "Tăng xác suất xuất hiện Joker",
+                    "{C:dark_edition}Âm bản lên {C:attention}20 lần",
+                    "{C:attention}-2{} ô Joker",
                 },
             },
 			sleeve_cry_legendary_sleeve = {
-                name = "Bọc Huyền thoại",
+                name = "Bọc Huyền Thoại",
                 text = {
-                    "Start with an {C:legendary}Legendary{C:legendary} Joker",
-                    "{C:green}1 in 5{} chance to create another",
-					"when)Trùm cược Blind is defeated {C:inactive}(must have room){}",
+                    "Bắt đầu với một Joker {C:legendary}Huyền Thoại",
+                    "Xác suất {C:green}1 trên 5{}tạo thêm một lá nữa",
+					"khi Boss Blind bị đánh bại {C:inactive}(Phải có ô trống)",
                 },
             },
         },
         Spectral = {
             c_cry_adversary = {
-                name = "Kẻ thù",
+                name = "Kẻ Thù",
                 text = {
-                    "{C:red}Tất cả{} các lá bài {C:attention}Joker{} trở thành {C:dark_edition}Âm bản{},",
-                    "{C:red}Tất cả{} các lá bài {C:attention}Joker{} trong shop sẽ tốn",
-                    "{C:red}gấp hai lần{} cho tới cuốt trận đấu",
+                    "{C:red}Mọi{} {C:attention}Joker{} đang sở hữu trở thành {C:dark_edition}Âm bản{},",
+                    "{C:red}Mọi{} {C:attention}Joker{} trong shop sẽ tốn",
+                    "{C:red}gấp hai lần{} cho tới cuối trận",
                 },
             },
             c_cry_analog = {
-                name = "Tương tự",
+                name = "Tương Tự",
                 text = {
-                    "Tạo {C:attention}#1#{} bản sao cho",
-                    "{C:attention}Joker{} bất kỳ, phá hủy",
-                    "mọi lá Joker, {C:attention}+#2#{} Ante",
+                    "Tạo {C:attention}#1#{} bản sao của",
+                    "một {C:attention}Joker{} bất kỳ, phá hủy",
+                    "mọi Joker khác, {C:attention}+#2#{} Ante",
                 },
             },
             c_cry_chambered = {
-                name = "Tạo khoang",
+                name = "Tạo Khoang",
                 text = {
-                    "Tạo bản sao {C:attention}#1#{} {C:dark_edition}Âm bản{}",
-                    "cho một",
-                    "vật phẩm {C:attention}bất kỳ{}",
-                    "thuộc quyền sở hữu của bạn",
-                    "{C:inactive,s:0.8}Không sao chép Tạo khoang{}"
+                    "Tạo {C:attention}#1#{} bản sao {C:dark_edition}Âm bản{}",
+                    "cho một lá tiêu thụ",
+                    "{C:attention}ngẫu nhiên{} thuộc",
+                    "sở hữu của bạn",
+                    "{C:inactive,s:0.8}Không sao chép Tạo Khoang{}"
                 },
             },
             c_cry_conduit = {
-                name = "Ống chuyền",
+                name = "Ống Dẫn",
                 text = {
-                    "tráo đổi {C:attention}các ấn bản{} của",
-                    "{C:attention}2{} lá bài được chọn hoặc các lá {C:attention}Joker{}",
+                    "Tráo đổi {C:attention}ấn bản{} của",
+                    "{C:attention}2{} lá bài hoặc {C:attention}Joker{} được chọn",
                 },
             },
             c_cry_gateway = {
-                name = "Cổng vào",
+                name = "Cánh Cổng",
                 text = {
-                    "Tạo ngẫu nhiên một",
-                    "{C:attention}Joker{} {C:cry_exotic,E:1}Sử thi{}, phá hủy",
-                    "các lá Joker khác",
+                    "Tạo một {C:attention}Joker{}",
+                    "{C:cry_exotic,E:1}Ngoại Lai{} ngẫu nhiên,",
+                    "phá huỷ các lá Joker khác",
                 },
             },
             c_cry_hammerspace = {
-                name = "Búa không gian",
+                name = "Khoang Búa",
                 text = {
-                    "Thêm {C:attention}các vật phẩm{} ngẫu nhiên",
-                    "như thể chúng là các {C:dark_edition}Cường hóa{}",
-                    "cho các lá bài trên tay",
+                    "Thêm các {C:attention}hiệu ứng tiêu thụ{}",
+                    "ngẫu nhiên như thể chúng là {C:dark_edition}Cường Hóa{}",
+                    "lên các lá bài giữ trên tay",
                 },
             },
             c_cry_lock = {
                 name = "Khóa",
                 text = {
-                    "Loại bỏ {C:red}mọi{} sticker",
+                    "Loại bỏ {C:red}mọi{} nhãn",
                     "khỏi {C:red}mọi{} Joker,",
-                    "sao đó thêm sự {C:purple,E:1}Vĩnh cửu{}",
+                    "sao đó thêm {C:purple,E:1}Vĩnh Hằng{}",
                     "cho một {C:attention}Joker{} ngẫu nhiên",
                 },
             },
@@ -2632,801 +2632,801 @@ return {
                 name = "POINTER://",
                 text = {
                     "Tạo một lá bài",
-                    "mà {C:cry_code}bạn chọn",
-                    "{C:inactive,s:0.8}(trừ các lá Sử thi #1#)",
+                    "theo {C:cry_code}mong muốn",
+                    "{C:inactive,s:0.8}(#1# ngoại trừ Joker Ngoại Lai)",
                 },
             },
             c_cry_replica = {
-                name = "Bản chép lại",
+                name = "Bản Sao",
                 text = {
-                    "Chuyển đổi các lá bài",
-                    "cầm trên tay",
-                    "thành một lá bài {C:attention}ngẫu nhiên{}",
-                    "cầm trên tay",
+                    "Biến đổi mọi lá",
+                    "giữ trên tay thành",
+                    "một lá {C:attention}ngẫu nhiên{}",
+                    "giữ trên tay",
                 },
             },
             c_cry_ritual = {
-                name = "Nghi thức",
+                name = "Nghi Thức",
                 text = {
-                    "Áp dụng {C:dark_edition}Âm bản{}, {C:dark_edition}Khảm mảnh{},",
-                    "hoặc {C:dark_edition}tinh tú{} thành {C:attention}#1#{}",
-                    "lá bài được chọn trên tay",
+                    "Áp dụng {C:dark_edition}Âm bản{}, {C:dark_edition}Khảm Mảnh{},",
+                    "hoặc {C:dark_edition}Thiên Tú{} lên {C:attention}#1#{}",
+                    "lá đã chọn trong tay",
                 },
             },
             c_cry_source = {
-                name = "Nguồn gốc",
+                name = "Nguồn",
                 text = {
-                    "Thêm một {C:cry_code}Con dấu xanh lá{}",
-                    "vào {C:attention}#1#{} lá bài được chọn",
-                    "trên tay",
+                    "Thêm một {C:cry_code}Con Dấu Lục{}",
+                    "vào {C:attention}#1#{} lá đã chọn",
+                    "trong tay",
                 },
             },
             c_cry_summoning = {
-                name = "Triệu hồi",
+                name = "Triệu Hồi",
                 text = {
-                    "Tạo ngẫu nhiên một",
-                    "lá {C:joker}Joker{} {C:cry_epic}Sử thi{}, phá hủy",
+                    "Tạo một {C:joker}Joker{}",
+                    "{C:cry_epic}Sử Thi{}, phá hủy",
                     "một {C:joker}Joker{} ngẫu nhiên",
                 },
             },
             c_cry_trade = {
-                name = "Lái buôn",
+                name = "Lái Buôn",
                 text = {
-                    "{C:attention}Mất{} ngẫu nhiên một Voucher,",
-                    "được {C:attention}2{} Voucher ngẫu nhiên",
+                    "{C:attention}Mất{} một Phiếu ngẫu nhiên,",
+                    "nhận {C:attention}2{} Phiếu ngẫu nhiên",
                 },
             },
             c_cry_typhoon = {
                 name = "Cơn bão",
                 text = {
-                    "Thêm một {C:cry_azure}Dấu ấn xanh lam{}",
-                    "cho {C:attention}#1#{} lá bài được chọn",
+                    "Thêm một {C:cry_azure}Con Dấu Xanh Thẳm{}",
+                    "cho {C:attention}#1#{} lá đã chọn",
                     "trên tay",
                 },
             },
             c_cry_vacuum = {
-                name = "Hút bụi",
+                name = "Chân Không",
                 text = {
-                    "Loại bỏ {C:red}mọi {C:green}sửa đổi{}",
-                    "khỏi {C:red}mọi{} lá bài cầm trên tay,",
-                    "Nhận {C:money}$#1#{} mỗi {C:green}sửa đổi{} được loại bỏ",
-                    "{C:inactive,s:0.7}(ví dụ. Cường hóa, Dấu ấn, Ấn bản)",
+                    "Loại bỏ {C:red}mọi {C:green}Sửa Đổi{}",
+                    "khỏi {C:red}mọi{} lá giữ trên tay,",
+                    "Nhận {C:money}$#1#{} mỗi {C:green}Sửa Đổi{} được loại bỏ",
+                    "{C:inactive,s:0.7}(VD: Cường hóa, Dấu ấn, Ấn bản)",
                 },
             },
             c_cry_white_hole = {
-                name = "Lỗ trắng",
+                name = "Lỗ Trắng",
                 text = {
-                    "{C:attention}Loại bỏ{} mọi lá bài có cấp độ,",
-                    "nâng cấp tay bài poker {C:legendary,E:1}chơi nhiều nhất{}",
+                    "{C:attention}Loại bỏ{} mọi cấp độ tay bài,",
+                    "nâng level tay poker {C:legendary,E:1}chơi nhiều nhất{}",
                     "lên {C:attention}3{} cho mỗi cấp độ được loại bỏ",
                 },
             },
         },
         Stake = {
             stake_cry_pink = {
-                name = "Stake Hồng",
+                name = "Cược Hồng",
                 colour = "Hồng", --this is used for auto-generated sticker localization
                 text = {
-                    "Điểm số yêu cầu tăng nhanh hơn",
-                    "với mỗi {C:attention}Ante",
+                    "Điểm yêu cầu tăng",
+                    "nhanh hơn sau mỗi {C:attention}Ante",
                 },
             },
             stake_cry_brown = {
-                name = "Stake Nâu",
+                name = "Cược Nâu",
                 colour = "Nâu",
                 text = {
-                    "Mọi {C:attention}sticker{} tương thích",
-                    "với nhau",
+                    "Mọi {C:attention}nhãn{} đều",
+                    "tương thích với nhau",
                 },
             },
             stake_cry_yellow = {
-                name = "Stake Vàng",
-                colour = "Vàng",
+                name = "Cược Vàng Thường",
+                colour = "Vàng Thường",
                 text = {
-                    "Các {C:attention}Sticker{} có thể xuất hiện trong",
-                    "tất cả các vật phẩm có thể mua được",
+                    "{C:attention}Nhãn{} có thể xuất hiện trên",
+                    "tất cả vật phẩm mua được",
                 },
             },
             stake_cry_jade = {
-                name = "Stake Cẩm thạch",
-                colour = "Cẩm thạch",
+                name = "Cược Cẩm Thạch",
+                colour = "Cẩm Thạch",
                 text = {
-                    "Các lá bài được rút có thể bị {C:attention}úp mặt xuống{}",
+                    "Lá bài có thể bị {C:attention}lật sấp{}",
                 },
             },
             stake_cry_cyan = {
-                name = "Stake Lục lam",
-                colour = "Lục lam",
+                name = "Cược Lục Lam",
+                colour = "Lục Lam",
                 text = {
-                    "Các lá Joker {C:green}hiếm{} và {C:red}Quý{} đều",
-                    "có thể ít xuất hiện hơn trước",
+                    "Các lá Joker {C:green}Ít Phổ Biến{} và {C:red}Hiếm{}",
+                    "đều ít xuất hiện hơn trước",
                 },
             },
             stake_cry_gray = {
-                name = "Stake xám",
+                name = "Cược Xám",
                 colour = "Xám",
                 text = {
-                    "Mỗi reroll sẽ tăng lên {C:attention}$2{} mỗi lần",
+                    "Mỗi lần Gieo lại sẽ tăng giá gieo lên {C:attention}$2{}",
                 },
             },
             stake_cry_crimson = {
-                name = "Stake đỏ thẩm",
-                colour = "Đỏ thẫm",
+                name = "Cược Đỏ Thẩm",
+                colour = "Đỏ Thẫm",
                 text = {
-                    "Các Voucher sẽ luôn hết ở {C:attention}mọi{} Ante",
+                    "Phiếu chỉ được làm mới ở Ante {C:attention}chẵn{}",
                 },
             },
             stake_cry_diamond = {
-                name = "Stake Kim cương",
-                colour = "Kim cương",
+                name = "Cược Kim Cương",
+                colour = "Kim Cương",
                 text = {
-                    "Cần đánh đến Ante thứ {C:attention}10{} để thắng",
+                    "Cần đánh qua Ante {C:attention}10{} để thắng",
                 },
             },
             stake_cry_amber = {
-                name = "Stake Hổ phách",
-                colour = "Hổ phách",
+                name = "Cược Hổ Phách",
+                colour = "Hổ Phách",
                 text = {
-                    "{C:attention}-1{} ô Gói tăng cường",
+                    "{C:attention}-1{} ô Gói Bài",
                 },
             },
             stake_cry_bronze = {
-                name = "Stake Đồng",
+                name = "Cược Đồng",
                 colour = "Đồng",
                 text = {
-                    "Các Voucher sẽ đắt lên {C:attention}50%{} giá trị",
+                    "Phiếu đắt hơn {C:attention}50%{} so với trước",
                 },
             },
             stake_cry_quartz = {
-                name = "Stake Thạch anh",
-                colour = "Thạch anh",
+                name = "Cược Thạch Anh",
+                colour = "Thạch Anh",
                 text = {
-                    "Các Joker có thể bị {C:attention}Ghim lại{}",
-                    "{s:0.8,C:inactive}(Giữ nguyên vị trí ở bên trái nhất){}",
+                    "Joker có thể {C:attention}Bị Ghim{}",
+                    "{s:0.8,C:inactive}(Giữ nguyên vị trí ở tít bên trái){}",
                 },
             },
             stake_cry_ruby = {
-                name = "Stake Hồng ngọc",
-                colour = "Hồng ngọc",
+                name = "Cược Hồng Ngọc",
+                colour = "Hồng Ngọc",
                 text = {
-                    "Các tiền cược cược {C:attention}Lớn{} có thể trở thành",
-                    "các {C:attention)Trùm cược{}",
+                    "{C:attention}Big{} Blind có thể",
+                    "trở thành {C:attention)Boss{} Blind",
                 },
             },
             stake_cry_glass = {
-                name = "Stake Thủy tinh",
-                colour = "Thủy tinh",
+                name = "Cược Thủy Tinh",
+                colour = "Thủy Tinh",
                 text = {
                     "Các lá bài có thể {C:attention}vỡ{} khi ghi điểm",
                 },
             },
             stake_cry_sapphire = {
-                name = "Stake Lam ngọc",
-                colour = "Lam ngọc",
+                name = "Cược Lam Ngọc",
+                colour = "Lam Ngọc",
                 text = {
-                    "Mất {C:attention}25%{} số tiền hiện tại",
+                    "Mất {C:attention}25%{} số tiền hiện có",
                     "vào cuối mỗi ante",
                     "{s:0.8,C:inactive}(Tối đa $10){}",
                 },
             },
             stake_cry_emerald = {
-                name = "Stake Ngọc lục bảo",
-                colour = "Ngọc lục bảo",
+                name = "Cược Ngọc Lục Bảo",
+                colour = "Ngọc Lục Bảo",
                 text = {
-                    "Các lá bài, gói, và voucher",
-                    "có thể {C:attention}úp mặt{}",
+                    "Lá bài, gói bài, và phiếu",
+                    "có thể bị {C:attention}lật sấp{}",
                     "{s:0.8,C:inactive}(Không thể nhìn cho tới khi mua){}",
                 },
             },
             stake_cry_platinum = {
-                name = "Stake Bạch kim",
-                colour = "Bạch kim",
+                name = "Cược Bạch Kim",
+                colour = "Bạch Kim",
                 text = {
-                    "Mọi tiền cược nhỏ (small blind) {C:attention}bị loại bỏ{}",
+                    "Small Blind {C:attention}bị loại bỏ{}",
                 },
             },
             stake_cry_twilight = {
-                name = "Stake Chạng Vạng",
+                name = "Cược Chạng Vạng",
                 colour = "Chạng Vạng",
                 text = {
-                    "Mọi lá bài có thể giống {C:attention}Chuối tiêu{}",
-                    "{s:0.8,C:inactive}(1 trên 10 khả năng bị phá hủy mỗi vòng đấu){}",
+                    "Mọi lá bài có thể có {C:attention}Chuối Tiêu{}",
+                    "{s:0.8,C:inactive}(Xác suất 1 trên 10 bị phá hủy mỗi ván){}",
                 },
             },
             stake_cry_verdant = {
-                name = "Stake Xanh ngát",
-                colour = "Xanh ngát",
+                name = "Cược Xanh Ngát",
+                colour = "Xanh Ngát",
                 text = {
-                    "Điểm yêu cầu tăng nhanh hơn",
-                    "cho mỗi {C:attention}Ante",
+                    "Điểm yêu cầu tăng",
+                    "nhanh hơn sau mỗi {C:attention}Ante",
                 },
             },
             stake_cry_ember = {
-                name = "Stake Than hồng",
-                colour = "Than hồng",
+                name = "Cược Than Hồng",
+                colour = "Than Hồng",
                 text = {
                     "Mọi vật phẩm đều vô giá trị khi bán",
                 },
             },
             stake_cry_dawn = {
-                name = "Stake Bình minh",
-                colour = "Bình minh",
+                name = "Cược Bình Minh",
+                colour = "Bình Minh",
                 text = {
-                    "Các lá Tarot và Quang phổ nhắm mục tiêu ít hơn {C:attention}1",
+                    "Các lá Tarot và Siêu Lịnh nhắm mục tiêu ít hơn {C:attention}1",
                     "lá bài",
                     "{s:0.8,C:inactive}(Tối thiểu là 1){}",
                 },
             },
             stake_cry_horizon = {
-                name = "Stake Hoàng hôn",
-                colour = "Hoàng hôn",
+                name = "Cược Hoàng Hôn",
+                colour = "Hoàng Hôn",
                 text = {
-                    "Khi tiền cược được chọn, thêm một",
-                    "{C:attention}lá bài bất kì{} vào bộ bài",
+                    "Khi blind được chọn, thêm một",
+                    "{C:attention}lá bài ngẫu nhiên{} vào bộ bài",
                 },
             },
             stake_cry_blossom = {
-                name = "Stake Hoa",
+                name = "Cược Hoa",
                 colour = "Hoa",
                 text = {
-                    "Trùm cược {C:attention}Cuối cùng{} có thể xuất hiện",
+                    "Boss Blind {C:attention}Cuối{} có thể xuất hiện",
                     "ở {C:attention}bất kì{} Ante nào",
                 },
             },
             stake_cry_azure = {
-                name = "Stake Xanh dương nhạt",
-                colour = "Xanh dương nhạt",
+                name = "Cược Xanh Thẳm",
+                colour = "Xanh Thẳm",
                 text = {
-                    "Mọi lá Joker đều bị suy giảm giá trị",
-                    "khoảng {C:attention}20%{}",
+                    "Mọi Joker bị giảm giá trị",
+                    "đi {C:attention}20%{}",
                 },
             },
             stake_cry_ascendant = {
-                name = "Stake Ưu việt",
-                colour = "Ưu việt",
+                name = "Cược Ưu Việt",
+                colour = "Ưu Việt",
                 text = {
-                    "{C:attention}-1{} ô Shop",
+                    "{C:attention}-1{} ô lá bài trong shop",
                 },
             },
         },
         Tag = {
             tag_cry_astral = {
-                name = "Nhãn tinh tú",
+                name = "Nhãn Thiên Tú",
                 text = {
-                    "Ấn bản shop kế nghiệm",
-                    "lá Joker sẽ miễn phí và",
-                    "trở thành {C:dark_edition}Tinh tú{}",
+                    "Joker bản chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Thiên Tú"
                 },
             },
             tag_cry_banana = {
-                name = "Nhãn chuối tiêu",
+                name = "Nhãn Chuối Tiêu",
                 text = {
                     "Tạo {C:attention}#1#",
-                    "{C:inactive}(Cần ô trống){}",
+                    "{C:inactive}(Phải có ô trống){}",
                 },
             },
             tag_cry_bettertop_up = {
-                name = "Nhãn nạp tốt hơn",
+                name = "Nhãn Tiếp Tế Tốt",
                 text = {
-                    "Tạo lên tới {C:attention}#1#",
-                    "lá bài Joker {C:green}Hiếm{}",
-                    "{C:inactive}(Cần ô trống){}",
+                    "Tạo tối đa {C:attention}#1#",
+                    "Joker {C:green}Ít Phổ Biến{}",
+                    "{C:inactive}(Phải có ô trống){}",
                 },
             },
             tag_cry_better_voucher = {
-                name = "Nhãn Voucher Hoàng kim",
+                name = "Nhãn Phiếu Hoàng Kim",
                 text = {
-                    "Thêm một cấp {C:attention}#1#{} Voucher",
-                    "vào cửa hàng kế tiếp",
+                    "Thêm một Phiếu cấp {C:attention}#1#{}",
+                    "vào shop tiếp theo",
                 },
             },
             tag_cry_blur = {
-                name = "Nhãn mờ",
+                name = "Nhãn Mờ Ảo",
                 text = {
-                    "Vào cửa hàng ấn bản kế nhiệm",
-                    "lá Joker sẽ miễn phí và",
-                    "trở nên {C:dark_edition}Mờ ảo{}",
+                    "Joker bản chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Mờ Ảo"
                 },
             },
             tag_cry_booster = {
-                name = "Nhãn tăng cường",
+                name = "Nhãn Gói Bài",
                 text = {
-                    "{C:cry_code}Gói tăng cường{} kế tiếp có",
-                    "các lá bài được {C:attention}nhân đôi{} và",
-                    "các lựa chọn cũng được {C:attention}nhân đôi{}",
+                    "{C:cry_code}Gói Bài{} kế tiếp có",
+                    "số lá bài được {C:attention}nhân đôi{} và",
+                    "số lựa chọn cũng được {C:attention}nhân đôi{}",
                 },
             },
             tag_cry_bundle = {
-                name = "Nhãn gói",
+                name = "Nhãn Gói Sưu Tập",
                 text = {
-                    "Tạo một {C:attention}Nhãn tiêu chuẩn{}, {C:tarot}Nhãn bùa{},",
-                    "{C:attention}Nhãn hề{}, và {C:planet}Nhãn sao băng",
+                    "Tạo một {C:attention}Nhãn Tiêu Chuẩn{}, {C:tarot}Nhãn Nùa Chú{},",
+                    "{C:attention}Nhãn Hề{}, và {C:planet}Nhãn Sao Băng",
                 },
             },
             tag_cry_cat = {
-                name = "Nhãn mèo",
-                text = { "Meow.", "{C:inactive}Cấp độ {C:dark_edition}#1#" },
+                name = "Nhãn Mèo",
+                text = { "Meo.", "{C:inactive}Cấp độ {C:dark_edition}#1#" },
             },
             tag_cry_console = {
-                name = "Nhãn bảng điều khiển",
+                name = "Nhãn Bảng Điều",
                 text = {
-                    "Cho miễn phí một",
-                    "{C:cry_code}Gói Chương trình",
+                    "Nhận một",
+                    "{C:cry_code}Gói Chương Trình{} miễn phí",
                 },
             },
             tag_cry_double_m = {
                 name = "Nhãn M Đôi",
                 text = {
-                    "Shop có thêm",
-                    "{C:legendary}M Joker{C:dark_edition}Vui vẻ{} ",
+                    "Shop có một",
+                    "{C:legendary}Joker M{C:dark_edition}Vui Nhộn{} ",
                 },
             },
             tag_cry_empowered = {
-                name = "Nhãn Uỷ quyền",
+                name = "Nhãn Siêu Cường",
                 text = {
-                    "Cho miễn phí một {C:spectral}Gói Quang Phổ",
-                    "cùng với {C:legendary,E:1}Lá linh hồn{} và {C:cry_exotic,E:1}Cổng vào{}",
+                    "Nhận một {C:spectral}Gói Siêu Linh{} miễn phí",
+                    "chứa {C:legendary,E:1}Linh Hồn{} và {C:cry_exotic,E:1}Cánh Cổng{}",
                 },
             },
             tag_cry_epic = {
-                name = "Nhãn Sử thi",
+                name = "Nhãn Sử Thi",
                 text = {
-                    "Shop sẽ chỉ còn giá giảm gấp 2 lần đối với",
-                    "{C:cry_epic}Joker sử thi",
+                    "Shop có một {C:cry_epic}Joker",
+                    "{C:cry_epic}Sử Thi{} giảm nửa giá",
                 },
             },
             tag_cry_gambler = {
                 name = "Nhãn Con Bạc",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng để tạo",
-                    "một {C:cry_exotic,E:1}Nhãn Uỷ quyền",
+                    "Xác suất {C:green}#1# trên #2#{} để tạo",
+                    "ra {C:cry_exotic,E:1}Nhãn Siêu Cường",
                 },
             },
             tag_cry_glass = {
-                name = "Nhãn dễ vỡ",
+                name = "Nhãn Mỏng Manh",
                 text = {
-                    "Vào shop kế nhiệm",
-                    "lá Joker sẽ miễn phí và",
-                    "trở nên {C:dark_edition}Dễ vỡ{}",
+                    "Joker tiêu chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Mỏng Manh"
                 },
             },
             tag_cry_glitched = {
-                name = "Nhãn nhiễu loạn",
+                name = "Nhãn Nhiễu Loạn",
                 text = {
-                    "Vào shop kế nhiệm",
-                    "lá Joker sẽ miễn phí và",
-                    "trở nên {C:dark_edition}Nhiễu loạn{}",
+                    "Joker tiêu chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Nhiễu Loạn"
                 },
             },
             tag_cry_gold = {
-                name = "Nhãn hoàng kim",
+                name = "Nhãn Hoàng Kim",
                 text = {
-                    "Vào shop kế nhiệm",
-                    "Lá Joker sẽ miễn phí và",
-                    "trở thành {C:dark_edition}Hoàng kim{}",
+                    "Joker tiêu chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Hoàng Kim"
                 },
             },
             tag_cry_gourmand = {
-                name = "Nhãn tham ăn",
+                name = "Nhãn Phàm Ăn",
                 text = {
-                    "Shop sẽ miễn phí",
-                    "{C:attention}Joker đồ ăn",
+                    "Shop có một {C:attention}Joker",
+                    "{C:attention}Thực Phẩm{} miễn phí",
                 },
             },
             tag_cry_loss = {
-                name = "Mất mát",
+                name = "Loss",
                 text = {
-                    "Bố thí một",
-                    "{C:cry_ascendant}Gói Meme",
+                    "Bố thí một {C:cry_ascendant}Gói Meme",
+                    "ko chịu thì pay acc",
                 },
             },
             tag_cry_m = {
-                name = "Nhãn Vui vẻ",
+                name = "Nhãn Vui Nhộn",
                 text = {
-                    "Vào cửa hàng kế nhiệm",
-                    "lá Joker sẽ miễn phí và",
-                    "trở thành {C:dark_edition}Vui vẻ{}",
+                    "Joker tiêu chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Vui Nhộn"
                 },
             },
             tag_cry_memory = {
-                name = "Nhãn kí ức",
+                name = "Nhãn Kí Ức",
                 text = {
                     "Tạo {C:attention}#1#{} bản sao của",
-                    "{C:attention}Nhãn{} cuối cùng đã sử dụng",
-                    "trong trận đấu này",
-                    "{s:0.8,C:inactive}Ngoại trừ nhãn sao chép",
+                    "{C:attention}Nhãn{} gần nhất đã sử dụng",
+                    "trong trận này",
+                    "{s:0.8,C:inactive}Ngoại trừ các nhãn sao chép",
                     "{s:0.8,C:inactive}Hiện tại: {s:0.8,C:attention}#2#",
                 },
             },
             tag_cry_mosaic = {
-                name = "Nhãn khảnh mảnh",
+                name = "Nhãn Khảm Mảnh",
                 text = {
-                    "Vào cửa hàng kế nhiệm",
-                    "Các lá Joker sẽ miễn phí",
-                    "và trở thành {C:dark_edition}Khảnh mảnh{}",
+                    "Joker tiêu chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Khảm Mảnh"
                 },
             },
             tag_cry_oversat = {
-                name = "Nhãn quá bão hòa",
+                name = "Nhãn Siêu Bão Hoà",
                 text = {
-                    "Vào cửa hàng kế nhiệm",
-                    "Các lá Joker sẽ miễn phí",
-                    "và trở thành {C:dark_edition}Quá bão hòa{}",
+                    "Joker tiêu chuẩn tiếp theo",
+                    "trong shop thì miễn phí",
+                    "và trở thành {C:dark_edition}Siêu Bão Hoà"
                 },
             },
             tag_cry_quadruple = {
-                name = "Nhãn Bốn lần",
+                name = "Nhãn Gấp Bốn",
                 text = {
                     "Tạo {C:attention}#1#{} bản sao của",
-                    "{C:attention}Nhãn{} lựa chọn kế nhiệm",
-                    "{s:0.8,C:inactive}Nhãn sao chép được loại trừ",
+                    "{C:attention}Nhãn{} đã chọn tiếp theo",
+                    "{s:0.8,C:inactive}Loại trừ các nhãn sao chép",
                 },
             },
             tag_cry_quintuple = {
-                name = "Nhãn Năm lần",
+                name = "Nhãn Gấp Năm",
                 text = {
                     "Tạo {C:attention}#1#{} bản sao của",
-                    "{C:attention}Nhãn{} lựa chọn kế nhiệm",
-                    "{s:0.8,C:inactive}Nhãn sao chép được loại trừ",
+                    "{C:attention}Nhãn{} đã chọn tiếp theo",
+                    "{s:0.8,C:inactive}Loại trừ các nhãn sao chép",
                 },
             },
             tag_cry_rework = {
-                name = "Nhãn tái khởi động",
+                name = "Nhãn Chế Mới",
                 text = {
                     "Shop có một",
                     "{C:dark_edition}#1# {C:cry_code}#2#",
                 },
             },
             tag_cry_schematic = {
-                name = "Nhãn sơ đồ",
+                name = "Nhãn Sơ Đồ",
                 text = {
                     "Shop có một",
                     "{C:attention}Động não",
                 },
             },
             tag_cry_scope = {
-                name = "Nhãn phạm vi",
+                name = "Nhãn Ống Ngắm",
                 text = {
                     "{C:attention}+#1# {C:blue}tay bài{} và",
-                    "{C:red}lượt bỏ{} vào vòng kế tiếp",
+                    "{C:red}lượt bỏ bài{} cho ván tiếp theo",
                 },
             },
             tag_cry_triple = {
-                name = "Nhãn gấp ba",
+                name = "Nhãn Gấp Ba",
                 text = {
                     "Tạo {C:attention}#1#{} bản sao của",
-                    "{C:attention}Nhãn{} lựa chọn kế nhiệm",
-                    "{s:0.8,C:inactive}Nhãn sao chép được loại trừ",
+                    "{C:attention}Nhãn{} đã chọn tiếp theo",
+                    "{s:0.8,C:inactive}Loại trừ các nhãn sao chép",
                 },
             },
         },
         Tarot = {
             c_cry_automaton = {
-                name = "Máy tự động hóa",
+                name = "Tự Động Hóa",
                 text = {
-                    "Tạo lên tới {C:attention}#1#",
-                    "lá bài {C:cry_code}Code{} ngẫu nhiên",
-                    "{C:inactive}(Cần ô trống)",
+                    "Tạo tối đa {C:attention}#1#",
+                    "lá {C:cry_code}Code{} ngẫu nhiên",
+                    "{C:inactive}(Phải có ô trống)",
                 },
             },
             c_cry_eclipse = {
                 name = "Nhật thực",
                 text = {
-                    "Cải tiến {C:attention}#1#{} lá bài được chọn",
-                    "trở thành một {C:attention}Lá bài Vọng",
+                    "Cường hoá {C:attention}#1#{} lá bài được chọn",
+                    "thành một {C:attention}Lá Vang Vọng",
                 },
             },
             c_cry_meld = {
-                name = "Meld",
+                name = "Pha Trộn",
                 text = {
                     "Chọn một lá {C:attention}Joker{} hoặc",
-                    "{C:attention}Lá bài đang chơi{} để",
-                    "trở thành {C:dark_edition}Hai mặt",
+                    "{C:attention}Lá bài thường{} để",
+                    "trở thành {C:dark_edition}Hai Mặt",
                 },
             },
             c_cry_theblessing = {
                 name = "Phước lành",
                 text = {
                     "Tạo {C:attention}1{}",
-                    "{C:attention}vật phẩm tiêu thụ{} ngẫu nhiên",
-                    "{C:inactive}(Cần ô trống){}",
+                    "{C:attention}lá tiêu thụ{} ngẫu nhiên",
+                    "{C:inactive}(Phải có ô trống){}",
                 },
             },
 	    c_cry_seraph = {
                 name = "Thiên thần Seraph",
                 text = {
-                    "Tăng cường {C:attention}#1#{} lá bài được chọn",
-                    "thành một {C:attention}Lá bài Dạ Quang",
+                    "Cường hoá {C:attention}#1#{} lá được chọn",
+                    "thành {C:attention}Lá Dạ Quang",
                 },
             },
         },
         Voucher = {
             v_cry_asteroglyph = {
-                name = "Khắc họa tinh vân",
+                name = "Khắc Họa Tinh Vân",
                 text = {
-                    "Thiết lập Ante về {C:attention}#1#{}",
+                    "Đặt Ante về {C:attention}#1#{}",
                 },
 		unlock = {
-                    'Tới Ante thứ {C:attention}36'
+                    'Đạ Ante {C:attention}36'
                 },
             },
             v_cry_blankcanvas = {
-                name = "Tấm vải trắng",
+                name = "Tấm Vải Trắng",
                 text = {
-                    "{C:attention}+#1#{} kích thức tay",
+                    "{C:attention}+#1#{} lá giữ trong tay",
                 },
 		unlock = {
-                    'Giảm {C:attention}kích thước tay{} của bạn',
+                    'Giảm {C:attention}số lá giữ trong tay{}',
                     'về {C:attention}0'
                 },
             },
             v_cry_clone_machine = {
-                name = "Máy tạo bản sao",
+                name = "Máy Nhân Bản",
                 text = {
                     "Nhãn nhân đôi trở thành",
-                    "{C:attention}Nhãn gấp năm{} và",
-                    "{C:attention}4X{} như bình thường",
+                    "{C:attention}Nhãn Gấp Năm{} và",
+                    "xuất hiền nhiều hơn {C:attention}4{} lần",
                 },
             },
             v_cry_command_prompt = {
-                name = "Command Prompt",
+                name = "Cửa Sổ Lệnh",
                 text = {
-                    "Các lá bài {C:cry_code}Code{}",
+                    "Các lá {C:cry_code}Code{}",
                     "có thể xuất hiện",
                     "trong {C:attention}shop{}",
                 },
             },
             v_cry_copies = {
-                name = "Sao chép",
+                name = "Sao Chép",
                 text = {
                     "Nhãn nhân đôi trở thành",
-                    "{C:attention}Nhãn gấp ba{} và",
-                    "{C:attention}2X{} như bình thường",
+                    "{C:attention}Nhãn Gấp Ba{} và",
+                    "xuất hiền nhiều hơn {C:attention}2{} lần",
                 },
             },
             v_cry_curate = {
-                name = "Giám tuyển",
+                name = "Giám Tuyển",
                 text = {
                     "Mọi lá bài",
-                    "xuất hiện cùng với",
-                    "một {C:dark_edition}Ấn bản{}",
+                    "đều xuất hiện với",
+                    "một {C:dark_edition}Ấn Bản{}",
                 },
 		unlock = {
                     "Khám phá",
-                    'toàn bộ {C:attention}Ấn bản'
+                    'toàn bộ {C:attention}Ấn Bản'
                 },
             },
             v_cry_dexterity = {
-                name = "Khéo léo",
+                name = "Khéo Léo",
                 text = {
-                    "Vĩnh viễn",
-                    "nhận {C:blue}+#1#{} tay bài",
-                    "mỗi vòng đấu",
+                    "Vĩnh viễn thêm",
+                    "{C:blue}+#1#{} tay bài",
+                    "mỗi ván",
                 },
 		unlock = {
                     "Chơi tổng cộng {C:attention}5000{}",
-                    '{C:attention}Các lá bài đang chơi{}',
+                    '{C:attention}Lá Bài Thường{}',
                 },
             },
             v_cry_double_down = {
-                name = "Đôi dưới",
+                name = "Cược Gấp Đôi",
                 text = {
-                    "Sau mọi vòng đấu,",
-                    "{X:dark_edition,C:white} X1.5 {} cho tổng các giá trị",
-                    "vào mặt sau của các lá bài",
-                    "{C:dark_edition}Hai mặt"
+                    "Sau mọi ván,",
+                    "{X:dark_edition,C:white} X1.5 {} cho mọi giá trị",
+                    "ở mặt sau của các lá bài",
+                    "{C:dark_edition}Hai Mặt"
                 },
             },
             v_cry_double_slit = {
-                name = "Đôi khe",
+                name = "Đôi Khe",
                 text = {
-                    "{C:attention}Meld{} có thể suất hiện",
+                    "{C:attention}Pha Trộn{} có thể suất hiện",
                     "trong shop hoặc",
-                    "Gói Arcana",
+                    "các Gói Thần Bí",
                 },
             },
             v_cry_double_vision = {
-                name = "Đôi tầm nhìn",
+                name = "Song Thị",
                 text = {
-                    "Các lá bài {C:dark_edition}Hai mặt{} xuất hiện",
-                    "{C:attention}4X{} lần thường xuyên hơn",
+                    "Các lá {C:dark_edition}Hai Mặt{} xuất hiện",
+                    "thường xuyên hơn {C:attention}4{} lần",
                 },
             },
             v_cry_fabric = {
-                name = "Đài phổ thông",
+                name = "Vải Đã Năng",
                 text = {
-                    "{C:dark_edition}+#1#{} Ô lá Joker",
+                    "{C:dark_edition}+#1#{} ô Joker",
                 },
 		unlock = {
-                    '{C:dark_edition}Phản vật chất{} được tặng thêm',
+                    'Quy đổi {C:dark_edition}Phản vật chất{}',
                     '{C:attention}10{} lần'
                 },
             },
             v_cry_massproduct = {
-                name = "Tăng sản lượng",
+                name = "Sản Xuất Đại Trà",
                 text = {
-                    "Mọi lá bài và gói",
-                    "trong shop tốn thêm {C:attention}$1{}",
+                    "Mọi lá bài và gói bài",
+                    "trong shop tốn {C:attention}$1{}",
                 },
 		unlock = {
-                    "Nhận {C:attention}25",
-                    '{C:attention}Voucher',
-                    'trong một màn chơi'
+                    "Quy đổi {C:attention}25",
+                    '{C:attention}Phiếu',
+                    'trong một trận'
                 },
             },
             v_cry_moneybean = {
-                name = "Cây đậu tiền",
+                name = "Cây Đậu Tiền",
                 text = {
-                    "Tăng lợi tức lãi suất",
-                    "kiếm được ở mỗi vòng chơi",
+                    "Tăng giới hạn lãi",
+                    "thu được mỗi ván",
                     "lên {C:money}$#1#{}",
                 },
 		unlock = {
-                    "Tối đa hóa",
-                    '{C:attention}lợi tức nhận được{}',
-                    'cho mỗi {C:attention}toàn bộ cuộc chơi',
+                    "Đạt {C:attention}tiền lãi",
+                    'nhận được ở mức',
+                    'tối đa cho {C:attention}cả trận',
                 },
             },
             v_cry_overstock_multi = {
-                name = "Hàng tồn kho",
+                name = "Tồn Đa Kho",
                 text = {
-                    "{C:attention}+#1#{} ô thẻ bài,",
-                    "{C:attention}+#1#{} ô gói tăng cường,",
-                    "and {C:attention}+#1#{} ô voucher,",
-                    "luôn luôn có tại shop",
+                    "{C:attention}+#1#{} ô lá bài,",
+                    "{C:attention}+#1#{} ô gói bài,",
+                    "and {C:attention}+#1#{} ô phiếu,",
+                    "có sẵn trong shop",
                 },
 		unlock = {
-                    "Chi tiêu khoảng {C:attention}1000$",
+                    "Chi tiêu {C:attention}1000$",
                     'trong shop',
-                    'trong một cuộc chơi'
+                    'trong một trận'
                 },
             },
             v_cry_pacclimator = {
-                name = "Thiết bị thích nghi hành tinh",
+                name = "Thích Nghi Hành Tinh",
                 text = {
-                    "Các lá {C:planet}Hành tinh{} xuất hiện",
-                    "{C:attention}X#1#{} thường xuyên hơn",
+                    "Lá {C:planet}Hành Tinh{} xuất hiện",
+                    "thường xuyên hơn {C:attention}#1# lần",
                     "trong shop",
-                    "Mọi lá bài {C:planet}Hành tinh{} sau này",
-                    "sẽ {C:green}miễn phí{}",
+                    "Mọi lá {C:planet}Hành Tinh{} sau này",
+                    "đều {C:green}miễn phí{}",
                 },
 		unlock = {
-                    "Mua tổng {C:attention}100{}",
-                    'lá bài {C:planet}Hành tinh',
+                    "Mua tổng cộng {C:attention}100{}",
+                    'lá {C:planet}Hành tinh',
                     'trong shop',
                 },
             },
             v_cry_pairamount_plus = {
-                name = "Pairamount Plus",
+                name = "Siêu Đôi Chúa",
                 text = {
-                    "{C:attention}Tái kích hoạt{} mọi lá M Joker",
-                    "cho tất cả Đôi",
-                    "{C:attention}có trong{} tay bài đã chơi",
+                    "{C:attention}Tái kích hoạt{} mọi lá Joker M",
+                    "một lần cho mỗi Đôi",
+                    "{C:attention}có{} trong tay bài đã chơi",
                 },
             },
             v_cry_pairing = {
-                name = "Đang Đôi",
+                name = "Theo Đôi",
                 text = {
-                    "{C:attention}Tái kích hoạt{} mọi lá M Joker",
-                    "nếu tay chơi là một {C:attention}Đôi",
+                    "{C:attention}Tái kích hoạt{} mọi lá Joker M{} nếu",
+                    "tay bài đã chơi là {C:attention}Đôi",
                 },
             },
             v_cry_quantum_computing = {
-                name = "Máy tính lượng tử",
+                name = "Tính Toán Lượng Tử",
                 text = {
-                    "Các lá bài {C:cry_code}Code{} có thể xuất hiện",
-                    "cùng với ấn bản {C:dark_edition}Âm bản{}",
+                    "Lá {C:cry_code}Code{} có thể xuất hiện",
+                    "ở dạng {C:dark_edition}Âm Bản{}",
                 },
             },
             v_cry_repair_man = {
-                name = "Người sửa chữa",
+                name = "Người \"Đóng Đôi\"",
                 text = {
                     "{C:attention}Tái kích hoạt{} mọi lá M Joker",
-                    "nếu chơi tay bài có chứa một {C:attention}Đôi",
+                    "nếu tay bài đã chơi chứa {C:attention}Đôi",
                 },
             },
             v_cry_rerollexchange = {
-                name = "Buôn Reroll",
+                name = "Gieo Trao Đổi",
                 text = {
-                    "Mọi reroll",
+                    "Mọi lượt gieo lại",
                     "tốn {C:attention}$2{}",
                 },
 		unlock = {
-                    "{C:attention}Reroll{} shop",
+                    "{C:attention}Gieo lại{} shop",
                     'tổng cộng',
                     '{C:attention}250 lần{}',
                     'trong một trận đấu'
                 },
             },
             v_cry_satellite_uplink = {
-                name = "Đường lên vệ tinh",
+                name = "Lên Vệ Tinh",
                 text = {
-                    "Các lá bài {C:cry_code}Code{} có thể",
-                    "xuất trong những",
-                    "{C:attention}Gói thiên thể{}",
+                    "Lá {C:cry_code}Code{} có thể",
+                    "xuất hiện trong các",
+                    "{C:attention}Gói Thiên Thể{}",
                 },
             },
             v_cry_scope = {
-                name = "Phạm vi thiên hà",
+                name = "Phạm Vi Thiên Hoà",
                 text = {
-                    "Tạo một lá bài {C:planet}Hành tinh",
-                    "cho mỗi",
-                    "{C:attention}tay poker{} đã chơi",
-                    "{C:inactive}(Cần ô trống){}",
+                    "Tạo ra lá {C:planet}Hành Tinh",
+                    "cho {C:attention}tay poker{} đã chơi",
+                    "{C:inactive}(Phải có ô trống){}",
                 },
 		unlock = {
                     "Sử dụng tổng cộng {C:attention}50{}",
-                    'lá bài {C:planet}Hành tinh{} trong',
-                    '{C:attention}Các gói tăng cường{}',
-                    'trong một trận đấu'
+                    'lá {C:planet}Hành Tinh{} trong',
+                    'các {C:attention} Gói Bài{}',
+                    'trong một trận'
                 },
             },
             v_cry_tacclimator = {
-                name = "Tarot thích nghi",
+                name = "Thích Nghi Tarot",
                 text = {
-                    "Các lá bài {C:tarot}Tarot{} xuất hiện",
-                    "{C:attention}X#1#{} thường xuyên hơn",
+                    "Lá {C:tarot}Tarot{} xuất hiện",
+                    "thường xuyên hơn {C:attention}#1# lần",
                     "trong shop",
                     "Mọi lá {C:tarot}Tarot{} sau này",
-                    "đều sẽ {C:green}miễn phí{}",
+                    "đều {C:green}miễn phí{}",
                 },
 		unlock = {
-                    "Mua tổng cộng {C:attention}100{} lá bài {C:tarot}Tarot",
+                    "Mua tổng cộng {C:attention}100{}",
+                    "lá {C:tarot}Tarot",
                     'trong shop',
                 },
             },
             v_cry_tag_printer = {
-                name = "Nhãn Máy in",
+                name = "Máy In Nhãn",
                 text = {
                     "Nhãn nhân đôi trở thành",
-                    "{C:attention}Nhãn gấp bốn{} và",
-                    "{C:attention}3X{} như bình thường",
+                    "{C:attention}Nhãn Gấp Bốn{} và",
+                    "xuất hiền nhiều hơn {C:attention}3{} lần",
                 },
             },
             v_cry_threers = {
-                name = "3 R",
+                name = "3 T",
                 text = {
-                    "Vĩnh viễn",
-                    "Nhận {C:red}+#1#{} lượt bỏ(s)",
-                    "mỗi vòng đấu",
+                    "Vĩnh viễn thêm",
+                    "{C:red}+#1#{} lượt bỏ bài",
+                    "mỗi ván",
                 },
 		unlock = {
                     "Bỏ tổng cộng {C:attention}5000{}",
-                    '{C:attention}Lá bài đang chơi{}',
+                    '{C:attention}Lá Bài Thường{}',
                 },
             },
             v_cry_stickyhand = {
-                name = "Tay nhớt dính",
+                name = "Tay Nhớt Dính",
                 text = {
-                    "{C:attention}+#1#{} giới hạn chọn lá bài",
+                    "{C:attention}+#1#{} số lá có thể chọn",
                 },
             },
             v_cry_grapplinghook = {
-                name = "Móc vật lộn",
+                name = "Súng Bắn Móc",
                 text = {
-                    "{C:attention}+#1#{} giới hạn chọn lá bài",
-                    "{C:inactive,s:0.7}Bây có thể làm được nhiều thứ hơn so với bây nghĩ đó{}",
+                    "{C:attention}+#1#{} số lá có thể chọn",
+                    "{C:inactive,s:0.7}Bây có thể làm được nhiều thứ hơn so với bây nghĩ đó{}", 
                 },
             },
             v_cry_hyperspacetether = {
-                name = "Liên dẫn không gian siêu tốc",
+                name = "Dây Dẫn Siêu Không",
                 text = {
-                    "{C:attention}+#1#{} giới hạn chọn lá bài",
-                    "Tất cả lá bài được chọn đều",
-                    "trở thành {C:attention}Bàn tay thăng thiên{}",
+                    "{C:attention}+#1#{} số lá có thể chọn",
+                    "Mọi lá bài đã chọn đều tiếp sức mạnh",
+                    "cho {C:attention}Tay Poker Thăng Thiên{}",
                 },
             },
         },
         Other = {
             banana = {
-                name = "Chuối tiêu",
+                name = "Chuối Tiêu",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng sẽ",
-                    "bị phá hủy mỗi vòng đấu",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "bị phá hủy sau mỗi ván",
                 },
             },
             cry_absolute = {
-                name = "Tuyệt đối",
+                name = "Tuyệt Đối",
                 text = {
                     "Không thể bán",
                     "hoặc phá hủy",
@@ -3434,355 +3434,355 @@ return {
                 },
             },
             cry_rigged = {
-                name = "Gian lận",
+                name = "Gian Lận",
                 text = {
-                    "Mọi xác suất {C:cry_code}được liệt kê ra{}",
-                    "đều {C:cry_code}đảm bảo",
+                    "Mọi xác suất {C:cry_code}được liệt kê{}",
+                    "đều {C:cry_code}đảm bảo trúng",
                 },
             },
             cry_hooked = {
-                name = "Đã kết nối",
+                name = "Đã Kết Nối",
                 text = {
-                    "Khi lá Joker này được {C:cry_code}Kích hoạt{},",
+                    "Khi Joker này được {C:cry_code}kích hoạt{},",
                     "kích hoạt {C:cry_code}#1#",
                 },
             },
             cry_flickering = {
-                name = "Nhấp nháy",
+                name = "Nhấp Nháy",
                 text = {
                     "Bị phá hủy sau khi",
-                    "{C:attention}#1#{} Kích hoạt",
-                    "{C:inactive}({C:attention}#2#{C:inactive} còn lại)"
+                    "{C:attention}#1#{} kích hoạt",
+                    "{C:inactive}(còn lại {C:attention}#2#{C:inactive})"
                 },
             },
             cry_flickering_desc = { --used by choco dice
-                name = "Nhấp nháy",
+                name = "Nhấp Nháy",
                 text = {
                     "Bị phá hủy sau khi",
-                    "{C:attention}#1#{} Kích hoạt",
+                    "{C:attention}#1#{} kích hoạt",
                 },
             },
             cry_possessed = {
-                name = "Chiếm hữu",
+                name = "Bị Ám",
                 text = {
                     "{C:attention}Vô hiệu hóa{} và {C:attention}đảo ngược{}",
                     "hiệu ứng, nếu có thể",
-                    "Bị phá hủy cùng {C:attention}Ma"
+                    "Bị phá hủy cùng {C:attention}Con Ma"
                 },
             },
             --todo? add candy jokers to list
             food_jokers = {
-                name = "Các lá Joker đồ ăn",
+                name = "Joker Thực Phẩm",
                 text = {
-                    "{s:0.8}Chuối Gros Michel, Trứng, Cà Rem, Chuối Cavendish,",
-                    "{s:0.8}Đậu đen, Cola không đường, Bỏng ngô, Ramen,",
-                    "{s:0.8}Nước có ga, Dưa chuột, Ớt Chili cay, Caramel,",
-                    "{s:0.8}Kẹo cổ đại, M thức ăn nhanh, etc.",
+                    "{s:0.8}Gros Michel, Trứng, Kem, Cavendish,",
+                    "{s:0.8}Đậu Đen, Cola Không Đường, Bỏng Ngô, Ramen,",
+                    "{s:0.8}Khoáng Có Ga, Dưa Chua, Ớt Cay, Caramel,",
+                    "{s:0.8}Kẹo Hoại Niệm, Thức Ăn Nhanh M, etc.",
                 },
             },
             ev_cry_choco0 = {
                 name = "",
                 text = {
-                    "Chi tiết về một hoạt động",
-                    "{C:cry_ascendant,E:1}sự kiện{} sẽ xuất hiện ở đây"
+                    "Chi tiết về một {C:cry_ascendant,E:1}sự kiện{} đang có",
+                    "hiệu lực sẽ xuất hiện ở đây"
                 }
             },
             ev_cry_choco1 = {
-                name = "1: Sự chiếm hữu",
+                name = "1: Ma Ám",
                 text = {
-                    "Các lá {C:attention}Joker{} những lá bài đang chơi có một",
-                    "{C:green}1 trên 3{} cơ hội đạt được Nhấp nháy",
-                    "Tạo một {C:attention}Ma",
+                    "{C:attention}Joker{} và lá bài thường có xác suất",
+                    "{C:green}1 trên 3{} bị áp dụng Nhấp Nháy",
+                    "Tạo ra {C:attention}Con Ma",
                     "{C:inactive,s:0.7}Bạn đã bị ma ám và",
-                    "{C:inactive,s:0.7}ý thức nhấp nháy lúc vào lúc ra."
+                    "{C:inactive,s:0.7}ý thức đang lúc buồn lúc tỉnh."
                 }
             },
             ev_cry_choco2 = {
-                name = "2: Nhà bị ám",
+                name = "2: Nhà Bị Ám",
                 text = {
-                    "Không thể bỏ qua {C:attention}tiền cược{} ở thời điểm hiện tại",
-                    "Một lần {C:attention}reroll{} được cho phép cho mỗi shop",
-                    "{C:attention}Voucher{} giá cả gấp đôi",
-                    "{C:inactive,s:0.7}Những linh hồn ma quái đã chiếm lấy! Đừng chạm vào",
-                    "{C:inactive,s:0.7}bất cứ điều gì và thoát ra càng sớm càng tốt!",
+                    "Không thể bỏ qua {C:attention}Blind{} lúc này",
+                    "Chỉ một lần {C:attention}gieo lại{} mỗi shop",
+                    "{C:attention}Phiếu{} tăng gấp đôi giá",
+                    "{C:inactive,s:0.7}Những linh hồn ma quái đã chiếm lấy nơi này! Đừng chạm vào",
+                    "{C:inactive,s:0.7}bất cứ thứ gì và thoát ra càng sớm càng tốt!",
                 }
             },
             ev_cry_choco3 = {
-                name = "3: Bình pha chế của phù thủy",
+                name = "3: Độc Dược Phù Thuỷ",
                 text = {
-                    "Tạo 3 {C:attention}Bình thuốc",
-                    "Sử dụng nó vào cuối mỗi {C:attention}Cược nhỏ(gà nhỏ){},",
-                    "hoặc {C:attention}mọi{} suy nhược sẽ bị áp dụng vào mỗi {C:attention}Ante",
+                    "Tạo 3 {C:attention}Bình Thuốc",
+                    "Sử dụng nó vào cuối {C:attention}Small Blind{},",
+                    "hoặc {C:attention}mọi{} suy nhược sẽ áp dụng vào {C:attention}Ante{} này",
                     "{C:inactive,s:0.7}Bạn đã bị một phù thủy bắt cóc!",
-                    "{C:inactive,s:0.7}Bà ta đưa cho bạn ba lọ thuốc và theo dõi bạn một cách chặt chẽ.",
+                    "{C:inactive,s:0.7}Bà ta đưa cho bạn ba lọ thuốc và theo dõi bạn sát sao.",
                     "{C:inactive,s:0.7}Hãy chọn một, nếu không bà ta sẽ quyết định thay bạn.",
                 }
             },
             ev_cry_choco4 = {
-                name = "4: Nguyệt vực",
+                name = "4: Nguyệt Vực",
                 text = {
-                    "Các lá bài đã chơi có {C:green}1 trên 4{} khả năng",
-                    "để biến thành lá bài hình chất {C:club}Chuồn{}",
-                    "Chia {C:attention}Điểm nhân{} cho số lượng lá bài hình đã chơi",
-                    "{C:inactive,s:0.7}Ngay cả một người đàn ông có trái tim trong sáng",
+                    "Lá bài đã chơi có xác suất {C:green}1 trên 4{}",
+                    "để biến thành lá mặt {C:club}Tép{} ngẫu nhiên",
+                    "Chia {C:attention}Nhân{} cho số lượng lá mặt đã chơi",
+                    "{C:inactive,s:0.7}Ngay cả một người có trái tim trong sáng",
                     "{C:inactive,s:0.7}và cầu nguyện vào ban đêm..."
                 }
             },
             ev_cry_choco5 = {
-                name = "5: Bú máu",
+                name = "5: Bú Máu",
                 text = {
-                    "Xóa bỏ các {C:attention}Nâng cấp{} của mọi lá bài đã chơi",
-                    "{C:green}1 trên 3{} khả năng bị phá hủy",
-                    "các lá bài {C:heart}Cơ{} và {C:diamond}Rô{}",
-                    "{C:inactive,s:0.7}Hãy cảnh giác vào lúc nửa đêm, vì",
-                    "{C:inactive,s:0.7,E:1}chúng ở trong bóng tối{C:inactive,s:0.7} tìm cách giải cơn khát của chúng..."
+                    "Loại bỏ {C:attention}Cường Hoá{} khỏi mọi lá bài đã chơi",
+                    "Xác suất {C:green}1 trên 3{} để phá hủy",
+                    "các lá {C:heart}Cơ{} và {C:diamond}Rô{}",
+                    "{C:inactive,s:0.7}Hãy cảnh giác lúc nửa đêm, vì",
+                    "{C:inactive,s:0.7,E:1}chúng đang ở trong bóng tối{C:inactive,s:0.7} tìm cách thoả cơn khát..."
                 }
             },
             ev_cry_choco6 = {
-                name = "6: Làm ơn chọn một",
+                name = "6: Hãy Chọn Một",
                 text = {
-                    "Tại {C:attention}cuối mỗi vòng{}, mở một",
-                    "gói {C:attention}Tăng cường{} ngẫu nhiên",
+                    "{C:attention}Ở cuối ván{}, mở một",
+                    "Gói {C:attention}Bài{} ngẫu nhiên",
                     "{C:inactive,s:0.7}Khi bạn đi dạo trên phố, bạn phát hiện ra một",
-                    "{C:inactive,s:0.7}hộp nhiều gói Booster Pack khác nhau. Tốt nhất là nên lấy một gói!"
+                    "{C:inactive,s:0.7}hộp đầy Gói Bài khác nhau. Tốt nhất là nên lấy một gói!"
                 }
             },
             ev_cry_choco7 = {
-                name = "7: Không khí lễ hội",
+                name = "7: Không Khí Lễ Hội",
                 text = {
-                    "Tạo 3 {C:attention}Cho kẹo hay bị ghẹo{} và 1 {C:attention}Giỏ kẹo",
-                    "Các shop có một {C:attention}Cho kẹo hay bị ghẹo{} tại mỗi vòng chơi",
-                    "{C:cry_candy}Các viên kẹo{} cho {C:money}$3{} nếu nhận được",
+                    "Tạo 3 {C:attention}Cho Kẹo Hay Bị Ghẹo{} và 1 {C:attention}Giỏ Kẹo",
+                    "Shop có một {C:attention}Cho Kẹo Hay Bị Ghẹo{} sau mỗi ván",
+                    "{C:cry_candy}Kẹo{} cho {C:money}$3{} khi sở hữu",
                     "{C:inactive,s:0.7}Toàn bộ khu phố được trang trí cho những hoạt động ma quái,",
-                    "{C:inactive,s:0.7}hãy đến và tận hưởng không khí lễ hội!"
+                    "{C:inactive,s:0.7}hãy đến và tận hưởng không khí lễ hội nào!"
                 }
             },
             ev_cry_choco8 = {
-                name = "8: Mưa kẹo",
+                name = "8: Mưa Kẹo",
                 text = {
-                    "Khi {C:attention}tiền cược{} bị đánh bại, nhận 1 {C:cry_candy}viên kẹo{}",
+                    "Khi {C:attention}Blind{} bị đánh bại, nhận 1 {C:cry_candy}viên kẹo{}",
                     "sau mỗi tay còn lại; Nhận một lá {C:attention}Joker đồ ăn{}",
                     "khi mà một {C:cry_candy}Viên kẹo{} được tạo ra",
-                    "{C:inactive,s:0.7}Kẹo rơi từ trên trời xuống! Nhanh lên,",
-                    "{C:inactive,s:0.7,E:1}hãy lấy càng nhiều càng tốt!"
+                    "{C:inactive,s:0.7}Kẹo rơi từ trên trời xuống kìa! Nhanh lên,",
+                    "{C:inactive,s:0.7,E:1}hãy hốc- nhầm, lấy càng nhiều càng tốt!"
                 }
             },
             ev_cry_choco9 = {
-                name = "9: Sự giàu có ma quái",
+                name = "9: Tài Phiệt Ma Quái",
                 text = {
-                    "Nhận được {C:money}$20",
-                    "Mọi {C:money}số tiền{} kiếm được sẽ {C:attention}nhân đôi",
-                    "{C:inactive,s:0.7}Bóng ma của một người họ hàng đã mất từ lâu của bạn",
-                    "{C:inactive,s:0.7}ghé thăm bạn vào lúc nửa đêm!",
+                    "Nhận {C:money}$20",
+                    "Mọi {C:money}số tiền{} sẽ nhận đều được {C:attention}nhân đôi",
+                    "{C:inactive,s:0.7}Bóng ma của một người họ hàng đã mất",
+                    "{C:inactive,s:0.7}từ lâu ghé thăm bạn lúc nửa đêm!",
                     "{C:inactive,s:0.7}Không nói một lời, họ đặt một túi tiền vào tay bạn,",
                     "{C:inactive,s:0.7}mỉm cười nồng nhiệt và vẫy tay khi họ tan biến vào không khí.",
                 }
             },
             ev_cry_choco10 = {
-                name = "10: Đồ cổ được tôn kính",
+                name = "10: Đồ Cổ Tôn Kính",
                 text = {
-                    "Một lá {C:attention}Joker{} {C:legendary}Huyền thoại{} xuất hiện",
-                    "trong ô {C:attention}Voucher{} với {C:money}$50",
-                    "Chỉ có thể mua được vật phẩm {C:attention}cuối cùng{} trong shop",
+                    "Một {C:attention}Joker{} {C:legendary}Huyền thoại{} xuất hiện",
+                    "trong ô {C:attention}Phiếu{} với giá {C:money}$50",
+                    "Chỉ có thể mua {C:attention}cuối cùng{} trong shop",
                     "{C:inactive,s:0.7}Bạn đã thu hút sự chú ý của tinh linh thánh tích,",
-                    "{C:inactive,s:0.7}nhưng sẽ không dễ để dập tắt.",
+                    "{C:inactive,s:0.7}nhưng sẽ không dễ dàng dập tắt nó đâu.",
                 }
             },
             cry_https_disabled = {
                 name = "M",
                 text = {
-                    "{C:attention,s:0.7}Nâng cấp{s:0.7} bị vô hiệu hóa bởi mặc định ({C:attention,s:0.7}HTTPS Module{s:0.7})",
+                    "{C:attention,s:0.7}Cập nhật{s:0.7} mặc định bị vô hiệu hóa({C:attention,s:0.7}HTTPS Module{s:0.7})",
                 },
             },
             --i am so sorry for this
             --actually some of this needs to be refactored at some point
             cry_eternal_booster = {
-                name = "Vĩnh cửu",
+                name = "Vĩnh Hằng",
                 text = {
                     "Mọi lá bài trong gói",
-                    "đều {C:attention}Vĩnh cửu{}",
+                    "đều {C:attention}Vĩnh Hằng{}",
                 },
             },
             cry_perishable_booster = {
-                name = "Dễ hỏng",
+                name = "Ngắn Hạn",
                 text = {
                     "Mọi lá bài trong gói",
-                    "đều {C:attention}Dễ hỏng{}",
+                    "đều {C:attention}Ngắn Hạn{}",
                 },
             },
             cry_rental_booster = {
-                name = "Cho thuê",
+                name = "Cho Thuê",
                 text = {
                     "Mọi lá bài trong gói",
-                    "đều {C:attention}Cho thuê{}",
+                    "đều {C:attention}Cho Thuê{}",
                 },
             },
             cry_pinned_booster = {
-                name = "Đã ghim",
+                name = "Bị Ghim",
                 text = {
                     "Mọi lá bài trong gói",
-                    "đều {C:attention}Đã ghim{}",
+                    "đều {C:attention}Bị Ghim{}",
                 },
             },
             cry_banana_booster = {
-                name = "Chuối tiêu",
+                name = "Chuối Tiêu",
                 text = {
                     "Mọi lá bài trong gói",
-                    "đều {C:attention}Chuối tiêu{}",
+                    "đều có {C:attention}Chuối Tiêu{}",
                 },
             },
             cry_eternal_voucher = {
-                name = "Vĩnh cửu",
+                name = "Vĩnh Hằng",
                 text = {
-                    "Không thể trao đổi",
+                    "Không thể bị trao đổi",
                 },
             },
             cry_perishable_voucher = {
-                name = "Dễ hỏng",
+                name = "Ngắn Hạn",
                 text = {
-                    "Suy yếu sau khi",
-                    "{C:attention}#1#{} vòng",
-                    "{C:inactive}({C:attention}#2#{C:inactive} còn lại)",
+                    "Vô hiệu hoá sau",
+                    "{C:attention}#1#{} ván",
+                    "{C:inactive}(còn lại {C:attention}#2#{C:inactive})",
                 },
             },
             cry_rental_voucher = {
-                name = "Cho thuê",
+                name = "Cho Thuê",
                 text = {
-                    "Mất {C:money}$#1#{} tại",
-                    "cuối mỗi vòng đấu",
+                    "Mất {C:money}$#1#{}",
+                    "ở cuối ván",
                 },
             },
             cry_pinned_voucher = {
-                name = "Đã ghim",
+                name = "Bị Ghim",
                 text = {
-                    "Luôn có trong shop",
-                    "cho tới khi được lấy",
+                    "Nằm trong shop",
+                    "cho tới khi quy đổi",
                 },
             },
             cry_banana_voucher = {
-                name = "Chuối tiêu",
+                name = "Chuối Tiêu",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng",
-                    "không được chuộc lại mỗi vòng",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "bị chuộc lại mỗi ván",
                 },
             },
             cry_perishable_consumeable = {
-                name = "Dễ hỏng",
+                name = "Ngắn Hạn",
                 text = {
-                    "Suy yếu tại",
-                    "cuối mỗi vòng đấu",
+                    "Vô hiệu hoá",
+                    "ở cuối ván",
                 },
             },
             cry_rental_consumeable = {
-                name = "Cho thuê",
+                name = "Cho Thuê",
                 text = {
-                    "Mất {C:money}$#1#{} tại cuối mỗi",
-                    "vòng đấu và khi sử dụng",
+                    "Mất {C:money}$#1#{} ở cuối ván",
+                    "và khi sử dụng",
                 },
             },
             cry_pinned_consumeable = {
-                name = "Đã ghim",
+                name = "Bị Ghim",
                 text = {
-                    "Không thể dùng",
-                    "những vật phẩm {C:attention}Đã ghim{} khác",
+                    "Không thể dùng lá tiêu thụ",
+                    "không-{C:attention}Bị-ghim{} khác",
                 },
             },
             cry_banana_consumeable = {
-                name = "Chuối tiêu",
+                name = "Chuối Tiêu",
                 text = {
-                    "{C:green}#1# trên #2#{} khả năng",
-                    "không có gì để dùng",
+                    "Xác suất {C:green}#1# trên #2#{}",
+                    "bị vô dụng khì dùng",
                 },
             },
             p_cry_code_normal_1 = {
-                name = "Gói Chương trình",
+                name = "Gói Chương Trình",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2#{C:cry_code} lá bài Code{}",
+                    "{C:attention}#2#{} lá {C:cry_code}Code{}",
                 },
             },
             p_cry_code_normal_2 = {
-                name = "Gói Chương trình",
+                name = "Gói Chương Trình",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2#{C:cry_code} lá bài Code{}",
+                    "{C:attention}#2#{} lá {C:cry_code}Code{}",
                 },
             },
             p_cry_code_jumbo_1 = {
-                name = "Jumbo Program Pack",
+                name = "Gói Chương Trình Lớn",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2#{C:cry_code} lá bài Code{}",
+                    "{C:attention}#2#{} lá {C:cry_code}Code{}",
                 },
             },
             p_cry_code_mega_1 = {
-                name = "Mega Program Pack",
+                name = "Gói Chương Trình Đại",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2#{C:cry_code} lá bài Code{}",
+                    "{C:attention}#2#{} lá {C:cry_code}Code{}",
                 },
             },
             p_cry_empowered = {
-                name = "Gói Quang Phổ [Nhãn Uỷ quyền]",
+                name = "Gói Siêu Linh [Nhãn Siêu Cường]",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2#{C:spectral} lá bài Quang phổ",
-                    "{s:0.8,C:inactive}(Được tạo bởi nhãn Uỷ quyền)",
+                    "{C:attention}#2#{} lá {C:spectral}Siêu Linh",
+                    "{s:0.8,C:inactive}(Được tạo bởi nhãn Siêu Cường)",
                 },
             },
             p_cry_meme_1 = {
                 name = "Gói Meme",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2# Các lá meme Joker{}",
+                    "{C:attention}#2# Joker Meme{}",
                 },
             },
             p_cry_meme_two = {
                 name = "Gói Meme",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2# Các lá meme Joker{}",
+                    "{C:attention}#2# Joker Meme{}",
                 },
             },
             p_cry_meme_three = {
                 name = "Gói Meme",
                 text = {
                     "Chọn {C:attention}#1#{} trong tối đa",
-                    "{C:attention}#2# Các lá meme Joker{}",
+                    "{C:attention}#2# Joker Meme{}",
                 },
             },
             undiscovered_code = {
-                name = "Chưa được khám phá",
+                name = "Chưa Khám Phá",
                 text = {
-                    "Mua hoặc sử dụng",
-                    "lá bài này",
-                    "trong trận đấu chưa khám phá ra để",
-                    "để học nó là cái gì"
+                    "Mua hoặc dùng",
+                    "lá này trong một",
+                    "trận ngẫu nhiên",
+                    "để biết tác dụng của nó"
                 }
             },
             undiscovered_unique = {
-                name = "Chưa được khám phá",
+                name = "Chưa Khám Phá",
                 text = {
-                    "Mua hoặc sử dụng",
-                    "lá bài này",
-                    "trong trận đấu chưa khám phá ra để",
-                    "để học nó là cái gì"
+                    "Mua hoặc dùng",
+                    "lá này trong một",
+                    "trận ngẫu nhiên",
+                    "để biết tác dụng của nó"
                 }
             },
             cry_green_seal = {
-                name = "Ấn xanh lá",
+                name = "Con Dấu Lục",
                 text = {
                     "Tạo một lá {C:cry_code}Code{}",
                     "khi chơi và không tính điểm",
-                    "{C:inactive}(Cần ô trống",
+                    "{C:inactive}(Phải có ô trống)",
                 },
             },
             cry_azure_seal = {
-                name = "Ấn xanh dương nhạt",
+                name = "Con Dấu Xanh Thẳm",
                 text = {
-                    "Tạo {C:attention}#1#{} {C:dark_edition}Âm bản{}",
-                    "{C:planet}Hành tinh{} cho mỗi",
-                    "{C:attention}tay poker{} được chơi, sau đó",
+                    "Tạo {C:attention}#1#{} {C:dark_edition}Âm Bản{}",
+                    "{C:planet}Hành tinh{} cho {C:attention}tay poker{}",
+                    "được chơi, sau đó",
                     "{C:red}phá hủy{} lá bài này",
                 },
             },
@@ -3795,167 +3795,167 @@ return {
         },
         Unique = {
             c_cry_potion = {
-                name = "Lọ thuốc",
+                name = "Lọ Thuốc",
                 text = {
-                    "Áp dụng một",
-                    "{C:attention}căn bệnh ác tính{} tiềm ẩn khi sử dụng",
-                    "{C:inactive,s:0.7}Nhận được từ Xúc xắc Sô cô la"
+                    "Áp dụng một {C:attention}suy nhược{}",
+                    "tiềm ẩn khi sử dụng",
+                    "{C:inactive,s:0.7}Nhận được từ Xúc Xắc Sôcôla"
                 }
             }
         }
     },
     misc = {
         poker_hands = {
-            ['cry_Bulwark'] = "Bờ Lũy",
-            ['cry_Clusterfuck'] = "Mớ chết tiệt",
-            ['cry_UltPair'] = "Đôi tối thượng",
-            ['cry_WholeDeck'] = "Đệch mịa điên vãi loz toàn bộ luôn",
+            ['cry_Bulwark'] = "Tường Thành",
+            ['cry_Clusterfuck'] = "Mớ Đệch",
+            ['cry_UltPair'] = "Đôi Tối Thượng",
+            ['cry_WholeDeck'] = "Đệch Mịa Cả Bộ Bài",
         },
         poker_hand_descriptions = {
             ['cry_Bulwark'] = {
-                '5 lá bài không có thứ hạng, không có chất',
+                '5 lá bài không bậc, không chất',
             },
             ['cry_Clusterfuck'] = {
                 'Ít nhất 8 lá bài không chứa',
-                'Đôi, Đồng chất hoặc Sảnh',
+                'Đôi, Thùng hoặc Sảnh',
             },
             ['cry_UltPair'] = {
-                'Hai Hai Đôi là khi ',
-                'có hai bộ đôi khác nhau',
-				'mỗi bộ đôi thuộc một chất khác nhau.',
+                'Hai lần Hai Đôi, với',
+                'mỗi hai đôi mang một chất',
+				'cho tổng cộng là hai chất.',
             },
             ['cry_WholeDeck'] = {
-                'Một bàn tay chứa đựng mọi thứ',
-                'lá bài tìm thấy trong bộ bài 52 lá.',
-                'Bây điên mịa rồi?',
+                'Một tay bài chứa mọi lá bài',
+                'được tìm thấy trong bộ bài 52 lá.',
+                'Bây bị điên mịa rồi hả?',
             },
         },
         achievement_names = {
-            ach_cry_ace_in_crash = "ÁT bỏ túi",
-            ach_cry_blurred_blurred_joker = "tiền cược hợp pháp",
+            ach_cry_ace_in_crash = "ÁT Bỏ Túi",
+            ach_cry_blurred_blurred_joker = "\"Mù\" Hợp Pháp",
             ach_cry_bullet_hell = "Bullet Hell",
-            ach_cry_break_infinity = "Phá vỡ vô thời hạn",
-            ach_cry_cryptid_the_cryptid = "Cryptid the Cryptid",
-            ach_cry_exodia = "Di cư",
-            ach_cry_freak_house = "Ngôi nhà kỳ dị",
+            ach_cry_break_infinity = "Bức Phá Vô Hạn",
+            ach_cry_cryptid_the_cryptid = "Dị Chủng hoá Dị Chủng",
+            ach_cry_exodia = "Di Cư",
+            ach_cry_freak_house = "Ngôi Nhà Kỳ Dị",
             ach_cry_googol_play_pass = "Googol Play Pass",
             ach_cry_haxxor = "H4xx0r",
-            ach_cry_home_realtor = "Nhà môi giới bất động sản",
-            ach_cry_jokes_on_you = "Đùa giỡn với bạn đấy, bạn ơi!",
-            ach_cry_niw_uoy = "!iốr gnằht yáM",
-            ach_cry_now_the_fun_begins = "Cuộc vui giờ mới bắt đầu.",
-            ach_cry_patience_virtue = "Kiên nhẫn là một đức tính tốt",
+            ach_cry_home_realtor = "Nhà Môi Giới Bất Động Sản",
+            ach_cry_jokes_on_you = "Đùa Đấy, Bạn Ơi!",
+            ach_cry_niw_uoy = "!gnắhT nếihC",
+            ach_cry_now_the_fun_begins = "Cuộc Vui Giờ mới Bắt Đầu.",
+            ach_cry_patience_virtue = "Kiên Nhẫn là Đức Tính Tốt",
             ach_cry_perfectly_balanced = "Perfectly Balanced",
             ach_cry_pull_request = "Pull Request",
-            ach_cry_traffic_jam = "Tắc đường",
-            ach_cry_ult_full_skip = "Skip đầy đủ tối thượng",
+            ach_cry_traffic_jam = "Tắc Đường",
+            ach_cry_ult_full_skip = "Cú Full Skip Tối Thượng",
             ach_cry_used_crash = "Tao đã bảo mầy đừng làm vậy rồi mà",
             ach_cry_what_have_you_done = "LÀM CÁI CON KHỈ GÌ THẾ?!",
         },
         achievement_descriptions = {
             ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
-            ach_cry_blurred_blurred_joker = "Nhận một Joker mờ mờ trồng chất",
-            ach_cry_bullet_hell = "Có 15 AP Joker",
-            ach_cry_break_infinity = "Có 1,79e308 Chip trong một ván bài",
-            ach_cry_cryptid_the_cryptid = "Use Cryptid on Cryptid",
-            ach_cry_exodia = "Có 5 lá Joker sử thi",
-            ach_cry_freak_house = "Chơi một tay bài Thùng cù lũ gồm các lá 6 và 9 của chất Tim trong khi sở hữu Nice.",
-            ach_cry_googol_play_pass = "Rig a Googol Play Card",
+            ach_cry_blurred_blurred_joker = "Sở hữu Joker Mờ Ảo Mờ Ảo",
+            ach_cry_bullet_hell = "Sở hữu 15 Joker Xuyên Giáp",
+            ach_cry_break_infinity = "Ghi 1.79e308 Chip trong một tay bài",
+            ach_cry_cryptid_the_cryptid = "Dùng Dị Chủng lên Dị Chủng",
+            ach_cry_exodia = "Sở hữu 5 Joker Sử Thi",
+            ach_cry_freak_house = "Chơi Thùng Cù Lũ chứa 6 Cơ và 9 Cơ trong khi sở hữu Toẹt Vòi",
+            ach_cry_googol_play_pass = "Áp Gian Lận lên Thẻ Googol Play",
             ach_cry_haxxor = "Dùng cheat code",
-            ach_cry_home_realtor = "Kích hoạt Happy House trước Ante 8 (không sử dụng DoE/Antimatter).",
-            ach_cry_jokes_on_you = "Kích hoạt hiệu ứng của The Joke trên Ante 1 và chiến thắng lượt chơi.",
-            ach_cry_niw_uoy = "Đạt mức Ante -8.",
-            ach_cry_now_the_fun_begins = "Thu được Canvas",
-            ach_cry_patience_virtue = "Chờ hết Lavender Loop trong 2 phút trước khi chơi ván bài đầu tiên và thắng cược blind.",
-            ach_cry_perfectly_balanced = "Thắng bộ bài Rất Công Bằng trên Cược Ưu việt",
-            ach_cry_pull_request = "Yêu cầu ://COMMIT tạo lại cùng một lá Joker mà nó đã phá hủy.",
-            ach_cry_traffic_jam = "Đánh bại mọi thử thách Rush thời gian,
-            ach_cry_ult_full_skip = "Thắng trong 1 vòng",
+            ach_cry_home_realtor = "Kích hoạt Ngôi Nhà Vụi Vẻ trước Ante 8 (không dùng DoE/Antimatter).",
+            ach_cry_jokes_on_you = "Kích hoạt khả năng của The Joke trên Ante 1 và thắng trận đó.",
+            ach_cry_niw_uoy = "Đạt Ante -8.",
+            ach_cry_now_the_fun_begins = "Sở hữu Tranh Sơn Dầu",
+            ach_cry_patience_virtue = "Chờ Lavender Loop trong 2 phút trước khi chơi ván bài đầu tiên và đánh bại nó.",
+            ach_cry_perfectly_balanced = "Thắng Bộ Bài Siêu Công Bằng ở độ khó Cược Ưu Việt",
+            ach_cry_pull_request = "Để ://COMMIT tạo ra đúng Joker mà nó đã phá hủy.",
+            ach_cry_traffic_jam = "Đánh bại mọi thử thách Giờ Cao Điểm",
+            ach_cry_ult_full_skip = "Thắng trận trong 1 ván",
             ach_cry_used_crash = "Dùng ://CRASH",
-            ach_cry_what_have_you_done = "Phá hủy hoặc hi sinh một Joker Kì lạ",
+            ach_cry_what_have_you_done = "Phá hủy hoặc hi sinh một Joker Ngoại Lai",
         },
         challenge_names = {
-            c_cry_ballin = "Ballin'",
-            c_cry_boss_rush = "Enter the Gungeon",
-            c_cry_dagger_war = "Dagger War",
+            c_cry_ballin = "Lăn \"Bóng\"",
+            c_cry_boss_rush = "Hầm Ngục Toàn Súng Đê",
+            c_cry_dagger_war = "Dao Găm Chiến",
             c_cry_joker_poker = "Joker Poker",
-            c_cry_onlycard = "Solo Card",
+            c_cry_onlycard = "Lá Solo",
             c_cry_rng = "RNG",
-            c_cry_rush_hour = "Rush Hour I",
-            c_cry_rush_hour_ii = "Rush Hour II",
-            c_cry_rush_hour_iii = "Rush Hour III",
-            c_cry_sticker_sheet = "Sticker Sheet",
-            c_cry_sticker_sheet_plus = "Sticker Sheet+",
+            c_cry_rush_hour = "Giờ Cao Điểm I",
+            c_cry_rush_hour_ii = "Giờ Cao Điểm II",
+            c_cry_rush_hour_iii = "Giờ Cao Điểm III",
+            c_cry_sticker_sheet = "Khung Nhãn",
+            c_cry_sticker_sheet_plus = "Khung Nhãn+",
         },
         dictionary = {
             --Settings Menu
-            cry_set_features = "Features",
+            cry_set_features = "Tính Năng",
             cry_set_music = "Nhạc",
-            cry_set_enable_features = "Chọn features để đáp ứng (áp dụng khi khởi động lại trò chơi):",
-            cry_feat_achievements = "Thành tựu",
-            ["cry_feat_antimatter deck"] = "Bộ bài phản vật chất",
-            cry_feat_blinds = "Tiền cược",
-            cry_feat_challenges = "Thử thách",
-            ["cry_feat_code cards"] = "Bài Code",
-            ["cry_feat_misc. decks"] = "Bộ bài đa dạng",
+            cry_set_enable_features = "Chọn tính năng để dùng (áp dụng khi khởi động lại trò chơi):",
+            cry_feat_achievements = "Thành Tựu",
+            ["cry_feat_antimatter deck"] = "Bộ Bài Phản Vật Chất",
+            cry_feat_blinds = "Blind",
+            cry_feat_challenges = "Thử Thách",
+            ["cry_feat_code cards"] = "Lá Code",
+            ["cry_feat_misc. decks"] = "Bộ Bài Khác",
             ["cry_feat_https module"] = "HTTPS Module",
-            ["cry_feat_timer mechanics"] = "Cơ chế hẹn giờ",
-            ["cry_feat_enhanced decks"] = "Bộ bài nâng cao",
-            ["cry_feat_epic jokers"] = "Joker Sử thi",
-            ["cry_feat_exotic jokers"] = "Joker Kì lạ",
+            ["cry_feat_timer mechanics"] = "Cơ Chế Hẹn Giờ",
+            ["cry_feat_enhanced decks"] = "Bộ Bài Cường Hoá",
+            ["cry_feat_epic jokers"] = "Joker Sử Thi",
+            ["cry_feat_exotic jokers"] = "Joker Ngoại Lai",
             ["cry_feat_m jokers"] = "Joker M",
-            cry_feat_menu = "Menu chính tùy chỉnh",
-            ["cry_feat_misc."] = "Đa dạng",
-            ["cry_feat_misc. jokers"] = "Joker đa dạng",
-            cry_feat_planets = "Các hành tinh",
-            cry_feat_jokerdisplay = "JokerDisplay (Không làm gì cả)",
+            cry_feat_menu = "Menu Chính Tùy Chỉnh",
+            ["cry_feat_misc."] = "Khác",
+            ["cry_feat_misc. jokers"] = "Joker Khác",
+            cry_feat_planets = "Hành Tinh",
+            cry_feat_jokerdisplay = "JokerDisplay (Vô Dụng)",
             cry_feat_tags = "Nhãn",
-            cry_feat_sleeves = "Bọc",
-            cry_feat_spectrals = "Quang phổ",
-            cry_feat_spooky = "Update Oái ăm",
-            ["cry_feat_more stakes"] = "Stake",
-            cry_feat_vouchers = "Voucher",
-            cry_mus_jimball = "Jimball (Funkytown by Lipps Inc. - Copyrighted)",
-            cry_mus_code = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
-            cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
-            cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
+            cry_feat_sleeves = "Bọc Bài",
+            cry_feat_spectrals = "Siêu Linh",
+            cry_feat_spooky = "Bản Cập Nhật Ma Quái",
+            ["cry_feat_more stakes"] = "Cược",
+            cry_feat_vouchers = "Phiếu",
+            cry_mus_jimball = "Jimball (Funkytown bởi Lipps Inc. - Có bản quyền)",
+            cry_mus_code = "Lá Code (://LETS_BREAK_THE_GAME bởi HexaCryonic)",
+            cry_mus_exotic = "Joker Ngoại Lai (Joker in Latin bởi AlexZGreat)",
+            cry_mus_high_score = "Điểm Cao (Final Boss [For Your Computer] bởi AlexZGreat)",
 
-            k_cry_program_pack = "Gói Chương trình",
+            k_cry_program_pack = "Gói Chương Trình",
             k_cry_meme_pack = "Gói Meme",
 
-            cry_critical_hit_ex = "Đòn chí mạng!",
-            cry_critical_miss_ex = "Đòn chí hụt!",
+            cry_critical_hit_ex = "Đòn Chí Mạng!",
+            cry_critical_miss_ex = "Đòn Chí Hụt!",
 
-            cry_potion1 = "-1 cho tất cả các cấp độ tay bài",
-            cry_potion2 = "X1.15 kích thước Tiền cược",
-            cry_potion3 = "-1 Tay bài và Lượt bỏ",
+            cry_potion1 = "-1 level cho tất cả tay bài",
+            cry_potion2 = "X1.15 điểm Blind",
+            cry_potion3 = "-1 Tay Bài và Lượt Bỏ Bài",
 
-            cry_debuff_oldhouse = "Không cù lũ",
-            cry_debuff_oldarm = "Chỉ dùng 4 bài hoặc ít hơn",
-            cry_debuff_oldpillar = "Không sảnh",
-            cry_debuff_oldflint = "Không thùng",
-            cry_debuff_oldmark = "Không lá bài nào có chứa đôi",
-            cry_debuff_obsidian_orb = "Áp dụng khả năng của tất cả các trùm đã bị đánh bại",
+            cry_debuff_oldhouse = "Không chơi Cù Lũ",
+            cry_debuff_oldarm = "Phải chơi 4 lá hoặc ít hơn",
+            cry_debuff_oldpillar = "Không chơi Sảnh",
+            cry_debuff_oldflint = "Không chơi Thùng",
+            cry_debuff_oldmark = "Không chơi tay bài chứa Đôi",
+            cry_debuff_obsidian_orb = "Áp dụng khả năng của tất cả Boss Blind bị đánh bại",
 
-            cry_tax_placeholder = "(X0.4 tiền cược yêu cầu)",
-            cry_joke_placeholder = "(hệ số nhân lên 8)",
+            cry_tax_placeholder = "(X0.4 điểm blind yêu cầu)",
+            cry_joke_placeholder = "(bội số của 8)",
 
             k_code = "Code",
-            k_unique = "Độc Quyền",
-            b_code_cards = "Bài Code",
-            b_unique_cards = "Bài Độc Quyền",
+            k_unique = "Độc Nhất",
+            b_code_cards = "Lá Code",
+            b_unique_cards = "Lá Độc Nhất",
             b_pull = "PULL",
-            cry_hooked_ex = "Đã kết nối!",
-            k_end_blind = "Kết thúc tiền cược",
+            cry_hooked_ex = "Đã Kết Nối!",
+            k_end_blind = "Kết Thúc Blind",
 
-            cry_code_rank = "NHẬP XẾP HẠNG",
-            cry_code_enh = "NHẬP CẢI TIẾN",
+            cry_code_rank = "NHẬP BẬC LÁ BÀI",
+            cry_code_enh = "NHẬP TÊN CƯỜNG HOÁ",
             cry_code_hand = "NHẬP TAY POKER",
             cry_code_enter_card = "NHẬP MỘT LÁ",
             cry_code_apply = "ÁP DỤNG",
             cry_code_apply_previous = "ÁP DỤNG TRƯỚC ĐÓ",
-            cry_code_exploit = "KHAI THÁC",
-            cry_code_exploit_previous = "KHAI THÁC TRƯỚC ĐÓ",
+            cry_code_exploit = "LỢI DỤNG",
+            cry_code_exploit_previous = "LỢI DỤNG TRƯỚC ĐÓ",
             cry_code_create = "TẠO",
             cry_code_create_previous = "TẠO TRƯỚC ĐÓ",
             cry_code_execute = "THỰC HIỆN",
@@ -3964,277 +3964,277 @@ return {
             b_flip = "LẬT LẠI",
             b_merge = "HỢP NHẤT",
 
-            cry_hand_bulwark = "Bờ lũy",
-            cry_hand_clusterfuck = "Mớ chết tiệt",
-            cry_hand_ultpair = "Đôi tối thượng",
+            cry_hand_bulwark = "Tường Thành",
+            cry_hand_clusterfuck = "Mớ Đệch",
+            cry_hand_ultpair = "Đôi Tối Thượng",
 
-            cry_asc_hands = "Asc. Hands",
+            cry_asc_hands = "Tay Thăng Thiên",
             cry_p_star = "Sao",
 
-            cry_again_q = "Lại nữa?",
-            cry_curse = "Nguyền rủa",
-            cry_curse_ex = "Nguyền rủa!",
+            cry_again_q = "Lần Nữa?",
+            cry_curse = "Nguyền Rủa",
+            cry_curse_ex = "Nguyền Rủa!",
             cry_sobbing = "Cứu tui...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
             cry_good_luck_ex = "Chúc may mắn!",
             cry_sus_ex = "Impostor!",
-            cry_jolly_ex = "Vui lên nào!",
+            cry_jolly_ex = "Vui Lên Nào!",
             cry_m_minus = "m",
             cry_m = "M",
             cry_m_ex = "M!",
-            cry_minus_round = "-1 Vòng đấu",
-            cry_plus_cryptid = "+1 Cryptid",
-            cry_plus_card = "+1 Lá bài",
+            cry_minus_round = "-1 Ván",
+            cry_plus_cryptid = "+1 Dị Chủng",
+            cry_plus_card = "+1 Lá",
             cry_plus_code = "+1 Code",
-            cry_no_triggers = "Không còn kích hoạt!",
-            cry_unredeemed = "Chưa được đổi...",
-            cry_active = "Hoạt động",
-            cry_inactive = "Dừng hoạt động",
+            cry_no_triggers = "Hết lượt kích hoạt!",
+            cry_unredeemed = "Đã Bị Chuộc Lại...",
+            cry_active = "Có Hiệu Lực",
+            cry_inactive = "Ko Hiệu Lực",
 
-            k_disable_music = "Tắt nhạc",
+            k_disable_music = "Tắt Nhạc",
 
-            k_cry_epic = "Sử thi",
-            k_cry_exotic = "Kì lạ",
+            k_cry_epic = "Sử Thi",
+            k_cry_exotic = "Ngoại Lai",
             k_cry_candy = "Kẹo",
-            k_cry_cursed  = "Đã nguyền rủa",
-            k_planet_disc = "Đĩa tiền hành tinh",
-            k_planet_satellite = "Vệ tinh tự nhiên",
-            k_planet_universe = "Toàn bộ vũ trụ chết tiệt",
+            k_cry_cursed  = "Bị Nguyền Rủa",
+            k_planet_disc = "Đĩa Cận Sao",
+            k_planet_satellite = "Vệ Tinh Tự Nhiên",
+            k_planet_universe = "Đệch Mịa Cả Cái Vũ Trụ",
 
             cry_notif_jimball_1 = "Jimball",
-            cry_notif_jimball_2 = "Copyright Notice",
-            cry_notif_jimball_d1 = "Jimball plays the song \"Funkytown\",",
-            cry_notif_jimball_d2 = "which is copyrighted and can't be",
-            cry_notif_jimball_d3 = "used for streams and videos.",
+            cry_notif_jimball_2 = "Cảnh Báo Bản Quyền",
+            cry_notif_jimball_d1 = "Jimball sẽ phát bài \"Funkytown\",",
+            cry_notif_jimball_d2 = "có bản quyền và ảnh hưởng lớn",
+            cry_notif_jimball_d3 = "đến stream và video.",
         },
         labels = {
-            food_jokers = "Joker Đồ ăn",
-            banana = "Chuối",
-            cry_absolute = "Tuyệt đối",
+            food_jokers = "Joker Thực Phẩm",
+            banana = "Chuối Tiêu",
+            cry_absolute = "Tuyệt Đối",
             code = "Code",
-            unique = "Độc nhất",
-            cry_rigged = "Gian lận",
-            cry_hooked = "Đã kết nối",
-            cry_flickering = "Nhấp nháy",
-            cry_possessed = "Bị chiếm hữu",
+            unique = "Độc Nhất",
+            cry_rigged = "Gian Lận",
+            cry_hooked = "Đã Kết Nối",
+            cry_flickering = "Nhấp Nháy",
+            cry_possessed = "Bị Ám",
 
-            cry_green_seal = "Con dấu xanh lá",
-            cry_azure_seal = "Con dấu xanh dương nhạt",
+            cry_green_seal = "Con Dấu Lục",
+            cry_azure_seal = "Con Dấu Xanh Thẳm",
 
-            cry_astral = "Tinh tú",
-            cry_blur = "Mờ ảo",
-            cry_double_sided = "Hai mặt",
-            cry_glass = "Dễ vỡ",
-            cry_glitched = "Nhiễu loạn",
-            cry_gold = "Hoàng kim",
-            cry_m = "Vui vẻ",
-            cry_mosaic = "Khảm mảnh",
-            cry_noisy = "Ồn ào",
-            cry_oversat = "Quá bão hòa",
+            cry_astral = "Thiên Tú",
+            cry_blur = "Mờ Ảo",
+            cry_double_sided = "Hai Mặt",
+            cry_glass = "Mỏng Manh",
+            cry_glitched = "Nhiễu Loạn",
+            cry_gold = "Hoàng Kim",
+            cry_m = "Vui Nhộn",
+            cry_mosaic = "Khảm Mảnh",
+            cry_noisy = "Ồn Ào",
+            cry_oversat = "Siêu Bão Hòa",
 
-            k_cry_epic = "Sử thi",
-            k_cry_exotic = "Kì lạ",
+            k_cry_epic = "Sử Thi",
+            k_cry_exotic = "Ngoại Lai",
             k_cry_candy = "Kẹo",
-            k_cry_cursed  = "Bị nguyền",
+            k_cry_cursed  = "Bị Nguyền Rủa",
         },
         rnj_loc_txts = {
             stats = {
-                plus_mult = { "{C:red}+#2#{} Điểm nhân" },
+                plus_mult = { "{C:red}+#2#{} Nhân" },
                 plus_chips = { "{C:blue}+#2#{} Chip" },
-                x_mult = { "{X:red,C:white} X#2#{} Điểm nhân" },
+                x_mult = { "{X:red,C:white} X#2#{} Nhân" },
                 x_chips = { "{X:blue,C:white} X#2#{} Chip" },
-                h_size = { "{C:attention}+#2#{} Kích thước tay bài" },
-                money = { "{C:money}+$#2#{} bán ra" },
+                h_size = { "{C:attention}+#2#{} Lá Giữ Trong Tay" },
+                money = { "{C:money}+$#2#{} tiền thưởng" },
             },
             stats_inactive = {
-                plus_mult = { "{C:inactive}(Hiện tại {C:red}+#1#{C:inactive} Điểm nhân)" },
-                plus_chips = { "{C:inactive}(Hiện tại {C:blue}+#1#{C:inactive} Chip)" },
-                x_mult = { "{C:inactive}(Hiện tại {X:red,C:white} X#1# {C:inactive} Điểm nhân)" },
-                x_chips = { "{C:inactive}(Hiện tại {X:blue,C:white} X#1# {C:inactive} Chip)" },
-                h_size = { "{C:inactive}(Hiện tại {C:attention}+#1#{C:inactive} Kích thước tay bài)" },
-                money = { "{C:inactive}(Hiện tại {C:money}+$#1#{C:inactive})" },
+                plus_mult = { "{C:inactive}(Hiện tại là {C:red}+#1#{C:inactive} Nhân)" },
+                plus_chips = { "{C:inactive}(Hiện tại là {C:blue}+#1#{C:inactive} Chip)" },
+                x_mult = { "{C:inactive}(Hiện tại là {X:red,C:white} X#1# {C:inactive} Nhân)" },
+                x_chips = { "{C:inactive}(Hiện tại là {X:blue,C:white} X#1# {C:inactive} Chip)" },
+                h_size = { "{C:inactive}(Hiện tại là {C:attention}+#1#{C:inactive} Lá Giữ Trong Tay)" },
+                money = { "{C:inactive}(Hiện tại là {C:money}+$#1#{C:inactive})" },
             },
             actions = {
                 make_joker = { "Tạo {C:attention}#2# Joker{}" },
-                make_tarot = { "Tạo {C:attention}#2#{C:tarot} lá bài Tarot{}" },
-                make_planet = { "Tạo {C:attention}#2#{C:planet} lá bài Hành tinh{}" },
-                make_spectral = { "Tạo {C:attention}#2#{C:spectral} lá bài Quang Phổ{}" },
+                make_tarot = { "Tạo {C:attention}#2# lá {C:tarot}Tarot{}" },
+                make_planet = { "Tạo {C:attention}#2# lá {C:planet}Hành Tinh{}" },
+                make_spectral = { "Tạo {C:attention}#2# lá {C:spectral}Siêu Linh{}" },
                 add_dollars = { "Nhận {C:money}$#2#{}" },
             },
             contexts = {
-                open_booster = { "khi một {C:attention}Gói tăng cường{} được mở" },
-                buying_card = { "khi một card được bán" },
-                selling_self = { "khi lá bài này được bán" },
+                open_booster = { "khi mở một {C:attention}Gói Bài{}" },
+                buying_card = { "khi một lá bài được mua" },
+                selling_self = { "khi lá này được bán" },
                 selling_card = { "khi một lá bài được bán" },
-                reroll_shop = { "đang reroll" },
-                ending_shop = { "vào cuối mỗi {C:attention}shop{}" },
-                skip_blind = { "khi một {C:attention}tiền cược{} bị skip" },
-                skipping_booster = { "khi một {C:attention}gói tăng cường{} bị skip" },
-                playing_card_added = { "mỗi lần một {C:attention}lá bài đang chơi{} được thêm vào bộ bài của bạn" },
-                first_hand_drawn = { "khi vòng đấu bắt đầu" },
-                setting_blind = { "khi {C:attention}Tiền cược{} được chọn" },
+                reroll_shop = { "lúc gieo lại" },
+                ending_shop = { "ở cuối {C:attention}shop{}" },
+                skip_blind = { "khi một {C:attention}blind{} bị bỏ qua" },
+                skipping_booster = { "khi bỏ qua một {C:attention}Gói Bài{}" },
+                playing_card_added = { "mỗi khi một {C:attention}lá bài thường{} được thêm vào bộ bài của bạn" },
+                first_hand_drawn = { "khi ván bắt đầu" },
+                setting_blind = { "khi {C:attention}Blind{} được chọn" },
                 remove_playing_cards = { "khi một lá bài bị phá hủy" },
-                using_consumeable = { "khi một lá bài {C:attention}tiêu thụ{} được sử dụng" },
-                debuffed_hand = { "nếu chơi {C:attention}tay bài{} không được phép" },
+                using_consumeable = { "khi một lá {C:attention}tiêu thụ{} được dùng" },
+                debuffed_hand = { "nếu chơi {C:attention}tay bài{} không hợp lệ" },
                 pre_discard = { "trước mỗi lượt bỏ" },
-                discard = { "cho mỗi lượt bỏ" },
-                end_of_round = { "vào cuối mỗi {C:attention}vòng đấu{}" },
-                individual_play = { "cho mỗi lá bài được ghi điểm" },
-                individual_hand_score = { "cho mỗi lá bài cầm trên tay trong khi tính điểm" },
-                individual_hand_end = { "cho mỗi lá bài cầm trên tay vào cuối mỗi {C:attention}vòng đấu{}" },
-                repetition_play = { "Tái kích hoạt lá bài đã chơi" },
-                repetition_hand = { "Tái kích hoạt lá bài cầm trên tay" },
-                other_joker = { "mỗi lá {C:attention}Joker{}" },
+                discard = { "cho mỗi lá bài bị bỏ" },
+                end_of_round = { "ở cuối {C:attention}ván{}" },
+                individual_play = { "cho mỗi lá bài ghi điểm" },
+                individual_hand_score = { "cho mỗi lá bài giữ trên tay khi tính điểm" },
+                individual_hand_end = { "cho mỗi lá bài giữ trên tay ở cuối {C:attention}ván{}" },
+                repetition_play = { "Tái kích lá bài đã chơi" },
+                repetition_hand = { "Tái kích lá bài giữ trên tay" },
+                other_joker = { "mỗi {C:attention}Joker{}" },
                 before = { "trước mỗi {C:attention}tay bài{}" },
                 after = { "sau mỗi {C:attention}tay bài{}" },
                 joker_main = {},
             },
             conds = {
-                buy_common = { "nếu như nó là  {C:attention}Joker{} {C:blue}Thường{}" },
-                buy_uncommon = { "nếu như nó là  {C:attention}Joker{} {C:green}Hiếm{}" },
-                tarot = { "nếu lá bài là một lá {C:tarot}Tarot{}" },
-                planet = { "nếu lá bài là một lá {C:planet}Planet{}" },
-                spectral = { "nếu lá bài là một lá {C:spectral}Spectral{}" },
-                joker = { "nếu lá bài là một lá {C:attention}Joker{}" },
-                suit = { "nếu lá bài là một lá {V:1}#3#{}" },
+                buy_common = { "nếu nó là {C:attention}Joker{} {C:blue}Thường{}" },
+                buy_uncommon = { "nếu nó là {C:attention}Joker{} {C:green}Ít Phổ Biến{}" },
+                tarot = { "nếu lá bài là lá {C:tarot}Tarot{}" },
+                planet = { "nếu lá bài là lá {C:planet}Hành Tinh{}" },
+                spectral = { "nếu lá bài là lá {C:spectral}Siêu Linh{}" },
+                joker = { "nếu lá bài là {C:attention}Joker{}" },
+                suit = { "nếu lá bài là lá {V:1}#3#{}" },
                 rank = { "nếu lá bài có bậc là {C:attention}#3#{}" },
-                face = { "nếu lá bài là một lá {C:attention}face{} card" },
-                boss = { "nếu {C:attention}tiền cược{} là một {C:attention}Trùm {C:attention}Cược{}" },
-                non_boss = { "nếu {C:attention}tiền cược{} không phải là một {C:attention}Trùm {C:attention}Cược{}" },
-                small = { "nếu {C:attention}tiền cược{} là một {C:attention}Cược {C:attention}Nhỏ{}" },
-                big = { "nếu {C:attention}tiền cược{} là một {C:attention}Cược {C:attention}Lớn{}" },
+                face = { "nếu lá bài là lá {C:attention}mặt{}" },
+                boss = { "nếu {C:attention}blind {} là {C:attention}Boss Blind{}" },
+                non_boss = { "nếu {C:attention}blind{} không phải là {C:attention}Boss Blind{}"},
+                small = { "nếu {C:attention}blind{} là {C:attention}Small Blind{}" },
+                big = { "nếu {C:attention}blind{} là {C:attention}Big Blind{}" },
                 first = { "nếu nó là {C:attention}tay bài {C:attention}đầu tiên{}" },
                 last = { "nếu nó là {C:attention}tay bài {C:attention}cuối cùng{}" },
-                common = { "nếu như nó là {C:attention}Joker{} {C:blue}Thường{}" },
-                uncommon = { "nếu như nó là {C:attention}Joker{} {C:green}Hiếm{}" },
-                rare = { "nếu như nó là  {C:attention}Joker{} {C:red}Quý{}" },
-                poker_hand = { "nếu như nó là {C:attention}#3#{}" },
-                or_more = { "nếu tay bài có chứa {C:attention}#3#{} hoặc nhiều hơn lá bài" },
-                or_less = { "nếu tay bài có chứa {C:attention}#3#{} hoặc ít hơn lá bài" },
-                hands_left = { "nếu #3# {C:blue}tay bài{} còn lại ở cuối vòng" },
-                discards_left = { "nếu #3# {C:red}lượt bỏ{} còn lại ở cuối vòng" },
+                common = { "nếu nó là {C:attention}Joker{} {C:blue}Thường{}" },
+                uncommon = { "nếu nó là {C:attention}Joker{} {C:green}Ít Phổ Biến{}" },
+                rare = { "nếu nó là  {C:attention}Joker{} {C:red}Hiếm{}" },
+                poker_hand = { "nếu tay bài là {C:attention}#3#{}" },
+                or_more = { "nếu tay bài chứa {C:attention}#3#{} lá hoặc nhiều hơn" },
+                or_less = { "nếu tay bài chứa {C:attention}#3#{} lá hoặc ít hơn" },
+                hands_left = { "nếu còn #3# {C:blue}tay bài{} ở cuối ván" },
+                discards_left = { "nếu còn #3# {C:red}lượt bỏ{} ở cuối ván" },
                 first_discard = { "nếu nó là {C:attention}lượt bỏ {C:attention}đầu tiên{}" },
                 last_discard = { "nếu nó là {C:attention}lượt bỏ {C:attention}cuối cùng{}" },
-                odds = { "cùng với {C:green}#4# {C:green}trên {C:green}#3#{} khả năng" },
+                odds = { "với xác suất {C:green}#4# {C:green}trên {C:green}#3#{}" },
             },
         },
         v_dictionary = {
             a_xchips = {"X#1# Chip"},
-            a_powmult = {"^#1# Điểm nhân"},
+            a_powmult = {"^#1# Nhân"},
             a_powchips = {"^#1# Chip"},
-            a_powmultchips = {"^#1# Điểm nhân+Chip"},
-            a_round = {"+#1# Vòng"},
+            a_powmultchips = {"^#1# Nhân+Chip"},
+            a_round = {"+#1# Ván"},
             a_candy = {"+#1# Kẹo"},
             a_xchips_minus = {"-X#1# Chip"},
-            a_powmult_minus = {"-^#1# Điểm nhân"},
+            a_powmult_minus = {"-^#1# Nhân"},
             a_powchips_minus = {"-^#1# Chip"},
-            a_powmultchips_minus = {"-^#1# Điểm nhân+Chip"},
-            a_round_minus = {"-#1# Vòng"},
+            a_powmultchips_minus = {"-^#1# Nhân+Chip"},
+            a_round_minus = {"-#1# Ván"},
 
-            a_tag = {"#1# Nhãn"},
-            a_tags = {"#1# Nhãn"},
+            a_tag = {"Nhãn #1#"},
+            a_tags = {"Nhãn #1#"},
 
-            cry_sticker_name = {"#1# Sticker"},
+            cry_sticker_name = {"Nhãn #1#"},
             cry_sticker_desc = {
-                "Đã dùng lên Joker này",
-                "để thắng trên #2##1#",
-                "#2#Stake#3# Độ khó"
+                "Đã dùng Joker này",
+                "để thắng ở độ khó",
+                "#2#Cược#3# #2##1#"
             },
 
-            cry_art = {"Art: #1#"},
-            cry_code = {"Code: #1#"},
-            cry_idea = {"Idea: #1#"}
+            cry_art = {"Bức Vẽ Bởi: #1#"},
+            cry_code = {"Code Bởi: #1#"},
+            cry_idea = {"Ý Tưởng Bởi: #1#"}
         },
         v_text = {
-            ch_c_cry_all_perishable = {"Mọi lá Joker đều {C:eternal}Dễ hỏng{}"},
-            ch_c_cry_all_rental = {"Mọi lá Joker đều {C:eternal}Cho thuê{}"},
-            ch_c_cry_all_pinned = {"Mọi lá Joker đều {C:eternal}Đã ghim{}"},
-            ch_c_cry_all_banana = {"Mọi lá Joker đều {C:eternal}Chuối tiêu{}"},
-            ch_c_all_rnj = {"Mọi lá Joker đều {C:attention}RNJoker{}"},
-            ch_c_cry_sticker_sheet_plus = {"Tất cả các mặt hàng có thể mua đều có sticker"},
-            ch_c_cry_rush_hour = {"Mọi trùm cược đều {C:attention}Đồng hồ{} hoặc {C:attention}Vòng oải hương"},
-            ch_c_cry_rush_hour_ii = {"Mọi tiền cược là {C:attention)Trùm cược{}"},
-            ch_c_cry_rush_hour_iii = {"{C:attention}Đồng hồ{} và {C:attention}Vòng oải hương{} mở rộng quy mô nhanh {C:attention}gấp đôi{}"},
-            ch_c_cry_no_tags = {"Skip đã bị {C:attention}vô hiệu hóa{}"},
-            ch_c_cry_no_vouchers = {"{C:attention}Các Voucher{} không còn xuất hiện trong shop"},
-            ch_c_cry_no_boosters = {"{C:attention}Các Gói tăng cường{} không còn xuất hiện trong shop"},
-            ch_c_cry_no_rerolls = {"Reroll bị {C:attention}vô hiệu hóa{}"},
-            ch_c_cry_no_consumables = {"{C:attention}Vật phẩm tiêu thụ{} không còn xuất hiện"}
+            ch_c_cry_all_perishable = {"Mọi Joker đều {C:eternal}Ngắn Hạn{}"},
+            ch_c_cry_all_rental = {"Mọi Joker đều {C:eternal}Cho Thuê{}"},
+            ch_c_cry_all_pinned = {"Mọi Joker đều {C:eternal}Bị Ghim{}"},
+            ch_c_cry_all_banana = {"Mọi Joker đều có {C:eternal}Chuối Tiêu{}"},
+            ch_c_all_rnj = {"Mọi Joker đều là {C:attention}RNJoker{}"},
+            ch_c_cry_sticker_sheet_plus = {"Tất cả lá b2i có thể mua đều có nhãn"},
+            ch_c_cry_rush_hour = {"Mọi Boss Blind đều là {C:attention}The Clock{} hoặc {C:attention}Lavender Loop"},
+            ch_c_cry_rush_hour_ii = {"Mọi Blind đều là {C:attention)Boss Blind{}"},
+            ch_c_cry_rush_hour_iii = {"{C:attention}The Clock{} và {C:attention}Lavender Loop{} tăng trưởng nhanh hơn {C:attention}gấp đôi{}"},
+            ch_c_cry_no_tags = {"Khả năng  bở qua bị {C:attention}vô hiệu hóa{}"},
+            ch_c_cry_no_vouchers = {"{C:attention}Phiếu{} không còn xuất hiện trong shop"},
+            ch_c_cry_no_boosters = {"{C:attention}Gói Bài{} không còn xuất hiện trong shop"},
+            ch_c_cry_no_rerolls = {"Khả năng gieo lại bị {C:attention}vô hiệu hóa{}"},
+            ch_c_cry_no_consumables = {"{C:attention}Lá Tiêu Thụ{} không còn xuất hiện"}
         },
         -- Thanks to many members of the community for contributing to all of these quips!
         -- There's too many to credit so just go here: https://discord.com/channels/1116389027176787968/1209506360987877408/1237971471146553406
         -- And here: https://discord.com/channels/1116389027176787968/1219749193204371456/1240468252325318667
         very_fair_quips = {
-            { "L", "KHÔNG CÓ PHIẾU ƯU ĐÃI", "CHO BẠN" },
-            { "BOZO", "BẠN NGHĨ RẰNG TÔI SẼ", "CHO BẠN PHIẾU ƯU ĐÃI SAO?" },
-            { "NOPE!", "KHÔNG CÓ PHIẾU ƯU ĐÃI Ở ĐÂY!", "(PHIÊN BẢN SLUMPAGE)" },
-            { "VẤN ĐỀ KỸ NĂNG", "HÃY THỬ GIỎI ĐỦ ĐỂ", "NHẬN PHIẾU ƯU ĐÃI" },
-            { "JIMBO", "TỪ BAN QUẢN LÝ", "QUÊN BỔ SUNG HÀNG" },
-            { "OOPS!", "KHÔNG CÓ PHIẾU ƯU ĐÃI", "" },
-            { "BẠN LÀ MỘT TRÒ HỀ,", "TẠI SAO BẠN NHÌN", "SANG ĐÂY? LOL" },
-            { "PHIẾU ƯU ĐÃI", "ĐANG Ở", "MỘT TÒA LÂU ĐÀI KHÁC" },
-            { "$0", "PHIẾU TRỐNG", "(HIỂU CHỨ?)" },
-            { "LỖI", "KHÔNG THỂ TÍNH TOÁN TRÊN GIÁ TRỊ NIL", "(tier4vouchers.lua)" },
-            { "GIẢM GIÁ 100%", "CHO TẤT CẢ PHIẾU ƯU ĐÃI", "(AI ĐÓ ĐÃ MUA HẾT RỒI)" },
-            { "THỬ LẠI SAU", "GỢI Ý: BẠN CŨNG KHÔNG", "CÓ ĐỦ TIỀN ĐÂU" },
-            { "HẢ?", '"PHIẾU ƯU ĐÃI"?', "ĐÓ THẬM CHÍ KHÔNG PHẢI LÀ TỪ ĐÚNG..." },
-            { 'NHẤN "R"', "ĐỂ BỔ SUNG", "TẤT CẢ PHIẾU ƯU ĐÃI" },
-            { "BẠN CÓ BIẾT KHÔNG?", "NHẤN ALT+F4", "ĐỂ NHẬN PHIẾU ƯU ĐÃI MIỄN PHÍ!" },
-            { "XIN LỖI,", "KHÔNG CÓ PHIẾU ƯU ĐÃI", "DO CẮT GIẢM NGÂN SÁCH" },
-            { "GỌI 1-600-JIMBO", "ĐỂ ĐÁNH GIÁ", "TRẢI NGHIỆM PHIẾU ƯU ĐÃI" },
-            { "ĐÁNH BẠI", "ANTE 39 TRÙM CƯỢC", "ĐỂ BỔ SUNG HÀNG" },            
-            { "TRÒ ẢO THUẬT", "TÔI ĐÃ LÀM CHO PHIẾU ƯU ĐÃI NÀY", "BIẾN MẤT" },
-            { "TẠI SAO", "PHIẾU ƯU ĐÃI LẠI GIỐNG", "MỘT BÀN VIẾT?" },
-            { "CHÚNG TÔI ĐÃ THU HỒI", "PHIẾU CỦA BẠN, CHÚNG SẼ ĐƯỢC", "SỬ DỤNG TỐT HƠN TRONG CÁC LƯỢT KHÁC" },
-            { "TẠI SAO HỌ GỌI ĐÓ LÀ PHIẾU", "KHI ĐÃ LÀM MÁT CÁI NÓNG", "VÀ ĂN CON CHIP LẠNH?" },
-            { "XIN LỖI", "PHIẾU ĐANG GẶP SỰ CỐ", "VOUCHIFIA ABORTUS" },
-            { "THẬT KHÔNG MAY", "BẢN CẬP NHẬT VOUCHRX REWRITE", "ĐÃ BỊ HỦY" },
-            { "ĐÁNH BẠI", "TRÙM BLIND", "ĐỂ KHÔNG THAY ĐỔI GÌ CẢ" },
-            { "CHIM ĐANG HÓT", "HOA ĐANG NỞ", "NHỮNG ĐỨA TRẺ NHƯ BẠN..." },
-            { "CHÚNG TÔI XIN THÔNG BÁO", "TẤT CẢ PHIẾU ĐÃ BỊ THU HỒI", "DO NGUY CƠ NHIỄM SALMONELLA" },
-            { "PHIẾU KHÔNG THỂ ĐẾN", "DO BỐ CỤC CỬA HÀNG", "VƯỢT NGÂN SÁCH 200%" },
-            { "BẠN THÍCH", "MUA PHIẾU, PHẢI KHÔNG?", "BẠN LÀ NGƯỜI MUA PHIẾU" },
-            { "PHIẾU ƯU ĐÃI", "!E", "HỒ BƠI PHIẾU ƯU ĐÃI" },
+            { "L", "KHÔNG CÓ PHIẾU", "CHO MÀY ĐÂU" },
+            { "NGU ĐẦN", "MÀY NGHĨ RẰNG TAO SẼ", "CHO MÀY PHIẾU À?" },
+            { "NOPE!", "KHÔNG CÓ PHIẾU Ở ĐÂY!", "(PHIÊN BẢN SLUMPAGE)" },
+            { "VẤN ĐỀ KỸ NĂNG", "NĂM MƠ MÀ", "LẤY PHIẾU ĐI" },
+            { "JIMBO", "TỪ BAN QUẢN LÝ", "QUÊN THAY MỚI" },
+            { "ÚI!", "KHÔNG CÓ PHIẾU NHA", "" },
+            { "MÀY LÀ THẰNG HỀ,", "LIẾC Ở ĐÂY", "LÀM GÌ? LOL" },
+            { "PHIẾU HIỆN", "ĐANG Ở", "LÂU ĐÀI KHÁC" },
+            { "$0", "PHIẾU TRỐNG", "(HIỂU RỔI CHỨ?)" },
+            { "ERROR", "CANNOT DO ARITHMETIC ON A NIL VALUE", "(tier4vouchers.lua)" },
+            { "GIẢM GIÁ 100%", "CHO TẤT CẢ PHIẾU", "(AI ĐÓ MÚC HẾT RỒI)" },
+            { "THỬ LẠI SAU NHÉ", "NHẮC TÍ LÀ MÀY CŨNG", "KHÔNG CÓ ĐỦ TIỀN ĐÂU" },
+            { "HẢ?", '"PHIẾU GÌ"?', "TỪ ĐÓ CÒN CHẲNG CÓ NGHĨA..." },
+            { 'NHẤN "R"', "ĐỂ THAY MỚI", "LẠI PHIẾU" },
+            { "BIẾT GÌ KHÔNG?", "NHẤN ALT+F4 ĐỂ", "NHẬN PHIẾU MIỄN PHÍ!" },
+            { "XIN LỖI,", "KHÔNG CÓ PHIẾU", "DO CẮT GIẢM NGÂN SÁCH" },
+            { "GỌI 1-600-JIMBO", "ĐỂ ĐÁNH GIÁ", "TRẢI NGHIỆM PHIẾU" },
+            { "ĐÁNH BẠI", "BOSS BLIND ANTE 39", "ĐỂ THAY MỚI" },            
+            { "ẢO THUẬT", "TAO ĐÃ ÚM BA LA", "BAY PHIẾU RỒI NHÉ" },
+            { "TẠI SAO", "PHIẾU LẠI GIỐNG", "BÀN VIẾT THẾ?" },
+            { "CHÚNG TÔI ĐÃ THU HỒI", "PHIẾU CỦA BẠN, CHÚNG SẼ CÓ ĐẤT", "DỤNG VÕ HƠN TRONG TRẬN KHÁC" },
+            { "TẠI SAO GỌI ĐÓ LÀ PHIẾU", "KHI LÀM MÁT CÁI NÓNG", "VÀ ĂN CHIP LẠNH?" },
+            { "XIN LỖI", "PHIẾU ĐANG GẶP SỰ CỐ", "\"MẤT TRINH\"" },
+            { "KHÔNG MAY LÀ BẢN", "CẬP NHẬT VOUCHRX REWRITE", "ĐÃ BỊ HỦY" },
+            { "ĐÁNH BẠI", "BOSS BLIND", "ĐỂ U NHƯ KỸ" },
+            { "CHIM ĐANG HÓT", "HOA ĐANG NỞ", "TRẺ TRÂU NHƯ MÀY..." },
+            { "XIN THÔNG BÁO", "TẤT CẢ PHIẾU ĐÃ BỊ THU HỒI", "DO NGUY CƠ NHIỄM SALMONELLA" },
+            { "PHIẾU KHÔNG THỂ ĐẾN", "DO BỐ CỤC SHOP", "VƯỢT NGÂN SÁCH 200%" },
+            { "MÀY THÍCH", "MUA PHIẾU À?", "MÀY LÀ KẺ HỐC PHIẾU" },
+            { "PHIẾU", "!E", "MỘT HỒ PHIẾU" },
             { "KHÔNG CÓ", "PHIẾU", "Ở ĐÂY" },
-            { "KHÔNG CÓ", "ÔNG GIÀ NOEL", "VÀ KHÔNG CÓ PHIẾU ƯU ĐÃI" },
+            { "KHÔNG CÓ", "ÔNG GIÀ NOEL VÀ", "CŨNG KHÔNG CÓ PHIẾU" },
             { "", "KHÔNG PHIẾU?", "" },
-            { "BẠN", "VỪA THUA", "TRÒ CHƠI" },
-            { "TÔI CÓ THỂ ĐỀ XUẤT", "MỘT QUẢ TRỨNG TỐT", "TRONG THỜI GIAN KHÓ KHĂN NÀY KHÔNG?" },
-            { "RA NGOÀI CHƠI", "THAY VÌ DÙNG", "BỘ BÀI NÀY" },
-            { "BẠN CÓ THỂ", "ĐANG CHƠI BỘ BÀI XANH", "NGAY BÂY GIỜ" },
-            { "ĐỒ MIỄN PHÍ", "LẤY NGAY TRƯỚC KHI", "QUÁ MUỘN (hết hàng)" },
-            { "CHỨNG MINH BẠN ĐÚNG", "BẰNG CÁCH MUA", "PHIẾU VÔ HÌNH VỚI GIÁ 10 USD" },
+            { "MÀY", "VỪA THUA", "TRẬN KÌA" },
+            { "ĐỂ TUI MÚC", "CHO QUẢ TRỨNG TỐT", "LÚC KHỐN ĐỐN NÀY NHÉ?" },
+            { "CHẠM CỎ ĐI", "THAY VÌ DÙNG", "BỘ BÀI NÀY" },
+            { "ĐANG CHƠI", "BỘ BÀI XANH", "PHẢI HÔNG?" },
+            { "ĐỒ NGOẠI LAI", "MIỄN PHÍ, MÚC LẸ TRƯỚC", "KHI QUÁ MUỘN (hết hàng)" },
+            { "CHỨNG MINH MÌNH ĐÚNG", "BẰNG CÁCH MUA PHIẾU", "VÔ HÌNH VỚI GIÁ $10" },
             { "", "không có phiếu?", "" },
-            { "THẤY QUẢNG CÁO NÀY?", "NẾU CÓ, NÓ ĐANG HOẠT ĐỘNG", "VÀ BẠN CÓ THỂ SỞ HỮU NÓ" },
-            { "BẠN ĐANG BỎ LỠ", "ÍT NHẤT 5 PHIẾU ƯU ĐÃI", "tonktonktonktonktonk" },
+            { "thấy quảng cáo này à?", "nếu được thì nó đang hoạt động", "và bạn cũng có thể lấy nó" },
+            { "BẠN ĐANG BỎ LỠ", "ÍT NHẤT 5 PHIẾU ĐÓ", "tonktonktonktonktonk" },
             { "10", "20 KHÔNG PHIẾU XD", "30 GOTO 10" },
-            { "PHIẾU ƯU ĐÃI", "LÀ TÍNH NĂNG CAO CẤP", "MỞ KHÓA VỚI 199,99 JOLLARS" },
-            { "THỰC SỰ KHÔNG CÓ PHIẾU!?!?", "CHỈ DÀNH CHO CƯỢC TĂNG DẦN", "BỘ BÀI RẤT CÔNG BẰNG" },
-            { "BẠN CÓ HÀI LÒNG VỚI", "TRẢI NGHIỆM PHIẾU ƯU ĐÃI? ĐÁNH GIÁ", "5 SAO TRÊN JESTELP" },
+            { "PHIẾU LÀ", "TÍNH NĂNG CAO CẤP", "MỞ KHÓA VỚI $199.99 JOLLAR" },
+            { "THỰC SỰ KHÔNG PHIẾU!?!?", "CHỈ DÀNH CHO CƯỢC ƯU VIỆT", "BỘ BÀI SIÊU CÔNG BẰNG" },
+            { "BẠN CÓ HÀI LÒNG VỚI", "TRẢI NGHIỆM PHIẾU KHÔNG? HÃY", "ĐÁNH GIÁ 5 SAO TRÊN JESTELP" },
             { "PHIẾU MIỄN PHÍ", "PHIẾU NÓNG GẦN BẠN", "LẤY PHIẾU NHANH VỚI MẸO NÀY" },
             { "GIỚI THIỆU", "PHIẾU CẤP 0 ĐẦU TIÊN!", "(sắp ra mắt trong Cryptid 1.0)" },
-            { "MỘT PHIẾU!", "NÓ CHỈ LÀ TƯỞNG TƯỢNG", "CHÚNG TÔI TƯỞNG BẠN MUỐN CÓ NÓ" },            
+            { "PHIẾU KÌA!", "À, TƯỞNG TƯỢNG THÔI", "BỌN TAO TƯỞNG MÀY MUỐN CÓ NÓ" },            
             { "TẮT TRÌNH CHẶN QUẢNG CÁO", "NẾU KHÔNG CÓ QUẢNG CÁO, CHÚNG TÔI KHÔNG THỂ", "BÁN PHIẾU CHO BẠN" },
-            { "NẾU BẠN CÓ", "VẤN ĐỀ VỚI VIỆC NÀY", "HÃY GỬI EMAIL ĐẾN NORESPONSE@JMAIL.COM" },
-            { "KHÔNG ĐỦ TIỀN", "ĐỂ MUA PHIẾU NÀY", "VẬY TẠI SAO CHÚNG TÔI LẠI ĐẶT NÓ Ở ĐÂY?" },
-            { "MUỐN MỘT PHIẾU ƯU ĐÃI?", "VẬY IM ĐI", "BẠN KHÔNG THỂ CÓ ĐÂU LOL" },
+            { "NẾU BẠN GẶP", "VẤN ĐỀ, HÃY GỬI", "EMAIL ĐẾN NORESPONSE@JMAIL.COM" },
+            { "KHÔNG ĐỦ TIỀN ĐỂ", "MUA PHIẾU, ĐẶT", "NÓ Ở ĐÂY LÀM GÌ?" },
+            { "MUỐN MUA PHIẾU À?", "VẬY THÌ IM ĐI", "MÀY KHÔNG LẤY ĐƯỢC ĐÂU LOL" },
             { "^$%& KHÔNG", "PHIẾU ^%&% %&$^% CHO", "$%&%%$ %&$&*%$^ BẠN" },
-            { "MỘT PHIẾU (TIN TƯỞNG)", "|\\/|", "|/\\|" },            
+            { "PHIẾU NÈ (TIN TAO ĐI)", "|\\/|", "|/\\|" },            
             {
                 "... --- ...",
                 ".--. .-.. .- -.-- . .-. -.. . -.-. --- -.. . -.. -- --- .-. ... .",
                 "-.-. --- -.. . - --- ..-. .. -. -.. .- ...- --- ..- -.-. .... . .-.",
             },
-            { "CHẠY > MỚI", "NHÌN CHẰM CHẰM VÀO HƯ KHÔNG", "TRONG MỘT HOẶC HAI TIẾNG" },
-            { "CHÚNG TÔI RẤT XIN LỖI", "NGƯỜI TRƯỚC HOẢNG LOẠN MUA HẾT", "TẤT CẢ CÁC PHIẾU" },
-            { "CẢM GIÁC NHƯ", "MUA ĐƯỢC", "KHÔNG PHIẾU" },
-            { "JIMBO QUAY TRÚNG MẶT 1", "VÀ NÉM TẤT CẢ", "PHIẾU VÀO HỐ" },
-            { "THỬ TRUY CẬP", "THÀNH PHẦN 'PHIẾU'", "(MỘT GIÁ TRỊ NULL)" },
+            { "TRẬN > TRẬN MỚI", "NHÌN KHÔNG KHÍ TRONG", "MỘT HOẶC HAI TIẾNG" },
+            { "RẤT XIN LỖI", "NGƯỜI TRƯỚC HOẢNG QUÁ", "MUA HẾT PHIẾU CMNR" },
+            { "CẢM GIÁC NHƯ NÀO", "KHI KHÔNG ĐƯỢC", "MUA PHIẾU?" },
+            { "JIMBO QUAY TRÚNG MẶT 1", "VÀ NÉM TẤT CẢ", "PHIẾU XUỐNG HỐ RỒI" },
+            { "ATTEMPT TO INDEX", "FIELD 'VOUCHER'", "(A NIL VALUE)" },
             {
-                "ÔI BẠN THẬT SỰ NGHĨ RẰNG ĐỌC HẾT TẤT CẢ NHỮNG DÒNG NÀY SẼ MANG PHIẾU CỦA BẠN TRỞ LẠI Ư?",
-                "RẤT TIẾC PHẢI NÓI VỚI BẠN RẰNG, BỘ BÀI NÀY KHÔNG CHỨA NHỮNG PHIẾU MÀ BẠN ĐANG TÌM KIẾM.",
-                "VĂN BẢN DÀI MỘT CÁCH BẤT THƯỜNG NÀY CÓ MẶT Ở ĐÂY CHỈ ĐỂ LÃNG PHÍ THỜI GIAN VÀ NỖ LỰC CỦA BẠN KHI ĐỌC NÓ.",
+                "ÔI BẠN ƠI THẬT, NGÂY THƠ THẾ, ĐỌC HẾT ĐỐNG NÀY SẼ MANG PHIẾU TRỞ LẠI À?",
+                "RẤT TIẾC PHẢI NÓI RẰNG, BỘ BÀI NÀY KHÔNG CHỨA PHIẾU ĐÂU MÀ CỰC NHỌC TÌM KIẾM.",
+                "ĐOẠN VĂN DÀI BẤT THƯỜNG NÀY CHỈ Ở ĐÂY ĐỂ BỌN NGU LÃNG PHÍ SỨC MÀ ĐỌC NÓ",
             },
             { "TRUY CẬP", "https://youtu.be/p7YXXieghto", "ĐỂ NHẬN PHIẾU MIỄN PHÍ" },            
         }
