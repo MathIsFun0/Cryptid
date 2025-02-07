@@ -290,12 +290,12 @@ local mstack = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return { vars = { center.ability.extra.retriggers, center.ability.extra.sell_req, center.ability.extra.sell } }
 	end,
-	calculate = function(self, card, context) --note: hardcoded like this intentionally
+	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra.retriggers,
+					repetitions = math.min(card.ability.extra.retriggers, 40),
 					card = card,
 				}
 			end
@@ -501,7 +501,7 @@ local bonk = {
 	order = 256,
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" } },
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
@@ -723,6 +723,8 @@ local sacrifice = {
 						end,
 					}))
 				end
+				if card.ability.extra.jollies < 1 then card.ability.extra.jollies = 1 end
+				if card.ability.extra.unc < 1 then card.ability.extra.unc = 1 end
 				for i = 1, math.min(30, card.ability.extra.jollies) do
 					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
 					jolly:add_to_deck()
@@ -770,7 +772,7 @@ local reverse = {
 	dependencies = {
 		items = {"set_cry_m"},
 	},
-	config = { extra = { type = "Pair", spawn = 0 } },
+	config = { extra = { type = "Pair" } },
     pools = {["Meme"] = true},
 	pos = { x = 0, y = 0 },
 	rarity = 2,
@@ -1237,6 +1239,7 @@ local macabre = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint or context.retrigger_joker) and not card.getting_sliced then
+			if card.ability.extra.add < 1 then card.ability.extra.add = 1 end
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local triggered = false
