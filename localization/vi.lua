@@ -134,7 +134,7 @@ return {
                 text = {
                     "Bắt đầu với một {C:attention}Joker {C:cry_exotic}Ngoại Lai",
                     "Tăng xác suất xuất hiện Joker",
-                    "{C:dark_edition}Âm bản lên {C:attention}20 lần",
+                    "{C:dark_edition}Âm bản{} lên {C:attention}20 lần",
                     "{C:attention}-2{} ô Joker",
                 },
             },
@@ -384,7 +384,7 @@ return {
                 name = "://EXPLOIT",
                 text = {
                     "Mọi tay bài đã chơi đều được coi là",
-                    "{C:cry_code}chứa{} một tay poker {C:cry_code}đã chọn{},",
+                    "{C:cry_code}tay poker{} {C:cry_code}đã chọn{},",
                     "đặt lại sau khi hết ván",
                     "{C:inactive,s:0.8}Các tay poker bí mật cần được",
                     "{C:inactive,s:0.8}khám phá để dùng hợp lệ",
@@ -673,7 +673,7 @@ return {
                     "hết ván nếu {C:attention}tay Poker{}",
                     "là {C:attention}#2#{}",
                     "{C:inactive}(Hiện tại là {C:attention}#3#{}{C:inactive}){}",
-                    "{C:inactive,s:0.8}không hề béo, chỉ là xương to thôi.",
+                    "{C:inactive,s:0.8}không hề béo, chỉ là to xương thôi.",
                 },
             },
             j_cry_blacklist = {
@@ -688,7 +688,7 @@ return {
             j_cry_blender = {
                 name = "Blender",
                 text = {
-                    "Tạo ra một lá tiêu thu {C:attention}ngẫu nhiên{}",
+                    "Tạo ra một lá tiêu thụ {C:attention}ngẫu nhiên{}",
                     "khi một {C:cry_code}Lá Code{} được sử dụng",
                     "{C:inactive}(Phải có ô trống){}",
                 },
@@ -705,8 +705,8 @@ return {
                 text = {
                     "Mỗi {C:attention}Joker{} cho {C:chips}+#1#{} Chip",
                     "Tăng số lượng chip lên {C:chips}+#2#{} nếu",
-                    "{C:attention} tay poker{} là {C:attention}#3#{}",
-                    "{C:inactive,s:0.8}Joker Vui Nhộn cho{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip{}",
+                    "{C:attention}tay poker{} là {C:attention}#3#{}",
+                    "{C:inactive,s:0.8}Joker Vui Nhộn{} cho {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip{}",
                 },
             },
             j_cry_bonkers = {
@@ -738,7 +738,7 @@ return {
             j_cry_boredom = {
                 name = "Buồn Chán",
                 text = {
-                    "Xác suất {C:green}#1# trong #2#{} để",
+                    "Xác suất {C:green}#1# trên #2#{} để",
                     "{C:attention}tái kích{} mỗi lá {C:attention}Joker{}",
                     "hoặc {C:attention}lá bài đã chơi{}",
                     "{C:inactive,s:0.8}Không tác dụng lên lá Buồn Chán khác{}",
@@ -830,7 +830,7 @@ return {
                 name = "Caramel",
                 text = {
                     "Mỗi lá bài đã chơi ghi thêm",
-                    "{X:mult,C:white}X#1#{} Nhân khi tính điểm",
+                    "{X:mult,C:white} X#1# {} Nhân khi tính điểm",
                     "cho {C:attention}#2#{} ván sắp tới",
                 },
             },
@@ -855,7 +855,7 @@ return {
                 text = {
                     "Gieo {C:green}Xúc Sắc 10{} khi",
                     "{C:attention}Boss Blind{} bị đánh bại",
-                    "để bắt đầu {C:cry_ascendant,E:1}sự kiện",
+                    "để bắt đầu {C:cry_ascendant,E:1}Sự Kiện",
                     "{C:inactive}(Hiện tại là: #1#)"
                 },
             },
@@ -882,7 +882,7 @@ return {
                 }
             },
             j_cry_clash = {
-                name = "Chuẩn Xung Đột",
+                name = "Chuẩn Xung Đột", --Chuẩn Nhị Tối Thượng có lẽ sẽ hợp hơn với chuẩn nhị, tam, tứ, v..v
                 text = {
                     "{X:mult,C:white} X#1# {} Nhân nếu chơi",
                     "một tay bài có chứa",
@@ -948,7 +948,7 @@ return {
                 },
             },
             j_cry_crustulum = {
-                name = "Vỏ Bánh",
+                name = "Bánh Ngọt", --Tiếng la tinh dịch thế này
                 text = {
                     "Joker này thêm {C:chips}+#2#{} Chip",
                     "mỗi lần {C:attention}gieo lại{} trong shop",
@@ -992,7 +992,7 @@ return {
                 },
             },
             j_cry_cut = {
-                name = "Cắt",
+                name = "Cut",
                 text = {
                     "Joker này phá hủy",
                     "một lá {C:cry_code}Code{} ngẫu nhiên",
@@ -1163,7 +1163,7 @@ return {
                 },
             },
             j_cry_filler = {
-                name = "Chuẩn Lấp",
+                name = "Chuẩn Nhất", --sẽ hợp hơn với Chuẩn nhị, tam, tứ,v..v
                 text = {
                     "{X:mult,C:white} X#1# {} Nhân nếu",
                     "tay bài đã chơi",
@@ -1207,7 +1207,7 @@ return {
                 },
             },
             j_cry_foolhardy = {
-                name = "Joker liều lĩnh",
+                name = "Joker Liều Lĩnh",
                 text = {
                     "{C:red}+#1#{} Nhân nếu",
                     "tay bài đã chơi",
@@ -1224,7 +1224,7 @@ return {
 		    },
 	    },
             j_cry_foxy = {
-                name = "Joker Cáo",
+                name = "Joker Láu Cá", --toàn bộ kiểu Joker dạng này đều chỉ tính cách, có lẽ
                 text = {
                     "{C:chips}+#1#{} Chip nếu",
                     "tay bài đã chơi",
@@ -1322,7 +1322,7 @@ return {
                 },
             },
             j_cry_home = {
-                name = "Chuẩn Nhà",
+                name = "Chuẩn Cù lũ", --hoặc cù, chứ thực ra nó chơi chữ house trong full house trong tiếng anh, mình dịch ra nghe nó hơi phèn nên để thế này
                 text = {
                     "{X:mult,C:white} X#1# {} Nhân nếu",
                     "tay bài đã chơi",
@@ -1419,7 +1419,7 @@ return {
 		unlock = {
                     "Đánh bại {C:attention}Boss Blind",
                     'với {C:attention}5 Lá Bài Ấn Bản{} hoặc',
-                    '{C:attention}Joker Ấn Bản',
+                    '{C:attention}5 Joker Ấn Bản', --nó ngắt dòng thế này mình thêm cho rõ nghĩa hơn thôi
                     'trở lên'
                 },
             },
@@ -1607,7 +1607,7 @@ return {
                 text = {
                     "Khi {C:attention}Blind{} được chọn,",
                     "phá hủy Joker liền trái",
-                    "và vĩnh viện thêm {C:attention}mười lần{}",
+                    "và vĩnh viễn thêm gấp {C:attention}mười lần{}",
                     "giá bán của nó vào {C:chips}Chip{}",
                     "{C:inactive}(Hiện tại là {C:chips}+#1#{C:inactive} Chip)",
                 },
@@ -1859,7 +1859,7 @@ return {
                 },
             },
             j_cry_queens_gambit = {
-                name = "Thí Quân Hậu",
+                name = "Thí Hậu", --Vắn tắt xúc tích hay hơn phải không :D
                 text = {
                     "Nếu {C:attention}tay poker{} là",
                     "{C:attention}Sảnh Chúa{}, phá huỷ",
@@ -1907,7 +1907,7 @@ return {
                 }
             },
             j_cry_reverse = {
-                name = "Lá Đảo Ngược",
+                name = "Lá Nghịch Đảo", --Nghe có hay hơn không?
                 text = {
                     "Lấp đầy các ô Joker còn trống {C:inactive}(Tối đa 100){}",
                     "bằng {C:attention}Joker Vui Nhộn{} {C:dark_edition}Lấp Lánh{} nếu",
@@ -1958,11 +1958,11 @@ return {
             j_cry_Scalae = {
                 name = "Phóng Đại",
                 text = {
-                    "{C:attention}Joker{} tăng trưởng sẽ tăng trưởng",
-                    "theo đa thức bậc {C:attention}#1#{}",
-                    "tăng bậc đa thức lên {C:attention}#2#{}",
-                    "ở cuối ván",
-                    "{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} bị ngoại trừ)",
+                    "Các lá {C:attention}Joker{} tỉ lệ sẽ tăng theo",
+                    "một đa thức bậc {C:attention}#1#{}",
+                    "tăng bậc lên {C:attention}#2#{}",
+                    "ở cuối mỗi vòng",
+                    "{C:inactive,s:0.8}({C:attention,s:0.8}Phóng Đại{C:inactive,s:0.8} bị ngoại trừ)", --thực sự cái này rất khó hình dung
                 },
             },
             j_cry_scrabble = {
@@ -2021,13 +2021,13 @@ return {
                 },
             },
             j_cry_fleshpanopticon = {
-                name = "Nhà Tù Thịt",
+                name = "Nhà Tù Thịt", --hình như đây là 1 scp jj đó phải không, nếu là tên riêng thì nên để tiếng anh nhỉ?
                 text = {
                     "{C:red}X#1#{} điểm {C:attention}Boss Blind{}",
                     "Khi {C:attention}Boss Blind{} bị đánh bại,",
                     "{C:red}tự hủy{} và tạo ra",
                     "một lá {C:spectral}Cánh Cổng{} {C:dark_edition}Âm Bản{}",
-                    "{C:inactive,s:0.8}\"Nhà tù này... đang giam giữ... tôi sao?\""
+                    "{C:inactive,s:0.8}\"Nhà tù này... đang giam giữ... ta sao?\""
                 },
             },
             j_cry_spaceglobe = {
@@ -2102,7 +2102,7 @@ return {
                 }
             },
             j_cry_supercell = {
-                name = "Supercell",
+                name = "Supercell", --Siêu Đột Phá
                 text = {
                     "{C:chips}+#1#{} Chip, {C:mult}+#1#{} Nhân,",
                     "{X:chips,C:white}X#2#{} Chip, {X:mult,C:white}X#2#{} Nhân",
@@ -2121,7 +2121,7 @@ return {
                 },
             },
             j_cry_swarm = {
-                name = "Chuẩn Bầy",
+                name = "Chuẩn Bầy", --Chuẩn Ngũ Tộc
                 text = {
                     "{X:mult,C:white} X#1# {} Nhân nếu",
                     "tay bài đã chơi",
@@ -2134,7 +2134,7 @@ return {
                 },
             },
             j_cry_sync_catalyst = {
-                name = "Xúc Tác Đồng Bộ",
+                name = "Xúc Tác Đồng Bộ", --Hợp Chất Đồng Hóa
                 text = {
                     "Cân bằng {C:chips}Chip{} và {C:mult}Nhân{}",
                     "{C:inactive,s:0.8}Này! Tôi đã từng nhìn thấy nó lần nào đó rồi!",
@@ -2204,7 +2204,7 @@ return {
                 },
             },
             j_cry_unity = {
-                name = "Chuẩn Đoàn Kết",
+                name = "Chuẩn Đoàn Kết", --Chuẩn Cù Tộc
                 text = {
                     "{X:mult,C:white} X#1# {} Nhân nếu",
                     "tay bài đã chơi",
@@ -2328,7 +2328,7 @@ return {
                 },
             },
             j_cry_wtf = {
-                name = "CHUẨN ĐỆCH!?",
+                name = "CHUẨN ĐỆCH!?", --CHUẨN..CHUẨN CÁI CO...!? :D
                 text = {
                     "{X:mult,C:white} X#1# {} Nhân nếu",
                     "tay bài đã chơi",
@@ -2520,10 +2520,10 @@ return {
                 },
             },
             sleeve_cry_infinite_sleeve = {
-                name = "Bọc Vộ Cực",
+                name = "Bọc Vô Cực",
                 text = {
                     "Bạn có thể chọn {C:attention}bất kỳ",
-                    "số lượng lá bài nào",
+                    "số lượng lá bài nào trên tay",
                     --someone do the hand size thing for me
                 },
             },
@@ -2554,7 +2554,7 @@ return {
                 text = {
                     "Bắt đầu với một {C:attention}Joker {C:cry_exotic}Ngoại Lai",
                     "Tăng xác suất xuất hiện Joker",
-                    "{C:dark_edition}Âm bản lên {C:attention}20 lần",
+                    "{C:dark_edition}Âm bản{} lên {C:attention}20 lần",
                     "{C:attention}-2{} ô Joker",
                 },
             },
@@ -2597,7 +2597,7 @@ return {
             c_cry_conduit = {
                 name = "Ống Dẫn",
                 text = {
-                    "Tráo đổi {C:attention}ấn bản{} của",
+                    "Tráo đổi {C:attention}Ấn bản{} của",
                     "{C:attention}2{} lá bài hoặc {C:attention}Joker{} được chọn",
                 },
             },
@@ -2620,7 +2620,7 @@ return {
             c_cry_lock = {
                 name = "Khóa",
                 text = {
-                    "Loại bỏ {C:red}mọi{} nhãn",
+                    "Loại bỏ {C:red}mọi{} nhãn", --nhãn? của lá Joker á
                     "khỏi {C:red}mọi{} Joker,",
                     "sao đó thêm {C:purple,E:1}Vĩnh Hằng{}",
                     "cho một {C:attention}Joker{} ngẫu nhiên",
@@ -2652,7 +2652,7 @@ return {
                 },
             },
             c_cry_source = {
-                name = "Nguồn",
+                name = "Source", --Gì liên quan tới code kiếc máy tính thì cứ để tiếng anh cho nó ngầu :D
                 text = {
                     "Thêm một {C:cry_code}Con Dấu Lục{}",
                     "vào {C:attention}#1#{} lá đã chọn",
@@ -2683,7 +2683,7 @@ return {
                 },
             },
             c_cry_vacuum = {
-                name = "Chân Không",
+                name = "Chân Không", --dòng text đọc thì nó mang hàm ý như Hút loại bỏ nên thấy dịch này chưa đúng lắm
                 text = {
                     "Loại bỏ {C:red}mọi {C:green}Sửa Đổi{}",
                     "khỏi {C:red}mọi{} lá giữ trên tay,",
@@ -2718,7 +2718,7 @@ return {
                 },
             },
             stake_cry_yellow = {
-                name = "Cược Vàng Thường",
+                name = "Cược Vàng Thường", --cái vàng kia ông chuyển qua Hoàng Kim nghe cho Oách xà lách đê, còn cái này để Vàng thôi
                 colour = "Vàng Thường",
                 text = {
                     "{C:attention}Nhãn{} có thể xuất hiện trên",
@@ -2937,13 +2937,13 @@ return {
             tag_cry_bundle = {
                 name = "Nhãn Gói Sưu Tập",
                 text = {
-                    "Tạo ra một {C:attention}Nhãn Tiêu Chuẩn{}, {C:tarot}Nhãn Nùa Chú{},",
+                    "Tạo ra một {C:attention}Nhãn Tiêu Chuẩn{}, {C:tarot}Nhãn Nùa Chú{},", --??Bùa chú hay Nùa chú đây
                     "{C:attention}Nhãn Hề{}, và {C:planet}Nhãn Sao Băng",
                 },
             },
             tag_cry_cat = {
                 name = "Nhãn Mèo",
-                text = { "Meo.", "{C:inactive}Cấp độ {C:dark_edition}#1#" },
+                text = { "Meo.", "{C:inactive}Cấp độ {C:dark_edition}#1#" }, --Meowww, Nyaaa
             },
             tag_cry_console = {
                 name = "Nhãn Bảng Điều",
@@ -2963,7 +2963,7 @@ return {
                 name = "Nhãn Siêu Cường",
                 text = {
                     "Nhận một {C:spectral}Gói Siêu Linh{} miễn phí",
-                    "chứa {C:legendary,E:1}Linh Hồn{} và {C:cry_exotic,E:1}Cánh Cổng{}",
+                    "chứa lá {C:legendary,E:1}Linh Hồn{} và {C:cry_exotic,E:1}Cánh Cổng{}",
                 },
             },
             tag_cry_epic = {
@@ -3001,7 +3001,7 @@ return {
                 text = {
                     "Joker tiêu chuẩn tiếp theo",
                     "trong shop thì miễn phí",
-                    "và trở thành {C:dark_edition}Hoàng Kim"
+                    "và trở thành {C:dark_edition}Hoàng Kim" --Hoàng Kim ở đây là gì nhỉ, có phải cái ấn bản mà dịch vanilla của ông là Vàng không, hay là của mod
                 },
             },
             tag_cry_gourmand = {
@@ -3167,7 +3167,7 @@ return {
                 },
             },
             v_cry_command_prompt = {
-                name = "Cửa Sổ Lệnh",
+                name = "Cửa Sổ Lệnh", -- plss để tiếng anh đi mà 
                 text = {
                     "Lá {C:cry_code}Code{}",
                     "có thể xuất hiện",
@@ -3280,7 +3280,7 @@ return {
                 },
             },
             v_cry_pacclimator = {
-                name = "Thích Nghi Hành Tinh",
+                name = "Thích Nghi Hành Tinh", --Thích Nghi Tinh Hệ
                 text = {
                     "Lá {C:planet}Hành Tinh{} xuất hiện",
                     "thường xuyên hơn {C:attention}#1# lần",
@@ -3359,7 +3359,7 @@ return {
                 },
             },
             v_cry_tacclimator = {
-                name = "Thích Nghi Tarot",
+                name = "Thích Nghi Tarot", --Tarot Thích Nghi
                 text = {
                     "Lá {C:tarot}Tarot{} xuất hiện",
                     "thường xuyên hơn {C:attention}#1# lần",
@@ -3481,7 +3481,7 @@ return {
             ev_cry_choco0 = {
                 name = "",
                 text = {
-                    "Chi tiết về một {C:cry_ascendant,E:1}sự kiện{} đang có",
+                    "Chi tiết về một {C:cry_ascendant,E:1}Sự Kiện{} đang có",
                     "hiệu lực sẽ xuất hiện ở đây"
                 }
             },
@@ -3972,7 +3972,7 @@ return {
             cry_again_q = "Lần Nữa?",
             cry_curse = "Nguyền Rủa",
             cry_curse_ex = "Nguyền Rủa!",
-            cry_sobbing = "Cứu tui...",
+            cry_sobbing = "Cứu ta...",
             cry_gaming = "Gaming",
             cry_gaming_ex = "Gaming!",
             cry_good_luck_ex = "Chúc may mắn!",
