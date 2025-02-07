@@ -737,13 +737,14 @@ local gourmand = {
 		if context.type == "store_joker_create" then
 			local card
 			card = create_card(
-				"Joker",
+				"Food",
 				context.area,
 				nil,
 				nil,
 				nil,
 				nil,
-				Cryptid.get_food("cry_gourmand_tag")
+				nil,
+				"cry_gourmand_tag"
 			)
 			create_shop_card_ui(card, "Joker", context.area)
 			card.states.visible = false

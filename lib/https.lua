@@ -23,6 +23,6 @@ function update_cry_member_count()
 		end
 	else
 		-- Use a fallback value if HTTPS is disabled (you all are awesome)
-		GLOBAL_cry_member_count = 10000
+		GLOBAL_cry_member_count = 20000
 	end
 end

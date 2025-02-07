@@ -79,13 +79,14 @@ local wrapped = {
 					end,
 				}))
 				local card = create_card(
-					"Joker",
+					"Food",
 					G.jokers,
 					nil,
 					nil,
 					nil,
 					nil,
-					Cryptid.get_food("cry_wrapped")
+					nil,
+					"cry_wrapped"
 				)
 				card:add_to_deck()
 				G.jokers:emplace(card)
