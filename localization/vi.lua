@@ -3070,7 +3070,7 @@ return {
                 name = "Nhãn Chế Mới",
                 text = {
                     "Shop có một",
-                    "{C:dark_edition}#1# {C:cry_code}#2#",
+                    "{C:cry_code}#2# {C:dark_edition}#1#",
                 },
             },
             tag_cry_schematic = {
