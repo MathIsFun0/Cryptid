@@ -930,7 +930,7 @@ return {
                 },
             },
             j_cry_copypaste = {
-                name = "SaoChép/Dán",
+                name = "Copy/Paste",
                 text = {
                     "Khi một lá {C:cry_code}Code{} được dùng,",
                     "Xác suất {C:green}#1# trên #2#{} tạo ra bản sao",
