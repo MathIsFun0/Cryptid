@@ -3777,8 +3777,8 @@ return {
             cry_azure_seal = {
                 name = "Con Dấu Xanh Thẳm",
                 text = {
-                    "Tạo ra {C:attention}#1#{} {C:dark_edition}Âm Bản{}",
-                    "{C:planet}Hành tinh{} cho {C:attention}tay poker{}",
+                    "Tạo ra {C:attention}#1#{} lá {C:planet}Hành Tinh{}",
+                    "{C:dark_edition}Âm Bản{} cho {C:attention}tay poker{}",
                     "được chơi, sau đó",
                     "{C:red}phá hủy{} lá bài này",
                 },
