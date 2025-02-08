@@ -1246,12 +1246,12 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
-		--todo: nostalgic deck compat
 		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
 		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
 		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
 		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
 		and G.jokers.highlighted[1].config.center.rarity ~= "cry_cursed"
+		and (G.jokers.highlighted[1].ability.name ~= "Diet Cola" or Card.get_gameset(card) == "madness")
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
