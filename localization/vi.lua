@@ -1218,7 +1218,7 @@ return {
 		    	"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền Rủa{}, phá hủy nó",
 			"Tạo ra {C:attention}#1#{} viên {C:cry_candy}Kẹo {C:dark_edition}Âm Bản{} vào cuối Shop",
 			"Thêm {X:dark_edition,C:white}^#2#{} Nhân cho mỗi viên {C:cry_candy}Kẹo{} đang sở hữu",
-			"{C:inactive}(Hiện tại lạ {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
+			"{C:inactive}(Hiện tại là {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
 		    },
 	    },
             j_cry_foxy = {
