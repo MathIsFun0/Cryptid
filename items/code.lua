@@ -1945,7 +1945,7 @@ local source_deck = {
 			"Cards cannot change seals",
 		},
 	},
-	atlas = "atlasenhanced",
+	atlas = "atlasdeck",
 }
 
 local CodeJoker = {
