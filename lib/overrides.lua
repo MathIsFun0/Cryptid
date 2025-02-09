@@ -1166,16 +1166,18 @@ function add_tag(tag, from_skip, no_copy)
  local ret = {}
 	SMODS.calculate_context({cry_add_tag = true}, ret)
 	for i = 1, #ret do
-		added_tags = added_tags + (ret[i].tags or 0)
+		if ret[i].jokers then
+			added_tags = added_tags + (ret[i].jokers.tags or 0)
+		end
 	end
 	if added_tags >= 1 then
 		at2(tag)
 	end
 	for i = 2, added_tags do
-		local tag_table = tag:save()
+		local ab = copy_table(G.GAME.tags[#G.GAME.tags].ability)
 		local new_tag = Tag(tag.key)
-		new_tag:load(tag_table)
 		at2(new_tag)
+		new_tag.ability = ab
 	end
 end
 
