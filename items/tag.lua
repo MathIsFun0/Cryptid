@@ -119,10 +119,21 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if i % 2 == 1 and cry_card_enabled("c_cry_gateway") == true then
+		if 
+			i % 2 == 1 
+			and cry_card_enabled("c_cry_gateway") == true 
+			and not G.GAME.used_jokers['c_cry_gateway']
+			and not next(find_joker("Showman"))
+		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
-		else
+		elseif
+			i % 2 == 0
+			and not G.GAME.used_jokers['c_soul']
+			and not next(find_joker("Showman"))	
+		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
+		else
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
 		end
 	end,
 	group_key = "k_spectral_pack",
