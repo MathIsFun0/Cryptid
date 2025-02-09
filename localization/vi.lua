@@ -3161,7 +3161,7 @@ return {
                 text = {
                     "Nhãn Kép trở thành",
                     "{C:attention}Nhãn Gấp Năm{} và",
-                    "xuất hiền nhiều hơn {C:attention}4{} lần",
+                    "xuất hiện nhiều hơn {C:attention}4{} lần",
                 },
             },
             v_cry_command_prompt = {
@@ -3177,7 +3177,7 @@ return {
                 text = {
                     "Nhãn Kép trở thành",
                     "{C:attention}Nhãn Gấp Ba{} và",
-                    "xuất hiền nhiều hơn {C:attention}2{} lần",
+                    "xuất hiện nhiều hơn {C:attention}2{} lần",
                 },
             },
             v_cry_curate = {
@@ -3376,7 +3376,7 @@ return {
                 text = {
                     "Nhãn Kép trở thành",
                     "{C:attention}Nhãn Gấp Bốn{} và",
-                    "xuất hiền nhiều hơn {C:attention}3{} lần",
+                    "xuất hiện nhiều hơn {C:attention}3{} lần",
                 },
             },
             v_cry_threers = {
