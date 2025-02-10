@@ -5,6 +5,82 @@ local atlasenhanced = {
 	px = 71,
 	py = 95,
 }
+local atlasedition = {
+	object_type = "Atlas",
+	key = "atlaseditiondeck",
+	path = "atlaseditiondeck.png",
+	px = 71,
+	py = 95,
+}
+
+Cryptid.edeck_sprites = {
+	edition = {
+		order = 1,
+		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		foil = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 0 } },
+		holo = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 0 } },
+		polychrome = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 0 } },
+		negative = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 0 } },
+		cry_mosaic = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 1 } },
+		cry_oversat = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 1 } },
+		cry_glass = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 1 } },
+		cry_gold = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 1 } },
+		cry_blur = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 2 } },
+		cry_noisy = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 2 } },
+		cry_astral = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 2 } },
+		cry_m = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 2 } },
+	},
+	enhancement = {
+		order = 2,
+		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		m_bonus = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 3 }},
+		m_mult = { atlas = "cry_atlasenhanced", pos = { x = 2, y = 3 }},
+		m_wild = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 3 }},
+		m_glass = { atlas = "cry_atlasenhanced", pos = { x = 4, y = 3 }},
+		m_steel = { atlas = "centers", pos = { x = 6, y = 1 }},
+		m_stone = { atlas = "centers", pos = { x = 5, y = 0 }},
+		m_gold = { atlas = "centers", pos = { x = 6, y = 0 }},
+		m_lucky = { atlas = "centers", pos = { x = 4, y = 1 }},
+		m_cry_echo = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 5 }},
+		m_cry_light = { atlas = "cry_misc", pos = { x = 0, y = 3 }},
+	},
+	sticker = {
+		order = 3,
+		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		eternal = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 2 } },
+		perishable = { atlas = "cry_atlasenhanced", pos = { x = 0, y = 3 } },
+		rental = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 3 } },
+		pinned = { atlas = "cry_atlasenhanced", pos = { x = 0, y = 5 } },
+		banana = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 4 } },
+	},
+	suit = {
+		order = 4,
+		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		Diamonds = { atlas = "cry_atlasenhanced", pos = { x = 2, y = 1 } },
+		Hearts = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 1 } },
+		Spades = { atlas = "cry_atlasenhanced", pos = { x = 4, y = 1 } },
+		Clubs = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 1 } },
+	},
+	seal = {
+		order = 5,
+		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		Gold = { atlas = "centers", pos = { x = 1, y = 2 } },
+		Red = { atlas = "centers", pos = { x = 0, y = 0 } },
+		Blue = { atlas = "cry_atlasenhanced", pos = { x = 2, y = 2 } },
+		Purple = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 2 } },
+		cry_azure = { atlas = "centers", pos = { x = 0, y = 2 } },
+		cry_green = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 5 } },
+	},
+}
+
+cry_edeck_atlas_update = function(self)
+	local sprite = Cryptid.edeck_sprites[self.edeck_type]
+	if not sprite then error(self.edeck_type) end
+	local enh_info = {cry_get_enchanced_deck_info(self)}
+	sprite = sprite[enh_info[sprite.order]] or sprite.default
+	self.atlas, self.pos = sprite.atlas, sprite.pos
+	return sprite
+end
 
 local e_deck = {
 	object_type = "Back",
@@ -37,7 +113,6 @@ local e_deck = {
 		}))
 	end
 }
--- I set up some WIP tables for sprites here, will finish later
 local et_deck = {
 	object_type = "Back",
 	name = "cry-Enhancement Deck",
@@ -46,9 +121,6 @@ local et_deck = {
 	pos = { x = 5, y = 2},
 	edeck_type = "enhancement",
 	config = {},
-	sprites = {
-		default = { atlas = "centers", pos = { x = 5, y = 2 } },
-	},
 	loc_vars = function(self, info_queue, center)
 		local _, bbb = cry_get_enchanced_deck_info(self)
 		return { vars = { localize{type = "name_text", set = "Enhanced", key = bbb} } }
@@ -65,10 +137,7 @@ local et_deck = {
 			end,
 		}))
 	end,
-	draw = function(self, card)
-		-- Ensure atlas is up to date
-
-	end
+	draw = cry_edeck_draw
 }
 local sk_deck = {
 	object_type = "Back",
@@ -291,7 +360,7 @@ return {
 			}
 			local editions = {}
 			for _, v in pairs(pool_table[center.edeck_type]) do
-				if not v.no_edeck then
+				if v.key ~= "e_base" and not v.no_edeck then
 					editions[#editions + 1] = (center.edeck_type == "edition" and v.key:sub(3)) or v.key
 				end
 			end
@@ -299,6 +368,7 @@ return {
 			for i = 1, #editions do
 				local _center = cry_deep_copy(center)
 				_center.config["cry_force_"..center.edeck_type] = editions[i]
+				cry_edeck_atlas_update(_center)
 				local card = create_generic_card(_center)
 				card.edeck_select = editions[i]
 				G.your_collection[1]:emplace(card)
@@ -324,5 +394,5 @@ return {
 		end
 	end,
 	order = 1000000,
-	items = {e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasenhanced},
+	items = {e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasenhanced, atlasedition},
 }

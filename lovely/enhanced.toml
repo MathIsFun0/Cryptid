@@ -39,9 +39,12 @@ if currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_for
     self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
     self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
 end
---todo override for current run
 if currentBack.effect.center.edeck_type then
     local edition, enhancement, sticker, suit, seal = cry_get_enchanced_deck_info(currentBack)
+    local sprite = cry_edeck_atlas_update(currentBack.effect.center)
+    self.children.back.atlas = G.ASSET_ATLAS[sprite.atlas] or self.children.back.atlas
+    self.children.back.sprite_pos = sprite.pos
+    self.children.back:reset()
     if currentBack.effect.center.edeck_type == 'edition' then
         self.children.back:draw_shader(edition, nil, self.ARGS.send_to_shader, true)
         if edition == 'negative' then
