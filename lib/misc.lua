@@ -518,7 +518,7 @@ end
 function cry_get_enchanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
-	("e_"..safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition")) or "e_foil", 
+	"e_"..(safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"), 
 	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus", 
 	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
 	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
