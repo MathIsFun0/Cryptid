@@ -6922,6 +6922,56 @@ local zooble = {
 		}
 	},
 }
+local lebaron_james = {
+	object_type = "Joker",
+	name = "cry-LeBaron James",
+	key = "lebaron_james",
+	pos = { x = 2, y = 0 },
+	config = {extra = {h_mod = 1, h_size = 0}},
+	rarity = 3,
+	cost = 6,
+	atlas = "placeholders",
+	order = 131,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.h_mod,center.ability.extra.h_size} }
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if SMODS.Ranks[context.other_card.base.value].key == "King" then
+				G.hand:change_size(math.min(1000-card.ability.extra.h_size, card.ability.extra.h_mod))
+				card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+				return {
+					message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
+					colour = G.C.FILTER,
+					card = card,
+				}
+			end
+		end
+		if context.end_of_round and not context.individual and not context.repetition then
+			G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
+			card.ability.extra.h_size = 0
+			return {
+				card = self,
+				message = localize("k_reset"),
+			}
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.cry_kings_held_when_played = true
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.cry_kings_held_when_played = false
+		G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
+	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		code = {
+			"AlexZGreat"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -7019,6 +7069,7 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	lebaron_james,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
@@ -7149,6 +7200,54 @@ return {
 				end
 			end
 		end
+
+		--code taken from the double-flip voucher in bettma's vouchers
+		function draw_card_immediately(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
+			-- the value of hand is calculated immediately, and the animation takes time. The vanilla draw_card includes add_event which isn't immediate, but in eval_card we need to immediately move the king to hand so that in following calculation G.hand will include these cards.
+			percent = percent or 50
+			delay = delay or 0.1 
+			if dir == 'down' then 
+				percent = 1-percent
+			end
+			sort = sort or false
+			local drawn = nil
+			if card then 
+				if from then card = from:remove_card(card) end
+				if card then drawn = true end
+				local stay_flipped = G.GAME and G.GAME.blind and G.GAME.blind:stay_flipped(to, card)
+				if G.GAME.modifiers.flipped_cards and to == G.hand then
+					if pseudorandom(pseudoseed('flipped_card')) < 1/G.GAME.modifiers.flipped_cards then
+						stay_flipped = true
+					end
+				end
+				to:emplace(card, nil, stay_flipped)
+			else
+				if to:draw_card_from(from, stay_flipped, discarded_only) then drawn = true end
+			end
+			if not mute and drawn then
+				if from == G.deck or from == G.hand or from == G.play or from == G.jokers or from == G.consumeables or from == G.discard then
+					G.VIBRATION = G.VIBRATION + 0.6
+				end
+				play_sound('card1', 0.85 + percent*0.2/100, 0.6*(vol or 1))
+			end
+			if sort then
+				to:sort()
+			end
+			return true
+		end
+
+		local eval_card_ref=eval_card
+    		function eval_card(card, context) -- debuffed card won't call this
+    		    local ret = {eval_card_ref(card,context)}
+    		    G.GAME.scoring_hand=context.scoring_hand
+    		    if context.cardarea == G.play and not context.repetition_only and (card.ability.set == 'Default' or card.ability.set == 'Enhanced') and G.cry_kings_held_when_played and SMODS.Ranks[card.base.value].key == "King" and card.area ~= G.hand then
+    	 	       if (not card.shattered) and (not card.destroyed) then 
+    	 	           draw_card_immediately(G.play,G.hand, 0.1,'down', false, card)
+    	  	          card.facing_ref=card.facing
+    	 	       end
+    		    end
+    		    return unpack(ret)
+    		end
 	end,
 	items = miscitems,
 }
