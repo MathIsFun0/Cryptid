@@ -3147,14 +3147,16 @@ G.FUNCS.pointer_apply = function()
 		return
 	end
 	for i, v in pairs(G.P_BLINDS) do
-		if v.name and apply_lower(entered_card) == apply_lower(v.name) then
-			current_card = i
-		end
-		if apply_lower(entered_card) == apply_lower(i) then
-			current_card = i
-		end
-		if apply_lower(entered_card) == apply_lower(localize({ type = "name_text", set = "Blind", key = i })) then
-			current_card = i
+		if G.GAME.round_resets.blind_choices.Boss and not (G.P_BLINDS[G.GAME.round_resets.blind_choices.Boss].boss or {}).epic then
+			if v.name and apply_lower(entered_card) == apply_lower(v.name) then
+				current_card = i
+			end
+			if apply_lower(entered_card) == apply_lower(i) then
+				current_card = i
+			end
+			if apply_lower(entered_card) == apply_lower(localize({ type = "name_text", set = "Blind", key = i })) then
+				current_card = i
+			end
 		end
 	end
 	if current_card and not G.P_CENTERS[current_card] and not G.P_TAGS[current_card] and not G.GAME.banned_keys[current_card] then
