@@ -9,6 +9,7 @@ local cotton_candy = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
+    pools = {["Food"] = true},
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
 			for i = 1, #G.jokers.cards do
@@ -34,8 +35,9 @@ local wrapped = {
 	eternal_compat = false,
 	perishable_compat = false,
 	order = 131,
-	immune_to_chemach = true,
+	immutable = true,
 	config = {extra = {rounds = 2}},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { set = "Other", key = "food_jokers" }
 		return { vars = { center.ability.extra.rounds } }
@@ -77,13 +79,14 @@ local wrapped = {
 					end,
 				}))
 				local card = create_card(
-					"Joker",
+					"Food",
 					G.jokers,
 					nil,
 					nil,
 					nil,
 					nil,
-					Cryptid.get_food("cry_wrapped")
+					nil,
+					"cry_wrapped"
 				)
 				card:add_to_deck()
 				G.jokers:emplace(card)
@@ -268,6 +271,7 @@ local potion = {
 	immutable = true,
 	no_dbl = true,
 	no_grc = true,
+	no_collection = true,
 	atlas = "atlasspooky",
 	can_use = function(self, card)
 		return true
@@ -611,7 +615,7 @@ local flickering = {
 	key = "flickering",
 	badge_colour = HEX("747474"),
 	loc_vars = function(self, info_queue, card)
-		return { vars = { 5, card.ability.flick_tally } }
+		return { vars = { 5, card.ability.flick_tally or 5 } }
 	end,
 	apply = function(self, card, val)
 		if not card.ability.eternal or G.GAME.modifiers.cry_sticker_sheet then
@@ -620,6 +624,7 @@ local flickering = {
 		end
 	end,
 	calculate = function(self, card, context)
+		if not card.ability.flick_tally then card.ability.flick_tally = 5 end
 		if card.ability.set == "Joker" then
 			if context.post_trigger and context.other_joker == card then
 				card.ability.flick_tally = card.ability.flick_tally - 1
@@ -855,7 +860,7 @@ local ghost = {
 local possessed = {
 	object_type = "Sticker",
 	atlas = "sticker",
-	pos = { x = 2, y = 2 }, --todo
+	pos = { x = 6, y = 0 }, --todo
 	key = "possessed",
 	no_sticker_sheet = true,
 	badge_colour = HEX("aaaaaa"),
@@ -958,6 +963,7 @@ local candy_cane = {
     order = 139,
     atlas = "atlasspooky",
     blueprint_compat = true,
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.rounds, center.ability.extra.dollars } }
 	end,
@@ -965,9 +971,10 @@ local candy_cane = {
 		if context.individual and context.cardarea == G.play then
 			if not context.other_card.candy_caned then
 				context.other_card.candy_caned = true
+				local c = context.other_card
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						context.other_card.candy_caned = nil
+						if c then c.candy_caned = nil end
 						return true
 					end
 				})) 
@@ -1030,6 +1037,7 @@ local candy_buttons = {
     cost = 10,
     atlas = "atlasspooky",
     blueprint_compat = true,
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.rerolls } }
 	end,
@@ -1083,6 +1091,7 @@ local jawbreaker = {
     order = 141,
     atlas = "atlasspooky",
     blueprint_compat = false,
+    pools = {["Food"] = true},
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss and not context.blueprint_card and not context.retrigger_joker then
 			for i = 1, #G.jokers.cards do
@@ -1146,6 +1155,7 @@ local mellowcreme = {
     order = 142,
     atlas = "atlasspooky",
 	config = {extra = {sell_mult = 4}},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.sell_mult } }
 	end,
@@ -1170,6 +1180,7 @@ local brittle = {
     atlas = "atlasspooky",
     order = 143,
 	config = {extra = {rounds = 9}},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold

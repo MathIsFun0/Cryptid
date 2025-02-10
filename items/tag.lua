@@ -119,10 +119,21 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if i % 2 == 1 and cry_card_enabled("c_cry_gateway") then
+		if 
+			i % 2 == 1 
+			and cry_card_enabled("c_cry_gateway") == true 
+			and not (G.GAME.used_jokers['c_cry_gateway']
+			and not next(find_joker("Showman")))
+		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
-		else
+		elseif
+			i % 2 == 0
+			and not (G.GAME.used_jokers['c_soul']
+			and not next(find_joker("Showman")))	
+		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
+		else
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
 		end
 	end,
 	group_key = "k_spectral_pack",
@@ -138,7 +149,7 @@ local empowered = {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
-		if cry_card_enabled("c_cry_gateway") then
+		if cry_card_enabled("c_cry_gateway") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_gateway
 		end
 		return { vars = {} }
@@ -572,19 +583,15 @@ local double_m_tag = {
 		if context.type == "store_joker_create" then
 			local card
 			local option = {}
-			for k, _ in pairs(Cryptid.M_jokers) do
-				if G.P_CENTERS[k] then
-					option[#option + 1] = k
-				end
-			end
 			card = create_card(
-				"Joker",
+				"M",
 				context.area,
 				nil,
 				nil,
 				nil,
 				nil,
-				pseudorandom_element(option, pseudoseed("M_is_love_M_is_life"))
+				nil,
+				"M_is_love_M_is_life"
 			)
 			card:set_edition({
 				cry_m = true,
@@ -741,13 +748,14 @@ local gourmand = {
 		if context.type == "store_joker_create" then
 			local card
 			card = create_card(
-				"Joker",
+				"Food",
 				context.area,
 				nil,
 				nil,
 				nil,
 				nil,
-				Cryptid.get_food("cry_gourmand_tag")
+				nil,
+				"cry_gourmand_tag"
 			)
 			create_shop_card_ui(card, "Joker", context.area)
 			card.states.visible = false

@@ -1,7 +1,119 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+local gnb = get_new_boss
+function get_new_boss()
+	--Fix an issue with adding bosses mid-run
+	for k, v in pairs(G.P_BLINDS) do
+		if not G.GAME.bosses_used[k] then
+			G.GAME.bosses_used[k] = 0
+		end
+	end
+	--This is how nostalgic deck replaces the boss blinds with Nostalgic versions
+	local bl = gnb()
+	if G.GAME.modifiers.cry_beta then
+		local bl_key = string.sub(bl,4)
+		local nostalgicblinds = {
+			arm = (cry_card_enabled("bl_cry_oldarm") == true),
+			fish = (cry_card_enabled("bl_cry_oldfish") == true),
+			flint = (cry_card_enabled("bl_cry_oldflint") == true),
+			house = (cry_card_enabled("bl_cry_oldhouse") == true),
+			manacle = (cry_card_enabled("bl_cry_oldmanacle") == true),
+			mark = (cry_card_enabled("bl_cry_oldmark") == true),
+			ox = (cry_card_enabled("bl_cry_oldox") == true),
+			pillar = (cry_card_enabled("bl_cry_oldpillar") == true),
+			serpent = (cry_card_enabled("bl_cry_oldserpent") == true)
+		}
+		if nostalgicblinds[bl_key] then
+			return "bl_cry_old"..bl_key
+		end
+	end
+	return bl
+end
 
+--Add context for after cards are played
+local gfep = G.FUNCS.evaluate_play
+function G.FUNCS.evaluate_play(e)
+	gfep(e)
+	G.GAME.blind:cry_after_play()
+end
 
+--Add context for Just before cards are played
+local pcfh = G.FUNCS.play_cards_from_highlighted
+function G.FUNCS.play_cards_from_highlighted(e)
+	G.GAME.blind:cry_before_play()
+	pcfh(e)
+end
+
+--Track defeated blinds for Obsidian Orb
+local dft = Blind.defeat
+function Blind:defeat(s)
+	dft(self, s)
+	local obj = self.config.blind
+	-- Ignore blinds with loc_vars because orb does not properly work with them yet
+	if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
+		return
+	end
+	if
+		self.name ~= "cry-Obsidian Orb"
+		--Stop impossible blind combinations from happening
+		and self.name ~= "The Sink"
+		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
+		and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
+		and (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"])
+		and (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"])
+		and (self.name ~= "cry-Lavender Loop" or not G.GAME.defeated_blinds["bl_cry_tax"])
+		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_cry_lavender_loop"])
+		and (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"])
+		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
+	then
+		G.GAME.defeated_blinds[self.config.blind.key] = true
+	end
+end
+
+local sr = Game.start_run
+function Game:start_run(args)
+	sr(self, args)
+	if G.P_BLINDS.bl_cry_clock then
+		G.P_BLINDS.bl_cry_clock.mult = 0
+	end
+	if not G.GAME.defeated_blinds then
+		G.GAME.defeated_blinds = {}
+	end
+end
+
+--patch for multiple Clocks to tick separately and load separately
+local bsb = Blind.set_blind
+function Blind:set_blind(blind, y, z)
+	local c = "Boss"
+	if string.sub(G.GAME.subhash or "", -1) == "S" then
+		c = "Small"
+	end
+	if string.sub(G.GAME.subhash or "", -1) == "B" then
+		c = "Big"
+	end
+	if
+		G.GAME.CRY_BLINDS
+		and G.GAME.CRY_BLINDS[c]
+		and not y
+		and blind
+		and blind.mult
+		and blind.cry_ante_base_mod
+	then
+		blind.mult = G.GAME.CRY_BLINDS[c]
+	end
+	bsb(self, blind, y, z)
+end
+
+local rb = reset_blinds
+function reset_blinds()
+	if G.GAME.round_resets.blind_states.Boss == "Defeated" then
+		G.GAME.CRY_BLINDS = {}
+		if G.P_BLINDS.bl_cry_clock then
+			G.P_BLINDS.bl_cry_clock.mult = 0
+		end
+	end
+	rb()
+end
 --Init stuff at the start of the game
 local gigo = Game.init_game_object
 function Game:init_game_object()
@@ -51,120 +163,6 @@ end
 local Backapply_to_runRef = Back.apply_to_run
 function Back.apply_to_run(self)
 	Backapply_to_runRef(self)
-	if self.effect.config.cry_force_enhancement then
-		if self.effect.config.cry_force_enhancement ~= "random" then
-			G.GAME.modifiers.cry_force_enhancement = self.effect.config.cry_force_enhancement
-		end
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-					if self.effect.config.cry_force_enhancement == "random" then
-						local enh = {}
-						for i = 1, #G.P_CENTER_POOLS.Enhanced do
-							enh[#enh + 1] = G.P_CENTER_POOLS.Enhanced[i]
-						end
-						enh[#enh + 1] = "CCD"
-						local random_enhancement = pseudorandom_element(enh, pseudoseed("cry_ant_enhancement"))
-						if random_enhancement.key and G.P_CENTERS[random_enhancement.key] then
-							G.playing_cards[c]:set_ability(G.P_CENTERS[random_enhancement.key])
-						else
-							G.playing_cards[c]:set_ability(get_random_consumable("cry_ant_ccd", nil, true))
-						end
-					else
-						G.playing_cards[c]:set_ability(G.P_CENTERS[self.effect.config.cry_force_enhancement])
-					end
-				end
-				return true
-			end,
-		}))
-	end
-	if self.effect.config.cry_force_edition then
-		if self.effect.config.cry_force_edition ~= "random" then
-			G.GAME.modifiers.cry_force_edition = self.effect.config.cry_force_edition
-		else
-			G.GAME.modifiers.cry_force_random_edition = true
-		end
-		for k, v in pairs(G.P_TAGS) do
-			if v.config and v.config.edition then
-				G.GAME.banned_keys[k] = true
-			end
-		end
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-					local ed_table = {}
-					if self.effect.config.cry_force_edition == "random" then
-						local random_edition =
-							pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
-						while random_edition.key == "e_base" do
-							random_edition =
-								pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
-						end
-						ed_table[random_edition.key:sub(3)] = true
-						G.playing_cards[c]:set_edition(ed_table, true, true)
-					else
-						ed_table[self.effect.config.cry_force_edition] = true
-						G.playing_cards[c]:set_edition(ed_table, true, true)
-					end
-				end
-				return true
-			end,
-		}))
-	end
-	if self.effect.config.cry_force_seal then
-		if self.effect.config.cry_force_seal ~= "random" then
-			G.GAME.modifiers.cry_force_seal = self.effect.config.cry_force_seal
-		end
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-					if self.effect.config.cry_force_seal == "random" then
-						local random_seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("cry_ant_seal"))
-						G.playing_cards[c]:set_seal(random_seal.key, true)
-					else
-						G.playing_cards[c]:set_seal(self.effect.config.cry_force_seal, true)
-					end
-				end
-				return true
-			end,
-		}))
-	end
-	if self.effect.config.cry_force_sticker then
-		G.GAME.modifiers.cry_force_sticker = self.effect.config.cry_force_sticker
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-					G.playing_cards[c].config.center.eternal_compat = true
-					G.playing_cards[c].config.center.perishable_compat = true
-					if
-						SMODS.Stickers[self.effect.config.cry_force_sticker]
-						and SMODS.Stickers[self.effect.config.cry_force_sticker].apply
-					then
-						SMODS.Stickers[self.effect.config.cry_force_sticker]:apply(G.playing_cards[c], true)
-					else
-						G.playing_cards[c]["set_" .. self.effect.config.cry_force_sticker](G.playing_cards[c], true)
-					end
-				end
-				return true
-			end,
-		}))
-	end
-	if self.effect.config.cry_force_suit then
-		G.GAME.modifiers.cry_force_suit = self.effect.config.cry_force_suit
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				for c = #G.playing_cards, 1, -1 do
-					G.playing_cards[c]:change_suit(self.effect.config.cry_force_suit)
-				end
-				return true
-			end,
-		}))
-	end
-	if self.effect.config.cry_boss_blocked then
-		for _, v in pairs(self.effect.config.cry_boss_blocked) do
-			G.GAME.bosses_used[v] = 1e308
-		end
-	end
 	if self.effect.config.cry_no_edition_price then
 		G.GAME.modifiers.cry_no_edition_price = true
 	end
@@ -222,11 +220,11 @@ function Game:update(dt)
 		AllowDividing("Code")
 		CryptidIncanCompat = true
 	end
-	
-	cry_pointer_dt = cry_pointer_dt + dt
-	cry_jimball_dt = cry_jimball_dt + dt
-	cry_glowing_dt = cry_glowing_dt + dt
-
+	if cry_card_enabled("set_cry_timer") == true then
+		cry_pointer_dt = cry_pointer_dt + dt
+		cry_jimball_dt = cry_jimball_dt + dt
+		cry_glowing_dt = cry_glowing_dt + dt
+	end
 	--Update sprite positions each frame on certain cards to give the illusion of an animated card
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
 		cry_pointer_dt = 0
@@ -406,20 +404,10 @@ function Card:set_cost()
 		self.sell_cost = 0
 		self.sell_cost_label = 0
 	end
-
-	--Makes Tarots free if Tarot Acclimator is redeemed
-	--Makes Planets free if Planet Acclimator is redeemed
-	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then
-		self.cost = 0
-	end
-	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
-		self.cost = 0
-	end
 end
 
 -- Modify to display badges for credits
 -- todo: make this optional
--- todo: fix memory leak (it's easy to see in main menu collection, unhovering doesn't remove credit dynatext)
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
 	smcmb(obj, badges)
@@ -1064,16 +1052,18 @@ function add_tag(tag, from_skip, no_copy)
  local ret = {}
 	SMODS.calculate_context({cry_add_tag = true}, ret)
 	for i = 1, #ret do
-		added_tags = added_tags + (ret[i].tags or 0)
+		if ret[i].jokers then
+			added_tags = added_tags + (ret[i].jokers.tags or 0)
+		end
 	end
 	if added_tags >= 1 then
 		at2(tag)
 	end
 	for i = 2, added_tags do
-		local tag_table = tag:save()
+		local ab = copy_table(G.GAME.tags[#G.GAME.tags].ability)
 		local new_tag = Tag(tag.key)
-		new_tag:load(tag_table)
 		at2(new_tag)
+		new_tag.ability = ab
 	end
 end
 
@@ -1133,7 +1123,6 @@ local function parse_loc_txt(center)
 end
 local il = init_localization
 function init_localization()
-	il()
 	if G.SETTINGS.language == "en-us" then
 		G.localization.descriptions.Spectral.c_cryptid.text[2] = "{C:attention}#2#{} selected card"
 		G.localization.descriptions.Spectral.c_talisman.text[2] = "to {C:attention}#1#{} selected"
@@ -1141,7 +1130,7 @@ function init_localization()
 		G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
-		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
+		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"	-- why is this done THREE times???
 		G.localization.descriptions.Voucher.v_antimatter.text[1] = "{C:dark_edition}+#1#{} Joker Slot"
 		G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
 		G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
@@ -1168,6 +1157,7 @@ function init_localization()
 			end
 		end
 	end
+	il()
 end
 
 --Fix a corrupted game state

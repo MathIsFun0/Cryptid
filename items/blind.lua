@@ -1,68 +1,3 @@
---extra blind functions for use by bosses
-function Blind:cry_ante_base_mod(dt)
-	if not self.disabled then
-		local obj = self.config.blind
-		if obj.cry_ante_base_mod and type(obj.cry_ante_base_mod) == "function" then
-			return obj:cry_ante_base_mod(dt)
-		end
-	end
-	return 0
-end
-function Blind:cry_round_base_mod(dt)
-	if not self.disabled then
-		local obj = self.config.blind
-		if obj.cry_round_base_mod and type(obj.cry_round_base_mod) == "function" then
-			return obj:cry_round_base_mod(dt)
-		end
-	end
-	return 1
-end
-function Blind:cry_cap_score(score)
-	if not self.disabled then
-		local obj = self.config.blind
-		if obj.cry_cap_score and type(obj.cry_cap_score) == "function" then
-			return obj:cry_cap_score(score)
-		end
-	end
-	return score
-end
-function Blind:cry_after_play()
-	if not self.disabled then
-		local obj = self.config.blind
-		if obj.cry_after_play and type(obj.cry_after_play) == "function" then
-			return obj:cry_after_play()
-		end
-	end
-end
-function Blind:cry_before_play()
-	if not self.disabled then
-		local obj = self.config.blind
-		if obj.cry_before_play and type(obj.cry_before_play) == "function" then
-			return obj:cry_before_play()
-		end
-	end
-end
-function Blind:cry_calc_ante_gain()
-	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
-		local card
-		if pseudorandom(pseudoseed("cry_spooky_curse")) < G.GAME.modifiers.cry_curse_rate then
-			card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
-		else
-			card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_spooky")
-		end
-		card:add_to_deck()
-		card:start_materialize()
-		G.jokers:emplace(card)
-	end
-	if not self.disabled then
-		local obj = self.config.blind
-		if obj.cry_calc_ante_gain and type(obj.cry_calc_ante_gain) == "function" then
-			return obj:cry_calc_ante_gain()
-		end
-	end
-	return 1
-end
-
 local oldox = {
 	object_type = "Blind",
 	name = "cry-oldox",
@@ -107,6 +42,11 @@ local oldhouse = {
 	end,
 }
 local oldarm = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldarm",
 	key = "oldarm",
@@ -130,6 +70,11 @@ local oldarm = {
 	end,
 }
 local oldfish = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldfish",
 	key = "oldfish",
@@ -150,6 +95,11 @@ local oldfish = {
 	end,
 }
 local oldmanacle = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldmanacle",
 	key = "oldmanacle",
@@ -170,6 +120,11 @@ local oldmanacle = {
 	end,
 }
 local oldserpent = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldserpent",
 	key = "oldserpent",
@@ -182,7 +137,7 @@ local oldserpent = {
 	order = 9,
 	boss_colour = HEX("4f6367"),
 	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-		if G.GAME.hands[text].level > 1 then
+		if G.GAME.hands[text].level > to_big(1) then
 			G.GAME.blind.triggered = true
 			return math.floor(mult / G.GAME.hands[text].level), hand_chips, true
 		end
@@ -190,6 +145,11 @@ local oldserpent = {
 	end,
 }
 local oldpillar = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldpillar",
 	key = "oldpillar",
@@ -213,6 +173,11 @@ local oldpillar = {
 	end,
 }
 local oldflint = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldflint",
 	key = "oldflint",
@@ -236,6 +201,11 @@ local oldflint = {
 	end,
 }
 local oldmark = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-oldmark",
 	key = "oldmark",
@@ -259,6 +229,11 @@ local oldmark = {
 	end,
 }
 local tax = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Tax",
 	key = "tax",
@@ -284,6 +259,11 @@ local tax = {
 	end,
 }
 local box = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-box",
 	key = "box",
@@ -303,6 +283,12 @@ local box = {
 	end,
 }
 local clock = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+			"set_cry_timer",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Clock",
 	key = "clock",
@@ -332,6 +318,11 @@ local clock = {
 	end,
 }
 local trick = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Trick",
 	key = "trick",
@@ -364,6 +355,11 @@ local trick = {
 }
 
 local joke = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Joke",
 	key = "joke",
@@ -392,6 +388,11 @@ local joke = {
 	end,
 }
 local hammer = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-hammer",
 	key = "hammer",
@@ -422,6 +423,11 @@ local hammer = {
 	end,
 }
 local magic = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-magic",
 	key = "magic",
@@ -452,6 +458,11 @@ local magic = {
 	end,
 }
 local windmill = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-windmill",
 	key = "windmill",
@@ -471,6 +482,11 @@ local windmill = {
 	end,
 }
 local striker = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-striker",
 	key = "striker",
@@ -490,6 +506,11 @@ local striker = {
 	end,
 }
 local shackle = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-shackle",
 	key = "shackle",
@@ -503,24 +524,21 @@ local shackle = {
 	boss_colour = HEX("010466"),
 	in_pool = function()
 		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then return false end
-		if not G.jokers then
-			return false
-		end
-		for i, j in pairs(G.jokers.cards) do
-			if j.edition and j.edition.negative == true then
-				return true
-			end
-		end
-		return false
+		return #advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
-		if (card.area == G.jokers) and not G.GAME.blind.disabled and card.edition and card.edition.negative == true then
+		if (card.area == G.jokers) and not G.GAME.blind.disabled and safe_get(card, "edition", "negative") == true then
 			return true
 		end
 		return false
 	end,
 }
 local pin = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-pin",
 	key = "pin",
@@ -532,18 +550,10 @@ local pin = {
 	atlas = "blinds",
 	order = 17,
 	boss_colour = HEX("452703"),
+	--Todo: whitelist candy jokers
 	in_pool = function()
-		if not G.jokers then
-			return false
-		end
-		for i, j in pairs(G.jokers.cards) do
-			if
-				not ((j.config.center.rarity == 1) or (j.config.center.rarity == 2) or (j.config.center.rarity == 3) or (j.config.center.rarity == 5))
-			then
-				return true
-			end
-		end
-		return false
+		if not G.jokers or not G.jokers.cards then return false end
+		return #advanced_find_joker(nil, {1,2,3}, nil, nil, true) < #G.jokers.cards
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if
@@ -560,21 +570,13 @@ local pin = {
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 
-local pinkbow = { --TODO: Add effect for this later. NOTE TO SELF: DO NOT FORGET!!!
-	object_type = "Blind",
-	name = "cry-pinkbow",
-	key = "pinkbow",
-	pos = { x = 0, y = 11 },
-	dollars = 8,
-	boss = {
-		min = 3,
-		max = 10,
-		showdown = true,
-	},
-	atlas = "blinds",
-	boss_colour = HEX("ff00cc"),
-}
 local lavender_loop = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+			"set_cry_timer",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Lavender Loop",
 	key = "lavender_loop",
@@ -612,6 +614,11 @@ local lavender_loop = {
 	end,
 }
 local tornado = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-tornado",
 	key = "tornado",
@@ -627,7 +634,7 @@ local tornado = {
 	order = 94,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
-		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
+		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
@@ -635,18 +642,10 @@ local tornado = {
 		end
 	end,
 	in_pool = function()
-		if not G.jokers then
-			return true
-		end
-		for i, j in pairs(G.jokers.cards) do
-			if j.ability.name == "Oops! All 6s" and j.ability.eternal == true then
-				return false
-			end
-		end
-		return true
+		return #advanced_find_joker("Oops! All 6s", nil, nil, {"eternal"}, nil) == 0
 	end,
 	collection_loc_vars = function(self)
-		return { vars = { "" .. ((G.GAME and G.GAME.probabilities.normal or 1) * 2), 3 } }
+		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
 		if
@@ -667,6 +666,11 @@ local tornado = {
 }
 --todo: disable get_local_debuff_text for this
 local vermillion_virus = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Vermillion Virus",
 	key = "vermillion_virus",
@@ -702,6 +706,11 @@ local vermillion_virus = {
 }
 
 local sapphire_stamp = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Sapphire Stamp",
 	key = "sapphire_stamp",
@@ -737,6 +746,11 @@ local sapphire_stamp = {
 }
 
 local obsidian_orb = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	object_type = "Blind",
 	name = "cry-Obsidian Orb",
 	key = "obsidian_orb",
@@ -1023,7 +1037,7 @@ local obsidian_orb = {
 			end
 			if s.name == "The Arm" then
 				G.GAME.blind.triggered = false
-				if G.GAME.hands[handname].level > 1 then
+				if to_big(G.GAME.hands[handname].level) > to_big(1) then
 					G.GAME.blind.triggered = true
 					if not check then
 						level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
@@ -1228,27 +1242,6 @@ local obsidian_orb = {
 	end,
 }
 
-local blind_sprites = {
-	object_type = "Atlas",
-	key = "blinds",
-	atlas_table = "ANIMATION_ATLAS",
-	path = "bl_cry.png",
-	px = 34,
-	py = 34,
-	frames = 21,
-}
-local nostalgia_sprites = {
-	object_type = "Atlas",
-	key = "nostalgia",
-	atlas_table = "ANIMATION_ATLAS",
-	path = "bl_nostalgia.png",
-	px = 34,
-	py = 34,
-	frames = 21,
-}
-
---this list contains all of the blinds to be registered, if Blinds are enabled--
---to disable a blind, comment it out or remove it from this list--
 local items_togo = {
 	oldox,
 	oldhouse,
@@ -1273,212 +1266,7 @@ local items_togo = {
 	tornado,
 	sapphire_stamp,
 	obsidian_orb,
-	blind_sprites,
-	nostalgia_sprites,
+	clock,
+	lavender_loop,
 }
-
-if Cryptid.enabled["Timer Mechanics"] then
-	table.insert(items_togo, clock)
-	table.insert(items_togo, lavender_loop)
-end
-
---Fix an issue with adding bosses mid-run
-local gnb = get_new_boss
-function get_new_boss()
-	for k, v in pairs(G.P_BLINDS) do
-		if not G.GAME.bosses_used[k] then
-			G.GAME.bosses_used[k] = 0
-		end
-	end
-	local bl = gnb()
-	if G.GAME.modifiers.cry_beta and Cryptid.enabled["Blinds"] then
-		local bl_key = string.sub(bl,4)
-		local nostalgicblinds = {
-			arm = true,
-			fish = true,
-			flint = true,
-			house = true,
-			manacle = true,
-			mark = true,
-			ox = true,
-			pillar = true,
-			serpent = true
-		}
-		if nostalgicblinds[bl_key] then
-			return "bl_cry_old"..bl_key
-		end
-	end
-	return bl
-end
-
-return {
-	name = "Blinds",
-	init = function()
-		--Clock Patches
-		local upd = Game.update
-		function Game:update(dt)
-			upd(self, dt)
-			local choices = { "Small", "Big", "Boss" }
-			G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
-			for _, c in pairs(choices) do
-				if
-					G.GAME
-					and G.GAME.round_resets
-					and G.GAME.round_resets.blind_choices
-					and G.GAME.round_resets.blind_choices[c]
-					and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
-				then
-					if
-						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult ~= 0
-						and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante ~= G.GAME.round_resets.ante
-					then
-						if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].name == "cry-Obsidian Orb" then
-							for i = 1, #G.GAME.defeated_blinds do
-								G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
-									* G.P_BLINDS[G.GAME.defeated_blinds[i]]
-									/ 2
-							end
-						else
-							G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = 0
-						end
-						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante = G.GAME.round_resets.ante
-					end
-					if
-						G.GAME.round_resets.blind_states[c] ~= "Current"
-						and G.GAME.round_resets.blind_states[c] ~= "Defeated"
-					then
-						G.GAME.CRY_BLINDS[c] = (
-							G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
-						)
-							+ (
-								G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
-									and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(
-										dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)
-									)
-								or 0
-							)
-						--Update UI
-						--todo: in blinds screen, too
-						if G.blind_select_opts then
-							local blind_UI =
-								G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
-							local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-							if chip_text_node then
-								chip_text_node.config.text = number_format(
-									get_blind_amount(G.GAME.round_resets.blind_ante)
-										* G.GAME.starting_params.ante_scaling
-										* G.GAME.CRY_BLINDS[c]
-								)
-								chip_text_node.config.scale = score_number_scale(
-									0.9,
-									get_blind_amount(G.GAME.round_resets.blind_ante)
-										* G.GAME.starting_params.ante_scaling
-										* G.GAME.CRY_BLINDS[c]
-								)
-							end
-							G.blind_select_opts[string.lower(c)]:recalculate()
-						end
-					elseif
-						G.GAME.round_resets.blind_states[c] ~= "Defeated"
-						and not G.GAME.blind.disabled
-						and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
-					then
-						G.GAME.blind.chips = G.GAME.blind.chips
-							+ G.GAME.blind:cry_ante_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
-								* get_blind_amount(G.GAME.round_resets.ante)
-								* G.GAME.starting_params.ante_scaling
-						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-					end
-				end
-				if
-					G.GAME.round_resets.blind_states[c] == "Current"
-					and G.GAME
-					and G.GAME.blind
-					and not G.GAME.blind.disabled
-					and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
-				then
-					G.GAME.blind.chips = G.GAME.blind.chips
-						* G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
-					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-				end
-			end
-		end
-		--Trick Patches
-		local gfep = G.FUNCS.evaluate_play
-		function G.FUNCS.evaluate_play(e)
-			gfep(e)
-			G.GAME.blind:cry_after_play()
-		end
-		--Sapphire Stamp Patches
-		local pcfh = G.FUNCS.play_cards_from_highlighted
-		function G.FUNCS.play_cards_from_highlighted(e)
-			G.GAME.blind:cry_before_play()
-			pcfh(e)
-		end
-		--Obsidian Orb Patches
-		local dft = Blind.defeat
-		function Blind:defeat(s)
-			dft(self, s)
-			local obj = self.config.blind
-			if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
-				return
-			end
-			if
-				self.name ~= "cry-Obsidian Orb"
-				and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
-				and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
-				and (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"])
-				and (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"])
-				and (self.name ~= "cry-Lavender Loop" or not G.GAME.defeated_blinds["bl_cry_tax"])
-				and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_cry_lavender_loop"])
-				and (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"])
-				and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
-			then
-				G.GAME.defeated_blinds[self.config.blind.key] = true
-			end
-		end
-		local sr = Game.start_run
-		function Game:start_run(args)
-			sr(self, args)
-			if G.P_BLINDS.bl_cry_clock then
-				G.P_BLINDS.bl_cry_clock.mult = 0
-			end
-			if not G.GAME.defeated_blinds then
-				G.GAME.defeated_blinds = {}
-			end
-		end
-		--patch for multiple Clocks to tick separately and load separately
-		local bsb = Blind.set_blind
-		function Blind:set_blind(blind, y, z)
-			local c = "Boss"
-			if string.sub(G.GAME.subhash or "", -1) == "S" then
-				c = "Small"
-			end
-			if string.sub(G.GAME.subhash or "", -1) == "B" then
-				c = "Big"
-			end
-			if
-				G.GAME.CRY_BLINDS
-				and G.GAME.CRY_BLINDS[c]
-				and not y
-				and blind
-				and blind.mult
-				and blind.cry_ante_base_mod
-			then
-				blind.mult = G.GAME.CRY_BLINDS[c]
-			end
-			bsb(self, blind, y, z)
-		end
-		local rb = reset_blinds
-		function reset_blinds()
-			if G.GAME.round_resets.blind_states.Boss == "Defeated" then
-				G.GAME.CRY_BLINDS = {}
-				if G.P_BLINDS.bl_cry_clock then
-					G.P_BLINDS.bl_cry_clock.mult = 0
-				end
-			end
-			rb()
-		end
-	end,
-	items = items_togo,
-}
+return { name = "Blinds", init = function() end, items = items_togo, }

@@ -436,6 +436,38 @@ function SMODS.calculate_context(context, return_table)
 			context.pre_jokers = nil
 		end
 	end
+	if context.using_consumeable then
+		local _card = context.consumeable
+		--calculate the joker effects
+		local eval, post = eval_card(_card, context)
+		local effects = {eval}
+		for _,v in ipairs(post) do effects[#effects+1] = v end
+
+		if context.other_joker then
+			for k, v in pairs(effects[1]) do
+				v.other_card = _card
+			end
+		end
+		if effects[1].retriggers then
+			context.retrigger_joker = true
+			for rt = 1, #effects[1].retriggers do
+				context.retrigger_joker = effects[1].retriggers[rt].retrigger_card
+				local rt_eval, rt_post = eval_card(_card, context)
+				table.insert(effects, {effects[1].retriggers[rt]})
+				table.insert(effects, rt_eval)
+				for _,v in ipairs(rt_post) do effects[#effects+1] = v end
+			end
+			context.retrigger_joker = false
+		end
+		if return_table then
+			for _,v in ipairs(effects) do 
+				if v.jokers and not v.jokers.card then v.jokers.card = _card end
+				return_table[#return_table+1] = v
+			end
+		else
+			SMODS.trigger_effects(effects, _card)
+		end
+	end
 	smcc(context, return_table)
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then

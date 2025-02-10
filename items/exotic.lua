@@ -160,7 +160,6 @@ local exponentia = {
 			context.joker_main
 			and (to_big(card.ability.extra.Emult) > to_big(1))
 		then
-			print(tprint(context))
 			return {
 				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.Emult)}},
 				Emult_mod = card.ability.extra.Emult,
@@ -279,10 +278,10 @@ local redeo = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	calculate = function(self, card, context)
-		if context.cry_ease_dollars and context.cry_ease_dollars < 0 and not context.blueprint then
+		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
 			card.ability.extra.money_remaining = card.ability.extra.money_remaining - context.cry_ease_dollars
 			local ante_mod = 0
-			while card.ability.extra.money_remaining >= card.ability.extra.money_req do
+			while to_big(card.ability.extra.money_remaining) >= to_big(card.ability.extra.money_req) do
 				card.ability.extra.money_remaining = card.ability.extra.money_remaining - card.ability.extra.money_req
 				card.ability.extra.money_req = card.ability.extra.money_req + card.ability.extra.money_mod
 				card.ability.extra.money_mod = math.min(1e300, math.ceil(card.ability.extra.money_mod * 1.06))
@@ -503,55 +502,6 @@ local primus = {
 		code = {"Jevonn"}
 	},
 }
-local big_num_whitelist = {
-	j_ride_the_bus = true,
-	j_egg = false,
-	j_runner = true,
-	j_ice_cream = true,
-	j_constellation = true,
-	j_green_joker = true,
-	j_red_card = true,
-	j_madness = true,
-	j_square = true,
-	j_vampire = true,
-	j_hologram = true,
-	j_obelisk = true,
-	j_turtle_bean = true,
-	j_lucky_cat = true,
-	j_flash = true,
-	j_popcorn = true,
-	j_trousers = true,
-	j_ramen = true,
-	j_castle = true,
-	j_campfire = true,
-	j_throwback = true,
-	j_glass = true,
-	j_wee = true,
-	j_hit_the_road = true,
-	j_caino = true,
-	j_yorick = true,
-	j_cry_dropshot = true,
-	j_cry_wee_fib = true,
-	j_cry_whip = true,
-	j_cry_pickle = true,
-	j_cry_chili_pepper = true,
-	j_cry_cursor = true,
-	j_cry_jimball = true,
-	j_cry_eternalflame = true,
-	j_cry_fspinner = true,
-	j_cry_krustytheclown = true,
-	j_cry_antennastoheaven = true,
-	j_cry_mondrian = true,
-	j_cry_spaceglobe = true,
-	j_cry_m = true,
-	-- j_cry_bonk = true,
-	j_cry_exponentia = true,
-	j_cry_crustulum = true,
-	j_cry_primus = true,
-	j_cry_stella_mortis = true,
-	j_cry_hugem = true,
-	j_cry_mprime = true,
-}
 local scalae = {
 	dependencies = {
 		items = {
@@ -606,14 +556,7 @@ local scalae = {
 			)
 			if
 				(new_scale < to_big(1e100))
-				or not (
-					(
-						joker.config
-						and joker.config.center
-						and joker.config.center.key
-						and big_num_whitelist[joker.config.center.key]
-					) or (joker.ability and joker.ability.big_num_scaler)
-				)
+				or not is_card_big(joker)
 			then
 				if new_scale >= to_big(1e300) then
 					new_scale = 1e300
@@ -738,7 +681,7 @@ local circulus_pistoris = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				center.edition and center.edition.cry_oversat and "tau" or "pi",
+				safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
 				center.ability.extra.hands_remaining,
 			},
 		}
@@ -752,13 +695,13 @@ local circulus_pistoris = {
 			)
 		then
 			local pi = math.pi
-			if card.edition and card.edition.cry_oversat then
+			if safe_get(card, "edition", "cry_oversat") then
 				pi = 2 * pi
 			end
 			return {
 				Echip_mod = pi,
 				Emult_mod = pi,
-				message = localize{type='variable',key='a_powmultchips',vars={(card.edition and card.edition.cry_oversat and "tau" or "pi")}},
+				message = localize{type='variable',key='a_powmultchips',vars={(safe_get(card, "edition", "cry_oversat") and "tau" or "pi")}},
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
 		end
@@ -1315,15 +1258,7 @@ local formidiulosus = {
 	atlas = "atlasexotic",
 	no_dbl = true,
 	update = function(self, card, front)
-		local value = 0
-		if G.jokers then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
-					value = value + 1
-				end
-			end
-		end
-		card.ability.extra.Emult = 1 + (card.ability.extra.Emult_mod * value)
+		card.ability.extra.Emult = 1 + ( card.ability.extra.Emult_mod * #advanced_find_joker(nil,"cry_candy",nil,nil,true) )
 	end,
 	calculate = function(self, card, context)
 		if (context.buying_card or context.cry_creating_card) and context.card.ability.set == "Joker" and context.card.config.center.rarity == "cry_cursed" and not context.blueprint and not (context.card == card) then

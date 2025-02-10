@@ -265,7 +265,7 @@ local sync_catalyst = {
 	},
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if G and G.jokers and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante < 9 then
+		if safe_get(G, "jokers") and safe_get(G.GAME, "round_resets", "ante") and G.GAME.round_resets.ante < 9 then
 			local rarities = {
 			}
 			for i = 1, #G.jokers.cards do
@@ -411,7 +411,7 @@ local error_joker = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		if G.GAME and G.GAME.pseudorandom and G.STAGE == G.STAGES.RUN then
+		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN then
 			cry_error_msgs[#cry_error_msgs].string = "%%" .. predict_card_for_shop()
 		else
 			cry_error_msgs[#cry_error_msgs].string = "%%J6"
@@ -517,7 +517,7 @@ local error_joker = {
 			and not context.blueprint
 		then
 			local eval = function(card)
-				return (card and card.ability and card.ability.loyalty_remaining == 0) and not G.RESET_JIGGLES
+				return (safe_get(card, "ability", "loyalty_remaining") == 0) and not G.RESET_JIGGLES
 			end
 			juice_card_until(card, eval, true)
 			local jokers = {}
@@ -709,25 +709,7 @@ local m = {
 			return nil, true
 		end
 	end,
-	post_process = function(self)
-		if get_m_retriggers then
-			local vc = self.calculate
-			self.calculate = function(self, card, context)
-				local ret, trig = vc(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card then
-					local reps = get_m_retriggers(self, card, context)
-					if reps > 0 then
-						return {
-							message = localize("k_again_ex"),
-							repetitions = reps + (ret and ret.repetitions or 0),
-							card = card,
-						}
-					end
-				end
-				return ret, trig
-			end
-		end
-	end,
+	pools = { ["M"] = true },
 	cry_credits = {
 		idea = {
 			"Jevonn",
@@ -778,25 +760,7 @@ local M = {
 			return nil, true
 		end
 	end,
-	post_process = function(self)
-		if get_m_retriggers then
-			local vc = self.calculate
-			self.calculate = function(self, card, context)
-				local ret, trig = vc(self, card, context)
-				if context.retrigger_joker_check and context.other_card == card then
-					local reps = get_m_retriggers(self, card, context)
-					if reps > 0 then
-						return {
-							message = localize("k_again_ex"),
-							repetitions = reps + (ret and ret.repetitions or 0),
-							card = card,
-						}
-					end
-				end
-				return ret, trig
-			end
-		end
-	end,
+	pools = { ["M"] = true },
 	cry_credits = {
 		idea = {
 			"Jevonn",
@@ -894,7 +858,7 @@ local number_blocks = {
 			vars = {
 				center.ability.extra.money,
 				center.ability.extra.money_mod,
-				localize(G.GAME.current_round.cry_nb_card and G.GAME.current_round.cry_nb_card.rank or "Ace", "ranks"),
+				localize(safe_get(G.GAME, "current_round", "cry_nb_card", "rank") or "Ace", "ranks"),
 			},
 		}
 	end,
@@ -995,6 +959,7 @@ local oldcandy = {
 			"set_cry_epic",
 		},
 	},
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.max(1, math.floor(center.ability.extra.hand_size)) } }
 	end,
@@ -1154,6 +1119,7 @@ local caramel = {
 	gameset_config = {
        		modest = {extra = { x_mult = 1.5 , rounds_remaining = 6 }},
  	},
+	pools = {["Food"] = true},
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasepic",
@@ -1299,8 +1265,7 @@ local curse_sob = {
 		if not from_debuff then
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_obelisk")
 			card:set_edition("e_negative", true, nil, true)
-			card.sob = true
-			card:set_eternal(true)
+			card.ability.cry_absolute = true
 			card:add_to_deck()
 			G.jokers:emplace(card)
 			return {
@@ -1324,7 +1289,7 @@ local curse_sob = {
 	},
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if G and G.jokers then
+		if safe_get(G, "jokers") then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.center.key == 'j_obelisk' and G.jokers.cards[i].ability.eternal then
 					unlock_card(self)
@@ -1348,7 +1313,7 @@ local bonusjoker = {
 	name = "cry-Bonus Joker",
 	key = "bonusjoker",
 	pos = { x = 3, y = 2 },
-	config = { extra = { odds = 8, check = 0 } },
+	config = { extra = { odds = 8, check = 0, add = 1 } },
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1378,12 +1343,12 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.extra.check = card.ability.extra.check + 1
 						end
-						G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+						G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
 					else
 						if not context.blueprint then
 							card.ability.extra.check = card.ability.extra.check + 1
 						end
-						G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+						G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.add
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1536,7 +1501,7 @@ local goldjoker = {
 	end,
 	calc_dollar_bonus = function(self, card)
 		local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
-		if bonus > 0 then
+		if bonus > to_big(0) then
 			return bonus
 		end
 	end,
@@ -1598,7 +1563,7 @@ local altgoogol = {
 							func = function()
 								for i = 1, card.ability.copies do
 									local chosen_joker = G.jokers.cards[1]
-									local card = copy_card(chosen_joker, nil, nil, nil, (gameset == "modest" and (chosen_joker.edition and chosen_joker.edition.negative) or nil))
+									local card = copy_card(chosen_joker, nil, nil, nil, (gameset == "modest" and (safe_get(chosen_joker, "edition", "negative")) or nil))
 									card:add_to_deck()
 									G.jokers:emplace(card)
 								end
@@ -1707,7 +1672,7 @@ local soccer = {
 		change_shop_size(card.ability.extra.holygrail)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - Card.get_gameset(card) == "modest" and 0 or card.ability.extra.holygrail
+		G.jokers.config.card_limit = G.jokers.config.card_limit - ((Card.get_gameset(card) == "modest") and 0 or card.ability.extra.holygrail)
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.holygrail
 		G.hand:change_size(-card.ability.extra.holygrail)
 		if not G.GAME.modifiers.cry_booster_packs then
@@ -1766,9 +1731,7 @@ local fleshpanopticon = {
 	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		if false then -- This is TEMPORARILY disabled because Exotics aren't enabled yet
-			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
-		end
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
@@ -1864,7 +1827,8 @@ local fleshpanopticon = {
 		},
 	},
 }
--- Note: This one was NOT refactored yet!
+-- Spectrogram
+-- Retrigger rightmost Joker once for every Echo Card played and scored
 local spectrogram = {
 	object_type = "Joker",
 	name = "cry-Spectrogram",
@@ -1875,6 +1839,12 @@ local spectrogram = {
 	cost = 9,
 	order = 133,
 	atlas = "atlasepic",
+	dependencies = {
+		items = {
+			"set_cry_epic",
+			"m_cry_echo"
+		},
+	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
 		return { vars = {} }

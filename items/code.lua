@@ -42,7 +42,7 @@ local pack1 = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -69,7 +69,7 @@ local pack2 = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -96,7 +96,7 @@ local packJ = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -123,7 +123,7 @@ local packM = {
 		ease_background_colour({ new_colour = G.C.SET.Code, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.config.center.config.choose, card.ability.extra } }
+		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
 	end,
 	group_key = "k_cry_program_pack",
 }
@@ -228,18 +228,10 @@ local payload = {
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
-		if G.GAME.dollars > 1e10 then
-			G.GAME.cry_payload = 3
-		else
-			G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult
-		end
+		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		if G.GAME.dollars > 1e10 then
-			G.GAME.cry_payload = 3
-		else
-			G.GAME.cry_payload = (G.GAME.cry_payload or 1) * card.ability.interest_mult ^ number
-		end
+		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult) ^ to_big(number)
 	end,
 }
 local reboot = {
@@ -471,7 +463,7 @@ local seed = {
 		if G.consumeables.highlighted[1] then
 			G.consumeables.highlighted[1].ability.cry_rigged = true
 		end
-		if G.pack_cards and G.pack_cards.highlighted[1] then
+		if safe_get(G, "pack_cards", "highlighted", 1) then
 			G.pack_cards.highlighted[1].ability.cry_rigged = true
 		end
 	end,
@@ -590,7 +582,7 @@ local variable = {
 	order = 8,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+		return { vars = { safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -629,7 +621,7 @@ local class = {
 	order = 16,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+		return { vars = { safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -833,10 +825,10 @@ local multiply = {
 		return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true) and not Card.no(G.jokers.highlighted[1], "immutable", true)
 	end,
 	use = function(self, card, area, copier)
-		if not G.jokers.highlighted[1].cry_multiply then
-			G.jokers.highlighted[1].cry_multiply = 1
+		if not G.jokers.highlighted[1].config.cry_multiply then
+			G.jokers.highlighted[1].config.cry_multiply = 1
 		end
-		G.jokers.highlighted[1].cry_multiply = G.jokers.highlighted[1].cry_multiply * 2
+		G.jokers.highlighted[1].config.cry_multiply = G.jokers.highlighted[1].config.cry_multiply * 2
 		cry_with_deck_effects(G.jokers.highlighted[1], function(card)
 			cry_misprintize(card, { min = 2, max = 2 }, nil, true)
 		end)
@@ -915,6 +907,10 @@ local delete = {
 		y = 2,
 	},
 	cost = 4,
+	config = { cry_multiuse = 3 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 			and card.area == G.consumeables
@@ -955,16 +951,47 @@ local delete = {
 		if c.config.center.rarity == "cry_exotic" then
 			check_for_unlock({ type = "what_have_you_done" })
 		end
-		G.GAME.banned_keys[c.config.center.key] = true
+		
+		G.GAME.cry_banished_keys[c.config.center.key] = true
+		
+		-- blanket ban all boosters of a specific type
+		if a == G.shop_booster then
+			local _center = c.config.center
+			for k, v in pairs(G.P_CENTER_POOLS.Booster) do
+				if _center.kind == v.kind 
+				and _center.config.extra == v.config.extra 
+				and _center.config.choose == v.config.choose then
+					G.GAME.cry_banished_keys[v.key] = true
+				end
+			end
+		end
+		
 		if _p then
 			for k, v in pairs(G.P_CARDS) do
-				if v.value == c.base.value and v.suit == c.base.suit then
+				-- blanket banning ranks here, probably more useful
+				if v.value == c.base.value then	-- and v.suit == c.base.suit
 					G.GAME.cry_banned_pcards[k] = true
 				end
 			end
 		end
 		c:start_dissolve()
 	end,
+	-- i was gonna use this function and all but... i don't like the way it does things
+	-- leaving it here so nobody screams at me
+	--[[
+	keep_on_use = function(self, card)
+		if card.ability.cry_multiuse <= 1 then
+			return false
+		else
+			card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+			delay(0.3)
+			card:juice_up()
+			play_sound('tarot1')
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = card.ability.cry_multiuse, colour = G.C.SECONDARY_SET.Code})
+			return true
+		end
+	end,
+	]]
 }
 local spaghetti = {
 	dependencies = {
@@ -992,13 +1019,14 @@ local spaghetti = {
 	end,
 	use = function(self, card, area, copier)
 		local card = create_card(
-			"Joker",
+			"Food",
 			G.jokers,
 			nil,
 			nil,
 			nil,
 			nil,
-			Cryptid.get_food("cry_spaghetti")
+			nil,
+			"cry_spaghetti"
 		)
 		card:set_edition({
 			cry_glitched = true,
@@ -1085,7 +1113,7 @@ local run = {
 	atlas = "code",
 	order = 6,
 	can_use = function(self, card)
-		return G.GAME.blind and G.GAME.blind.in_blind
+		return safe_get(G.GAME, "blind", "in_blind")
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
@@ -1134,7 +1162,10 @@ local exploit = {
 	},
 	cost = 4,
 	order = 28,
-	config = { extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
+	config = { cry_multiuse = 2, extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
+	loc_vars = function(self, info_queue, card)
+		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+	end,
 	can_use = function(self, card)
 		return true
 	end,
@@ -1177,9 +1208,9 @@ local oboe = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		if not card then
-			return { vars = { self.config.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+			return { vars = { self.config.extra.choices, (safe_get(G.GAME, "cry_oboe") or 0) } }
 		end
-		return { vars = { card.ability.extra.choices, (G.GAME and G.GAME.cry_oboe or 0) } }
+		return { vars = { card.ability.extra.choices, (safe_get(G.GAME, "cry_oboe") or 0) } }
 	end,
 	can_use = function(self, card)
 		return true
@@ -1215,12 +1246,12 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
-		--todo: nostalgic deck compat
 		return #G.jokers.highlighted == 1 and not G.jokers.highlighted[1].ability.eternal
 		and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
 		and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
 		and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
 		and G.jokers.highlighted[1].config.center.rarity ~= "cry_cursed"
+		and (G.jokers.highlighted[1].ability.name ~= "Diet Cola" or Card.get_gameset(card) == "madness")
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
@@ -1618,7 +1649,7 @@ local alttab = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		local ret = localize("k_none")
-		if G.GAME and G.GAME.blind and G.GAME.blind.in_blind then
+		if safe_get(G.GAME, "blind", "in_blind") then
 			if G.GAME.blind:get_type() == 'Small' then
 				ret = localize{type = 'name_text', key = G.GAME.round_resets.blind_tags.Small, set = 'Tag'}
 			elseif G.GAME.blind:get_type() == 'Big' then
@@ -1630,7 +1661,7 @@ local alttab = {
 		return { vars = { ret } }
 	end,
 	can_use = function(self, card)
-		return G.GAME.blind and G.GAME.blind.in_blind
+		return safe_get(G.GAME, "blind", "in_blind")
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -1686,7 +1717,7 @@ local automaton = {
 	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability and card.ability.create or self.config.create } }
+		return { vars = { safe_get(card, "ability", "create") or self.config.create } }
 	end,
 	can_use = function(self, card)
 		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
@@ -1914,7 +1945,7 @@ local source_deck = {
 			"Cards cannot change seals",
 		},
 	},
-	atlas = "atlasenhanced",
+	atlas = "atlasdeck",
 }
 
 local CodeJoker = {
@@ -1967,7 +1998,7 @@ local CodeJoker = {
 			local count2 = 0
 			for k,v in pairs(G.P_CENTER_POOLS['Code']) do
 				count2 = count2+1
-				if v and v.discovered == true then
+				if safe_get(v, "discovered") == true then
 					count = count + 1
 				end
 			end
@@ -1983,7 +2014,6 @@ local CodeJoker = {
 		end
 	end,
 }
-
 local copypaste = {
 	dependencies = {
 		items = {
@@ -1997,13 +2027,14 @@ local copypaste = {
 	pos = { x = 3, y = 4 },
 	order = 110,
 	immune_to_chemach = true,
-	config = { extra = { odds = 2, ckt = 0 } },	-- what is a ckt
+	config = { extra = { odds = 2, ckt = nil } },	-- what is a ckt
 	rarity = "cry_epic",
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			vars = { card and cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob or 1), card.ability.extra.odds, card.ability.cry_rigged) or 1, card and card.ability.extra.odds or 2 },	-- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			key = Card.get_gameset(card) ~= "madness" and "j_cry_copypaste" or "j_cry_copypaste2"
 		}
 	end,
 	atlas = "atlasepic",
@@ -2012,6 +2043,7 @@ local copypaste = {
 			context.using_consumeable
 			and context.consumeable.ability.set == "Code"
 			and not context.consumeable.beginning_end
+			and not card.ability.extra.ckt
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				if pseudorandom("cry_copypaste_joker") < cry_prob(math.min(card.ability.extra.odds/2, card.ability.cry_prob), card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
@@ -2031,9 +2063,17 @@ local copypaste = {
 						nil,
 						{ message = localize("k_copied_ex") }
 					)
+					if Card.get_gameset(card) ~= "madness" then card.ability.extra.ckt = true end
 				end
 			end
+		elseif context.end_of_round and not context.retrigger_joker and not context.blueprint and card.ability.extra.ckt then
+			card.ability.extra.ckt = nil
+			return {
+				message = localize("k_reset"),
+				card = card,
+			}
 		end
+		
 	end,
 	cry_credits = {
 		idea = {
@@ -2215,10 +2255,8 @@ local python = {
 			return
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Xmult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
@@ -2837,6 +2875,7 @@ G.FUNCS.class_apply = function()
 		m_gold = { "gold", "money", "yellow" },
 		m_lucky = { "lucky", "rng" },
 		m_cry_echo = { "echo", "retrigger", "retriggers" },
+		m_cry_light = { "light" },
 		ccd = { "ccd" },
 		null = { "nil" },
 	}
@@ -3560,8 +3599,11 @@ G.FUNCS.pointer_apply = function()
 				["perishable"] = { "perishable" },
 				["rental"] = { "rental" },
 				["pinned"] = { "pinned" },
-				["banana"] = { "banana" },
+				["banana"] = { "banana" },	-- no idea why this evades prefixing
 				["cry_rigged"] = { "rigged" },
+				["cry_flickering"] = { "flickering" },
+				["cry_possessed"] = { "possessed" },
+				["cry_absolute"] = { "absolute" },
 			}
 			local function parsley(_table, _word)
 				for i, v in pairs(_table) do
@@ -4328,12 +4370,12 @@ return {
 		function end_round()
 			er()
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].cry_multiply then
-					m = G.jokers.cards[i].cry_multiply
+				if G.jokers.cards[i].config.cry_multiply then
+					m = G.jokers.cards[i].config.cry_multiply
 					cry_with_deck_effects(G.jokers.cards[i], function(card)
 						cry_misprintize(card, { min = 1 / m, max = 1 / m }, nil, true)
 					end)
-					G.jokers.cards[i].cry_multiply = nil
+					G.jokers.cards[i].config.cry_multiply = nil
 				end
 			end
 		end
@@ -4741,6 +4783,9 @@ return {
 			end
 			return ret, trig
 		end
+		
+		-- exploit: mess with poker hand evaluation
+		
 		local evaluate_poker_hand_ref = evaluate_poker_hand
 		function evaluate_poker_hand(hand)
 			local results = evaluate_poker_hand_ref(hand)
@@ -4756,6 +4801,16 @@ return {
 			end
 			return results
 		end
+		local htuis = G.FUNCS.hand_text_UI_set
+		G.FUNCS.hand_text_UI_set = function(e)
+			htuis(e)
+			if G.GAME.cry_exploit_override then
+				e.config.object.colours = {G.C.SECONDARY_SET.Code}
+			else
+				e.config.object.colours = {G.C.UI.TEXT_LIGHT}
+			end
+			e.config.object:update_text()
+		end
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G.jokers then
@@ -4767,6 +4822,21 @@ return {
 				end
 			end
 			Cardstart_dissolveRef(self,dissolve_colours, silent, dissolve_time_fac, no_juice)
+		end
+
+		-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
+		-- very inefficient
+		-- maybe smods should overwrite the function and make it more targetable?
+		
+		local getpackref = get_pack
+		function get_pack(_key, _type)
+			local temp_banned = copy_table(G.GAME.banned_keys)
+			for k, v in pairs(G.GAME.cry_banished_keys) do
+				G.GAME.banned_keys[k] = v
+			end
+			local ret = getpackref(_key, _type)
+			G.GAME.banned_keys = copy_table(temp_banned)
+			return ret
 		end
 	end,
 	items = code_cards,

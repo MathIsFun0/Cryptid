@@ -17,6 +17,82 @@ function loc_colour(_c, _default)
 	return lc(_c, _default)
 end
 
+-- More advanced version of find joker for things that need to find very specific things
+function advanced_find_joker(name, rarity, edition, ability, non_debuff)
+	local jokers = {}
+	if not G.jokers or not G.jokers.cards then return {} end
+	local filter = 0
+	if name then filter = filter + 1 end
+	if edition then filter = filter + 1 end
+	if type(rarity) ~= "table" then
+		if type(rarity) == "string" then 
+			rarity = { rarity }
+		else
+			rarity = nil
+		end
+	end
+	if rarity then filter = filter + 1 end
+	if type(ability) ~= "table" then
+		if type(ability) == "string" then 
+			ability = { ability }
+		else
+			ability = nil
+		end
+	end
+	if ability then filter = filter + 1 end
+	-- return nothing if function is called with no useful arguments
+	if filter == 0 then return {} end
+	for k, v in pairs(G.jokers.cards) do
+		if v and type(v) == 'table' and (non_debuff or not v.debuff) then
+			local check = 0
+			if name and v.ability.name == name then check = check + 1 end
+			if edition and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]] then check = check + 1 end
+			if rarity then
+				--Passes as valid if rarity matches ANY of the values in the rarity table
+				for _, a in ipairs(rarity) do
+					if v.config.center.rarity == a then
+						check = check + 1
+						break
+					end
+				end
+			end
+			if ability then
+				--Only passes if the joker has everything in the ability table
+				local abilitycheck = true
+				for _, b in ipairs(ability) do
+					if not v.ability[b] then
+						abilitycheck = false
+						break
+					end
+				end
+				if abilitycheck then check = check + 1 end
+			end
+			if check == filter then table.insert(jokers, v) end
+		end
+	end
+	for k, v in pairs(G.consumeables.cards) do
+		if v and type(v) == 'table' and (non_debuff or not v.debuff) then
+			local check = 0
+			if name and v.ability.name == name then check = check + 1 end
+			if edition and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]] then check = check + 1 end
+			if ability then
+				--Only passes if the joker has everything in the ability table
+				local abilitycheck = true
+				for _, b in ipairs(ability) do
+					if not v.ability[b] then
+						abilitycheck = false
+						break
+					end
+				end
+				if abilitycheck then check = check + 1 end
+			end
+			--Consumables don't have a rarity, so this should ignore it in that case (untested lmfao)
+			if check == filter then table.insert(jokers, v) end
+		end
+	end
+	return jokers
+end
+
 -- Midground sprites - used for Exotic Jokers and Gateway
 -- don't really feel like explaining this deeply, it's based on code for The Soul and Legendary Jokers
 local set_spritesref = Card.set_sprites
@@ -67,15 +143,23 @@ function cry_edition_to_table(edition) -- look mom i figured it out (this does N
 	end
 end
 
--- check if Director's Cut or Retcon offers a cheaper reroll price
-function cry_cheapest_boss_reroll()
-	local dcut = G.GAME.cry_voucher_centers["v_directors_cut"].config.extra or 1e308
-	local retc = G.GAME.cry_voucher_centers["v_retcon"].config.extra or 1e308
-	if dcut < retc then
-		return dcut
-	else
-		return retc
+-- simple plural s function for localisation
+function cry_pls(str, vars)
+	if string.sub(str, 1, 1) == 'p' 
+	or string.sub(str, 1, 1) == 's' 
+	or string.sub(str, 1, 1) == 'y' then
+		num = vars[tonumber(string.sub(str, 2, -1))]
+		if num then
+			if math.abs(to_big(num) - 1) > to_big(0.001) then
+				return string.sub(str, 1, 1) == 'y' and 'ies' 
+				or 's'
+			else
+				return string.sub(str, 1, 1) == 'y' and 'y' 
+				or ''
+			end
+		end
 	end
+	return false -- idk it doesn't really matter
 end
 
 -- generate a random edition (e.g. Antimatter Deck)
@@ -124,26 +208,15 @@ function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undis
 	end
 end
 
+-- checks for Jolly Jokers or cards that are supposed to be treated as jolly jokers
 function Card:is_jolly()
-	local check = false
 	if self.ability.name == "Jolly Joker" then
-		check = true
+		return true
 	end
 	if self.edition and self.edition.key == "e_cry_m" then
-		check = true
+		return true
 	end
-
-	--[[
-	Some scenarios/ examples I used for testing this (These DO work as intended if not commented out)
-	if next(find_joker("cry-mneon")) then
-		check = true
-	end
-	if G.GAME.blind.boss then
-		check = true
-	end
-	]]
-	--
-	return check
+	return false
 end
 
 function cry_with_deck_effects(card, func)
@@ -182,7 +255,7 @@ function get_m_jokers()
 	local mcount = 0
 	if G.jokers then
 		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.effect == "M Joker" then
+			if safe_get(G.jokers.cards[i], "pools", "M") then
 				mcount = mcount + 1
 			end
 			if G.jokers.cards[i].ability.name == "cry-mprime" then
@@ -271,19 +344,6 @@ if true then --Cryptid.enabled["Menu"] then
 		return ret
 	end
 end
-function Cryptid.get_food(seed)
-	local food_keys = {}
-	for k, v in pairs(Cryptid.food) do
-		if G.GAME.banned_keys[v] and G.P_CENTERS[v] then
-			table.insert(food_keys, v)
-		end
-	end
-	if #food_keys <= 0 then
-		return "j_reserved_parking"
-	else
-		return pseudorandom_element(food_keys, pseudoseed(seed))
-	end
-end
 
 -- just dumping this garbage here
 -- this just ensures that extra voucher slots work as expected
@@ -319,6 +379,236 @@ function cry_bonusvouchermod(mod)
 				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				G.shop_vouchers:emplace(card)
 			end
+		end
+	end
+end
+
+Cryptid.big_num_whitelist = {
+	j_ride_the_bus = true,
+	j_egg = true,
+	j_runner = true,
+	j_ice_cream = true,
+	j_constellation = true,
+	j_green_joker = true,
+	j_red_card = true,
+	j_madness = true,
+	j_square = true,
+	j_vampire = true,
+	j_hologram = true,
+	j_obelisk = true,
+	j_turtle_bean = true,
+	j_lucky_cat = true,
+	j_flash = true,
+	j_popcorn = true,
+	j_trousers = true,
+	j_ramen = true,
+	j_castle = true,
+	j_campfire = true,
+	j_throwback = true,
+	j_glass = true,
+	j_wee = true,
+	j_hit_the_road = true,
+	j_caino = true,
+	j_yorick = true,
+	-- Once all Cryptid Jokers get support for this, these can be removed
+	j_cry_dropshot = true,
+	j_cry_wee_fib = true,
+	j_cry_whip = true,
+	j_cry_pickle = true,
+	j_cry_chili_pepper = true,
+	j_cry_cursor = true,
+	j_cry_jimball = true,
+	j_cry_eternalflame = true,
+	j_cry_fspinner = true,
+	j_cry_krustytheclown = true,
+	j_cry_antennastoheaven = true,
+	j_cry_mondrian = true,
+	j_cry_spaceglobe = true,
+	j_cry_m = true,
+	j_cry_exponentia = true,
+	j_cry_crustulum = true,
+	j_cry_primus = true,
+	j_cry_stella_mortis = true,
+	j_cry_hugem = true,
+	j_cry_mprime = true,
+}
+
+function is_card_big(joker)
+	local center = joker.config and joker.config.center
+	if not center then return false end
+	return Cryptid.big_num_whitelist[center.key or "Nope!"] --[[or
+	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
+end
+
+--Utility function to check things without erroring
+function safe_get(t, ...)
+	local current = t
+	for _, k in ipairs({...}) do
+		if current[k] == nil then
+		return false
+		end
+		current = current[k]
+	end
+	return current
+end
+--Functions used by boss blinds
+function Blind:cry_ante_base_mod(dt)
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_ante_base_mod and type(obj.cry_ante_base_mod) == "function" then
+			return obj:cry_ante_base_mod(dt)
+		end
+	end
+	return 0
+end
+function Blind:cry_round_base_mod(dt)
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_round_base_mod and type(obj.cry_round_base_mod) == "function" then
+			return obj:cry_round_base_mod(dt)
+		end
+	end
+	return 1
+end
+function Blind:cry_cap_score(score)
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_cap_score and type(obj.cry_cap_score) == "function" then
+			return obj:cry_cap_score(score)
+		end
+	end
+	return score
+end
+function Blind:cry_after_play()
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_after_play and type(obj.cry_after_play) == "function" then
+			return obj:cry_after_play()
+		end
+	end
+end
+function Blind:cry_before_play()
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_before_play and type(obj.cry_before_play) == "function" then
+			return obj:cry_before_play()
+		end
+	end
+end
+function Blind:cry_calc_ante_gain()
+	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
+		local card
+		if pseudorandom(pseudoseed("cry_spooky_curse")) < G.GAME.modifiers.cry_curse_rate then
+			card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
+		else
+			card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_spooky")
+		end
+		card:add_to_deck()
+		card:start_materialize()
+		G.jokers:emplace(card)
+	end
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_calc_ante_gain and type(obj.cry_calc_ante_gain) == "function" then
+			return obj:cry_calc_ante_gain()
+		end
+	end
+	return 1
+end
+-- Functions for the cycle toggles
+G.FUNCS.cry_enhancement_deck_one = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_one = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_one = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_two = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_two = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_two = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_three = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_three = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_three = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_four = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_four = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_four = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_five = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_five = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_five = args.to_key
+end
+function cry_get_enchanced_deck_info()
+	--only accounts for vanilla stuff at the moment (WIP)
+	local edition, enhancement, sticker, suit, seal =
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_one") or 1, 
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_two") or 1, 
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_three") or 1,
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_four") or 1,
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_five") or 1
+	--Edition
+	local edition_table = {
+		--Ignoring e_base
+		"foil",
+		"holo",
+		"polychrome",
+		"negative",
+	}
+	--Enhancement
+	local enhancement_table = {"m_bonus","m_mult","m_wild","m_glass","m_steel","m_stone","m_gold","m_lucky",}
+	--Sticker
+	local sticker_table = {"eternal","perishable","rental","pinned",}
+	--Suit
+	local suit_table = {"Spades","Hearts","Clubs","Diamonds",}
+	--Seals
+	local seal_table = {"Gold","Blue","Red","Purple",}
+	-- Do Stuff
+	for i, v in pairs(edition_table) do
+		if edition == i then
+			edition = v
+			break
+		end
+	end
+	for i, v in pairs(enhancement_table) do
+		if enhancement == i then
+			enhancement = v
+			break
+		end
+	end
+	for i, v in pairs(sticker_table) do
+		if sticker == i then
+			sticker = v
+			break
+		end
+	end
+	for i, v in pairs(suit_table) do
+		if suit == i then
+			suit = v
+			break
+		end
+	end
+	for i, v in pairs(seal_table) do
+		if seal == i then
+			seal = v
+			break
+		end
+	end
+	return edition, enhancement, sticker, suit, seal
+end
+function Cryptid.post_process(center)
+	if center.pools and center.pools.M then
+		local vc = center.calculate
+		center.calculate = function(self, card, context)
+			local ret, trig = vc(self, card, context)
+			if context.retrigger_joker_check and context.other_card == card then
+				local reps = get_m_retriggers(self, card, context)
+				if reps > 0 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = reps + (ret and ret.repetitions or 0),
+						card = card,
+					}
+				end
+			end
+			return ret, trig
 		end
 	end
 end

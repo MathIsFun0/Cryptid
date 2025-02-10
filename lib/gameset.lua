@@ -565,7 +565,8 @@ function cry_get_gameset(card, center)
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
 		else
-			error("Could not find key for center: " .. tprint(center))
+			print("Could not find key for center: " .. tprint(center))
+			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 		end
 	end
 	local gameset = G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
@@ -645,9 +646,6 @@ if not Jen then
 				end
 			end
 		end
-		if G.GAME.viewed_back and self.config.center.key == "c_base" then
-			cry_gameset_config_UI(G.GAME.viewed_back.effect.center)
-		end
 	end
 end
 
@@ -726,7 +724,7 @@ function cry_gameset_config_UI(center)
 
 	local t = create_UIBox_generic_options({
 		infotip = localize("cry_gameset_explanation"),
-		back_func = "openModUI_Cryptid",
+		back_func = G.cry_prev_collec,
 		snap_back = true,
 		contents = {
 			{
@@ -740,6 +738,39 @@ function cry_gameset_config_UI(center)
 		definition = t,
 	})
 end
+
+local collection_shtuff = {
+	"blinds",
+	"jokers",
+	
+	-- consumables don't work
+	-- idk what smods is doing with consumable collection stuff, anyone know what the buttons are doing?
+	"tarots",
+	"planets",
+	"spectrals",
+	"codes",
+	
+	"vouchers",
+	"enhancements",
+	"decks",
+	"editions",
+	"tags",
+	"seals",
+	"boosters",
+	"stickers",
+}
+
+-- sure this is cool and all but it doesn't keep page yet so it's pretty useless
+-- would need to regex patch that
+
+for i, v in ipairs(collection_shtuff) do
+	local ref = G.FUNCS['your_collection_'..v]
+	G.FUNCS['your_collection_'..v] = function(e)
+		G.cry_prev_collec = 'your_collection_'..v
+		ref(e)
+	end
+end
+G.cry_prev_collec = 'your_collection_jokers'
 
 -- change the rarity sticker's color for gameset selection on an item
 local gtc = get_type_colour
@@ -876,10 +907,16 @@ SMODS.GameObject.enable = function(self)
 	end
 end
 
+-- Note: For custom pools, these only support Center.pools, not ObjectType.cards
+-- That could cause issues with mod compat in the future
+-- Potential improvement: automatic pool detection from gamesets?
 SMODS.Center._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
+		for k, v in pairs(self.pools or {}) do
+			SMODS.ObjectTypes[k]:delete_card(self)
+		end
 		G.P_CENTERS[self.key] = nil
 	end
 end
@@ -888,6 +925,9 @@ SMODS.Center.enable = function(self)
 		self.cry_disabled = nil
 		SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
 		G.P_CENTERS[self.key] = self
+		for k, v in pairs(self.pools or {}) do
+			SMODS.ObjectTypes[k]:inject_card(self)
+		end
 	end
 end
 SMODS.Joker.enable = function(self)
@@ -1055,22 +1095,96 @@ G.P_CENTER_POOLS["Content Set"] = {}
 SMODS.ContentSet({
 	key = "m",
 	atlas = "atlasepic",
-	pos = { x = 3, y = 1 },
+	pos = { x = 3, y = 1 }, --m
 })
 SMODS.ContentSet({
 	key = "epic",
 	atlas = "atlasepic",
-	pos = { x = 2, y = 1 },
+	pos = { x = 2, y = 1 }, --Canvas
 })
 SMODS.ContentSet({
 	key = "code",
-	atlas = "atlasepic",
-	pos = { x = 2, y = 2 },
+	atlas = "code",
+	pos = { x = 0, y = 0 }, --://CRASH
 })
 SMODS.ContentSet({
 	key = "exotic",
-	atlas = "atlasepic",
-	pos = { x = 2, y = 3 },
+	atlas = "atlasexotic",
+	pos = { x = 0, y = 1 }, --Iterum
+	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
+})
+SMODS.ContentSet({
+	key = "blind",
+	atlas = "blinds",
+	pos = { x = 0, y = 4 }, --The Joke
+	cry_blind = true
+})
+SMODS.ContentSet({
+	key = "deck",
+	atlas = "atlasdeck",
+	pos = { x = 4, y = 5 }, --Critical Deck
+})
+SMODS.ContentSet({
+	key = "spooky",
+	atlas = "atlasspooky",
+	pos = { x = 1, y = 0 }, --Chocolate Dice
+})
+SMODS.ContentSet({
+	key = "cursed",
+	atlas = "atlasspooky",
+	pos = { x = 3, y = 0 }, --Ghost
+})
+SMODS.ContentSet({
+	key = "timer",
+	atlas = "blinds",
+	pos = { x = 0, y = 1 }, --The Clock
+	cry_blind = true
+})
+SMODS.ContentSet({
+	key = "enhanced",
+	atlas = "atlasenhanced",
+	pos = { x = 2, y = 3 }, --The Empress' Deck
+})
+SMODS.ContentSet({
+	key = "misc",
+	atlas = "cry_misc",
+	pos = { x = 2, y = 0 }, --Echo Card
+})
+SMODS.ContentSet({
+	key = "misc_joker",
+	atlas = "atlasone",
+	pos = { x = 2, y = 3 }, --Nice
+})
+SMODS.ContentSet({
+	key = "planet",
+	atlas = "atlasnotjokers",
+	pos = { x = 4, y = 2 }, --Planet.lua
+})
+SMODS.ContentSet({
+	key = "spectral",
+	atlas = "atlasnotjokers",
+	pos = { x = 1, y = 1 }, --Replica
+})
+SMODS.ContentSet({
+	key = "tag",
+	atlas = "tag_cry",
+	pos = { x = 0, y = 2 }, --Cat Tag
+	cry_tag = true
+})
+SMODS.ContentSet({
+	key = "tier3",
+	atlas = "atlasvoucher",
+	pos = { x = 5, y = 2 }, --Asteroglyph
+})
+SMODS.ContentSet({
+	key = "voucher",
+	atlas = "atlasvoucher",
+	pos = { x = 1, y = 2 }, --Tag Printer
+})
+SMODS.ContentSet({
+	key = "poker_hand_stuff",
+	atlas = "atlasthree",
+	pos = { x = 7, y = 1 }, --The Fuck!? (Clusterfuck's XMult Joker)
 })
 
 -- these are mostly copy/paste from vanilla code
@@ -1126,14 +1240,7 @@ function create_UIBox_your_collection_content_sets()
 			if not center then
 				break
 			end
-			local card = Card(
-				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
-				G.your_collection[j].T.y,
-				G.CARD_W,
-				G.CARD_H,
-				nil,
-				center
-			)
+			local card = create_generic_card(center)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1189,14 +1296,7 @@ G.FUNCS.your_collection_content_set_page = function(args)
 			if not center then
 				break
 			end
-			local card = Card(
-				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
-				G.your_collection[j].T.y,
-				G.CARD_W,
-				G.CARD_H,
-				G.P_CARDS.empty,
-				center
-			)
+			local card = create_generic_card(center)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1209,11 +1309,13 @@ end
 
 function create_generic_card(center)
 	--todo: make gameset stickers play nicely with resized sprites
+	local is_blind = center.set == "Blind" or center.cry_blind
+	local is_tag = center.set == "Tag" or center.cry_tag
 	local card = Card(
 		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
 		G.ROOM.T.h,
-		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.42 * G.CARD_W or G.CARD_W,
-		center.set == "Blind" and 0.7 * G.CARD_W or center.set == "Tag" and 0.42 * G.CARD_W or G.CARD_H,
+		is_blind and 0.7 * G.CARD_W or is_tag and 0.42 * G.CARD_W or G.CARD_W,
+		is_blind and 0.7 * G.CARD_W or is_tag and 0.42 * G.CARD_W or G.CARD_H,
 		nil,
 		center.set ~= "Seal" and center.set ~= "Sticker" and center or G.P_CENTERS.c_base
 	)
@@ -1221,17 +1323,30 @@ function create_generic_card(center)
 	if center.set == "Edition" then
 		card:set_edition(center.key, true, true)
 	end
+	if safe_get(center, "config", "cry_antimatter") then
+		card:set_edition("e_negative", true, true)
+		return card
+	end
+	if safe_get(center, "config", "cry_force_edition") then
+		card:set_edition({[center.config.cry_force_edition] = true}, true, true)
+	end
 	if center.set == "Seal" then
 		card:set_seal(center.key, true, true)
 		card.config.center = cry_deep_copy(card.config.center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
 	end
+	if safe_get(center, "config", "cry_force_seal") then
+		card:set_seal(center.config.cry_force_seal, true, true)
+	end
 	if center.set == "Sticker" then
 		center:apply(card, true)
 		card.config.center = cry_deep_copy(card.config.center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
+	end
+	if safe_get(center, "config", "cry_force_sticker") then
+		SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
 	end
 	return card
 end
@@ -1279,10 +1394,40 @@ end
 
 -- Make Cryptid show all collection boxes (kinda silly)
 local mct = modsCollectionTally
-function modsCollectionTally(...)
-	local t = mct(...)
+function modsCollectionTally(pool, set)
+	local t = mct(pool, set)
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		return { tally = 10 ^ 400, of = 10 ^ 400 }
+		local obj_tally = {tally = 0, of = 0}
+		--infer pool
+		local _set = set or safe_get(pool, 1, "set")
+		--general consumable UI breaks w/ this
+		if _set then
+			if _set == "Seal" then
+				pool = SMODS.Seal.obj_table
+				set = _set
+			elseif G.P_CENTER_POOLS[_set] then
+				pool = SMODS.Center.obj_table
+				set = _set
+			end
+		end
+		for _, v in pairs(pool) do
+			if v.mod and G.ACTIVE_MOD_UI.id == v.mod.id and not v.no_collection then
+				if set then
+					if v.set and v.set == set then
+						obj_tally.of = obj_tally.of+1
+						if cry_get_gameset(v) ~= "disabled" then 
+							obj_tally.tally = obj_tally.tally+1
+						end
+					end
+				else
+					obj_tally.of = obj_tally.of+1
+					if cry_get_gameset(v) ~= "disabled" then 
+						obj_tally.tally = obj_tally.tally+1
+					end
+				end
+			end
+		end
+		return obj_tally
 	end
 	return t
 end
@@ -1297,7 +1442,24 @@ function create_UIBox_your_collection_decks()
 				table.insert(generic_collection_pool, v)
 			end
 		end
-		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 })
+		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 },
+		{
+			modify_card = function(card, center, i, j)
+				if center.config.cry_antimatter then
+					card:set_edition("e_negative", true, true)
+					return card
+				end
+				if center.config.cry_force_edition then
+					card:set_edition({[center.config.cry_force_edition] = true}, true, true)
+				end
+				if center.config.cry_force_seal then
+					card:set_seal(center.config.cry_force_seal, true, true)
+				end
+				if center.config.cry_force_sticker then
+					SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
+				end
+			end
+		})
 	else
 		return uibk()
 	end

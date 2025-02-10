@@ -136,6 +136,75 @@ pattern = '''return center\nend\n\nfunction get_current_pool\(_type, _rarity, _l
 position = "before"
 payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end '''
 
+# Delete - banished keys prevent pool stuff, guess we're going for this method after all
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if v.yes_pool_flag and not G.GAME.pool_flags[v.yes_pool_flag] then add = nil end'''
+position = "after"
+payload = '''if G.GAME.cry_banished_keys[v.key] then add = nil end'''
+match_indent = true
+
+# Delete - multiuse 1
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if card.area and (not nc or card.area == G.pack_cards) then card.area:remove_card(card) end'''
+position = "before"
+payload = '''
+local cry_muse = false
+if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) then
+	cry_muse = true
+	dont_dissolve = true
+end	
+'''
+match_indent = true
+
+# Delete - multiuse 2
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if (prev_state == G.STATES.TAROT_PACK or prev_state == G.STATES.PLANET_PACK or'''
+position = "before"
+payload = '''
+if cry_muse then
+	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+	card:set_cost()
+	delay(0.4)
+	
+	-- i make my own card eval status text :D
+	
+	card:juice_up()
+	play_sound('generic1')
+	attention_text({
+		text = format_ui_value(card.ability.cry_multiuse),
+		scale = 1.1, 
+		hold = 0.6,
+		major = card,
+		backdrop_colour = G.C.SECONDARY_SET[card.config.center.set],
+		align = 'bm',
+		offset = {x = 0, y = 0.2}
+	})
+	
+	delay(0.8)
+	draw_card(G.play, area, 1, 'up', true, card, nil, true)
+	tprint(area)
+end
+'''
+match_indent = true
+
+# Delete - init table to avoid headaches
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ecto_minus = 1,'''
+position = "after"
+payload = '''
+cry_banished_keys = {},
+'''
+match_indent = true
+
 # Run - don't clear shop
 [[patches]]
 [patches.pattern]
@@ -266,10 +335,26 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''function end_round()'''
+pattern = '''-- TARGET: effects after hand evaluation'''
 position = "after"
 payload = '''
-G.GAME.cry_exploit_override = nil
+G.E_MANAGER:add_event(Event({
+	func = function()
+		G.GAME.cry_exploit_override = nil
+		return true
+	end
+}))
+'''
+match_indent = true
+
+# Exploit - patch into smods
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''disp_text = text'''
+position = "before"
+payload = '''
+text = G.GAME.cry_exploit_override or text
 '''
 match_indent = true
 

@@ -195,9 +195,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = "elseif _c.name == 'Cryptid' then loc_vars = {_c.config.extra}"
+pattern = "elseif _c.name == 'Cryptid' then loc_vars = {cfg.extra}"
 position = "at"
-payload = '''elseif _c.name == 'Cryptid' then loc_vars = {_c.config.extra, _c.config.max_highlighted}
+payload = '''elseif _c.name == 'Cryptid' then loc_vars = {cfg.extra, cfg.max_highlighted}
 '''
 match_indent = true
 
@@ -232,7 +232,7 @@ line_prepend = '$indent    '
 payload = '''
 
 if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then 
-    loc_vars = {_c.config.max_highlighted}
+    loc_vars = {cfg.max_highlighted}
 end
 '''
 
@@ -282,68 +282,21 @@ payload = '''
 '''
 match_indent = true
 
-# welcome to hell, enjoy your stay (initialise center copy)
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "self.GAME.selected_back_key = selected_back"
-position = "after"
-payload = '''
-G.GAME.cry_voucher_centers = {}
-for k, v in pairs(G.P_CENTERS) do
-	if v.set == 'Voucher' then
-		G.GAME.cry_voucher_centers[k] = {config = {}}
-		G.GAME.cry_voucher_centers[k].config = copy_table(v.config)
-	end
-end
-'''
-match_indent = true
-
-# when voucher is redeemed, save ability to center copy
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.shop_voucher then G.GAME.current_round.voucher = nil end"
-position = "after"
-payload = '''
-G.GAME.cry_voucher_centers[self.config.center_key].config.extra = self.ability.extra
-if self.ability.extra_disp then G.GAME.cry_voucher_centers[self.config.center_key].config.extra_disp = self.ability.extra_disp end
-'''
-match_indent = true
-
-# extra override
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "extra = center and center.config.extra or self and self.ability.extra"
-position = "at"
-payload = '''
-extra = self and G.GAME.cry_voucher_centers[self.config.center_key].config.extra or center and center.config.extra
-'''
-match_indent = true
-
 # the d in disp stands for disparity (match internal values to display values)
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if center_table.name == 'Overstock' or center_table.name == 'Overstock Plus' then"
-position = "before"
+pattern = "function Card:apply_to_run(center)"
+position = "after"
 payload = '''
-if not center_table.extra then center_table.extra = center and center.config.extra end	-- catch
-if self and self.ability and self.ability.extra_disp then
-	local up = false
-	if center_table.name == 'Tarot Tycoon' or center_table.name == 'Planet Tycoon' then
-		up = true
-	end
-	local og_extra = 9.6/4
-	local og_disp = 2
-	if up == true then
-		og_extra = 32/4
-		og_disp = 4
-	end
-	local misprint_diff = self.ability.extra_disp / og_disp
-	G.GAME.cry_voucher_centers[self.config.center_key].config.extra = og_extra*misprint_diff
-	center_table.extra = og_extra*misprint_diff
+if (self and self.ability and self.ability.extra_disp) then	-- redeeming through centers isn't misprinted
+	local self_disp = self.ability.extra_disp
+	local orig_disp = self.config.center.config.extra_disp
+	local self_extra = self.ability.extra
+	local orig_extra = self.config.center.config.extra
+	
+	local new_fac = self_disp / orig_disp
+	self.ability.extra = new_fac*orig_extra
 end
 '''
 match_indent = true
@@ -404,10 +357,10 @@ payload = '''
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''elseif _c.name == "Clearance Sale" or _c.name == "Liquidation" then loc_vars = {_c.config.extra}'''
+pattern = '''elseif _c.name == "Clearance Sale" or _c.name == "Liquidation" then loc_vars = {cfg.extra}'''
 position = "after"
 payload = '''
-elseif _c.name == "Crystal Ball" or _c.name == "Omen Globe" then loc_vars = {_c.config.extra}
+elseif _c.name == "Crystal Ball" or _c.name == "Omen Globe" then loc_vars = {cfg.extra}
 '''
 match_indent = true
 
@@ -418,7 +371,7 @@ target = "functions/common_events.lua"
 pattern = '''if _c.name == "Overstock" or _c.name == 'Overstock Plus' then'''
 position = "at"
 payload = '''
-if _c.name == "Overstock" or _c.name == "Overstock Plus" then loc_vars = {_c.config.extra}
+if _c.name == "Overstock" or _c.name == "Overstock Plus" then loc_vars = {cfg.extra}
 '''
 match_indent = true
 
@@ -429,20 +382,9 @@ target = "functions/common_events.lua"
 pattern = '''elseif _c.name == "Blank" or _c.name == "Antimatter" then'''
 position = "at"
 payload = '''
-elseif _c.name == "Blank" or _c.name == "Antimatter" then loc_vars = {_c.config.extra}
+elseif _c.name == "Blank" or _c.name == "Antimatter" then loc_vars = {cfg.extra}
 '''
 match_indent = true
-
-# tbf, more like half
-[[patches]]
-[patches.regex]
-target = "card.lua"
-pattern = '''message = localize\{type = 'variable', key = 'a_xmult', vars = \{G.P_CENTERS.v_observatory.config.extra}},\n\s+Xmult_mod = G.P_CENTERS.v_observatory.config.extra'''
-position = "at"
-payload = '''
-                    message = localize{type = 'variable', key = 'a_xmult', vars = {G.GAME.cry_voucher_centers['v_observatory'].config.extra}},
-                    Xmult_mod = G.GAME.cry_voucher_centers['v_observatory'].config.extra
-'''
 
 # but whatever, not like i was doing anything anyway
 [[patches]]
@@ -515,5 +457,47 @@ pattern = '''v_antimatter=       {order = 24,    discovered = false, unlocked = 
 position = "at"
 payload = '''
 v_antimatter=       {order = 24,    discovered = false, unlocked = false, available = true, cost = 10, name = "Antimatter", pos = {x=7,y=1}, set = "Voucher", config = {extra = 1}, requires = {'v_blank'},unlock_condition = {type = 'blank_redeems', extra = 10}},
+'''
+match_indent = true
+
+# whyyyyyyyyy
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.tarot_rate = 4*center_table.extra'''
+position = "at"
+payload = '''
+G.GAME.tarot_rate = G.GAME.tarot_rate*center_table.extra
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.planet_rate = 4*center_table.extra'''
+position = "at"
+payload = '''
+G.GAME.planet_rate = G.GAME.planet_rate*center_table.extra
+'''
+match_indent = true
+
+# keep vanilla rates by modifying tycoons
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_tarot_tycoon=     {order = 18,     discovered = false, unlocked = false, available = true,cost = 10, name = "Tarot Tycoon", pos = {x=1,y=1}, set = "Voucher", config = {extra = 32/4, extra_disp = 4}, requires = {'v_tarot_merchant'},unlock_condition = {type = 'c_tarots_bought', extra = 50}},'''
+position = "at"
+payload = '''
+v_tarot_tycoon=     {order = 18,     discovered = false, unlocked = false, available = true,cost = 10, name = "Tarot Tycoon", pos = {x=1,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_tarot_merchant'},unlock_condition = {type = 'c_tarots_bought', extra = 50}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/4, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},'''
+position = "at"
+payload = '''
+v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},
 '''
 match_indent = true

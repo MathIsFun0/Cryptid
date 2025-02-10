@@ -192,14 +192,16 @@ position = "before"
 payload = '''
 Cryptid = {}
 Cryptid.enabled = {}
-Cryptid.memepack = {}
 Cryptid.aliases = {}
-Cryptid.food = {}
-Cryptid.M_jokers = {} 
-Cryptid.Megavouchers = {}
 function cry_format(...)
 	return ...
 end
+
+-- These ones are deprecated, they do not do anything and are just here to prevent crashes
+Cryptid.memepack = {}
+Cryptid.food = {}
+Cryptid.M_jokers = {} 
+Cryptid.Megavouchers = {}
 '''
 match_indent = true
 
@@ -214,5 +216,20 @@ end
 position = "after"
 payload = '''
 SMODS.calculate_context{cry_creating_card = true, card = card}
+'''
+match_indent = true
+
+# plural handler (annoyingly fragile overwrite)
+# also i pass the whole vars here, even though it's inefficient, just because it looks better
+# whatever
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+position = "at"
+payload = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or cry_pls(subpart[1], args.vars) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
 '''
 match_indent = true

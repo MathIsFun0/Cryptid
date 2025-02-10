@@ -534,6 +534,7 @@ local pickle = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasone",
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tags_mod } }
 	end,
@@ -756,6 +757,7 @@ local chili_pepper = {
 	eternal_compat = false,
 	perishable_compat = false,
 	atlas = "atlastwo",
+    pools = {["Food"] = true},
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = { center.ability.extra.Xmult, center.ability.extra.Xmult_mod, center.ability.extra.rounds_remaining },
@@ -841,17 +843,13 @@ local compound_interest = {
 		return { vars = { center.ability.extra.percent, center.ability.extra.percent_mod } }
 	end,
 	calc_dollar_bonus = function(self, card)
-		if G.GAME.dollars > 0 then
+		if G.GAME.dollars > to_big(0) then
 			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
 			local old = card.ability.extra.percent
 			card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
 			compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
-			if bonus > 0 then
-				if G.GAME.dollars > 1e10 then
-					return 1
-				else
-					return bonus
-				end
+			if bonus > to_big(0) then
+				return bonus
 			end
 		else 
 			return 0
@@ -917,7 +915,10 @@ local eternalflame = {
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.extra, center.ability.extra.x_mult } }
+		return { 
+			vars = { center.ability.extra.extra, center.ability.extra.x_mult },
+			key = Card.get_gameset(card) ~= "modest" and "j_cry_eternalflame2" or "j_cry_eternalflame" 
+		}
 	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -929,7 +930,7 @@ local eternalflame = {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
 				Xmult_mod = card.ability.extra.x_mult,
 			}
-		elseif context.selling_card and not context.blueprint then
+		elseif context.selling_card and (context.card.sell_cost >= 3 or Card.get_gameset(card) ~= "modest") and not context.blueprint then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(
 				card,
@@ -970,7 +971,7 @@ local nice = {
 		return { vars = { center.ability.extra.chips } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and not context.after then
+		if context.cardarea == G.jokers and context.before then
 			card.ability.extra.sixcount = 0
 			card.ability.extra.ninecount = 0
 			for i, v in pairs(context.full_hand) do
@@ -980,7 +981,7 @@ local nice = {
 					card.ability.extra.ninecount = card.ability.extra.ninecount + 1
 				end
 			end
-		elseif context.cardarea == G.jokers and not context.before and not context.after then
+		elseif context.cardarea == G.jokers and context.joker_main then
 			if card.ability.extra.sixcount > 0 and card.ability.extra.ninecount > 0 then
 				return {
 					message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips or 0 } }),
@@ -1350,50 +1351,6 @@ local fspinner = {
 		}
 	},
 }
-local luigi = {
-	object_type = "Joker",
-	name = "cry-luigi",
-	key = "luigi",
-	pos = { x = 0, y = 3 },
-	soul_pos = { x = 1, y = 3 },
-	config = { extra = { x_chips = 3 } },
-	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_chips } }
-	end,
-	rarity = 4,
-	cost = 20,
-	order = 86,
-	blueprint_compat = true,
-	calculate = function(self, card, context)
-		if context.other_joker and context.other_joker.ability.set == "Joker" then
-			if not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						context.other_joker:juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
-			end
-			return {
-				message = localize({ type = "variable", key = "a_xchips", vars = { card.ability.extra.x_chips } }),
-				colour = G.C.CHIPS,
-				Xchip_mod = card.ability.extra.x_chips,
-			}
-		end
-	end,
-	atlas = "atlasthree",
-	cry_credits = {
-		idea = {
-			"Auto Watto"
-		},
-		art = {
-			"Linus Goof Balls"
-		},
-		code = {
-			"Auto Watto"
-		}
-	},
-}
 local waluigi = {
 	object_type = "Joker",
 	name = "cry-Waluigi",
@@ -1434,42 +1391,6 @@ local waluigi = {
 		},
 		code = {
 			"Math"
-		}
-	},
-}
-local mario = {
-	object_type = "Joker",
-	name = "cry-mario",
-	key = "mario",
-	config = { extra = { retriggers = 2 } },
-	pos = { x = 4, y = 3 },
-	soul_pos = { x = 5, y = 3 },
-	rarity = 4,
-	order = 85,
-	cost = 20,
-	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { math.min(25, center.ability.extra.retriggers) } }
-	end,
-	atlas = "atlasthree",
-	calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			return {
-				message = localize("k_again_ex"),
-				repetitions = math.min(25, card.ability.extra.retriggers),
-				card = card,
-			}
-		end
-	end,
-	cry_credits = {
-		idea = {
-			"Auto Watto"
-		},
-		art = {
-			"Linus Goof Balls"
-		},
-		code = {
-			"Auto Watto"
 		}
 	},
 }
@@ -6089,6 +6010,7 @@ local astral_bottle = {
 	object_type = "Joker",
 	name = "cry-astral_bottle",
 	key = "astral_bottle",
+	eternal_compat = false,
 	pos = { x = 7, y = 0 },
 	atlas = "atlasthree",
 	rarity = 2,
@@ -6134,16 +6056,6 @@ local kidnap = {
 	cost = 4,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_zany
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_mad
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_crazy
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_droll
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_sly
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_wily
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_clever
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_devious
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_crafty
 		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
 	end,
 	atlas = "atlasone",
@@ -6452,15 +6364,47 @@ local cookie = {
 			}
 		end
 		if context.cry_press then
-			card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
-			card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+			if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_eaten_ex") , colour = G.C.CHIPS }
 				)
+			else
+				card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+				card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = "-" ..card.ability.extra.chip_mod , colour = G.C.CHIPS }
+				)
+			end
 		end
 	end,
 	cry_credits = {
@@ -6595,22 +6539,16 @@ local tax_fraud = {
 	order = 128,
 	atlas = "placeholders",
 	in_pool = function(self)
-		if G.jokers then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.rental then return true end
-			end
-		end
-		return false
+		if not G.GAME.modifiers.enable_rentals_in_shop then return false end
+		return true
 	end,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.money } }
 	end,
 	calc_dollar_bonus = function(self, card)
-		local rentals = 0
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.rental then rentals = rentals+1 end
+		if #advanced_find_joker(nil, nil, nil, {"rental"}, true) ~= 0 then
+			return card.ability.extra.money * #advanced_find_joker(nil, nil, nil, {"rental"}, true)
 		end
-		return rentals*card.ability.extra.money
 	end,
 	cry_credits = {
 		idea = {
@@ -6702,7 +6640,7 @@ local digitalhallucinations = {
 						end)
 					}))
 					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_'..short1[i]), colour = G.C.SECONDARY_SET[short2[i]]})
-					return true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
+					return nil, true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
 				end
 			end
 			if boosty.ability.name:find('code') then
@@ -6718,7 +6656,7 @@ local digitalhallucinations = {
 					end
 				}))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('cry_plus_code'), colour = G.C.SET.Code})
-				return true
+				return nil, true
 			end
 			if boosty.ability.name:find('Buffoon') then
 				G.E_MANAGER:add_event(Event({
@@ -6734,7 +6672,7 @@ local digitalhallucinations = {
 					end
 				}))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.FILTER})
-				return true
+				return nil, true
 			end
 			if boosty.ability.name:find('Standard') then
 				G.E_MANAGER:add_event(Event({
@@ -6760,7 +6698,7 @@ local digitalhallucinations = {
 				draw_card(G.play,G.deck, 90,'up', nil)  
 
 				playing_card_joker_effects({true})	-- who knows what most this stuff does, i just copied it from marble jonkler
-				return true
+				return nil, true
 			end
 		end
 	end,
@@ -6888,9 +6826,7 @@ local miscitems =  {
 	sus,
 	chad,
 	jimball,
-	luigi,
 	waluigi,
-	mario,
 	wario,
 	eternalflame,
 	seal_the_deal,

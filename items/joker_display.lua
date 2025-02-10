@@ -578,7 +578,7 @@ if JokerDisplay then
 			return { e_mult = (
 				card.ability.name == "Jolly Joker"
 				or card.edition and card.edition.key == "e_cry_m"
-				or card.ability.effect == "M Joker"
+				or safe_get(card, "pools", "M")
 		 	) 
 			and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end,

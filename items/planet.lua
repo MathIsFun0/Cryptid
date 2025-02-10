@@ -1,4 +1,9 @@
 local timantti = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-Timantti",
@@ -51,6 +56,7 @@ local timantti = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "High Card"
 				or context.scoring_name == "Pair"
@@ -66,6 +72,11 @@ local timantti = {
 	end,
 }
 local klubi = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-Klubi",
@@ -118,6 +129,7 @@ local klubi = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "Three of a Kind"
 				or context.scoring_name == "Straight"
@@ -133,6 +145,11 @@ local klubi = {
 	end,
 }
 local sydan = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-Sydan",
@@ -185,6 +202,7 @@ local sydan = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "Full House"
 				or context.scoring_name == "Four of a Kind"
@@ -200,6 +218,11 @@ local sydan = {
 	end,
 }
 local lapio = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-Lapio",
@@ -252,6 +275,7 @@ local lapio = {
 	calculate = function(self, card, context)
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (
 				context.scoring_name == "Five of a Kind"
 				or context.scoring_name == "Flush House"
@@ -267,73 +291,85 @@ local lapio = {
 	end,
 }
 local kaikki = {
-    object_type = "Consumable",
-    set = "Planet",
-    name = "cry-Kaikki",
-    key = "Kaikki",
-    pos = { x = 3, y = 5 },
-    config = { hand_types = { "cry_Bulwark", "cry_Clusterfuck", "cry_UltPair" }, softlock = true },
-    cost = 4,
-    aurinko = true,
-    atlas = "atlasnotjokers",
-    order = 12,
-    can_use = function(self, card)
-        return true
-    end,
-    loc_vars = function(self, info_queue, center)
-        local levelone = G.GAME.hands["cry_Bulwark"].level or 1
-        local leveltwo = G.GAME.hands["cry_Clusterfuck"].level or 1
-        local levelthree = G.GAME.hands["cry_UltPair"].level or 1
-        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-        local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-        local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-        if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-            if levelone == 1 then
-                planetcolourone = G.C.UI.TEXT_DARK
-            end
-            if leveltwo == 1 then
-                planetcolourtwo = G.C.UI.TEXT_DARK
-            end
-            if levelthree == 1 then
-                planetcolourthree = G.C.UI.TEXT_DARK
-            end
-        end
-        return {
-            vars = {
-                localize("cry_hand_bulwark"),
-                localize("cry_hand_clusterfuck"),
-                localize("cry_hand_ultpair"),
-                G.GAME.hands["cry_Bulwark"].level,
-                G.GAME.hands["cry_Clusterfuck"].level,
-                G.GAME.hands["cry_UltPair"].level,
-                colours = { planetcolourone, planetcolourtwo, planetcolourthree },
-            },
-        }
-    end,
-    use = function(self, card, area, copier)
-        suit_level_up(self, card, area, copier)
-    end,
-    bulk_use = function(self, card, area, copier, number)
-        suit_level_up(self, card, area, copier, number)
-    end,
-    calculate = function(self, card, context)
-        if
-            G.GAME.used_vouchers.v_observatory
-            and (
-                context.scoring_name == "cry_Bulwark"
-                or context.scoring_name == "cry_Clusterfuck"
-                or context.scoring_name == "cry_UltPair"
-            )
-        then
-            local value = G.P_CENTERS.v_observatory.config.extra
-            return {
-                message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-                Xmult_mod = value,
-            }
-        end
-    end,
+	dependencies = {
+		items = {
+			"set_cry_planet",
+			"set_cry_poker_hand_stuff"
+		},
+	},
+	object_type = "Consumable",
+    	set = "Planet",
+    	name = "cry-Kaikki",
+    	key = "Kaikki",
+   	pos = { x = 3, y = 5 },
+    	config = { hand_types = { "cry_Bulwark", "cry_Clusterfuck", "cry_UltPair" }, softlock = true },
+    	cost = 4,
+    	aurinko = true,
+    	atlas = "atlasnotjokers",
+    	order = 12,
+    	can_use = function(self, card)
+        	return true
+    	end,
+    	loc_vars = function(self, info_queue, center)
+        	local levelone = G.GAME.hands["cry_Bulwark"].level or 1
+        	local leveltwo = G.GAME.hands["cry_Clusterfuck"].level or 1
+        	local levelthree = G.GAME.hands["cry_UltPair"].level or 1
+        	local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        	local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+        	local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+        	if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
+            		if levelone == 1 then
+                		planetcolourone = G.C.UI.TEXT_DARK
+            		end
+            		if leveltwo == 1 then
+                		planetcolourtwo = G.C.UI.TEXT_DARK
+            		end
+            		if levelthree == 1 then
+                		planetcolourthree = G.C.UI.TEXT_DARK
+            		end
+        	end
+        	return {
+            		vars = {
+                		localize("cry_hand_bulwark"),
+                		localize("cry_hand_clusterfuck"),
+                		localize("cry_hand_ultpair"),
+               			G.GAME.hands["cry_Bulwark"].level,
+                		G.GAME.hands["cry_Clusterfuck"].level,
+                		G.GAME.hands["cry_UltPair"].level,
+                		colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+            		},
+        	}
+    	end,
+    	use = function(self, card, area, copier)
+		suit_level_up(self, card, area, copier)
+    	end,
+   	bulk_use = function(self, card, area, copier, number)
+        	suit_level_up(self, card, area, copier, number)
+    	end,
+    	calculate = function(self, card, context)
+        	if
+            	G.GAME.used_vouchers.v_observatory
+		and context.joker_main
+            	and (
+                	context.scoring_name == "cry_Bulwark"
+                	or context.scoring_name == "cry_Clusterfuck"
+                	or context.scoring_name == "cry_UltPair"
+            	)
+        	then
+            		local value = G.P_CENTERS.v_observatory.config.extra
+            		return {
+                		message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+                		Xmult_mod = value,
+            		}
+        	end
+    	end,
 }
 local planetlua = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-planetlua",
@@ -593,6 +629,7 @@ local planetlua = {
 	calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for (G.P_CENTERS.v_observatory.config.extra) Mult
 		if
 			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
 			and (pseudorandom("nstar") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
@@ -604,6 +641,11 @@ local planetlua = {
 	end,
 }
 local nstar = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-nstar",
@@ -692,7 +734,7 @@ local nstar = {
 		)
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
-		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil then
+		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil and context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
@@ -705,6 +747,12 @@ local nstar = {
 	end,
 }
 local sunplanet = {
+	dependencies = {
+		items = {
+			"set_cry_planet",
+			"set_cry_poker_hand_stuff"
+		},
+	},
 	object_type = "Consumable",
 	set = "Planet",
 	name = "cry-sunplanet",
@@ -779,7 +827,7 @@ local sunplanet = {
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
 	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand 
-		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 then
+		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 and context.joker_main then
 			local value = G.P_CENTERS.v_observatory.config.extra
             		return {
                 		message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
@@ -808,8 +856,151 @@ local sunplanet = {
 		return false
 	end,
 }
+local abelt = {
+    dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff"
+		},
+    },
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'asteroidbelt',
+    config = { hand_type = 'cry_Bulwark', softlock = true },
+    pos = {x = 1, y = 5 },
+    order = 2,
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Bulwark"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_hand_bulwark"),
+                G.GAME.hands["cry_Bulwark"].level,
+				G.GAME.hands["cry_Bulwark"].l_mult,
+				G.GAME.hands["cry_Bulwark"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
+local void = {
+    dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff"
+		},
+    },
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'void',
+    order = 3,
+    config = { hand_type = 'cry_Clusterfuck', softlock = true },
+    pos = {x = 0, y = 5 },
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_Clusterfuck"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_Clusterfuck"),
+                G.GAME.hands["cry_Clusterfuck"].level,
+				G.GAME.hands["cry_Clusterfuck"].l_mult,
+				G.GAME.hands["cry_Clusterfuck"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
+local marsmoons = {
+    dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff"
+		},
+    },
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'marsmoons',
+    order = 4,
+    config = { hand_type = 'cry_UltPair', softlock = true },
+    pos = {x = 2, y = 5 },
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_UltPair"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_UltPair"),
+                G.GAME.hands["cry_UltPair"].level,
+				G.GAME.hands["cry_UltPair"].l_mult,
+				G.GAME.hands["cry_UltPair"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
+local universe = {
+    dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff"
+		},
+    },
+    object_type = "Consumable",
+    set = 'Planet',
+    key = 'universe',
+    config = { hand_type = 'cry_WholeDeck', softlock = true },
+    pos = {x = 4, y = 5 },
+    order = 5,
+    atlas = 'atlasnotjokers',
+		aurinko = true,
+    set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
+    end,
+	loc_vars = function(self, info_queue, center)
+        local levelone = G.GAME.hands["cry_WholeDeck"].level or 1
+        local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+        if levelone == 1 then
+            planetcolourone = G.C.UI.TEXT_DARK
+        end
+        return {
+            vars = {
+                localize("cry_UltPair"),
+                G.GAME.hands["cry_WholeDeck"].level,
+				G.GAME.hands["cry_WholeDeck"].l_mult,
+				G.GAME.hands["cry_WholeDeck"].l_chips,
+                colours = { planetcolourone },
+            },
+        }
+    end,
+    generate_ui = 0,
+}
 function suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
+	if not number then
+		number = 1
+	end
 	for _, v in pairs(card.config.center.config.hand_types) do
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
@@ -851,10 +1042,7 @@ function neutronstarrandomhand(ignore, seed, allowhidden)
 	end
 	return chosen_hand
 end
-local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio, sunplanet }
-if Cryptid.enabled["Misc."] then
-	planet_cards[#planet_cards + 1] = kaikki
-end
+local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio, sunplanet, kaikki, abelt, void, marsmoons, universe }
 if not (SMODS.Mods["jen"] or {}).can_load then
 end
 return { name = "Planets", init = function() end, items = planet_cards }
