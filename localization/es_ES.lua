@@ -2022,7 +2022,7 @@ return {
                 },
             },
             j_cry_soccer = { --why tf is this called soccer again -AlexSC
-                name = "Uno para todos", --changed the name from latin because this isn't exotic
+                name = "Uno para todos",
                 text = {
                     "{C:attention}+#1#{} ranura de comodín",
                     "{C:attention}+#1#{} ranura de paquete potenciador",
@@ -3373,7 +3373,7 @@ return {
                 text = {
                     "Crea la carta de {C:planet}planeta",
                     "por la {C:attention}mano de póker{} jugada",
-                    "{C:inactive}(Must have room){}",
+                    "{C:inactive}(debe haber espacio){}",
                 },
                 unlock={
                     "Usa un total de {C:attention}#1#",
@@ -3799,7 +3799,7 @@ return {
                 text = {
                     "Crea una carta de {C:cry_code}código{}",
                     "cuando se juega y no puntúa",
-                    "{C:inactive}(Debe haver espacio)",
+                    "{C:inactive}(Debe haber espacio)",
                 },
             },
             cry_azure_seal = {
