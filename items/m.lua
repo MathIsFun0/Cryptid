@@ -1,8 +1,8 @@
 local jollysus = {
+	pools = {["M"] = true},
 	object_type = "Joker",
 	name = "cry-jollysus Joker",
 	key = "jollysus",
-	effect = "M Joker",
 	pos = { x = 3, y = 1 },
 	config = { extra = { spawn = true, active = localize("k_active_ex") } },
 	rarity = 1,
@@ -94,7 +94,7 @@ local bubblem = {
 	object_type = "Joker",
 	name = "cry-bubblem",
 	key = "bubblem",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	order = 251,
 	pos = { x = 0, y = 0 },
 	config = { extra = { spawn = false, type = "Three of a Kind" } },
@@ -169,7 +169,7 @@ local foodm = {
 	object_type = "Joker",
 	name = "cry-foodm",
 	key = "foodm",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	config = { extra = { mult = 40, rounds_remaining = 2, round_inc = 1 } },
 	pos = { x = 4, y = 2 },
 	rarity = 1,
@@ -274,7 +274,7 @@ local mstack = {
 	object_type = "Joker",
 	name = "cry-mstack",
 	key = "mstack",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	order = 253,
 	config = { extra = { sell = 0, sell_req = 3, retriggers = 1, check = false } },
 	dependencies = {
@@ -355,7 +355,7 @@ local mneon = {
 	object_type = "Joker",
 	name = "cry-mneon",
 	key = "mneon",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	pos = { x = 4, y = 2 },
 	order = 254,
 	config = { extra = { bonus = 1, money = 0 } },
@@ -407,7 +407,7 @@ local notebook = {
 	object_type = "Joker",
 	name = "cry-notebook",
 	key = "notebook",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	pos = { x = 1, y = 0 },
 	order = 255,
 	config = {
@@ -497,7 +497,7 @@ local bonk = {
 	object_type = "Joker",
 	name = "cry-bonk",
 	key = "bonk",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	order = 256,
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" } },
@@ -587,7 +587,7 @@ local loopy = {
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	config = { extra = { retrigger = 0 } },
 	pos = { x = 4, y = 1 },
 	order = 257,
@@ -649,7 +649,7 @@ local scrabble = {
 	object_type = "Joker",
 	name = "cry-scrabble",
 	key = "scrabble",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	config = { extra = { odds = 4 } },
 	pos = { x = 0, y = 2 },
 	order = 258,
@@ -700,7 +700,7 @@ local sacrifice = {
 		items = {"set_cry_m"},
 	},
 	key = "sacrifice",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	config = { extra = { jollies = 3, unc = 1, text = localize("k_active_ex"), spawn = true } },
 	pos = { x = 5, y = 2 },
 	order = 259,
@@ -773,7 +773,7 @@ local reverse = {
 		items = {"set_cry_m"},
 	},
 	config = { extra = { type = "Pair" } },
-    pools = {["Meme"] = true},
+    	pools = {["Meme"] = true,["M"] = true},
 	pos = { x = 0, y = 0 },
 	display_size = { w = 0.7 * 71, h = 0.7 * 95 },
 	rarity = 2,
@@ -854,7 +854,7 @@ local doodlem = {
 	name = "cry-doodlem",
 	key = "doodlem",
 	atlas = "atlasepic",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	dependencies = {
 		items = {
 			"set_cry_m",
@@ -918,7 +918,7 @@ local virgo = {
 	object_type = "Joker",
 	name = "cry-virgo",
 	key = "virgo",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	dependencies = {
 		items = {
 			"set_cry_m",
@@ -1004,7 +1004,7 @@ local smallestm = {
 		},
 	},
 	key = "smallestm",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	config = { extra = { type = "Pair" } },
 	pos = { x = 5, y = 0 },
 	rarity = "cry_epic",
@@ -1060,7 +1060,7 @@ local biggestm = {
 		},
 	},
 	rarity = "cry_epic",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	cost = 12,
 	order = 268,
 	blueprint_compat = true,
@@ -1228,7 +1228,7 @@ local macabre = {
 	object_type = "Joker",
 	name = "cry-Macabre Joker",
 	key = "macabre",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	order = 263,
 	pos = { x = 1, y = 2 },
 	config = { extra = {add = 1} },
@@ -1301,7 +1301,7 @@ local megg = {
 	object_type = "Joker",
 	name = "cry-megg",
 	key = "Megg",
-	effect = "M Joker",
+	pools = {["M"] = true},
 	blueprint_compat = false,
 	eternal_compat = false,
 	pos = { x = 0, y = 4 },
@@ -1369,7 +1369,7 @@ local longboi = {
 	rarity = 1,
 	cost = 5,
 	order = 261,
-	effect = "M Joker",
+	pools = {["M"] = true},
 	no_dbl = true,
 	blueprint_compat = true,
 	eternal_compat = false,
@@ -1467,15 +1467,6 @@ function get_m_retriggers(self, card, context)
 end
 return {
 	name = "M Jokers",
-	init = function()
-		for _, item in pairs(ret_items) do
-			if item.object_type == "Joker" and item.key ~= "mprime" then
-				if not item.pools then
-					item.pools = {}
-				end
-				item.pools["M"] = true
-			end
-		end
-	end,
+	init = function() end,
 	items = ret_items,
 }

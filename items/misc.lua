@@ -1,29 +1,8 @@
-local memepack_atlas = {
-	object_type = "Atlas",
-	key = "memepack",
-	path = "pack_cry.png",
-	px = 71,
-	py = 95,
-}
-local meme_object_type = {
-    object_type = "ObjectType",
-    key = "Meme",
-    default = "j_mr_bones",
-	cards = {},
-    inject = function(self)
-        SMODS.ObjectType.inject(self)
-        -- insert base game meme jokers
-        self:inject_card(G.P_CENTERS.j_mr_bones)
-        self:inject_card(G.P_CENTERS.j_obelisk)
-        self:inject_card(G.P_CENTERS.j_jolly)
-        self:inject_card(G.P_CENTERS.j_space)
-    end
-}
 local meme1 = {
 	object_type = "Booster",
 	key = "meme_1",
 	kind = "meme",
-	atlas = "memepack",
+	atlas = "pack",
 	pos = { x = 0, y = 1 },
 	order = 5,
 	config = { extra = 5, choose = 2 },
@@ -55,7 +34,7 @@ local meme2 = {
 	object_type = "Booster",
 	key = "meme_two",
 	kind = "meme",
-	atlas = "memepack",
+	atlas = "pack",
 	pos = { x = 1, y = 1 },
 	order = 6,
 	config = { extra = 5, choose = 2 },
@@ -87,7 +66,7 @@ local meme3 = {
 	object_type = "Booster",
 	key = "meme_three",
 	kind = "meme",
-	atlas = "memepack",
+	atlas = "pack",
 	pos = { x = 2, y = 1 },
 	order = 7,
 	config = { extra = 5, choose = 2 },
@@ -1385,8 +1364,6 @@ local absolute = {
 	end,
 }
 local miscitems = {
-	memepack_atlas,
-  	meme_object_type,
 	meme1,
 	meme2,
 	meme3,

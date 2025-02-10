@@ -219,34 +219,51 @@ SMODS.ConsumableType({
 	can_stack = false,
 	can_divide = false,
 })
-
 -- Pool used by Food Jokers
 SMODS.ObjectType({
-    key = "Food",
-    default = "j_gros_michel",
+	key = "Food",
+    	default = "j_reserved_parking",
 	cards = {},
-    inject = function(self)
-        SMODS.ObjectType.inject(self)
-        -- insert base game food jokers
-        self:inject_card(G.P_CENTERS.j_gros_michel)
-        self:inject_card(G.P_CENTERS.j_egg)
-        self:inject_card(G.P_CENTERS.j_ice_cream)
-        self:inject_card(G.P_CENTERS.j_cavendish)
-        self:inject_card(G.P_CENTERS.j_turtle_bean)
-        self:inject_card(G.P_CENTERS.j_diet_cola)
-        self:inject_card(G.P_CENTERS.j_popcorn)
-        self:inject_card(G.P_CENTERS.j_ramen)
-        self:inject_card(G.P_CENTERS.j_selzer)
-    end
+    	inject = function(self)
+        	SMODS.ObjectType.inject(self)
+        	-- insert base game food jokers
+        	self:inject_card(G.P_CENTERS.j_gros_michel)
+        	self:inject_card(G.P_CENTERS.j_egg)
+        	self:inject_card(G.P_CENTERS.j_ice_cream)
+        	self:inject_card(G.P_CENTERS.j_cavendish)
+        	self:inject_card(G.P_CENTERS.j_turtle_bean)
+        	self:inject_card(G.P_CENTERS.j_diet_cola)
+        	self:inject_card(G.P_CENTERS.j_popcorn)
+       		self:inject_card(G.P_CENTERS.j_ramen)
+        	self:inject_card(G.P_CENTERS.j_selzer)
+    	end
 })
-
 SMODS.ObjectType({
 	object_type = "ObjectType",
-    key = "Tier3",
-    default = "v_blank",
+    	key = "Meme",
+    	default = "j_mr_bones",
+	cards = {},
+    	inject = function(self)
+        	SMODS.ObjectType.inject(self)
+        	-- insert base game meme jokers
+        	self:inject_card(G.P_CENTERS.j_mr_bones)
+        	self:inject_card(G.P_CENTERS.j_obelisk)
+       		self:inject_card(G.P_CENTERS.j_jolly)
+        	self:inject_card(G.P_CENTERS.j_space)
+    	end
+})
+SMODS.ObjectType({
+	object_type = "ObjectType",
+    	key = "Tier3",
+    	default = "v_blank",
 	cards = {},
 })
-
+SMODS.ObjectType({
+	object_type = "ObjectType",
+    	key = "M",
+    	default = "j_jolly",
+	cards = {},
+})
 --Stickers and modifiers used by Challenges+Stakes
 SMODS.Atlas({
 	key = "sticker",
@@ -352,7 +369,8 @@ SMODS.Sound({
 		return next(find_joker("cry-Jimball"))
 			and Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.jimball_music
-			and 1.57e308
+			-- Lowering priority for edition Jimballs later
+			and 7
 	end,
 })
 SMODS.Sound({
@@ -385,7 +403,9 @@ SMODS.Sound({
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return Cryptid_config.Cryptid and Cryptid_config.Cryptid.exotic_music and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+		return Cryptid_config.Cryptid 
+			and Cryptid_config.Cryptid.exotic_music 
+			and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
 SMODS.Sound({

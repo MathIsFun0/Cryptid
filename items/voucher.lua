@@ -815,12 +815,6 @@ end
 --Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
 -- Uncursed this -Math
 
-local t3_object_type = {
-	object_type = "ObjectType",
-    key = "Tier3",
-    default = "v_blank",
-	cards = {},
-}
 function get_next_megavoucher_key(_from_tag)
     local _pool, _pool_key = get_current_pool('Tier3')
     if _from_tag then _pool_key = 'Voucher_fromtag' end
@@ -857,7 +851,6 @@ local voucheritems = {
 	stickyhand,
 	grapplinghook,
 	hyperspacetether,
-	t3_object_type,
 	command_prompt,
 	satellite_uplink,
 	quantum_computing,
