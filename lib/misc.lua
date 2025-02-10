@@ -515,7 +515,7 @@ function Blind:cry_calc_ante_gain()
 	end
 	return 1
 end
-function cry_get_enchanced_deck_info()
+function cry_get_enchanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
 	("e_"..safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition")) or "e_foil", 
@@ -529,7 +529,21 @@ function cry_get_enchanced_deck_info()
 	sticker = safe_get(SMODS.Stickers,sticker) and sticker or "eternal"
 	suit = safe_get(SMODS.Suits,suit) and suit or "Spades"
 	seal = safe_get(G.P_SEALS,seal) and seal or "Gold"
-	return edition, enhancement, sticker, suit, seal
+	local ret = {
+		edition = edition,
+		enhancement = enhancement,
+		sticker = sticker,
+		suit = suit,
+		seal = seal
+	}
+	for k, _ in pairs(ret) do
+		if G.GAME.modifiers["cry_force_"..k] and not G.GAME.viewed_back then
+			ret[k] = G.GAME.modifiers["cry_force_"..k]
+		elseif safe_get(deck,"config","cry_force_"..k) then
+			ret[k] = deck.config["cry_force_"..k]
+		end
+	end
+	return ret.edition, ret.enhancement, ret.sticker, ret.suit, ret.seal
 end
 function Cryptid.post_process(center)
 	if center.pools and center.pools.M then

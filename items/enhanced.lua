@@ -13,22 +13,13 @@ local e_deck = {
 	order = 17,
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
-		local aaa
-		-- Won't update to the correct value if it's switched while in a game and then viewing the new value while in that same game
-		-- Oh well
-		if G.GAME.modifiers.cry_force_edition and not G.GAME.viewed_back then 
-			aaa = G.GAME.modifiers.cry_force_edition
-		elseif self.config.cry_force_edition then
-			aaa = self.config.cry_force_edition
-		else
-			aaa = cry_get_enchanced_deck_info()
-		end
+		local aaa = cry_get_enchanced_deck_info(self)
 		return { vars = { localize{type = "name_text", set = "Edition", key = "e_" .. aaa} } }
 	end,
 	edeck_type = "edition",
 	config = {},
 	apply = function(self)
-		local aaa = cry_get_enchanced_deck_info()
+		local aaa = cry_get_enchanced_deck_info(self)
 		G.GAME.modifiers.cry_force_edition = aaa
 		--Ban Edition tags (They will never redeem)
 		for k, v in pairs(G.P_TAGS) do
@@ -46,6 +37,7 @@ local e_deck = {
 		}))
 	end
 }
+-- I set up some WIP tables for sprites here, will finish later
 local et_deck = {
 	object_type = "Back",
 	name = "cry-Enhancement Deck",
@@ -54,19 +46,15 @@ local et_deck = {
 	pos = { x = 5, y = 2},
 	edeck_type = "enhancement",
 	config = {},
+	sprites = {
+		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+	},
 	loc_vars = function(self, info_queue, center)
-		local aaa,bbb
-		if G.GAME.modifiers.cry_force_enhancement and not G.GAME.viewed_back then 
-			bbb = G.GAME.modifiers.cry_force_enhancement
-		elseif self.config.cry_force_enhancement then
-			bbb = self.config.cry_force_enhancement
-		else
-			aaa,bbb = cry_get_enchanced_deck_info()
-		end
+		local _, bbb = cry_get_enchanced_deck_info(self)
 		return { vars = { localize{type = "name_text", set = "Enhanced", key = bbb} } }
 	end,
 	apply = function(self)
-		local aaa,bbb = cry_get_enchanced_deck_info()
+		local aaa,bbb = cry_get_enchanced_deck_info(self)
 		G.GAME.modifiers.cry_force_enhancement = bbb
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -77,6 +65,10 @@ local et_deck = {
 			end,
 		}))
 	end,
+	draw = function(self, card)
+		-- Ensure atlas is up to date
+
+	end
 }
 local sk_deck = {
 	object_type = "Back",
@@ -87,19 +79,12 @@ local sk_deck = {
 	edeck_type = "sticker",
 	config = {},
 	loc_vars = function(self, info_queue, center)
-		local aaa,bbb,ccc
-		if G.GAME.modifiers.cry_force_sticker and not G.GAME.viewed_back then 
-			ccc = G.GAME.modifiers.cry_force_sticker
-		elseif self.config.cry_force_sticker then
-			ccc = self.config.cry_force_sticker
-		else
-			aaa,bbb,ccc = cry_get_enchanced_deck_info()
-		end
+		local _, _, ccc = cry_get_enchanced_deck_info(self)
 		if ccc == "pinned" then ccc = "pinned_left" end
 		return { vars = { localize{type = "name_text", set = "Other", key = ccc} } }
 	end,
 	apply = function(self)
-		local aaa,bbb,ccc = cry_get_enchanced_deck_info()
+		local aaa,bbb,ccc = cry_get_enchanced_deck_info(self)
 		G.GAME.modifiers.cry_force_sticker = ccc
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -129,18 +114,11 @@ local st_deck = {
 	pos = { x = 5, y = 2},
 	edeck_type = "suit",
 	loc_vars = function(self, info_queue, center)
-		local aaa,bbb,ccc,ddd
-		if G.GAME.modifiers.cry_force_suit and not G.GAME.viewed_back then 
-			ddd = G.GAME.modifiers.cry_force_suit
-		elseif self.config.cry_force_suit then
-			ddd = self.config.cry_force_suit
-		else
-			aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info()
-		end
+		local _, _, _, ddd = cry_get_enchanced_deck_info(self)
 		return { vars = { localize(ddd, 'suits_plural') } }
 	end,
 	apply = function(self)
-		local aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info()
+		local aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info(self)
 		if ddd == "Spades" then
 			G.GAME.bosses_used["bl_goad"] = 1e308
 		elseif ddd == "Hearts" then
@@ -170,18 +148,11 @@ local sl_deck = {
 	config = {},
 	edeck_type = "seal",
 	loc_vars = function(self, info_queue, center)
-		local aaa,bbb,ccc,ddd,eee
-		if G.GAME.modifiers.cry_force_seal and not G.GAME.viewed_back then 
-			eee = G.GAME.modifiers.cry_force_seal
-		elseif self.config.cry_force_seal then
-			eee = self.config.cry_force_seal
-		else
-			aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info()
-		end
+		local _, _, _, _, eee = cry_get_enchanced_deck_info(self)
 		return { vars = { localize{type = "name_text", set = "Other", key = eee:lower().."_seal"} } }
 	end,
 	apply = function(self)
-		local aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info()
+		local aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info(self)
 		G.GAME.modifiers.cry_force_seal = eee
 		G.E_MANAGER:add_event(Event({
 			func = function()

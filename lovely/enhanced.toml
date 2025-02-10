@@ -41,7 +41,7 @@ if currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_for
 end
 --todo override for current run
 if currentBack.effect.center.edeck_type then
-    local edition, enhancement, sticker, suit, seal = cry_get_enchanced_deck_info()
+    local edition, enhancement, sticker, suit, seal = cry_get_enchanced_deck_info(currentBack)
     if currentBack.effect.center.edeck_type == 'edition' then
         self.children.back:draw_shader(edition, nil, self.ARGS.send_to_shader, true)
         if edition == 'negative' then
