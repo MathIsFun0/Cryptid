@@ -1070,6 +1070,7 @@ local double_sided = {
 	weight = 10,
 	extra_cost = 0,
 	in_shop = true,
+	no_edeck = true,
 	sound = {
 		sound = "cry_e_double_sided",
 		per = 1,

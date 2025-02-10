@@ -39,6 +39,34 @@ if currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_for
     self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
     self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
 end
+--todo override for current run
+if currentBack.effect.center.edeck_type then
+    local edition, enhancement, sticker, suit, seal = cry_get_enchanced_deck_info()
+    if currentBack.effect.center.edeck_type == 'edition' then
+        self.children.back:draw_shader(edition, nil, self.ARGS.send_to_shader, true)
+        if edition == 'negative' then
+            self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
+            self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
+        end
+    end
+    if currentBack.effect.center.edeck_type == 'seal' then
+        G.shared_seals[seal]:draw_shader('dissolve', nil, nil, true, self.children.center)
+        if seal == 'Gold' then G.shared_seals[seal]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center) end
+    end
+    if currentBack.effect.center.edeck_type == 'sticker' then
+        for k, v in pairs(SMODS.Stickers) do
+            if sticker == v.key then
+                if v and v.draw and type(v.draw) == 'function' then
+                    v:draw(self)
+                else
+                    G.shared_stickers[v.key].role.draw_major = self
+                    G.shared_stickers[v.key]:draw_shader('dissolve', nil, nil, true, self.children.center)
+                    G.shared_stickers[v.key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, true, self.children.center)
+                end
+            end
+        end
+    end
+end
 '''
 match_indent = true
 

@@ -1,6 +1,3 @@
--- Enhanced has to be loaded near-last because of Jolly edition
--- Not localized for now - will be rewritten later
-
 local atlasenhanced = {
 	object_type = "Atlas",
 	key = "atlasenhanced",
@@ -9,256 +6,193 @@ local atlasenhanced = {
 	py = 95,
 }
 
-packs_to_add = { atlasenhanced }
-
-local typed_decks = {
-	--	{'mod_prefix',	'Type',			'Name of Deck',				'Name of Object',		'Object Key',		'Shader Name',		'Atlas',			'posX',	'posY',	'Flavour Text',           'Add Price Increase'},
-	--	 eg. 'cry_' for	Edition,		Leave nil to construct								Usually matches		Leave nil to use	All three of these are used			Small subtext underneath  If true, editions
-	--   Cryptid cards	Enhancement,	automatically from									name				object key as name	for custom deck backs				main text                 affect the price of
-	--	 Leave empty	Seal,           object name											Used instead for	Should be nil for	Leave nil to use default                                      cards in shop
-	--	 for vanilla	Sticker,															banned boss blind	non-shader objects	fallback
-	--   				Suit                                   								on Suit decks
-	--																						For stickers ONLY,
-	--																						prefix must be included
-	--																						if you use one
-	--
-	-- Vanilla
-	{ "", "Enhancement", "The Hierophant's Deck", "Bonus", "bonus", nil, "atlasenhanced", 3, 3, "" },
-	{ "", "Enhancement", "The Empress' Deck", "Mult", "mult", nil, "atlasenhanced", 2, 3, "" },
-	{ "", "Enhancement", "The Lovers' Deck", "Wild", "wild", nil, "atlasenhanced", 5, 3, "" },
-	{ "", "Enhancement", "Deck of Justice", "Glass", "glass", nil, "atlasenhanced", 4, 3, "" },
-	{ "", "Enhancement", "The Chariot's Deck", "Steel", "steel", nil, nil, 6, 1, "" },
-	{ "", "Enhancement", "Stoner's Deck", "Stone", "stone", nil, nil, 5, 0, "" },
-	{ "", "Enhancement", "The Devil's Deck", "Gold", "gold", nil, nil, 6, 0, "" },
-	{ "", "Enhancement", "The Magician's Deck", "Lucky", "lucky", nil, nil, 4, 1, "" },
-
-	{ "", "Edition", "Deck of Chips", "Foil", "foil", nil, nil, 0, 2, "" },
-	{ "", "Edition", "Deck of Mult", "Holographic", "holo", nil, nil, 0, 0, "" },
-	{ "", "Edition", "Deck of XMult", "Polychrome", "polychrome", nil, nil, 5, 2, "" },
-	{ "", "Edition", nil, "Negative", "negative", nil, nil, 5, 2, "" },
-
-	{ "", "Seal", "Talisman Deck", "Gold", "Gold", nil, nil, 1, 2, "" },
-	{ "", "Seal", "Déja Vu Deck", "Red", "Red", nil, nil, 0, 0, "" },
-	{ "", "Seal", "Trance Deck", "Blue", "Blue", nil, "atlasenhanced", 2, 2, "" },
-	{ "", "Seal", "Medium Deck", "Purple", "Purple", nil, "atlasenhanced", 1, 2, "" },
-
-	{ "", "Sticker", nil, "Eternal", "eternal", nil, "atlasenhanced", 5, 2, "" },
-	{ "", "Sticker", nil, "Perishable", "perishable", nil, "atlasenhanced", 0, 3, "" },
-	{ "", "Sticker", nil, "Rental", "rental", nil, "atlasenhanced", 1, 3, "" },
-	{ "", "Sticker", nil, "Pinned", "pinned", nil, "atlasenhanced", 0, 5, "" },
-
-	{ "", "Suit", "Deck of the Stars", "Diamonds", "window", nil, "atlasenhanced", 2, 1, "" },
-	{ "", "Suit", "Deck of the Sun", "Hearts", "head", nil, "atlasenhanced", 3, 1, "" },
-	{ "", "Suit", "Deck of the World", "Spades", "goad", nil, "atlasenhanced", 4, 1, "" },
-	{ "", "Suit", "Deck of the Moon", "Clubs", "club", nil, "atlasenhanced", 5, 1, "" },
-
-	-- Cryptid
-	-- todo: work with mod config better here
-
-	{ "cry", "Enhancement", "The Eclipse's Deck", "Echo", "echo", nil, "atlasenhanced", 1, 5, "" },
-	{ "cry", "Enhancement", "The Seraph's Deck", "Light", "light", nil, "cry_misc", 0, 3, "" },
-
-	{ "cry", "Edition", nil, "Fragile", "glass", nil, nil, 5, 2, "" },
-	{ "cry", "Edition", nil, "Golden", "gold", nil, nil, 5, 2, "" },
-	{ "cry", "Edition", nil, "Noisy", "noisy", nil, nil, 5, 2, "" },
-	{ "cry", "Edition", nil, "Astral", "astral", nil, nil, 5, 2, "" },
-	{ "cry", "Edition", nil, "Blurred", "blur", nil, nil, 0, 0, "" },
-	{ "cry", "Edition", nil, "Mosaic", "mosaic", nil, nil, 5, 2, "" },
-	{ "cry", "Edition", nil, "Oversaturated", "oversat", nil, nil, 5, 2, "" },
-	{
-		"cry",
-		"Edition",
-		nil,
-		"Glitched",
-		"glitched",
-		nil,
-		nil,
-		5,
-		2,
-		"Wait, isn't this just Misprint Deck?",
-	},
-
-	{ "cry", "Seal", "Typhoon Deck", "Azure", "azure", nil, nil, 0, 2, "" },
-
-	{ "cry", "Sticker", nil, "Banana", "banana", nil, "atlasenhanced", 5, 4, "" },
+local e_deck = {
+	object_type = "Back",
+	name = "cry-Edition Deck",
+	key = "e_deck",
+	order = 17,
+	pos = { x = 5, y = 2 },
+	loc_vars = function(self, info_queue, center)
+		local aaa
+		-- Won't update to the correct value if it's switched while in a game and then viewing the new value while in that same game
+		-- Oh well
+		if G.GAME.modifiers.cry_force_edition and not G.GAME.viewed_back then 
+			aaa = G.GAME.modifiers.cry_force_edition
+		elseif self.config.cry_force_edition then
+			aaa = self.config.cry_force_edition
+		else
+			aaa = cry_get_enchanced_deck_info()
+		end
+		return { vars = { localize{type = "name_text", set = "Edition", key = "e_" .. aaa} } }
+	end,
+	edeck_type = "edition",
+	config = {},
+	apply = function(self)
+		local aaa = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_edition = aaa
+		--Ban Edition tags (They will never redeem)
+		for k, v in pairs(G.P_TAGS) do
+			if v.config and v.config.edition then
+				G.GAME.banned_keys[k] = true
+			end
+		end
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:set_edition(aaa, true, true)
+				end
+				return true
+			end,
+		}))
+	end
 }
-
-if Cryptid.enabled["M Jokers"] then -- Crashes the game if M jokers are disabled if we don't add this separately
-	table.insert(typed_decks, 31, { "cry", "Edition", "Meck", "Jolly", "m", nil, nil, 5, 2, "" })
-end
-
-for i = 1, #typed_decks do
-	local deck = typed_decks[i]
-
-	local shader = nil
-	if deck[6] then
-		shader = deck[1] .. "_" .. deck[6]
-		if deck.no_prefix then
-			shader = deck[6]
+local et_deck = {
+	object_type = "Back",
+	name = "cry-Enhancement Deck",
+	key = "et_deck",
+	order = 18,
+	pos = { x = 5, y = 2},
+	edeck_type = "enhancement",
+	config = {},
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb
+		if G.GAME.modifiers.cry_force_enhancement and not G.GAME.viewed_back then 
+			bbb = G.GAME.modifiers.cry_force_enhancement
+		elseif self.config.cry_force_enhancement then
+			bbb = self.config.cry_force_enhancement
+		else
+			aaa,bbb = cry_get_enchanced_deck_info()
 		end
-	end
-
-	local deck_name = deck[3]
-	if not deck_name then
-		deck_name = deck[4] .. " Deck"
-	end
-
-	local deck_internal_name = ""
-	if deck[1] == "cry" then -- don't register eg. 'cry-cry-Typhoon Deck'
-		deck_internal_name = "cry-" .. deck_name
-	else -- eg. 'cry-jen-Blood Deck'
-		deck_internal_name = "cry-" .. deck[1] .. "-" .. deck_name
-	end
-
-	local deck_key = ""
-	if deck[1] == "cry" then
-		deck_key = "cry" .. (deck[5] or deck[4]) .. "_deck"
-	else
-		deck_key = "cry" .. deck[1] .. "-" .. (deck[5] or deck[4]) .. "_deck"
-	end
-
-	local object_key = ""
-	if deck[1] == "" or deck.no_prefix then -- vanilla doesn't have a prefix, don't add the _
-		object_key = deck[5] or deck[4]
-	else
-		object_key = deck[1] .. "_" .. (deck[5] or deck[4])
-	end
-
-	local suit_key = ""
-	if deck[1] == "" or deck.no_prefix then
-		suit_key = deck[4]
-	else
-		suit_key = deck[1] .. "_" .. deck[4]
-	end
-
-	if deck[2] == "Edition" then
-		local obj = {
-			object_type = "Back",
-			name = deck_internal_name,
-			key = deck_key,
-			config = { cry_force_edition = object_key, cry_force_edition_shader = shader },
-			pos = { x = deck[8], y = deck[9] },
-			loc_txt = {
-				name = deck_name,
-				text = {
-					"All cards are {C:dark_edition,T:" .. object_key .. "}" .. deck[4] .. " Cards{}",
-					"Cards cannot change editions",
-					"{s:0.8,C:inactive}" .. deck[10],
-				},
-			},
-		}
-		if deck[7] then
-			obj.atlas = deck[7]
-			if string.find(deck[7], "_") then
-				obj.prefix_config = { atlas = false }
-			end
+		return { vars = { localize{type = "name_text", set = "Enhanced", key = bbb} } }
+	end,
+	apply = function(self)
+		local aaa,bbb = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_enhancement = bbb
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:set_ability(G.P_CENTERS[bbb])
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local sk_deck = {
+	object_type = "Back",
+	name = "cry-Sticker Deck",
+	key = "sk_deck",
+	order = 19,
+	pos = { x = 5, y = 2},
+	edeck_type = "sticker",
+	config = {},
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb,ccc
+		if G.GAME.modifiers.cry_force_sticker and not G.GAME.viewed_back then 
+			ccc = G.GAME.modifiers.cry_force_sticker
+		elseif self.config.cry_force_sticker then
+			ccc = self.config.cry_force_sticker
+		else
+			aaa,bbb,ccc = cry_get_enchanced_deck_info()
 		end
-		if not deck[11] then
-			obj.config.cry_no_edition_price = true
+		if ccc == "pinned" then ccc = "pinned_left" end
+		return { vars = { localize{type = "name_text", set = "Other", key = ccc} } }
+	end,
+	apply = function(self)
+		local aaa,bbb,ccc = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_sticker = ccc
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c].config.center.eternal_compat = true
+					G.playing_cards[c].config.center.perishable_compat = true
+					if
+						SMODS.Stickers[ccc]
+						and SMODS.Stickers[ccc].apply
+					then
+						SMODS.Stickers[ccc]:apply(G.playing_cards[c], true)
+					else
+						G.playing_cards[c]["set_" .. ccc](G.playing_cards[c], true)
+					end
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local st_deck = {
+	object_type = "Back",
+	name = "cry-Suit Deck",
+	key = "st_deck",
+	config = {},
+	order = 20,
+	pos = { x = 5, y = 2},
+	edeck_type = "suit",
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb,ccc,ddd
+		if G.GAME.modifiers.cry_force_suit and not G.GAME.viewed_back then 
+			ddd = G.GAME.modifiers.cry_force_suit
+		elseif self.config.cry_force_suit then
+			ddd = self.config.cry_force_suit
+		else
+			aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info()
 		end
-		packs_to_add[#packs_to_add + 1] = obj
-	elseif deck[2] == "Enhancement" then
-		local obj = {
-			object_type = "Back",
-			name = deck_internal_name,
-			key = deck_key,
-			config = { cry_force_enhancement = "m_" .. object_key },
-			pos = { x = deck[8], y = deck[9] },
-			loc_txt = {
-				name = deck_name,
-				text = {
-					"All {C:attention}playing cards{}",
-					"are {C:attention,T:m_" .. object_key .. "}" .. deck[4] .. " Cards{}",
-					"Cards cannot change enhancements",
-					"{s:0.8,C:inactive}" .. deck[10],
-				},
-			},
-		}
-
-		if deck[7] then
-			obj.atlas = deck[7]
-			if string.find(deck[7], "_") then
-				obj.prefix_config = { atlas = false }
-			end
+		return { vars = { localize(ddd, 'suits_plural') } }
+	end,
+	apply = function(self)
+		local aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info()
+		if ddd == "Spades" then
+			G.GAME.bosses_used["bl_goad"] = 1e308
+		elseif ddd == "Hearts" then
+			G.GAME.bosses_used["bl_head"] = 1e308
+		elseif ddd == "Clubs" then
+			G.GAME.bosses_used["bl_club"] = 1e308
+		elseif ddd == "Diamonds" then
+			G.GAME.bosses_used["bl_window"] = 1e308
 		end
-		packs_to_add[#packs_to_add + 1] = obj
-	elseif deck[2] == "Seal" then
-		local obj = {
-			object_type = "Back",
-			name = deck_internal_name,
-			key = deck_key,
-			config = { cry_force_seal = object_key },
-			pos = { x = deck[8], y = deck[9] },
-			loc_txt = {
-				name = deck_name,
-				text = {
-					"All cards have a {C:dark_edition}" .. deck[4] .. " Seal{}",
-					"Cards cannot change seals",
-					"{s:0.8,C:inactive}" .. deck[10],
-				},
-			},
-		}
-
-		if deck[7] then
-			obj.atlas = deck[7]
-			if string.find(deck[7], "_") then
-				obj.prefix_config = { atlas = false }
-			end
+		G.GAME.modifiers.cry_force_suit = ddd
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:change_suit(ddd)
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local sl_deck = {
+	object_type = "Back",
+	name = "cry-Seal Deck",
+	key = "sl_deck",
+	order = 21,
+	pos = { x = 5, y = 2},
+	config = {},
+	edeck_type = "seal",
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb,ccc,ddd,eee
+		if G.GAME.modifiers.cry_force_seal and not G.GAME.viewed_back then 
+			eee = G.GAME.modifiers.cry_force_seal
+		elseif self.config.cry_force_seal then
+			eee = self.config.cry_force_seal
+		else
+			aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info()
 		end
-		packs_to_add[#packs_to_add + 1] = obj
-	elseif deck[2] == "Sticker" then
-		local obj = {
-			object_type = "Back",
-			name = deck_internal_name,
-			key = deck_key,
-			config = { cry_force_sticker = deck[5] }, -- stickers DON'T use object_key for SOME reason
-			pos = { x = deck[8], y = deck[9] },
-			loc_txt = {
-				name = deck_name,
-				text = {
-					"All cards are {C:attention}" .. deck[4] .. "{}",
-					"{s:0.8,C:inactive}" .. deck[10],
-				},
-			},
-		}
-
-		if deck[7] then
-			obj.atlas = deck[7]
-			if string.find(deck[7], "_") then
-				obj.prefix_config = { atlas = false }
-			end
-		end
-		packs_to_add[#packs_to_add + 1] = obj
-	elseif deck[2] == "Suit" then
-		local obj = {
-			object_type = "Back",
-			name = deck_internal_name,
-			key = deck_key,
-			config = { cry_force_suit = suit_key, cry_boss_blocked = deck[5] and { "bl_" .. object_key } },
-			pos = { x = deck[8], y = deck[9] },
-			loc_txt = {
-				name = deck_name,
-				text = {
-					"All playing cards are {C:dark_edition}" .. deck[4] .. "{}",
-					"and cannot change suits",
-					deck[10] or "{s:0}",
-					deck[5] and "{C:attention}The " .. string.upper(string.sub(deck[5], 1, 1)) .. string.sub(
-						deck[5],
-						2
-					) .. "{} cannot appear", -- UGLY hack
-				},
-			},
-		}
-
-		if deck[7] then
-			obj.atlas = deck[7]
-			if string.find(deck[7], "_") then
-				obj.prefix_config = { atlas = false }
-			end
-		end
-		packs_to_add[#packs_to_add + 1] = obj
-	end
-end
+		return { vars = { localize{type = "name_text", set = "Other", key = eee:lower().."_seal"} } }
+	end,
+	apply = function(self)
+		local aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_seal = eee
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:set_seal(eee, true)
+				end
+				return true
+			end,
+		}))
+	end,
+}
 
 return {
 	name = "Enhanced Decks",
@@ -349,7 +283,75 @@ return {
 				sc(self)
 			end
 		end
+		local ccl = Card.click
+		function Card:click()
+			ccl(self)
+			if G.STAGE == G.STAGES.MAIN_MENU and safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") then
+				if self.edeck_select then
+					G.PROFILES[G.SETTINGS.profile]["cry_edeck_"..G.GAME.viewed_back.effect.center.edeck_type] = self.edeck_select
+				end
+				cry_enhancement_config_UI(G.GAME.viewed_back.effect.center)
+			end
+		end
+		function cry_enhancement_config_UI(center)
+			G.SETTINGS.paused = true
+			G.your_collection = {}
+			G.your_collection[1] = CardArea(
+				G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
+				G.ROOM.T.h,
+				5.3 * G.CARD_W,
+				1.03 * G.CARD_H,
+				{ card_limit = 5, type = "title", highlight_limit = 0, collection = true }
+			)
+			local deck_tables = {
+				n = G.UIT.R,
+				config = { align = "cm", padding = 0, no_fill = true },
+				nodes = {
+					{ n = G.UIT.O, config = { object = G.your_collection[1] } },
+				},
+			}
+
+			local pool_table = {
+				edition = G.P_CENTER_POOLS.Edition,
+				enhancement = G.P_CENTER_POOLS.Enhanced,
+				sticker = SMODS.Stickers,
+				suit = SMODS.Suits,
+				seal = G.P_SEALS
+			}
+			local editions = {}
+			for _, v in pairs(pool_table[center.edeck_type]) do
+				if not v.no_edeck then
+					editions[#editions + 1] = (center.edeck_type == "edition" and v.key:sub(3)) or v.key
+				end
+			end
+		
+			for i = 1, #editions do
+				local _center = cry_deep_copy(center)
+				_center.config["cry_force_"..center.edeck_type] = editions[i]
+				local card = create_generic_card(_center)
+				card.edeck_select = editions[i]
+				G.your_collection[1]:emplace(card)
+			end
+		
+			INIT_COLLECTION_CARD_ALERTS()
+		
+			local t = create_UIBox_generic_options({
+				--infotip = localize("cry_gameset_explanation"),
+				back_func = "setup_run",
+				snap_back = true,
+				contents = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm", minw = 2.5, padding = 0.1, r = 0.1, colour = G.C.BLACK, emboss = 0.05 },
+						nodes = { deck_tables },
+					},
+				},
+			})
+			G.FUNCS.overlay_menu({
+				definition = t,
+			})
+		end
 	end,
 	order = 1000000,
-	items = {},
+	items = {e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasenhanced},
 }

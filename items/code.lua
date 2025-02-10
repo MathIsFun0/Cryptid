@@ -539,6 +539,7 @@ local hooked = {
 	object_type = "Sticker",
 	atlas = "sticker",
 	pos = { x = 5, y = 3 },
+	no_edeck = true,
 	loc_vars = function(self, info_queue, card)
 		local var
 		if not card or not card.hook_id then
