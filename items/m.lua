@@ -1423,12 +1423,6 @@ local longboi = {
 		}
 	},
 }
-local m_object_type = {
-	object_type = "ObjectType",
-    key = "M",
-    default = "j_cry_m",
-	cards = {},
-}
 local ret_items = {
 	bubblem,
 	foodm,
@@ -1447,7 +1441,6 @@ local ret_items = {
 	smallestm,
 	biggestm,
 	mprime,
-	m_object_type,
 }
 --retriggering system for M Vouchers
 function get_m_retriggers(self, card, context)
