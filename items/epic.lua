@@ -669,7 +669,7 @@ local m = {
 			-- Note: This isn't in the M Joker content set due to being added separately
 		},
 	},
-	pools = { ["Meme"] = true },
+	pools = { ["Meme"] = true,["M"] = true },
 	rarity = "cry_epic",
 	order = 1,
 	cost = 13,
@@ -709,7 +709,6 @@ local m = {
 			return nil, true
 		end
 	end,
-	pools = { ["M"] = true },
 	cry_credits = {
 		idea = {
 			"Jevonn",
