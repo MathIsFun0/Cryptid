@@ -4,7 +4,11 @@ local cat = {
 	pos = { x = 0, y = 2 },
 	key = "cat",
 	name = "cry-Cat Tag",
+	config = { level = 1 },
 	order = 12,
+	loc_vars = function(self, info_queue, tag)
+		return { vars = {tag and tag.ability.level or self.config.level} }
+	end,
 }
 local epic_tag = {
 	object_type = "Tag",

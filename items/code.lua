@@ -1300,6 +1300,28 @@ local rework_tag = {
 	config = { type = "store_joker_create" },
 	key = "rework",
 	ability = { rework_edition = nil, rework_key = nil },
+	loc_vars = function(self, info_queue, tag)
+		local function p(w)
+			r = ''
+			local vowels = {'a', 'e', 'i', 'o', 'u'}
+			for i, v in ipairs(vowels) do
+				if string.sub(string.lower(w),1,1) == v then
+					r = 'n'
+					break
+				end
+			end
+			return r
+		end
+		local ed = safe_get(tag, 'ability', 'rework_edition') and localize{type = "name_text", set = "Edition", key = tag.ability.rework_edition} or "["..string.lower(localize("k_edition")).."]"
+		return {
+			vars = {
+				ed,
+				safe_get(tag, 'ability', 'rework_key') and localize{type = "name_text", set = "Joker", key = tag.ability.rework_key}
+				or "["..string.lower(localize("k_joker")).."]",
+				string.sub(ed,1,1) ~= "[" and p(ed) or 'n',
+			}
+		}
+	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))

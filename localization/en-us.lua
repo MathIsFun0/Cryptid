@@ -3292,7 +3292,7 @@ return {
             tag_cry_rework = {
                 name = "Rework Tag",
                 text = {
-                    "Shop has a(n)",
+                    "Shop has a#3#",
                     "{C:dark_edition}#1# {C:cry_code}#2#",
                 },
             },
