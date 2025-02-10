@@ -262,6 +262,7 @@ local potion = {
 	key = "potion",
 	name = "cry-Potion",
 	pos = { x = 0, y = 1 },
+	pixel_size = { w = 35/69 * 71, h = 35/69 * 71 },
 	config = { random_event = 2 },
 	cost = 4,
 	no_doe = true,
