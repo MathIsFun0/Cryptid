@@ -1894,37 +1894,23 @@ local maze = {
 	order = 61,
 	immutable = true,
 	atlas = "atlastwo",
-	calculate = function(self, card, context)
-		if context.after and not context.blueprint and not context.retrigger_joker then
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.3,
-				blockable = false,
-				func = function()
-					G.GAME.current_round.hands_played = 0
-					G.GAME.current_round.discards_used = 0
-					return true
-				end,
-			}))
-			return true
-		end
-		if context.discard and not context.blueprint and not context.retrigger_joker then
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.3,
-				blockable = false,
-				func = function()
-					G.GAME.current_round.hands_played = 0
-					G.GAME.current_round.discards_used = 0
-					return true
-				end,
-			}))
-			return true
+	update = function(self, card, dt)
+		if G.STAGE == G.STAGES.RUN then
+			if G.GAME.current_round.hands_played > 0 then
+				G.GAME.current_round.hands_played = 0
+			end
+			if G.GAME.current_round.discards_used > 0 then
+				G.GAME.current_round.discards_used = 0
+			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.GAME.current_round.hands_played = 0
-		G.GAME.current_round.discards_used = 0
+		if G.GAME.current_round.hands_played > 0 then
+			G.GAME.current_round.hands_played = 0
+		end
+		if G.GAME.current_round.discards_used > 0 then
+			G.GAME.current_round.discards_used = 0
+		end
 	end,
 	cry_credits = {
 		idea = {
