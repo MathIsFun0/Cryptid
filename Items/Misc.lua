@@ -1020,9 +1020,9 @@ local opalized = {
 	key = "opalized",
 	atlas = "cry_misc",
 	pos = {x = 1, y = 3 }, 
-	config = {extra = {levelOdds = 4}},
+	config = {extra = {levelOdds = 3}},
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.extra.levelOdds or 4} }
+		return { vars = { card and card.ability.extra.levelOdds or 3} }
 	end,
 	calculate = function(self,card,context)
 		if context.cardarea == G.play and context.scoring_hand and not context.repetition then
@@ -1060,9 +1060,9 @@ local dreaming = {
 	name = "cry-dreaming",
 	key = "dreaming",
 	order = 2,
-	pos = { x = 1, y = 2 },
+	pos = { x = 5, y = 3 },
 	config = { mod_conv = "m_cry_opalized", max_highlighted = 2 },
-	atlas = "placeholders",
+	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_opalized
 
