@@ -646,9 +646,6 @@ if not Jen then
 				end
 			end
 		end
-		if G.GAME.viewed_back and self.config.center.key == "c_base" then
-			cry_gameset_config_UI(G.GAME.viewed_back.effect.center)
-		end
 	end
 end
 
@@ -727,7 +724,7 @@ function cry_gameset_config_UI(center)
 
 	local t = create_UIBox_generic_options({
 		infotip = localize("cry_gameset_explanation"),
-		back_func = "openModUI_Cryptid",
+		back_func = G.cry_prev_collec,
 		snap_back = true,
 		contents = {
 			{
@@ -741,6 +738,39 @@ function cry_gameset_config_UI(center)
 		definition = t,
 	})
 end
+
+local collection_shtuff = {
+	"blinds",
+	"jokers",
+	
+	-- consumables don't work
+	-- idk what smods is doing with consumable collection stuff, anyone know what the buttons are doing?
+	"tarots",
+	"planets",
+	"spectrals",
+	"codes",
+	
+	"vouchers",
+	"enhancements",
+	"decks",
+	"editions",
+	"tags",
+	"seals",
+	"boosters",
+	"stickers",
+}
+
+-- sure this is cool and all but it doesn't keep page yet so it's pretty useless
+-- would need to regex patch that
+
+for i, v in ipairs(collection_shtuff) do
+	local ref = G.FUNCS['your_collection_'..v]
+	G.FUNCS['your_collection_'..v] = function(e)
+		G.cry_prev_collec = 'your_collection_'..v
+		ref(e)
+	end
+end
+G.cry_prev_collec = 'your_collection_jokers'
 
 -- change the rarity sticker's color for gameset selection on an item
 local gtc = get_type_colour
