@@ -61,6 +61,13 @@ return {
                     "{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
                 },
             },
+	    b_cry_e_deck = {
+                name = "Edition Deck",
+                text = {
+                    "All cards are {C:dark_edition}#1#{}",
+                    "Cards cannot change editions",
+                },
+            },
             b_cry_encoded = {
                 name = "Encoded Deck",
                 text = {
@@ -77,6 +84,13 @@ return {
                     "appearing in shops,",
                     "start run with",
                     "{C:attention,T:v_overstock_plus}Overstock Plus",
+                },
+            },
+	    b_cry_et_deck = {
+                name = "Enhancement Deck",
+                text = {
+                    "All {C:attention}playing cards{}",
+                    "are {C:attention}#1#{}(s)",
                 },
             },
             b_cry_glowing = {
@@ -111,6 +125,19 @@ return {
                     "gain its {C:attention}extra tiers",
                 },
             },
+	    b_cry_sk_deck = {
+                name = "Sticker Deck",
+                text = {
+                    "All cards are {C:attention}#1#{}",
+                },
+            },
+	    b_cry_sl_deck = {
+                name = "Seal Deck",
+                text = {
+		    "All playing cards have a {C:dark_edition}#1#{}",
+		    "Cards cannot change seals",
+		},
+            },
             b_cry_spooky = {
                 name = "Spooky Deck",
                 text = {
@@ -118,6 +145,13 @@ return {
                     "After each {C:attention}Ante{}, create a",
                     "{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
                 }
+            },
+	    b_cry_st_deck = {
+                name = "Suit Deck",
+                text = {
+		    "All playing cards are {C:dark_edition}#1#",
+		    "and cannot change suits",
+		},
             },
             b_cry_very_fair = {
                 name = "Very Fair Deck",
@@ -4253,6 +4287,11 @@ return {
             cry_code_create_previous = "CREATE PREVIOUS",
             cry_code_execute = "EXECUTE",
             cry_code_cancel = "CANCEL",
+	    cry_deck_one = "Edition Deck Edition",
+	    cry_deck_two = "Enhancement Deck Enhancement",
+   	    cry_deck_three = "Sticker Deck Sticker",
+   	    cry_deck_four = "Suit Deck Suit",
+   	    cry_deck_five = "Seal Deck Seal",
 
             b_flip = "FLIP",
             b_merge = "MERGE",

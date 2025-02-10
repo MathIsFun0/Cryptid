@@ -11,7 +11,6 @@ local very_fair = {
 	end,
 }
 very_fair_quip = {}
-
 local equilibrium = {
 	object_type = "Back",
 	name = "cry-Equilibrium",
@@ -317,7 +316,183 @@ local antimatter = {
 	end,
 	atlas = "atlasdeck",
 }
-
+local e_deck = {
+	object_type = "Back",
+	name = "cry-Edition Deck",
+	key = "e_deck",
+	order = 17,
+	pos = { x = 1, y = 0 },
+	atlas = "atlasdeck",
+	loc_vars = function(self, info_queue, center)
+		local aaa
+		-- Won't update to the correct value if it's switched while in a game and then viewing the new value while in that same game
+		-- Oh well
+		if G.GAME.modifiers.cry_force_edition and not G.GAME.viewed_back then 
+			aaa = G.GAME.modifiers.cry_force_edition
+		else
+			aaa = cry_get_enchanced_deck_info()
+		end
+		return { vars = { localize{type = "name_text", set = "Edition", key = "e_" .. aaa} } }
+	end,
+	apply = function(self)
+		local aaa = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_edition = aaa
+		--Ban Edition tags (They will never redeem)
+		for k, v in pairs(G.P_TAGS) do
+			if v.config and v.config.edition then
+				G.GAME.banned_keys[k] = true
+			end
+		end
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:set_edition(aaa, true, true)
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local et_deck = {
+	object_type = "Back",
+	name = "cry-Enhancement Deck",
+	key = "et_deck",
+	order = 18,
+	pos = { x = 1, y = 0 },
+	atlas = "atlasdeck",
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb
+		if G.GAME.modifiers.cry_force_enhancement and not G.GAME.viewed_back then 
+			bbb = G.GAME.modifiers.cry_force_enhancement
+		else
+			aaa,bbb = cry_get_enchanced_deck_info()
+		end
+		return { vars = { localize{type = "name_text", set = "Enhanced", key = bbb} } }
+	end,
+	apply = function(self)
+		local aaa,bbb = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_enhancement = bbb
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:set_ability(G.P_CENTERS[bbb])
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local sk_deck = {
+	object_type = "Back",
+	name = "cry-Sticker Deck",
+	key = "sk_deck",
+	order = 19,
+	pos = { x = 1, y = 0 },
+	atlas = "atlasdeck",
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb,ccc
+		if G.GAME.modifiers.cry_force_sticker and not G.GAME.viewed_back then 
+			ccc = G.GAME.modifiers.cry_force_sticker
+		else
+			aaa,bbb,ccc = cry_get_enchanced_deck_info()
+		end
+		if ccc == "pinned" then ccc = "pinned_left" end
+		return { vars = { localize{type = "name_text", set = "Other", key = ccc} } }
+	end,
+	apply = function(self)
+		local aaa,bbb,ccc = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_sticker = ccc
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c].config.center.eternal_compat = true
+					G.playing_cards[c].config.center.perishable_compat = true
+					if
+						SMODS.Stickers[ccc]
+						and SMODS.Stickers[ccc].apply
+					then
+						SMODS.Stickers[ccc]:apply(G.playing_cards[c], true)
+					else
+						G.playing_cards[c]["set_" .. ccc](G.playing_cards[c], true)
+					end
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local st_deck = {
+	object_type = "Back",
+	name = "cry-Suit Deck",
+	key = "st_deck",
+	order = 20,
+	pos = { x = 1, y = 0 },
+	atlas = "atlasdeck",
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb,ccc,ddd
+		if G.GAME.modifiers.cry_force_suit and not G.GAME.viewed_back then 
+			ddd = G.GAME.modifiers.cry_force_suit
+		else
+			aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info()
+		end
+		return { vars = { localize(ddd, 'suits_plural') } }
+	end,
+	apply = function(self)
+		local aaa,bbb,ccc,ddd = cry_get_enchanced_deck_info()
+		if ddd == "Spades" then
+			G.GAME.bosses_used["bl_goad"] = 1e308
+		elseif ddd == "Hearts" then
+			G.GAME.bosses_used["bl_head"] = 1e308
+		elseif ddd == "Clubs" then
+			G.GAME.bosses_used["bl_club"] = 1e308
+		elseif ddd == "Diamonds" then
+			G.GAME.bosses_used["bl_window"] = 1e308
+		end
+		G.GAME.modifiers.cry_force_suit = ddd
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:change_suit(ddd)
+				end
+				return true
+			end,
+		}))
+	end,
+}
+local sl_deck = {
+	object_type = "Back",
+	name = "cry-Seal Deck",
+	key = "sl_deck",
+	order = 21,
+	pos = { x = 1, y = 0 },
+	atlas = "atlasdeck",
+	loc_vars = function(self, info_queue, center)
+		local aaa,bbb,ccc,ddd,eee
+		if G.GAME.modifiers.cry_force_seal and not G.GAME.viewed_back then 
+			eee = G.GAME.modifiers.cry_force_seal
+		else
+			aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info()
+		end
+		--Scuffed but oh well
+		if eee == "Gold" then eee = "gold_seal"
+		elseif eee == "Red" then eee = "red_seal"
+		elseif eee == "Blue" then eee = "blue_seal"
+		elseif eee == "Purple" then eee = "purple_seal" end
+		return { vars = { localize{type = "name_text", set = "Other", key = eee} } }
+	end,
+	apply = function(self)
+		local aaa,bbb,ccc,ddd,eee = cry_get_enchanced_deck_info()
+		G.GAME.modifiers.cry_force_seal = eee
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for c = #G.playing_cards, 1, -1 do
+					G.playing_cards[c]:set_seal(eee, true)
+				end
+				return true
+			end,
+		}))
+	end,
+}
 function antimatter_apply()
 
 	local bluecheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8)
@@ -803,6 +978,9 @@ function get_antimatter_consumables(consumable_table)
 end
 ]]--
 
+
+
+
 return {
 	name = "Misc. Decks",
 	init = function()
@@ -953,6 +1131,11 @@ return {
 		bountiful,
 		beige,
 		blank,
-		antimatter
+		antimatter,
+		e_deck,
+		et_deck,
+		sk_deck,
+		st_deck,
+		sl_deck
 	},
 }

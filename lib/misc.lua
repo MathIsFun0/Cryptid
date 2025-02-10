@@ -515,7 +515,84 @@ function Blind:cry_calc_ante_gain()
 	end
 	return 1
 end
-
+-- Functions for the cycle toggles
+G.FUNCS.cry_enhancement_deck_one = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_one = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_one = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_two = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_two = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_two = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_three = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_three = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_three = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_four = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_four = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_four = args.to_key
+end
+G.FUNCS.cry_enhancement_deck_five = function(args)
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_mod_five = args.to_key
+	G.PROFILES[G.SETTINGS.profile].cry_enhancement_memory_five = args.to_key
+end
+function cry_get_enchanced_deck_info()
+	--only accounts for vanilla stuff at the moment (WIP)
+	local edition, enhancement, sticker, suit, seal =
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_one") or 1, 
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_two") or 1, 
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_three") or 1,
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_four") or 1,
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_mod_five") or 1
+	--Edition
+	local edition_table = {
+		--Ignoring e_base
+		"foil",
+		"holo",
+		"polychrome",
+		"negative",
+	}
+	--Enhancement
+	local enhancement_table = {"m_bonus","m_mult","m_wild","m_glass","m_steel","m_stone","m_gold","m_lucky",}
+	--Sticker
+	local sticker_table = {"eternal","perishable","rental","pinned",}
+	--Suit
+	local suit_table = {"Spades","Hearts","Clubs","Diamonds",}
+	--Seals
+	local seal_table = {"Gold","Blue","Red","Purple",}
+	-- Do Stuff
+	for i, v in pairs(edition_table) do
+		if edition == i then
+			edition = v
+			break
+		end
+	end
+	for i, v in pairs(enhancement_table) do
+		if enhancement == i then
+			enhancement = v
+			break
+		end
+	end
+	for i, v in pairs(sticker_table) do
+		if sticker == i then
+			sticker = v
+			break
+		end
+	end
+	for i, v in pairs(suit_table) do
+		if suit == i then
+			suit = v
+			break
+		end
+	end
+	for i, v in pairs(seal_table) do
+		if seal == i then
+			seal = v
+			break
+		end
+	end
+	return edition, enhancement, sticker, suit, seal
+end
 function Cryptid.post_process(center)
 	if center.pools and center.pools.M then
 		local vc = center.calculate

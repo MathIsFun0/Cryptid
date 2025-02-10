@@ -52,80 +52,24 @@ local test = {
 }
 local test3 = {
 	object_type = "Joker",
-	name = "cry-happy",
-	key = "happy",
+	name = "cry-test3",
+	key = "test3",
 	pos = { x = 2, y = 1 },
 	rarity = 1,
 	cost = 2,
 	discovered = true,
-	gameset_config = {
-        	modest = {cost = 5},
-    	},
-	order = 63,
-	blueprint_compat = true,
-	eternal_compat = false,
 	atlas = "atlastwo",
-	calculate = function(self, card, context)
-		if
-			context.selling_self
-			and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit
-			and not context.retrigger_joker
-		then
-			local sellcreatejoker = 1
-			G.GAME.joker_buffer = G.GAME.joker_buffer + sellcreatejoker
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					for i = 1, sellcreatejoker do
-						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "happy")
-						card:add_to_deck()
-						G.jokers:emplace(card)
-						card:start_materialize()
-						G.GAME.joker_buffer = 0
-					end
-					return true
-				end,
-			}))
-			card_eval_status_text(
-				context.blueprint_card or card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("k_plus_joker"), colour = G.C.BLUE }
-			)
-			return nil, true
-		end
-		if
-			context.end_of_round
-			and not context.individual
-			and not context.repetition
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
-		then
-			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-			G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					if roundcreatejoker > 0 then
-						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "happy")
-						card:add_to_deck()
-						G.jokers:emplace(card)
-						card:start_materialize()
-						G.GAME.joker_buffer = 0
-					end
-					return true
-				end,
-			}))
-			card_eval_status_text(
-				context.blueprint_card or card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("k_plus_joker"), colour = G.C.BLUE }
-			)
-			return nil, true
-		end
+	loc_txt = {
+        	name = 'Loc var man B)',
+     		text = {
+			"{C:attention}#1#",
+       			"{C:green}#2#",
+			"{C:inactive}#3##4##5#"
+        	}
+    	},
+	loc_vars = function(self, info_queue, card)
+		local a,b,c,d,e = cry_get_enchanced_deck_info()
+		return { vars = { a,b,c,d,e } }
 	end,
 	cry_credits = {
 		idea = {

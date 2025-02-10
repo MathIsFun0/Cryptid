@@ -183,7 +183,6 @@ function SMODS.injectItems(...)
 	cry_update_obj_registry()
 end
 
-
 local cryptidTabs = function() return {
 	{
 		label = localize("cry_set_features"),
@@ -213,6 +212,76 @@ local cryptidTabs = function() return {
 			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 			cry_nodes[#cry_nodes + 1] = config
 			cry_nodes[#cry_nodes + 1] = UIBox_button({button = 'your_collection_content_sets', label = {localize('b_content_sets')}, count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'})
+
+			--Enchancement deck toggles (WIP, only accounts for vanilla stuff at the moment)
+			cry_nodes[#cry_nodes + 1] = create_option_cycle({
+                                label = localize("cry_deck_one"),
+                                scale = 0.6,
+                                w = 4,
+                                options = {
+					localize{type = "name_text", set = "Edition", key = "e_foil"},
+					localize{type = "name_text", set = "Edition", key = "e_holo"},
+					localize{type = "name_text", set = "Edition", key = "e_polychrome"},
+					localize{type = "name_text", set = "Edition", key = "e_negative"},
+				},
+                                opt_callback = 'cry_enhancement_deck_one',
+                                current_option = safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_memory_one") or 1,
+                        })
+			cry_nodes[#cry_nodes + 1] = create_option_cycle({
+                                label = localize("cry_deck_two"),
+                                scale = 0.6,
+                                w = 4,
+                                options = {
+					localize{type = "name_text", set = "Enhanced", key = "m_bonus"},
+					localize{type = "name_text", set = "Enhanced", key = "m_mult"},
+					localize{type = "name_text", set = "Enhanced", key = "m_wild"},
+					localize{type = "name_text", set = "Enhanced", key = "m_glass"},
+					localize{type = "name_text", set = "Enhanced", key = "m_steel"},
+					localize{type = "name_text", set = "Enhanced", key = "m_gold"},
+					localize{type = "name_text", set = "Enhanced", key = "m_lucky"},	
+				},
+                                opt_callback = 'cry_enhancement_deck_two',
+                                current_option = safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_memory_two") or 1,
+                        })
+			cry_nodes[#cry_nodes + 1] = create_option_cycle({
+                                label = localize("cry_deck_three"),
+                                scale = 0.6,
+                                w = 4,
+                                options = {
+					localize{type = "name_text", set = "Other", key = "eternal"},
+					localize{type = "name_text", set = "Other", key = "perishable"},
+					localize{type = "name_text", set = "Other", key = "rental"},
+					localize{type = "name_text", set = "Other", key = "pinned_left"},
+				},
+                                opt_callback = 'cry_enhancement_deck_three',
+                                current_option = safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_memory_three") or 1,
+                        })
+			cry_nodes[#cry_nodes + 1] = create_option_cycle({
+                                label = localize("cry_deck_four"),
+                                scale = 0.6,
+                                w = 4,
+                                options = {
+					localize("Spades", 'suits_plural'),
+					localize("Hearts", 'suits_plural'),
+					localize("Clubs", 'suits_plural'),
+					localize("Diamonds", 'suits_plural'),
+				},
+                                opt_callback = 'cry_enhancement_deck_four',
+                                current_option = safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_memory_four") or 1,
+                        })
+			cry_nodes[#cry_nodes + 1] = create_option_cycle({
+                                label = localize("cry_deck_five"),
+                                scale = 0.6,
+                                w = 4,
+                                options = {
+					localize{type = "name_text", set = "Other", key = "gold_seal"},
+					localize{type = "name_text", set = "Other", key = "blue_seal"},
+					localize{type = "name_text", set = "Other", key = "red_seal"},
+					localize{type = "name_text", set = "Other", key = "purple_seal"},
+				},
+                                opt_callback = 'cry_enhancement_deck_five',
+                                current_option = safe_get(G.PROFILES, G.SETTINGS.profile, "cry_enhancement_memory_five") or 1,
+                        })
 			return {
 				n = G.UIT.ROOT,
 				config = {
