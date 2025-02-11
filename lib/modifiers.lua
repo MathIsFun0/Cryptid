@@ -693,6 +693,28 @@ function Tag:set_ability()
 	end
 end
 
+local ycollecref = G.FUNCS.your_collection
+G.FUNCS.your_collection = function(e)
+	ycollecref(e)
+	G.cry_current_tagpage = nil
+end
+local omuicryref = G.FUNCS.openModUI_Cryptid
+G.FUNCS.openModUI_Cryptid = function(e)
+	omuicryref(e)
+	G.cry_current_tagpage = nil
+end
+
+function cry_shinytag_tally()
+	local ret = 0
+	for k, v in pairs(Cryptid.shinytagdata) do
+		if Cryptid.shinytagdata[k] then
+			ret = ret + 1
+		end
+	end
+	print(ret)
+	return ret
+end
+
 -- temp crappy overwrite for voucher ui until smods does stuff
 
 function G.UIDEF.used_vouchers()
