@@ -808,7 +808,7 @@ if JokerDisplay then
 		},
 		calc_function = function(card)
 			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
-			card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
+			card.joker_display_values.dollars = bonus and bonus > to_big(0) and bonus or 0
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
@@ -1544,7 +1544,7 @@ if JokerDisplay then
 		},
 		calc_function = function(card)
 			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
-			card.joker_display_values.dollars = bonus and bonus > 0 and bonus or 0
+			card.joker_display_values.dollars = bonus and bonus > to_big(0) and bonus or 0
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}

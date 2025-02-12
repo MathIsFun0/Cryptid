@@ -1246,6 +1246,40 @@ local obsidian_orb = {
 		return disp_text
 	end,
 }
+local trophy = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 1,
+	object_type = "Blind",
+	name = "cry-Lemon Trophy",
+	key = "trophy",
+	pos = { x = 0, y = 17 },
+	dollars = 8,
+	boss = {
+		min = 3,
+		max = 10,
+		showdown = true,
+	},
+	atlas = "blinds",
+	order = 95,
+	boss_colour = HEX("bbdb44"),
+	set_blind = function(self, reset, silent)
+		G.GAME.trophymod = true
+	end,
+	defeat = function(self, silent)
+		if G.GAME.trophymod then
+			G.GAME.trophymod = nil
+		end
+	end,
+	disable = function(self, silent)
+		if G.GAME.trophymod then
+			G.GAME.trophymod = nil
+		end
+	end,
+}
 local items_togo = {
 	oldox,
 	oldhouse,
@@ -1272,5 +1306,6 @@ local items_togo = {
 	obsidian_orb,
 	clock,
 	lavender_loop,
+	trophy,
 }
 return { name = "Blinds", items = items_togo, }
