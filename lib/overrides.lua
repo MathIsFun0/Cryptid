@@ -1174,7 +1174,15 @@ function Controller:queue_L_cursor_press(x, y)
 	end
 	self.L_cursor_queue = { x = x, y = y }
 end
-
+-- Lemon Trophy's effect
+local trophy_mod_mult = mod_mult
+function mod_mult(_mult)
+	hand_chips = hand_chips or 0
+	if G.GAME.trophymod then
+		_mult = math.min(_mult, math.max(hand_chips, 0))
+	end
+  	return trophy_mod_mult(_mult)
+end
 -- Fix a CCD-related crash
 local cuc = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
