@@ -1141,11 +1141,6 @@ SMODS.ContentSet({
 	cry_blind = true
 })
 SMODS.ContentSet({
-	key = "enhanced",
-	atlas = "atlasenhanced",
-	pos = { x = 2, y = 3 }, --The Empress' Deck
-})
-SMODS.ContentSet({
 	key = "misc",
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 }, --Echo Card

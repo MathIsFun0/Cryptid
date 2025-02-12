@@ -1,5 +1,10 @@
 local oldox = {
 	object_type = "Blind",
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	name = "cry-oldox",
 	key = "oldox",
 	pos = { x = 0, y = 0 },
@@ -20,6 +25,11 @@ local oldox = {
 }
 local oldhouse = {
 	object_type = "Blind",
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
 	name = "cry-oldhouse",
 	key = "oldhouse",
 	pos = { x = 0, y = 2 },
@@ -353,7 +363,6 @@ local trick = {
         end--]]
 	end,
 }
-
 local joke = {
 	dependencies = {
 		items = {
@@ -566,10 +575,8 @@ local pin = {
 		return false
 	end,
 }
-
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
-
 local lavender_loop = {
 	dependencies = {
 		items = {
@@ -704,7 +711,6 @@ local vermillion_virus = {
 		end
 	end,
 }
-
 local sapphire_stamp = {
 	dependencies = {
 		items = {
@@ -744,7 +750,6 @@ local sapphire_stamp = {
 		end
 	end,
 }
-
 local obsidian_orb = {
 	dependencies = {
 		items = {
@@ -1241,7 +1246,6 @@ local obsidian_orb = {
 		return disp_text
 	end,
 }
-
 local items_togo = {
 	oldox,
 	oldhouse,
@@ -1269,4 +1273,4 @@ local items_togo = {
 	clock,
 	lavender_loop,
 }
-return { name = "Blinds", init = function() end, items = items_togo, }
+return { name = "Blinds", items = items_togo, }

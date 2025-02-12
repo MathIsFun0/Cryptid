@@ -84,6 +84,11 @@ end
 
 local e_deck = {
 	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck"
+		},
+	},
 	name = "cry-Edition Deck",
 	key = "e_deck",
 	order = 17,
@@ -115,6 +120,11 @@ local e_deck = {
 }
 local et_deck = {
 	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck"
+		},
+	},
 	name = "cry-Enhancement Deck",
 	key = "et_deck",
 	order = 18,
@@ -141,6 +151,11 @@ local et_deck = {
 }
 local sk_deck = {
 	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck"
+		},
+	},
 	name = "cry-Sticker Deck",
 	key = "sk_deck",
 	order = 19,
@@ -176,6 +191,11 @@ local sk_deck = {
 }
 local st_deck = {
 	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck"
+		},
+	},
 	name = "cry-Suit Deck",
 	key = "st_deck",
 	config = {},
@@ -210,6 +230,11 @@ local st_deck = {
 }
 local sl_deck = {
 	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck"
+		},
+	},
 	name = "cry-Seal Deck",
 	key = "sl_deck",
 	order = 21,

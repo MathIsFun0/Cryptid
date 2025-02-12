@@ -567,18 +567,10 @@ return {
                 }
             },
             set_cry_deck = {
-                name = "Misc. Decks",
+                name = "Decks",
                 text = {
-                    "Gimmicky {C:attention}Decks{} added",
+                    "{C:attention}Decks{} added",
                     "by Cryptid"
-                }
-            },
-            set_cry_enhanced = {
-                name = "Enhanced Decks",
-                text = {
-                    "{C:attention}Decks{} where all cards",
-                    "have the same {C:attention}Enhancement{}, {C:attention}Edition{},",
-                    "{C:attention}Seal{}, {C:attention}Suit{}, or {C:attention}Sticker{}",
                 }
             },
             set_cry_epic = {
@@ -4236,7 +4228,7 @@ return {
             cry_mus_code = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
             cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
             cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
-	    cry_mus_alt_bg = "Background Music",
+	    cry_mus_alt_bg = "Background Music (by MathIsFun_)",
 
             k_cry_program_pack = "Program Pack",
             k_cry_meme_pack = "Meme Pack",
