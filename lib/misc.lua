@@ -399,7 +399,6 @@ function set_profile_progress()
 			if Cryptid.shinytagdata[k] == nil then
 				Cryptid.shinytagdata.init = true
 				Cryptid.shinytagdata[k] = false
-				print(k)
 			end
 		end
 	end

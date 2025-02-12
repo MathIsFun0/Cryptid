@@ -216,7 +216,6 @@ function cry_rollshiny()
 	local prob = 1
 	if next(SMODS.find_card('j_lucky_cat')) then prob = 3 end
 	if pseudorandom("cry_shiny") < prob / 4096 then
-		print("true")
 		return 'shiny'
 	end
 	return 'normal'
@@ -333,11 +332,6 @@ local meta = STR_UNPACK(get_compressed(G.SETTINGS.profile..'/'..'meta.jkr') or '
 position = "after"
 payload = '''
 local cryptidsave = STR_UNPACK(get_compressed(G.SETTINGS.profile..'/'..'cryptidsave.jkr') or 'return {}')
-
-for k, v in pairs(cryptidsave) do
-	print('loaded CRYPTIDSAVE')
-	print(k)
-end
 
 if cryptidsave and cryptidsave.shinytags then
 	Cryptid.shinytagdata = copy_table(cryptidsave.shinytags)

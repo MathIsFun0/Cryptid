@@ -686,7 +686,6 @@ function Tag:set_ability()
 		G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] or {}
 		
 		if not G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] then
-			print("rolling")
 			G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] = cry_rollshiny()
 		end
 		self.ability.shiny = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] == 'shiny' and true
@@ -711,7 +710,6 @@ function cry_shinytag_tally()
 			ret = ret + 1
 		end
 	end
-	print(ret)
 	return ret
 end
 
