@@ -1,5 +1,59 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+-- get_currrent_pool hook for Deck of Equilibrium and Copies 
+local gcp = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
+	if type == "Tag" then
+		for i = 1, #pool do
+			-- Copies: Turn Double tags into Triple Tags
+			if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+				pool[i] = "tag_cry_triple"
+			end
+			-- Tag Printer: Turn Double tags and Triple Tags into Quadruple Tags
+			if
+				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple")
+				and G.GAME.used_vouchers.v_cry_tag_printer
+			then
+				pool[i] = "tag_cry_quadruple"
+			end
+			-- Clone Machine: Turn Double tags and Triple Tags as well as Quadruple Tags into Quintuple Tags
+			if
+				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple" or pool[i] == "tag_cry_quadruple")
+				and G.GAME.used_vouchers.v_cry_clone_machine
+			then
+				pool[i] = "tag_cry_quintuple"
+			end
+		end
+	-- Deck of Equilibrium stuff
+	elseif
+		G.GAME.modifiers.cry_equilibrium
+		and not override_equilibrium_effect
+		and (_append == "sho" or _type == "Voucher" or _type == "Booster")
+	then
+		if
+			_type ~= "Enhanced"
+			and _type ~= "Edition"
+			and _type ~= "Back"
+			and _type ~= "Tag"
+			and _type ~= "Seal"
+			and _type ~= "Stake"
+		then
+			-- we're regenerating the pool every time because of banned keys but it's fine tbh
+			P_CRY_ITEMS = {}
+			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
+			for _, id in ipairs(valid_pools) do
+				for k, v in pairs(G.P_CENTER_POOLS[id]) do
+					if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
+						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+					end
+				end
+			end
+			if #P_CRY_ITEMS <= 0 then P_CRY_ITEMS[#P_CRY_ITEMS + 1] = 'v_blank' end
+			return P_CRY_ITEMS, "cry_equilibrium" .. G.GAME.round_resets.ante
+		end
+	end
+	return gcp(_type, _rarity, _legendary, _append)
+end
 local gnb = get_new_boss
 function get_new_boss()
 	--Fix an issue with adding bosses mid-run

@@ -874,30 +874,6 @@ return {
 			return ed
 		end
 		--Copies and upgrades
-		local gcp = get_current_pool
-		function get_current_pool(type, rarity, legendary, append, z)
-			pool, pool_append = gcp(type, rarity, legendary, append, z)
-			if type == "Tag" then
-				for i = 1, #pool do
-					if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
-						pool[i] = "tag_cry_triple"
-					end
-					if
-						(pool[i] == "tag_double" or pool[i] == "tag_cry_triple")
-						and G.GAME.used_vouchers.v_cry_tag_printer
-					then
-						pool[i] = "tag_cry_quadruple"
-					end
-					if
-						(pool[i] == "tag_double" or pool[i] == "tag_cry_triple" or pool[i] == "tag_cry_quadruple")
-						and G.GAME.used_vouchers.v_cry_clone_machine
-					then
-						pool[i] = "tag_cry_quintuple"
-					end
-				end
-			end
-			return pool, pool_append
-		end
 		local tinit = Tag.init
 		function Tag:init(tag, y, z)
 			if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then

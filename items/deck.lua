@@ -35,46 +35,6 @@ local equilibrium = {
 		G.GAME.modifiers.cry_equilibrium = true
 	end,
 	init = function(self)
-		local gcp = get_current_pool
-		function get_current_pool(t, r, l, a, override_equilibrium_effect)
-			if
-				G.GAME.modifiers.cry_equilibrium
-				and not override_equilibrium_effect
-				and (a == "sho" or t == "Voucher" or t == "Booster")
-			then
-				if
-					t ~= "Enhanced"
-					and t ~= "Edition"
-					and t ~= "Back"
-					and t ~= "Tag"
-					and t ~= "Seal"
-					and t ~= "Stake"
-				then
-					if true then	-- if not P_CRY_ITEMS then
-						-- we're regenerating the pool every time because of banned keys but it's fine tbh
-						P_CRY_ITEMS = {}
-						local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-						for _, id in ipairs(valid_pools) do
-							for k, v in pairs(G.P_CENTER_POOLS[id]) do
-								if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
-									P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-								end
-							end
-						end
-						--[[	this doesn't seem to be working
-						for k, v in pairs(G.P_CARDS) do
-							if v.unlocked == true and not center_no(v, "doe", k) then
-								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-							end
-						end
-						]]
-					end
-					if #P_CRY_ITEMS <= 0 then P_CRY_ITEMS[#P_CRY_ITEMS + 1] = 'v_blank' end
-					return P_CRY_ITEMS, "cry_equilibrium" .. G.GAME.round_resets.ante
-				end
-			end
-			return gcp(t, r, l, a)
-		end
 		local gp = get_pack
 		function get_pack(k, t)
 			if G.GAME.modifiers.cry_equilibrium then
