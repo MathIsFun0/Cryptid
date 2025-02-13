@@ -418,6 +418,5 @@ return {
 			})
 		end
 	end,
-	order = 1000000,
 	items = {e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasenhanced, atlasedition},
 }
