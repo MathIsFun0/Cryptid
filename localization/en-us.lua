@@ -2355,6 +2355,14 @@ return {
                     "{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
                 },
             },
+            j_cry_mitosis = {
+                name = "Mitosis",
+                text = {
+                    "{X:mult,C:white}X#1# {} Mult",
+                    "{C:green}1 in 6 chance{} to create a {C:dark_edition}Negative{} copy",
+                    "of itself at the end of the round"
+                },
+            },
         },
         Planet = {
             c_cry_Klubi = {
