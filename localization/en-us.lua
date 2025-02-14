@@ -4263,6 +4263,10 @@ return {
             --Why aren't these in vanilla?
             b_tag = "Tag",
             b_blind = "Blind",
+
+            k_current = "Current",
+            b_browse_cap = "BROWSE",
+            b_code_terminal_cap = "TERMINAL",
             
             b_tarot_rate = "Tarot Rate",
             b_planet_rate = "Planet Rate",
