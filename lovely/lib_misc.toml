@@ -257,3 +257,17 @@ end
 
 '''
 match_indent = true
+
+# handle banned playing cards
+# this must patch into pseudorandom_element to not break Steamodded in_pool logic
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if keep then"
+position = "before"
+payload = '''
+if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
+	keep = false
+end
+'''
+match_indent = true

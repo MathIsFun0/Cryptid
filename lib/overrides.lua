@@ -727,22 +727,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		center = G.P_CENTERS[center]
 	end
 
-	-- handle banned keys for playing cards
-	-- can cache this if it's too much of a performance hit
-	local _cardlist = {}
-	for k, v in pairs(G.P_CARDS) do
-		local add = true
-		if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
-			add = false
-		end
-		if add then _cardlist[#_cardlist+1] = k end
-	end
-	if #_cardlist <= 0 then _cardlist[#_cardlist+1] = 'S_A' end
-
 	local front = (
 		(_type == "Base" or _type == "Enhanced")
-		and G.P_CARDS[pseudorandom_element(_cardlist, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))]
+		and pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
 	) or nil
+
 	if area == "ERROR" then
 		local ret = (front or center)
 		if not ret.config then
