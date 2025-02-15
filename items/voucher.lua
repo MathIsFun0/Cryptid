@@ -7,6 +7,12 @@ local voucher_atlas = {
 }
 local copies = { --Double tags become Triple Tags and are 2X as common
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tag",
+		}
+	},
 	key = "copies",
 	atlas = "atlasvoucher",
 	order = 1,
@@ -16,9 +22,35 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 		info_queue[#info_queue+1] = {set = "Tag", key = "tag_cry_triple", specific_vars = {2}}
 		return { vars = {} }
 	end,
+	init = function(self)
+		--Copies and upgrades
+		local tinit = Tag.init
+		function Tag:init(tag, y, z)
+			if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+				tag = "tag_cry_triple"
+			end
+			if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
+				tag = "tag_cry_quadruple"
+			end
+			if
+				(tag == "tag_double" or tag == "tag_cry_triple" or tag == "tag_cry_quadruple")
+				and G.GAME.used_vouchers.v_cry_clone_machine
+			then
+				tag = "tag_cry_quintuple"
+			end
+			return tinit(self, tag, y, z)
+		end
+	end
 }
 local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tag",
+			"v_cry_copies",
+		}
+	},
 	key = "tag_printer",
 	order = 2,
 	atlas = "atlasvoucher",
@@ -32,6 +64,14 @@ local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 }
 local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tag",
+			"set_cry_tier3",
+			"v_cry_tag_printer",
+		}
+	},
 	key = "clone_machine",
 	atlas = "atlasvoucher",
 	order = 91,
@@ -46,6 +86,12 @@ local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
 }
 local command_prompt = { --Code cards can appear in the shop
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_code",
+		}
+	},
 	key = "command_prompt",
 	atlas = "atlasvoucher",
 	order = 3,
@@ -72,6 +118,13 @@ local command_prompt = { --Code cards can appear in the shop
 }
 local satellite_uplink = { --Code cards may appear in any of the Celestial Packs
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_code",
+			"v_cry_command_prompt",
+		}
+	},
 	key = "satellite_uplink",
 	atlas = "atlasvoucher",
 	order = 4,
@@ -83,6 +136,14 @@ local satellite_uplink = { --Code cards may appear in any of the Celestial Packs
 }
 local quantum_computing = { --Code cards can spawn with Negative addition
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tier3",
+			"set_cry_code",
+			"v_cry_satellite_uplink",
+		}
+	},
 	key = "quantum_computing",
 	order = 92,
 	atlas = "atlasvoucher",
@@ -95,6 +156,12 @@ local quantum_computing = { --Code cards can spawn with Negative addition
 }
 local pairing = { --Retrigger all M Jokers if played hand is a Pair
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_m",
+		}
+	},
 	key = "pairing",
 	atlas = "atlasvoucher",
 	order = 5,
@@ -115,6 +182,13 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 }
 local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_m",
+			"v_cry_pairing",
+		}
+	},
 	key = "repair_man",
 	atlas = "atlasvoucher",
 	order = 6,
@@ -136,6 +210,14 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 }
 local pairamount_plus = { --Retrigger all M Jokers once for every pair contained in played hand
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_m",
+			"set_cry_tier3",
+			"v_cry_repair_man",
+		}
+	},
 	key = "pairamount_plus",
 	atlas = "atlasvoucher",
 	order = 93,
@@ -158,6 +240,12 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 }
 local double_vision = { --Double-Sided cards appear 4x more frequently
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"e_cry_double_sided"
+		}
+	},
 	key = "double_vision",
 	order = 7,
 	atlas = "atlasvoucher",
@@ -174,6 +262,14 @@ local double_vision = { --Double-Sided cards appear 4x more frequently
 }
 local double_slit = { --Meld can appear in the shop and Arcana Packs
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"e_cry_double_sided",
+			"c_cry_meld",
+			"v_cry_double_vision",
+		}
+	},
 	key = "double_slit",
 	atlas = "atlasvoucher",
 	order = 8,
@@ -191,6 +287,14 @@ local double_slit = { --Meld can appear in the shop and Arcana Packs
 }
 local double_down = { --After every round, X1.5 to all values on the back of Double-Sided Cards
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tier3",
+			"e_cry_double_sided",
+			"v_cry_double_slit",
+		}
+	},
 	key = "double_down",
 	atlas = "atlasvoucher",
 	order = 94,
@@ -209,6 +313,11 @@ local double_down = { --After every round, X1.5 to all values on the back of Dou
 }
 local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 voucher slot[s] available in the shop
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "overstock_multi",
 	config = { extra = 1 },
 	atlas = "atlasvoucher",
@@ -250,6 +359,11 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 }
 local massproduct = { --All cards and packs in the shop cost $1
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "massproduct",
 	atlas = "atlasvoucher",
 	order = 76,
@@ -286,15 +400,35 @@ local massproduct = { --All cards and packs in the shop cost $1
 }
 local curate = { --All cards appear with an Edition
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "curate",
 	atlas = "atlasvoucher",
 	order = 77,
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
     pools = {["Tier3"] = true},
+	init = function(self)
+		local pe = poll_edition
+		function poll_edition(_key, _mod, _no_neg, _guaranteed, _options)
+			local ed = pe(_key, _mod, _no_neg, _guaranteed, _options)
+			while not ed and G.GAME.used_vouchers.v_cry_curate do
+				ed = pe(_key, _mod, _no_neg, _guaranteed, _options)
+			end
+			return ed
+		end
+	end
 }
 local rerollexchange = { --All rerolls cost $2
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "rerollexchange",
 	atlas = "atlasvoucher",
 	order = 78,
@@ -324,6 +458,11 @@ local rerollexchange = { --All rerolls cost $2
 --Order 79 reserved for celestial storage (unimplemented)
 local scope = { --Also unimplemented
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "scope",
 	atlas = "atlasvoucher",
 	order = 80,
@@ -333,6 +472,11 @@ local scope = { --Also unimplemented
 }
 local dexterity = { --Permanently gain +2 hand[s] each round
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "dexterity",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
@@ -354,6 +498,11 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 }
 local threers = { --Permanently gain +2 discard[s] each round
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "threers",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
@@ -375,6 +524,11 @@ local threers = { --Permanently gain +2 discard[s] each round
 }
 local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All future Tarot cards are free
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "tacclimator",
 	config = { extra = 24 / 4, extra_disp = 6 },
 	atlas = "atlasvoucher",
@@ -404,6 +558,11 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 }
 local pacclimator = { --Planet cards appear X6 more frequently in the shop   All future Planet cards are free
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "pacclimator",
 	config = { extra = 24 / 4, extra_disp = 6 },
 	atlas = "atlasvoucher",
@@ -433,6 +592,11 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 }
 local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "moneybean",
 	config = { extra = 1e300 },
 	atlas = "atlasvoucher",
@@ -462,6 +626,11 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 }
 local fabric = { --+2 Joker slot[s]
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "fabric",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
@@ -506,18 +675,13 @@ local fabric = { --+2 Joker slot[s]
 	end,
 }
 --Order 87 reserved for Fake-out (unimplemented)
-local function asteroglyph_ante()
-	if not (G.GAME or {}).modifiers then
-		return 0
-	end
-	if not G.GAME.modifiers.cry_astero_ante then
-		G.GAME.modifiers.cry_astero_ante = 0
-	end
-	return G.GAME.modifiers.cry_astero_ante
-end
-
 local asteroglyph = { --Set Ante to 0
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "asteroglyph",
 	atlas = "atlasvoucher",
 	order = 88,
@@ -552,10 +716,26 @@ local asteroglyph = { --Set Ante to 0
 			unlock_card(self)
 		end
 	end,
+	init = function(self)
+		function asteroglyph_ante()
+			if not (G.GAME or {}).modifiers then
+				return 0
+			end
+			if not G.GAME.modifiers.cry_astero_ante then
+				G.GAME.modifiers.cry_astero_ante = 0
+			end
+			return G.GAME.modifiers.cry_astero_ante
+		end
+	end
 }
 --Order 89 reserved for Ivory Script (unimplemented)
 local blankcanvas = { --+2 hand size
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		}
+	},
 	key = "blankcanvas",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
@@ -585,9 +765,14 @@ local blankcanvas = { --+2 hand size
 		end
 	end,
 }
-
 local stickyhand = { --+1 card selection limit
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_poker_hand_stuff"
+		}
+	},
 	key = "stickyhand",
 	config = { extra = 1 },
 	atlas = "atlasvoucher",
@@ -607,9 +792,15 @@ local stickyhand = { --+1 card selection limit
 		G.hand:unhighlight_all()
 	end,
 }
-
 local grapplinghook = { --+1 card selection limit (replace me when "extra functionality" is added later)
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_poker_hand_stuff",
+			"v_cry_stickyhand"
+		}
+	},
 	key = "grapplinghook",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
@@ -630,9 +821,16 @@ local grapplinghook = { --+1 card selection limit (replace me when "extra functi
 		G.hand:unhighlight_all()
 	end,
 }
-
 local hyperspacetether = { --+2 card selection limit (replace me when "extra functionality" is added later)
 	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_poker_hand_stuff",
+			"set_cry_tier3",
+			"v_cry_grapplinghook",
+		}
+	},
 	key = "hyperspacetether",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
@@ -654,10 +852,14 @@ local hyperspacetether = { --+2 card selection limit (replace me when "extra fun
 		G.hand:unhighlight_all()
 	end,
 }
-
-
 local triple = { --Copies voucher triple tag
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"v_cry_copies",
+		}
+	},
 	atlas = "tag_cry",
 	name = "cry-Triple Tag",
 	order = 20,
@@ -704,6 +906,12 @@ local triple = { --Copies voucher triple tag
 }
 local quadruple = { --Tag printer voucher quadruple tag
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"v_cry_tag_printer",
+		}
+	},
 	atlas = "tag_cry",
 	name = "cry-Quadruple Tag",
 	order = 21,
@@ -750,6 +958,12 @@ local quadruple = { --Tag printer voucher quadruple tag
 }
 local quintuple = { --Clone machine voucher quintuple tag
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"v_cry_clone_machine",
+		}
+	},
 	atlas = "tag_cry",
 	name = "cry-Quintuple Tag",
 	order = 22,
@@ -811,23 +1025,6 @@ if SMODS.Mods["Tier3Sub"] then
 	tacclimator.config.extra = tacclimator.config.extra * 8
 	pacclimator.config.extra = pacclimator.config.extra * 8
 end
-
---Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
--- Uncursed this -Math
-
-function get_next_megavoucher_key(_from_tag)
-    local _pool, _pool_key = get_current_pool('Tier3')
-    if _from_tag then _pool_key = 'Voucher_fromtag' end
-    local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
-    local it = 1
-    while center == 'UNAVAILABLE' do
-        it = it + 1
-        center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
-    end
-
-    return center
-end
-
 local voucheritems = {
 	voucher_atlas,
 	copies,
@@ -864,31 +1061,19 @@ local voucheritems = {
 return {
 	name = "Vouchers",
 	init = function()
-		--Curate
-		local pe = poll_edition
-		function poll_edition(_key, _mod, _no_neg, _guaranteed, _options)
-			local ed = pe(_key, _mod, _no_neg, _guaranteed, _options)
-			while not ed and G.GAME.used_vouchers.v_cry_curate do
-				ed = pe(_key, _mod, _no_neg, _guaranteed, _options)
+		--Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
+		-- Uncursed this -Math
+		function get_next_megavoucher_key(_from_tag)
+			local _pool, _pool_key = get_current_pool('Tier3')
+			if _from_tag then _pool_key = 'Voucher_fromtag' end
+			local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+			local it = 1
+			while center == 'UNAVAILABLE' do
+				it = it + 1
+				center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
 			end
-			return ed
-		end
-		--Copies and upgrades
-		local tinit = Tag.init
-		function Tag:init(tag, y, z)
-			if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
-				tag = "tag_cry_triple"
-			end
-			if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
-				tag = "tag_cry_quadruple"
-			end
-			if
-				(tag == "tag_double" or tag == "tag_cry_triple" or tag == "tag_cry_quadruple")
-				and G.GAME.used_vouchers.v_cry_clone_machine
-			then
-				tag = "tag_cry_quintuple"
-			end
-			return tinit(self, tag, y, z)
+
+			return center
 		end
 	end,
 	items = voucheritems,

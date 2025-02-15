@@ -4286,11 +4286,6 @@ return {
             cry_code_create_previous = "CREATE PREVIOUS",
             cry_code_execute = "EXECUTE",
             cry_code_cancel = "CANCEL",
-	    cry_deck_one = "Edition Deck Edition",
-	    cry_deck_two = "Enhancement Deck Enhancement",
-   	    cry_deck_three = "Sticker Deck Sticker",
-   	    cry_deck_four = "Suit Deck Suit",
-   	    cry_deck_five = "Seal Deck Seal",
 
             b_flip = "FLIP",
             b_merge = "MERGE",
