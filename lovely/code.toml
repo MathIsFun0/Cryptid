@@ -374,7 +374,7 @@ payload = '''
 '''
 match_indent = true
 
-# Pointer - Browse collection
+# Pointer/Class - Browse collection
 
 # remove buttons conditionally
 [[patches]]
@@ -383,7 +383,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5}),'''
 position = "at"
 payload = '''
-(not G.GAME.USING_POINTER) and UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5}) or nil,
+(not G.GAME.USING_UI) and UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5}) or nil,
 '''
 match_indent = true
 
@@ -394,7 +394,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'}),'''
 position = "at"
 payload = '''
-(not G.GAME.USING_POINTER) and UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'}) or nil,
+(not G.GAME.USING_UI) and UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'}) or nil,
 '''
 match_indent = true
 
@@ -404,7 +404,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}),'''
 position = "at"
 payload = '''
-(not G.GAME.USING_POINTER) and UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}) or nil,
+(not G.GAME.USING_UI) and UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}) or nil,
 '''
 match_indent = true
 
@@ -415,8 +415,8 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = 2.0, id = 'your_collection_blinds', focus_args = {snap_to = true}}),UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}),'''
 position = "at"
 payload = '''
-UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = G.GAME.USING_POINTER and 2.4 or 2.0, id = 'your_collection_blinds', focus_args = {snap_to = true}}),
-(not G.GAME.USING_POINTER) and UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}) or nil,
+UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = G.GAME.USING_UI and 2.4 or 2.0, id = 'your_collection_blinds', focus_args = {snap_to = true}}),
+(not G.GAME.USING_UI) and UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}) or nil,
 '''
 match_indent = true
 
@@ -426,7 +426,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}),'''
 position = "at"
 payload = '''
-(not G.GAME.USING_POINTER) and UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}) or nil,
+(not G.GAME.USING_UI) and UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}) or nil,
 '''
 match_indent = true
 
@@ -437,7 +437,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_boosters', label = {localize('b_booster_packs')}, count = G.DISCOVER_TALLIES.boosters, minw = 5, id = 'your_collection_boosters'}),'''
 position = "at"
 payload = '''
-UIBox_button({button = 'your_collection_boosters', label = {localize('b_booster_packs')}, count = G.DISCOVER_TALLIES.boosters, minw = 5, minh = G.GAME.USING_POINTER and 2.4, id = 'your_collection_boosters'}),
+UIBox_button({button = 'your_collection_boosters', label = {localize('b_booster_packs')}, count = G.DISCOVER_TALLIES.boosters, minw = 5, minh = G.GAME.USING_UI and 2.4, id = 'your_collection_boosters'}),
 '''
 match_indent = true
 
@@ -448,7 +448,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({button = 'your_collection_tags', label = {localize('b_tags')}, count = G.DISCOVER_TALLIES.tags, minw = 5, id = 'your_collection_tags'}),'''
 position = "at"
 payload = '''
-UIBox_button({button = 'your_collection_tags', label = {localize('b_tags')}, count = G.DISCOVER_TALLIES.tags, minw = 5, minh = G.GAME.USING_POINTER and 2.5, id = 'your_collection_tags'}),
+UIBox_button({button = 'your_collection_tags', label = {localize('b_tags')}, count = G.DISCOVER_TALLIES.tags, minw = 5, minh = G.GAME.USING_UI and 2.5, id = 'your_collection_tags'}),
 '''
 match_indent = true
 
@@ -459,7 +459,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''local t = create_UIBox_generic_options({ back_func = G.STAGE == G.STAGES.RUN and 'options' or 'exit_overlay_menu', contents = {'''
 position = "at"
 payload = '''
-local t = create_UIBox_generic_options({ back_func = (G.STAGE == G.STAGES.RUN and not G.GAME.USING_POINTER) and 'options' or 'exit_overlay_menu', contents = {
+local t = create_UIBox_generic_options({ back_func = (G.STAGE == G.STAGES.RUN and not G.GAME.USING_UI) and 'options' or 'exit_overlay_menu', contents = {
 '''
 match_indent = true
 
@@ -470,7 +470,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''local back_func = args.back_func or "exit_overlay_menu"'''
 position = "before"
 payload = '''
-if G.GAME and G.GAME.USING_POINTER then
+if G.GAME and G.GAME.USING_UI then
 	args.colour = HEX("04200c")
 	args.outline_colour = G.C.SECONDARY_SET.Code
 	args.back_colour = G.C.SET.Code
@@ -486,7 +486,7 @@ pattern = '''args.colour = args.colour or G.C.RED'''
 position = "before"
 payload = '''
 if (not args.colour) or args.colour == G.C.RED then
-	args.colour = (G.GAME and G.GAME.USING_POINTER) and G.C.SET.Code or args.colour
+	args.colour = (G.GAME and G.GAME.USING_UI) and G.C.SET.Code or args.colour
 end
 '''
 match_indent = true

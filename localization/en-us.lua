@@ -4266,6 +4266,7 @@ return {
 
             k_current = "Current",
             b_browse_cap = "BROWSE",
+            b_select_cap = "SELECT",
             b_code_terminal_cap = "TERMINAL",
             
             b_tarot_rate = "Tarot Rate",
@@ -4464,6 +4465,22 @@ return {
                 last_discard = { "if it's the {C:attention}last {C:attention}discard{}" },
                 odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },
             },
+        },
+        terminal_cry = {
+            -- this is bad
+            -- nobody will be localising this because i will change it
+            cryptidbr = {"Cryptid ["}, usingsmodsbr = {"] using SMODS, configured to "},
+            exit = {'Type "exit" or press "escape" to leave the terminal.'},
+            error = {"Error: "},
+            success = {"Success: "},
+            identified_object = {"identified object"},
+            identified_illegal_object = {"identified illegal object"},
+            could_not_find_object = {"could not find object from input"},
+            identified_enh = {"identified enhancement"},
+            identified_edition1 = {"identified"}, identified_edition2 = {"of class Edition, expected Enhancement"},
+            identified_cheat1 = {"Passcode"}, identified_cheat2 = {"recognised. "},
+            could_not_find_enhancement = {"could not find enhancement from input"},
+            you_may_now_exit = {"You may now exit the terminal."},
         },
         v_dictionary = {
             a_xchips = {"X#1# Chips"},
