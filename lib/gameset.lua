@@ -1486,7 +1486,7 @@ function create_generic_card(center, x, y)
 		card:set_edition({[center.config.cry_force_edition] = true}, true, true)
 	end
 	if center.set == "Seal" then
-		card:set_seal(center.key, trfue, true)
+		card:set_seal(center.key, true, true)
 		card.config.center = cry_deep_copy(card.config.center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
