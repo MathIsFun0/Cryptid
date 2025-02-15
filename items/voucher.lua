@@ -770,7 +770,6 @@ local stickyhand = { --+1 card selection limit
 	dependencies = {
 		items = {
 			"set_cry_voucher",
-			"set_cry_poker_hand_stuff"
 		}
 	},
 	key = "stickyhand",
@@ -797,7 +796,6 @@ local grapplinghook = { --+1 card selection limit (replace me when "extra functi
 	dependencies = {
 		items = {
 			"set_cry_voucher",
-			"set_cry_poker_hand_stuff",
 			"v_cry_stickyhand"
 		}
 	},
@@ -821,12 +819,11 @@ local grapplinghook = { --+1 card selection limit (replace me when "extra functi
 		G.hand:unhighlight_all()
 	end,
 }
-local hyperspacetether = { --+2 card selection limit (replace me when "extra functionality" is added later)
+local hyperspacetether = { --+2 card selection limit + other stuff
 	object_type = "Voucher",
 	dependencies = {
 		items = {
 			"set_cry_voucher",
-			"set_cry_poker_hand_stuff",
 			"set_cry_tier3",
 			"v_cry_grapplinghook",
 		}
