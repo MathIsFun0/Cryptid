@@ -1234,3 +1234,18 @@ function Card:can_use_consumeable(any_state, skip_check)
 	end
 	return cuc(self, any_state, skip_check)
 end
+
+-- add second back button to create_UIBox_generic_options
+local cuigo = create_UIBox_generic_options
+function create_UIBox_generic_options(args)
+	local ret = cuigo(args)
+	if args.back2 then
+		local mainUI = ret.nodes[1].nodes[1].nodes
+		mainUI[#mainUI+1] = {n=G.UIT.R, config={id = args.back2_id or 'overlay_menu_back2_button', align = "cm", minw = 2.5, button_delay = args.back2_delay, padding =0.1, r = 0.1, hover = true, colour = args.back2_colour or G.C.ORANGE, button = args.back2_func or "exit_overlay_menu", shadow = true, focus_args = {nav = 'wide', button = 'b', snap_to = args.snap_back2}}, nodes={
+			{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
+			  {n=G.UIT.T, config={id = args.back2_id or nil, text = args.back2_label or localize('b_back'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = not args.no_pip and 'set_button_pip' or nil, focus_args =  not args.no_pip and {button = args.back2_button or 'b'} or nil}}
+			}}
+		  }}
+	end
+	return ret
+end

@@ -4343,6 +4343,8 @@ return {
             cry_gameset_mainline = "Mainline",
             cry_gameset_madness = "Madness",
             cry_gameset_custom = "Modified",
+
+            cry_view_set_contents = "View Items in Set",
         },
         labels = {
             food_jokers = "Food Jokers",

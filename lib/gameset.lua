@@ -651,6 +651,9 @@ end
 
 -- gameset config UI
 function cry_gameset_config_UI(center)
+	if not center then
+		center = G.viewedContentSet
+	end
 	G.SETTINGS.paused = true
 	G.your_collection = {}
 	G.your_collection[1] = CardArea(
@@ -677,7 +680,6 @@ function cry_gameset_config_UI(center)
 	if center.set == "Content Set" then
 		gamesets = { "disabled", G.PROFILES[G.SETTINGS.profile].cry_gameset }
 	end
-
 	for i = 1, #gamesets do
 		if
 			not (
@@ -721,8 +723,7 @@ function cry_gameset_config_UI(center)
 	end
 
 	INIT_COLLECTION_CARD_ALERTS()
-
-	local t = create_UIBox_generic_options({
+	local args = {
 		infotip = localize("cry_gameset_explanation"),
 		back_func = G.cry_prev_collec,
 		snap_back = true,
@@ -733,10 +734,23 @@ function cry_gameset_config_UI(center)
 				nodes = { deck_tables },
 			},
 		},
-	})
+	}
+	if center.set == "Content Set" then
+		G.viewedContentSet = center
+		args.back2 = true
+		args.back2_func = "your_collection_current_set"
+		args.back2_label = localize("cry_view_set_contents")
+		args.back2_colour = G.C.CRY_SELECTED
+	end
+	local t = create_UIBox_generic_options(args)
 	G.FUNCS.overlay_menu({
 		definition = t,
 	})
+end
+
+function G.FUNCS.cry_gameset_config_UI()
+	G.cry_prev_collec = 'your_collection_content_sets'
+	cry_gameset_config_UI()
 end
 
 local collection_shtuff = {
@@ -758,6 +772,7 @@ local collection_shtuff = {
 	"seals",
 	"boosters",
 	"stickers",
+	"content_sets"
 }
 
 -- sure this is cool and all but it doesn't keep page yet so it's pretty useless
@@ -1040,7 +1055,7 @@ function cry_update_obj_registry(m, force_enable)
 		m = SMODS.GameObject
 		if m.subclasses then
 			for k, v in pairs(m.subclasses) do
-				cry_update_obj_registry(v)
+				cry_update_obj_registry(v, force_enable)
 			end
 		end
 	end
@@ -1057,6 +1072,23 @@ function cry_update_obj_registry(m, force_enable)
 						v:_disable(en)
 					end
 				end
+			end
+		end
+	end
+end
+function cry_index_items(func, m)
+	if not m then
+		m = SMODS.GameObject
+		if m.subclasses then
+			for k, v in pairs(m.subclasses) do
+				cry_index_items(func, v)
+			end
+		end
+	end
+	if m.obj_table then
+		for k, v in pairs(m.obj_table) do
+			if v.mod and v.mod.id == "Cryptid" then
+				func(v)
 			end
 		end
 	end
@@ -1184,9 +1216,18 @@ SMODS.ContentSet({
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)
+	G.cry_prev_collec = 'your_collection_content_sets'
 	G.SETTINGS.paused = true
 	G.FUNCS.overlay_menu({
 		definition = create_UIBox_your_collection_content_sets(),
+	})
+end
+
+G.FUNCS.your_collection_current_set = function(e)
+	G.cry_prev_collec = 'your_collection_current_set'
+	G.SETTINGS.paused = true
+	G.FUNCS.overlay_menu({
+		definition = create_UIBox_your_collection_current_set(),
 	})
 end
 
@@ -1267,6 +1308,89 @@ function create_UIBox_your_collection_content_sets()
 	return t
 end
 
+function create_UIBox_your_collection_current_set()
+	local deck_tables = {}
+
+	G.your_collection = {}
+	for j = 1, 3 do
+		G.your_collection[j] = CardArea(
+			G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
+			G.ROOM.T.h,
+			5 * G.CARD_W,
+			0.95 * G.CARD_H,
+			{ card_limit = 5, type = "title", highlight_limit = 0, collection = true }
+		)
+		table.insert(deck_tables, {
+			n = G.UIT.R,
+			config = { align = "cm", padding = 0.07, no_fill = true },
+			nodes = {
+				{ n = G.UIT.O, config = { object = G.your_collection[j] } },
+			},
+		})
+	end
+
+	joker_pool = {}
+	local function is_in_set(card)
+		if card.dependencies and card.dependencies.items then
+			for i = 1, #card.dependencies.items do
+				if card.dependencies.items[i] == G.viewedContentSet.key then
+					joker_pool[#joker_pool + 1] = card
+					return true
+				end
+			end
+		end
+	end
+	cry_index_items(is_in_set)
+	local joker_options = {}
+	for i = 1, math.ceil(#joker_pool / (5 * #G.your_collection)) do
+		table.insert(
+			joker_options,
+			localize("k_page")
+				.. " "
+				.. tostring(i)
+				.. "/"
+				.. tostring(math.ceil(#joker_pool / (5 * #G.your_collection)))
+		)
+	end
+
+	for i = 1, 5 do
+		for j = 1, #G.your_collection do
+			local center = joker_pool[i + (j - 1) * 5]
+			if not center then
+				break
+			end
+			local card = create_generic_card(center)
+			G.your_collection[j]:emplace(card)
+		end
+	end
+
+	INIT_COLLECTION_CARD_ALERTS()
+
+	local t = create_UIBox_generic_options({
+		back_func = "cry_gameset_config_UI",
+		contents = {
+			{ n = G.UIT.R, config = { align = "cm", r = 0.1, colour = G.C.BLACK, emboss = 0.05 }, nodes = deck_tables },
+			{
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					create_option_cycle({
+						options = joker_options,
+						w = 4.5,
+						cycle_shoulders = true,
+						opt_callback = "your_collection_current_set_page",
+						current_option = 1,
+						colour = G.C.RED,
+						no_pips = true,
+						focus_args = { snap_to = true, nav = "wide" },
+					}),
+				},
+			},
+		},
+	})
+	return t
+end
+
 G.FUNCS.your_collection_content_set_page = function(args)
 	if not args or not args.cycle_config then
 		return
@@ -1284,6 +1408,42 @@ G.FUNCS.your_collection_content_set_page = function(args)
 			table.insert(joker_pool, v)
 		end
 	end
+	for i = 1, 5 do
+		for j = 1, #G.your_collection do
+			local center =
+				joker_pool[i + (j - 1) * 5 + (5 * #G.your_collection * (args.cycle_config.current_option - 1))]
+			if not center then
+				break
+			end
+			local card = create_generic_card(center)
+			G.your_collection[j]:emplace(card)
+		end
+	end
+	INIT_COLLECTION_CARD_ALERTS()
+end
+G.FUNCS.your_collection_current_set_page = function(args)
+	if not args or not args.cycle_config then
+		return
+	end
+	for j = 1, #G.your_collection do
+		for i = #G.your_collection[j].cards, 1, -1 do
+			local c = G.your_collection[j]:remove_card(G.your_collection[j].cards[i])
+			c:remove()
+			c = nil
+		end
+	end
+	joker_pool = {}
+	local function is_in_set(card)
+		if card.dependencies and card.dependencies.items then
+			for i = 1, #card.dependencies.items do
+				if card.dependencies.items[i] == G.viewedContentSet.key then
+					joker_pool[#joker_pool + 1] = card
+					return true
+				end
+			end
+		end
+	end
+	cry_index_items(is_in_set)
 	for i = 1, 5 do
 		for j = 1, #G.your_collection do
 			local center =
