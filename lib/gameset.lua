@@ -1276,7 +1276,7 @@ function create_UIBox_your_collection_content_sets()
 			if not center then
 				break
 			end
-			local card = create_generic_card(center)
+			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1359,7 +1359,7 @@ function create_UIBox_your_collection_current_set()
 			if not center then
 				break
 			end
-			local card = create_generic_card(center)
+			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1415,7 +1415,7 @@ G.FUNCS.your_collection_content_set_page = function(args)
 			if not center then
 				break
 			end
-			local card = create_generic_card(center)
+			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1451,7 +1451,7 @@ G.FUNCS.your_collection_current_set_page = function(args)
 			if not center then
 				break
 			end
-			local card = create_generic_card(center)
+			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1462,13 +1462,13 @@ end
 ---- GENERIC COLLECTIONS -----
 ------------------------------
 
-function create_generic_card(center)
+function create_generic_card(center, x, y)
 	--todo: make gameset stickers play nicely with resized sprites
 	local is_blind = center.set == "Blind" or center.cry_blind
 	local is_tag = center.set == "Tag" or center.cry_tag
 	local card = Card(
-		G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
-		G.ROOM.T.h,
+		x or G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
+		y or G.ROOM.T.h,
 		is_blind and 0.7 * G.CARD_W or is_tag and 0.42 * G.CARD_W or G.CARD_W,
 		is_blind and 0.7 * G.CARD_W or is_tag and 0.42 * G.CARD_W or G.CARD_H,
 		nil,
@@ -1486,7 +1486,7 @@ function create_generic_card(center)
 		card:set_edition({[center.config.cry_force_edition] = true}, true, true)
 	end
 	if center.set == "Seal" then
-		card:set_seal(center.key, true, true)
+		card:set_seal(center.key, trfue, true)
 		card.config.center = cry_deep_copy(card.config.center)
 		card.config.center.force_gameset = center.force_gameset
 		card.config.center.key = center.key
