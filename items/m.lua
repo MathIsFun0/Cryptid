@@ -1023,7 +1023,9 @@ local smallestm = {
 		if context.cardarea == G.jokers and context.before then
 			--This isn't retrigger joker compatible for some reason
 			if context.scoring_name == card.ability.extra.type then
-				add_tag(Tag("tag_cry_double_m"))
+				local tag = Tag("tag_cry_double_m")
+				tag.ability.shiny = cry_rollshinybool()
+				add_tag(tag)
 				play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
                 		play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
 				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {

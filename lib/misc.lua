@@ -383,6 +383,27 @@ function cry_bonusvouchermod(mod)
 	end
 end
 
+function save_cryptid()
+	local data = {
+		shinytags = {},
+	}
+	data.shinytags = copy_table(Cryptid.shinytagdata)
+	compress_and_save( G.SETTINGS.profile..'/'..'cryptidsave.jkr', STR_PACK(data))
+end
+
+local sppref = set_profile_progress
+function set_profile_progress()
+	sppref()
+	if not Cryptid.shinytagdata.init then
+		for k, v in pairs(G.P_TAGS) do
+			if Cryptid.shinytagdata[k] == nil then
+				Cryptid.shinytagdata.init = true
+				Cryptid.shinytagdata[k] = false
+			end
+		end
+	end
+end
+
 Cryptid.big_num_whitelist = {
 	j_ride_the_bus = true,
 	j_egg = true,

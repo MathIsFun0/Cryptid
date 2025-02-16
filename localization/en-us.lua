@@ -4273,6 +4273,7 @@ return {
             b_pull = "PULL",
             cry_hooked_ex = "Hooked!",
             k_end_blind = "End Blind",
+            k_cry_shiny = "Shiny",
 
             cry_code_rank = "ENTER RANK",
             cry_code_enh = "ENTER ENHANCEMENT",
