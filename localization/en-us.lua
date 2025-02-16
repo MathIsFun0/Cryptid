@@ -1035,6 +1035,14 @@ return {
                     "{C:attention}#1#{} additional time#s1#",
                 },
             },
+            j_cry_chaos_theory = {
+                name = "Chaos Theory",
+                text = {
+                    "This Joker gains {X:mult,C:white} X#2# {} Mult",
+                    "for played hand's {C:gold}Ascension Power{}",
+                    "{C:inactive}(Currently{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
+                },
+            },
             j_cry_chili_pepper = {
                 name = "Chili Pepper",
                 text = {
