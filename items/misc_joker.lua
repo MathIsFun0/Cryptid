@@ -6790,6 +6790,54 @@ local zooble = {
 		}
 	},
 }
+local chaostheory = {
+	object_type = "Joker",
+	name = "cry-Chaos Theory",
+	key = "chaos_theory",
+	pos = { x = 2, y = 5 },
+	config = { extra = { Xmult_mod = 0.2, x_mult = 1 } },
+	rarity = 3,
+	cost = 9,
+	order = 133,
+	atlas = "atlasone",
+	in_pool = function(self)
+		if G.GAME.cry_asc_played and G.GAME.cry_asc_played > 0 then
+			return true
+		end
+		return false
+	end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.x_mult, center.ability.extra.Xmult_mod } }
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and context.before and not context.blueprint then
+			if G.GAME.current_round.current_hand.cry_asc_num > 0 then
+				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod * G.GAME.current_round.current_hand.cry_asc_num
+				return {
+					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
+					colour = G.C.FILTER,
+				}
+			end
+		end
+		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
+				Xmult_mod = card.ability.extra.x_mult,
+			}
+		end
+	end,
+	cry_credits = {
+		art = {
+			"lumpytouch"
+		},
+		idea = {
+			"MathIsFun_"
+		},
+		code = {
+			"MathIsFun_"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -6887,6 +6935,7 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	chaostheory
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
