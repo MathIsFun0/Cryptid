@@ -6849,7 +6849,7 @@ local arsonist = {
 		if context.destroying_card then
 			local eval = evaluate_poker_hand(context.full_hand)
             		if next(eval['Full House']) then
-                		return context.destroying_card.ability.eternal == false
+                		return not context.destroying_card.ability.eternal
             		end
 		end
 	end,
