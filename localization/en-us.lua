@@ -345,6 +345,13 @@ return {
                     "face-up cards held in hand",
                 },
             },
+	    bl_cry_trophy = {
+                name = "Lemon Trophy",
+                text = {
+                    "Mult cannot",
+                    "exceed Chips",
+                },
+            },
             bl_cry_vermillion_virus = {
                 name = "Vermillion Virus",
                 text = {
@@ -567,18 +574,10 @@ return {
                 }
             },
             set_cry_deck = {
-                name = "Misc. Decks",
+                name = "Decks",
                 text = {
-                    "Gimmicky {C:attention}Decks{} added",
+                    "{C:attention}Decks{} added",
                     "by Cryptid"
-                }
-            },
-            set_cry_enhanced = {
-                name = "Enhanced Decks",
-                text = {
-                    "{C:attention}Decks{} where all cards",
-                    "have the same {C:attention}Enhancement{}, {C:attention}Edition{},",
-                    "{C:attention}Seal{}, {C:attention}Suit{}, or {C:attention}Sticker{}",
                 }
             },
             set_cry_epic = {
@@ -1304,7 +1303,7 @@ return {
                 name = "Energia",
                 text = {
                     "When a {C:attention}Tag{} is acquired,",
-                    "create {C:attention}#1#{} cop#y1# of it",
+                    "create up to {C:attention}#1#{} cop#y1# of it",
                     "and {C:attention}increase{} the number of",
                     "copies by {C:attention}#2#",
                 },
@@ -4236,7 +4235,7 @@ return {
             cry_mus_code = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
             cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
             cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
-	    cry_mus_alt_bg = "Background Music",
+	    cry_mus_alt_bg = "Background Music (by MathIsFun_)",
 
             k_cry_program_pack = "Program Pack",
             k_cry_meme_pack = "Meme Pack",
@@ -4288,11 +4287,6 @@ return {
             cry_code_create_previous = "CREATE PREVIOUS",
             cry_code_execute = "EXECUTE",
             cry_code_cancel = "CANCEL",
-	    cry_deck_one = "Edition Deck Edition",
-	    cry_deck_two = "Enhancement Deck Enhancement",
-   	    cry_deck_three = "Sticker Deck Sticker",
-   	    cry_deck_four = "Suit Deck Suit",
-   	    cry_deck_five = "Seal Deck Seal",
 
             b_flip = "FLIP",
             b_merge = "MERGE",
@@ -4350,6 +4344,8 @@ return {
             cry_gameset_mainline = "Mainline",
             cry_gameset_madness = "Madness",
             cry_gameset_custom = "Modified",
+
+            cry_view_set_contents = "View Items in Set",
         },
         labels = {
             food_jokers = "Food Jokers",
@@ -4475,9 +4471,10 @@ return {
             a_powchips_minus = {"-^#1# Chips"},
             a_powmultchips_minus = {"-^#1# Mult+Chips"},
             a_round_minus = {"-#1# Round"},
-
-            a_tag = {"#1# Tag"},
-            a_tags = {"#1# Tags"},
+	        a_tag_minus = {"-#1# Tag"},
+            a_tags_minus = {"-#1# Tags"},
+            a_tag = {"+#1# Tag"},
+            a_tags = {"+#1# Tags"},
 
             cry_sticker_name = {"#1# Sticker"},
             cry_sticker_desc = {

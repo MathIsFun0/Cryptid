@@ -169,14 +169,13 @@ local foodm = {
 	object_type = "Joker",
 	name = "cry-foodm",
 	key = "foodm",
-	pools = {["M"] = true},
+	pools = {["M"] = true,["Food"] = true},
 	config = { extra = { mult = 40, rounds_remaining = 2, round_inc = 1 } },
 	pos = { x = 4, y = 2 },
 	rarity = 1,
 	dependencies = {
 		items = {"set_cry_m"},
 	},
-    pools = {["Food"] = true},
 	order = 252,
 	cost = 5,
 	atlas = "atlasone",
@@ -1233,6 +1232,7 @@ local macabre = {
 	pools = {["M"] = true},
 	order = 263,
 	pos = { x = 1, y = 2 },
+	display_size = { w = 1.2 * 71, h = 1.2 * 95 },
 	config = { extra = {add = 1} },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly

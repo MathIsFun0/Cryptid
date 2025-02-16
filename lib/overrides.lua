@@ -1,5 +1,59 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+-- get_currrent_pool hook for Deck of Equilibrium and Copies 
+local gcp = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
+	if type == "Tag" then
+		for i = 1, #pool do
+			-- Copies: Turn Double tags into Triple Tags
+			if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+				pool[i] = "tag_cry_triple"
+			end
+			-- Tag Printer: Turn Double tags and Triple Tags into Quadruple Tags
+			if
+				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple")
+				and G.GAME.used_vouchers.v_cry_tag_printer
+			then
+				pool[i] = "tag_cry_quadruple"
+			end
+			-- Clone Machine: Turn Double tags and Triple Tags as well as Quadruple Tags into Quintuple Tags
+			if
+				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple" or pool[i] == "tag_cry_quadruple")
+				and G.GAME.used_vouchers.v_cry_clone_machine
+			then
+				pool[i] = "tag_cry_quintuple"
+			end
+		end
+	-- Deck of Equilibrium stuff
+	elseif
+		G.GAME.modifiers.cry_equilibrium
+		and not override_equilibrium_effect
+		and (_append == "sho" or _type == "Voucher" or _type == "Booster")
+	then
+		if
+			_type ~= "Enhanced"
+			and _type ~= "Edition"
+			and _type ~= "Back"
+			and _type ~= "Tag"
+			and _type ~= "Seal"
+			and _type ~= "Stake"
+		then
+			-- we're regenerating the pool every time because of banned keys but it's fine tbh
+			P_CRY_ITEMS = {}
+			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
+			for _, id in ipairs(valid_pools) do
+				for k, v in pairs(G.P_CENTER_POOLS[id]) do
+					if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
+						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+					end
+				end
+			end
+			if #P_CRY_ITEMS <= 0 then P_CRY_ITEMS[#P_CRY_ITEMS + 1] = 'v_blank' end
+			return P_CRY_ITEMS, "cry_equilibrium" .. G.GAME.round_resets.ante
+		end
+	end
+	return gcp(_type, _rarity, _legendary, _append)
+end
 local gnb = get_new_boss
 function get_new_boss()
 	--Fix an issue with adding bosses mid-run
@@ -673,22 +727,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		center = G.P_CENTERS[center]
 	end
 
-	-- handle banned keys for playing cards
-	-- can cache this if it's too much of a performance hit
-	local _cardlist = {}
-	for k, v in pairs(G.P_CARDS) do
-		local add = true
-		if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
-			add = false
-		end
-		if add then _cardlist[#_cardlist+1] = k end
-	end
-	if #_cardlist <= 0 then _cardlist[#_cardlist+1] = 'S_A' end
-
 	local front = (
 		(_type == "Base" or _type == "Enhanced")
-		and G.P_CARDS[pseudorandom_element(_cardlist, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))]
+		and pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
 	) or nil
+
 	if area == "ERROR" then
 		local ret = (front or center)
 		if not ret.config then
@@ -1174,7 +1217,15 @@ function Controller:queue_L_cursor_press(x, y)
 	end
 	self.L_cursor_queue = { x = x, y = y }
 end
-
+-- Lemon Trophy's effect
+local trophy_mod_mult = mod_mult
+function mod_mult(_mult)
+	hand_chips = hand_chips or 0
+	if G.GAME.trophymod then
+		_mult = math.min(_mult, math.max(hand_chips, 0))
+	end
+  	return trophy_mod_mult(_mult)
+end
 -- Fix a CCD-related crash
 local cuc = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
@@ -1182,4 +1233,19 @@ function Card:can_use_consumeable(any_state, skip_check)
 		return false
 	end
 	return cuc(self, any_state, skip_check)
+end
+
+-- add second back button to create_UIBox_generic_options
+local cuigo = create_UIBox_generic_options
+function create_UIBox_generic_options(args)
+	local ret = cuigo(args)
+	if args.back2 then
+		local mainUI = ret.nodes[1].nodes[1].nodes
+		mainUI[#mainUI+1] = {n=G.UIT.R, config={id = args.back2_id or 'overlay_menu_back2_button', align = "cm", minw = 2.5, button_delay = args.back2_delay, padding =0.1, r = 0.1, hover = true, colour = args.back2_colour or G.C.ORANGE, button = args.back2_func or "exit_overlay_menu", shadow = true, focus_args = {nav = 'wide', button = 'b', snap_to = args.snap_back2}}, nodes={
+			{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
+			  {n=G.UIT.T, config={id = args.back2_id or nil, text = args.back2_label or localize('b_back'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = not args.no_pip and 'set_button_pip' or nil, focus_args =  not args.no_pip and {button = args.back2_button or 'b'} or nil}}
+			}}
+		  }}
+	end
+	return ret
 end

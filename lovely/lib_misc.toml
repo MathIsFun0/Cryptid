@@ -233,3 +233,41 @@ payload = '''
 assembled_string = assembled_string..(type(subpart) == 'string' and subpart or cry_pls(subpart[1], args.vars) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
 '''
 match_indent = true
+
+# prevent misprint crashing when big
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+for i = self.ability.extra.min, self.ability.extra.max do
+    r_mults[#r_mults+1] = tostring(i)
+end
+'''
+position = "at"
+payload = '''
+if self.ability.extra.max - self.ability.extra.min < 500 then
+	for i = self.ability.extra.min, self.ability.extra.max do
+	    r_mults[#r_mults+1] = tostring(i)
+	end
+else
+	for i = 1, 50 do
+		r_mults[#r_mults+1] = tostring(math.random(self.ability.extra.min, self.ability.extra.max))
+	end
+end
+
+'''
+match_indent = true
+
+# handle banned playing cards
+# this must patch into pseudorandom_element to not break Steamodded in_pool logic
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if keep then"
+position = "before"
+payload = '''
+if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
+	keep = false
+end
+'''
+match_indent = true

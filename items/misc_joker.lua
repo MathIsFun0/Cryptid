@@ -566,7 +566,7 @@ local pickle = {
 				nil,
 				nil,
 				{
-					message = "+"..localize({ type = "variable", key = "a_tag" .. (card.ability.extra.tags > 1 and "s" or ""), vars = { card.ability.extra.tags } })[1],
+					message = localize({ type = "variable", key = card.ability.extra.tags == 1 and "a_tag" or "a_tags", vars = { card.ability.extra.tags } })[1],
 					colour = G.C.FILTER,
 				}
 			)
@@ -582,7 +582,7 @@ local pickle = {
 					nil,
 					nil,
 					{
-						message = "-"..localize({ type = "variable", key = "a_tag" .. (card.ability.extra.tags_mod > 1 and "s" or ""), vars = { card.ability.extra.tags_mod } })[1],
+						message = localize({ type = "variable", key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus", vars = { card.ability.extra.tags_mod } })[1]
 						colour = G.C.FILTER,
 					}
 				)

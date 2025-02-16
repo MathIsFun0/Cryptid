@@ -136,6 +136,124 @@ local universum = {
 		idea = {"Ein13"},
 		art = {"Ein13"},
 	},
+	init = function(self)
+		
+		--Universum Patches
+		local uht = update_hand_text
+		function update_hand_text(config, vals)
+			if next(find_joker("cry-Universum")) and not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({ --This is the Hand name text for the poker hand
+					trigger = "before",
+					blockable = not config.immediate,
+					delay = config.delay or 0.8,
+					func = function()
+						local col = G.C.GREEN
+						if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
+							local delta = vals.chips
+							if is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips) then
+								delta = "X" .. number_format(vals.chips / G.GAME.current_round.current_hand.chips)
+							end
+							G.GAME.current_round.current_hand.chips = vals.chips
+							G.hand_text_area.chips:update(0)
+							if vals.StatusText then
+								attention_text({
+									text = delta,
+									scale = 0.8,
+									hold = 1,
+									cover = G.hand_text_area.chips.parent,
+									cover_colour = mix_colours(G.C.CHIPS, col, 0.1),
+									emboss = 0.05,
+									align = "cm",
+									cover_align = "cr",
+								})
+							end
+						end
+						if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
+							local delta = vals.mult
+							if is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult) then
+								delta = "X" .. number_format(vals.mult / G.GAME.current_round.current_hand.mult)
+							end
+							G.GAME.current_round.current_hand.mult = vals.mult
+							G.hand_text_area.mult:update(0)
+							if vals.StatusText then
+								attention_text({
+									text = delta,
+									scale = 0.8,
+									hold = 1,
+									cover = G.hand_text_area.mult.parent,
+									cover_colour = mix_colours(G.C.MULT, col, 0.1),
+									emboss = 0.05,
+									align = "cm",
+									cover_align = "cl",
+								})
+							end
+							if not G.TAROT_INTERRUPT then
+								G.hand_text_area.mult:juice_up()
+							end
+						end
+						if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
+							G.GAME.current_round.current_hand.handname = vals.handname
+							if not config.nopulse then
+								G.hand_text_area.handname.config.object:pulse(0.2)
+							end
+						end
+						if vals.chip_total then
+							G.GAME.current_round.current_hand.chip_total = vals.chip_total
+							G.hand_text_area.chip_total.config.object:pulse(0.5)
+						end
+						if
+							vals.level
+							and G.GAME.current_round.current_hand.hand_level
+								~= " " .. localize("k_lvl") .. tostring(vals.level)
+						then
+							if vals.level == "" then
+								G.GAME.current_round.current_hand.hand_level = vals.level
+							else
+								G.GAME.current_round.current_hand.hand_level = " "
+									.. localize("k_lvl")
+									.. tostring(vals.level)
+								if is_number(vals.level) then
+									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[to_big(math.min(vals.level, 7)):to_number()]
+								else
+									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
+								end
+								G.hand_text_area.hand_level:juice_up()
+							end
+						end
+						if config.sound and not config.modded then
+							play_sound(config.sound, config.pitch or 1, config.volume or 1)
+						end
+						if config.modded then
+							if
+								G.HUD_blind
+								and G.HUD_blind.get_UIE_by_ID
+								and G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_1")
+								and G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_2")
+							then
+								G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_1"):juice_up(0.3, 0)
+								G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_2"):juice_up(0.3, 0)
+							end
+							G.GAME.blind:juice_up()
+							G.E_MANAGER:add_event(Event({
+								trigger = "after",
+								delay = 0.06 * G.SETTINGS.GAMESPEED,
+								blockable = false,
+								blocking = false,
+								func = function()
+									play_sound("tarot2", 0.76, 0.4)
+									return true
+								end,
+							}))
+							play_sound("tarot2", 1, 0.4)
+						end
+						return true
+					end,
+				}))
+			else
+				uht(config, vals)
+			end
+		end
+	end
 }
 local exponentia = {
 	dependencies = {
@@ -175,23 +293,23 @@ local exponentia = {
 		art = {"Jevonn"},
 		code = {"Math"}
 	},
-}
-
--- Exponentia scaling
-local scie = SMODS.calculate_individual_effect
-function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
-  local ret = scie(effect, scored_card, key, amount, from_edition)
-  if (key == 'x_mult' or key == 'xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
-	for _, v in pairs(find_joker("cry-Exponentia")) do
-		local old = v.ability.extra.Emult
-        v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-        card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
-        exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+	init = function(self)
+		-- Hook for scaling
+		local scie = SMODS.calculate_individual_effect
+		function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+			local ret = scie(effect, scored_card, key, amount, from_edition)
+			if (key == 'x_mult' or key == 'xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
+				for _, v in pairs(find_joker("cry-Exponentia")) do
+					local old = v.ability.extra.Emult
+					v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_powmult',vars={number_format(to_big(v.ability.extra.Emult))}}})
+					exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+				end
+			end
+			return ret
+		end
 	end
-  end
-  return ret
-end
-
+}
 local speculo = {
 	dependencies = {
 		items = {
@@ -298,6 +416,15 @@ local redeo = {
 		art = {"Jevonn"},
 		code = {"Math", "jenwalter666"}
 	},
+	init = function(self)
+		local ed = ease_dollars
+		function ease_dollars(mod, x)
+			ed(mod, x)
+			for i = 1, #G.jokers.cards do
+				local effects = G.jokers.cards[i]:calculate_joker({ cry_ease_dollars = mod })
+			end
+		end
+	end
 }
 local tenebris = {
 	dependencies = {
@@ -833,32 +960,6 @@ local aequilibrium = {
 		code = {"Elial2"}
 	},
 }
-local cc = copy_card
-function copy_card(card, a, b, c, d)
-	local m
-	if
-		card
-		and card.ability
-		and card.ability.extra
-		and type(card.ability.extra) == "table"
-		and card.ability.extra.card
-	then
-		m = card.ability.extra.card
-		card.ability.extra.card = nil
-	end
-	local ret = cc(card, a, b, c, d)
-	if
-		card
-		and card.ability
-		and card.ability.extra
-		and type(card.ability.extra) == "table"
-		and card.ability.extra.card
-		and m
-	then
-		card.ability.extra.card = m
-	end
-	return ret
-end
 local facile = {
 	dependencies = {
 		items = {
@@ -980,7 +1081,6 @@ local gemino = {
 		end
 	end,
 }
-
 local energia = {
 	dependencies = {
 		items = {
@@ -998,7 +1098,7 @@ local energia = {
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tag_mod },
+			vars = { math.min(center.ability.extra.tags,40), center.ability.extra.tag_mod },
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1006,19 +1106,23 @@ local energia = {
 	atlas = "atlasexotic",
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
-			local t = math.min(20, card.ability.extra.tags)
+			local value = #G.GAME.tags or 0
+			local t = math.min(40 - value,card.ability.extra.tags)
 			card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
-			if card.ability.extra.tags < 20 then
+			if t > 0 then
 				card_eval_status_text(
 					card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
-				)
+					{
+						message = localize({ type = "variable", key = card.ability.extra.tags == 1 and "a_tag" or "a_tags", vars = { t } })[1],
+						colour = G.C.DARK_EDITION,
+					}
+			)
 			end
-			return { tags = t }
+			return { tags = math.max(t,0) }
 		end
 	end,
 	cry_credits = {
@@ -1027,7 +1131,6 @@ local energia = {
 		code = {"Math"}
 	},
 }
-
 --why is this an exotic???
 local verisimile = {
 	dependencies = {
@@ -1129,7 +1232,6 @@ local verisimile = {
 		code = {"Jevonn"}
 	},
 }
-
 local duplicare = {
     dependencies = {
 		items = {
@@ -1174,7 +1276,6 @@ local duplicare = {
 		code = {"elial2"}
 	},
 }
-
 -- to be honest, this needs a refactor because
 -- rescribed jokers are forgotten on save reload
 -- they are not saved in a good way right now
@@ -1233,11 +1334,11 @@ local rescribere = {
         end
     end
 }
-
 local formidiulosus = {
 	dependencies = {
 		items = {
 			"c_cry_gateway",
+			"set_cry_spooky",
 		},
 	},
 	object_type = "Joker",
@@ -1327,129 +1428,32 @@ local items = {
 return {
 	name = "Exotic Jokers",
 	init = function()
-		--Universum Patches
-		local uht = update_hand_text
-		function update_hand_text(config, vals)
-			if next(find_joker("cry-Universum")) and not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({ --This is the Hand name text for the poker hand
-					trigger = "before",
-					blockable = not config.immediate,
-					delay = config.delay or 0.8,
-					func = function()
-						local col = G.C.GREEN
-						if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
-							local delta = vals.chips
-							if is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips) then
-								delta = "X" .. number_format(vals.chips / G.GAME.current_round.current_hand.chips)
-							end
-							G.GAME.current_round.current_hand.chips = vals.chips
-							G.hand_text_area.chips:update(0)
-							if vals.StatusText then
-								attention_text({
-									text = delta,
-									scale = 0.8,
-									hold = 1,
-									cover = G.hand_text_area.chips.parent,
-									cover_colour = mix_colours(G.C.CHIPS, col, 0.1),
-									emboss = 0.05,
-									align = "cm",
-									cover_align = "cr",
-								})
-							end
-						end
-						if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
-							local delta = vals.mult
-							if is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult) then
-								delta = "X" .. number_format(vals.mult / G.GAME.current_round.current_hand.mult)
-							end
-							G.GAME.current_round.current_hand.mult = vals.mult
-							G.hand_text_area.mult:update(0)
-							if vals.StatusText then
-								attention_text({
-									text = delta,
-									scale = 0.8,
-									hold = 1,
-									cover = G.hand_text_area.mult.parent,
-									cover_colour = mix_colours(G.C.MULT, col, 0.1),
-									emboss = 0.05,
-									align = "cm",
-									cover_align = "cl",
-								})
-							end
-							if not G.TAROT_INTERRUPT then
-								G.hand_text_area.mult:juice_up()
-							end
-						end
-						if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
-							G.GAME.current_round.current_hand.handname = vals.handname
-							if not config.nopulse then
-								G.hand_text_area.handname.config.object:pulse(0.2)
-							end
-						end
-						if vals.chip_total then
-							G.GAME.current_round.current_hand.chip_total = vals.chip_total
-							G.hand_text_area.chip_total.config.object:pulse(0.5)
-						end
-						if
-							vals.level
-							and G.GAME.current_round.current_hand.hand_level
-								~= " " .. localize("k_lvl") .. tostring(vals.level)
-						then
-							if vals.level == "" then
-								G.GAME.current_round.current_hand.hand_level = vals.level
-							else
-								G.GAME.current_round.current_hand.hand_level = " "
-									.. localize("k_lvl")
-									.. tostring(vals.level)
-								if is_number(vals.level) then
-									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[to_big(math.min(vals.level, 7)):to_number()]
-								else
-									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
-								end
-								G.hand_text_area.hand_level:juice_up()
-							end
-						end
-						if config.sound and not config.modded then
-							play_sound(config.sound, config.pitch or 1, config.volume or 1)
-						end
-						if config.modded then
-							if
-								G.HUD_blind
-								and G.HUD_blind.get_UIE_by_ID
-								and G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_1")
-								and G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_2")
-							then
-								G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_1"):juice_up(0.3, 0)
-								G.HUD_blind:get_UIE_by_ID("HUD_blind_debuff_2"):juice_up(0.3, 0)
-							end
-							G.GAME.blind:juice_up()
-							G.E_MANAGER:add_event(Event({
-								trigger = "after",
-								delay = 0.06 * G.SETTINGS.GAMESPEED,
-								blockable = false,
-								blocking = false,
-								func = function()
-									play_sound("tarot2", 0.76, 0.4)
-									return true
-								end,
-							}))
-							play_sound("tarot2", 1, 0.4)
-						end
-						return true
-					end,
-				}))
-			else
-				uht(config, vals)
+		--I have no clue what this patch does
+		local cc = copy_card
+		function copy_card(card, a, b, c, d)
+			local m
+			if
+				card
+				and card.ability
+				and card.ability.extra
+				and type(card.ability.extra) == "table"
+				and card.ability.extra.card
+			then
+				m = card.ability.extra.card
+				card.ability.extra.card = nil
 			end
-		end
-
-		--Redeo Patches
-		local ed = ease_dollars
-		function ease_dollars(mod, x)
-			ed(mod, x)
-			for i = 1, #G.jokers.cards do
-				local effects = G.jokers.cards[i]:calculate_joker({ cry_ease_dollars = mod })
+			local ret = cc(card, a, b, c, d)
+			if
+				card
+				and card.ability
+				and card.ability.extra
+				and type(card.ability.extra) == "table"
+				and card.ability.extra.card
+				and m
+			then
+				card.ability.extra.card = m
 			end
+			return ret
 		end
 	end,
 	items = items,
