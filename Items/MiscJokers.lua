@@ -6848,9 +6848,9 @@ local arsonist = {
 	calculate = function(self, card, context)
 		if context.destroying_card then
 			local eval = evaluate_poker_hand(context.full_hand)
-            if next(eval['Full House']) then
-                return true
-            end
+            		if next(eval['Full House']) then
+                		return context.destroying_card.ability.eternal == false
+            		end
 		end
 	end,
 	cry_credits = {
