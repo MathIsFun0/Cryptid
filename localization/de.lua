@@ -3756,9 +3756,10 @@ return {
             a_powchips_minus = {"-^#1# Chips"},
             a_powmultchips_minus = {"-^#1# Mult+Chips"},
             a_round_minus = {"-#1# Runde"},
-            
-            a_tag = {"#1# Tag"},
-            a_tags = {"#1# Tags"},
+            a_tag_minus = {"-#1# Tag"},
+            a_tags_minus = {"-#1# Tags"},
+            a_tag = {"+#1# Tag"},
+            a_tags = {"+#1# Tags"},
 
             cry_sticker_name = {"#1# Sticker"},
             cry_sticker_desc = {

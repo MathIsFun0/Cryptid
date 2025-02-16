@@ -1098,7 +1098,7 @@ local energia = {
 	config = { extra = { tags = 1, tag_mod = 1 } },
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { math.min(20, center.ability.extra.tags), center.ability.extra.tag_mod },
+			vars = { math.min(center.ability.extra.tags,40), center.ability.extra.tag_mod },
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1106,19 +1106,23 @@ local energia = {
 	atlas = "atlasexotic",
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
-			local t = math.min(20, card.ability.extra.tags)
+			local value = #G.GAME.tags or 0
+			local t = math.min(40 - value,card.ability.extra.tags)
 			card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
-			if card.ability.extra.tags < 20 then
+			if t > 0 then
 				card_eval_status_text(
 					card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize("k_upgrade_ex"), colour = G.C.DARK_EDITION }
-				)
+					{
+						message = localize({ type = "variable", key = card.ability.extra.tags == 1 and "a_tag" or "a_tags", vars = { t } })[1],
+						colour = G.C.DARK_EDITION,
+					}
+			)
 			end
-			return { tags = t }
+			return { tags = math.max(t,0) }
 		end
 	end,
 	cry_credits = {

@@ -4225,6 +4225,8 @@ return {
 			a_round_minus = {
 				"-#1# 回合"
 			},
+			a_tag_minus = {"-#1# 标签"},
+            a_tags_minus = {"-#1# 标签"},
 			a_tag = {
 				"#1# 标签"
 			},

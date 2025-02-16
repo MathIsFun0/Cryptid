@@ -3843,9 +3843,10 @@ return {
             a_powchips_minus = {"-^#1# fichas"},
             a_powmultchips_minus = {"-^#1# multi+fichas"},
             a_round_minus = {"-#1# ronda"},
-
-            a_tag = {"#1# etiqueta"},
-            a_tags = {"#1# etiquetas"},
+            a_tag_minus = {"-#1# etiqueta"},
+            a_tags_minus = {"-#1# etiquetas"},
+            a_tag = {"+#1# etiqueta"},
+            a_tags = {"+#1# etiquetas"},
 
             cry_sticker_name = {"Pegatina #1#"},
             cry_sticker_desc = {

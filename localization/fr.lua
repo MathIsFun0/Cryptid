@@ -3840,7 +3840,8 @@ return {
             a_powchips_minus = { "-^#1# Jetons" },
             a_powmultchips_minus = { "-^#1# Multi+Jetons" },
             a_round_minus = { "-#1# Manche(s)" },
-
+            a_tag_minus = {"-#1# Badge"},
+            a_tags_minus = {"-#1# Badges"},
             a_tag = { "#1# Badge" },
             a_tags = { "#1# Badges" },
 

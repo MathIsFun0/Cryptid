@@ -25,7 +25,10 @@ local test = {
 	loc_vars = function(self, info_queue, center)
 		local gameset = Card.get_gameset(center)
 		if gameset == 'disabled' then gameset = 'mainline' end --still show description
-		return { vars = { center.ability.extra.chips }, key = "j_cry_test_"..gameset }
+		return { 
+			vars = { center.ability.extra.chips },
+			key = "j_cry_test_"..gameset
+		}
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
@@ -49,6 +52,49 @@ local test = {
 			"Jevonn"
 		}
 	},
+}
+local test2 = {
+	object_type = "Joker",
+	name = "ABC",
+	key = 'abc',
+	loc_txt = {
+		name = 'ABC',
+		text = {}
+	},
+	pos = { x = 0, y = 0 },
+	cost = 1,
+	rarity = 1,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.retrigger_joker then
+			if card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2 then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = 1,
+					card = card,
+				}
+			end
+		elseif context.other_joker and card ~= context.other_joker then
+			if card.T.x + card.T.w / 2 < context.other_joker.T.x + context.other_joker.T.w / 2 then
+				if not Talisman.config_file.disable_anims then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							context.other_joker:juice_up(0.5, 0.5)
+							return true
+						end,
+					}))
+				end
+				return {
+					message = localize({ type = "variable", key = "a_xmult", vars = { 3 } }),
+					Xmult_mod = 3,
+				}
+			end
+		end
+	end
 }
 local test3 = {
 	object_type = "Joker",
@@ -134,4 +180,4 @@ local test4 = {
 		end
 	end,
 }
-return {items = {test, test3, test4}, disabled = true}
+return {items = {test, test2, test3, test4}, disabled = true}
