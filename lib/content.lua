@@ -531,21 +531,6 @@ SMODS.Atlas({
 	px = 34,
 	py = 34,
 })
-
--- shiny tags
-SMODS.Atlas({
-	key = "shinyv",
-	path = "shinyv.png",
-	px = 34,
-	py = 34,
-})
-SMODS.Atlas({
-	key = "shinyc",
-	path = "shinyc.png",
-	px = 34,
-	py = 34,
-})
-
 SMODS.Atlas({
 	key = "atlasdeck",
 	path = "atlasdeck.png",
