@@ -859,7 +859,7 @@ return {
                 },
             },
             j_cry_circulus_pistoris = {
-                name = "Vòng Tròn Bánh \"Pi\"",
+                name = "Circulus Pistoris -Bính Sư Pi Luân-",
                 text = {
                     "{X:dark_edition,C:white}^#1#{} Chip và {X:dark_edition,C:white}^#1#{} Nhân",
                     "nếu {C:attention}còn lại",
@@ -946,7 +946,7 @@ return {
                 },
             },
             j_cry_crustulum = {
-                name = "Vỏ Bánh",
+                name = "Crustulum -Thiên Bính Nhất Phiến-",
                 text = {
                     "Joker này thêm {C:chips}+#2#{} Chip",
                     "mỗi lần {C:attention}gieo lại{} trong shop",
@@ -1078,7 +1078,7 @@ return {
                 },
             },
             j_cry_duplicare = {
-                name = '"Nhân" Bản',
+                name = 'Duplicare -Cách Bội-',
                 text = {
                     "Joker này thêm {X:mult,C:white} X#2# {} Nhân",
                     "Khi một {C:attention}Joker{} kích hoạt",
@@ -1087,7 +1087,7 @@ return {
                 }
             },
             j_cry_effarcire = {
-                name = "Lấp Đầy",
+                name = "Effarcire -Trát Mãn-",
                 text = {
                     "Bốc {C:green}cả bộ bài{} lên tay",
                     "khi {C:attention}Blind{} được chọn",
@@ -1096,7 +1096,7 @@ return {
                 },
             },
             j_cry_energia = {
-                name = "Năng Lượng",
+                name = "Energia -Năng Lượng-",
                 text = {
                     "Khi nhận được {C:attention}Nhãn{},",
                     "tạo ra {C:attention}#1#{} bản sao của nó",
@@ -1105,7 +1105,7 @@ return {
                 },
             },
             j_cry_equilib = {
-                name = "Át Bình Đẳng",
+                name = "Ace Aequilibrium -Át Bình Đẳng-",
                 text = {
                     "Các Joker sẽ xuất hiện theo",
                     "thứ tự trong {C:attention}Bộ Sưu Tập{}",
@@ -1137,7 +1137,7 @@ return {
                 },
             },
             j_cry_exponentia = {
-                name = "Lũy Thừa",
+                name = "Exponentia -Bạo Trướng-",
                 text = {
                     "Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
                     "khi {X:red,C:white} XNhân {} được kích hoạt",
@@ -1153,7 +1153,7 @@ return {
                 },
             },
             j_cry_facile = {
-                name = "Dễ dàng",
+                name = "Facile -Khinh Dung-",
                 text = {
                     "{X:dark_edition,C:white}^#1#{} Nhân nếu",
                     "các lá bài đã chơi tính điểm",
@@ -1213,12 +1213,12 @@ return {
                 }
             },
 	    j_cry_formidiulosus = {
-		    name = "Formidiulosus",
+		    name = "Formidiulosus -Chấn Nhiếp Nhân Tâm-",
 		    text = {
 		    	"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền Rủa{}, phá hủy nó",
 			"Tạo ra {C:attention}#1#{} viên {C:cry_candy}Kẹo {C:dark_edition}Âm Bản{} vào cuối Shop",
 			"Thêm {X:dark_edition,C:white}^#2#{} Nhân cho mỗi viên {C:cry_candy}Kẹo{} đang sở hữu",
-			"{C:inactive}(Hiện tại là {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
+			"{C:inactive}(Hiện tại lạ {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
 		    },
 	    },
             j_cry_foxy = {
@@ -1254,7 +1254,7 @@ return {
                 },
             },
             j_cry_gemino = {
-                name = "Song Tử",
+                name = "Gemino -Bội Sinh-",
                 text = {
                     "{C:attention}Nhân đôi{} mọi giá trị",
                     "của {C:attention}Joker{} ở tít bên trái",
@@ -1340,7 +1340,7 @@ return {
                 },
             },
             j_cry_iterum = {
-                name = "Nhắc Lại",
+                name = "Iterum -Tái Diễn-",
                 text = {
                     "Tái kích mọi lá bài đã chơi",
                     "{C:attention}#2#{} lần, mỗi lá bài",
@@ -1627,14 +1627,12 @@ return {
                 },
             },
             j_cry_mprime = {
-                name = "Tredecim",
+                name = "Tredecim -Thập Tam XIII-",
                 text = {
                     "Tạo ra một {C:legendary}Joker M{} ở cuối ván",
-                    "Mỗi lá {C:attention}Joker Vui Nhộn{} hoặc {C:legendary}Joker M",
-                    "ghi thêm {X:dark_edition,C:white}^#1#{} Nhân",
-                    "Tăng trưởng thêm {X:dark_edition,C:white}^#2#{}",
-                    "khi một {C:attention}Joker Vui Nhộn{} được {C:attention}bán",
-                    "{C:inactive,s:0.8}(Ngoại trừ Tredecim)",
+                    "thêm {X:dark_edition,C:white}^#1#{} Nhân cho mỗi {C:attention}Joker Vui Nhộn{} hoặc {C:legendary}Joker M ",
+                    "Tăng {X:dark_edition,C:white}^#2#{} khi một {C:attention}Joker Vui Nhộn{} được {C:attention}bán",
+                    "{C:inactive,s:0.8}(Ngoại trừ Thập Tam)",
                 },
             },
             j_cry_mstack = {
@@ -1822,7 +1820,7 @@ return {
                 },
             },
             j_cry_primus = {
-                name = "\"Nguyên\" Tố",
+                name = "Primus -Nguyên Tố-",
                 text = {
                     "Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
                     "nếu như tất cả lá đã chơi là",
@@ -1886,7 +1884,7 @@ return {
                 },
             },
             j_cry_redeo = {
-                name = "Tua Lại",
+                name = "Redeo -Luân Hồi-",
                 text = {
                     "{C:attention}-#1#{} Ante khi",
                     "đã tiêu {C:money}$#2#{} {C:inactive}($#3#){}",
@@ -1954,7 +1952,7 @@ return {
                 }
             },
             j_cry_Scalae = {
-                name = "Phóng Đại",
+                name = "Scalae -Trùng Cấp-",
                 text = {
                     "{C:attention}Joker{} tăng trưởng sẽ tăng trưởng",
                     "theo đa thức bậc {C:attention}#1#{}",
@@ -2046,7 +2044,7 @@ return {
                 },
             },
             j_cry_speculo = {
-                name = "Suy Đoán",
+                name = "Speculo -Giám Chiếu-",
                 text = {
                     "Tạo ra một bản sao {C:dark_edition}Âm Bản{}",
                     "của một lá {C:attention}Joker{} ngẫu nhiên",
@@ -2069,12 +2067,11 @@ return {
                 },
             },
             j_cry_stella_mortis = {
-                name = "Sao Tử Thần",
+                name = "Stella Mortis -Hắc Mệnh Tinh-",
                 text = {
                     "Joker này phá hủy một lá",
-                    "{C:planet}Hành tinh{} ngẫu nhiên",
-                    "và thêm {X:dark_edition,C:white} ^#1# {} Nhân",
-                    "ở cuối {C:attention}shop{}",
+                    "{C:planet}Hành tinh{} ngẫu nhiên và",
+                    "thêm {X:dark_edition,C:white} ^#1# {} Nhân ở cuối {C:attention}shop{}",
                     "{C:inactive}(Hiện tại là {X:dark_edition,C:white} ^#2# {C:inactive} Nhân)",
                 },
             },
@@ -2146,7 +2143,7 @@ return {
 				},
 			},
             j_cry_tenebris = {
-                name = "U Ám",
+                name = "Tenebris -Hắc Vực-",
                 text = {
                     "{C:dark_edition}+#1#{} ô {C:attention}Joker{}",
                     "Nhận {C:money}$#2#{} ở cuối ván",
@@ -2222,7 +2219,7 @@ return {
                 },
             },
             j_cry_universum = {
-                name = "Toàn Diện Vật",
+                name = "Universum -Vạn Tượng Giới-",
                 text = {
                     "Các {C:attention}tay Poker{} nhận",
                     "{X:red,C:white} X#1# {} Nhân và {X:blue,C:white} X#1# {} Chip",
