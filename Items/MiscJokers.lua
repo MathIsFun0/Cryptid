@@ -6790,7 +6790,7 @@ local digitalhallucinations = {
 					end
 				}))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.FILTER})
-				return true
+				return nil, true
 			end
 			if boosty.ability.name:find('Standard') then
 				G.E_MANAGER:add_event(Event({
