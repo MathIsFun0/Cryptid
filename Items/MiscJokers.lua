@@ -6758,7 +6758,7 @@ local digitalhallucinations = {
 						end)
 					}))
 					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_'..short1[i]), colour = G.C.SECONDARY_SET[short2[i]]})
-					return true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
+					return nil, true	-- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
 				end
 			end
 			if boosty.ability.name:find('code') then
@@ -6774,7 +6774,7 @@ local digitalhallucinations = {
 					end
 				}))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('cry_plus_code'), colour = G.C.SET.Code})
-				return true
+				return nil, true
 			end
 			if boosty.ability.name:find('Buffoon') then
 				G.E_MANAGER:add_event(Event({
@@ -6816,7 +6816,7 @@ local digitalhallucinations = {
 				draw_card(G.play,G.deck, 90,'up', nil)  
 
 				playing_card_joker_effects({true})	-- who knows what most this stuff does, i just copied it from marble jonkler
-				return true
+				return nil, true
 			end
 		end
 	end,
@@ -6875,11 +6875,14 @@ local zooble = {
 	cost = 6,
 	atlas = "atlasone",
 	order = 132,
-	loc_vars = function(self, info_queue, center)
-		return { vars = {center.ability.extra.mult,center.ability.extra.a_mult }}
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	loc_vars = function(self, info_queue, card)
+		return { vars = {card.ability.extra.mult, card.ability.extra.a_mult }}
 	end,
 	calculate = function(self, card, context)
-		if context.before and context.cardarea == G.jokers then
+		if context.before and context.cardarea == G.jokers and not context.blueprint then
 			if not (next(context.poker_hands['Straight']) or next(context.poker_hands['Straight Flush'])) then
 				local unique_ranks = {}
 				for i, v in pairs (context.scoring_hand) do
