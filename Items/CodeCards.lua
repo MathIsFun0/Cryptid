@@ -601,10 +601,7 @@ local commit = {
 	can_use = function(self, card)
 		return #G.jokers.highlighted == 1
 			and not G.jokers.highlighted[1].ability.eternal
-			and not (
-				type(G.jokers.highlighted[1].config.center.rarity) == "number"
-				and G.jokers.highlighted[1].config.center.rarity >= 5
-			)
+			and (not Jen or not Jen.overpowered(G.jokers.highlighted[1].config.center.rarity))
 	end,
 	use = function(self, card, area, copier)
 		local deleted_joker_key = G.jokers.highlighted[1].config.center.key
