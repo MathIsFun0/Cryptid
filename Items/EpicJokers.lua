@@ -802,10 +802,8 @@ local circus = {
 			"Jevonn"
 		}
 	},
-	unlocked = true,
+	unlocked = false,
 	check_for_unlock = function(self, args)
-		--[[
-		Causes too many crashes. Need to reimplenemt this in a way that won't crash all the time
 		if G and G.jokers and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante < 9 then
 			local rarities = {
 
@@ -818,7 +816,6 @@ local circus = {
  				unlock_card(self)
 			end
 		end
-		]]--
 		if args.type == 'cry_lock_all' then
 			lock_card(self)
 		end
@@ -1475,6 +1472,64 @@ local spectrogram = {
 		},
 		code = {
 			"AlexZGreat"
+		}
+	},
+}
+local spectrogram = {
+	object_type = "Joker",
+	name = "cry-mitosis",
+	key = "mitosis",
+	pos = { x = 2, y = 5 },
+	config = { extra = {xmult = 1.5, odds = 1, out_of = 6} },
+	rarity = "cry_epic",
+	cost = 9,
+	order = 134,
+	atlas = "atlasepic",
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+
+		return { vars = { center.ability.extra.xmult, center.ability.extra.odds, center.ability.extra.out_of } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				Xmult_mod = card.ability.extra.xmult,
+				message = "X" .. card.ability.extra.xmult,
+				colour = G.C.MULT
+			}
+		end
+
+		if context.end_of_round and not context.other_card then
+			local results = pseudorandom("mitosis")
+			if results < (card.ability.extra.odds / card.ability.extra.out_of) then
+				local dupe = copy_card(card)
+				dupe:set_edition({
+					negative = true,
+				})
+				dupe:add_to_deck()
+				G.jokers:emplace(dupe)
+
+				return {
+					message = "Split!",
+					colour = G.C.GREEN
+				}
+			else
+				return {
+					message = "Nope!",
+					colour = G.C.PURPLE
+				}
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Khaki"
+		},
+		art = {
+			"Khaki"
+		},
+		code = {
+			"Khaki"
 		}
 	},
 }
