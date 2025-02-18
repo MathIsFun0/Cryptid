@@ -1,3 +1,5 @@
+--These don't use the gameset system currently.
+--Will probably add when there's a way to view stakes in the Collection
 local pink = {
 	object_type = "Stake",
 	name = "cry-Pink Stake",

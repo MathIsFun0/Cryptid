@@ -1,5 +1,10 @@
 local cotton_candy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
 	key = "cotton_candy",
 	pos = { x = 2, y = 0 },
 	rarity = "cry_candy",
@@ -27,6 +32,11 @@ local cotton_candy = {
 }
 local wrapped = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
 	key = "wrapped",
 	pos = { x = 5, y = 0 },
 	rarity = "cry_candy",
@@ -100,6 +110,11 @@ local wrapped = {
 }
 local choco_dice = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
 	key = "chocolate_dice",
 	pos = { x = 1, y = 0 },
 	rarity = 3,
@@ -180,6 +195,24 @@ local choco2 = {
 	calculate = function(self, context)
 		if context.cash_out then
 			G.GAME.current_round.rerolled = false
+		end
+	end,
+	init = function(self)
+		--track if rerolled
+		local gfrs = G.FUNCS.reroll_shop
+		G.FUNCS.reroll_shop = function(e)
+			local ret = gfrs(e)
+			G.GAME.current_round.rerolled = true
+			return ret
+		end
+		local gfcr = G.FUNCS.can_reroll
+		G.FUNCS.can_reroll = function(e)
+			if G.GAME.events.ev_cry_choco2 and G.GAME.current_round.rerolled then
+				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				e.config.button = nil
+				return
+			end
+			return gfcr(e)
 		end
 	end
 }
@@ -448,6 +481,31 @@ local choco7 = {
 			tag.ability.rework_edition = "e_base"
 			add_tag(tag)
 		end
+	end,
+	init = function(self)
+		--candy gives $3
+		local catd = Card.add_to_deck
+		function Card:add_to_deck(debuff)
+			if not debuff and self.config.center.rarity == "cry_candy" then
+				if G.GAME.events.ev_cry_choco7 then
+					ease_dollars(3)
+				end
+				if G.GAME.events.ev_cry_choco8 then
+					local card = create_card(
+						"Joker",
+						G.jokers,
+						nil,
+						nil,
+						nil,
+						nil,
+						pseudorandom_element(Cryptid.food, pseudoseed("cry_candy_rain"))
+					)
+					card:add_to_deck()
+					G.jokers:emplace(card)
+				end
+			end
+			return catd(self, debuff)
+		end
 	end
 }
 local choco8 = {
@@ -470,22 +528,43 @@ local choco9 = {
 		G.GAME.events[self.key] = true
 		ease_dollars(10) --will already be X2 = 20
 	end,
-}
-local ed = ease_dollars
-function ease_dollars(mod, instant)
-	if mod == 0 then return end
-	if G.GAME.events.ev_cry_choco9 and mod > to_big(0) then
-		mod = mod * 2
+	init = function(self)
+		local ed = ease_dollars
+		function ease_dollars(mod, instant)
+			if mod == 0 then return end
+			if G.GAME.events.ev_cry_choco9 and mod > to_big(0) then
+				mod = mod * 2
+			end
+			return ed(mod, instant)
+		end
 	end
-	return ed(mod, instant)
-end
+}
 local choco10 = { --revered antique
 	object_type = "Event",
-	key = "choco10"
+	key = "choco10",
 	--everything here is lovely patches or hooks
+	init = function(self)
+		--antique can only be bought as last item
+		local gfcb = G.FUNCS.can_buy
+		function G.FUNCS.can_buy(e)
+			if e.config.ref_table and e.config.ref_table.ability and e.config.ref_table.ability.cry_antique then
+				if not (#G.shop_jokers.cards == 0 and #G.shop_booster.cards == 0 and #G.shop_vouchers.cards == 1) then
+					e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+					e.config.button = nil
+					return
+				end
+			end
+			return gfcb(e)
+		end
+	end
 }
 local spy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		}
+	},
 	key = "spy",
 	pos = { x = 0, y = 0 },
 	rarity = 1,
@@ -610,6 +689,11 @@ local spy = {
 }
 local flickering = {
 	object_type = "Sticker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
 	atlas = "sticker",
 	pos = { x = 5, y = 4 }, --placeholder
 	key = "flickering",
@@ -671,6 +755,12 @@ local flickering = {
 }
 local trick_or_treat = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+			"set_cry_cursed",
+		}
+	},
 	key = "trick_or_treat",
 	pos = { x = 2, y = 1 },
 	rarity = 2,
@@ -701,6 +791,11 @@ local trick_or_treat = {
 }
 local candy_basket = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
 	key = "candy_basket",
 	pos = { x = 4, y = 0 },
 	rarity = 2,
@@ -736,6 +831,11 @@ local candy_basket = {
 }
 local blacklist = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		}
+	},
 	key = "blacklist",
 	pos = { x = 2, y = 2 },
 	rarity = "cry_cursed",
@@ -803,6 +903,11 @@ local blacklist = {
 }
 local ghost = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		}
+	},
 	key = "ghost",
 	pos = { x = 3, y = 0 },
 	config = {extra = {possess_rate = 2, destroy_rate = 6}},
@@ -859,6 +964,12 @@ local ghost = {
 }
 local possessed = {
 	object_type = "Sticker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+			"j_cry_ghost",
+		}
+	},
 	atlas = "sticker",
 	pos = { x = 6, y = 0 }, --todo
 	key = "possessed",
@@ -867,6 +978,14 @@ local possessed = {
 }
 local spookydeck = {
 	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+			"set_cry_cursed",
+			"set_cry_deck",
+			"j_cry_chocolate_dice",
+		}
+	},
 	key = "spooky",
 	config = { cry_curse_rate = 0.25 },
 	pos = { x = 3, y = 1 },
@@ -888,9 +1007,36 @@ local spookydeck = {
 			end,
 		}))
         end,
+	init = function(self)
+		local Backapply_to_runRef = Back.apply_to_run
+		function Back.apply_to_run(self)
+			Backapply_to_runRef(self)
+			if self.effect.config.cry_spooky then
+				G.GAME.modifiers.cry_spooky = true
+				G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate	or 0.25
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						if G.jokers then
+							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
+							card:add_to_deck()
+							card:start_materialize()
+							card:set_eternal(true)
+							G.jokers:emplace(card)
+							return true
+						end
+					end,
+				}))
+			end
+		end
+	end
 }
 local candy_dagger = {
     object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
     name = "cry-Candy Dagger",
     key = "candy_dagger",
     pos = { x = 4, y = 2 },
@@ -955,6 +1101,11 @@ local candy_dagger = {
 }
 local candy_cane = {
     object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
     key = "candy_cane",
     pos = { x = 1, y = 1 },
     rarity = "cry_candy",
@@ -1025,9 +1176,13 @@ local candy_cane = {
 		end
     end,
 }
-
 local candy_buttons = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
     key = "candy_buttons",
 	name = "cry-candybuttons",
     pos = { x = 1, y = 2 },
@@ -1081,9 +1236,13 @@ local candy_buttons = {
 		calculate_reroll_cost(true)
 	end,
 }
-
 local jawbreaker = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
     key = "jawbreaker",
     pos = { x = 3, y = 2 },
     rarity = "cry_candy",
@@ -1148,6 +1307,11 @@ local jawbreaker = {
 }
 local mellowcreme = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
     key = "mellowcreme",
     pos = { x = 0, y = 2 },
     rarity = "cry_candy",
@@ -1173,6 +1337,11 @@ local mellowcreme = {
 }
 local brittle = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
     key = "brittle",
     pos = { x = 5, y = 1 },
     rarity = "cry_candy",
@@ -1238,6 +1407,11 @@ local brittle = {
 }
 local monopoly_money = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		}
+	},
 	key = "monopoly_money",
 	name = "cry-Monopoly",
 	pos = { x = 4, y = 1 },
@@ -1282,6 +1456,11 @@ local monopoly_money = {
 }
 local candy_sticks = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		}
+	},
 	key = "candy_sticks",
 	name = "cry-Candy-Sticks",
 	pos = { x = 5, y = 2 },
@@ -1366,7 +1545,6 @@ local candy_sticks = {
 		}
 	},
 }
-
 items = {
 	cotton_candy,
 	wrapped,
@@ -1401,7 +1579,7 @@ items = {
 	candy_sticks,
 }
 return { name = "Spooky", init = function() 
-	
+	--Cursed rarity patches
 	local sc = Card.set_cost
 	function Card:set_cost()
 		sc(self)
@@ -1410,7 +1588,6 @@ return { name = "Spooky", init = function()
 			self.sell_cost_label = 0
 		end
 	end
-	
 	--Really hacky patch to remove sell button for cursed jokers
 	local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 	function G.UIDEF.use_and_sell_buttons(card)
@@ -1423,79 +1600,4 @@ return { name = "Spooky", init = function()
 		end
 		return m
 	end
-
-	--track if rerolled
-	local gfrs = G.FUNCS.reroll_shop
-	G.FUNCS.reroll_shop = function(e)
-		local ret = gfrs(e)
-		G.GAME.current_round.rerolled = true
-		return ret
-	end
-	local gfcr = G.FUNCS.can_reroll
-	G.FUNCS.can_reroll = function(e)
-		if G.GAME.events.ev_cry_choco2 and G.GAME.current_round.rerolled then
-			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        	e.config.button = nil
-			return
-		end
-		return gfcr(e)
-	end
-
-	--candy gives $3
-	local catd = Card.add_to_deck
-	function Card:add_to_deck(debuff)
-		if not debuff and self.config.center.rarity == "cry_candy" then
-			if G.GAME.events.ev_cry_choco7 then
-				ease_dollars(3)
-			end
-			if G.GAME.events.ev_cry_choco8 then
-				local card = create_card(
-					"Joker",
-					G.jokers,
-					nil,
-					nil,
-					nil,
-					nil,
-					pseudorandom_element(Cryptid.food, pseudoseed("cry_candy_rain"))
-				)
-				card:add_to_deck()
-				G.jokers:emplace(card)
-			end
-		end
-		return catd(self, debuff)
-	end
-
-	--antique can only be bought as last item
-	local gfcb = G.FUNCS.can_buy
-	function G.FUNCS.can_buy(e)
-		if e.config.ref_table and e.config.ref_table.ability and e.config.ref_table.ability.cry_antique then
-			if not (#G.shop_jokers.cards == 0 and #G.shop_booster.cards == 0 and #G.shop_vouchers.cards == 1) then
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
-				return
-			end
-		end
-		return gfcb(e)
-	end
-
-	local Backapply_to_runRef = Back.apply_to_run
-		function Back.apply_to_run(self)
-			Backapply_to_runRef(self)
-			if self.effect.config.cry_spooky then
-				G.GAME.modifiers.cry_spooky = true
-				G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate	or 0.25
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
-							card:add_to_deck()
-							card:start_materialize()
-							card:set_eternal(true)
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-			end
-		end
 end, items = items }

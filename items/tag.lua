@@ -1,17 +1,24 @@
 local cat = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 0, y = 2 },
 	key = "cat",
 	name = "cry-Cat Tag",
-	config = { level = 1 },
 	order = 12,
-	loc_vars = function(self, info_queue, tag)
-		return { vars = {tag and tag.ability.level or self.config.level} }
-	end,
 }
 local epic_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"set_cry_epic",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 3, y = 0 },
 	name = "cry-Epic Tag",
@@ -50,6 +57,11 @@ local epic_tag = {
 }
 local schematic = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 1, y = 2 },
 	name = "cry-Schematic Tag",
@@ -58,7 +70,7 @@ local schematic = {
 	config = { type = "store_joker_create" },
 	key = "schematic",
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.j_brainstorm
+		info_queue[#info_queue + 1] = { set = "Joker", key = "j_brainstorm" }
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -88,11 +100,18 @@ local schematic = {
 }
 local empoweredPack = {
 	object_type = "Booster",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"set_cry_exotic",
+			"tag_cry_empowered"
+		}
+	},
 	name = "cry-Empowered Pack",
 	key = "empowered",
 	kind = "Spectral",
 	no_doe = true,
-	atlas = "pack",
+	atlas = "empowered",
 	pos = { x = 3, y = 1 },
 	config = { extra = 2, choose = 1 },
 	cost = 0,
@@ -123,27 +142,30 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if 
-			i % 2 == 1 
-			and cry_card_enabled("c_cry_gateway") == true 
-			and not (G.GAME.used_jokers['c_cry_gateway']
-			and not next(find_joker("Showman")))
-		then
+		if i % 2 == 1 and Cryptid.enabled["Exotic Jokers"] then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
-		elseif
-			i % 2 == 0
-			and not (G.GAME.used_jokers['c_soul']
-			and not next(find_joker("Showman")))	
-		then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
 		else
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
 		end
 	end,
 	group_key = "k_spectral_pack",
 }
+local empoweredpack_sprite = {
+	object_type = "Atlas",
+	key = "empowered",
+	path = "pack_cry.png",
+	px = 71,
+	py = 95,
+}
 local empowered = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"set_cry_exotic",
+			"c_cry_gateway",
+		}
+	},
 	name = "cry-Empowered Tag",
 	order = 18,
 	atlas = "tag_cry",
@@ -152,9 +174,9 @@ local empowered = {
 	key = "empowered",
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
-		info_queue[#info_queue + 1] = G.P_CENTERS.c_soul
-		if cry_card_enabled("c_cry_gateway") == true then
-			info_queue[#info_queue + 1] = G.P_CENTERS.c_cry_gateway
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
+		if Cryptid.enabled["Exotic Jokers"] then
+			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		end
 		return { vars = {} }
 	end,
@@ -189,6 +211,12 @@ local empowered = {
 }
 local gambler = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"tag_cry_empowered",
+		}
+	},
 	name = "cry-Gamblecore",
 	order = 13,
 	atlas = "tag_cry",
@@ -197,7 +225,7 @@ local gambler = {
 	min_ante = 2,
 	key = "gambler",
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.tag_cry_empowered
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_empowered" }
 		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
 	end,
 	apply = function(self, tag, context)
@@ -221,6 +249,11 @@ local gambler = {
 }
 local bundle = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
 	name = "cry-Bundle Tag",
 	order = 16,
 	atlas = "tag_cry",
@@ -229,10 +262,10 @@ local bundle = {
 	key = "bundle",
 	min_ante = 2,
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.tag_standard
-		info_queue[#info_queue + 1] = G.P_CENTERS.tag_charm
-		info_queue[#info_queue + 1] = G.P_CENTERS.tag_meteor
-		info_queue[#info_queue + 1] = G.P_CENTERS.tag_buffoon
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_standard" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_charm" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_meteor" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_buffoon" }
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -254,6 +287,11 @@ local bundle = {
 }
 local memory = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 3, y = 1 },
 	name = "cry-Memory Tag",
@@ -288,9 +326,35 @@ local memory = {
 	in_pool = function()
 		return G.GAME.cry_last_tag_used and true
 	end,
+	init = function(self)
+		--store last tag used
+		local tapr = Tag.apply_to_run
+		function Tag:apply_to_run(x)
+			local ret = tapr(self, x)
+			if
+				self.triggered
+				and self.key ~= "tag_double"
+				and self.key ~= "tag_cry_memory"
+				and self.key ~= "tag_cry_triple"
+				and self.key ~= "tag_cry_quadruple"
+				and self.key ~= "tag_cry_quintuple"
+				and self.key ~= "tag_ortalab_rewind"
+			then
+				G.GAME.cry_last_tag_used = self.key
+				G.GAME.cry_memory_orbital = self.ability.orbital_hand
+			end
+			return ret
+		end
+	end
 }
 local glitched_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_glitched",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 5, y = 0 },
 	name = "cry-Glitched Tag",
@@ -326,6 +390,12 @@ local glitched_tag = {
 }
 local oversat_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_oversat",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 7, y = 1 },
 	name = "cry-Oversaturated Tag",
@@ -361,6 +431,12 @@ local oversat_tag = {
 }
 local mosaic_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_mosaic",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 5, y = 1 },
 	name = "cry-Mosaic Tag",
@@ -396,6 +472,12 @@ local mosaic_tag = {
 }
 local gold_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_gold",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 6, y = 0 },
 	name = "cry-Golden Tag",
@@ -431,6 +513,12 @@ local gold_tag = {
 }
 local glass_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_glass",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 4, y = 0 },
 	name = "cry-Glass Tag",
@@ -466,6 +554,12 @@ local glass_tag = {
 }
 local blur_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_blur",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 7, y = 0 },
 	name = "cry-Blurred Tag",
@@ -502,6 +596,12 @@ local blur_tag = {
 --order 8 reserved for Noisy tag (if it ever has a shader / comes into existence)
 local astral_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_astral",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 6, y = 1 },
 	name = "cry-Astral Tag",
@@ -537,6 +637,12 @@ local astral_tag = {
 }
 local m_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_m",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 4, y = 1 },
 	name = "cry-Jolly Tag",
@@ -572,6 +678,13 @@ local m_tag = {
 }
 local double_m_tag = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"e_cry_m",
+			"j_cry_smallestm",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 7, y = 2 },
 	name = "cry-Double M Tag",
@@ -587,15 +700,19 @@ local double_m_tag = {
 		if context.type == "store_joker_create" then
 			local card
 			local option = {}
+			for k, _ in pairs(Cryptid.M_jokers) do
+				if G.P_CENTERS[k] then
+					option[#option + 1] = k
+				end
+			end
 			card = create_card(
-				"M",
+				"Joker",
 				context.area,
 				nil,
 				nil,
 				nil,
 				nil,
-				nil,
-				"M_is_love_M_is_life"
+				pseudorandom_element(option, pseudoseed("M_is_love_M_is_life"))
 			)
 			card:set_edition({
 				cry_m = true,
@@ -618,6 +735,11 @@ local double_m_tag = {
 }
 local banana = {
         object_type = "Tag",
+		dependencies = {
+			items = {
+				"set_cry_tag",
+			}
+		},
         name = "cry-Banana Tag",
 	order = 27,
         atlas = "tag_cry",
@@ -632,14 +754,22 @@ local banana = {
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][61].key
 			})
-			info_queue[#info_queue + 1] = G.P_CENTERS.j_cavendish
+			info_queue[#info_queue + 1] = {
+				set = "Joker", 
+				key = "j_cavendish",
+				specific_vars = { 3, G.GAME.probabilities.normal or 1, 1000 }
+			}
 		else
 			banana = localize({ 
 				type = "name_text",
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][38].key
 			})
-			info_queue[#info_queue + 1] = G.P_CENTERS.j_gros_michel
+			info_queue[#info_queue + 1] = {
+				set = "Joker", 
+				key = "j_gros_michel",
+				specific_vars = { 15, G.GAME.probabilities.normal or 1, 6 }
+			}
 		end
 		return { vars = { banana } }
 	end,
@@ -675,6 +805,11 @@ local banana = {
 }
 local scope = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 6, y = 2 },
 	name = "cry-Scope Tag",
@@ -699,6 +834,12 @@ local scope = {
 }
 local loss = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"p_cry_meme_1",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 1, y = 3 },
 	name = "cry-Loss Tag",
@@ -707,7 +848,7 @@ local loss = {
 	key = "loss",
 	min_ante = 2,
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.p_cry_meme_1
+		info_queue[#info_queue + 1] = { set = "Other", key = "p_cry_meme_1", specific_vars = { 2, 5 } }
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -738,6 +879,11 @@ local loss = {
 }
 local gourmand = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 2, y = 3 },
 	name = "cry-Gourmand Tag",
@@ -752,14 +898,13 @@ local gourmand = {
 		if context.type == "store_joker_create" then
 			local card
 			card = create_card(
-				"Food",
+				"Joker",
 				context.area,
 				nil,
 				nil,
 				nil,
 				nil,
-				nil,
-				"cry_gourmand_tag"
+				Cryptid.get_food("cry_gourmand_tag")
 			)
 			create_shop_card_ui(card, "Joker", context.area)
 			card.states.visible = false
@@ -776,6 +921,11 @@ local gourmand = {
 }
 local better_top_up = {
     object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		}
+	},
     name = "cry-Better Top-up Tag",
 	order = 15,
     atlas = "tag_cry",
@@ -812,6 +962,12 @@ local better_top_up = {
 }
 local better_voucher = {
 	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+			"set_cry_tier3",
+		}
+	},
 	atlas = "tag_cry",
 	pos = { x = 3, y = 3 },
 	name = "cry-Golden Voucher Tag",
@@ -876,6 +1032,11 @@ local better_voucher = {
 }
 local booster = {
         object_type = "Tag",
+		dependencies = {
+			items = {
+				"set_cry_tag",
+			}
+		},
         name = "cry-Booster Tag",
 	order = 28,
         atlas = "tag_cry",
@@ -914,49 +1075,22 @@ local tagitems = {
 	gourmand,
 	better_top_up,
 	booster,
+	better_voucher,
+	epic_tag,
+	glitched_tag,
+	oversat_tag,
+	mosaic_tag,
+	gold_tag,
+	glass_tag,
+	blur_tag,
+	astral_tag,
+	loss,
+	m_tag,
+	double_m_tag,
 }
-if Cryptid.enabled["Vouchers"] then
-	tagitems[#tagitems + 1] = better_voucher
-end
-if Cryptid.enabled["Epic Jokers"] then
-	tagitems[#tagitems + 1] = epic_tag
-end
-if Cryptid.enabled["Misc."] then
-	tagitems[#tagitems + 1] = glitched_tag
-	tagitems[#tagitems + 1] = oversat_tag
-	tagitems[#tagitems + 1] = mosaic_tag
-	tagitems[#tagitems + 1] = gold_tag
-	tagitems[#tagitems + 1] = glass_tag
-	tagitems[#tagitems + 1] = blur_tag
-	tagitems[#tagitems + 1] = astral_tag
-	tagitems[#tagitems + 1] = loss
-	if Cryptid.enabled["M Jokers"] then
-		tagitems[#tagitems + 1] = m_tag
-		tagitems[#tagitems + 1] = double_m_tag
-	end
-end
 return {
 	name = "Tags",
 	init = function()
-                --Memory Tag Patches - store last tag used
-		local tapr = Tag.apply_to_run
-		function Tag:apply_to_run(x)
-			local ret = tapr(self, x)
-			if
-				self.triggered
-				and self.key ~= "tag_double"
-				and self.key ~= "tag_cry_memory"
-				and self.key ~= "tag_cry_triple"
-				and self.key ~= "tag_cry_quadruple"
-				and self.key ~= "tag_cry_quintuple"
-				and self.key ~= "tag_ortalab_rewind"
-			then
-				G.GAME.cry_last_tag_used = self.key
-				G.GAME.cry_memory_orbital = self.ability.orbital_hand
-			end
-			return ret
-		end
         end,
         items = tagitems,
-		
 }

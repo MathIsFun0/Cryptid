@@ -1,5 +1,10 @@
 local white_hole = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-White Hole",
 	key = "white_hole",
@@ -102,6 +107,11 @@ local white_hole = {
 }
 local vacuum = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Vacuum",
 	key = "vacuum",
@@ -173,6 +183,11 @@ local vacuum = {
 }
 local hammerspace = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Hammerspace",
 	key = "hammerspace",
@@ -228,6 +243,11 @@ local hammerspace = {
 }
 local lock = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Lock",
 	key = "lock",
@@ -335,6 +355,11 @@ local lock = {
 }
 local trade = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Trade",
 	key = "trade",
@@ -449,6 +474,11 @@ local trade = {
 }
 local analog = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Analog",
 	key = "analog",
@@ -504,6 +534,12 @@ local analog = {
 }
 local summoning = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+			"set_cry_epic",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Summoning",
 	key = "summoning",
@@ -554,6 +590,11 @@ local summoning = {
 }
 local replica = {
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Replica",
 	key = "replica",
@@ -623,6 +664,13 @@ local ritual = {
 		code = {"spire_winder"}
 	},
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+			"e_cry_mosaic",
+			"e_cry_astral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Ritual",
 	key = "ritual",
@@ -706,6 +754,11 @@ local adversary = {
 		code = {"spire_winder"}
 	},
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Adversary",
 	key = "adversary",
@@ -793,6 +846,11 @@ local chambered = {
 		code = {"spire_winder"}
 	},
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-Chambered",
 	key = "chambered",
@@ -849,6 +907,11 @@ local conduit = {
 		code = {"spire_winder"}
 	},
 	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+		}
+	},
 	set = "Spectral",
 	name = "cry-conduit",
 	key = "conduit",
@@ -961,15 +1024,10 @@ local spectrals = {
 	adversary,
 	chambered,
 	conduit,
+	summoning,
+	ritual,
 }
-if Cryptid.enabled["Epic Jokers"] then
-	spectrals[#spectrals + 1] = summoning
-end
-if Cryptid.enabled["Misc."] then
-	spectrals[#spectrals + 1] = ritual
-end
 return {
 	name = "Spectrals",
 	items = spectrals,
-	
 }
