@@ -15,7 +15,7 @@ SMODS.PokerHand({
         	{ 'S_A',    true, 'm_stone' },
     	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_asteroidbelt") ~= true then return end
 		local stones = {}
 		for i, card in ipairs(hand) do
 			if card.config.center_key == 'm_stone' or (card.config.center.no_rank and card.config.center.no_suit) then stones[#stones+1] = card end
@@ -41,7 +41,7 @@ SMODS.PokerHand({
        		{ 'C_5',    true },
     	},
     	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_void") ~= true then return end
    		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
     		if #hand > 7 then
       			if not other_hands then return {hand} end
@@ -66,7 +66,7 @@ SMODS.PokerHand({
         	{ 'H_7',    true },
     	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_marsmoons") ~= true then return end
 		local scoring_pairs = {}
 		local unique_suits = 0
 		for suit, _ in pairs(SMODS.Suits) do
@@ -126,7 +126,7 @@ SMODS.PokerHand({
                 { 'S_2',    true },{ 'H_2',    true },{ 'C_2',    true },{ 'D_2',    true },
     	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_universe") ~= true then return end
 		if #hand >= 52 then
 			local deck_booleans = {}
 		        local scored_cards = {}

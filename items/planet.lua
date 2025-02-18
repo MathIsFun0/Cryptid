@@ -745,8 +745,35 @@ local nstar = {
 			}
 		end
 	end,
+	init = function(self)
+		function neutronstarrandomhand(ignore, seed, allowhidden)
+			--From JenLib's get_random_hand
+			local chosen_hand
+			ignore = ignore or {}
+			seed = seed or "randomhand"
+			if type(ignore) ~= "table" then
+				ignore = { ignore }
+			end
+			while true do
+				chosen_hand = pseudorandom_element(G.handlist, pseudoseed(seed))
+				if G.GAME.hands[chosen_hand].visible or allowhidden then
+					local safe = true
+					for _, v in pairs(ignore) do
+						if v == chosen_hand then
+							safe = false
+						end
+					end
+					if safe then
+						break
+					end
+				end
+			end
+			return chosen_hand
+		end
+	end,
 }
 local sunplanet = {
+	--TODO: disable ascendant hands if this is disabled
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -1018,31 +1045,5 @@ function suit_level_up(center, card, area, copier, number)
 		{ mult = 0, chips = 0, handname = "", level = "" }
 	)
 end
-function neutronstarrandomhand(ignore, seed, allowhidden)
-	--From JenLib's get_random_hand
-	local chosen_hand
-	ignore = ignore or {}
-	seed = seed or "randomhand"
-	if type(ignore) ~= "table" then
-		ignore = { ignore }
-	end
-	while true do
-		chosen_hand = pseudorandom_element(G.handlist, pseudoseed(seed))
-		if G.GAME.hands[chosen_hand].visible or allowhidden then
-			local safe = true
-			for _, v in pairs(ignore) do
-				if v == chosen_hand then
-					safe = false
-				end
-			end
-			if safe then
-				break
-			end
-		end
-	end
-	return chosen_hand
-end
 local planet_cards = { planetlua, nstar, timantti, klubi, sydan, lapio, sunplanet, kaikki, abelt, void, marsmoons, universe }
-if not (SMODS.Mods["jen"] or {}).can_load then
-end
 return { name = "Planets", init = function() end, items = planet_cards }
