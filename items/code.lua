@@ -4396,10 +4396,8 @@ local cut = {
 			end
 		end
 		if
-			context.cardarea == G.jokers
+			context.joker_main
 			and (to_big(card.ability.extra.Xmult) > to_big(1))
-			and not context.before
-			and not context.after
 		then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={number_format(card.ability.extra.Xmult)}},
