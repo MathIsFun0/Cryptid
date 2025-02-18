@@ -582,7 +582,7 @@ local pickle = {
 					nil,
 					nil,
 					{
-						message = localize({ type = "variable", key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus", vars = { card.ability.extra.tags_mod } })[1]
+						message = localize({ type = "variable", key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus", vars = { card.ability.extra.tags_mod } })[1],
 						colour = G.C.FILTER,
 					}
 				)
@@ -6031,6 +6031,40 @@ local astral_bottle = {
 		end
 	end,
 }
+local kittyprinter = {
+	dependencies = {
+		items = {
+			"tag_cry_cat",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-kittyprinter",
+	key = "kittyprinter",
+	config = { extra = { Xmult = 2 } },
+	pos = { x = 2, y = 5 },
+	rarity = 2,
+	cost = 6,
+	atlas = "atlasone",
+	order = 129,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult } }
+	end,
+	calculate = function(self, card, context)
+		if
+			context.joker_main
+		then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { card.ability.extra.Xmult },
+				}),
+				Xmult_mod = card.ability.extra.Xmult,
+			}
+		end
+	end,
+}
 local kidnap = {
 	object_type = "Joker",
 	name = "cry-kidnap",
@@ -6334,7 +6368,7 @@ local cookie = {
 	rarity = 1,
 	cost = 4,
 	atlas = "atlastwo",
-	order = 133,
+	order = 129,
 	config = {extra = {chips = 150, chip_mod = 1}},
 	blueprint_compat = true,
 	eternal_compat = false,
@@ -6598,7 +6632,7 @@ local digitalhallucinations = {
 	name = "cry-Digital Hallucinations",
 	key = "digitalhallucinations",
 	pos = { x = 0, y = 7 },
-	order = 130,
+	order = 129,
 	config = { odds = 2 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged), card.ability.odds } }
@@ -6714,7 +6748,7 @@ local arsonist = {
 	rarity = 3,
 	cost = 5,
 	atlas = "atlasone",
-	order = 131,
+	order = 129,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { } }
 	end,
@@ -6747,7 +6781,7 @@ local zooble = {
 	rarity = 2,
 	cost = 6,
 	atlas = "atlasone",
-	order = 132,
+	order = 129,
 	loc_vars = function(self, info_queue, center)
 		return { vars = {center.ability.extra.mult,center.ability.extra.a_mult }}
 	end,
@@ -6878,6 +6912,7 @@ local miscitems =  {
 	savvy,
 	subtle,
 	discreet,
+	kittyprinter,
 	kidnap,
 	exposed,
 	mask,

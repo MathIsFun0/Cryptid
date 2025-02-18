@@ -1604,6 +1604,14 @@ return {
                     "{C:attention}Type Chips{} Joker is sold",
                 },
             },
+            j_cry_kittyprinter = {
+                name = "Kitty Printer",
+                text = {
+                    "{X:mult,C:white} X#1# {} Mult",
+                    "All {C:attention}skip{} tags",
+                    "become {C:attention}Cat Tags{}"
+                },
+            },
             j_cry_kooky = {
                 name = "Kooky Joker",
                 text = {
