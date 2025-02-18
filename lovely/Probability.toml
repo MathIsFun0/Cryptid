@@ -27,7 +27,7 @@ function cry_prob(owned, den, rigged)
 	if rigged then 
 		return den
 	else
-		return prob*owned
+		return prob*(owned or 1)
 	end
 end
 '''
