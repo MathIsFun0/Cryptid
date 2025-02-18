@@ -193,7 +193,7 @@ local gambler = {
 	order = 13,
 	atlas = "tag_cry",
 	pos = { x = 2, y = 0 },
-	config = { type = "immediate", odds = 4 },
+	config = { type = "new_blind_choice", odds = 4 },
 	min_ante = 2,
 	key = "gambler",
 	loc_vars = function(self, info_queue)
@@ -201,19 +201,27 @@ local gambler = {
 		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
 	end,
 	apply = function(self, tag, context)
-		if context.type == "immediate" then
+		if context.type == "new_blind_choice" then
 			if pseudorandom("cry_gambler_tag") < G.GAME.probabilities.normal / tag.config.odds then
 				local lock = tag.ID
             			G.CONTROLLER.locks[lock] = true
 				tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
-                    			local tag = Tag("tag_cry_empowered")
-					add_tag(tag)
+                    			local emp = Tag("tag_cry_empowered")
+					if tag.ability.shiny then	-- good fucking luck
+						emp.ability.shiny = cry_rollshinybool()
+					end
+					add_tag(emp)
+					emp:apply_to_run({type = 'new_blind_choice'})
                     			G.CONTROLLER.locks[lock] = nil
                     			return true
                 		end)
 			else
 				tag:nope()
+				for i = 1, #G.GAME.tags do
+					if G.GAME.tags[i]:apply_to_run({type = 'new_blind_choice'}) then break end
+				end
 			end
+
                 	tag.triggered = true
                 	return true
 		end
@@ -225,7 +233,7 @@ local bundle = {
 	order = 16,
 	atlas = "tag_cry",
 	pos = { x = 0, y = 0 },
-	config = { type = "immediate" },
+	config = { type = "new_blind_choice" },
 	key = "bundle",
 	min_ante = 2,
 	loc_vars = function(self, info_queue)
@@ -236,14 +244,19 @@ local bundle = {
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
-		if context.type == "immediate" then
+		if context.type == "new_blind_choice" then
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.ATTENTION, function()
-				add_tag(Tag("tag_standard"))
-				add_tag(Tag("tag_charm"))
-				add_tag(Tag("tag_meteor"))
-				add_tag(Tag("tag_buffoon"))
+				local tags = {'standard', 'charm', 'meteor', 'buffoon'}
+				for i, v in ipairs(tags) do
+					local _tag = Tag("tag_"..v)
+					_tag.ability.shiny = cry_rollshinybool()
+					add_tag(_tag)
+					if i == 1 then
+						_tag:apply_to_run({type = 'new_blind_choice'})
+					end
+				end
 				G.CONTROLLER.locks[lock] = nil
 				return true
 			end)
