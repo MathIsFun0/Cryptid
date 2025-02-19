@@ -70,6 +70,7 @@ local ballin = {
 			{ id = "c_justice" },
 			{ id = "c_devil" },
 			{ id = "c_tower" },
+			{ id = "c_cry_seraph"},
 			{ id = "c_familiar" },
 			{ id = "c_grim" },
 			{ id = "c_incantation" },
