@@ -111,7 +111,7 @@ local empoweredPack = {
 	key = "empowered",
 	kind = "Spectral",
 	no_doe = true,
-	atlas = "empowered",
+	atlas = "pack",
 	pos = { x = 3, y = 1 },
 	config = { extra = 2, choose = 1 },
 	cost = 0,
