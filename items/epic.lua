@@ -1849,23 +1849,22 @@ local spectrogram = {
 		return { vars = {} }
 	end,
     calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_context.scoring_hand then
-				if context.other_card == G.jokers.cards[#G.jokers.cards] then
-					local echonum = 0
-					for i, v in pairs (context.other_context.scoring_hand) do
-						if v.config.center_key == 'm_cry_echo' then
+		local echonum = 0
+		if context.before and context.cardarea == G.play then
+			for i, v in pairs(context.scoring_hand) do
+				if v.config.center_key == 'm_cry_echo' then
 							echonum = echonum + 1
-						end
-					end
-					if echonum > 0 then
-						return {
-							message = localize("k_again_ex"),
-							repetitions = echonum,
-							card = card,
-						}
-					end
 				end
+			end
+		end
+		
+		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if echonum > 0 then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = echonum,
+					card = card,
+				}
 			end
 		end
     end,
