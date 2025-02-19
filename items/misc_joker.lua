@@ -6518,12 +6518,12 @@ local tax_fraud = {
 	object_type = "Joker",
 	name = "cry-Tax-Fraud",
 	key = "tax_fraud",
-	pos = { x = 2, y = 0 },
+	pos = { x = 4, y = 6 },
 	config = { extra = { money = 6 } },
 	rarity = 3,
 	cost = 10,
 	order = 128,
-	atlas = "placeholders",
+	atlas = "atlastwo",
 	in_pool = function(self)
 		if not G.GAME.modifiers.enable_rentals_in_shop then return false end
 		return true
@@ -6539,6 +6539,9 @@ local tax_fraud = {
 	cry_credits = {
 		idea = {
 			"DoNotSus"
+		},
+		art = {
+			"Dragokillfist"
 		},
 		code = {
 			"Foegro"
