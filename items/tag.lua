@@ -111,7 +111,7 @@ local empoweredPack = {
 	key = "empowered",
 	kind = "Spectral",
 	no_doe = true,
-	atlas = "empowered",
+	atlas = "pack",
 	pos = { x = 3, y = 1 },
 	config = { extra = 2, choose = 1 },
 	cost = 0,
@@ -149,13 +149,6 @@ local empoweredPack = {
 		end
 	end,
 	group_key = "k_spectral_pack",
-}
-local empoweredpack_sprite = {
-	object_type = "Atlas",
-	key = "empowered",
-	path = "pack_cry.png",
-	px = 71,
-	py = 95,
 }
 local empowered = {
 	object_type = "Tag",
