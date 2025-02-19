@@ -150,13 +150,6 @@ local empoweredPack = {
 	end,
 	group_key = "k_spectral_pack",
 }
-local empoweredpack_sprite = {
-	object_type = "Atlas",
-	key = "empowered",
-	path = "pack_cry.png",
-	px = 71,
-	py = 95,
-}
 local empowered = {
 	object_type = "Tag",
 	dependencies = {
