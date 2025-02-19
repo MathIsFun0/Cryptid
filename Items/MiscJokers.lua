@@ -6687,6 +6687,7 @@ local pity_prize = {
 	cost = 4,
 	atlas = "atlastwo",
 	order = 129,
+	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { } }
 	end,
@@ -6706,6 +6707,7 @@ local pity_prize = {
 				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
 			end
 			add_tag(tag)
+			return nil, true
 		end
 	end,
 	cry_credits = {
