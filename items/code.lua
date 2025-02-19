@@ -3301,7 +3301,7 @@ local green_seal = {
 			for k, v in ipairs(context.scoring_hand) do
 				v.cry_green_incompat = nil
 			end
-		end,
+		end
 	end,
 }
 local source = {
