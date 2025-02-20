@@ -324,7 +324,11 @@ local clock = {
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 	cry_ante_base_mod = function(self, dt)
-		return 0.1 * dt / 3
+		if G.SETTINGS.paused then
+			return 0
+		else
+			return 0.1 * dt / 3
+		end
 	end,
 }
 local trick = {
@@ -629,11 +633,15 @@ local lavender_loop = {
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
+				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1) * (G.SETTINGS.paused and 0 or 1)
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
-		return 1.25 ^ (dt / 1.5)
+		if G.SETTINGS.paused then
+			return 1
+		else
+			return 1.25 ^ (dt / 1.5)
+		end
 	end,
 }
 local tornado = {
