@@ -580,7 +580,7 @@ local loopy = {
 	key = "loopy",
 	pools = { ["M"] = true },
 	config = { extra = { retrigger = 0 } },
-	pos = { x = 4, y = 1 },
+	pos = { x = 7, y = 0 },
 	order = 257,
 	atlas = "atlastwo",
 	immutable = true,
