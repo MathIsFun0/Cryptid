@@ -1203,7 +1203,7 @@ local double_sided = {
 	gameset_config = {
 		modest = { disabled = true },
 		mainline = { disabled = true },
-		madness = { disabled = true },
+		madness = { disabled = false },
 		experimental = {},
 	},
 	extra_gamesets = { "experimental" },
@@ -1431,11 +1431,11 @@ local double_sided = {
 			end
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
-				self.dbl_side:set_ability(G.P_CENTERS.c_base)
+				self.dbl_side:set_ability(G.P_CENTERS.j_joker)
 				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
-					self.dbl_side.config.center = cry_deep_copy(self.dbl_side.config.center)
-					self.dbl_side.config.center.no_rank = true
+					self.dbl_side = cry_deep_copy(self)
+				self.dbl_side:set_ability(G.P_CENTERS.c_base)
 				end
 				self.dbl_side.added_to_deck = false
 				return true
