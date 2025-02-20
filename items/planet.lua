@@ -812,7 +812,7 @@ local sunplanet = {
 				blockable = false,
 				blocking = false,
 				delay =  1.2,
-				func = (function() 
+				func = (function()
 					ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
 					ease_colour(G.C.UI_MULT, G.C.RED, 1)
 				return true
@@ -841,7 +841,7 @@ local sunplanet = {
 				blockable = false,
 				blocking = false,
 				delay =  1.2,
-				func = (function() 
+				func = (function()
 					ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
 					ease_colour(G.C.UI_MULT, G.C.RED, 1)
 				return true
@@ -853,7 +853,7 @@ local sunplanet = {
 		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number or number
         	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end,
-	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand 
+	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand
 		if G.GAME.used_vouchers.v_observatory and G.GAME.current_round.current_hand.cry_asc_num ~= 0 and context.joker_main then
 			local value = G.P_CENTERS.v_observatory.config.extra
             		return {
@@ -865,7 +865,7 @@ local sunplanet = {
 	loc_vars = function(self, info_queue, center)
 		local levelone = (G.GAME.sunnumber and G.GAME.sunnumber or 0)+1
 		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then 
+		if levelone == 1 then
 			planetcolourone = G.C.UI.TEXT_DARK
 		end
 		return {

@@ -102,7 +102,7 @@ target = "card.lua"
 pattern = "for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end"
 position = "at"
 payload = '''
-for k, v in ipairs(G.hand.cards) do 
+for k, v in ipairs(G.hand.cards) do
     if not v.ability.eternal then
         temp_hand[#temp_hand+1] = v
     end
@@ -363,8 +363,8 @@ match_indent = true
 target = "card.lua"
 pattern = '''ease_dollars(self.sell_cost)'''
 position = "at"
-payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then 
-	ease_dollars(self.sell_cost) 
+payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then
+	ease_dollars(self.sell_cost)
 end'''
 match_indent = true
 
@@ -374,8 +374,8 @@ match_indent = true
 target = "card.lua"
 pattern = '''play_sound('coin2')'''
 position = "at"
-payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then 
-	play_sound('coin2') 
+payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then
+	play_sound('coin2')
 end'''
 match_indent = true
 
@@ -385,10 +385,10 @@ match_indent = true
 target = "card.lua"
 pattern = '''self:start_dissolve({G.C.GOLD})'''
 position = "at"
-payload = '''if G.GAME.modifiers.cry_no_sell_value or self.sell_cost == 0 then 
-	self:start_dissolve({G.C.RED}) 
-else 
-	self:start_dissolve({G.C.GOLD}) 
+payload = '''if G.GAME.modifiers.cry_no_sell_value or self.sell_cost == 0 then
+	self:start_dissolve({G.C.RED})
+else
+	self:start_dissolve({G.C.GOLD})
 end'''
 match_indent = true
 
@@ -425,7 +425,7 @@ pattern = '''G.GAME.blind:set_blind(G.GAME.round_resets.blind)'''
 position = "after"
 payload = '''if G.GAME.modifiers.cry_card_each_round then
     G.E_MANAGER:add_event(Event({
-        func = function() 
+        func = function()
             local front = pseudorandom_element(G.P_CARDS, pseudoseed('cry_horizon'))
             G.playing_card = (G.playing_card and G.playing_card + 1) or 1
             local edition = G.P_CENTERS.c_base
@@ -442,11 +442,11 @@ payload = '''if G.GAME.modifiers.cry_card_each_round then
             return true
         end}))
     G.E_MANAGER:add_event(Event({
-        func = function() 
+        func = function()
             G.deck.config.card_limit = G.deck.config.card_limit + 1
             return true
         end}))
-    draw_card(G.play,G.deck, 90,'up', nil) 
+    draw_card(G.play,G.deck, 90,'up', nil)
 end'''
 match_indent = true
 

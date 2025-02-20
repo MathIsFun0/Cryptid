@@ -414,11 +414,11 @@ local trade = {
 		else
 			area = G.play
 		end
-		
+
 		local card = copy_card(unredeemed_voucher)
 		card.ability.extra = copy_table(unredeemed_voucher.ability.extra)
 		if card.facing == 'back' then card:flip() end
-		
+
 		card:start_materialize()
 		area:emplace(card)
 		card.cost = 0
@@ -1017,7 +1017,7 @@ local spectrals = {
 	white_hole,
 	vacuum,
 	hammerspace,
-	lock, 
+	lock,
 	trade,
 	analog,
 	replica,

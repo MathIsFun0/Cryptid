@@ -1186,7 +1186,7 @@ return {
                     "{C:inactive}(Must have room){}",
                 },
 		unlock = {
-                    "Obtain an {C:purple}Eternal{}", 
+                    "Obtain an {C:purple}Eternal{}",
                     "{C:attention}Obelisk"
                 },
             },
@@ -1514,7 +1514,7 @@ return {
                     "{X:red,C:white} X#3# {} Mult",
                 },
 		unlock = {
-                    "Score {C:attention}1.0e100{} Chips", 
+                    "Score {C:attention}1.0e100{} Chips",
                     "in a single hand"
                 },
             },
@@ -4266,10 +4266,10 @@ return {
             --Why aren't these in vanilla?
             b_tag = "Tag",
             b_blind = "Blind",
-            
+
             b_tarot_rate = "Tarot Rate",
             b_planet_rate = "Planet Rate",
-            
+
             k_unique = "Unique",
             b_code_cards = "Code Cards",
             b_unique_cards = "Unique Cards",

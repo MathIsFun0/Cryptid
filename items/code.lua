@@ -260,7 +260,7 @@ local crash = {
 			G.CHOOSE_ACE:remove()
 			G.ENTERED_ACE = nil
 		end
-		
+
 		crashes = {
 			function()
 				G:save_settings()
@@ -359,12 +359,12 @@ local crash = {
 					end
 					return newStr
 				end
-		
+
 				function getDebugInfoForCrash()
 					local info = "Additional Context:\nBalatro Version: " .. VERSION .. "\nModded Version: " .. MODDED_VERSION
 					local major, minor, revision, codename = love.getVersion()
 					info = info .. "\nLove2D Version: " .. corruptString(string.format("%d.%d.%d", major, minor, revision))
-		
+
 					local lovely_success, lovely = pcall(require, "lovely")
 					if lovely_success then
 						info = info .. "\nLovely Version: " .. corruptString(lovely.version)
@@ -411,10 +411,10 @@ local crash = {
 					end
 					return info
 				end
-		
+
 				VERSION = corruptString(VERSION)
 				MODDED_VERSION = corruptString(MODDED_VERSION)
-		
+
 				if SMODS.mod_list then
 					for i, mod in ipairs(SMODS.mod_list) do
 						mod.can_load = true
@@ -425,26 +425,26 @@ local crash = {
 						mod.debug_info = corruptString(math.random(5, 100))
 					end
 				end
-		
+
 				do
 					local utf8 = require("utf8")
 					local linesize = 100
-		
+
 					-- Modifed from https://love2d.org/wiki/love.errorhandler
 					function love.errorhandler(msg)
 						msg = tostring(msg)
-		
+
 						if not love.window or not love.graphics or not love.event then
 							return
 						end
-		
+
 						if not love.graphics.isCreated() or not love.window.isOpen() then
 							local success, status = pcall(love.window.setMode, 800, 600)
 							if not success or not status then
 								return
 							end
 						end
-		
+
 						-- Reset state.
 						if love.mouse then
 							love.mouse.setVisible(true)
@@ -463,45 +463,45 @@ local crash = {
 						if love.audio then
 							love.audio.stop()
 						end
-		
+
 						love.graphics.reset()
 						local font = love.graphics.setNewFont("resources/fonts/m6x11plus.ttf", 20)
-		
+
 						local background = { math.random() * 0.3, math.random() * 0.3, math.random() * 0.3 }
 						love.graphics.clear(background)
 						love.graphics.origin()
-		
+
 						local sanitizedmsg = {}
 						for char in msg:gmatch(utf8.charpattern) do
 							table.insert(sanitizedmsg, char)
 						end
 						sanitizedmsg = table.concat(sanitizedmsg)
-		
+
 						local err = {}
-		
+
 						table.insert(err, "Oops! The game crashed:")
 						table.insert(err, sanitizedmsg)
-		
+
 						if #sanitizedmsg ~= #msg then
 							table.insert(err, "Invalid UTF-8 string in error message.")
 						end
-		
+
 						local success, msg = pcall(getDebugInfoForCrash)
 						if success and msg then
 							table.insert(err, "\n" .. msg)
 						else
 							table.insert(err, "\n" .. "Failed to get additional context :/")
 						end
-		
+
 						local p = table.concat(err, "\n")
-		
+
 						p = p:gsub("\t", "")
 						p = p:gsub('%[string "(.-)"%]', "%1")
-		
+
 						local scrollOffset = 0
 						local endHeight = 0
 						love.keyboard.setKeyRepeat(true)
-		
+
 						local function scrollDown(amt)
 							if amt == nil then
 								amt = 18
@@ -511,7 +511,7 @@ local crash = {
 								scrollOffset = endHeight
 							end
 						end
-		
+
 						local function scrollUp(amt)
 							if amt == nil then
 								amt = 18
@@ -521,10 +521,10 @@ local crash = {
 								scrollOffset = 0
 							end
 						end
-		
+
 						local pos = 70
 						local arrowSize = 20
-		
+
 						local function calcEndHeight()
 							local font = love.graphics.getFont()
 							local rw, lines = font:getWrap(p, love.graphics.getWidth() - pos * 2)
@@ -538,7 +538,7 @@ local crash = {
 								scrollOffset = endHeight
 							end
 						end
-		
+
 						local function draw()
 							if not love.graphics.isActive() then
 								return
@@ -576,7 +576,7 @@ local crash = {
 							end
 							love.graphics.present()
 						end
-		
+
 						local fullErrorText = p
 						local function copyToClipboard()
 							if not love.system then
@@ -585,7 +585,7 @@ local crash = {
 							love.system.setClipboardText(fullErrorText)
 							p = p .. "\nCopied to clipboard!"
 						end
-		
+
 						if G then
 							-- Kill threads (makes restarting possible)
 							if G.SOUND_MANAGER and G.SOUND_MANAGER.channel then
@@ -604,10 +604,10 @@ local crash = {
 								})
 							end
 						end
-		
+
 						return function()
 							love.event.pump()
-		
+
 							for e, a, b, c in love.event.poll() do
 								if e == "quit" then
 									return 1
@@ -660,16 +660,16 @@ local crash = {
 									end
 								end
 							end
-		
+
 							draw()
-		
+
 							if love.timer then
 								love.timer.sleep(0.1)
 							end
 						end
 					end
 				end
-		
+
 				load("error(messages[math.random(1, #messages)])", corruptString(30), "t")()
 			end,
 			function()
@@ -711,7 +711,7 @@ local crash = {
 					"lovely-injector has crashed:\npanicked at library/cors/src/panicking.rs:221:5:\npanic in a function that cannot unwind",
 					"error"
 				)
-		
+
 				function love.errorhandler() end
 				print(crash.crash.crash)
 			end,
@@ -1042,15 +1042,15 @@ local rigged = {
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	draw = function(self, card) --don't draw shine
-		if not G.shared_stickers["cry_rigged2"] then 
-			G.shared_stickers["cry_rigged2"] = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 }) 
+		if not G.shared_stickers["cry_rigged2"] then
+			G.shared_stickers["cry_rigged2"] = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 })
 		end	-- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
-		
+
 		G.shared_stickers[self.key].role.draw_major = card
 		G.shared_stickers["cry_rigged2"].role.draw_major = card
-		
+
 		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
-		
+
 		card.hover_tilt = card.hover_tilt/2	-- call it spaghetti, but it's what hologram does so...
 		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
 		G.shared_stickers["cry_rigged2"]:draw_shader("hologram", nil, card.ARGS.send_to_shader, nil, card.children.center)	-- this doesn't really do much tbh, but the slight effect is nice
@@ -1089,7 +1089,7 @@ local hook = {
 		G.jokers.highlighted[2].hook_id = G.jokers.highlighted[1].sort_id
 	end,
 	init = function(self)
-		
+
 		--HOOK:// patches (probably broken)
 		--[[local cj = Card.calculate_joker
 		function Card:calculate_joker(context)
@@ -1277,14 +1277,14 @@ local variable = {
 			})
 			return t
 		end
-		
+
 		G.FUNCS.variable_apply_previous = function()
 			if G.PREVIOUS_ENTERED_RANK then
 				G.ENTERED_RANK = G.PREVIOUS_ENTERED_RANK or ""
 			end
 			G.FUNCS.variable_apply()
 		end
-		
+
 		G.FUNCS.variable_apply = function()
 			local rank_table = {
 				{},
@@ -1304,9 +1304,9 @@ local variable = {
 				{ "M" },
 				{ "nil" },
 			}
-		
+
 			local rank_suffix = nil
-		
+
 			for i, v in pairs(rank_table) do
 				for j, k in pairs(v) do
 					if string.lower(G.ENTERED_RANK) == string.lower(k) then
@@ -1314,7 +1314,7 @@ local variable = {
 					end
 				end
 			end
-		
+
 			if rank_suffix then
 				G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
 				G.GAME.USING_CODE = false
@@ -1446,7 +1446,7 @@ local variable = {
 				G.CHOOSE_RANK:remove()
 			end
 		end
-		
+
 		G.FUNCS.variable_cancel = function()
 			G.CHOOSE_RANK:remove()
 			G.GAME.USING_CODE = false
@@ -1651,7 +1651,7 @@ local class = {
 							end
 						end
 					end
-					if destroyed_cards[1] then 
+					if destroyed_cards[1] then
 								for j=1, #G.jokers.cards do
 									eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = destroyed_cards})
 								end
@@ -2050,21 +2050,21 @@ local delete = {
 		if c.config.center.rarity == "cry_exotic" then
 			check_for_unlock({ type = "what_have_you_done" })
 		end
-		
+
 		G.GAME.cry_banished_keys[c.config.center.key] = true
-		
+
 		-- blanket ban all boosters of a specific type
 		if a == G.shop_booster then
 			local _center = c.config.center
 			for k, v in pairs(G.P_CENTER_POOLS.Booster) do
-				if _center.kind == v.kind 
-				and _center.config.extra == v.config.extra 
+				if _center.kind == v.kind
+				and _center.config.extra == v.config.extra
 				and _center.config.choose == v.config.choose then
 					G.GAME.cry_banished_keys[v.key] = true
 				end
 			end
 		end
-		
+
 		if _p then
 			for k, v in pairs(G.P_CARDS) do
 				-- blanket banning ranks here, probably more useful
@@ -2168,7 +2168,7 @@ local machinecode = {
 	end,
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, center)
-		return {  
+		return {
 			main_start = {
         			randomchar(codechars6),
         			randomchar(codechars6),
@@ -2177,7 +2177,7 @@ local machinecode = {
         			randomchar(codechars6),
        				randomchar(codechars6),
 			}
-		} 
+		}
 	end,
 	use = function(self, card, area, copier)
 		local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, get_random_consumable("cry_machinecode", nil, "c_cry_machinecode").key, c_cry_machinecode)
@@ -3779,10 +3779,10 @@ local pointer = {
 					G.jokers:emplace(card)
 					created = true
 				end
-				if 
-					G.P_CENTERS[current_card].consumeable 
-					and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable" 
-					and not G.GAME.banned_keys[current_card] 
+				if
+					G.P_CENTERS[current_card].consumeable
+					and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
+					and not G.GAME.banned_keys[current_card]
 				then
 					local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 					if card.ability.name and card.ability.name == "cry-Chambered" then card.ability.extra.num_copies = 1 end
@@ -3790,9 +3790,9 @@ local pointer = {
 					G.consumeables:emplace(card)
 					created = true
 				end
-				if 
+				if
 					G.P_CENTERS[current_card].set == "Voucher"
-					and G.P_CENTERS[current_card].unlocked 
+					and G.P_CENTERS[current_card].unlocked
 					and not G.GAME.banned_keys[current_card]
 				then
 					local area
@@ -3859,8 +3859,8 @@ local pointer = {
 					current_card = i
 				end
 			end
-			if 
-				current_card 
+			if
+				current_card
 				and not G.P_CENTERS[current_card]
 				and not G.GAME.banned_keys[current_card]
 			then
@@ -3904,7 +3904,7 @@ local pointer = {
 					--from debugplus
 					local par = G.blind_select_opts.boss.parent
 					G.GAME.round_resets.blind_choices.Boss = current_card
-		
+
 					G.blind_select_opts.boss:remove()
 					G.blind_select_opts.boss = UIBox({
 						T = { par.T.x, 0, 0, 0 },
@@ -3937,7 +3937,7 @@ local pointer = {
 					par.config.object:recalculate()
 					G.blind_select_opts.boss.parent = par
 					G.blind_select_opts.boss.alignment.offset.y = 0
-		
+
 					for i = 1, #G.GAME.tags do
 						if G.GAME.tags[i]:apply_to_run({
 							type = "new_blind_choice",
@@ -3962,7 +3962,7 @@ local pointer = {
 				for i in string.gmatch(string.lower(entered_card), "%S+") do	-- not using apply_lower because we actually want the spaces here
 					table.insert(words, i)
 				end
-				
+
 				local rank_table = {
 					{ "stone" },
 					{ "2", "Two", "II" },
@@ -4088,9 +4088,9 @@ local pointer = {
 						elseif rrank == 14 then return "Ace"
 						end
 					end
-					
+
 					-- ok with all that fluff out the way now we can figure out what on earth we're creating
-					
+
 					local _seal_att = false
 					local _suit = ""
 					local _enh = ""
@@ -4102,36 +4102,36 @@ local pointer = {
 						-- this is dodgy spaghetti but w/ever
 						local wword = words[m]
 						if _suit == "" then _suit = parsley(suit_table, wword) end
-						if _enh == "" then 
+						if _enh == "" then
 							_enh = parsley(enh_table, wword)
 							if _enh == "m_gold" and _seal_att == true then _enh = "" end
 						end
-						if _ed == "" then 
+						if _ed == "" then
 							_ed = parsley(ed_table, wword)
 							if _ed == "e_cry_gold" and _seal_att == true then _ed = "" end
 						end
-						if _seal == "" then 
+						if _seal == "" then
 							_seal = parsley(seal_table, wword)
 							if _seal == "Gold" and _seal_att == false then _seal = "" end
 						end
 						local _st = parsley(sticker_table, wword)
 						if _st then _stickers[#_stickers+1] = _st end
-						if wword == "seal" or wword == "sealed" then 
-							_seal_att = true 
-						else 
-							_seal_att = false 
+						if wword == "seal" or wword == "sealed" then
+							_seal_att = true
+						else
+							_seal_att = false
 						end	-- from end so the next word should describe the seal
 					end
-		
+
 					-- now to construct the playing card
 					-- i'm doing this by applying everything but maybe it's a bit janky?
-					
+
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
-					
+
 					G.E_MANAGER:add_event(Event({
-						func = function() 
+						func = function()
 							G.playing_card = (G.playing_card and G.playing_card + 1) or 1
 							local _card = create_card("Base", G.play, nil, nil, nil, nil, nil, "pointer")
 							SMODS.change_base(_card, _suit ~= "" and _suit or pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('sigil')), _rank > 1 and to_rank(_rank) or nil)
@@ -4150,7 +4150,7 @@ local pointer = {
 						return true
 								end}))
 					G.E_MANAGER:add_event(Event({
-						func = function() 
+						func = function()
 							G.deck.config.card_limit = G.deck.config.card_limit + 1
 						return true
 					end}))
@@ -4330,7 +4330,7 @@ local copypaste = {
 				card = card,
 			}
 		end
-		
+
 	end,
 	cry_credits = {
 		idea = {

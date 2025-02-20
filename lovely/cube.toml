@@ -12,7 +12,7 @@ position = "before"
 payload = '''
 elseif v.source_gate then
     if v.source_gate ~= _append then
-        add = nil 
+        add = nil
     else
         add = true
     end
@@ -22,6 +22,6 @@ elseif v.joker_gate then
         if vv.ability.name == v.joker_gate then
             add = true
         end
-    end 
+    end
 '''
 match_indent = true

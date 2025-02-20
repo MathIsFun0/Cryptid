@@ -1621,7 +1621,7 @@ return {
                     "del comodín del {C:attention}extremo derecho{} por {C:attention}x#1#{}"
                 },
             },
-    
+
             j_cry_oldblueprint = {
                 name = "Plano viejo",
                 text = {

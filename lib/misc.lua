@@ -25,7 +25,7 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 	if name then filter = filter + 1 end
 	if edition then filter = filter + 1 end
 	if type(rarity) ~= "table" then
-		if type(rarity) == "string" then 
+		if type(rarity) == "string" then
 			rarity = { rarity }
 		else
 			rarity = nil
@@ -33,7 +33,7 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 	end
 	if rarity then filter = filter + 1 end
 	if type(ability) ~= "table" then
-		if type(ability) == "string" then 
+		if type(ability) == "string" then
 			ability = { ability }
 		else
 			ability = nil
@@ -145,16 +145,16 @@ end
 
 -- simple plural s function for localisation
 function cry_pls(str, vars)
-	if string.sub(str, 1, 1) == 'p' 
-	or string.sub(str, 1, 1) == 's' 
+	if string.sub(str, 1, 1) == 'p'
+	or string.sub(str, 1, 1) == 's'
 	or string.sub(str, 1, 1) == 'y' then
 		num = vars[tonumber(string.sub(str, 2, -1))]
 		if num then
 			if math.abs(to_big(num) - 1) > to_big(0.001) then
-				return string.sub(str, 1, 1) == 'y' and 'ies' 
+				return string.sub(str, 1, 1) == 'y' and 'ies'
 				or 's'
 			else
-				return string.sub(str, 1, 1) == 'y' and 'y' 
+				return string.sub(str, 1, 1) == 'y' and 'y'
 				or ''
 			end
 		end
@@ -356,10 +356,10 @@ function cry_bonusvouchermod(mod)
 			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
 				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
 				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
-				
-				
+
+
 				-- this could be a function but it's done like what... 3 times? it doesn't matter rn
-				
+
 				local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
 					G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[curr_bonus[#curr_bonus]],{bypass_discovery_center = true, bypass_discovery_ui = true})
 				card.shop_cry_bonusvoucher = #curr_bonus
@@ -518,8 +518,8 @@ end
 function cry_get_enchanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
-	"e_"..(safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"), 
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus", 
+	"e_"..(safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
+	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
 	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
 	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
 	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"

@@ -12,7 +12,7 @@ target = "game.lua"
 pattern = '''check_for_unlock({type = 'blind_discoveries'})'''
 position = "after"
 payload = '''
-if change_context ~= "splash" then 
+if change_context ~= "splash" then
     if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_used_crash'] and G.ACHIEVEMENTS['ach_cry_used_crash'].earned) then check_for_unlock({type = 'ach_cry_used_crash'}) end
     if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_traffic_jam'] and G.ACHIEVEMENTS['ach_cry_traffic_jam'].earned) then check_for_unlock({type = 'win_challenge_startup'}) end
     if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_perfectly_balanced'] and G.ACHIEVEMENTS['ach_cry_perfectly_balanced'].earned) then check_for_unlock({type = 'win_stake_startup'}) end

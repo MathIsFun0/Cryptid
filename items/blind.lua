@@ -351,15 +351,15 @@ local trick = {
 				v:flip()
 			end
 		end
-		--[[if #G.hand.cards > 1 then 
-            G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function() 
-                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 0.85);return true end })) 
+		--[[if #G.hand.cards > 1 then
+            G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 0.85);return true end }))
                 delay(0.15)
-                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1.15);return true end })) 
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1.15);return true end }))
                 delay(0.15)
-                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1);return true end })) 
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1);return true end }))
                 delay(0.5)
-            return true end })) 
+            return true end }))
         end--]]
 	end,
 }

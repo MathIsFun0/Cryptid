@@ -516,7 +516,7 @@ local antimatter = {
 			local sun = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_sun_deck", "wins", 8)
 			local star = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_star_deck", "wins", 8)
 			local moon = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_moon_deck", "wins", 8)
-			
+
 			if cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
 				bluecheck = 1
 				yellowcheck = 1
@@ -596,10 +596,10 @@ local antimatter = {
 				G.E_MANAGER:add_event(Event({
 						func = function()
 								for k, v in pairs(G.playing_cards) do
-										if v.base.suit == 'Clubs' then 
+										if v.base.suit == 'Clubs' then
 											v:change_suit('Spades')
 										end
-										if v.base.suit == 'Diamonds' then 
+										if v.base.suit == 'Diamonds' then
 										v:change_suit('Hearts')
 										end
 								end
@@ -642,7 +642,7 @@ local antimatter = {
 				}))
 				]]--
 			end
-			-- Deck of Equilibrium 
+			-- Deck of Equilibrium
 			if (equilibriumcheck or 0) ~= 0 then
 				G.GAME.modifiers.cry_equilibrium = true
 			end
@@ -660,9 +660,9 @@ local antimatter = {
 			if (wormholecheck or 0) ~= 0 then
 				G.GAME.modifiers.cry_negative_rate = 20
 				--[[
-				
+
 				Needs to check if exotic Jokers exist are enabled (whenever that happens)
-				
+
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
@@ -674,7 +674,7 @@ local antimatter = {
 						end
 					end,
 				}))
-				
+
 				]]--
 			end
 			-- Redeemed deck
@@ -744,7 +744,7 @@ local antimatter = {
 
 			local critcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
 			local plasmacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
-			
+
 			if args.context == "final_scoring_step" then
 					local crit_poll = pseudorandom(pseudoseed("cry_critical"))
 					crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
@@ -892,7 +892,7 @@ local antimatter = {
 		function get_antimatter_vouchers(voucher_table)
 			-- Create a table or use one that is passed into the function
 			if not voucher_table or type(voucher_table) ~= "table" then voucher_table = {} end
-			
+
 			-- Add Vouchers into the table by key
 			local function already_exists(t, voucher)
 				for _, v in ipairs(t) do
@@ -909,13 +909,13 @@ local antimatter = {
 					end
 			end
 
-			--Checks for nils in the extremely nested thing i'm checking for 
+			--Checks for nils in the extremely nested thing i'm checking for
 
 			local nebulacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
 			local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
 			local zodiaccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
 			local equilibriumcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
-			
+
 			--Nebula Deck
 			if (nebulacheck or 0) ~= 0 then
 				Add_voucher_to_the_table(voucher_table, "v_telescope")
@@ -924,7 +924,7 @@ local antimatter = {
 			if (magiccheck or 0) ~= 0 then
 				Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
 			end
-			
+
 			-- Zodiac Deck
 			if (zodiaccheck or 0) ~= 0 then
 				Add_voucher_to_the_table(voucher_table, "v_tarot_merchant")
@@ -940,15 +940,15 @@ local antimatter = {
 		end
 		--Does this even need to be a function idk
 		function get_antimatter_consumables(consumable_table)
-			--Checks for nils in the extremely nested thing i'm checking for 
+			--Checks for nils in the extremely nested thing i'm checking for
 			-- Create a table or use one that is passed into the function
 			if not consumable_table or type(consumable_table) ~= "table" then consumable_table = {} end
-			
+
 			-- Add Consumables into the table by key
 
 			local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
 			local ghostcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
-			
+
 			if (magiccheck or 0) ~= 0 then
 				table.insert(consumable_table, "c_fool")
 				table.insert(consumable_table, "c_fool")
@@ -956,7 +956,7 @@ local antimatter = {
 			if (ghostcheck or 0) ~= 0 then
 				table.insert(consumable_table, "c_hex")
 			end
-			
+
 			return consumable_table
 		end
 
