@@ -1203,7 +1203,7 @@ local double_sided = {
 	gameset_config = {
 		modest = { disabled = true },
 		mainline = { disabled = true },
-		madness = { disabled = false },
+		madness = { disabled = true },
 		experimental = {},
 	},
 	extra_gamesets = { "experimental" },
