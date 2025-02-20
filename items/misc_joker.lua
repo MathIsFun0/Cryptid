@@ -893,7 +893,7 @@ local big_cube = {
 	end,
 	cry_credits = {
 		idea = {
-			"Mystick Myclick"
+			"Mystic Misclick"
 		},
 		art = {
 			"AlexZGreat"
