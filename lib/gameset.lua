@@ -585,6 +585,9 @@ function Card:get_gameset(center)
 end
 local csa = Card.set_ability
 function Card:set_ability(center, y, z)
+	if not center.config then
+		center.config = {} --crashproofing
+	end
 	csa(self, center, y, z)
 	if center.gameset_config and center.gameset_config[self:get_gameset(center)] then
 		for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
@@ -1122,97 +1125,118 @@ SMODS.ContentSet = SMODS.Center:extend({
 			G.P_CENTER_POOLS[self.set] = {}
 		end
 		SMODS.Center.inject(self)
+		if not self.cry_order then
+			self.cry_order = 0
+		end
 	end,
 })
 G.P_CENTER_POOLS["Content Set"] = {}
+-- For now, I made larger sets appear earlier. This can be tweaked later...
 SMODS.ContentSet({
 	key = "m",
 	atlas = "atlasepic",
 	pos = { x = 3, y = 1 }, --m
+	cry_order = -22,
 })
 SMODS.ContentSet({
 	key = "epic",
 	atlas = "atlasepic",
 	pos = { x = 2, y = 1 }, --Canvas
+	cry_order = -32,
 })
 SMODS.ContentSet({
 	key = "code",
 	atlas = "code",
 	pos = { x = 0, y = 0 }, --://CRASH
+	cry_order = -39,
 })
 SMODS.ContentSet({
 	key = "exotic",
 	atlas = "atlasexotic",
 	pos = { x = 0, y = 1 }, --Iterum
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
+	cry_order = -20,
 })
 SMODS.ContentSet({
 	key = "blind",
 	atlas = "blinds",
 	pos = { x = 0, y = 4 }, --The Joke
-	cry_blind = true
+	cry_blind = true,
+	cry_order = -26,
 })
 SMODS.ContentSet({
 	key = "deck",
 	atlas = "atlasdeck",
 	pos = { x = 4, y = 5 }, --Critical Deck
+	cry_order = -23,
 })
 SMODS.ContentSet({
 	key = "spooky",
 	atlas = "atlasspooky",
 	pos = { x = 1, y = 0 }, --Chocolate Dice
+	cry_order = -14,
 })
 SMODS.ContentSet({
 	key = "cursed",
 	atlas = "atlasspooky",
 	pos = { x = 3, y = 0 }, --Ghost
+	cry_order = -6,
 })
 SMODS.ContentSet({
 	key = "timer",
 	atlas = "blinds",
 	pos = { x = 0, y = 1 }, --The Clock
-	cry_blind = true
+	cry_blind = true,
+	cry_order = -2,
 })
 SMODS.ContentSet({
 	key = "misc",
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 }, --Echo Card
+	cry_order = -22,
 })
 SMODS.ContentSet({
 	key = "misc_joker",
 	atlas = "atlasone",
 	pos = { x = 2, y = 3 }, --Nice
+	cry_order = -111,
 })
 SMODS.ContentSet({
 	key = "planet",
 	atlas = "atlasnotjokers",
 	pos = { x = 4, y = 2 }, --Planet.lua
+	cry_order = -8,
 })
 SMODS.ContentSet({
 	key = "spectral",
 	atlas = "atlasnotjokers",
 	pos = { x = 1, y = 1 }, --Replica
+	cry_order = -12,
 })
 SMODS.ContentSet({
 	key = "tag",
 	atlas = "tag_cry",
 	pos = { x = 0, y = 2 }, --Cat Tag
-	cry_tag = true
+	cry_tag = true,
+	cry_order = -30,
 })
 SMODS.ContentSet({
 	key = "tier3",
 	atlas = "atlasvoucher",
 	pos = { x = 5, y = 2 }, --Asteroglyph
+	cry_order = -18,
 })
 SMODS.ContentSet({
 	key = "voucher",
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 }, --Tag Printer
+	cry_order = -15,
 })
 SMODS.ContentSet({
 	key = "poker_hand_stuff",
 	atlas = "atlasthree",
 	pos = { x = 7, y = 1 }, --The Fuck!? (Clusterfuck's XMult Joker)
+	cry_order = -16,
 })
 
 -- these are mostly copy/paste from vanilla code
@@ -1259,6 +1283,9 @@ function create_UIBox_your_collection_content_sets()
 			table.insert(joker_pool, v)
 		end
 	end
+	table.sort(joker_pool, function(a, b)
+		return a.cry_order < b.cry_order
+	end)
 	local joker_options = {}
 	for i = 1, math.ceil(#joker_pool / (5 * #G.your_collection)) do
 		table.insert(
@@ -1342,6 +1369,9 @@ function create_UIBox_your_collection_current_set()
 		end
 	end
 	cry_index_items(is_in_set)
+	table.sort(joker_pool, function(a, b)
+		return a.cry_order < b.cry_order
+	end)
 	local joker_options = {}
 	for i = 1, math.ceil(#joker_pool / (5 * #G.your_collection)) do
 		table.insert(
@@ -1409,6 +1439,9 @@ G.FUNCS.your_collection_content_set_page = function(args)
 			table.insert(joker_pool, v)
 		end
 	end
+	table.sort(joker_pool, function(a, b)
+		return a.cry_order < b.cry_order
+	end)
 	for i = 1, 5 do
 		for j = 1, #G.your_collection do
 			local center =
@@ -1445,6 +1478,9 @@ G.FUNCS.your_collection_current_set_page = function(args)
 		end
 	end
 	cry_index_items(is_in_set)
+	table.sort(joker_pool, function(a, b)
+		return a.cry_order < b.cry_order
+	end)
 	for i = 1, 5 do
 		for j = 1, #G.your_collection do
 			local center =
@@ -1556,7 +1592,16 @@ function modsCollectionTally(pool, set)
 		local obj_tally = {tally = 0, of = 0}
 		--infer pool
 		local _set = set or safe_get(pool, 1, "set")
-		--general consumable UI breaks w/ this
+		--check for general consumables
+		local consumable = false
+		if _set and safe_get(pool, 1, "consumeable") then
+			for i = 1, #pool do
+				if safe_get(pool, i, "set") ~= _set then
+					consumable = true
+					break
+				end
+			end
+		end
 		if _set then
 			if _set == "Seal" then
 				pool = SMODS.Seal.obj_table
@@ -1568,16 +1613,23 @@ function modsCollectionTally(pool, set)
 		end
 		for _, v in pairs(pool) do
 			if v.mod and G.ACTIVE_MOD_UI.id == v.mod.id and not v.no_collection then
-				if set then
+				if consumable then
+					if safe_get(v, "consumeable") then
+						obj_tally.of = obj_tally.of+1
+						if cry_card_enabled(v.key) == true then
+							obj_tally.tally = obj_tally.tally+1
+						end
+					end
+				elseif set then
 					if v.set and v.set == set then
 						obj_tally.of = obj_tally.of+1
-						if cry_get_gameset(v) ~= "disabled" then
+						if cry_card_enabled(v.key) == true then
 							obj_tally.tally = obj_tally.tally+1
 						end
 					end
 				else
 					obj_tally.of = obj_tally.of+1
-					if cry_get_gameset(v) ~= "disabled" then
+					if cry_card_enabled(v.key) == true then
 						obj_tally.tally = obj_tally.tally+1
 					end
 				end

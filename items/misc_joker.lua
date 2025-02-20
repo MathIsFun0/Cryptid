@@ -7529,7 +7529,7 @@ local miscitems =  {
 	stronghold,
 	wtf,
 	clash,
-	adriot,
+	adroit,
 	penetrating,
 	treacherous,
 	bonkers,

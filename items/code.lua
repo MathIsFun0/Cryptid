@@ -3307,7 +3307,7 @@ local green_seal = {
 local source = {
 	dependencies = {
 		items = {
-			"cry_green_seal",
+			"cry_green",
 		},
 	},
 	object_type = "Consumable",
