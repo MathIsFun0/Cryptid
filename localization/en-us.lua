@@ -2161,8 +2161,6 @@ return {
                     "After scoring {C:attention}#2#{} {C:inactive}[#1#]{} Enhanced",
                     "cards, sell this card to",
                     "create an {C:cry_epic}Epic{} {C:attention}Joker{}",
-                    "{C:inactive,s:0.8}Will create a {C:red,s:0.8}Rare{} {C:attention,s:0.8}Joker{}",
-                    "{C:inactive,s:0.8}if {C:cry_epic,s:0.8}Epic{} {C:inactive,s:0.8}Jokers are disabled{}",
                 },
             },
             j_cry_savvy = {

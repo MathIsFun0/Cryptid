@@ -61,7 +61,7 @@ local gateway = {
 local iterum = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -106,7 +106,7 @@ local iterum = {
 local universum = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -258,7 +258,7 @@ local universum = {
 local exponentia = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -313,7 +313,7 @@ local exponentia = {
 local speculo = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -372,7 +372,7 @@ local speculo = {
 local redeo = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -429,7 +429,7 @@ local redeo = {
 local tenebris = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -463,7 +463,7 @@ local tenebris = {
 local effarcire = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -503,7 +503,7 @@ local effarcire_sprite = {
 local crustulum = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -565,7 +565,7 @@ local crustulum = {
 local primus = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -632,7 +632,7 @@ local primus = {
 local scalae = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -706,7 +706,7 @@ local scalae = {
 local stella_mortis = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -791,7 +791,7 @@ local stella_mortis = {
 local circulus_pistoris = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -842,7 +842,7 @@ local circulus_pistoris = {
 local aequilibrium = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -963,7 +963,7 @@ local aequilibrium = {
 local facile = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -1013,7 +1013,7 @@ local facile = {
 local gemino = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -1084,7 +1084,7 @@ local gemino = {
 local energia = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -1135,7 +1135,7 @@ local energia = {
 local verisimile = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
 	},
 	object_type = "Joker",
@@ -1235,7 +1235,7 @@ local verisimile = {
 local duplicare = {
     dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 		},
     },
     object_type = "Joker",
@@ -1337,7 +1337,7 @@ local rescribere = {
 local formidiulosus = {
 	dependencies = {
 		items = {
-			"c_cry_gateway",
+			"c_cry_gateway","set_cry_exotic",
 			"set_cry_spooky",
 		},
 	},

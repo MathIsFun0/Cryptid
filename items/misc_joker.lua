@@ -1,5 +1,10 @@
 local dropshot = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Dropshot",
 	key = "dropshot",
 	order = 3,
@@ -76,9 +81,44 @@ local dropshot = {
 			"Math"
 		}
 	},
+	init = function(self)
+		local gigo = Game.init_game_object
+		function Game:init_game_object()
+			local g = gigo(self)
+			g.current_round.cry_dropshot_card = { suit = "Spades" }
+			return g
+		end
+		local rcc = reset_castle_card
+		function reset_castle_card()
+			rcc()
+			if not G.GAME.current_round.cry_dropshot_card then
+				G.GAME.current_round.cry_dropshot_card = {}
+			end
+			G.GAME.current_round.cry_dropshot_card.suit = "Spades"
+			local valid_castle_cards = {}
+			for k, v in ipairs(G.playing_cards) do
+				if v.ability.effect ~= "Stone Card" then
+					valid_castle_cards[#valid_castle_cards + 1] = v
+				end
+			end
+			if valid_castle_cards[1] then
+				local castle_card =
+					pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
+				if not G.GAME.current_round.cry_dropshot_card then
+					G.GAME.current_round.cry_dropshot_card = {}
+				end
+				G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
+			end
+		end
+	end
 }
 local happyhouse = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-happyhouse",
 	key = "happyhouse",
 	pos = { x = 2, y = 4 },
@@ -147,6 +187,11 @@ local happyhouse = {
 }
 local maximized = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Maximized",
 	key = "maximized",
 	pos = { x = 5, y = 2 },
@@ -166,9 +211,41 @@ local maximized = {
 			"Math"
 		}
 	},
+	init = function(self)
+		local cgi_ref = Card.get_id
+		override_maximized = false
+		function Card:get_id()
+			local id = cgi_ref(self)
+			if id == nil then
+				id = 10
+			end
+			if next(find_joker("cry-Maximized")) and not override_maximized then
+				if id >= 2 and id <= 10 then
+					id = 10
+				end
+				if id >= 11 and id <= 13 or next(find_joker("Pareidolia")) then
+					id = 13
+				end
+			end
+			return id
+		end
+		--Fix issues with View Deck and Maximized
+		local gui_vd = G.UIDEF.view_deck
+		function G.UIDEF.view_deck(unplayed_only)
+			override_maximized = true
+			local ret_value = gui_vd(unplayed_only)
+			override_maximized = false
+			return ret_value
+		end
+	end
 }
 local potofjokes = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Pot of Jokes",
 	key = "pot_of_jokes",
 	config = { extra = { h_size = -2, h_mod = 1 } },
@@ -229,6 +306,11 @@ local potofjokes = {
 }
 local queensgambit = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Queen's Gambit",
 	key = "queens_gambit",
 	pos = { x = 1, y = 0 },
@@ -287,6 +369,11 @@ local queensgambit = {
 }
 local wee_fib = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Wee Fibonacci",
 	key = "wee_fib",
 	config = { extra = { mult = 0, mult_mod = 3 } },
@@ -338,6 +425,11 @@ local wee_fib = {
 }
 local whip = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-The WHIP",
 	key = "whip",
 	pos = { x = 5, y = 3 },
@@ -430,6 +522,11 @@ local whip = {
 }
 local lucky_joker = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Lucky Joker",
 	key = "lucky_joker",
 	config = { extra = { dollars = 5 } },
@@ -471,6 +568,11 @@ local lucky_joker = {
 }
 local cursor = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Cursor",
 	key = "cursor",
 	config = { extra = { chips = 0, chip_mod = 8 } },
@@ -524,6 +626,11 @@ local cursor = {
 }
 local pickle = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Pickle",
 	key = "pickle",
 	config = { extra = { tags = 3, tags_mod = 1 } },
@@ -628,6 +735,11 @@ local pickle = {
 }
 local cube = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Cube",
 	key = "cube",
 	config = { extra = { chips = 6 } },
@@ -662,9 +774,26 @@ local cube = {
 			"Math"
 		}
 	},
+	init = function(self)
+		local sc = Card.set_cost
+		function Card:set_cost()
+			sc(self)
+			if self.ability.name == "cry-Cube" then
+				self.cost = -27
+			end
+			if self.ability.name == "cry-Big Cube" then
+				self.cost = 27
+			end
+		end
+	end
 }
 local triplet_rhythm = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Triplet Rhythm",
 	key = "triplet_rhythm",
 	config = { extra = { Xmult = 3 } },
@@ -707,6 +836,11 @@ local triplet_rhythm = {
 }
 local booster = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Booster Joker",
 	key = "booster",
 	config = { extra = { booster_slots = 1 } },
@@ -746,6 +880,11 @@ local booster = {
 }
 local chili_pepper = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Chili Pepper",
 	key = "chili_pepper",
 	config = { extra = { Xmult = 1, Xmult_mod = 0.5, rounds_remaining = 8 } },
@@ -830,6 +969,11 @@ local chili_pepper = {
 }
 local compound_interest = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Compound Interest",
 	key = "compound_interest",
 	config = { extra = { percent_mod = 3, percent = 12 } },
@@ -869,6 +1013,12 @@ local compound_interest = {
 }
 local big_cube = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"j_cry_cube",
+		}
+	},
 	name = "cry-Big Cube",
 	key = "big_cube",
 	joker_gate = "cry-Cube",
@@ -905,6 +1055,11 @@ local big_cube = {
 }
 local eternalflame = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-eternalflame",
 	key = "eternalflame",
 	pos = { x = 0, y = 4 },
@@ -957,6 +1112,11 @@ local eternalflame = {
 }
 local nice = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Nice",
 	key = "nice",
 	config = { extra = { chips = 420, sixcount = 0, ninecount = 0 } },
@@ -1004,6 +1164,11 @@ local nice = {
 }
 local seal_the_deal = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Seal The Deal",
 	key = "seal_the_deal",
 	config = { extra = nil },
@@ -1068,6 +1233,11 @@ local seal_the_deal = {
 }
 local chad = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Chad",
 	key = "chad",
 	pos = { x = 0, y = 3 },
@@ -1108,6 +1278,11 @@ local chad = {
 }
 local jimball = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Jimball",
 	key = "jimball",
 	pos = { x = 0, y = 0 },
@@ -1184,13 +1359,15 @@ local jimball = {
 			unlock_card(self)
 		end
 	end,
+	init = function(self)
+		G.FUNCS.notif_jimball = function()
+			Cryptid_config.Cryptid.jimball_music = false
+			G:save_settings()
+			G.FUNCS:exit_overlay_menu()
+			-- todo: autosave settings (Not sure if this autosaves it)
+		end
+	end
 }
-G.FUNCS.notif_jimball = function()
-	Cryptid_config.Cryptid.jimball_music = false
-	G:save_settings()
-	G.FUNCS:exit_overlay_menu()
-	-- todo: autosave settings (Not sure if this autosaves it)
-end
 local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 	object_type = "Atlas",
 	key = "jimball",
@@ -1200,6 +1377,11 @@ local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 }
 local sus = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-SUS",
 	key = "sus",
 	pos = { x = 1, y = 3 },
@@ -1302,6 +1484,11 @@ local sus = {
 }
 local fspinner = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-fspinner",
 	key = "fspinner",
 	pos = { x = 4, y = 0 },
@@ -1353,6 +1540,11 @@ local fspinner = {
 }
 local waluigi = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Waluigi",
 	key = "waluigi",
 	pos = { x = 0, y = 3 },
@@ -1396,6 +1588,11 @@ local waluigi = {
 }
 local wario = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-wario",
 	key = "wario",
 	order = 88,
@@ -1443,6 +1640,11 @@ local wario = {
 }
 local krustytheclown = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-krustytheclown",
 	key = "krustytheclown",
 	pos = { x = 3, y = 4 },
@@ -1490,6 +1692,11 @@ local krustytheclown = {
 }
 local blurred = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-blurred Joker",
 	key = "blurred",
 	pos = { x = 4, y = 4 },
@@ -1532,6 +1739,11 @@ local blurred = {
 }
 local gardenfork = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-gardenfork",
 	key = "gardenfork",
 	pos = { x = 0, y = 1 },
@@ -1572,6 +1784,11 @@ local gardenfork = {
 }
 local lightupthenight = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-lightupthenight",
 	key = "lightupthenight",
 	config = { extra = { xmult = 1.5 } },
@@ -1610,6 +1827,11 @@ local lightupthenight = {
 }
 local nosound = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-nosound",
 	key = "nosound",
 	config = { extra = { retriggers = 3 } },
@@ -1650,6 +1872,11 @@ local nosound = {
 }
 local antennastoheaven = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-antennastoheaven",
 	key = "antennastoheaven",
 	pos = { x = 3, y = 1 },
@@ -1700,6 +1927,11 @@ local antennastoheaven = {
 }
 local hunger = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-hunger",
 	key = "hunger",
 	config = { extra = { money = 3 } },
@@ -1739,6 +1971,11 @@ local hunger = {
 }
 local weegaming = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-weegaming",
 	key = "weegaming",
 	order = 62,
@@ -1779,6 +2016,11 @@ local weegaming = {
 }
 local redbloon = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-redbloon",
 	key = "redbloon",
 	config = { extra = { money = 20, rounds_remaining = 2 } },
@@ -1851,6 +2093,11 @@ local redbloon = {
 }
 local apjoker = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-AP Joker",
 	key = "apjoker",
 	pos = { x = 2, y = 0 },
@@ -1886,6 +2133,11 @@ local apjoker = {
 }
 local maze = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-maze",
 	key = "maze",
 	pos = { x = 1, y = 1 },
@@ -1928,6 +2180,11 @@ local maze = {
 --funny side effect of this fix causes trading card and dna to juice up like craaazy lol
 local panopticon = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-panopticon",
 	key = "panopticon",
 	pos = { x = 1, y = 4 },
@@ -1967,6 +2224,11 @@ local panopticon = {
 }
 local magnet = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-magnet",
 	key = "magnet",
 	pos = { x = 4, y = 0 },
@@ -2001,6 +2263,11 @@ local magnet = {
 }
 local unjust_dagger = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Unjust Dagger",
 	key = "unjust_dagger",
 	pos = { x = 3, y = 0 },
@@ -2088,6 +2355,11 @@ local unjust_dagger = {
 }
 local monkey_dagger = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Monkey Dagger",
 	key = "monkey_dagger",
 	pos = { x = 4, y = 3 },
@@ -2175,6 +2447,11 @@ local monkey_dagger = {
 }
 local pirate_dagger = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Pirate Dagger",
 	key = "pirate_dagger",
 	pos = { x = 3, y = 3 },
@@ -2262,6 +2539,11 @@ local pirate_dagger = {
 }
 local mondrian = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-mondrian",
 	key = "mondrian",
 	pos = { x = 5, y = 3 },
@@ -2311,9 +2593,14 @@ local mondrian = {
 		}
 	},
 }
---TODO gate this joker behind epics
 local sapling = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_epic",
+		}
+	},
 	name = "cry-sapling",
 	key = "sapling",
 	pos = { x = 3, y = 2 },
@@ -2373,6 +2660,11 @@ local sapling = {
 }
 local spaceglobe = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-spaceglobe",
 	key = "spaceglobe",
 	pos = { x = 1, y = 4 },
@@ -2447,6 +2739,11 @@ local spaceglobe = {
 }
 local happy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-happy",
 	key = "happy",
 	pos = { x = 2, y = 1 },
@@ -2533,6 +2830,11 @@ local happy = {
 }
 local meteor = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-meteor",
 	key = "meteor",
 	pos = { x = 0, y = 2 },
@@ -2612,6 +2914,11 @@ local meteor = {
 }
 local exoplanet = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-exoplanet",
 	key = "exoplanet",
 	pos = { x = 1, y = 2 },
@@ -2691,6 +2998,11 @@ local exoplanet = {
 }
 local stardust = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-stardust",
 	key = "stardust",
 	pos = { x = 2, y = 2 },
@@ -2768,498 +3080,13 @@ local stardust = {
 		}
 	},
 }
-function rnjoker_randomize(card)
-	card.ability.abilities = {}
-	card.ability.extra = {}
-	card.ability.extra.value = {}
-	card.ability.extra.value_mod = {}
-	card.ability.extra.cond_value = {}
-	local values = {}
-	local contexts = {
-		"open_booster",
-		"buying_card",
-		"selling_self",
-		"selling_card",
-		"reroll_shop",
-		"ending_shop",
-		"skip_blind",
-		"skipping_booster",
-		"playing_card_added",
-		"first_hand_drawn",
-		"setting_blind",
-		"remove_playing_cards",
-		"using_consumeable",
-		"debuffed_hand",
-		"pre_discard",
-		"discard",
-		"end_of_round",
-		"individual_play",
-		"individual_hand_score",
-		"individual_hand_end",
-		"repetition_play",
-		"repetition_hand",
-		"other_joker",
-		"before",
-		"after",
-		"joker_main",
-	}
-	local stats = {
-		plus_mult = 2 + pseudorandom("rnj_mult1") * 28,
-		plus_chips = 4 + pseudorandom("rnj_chips1") * 196,
-		x_mult = 1 + pseudorandom("rnj_mult2") * 3,
-		x_chips = 1 + pseudorandom("rnj_chips2") * 3,
-		h_size = 1 + math.floor(pseudorandom("rnj_h_size") * 3),
-		money = 1 + math.floor(pseudorandom("rnj_money") * 5),
-	}
-	local actions = {
-		make_joker = 1,
-		make_tarot = 1 + math.min(2, math.floor(pseudorandom("rnj_tarot") * 2)),
-		make_planet = 1 + math.min(2, math.floor(pseudorandom("rnj_planet") * 2)),
-		make_spectral = 1,
-		add_dollars = 1 + math.min(4, math.floor(pseudorandom("rnj_dollars") * 5)),
-	}
-	local context = pseudorandom_element(contexts, pseudoseed("rnj_context"))
-	values.context = context
-	if context == "other_joker" or context == "joker_main" then
-		stats.h_size = nil
-		stats.money = nil
-	end
-	local stat_val, stat = pseudorandom_element(stats, pseudoseed("rnj_stat"))
-	local act_val, act = pseudorandom_element(actions, pseudoseed("rnj_stat"))
-	local scale = (pseudorandom("rnj_scale") > 0.5)
-	local is_stat = (pseudorandom("rnj_stat") > 0.5)
-	if context == "other_joker" or context == "joker_main" then
-		is_stat = true
-		scale = false
-	end
-	if
-		((stat == "h_size") or (stat == "money"))
-		and (context == "individual_play" or context == "individual_hand_score" or context == "individual_hand_end")
-		and is_stat
-	then
-		scale = true
-	end
-	if context == "selling_self" then
-		is_stat = false
-		scale = false
-	end
-	if is_stat then
-		values.value = stat_val or 0
-		values.stat = stat
-		if
-			scale
-			or (
-				(context ~= "joker_main")
-				and (context ~= "other_joker")
-				and (context ~= "individual_play")
-				and (context ~= "individual_hand_score")
-			)
-		then
-			values.value = ((stat == "x_mult") or (stat == "x_chips")) and 1 or 0
-			scale = true
-			if stat == "plus_mult" then
-				values.scale_value = pseudorandom("rnj_scaling") * 10
-			elseif stat == "plus_chips" then
-				values.scale_value = pseudorandom("rnj_scaling") * 50
-			elseif stat == "h_size" then
-				values.scale_value = 1
-			elseif stat == "money" then
-				values.scale_value = pseudorandom("rnj_scaling") * 4
-			else
-				values.scale_value = pseudorandom("rnj_scaling")
-			end
-		end
-	else
-		scale = false
-		values.value = act_val
-		values.act = act
-	end
-	if pseudorandom("rnj_stat") < 0.8 then
-		local conds = {}
-		if context == "buying_card" then
-			conds = {
-				"buy_common",
-				"buy_uncommon",
-				"tarot",
-				"planet",
-				"spectral",
-				"odds",
-			}
-		elseif context == "selling_card" then
-			conds = {
-				"tarot",
-				"planet",
-				"spectral",
-				"joker",
-				"odds",
-			}
-		elseif context == "playing_card_added" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "setting_blind" then
-			conds = {
-				"boss",
-				"non_boss",
-				"small",
-				"big",
-				"odds",
-			}
-		elseif context == "remove_playing_cards" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "using_consumeable" then
-			conds = {
-				"tarot",
-				"planet",
-				"spectral",
-				"odds",
-			}
-		elseif context == "pre_discard" then
-			conds = {
-				"first_discard",
-				"last_discard",
-				"odds",
-			}
-		elseif context == "discard" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "individual_play" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "individual_hand_score" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "individual_hand_end" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "repetition_play" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "repetition_hand" then
-			conds = {
-				"suit",
-				"rank",
-				"face",
-				"odds",
-			}
-		elseif context == "other_joker" then
-			conds = {
-				"uncommon",
-				"rare",
-				"odds",
-			}
-		elseif context == "before" then
-			conds = {
-				"first",
-				"last",
-				"poker_hand",
-				"odds",
-			}
-		elseif context == "after" then
-			conds = {
-				"first",
-				"last",
-				"poker_hand",
-				"odds",
-			}
-		elseif context == "joker_main" then
-			conds = {
-				"first",
-				"last",
-				"poker_hand",
-				"or_more",
-				"or_less",
-				"odds",
-			}
-		elseif context == "cry_payout" then
-			conds = {
-				"hands_left",
-				"discards_left",
-			}
-		end
-		if #conds > 0 then
-			local cond = pseudorandom_element(conds, pseudoseed("rnj_stat"))
-			values.cond = cond
-			if cond == "poker_hand" then
-				local none, key = pseudorandom_element(G.GAME.hands, pseudoseed("rnj_poker-hand"))
-				values.cond_value = localize(key, "poker_hands")
-				values.poker_hand = key
-			end
-			if cond == "suit" then
-				local suit = pseudorandom_element(SMODS.Suits, pseudoseed("rnj_suit"))
-				values.cond_value = localize(suit.key, "suits_singular")
-				values.suit = suit.key
-				values.color = G.C.SUITS[suit.key]
-				if values.color == nil then
-					values.color = G.C.IMPORTANT
-				end
-			end
-			if cond == "rank" then
-				local rank = pseudorandom_element(SMODS.Ranks, pseudoseed("rnj_rank"))
-				values.cond_value = localize(rank.key, "ranks")
-				values.rank = rank.id
-			end
-			if (cond == "or_more") or (cond == "or_less") then
-				values.cond_value = math.min(5, math.floor(pseudorandom("rnj_cards") * 6))
-			end
-			if (cond == "hands_left") or (cond == "discards_left") then
-				values.cond_value = math.min(3, math.floor(pseudorandom("rnj_cards") * 4))
-			end
-			if cond == "odds" then
-				values.cond_value = 2 + math.min(3, math.floor(pseudorandom("rnj_cards") * 4))
-			end
-		end
-	end
-	local loc_txt = ""
-	local extra_lines = { "" }
-	if (context ~= "repetition_play") and (context ~= "repetition_hand") then
-		if values.stat then
-			for i, j in ipairs(G.localization.misc.rnj_loc_txts.stats[values.stat]) do
-				if scale and (i == 1) then
-					loc_txt = loc_txt .. "Gains "
-				end
-				loc_txt = loc_txt .. j
-			end
-		end
-		if values.act then
-			for i, j in ipairs(G.localization.misc.rnj_loc_txts.actions[values.act]) do
-				loc_txt = loc_txt .. j
-			end
-		end
-	else
-		scale = false
-		values.stat = nil
-		values.act = nil
-		values.value = nil
-		values.scale_value = nil
-	end
-	loc_txt = loc_txt .. " "
-	if values.context then
-		for i, j in ipairs(G.localization.misc.rnj_loc_txts.contexts[values.context]) do
-			loc_txt = loc_txt .. j
-		end
-	end
-	if values.context ~= "joker_main" then
-		loc_txt = loc_txt .. " "
-	end
-	if values.cond then
-		for i, j in ipairs(G.localization.misc.rnj_loc_txts.conds[values.cond]) do
-			loc_txt = loc_txt .. j
-		end
-	end
-	if scale then
-		for i, j in ipairs(G.localization.misc.rnj_loc_txts.stats_inactive[values.stat]) do
-			table.insert(extra_lines, j)
-		end
-	end
-	if values.act and (values.act ~= "add_dollars") then
-		table.insert(extra_lines, "{C:inactive}(Must have room){}")
-	end
-	local accum = 0
-	local lines = { "Randomize abilities each {C:attention}Ante{}" }
-	local in_brace = false
-	local cuur_str = ""
-	for i = 1, string.len(loc_txt) do
-		local char = string.sub(loc_txt, i, i)
-		if char == "{" then
-			in_brace = true
-			cuur_str = cuur_str .. char
-		elseif char == "}" then
-			in_brace = false
-			cuur_str = cuur_str .. char
-		elseif char == " " and (accum >= 25) then
-			table.insert(lines, cuur_str)
-			cuur_str = ""
-			accum = 0
-		else
-			if not in_brace then
-				accum = accum + 1
-			end
-			cuur_str = cuur_str .. char
-		end
-	end
-	if string.len(cuur_str) > 0 then
-		table.insert(lines, cuur_str)
-	end
-	if #extra_lines > 0 then
-		for i, j in ipairs(extra_lines) do
-			table.insert(lines, j)
-		end
-	end
-	values.loc_txt = lines
-	card.ability.extra = {}
-	if values.value then
-		values.value = math.floor(values.value * 100) / 100
-		card.ability.extra.value = values.value
-	end
-	if values.scale_value then
-		values.scale_value = math.floor(values.scale_value * 100) / 100
-		card.ability.extra.value_mod = values.scale_value
-	end
-	if values.cond_value then
-		card.ability.extra.cond_value = values.cond_value
-	end
-	if values.color then
-		card.ability.extra.color = values.color
-	end
-	local text_parsed = {}
-	for _, line in ipairs(values.loc_txt) do
-		text_parsed[#text_parsed + 1] = loc_parse_string(line)
-	end
-	values.text_parsed = text_parsed
-	card.ability.abilities = { values }
-end
-function localalize_with_direct(loc_target, args, misc_cat)
-	if loc_target then
-		for _, lines in
-			ipairs(
-				args.type == "unlocks" and loc_target.unlock_parsed
-					or args.type == "name" and loc_target.name_parsed
-					or (args.type == "text" or args.type == "tutorial" or args.type == "quips") and loc_target
-					or loc_target.text_parsed
-			)
-		do
-			local final_line = {}
-			for _, part in ipairs(lines) do
-				local assembled_string = ""
-				for _, subpart in ipairs(part.strings) do
-					assembled_string = assembled_string
-						.. (
-							type(subpart) == "string" and subpart
-							or format_ui_value(args.vars[tonumber(subpart[1])])
-							or "ERROR"
-						)
-				end
-				local desc_scale = G.LANG.font.DESCSCALE
-				if G.F_MOBILE_UI then
-					desc_scale = desc_scale * 1.5
-				end
-				if args.type == "name" then
-					final_line[#final_line + 1] = {
-						n = G.UIT.O,
-						config = {
-							object = DynaText({
-								string = { assembled_string },
-								colours = {
-									(part.control.V and args.vars.colours[tonumber(part.control.V)])
-										or (part.control.C and loc_colour(part.control.C))
-										or G.C.UI.TEXT_LIGHT,
-								},
-								bump = true,
-								silent = true,
-								pop_in = 0,
-								pop_in_rate = 4,
-								maxw = 5,
-								shadow = true,
-								y_offset = -0.6,
-								spacing = math.max(0, 0.32 * (17 - #assembled_string)),
-								scale = (0.55 - 0.004 * #assembled_string)
-									* (part.control.s and tonumber(part.control.s) or 1),
-							}),
-						},
-					}
-				elseif part.control.E then
-					local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil
-					if part.control.E == "1" then
-						_float = true
-						_silent = true
-						_pop_in = 0
-					elseif part.control.E == "2" then
-						_bump = true
-						_spacing = 1
-					end
-					final_line[#final_line + 1] = {
-						n = G.UIT.O,
-						config = {
-							object = DynaText({
-								string = { assembled_string },
-								colours = {
-									part.control.V and args.vars.colours[tonumber(part.control.V)]
-										or loc_colour(part.control.C or nil),
-								},
-								float = _float,
-								silent = _silent,
-								pop_in = _pop_in,
-								bump = _bump,
-								spacing = _spacing,
-								scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
-							}),
-						},
-					}
-				elseif part.control.X then
-					final_line[#final_line + 1] = {
-						n = G.UIT.C,
-						config = {
-							align = "m",
-							colour = loc_colour(part.control.X),
-							r = 0.05,
-							padding = 0.03,
-							res = 0.15,
-						},
-						nodes = {
-							{
-								n = G.UIT.T,
-								config = {
-									text = assembled_string,
-									colour = loc_colour(part.control.C or nil),
-									scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
-								},
-							},
-						},
-					}
-				else
-					final_line[#final_line + 1] = {
-						n = G.UIT.T,
-						config = {
-							detailed_tooltip = part.control.T
-									and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T])
-								or nil,
-							text = assembled_string,
-							shadow = args.shadow,
-							colour = part.control.V and args.vars.colours[tonumber(part.control.V)]
-								or loc_colour(part.control.C or nil, args.default_col),
-							scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
-						},
-					}
-				end
-			end
-			if args.type == "name" or args.type == "text" then
-				return final_line
-			end
-			args.nodes[#args.nodes + 1] = final_line
-		end
-	end
-end
 local rnjoker = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-rnjoker Joker", --:balatrojoker:
 	key = "rnjoker",
 	pos = { x = 5, y = 4 },
@@ -4017,9 +3844,506 @@ local rnjoker = {
 			"Mathguy"
 		}
 	},
+	init = function(self)
+		function rnjoker_randomize(card)
+			card.ability.abilities = {}
+			card.ability.extra = {}
+			card.ability.extra.value = {}
+			card.ability.extra.value_mod = {}
+			card.ability.extra.cond_value = {}
+			local values = {}
+			local contexts = {
+				"open_booster",
+				"buying_card",
+				"selling_self",
+				"selling_card",
+				"reroll_shop",
+				"ending_shop",
+				"skip_blind",
+				"skipping_booster",
+				"playing_card_added",
+				"first_hand_drawn",
+				"setting_blind",
+				"remove_playing_cards",
+				"using_consumeable",
+				"debuffed_hand",
+				"pre_discard",
+				"discard",
+				"end_of_round",
+				"individual_play",
+				"individual_hand_score",
+				"individual_hand_end",
+				"repetition_play",
+				"repetition_hand",
+				"other_joker",
+				"before",
+				"after",
+				"joker_main",
+			}
+			local stats = {
+				plus_mult = 2 + pseudorandom("rnj_mult1") * 28,
+				plus_chips = 4 + pseudorandom("rnj_chips1") * 196,
+				x_mult = 1 + pseudorandom("rnj_mult2") * 3,
+				x_chips = 1 + pseudorandom("rnj_chips2") * 3,
+				h_size = 1 + math.floor(pseudorandom("rnj_h_size") * 3),
+				money = 1 + math.floor(pseudorandom("rnj_money") * 5),
+			}
+			local actions = {
+				make_joker = 1,
+				make_tarot = 1 + math.min(2, math.floor(pseudorandom("rnj_tarot") * 2)),
+				make_planet = 1 + math.min(2, math.floor(pseudorandom("rnj_planet") * 2)),
+				make_spectral = 1,
+				add_dollars = 1 + math.min(4, math.floor(pseudorandom("rnj_dollars") * 5)),
+			}
+			local context = pseudorandom_element(contexts, pseudoseed("rnj_context"))
+			values.context = context
+			if context == "other_joker" or context == "joker_main" then
+				stats.h_size = nil
+				stats.money = nil
+			end
+			local stat_val, stat = pseudorandom_element(stats, pseudoseed("rnj_stat"))
+			local act_val, act = pseudorandom_element(actions, pseudoseed("rnj_stat"))
+			local scale = (pseudorandom("rnj_scale") > 0.5)
+			local is_stat = (pseudorandom("rnj_stat") > 0.5)
+			if context == "other_joker" or context == "joker_main" then
+				is_stat = true
+				scale = false
+			end
+			if
+				((stat == "h_size") or (stat == "money"))
+				and (context == "individual_play" or context == "individual_hand_score" or context == "individual_hand_end")
+				and is_stat
+			then
+				scale = true
+			end
+			if context == "selling_self" then
+				is_stat = false
+				scale = false
+			end
+			if is_stat then
+				values.value = stat_val or 0
+				values.stat = stat
+				if
+					scale
+					or (
+						(context ~= "joker_main")
+						and (context ~= "other_joker")
+						and (context ~= "individual_play")
+						and (context ~= "individual_hand_score")
+					)
+				then
+					values.value = ((stat == "x_mult") or (stat == "x_chips")) and 1 or 0
+					scale = true
+					if stat == "plus_mult" then
+						values.scale_value = pseudorandom("rnj_scaling") * 10
+					elseif stat == "plus_chips" then
+						values.scale_value = pseudorandom("rnj_scaling") * 50
+					elseif stat == "h_size" then
+						values.scale_value = 1
+					elseif stat == "money" then
+						values.scale_value = pseudorandom("rnj_scaling") * 4
+					else
+						values.scale_value = pseudorandom("rnj_scaling")
+					end
+				end
+			else
+				scale = false
+				values.value = act_val
+				values.act = act
+			end
+			if pseudorandom("rnj_stat") < 0.8 then
+				local conds = {}
+				if context == "buying_card" then
+					conds = {
+						"buy_common",
+						"buy_uncommon",
+						"tarot",
+						"planet",
+						"spectral",
+						"odds",
+					}
+				elseif context == "selling_card" then
+					conds = {
+						"tarot",
+						"planet",
+						"spectral",
+						"joker",
+						"odds",
+					}
+				elseif context == "playing_card_added" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "setting_blind" then
+					conds = {
+						"boss",
+						"non_boss",
+						"small",
+						"big",
+						"odds",
+					}
+				elseif context == "remove_playing_cards" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "using_consumeable" then
+					conds = {
+						"tarot",
+						"planet",
+						"spectral",
+						"odds",
+					}
+				elseif context == "pre_discard" then
+					conds = {
+						"first_discard",
+						"last_discard",
+						"odds",
+					}
+				elseif context == "discard" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "individual_play" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "individual_hand_score" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "individual_hand_end" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "repetition_play" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "repetition_hand" then
+					conds = {
+						"suit",
+						"rank",
+						"face",
+						"odds",
+					}
+				elseif context == "other_joker" then
+					conds = {
+						"uncommon",
+						"rare",
+						"odds",
+					}
+				elseif context == "before" then
+					conds = {
+						"first",
+						"last",
+						"poker_hand",
+						"odds",
+					}
+				elseif context == "after" then
+					conds = {
+						"first",
+						"last",
+						"poker_hand",
+						"odds",
+					}
+				elseif context == "joker_main" then
+					conds = {
+						"first",
+						"last",
+						"poker_hand",
+						"or_more",
+						"or_less",
+						"odds",
+					}
+				elseif context == "cry_payout" then
+					conds = {
+						"hands_left",
+						"discards_left",
+					}
+				end
+				if #conds > 0 then
+					local cond = pseudorandom_element(conds, pseudoseed("rnj_stat"))
+					values.cond = cond
+					if cond == "poker_hand" then
+						local none, key = pseudorandom_element(G.GAME.hands, pseudoseed("rnj_poker-hand"))
+						values.cond_value = localize(key, "poker_hands")
+						values.poker_hand = key
+					end
+					if cond == "suit" then
+						local suit = pseudorandom_element(SMODS.Suits, pseudoseed("rnj_suit"))
+						values.cond_value = localize(suit.key, "suits_singular")
+						values.suit = suit.key
+						values.color = G.C.SUITS[suit.key]
+						if values.color == nil then
+							values.color = G.C.IMPORTANT
+						end
+					end
+					if cond == "rank" then
+						local rank = pseudorandom_element(SMODS.Ranks, pseudoseed("rnj_rank"))
+						values.cond_value = localize(rank.key, "ranks")
+						values.rank = rank.id
+					end
+					if (cond == "or_more") or (cond == "or_less") then
+						values.cond_value = math.min(5, math.floor(pseudorandom("rnj_cards") * 6))
+					end
+					if (cond == "hands_left") or (cond == "discards_left") then
+						values.cond_value = math.min(3, math.floor(pseudorandom("rnj_cards") * 4))
+					end
+					if cond == "odds" then
+						values.cond_value = 2 + math.min(3, math.floor(pseudorandom("rnj_cards") * 4))
+					end
+				end
+			end
+			local loc_txt = ""
+			local extra_lines = { "" }
+			if (context ~= "repetition_play") and (context ~= "repetition_hand") then
+				if values.stat then
+					for i, j in ipairs(G.localization.misc.rnj_loc_txts.stats[values.stat]) do
+						if scale and (i == 1) then
+							loc_txt = loc_txt .. "Gains "
+						end
+						loc_txt = loc_txt .. j
+					end
+				end
+				if values.act then
+					for i, j in ipairs(G.localization.misc.rnj_loc_txts.actions[values.act]) do
+						loc_txt = loc_txt .. j
+					end
+				end
+			else
+				scale = false
+				values.stat = nil
+				values.act = nil
+				values.value = nil
+				values.scale_value = nil
+			end
+			loc_txt = loc_txt .. " "
+			if values.context then
+				for i, j in ipairs(G.localization.misc.rnj_loc_txts.contexts[values.context]) do
+					loc_txt = loc_txt .. j
+				end
+			end
+			if values.context ~= "joker_main" then
+				loc_txt = loc_txt .. " "
+			end
+			if values.cond then
+				for i, j in ipairs(G.localization.misc.rnj_loc_txts.conds[values.cond]) do
+					loc_txt = loc_txt .. j
+				end
+			end
+			if scale then
+				for i, j in ipairs(G.localization.misc.rnj_loc_txts.stats_inactive[values.stat]) do
+					table.insert(extra_lines, j)
+				end
+			end
+			if values.act and (values.act ~= "add_dollars") then
+				table.insert(extra_lines, "{C:inactive}(Must have room){}")
+			end
+			local accum = 0
+			local lines = { "Randomize abilities each {C:attention}Ante{}" }
+			local in_brace = false
+			local cuur_str = ""
+			for i = 1, string.len(loc_txt) do
+				local char = string.sub(loc_txt, i, i)
+				if char == "{" then
+					in_brace = true
+					cuur_str = cuur_str .. char
+				elseif char == "}" then
+					in_brace = false
+					cuur_str = cuur_str .. char
+				elseif char == " " and (accum >= 25) then
+					table.insert(lines, cuur_str)
+					cuur_str = ""
+					accum = 0
+				else
+					if not in_brace then
+						accum = accum + 1
+					end
+					cuur_str = cuur_str .. char
+				end
+			end
+			if string.len(cuur_str) > 0 then
+				table.insert(lines, cuur_str)
+			end
+			if #extra_lines > 0 then
+				for i, j in ipairs(extra_lines) do
+					table.insert(lines, j)
+				end
+			end
+			values.loc_txt = lines
+			card.ability.extra = {}
+			if values.value then
+				values.value = math.floor(values.value * 100) / 100
+				card.ability.extra.value = values.value
+			end
+			if values.scale_value then
+				values.scale_value = math.floor(values.scale_value * 100) / 100
+				card.ability.extra.value_mod = values.scale_value
+			end
+			if values.cond_value then
+				card.ability.extra.cond_value = values.cond_value
+			end
+			if values.color then
+				card.ability.extra.color = values.color
+			end
+			local text_parsed = {}
+			for _, line in ipairs(values.loc_txt) do
+				text_parsed[#text_parsed + 1] = loc_parse_string(line)
+			end
+			values.text_parsed = text_parsed
+			card.ability.abilities = { values }
+		end
+		function localalize_with_direct(loc_target, args, misc_cat)
+			if loc_target then
+				for _, lines in
+					ipairs(
+						args.type == "unlocks" and loc_target.unlock_parsed
+							or args.type == "name" and loc_target.name_parsed
+							or (args.type == "text" or args.type == "tutorial" or args.type == "quips") and loc_target
+							or loc_target.text_parsed
+					)
+				do
+					local final_line = {}
+					for _, part in ipairs(lines) do
+						local assembled_string = ""
+						for _, subpart in ipairs(part.strings) do
+							assembled_string = assembled_string
+								.. (
+									type(subpart) == "string" and subpart
+									or format_ui_value(args.vars[tonumber(subpart[1])])
+									or "ERROR"
+								)
+						end
+						local desc_scale = G.LANG.font.DESCSCALE
+						if G.F_MOBILE_UI then
+							desc_scale = desc_scale * 1.5
+						end
+						if args.type == "name" then
+							final_line[#final_line + 1] = {
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = { assembled_string },
+										colours = {
+											(part.control.V and args.vars.colours[tonumber(part.control.V)])
+												or (part.control.C and loc_colour(part.control.C))
+												or G.C.UI.TEXT_LIGHT,
+										},
+										bump = true,
+										silent = true,
+										pop_in = 0,
+										pop_in_rate = 4,
+										maxw = 5,
+										shadow = true,
+										y_offset = -0.6,
+										spacing = math.max(0, 0.32 * (17 - #assembled_string)),
+										scale = (0.55 - 0.004 * #assembled_string)
+											* (part.control.s and tonumber(part.control.s) or 1),
+									}),
+								},
+							}
+						elseif part.control.E then
+							local _float, _silent, _pop_in, _bump, _spacing = nil, true, nil, nil, nil
+							if part.control.E == "1" then
+								_float = true
+								_silent = true
+								_pop_in = 0
+							elseif part.control.E == "2" then
+								_bump = true
+								_spacing = 1
+							end
+							final_line[#final_line + 1] = {
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = { assembled_string },
+										colours = {
+											part.control.V and args.vars.colours[tonumber(part.control.V)]
+												or loc_colour(part.control.C or nil),
+										},
+										float = _float,
+										silent = _silent,
+										pop_in = _pop_in,
+										bump = _bump,
+										spacing = _spacing,
+										scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
+									}),
+								},
+							}
+						elseif part.control.X then
+							final_line[#final_line + 1] = {
+								n = G.UIT.C,
+								config = {
+									align = "m",
+									colour = loc_colour(part.control.X),
+									r = 0.05,
+									padding = 0.03,
+									res = 0.15,
+								},
+								nodes = {
+									{
+										n = G.UIT.T,
+										config = {
+											text = assembled_string,
+											colour = loc_colour(part.control.C or nil),
+											scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
+										},
+									},
+								},
+							}
+						else
+							final_line[#final_line + 1] = {
+								n = G.UIT.T,
+								config = {
+									detailed_tooltip = part.control.T
+											and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T])
+										or nil,
+									text = assembled_string,
+									shadow = args.shadow,
+									colour = part.control.V and args.vars.colours[tonumber(part.control.V)]
+										or loc_colour(part.control.C or nil, args.default_col),
+									scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
+								},
+							}
+						end
+					end
+					if args.type == "name" or args.type == "text" then
+						return final_line
+					end
+					args.nodes[#args.nodes + 1] = final_line
+				end
+			end
+		end
+	end
 }
 local duos = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-duos",
 	key = "duos",
 	order = 90,
@@ -4062,6 +4386,11 @@ local duos = {
 }
 local home = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-home",
 	key = "home",
 	order = 91,
@@ -4104,6 +4433,11 @@ local home = {
 }
 local nuts = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-nuts",
 	key = "nuts",
 	order = 92,
@@ -4146,6 +4480,11 @@ local nuts = {
 }
 local quintet = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-quintet",
 	key = "quintet",
 	order = 93,
@@ -4196,6 +4535,11 @@ local quintet = {
 }
 local unity = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-unity",
 	key = "unity",
 	order = 94,
@@ -4246,6 +4590,11 @@ local unity = {
 }
 local swarm = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-swarm",
 	key = "swarm",
 	order = 95,
@@ -4296,6 +4645,13 @@ local swarm = {
 }
 local stronghold = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_asteroidbelt",
+		}
+	},
 	name = "cry-stronghold",
 	key = "stronghold",
 	order = 119,
@@ -4335,6 +4691,13 @@ local stronghold = {
 }
 local wtf = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_void",
+		}
+	},
 	name = "cry-wtf",
 	key = "wtf",
 	order = 120,
@@ -4374,6 +4737,13 @@ local wtf = {
 }
 local clash = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_marsmoons",
+		}
+	},
 	name = "cry-clash",
 	key = "clash",
 	order = 121,
@@ -4413,6 +4783,11 @@ local clash = {
 }
 local filler = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-filler",
 	key = "filler",
 	pos = { x = 0, y = 1 },
@@ -4451,6 +4826,11 @@ local filler = {
 }
 local giggly = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Giggly Joker",
 	key = "giggly",
 	effect = "Cry Type Mult",
@@ -4487,6 +4867,11 @@ local giggly = {
 }
 local nutty = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Nutty Joker",
 	key = "nutty",
 	effect = "Cry Type Mult",
@@ -4523,6 +4908,11 @@ local nutty = {
 }
 local manic = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Manic Joker",
 	key = "manic",
 	effect = "Cry Type Mult",
@@ -4559,6 +4949,11 @@ local manic = {
 }
 local silly = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Silly Joker",
 	key = "silly",
 	pos = { x = 3, y = 5 },
@@ -4595,6 +4990,11 @@ local silly = {
 }
 local delirious = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Delirious Joker",
 	key = "delirious",
 	effect = "Cry Type Mult",
@@ -4637,6 +5037,11 @@ local delirious = {
 }
 local wacky = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Wacky Joker",
 	key = "wacky",
 	pos = { x = 5, y = 5 },
@@ -4679,6 +5084,11 @@ local wacky = {
 }
 local kooky = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Kooky Joker",
 	key = "kooky",
 	pos = { x = 6, y = 5 },
@@ -4719,9 +5129,15 @@ local kooky = {
 		}
 	},
 }
-
 local bonkers = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_asteroidbelt",
+		}
+	},
 	name = "cry-Bonkers Joker",
 	key = "bonkers",
 	pos = { x = 8, y = 5 },
@@ -4751,9 +5167,15 @@ local bonkers = {
 		return false
 	end,
 }
-
 local fuckedup = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_void",
+		}
+	},
 	name = "cry-Fucked-Up Joker",
 	key = "fuckedup",
 	pos = { x = 7, y = 2 },
@@ -4783,9 +5205,15 @@ local fuckedup = {
 		return false
 	end,
 }
-
 local foolhardy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_marsmoons",
+		}
+	},
 	name = "cry-Foolhardy Joker",
 	key = "foolhardy",
 	pos = { x = 8, y = 2 },
@@ -4815,9 +5243,13 @@ local foolhardy = {
 		return false
 	end,
 }
-
 local dubious = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Dubious Joker",
 	key = "dubious",
 	pos = { x = 0, y = 6 },
@@ -4854,6 +5286,11 @@ local dubious = {
 }
 local shrewd = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Shrewd Joker",
 	key = "shrewd",
 	pos = { x = 1, y = 6 },
@@ -4890,6 +5327,11 @@ local shrewd = {
 }
 local tricksy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Tricksy Joker",
 	key = "tricksy",
 	effect = "Cry Type Chips",
@@ -4926,6 +5368,11 @@ local tricksy = {
 }
 local foxy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Foxy Joker",
 	key = "foxy",
 	pos = { x = 3, y = 6 },
@@ -4962,6 +5409,11 @@ local foxy = {
 }
 local savvy = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Savvy Joker",
 	key = "savvy",
 	pos = { x = 4, y = 6 },
@@ -5004,6 +5456,11 @@ local savvy = {
 }
 local subtle = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Subtle Joker",
 	key = "subtle",
 	pos = { x = 5, y = 6 },
@@ -5046,6 +5503,11 @@ local subtle = {
 }
 local discreet = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Discreet Joker",
 	key = "discreet",
 	pos = { x = 6, y = 6 },
@@ -5088,6 +5550,13 @@ local discreet = {
 }
 local adroit = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_asteroidbelt",
+		}
+	},
 	name = "cry-Adroit Joker",
 	key = "adroit",
 	pos = { x = 7, y = 4 },
@@ -5119,6 +5588,13 @@ local adroit = {
 }
 local penetrating = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_void",
+		}
+	},
 	name = "cry-Penetrating Joker",
 	key = "penetrating",
 	pos = { x = 7, y = 3 },
@@ -5150,6 +5626,13 @@ local penetrating = {
 }
 local treacherous = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+			"c_cry_marsmoons",
+		}
+	},
 	name = "cry-Treacherous Joker",
 	key = "treacherous",
 	pos = { x = 8, y = 3 },
@@ -5181,6 +5664,11 @@ local treacherous = {
 }
 local coin = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-coin",
 	key = "coin",
 	pos = { x = 0, y = 2 },
@@ -5222,6 +5710,11 @@ local coin = {
 }
 local wheelhope = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-wheelhope",
 	key = "wheelhope",
 	pos = { x = 1, y = 1 },
@@ -5278,6 +5771,11 @@ local wheelhope = {
 }
 local oldblueprint = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-oldblueprint",
 	key = "oldblueprint",
 	pos = { x = 2, y = 1 },
@@ -5403,6 +5901,11 @@ local oldblueprint = {
 }
 local night = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-night",
 	key = "night",
 	config = { extra = { mult = 3 } },
@@ -5480,6 +5983,11 @@ local night = {
 }
 local busdriver = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-busdriver",
 	key = "busdriver",
 	config = { extra = { mult = 50, odds = 4 } },
@@ -5536,6 +6044,12 @@ local busdriver = {
 }
 local translucent = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"banana",
+		}
+	},
 	name = "cry-translucent Joker",
 	key = "translucent",
 	pos = { x = 5, y = 2 },
@@ -5587,6 +6101,11 @@ local translucent = {
 }
 local morse = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-morse",
 	key = "morse",
 	pos = { x = 5, y = 1 },
@@ -5630,6 +6149,11 @@ local morse = {
 }
 local membershipcard = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-membershipcard",
 	key = "membershipcard",
 	config = { extra = { Xmult_mod = 0.1 } },
@@ -5672,6 +6196,11 @@ local membershipcard = {
 }
 local kscope = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-kscope",
 	key = "kscope",
 	pos = { x = 3, y = 4 },
@@ -5712,6 +6241,11 @@ local kscope = {
 }
 local cryptidmoment = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry_cryptidmoment",
 	key = "cryptidmoment",
 	pos = { x = 6, y = 0 },
@@ -5750,6 +6284,12 @@ local cryptidmoment = {
 }
 local flipside = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"e_cry_double_sided",
+		}
+	},
 	name = "cry-Flip Side",
 	key = "flip_side",
 	pos = { x = 3, y = 6 },
@@ -5806,6 +6346,11 @@ local flipside = {
 }
 local oldinvisible = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Old Invisible Joker",
 	key = "oldinvisible",
 	pos = { x = 4, y = 4 },
@@ -5880,6 +6425,12 @@ local oldinvisible = {
 }
 local fractal = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"set_cry_poker_hand_stuff",
+		}
+	},
 	name = "cry-FractalFingers",
 	key = "fractal",
 	pos = { x = 6, y = 4 },
@@ -5919,6 +6470,12 @@ local universe = {
 		code = {"spire_winder"}
 	},
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"e_cry_astral",
+		}
+	},
 	name = "cry-universe",
 	key = "universe",
 	pos = { x = 8, y = 0 },
@@ -5994,6 +6551,12 @@ local astral_bottle = {
 		code = {"spire_winder"}
 	},
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"e_cry_astral",
+		}
+	},
 	name = "cry-astral_bottle",
 	key = "astral_bottle",
 	eternal_compat = false,
@@ -6031,6 +6594,11 @@ local astral_bottle = {
 }
 local kidnap = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-kidnap",
 	key = "kidnap",
 	order = 23,
@@ -6096,6 +6664,11 @@ local kidnap = {
 }
 local exposed = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Exposed",
 	key = "exposed",
 	pos = { x = 0, y = 5 },
@@ -6138,6 +6711,11 @@ local exposed = {
 }
 local mask = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Mask",
 	key = "mask",
 	pos = { x = 1, y = 5 },
@@ -6180,6 +6758,11 @@ local mask = {
 }
 local tropical_smoothie = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Tropical Smoothie",
 	key = "tropical_smoothie",
 	pos = { x = 2, y = 5 },
@@ -6220,6 +6803,11 @@ local tropical_smoothie = {
 }
 local pumpkin = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	key = "pumpkin",
 	pos = { x = 0, y = 6 },
 	rarity = 3,
@@ -6282,6 +6870,11 @@ local pumpkin = {
 }
 local carved_pumpkin = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	key = "carved_pumpkin",
 	pos = { x = 1, y = 6 },
 	rarity = 3,
@@ -6327,6 +6920,11 @@ local carved_pumpkin = {
 }
 local cookie = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	key = "clicked_cookie",
 	pos = { x = 2, y = 6 },
 	rarity = 1,
@@ -6407,6 +7005,11 @@ local cookie = {
 }
 local necromancer = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Necromancer",
 	key = "necromancer",
 	pos = { x = 3, y = 5 },
@@ -6442,6 +7045,11 @@ local necromancer = {
 }
 local oil_lamp = { --You want it? It's yours my friend
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Oil-Lamp",
 	key = "oil_lamp",
 	pos = { x = 4, y = 5 },
@@ -6516,6 +7124,11 @@ local oil_lamp = { --You want it? It's yours my friend
 }
 local tax_fraud = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Tax-Fraud",
 	key = "tax_fraud",
 	pos = { x = 4, y = 6 },
@@ -6550,6 +7163,11 @@ local tax_fraud = {
 }
 local pity_prize = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Pity-Prize",
 	key = "pity_prize",
 	pos = { x = 5, y = 5 },
@@ -6593,6 +7211,11 @@ local pity_prize = {
 }
 local digitalhallucinations = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Digital Hallucinations",
 	key = "digitalhallucinations",
 	pos = { x = 0, y = 7 },
@@ -6705,6 +7328,11 @@ local digitalhallucinations = {
 }
 local arsonist = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Arsonist",
 	key = "arsonist",
 	pos = { x = 0, y = 5 },
@@ -6738,6 +7366,11 @@ local arsonist = {
 }
 local zooble = {
 	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		}
+	},
 	name = "cry-Zooble",
 	key = "zooble",
 	pos = { x = 1, y = 5 },
@@ -6890,97 +7523,24 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	flipside,
+	universe,
+	astral_bottle,
+	stronghold,
+	wtf,
+	clash,
+	adriot,
+	penetrating,
+	treacherous,
+	bonkers,
+	fuckedup,
+	foolhardy,
+	translucent
 }
-if Cryptid.enabled["Misc."] then
-	miscitems[#miscitems+1] = flipside
-	miscitems[#miscitems+1] = universe
-	miscitems[#miscitems+1] = astral_bottle
-	miscitems[#miscitems+1] = stronghold
-	miscitems[#miscitems+1] = wtf
-	miscitems[#miscitems+1] = clash
-	miscitems[#miscitems+1] = adroit
-	miscitems[#miscitems+1] = penetrating
-	miscitems[#miscitems+1] = treacherous
-	miscitems[#miscitems+1] = bonkers
-	miscitems[#miscitems+1] = fuckedup
-	miscitems[#miscitems+1] = foolhardy
-end
-if Cryptid.enabled["More Stakes"] then
-	miscitems[#miscitems+1] = translucent
-end
 return {
 	name = "Misc. Jokers",
 	init = function()
-		cry_enable_jokers = true
-		--Dropshot Patches
-		local gigo = Game.init_game_object
-		function Game:init_game_object()
-			local g = gigo(self)
-			g.current_round.cry_dropshot_card = { suit = "Spades" }
-			return g
-		end
-		local rcc = reset_castle_card
-		function reset_castle_card()
-			rcc()
-			if not G.GAME.current_round.cry_dropshot_card then
-				G.GAME.current_round.cry_dropshot_card = {}
-			end
-			G.GAME.current_round.cry_dropshot_card.suit = "Spades"
-			local valid_castle_cards = {}
-			for k, v in ipairs(G.playing_cards) do
-				if v.ability.effect ~= "Stone Card" then
-					valid_castle_cards[#valid_castle_cards + 1] = v
-				end
-			end
-			if valid_castle_cards[1] then
-				local castle_card =
-					pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
-				if not G.GAME.current_round.cry_dropshot_card then
-					G.GAME.current_round.cry_dropshot_card = {}
-				end
-				G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
-			end
-		end
-
-		--Maximized Patches
-		local cgi_ref = Card.get_id
-		override_maximized = false
-		function Card:get_id()
-			local id = cgi_ref(self)
-			if id == nil then
-				id = 10
-			end
-			if next(find_joker("cry-Maximized")) and not override_maximized then
-				if id >= 2 and id <= 10 then
-					id = 10
-				end
-				if id >= 11 and id <= 13 or next(find_joker("Pareidolia")) then
-					id = 13
-				end
-			end
-			return id
-		end
-		--Fix issues with View Deck and Maximized
-		local gui_vd = G.UIDEF.view_deck
-		function G.UIDEF.view_deck(unplayed_only)
-			override_maximized = true
-			local ret_value = gui_vd(unplayed_only)
-			override_maximized = false
-			return ret_value
-		end
-
-		--Cube Patches
-		local sc = Card.set_cost
-		function Card:set_cost()
-			sc(self)
-			if self.ability.name == "cry-Cube" then
-				self.cost = -27
-			end
-			if self.ability.name == "cry-Big Cube" then
-				self.cost = 27
-			end
-		end
-
+		-- Add more calculation contexts (used by Pumpkin and Clicked Cookie)
 		local oldfunc = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G and G.jokers and G.jokers.cards then

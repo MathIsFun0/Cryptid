@@ -465,7 +465,7 @@ end
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
 	smcmb(obj, badges)
-	if obj and obj.cry_credits then
+	if not SMODS.config.no_mod_badges and obj and obj.cry_credits then
 		local function calc_scale_fac(text)
 			local size = 0.9
 			local font = G.LANG.font

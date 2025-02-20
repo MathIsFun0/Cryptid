@@ -103,7 +103,6 @@ local empoweredPack = {
 	dependencies = {
 		items = {
 			"set_cry_tag",
-			"set_cry_exotic",
 			"tag_cry_empowered"
 		}
 	},
@@ -674,8 +673,8 @@ local double_m_tag = {
 	dependencies = {
 		items = {
 			"set_cry_tag",
+			"set_cry_m",
 			"e_cry_m",
-			"j_cry_smallestm",
 		}
 	},
 	atlas = "tag_cry",

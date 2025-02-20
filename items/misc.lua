@@ -1,5 +1,11 @@
+-- Packs
 local meme1 = {
 	object_type = "Booster",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "meme_1",
 	kind = "meme",
 	atlas = "pack",
@@ -32,6 +38,12 @@ local meme1 = {
 }
 local meme2 = {
 	object_type = "Booster",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"p_cry_meme_1",
+		}
+	},
 	key = "meme_two",
 	kind = "meme",
 	atlas = "pack",
@@ -64,6 +76,13 @@ local meme2 = {
 }
 local meme3 = {
 	object_type = "Booster",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"p_cry_meme_1",
+			"p_cry_meme_two",
+		}
+	},
 	key = "meme_three",
 	kind = "meme",
 	atlas = "pack",
@@ -100,7 +119,6 @@ if not AurinkoAddons then
 end
 
 --Edition code based on Bunco's Glitter Edition
-
 local mosaic_shader = {
 	object_type = "Shader",
 	key = "mosaic",
@@ -108,6 +126,11 @@ local mosaic_shader = {
 }
 local mosaic = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "mosaic",
 	order = 2,
 	weight = 0.8, --slightly rarer than Polychrome
@@ -157,6 +180,7 @@ local mosaic = {
 		end
 	end,
 }
+
 local oversat_shader = {
 	object_type = "Shader",
 	key = "oversat",
@@ -164,6 +188,11 @@ local oversat_shader = {
 }
 local oversat = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "oversat",
 	order = 3,
 	weight = 3,
@@ -199,55 +228,56 @@ local oversat = {
 			cry_misprintize(card, {min = 0.5, max = 0.5}, nil, true)
 		end)
 	end,
-}
-
-AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
-	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + (G.GAME.hands[hand].l_chips * amount), 0)
-	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + (G.GAME.hands[hand].l_mult * amount), 1)
-	if not instant then
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.3,
-			func = function()
-				play_sound("chips1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips, StatusText = true })
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.3,
-			func = function()
-				play_sound("multhit1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-	elseif hand == G.handlist[#G.handlist] then
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("chips1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "++" or "--"), StatusText = true })
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("multhit1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
+	init = function(self)
+		AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
+			G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + (G.GAME.hands[hand].l_chips * amount), 0)
+			G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + (G.GAME.hands[hand].l_mult * amount), 1)
+			if not instant then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.3,
+					func = function()
+						play_sound("chips1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips, StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.3,
+					func = function()
+						play_sound("multhit1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
+			elseif hand == G.handlist[#G.handlist] then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("chips1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "++" or "--"), StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("multhit1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
+			end
+		end
 	end
-end
+}
 
 local glitched_shader = {
 	object_type = "Shader",
@@ -256,6 +286,11 @@ local glitched_shader = {
 }
 local glitched = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "glitched",
 	order = 1,
 	weight = 15,
@@ -294,170 +329,171 @@ local glitched = {
 			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 	end,
-}
+	init = function(self)
+		local randtext = {
+			"A",
+			"B",
+			"C",
+			"D",
+			"E",
+			"F",
+			"G",
+			"H",
+			"I",
+			"J",
+			"K",
+			"L",
+			"M",
+			"N",
+			"O",
+			"P",
+			"Q",
+			"R",
+			"S",
+			"T",
+			"U",
+			"V",
+			"W",
+			"X",
+			"Y",
+			"Z",
+			" ",
+			"a",
+			"b",
+			"c",
+			"d",
+			"e",
+			"f",
+			"g",
+			"h",
+			"i",
+			"j",
+			"k",
+			"l",
+			"m",
+			"n",
+			"o",
+			"p",
+			"q",
+			"r",
+			"s",
+			"t",
+			"u",
+			"v",
+			"w",
+			"x",
+			"y",
+			"z",
+			"0",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"+",
+			"-",
+			"?",
+			"!",
+			"$",
+			"%",
+			"[",
+			"]",
+			"(",
+			")",
+		}
 
-local randtext = {
-	"A",
-	"B",
-	"C",
-	"D",
-	"E",
-	"F",
-	"G",
-	"H",
-	"I",
-	"J",
-	"K",
-	"L",
-	"M",
-	"N",
-	"O",
-	"P",
-	"Q",
-	"R",
-	"S",
-	"T",
-	"U",
-	"V",
-	"W",
-	"X",
-	"Y",
-	"Z",
-	" ",
-	"a",
-	"b",
-	"c",
-	"d",
-	"e",
-	"f",
-	"g",
-	"h",
-	"i",
-	"j",
-	"k",
-	"l",
-	"m",
-	"n",
-	"o",
-	"p",
-	"q",
-	"r",
-	"s",
-	"t",
-	"u",
-	"v",
-	"w",
-	"x",
-	"y",
-	"z",
-	"0",
-	"1",
-	"2",
-	"3",
-	"4",
-	"5",
-	"6",
-	"7",
-	"8",
-	"9",
-	"+",
-	"-",
-	"?",
-	"!",
-	"$",
-	"%",
-	"[",
-	"]",
-	"(",
-	")",
-}
-
-local function obfuscatedtext(length)
-	local str = ""
-	for i = 1, length do
-		str = str .. randtext[math.random(#randtext)]
-	end
-	return str
-end
-
-AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
-	local modc = G.GAME.hands[hand].l_chips
-		* cry_log_random(
-			pseudoseed("cry_aurinko_chips_misprint" .. G.GAME.round_resets.ante),
-			(G.GAME.modifiers.cry_misprint_min or 1) / 10,
-			(G.GAME.modifiers.cry_misprint_max or 1) * 10
-		)
-		* amount
-	local modm = G.GAME.hands[hand].l_mult
-		* cry_log_random(
-			pseudoseed("cry_aurinko_mult_misprint" .. G.GAME.round_resets.ante),
-			(G.GAME.modifiers.cry_misprint_min or 1) / 10,
-			(G.GAME.modifiers.cry_misprint_max or 1) * 10
-		)
-		* amount
-	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
-	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
-	if not instant then
-		for i = 1, math.random(2, 4) do
-			update_hand_text(
-				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
-				{ chips = obfuscatedtext(3) }
-			)
+		local function obfuscatedtext(length)
+			local str = ""
+			for i = 1, length do
+				str = str .. randtext[math.random(#randtext)]
+			end
+			return str
 		end
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0,
-			func = function()
-				play_sound("chips1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text(
-			{ delay = 0 },
-			{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
-		)
-		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
-		for i = 1, math.random(2, 4) do
-			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+
+		AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
+			local modc = G.GAME.hands[hand].l_chips
+				* cry_log_random(
+					pseudoseed("cry_aurinko_chips_misprint" .. G.GAME.round_resets.ante),
+					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
+					(G.GAME.modifiers.cry_misprint_max or 1) * 10
+				)
+				* amount
+			local modm = G.GAME.hands[hand].l_mult
+				* cry_log_random(
+					pseudoseed("cry_aurinko_mult_misprint" .. G.GAME.round_resets.ante),
+					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
+					(G.GAME.modifiers.cry_misprint_max or 1) * 10
+				)
+				* amount
+			G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+			G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+			if not instant then
+				for i = 1, math.random(2, 4) do
+					update_hand_text(
+						{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+						{ chips = obfuscatedtext(3) }
+					)
+				end
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0,
+					func = function()
+						play_sound("chips1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text(
+					{ delay = 0 },
+					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+				)
+				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
+				for i = 1, math.random(2, 4) do
+					update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+				end
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0,
+					func = function()
+						play_sound("multhit1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text(
+					{ delay = 0 },
+					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+				)
+				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
+			elseif hand == G.handlist[#G.handlist] then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("chips1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("multhit1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
+			end
 		end
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0,
-			func = function()
-				play_sound("multhit1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text(
-			{ delay = 0 },
-			{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
-		)
-		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-	elseif hand == G.handlist[#G.handlist] then
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("chips1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("multhit1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
 	end
-end
+}
 
 local astral_shader = {
 	object_type = "Shader",
@@ -466,6 +502,11 @@ local astral_shader = {
 }
 local astral = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "astral",
 	order = 30,
 	weight = 0.3, --very rare
@@ -523,6 +564,11 @@ local blurred_shader = {
 }
 local blurred = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "blur",
 	order = 6,
 	weight = 0.5, --very rare
@@ -556,6 +602,7 @@ local blurred = {
 		end
 	end,
 }
+
 local noisy_shader = {
 	object_type = "Shader",
 	key = "noisy",
@@ -573,6 +620,11 @@ local noisy_stats = {
 }
 local noisy = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "noisy",
 	order = 7,
 	weight = 3,
@@ -749,74 +801,75 @@ local noisy = {
 		desc_nodes[#desc_nodes + 1] = mult_ui
 		desc_nodes[#desc_nodes + 1] = chip_ui
 	end,
-}
-
-AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
-	local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
-	local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
-	G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
-	G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
-	if not instant then
-		for i = 1, math.random(2, 4) do
-			update_hand_text(
-				{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
-				{ chips = obfuscatedtext(3) }
-			)
+	init = function(self)
+		AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
+			local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
+			local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
+			G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+			G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+			if not instant then
+				for i = 1, math.random(2, 4) do
+					update_hand_text(
+						{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+						{ chips = obfuscatedtext(3) }
+					)
+				end
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0,
+					func = function()
+						play_sound("chips1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text(
+					{ delay = 0 },
+					{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+				)
+				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
+				for i = 1, math.random(2, 4) do
+					update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+				end
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0,
+					func = function()
+						play_sound("multhit1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text(
+					{ delay = 0 },
+					{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+				)
+				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
+			elseif hand == G.handlist[#G.handlist] then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("chips1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						play_sound("multhit1")
+						card:juice_up(0.8, 0.5)
+						return true
+					end,
+				}))
+				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+			end
 		end
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0,
-			func = function()
-				play_sound("chips1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text(
-			{ delay = 0 },
-			{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
-		)
-		update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
-		for i = 1, math.random(2, 4) do
-			update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
-		end
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0,
-			func = function()
-				play_sound("multhit1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text(
-			{ delay = 0 },
-			{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
-		)
-		update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-	elseif hand == G.handlist[#G.handlist] then
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("chips1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("multhit1")
-				card:juice_up(0.8, 0.5)
-				return true
-			end,
-		}))
-		update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
 	end
-end
+}
 
 local jollyeditionshader = {
 	object_type = "Shader",
@@ -825,6 +878,12 @@ local jollyeditionshader = {
 }
 local jollyedition = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"set_cry_m",
+		}
+	},
 	in_shop = false,
 	order = 31,
 	weight = 0,
@@ -875,6 +934,77 @@ local jollyedition = {
 			card.config.trigger = nil
 		end
 	end,
+	init = function(self)
+		--Change name of cards with Jolly edition
+		local gcui = generate_card_ui
+		function generate_card_ui(
+			_c,
+			full_UI_table,
+			specific_vars,
+			card_type,
+			badges,
+			hide_desc,
+			main_start,
+			main_end,
+			card
+		)
+			local full_UI_table =
+				gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+			if
+				card
+				and card.edition
+				and card.edition.cry_m
+				and (not card.ability or card.ability.set ~= "Edition")
+				and full_UI_table
+				and full_UI_table.name
+				and type(full_UI_table.name) == "table"
+				and full_UI_table.name[1]
+				and full_UI_table.name[1].config
+				and full_UI_table.name[1].config.object
+				and full_UI_table.name[1].config.object.config
+			then
+				local conf = full_UI_table.name[1].config.object.config
+				if conf.string and #conf.string > 0 then
+					local function m_ify_word(text)
+						-- Define a pattern for vowels
+						local vowels = "AEIOUaeiou"
+
+						-- Use gsub to replace the first consonant of each word with 'M'
+						local result = text:gsub("(%a)(%w*)", function(first, rest)
+							if vowels:find(first) then
+								-- If the first character is a vowel, add an M
+								if (not rest[1]) or (rest:lower()[1] == rest[1]) then --this check doesn't work properly
+									return "M" .. first:lower() .. rest
+								else
+									return "M" .. first:upper() .. rest
+								end
+							elseif first:lower() == "m" then
+								-- If the word already starts with 'M', keep it unchanged
+								return first .. rest
+							else
+								-- Replace the first consonant with 'M'
+								return "M" .. rest
+							end
+						end)
+
+						return result
+					end
+					function m_ify(text)
+						-- Use gsub to apply the m_ify_word function to each word
+						local result = text:gsub("(%S+)", function(word)
+							return m_ify_word(word)
+						end)
+
+						return result
+					end
+					conf.string[1] = m_ify(conf.string[1])
+					full_UI_table.name[1].config.object:remove()
+					full_UI_table.name[1].config.object = DynaText(conf)
+				end
+			end
+			return full_UI_table
+		end
+	end
 }
 
 local glass_shader = {
@@ -889,6 +1019,11 @@ local glass_shader = {
 }
 local glass_edition = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "glass",
 	order = 4,
 	shader = "glass",
@@ -1027,6 +1162,11 @@ local gold_shader = {
 }
 local gold_edition = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
 	key = "gold",
 	order = 5,
 	shader = "gold",
@@ -1064,6 +1204,18 @@ local gold_edition = {
 
 local double_sided = {
 	object_type = "Edition",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
+    gameset_config = {
+        modest = {disabled = true},
+		mainline = {disabled = true},
+		madness = {disabled = true},
+		experimental = {}
+    },
+	extra_gamesets = {"experimental"},
 	key = "double_sided",
 	shader = false,
 	order = 32,
@@ -1085,393 +1237,7 @@ local double_sided = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight * (G.GAME.used_vouchers.v_cry_double_vision and 4 or 1)
 	end,
-}
-local echo = {
-	object_type = "Enhancement",
-	key = "echo",
-	atlas = "cry_misc",
-	pos = { x = 2, y = 0 },
-	config = { retriggers = 2, extra = 2 },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
-	end,
-	calculate = function(self, card, context)
-		if context.repetition and pseudorandom("echo") < cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2) then
-			return {
-				message = localize("k_again_ex"),
-				repetitions = card.ability.retriggers,
-				card = card,
-			}
-		end
-	end,
-}
-local eclipse = {
-	object_type = "Consumable",
-	set = "Tarot",
-	name = "cry-Eclipse",
-	key = "eclipse",
-	order = 1,
-	pos = { x = 4, y = 0 },
-	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
-	atlas = "atlasnotjokers",
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
-
-		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
-	end,
-}
-local light = {
-	object_type = "Enhancement",
-	key = "light",
-	atlas = "cry_misc",
-	cry_noshadow = true,
-	pos = { x = 0, y = 3 },
-	config = {extra = {a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5}},
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult, card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult, card and card.ability.extra.current or self.config.extra.current, card and card.ability.extra.req or self.config.extra.req } }
-	end,
-	calculate = function(self,card,context)
-		if context.cardarea == G.play and context.main_scoring then
-			if #context.scoring_hand > 1 then
-				card.ability.extra.current = card.ability.extra.current - (#context.scoring_hand - 1)
-				while card.ability.extra.current <= 0 do
-					card.ability.extra.req = card.ability.extra.req +5
-					card.ability.extra.current = card.ability.extra.current + card.ability.extra.req
-					card.ability.extra.current_x_mult = card.ability.extra.current_x_mult + card.ability.extra.a_x_mult
-				end
-			end
-			if card.ability.extra.current_x_mult > 1 then
-				return {
-					x_mult = card.ability.extra.current_x_mult
-				}
-			end
-		end
-	end,
-}
-local seraph = { 
-	object_type = "Consumable",
-	set = "Tarot",
-	name = "cry-Seraph",
-	key = "seraph",
-	order = 2,
-	pos = { x = 1, y = 2 },
-	config = { mod_conv = "m_cry_light", max_highlighted = 2 },
-	atlas = "placeholders",
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
-
-		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
-	end,
-}
-local blessing = {
-	object_type = "Consumable",
-	set = "Tarot",
-	name = "cry-theblessing",
-	key = "theblessing",
-	order = 6,
-	pos = { x = 2, y = 3 },
-	cost = 3,
-	atlas = "atlasnotjokers",
-	can_use = function(self, card)
-		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
-	end,
-	can_bulk_use = true,
-	use = function(self, card, area, copier)
-		local used_consumable = copier or card
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.4,
-			func = function()
-				if G.consumeables.config.card_limit > #G.consumeables.cards then
-					play_sound("timpani")
-					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
-					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
-					_card:add_to_deck()
-					G.consumeables:emplace(_card)
-					used_consumable:juice_up(0.3, 0.5)
-				end
-				return true
-			end,
-		}))
-		delay(0.6)
-	end,
-}
-local azure_seal = {
-	object_type = "Seal",
-	name = "cry-Azure-Seal",
-	key = "azure",
-	badge_colour = HEX("1d4fd7"),
-	config = { planets_amount = 3 },
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.planets_amount } }
-	end,
-	atlas = "cry_misc",
-	pos = { x = 0, y = 2 },
-	-- This is still quite jank
-	calculate = function(self, card, context)
-		if context.destroying_card and not card.will_shatter then
-			card.will_shatter = true
-			G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.0,
-				func = function()
-					local card_type = "Planet"
-					local _planet = nil
-					if G.GAME.last_hand_played then
-						for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-							if v.config.hand_type == G.GAME.last_hand_played then
-								_planet = v.key
-								break
-							end
-						end
-					end
-
-					for i = 1, self.config.planets_amount do
-						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
-
-						card:set_edition({ negative = true }, true)
-						card:add_to_deck()
-						G.consumeables:emplace(card)
-					end
-					return true
-				end,
-			}))
-
-			return {remove = true}
-		end
-	end,
-}
-
-local typhoon = {
-	object_type = "Consumable",
-	set = "Spectral",
-	name = "cry-Typhoon",
-	key = "typhoon",
-	order = 8,
-	config = {
-		-- This will add a tooltip.
-		mod_conv = "cry_azure_seal",
-		-- Tooltip args
-		seal = { planets_amount = 3 },
-		max_highlighted = 1,
-	},
-	loc_vars = function(self, info_queue, center)
-		-- Handle creating a tooltip with set args.
-		info_queue[#info_queue + 1] =
-			{ set = "Other", key = "cry_azure_seal", specific_vars = { self.config.seal.planets_amount } }
-		return { vars = { center.ability.max_highlighted } }
-	end,
-	cost = 4,
-	atlas = "atlasnotjokers",
-	pos = { x = 0, y = 4 },
-	use = function(self, card, area, copier) --Good enough
-		local used_consumable = copier or card
-		for i = 1, #G.hand.highlighted do
-			local highlighted = G.hand.highlighted[i]
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound("tarot1")
-					highlighted:juice_up(0.3, 0.5)
-					return true
-				end,
-			}))
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.1,
-				func = function()
-					if highlighted then
-						highlighted:set_seal("cry_azure")
-					end
-					return true
-				end,
-			}))
-			delay(0.5)
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.2,
-				func = function()
-					G.hand:unhighlight_all()
-					return true
-				end,
-			}))
-		end
-	end,
-}
-
-local meld = {
-	object_type = "Consumable",
-	set = "Tarot",
-	name = "cry-Meld",
-	key = "meld",
-	order = 3,
-	pos = { x = 4, y = 4 },
-	config = { extra = 4 },
-	cost = 4,
-	atlas = "atlasnotjokers",
-	can_use = function(self, card)
-		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
-			if 
-				#G.jokers.highlighted == 1 and 
-				(
-					Card.no(G.jokers.highlighted[1], "dbl") 
-					or G.jokers.highlighted[1].edition
-				) 
-			then return false end
-			if 
-				#G.hand.highlighted == 1 
-				and G.hand.highlighted[1].edition 
-			then return false end
-			return true
-		end
-	end,
-	cry_credits = {
-		jolly = {
-			"Jolly Open Winner",
-			"Axolotolus",
-		},
-	},
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
-	end,
-	use = function(self, card, area, copier)
-		if #G.jokers.highlighted == 1 then
-			G.jokers.highlighted[1]:remove_from_deck(true)
-			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
-			G.jokers.highlighted[1]:add_to_deck(true)
-			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
-		else
-			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
-			G.hand:remove_from_highlighted(G.hand.highlighted[1])
-		end
-	end,
-	in_pool = function()
-		return G.GAME.used_vouchers.v_cry_double_slit
-	end
-}
-local absolute = {
-	object_type = "Sticker",
-	badge_colour = HEX('c75985'),
-	prefix_config = { key = false },
-	key = "cry_absolute",
-	atlas = "sticker",
-	pos = { x = 1, y = 5 },
-	should_apply = false,
-	no_sticker_sheet = true,
-	draw = function(self, card, layer)
-		G.shared_stickers["cry_absolute"].role.draw_major = card
-		G.shared_stickers["cry_absolute"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
-		G.shared_stickers["cry_absolute"]:draw_shader('polychrome', nil, card.ARGS.send_to_shader, nil, card.children.center)
-		G.shared_stickers["cry_absolute"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
-	end,
-}
-local miscitems = {
-	meme1,
-	meme2,
-	meme3,
-	mosaic_shader,
-	oversat_shader,
-	glitched_shader,
-	astral_shader,
-	blurred_shader,
-	glass_shader,
-	gold_shader,
-	noisy_shader,
-	glass_edition,
-	gold_edition,
-	glitched,
-	noisy,
-	mosaic,
-	oversat,
-	blurred,
-	astral,
-	echo,
-	eclipse,
-	blessing,
-	typhoon,
-	azure_seal,
-	double_sided,
-	meld,
-	absolute,
-	light,
-	seraph,
-}
-if Cryptid.enabled["M Jokers"] then
-	miscitems[#miscitems + 1] = jollyeditionshader
-	miscitems[#miscitems + 1] = jollyedition
-end
-return {
-	name = "Misc.",
-	init = function()
-		--Change name of cards with Jolly edition
-		local gcui = generate_card_ui
-		function generate_card_ui(
-			_c,
-			full_UI_table,
-			specific_vars,
-			card_type,
-			badges,
-			hide_desc,
-			main_start,
-			main_end,
-			card
-		)
-			local full_UI_table =
-				gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
-			if
-				card
-				and card.edition
-				and card.edition.cry_m
-				and (not card.ability or card.ability.set ~= "Edition")
-				and full_UI_table
-				and full_UI_table.name
-				and type(full_UI_table.name) == "table"
-				and full_UI_table.name[1]
-				and full_UI_table.name[1].config
-				and full_UI_table.name[1].config.object
-				and full_UI_table.name[1].config.object.config
-			then
-				local conf = full_UI_table.name[1].config.object.config
-				if conf.string and #conf.string > 0 then
-					local function m_ify_word(text)
-						-- Define a pattern for vowels
-						local vowels = "AEIOUaeiou"
-
-						-- Use gsub to replace the first consonant of each word with 'M'
-						local result = text:gsub("(%a)(%w*)", function(first, rest)
-							if vowels:find(first) then
-								-- If the first character is a vowel, add an M
-								if (not rest[1]) or (rest:lower()[1] == rest[1]) then --this check doesn't work properly
-									return "M" .. first:lower() .. rest
-								else
-									return "M" .. first:upper() .. rest
-								end
-							elseif first:lower() == "m" then
-								-- If the word already starts with 'M', keep it unchanged
-								return first .. rest
-							else
-								-- Replace the first consonant with 'M'
-								return "M" .. rest
-							end
-						end)
-
-						return result
-					end
-					function m_ify(text)
-						-- Use gsub to apply the m_ify_word function to each word
-						local result = text:gsub("(%S+)", function(word)
-							return m_ify_word(word)
-						end)
-
-						return result
-					end
-					conf.string[1] = m_ify(conf.string[1])
-					full_UI_table.name[1].config.object:remove()
-					full_UI_table.name[1].config.object = DynaText(conf)
-				end
-			end
-			return full_UI_table
-		end
-
+	init = function(self)
 		-- Double-Sided - create FLIP button
 		-- kinda based on Fusion Jokers
 		local card_focus_ui = G.UIDEF.card_focus_ui
@@ -1800,6 +1566,375 @@ return {
 			end
 			G:save_settings()
 		end
+	end
+}
+local meld = {
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"e_cry_double_sided",
+		}
+	},
+	set = "Tarot",
+	name = "cry-Meld",
+	key = "meld",
+	order = 3,
+	pos = { x = 4, y = 4 },
+	config = { extra = 4 },
+	cost = 4,
+	atlas = "atlasnotjokers",
+	can_use = function(self, card)
+		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
+			if 
+				#G.jokers.highlighted == 1 and 
+				(
+					Card.no(G.jokers.highlighted[1], "dbl") 
+					or G.jokers.highlighted[1].edition
+				) 
+			then return false end
+			if 
+				#G.hand.highlighted == 1 
+				and G.hand.highlighted[1].edition 
+			then return false end
+			return true
+		end
+	end,
+	cry_credits = {
+		jolly = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	use = function(self, card, area, copier)
+		if #G.jokers.highlighted == 1 then
+			G.jokers.highlighted[1]:remove_from_deck(true)
+			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.jokers.highlighted[1]:add_to_deck(true)
+			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
+		else
+			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.hand:remove_from_highlighted(G.hand.highlighted[1])
+		end
+	end,
+	in_pool = function()
+		return G.GAME.used_vouchers.v_cry_double_slit
+	end
+}
+
+-- Enhancements/Tarots
+local echo = {
+	object_type = "Enhancement",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
+	key = "echo",
+	atlas = "cry_misc",
+	pos = { x = 2, y = 0 },
+	config = { retriggers = 2, extra = 2 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
+	end,
+	calculate = function(self, card, context)
+		if context.repetition and pseudorandom("echo") < cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2) then
+			return {
+				message = localize("k_again_ex"),
+				repetitions = card.ability.retriggers,
+				card = card,
+			}
+		end
+	end,
+}
+local eclipse = {
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"m_cry_echo",
+		}
+	},
+	set = "Tarot",
+	name = "cry-Eclipse",
+	key = "eclipse",
+	order = 1,
+	pos = { x = 4, y = 0 },
+	config = { mod_conv = "m_cry_echo", max_highlighted = 1 },
+	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
+
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+}
+local light = {
+	object_type = "Enhancement",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
+	key = "light",
+	atlas = "cry_misc",
+	cry_noshadow = true,
+	pos = { x = 0, y = 3 },
+	config = {extra = {a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5}},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult, card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult, card and card.ability.extra.current or self.config.extra.current, card and card.ability.extra.req or self.config.extra.req } }
+	end,
+	calculate = function(self,card,context)
+		if context.cardarea == G.play and context.main_scoring then
+			if #context.scoring_hand > 1 then
+				card.ability.extra.current = card.ability.extra.current - (#context.scoring_hand - 1)
+				while card.ability.extra.current <= 0 do
+					card.ability.extra.req = card.ability.extra.req +5
+					card.ability.extra.current = card.ability.extra.current + card.ability.extra.req
+					card.ability.extra.current_x_mult = card.ability.extra.current_x_mult + card.ability.extra.a_x_mult
+				end
+			end
+			if card.ability.extra.current_x_mult > 1 then
+				return {
+					x_mult = card.ability.extra.current_x_mult
+				}
+			end
+		end
+	end,
+}
+local seraph = { 
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"m_cry_light",
+		}
+	},
+	set = "Tarot",
+	name = "cry-Seraph",
+	key = "seraph",
+	order = 2,
+	pos = { x = 1, y = 2 },
+	config = { mod_conv = "m_cry_light", max_highlighted = 2 },
+	atlas = "placeholders",
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
+
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+}
+local blessing = {
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
+	set = "Tarot",
+	name = "cry-theblessing",
+	key = "theblessing",
+	order = 6,
+	pos = { x = 2, y = 3 },
+	cost = 3,
+	atlas = "atlasnotjokers",
+	can_use = function(self, card)
+		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
+	end,
+	can_bulk_use = true,
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				if G.consumeables.config.card_limit > #G.consumeables.cards then
+					play_sound("timpani")
+					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
+					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
+					_card:add_to_deck()
+					G.consumeables:emplace(_card)
+					used_consumable:juice_up(0.3, 0.5)
+				end
+				return true
+			end,
+		}))
+		delay(0.6)
+	end,
+}
+
+-- Seals
+local azure_seal = {
+	object_type = "Seal",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
+	name = "cry-Azure-Seal",
+	key = "azure",
+	badge_colour = HEX("1d4fd7"),
+	config = { planets_amount = 3 },
+	loc_vars = function(self, info_queue)
+		return { vars = { self.config.planets_amount } }
+	end,
+	atlas = "cry_misc",
+	pos = { x = 0, y = 2 },
+	-- This is still quite jank
+	calculate = function(self, card, context)
+		if context.destroying_card and not card.will_shatter then
+			card.will_shatter = true
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.0,
+				func = function()
+					local card_type = "Planet"
+					local _planet = nil
+					if G.GAME.last_hand_played then
+						for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+							if v.config.hand_type == G.GAME.last_hand_played then
+								_planet = v.key
+								break
+							end
+						end
+					end
+
+					for i = 1, self.config.planets_amount do
+						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
+
+						card:set_edition({ negative = true }, true)
+						card:add_to_deck()
+						G.consumeables:emplace(card)
+					end
+					return true
+				end,
+			}))
+
+			return {remove = true}
+		end
+	end,
+}
+local typhoon = {
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"cry_azure",
+		}
+	},
+	set = "Spectral",
+	name = "cry-Typhoon",
+	key = "typhoon",
+	order = 8,
+	config = {
+		-- This will add a tooltip.
+		mod_conv = "cry_azure_seal",
+		-- Tooltip args
+		seal = { planets_amount = 3 },
+		max_highlighted = 1,
+	},
+	loc_vars = function(self, info_queue, center)
+		-- Handle creating a tooltip with set args.
+		info_queue[#info_queue + 1] =
+			{ set = "Other", key = "cry_azure_seal", specific_vars = { self.config.seal.planets_amount } }
+		return { vars = { center.ability.max_highlighted } }
+	end,
+	cost = 4,
+	atlas = "atlasnotjokers",
+	pos = { x = 0, y = 4 },
+	use = function(self, card, area, copier) --Good enough
+		local used_consumable = copier or card
+		for i = 1, #G.hand.highlighted do
+			local highlighted = G.hand.highlighted[i]
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					highlighted:juice_up(0.3, 0.5)
+					return true
+				end,
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.1,
+				func = function()
+					if highlighted then
+						highlighted:set_seal("cry_azure")
+					end
+					return true
+				end,
+			}))
+			delay(0.5)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
+		end
+	end,
+}
+
+local absolute = {
+	object_type = "Sticker",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		}
+	},
+	badge_colour = HEX('c75985'),
+	prefix_config = { key = false },
+	key = "cry_absolute",
+	atlas = "sticker",
+	pos = { x = 1, y = 5 },
+	should_apply = false,
+	no_sticker_sheet = true,
+	draw = function(self, card, layer)
+		G.shared_stickers["cry_absolute"].role.draw_major = card
+		G.shared_stickers["cry_absolute"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader('polychrome', nil, card.ARGS.send_to_shader, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+	end,
+}
+local miscitems = {
+	meme1,
+	meme2,
+	meme3,
+	mosaic_shader,
+	oversat_shader,
+	glitched_shader,
+	astral_shader,
+	blurred_shader,
+	glass_shader,
+	gold_shader,
+	noisy_shader,
+	glass_edition,
+	gold_edition,
+	glitched,
+	noisy,
+	mosaic,
+	oversat,
+	blurred,
+	astral,
+	echo,
+	eclipse,
+	blessing,
+	typhoon,
+	azure_seal,
+	double_sided,
+	meld,
+	absolute,
+	light,
+	seraph,
+	jollyeditionshader,
+	jollyedition
+}
+return {
+	name = "Misc.",
+	init = function()
+		-- Remove shadow from cards (e.g. Light Cards)
 		local setabilityref = Card.set_ability
 		function Card:set_ability(center, initial, delay_sprites)
 			setabilityref(self, center, initial, delay_sprites)
