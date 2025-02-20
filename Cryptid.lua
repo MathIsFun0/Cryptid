@@ -56,7 +56,9 @@ end
 local function process_items(f, mod)
 	local ret = f()
 	if not ret.disabled then
-		if ret.init then ret:init() end
+		if ret.init then
+			ret:init()
+		end
 		if ret.items then
 			for _, item in ipairs(ret.items) do
 				if mod then
@@ -72,10 +74,14 @@ local function process_items(f, mod)
 						item.atlas = mod.prefix .. "_" .. item.atlas
 					end
 					-- this will also display the mod's own badge
-					if not item.dependencies then item.dependencies = {} end
+					if not item.dependencies then
+						item.dependencies = {}
+					end
 					item.dependencies[#item.dependencies + 1] = mod.id
 				end
-				if item.init then item:init() end
+				if item.init then
+					item:init()
+				end
 				--[[if not item.gameset_config then
 					-- by default, disable on modest
 					item.gameset_config = {
@@ -183,113 +189,124 @@ function SMODS.injectItems(...)
 	cry_update_obj_registry()
 end
 
-local cryptidTabs = function() return {
-	{
-		label = localize("cry_set_features"),
-		chosen = true,
-		tab_definition_function = function()
-			cry_nodes = {
-				{
-					n = G.UIT.R,
-					config = { align = "cm" },
-					nodes = {
-						{
-							n = G.UIT.O,
-							config = {
-								object = DynaText({
-									string = localize("cry_set_enable_features"),
-									colours = { G.C.WHITE },
-									shadow = true,
-									scale = 0.4,
-								}),
+local cryptidTabs = function()
+	return {
+		{
+			label = localize("cry_set_features"),
+			chosen = true,
+			tab_definition_function = function()
+				cry_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = localize("cry_set_enable_features"),
+										colours = { G.C.WHITE },
+										shadow = true,
+										scale = 0.4,
+									}),
+								},
 							},
 						},
 					},
-				},
-			}
-			left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-			right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
-			cry_nodes[#cry_nodes + 1] = config
-			cry_nodes[#cry_nodes + 1] = UIBox_button({button = 'your_collection_content_sets', label = {localize('b_content_sets')}, count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'})
+				}
+				left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				config =
+					{ n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
+				cry_nodes[#cry_nodes + 1] = config
+				cry_nodes[#cry_nodes + 1] = UIBox_button({
+					button = "your_collection_content_sets",
+					label = { localize("b_content_sets") },
+					count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
+					minw = 5,
+					minh = 1.7,
+					scale = 0.6,
+					id = "your_collection_jokers",
+				})
 
-			return {
-				n = G.UIT.ROOT,
-				config = {
-					emboss = 0.05,
-					minh = 6,
-					r = 0.1,
-					minw = 10,
-					align = "cm",
-					padding = 0.2,
-					colour = G.C.BLACK,
-				},
-				nodes = cry_nodes,
-			}
-		end,
-	},
-	{
-		label = localize("cry_set_music"),
-		tab_definition_function = function()
-			-- TODO: Add a button here to reset all Cryptid achievements.
-			-- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
-			--[[fetch_achievements()
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = cry_nodes,
+				}
+			end,
+		},
+		{
+			label = localize("cry_set_music"),
+			tab_definition_function = function()
+				-- TODO: Add a button here to reset all Cryptid achievements.
+				-- If you want to do that now, add this to the SMODS.InjectItems in Steamodded/loader/loader.lua
+				--[[fetch_achievements()
             for k, v in pairs(SMODS.Achievements) do
                 G.SETTINGS.ACHIEVEMENTS_EARNED[k] = nil
                 G.ACHIEVEMENTS[k].earned = nil
             end
             fetch_achievements()]]
-			cry_nodes = {
-				{
-					n = G.UIT.R,
-					config = { align = "cm" },
-					nodes = {
-						--{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+				cry_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+							--{n=G.UIT.O, config={object = DynaText({string = "", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+						},
 					},
-				},
-			}
-			settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_jimball"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "jimball_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_code"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "code_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_exotic"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "exotic_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_high_score"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "big_music",
-			})
-			settings.nodes[#settings.nodes + 1] = create_toggle({
-				label = localize("cry_mus_alt_bg"),
-				ref_table = Cryptid_config.Cryptid,
-				ref_value = "alt_bg_music",
-			})
-			config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
-			cry_nodes[#cry_nodes + 1] = config
-			return {
-				n = G.UIT.ROOT,
-				config = {
-					emboss = 0.05,
-					minh = 6,
-					r = 0.1,
-					minw = 10,
-					align = "cm",
-					padding = 0.2,
-					colour = G.C.BLACK,
-				},
-				nodes = cry_nodes,
-			}
-		end,
-	},
-} end
+				}
+				settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_jimball"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "jimball_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_code"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "code_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_exotic"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "exotic_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_high_score"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "big_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					label = localize("cry_mus_alt_bg"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "alt_bg_music",
+				})
+				config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
+				cry_nodes[#cry_nodes + 1] = config
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = cry_nodes,
+				}
+			end,
+		},
+	}
+end
 SMODS.current_mod.extra_tabs = cryptidTabs

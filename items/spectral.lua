@@ -3,7 +3,7 @@ local white_hole = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-White Hole",
@@ -41,15 +41,12 @@ local white_hole = {
 				end
 			end
 		end
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{
-				handname = localize(_hand, "poker_hands"),
-				chips = G.GAME.hands[_hand].chips,
-				mult = G.GAME.hands[_hand].mult,
-				level = G.GAME.hands[_hand].level,
-			}
-		)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize(_hand, "poker_hands"),
+			chips = G.GAME.hands[_hand].chips,
+			mult = G.GAME.hands[_hand].mult,
+			level = G.GAME.hands[_hand].level,
+		})
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4)
 		else
@@ -85,15 +82,12 @@ local white_hole = {
 				end
 			end
 		end
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{
-				handname = localize(_hand, "poker_hands"),
-				chips = G.GAME.hands[_hand].chips,
-				mult = G.GAME.hands[_hand].mult,
-				level = G.GAME.hands[_hand].level,
-			}
-		)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize(_hand, "poker_hands"),
+			chips = G.GAME.hands[_hand].chips,
+			mult = G.GAME.hands[_hand].mult,
+			level = G.GAME.hands[_hand].level,
+		})
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4 * number)
 		else
@@ -110,7 +104,7 @@ local vacuum = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Vacuum",
@@ -186,7 +180,7 @@ local hammerspace = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Hammerspace",
@@ -246,7 +240,7 @@ local lock = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Lock",
@@ -358,7 +352,7 @@ local trade = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Trade",
@@ -397,7 +391,9 @@ local trade = {
 					end
 				end
 			end
-			if v.ability.eternal then can_use = false end
+			if v.ability.eternal then
+				can_use = false
+			end
 			if can_use then
 				usable_vouchers[#usable_vouchers + 1] = v
 			end
@@ -417,7 +413,9 @@ local trade = {
 
 		local card = copy_card(unredeemed_voucher)
 		card.ability.extra = copy_table(unredeemed_voucher.ability.extra)
-		if card.facing == 'back' then card:flip() end
+		if card.facing == "back" then
+			card:flip()
+		end
 
 		card:start_materialize()
 		area:emplace(card)
@@ -477,7 +475,7 @@ local analog = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Analog",
@@ -538,7 +536,7 @@ local summoning = {
 		items = {
 			"set_cry_spectral",
 			"set_cry_epic",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Summoning",
@@ -593,7 +591,7 @@ local replica = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Replica",
@@ -659,9 +657,9 @@ local replica = {
 }
 local ritual = {
 	cry_credits = {
-		idea = {"Mystic Misclick"},
-		art = {"spire_winder"},
-		code = {"spire_winder"}
+		idea = { "Mystic Misclick" },
+		art = { "spire_winder" },
+		code = { "spire_winder" },
 	},
 	object_type = "Consumable",
 	dependencies = {
@@ -669,7 +667,7 @@ local ritual = {
 			"set_cry_spectral",
 			"e_cry_mosaic",
 			"e_cry_astral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Ritual",
@@ -695,7 +693,9 @@ local ritual = {
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
 		--TODO: CCD card compat
-		if #G.hand.highlighted > card.ability.max_highlighted then return false end
+		if #G.hand.highlighted > card.ability.max_highlighted then
+			return false
+		end
 		for _, v in ipairs(G.hand.highlighted) do
 			if v.edition then
 				return false
@@ -708,56 +708,56 @@ local ritual = {
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
 			if highlighted ~= card then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound("tarot1")
-					highlighted:juice_up(0.3, 0.5)
-					return true
-				end,
-			}))
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.1,
-				func = function()
-					if highlighted then
-						local random_result = pseudorandom(pseudoseed("cry-Ritual"))
-						if random_result >= 5 / 6 then
-							highlighted:set_edition({cry_astral = true})
-						else
-							if random_result >= 1 / 2 then
-								highlighted:set_edition({cry_mosaic = true})
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						highlighted:juice_up(0.3, 0.5)
+						return true
+					end,
+				}))
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.1,
+					func = function()
+						if highlighted then
+							local random_result = pseudorandom(pseudoseed("cry-Ritual"))
+							if random_result >= 5 / 6 then
+								highlighted:set_edition({ cry_astral = true })
 							else
-								highlighted:set_edition({negative = true})
+								if random_result >= 1 / 2 then
+									highlighted:set_edition({ cry_mosaic = true })
+								else
+									highlighted:set_edition({ negative = true })
+								end
 							end
 						end
-					end
-					return true
-				end,
-			}))
-			delay(0.5)
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.2,
-				func = function()
-					G.hand:unhighlight_all()
-					return true
-				end,
-			}))
+						return true
+					end,
+				}))
+				delay(0.5)
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						G.hand:unhighlight_all()
+						return true
+					end,
+				}))
 			end
 		end
 	end,
 }
 local adversary = {
 	cry_credits = {
-		idea = {"y_not_tony"},
-		art = {"Pyrocreep"},
-		code = {"spire_winder"}
+		idea = { "y_not_tony" },
+		art = { "Pyrocreep" },
+		code = { "spire_winder" },
 	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Adversary",
@@ -809,7 +809,9 @@ local adversary = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					if not CARD.edition then CARD:set_edition({negative = true}) end
+					if not CARD.edition then
+						CARD:set_edition({ negative = true })
+					end
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -841,24 +843,24 @@ local adversary = {
 }
 local chambered = {
 	cry_credits = {
-		idea = {"y_not_tony"},
-		art = {"Pyrocreep"},
-		code = {"spire_winder"}
+		idea = { "y_not_tony" },
+		art = { "Pyrocreep" },
+		code = { "spire_winder" },
 	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Chambered",
 	key = "chambered",
 	pos = { x = 5, y = 0 },
-	config = { extra = {num_copies = 3}},
+	config = { extra = { num_copies = 3 } },
 	loc_vars = function(self, info_queue, card)
-	  info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
-	  return { vars = { card.ability.extra.num_copies } }
+		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+		return { vars = { card.ability.extra.num_copies } }
 	end,
 	cost = 4,
 	order = 11,
@@ -883,40 +885,48 @@ local chambered = {
 				table.insert(filteredCons, item)
 			end
 		end
-		target = pseudorandom_element(filteredCons, pseudoseed('chambered'))
-		for i=1,card.ability.extra.num_copies do
+		target = pseudorandom_element(filteredCons, pseudoseed("chambered"))
+		for i = 1, card.ability.extra.num_copies do
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local card_copy = copy_card(target, nil)
 					if Incantation then
 						card_copy:setQty(1)
 					end
-					card_copy:set_edition({negative = true}, true)
+					card_copy:set_edition({ negative = true }, true)
 					card_copy:add_to_deck()
 					G.consumeables:emplace(card_copy)
 					return true
-				end}))
-			card_eval_status_text(target, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex'), colour = G.C.SECONDARY_SET.Spectral})
+				end,
+			}))
+			card_eval_status_text(
+				target,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize("k_duplicated_ex"), colour = G.C.SECONDARY_SET.Spectral }
+			)
 		end
 	end,
 }
 local conduit = {
 	cry_credits = {
-		idea = {"Knockback1 (Oiiman)"},
-		art = {"Knockback1 (Oiiman)"},
-		code = {"spire_winder"}
+		idea = { "Knockback1 (Oiiman)" },
+		art = { "Knockback1 (Oiiman)" },
+		code = { "spire_winder" },
 	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-conduit",
 	key = "conduit",
 	pos = { x = 6, y = 0 },
-	config = { },
+	config = {},
 	cost = 4,
 	order = 12,
 	atlas = "atlasnotjokers",

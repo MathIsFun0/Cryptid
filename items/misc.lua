@@ -4,7 +4,7 @@ local meme1 = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "meme_1",
 	kind = "meme",
@@ -15,8 +15,11 @@ local meme1 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-                if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then
-            		if pseudorandom('meme1_'..G.GAME.round_resets.ante) > 0.997 then
+		if
+			Cryptid.enabled["Misc. Jokers"]
+			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
+		then
+			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
 				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
@@ -27,7 +30,12 @@ local meme1 = {
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
+		return {
+			vars = {
+				card and card.ability.choose or self.config.choose,
+				card and card.ability.extra or self.config.extra,
+			},
+		}
 	end,
 	update_pack = function(self, dt)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -42,7 +50,7 @@ local meme2 = {
 		items = {
 			"set_cry_misc",
 			"p_cry_meme_1",
-		}
+		},
 	},
 	key = "meme_two",
 	kind = "meme",
@@ -53,8 +61,11 @@ local meme2 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then
-            		if pseudorandom('memetwo_'..G.GAME.round_resets.ante) > 0.997 then
+		if
+			Cryptid.enabled["Misc. Jokers"]
+			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
+		then
+			if pseudorandom("memetwo_" .. G.GAME.round_resets.ante) > 0.997 then
 				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
@@ -65,7 +76,12 @@ local meme2 = {
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
+		return {
+			vars = {
+				card and card.ability.choose or self.config.choose,
+				card and card.ability.extra or self.config.extra,
+			},
+		}
 	end,
 	update_pack = function(self, dt)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -81,7 +97,7 @@ local meme3 = {
 			"set_cry_misc",
 			"p_cry_meme_1",
 			"p_cry_meme_two",
-		}
+		},
 	},
 	key = "meme_three",
 	kind = "meme",
@@ -92,8 +108,11 @@ local meme3 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then
-            		if pseudorandom('memethree_'..G.GAME.round_resets.ante) > 0.997 then
+		if
+			Cryptid.enabled["Misc. Jokers"]
+			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
+		then
+			if pseudorandom("memethree_" .. G.GAME.round_resets.ante) > 0.997 then
 				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
@@ -104,7 +123,12 @@ local meme3 = {
 		ease_background_colour({ new_colour = G.C.CRY_ASCENDANT, special_colour = G.C.BLACK, contrast = 2 })
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.choose or self.config.choose, card and card.ability.extra or self.config.extra } }
+		return {
+			vars = {
+				card and card.ability.choose or self.config.choose,
+				card and card.ability.extra or self.config.extra,
+			},
+		}
 	end,
 	update_pack = function(self, dt)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -129,7 +153,7 @@ local mosaic = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "mosaic",
 	order = 2,
@@ -152,30 +176,22 @@ local mosaic = {
 	calculate = function(self, card, context)
 		if
 			(
-				context.edition			 -- for when on jonklers
+				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
-				and card.config.trigger      	 -- fixes double trigger
+				and card.config.trigger -- fixes double trigger
 			)
 			or (
-				context.main_scoring		 -- for when on playing cards
+				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
 		then
-			return {x_chips = self.config.x_chips}   -- updated value
+			return { x_chips = self.config.x_chips } -- updated value
 		end
-		if
-			(
-				context.joker_main
-			)
-		then
-			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		if context.joker_main then
+			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 
-		if
-			(
-				context.after
-			)
-		then
+		if context.after then
 			card.config.trigger = nil
 		end
 	end,
@@ -191,7 +207,7 @@ local oversat = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "oversat",
 	order = 3,
@@ -211,11 +227,11 @@ local oversat = {
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, {
 				min = 2,
-				max = 2
+				max = 2,
 			}, nil, true)
 		end)
 		if card.config.center.apply_oversat then
-			card.config.center:apply_oversat(card, 	function(val)
+			card.config.center:apply_oversat(card, function(val)
 				return cry_misprintize_val(val, {
 					min = 2,
 					max = 2,
@@ -225,7 +241,7 @@ local oversat = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {min = 0.5, max = 0.5}, nil, true)
+			cry_misprintize(card, { min = 0.5, max = 0.5 }, nil, true)
 		end)
 	end,
 	init = function(self)
@@ -276,7 +292,7 @@ local oversat = {
 				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
 			end
 		end
-	end
+	end,
 }
 
 local glitched_shader = {
@@ -289,7 +305,7 @@ local glitched = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "glitched",
 	order = 1,
@@ -311,7 +327,7 @@ local glitched = {
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, {
 				min = 0.1,
-				max = 10
+				max = 10,
 			}, nil, true)
 		end)
 		if card.config.center.apply_glitched then
@@ -325,7 +341,7 @@ local glitched = {
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {min = 1, max = 1}, true)
+			cry_misprintize(card, { min = 1, max = 1 }, true)
 			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 	end,
@@ -449,11 +465,17 @@ local glitched = {
 				}))
 				update_hand_text(
 					{ delay = 0 },
-					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+					{
+						chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
+						StatusText = true,
+					}
 				)
 				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 				for i = 1, math.random(2, 4) do
-					update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+					update_hand_text(
+						{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+						{ mult = obfuscatedtext(3) }
+					)
 				end
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -466,7 +488,10 @@ local glitched = {
 				}))
 				update_hand_text(
 					{ delay = 0 },
-					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+					{
+						mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
+						StatusText = true,
+					}
 				)
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 			elseif hand == G.handlist[#G.handlist] then
@@ -479,7 +504,10 @@ local glitched = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -489,10 +517,13 @@ local glitched = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 			end
 		end
-	end
+	end,
 }
 
 local astral_shader = {
@@ -505,7 +536,7 @@ local astral = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "astral",
 	order = 30,
@@ -528,30 +559,22 @@ local astral = {
 	calculate = function(self, card, context)
 		if
 			(
-				context.edition			 -- for when on jonklers
+				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
-				and card.config.trigger      	 -- fixes double trigger
+				and card.config.trigger -- fixes double trigger
 			)
 			or (
-				context.main_scoring		 -- for when on playing cards
+				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
 		then
-			return {e_mult = self.config.e_mult}   -- updated value
+			return { e_mult = self.config.e_mult } -- updated value
 		end
-		if
-			(
-				context.joker_main
-			)
-		then
-			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		if context.joker_main then
+			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 
-		if
-			(
-				context.after
-			)
-		then
+		if context.after then
 			card.config.trigger = nil
 		end
 	end,
@@ -567,7 +590,7 @@ local blurred = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "blur",
 	order = 6,
@@ -592,8 +615,15 @@ local blurred = {
 	end,
 	--Note: This doesn't always play the animations properly for Jokers
 	calculate = function(self, card, context)
-		if context.other_card == card and ((context.repetition and context.cardarea == G.play) or (context.retrigger_joker_check and not context.retrigger_joker)) then
-			local extra_retrigger = pseudorandom("cry_blurred") <= G.GAME.probabilities.normal / self.config.retrigger_chance
+		if
+			context.other_card == card
+			and (
+				(context.repetition and context.cardarea == G.play)
+				or (context.retrigger_joker_check and not context.retrigger_joker)
+			)
+		then
+			local extra_retrigger = pseudorandom("cry_blurred")
+				<= G.GAME.probabilities.normal / self.config.retrigger_chance
 			return {
 				message = localize("cry_again_q"),
 				repetitions = self.config.retriggers + (extra_retrigger and self.config.extra_retriggers or 0),
@@ -611,19 +641,19 @@ local noisy_shader = {
 local noisy_stats = {
 	min = {
 		mult = 0,
-		chips = 0
+		chips = 0,
 	},
 	max = {
 		mult = 30,
-		chips = 150
-	}
+		chips = 150,
+	},
 }
 local noisy = {
 	object_type = "Edition",
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "noisy",
 	order = 7,
@@ -631,7 +661,13 @@ local noisy = {
 	shader = "noisy",
 	in_shop = true,
 	extra_cost = 4,
-	config = { min_mult = noisy_stats.min.mult, max_mult = noisy_stats.max.mult, min_chips = noisy_stats.min.chips, max_chips = noisy_stats.max.chips, trigger = nil },
+	config = {
+		min_mult = noisy_stats.min.mult,
+		max_mult = noisy_stats.max.mult,
+		min_chips = noisy_stats.min.chips,
+		max_chips = noisy_stats.max.chips,
+		trigger = nil,
+	},
 	sound = {
 		sound = "cry_e_noisy",
 		per = 1,
@@ -640,33 +676,25 @@ local noisy = {
 	calculate = function(self, card, context)
 		if
 			(
-				context.edition			 -- for when on jonklers
+				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
-				and card.config.trigger      	 -- fixes double trigger
+				and card.config.trigger -- fixes double trigger
 			)
 			or (
-				context.main_scoring		 -- for when on playing cards
+				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
 		then
 			return {
 				mult = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult),
-				chips = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips)
-			}   -- updated value
+				chips = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips),
+			} -- updated value
 		end
-		if
-			(
-				context.joker_main
-			)
-		then
-			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		if context.joker_main then
+			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 
-		if
-			(
-				context.after
-			)
-		then
+		if context.after then
 			card.config.trigger = nil
 		end
 	end,
@@ -769,7 +797,10 @@ local noisy = {
 							{ string = "rand()", colour = G.C.JOKER_GREY },
 							{
 								string = "@#"
-									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(2, 2) or "m")
+									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(
+										2,
+										2
+									) or "m")
 									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7),
 								colour = G.C.BLUE,
 							},
@@ -829,7 +860,10 @@ local noisy = {
 				)
 				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 				for i = 1, math.random(2, 4) do
-					update_hand_text({ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 }, { mult = obfuscatedtext(3) })
+					update_hand_text(
+						{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+						{ mult = obfuscatedtext(3) }
+					)
 				end
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -868,7 +902,7 @@ local noisy = {
 				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
 			end
 		end
-	end
+	end,
 }
 
 local jollyeditionshader = {
@@ -882,12 +916,12 @@ local jollyedition = {
 		items = {
 			"set_cry_misc",
 			"set_cry_m",
-		}
+		},
 	},
 	in_shop = false,
 	order = 31,
 	weight = 0,
-	pos = {x = 2, y = 0},
+	pos = { x = 2, y = 0 },
 	name = "cry-jollyedition",
 	sound = {
 		sound = "cry_e_jolly",
@@ -907,30 +941,22 @@ local jollyedition = {
 	calculate = function(self, card, context)
 		if
 			(
-				context.edition			 -- for when on jonklers
+				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
-				and card.config.trigger      	 -- fixes double trigger
+				and card.config.trigger -- fixes double trigger
 			)
 			or (
-				context.main_scoring		 -- for when on playing cards
+				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
 		then
-			return {mult = self.config.mult}   -- updated value
+			return { mult = self.config.mult } -- updated value
 		end
-		if
-			(
-				context.joker_main
-			)
-		then
-			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		if context.joker_main then
+			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 
-		if
-			(
-				context.after
-			)
-		then
+		if context.after then
 			card.config.trigger = nil
 		end
 	end,
@@ -1004,7 +1030,7 @@ local jollyedition = {
 			end
 			return full_UI_table
 		end
-	end
+	end,
 }
 
 local glass_shader = {
@@ -1022,7 +1048,7 @@ local glass_edition = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "glass",
 	order = 4,
@@ -1052,30 +1078,24 @@ local glass_edition = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if
-			(
-				context.edition
-				and context.cardarea == G.jokers
-				and card.config.trigger
-			)
-		then
-			return {x_mult = self.config.x_mult}
+		if context.edition and context.cardarea == G.jokers and card.config.trigger then
+			return { x_mult = self.config.x_mult }
 		end
 
 		if
-			(
-				context.cardarea == G.jokers
-				and context.post_trigger --animation-wise this looks weird sometimes
-			)
+			context.cardarea == G.jokers and context.post_trigger --animation-wise this looks weird sometimes
 		then
 			if
-				not card.ability.eternal and (pseudorandom(pseudoseed("cry_fragile"))
-				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
+				not card.ability.eternal
+				and (
+					pseudorandom(pseudoseed("cry_fragile"))
+					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
+				)
 			then
 				-- this event call might need to be pushed later to make more sense
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
+						play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, 0.5)
 						card.states.drag.is = true
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
@@ -1090,45 +1110,35 @@ local glass_edition = {
 							end,
 						}))
 						return true
-					end
-					}))
+					end,
+				}))
 			end
 		end
-		if (
-				context.main_scoring
-				and context.cardarea == G.play
-			)
-		then
+		if context.main_scoring and context.cardarea == G.play then
 			if
-				not card.ability.eternal and (pseudorandom(pseudoseed("cry_fragile"))
-				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
+				not card.ability.eternal
+				and (
+					pseudorandom(pseudoseed("cry_fragile"))
+					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
+				)
 			then
 				card.config.will_shatter = true
 			end
-			return {x_mult = self.config.x_mult}
+			return { x_mult = self.config.x_mult }
 		end
 
-		if
-			(
-				context.joker_main
-			)
-		then
-			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+		if context.joker_main then
+			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
 
-		if
-			(
-				context.after
-			)
-		then
+		if context.after then
 			card.config.trigger = nil
 		end
 
-		if context.destroying_card and card.config.will_shatter
-		then
+		if context.destroying_card and card.config.will_shatter then
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
+					play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, 0.5)
 					card.states.drag.is = true
 					G.E_MANAGER:add_event(Event({
 						trigger = "after",
@@ -1143,9 +1153,9 @@ local glass_edition = {
 						end,
 					}))
 					return true
-				end
-    			}))
-			return {remove = true}
+				end,
+			}))
+			return { remove = true }
 		end
 	end,
 }
@@ -1165,7 +1175,7 @@ local gold_edition = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "gold",
 	order = 5,
@@ -1187,17 +1197,8 @@ local gold_edition = {
 		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
 	end,
 	calculate = function(self, card, context)
-		if
-			(
-				context.post_trigger
-			)
-			or
-			(
-				context.using_consumeable
-				and context.consumeable == card
-			)
-		then
-			SMODS.calculate_effect({dollars = self.config.dollars}, card, true)
+		if context.post_trigger or (context.using_consumeable and context.consumeable == card) then
+			SMODS.calculate_effect({ dollars = self.config.dollars }, card, true)
 		end
 	end,
 }
@@ -1207,15 +1208,15 @@ local double_sided = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
-    gameset_config = {
-        modest = {disabled = true},
-		mainline = {disabled = true},
-		madness = {disabled = true},
-		experimental = {}
-    },
-	extra_gamesets = {"experimental"},
+	gameset_config = {
+		modest = { disabled = true },
+		mainline = { disabled = true },
+		madness = { disabled = true },
+		experimental = {},
+	},
+	extra_gamesets = { "experimental" },
 	key = "double_sided",
 	shader = false,
 	order = 32,
@@ -1416,7 +1417,7 @@ local double_sided = {
 				end
 				self:dbl_side_flip()
 			end
-			if self.ability.cry_absolute then	-- feedback loop... may be problematic
+			if self.ability.cry_absolute then -- feedback loop... may be problematic
 				self.cry_absolute = true
 			end
 			if self.cry_absolute then
@@ -1474,17 +1475,21 @@ local double_sided = {
 					end
 				end
 				self:set_sprites(nil, self.config.card)
-				if self.children and self.children.front and self.config.card_key then self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos) end
+				if self.children and self.children.front and self.config.card_key then
+					self.children.front:set_sprite_pos(G.P_CARDS[self.config.card_key].pos)
+				end
 			end
 			if (not self.base or not self.base.name) and self.children.front then
 				self.children.front:remove()
 				self.children.front = nil
 			end
-			self:set_edition({cry_double_sided = true},true,true)
+			self:set_edition({ cry_double_sided = true }, true, true)
 		end
 		local cgcb = Card.get_chip_bonus
 		function Card:get_chip_bonus()
-			if self.ability.set == "Joker" then return 0 end
+			if self.ability.set == "Joker" then
+				return 0
+			end
 			return cgcb(self)
 		end
 		local csave = Card.save
@@ -1529,21 +1534,21 @@ local double_sided = {
 		local catd = Card.add_to_deck
 		local crfd = Card.remove_from_deck
 		function Card:add_to_deck(debuff)
-			if debuff and self.ability.name == 'Chaos the Clown' then
+			if debuff and self.ability.name == "Chaos the Clown" then
 				return
 			end
 			return catd(self, debuff)
 		end
 		function Card:remove_from_deck(debuff)
-			if debuff and self.ability.name == 'Chaos the Clown' then
+			if debuff and self.ability.name == "Chaos the Clown" then
 				return
 			end
 			return crfd(self, debuff)
 		end
 		local cae = CardArea.emplace
-		function CardArea:emplace(card,m1,m2)
+		function CardArea:emplace(card, m1, m2)
 			if not (card.will_shatter or card.destroyed or card.shattered) then
-				cae(self,card,m1,m2)
+				cae(self, card, m1, m2)
 			else
 				if card.area then
 					card.area:remove_card(card)
@@ -1556,17 +1561,29 @@ local double_sided = {
 		function set_joker_win()
 			sjw()
 			for k, v in pairs(G.jokers.cards) do
-			  if v.dbl_side and v.dbl_side.config.center_key and v.dbl_side.ability.set == 'Joker' then
-				G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] or {count = 1, order = v.dbl_side.config.center.order, wins = {}, losses = {}, wins_by_key = {}, losses_by_key = {}}
-				if G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] then
-				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins or {}
-				  G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] = (G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] or 0) + 1
+				if v.dbl_side and v.dbl_side.config.center_key and v.dbl_side.ability.set == "Joker" then
+					G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key]
+						or {
+							count = 1,
+							order = v.dbl_side.config.center.order,
+							wins = {},
+							losses = {},
+							wins_by_key = {},
+							losses_by_key = {},
+						}
+					if G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key] then
+						G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins = G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins
+							or {}
+						G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake] = (
+							G.PROFILES[G.SETTINGS.profile].joker_usage[v.dbl_side.config.center_key].wins[G.GAME.stake]
+							or 0
+						) + 1
+					end
 				end
-			  end
 			end
 			G:save_settings()
 		end
-	end
+	end,
 }
 local meld = {
 	object_type = "Consumable",
@@ -1574,7 +1591,7 @@ local meld = {
 		items = {
 			"set_cry_misc",
 			"e_cry_double_sided",
-		}
+		},
 	},
 	set = "Tarot",
 	name = "cry-Meld",
@@ -1585,18 +1602,21 @@ local meld = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
+		if
+			#G.jokers.highlighted
+				+ #G.hand.highlighted
+				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
+			== 1
+		then
 			if
-				#G.jokers.highlighted == 1 and
-				(
-					Card.no(G.jokers.highlighted[1], "dbl")
-					or G.jokers.highlighted[1].edition
-				)
-			then return false end
-			if
-				#G.hand.highlighted == 1
-				and G.hand.highlighted[1].edition
-			then return false end
+				#G.jokers.highlighted == 1
+				and (Card.no(G.jokers.highlighted[1], "dbl") or G.jokers.highlighted[1].edition)
+			then
+				return false
+			end
+			if #G.hand.highlighted == 1 and G.hand.highlighted[1].edition then
+				return false
+			end
 			return true
 		end
 	end,
@@ -1622,7 +1642,7 @@ local meld = {
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_double_slit
-	end
+	end,
 }
 
 -- Enhancements/Tarots
@@ -1631,17 +1651,27 @@ local echo = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "echo",
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { self.config.retriggers, card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1, self.config.extra } }	-- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
+		return {
+			vars = {
+				self.config.retriggers,
+				card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1,
+				self.config.extra,
+			},
+		} -- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
 	calculate = function(self, card, context)
-		if context.repetition and pseudorandom("echo") < cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2) then
+		if
+			context.repetition
+			and pseudorandom("echo")
+				< cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2)
+		then
 			return {
 				message = localize("k_again_ex"),
 				repetitions = card.ability.retriggers,
@@ -1656,7 +1686,7 @@ local eclipse = {
 		items = {
 			"set_cry_misc",
 			"m_cry_echo",
-		}
+		},
 	},
 	set = "Tarot",
 	name = "cry-Eclipse",
@@ -1676,29 +1706,36 @@ local light = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	key = "light",
 	atlas = "cry_misc",
 	cry_noshadow = true,
 	pos = { x = 0, y = 3 },
-	config = {extra = {a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5}},
+	config = { extra = { a_x_mult = 0.2, current_x_mult = 1, req = 5, current = 5 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult, card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult, card and card.ability.extra.current or self.config.extra.current, card and card.ability.extra.req or self.config.extra.req } }
+		return {
+			vars = {
+				card and card.ability.extra.a_x_mult or self.config.extra.a_x_mult,
+				card and card.ability.extra.current_x_mult or self.config.extra.current_x_mult,
+				card and card.ability.extra.current or self.config.extra.current,
+				card and card.ability.extra.req or self.config.extra.req,
+			},
+		}
 	end,
-	calculate = function(self,card,context)
+	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.main_scoring then
 			if #context.scoring_hand > 1 then
 				card.ability.extra.current = card.ability.extra.current - (#context.scoring_hand - 1)
 				while card.ability.extra.current <= 0 do
-					card.ability.extra.req = card.ability.extra.req +5
+					card.ability.extra.req = card.ability.extra.req + 5
 					card.ability.extra.current = card.ability.extra.current + card.ability.extra.req
 					card.ability.extra.current_x_mult = card.ability.extra.current_x_mult + card.ability.extra.a_x_mult
 				end
 			end
 			if card.ability.extra.current_x_mult > 1 then
 				return {
-					x_mult = card.ability.extra.current_x_mult
+					x_mult = card.ability.extra.current_x_mult,
 				}
 			end
 		end
@@ -1710,7 +1747,7 @@ local seraph = {
 		items = {
 			"set_cry_misc",
 			"m_cry_light",
-		}
+		},
 	},
 	set = "Tarot",
 	name = "cry-Seraph",
@@ -1730,7 +1767,7 @@ local blessing = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	set = "Tarot",
 	name = "cry-theblessing",
@@ -1752,7 +1789,16 @@ local blessing = {
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
 					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
-					local _card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, forced_key.config.center_key, "blessing")
+					local _card = create_card(
+						"Consumeables",
+						G.consumables,
+						nil,
+						nil,
+						nil,
+						nil,
+						forced_key.config.center_key,
+						"blessing"
+					)
 					_card:add_to_deck()
 					G.consumeables:emplace(_card)
 					used_consumable:juice_up(0.3, 0.5)
@@ -1770,7 +1816,7 @@ local azure_seal = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
 	name = "cry-Azure-Seal",
 	key = "azure",
@@ -1811,7 +1857,7 @@ local azure_seal = {
 				end,
 			}))
 
-			return {remove = true}
+			return { remove = true }
 		end
 	end,
 }
@@ -1821,7 +1867,7 @@ local typhoon = {
 		items = {
 			"set_cry_misc",
 			"cry_azure",
-		}
+		},
 	},
 	set = "Spectral",
 	name = "cry-Typhoon",
@@ -1882,9 +1928,9 @@ local absolute = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
-		}
+		},
 	},
-	badge_colour = HEX('c75985'),
+	badge_colour = HEX("c75985"),
 	prefix_config = { key = false },
 	key = "cry_absolute",
 	atlas = "sticker",
@@ -1893,9 +1939,21 @@ local absolute = {
 	no_sticker_sheet = true,
 	draw = function(self, card, layer)
 		G.shared_stickers["cry_absolute"].role.draw_major = card
-		G.shared_stickers["cry_absolute"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
-		G.shared_stickers["cry_absolute"]:draw_shader('polychrome', nil, card.ARGS.send_to_shader, nil, card.children.center)
-		G.shared_stickers["cry_absolute"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader(
+			"polychrome",
+			nil,
+			card.ARGS.send_to_shader,
+			nil,
+			card.children.center
+		)
+		G.shared_stickers["cry_absolute"]:draw_shader(
+			"voucher",
+			nil,
+			card.ARGS.send_to_shader,
+			nil,
+			card.children.center
+		)
 	end,
 }
 local miscitems = {
@@ -1929,7 +1987,7 @@ local miscitems = {
 	light,
 	seraph,
 	jollyeditionshader,
-	jollyedition
+	jollyedition,
 }
 return {
 	name = "Misc.",
@@ -1940,9 +1998,9 @@ return {
 			setabilityref(self, center, initial, delay_sprites)
 
 			if self.config.center.cry_noshadow then
-				self.ignore_shadow['cry_noshadow'] = true
-			elseif self.ignore_shadow['cry_noshadow'] then
-				self.ignore_shadow['cry_noshadow'] = nil
+				self.ignore_shadow["cry_noshadow"] = true
+			elseif self.ignore_shadow["cry_noshadow"] then
+				self.ignore_shadow["cry_noshadow"] = nil
 			end
 		end
 	end,

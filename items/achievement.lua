@@ -447,4 +447,4 @@ local achievement_objects = {
 	traffic_jam,
 	perfectly_balanced,
 }
-return { name = "Achievements", items = achievement_objects,  }
+return { name = "Achievements", items = achievement_objects }

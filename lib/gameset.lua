@@ -335,25 +335,25 @@ G.FUNCS.cry_gameset_confirm = function(e)
 			--Unlock All by default in madness
 			G.PROFILES[G.SETTINGS.profile].all_unlocked = true
 			for k, v in pairs(G.P_CENTERS) do
-			if not v.demo and not v.wip then
-				v.alerted = true
-				v.discovered = true
-				v.unlocked = true
-			end
+				if not v.demo and not v.wip then
+					v.alerted = true
+					v.discovered = true
+					v.unlocked = true
+				end
 			end
 			for k, v in pairs(G.P_BLINDS) do
-			if not v.demo and not v.wip then
-				v.alerted = true
-				v.discovered = true
-				v.unlocked = true
-			end
+				if not v.demo and not v.wip then
+					v.alerted = true
+					v.discovered = true
+					v.unlocked = true
+				end
 			end
 			for k, v in pairs(G.P_TAGS) do
-			if not v.demo and not v.wip then
-				v.alerted = true
-				v.discovered = true
-				v.unlocked = true
-			end
+				if not v.demo and not v.wip then
+					v.alerted = true
+					v.discovered = true
+					v.unlocked = true
+				end
 			end
 			set_profile_progress()
 			set_discover_tallies()
@@ -753,7 +753,7 @@ function cry_gameset_config_UI(center)
 end
 
 function G.FUNCS.cry_gameset_config_UI()
-	G.cry_prev_collec = 'your_collection_content_sets'
+	G.cry_prev_collec = "your_collection_content_sets"
 	cry_gameset_config_UI()
 end
 
@@ -776,20 +776,20 @@ local collection_shtuff = {
 	"seals",
 	"boosters",
 	"stickers",
-	"content_sets"
+	"content_sets",
 }
 
 -- sure this is cool and all but it doesn't keep page yet so it's pretty useless
 -- would need to regex patch that
 
 for i, v in ipairs(collection_shtuff) do
-	local ref = G.FUNCS['your_collection_'..v]
-	G.FUNCS['your_collection_'..v] = function(e)
-		G.cry_prev_collec = 'your_collection_'..v
+	local ref = G.FUNCS["your_collection_" .. v]
+	G.FUNCS["your_collection_" .. v] = function(e)
+		G.cry_prev_collec = "your_collection_" .. v
 		ref(e)
 	end
 end
-G.cry_prev_collec = 'your_collection_jokers'
+G.cry_prev_collec = "your_collection_jokers"
 
 -- change the rarity sticker's color for gameset selection on an item
 local gtc = get_type_colour
@@ -1241,7 +1241,7 @@ SMODS.ContentSet({
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)
-	G.cry_prev_collec = 'your_collection_content_sets'
+	G.cry_prev_collec = "your_collection_content_sets"
 	G.SETTINGS.paused = true
 	G.FUNCS.overlay_menu({
 		definition = create_UIBox_your_collection_content_sets(),
@@ -1249,7 +1249,7 @@ G.FUNCS.your_collection_content_sets = function(e)
 end
 
 G.FUNCS.your_collection_current_set = function(e)
-	G.cry_prev_collec = 'your_collection_current_set'
+	G.cry_prev_collec = "your_collection_current_set"
 	G.SETTINGS.paused = true
 	G.FUNCS.overlay_menu({
 		definition = create_UIBox_your_collection_current_set(),
@@ -1304,7 +1304,11 @@ function create_UIBox_your_collection_content_sets()
 			if not center then
 				break
 			end
-			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
+			local card = create_generic_card(
+				center,
+				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
+				G.your_collection[j].T.y
+			)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1390,7 +1394,11 @@ function create_UIBox_your_collection_current_set()
 			if not center then
 				break
 			end
-			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
+			local card = create_generic_card(
+				center,
+				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
+				G.your_collection[j].T.y
+			)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1449,7 +1457,11 @@ G.FUNCS.your_collection_content_set_page = function(args)
 			if not center then
 				break
 			end
-			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
+			local card = create_generic_card(
+				center,
+				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
+				G.your_collection[j].T.y
+			)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1488,7 +1500,11 @@ G.FUNCS.your_collection_current_set_page = function(args)
 			if not center then
 				break
 			end
-			local card = create_generic_card(center, G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y)
+			local card = create_generic_card(
+				center,
+				G.your_collection[j].T.x + G.your_collection[j].T.w / 2,
+				G.your_collection[j].T.y
+			)
 			G.your_collection[j]:emplace(card)
 		end
 	end
@@ -1520,7 +1536,7 @@ function create_generic_card(center, x, y)
 		return card
 	end
 	if safe_get(center, "config", "cry_force_edition") then
-		card:set_edition({[center.config.cry_force_edition] = true}, true, true)
+		card:set_edition({ [center.config.cry_force_edition] = true }, true, true)
 	end
 	if center.set == "Seal" then
 		card:set_seal(center.key, true, true)
@@ -1589,7 +1605,7 @@ local mct = modsCollectionTally
 function modsCollectionTally(pool, set)
 	local t = mct(pool, set)
 	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
-		local obj_tally = {tally = 0, of = 0}
+		local obj_tally = { tally = 0, of = 0 }
 		--infer pool
 		local _set = set or safe_get(pool, 1, "set")
 		--check for general consumables
@@ -1615,22 +1631,22 @@ function modsCollectionTally(pool, set)
 			if v.mod and G.ACTIVE_MOD_UI.id == v.mod.id and not v.no_collection then
 				if consumable then
 					if safe_get(v, "consumeable") then
-						obj_tally.of = obj_tally.of+1
+						obj_tally.of = obj_tally.of + 1
 						if cry_card_enabled(v.key) == true then
-							obj_tally.tally = obj_tally.tally+1
+							obj_tally.tally = obj_tally.tally + 1
 						end
 					end
 				elseif set then
 					if v.set and v.set == set then
-						obj_tally.of = obj_tally.of+1
+						obj_tally.of = obj_tally.of + 1
 						if cry_card_enabled(v.key) == true then
-							obj_tally.tally = obj_tally.tally+1
+							obj_tally.tally = obj_tally.tally + 1
 						end
 					end
 				else
-					obj_tally.of = obj_tally.of+1
+					obj_tally.of = obj_tally.of + 1
 					if cry_card_enabled(v.key) == true then
-						obj_tally.tally = obj_tally.tally+1
+						obj_tally.tally = obj_tally.tally + 1
 					end
 				end
 			end
@@ -1650,15 +1666,14 @@ function create_UIBox_your_collection_decks()
 				table.insert(generic_collection_pool, v)
 			end
 		end
-		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 },
-		{
+		return SMODS.card_collection_UIBox(generic_collection_pool, { 5, 5, 5 }, {
 			modify_card = function(card, center, i, j)
 				if center.config.cry_antimatter then
 					card:set_edition("e_negative", true, true)
 					return card
 				end
 				if center.config.cry_force_edition then
-					card:set_edition({[center.config.cry_force_edition] = true}, true, true)
+					card:set_edition({ [center.config.cry_force_edition] = true }, true, true)
 				end
 				if center.config.cry_force_seal then
 					card:set_seal(center.config.cry_force_seal, true, true)
@@ -1666,7 +1681,7 @@ function create_UIBox_your_collection_decks()
 				if center.config.cry_force_sticker then
 					SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
 				end
-			end
+			end,
 		})
 	else
 		return uibk()

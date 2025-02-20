@@ -20,10 +20,16 @@ end
 -- More advanced version of find joker for things that need to find very specific things
 function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 	local jokers = {}
-	if not G.jokers or not G.jokers.cards then return {} end
+	if not G.jokers or not G.jokers.cards then
+		return {}
+	end
 	local filter = 0
-	if name then filter = filter + 1 end
-	if edition then filter = filter + 1 end
+	if name then
+		filter = filter + 1
+	end
+	if edition then
+		filter = filter + 1
+	end
 	if type(rarity) ~= "table" then
 		if type(rarity) == "string" then
 			rarity = { rarity }
@@ -31,7 +37,9 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 			rarity = nil
 		end
 	end
-	if rarity then filter = filter + 1 end
+	if rarity then
+		filter = filter + 1
+	end
 	if type(ability) ~= "table" then
 		if type(ability) == "string" then
 			ability = { ability }
@@ -39,14 +47,25 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 			ability = nil
 		end
 	end
-	if ability then filter = filter + 1 end
+	if ability then
+		filter = filter + 1
+	end
 	-- return nothing if function is called with no useful arguments
-	if filter == 0 then return {} end
+	if filter == 0 then
+		return {}
+	end
 	for k, v in pairs(G.jokers.cards) do
-		if v and type(v) == 'table' and (non_debuff or not v.debuff) then
+		if v and type(v) == "table" and (non_debuff or not v.debuff) then
 			local check = 0
-			if name and v.ability.name == name then check = check + 1 end
-			if edition and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]] then check = check + 1 end
+			if name and v.ability.name == name then
+				check = check + 1
+			end
+			if
+				edition
+				and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]]
+			then
+				check = check + 1
+			end
 			if rarity then
 				--Passes as valid if rarity matches ANY of the values in the rarity table
 				for _, a in ipairs(rarity) do
@@ -65,16 +84,27 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 						break
 					end
 				end
-				if abilitycheck then check = check + 1 end
+				if abilitycheck then
+					check = check + 1
+				end
 			end
-			if check == filter then table.insert(jokers, v) end
+			if check == filter then
+				table.insert(jokers, v)
+			end
 		end
 	end
 	for k, v in pairs(G.consumeables.cards) do
-		if v and type(v) == 'table' and (non_debuff or not v.debuff) then
+		if v and type(v) == "table" and (non_debuff or not v.debuff) then
 			local check = 0
-			if name and v.ability.name == name then check = check + 1 end
-			if edition and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]] then check = check + 1 end
+			if name and v.ability.name == name then
+				check = check + 1
+			end
+			if
+				edition
+				and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]]
+			then
+				check = check + 1
+			end
 			if ability then
 				--Only passes if the joker has everything in the ability table
 				local abilitycheck = true
@@ -84,10 +114,14 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 						break
 					end
 				end
-				if abilitycheck then check = check + 1 end
+				if abilitycheck then
+					check = check + 1
+				end
 			end
 			--Consumables don't have a rarity, so this should ignore it in that case (untested lmfao)
-			if check == filter then table.insert(jokers, v) end
+			if check == filter then
+				table.insert(jokers, v)
+			end
 		end
 	end
 	return jokers
@@ -145,17 +179,13 @@ end
 
 -- simple plural s function for localisation
 function cry_pls(str, vars)
-	if string.sub(str, 1, 1) == 'p'
-	or string.sub(str, 1, 1) == 's'
-	or string.sub(str, 1, 1) == 'y' then
+	if string.sub(str, 1, 1) == "p" or string.sub(str, 1, 1) == "s" or string.sub(str, 1, 1) == "y" then
 		num = vars[tonumber(string.sub(str, 2, -1))]
 		if num then
 			if math.abs(to_big(num) - 1) > to_big(0.001) then
-				return string.sub(str, 1, 1) == 'y' and 'ies'
-				or 's'
+				return string.sub(str, 1, 1) == "y" and "ies" or "s"
 			else
-				return string.sub(str, 1, 1) == 'y' and 'y'
-				or ''
+				return string.sub(str, 1, 1) == "y" and "y" or ""
 			end
 		end
 	end
@@ -348,30 +378,41 @@ end
 -- just dumping this garbage here
 -- this just ensures that extra voucher slots work as expected
 function cry_bonusvouchermod(mod)
-	if not G.GAME.shop then return end
+	if not G.GAME.shop then
+		return
+	end
 	G.GAME.cry_bonusvouchercount = G.GAME.cry_bonusvouchercount + mod
 	if G.shop_jokers and G.shop_jokers.cards then
 		G.shop:recalculate()
-		if mod > 0 then		-- not doing minus mod because it'd be janky and who really cares
-			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
+		if mod > 0 then -- not doing minus mod because it'd be janky and who really cares
+			for i = 1, G.GAME.cry_bonusvouchercount + 1 - #G.shop_vouchers.cards do
 				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
-				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
-
+				curr_bonus[#curr_bonus + 1] = get_next_voucher_key()
 
 				-- this could be a function but it's done like what... 3 times? it doesn't matter rn
 
-				local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
-					G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[curr_bonus[#curr_bonus]],{bypass_discovery_center = true, bypass_discovery_ui = true})
+				local card = Card(
+					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
+					G.shop_vouchers.T.y,
+					G.CARD_W,
+					G.CARD_H,
+					G.P_CARDS.empty,
+					G.P_CENTERS[curr_bonus[#curr_bonus]],
+					{ bypass_discovery_center = true, bypass_discovery_ui = true }
+				)
 				card.shop_cry_bonusvoucher = #curr_bonus
 				cry_misprintize(card)
 				if G.GAME.events.ev_cry_choco2 then
 					card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 					card:set_cost()
 				end
-				if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+				if
+					G.GAME.modifiers.cry_enable_flipped_in_shop
+					and pseudorandom("cry_flip_vouch" .. G.GAME.round_resets.ante) > 0.7
+				then
 					card.cry_flipped = true
 				end
-				create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
 				card:start_materialize()
 				if G.GAME.current_round.cry_voucher_edition then
 					card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
@@ -435,7 +476,9 @@ Cryptid.big_num_whitelist = {
 
 function is_card_big(joker)
 	local center = joker.config and joker.config.center
-	if not center then return false end
+	if not center then
+		return false
+	end
 	return Cryptid.big_num_whitelist[center.key or "Nope!"] --[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
@@ -443,9 +486,9 @@ end
 --Utility function to check things without erroring
 function safe_get(t, ...)
 	local current = t
-	for _, k in ipairs({...}) do
+	for _, k in ipairs({ ... }) do
 		if current[k] == nil then
-		return false
+			return false
 		end
 		current = current[k]
 	end
@@ -518,29 +561,29 @@ end
 function cry_get_enchanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
-	"e_"..(safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
+		"e_" .. (safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
+		safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
+		safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
+		safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
+		safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
 	-- Do Stuff
-	edition = (safe_get(G.P_CENTERS,edition) and edition or "e_foil"):sub(3)
-	enhancement = safe_get(G.P_CENTERS,enhancement) and enhancement or "m_bonus"
-	sticker = safe_get(SMODS.Stickers,sticker) and sticker or "eternal"
-	suit = safe_get(SMODS.Suits,suit) and suit or "Spades"
-	seal = safe_get(G.P_SEALS,seal) and seal or "Gold"
+	edition = (safe_get(G.P_CENTERS, edition) and edition or "e_foil"):sub(3)
+	enhancement = safe_get(G.P_CENTERS, enhancement) and enhancement or "m_bonus"
+	sticker = safe_get(SMODS.Stickers, sticker) and sticker or "eternal"
+	suit = safe_get(SMODS.Suits, suit) and suit or "Spades"
+	seal = safe_get(G.P_SEALS, seal) and seal or "Gold"
 	local ret = {
 		edition = edition,
 		enhancement = enhancement,
 		sticker = sticker,
 		suit = suit,
-		seal = seal
+		seal = seal,
 	}
 	for k, _ in pairs(ret) do
-		if G.GAME.modifiers["cry_force_"..k] and not G.GAME.viewed_back then
-			ret[k] = G.GAME.modifiers["cry_force_"..k]
-		elseif safe_get(deck,"config","cry_force_"..k) then
-			ret[k] = deck.config["cry_force_"..k]
+		if G.GAME.modifiers["cry_force_" .. k] and not G.GAME.viewed_back then
+			ret[k] = G.GAME.modifiers["cry_force_" .. k]
+		elseif safe_get(deck, "config", "cry_force_" .. k) then
+			ret[k] = deck.config["cry_force_" .. k]
 		end
 	end
 	return ret.edition, ret.enhancement, ret.sticker, ret.suit, ret.seal

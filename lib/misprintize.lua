@@ -103,7 +103,9 @@ function cry_sanity_check(val, is_big)
 		if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 			val = 1e300
 		end
-		if type(val) == "table" then return val end
+		if type(val) == "table" then
+			return val
+		end
 		if val > 1e100 or val < -1e100 then
 			return to_big(val)
 		end

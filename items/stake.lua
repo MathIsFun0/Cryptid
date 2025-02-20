@@ -345,8 +345,7 @@ local ascendant = {
 	order = 32,
 	colour = G.C.CRY_ASCENDANT,
 }
-local stake_atlas = { object_type = "Atlas", key = "stake",
-path = "stake_cry.png", px = 29, py = 29 }
+local stake_atlas = { object_type = "Atlas", key = "stake", path = "stake_cry.png", px = 29, py = 29 }
 return {
 	name = "More Stakes",
 	init = function(self)
@@ -436,7 +435,7 @@ return {
 					end,
 				}))
 				delay(0.3)
-				SMODS.calculate_context({remove_playing_cards = true, removed = destroyed_cards})
+				SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
 			end,
 		}, true)
 		SMODS.Consumable:take_ownership("familiar", {
@@ -480,7 +479,7 @@ return {
 					end,
 				}))
 				delay(0.3)
-				SMODS.calculate_context({remove_playing_cards = true, removed = destroyed_cards})
+				SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
 			end,
 		}, true)
 		SMODS.Consumable:take_ownership("incantation", {
@@ -524,7 +523,7 @@ return {
 					end,
 				}))
 				delay(0.3)
-				SMODS.calculate_context({remove_playing_cards = true, removed = destroyed_cards})
+				SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
 			end,
 		}, true)
 
@@ -579,5 +578,4 @@ return {
 		azure,
 		ascendant,
 	},
-
 }
