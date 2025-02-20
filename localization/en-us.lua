@@ -66,6 +66,7 @@ return {
                 text = {
                     "All cards are {C:dark_edition}#1#{}",
                     "Cards cannot change editions",
+                    "{C:inactive}(Click to edit)",
                 },
             },
             b_cry_encoded = {
@@ -91,6 +92,7 @@ return {
                 text = {
                     "All {C:attention}playing cards{}",
                     "are {C:attention}#1#{}(s)",
+                    "{C:inactive}(Click to edit)",
                 },
             },
             b_cry_glowing = {
@@ -129,6 +131,7 @@ return {
                 name = "Sticker Deck",
                 text = {
                     "All cards are {C:attention}#1#{}",
+                    "{C:inactive}(Click to edit)",
                 },
             },
 	    b_cry_sl_deck = {
@@ -136,6 +139,7 @@ return {
                 text = {
 		    "All playing cards have a {C:dark_edition}#1#{}",
 		    "Cards cannot change seals",
+            "{C:inactive}(Click to edit)",
 		},
             },
             b_cry_spooky = {
@@ -151,6 +155,7 @@ return {
                 text = {
 		    "All playing cards are {C:dark_edition}#1#",
 		    "and cannot change suits",
+            "{C:inactive}(Click to edit)",
 		},
             },
             b_cry_very_fair = {

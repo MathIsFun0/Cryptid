@@ -351,7 +351,8 @@ return {
 		local ccl = Card.click
 		function Card:click()
 			ccl(self)
-			if G.STAGE == G.STAGES.MAIN_MENU and safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") then
+			--TODO: Galdur compat (will likely add a new page with Galdur API)
+			if safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select) then
 				if self.edeck_select then
 					G.PROFILES[G.SETTINGS.profile]["cry_edeck_"..G.GAME.viewed_back.effect.center.edeck_type] = self.edeck_select
 				end
