@@ -30,6 +30,9 @@ Cryptid.enabled = copy_table(Cryptid_config)
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
 	post_trigger = true,
+	cardareas = {
+		unscored = true,
+	}
 	-- Here are some other ones Steamodded has
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
 	--[[
