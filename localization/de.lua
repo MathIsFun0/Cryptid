@@ -1653,7 +1653,7 @@ return {
                     "{C:inactive}(Momentan {X:chips,C:white} X#1# {C:inactive} Chips)",
                 },
             },
-			
+
 			j_cry_pity_prize = {
 				name = "Trostpreis",
 				text = {
@@ -3562,7 +3562,7 @@ return {
 
             cry_critical_hit_ex = "Kritischer Treffer!",
             cry_critical_miss_ex = "Kritisch verfehlt!",
-			
+
 			cry_potion1 = "-1 zu allen Handleveln",
             cry_potion2 = "X1.15 Blindgröße",
             cry_potion3 = "-1 Hand und Abwurf",
@@ -3597,7 +3597,7 @@ return {
 
             b_flip = "UMDREHEN",
             b_merge = "KOMBINIEREN",
-			
+
 			cry_hand_bulwark = "Bollwerk",
             cry_hand_clusterfuck = "Clusterfuck",
             cry_hand_ultpair = "Ultimatives Paar",
@@ -3767,7 +3767,7 @@ return {
                 "um auf #2##1#",
                 "#2#Einsatz#3# Schwieringkeit tu gewinnen"
             },
-			
+
 
             cry_art = {"Bild: #1#"},
             cry_code = {"Code: #1#"},

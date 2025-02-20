@@ -345,7 +345,7 @@ local ascendant = {
 	order = 32,
 	colour = G.C.CRY_ASCENDANT,
 }
-local stake_atlas = { object_type = "Atlas", key = "stake", 
+local stake_atlas = { object_type = "Atlas", key = "stake",
 path = "stake_cry.png", px = 29, py = 29 }
 return {
 	name = "More Stakes",
@@ -579,5 +579,5 @@ return {
 		azure,
 		ascendant,
 	},
-	
+
 }

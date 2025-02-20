@@ -1074,5 +1074,5 @@ return {
 		end
 	end,
 	items = voucheritems,
-	
+
 }

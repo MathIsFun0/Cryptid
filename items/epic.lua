@@ -8,7 +8,7 @@ gameset_config = {
 -- Card.get_gameset(card) ~= "modest"
 
 --TODO Modest descriptions for
-Supercell 
+Supercell
 Old Membership card
 Canvas
 Nostalgic Googol Play Card
@@ -1550,13 +1550,13 @@ local altgoogol = {
 		local gameset = Card.get_gameset(card)
 		if context.selling_self and not context.retrigger_joker and (gameset == "madness" or not context.blueprint) then
 			local jokers = {}
-                	for i=1, #G.jokers.cards do 
+                	for i=1, #G.jokers.cards do
                     		if G.jokers.cards[i] ~= card then
                         		jokers[#jokers+1] = G.jokers.cards[i]
                     		end
                 	end
                 	if #jokers > 0 then
-				if not gameset == "modest" or #G.jokers.cards <= G.jokers.config.card_limit then 
+				if not gameset == "modest" or #G.jokers.cards <= G.jokers.config.card_limit then
 					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
 						G.E_MANAGER:add_event(Event({
 							func = function()
@@ -1575,7 +1575,7 @@ local altgoogol = {
 							nil,
 							nil,
 							nil,
-						{ 
+						{
 							message = localize("k_duplicated_ex"),
 							colour = G.C.RARITY.cry_epic,
 							}
@@ -1588,7 +1588,7 @@ local altgoogol = {
 							nil,
 							nil,
 							nil,
-							{ 
+							{
 							message = localize("k_nope_ex"),
 							colour = G.C.RARITY.cry_epic,
 							}
@@ -1602,7 +1602,7 @@ local altgoogol = {
 							nil,
 							nil,
 							nil,
-							{ 
+							{
 							message = localize("k_no_room_ex"),
 							colour = G.C.RARITY.cry_epic,
 							}
@@ -1616,7 +1616,7 @@ local altgoogol = {
 						nil,
 						nil,
 						nil,
-						{ 
+						{
 						message = localize("k_no_other_jokers"),
 						colour = G.C.RARITY.cry_epic,
 						}
@@ -1857,7 +1857,7 @@ local spectrogram = {
 				end
 			end
 		end
-		
+
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
 			if card.ability.extra.echonum and card.ability.extra.echonum > 0 then
 				return {

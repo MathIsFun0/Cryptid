@@ -25,7 +25,7 @@ local test = {
 	loc_vars = function(self, info_queue, center)
 		local gameset = Card.get_gameset(center)
 		if gameset == 'disabled' then gameset = 'mainline' end --still show description
-		return { 
+		return {
 			vars = { center.ability.extra.chips },
 			key = "j_cry_test_"..gameset
 		}
@@ -165,7 +165,7 @@ local test4 = {
 					card.ability.extra.center = "immutable"
 					if other_joker and other_joker ~= card and (Card.no(other_joker, "immutable", true)) then
                 				card.ability.blueprint_compat = 'yes'
-            				else	
+            				else
                					card.ability.blueprint_compat = 'nah'
             				end
 				else

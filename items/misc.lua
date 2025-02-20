@@ -15,8 +15,8 @@ local meme1 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-                if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
-            		if pseudorandom('meme1_'..G.GAME.round_resets.ante) > 0.997 then 
+                if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then
+            		if pseudorandom('meme1_'..G.GAME.round_resets.ante) > 0.997 then
 				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
@@ -53,8 +53,8 @@ local meme2 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
-            		if pseudorandom('memetwo_'..G.GAME.round_resets.ante) > 0.997 then 
+		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then
+            		if pseudorandom('memetwo_'..G.GAME.round_resets.ante) > 0.997 then
 				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
@@ -92,8 +92,8 @@ local meme3 = {
 	cost = 14,
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
-		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then 
-            		if pseudorandom('memethree_'..G.GAME.round_resets.ante) > 0.997 then 
+		if Cryptid.enabled["Misc. Jokers"] and not (G.GAME.used_jokers['j_cry_waluigi'] and not next(find_joker("Showman"))) then
+            		if pseudorandom('memethree_'..G.GAME.round_resets.ante) > 0.997 then
 				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
@@ -170,7 +170,7 @@ local mosaic = {
 		then
 			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
-			
+
 		if
 			(
 				context.after
@@ -546,7 +546,7 @@ local astral = {
 		then
 			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
-			
+
 		if
 			(
 				context.after
@@ -661,7 +661,7 @@ local noisy = {
 		then
 			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
-			
+
 		if
 			(
 				context.after
@@ -925,7 +925,7 @@ local jollyedition = {
 		then
 			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
-			
+
 		if
 			(
 				context.after
@@ -1073,7 +1073,7 @@ local glass_edition = {
 				> ((self.config.shatter_chance - 1) / (self.config.shatter_chance)))
 			then
 				-- this event call might need to be pushed later to make more sense
-				G.E_MANAGER:add_event(Event({ 
+				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
 						card.states.drag.is = true
@@ -1115,7 +1115,7 @@ local glass_edition = {
 		then
 			card.config.trigger = true 		 -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
 		end
-			
+
 		if
 			(
 				context.after
@@ -1123,10 +1123,10 @@ local glass_edition = {
 		then
 			card.config.trigger = nil
 		end
-		
+
 		if context.destroying_card and card.config.will_shatter
 		then
-			G.E_MANAGER:add_event(Event({ 
+			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
 					card.states.drag.is = true
@@ -1459,8 +1459,8 @@ local double_sided = {
 			if next(find_joker("cry-Flip Side")) and self.dbl_side then
 				active_side = self.dbl_side
 			end
-			if not init_dbl_side then 
-				active_side:remove_from_deck(true) 
+			if not init_dbl_side then
+				active_side:remove_from_deck(true)
 			end
 			copy_dbl_card(self, self.dbl_side, false)
 			copy_dbl_card(tmp_side, self, false)
@@ -1586,16 +1586,16 @@ local meld = {
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		if #G.jokers.highlighted + #G.hand.highlighted - (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0) == 1 then
-			if 
-				#G.jokers.highlighted == 1 and 
+			if
+				#G.jokers.highlighted == 1 and
 				(
-					Card.no(G.jokers.highlighted[1], "dbl") 
+					Card.no(G.jokers.highlighted[1], "dbl")
 					or G.jokers.highlighted[1].edition
-				) 
+				)
 			then return false end
-			if 
-				#G.hand.highlighted == 1 
-				and G.hand.highlighted[1].edition 
+			if
+				#G.hand.highlighted == 1
+				and G.hand.highlighted[1].edition
 			then return false end
 			return true
 		end
@@ -1704,7 +1704,7 @@ local light = {
 		end
 	end,
 }
-local seraph = { 
+local seraph = {
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -1938,7 +1938,7 @@ return {
 		local setabilityref = Card.set_ability
 		function Card:set_ability(center, initial, delay_sprites)
 			setabilityref(self, center, initial, delay_sprites)
-			
+
 			if self.config.center.cry_noshadow then
 				self.ignore_shadow['cry_noshadow'] = true
 			elseif self.ignore_shadow['cry_noshadow'] then
@@ -1946,5 +1946,5 @@ return {
 			end
 		end
 	end,
-	items = miscitems,	
+	items = miscitems,
 }

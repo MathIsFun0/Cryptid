@@ -1,6 +1,6 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
--- get_currrent_pool hook for Deck of Equilibrium and Copies 
+-- get_currrent_pool hook for Deck of Equilibrium and Copies
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
 	if type == "Tag" then

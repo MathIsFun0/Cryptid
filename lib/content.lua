@@ -403,8 +403,8 @@ SMODS.Sound({
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return Cryptid_config.Cryptid 
-			and Cryptid_config.Cryptid.exotic_music 
+		return Cryptid_config.Cryptid
+			and Cryptid_config.Cryptid.exotic_music
 			and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })

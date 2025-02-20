@@ -125,7 +125,7 @@ local universum = {
 	end,
 	calculate = function(self, card, context)
 		if context.cry_universum then
-			return { 
+			return {
 				mod = to_big(card.ability.extra),
 				colour = G.C.DARK_EDITION,
 				message = localize("k_upgrade_ex")
@@ -137,7 +137,7 @@ local universum = {
 		art = {"Ein13"},
 	},
 	init = function(self)
-		
+
 		--Universum Patches
 		local uht = update_hand_text
 		function update_hand_text(config, vals)
@@ -1157,7 +1157,7 @@ local verisimile = {
 		if context.post_trigger and not context.blueprint then
 			--Todo: Gros Michel, Cavendish, Planet.lua
 			--Bus driver is ignored because it always triggers anyway
-			if context.other_joker.ability.name == "8 Ball" 
+			if context.other_joker.ability.name == "8 Ball"
 			or context.other_joker.ability.name == "Space Joker"
 			or context.other_joker.ability.name == "Business Card"
 			or context.other_joker.ability.name == "Hallucination" then
@@ -1309,7 +1309,7 @@ local rescribere = {
 
                 eligibleJokers[i].calculate_joker = function(cardd,contextt)
                     local totalret = oldfunc(cardd,contextt)
-                    
+
                     v = eligibleJokers[i].ability.rescribere_jokers[#eligibleJokers[i].ability.rescribere_jokers]
 
                     local ret = v:calculate_joker(contextt)

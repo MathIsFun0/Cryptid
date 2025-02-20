@@ -460,7 +460,7 @@ function SMODS.calculate_context(context, return_table)
 			context.retrigger_joker = false
 		end
 		if return_table then
-			for _,v in ipairs(effects) do 
+			for _,v in ipairs(effects) do
 				if v.jokers and not v.jokers.card then v.jokers.card = _card end
 				return_table[#return_table+1] = v
 			end

@@ -269,9 +269,9 @@ return {
 			-- B so they ignore misprintize in order to keep vanilla descripton accurate (ex hack shouldn't be able to trigger more than once)
 			-- C so Gemini doesn't say they are compatible when they are not
 			-- D Invisible Joker
-			
-			if center.name == "Fortune Teller" 
-			or center.name == "Shoot the Moon" 
+
+			if center.name == "Fortune Teller"
+			or center.name == "Shoot the Moon"
 			or center.name == "Riff-raff"
 			or center.name == "Chaos the Clown"
 			or center.name == "Dusk"
@@ -307,7 +307,7 @@ return {
 			or center.name == "Burnt Joker"
 			or center.name == "Chicot"
 			or center.name == "Perkeo"
-			then 
+			then
 				self.config.center.immutable = true
 			end
 			if safe_get(center, "name") == "Default Base" then	-- scuffed
@@ -390,7 +390,7 @@ return {
 					editions[#editions + 1] = (center.edeck_type == "edition" and v.key:sub(3)) or v.key
 				end
 			end
-		
+
 			for i = 1, #editions do
 				local _center = cry_deep_copy(center)
 				_center.config["cry_force_"..center.edeck_type] = editions[i]
@@ -399,9 +399,9 @@ return {
 				card.edeck_select = editions[i]
 				G.your_collection[1]:emplace(card)
 			end
-		
+
 			INIT_COLLECTION_CARD_ALERTS()
-		
+
 			local t = create_UIBox_generic_options({
 				--infotip = localize("cry_gameset_explanation"),
 				back_func = "setup_run",

@@ -42,33 +42,33 @@ position = "before"
 payload = '''
 if _c.name == 'cry-membershipcard' or _c.name == 'cry-membershipcardtwo' then
 	if not Cryptid.enabled["HTTPS Module"] then
-		if G.localization.descriptions.Other.cry_https_disabled then 
+		if G.localization.descriptions.Other.cry_https_disabled then
 			main_end = {}
 			localize{type = 'other', key = 'cry_https_disabled', nodes = main_end, vars = {}}
 			main_end = main_end[1]
 		end
 	end
 end
-if _c.name == 'cry-translucent Joker' then 
+if _c.name == 'cry-translucent Joker' then
 	if G.jokers and G.jokers.cards then
                 for k, v in ipairs(G.jokers.cards) do
-                    if (v.edition and v.edition.negative) and (G.localization.descriptions.Other.remove_negative)then 
+                    if (v.edition and v.edition.negative) and (G.localization.descriptions.Other.remove_negative)then
                         main_end = {}
                         localize{type = 'other', key = 'remove_negative', nodes = main_end, vars = {}}
                         main_end = main_end[1]
                         break
                     end
                 end
-        end 
+        end
 end
 if _c.name == 'cry-blurred Joker' then
 	if (SMODS.Mods["sdm0sstuff"] or {}).can_load then
-		if G.localization.descriptions.Other.blurred_sdm0 then 
+		if G.localization.descriptions.Other.blurred_sdm0 then
 			main_end = {}
 			localize{type = 'other', key = 'blurred_sdm0', nodes = main_end, vars = {}}
 			main_end = main_end[1]
 		end
 	end
-end 
+end
 '''
 match_indent = true

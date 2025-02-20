@@ -151,7 +151,7 @@ local choco_dice = {
 		if not from_debuff then
 			SMODS.Events["ev_cry_choco"..card.ability.extra.roll]:finish()
 		end
-		
+
 	end,
 }
 local choco_base_event = {
@@ -315,8 +315,8 @@ local potion = {
 	use = function(self, card, area, copier)
 		if not (G.GAME.events and G.GAME.events.ev_cry_choco3) then
 			return
-		end -- Just in case a potion is found out side of the event 
-		G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] 
+		end -- Just in case a potion is found out side of the event
+		G.GAME.events.ev_cry_choco3.potions[card.ability.random_event]
 			= (G.GAME.events.ev_cry_choco3.potions[card.ability.random_event] or 0)+1
 		--Announce event
 		G.E_MANAGER:add_event(Event({
@@ -402,7 +402,7 @@ local choco5 = { --bloodsucker
 	calculate = function(self, context)
 		if context.pre_jokers and context.before and not context.repetition and not context.blueprint and not context.retrigger_joker then
 			for k, v in ipairs(context.scoring_hand) do
-				if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then 
+				if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
 					v:set_ability(G.P_CENTERS.c_base, nil, true)
 					v.vampired = true
 					G.E_MANAGER:add_event(Event({
@@ -411,7 +411,7 @@ local choco5 = { --bloodsucker
 							v.vampired = nil
 							return true
 						end
-					})) 
+					}))
 				end
 			end
 		end
@@ -637,7 +637,7 @@ local spy = {
 			if desc_nodes == full_UI_table.main and not full_UI_table.name then
 				full_UI_table.name = localize { type = 'name', set = target.set, key = target.key, nodes = full_UI_table.name }
 			elseif desc_nodes ~= full_UI_table.main and not desc_nodes.name then
-				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set } 
+				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set }
 			end
 			if specific_vars and specific_vars.debuffed and not res.replace_debuff then
 				target = { type = 'other', key = 'debuffed_' ..
@@ -671,7 +671,7 @@ local spy = {
 			if desc_nodes == full_UI_table.main and not full_UI_table.name then
 				full_UI_table.name = localize { type = 'name', set = target.set, key = target.key, nodes = full_UI_table.name }
 			elseif desc_nodes ~= full_UI_table.main and not desc_nodes.name then
-				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set } 
+				desc_nodes.name = localize{type = 'name_text', key = target.key, set = target.set }
 			end
 			if specific_vars and specific_vars.debuffed and not res.replace_debuff then
 				target = { type = 'other', key = 'debuffed_' ..
@@ -734,7 +734,7 @@ local flickering = {
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
 					card_eval_status_text(
-						card, 'extra', nil, nil, nil, 
+						card, 'extra', nil, nil, nil,
 						{
 							message = localize{type='variable',key='a_remaining',vars={card.ability.flick_tally}},
 							colour = G.C.FILTER,
@@ -1128,7 +1128,7 @@ local candy_cane = {
 						if c then c.candy_caned = nil end
 						return true
 					end
-				})) 
+				}))
 			else
 				ease_dollars(card.ability.extra.dollars)
 			end
@@ -1327,7 +1327,7 @@ local mellowcreme = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			for k, v in ipairs(G.consumeables.cards) do
-				if v.set_cost then 
+				if v.set_cost then
 					v.ability.extra_value = (v.ability.extra_value or 0) + (math.max(1, math.floor(v.cost/2)) + (v.ability.extra_value or 0))*(card.ability.extra.sell_mult-1)
 					v:set_cost()
 				end
@@ -1371,7 +1371,7 @@ local brittle = {
 						_card.brittled = nil
 						return true
 					end
-				})) 
+				}))
 				if card.ability.extra.rounds > 0 then
 					return nil, true
 				else
@@ -1505,7 +1505,7 @@ local candy_sticks = {
                                     G.jokers:remove_card(card)
                                     card:remove()
                                     card = nil
-                                return true; end})) 
+                                return true; end}))
                         return true
                     end
                 }))
@@ -1524,7 +1524,7 @@ local candy_sticks = {
                                     G.jokers:remove_card(card)
                                     card:remove()
                                     card = nil
-                                return true; end})) 
+                                return true; end}))
                         return true
                     end
                 }))
@@ -1578,7 +1578,7 @@ items = {
 	monopoly_money,
 	candy_sticks,
 }
-return { name = "Spooky", init = function() 
+return { name = "Spooky", init = function()
 	--Cursed rarity patches
 	local sc = Card.set_cost
 	function Card:set_cost()

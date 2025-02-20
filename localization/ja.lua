@@ -3207,7 +3207,7 @@ return {
             a_powchips_minus = {"-^#1# Chips"},
             a_powmultchips_minus = {"-^#1# Mult+Chips"},
             a_round_minus = {"-#1# Round"},
-            
+
             a_tag = {"#1# Tag"},
             a_tags = {"#1# Tags"},
 

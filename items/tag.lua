@@ -176,7 +176,7 @@ local empowered = {
 		if context.type == "new_blind_choice" then
 			local lock = tag.ID
             		G.CONTROLLER.locks[lock] = true
-			tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+			tag:yep('+', G.C.SECONDARY_SET.Spectral,function()
                     		local key = "p_cry_empowered"
                     		local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
                     		G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
@@ -225,7 +225,7 @@ local gambler = {
 			if pseudorandom("cry_gambler_tag") < G.GAME.probabilities.normal / tag.config.odds then
 				local lock = tag.ID
             			G.CONTROLLER.locks[lock] = true
-				tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+				tag:yep('+', G.C.SECONDARY_SET.Spectral,function()
                     			local tag = Tag("tag_cry_empowered")
 					add_tag(tag)
                     			G.CONTROLLER.locks[lock] = nil
@@ -366,7 +366,7 @@ local glitched_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_glitched = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -407,7 +407,7 @@ local oversat_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_oversat = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -448,7 +448,7 @@ local mosaic_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_mosaic = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -489,7 +489,7 @@ local gold_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_gold = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -530,7 +530,7 @@ local glass_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_glass = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -571,7 +571,7 @@ local blur_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_blur = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -613,7 +613,7 @@ local astral_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('+', G.C.DARK_EDITION,function() 
+                    		tag:yep('+', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_astral = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -654,7 +654,7 @@ local m_tag = {
                 		local lock = tag.ID
                 		G.CONTROLLER.locks[lock] = true
                    		context.card.temp_edition = true
-                    		tag:yep('M', G.C.DARK_EDITION,function() 
+                    		tag:yep('M', G.C.DARK_EDITION,function()
                         		context.card:set_edition({cry_m = true}, true)
                         		context.card.ability.couponed = true
                         		context.card:set_cost()
@@ -741,24 +741,24 @@ local banana = {
 	loc_vars = function(self, info_queue)
 		local banana
 		if G.GAME.pool_flags.gros_michel_extinct == true then
-			banana = localize({ 
+			banana = localize({
 				type = "name_text",
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][61].key
 			})
 			info_queue[#info_queue + 1] = {
-				set = "Joker", 
+				set = "Joker",
 				key = "j_cavendish",
 				specific_vars = { 3, G.GAME.probabilities.normal or 1, 1000 }
 			}
 		else
-			banana = localize({ 
+			banana = localize({
 				type = "name_text",
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][38].key
 			})
 			info_queue[#info_queue + 1] = {
-				set = "Joker", 
+				set = "Joker",
 				key = "j_gros_michel",
 				specific_vars = { 15, G.GAME.probabilities.normal or 1, 6 }
 			}
@@ -792,7 +792,7 @@ local banana = {
                         tag.triggered = true
                         return true
 		end
-			
+
         end
 }
 local scope = {
@@ -813,8 +813,8 @@ local scope = {
 		return { vars = {self.config.num} }
 	end,
 	apply = function(self, tag, context)
-		if context.type == 'round_start_bonus' then 
-                	tag:yep('+', G.C.BLUE,function() 
+		if context.type == 'round_start_bonus' then
+                	tag:yep('+', G.C.BLUE,function()
                     		return true
                 	end)
 			ease_hands_played(tag.config.num)
@@ -847,7 +847,7 @@ local loss = {
 		if context.type == "new_blind_choice" then
 			local lock = tag.ID
             		G.CONTROLLER.locks[lock] = true
-			tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+			tag:yep('+', G.C.SECONDARY_SET.Spectral,function()
                     		local key = 'p_cry_meme_1'
                     		local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
                     		G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
@@ -972,7 +972,7 @@ local better_voucher = {
 	end,
 	apply = function(self, tag, context)
 		if context.type == "voucher_add" then
-			tag:yep('+', G.C.SECONDARY_SET.Voucher,function() 
+			tag:yep('+', G.C.SECONDARY_SET.Voucher,function()
                     		G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
                     		local voucher_key = get_next_megavoucher_key(true)
                     		G.ARGS.voucher_tag[voucher_key] = true
@@ -988,7 +988,7 @@ local better_voucher = {
                     			local edition = cry_poll_random_edition()
                     			card:set_edition(edition, true)
                    		end
-                    
+
                     		if G.GAME.modifiers.cry_force_sticker == 'eternal' or G.GAME.modifiers.cry_sticker_sheet_plus then
                     			card:set_eternal(true)
                     			card.ability.eternal = true
@@ -1051,7 +1051,7 @@ local booster = {
                         tag.triggered = true
                         return true
 		end
-			
+
         end
 }
 local tagitems = {

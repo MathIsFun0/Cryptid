@@ -17,7 +17,7 @@ if CardSleeves then
 				func = function()
 					if G.jokers then
 							-- Adding a before spawning becuase jen banned copy_paste
-							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then  
+							if G.P_CENTERS["j_cry_CodeJoker"] and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"]) then
 								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
 								card:add_to_deck()
 								card:start_materialize()

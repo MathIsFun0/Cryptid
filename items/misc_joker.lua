@@ -995,7 +995,7 @@ local compound_interest = {
 			if bonus > to_big(0) then
 				return bonus
 			end
-		else 
+		else
 			return 0
 		end
 	end,
@@ -1070,9 +1070,9 @@ local eternalflame = {
 	perishable_compat = false,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { 
+		return {
 			vars = { center.ability.extra.extra, center.ability.extra.x_mult },
-			key = Card.get_gameset(card) ~= "modest" and "j_cry_eternalflame2" or "j_cry_eternalflame" 
+			key = Card.get_gameset(card) ~= "modest" and "j_cry_eternalflame2" or "j_cry_eternalflame"
 		}
 	end,
 	atlas = "atlasone",
@@ -1181,7 +1181,7 @@ local seal_the_deal = {
 	calculate = function(self, card, context)
 		if context.after and G.GAME.current_round.hands_left == 0 and not context.blueprint and not context.retrigger_joker then
 			G.E_MANAGER:add_event(Event({
-				trigger = 'before', 
+				trigger = 'before',
 				delay = 1.3,
 				func = function()	-- i can't figure out how to split these events without making em look bad so you get this?
 					for j = 1, #context.scoring_hand do
@@ -5797,7 +5797,7 @@ local oldblueprint = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
-		return { 
+		return {
 			vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },
 			main_end = (card.area and card.area == G.jokers) and {
         			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
@@ -6830,7 +6830,7 @@ local pumpkin = {
 					play_sound('tarot1')
 					return true
 				end
-			})) 
+			}))
 			return {
 				message = localize('k_saved_ex'),
 				saved = true,
@@ -7060,7 +7060,7 @@ local oil_lamp = { --You want it? It's yours my friend
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, card)
 		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
-		return { 
+		return {
 			vars = { card.ability.extra.increase },
 			main_end = (card.area and card.area == G.jokers) and {
         			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
@@ -7183,7 +7183,7 @@ local pity_prize = {
 	calculate = function(self, card, context)
 		if context.skipping_booster then
 			local tag
-			repeat 
+			repeat
 				tag = Tag(get_next_tag_key("cry_pity_prize"))
 			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag"
 			if tag.name == "Orbital Tag" then
@@ -7262,10 +7262,10 @@ local digitalhallucinations = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		
+
 		-- you know, i was totally ready to do something smart here but vanilla hardcodes this stuff, so i will too
 		-- some cards need to be handled slightly differently anyway, adding mod support can't really be automatic in some circumstances
-		
+
 		if context.open_booster and (pseudorandom("digi") < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)/card.ability.odds) then
 			local boosty = context.card
 			local consums = {'Arcana', 'Celestial', 'Spectral'}
@@ -7321,7 +7321,7 @@ local digitalhallucinations = {
 			end
 			if boosty.ability.name:find('Standard') then
 				G.E_MANAGER:add_event(Event({
-					func = function() 
+					func = function()
 						local front = pseudorandom_element(G.P_CARDS, pseudoseed('diha_p'))
 						G.playing_card = (G.playing_card and G.playing_card + 1) or 1
 						local ccard = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
@@ -7335,12 +7335,12 @@ local digitalhallucinations = {
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('cry_plus_card'), colour = G.C.FILTER})
 
 				G.E_MANAGER:add_event(Event({
-					func = function() 
+					func = function()
 						G.deck.config.card_limit = G.deck.config.card_limit + 1
 						return true
 					end
 				}))
-				draw_card(G.play,G.deck, 90,'up', nil)  
+				draw_card(G.play,G.deck, 90,'up', nil)
 
 				playing_card_joker_effects({true})	-- who knows what most this stuff does, i just copied it from marble jonkler
 				return nil, true
