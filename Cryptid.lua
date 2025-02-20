@@ -32,7 +32,7 @@ SMODS.current_mod.optional_features = {
 	post_trigger = true,
 	cardareas = {
 		unscored = true,
-	}
+	},
 	-- Here are some other ones Steamodded has
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
 	--[[
