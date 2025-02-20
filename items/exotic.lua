@@ -279,9 +279,13 @@ local exponentia = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -304,20 +308,13 @@ local exponentia = {
 				for _, v in pairs(find_joker("cry-Exponentia")) do
 					local old = v.ability.extra.Emult
 					v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
-					card_eval_status_text(
-						v,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{
-							message = localize({
-								type = "variable",
-								key = "a_powmult",
-								vars = { number_format(to_big(v.ability.extra.Emult)) },
-							}),
-						}
-					)
+					card_eval_status_text(v, "extra", nil, nil, nil, {
+						message = localize({
+							type = "variable",
+							key = "a_powmult",
+							vars = { number_format(to_big(v.ability.extra.Emult)) },
+						}),
+					})
 					exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
 				end
 			end
@@ -622,9 +619,13 @@ local primus = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -776,9 +777,13 @@ local stella_mortis = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}
@@ -1305,9 +1310,13 @@ local duplicare = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = {
-					number_format(card.ability.extra.Xmult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = {
+						number_format(card.ability.extra.Xmult),
+					},
+				}),
 				Xmult_mod = card.ability.extra.Xmult,
 				colour = G.C.MULT,
 			}
@@ -1444,9 +1453,13 @@ local formidiulosus = {
 			and not context.after
 		then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.Emult),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
 				Emult_mod = card.ability.extra.Emult,
 				colour = G.C.DARK_EDITION,
 			}

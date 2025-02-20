@@ -772,20 +772,17 @@ local flickering = {
 			if context.post_trigger and context.other_joker == card then
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
-					card_eval_status_text(
-						card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{
-							message = localize({ type = "variable", key = "a_remaining", vars = {
+					card_eval_status_text(card, "extra", nil, nil, nil, {
+						message = localize({
+							type = "variable",
+							key = "a_remaining",
+							vars = {
 								card.ability.flick_tally,
-							} }),
-							colour = G.C.FILTER,
-							delay = 0.45,
-						}
-					)
+							},
+						}),
+						colour = G.C.FILTER,
+						delay = 0.45,
+					})
 				else
 					card.will_shatter = true
 					G.E_MANAGER:add_event(Event({
@@ -802,7 +799,11 @@ local flickering = {
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
 					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = localize({ type = "variable", key = "a_remaining", vars = { card.ability.flick_tally } }),
+						message = localize({
+							type = "variable",
+							key = "a_remaining",
+							vars = { card.ability.flick_tally },
+						}),
 						colour = G.C.FILTER,
 						delay = 0.45,
 					})
