@@ -17,6 +17,7 @@ Cryptid.cross_mod_names = {
 	Cryptid = "Cryptid",
 	jen = "Jen's Almanac",
 	sdm0sstuff = "SDM_0's Stuff",
+	magic_the_jokering = "Magic the Jokering",
 }
 -------------------------
 ---- TUTORIAL SYSTEM ----
