@@ -315,11 +315,11 @@ SMODS.ObjectType({
 		self:inject_card(G.P_CENTERS.j_space)
 	end,
 })
-SMODS.ObjectType  ( {
-	object_type  = "ObjectType",
-		key  = "Tier3",
-			default =  "v_blank",
-				cards =  {},
+SMODS.ObjectType({
+	object_type = "ObjectType",
+	key = "Tier3",
+	default = "v_blank",
+	cards = {},
 })
 SMODS.ObjectType({
 	object_type = "ObjectType",

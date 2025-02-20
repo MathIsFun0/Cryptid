@@ -179,8 +179,7 @@ local mosaic = {
 				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
 				and card.config.trigger -- fixes double trigger
-			)
-			or (
+			) or (
 				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
@@ -463,13 +462,10 @@ local glitched = {
 						return true
 					end,
 				}))
-				update_hand_text(
-					{ delay = 0 },
-					{
-						chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
-						StatusText = true,
-					}
-				)
+				update_hand_text({ delay = 0 }, {
+					chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
+					StatusText = true,
+				})
 				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 				for i = 1, math.random(2, 4) do
 					update_hand_text(
@@ -486,13 +482,10 @@ local glitched = {
 						return true
 					end,
 				}))
-				update_hand_text(
-					{ delay = 0 },
-					{
-						mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
-						StatusText = true,
-					}
-				)
+				update_hand_text({ delay = 0 }, {
+					mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
+					StatusText = true,
+				})
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 			elseif hand == G.handlist[#G.handlist] then
 				G.E_MANAGER:add_event(Event({
@@ -562,8 +555,7 @@ local astral = {
 				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
 				and card.config.trigger -- fixes double trigger
-			)
-			or (
+			) or (
 				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
@@ -679,8 +671,7 @@ local noisy = {
 				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
 				and card.config.trigger -- fixes double trigger
-			)
-			or (
+			) or (
 				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
@@ -944,8 +935,7 @@ local jollyedition = {
 				context.edition -- for when on jonklers
 				and context.cardarea == G.jokers -- checks if should trigger
 				and card.config.trigger -- fixes double trigger
-			)
-			or (
+			) or (
 				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
 			)
