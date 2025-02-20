@@ -16,6 +16,7 @@ Cryptid.cross_mod_names = {
 	CardSleeves = "Card Sleeves",
 	Cryptid = "Cryptid",
 	jen = "Jen's Almanac",
+	sdm0sstuff = "SDM_0's Stuff",
 }
 -------------------------
 ---- TUTORIAL SYSTEM ----
@@ -334,21 +335,21 @@ G.FUNCS.cry_gameset_confirm = function(e)
 			--Unlock All by default in madness
 			G.PROFILES[G.SETTINGS.profile].all_unlocked = true
 			for k, v in pairs(G.P_CENTERS) do
-			if not v.demo and not v.wip then 
+			if not v.demo and not v.wip then
 				v.alerted = true
 				v.discovered = true
 				v.unlocked = true
 			end
 			end
 			for k, v in pairs(G.P_BLINDS) do
-			if not v.demo and not v.wip then 
+			if not v.demo and not v.wip then
 				v.alerted = true
 				v.discovered = true
 				v.unlocked = true
 			end
 			end
 			for k, v in pairs(G.P_TAGS) do
-			if not v.demo and not v.wip then 
+			if not v.demo and not v.wip then
 				v.alerted = true
 				v.discovered = true
 				v.unlocked = true
@@ -714,7 +715,7 @@ function cry_gameset_config_UI(center)
 					key = center.key,
 					config = {}
 				}
-				local card = Card(G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h, G.CARD_W, G.CARD_H, G.P_CARDS.empty, fake_center)		
+				local card = Card(G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h, G.CARD_W, G.CARD_H, G.P_CARDS.empty, fake_center)
 				card:start_materialize()
 				card.gameset_select = true
 				G.your_collection[1]:emplace(card)
@@ -756,14 +757,14 @@ end
 local collection_shtuff = {
 	"blinds",
 	"jokers",
-	
+
 	-- consumables don't work
 	-- idk what smods is doing with consumable collection stuff, anyone know what the buttons are doing?
 	"tarots",
 	"planets",
 	"spectrals",
 	"codes",
-	
+
 	"vouchers",
 	"enhancements",
 	"decks",
@@ -1570,13 +1571,13 @@ function modsCollectionTally(pool, set)
 				if set then
 					if v.set and v.set == set then
 						obj_tally.of = obj_tally.of+1
-						if cry_get_gameset(v) ~= "disabled" then 
+						if cry_get_gameset(v) ~= "disabled" then
 							obj_tally.tally = obj_tally.tally+1
 						end
 					end
 				else
 					obj_tally.of = obj_tally.of+1
-					if cry_get_gameset(v) ~= "disabled" then 
+					if cry_get_gameset(v) ~= "disabled" then
 						obj_tally.tally = obj_tally.tally+1
 					end
 				end
