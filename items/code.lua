@@ -3279,7 +3279,7 @@ local green_seal = {
 	pos = { x = 1, y = 2 },
 
 	calculate = function(self, card, context)
-		if context.before and not context.blueprint and card == context.scoring_hand[1] then
+		if context.cardarea == 'unscored' and context.main_scoring then
 			for k, v in ipairs(context.scoring_hand) do
 				v.cry_green_incompat = true
 			end
@@ -3294,7 +3294,7 @@ local green_seal = {
 								v:juice_up()
 							end
 							return true
-						end,
+						end
 					}))
 				end
 			end
