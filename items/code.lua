@@ -2781,6 +2781,7 @@ local rework = {
 		if jkr.config.center.key == "c_base" then jkr.config.center.key = "j_scholar" end
 		tag.ability.rework_key = jkr.config.center.key
 		tag.ability.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
+		tag.ability.shiny = cry_rollshinybool()
 		add_tag(tag)
 		--SMODS.Tags.tag_cry_rework.apply(tag, {type = "store_joker_create"})
 		G.E_MANAGER:add_event(Event({
