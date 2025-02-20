@@ -1833,7 +1833,7 @@ local spectrogram = {
 	name = "cry-Spectrogram",
 	key = "spectrogram",
 	pos = { x = 1, y = 5 },
-	config = { extra = {} },
+	config = { extra = {echonum = 0} },
 	rarity = "cry_epic",
 	cost = 9,
 	order = 133,
@@ -1849,20 +1849,20 @@ local spectrogram = {
 		return { vars = {} }
 	end,
     calculate = function(self, card, context)
-		local echonum = 0
-		if context.before and context.cardarea == G.play then
+		if context.before and context.cardarea == G.jokers then
+			card.ability.extra.echonum = 0
 			for i, v in pairs(context.scoring_hand) do
-				if v.config.center_key == 'm_cry_echo' then
-							echonum = echonum + 1
+				if v.config.center_key == 'm_cry_echo' and not v.debuff then
+					card.ability.extra.echonum = card.ability.extra.echonum + 1
 				end
 			end
 		end
 		
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if echonum > 0 then
+			if card.ability.extra.echonum and card.ability.extra.echonum > 0 then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = echonum,
+					repetitions = card.ability.extra.echonum,
 					card = card,
 				}
 			end
