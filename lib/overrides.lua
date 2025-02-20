@@ -658,7 +658,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			and not center_no(center, "aeq")
 			and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
-	if _type == "Joker" and not _rarity then
+	if _type == "Joker" and not _rarity and not legendary then
 		if not G.GAME.aequilibriumkey then
 			G.GAME.aequilibriumkey = 1
 		end
