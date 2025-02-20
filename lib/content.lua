@@ -309,6 +309,7 @@ SMODS.ObjectType({
 		SMODS.ObjectType.inject(self)
 		-- insert base game meme jokers
 		self:inject_card(G.P_CENTERS.j_mr_bones)
+		self:inject_card(G.P_CENTERS.j_four_fingers) --loss reference
 		self:inject_card(G.P_CENTERS.j_obelisk)
 		self:inject_card(G.P_CENTERS.j_jolly)
 		self:inject_card(G.P_CENTERS.j_space)
