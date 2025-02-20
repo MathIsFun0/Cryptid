@@ -16,7 +16,9 @@ local sticker_sheet = {
 		modifiers = {},
 	},
 	restrictions = {
-		banned_cards = {},
+		banned_cards = {
+			
+		},
 		banned_other = {},
 	},
 	deck = {
