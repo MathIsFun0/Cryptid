@@ -905,8 +905,7 @@ local gourmand = {
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
-			local card
-			card = create_card("Joker", context.area, nil, nil, nil, nil, Cryptid.get_food("cry_gourmand_tag"))
+			local card = create_card("Food", context.area, nil, nil, nil, nil, nil, "cry_gourmand")
 			create_shop_card_ui(card, "Joker", context.area)
 			card.states.visible = false
 			tag:yep("+", G.C.GREEN, function()
