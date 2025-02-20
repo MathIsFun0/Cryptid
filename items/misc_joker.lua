@@ -2598,7 +2598,6 @@ local sapling = {
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
-			"set_cry_epic",
 		}
 	},
 	name = "cry-sapling",
@@ -2611,7 +2610,12 @@ local sapling = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.score, center.ability.extra.req } }
+		return { 
+			vars = { 
+				center.ability.extra.score, center.ability.extra.req, cry_card_enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
+				colours = { G.C.RARITY[cry_card_enabled("set_cry_epic") == true and "cry_epic" or 3] },
+			},
+		}
 	end,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
@@ -2635,8 +2639,9 @@ local sapling = {
 			and not context.retrigger_joker
 		then
 			if card.ability.extra.score >= card.ability.extra.req then
+				local value = cry_card_enabled("set_cry_epic") == true and "cry_epic" or 0.99
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.RARITY["cry_epic"]})
-				local card = create_card("Joker", G.jokers, nil, 'cry_epic', nil, nil, nil, "cry_sapling")
+				local card = create_card("Joker", G.jokers, nil, value, nil, nil, nil, "cry_sapling")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:start_materialize()

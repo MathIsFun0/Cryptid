@@ -2160,7 +2160,7 @@ return {
                 text = {
                     "After scoring {C:attention}#2#{} {C:inactive}[#1#]{} Enhanced",
                     "cards, sell this card to",
-                    "create an {C:cry_epic}Epic{} {C:attention}Joker{}",
+                    "create a(n) {V:1}#3#{} {C:attention}Joker{}",
                 },
             },
             j_cry_savvy = {
