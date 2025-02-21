@@ -1412,8 +1412,10 @@ return {
 		--Sapphire Stamp Patches
 		local pcfh = G.FUNCS.play_cards_from_highlighted
 		function G.FUNCS.play_cards_from_highlighted(e)
+			G.GAME.before_play_buffer = true
 			G.GAME.blind:cry_before_play()
 			pcfh(e)
+			G.GAME.before_play_buffer = nil
 		end
 		--Obsidian Orb Patches
 		local dft = Blind.defeat

@@ -607,7 +607,9 @@ local stickyhand = { --+1 card selection limit
   G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
 		- math.max(1, math.floor(self.config.extra))
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
-		G.hand:unhighlight_all()
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
 	end,
 }
 
@@ -630,7 +632,9 @@ local grapplinghook = { --+1 card selection limit (replace me when "extra functi
   G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
 		- math.max(1, math.floor(self.config.extra))
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
-		G.hand:unhighlight_all()
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
 	end,
 }
 
@@ -653,7 +657,9 @@ local hyperspacetether = { --+2 card selection limit (replace me when "extra fun
   G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
 		- math.max(1, math.floor(self.config.extra))
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
-		G.hand:unhighlight_all()
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
 	end,
 }
 

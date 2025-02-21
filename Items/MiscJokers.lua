@@ -5970,7 +5970,9 @@ local fractal = {
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
-		G.hand:unhighlight_all()
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
 	end,
 	cry_credits = {
 		idea = {
