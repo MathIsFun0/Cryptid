@@ -5366,7 +5366,7 @@ local oldblueprint = {
 	loc_vars = function(self, info_queue, card)
 		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ''; card.ability.blueprint_compat_check = nil
 		return { 
-			vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },
+			vars = { cry_	(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds },
 			main_end = (card.area and card.area == G.jokers) and {
         			{n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
             				{n=G.UIT.C, config={ref_table = card, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
@@ -6929,6 +6929,76 @@ local zooble = {
 		}
 	},
 }
+local quietgame = {
+	object_type = "Joker",
+	name = "cry-The Quiet Game",
+	key = "quietgame",
+	pos = { x = 4, y = 6 },
+	config = {extra = {xmult = 1, xmult_mod = 0.02, quiet_timer_enabled = false, quiet_timer_disabled = false, quietgame_dt = 0, speed = nil}},
+	rarity = 3,
+	cost = 10,
+	atlas = "atlastwo",
+	order = 132,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.xmult, center.ability.extra.xmult_mod }}
+	end,
+	update = function(self, card, dt)
+		if card.ability.extra.quiet_timer_enabled == true and not card.ability.extra.quiet_timer_disabled == true then
+			card.ability.extra.quietgame_dt = card.ability.extra.quietgame_dt + (dt/G.SPEEDFACTOR)
+			if card.ability.extra.quietgame_dt > 1 then
+				card.ability.extra.quietgame_dt = 0
+				card:calculate_joker(	{scale_quiet = true})
+			end
+		end
+
+	end,
+	calculate = function(self, card, context)
+		if (context.cry_press or context.cry_rpress or context.cry_key_press ) then
+			card.ability.extra.quiet_timer_enabled = false
+			
+			G.SETTINGS.SOUND.volume = 100
+		end
+		if context.joker_main then
+			return{
+				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
+				Xmult_mod = card.ability.extra.xmult,
+			}
+		end
+		if context.scale_quiet and not context.retrigger_joker and not context.blueprint_card then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+			card_eval_status_text(
+				card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
+				)
+		end
+			
+	end,
+	add_to_deck = function(self, card, from_debuff)
+	
+		if not from_debuff then
+			G.SETTINGS.SOUND.volume = 0
+			card.ability.extra.speed = G.SETTINGS.GAMESPEED
+			
+				
+					card.ability.extra.quiet_timer_enabled = true
+			end
+	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic"
+		},
+		art = {
+			"SMG9000"
+		},
+		code = {
+			"SMG9000"
+		}
+	},
+}
 local miscitems =  {
 	jimball_sprite,
 	dropshot,
@@ -7026,6 +7096,7 @@ local miscitems =  {
 	digitalhallucinations,
 	arsonist,
 	zooble,
+	quietgame,
 }
 if Cryptid.enabled["Misc."] then
 	miscitems[#miscitems+1] = flipside
@@ -7156,6 +7227,25 @@ return {
 				end
 			end
 		end
+		local rcpref = Controller.R_cursor_press
+		function Controller:R_cursor_press(x, y)
+			rcpref(self,x,y)
+			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({cry_rpress = true})
+				end
+			end
+		end
+		local anypref = love.keypressed
+		function love.keypressed(key)
+			if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
+				for i = 1, #G.jokers.cards do
+					G.jokers.cards[i]:calculate_joker({cry_key_press = true})
+				end
+			end
+			anypref(key)
+		end
+			
 	end,
 	items = miscitems,
 }

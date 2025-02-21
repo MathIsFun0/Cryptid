@@ -996,14 +996,16 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 								orig_scale_scale = o
 							end
 						end
-						card_eval_status_text(
-							G.jokers.cards[i],
-							"extra",
-							nil,
-							nil,
-							nil,
-							{ message = localize("k_upgrade_ex") }
-						)
+						if jkr.config.center.key ~= 'j_quietgame' then
+							card_eval_status_text(
+								G.jokers.cards[i],
+								"extra",
+								nil,
+								nil,
+								nil,
+								{ message = localize("k_upgrade_ex") }
+							)
+						end
 					end
 					local reps = {}
 					for i2 = 1, #G.jokers.cards do
@@ -1071,14 +1073,16 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 											orig_scale_scale = o
 										end
 									end
-									card_eval_status_text(
-										G.jokers.cards[i],
-										"extra",
-										nil,
-										nil,
-										nil,
-										{ message = localize("k_upgrade_ex") }
-									)
+									if jkr.config.center.key ~= 'j_quietgame' then
+										card_eval_status_text(
+											G.jokers.cards[i],
+											"extra",
+											nil,
+											nil,
+											nil,
+											{ message = localize("k_upgrade_ex") }
+										)
+									end
 								end
 							end
 						end
