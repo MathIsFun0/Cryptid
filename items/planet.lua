@@ -330,9 +330,9 @@ local kaikki = {
 		end
 		return {
 			vars = {
-				localize("cry_hand_bulwark"),
-				localize("cry_hand_clusterfuck"),
-				localize("cry_hand_ultpair"),
+				localize("cry_Bulwark", "poker_hands"),
+				localize("cry_Clusterfuck", "poker_hands"),
+				localize("cry_UltPair", "poker_hands"),
 				G.GAME.hands["cry_Bulwark"].level,
 				G.GAME.hands["cry_Clusterfuck"].level,
 				G.GAME.hands["cry_UltPair"].level,

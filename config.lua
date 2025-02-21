@@ -6,4 +6,5 @@ return {
 		["big_music"] = true,
 		["alt_bg_music"] = true,
 	},
+	["family_mode"] = true,
 }

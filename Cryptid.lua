@@ -231,7 +231,13 @@ local cryptidTabs = function()
 					scale = 0.6,
 					id = "your_collection_jokers",
 				})
-
+				--Make this not require a restart later
+				cry_nodes[#cry_nodes + 1] = create_toggle({
+					label = localize("cry_family"),
+					active_colour = G.C.MONEY,
+					ref_table = Cryptid_config,
+					ref_value = "family_mode",
+				})
 				return {
 					n = G.UIT.ROOT,
 					config = {

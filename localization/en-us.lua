@@ -1457,7 +1457,7 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = "Fucked-Up Joker",
+				name = Cryptid_config.family_mode and "Tidy Joker" or "Fucked-Up Joker",
 				text = {
 					"{C:red}+#1#{} Mult if played",
 					"hand contains",
@@ -2544,7 +2544,7 @@ return {
 				},
 			},
 			j_cry_wtf = {
-				name = "The Fuck!?",
+				name = Cryptid_config.family_mode and "The Cluster" or "The Fuck!?",
 				text = {
 					"{X:mult,C:white} X#1# {} Mult if played",
 					"hand contains",
@@ -2666,7 +2666,7 @@ return {
 				},
 			},
 			c_cry_universe = {
-				name = "The Universe In Its Fucking Entirety",
+				name = Cryptid_config.family_mode and "Universe" or "The Universe In Its Fucking Entirety",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
 					"{C:attention}#2#",
@@ -4126,9 +4126,9 @@ return {
 		},
 		poker_hands = {
 			["cry_Bulwark"] = "Bulwark",
-			["cry_Clusterfuck"] = "Clusterfuck",
+			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Cluster" or "Clusterfuck",
 			["cry_UltPair"] = "Ultimate Pair",
-			["cry_WholeDeck"] = "The Entire Fucking Deck",
+			["cry_WholeDeck"] = Cryptid_config.family_mode and "Fifty Two" or "The Entire Fucking Deck",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4239,6 +4239,7 @@ return {
 			cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
 			cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
 			cry_mus_alt_bg = "Background Music (by MathIsFun_)",
+			cry_family = "Family Friendly Mode (Requires Restart",
 
 			k_cry_program_pack = "Program Pack",
 			k_cry_meme_pack = "Meme Pack",
@@ -4293,10 +4294,6 @@ return {
 			b_flip = "FLIP",
 			b_merge = "MERGE",
 
-			cry_hand_bulwark = "Bulwark",
-			cry_hand_clusterfuck = "Clusterfuck",
-			cry_hand_ultpair = "Ultimate Pair",
-
 			cry_asc_hands = "Asc. Hands",
 			cry_p_star = "Star",
 
@@ -4329,7 +4326,7 @@ return {
 			k_cry_cursed = "Cursed",
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",
-			k_planet_universe = "The Actual Fucking Universe",
+			k_planet_universe = Cryptid_config.family_mode and "Universe" or "The Actual Fucking Universe",
 
 			cry_notif_jimball_1 = "Jimball",
 			cry_notif_jimball_2 = "Copyright Notice",

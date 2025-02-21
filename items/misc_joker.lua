@@ -4668,7 +4668,7 @@ local stronghold = {
 	pos = { x = 8, y = 4 },
 	config = { Xmult = 5, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.x_mult, localize("cry_hand_bulwark") } }
+		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 3,
@@ -4713,7 +4713,7 @@ local wtf = {
 	pos = { x = 7, y = 1 },
 	config = { Xmult = 10, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.x_mult, localize("cry_hand_clusterfuck") } }
+		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 3,
@@ -4758,7 +4758,7 @@ local clash = {
 	pos = { x = 8, y = 1 },
 	config = { Xmult = 12, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.x_mult, localize("cry_hand_ultpair") } }
+		return { vars = { card.ability.x_mult, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 3,
@@ -5151,7 +5151,7 @@ local bonkers = {
 	order = 113,
 	config = { t_mult = 20, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.t_mult, localize("cry_hand_bulwark") } }
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
@@ -5189,7 +5189,7 @@ local fuckedup = {
 	order = 114,
 	config = { t_mult = 37, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.t_mult, localize("cry_hand_clusterfuck") } }
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
@@ -5227,7 +5227,7 @@ local foolhardy = {
 	order = 115,
 	config = { t_mult = 42, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.t_mult, localize("cry_hand_ultpair") } }
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
@@ -5571,7 +5571,7 @@ local adroit = {
 	order = 116,
 	config = { t_chips = 170, type = "cry_Bulwark" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.t_chips, localize("cry_hand_bulwark") } }
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
@@ -5609,7 +5609,7 @@ local penetrating = {
 	order = 117,
 	config = { t_chips = 270, type = "cry_Clusterfuck" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.t_chips, localize("cry_hand_clusterfuck") } }
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
@@ -5647,7 +5647,7 @@ local treacherous = {
 	order = 118,
 	config = { t_chips = 300, type = "cry_UltPair" },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.t_chips, localize("cry_hand_ultpair") } }
+		return { vars = { card.ability.t_chips, localize(card.ability.type, "poker_hands") } }
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
