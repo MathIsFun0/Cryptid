@@ -18,7 +18,7 @@ function loc_colour(_c, _default)
 end
 
 -- More advanced version of find joker for things that need to find very specific things
-function advanced_find_joker(name, rarity, edition, ability, non_debuff)
+function advanced_find_joker(name, rarity, edition, ability, non_debuff, area)
 	local jokers = {}
 	if not G.jokers or not G.jokers.cards then
 		return {}
@@ -54,6 +54,7 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 	if filter == 0 then
 		return {}
 	end
+	if not area or area == "j" then
 	for k, v in pairs(G.jokers.cards) do
 		if v and type(v) == "table" and (non_debuff or not v.debuff) then
 			local check = 0
@@ -93,6 +94,8 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 			end
 		end
 	end
+	end
+	if not area or area = "c" then
 	for k, v in pairs(G.consumeables.cards) do
 		if v and type(v) == "table" and (non_debuff or not v.debuff) then
 			local check = 0
@@ -123,6 +126,7 @@ function advanced_find_joker(name, rarity, edition, ability, non_debuff)
 				table.insert(jokers, v)
 			end
 		end
+	end
 	end
 	return jokers
 end
