@@ -614,6 +614,15 @@ return {
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
                 },
             },
+            m_cry_opalized = {
+                name = "Opalized Card",
+                text = {
+                    "{C:green}1 in #1#{} chance to",
+                    "create a {C:dark_edition}Negative{}",
+                    "{C:planet}Planet{} for played",
+                    "{C:attention}poker hand{}",
+                },
+            },
         },
         Joker = {
             j_cry_adroit = {
@@ -3141,6 +3150,13 @@ return {
                     "into a {C:attention}Light Card",
                 },
             },
+        c_cry_dreaming = {
+            name = "The Dreaming",
+            text = {
+                "Enhances {C:attention}#1#{} selected cards",
+                "into {C:planet}Opalized Cards",
+            },
+            },    
         },
         Voucher = {
             v_cry_asteroglyph = {
