@@ -87,6 +87,10 @@ if Cryptid.enabled["M Jokers"] then -- Crashes the game if M jokers are disabled
 	table.insert(typed_decks, 31, { "cry", "Edition", "Meck", "Jolly", "m", nil, nil, 5, 2, "" })
 end
 
+if Cryptid.enabled["Code Cards"] then -- Ditto
+	table.insert(typed_decks, 32, { "cry", "Sticker", nil, "Rigged", "cry_rigged", nil, "atlasenhanced", 3, 6, "" })
+end
+
 for i = 1, #typed_decks do
 	local deck = typed_decks[i]
 
@@ -398,9 +402,9 @@ return {
 			-- B so they ignore misprintize in order to keep vanilla descripton accurate (ex hack shouldn't be able to trigger more than once)
 			-- C so Gemini doesn't say they are compatible when they are not
 			-- D Invisible Joker
-			
-			if center.name == "Fortune Teller" 
-			or center.name == "Shoot the Moon" 
+
+			if center.name == "Fortune Teller"
+			or center.name == "Shoot the Moon"
 			or center.name == "Riff-raff"
 			or center.name == "Chaos the Clown"
 			or center.name == "Dusk"
@@ -436,10 +440,10 @@ return {
 			or center.name == "Burnt Joker"
 			or center.name == "Chicot"
 			or center.name == "Perkeo"
-			then 
+			then
 				self.config.center.immutable = true
 			end
-			
+
 			if center and center.set == "Enhanced" then
 				return sa(
 					self,
