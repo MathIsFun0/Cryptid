@@ -972,7 +972,9 @@ local blacklist = {
 			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante))
 	end,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { localize(center.ability.extra.blacklist and center.ability.extra.blacklist.key or "Ace", "ranks") } }
+		return {
+			vars = { localize(center.ability.extra.blacklist and center.ability.extra.blacklist.key or "Ace", "ranks") },
+		}
 	end,
 }
 local ghost = {
