@@ -563,6 +563,9 @@ function cry_get_gameset(card, center)
 	if center.force_gameset then
 		return center.force_gameset
 	end
+	if center.fake_card then
+		return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
+	end
 	if not center.key then
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
