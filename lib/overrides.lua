@@ -93,8 +93,10 @@ end
 --Add context for Just before cards are played
 local pcfh = G.FUNCS.play_cards_from_highlighted
 function G.FUNCS.play_cards_from_highlighted(e)
+	G.GAME.before_play_buffer = true
 	G.GAME.blind:cry_before_play()
 	pcfh(e)
+	G.GAME.before_play_buffer = nil
 end
 
 --Track defeated blinds for Obsidian Orb

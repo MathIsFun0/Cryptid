@@ -6508,7 +6508,9 @@ local fractal = {
 		if G.hand.config.highlighted_limit < 5 then
 			G.hand.config.highlighted_limit = 5
 		end
-		G.hand:unhighlight_all()
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
 	end,
 	cry_credits = {
 		idea = {
