@@ -535,7 +535,6 @@ local summoning = {
 	dependencies = {
 		items = {
 			"set_cry_spectral",
-			"set_cry_epic",
 		},
 	},
 	set = "Spectral",
@@ -545,6 +544,14 @@ local summoning = {
 	cost = 4,
 	order = 5,
 	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				cry_card_enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
+				colours = { G.C.RARITY[cry_card_enabled("set_cry_epic") == true and "cry_epic" or 3] },
+			},
+		}
+	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
 	end,
@@ -557,6 +564,7 @@ local summoning = {
 			end
 		end
 		local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed("cry_summoning"))
+		local value = cry_card_enabled("set_cry_epic") == true and "cry_epic" or 0.99
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
@@ -576,7 +584,7 @@ local summoning = {
 			delay = 0.4,
 			func = function()
 				play_sound("timpani")
-				local card = create_card("Joker", G.jokers, nil, "cry_epic", nil, nil, nil, "cry_summoning")
+				local card = create_card("Joker", G.jokers, nil, value, nil, nil, nil, "cry_summoning")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:juice_up(0.3, 0.5)

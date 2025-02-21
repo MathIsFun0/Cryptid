@@ -2878,7 +2878,7 @@ return {
 				name = "Summoning",
 				text = {
 					"Create a random",
-					"{C:cry_epic}Epic{} {C:joker}Joker{}, destroy",
+					"{V:1}#1#{} {C:joker}Joker{}, destroy",
 					"one random {C:joker}Joker{}",
 				},
 			},
