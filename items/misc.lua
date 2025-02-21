@@ -1435,7 +1435,7 @@ local double_sided = {
 				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
 					self.dbl_side = cry_deep_copy(self)
-				self.dbl_side:set_ability(G.P_CENTERS.c_base)
+					self.dbl_side:set_ability(G.P_CENTERS.c_base)
 				end
 				self.dbl_side.added_to_deck = false
 				return true
