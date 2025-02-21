@@ -499,7 +499,7 @@ local glitched = {
 				}))
 				update_hand_text(
 					{ delay = 1.3 },
-					{ chips = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true }
+					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
 				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -1431,11 +1431,11 @@ local double_sided = {
 			end
 			if not self.dbl_side then
 				self.dbl_side = cry_deep_copy(self)
-				self.dbl_side:set_ability(G.P_CENTERS.c_base)
+				self.dbl_side:set_ability(G.P_CENTERS.j_joker)
 				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
-					self.dbl_side.config.center = cry_deep_copy(self.dbl_side.config.center)
-					self.dbl_side.config.center.no_rank = true
+					self.dbl_side = cry_deep_copy(self)
+				self.dbl_side:set_ability(G.P_CENTERS.c_base)
 				end
 				self.dbl_side.added_to_deck = false
 				return true
@@ -1746,7 +1746,7 @@ local seraph = {
 	pos = { x = 1, y = 2 },
 	config = { mod_conv = "m_cry_light", max_highlighted = 2 },
 	atlas = "placeholders",
-	loc_vars = function(self, info_queue)
+	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
 
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
