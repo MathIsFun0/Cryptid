@@ -1759,7 +1759,7 @@ local gardenfork = {
 			for i = 1, #context.full_hand do
 				if context.other_card:get_id() == 14 then
 					for j = 1, #context.full_hand do
-						if context.other_card:get_id() == 7 then	-- :( ekshpenshive
+						if context.other_card:get_id() == 7 then -- :( ekshpenshive
 							ease_dollars(card.ability.extra.money)
 							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 						end
@@ -5905,7 +5905,6 @@ local oldblueprint = {
 			end
 		end
 		if other_joker and other_joker ~= card then
-
 			context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
 			context.blueprint_card = context.blueprint_card or card
 
