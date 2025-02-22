@@ -353,7 +353,15 @@ if true then --Cryptid.enabled["Menu"] then
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
 		-- adds a Cryptid spectral to the main menu
-		local newcard = Card(G.title_top.T.x, G.title_top.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS.c_cryptid, {bypass_discovery_center = true})
+		local newcard = Card(
+			G.title_top.T.x,
+			G.title_top.T.y,
+			G.CARD_W,
+			G.CARD_H,
+			G.P_CARDS.empty,
+			G.P_CENTERS.c_cryptid,
+			{ bypass_discovery_center = true }
+		)
 		-- recenter the title
 		G.title_top.T.w = G.title_top.T.w * 1.7675
 		G.title_top.T.x = G.title_top.T.x - 0.8
@@ -378,21 +386,22 @@ if true then --Cryptid.enabled["Menu"] then
 		})
 
 		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
+			trigger = "after",
 			delay = 0,
 			blockable = false,
 			blocking = false,
-			func = (function()
-				if change_context == 'splash' then 
+			func = function()
+				if change_context == "splash" then
 					newcard.states.visible = true
-					newcard:start_materialize({G.C.WHITE,G.C.WHITE}, true, 2.5)
+					newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, true, 2.5)
 				else
 					newcard.states.visible = true
-					newcard:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
+					newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.2)
 				end
 				return true
-		end)}))
-		
+			end,
+		}))
+
 		return ret
 	end
 end

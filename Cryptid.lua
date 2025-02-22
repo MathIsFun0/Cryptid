@@ -185,12 +185,12 @@ local inj = SMODS.injectItems
 function SMODS.injectItems(...)
 	inj(...)
 	cry_update_obj_registry()
-	for _, t in ipairs{
-        G.P_CENTERS,
-        G.P_BLINDS,
-        G.P_TAGS,
-        G.P_SEALS,
-    } do
+	for _, t in ipairs({
+		G.P_CENTERS,
+		G.P_BLINDS,
+		G.P_TAGS,
+		G.P_SEALS,
+	}) do
 		for k, v in pairs(t) do
 			if v and G.PROFILES[G.SETTINGS.profile].all_unlocked then
 				v.alerted = true
