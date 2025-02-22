@@ -2570,7 +2570,7 @@ local exploit = {
 		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
 	end,
 	can_use = function(self, card)
-		return true
+		return G.STATE == G.STATES.SELECTING_HAND
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
