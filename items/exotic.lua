@@ -136,7 +136,7 @@ local universum = {
 	end,
 	cry_credits = {
 		idea = { "Ein13" },
-		art = { "Ein13" },
+		art = { "Ein13/hydrogenperoxiide" },
 	},
 	init = function(self)
 		--Universum Patches
