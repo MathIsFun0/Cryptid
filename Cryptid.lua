@@ -92,12 +92,6 @@ local function process_items(f, mod)
 						modest = {disabled = true},
 					}
 				end--]]
-				if G.PROFILES[G.SETTINGS.profile].all_unlocked then
-					-- There's something a bit goofy about this, it shouldn't kick in this early
-					item.alerted = true
-					item.discovered = true
-					item.unlocked = true
-				end
 				if not Cryptid.object_registry[item.object_type] then
 					Cryptid.object_registry[item.object_type] = {}
 				end
@@ -191,6 +185,20 @@ local inj = SMODS.injectItems
 function SMODS.injectItems(...)
 	inj(...)
 	cry_update_obj_registry()
+	for _, t in ipairs{
+        G.P_CENTERS,
+        G.P_BLINDS,
+        G.P_TAGS,
+        G.P_SEALS,
+    } do
+		for k, v in pairs(t) do
+			if v and G.PROFILES[G.SETTINGS.profile].all_unlocked then
+				v.alerted = true
+				v.discovered = true
+				v.unlocked = true
+			end
+		end
+	end
 end
 
 local cryptidConfigTab = function()
