@@ -215,8 +215,7 @@ local cryptidConfigTab = function()
 	}
 	left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 	right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-	config =
-		{ n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
+	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 	cry_nodes[#cry_nodes + 1] = config
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
 		button = "your_collection_content_sets",
@@ -233,7 +232,7 @@ local cryptidConfigTab = function()
 		active_colour = G.C.MONEY,
 		ref_table = Cryptid_config,
 		ref_value = "family_mode",
-		callback = reload_cryptid_localization
+		callback = reload_cryptid_localization,
 	})
 	return {
 		n = G.UIT.ROOT,
