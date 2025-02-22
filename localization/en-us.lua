@@ -4062,8 +4062,6 @@ return {
 			cry_intro_1 = {
 				"Hello, I'm {C:attention}Joseph J. Joker{}!",
 				"Welcome to {C:cry_exotic,E:1}Cryptid{}!",
-				"{s:0.8}Note: You are currently playing an early version",
-				"{s:0.8}of the refactor. Expect issues!",
 			},
 			cry_intro_2 = {
 				"It looks like you've never",
@@ -4083,6 +4081,8 @@ return {
 				"As you might be able to tell by these",
 				"{C:cry_ascendant}gamesets{}, I like the letter {C:attention}M{}.",
 				"Select a gameset for me to explain...",
+				"{s:0.8}Note: Gameset balancing is a heavy work in progress.",
+				"{s:0.8}Expect things to change frequently!",
 			},
 			cry_modest_1 = {
 				"Seeking an experience close to vanilla?",
