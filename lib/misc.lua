@@ -611,3 +611,10 @@ function Cryptid.post_process(center)
 		end
 	end
 end
+
+-- Wrapper G.FUNCS function to reset localization
+-- For resetting localization on the fly for family friendly toggle
+function reload_cryptid_localization()
+	SMODS.handle_loc_file(Cryptid.path)
+	return init_localization()
+end
