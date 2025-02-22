@@ -1757,9 +1757,9 @@ local gardenfork = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			for i = 1, #context.full_hand do
-				if SMODS.Ranks[context.full_hand[i].base.value].key == "Ace" then
+				if context.other_card:get_id() == 14 then
 					for j = 1, #context.full_hand do
-						if SMODS.Ranks[context.full_hand[j].base.value].key == "7" then
+						if context.other_card:get_id() == 7 then	-- :( ekshpenshive
 							ease_dollars(card.ability.extra.money)
 							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 						end
@@ -1801,8 +1801,8 @@ local lightupthenight = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual then
-			local rank = SMODS.Ranks[context.other_card.base.value].key
-			if rank == "2" or rank == "7" then
+			local rank = context.other_card:get_id()
+			if rank == 2 or rank == 7 then
 				return {
 					x_mult = card.ability.extra.xmult,
 					colour = G.C.RED,
@@ -1845,8 +1845,7 @@ local nosound = {
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
-				local rank = SMODS.Ranks[context.other_card.base.value].key
-				if rank == "7" then
+				if context.other_card:get_id() == 7 then
 					return {
 						message = localize("k_again_ex"),
 						repetitions = card.ability.extra.retriggers,
@@ -1901,8 +1900,8 @@ local antennastoheaven = {
 			}
 		end
 		if context.cardarea == G.play and context.individual and not context.blueprint then
-			local rank = SMODS.Ranks[context.other_card.base.value].key
-			if rank == "4" or rank == "7" then
+			local rank = context.other_card:get_id()
+			if rank == 4 or rank == 7 then
 				card.ability.extra.x_chips = card.ability.extra.x_chips + card.ability.extra.bonus
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1990,8 +1989,7 @@ local weegaming = {
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
-				local rank = SMODS.Ranks[context.other_card.base.value].key
-				if rank == "2" then
+				if context.other_card:get_id() == 2 then
 					return {
 						message = localize("k_again_ex"),
 						repetitions = card.ability.extra.retriggers,
@@ -5907,6 +5905,7 @@ local oldblueprint = {
 			end
 		end
 		if other_joker and other_joker ~= card then
+
 			context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
 			context.blueprint_card = context.blueprint_card or card
 
@@ -5915,12 +5914,20 @@ local oldblueprint = {
 			end
 
 			local other_joker_ret, trig = other_joker:calculate_joker(context)
+			local eff_card = context.blueprint_card or card
+
+			context.blueprint = nil
+			context.blueprint_card = nil
+
+			if other_joker_ret == true then
+				return other_joker_ret
+			end
 			if other_joker_ret or trig then
 				if not other_joker_ret then
 					other_joker_ret = {}
 				end
-				other_joker_ret.card = context.blueprint_card or card
-				other_joker_ret.colour = G.C.BLUE
+				other_joker_ret.card = eff_card
+				other_joker_ret.colour = darken(G.C.BLUE, 0.3)
 				other_joker_ret.no_callback = true
 				return other_joker_ret
 			end

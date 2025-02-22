@@ -1650,9 +1650,9 @@ local echo = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				self.config.retriggers,
+				card and card.ability.retriggers or self.config.retriggers,
 				card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1,
-				self.config.extra,
+				card and card.ability.extra or self.config.extra,
 			},
 		} -- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
@@ -1743,9 +1743,9 @@ local seraph = {
 	name = "cry-Seraph",
 	key = "seraph",
 	order = 2,
-	pos = { x = 1, y = 2 },
+	pos = { x = 5, y = 3 },
 	config = { mod_conv = "m_cry_light", max_highlighted = 2 },
-	atlas = "placeholders",
+	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
 
