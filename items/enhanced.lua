@@ -362,13 +362,20 @@ return {
 		function Card:click()
 			ccl(self)
 			if
-				Galdur and (self.edeck_select or (self.area == safe_get(Galdur, "run_setup", "selected_deck_area") and safe_get(self, "config", "center", "edeck_type"))) or
-				(safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type")
-				and (self.back == "viewed_back" or self.edeck_select))
+				Galdur
+					and (self.edeck_select or (self.area == safe_get(Galdur, "run_setup", "selected_deck_area") and safe_get(
+						self,
+						"config",
+						"center",
+						"edeck_type"
+					)))
+				or (
+					safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type")
+					and (self.back == "viewed_back" or self.edeck_select)
+				)
 			then
 				if self.edeck_select then
-					G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] =
-						self.edeck_select
+					G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] = self.edeck_select
 				end
 				cry_enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center)
 			end
