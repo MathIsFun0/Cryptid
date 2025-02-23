@@ -206,7 +206,7 @@ if args and args.vars then
     local reset = {}
     for i, j in pairs(args.vars) do
         if type(j) == 'table' then
-            if (j.new and type(j.new) == "function") and ((j.m and j.e) or (j.array and j.sign and (type(j.array) == "table"))) then 
+            if (j.new and type(j.new) == "function") and ((j.m and j.e) or (j.array and j.sign and (type(j.array) == "table"))) then
                 reset[i] = number_format(j)
             end
         end
@@ -290,7 +290,7 @@ payload = '''else
 self.jokers = CardArea(
     0, 0,
     CAI.joker_W+CAI.consumeable_W,
-    CAI.joker_H, 
+    CAI.joker_H,
     {card_limit = self.GAME.starting_params.joker_slots+self.GAME.starting_params.consumable_slots-1, type = 'joker', highlight_limit = 1e100})
 self.consumeables = self.jokers
 end'''
@@ -399,7 +399,7 @@ pattern = '''if G.GAME.round_resets.temp_reroll_cost then G.GAME.round_resets.te
 position = "after"
 payload = '''
 for _, v in pairs(find_joker("cry-loopy")) do
-	if v.ability.extra.retrigger ~= 0 then 
+	if v.ability.extra.retrigger ~= 0 then
 		v.ability.extra.retrigger = 0
 		card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize("k_reset"), colour = G.C.GREEN})
 	end
@@ -417,7 +417,7 @@ target = "tag.lua"
 pattern = '''update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {'''
 position = "before"
 payload = '''
-if (not self.ability.orbital_hand) or (not G.GAME.hands[self.ability.orbital_hand]) then 
+if (not self.ability.orbital_hand) or (not G.GAME.hands[self.ability.orbital_hand]) then
 	local _poker_hands = {}
 	for k, v in pairs(G.GAME.hands) do
 		if v.visible then _poker_hands[#_poker_hands+1] = k end

@@ -80,7 +80,7 @@ if self.ability.banana then
                                 if self.area then self.area:remove_card(self) end
                                 self:remove()
                                 self = nil
-                            return true; end})) 
+                            return true; end}))
                     return true
                 end
             }))

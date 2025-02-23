@@ -36,7 +36,7 @@ match_indent = true
 
 # Prevent pack softlocks
 # Off by One Error effect
-# Booster Tag effect 
+# Booster Tag effect
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -231,7 +231,7 @@ position = 'after'
 line_prepend = '$indent    '
 payload = '''
 
-if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then 
+if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then
     loc_vars = {cfg.max_highlighted}
 end
 '''
@@ -274,10 +274,10 @@ target = "card.lua"
 pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))"
 position = "after"
 payload = '''
-    if self.ability.set == 'Joker' then 
+    if self.ability.set == 'Joker' then
         self.cost = cry_format(self.cost * G.GAME.cry_shop_joker_price_modifier,'%.2f') end
-    if self.misprint_cost_fac then 
-        self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f') 
+    if self.misprint_cost_fac then
+        self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f')
     if not G.GAME.modifiers.cry_misprint_min then self.cost = math.floor(self.cost) end end
 '''
 match_indent = true
@@ -294,7 +294,7 @@ if (self and self.ability and self.ability.extra_disp) then	-- redeeming through
 	local orig_disp = self.config.center.config.extra_disp
 	local self_extra = self.ability.extra
 	local orig_extra = self.config.center.config.extra
-	
+
 	local new_fac = self_disp / orig_disp
 	self.ability.extra = new_fac*orig_extra
 end
@@ -332,7 +332,7 @@ position = "at"
 payload = '''
     if center_table.name == 'Antimatter' then
         G.E_MANAGER:add_event(Event({func = function()
-            if G.jokers then 
+            if G.jokers then
                 G.jokers.config.card_limit = G.jokers.config.card_limit + center_table.extra
             end
             return true end }))

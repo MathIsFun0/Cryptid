@@ -1,5 +1,5 @@
 local jollysus = {
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	object_type = "Joker",
 	name = "cry-jollysus Joker",
 	key = "jollysus",
@@ -11,7 +11,7 @@ local jollysus = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
@@ -74,14 +74,14 @@ local jollysus = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 --TODO
@@ -89,12 +89,12 @@ local jollysus = {
 --Make Blueprints create copies when this is sold to the right of Blueprint
 local bubblem = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-bubblem",
 	key = "bubblem",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	order = 251,
 	pos = { x = 0, y = 0 },
 	config = { extra = { spawn = false, type = "Three of a Kind" } },
@@ -155,26 +155,26 @@ local bubblem = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local foodm = {
 	object_type = "Joker",
 	name = "cry-foodm",
 	key = "foodm",
-	pools = {["M"] = true,["Food"] = true},
+	pools = { ["M"] = true, ["Food"] = true },
 	config = { extra = { mult = 40, rounds_remaining = 2, round_inc = 1 } },
 	pos = { x = 4, y = 2 },
 	rarity = 1,
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	order = 252,
 	cost = 5,
@@ -192,10 +192,7 @@ local foodm = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if
-			context.joker_main
-			and (card.ability.extra.mult > 0)
-		then
+		if context.joker_main and (card.ability.extra.mult > 0) then
 			return {
 				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
 				mult_mod = card.ability.extra.mult,
@@ -251,7 +248,7 @@ local foodm = {
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining + card.ability.extra.round_inc
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize{type='variable',key='a_round',vars={card.ability.extra.round_inc}},
+					message = localize({ type = "variable", key = "a_round", vars = { card.ability.extra.round_inc } }),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -259,25 +256,25 @@ local foodm = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local mstack = {
 	object_type = "Joker",
 	name = "cry-mstack",
 	key = "mstack",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	order = 253,
 	config = { extra = { sell = 0, sell_req = 3, retriggers = 1, check = false } },
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	pos = { x = 2, y = 3 },
 	atlas = "atlastwo",
@@ -337,24 +334,24 @@ local mstack = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local mneon = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-mneon",
 	key = "mneon",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	pos = { x = 4, y = 2 },
 	order = 254,
 	config = { extra = { bonus = 1, money = 0 } },
@@ -371,14 +368,12 @@ local mneon = {
 		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
-				if
-					G.jokers.cards[i]:is_jolly()
-					or safe_get(G.jokers.cards[i], "pools", "M")
-				then
+				if G.jokers.cards[i]:is_jolly() or safe_get(G.jokers.cards[i], "pools", "M") then
 					jollycount = jollycount + 1
 				end
 			end
-			card.ability.extra.money = card.ability.extra.money + math.max(1, card.ability.extra.bonus) * (jollycount or 1)
+			card.ability.extra.money = card.ability.extra.money
+				+ math.max(1, card.ability.extra.bonus) * (jollycount or 1)
 			return { message = localize("cry_m_ex") }
 		end
 	end,
@@ -389,28 +384,28 @@ local mneon = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local notebook = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-notebook",
 	key = "notebook",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	pos = { x = 1, y = 0 },
 	order = 255,
 	config = {
-		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "", add = 1 }
+		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "", add = 1 },
 	},
 	rarity = 3,
 	cost = 9,
@@ -438,15 +433,14 @@ local notebook = {
 		then
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
-				if
-					G.jokers.cards[i]:is_jolly()
-				then
+				if G.jokers.cards[i]:is_jolly() then
 					jollycount = jollycount + 1
 				end
 			end
 			if
 				jollycount >= card.ability.extra.jollies --if there are 5 or more jolly jokers
-				or pseudorandom("cry_notebook") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+				or pseudorandom("cry_notebook")
+					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
 				card.ability.extra.slot = card.ability.extra.slot + card.ability.extra.add
 				G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
@@ -479,28 +473,28 @@ local notebook = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local bonk = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-bonk",
 	key = "bonk",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	order = 256,
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" } },
-    	pools = {["Meme"] = true},
+	pools = { ["Meme"] = true },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
@@ -529,9 +523,7 @@ local bonk = {
 			end
 		end
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
-			if
-				context.other_joker:is_jolly()
-			then
+			if context.other_joker:is_jolly() then
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -569,26 +561,26 @@ local bonk = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local loopy = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-loopy",
 	key = "loopy",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	config = { extra = { retrigger = 0 } },
-	pos = { x = 4, y = 1 },
+	pos = { x = 7, y = 0 },
 	order = 257,
 	atlas = "atlastwo",
 	immutable = true,
@@ -631,24 +623,24 @@ local loopy = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local scrabble = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-scrabble",
 	key = "scrabble",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	config = { extra = { odds = 4 } },
 	pos = { x = 0, y = 2 },
 	order = 258,
@@ -660,12 +652,21 @@ local scrabble = {
 		if cry_card_enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
-		return { vars = { cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
+		return {
+			vars = {
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
-			if pseudorandom("scrabbleother") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+			if
+				pseudorandom("scrabbleother")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+					/ card.ability.extra.odds
+			then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
 				if cry_card_enabled("e_cry_m") == true then
@@ -675,31 +676,38 @@ local scrabble = {
 				G.jokers:emplace(card)
 			end
 			if check then
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
+				)
 				return nil, true
 			end
 		end
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local sacrifice = {
 	object_type = "Joker",
 	name = "cry-sacrifice",
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	key = "sacrifice",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	config = { extra = { jollies = 3, unc = 1, text = localize("k_active_ex"), spawn = true } },
 	pos = { x = 5, y = 2 },
 	order = 259,
@@ -709,7 +717,13 @@ local sacrifice = {
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		return { vars = { center.ability.extra.text, math.min(30, center.ability.extra.jollies), math.min(30, center.ability.extra.unc) } }
+		return {
+			vars = {
+				center.ability.extra.text,
+				math.min(30, center.ability.extra.jollies),
+				math.min(30, center.ability.extra.unc),
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.using_consumeable and card.ability.extra.spawn and not context.retrigger_joker then
@@ -722,8 +736,12 @@ local sacrifice = {
 						end,
 					}))
 				end
-				if card.ability.extra.jollies < 1 then card.ability.extra.jollies = 1 end
-				if card.ability.extra.unc < 1 then card.ability.extra.unc = 1 end
+				if card.ability.extra.jollies < 1 then
+					card.ability.extra.jollies = 1
+				end
+				if card.ability.extra.unc < 1 then
+					card.ability.extra.unc = 1
+				end
 				for i = 1, math.min(30, card.ability.extra.jollies) do
 					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
 					jolly:add_to_deck()
@@ -735,7 +753,14 @@ local sacrifice = {
 					G.jokers:emplace(unc)
 					unc:start_materialize()
 				end
-				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.SPECTRAL })
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("cry_m_ex"), colour = G.C.SPECTRAL }
+				)
 				return nil, true
 			end
 		end
@@ -752,14 +777,14 @@ local sacrifice = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 --TODO: Fix Brainstorm incompatibility (the joker not the mod)
@@ -769,10 +794,10 @@ local reverse = {
 	key = "reverse",
 	effect = "M Joker",
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	config = { extra = { type = "Pair" } },
-    	pools = {["Meme"] = true,["M"] = true},
+	pools = { ["Meme"] = true, ["M"] = true },
 	pos = { x = 0, y = 0 },
 	display_size = { w = 0.7 * 71, h = 0.7 * 95 },
 	rarity = 2,
@@ -832,20 +857,27 @@ local reverse = {
 						return true
 					end,
 				}))
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
+				)
 			end
 		end
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local doodlem = {
@@ -853,14 +885,14 @@ local doodlem = {
 	name = "cry-doodlem",
 	key = "doodlem",
 	atlas = "atlasepic",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	dependencies = {
 		items = {
 			"set_cry_m",
 			"set_cry_epic",
 		},
 	},
-	config = { extra = {add = 1, init = 2} },
+	config = { extra = { add = 1, init = 2 } },
 	pos = { x = 2, y = 0 },
 	rarity = "cry_epic",
 	cost = 13,
@@ -875,9 +907,7 @@ local doodlem = {
 		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			local jollycount = card.ability.extra.init
 			for i = 1, #G.jokers.cards do
-				if
-					G.jokers.cards[i]:is_jolly()
-				then
+				if G.jokers.cards[i]:is_jolly() then
 					jollycount = jollycount + math.floor(card.ability.extra.add)
 				end
 			end
@@ -903,21 +933,21 @@ local doodlem = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local virgo = {
 	object_type = "Joker",
 	name = "cry-virgo",
 	key = "virgo",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	dependencies = {
 		items = {
 			"set_cry_m",
@@ -973,7 +1003,14 @@ local virgo = {
 							return true
 						end,
 					}))
-					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
+					card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
+					)
 					return true
 				end,
 			}))
@@ -982,14 +1019,14 @@ local virgo = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local smallestm = {
@@ -1003,7 +1040,7 @@ local smallestm = {
 		},
 	},
 	key = "smallestm",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	config = { extra = { type = "Pair" } },
 	pos = { x = 5, y = 0 },
 	rarity = "cry_epic",
@@ -1037,14 +1074,14 @@ local smallestm = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local biggestm = {
@@ -1061,7 +1098,7 @@ local biggestm = {
 		},
 	},
 	rarity = "cry_epic",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	cost = 12,
 	order = 268,
 	blueprint_compat = true,
@@ -1078,7 +1115,7 @@ local biggestm = {
 	calculate = function(self, card, context)
 		if context.joker_main and card.ability.extra.check then
 			return {
-				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.x_mult}},
+				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
 				Xmult_mod = card.ability.extra.x_mult,
 				colour = G.C.MULT,
 			}
@@ -1111,14 +1148,14 @@ local biggestm = {
 	end,
 	cry_credits = {
 		idea = {
-			"Kailen"
+			"Kailen",
 		},
 		art = {
-			"Kailen"
+			"Kailen",
 		},
 		code = {
-			"Kailen"
-		}
+			"Kailen",
+		},
 	},
 }
 local mprime = {
@@ -1145,36 +1182,33 @@ local mprime = {
 	atlas = "atlasexotic",
 	perishable_compat = false,
 	calculate = function(self, card, context)
-		if
-			context.selling_card
-			and (
-				context.card:is_jolly()
-			)
-		then
+		if context.selling_card and (context.card:is_jolly()) then
 			if not context.blueprint then
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.bonus
 			end
 			if not context.retrigger_joker then
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_m_ex"), colour = G.C.DARK_EDITION })
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
+				)
 			end
-		elseif context.end_of_round and not context.individual and not context.repetition
-		and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-	    	and not context.retrigger_joker then
+		elseif
+			context.end_of_round
+			and not context.individual
+			and not context.repetition
+			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			and not context.retrigger_joker
+		then
 			local mjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + mjoker
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					if mjoker > 0 then
-						local card = create_card(
-							"M",
-							G.jokers,
-							nil,
-							nil,
-							nil,
-							nil,
-							nil,
-							"mprime"
-						)
+						local card = create_card("M", G.jokers, nil, nil, nil, nil, nil, "mprime")
 						card:add_to_deck()
 						G.jokers:emplace(card)
 						card:start_materialize()
@@ -1186,10 +1220,7 @@ local mprime = {
 		elseif context.other_joker then
 			if
 				context.other_joker
-				and (
-					context.other_joker:is_jolly()
-					or safe_get(context.other_joker, "pools", "M")
-				)
+				and (context.other_joker:is_jolly() or safe_get(context.other_joker, "pools", "M"))
 			then
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
@@ -1200,7 +1231,7 @@ local mprime = {
 					}))
 				end
 				return {
-					message = localize{type='variable',key='a_powmult',vars={card.ability.extra.mult}},
+					message = localize({ type = "variable", key = "a_powmult", vars = { card.ability.extra.mult } }),
 					Emult_mod = card.ability.extra.mult,
 					colour = G.C.DARK_EDITION,
 					card = card,
@@ -1210,14 +1241,14 @@ local mprime = {
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Jevonn"
+			"Jevonn",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local macabre = {
@@ -1229,11 +1260,11 @@ local macabre = {
 	object_type = "Joker",
 	name = "cry-Macabre Joker",
 	key = "macabre",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	order = 263,
 	pos = { x = 1, y = 2 },
 	display_size = { w = 1.2 * 71, h = 1.2 * 95 },
-	config = { extra = {add = 1} },
+	config = { extra = { add = 1 } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return { vars = { math.min(15, center.ability.extra.add) } }
@@ -1243,7 +1274,9 @@ local macabre = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint or context.retrigger_joker) and not card.getting_sliced then
-			if card.ability.extra.add < 1 then card.ability.extra.add = 1 end
+			if card.ability.extra.add < 1 then
+				card.ability.extra.add = 1
+			end
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local triggered = false
@@ -1253,11 +1286,7 @@ local macabre = {
 							v ~= card
 							and not v:is_jolly()
 							and v.config.center.key ~= "j_cry_mprime"
-							and not (
-								v.ability.eternal
-								or v.getting_sliced
-								or safe_get(v, "pools", "M")
-							)
+							and not (v.ability.eternal or v.getting_sliced or safe_get(v, "pools", "M"))
 						then
 							destroyed_jokers[#destroyed_jokers + 1] = v
 						end
@@ -1286,24 +1315,24 @@ local macabre = {
 	end,
 	cry_credits = {
 		idea = {
-			"SDM_0"
+			"SDM_0",
 		},
 		art = {
-			"SDM_0"
+			"SDM_0",
 		},
 		code = {
-			"SDM_0"
-		}
+			"SDM_0",
+		},
 	},
 }
 local megg = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-megg",
 	key = "Megg",
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	blueprint_compat = false,
 	eternal_compat = false,
 	pos = { x = 0, y = 4 },
@@ -1332,7 +1361,14 @@ local megg = {
 			if card.ability.extra.amount > 200 then
 				card.ability.extra.amount = 200
 			end
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = { localize("cry_jolly_ex") }, colour = G.C.FILTER })
+			card_eval_status_text(
+				card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = { localize("cry_jolly_ex") }, colour = G.C.FILTER }
+			)
 			return nil, true
 		end
 		if
@@ -1349,19 +1385,19 @@ local megg = {
 	end,
 	cry_credits = {
 		idea = {
-			"Watermelon Lover"
+			"Watermelon Lover",
 		},
 		art = {
-			"Watermelon Lover"
+			"Watermelon Lover",
 		},
 		code = {
-			"SDM_0"
-		}
+			"SDM_0",
+		},
 	},
 }
 local longboi = {
 	dependencies = {
-		items = {"set_cry_m"},
+		items = { "set_cry_m" },
 	},
 	object_type = "Joker",
 	name = "cry-longboi",
@@ -1371,21 +1407,24 @@ local longboi = {
 	rarity = 1,
 	cost = 5,
 	order = 261,
-	pools = {["M"] = true},
+	pools = { ["M"] = true },
 	no_dbl = true,
 	blueprint_compat = true,
 	eternal_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { math.max(0.75, math.floor(center.ability.extra.bonus)), (center.ability.extra.mult ~= nil and center.ability.extra.mult or (G.GAME.monstermult or 1)) } }
+		return {
+			vars = {
+				math.max(0.75, math.floor(center.ability.extra.bonus)),
+				(center.ability.extra.mult ~= nil and center.ability.extra.mult or (G.GAME.monstermult or 1)),
+			},
+		}
 	end,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
-		if
-			context.end_of_round
-			and not context.individual
-			and not context.repetition
-		then
-			if not G.GAME.monstermult then G.GAME.monstermult = 1 end
+		if context.end_of_round and not context.individual and not context.repetition then
+			if not G.GAME.monstermult then
+				G.GAME.monstermult = 1
+			end
 			G.GAME.monstermult = G.GAME.monstermult + math.max(0.75, math.floor(card.ability.extra.bonus))
 			if not context.retrigger_joker then
 				return {
@@ -1395,10 +1434,7 @@ local longboi = {
 					}),
 				}
 			end
-		elseif
-			context.joker_main
-			and ((card.ability.extra.mult or 1) > 1)
-		then
+		elseif context.joker_main and ((card.ability.extra.mult or 1) > 1) then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.mult } }),
 				Xmult_mod = card.ability.extra.mult,
@@ -1408,21 +1444,23 @@ local longboi = {
 	add_to_deck = function(self, card, from_debuff)
 		if (not from_debuff and card.ability.extra.mult == nil) or card.checkmonster then
 			--Stops Things like Gemini from updating mult when it isn't supposed to
-			if card.checkmonster then card.checkmonster = nil end
+			if card.checkmonster then
+				card.checkmonster = nil
+			end
 
 			card.ability.extra.mult = G.GAME.monstermult or 1
 		end
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn"
+			"Jevonn",
 		},
 		art = {
-			"Watermelon Lover"
+			"Watermelon Lover",
 		},
 		code = {
-			"Jevonn"
-		}
+			"Jevonn",
+		},
 	},
 }
 local ret_items = {

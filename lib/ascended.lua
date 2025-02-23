@@ -1,10 +1,10 @@
 -- ascended.lua - Used for Ascended Hands
 
-G.FUNCS.cry_asc_UI_set = function(e) 
+G.FUNCS.cry_asc_UI_set = function(e)
 	if G.GAME.cry_exploit_override then
-		e.config.object.colours = {darken(G.C.SECONDARY_SET.Code, 0.2)}
+		e.config.object.colours = { darken(G.C.SECONDARY_SET.Code, 0.2) }
 	else
-		e.config.object.colours = {G.C.GOLD}
+		e.config.object.colours = { G.C.GOLD }
 	end
 	e.config.object:update_text()
 end
@@ -95,11 +95,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["Pair"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		["Two Pair"] = 4,
 		["Three of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		["Straight"] = next(SMODS.find_card('j_four_fingers')) and cry_get_gameset() ~= "modest" and 4 or 5,
-		["Flush"] = next(SMODS.find_card('j_four_fingers')) and cry_get_gameset() ~= "modest" and 4 or 5,
+		["Straight"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
+		["Flush"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
 		["Full House"] = 5,
 		["Four of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		["Straight Flush"] = next(SMODS.find_card('j_four_fingers')) and cry_get_gameset() ~= "modest" and 4 or 5, --debatable
+		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5, --debatable
 		["cry_Bulwark"] = 5,
 		["Five of a Kind"] = 5,
 		["Flush House"] = 5,
@@ -108,7 +108,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
 	}
-	
+
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
 	if hand_table[text] and cry_card_enabled("set_cry_poker_hand_stuff") == true then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
@@ -117,12 +117,12 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	else
 		G.GAME.current_round.current_hand.cry_asc_num = 0
 	end
-	
+
 	G.GAME.current_round.current_hand.cry_asc_num = math.max(0, G.GAME.current_round.current_hand.cry_asc_num)
 	if G.GAME.cry_exploit_override then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + 1
 	end
-	
+
 	G.GAME.current_round.current_hand.cry_asc_num_text = (
 		G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0
 	)
@@ -131,14 +131,26 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 function cry_ascend(num) -- edit this function at your leisure
-	if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return num end
+	if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then
+		return num
+	end
 	if cry_get_gameset() == "modest" then
 		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
-		if not G.GAME.current_round.current_hand.cry_asc_num then return num end
-		if G.GAME.current_round.current_hand.cry_asc_num <= 0 then return num end
+		if not G.GAME.current_round.current_hand.cry_asc_num then
+			return num
+		end
+		if G.GAME.current_round.current_hand.cry_asc_num <= 0 then
+			return num
+		end
 		return math.max(
 			num,
-			num * (1 + 0.1 + (0.05 * ( G.GAME.sunnumber or 0) ) + ( (0.1 + (0.05 * ( G.GAME.sunnumber or 0) ) ) * (G.GAME.current_round.current_hand.cry_asc_num or 0) ) )
+			num
+				* (
+					1
+					+ 0.1
+					+ (0.05 * (G.GAME.sunnumber or 0))
+					+ ((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * (G.GAME.current_round.current_hand.cry_asc_num or 0))
+				)
 		)
 	else
 		return math.max(

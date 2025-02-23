@@ -1,6 +1,5 @@
 -- cross-mod.lua - Used for compatibility and content with other mods
 
-
 --For Double Scale/Scalae, modify Green Joker to use one variable
 SMODS.Joker:take_ownership("green_joker", {
 	config = { extra = 1, mult = 0 },

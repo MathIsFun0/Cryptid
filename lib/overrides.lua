@@ -1,6 +1,6 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
--- get_currrent_pool hook for Deck of Equilibrium and Copies 
+-- get_currrent_pool hook for Deck of Equilibrium and Copies
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
 	if type == "Tag" then
@@ -10,10 +10,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 				pool[i] = "tag_cry_triple"
 			end
 			-- Tag Printer: Turn Double tags and Triple Tags into Quadruple Tags
-			if
-				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple")
-				and G.GAME.used_vouchers.v_cry_tag_printer
-			then
+			if (pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
 				pool[i] = "tag_cry_quadruple"
 			end
 			-- Clone Machine: Turn Double tags and Triple Tags as well as Quadruple Tags into Quintuple Tags
@@ -48,7 +45,9 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 					end
 				end
 			end
-			if #P_CRY_ITEMS <= 0 then P_CRY_ITEMS[#P_CRY_ITEMS + 1] = 'v_blank' end
+			if #P_CRY_ITEMS <= 0 then
+				P_CRY_ITEMS[#P_CRY_ITEMS + 1] = "v_blank"
+			end
 			return P_CRY_ITEMS, "cry_equilibrium" .. G.GAME.round_resets.ante
 		end
 	end
@@ -65,7 +64,7 @@ function get_new_boss()
 	--This is how nostalgic deck replaces the boss blinds with Nostalgic versions
 	local bl = gnb()
 	if G.GAME.modifiers.cry_beta then
-		local bl_key = string.sub(bl,4)
+		local bl_key = string.sub(bl, 4)
 		local nostalgicblinds = {
 			arm = (cry_card_enabled("bl_cry_oldarm") == true),
 			fish = (cry_card_enabled("bl_cry_oldfish") == true),
@@ -75,10 +74,10 @@ function get_new_boss()
 			mark = (cry_card_enabled("bl_cry_oldmark") == true),
 			ox = (cry_card_enabled("bl_cry_oldox") == true),
 			pillar = (cry_card_enabled("bl_cry_oldpillar") == true),
-			serpent = (cry_card_enabled("bl_cry_oldserpent") == true)
+			serpent = (cry_card_enabled("bl_cry_oldserpent") == true),
 		}
 		if nostalgicblinds[bl_key] then
-			return "bl_cry_old"..bl_key
+			return "bl_cry_old" .. bl_key
 		end
 	end
 	return bl
@@ -94,8 +93,10 @@ end
 --Add context for Just before cards are played
 local pcfh = G.FUNCS.play_cards_from_highlighted
 function G.FUNCS.play_cards_from_highlighted(e)
+	G.GAME.before_play_buffer = true
 	G.GAME.blind:cry_before_play()
 	pcfh(e)
+	G.GAME.before_play_buffer = nil
 end
 
 --Track defeated blinds for Obsidian Orb
@@ -145,14 +146,7 @@ function Blind:set_blind(blind, y, z)
 	if string.sub(G.GAME.subhash or "", -1) == "B" then
 		c = "Big"
 	end
-	if
-		G.GAME.CRY_BLINDS
-		and G.GAME.CRY_BLINDS[c]
-		and not y
-		and blind
-		and blind.mult
-		and blind.cry_ante_base_mod
-	then
+	if G.GAME.CRY_BLINDS and G.GAME.CRY_BLINDS[c] and not y and blind and blind.mult and blind.cry_ante_base_mod then
 		blind.mult = G.GAME.CRY_BLINDS[c]
 	end
 	bsb(self, blind, y, z)
@@ -410,7 +404,11 @@ function Game:update(dt)
 			and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
 		then
 			G.GAME.blind.chips = G.GAME.blind.chips
-				* (G.GAME.blind.cry_round_base_mod and G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)) or 1)
+				* (
+					G.GAME.blind.cry_round_base_mod
+						and G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
+					or 1
+				)
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		end
 	end
@@ -460,12 +458,12 @@ function Card:set_cost()
 	end
 end
 
--- Modify to display badges for credits
+-- Modify to display badges for credits and some gameset badges
 -- todo: make this optional
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
 	smcmb(obj, badges)
-	if obj and obj.cry_credits then
+	if not SMODS.config.no_mod_badges and obj and obj.cry_credits then
 		local function calc_scale_fac(text)
 			local size = 0.9
 			local font = G.LANG.font
@@ -607,6 +605,23 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 		end
 	end
+	if safe_get(G, "ACTIVE_MOD_UI", "id") == "Cryptid" and obj and not obj.force_gameset then
+		local set = cry_get_gameset(obj)
+		if set == "disabled" or obj.set == "Content Set" then
+			return
+		end
+		local card_type = localize("cry_gameset_" .. cry_get_gameset(obj))
+		if card_type == "ERROR" then
+			card_type = localize("cry_gameset_custom")
+		end
+		badges[#badges + 1] = create_badge(
+			card_type,
+			set == "modest" and G.C.GREEN
+				or set == "mainline" and G.C.RED
+				or set == "madness" and G.C.CRY_EXOTIC
+				or G.C.CRY_ASCENDANT
+		)
+	end
 end
 
 -- This is short enough that I'm fine overriding it
@@ -658,7 +673,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			and not center_no(center, "aeq")
 			and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
-	if _type == "Joker" and not _rarity then
+	if _type == "Joker" and not _rarity and not legendary then
 		if not G.GAME.aequilibriumkey then
 			G.GAME.aequilibriumkey = 1
 		end
@@ -972,7 +987,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
 		if card.config.center.rarity == 1 then
-			cry_misprintize(card,{min = 4, max = 4}, nil, true)
+			cry_misprintize(card, { min = 4, max = 4 }, nil, true)
 		end
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
@@ -1092,8 +1107,8 @@ function add_tag(tag, from_skip, no_copy)
 		return
 	end
 	local added_tags = 1
- local ret = {}
-	SMODS.calculate_context({cry_add_tag = true}, ret)
+	local ret = {}
+	SMODS.calculate_context({ cry_add_tag = true }, ret)
 	for i = 1, #ret do
 		if ret[i].jokers then
 			added_tags = added_tags + (ret[i].jokers.tags or 0)
@@ -1173,7 +1188,7 @@ function init_localization()
 		G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
-		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"	-- why is this done THREE times???
+		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected" -- why is this done THREE times???
 		G.localization.descriptions.Voucher.v_antimatter.text[1] = "{C:dark_edition}+#1#{} Joker Slot"
 		G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
 		G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
@@ -1189,11 +1204,15 @@ function init_localization()
 				if not G.localization.descriptions.Other[sticker_key] then
 					G.localization.descriptions.Other[sticker_key] = {
 						name = localize({ type = "variable", key = "cry_sticker_name", vars = { color } })[1],
-						text = localize({ type = "variable", key = "cry_sticker_desc", vars = {
-							color,
-							"{C:attention}",
-							"{}",
-						} }),
+						text = localize({
+							type = "variable",
+							key = "cry_sticker_desc",
+							vars = {
+								color,
+								"{C:attention}",
+								"{}",
+							},
+						}),
 					}
 					parse_loc_txt(G.localization.descriptions.Other[sticker_key])
 				end
@@ -1224,7 +1243,7 @@ function mod_mult(_mult)
 	if G.GAME.trophymod then
 		_mult = math.min(_mult, math.max(hand_chips, 0))
 	end
-  	return trophy_mod_mult(_mult)
+	return trophy_mod_mult(_mult)
 end
 -- Fix a CCD-related crash
 local cuc = Card.can_use_consumeable
@@ -1241,11 +1260,42 @@ function create_UIBox_generic_options(args)
 	local ret = cuigo(args)
 	if args.back2 then
 		local mainUI = ret.nodes[1].nodes[1].nodes
-		mainUI[#mainUI+1] = {n=G.UIT.R, config={id = args.back2_id or 'overlay_menu_back2_button', align = "cm", minw = 2.5, button_delay = args.back2_delay, padding =0.1, r = 0.1, hover = true, colour = args.back2_colour or G.C.ORANGE, button = args.back2_func or "exit_overlay_menu", shadow = true, focus_args = {nav = 'wide', button = 'b', snap_to = args.snap_back2}}, nodes={
-			{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
-			  {n=G.UIT.T, config={id = args.back2_id or nil, text = args.back2_label or localize('b_back'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true, func = not args.no_pip and 'set_button_pip' or nil, focus_args =  not args.no_pip and {button = args.back2_button or 'b'} or nil}}
-			}}
-		  }}
+		mainUI[#mainUI + 1] = {
+			n = G.UIT.R,
+			config = {
+				id = args.back2_id or "overlay_menu_back2_button",
+				align = "cm",
+				minw = 2.5,
+				button_delay = args.back2_delay,
+				padding = 0.1,
+				r = 0.1,
+				hover = true,
+				colour = args.back2_colour or G.C.ORANGE,
+				button = args.back2_func or "exit_overlay_menu",
+				shadow = true,
+				focus_args = { nav = "wide", button = "b", snap_to = args.snap_back2 },
+			},
+			nodes = {
+				{
+					n = G.UIT.R,
+					config = { align = "cm", padding = 0, no_fill = true },
+					nodes = {
+						{
+							n = G.UIT.T,
+							config = {
+								id = args.back2_id or nil,
+								text = args.back2_label or localize("b_back"),
+								scale = 0.5,
+								colour = G.C.UI.TEXT_LIGHT,
+								shadow = true,
+								func = not args.no_pip and "set_button_pip" or nil,
+								focus_args = not args.no_pip and { button = args.back2_button or "b" } or nil,
+							},
+						},
+					},
+				},
+			},
+		}
 	end
 	return ret
 end

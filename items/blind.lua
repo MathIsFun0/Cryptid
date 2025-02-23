@@ -256,11 +256,11 @@ local tax = {
 	order = 2,
 	boss_colour = HEX("40ff40"),
 	loc_vars = function(self, info_queue, card)
-		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante)*2*G.GAME.starting_params.ante_scaling } }	-- no bignum?
+		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling } } -- no bignum?
 	end,
-        collection_loc_vars = function(self)
-            return { vars = { localize("cry_tax_placeholder") }}
-        end,
+	collection_loc_vars = function(self)
+		return { vars = { localize("cry_tax_placeholder") } }
+	end,
 	cry_cap_score = function(self, score)
 		return math.floor(math.min(0.4 * G.GAME.blind.chips, score) + 0.5)
 	end,
@@ -324,7 +324,11 @@ local clock = {
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 	cry_ante_base_mod = function(self, dt)
-		return 0.1 * dt / 3
+		if G.SETTINGS.paused then
+			return 0
+		else
+			return 0.1 * dt / 3
+		end
 	end,
 }
 local trick = {
@@ -351,15 +355,15 @@ local trick = {
 				v:flip()
 			end
 		end
-		--[[if #G.hand.cards > 1 then 
-            G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function() 
-                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 0.85);return true end })) 
+		--[[if #G.hand.cards > 1 then
+            G.E_MANAGER:add_event(Event({ trigger = 'after', delay = 0.2, func = function()
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 0.85);return true end }))
                 delay(0.15)
-                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1.15);return true end })) 
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1.15);return true end }))
                 delay(0.15)
-                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1);return true end })) 
+                G.E_MANAGER:add_event(Event({ func = function() G.hand:shuffle('cry_trick'); play_sound('cardSlide1', 1);return true end }))
                 delay(0.5)
-            return true end })) 
+            return true end }))
         end--]]
 	end,
 }
@@ -381,11 +385,18 @@ local joke = {
 	order = 15,
 	boss_colour = HEX("00ffaa"),
 	loc_vars = function(self)
-		return { vars = { G.GAME.win_ante or 8, (G.GAME.win_ante and G.GAME.round_resets.ante) and math.floor(G.GAME.round_resets.ante + (G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante)) or 8 } }
+		return {
+			vars = {
+				G.GAME.win_ante or 8,
+				(G.GAME.win_ante and G.GAME.round_resets.ante) and math.floor(
+					G.GAME.round_resets.ante + (G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante)
+				) or 8,
+			},
+		}
 	end,
-        collection_loc_vars = function(self)
-            return { vars = { '8', localize('cry_joke_placeholder') }}
-        end,
+	collection_loc_vars = function(self)
+		return { vars = { "8", localize("cry_joke_placeholder") } }
+	end,
 	cry_calc_ante_gain = function(self)
 		if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
 			if G.GAME.round_resets.ante == 1 then
@@ -532,7 +543,9 @@ local shackle = {
 	order = 18,
 	boss_colour = HEX("010466"),
 	in_pool = function()
-		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then return false end
+		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then
+			return false
+		end
 		return #advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
@@ -561,14 +574,21 @@ local pin = {
 	boss_colour = HEX("452703"),
 	--Todo: whitelist candy jokers
 	in_pool = function()
-		if not G.jokers or not G.jokers.cards then return false end
-		return #advanced_find_joker(nil, {1,2,3}, nil, nil, true) < #G.jokers.cards
+		if not G.jokers or not G.jokers.cards then
+			return false
+		end
+		return #advanced_find_joker(nil, { 1, 2, 3 }, nil, nil, true) < #G.jokers.cards
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
-			and (card.config.center.rarity ~= 3 and card.config.center.rarity ~= 2 and card.config.center.rarity ~= 1 and card.config.center.rarity ~= 5)
+			and (
+				card.config.center.rarity ~= 3
+				and card.config.center.rarity ~= 2
+				and card.config.center.rarity ~= 1
+				and card.config.center.rarity ~= 5
+			)
 		then
 			return true
 		end
@@ -613,11 +633,15 @@ local lavender_loop = {
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
+				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1) * (G.SETTINGS.paused and 0 or 1)
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
-		return 1.25 ^ (dt / 1.5)
+		if G.SETTINGS.paused then
+			return 1
+		else
+			return 1.25 ^ (dt / 1.5)
+		end
 	end,
 }
 local tornado = {
@@ -645,11 +669,11 @@ local tornado = {
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
-			G.GAME.blind.tornado_guarantee = pseudorandom(pseudoseed("tornado"),1,G.GAME.round_resets.hands)
+			G.GAME.blind.tornado_guarantee = pseudorandom(pseudoseed("tornado"), 1, G.GAME.round_resets.hands)
 		end
 	end,
 	in_pool = function()
-		return #advanced_find_joker("Oops! All 6s", nil, nil, {"eternal"}, nil) == 0
+		return #advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
@@ -661,7 +685,10 @@ local tornado = {
 			and not G.GAME.blind.disabled
 		then
 			--check for guarantee
-			if G.GAME.probabilities.normal <= 1 and G.GAME.current_round.hands_left+1 == G.GAME.blind.tornado_guarantee then
+			if
+				G.GAME.probabilities.normal <= 1
+				and G.GAME.current_round.hands_left + 1 == G.GAME.blind.tornado_guarantee
+			then
 				return false
 			end
 
@@ -696,7 +723,14 @@ local vermillion_virus = {
 			local idx = pseudorandom(pseudoseed("cry_vermillion_virus"), 1, #G.jokers.cards)
 			if G.jokers.cards[idx] then
 				if G.jokers.cards[idx].config.center.immune_to_vermillion then
-					card_eval_status_text(G.jokers.cards[idx], 'extra', nil, nil, nil, {message = localize('k_nope_ex'), colour = G.C.JOKER_GREY})
+					card_eval_status_text(
+						G.jokers.cards[idx],
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_nope_ex"), colour = G.C.JOKER_GREY }
+					)
 				else
 					_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
 					G.jokers.cards[idx]:remove_from_deck()
@@ -1308,4 +1342,4 @@ local items_togo = {
 	lavender_loop,
 	trophy,
 }
-return { name = "Blinds", items = items_togo, }
+return { name = "Blinds", items = items_togo }

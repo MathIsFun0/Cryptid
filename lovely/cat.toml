@@ -32,7 +32,7 @@ tag_sprite.click = function(_self)
 					cry_too_fast_kitty = true
 					local perc = (other_cat.ability.level + 1)/10
 					if perc > 1 then perc = 1 end
-					
+
 					local edition = G.P_CENTER_POOLS.Edition[1]
 					local j = 1
 					while j < other_cat.ability.level + 1 do
@@ -44,7 +44,7 @@ tag_sprite.click = function(_self)
 							end
 						end
 					end
-					
+
 					G.E_MANAGER:add_event(Event({
 						delay = 0.0,
 						trigger = 'immediate',
@@ -52,7 +52,7 @@ tag_sprite.click = function(_self)
 							attention_text({
 								text = ""..other_cat.ability.level,
 								colour = G.C.WHITE,
-								scale = 1, 
+								scale = 1,
 								hold = 0.3/G.SETTINGS.GAMESPEED,
 								cover = other_cat.HUD_tag,
 								cover_colour = G.C.DARK_EDITION,
@@ -70,7 +70,7 @@ tag_sprite.click = function(_self)
 							attention_text({
 								text = "-",
 								colour = G.C.WHITE,
-								scale = 1, 
+								scale = 1,
 								hold = 0.3/G.SETTINGS.GAMESPEED,
 								cover = self.HUD_tag,
 								cover_colour = G.C.RED,
@@ -88,7 +88,7 @@ tag_sprite.click = function(_self)
 					G.E_MANAGER:add_event(Event({		-- i have no idea what this does but i'm not messing with it
 						func = func
 					}))
-					
+
 					other_cat.ability.level = other_cat.ability.level + 1
 					
 					if self.ability.shiny then
@@ -97,7 +97,7 @@ tag_sprite.click = function(_self)
 							save_cryptid()
 						end
 					end
-					
+
 					G.E_MANAGER:add_event(Event({
 						trigger = 'after',
 						delay = 0.7,
@@ -128,15 +128,15 @@ position = "after"
 payload = '''
 tag_sprite.draw = function(_self)
 	if not _self.states.visible then return end
-	
+
 	_self.tilt_var = self.tilt_var or {mx = 0, my = 0, dx = _self.tilt_var.dx or 0, dy = _self.tilt_var.dy or 0, amt = 0}
 	_self.tilt_var.mx, _self.tilt_var.my = G.CONTROLLER.cursor_position.x, G.CONTROLLER.cursor_position.y
         _self.tilt_var.amt = math.abs(_self.hover_offset.y + _self.hover_offset.x - 10)*0.3
-	
+
         _self.ARGS.send_to_shader = _self.ARGS.send_to_shader or {}
         _self.ARGS.send_to_shader[1] = math.min(_self.VT.r*3, 1) + G.TIMERS.REAL/(28) + (_self.juice and _self.juice.r*10 or 0) + _self.tilt_var.amt
         _self.ARGS.send_to_shader[2] = G.TIMERS.REAL*2
-	
+
 	_self.tilt_var = _self.tilt_var or {}
 	_self.tilt_var.mx, _self.tilt_var.my =G.CONTROLLER.cursor_position.x,G.CONTROLLER.cursor_position.y
 

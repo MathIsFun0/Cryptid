@@ -1,0 +1,30 @@
+name: Stylua
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  stylua:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run stylua
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: .
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "jolly[bot]"
+          git config --global user.email "jolly[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "jolly-bot: auto-format Lua files using Stylua"
+          git push
