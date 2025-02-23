@@ -512,7 +512,7 @@ local glitched = {
 				}))
 				update_hand_text(
 					{ delay = 1.3 },
-					{ mult = (amount > to_big(0) and "+" or "-") .. "???", StatusText = true }
+					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
 				)
 			end
 		end
