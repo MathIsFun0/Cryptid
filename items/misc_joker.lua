@@ -1759,7 +1759,7 @@ local gardenfork = {
 			for i = 1, #context.full_hand do
 				if context.scoring_hand[i]:get_id() == 14 then
 					for j = 1, #context.full_hand do
-						if context.scoring_hand[i]:get_id() == 7 then -- :( ekshpenshive
+						if context.scoring_hand[j]:get_id() == 7 then -- :( ekshpenshive
 							ease_dollars(card.ability.extra.money)
 							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 						end
