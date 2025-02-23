@@ -262,7 +262,7 @@ local potofjokes = {
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			G.hand:change_size(math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
+			G.hand:change_size(math.min(math.max(0, 1000 - card.ability.extra.h_size), card.ability.extra.h_mod))
 			card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
 			return {
 				message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
@@ -387,7 +387,7 @@ local wee_fib = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			local rank = context.other_card:get_id()
-			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
+			if rank == 14 or rank == 2 or rank == 3 or rank == 5 or rank == 8 then
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
 
 				return {
@@ -797,7 +797,7 @@ local triplet_rhythm = {
 		if context.joker_main and context.scoring_hand then
 			local threes = 0
 			for i = 1, #context.scoring_hand do
-				if context.scoring_hand[i]:get_id() then
+				if context.scoring_hand[i]:get_id() == 3 then
 					threes = threes + 1
 				end
 			end
@@ -1500,7 +1500,7 @@ local fspinner = {
 		return { vars = { center.ability.extra.chips, center.ability.extra.chip_mod } }
 	end,
 	rarity = 1,
-	cost = 6,
+	cost = 5,
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -1759,9 +1759,9 @@ local gardenfork = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			for i = 1, #context.full_hand do
-				if context.other_card:get_id() == 14 then
+				if context.scoring_hand[i]:get_id() == 14 then
 					for j = 1, #context.full_hand do
-						if context.other_card:get_id() == 7 then -- :( ekshpenshive
+						if context.scoring_hand[j]:get_id() == 7 then -- :( ekshpenshive
 							ease_dollars(card.ability.extra.money)
 							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 						end
@@ -7016,8 +7016,8 @@ local cookie = {
 	rarity = 1,
 	cost = 4,
 	atlas = "atlastwo",
-	order = 129,
-	config = { extra = { chips = 150, chip_mod = 1 } },
+	order = 133,
+	config = { extra = { chips = 200, chip_mod = 1 } },
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,

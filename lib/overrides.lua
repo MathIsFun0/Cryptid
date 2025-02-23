@@ -229,6 +229,8 @@ G.C.CRY_BLOSSOM = { 0, 0, 0, 0 }
 G.C.CRY_AZURE = { 0, 0, 0, 0 }
 G.C.CRY_ASCENDANT = { 0, 0, 0, 0 }
 G.C.CRY_JOLLY = { 0, 0, 0, 0 }
+G.C.CRY_GREENGRADIENT = { 0, 0, 0, 0 }
+G.C.CRY_ALTGREENGRADIENT = { 0, 0, 0, 0 }
 Cryptid.C = {
 	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
 	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
@@ -241,8 +243,9 @@ Cryptid.C = {
 	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
 	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
 	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
+	GREENGRADIENT = { HEX("51e099"), HEX("1e523a") },
+	ALTGREENGRADIENT = { HEX("6bb565"), HEX("bd28bf") },
 }
-
 cry_pointer_dt = 0
 cry_jimball_dt = 0
 cry_glowing_dt = 0

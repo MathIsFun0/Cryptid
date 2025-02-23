@@ -379,7 +379,7 @@ return {
 			c_cry_class = {
 				name = "://CLASS",
 				text = {
-					"Convert {C:cry_code}#1#{} selected card#s1#",
+					"Convert {C:cry_code}#1#{} selected card#<s>1#",
 					"to a {C:cry_code}chosen{} enhancement",
 				},
 			},
@@ -488,8 +488,8 @@ return {
 				name = "://OFFBYONE",
 				text = {
 					"Next {C:cry_code}Booster Pack{} has",
-					"{C:cry_code}#1#{} extra card#s1# and",
-					"{C:cry_code}#1#{} extra choice#s1#",
+					"{C:cry_code}#1#{} extra card#<s>1# and",
+					"{C:cry_code}#1#{} extra choice#<s>1#",
 					"{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
 				},
 			},
@@ -546,7 +546,7 @@ return {
 			c_cry_variable = {
 				name = "://VARIABLE",
 				text = {
-					"Convert {C:cry_code}#1#{} selected card#s1#",
+					"Convert {C:cry_code}#1#{} selected card#<s>1#",
 					"to a {C:cry_code}chosen{} rank",
 				},
 			},
@@ -690,7 +690,7 @@ return {
 					"card {C:attention}1{} time",
 					"{C:green}#1# in #2#{} chance",
 					"to retrigger {C:attention}#3#{}",
-					"additional time#s3#",
+					"additional time#<s>3#",
 				},
 			},
 			e_cry_double_sided = {
@@ -766,14 +766,14 @@ return {
 				text = {
 					"{C:green}#2# in #3#{} chance to",
 					"{C:attention}retrigger{} #1# additional",
-					"time#s1# when scored",
+					"time#<s>1# when scored",
 				},
 			},
 			m_cry_light = {
 				name = "Light Card",
 				text = {
 					"When triggered with {C:attention}#4#{} {C:inactive}(#3#){} other",
-					"scoring card#s4#, gain {X:mult,C:white}X#1#{} Mult and",
+					"scoring card#<s>4#, gain {X:mult,C:white}X#1#{} Mult and",
 					"increase requirement by {C:attention}5{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 				},
@@ -783,34 +783,34 @@ return {
 			j_cry_test_modest = {
 				name = "Test Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#",
+					"{C:chips}+#1#{} Chip#<s>1#",
 				},
 			},
 			j_cry_test_mainline = {
 				name = "Test Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#",
+					"{C:chips}+#1#{} Chip#<s>1#",
 					"{C:money}+$44{} at start of {C:attention}Blind{}",
 				},
 			},
 			j_cry_test_madness = {
 				name = "Test Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#",
+					"{C:chips}+#1#{} Chip#<s>1#",
 					"{C:money}+$44444{} at start of {C:attention}Blind{}",
 				},
 			},
 			j_cry_test_cryptid_in_2025 = {
 				name = "Test Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#",
+					"{C:chips}+#1#{} Chip#<s>1#",
 					"{C:money}+$44444{} at start of {C:attention}Blind{}",
 				},
 			},
 			j_cry_adroit = {
 				name = "Adroit Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played",
+					"{C:chips}+#1#{} Chip#<s>1# if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -819,7 +819,7 @@ return {
 				name = "Nostalgic Googol Play Card",
 				text = {
 					"Sell this card to create",
-					"{C:attention}#1#{} cop#y1# of the leftmost {C:attention}Joker{}",
+					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
 					"{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
 				},
 			},
@@ -890,17 +890,17 @@ return {
 			j_cry_blurred = {
 				name = "Blurred Joker",
 				text = {
-					"Gain {C:blue}+#1#{} hand#s1# when",
+					"Gain {C:blue}+#1#{} hand#<s>1# when",
 					"{C:attention}Blind{} is selected",
 				},
 			},
 			j_cry_bonk = {
 				name = "Bonk",
 				text = {
-					"Each {C:attention}Joker{} gives {C:chips}+#1#{} Chip#s1#",
+					"Each {C:attention}Joker{} gives {C:chips}+#1#{} Chip#<s>1#",
 					"Increase amount by {C:chips}+#2#{} if",
 					"{C:attention} poker hand{} is a {C:attention}#3#{}",
-					"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip#s4# instead{}",
+					"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip#<s>4# instead{}",
 				},
 			},
 			j_cry_bonkers = {
@@ -925,7 +925,7 @@ return {
 			j_cry_booster = {
 				name = "Booster Joker",
 				text = {
-					"{C:attention}+#1#{} Booster Pack slot#s1#",
+					"{C:attention}+#1#{} Booster Pack slot#<s>1#",
 					"available in shop",
 				},
 			},
@@ -946,7 +946,7 @@ return {
 			j_cry_brittle = {
 				name = "Brittle Candy",
 				text = {
-					"For the next {C:attention}#1#{} hand#s1#,",
+					"For the next {C:attention}#1#{} hand#<s>1#,",
 					"add {C:attention}Stone{}, {C:attention}Gold{}, or {C:attention}Steel{} to",
 					"the rightmost scoring card",
 				},
@@ -972,22 +972,22 @@ return {
 			j_cry_candy_basket = {
 				name = "Candy Basket",
 				text = {
-					"Sell this card to create {C:attention}#1#{} {C:cry_candy}Cand#y1#",
-					"{C:attention}+#2#{} {C:cry_candy}Cand#y2#{} every {C:attention}2{} Blinds defeated",
-					"{C:attention}+#3#{} {C:cry_candy}Cand#y3#{} when {C:attention}Boss Blind{} defeated",
+					"Sell this card to create {C:attention}#1#{} {C:cry_candy}Cand#<ies,y>1#",
+					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}2{} Blinds defeated",
+					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>3#{} when {C:attention}Boss Blind{} defeated",
 				},
 			},
 			j_cry_candy_buttons = {
 				name = "Candy Buttons",
 				text = {
-					"The next {C:attention}#1#{} reroll#s1#",
+					"The next {C:attention}#1#{} reroll#<s>1#",
 					"cost {C:money}$1{}",
 				},
 			},
 			j_cry_candy_cane = {
 				name = "Candy Cane",
 				text = {
-					"For the next {C:attention}#1#{} round#s1#,",
+					"For the next {C:attention}#1#{} round#<s>1#,",
 					"playing cards give {C:money}$#2#",
 					"when {C:attention}retriggered",
 				},
@@ -1004,7 +1004,7 @@ return {
 				name = "Candy Sticks",
 				text = {
 					"Next boss blind's effect isn't active",
-					"until you've played {C:attention}#1#{} hand#s1#",
+					"until you've played {C:attention}#1#{} hand#<s>1#",
 				},
 			},
 			j_cry_canvas = {
@@ -1025,14 +1025,14 @@ return {
 				text = {
 					"Each played card gives",
 					"{X:mult,C:white}X#1#{} Mult when scored",
-					"for the next {C:attention}#2#{} round#s2#",
+					"for the next {C:attention}#2#{} round#<s>2#",
 				},
 			},
 			j_cry_chad = {
 				name = "Chad",
 				text = {
 					"Retrigger {C:attention}leftmost{} Joker",
-					"{C:attention}#1#{} additional time#s1#",
+					"{C:attention}#1#{} additional time#<s>1#",
 				},
 			},
 			j_cry_chili_pepper = {
@@ -1040,7 +1040,7 @@ return {
 				text = {
 					"This Joker gains {X:mult,C:white} X#2# {} Mult",
 					"at end of round,",
-					"{C:red,E:2}self destructs{} after {C:attention}#3#{} round#s3#",
+					"{C:red,E:2}self destructs{} after {C:attention}#3#{} round#<s>3#",
 					"{C:inactive}(Currently{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
 				},
 			},
@@ -1058,7 +1058,7 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Chips and {X:dark_edition,C:white}^#1#{} Mult",
 					"if {C:attention}exactly{} #2#",
-					"hand#s2# remaining",
+					"hand#<s>2# remaining",
 				},
 			},
 			j_cry_circus = {
@@ -1091,8 +1091,8 @@ return {
 			j_cry_clicked_cookie = {
 				name = "Clicked Cookie",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#",
-					"{C:chips}-#2#{} Chip#s2# when",
+					"{C:chips}+#1#{} Chip#<s>1#",
+					"{C:chips}-#2#{} Chip#<s>2# when",
 					"you {C:attention}click",
 				},
 			},
@@ -1152,10 +1152,10 @@ return {
 			j_cry_crustulum = {
 				name = "Crustulum",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chip#s1#",
+					"This Joker gains {C:chips}+#2#{} Chip#<s>1#",
 					"per {C:attention}reroll{} in the shop",
 					"{C:green}All rerolls are free{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chip#s1#)",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chip#<s>1#)",
 				},
 			},
 			j_cry_cryptidmoment = {
@@ -1169,7 +1169,7 @@ return {
 			j_cry_cube = {
 				name = "Cube",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#",
+					"{C:chips}+#1#{} Chip#<s>1#",
 				},
 			},
 			j_cry_curse_sob = {
@@ -1188,9 +1188,9 @@ return {
 			j_cry_cursor = {
 				name = "Cursor",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chip#s2#",
+					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"for each card {C:attention}purchased{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#s1#)",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_cut = {
@@ -1303,7 +1303,7 @@ return {
 				name = "Energia",
 				text = {
 					"When a {C:attention}Tag{} is acquired,",
-					"create up to {C:attention}#1#{} cop#y1# of it",
+					"create up to {C:attention}#1#{} cop#<ies,y>1# of it",
 					"and {C:attention}increase{} the number of",
 					"copies by {C:attention}#2#",
 				},
@@ -1313,7 +1313,7 @@ return {
 				text = {
 					"Jokers appear using the",
 					"order from the {C:attention}Collection{}",
-					"Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker#s1#",
+					"Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker#<s>1#",
 					"when hand is played",
 					"{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
 					"{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#",
@@ -1361,7 +1361,7 @@ return {
 				name = "Exposed",
 				text = {
 					"Retrigger all non-{C:attention}face{} cards",
-					"{C:attention}#1#{} additional time#s1#",
+					"{C:attention}#1#{} additional time#<s>1#",
 					"All {C:attention}face{} cards are debuffed",
 				},
 			},
@@ -1410,7 +1410,7 @@ return {
 				name = "Fast Food M",
 				text = {
 					"{C:mult}+#1#{} Mult",
-					"{C:red,E:2}self destructs{} in {C:attention}#2#{} round#s2#",
+					"{C:red,E:2}self destructs{} in {C:attention}#2#{} round#<s>2#",
 					"Increases by {C:attention}#3#{} round when",
 					"{C:attention}Jolly Joker{} is {C:attention}sold{}",
 					"{C:inactive,s:0.8}2 McDoubles, 2 McChickens{}",
@@ -1429,7 +1429,7 @@ return {
 				name = "Formidiulosus",
 				text = {
 					"When a {X:cry_cursed,C:white}Cursed{} Joker is obtained, destroy it",
-					"Creates {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Cand#y1#{} at end of shop",
+					"Creates {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Cand#<ies,y>1#{} at end of shop",
 					"Gains {X:dark_edition,C:white}^#2#{} Mult for each {C:cry_candy}Candy{} in possession",
 					"{C:inactive}(Currently {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 				},
@@ -1437,7 +1437,7 @@ return {
 			j_cry_foxy = {
 				name = "Foxy Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played",
+					"{C:chips}+#1#{} Chip#<s>1# if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -1445,10 +1445,10 @@ return {
 			j_cry_fspinner = {
 				name = "Fidget Spinner",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chip#s2#",
+					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"if hand played is {C:attention}not{}",
 					"most played {C:attention}poker hand{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#s1#)",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_fuckedup = {
@@ -1556,7 +1556,7 @@ return {
 				name = "Iterum",
 				text = {
 					"Retrigger all cards played",
-					"{C:attention}#2#{} time#s2#,",
+					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
 					"{X:mult,C:white} X#1# {} Mult when scored",
 				},
@@ -1665,7 +1665,7 @@ return {
 					"{C:attention}Retrigger{} all Jokers",
 					"once for each {C:attention}Jolly{}",
 					"{C:attention}Joker{} sold this round",
-					"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retrigger#s1#){}",
+					"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retrigger#<s>1#){}",
 					"{C:inactive,s:0.8}There wasn't enough room...{}",
 				},
 			},
@@ -1706,7 +1706,7 @@ return {
 					"When {C:attention}Blind{} is selected,",
 					"destroys each {C:attention}Joker{} except",
 					"{C:legendary}M Jokers{} and {C:attention}Jolly Jokers{}",
-					"and create #1# {C:attention}Jolly Joker#s1#{}",
+					"and create #1# {C:attention}Jolly Joker#<s>1#{}",
 					"for each destroyed card",
 				},
 			},
@@ -1730,14 +1730,14 @@ return {
 				name = "Mario",
 				text = {
 					"Retrigger all Jokers",
-					"{C:attention}#1#{} additional time#s1#",
+					"{C:attention}#1#{} additional time#<s>1#",
 				},
 			},
 			j_cry_mask = {
 				name = "Mask",
 				text = {
 					"Retrigger all {C:attention}face{} cards",
-					"{C:attention}#1#{} additional time#s1#",
+					"{C:attention}#1#{} additional time#<s>1#",
 					"All non-{C:attention}face{} cards are debuffed",
 				},
 			},
@@ -1791,9 +1791,9 @@ return {
 			j_cry_membershipcardtwo = {
 				name = "Old Membership Card", --Could probably have a diff Name imo
 				text = {
-					"{C:chips}+#1#{} Chip#s1# for each member",
+					"{C:chips}+#1#{} Chip#<s>1# for each member",
 					"in the {C:attention}Cryptid Discord{}",
-					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chip#s2#)",
+					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chip#<s>2#)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
@@ -1801,7 +1801,7 @@ return {
 				name = "Meteor Shower",
 				text = {
 					"{C:dark_edition}Foil{} cards each",
-					"give {C:chips}+#1#{} Chip#s1#",
+					"give {C:chips}+#1#{} Chip#<s>1#",
 				},
 			},
 			j_cry_mneon = {
@@ -1830,7 +1830,7 @@ return {
 					"destroy Joker to the left",
 					"and permanently add {C:attention}ten times{}",
 					"its sell value to this {C:chips}Chips{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#s1#)",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_monopoly_money = {
@@ -1865,7 +1865,7 @@ return {
 				text = {
 					"Retrigger all cards played",
 					"once for every",
-					"{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Joker#s2#{} sold",
+					"{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Joker#<s>2#{} sold",
 					"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
 				},
 			},
@@ -1889,13 +1889,13 @@ return {
 			j_cry_negative = {
 				name = "Negative Joker",
 				text = {
-					"{C:dark_edition}+#1#{C:attention} Joker{} slot#s1#",
+					"{C:dark_edition}+#1#{C:attention} Joker{} slot#<s>1#",
 				},
 			},
 			j_cry_nice = {
 				name = "Nice",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played hand",
+					"{C:chips}+#1#{} Chip#<s>1# if played hand",
 					"contains a {C:attention}6{} and a {C:attention}9",
 					"{C:inactive,s:0.8}Nice.{}",
 				},
@@ -1913,14 +1913,14 @@ return {
 				name = "No Sound, No Memory",
 				text = {
 					"Retrigger each played {C:attention}7{}",
-					"{C:attention:}#1#{} additional time#s1#",
+					"{C:attention:}#1#{} additional time#<s>1#",
 				},
 			},
 			j_cry_notebook = {
 				name = "Notebook",
 				text = {
 					"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+#6#{} Joker",
-					"slot#s6# per {C:attention}reroll{} in the shop",
+					"slot#<s>6# per {C:attention}reroll{} in the shop",
 					"{C:green}Always triggers{} if there are",
 					"{C:attention}#5#{} or more {C:attention}Jolly Jokers{}",
 					"{C:red}Works once per round{}",
@@ -2104,7 +2104,7 @@ return {
 			j_cry_redbloon = {
 				name = "Red Bloon",
 				text = {
-					"Earn {C:money}$#1#{} in {C:attention}#2#{} round#s2#",
+					"Earn {C:money}$#1#{} in {C:attention}#2#{} round#<s>2#",
 					"{C:red,E:2}self destructs{}",
 				},
 			},
@@ -2151,8 +2151,8 @@ return {
 			j_cry_sacrifice = {
 				name = "Sacrifice",
 				text = {
-					"Create #3# {C:green}Uncommon{} Joker#s3#",
-					"and #2# {C:attention}Jolly Joker#s2#{} when",
+					"Create #3# {C:green}Uncommon{} Joker#<s>3#",
+					"and #2# {C:attention}Jolly Joker#<s>2#{} when",
 					"a {C:spectral}Spectral{} card is used",
 					"{C:red}Works once per round{}",
 					"{C:inactive}#1#{}",
@@ -2171,7 +2171,7 @@ return {
 			j_cry_savvy = {
 				name = "Savvy Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played",
+					"{C:chips}+#1#{} Chip#<s>1# if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2204,7 +2204,7 @@ return {
 			j_cry_shrewd = {
 				name = "Shrewd Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played",
+					"{C:chips}+#1#{} Chip#<s>1# if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2229,12 +2229,12 @@ return {
 			j_cry_soccer = {
 				name = "One for All", --changed the name from latin because this isn't exotic
 				text = {
-					"{C:attention}+#1#{} Joker slot#s1#",
-					"{C:attention}+#1#{} Booster Pack slot#s1#",
+					"{C:attention}+#1#{} Joker slot#<s>1#",
+					"{C:attention}+#1#{} Booster Pack slot#<s>1#",
 					"{C:attention}+#1#{} hand size",
-					"{C:attention}+#1#{} consumable slot#s1#",
-					"{C:attention}+#1#{} card#s1# in shop",
-					"{C:attention}+#1#{} voucher slot#s1#",
+					"{C:attention}+#1#{} consumable slot#<s>1#",
+					"{C:attention}+#1#{} card#<s>1# in shop",
+					"{C:attention}+#1#{} voucher slot#<s>1#",
 				},
 				unlock = {
 					"Win a run with",
@@ -2325,7 +2325,7 @@ return {
 			j_cry_supercell = {
 				name = "Supercell",
 				text = {
-					"{C:chips}+#1#{} Chip#s1#, {C:mult}+#1#{} Mult,",
+					"{C:chips}+#1#{} Chip#<s>1#, {C:mult}+#1#{} Mult,",
 					"{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
 					"Earn {C:money}$#3#{} at",
 					"end of round",
@@ -2371,7 +2371,7 @@ return {
 			j_cry_tenebris = {
 				name = "Tenebris",
 				text = {
-					"{C:dark_edition}+#1#{C:attention} Joker{} slot#s1#",
+					"{C:dark_edition}+#1#{C:attention} Joker{} slot#<s>1#",
 					"Earn {C:money}$#2#{} at end of round",
 				},
 			},
@@ -2387,7 +2387,7 @@ return {
 			j_cry_treacherous = {
 				name = "Treacherous Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played",
+					"{C:chips}+#1#{} Chip#<s>1# if played",
 					"hand contains",
 					"an {C:attention}#2#",
 				},
@@ -2404,7 +2404,7 @@ return {
 			j_cry_tricksy = {
 				name = "Tricksy Joker",
 				text = {
-					"{C:chips}+#1#{} Chip#s1# if played",
+					"{C:chips}+#1#{} Chip#<s>1# if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2518,7 +2518,7 @@ return {
 				name = "2D",
 				text = {
 					"Retrigger each played {C:attention}2{}", --wee gaming
-					"{C:attention:}#1#{} additional time#s1#", --wee gaming?
+					"{C:attention:}#1#{} additional time#<s>1#", --wee gaming?
 					"{C:inactive,s:0.8}Wee Gaming?{}",
 				},
 			},
@@ -2544,7 +2544,7 @@ return {
 				name = "Wrapped Candy",
 				text = {
 					"Create a random {C:attention}Food Joker{}",
-					"in {C:attention}#1#{} round#s1#",
+					"in {C:attention}#1#{} round#<s>1#",
 					"{C:red,E:2}self destructs{}",
 				},
 			},
@@ -2649,7 +2649,7 @@ return {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
 					"{C:attention}#2#",
 					"{C:mult}+#3#{} Mult and",
-					"{C:chips}+#4#{} chip#s4#",
+					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
 			c_cry_void = {
@@ -2658,7 +2658,7 @@ return {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
 					"{C:attention}#2#",
 					"{C:mult}+#3#{} Mult and",
-					"{C:chips}+#4#{} chip#s4#",
+					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
 			c_cry_asteroidbelt = {
@@ -2667,7 +2667,7 @@ return {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
 					"{C:attention}#2#",
 					"{C:mult}+#3#{} Mult and",
-					"{C:chips}+#4#{} chip#s4#",
+					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
 			c_cry_universe = {
@@ -2676,7 +2676,7 @@ return {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
 					"{C:attention}#2#",
 					"{C:mult}+#3#{} Mult and",
-					"{C:chips}+#4#{} chip#s4#",
+					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
 			c_cry_sunplanet = {
@@ -2799,7 +2799,7 @@ return {
 			c_cry_analog = {
 				name = "Analog",
 				text = {
-					"Create {C:attention}#1#{} cop#y1# of a",
+					"Create {C:attention}#1#{} cop#<ies,y>1# of a",
 					"random {C:attention}Joker{}, destroy",
 					"all other Jokers, {C:attention}+#2#{} Ante",
 				},
@@ -2808,7 +2808,7 @@ return {
 				name = "Chambered",
 				text = {
 					"Create {C:attention}#1#{} {C:dark_edition}Negative{}",
-					"cop#y1# of a",
+					"cop#<ies,y>1# of a",
 					"{C:attention}random{} consumable",
 					"in your possession",
 					"{C:inactive,s:0.8}Does not copy Chambered{}",
@@ -2868,7 +2868,7 @@ return {
 				text = {
 					"Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{},",
 					"or {C:dark_edition}Astral{} to {C:attention}#1#{}",
-					"selected card#s1# in hand",
+					"selected card#<s>1# in hand",
 				},
 			},
 			c_cry_source = {
@@ -2876,7 +2876,7 @@ return {
 				text = {
 					"Add a {C:cry_code}Green Seal{}",
 					"to {C:attention}#1#{} selected",
-					"card#s1# in your hand",
+					"card#<s>1# in your hand",
 				},
 			},
 			c_cry_summoning = {
@@ -2899,7 +2899,7 @@ return {
 				text = {
 					"Add an {C:cry_azure}Azure Seal{}",
 					"to {C:attention}#1#{} selected",
-					"card#s1# in your hand",
+					"card#<s>1# in your hand",
 				},
 			},
 			c_cry_vacuum = {
@@ -3135,7 +3135,7 @@ return {
 				name = "Better Top-up Tag",
 				text = {
 					"Creates up to {C:attention}#1#",
-					"{C:green}Uncommon{} Joker#s1#",
+					"{C:green}Uncommon{} Joker#<s>1#",
 					"{C:inactive}(Must have room){}",
 				},
 			},
@@ -3257,7 +3257,7 @@ return {
 			tag_cry_memory = {
 				name = "Memory Tag",
 				text = {
-					"Create {C:attention}#1#{} cop#y1# of",
+					"Create {C:attention}#1#{} cop#<ies,y>1# of",
 					"the last {C:attention}Tag{} used",
 					"during this run",
 					"{s:0.8,C:inactive}Copying Tags excluded",
@@ -3283,7 +3283,7 @@ return {
 			tag_cry_quadruple = {
 				name = "Quadruple Tag",
 				text = {
-					"Gives {C:attention}#1#{} cop#y1# of the",
+					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
 					"next selected {C:attention}Tag",
 					"{s:0.8,C:inactive}Copying Tags excluded",
 				},
@@ -3291,7 +3291,7 @@ return {
 			tag_cry_quintuple = {
 				name = "Quintuple Tag",
 				text = {
-					"Gives {C:attention}#1#{} cop#y1# of the",
+					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
 					"next selected {C:attention}Tag",
 					"{s:0.8,C:inactive}Copying Tags excluded",
 				},
@@ -3313,14 +3313,14 @@ return {
 			tag_cry_scope = {
 				name = "Scope Tag",
 				text = {
-					"{C:attention}+#1# {C:blue}hand#s1#{} and",
-					"{C:red}discard#s1#{} next round",
+					"{C:attention}+#1# {C:blue}hand#<s>1#{} and",
+					"{C:red}discard#<s>1#{} next round",
 				},
 			},
 			tag_cry_triple = {
 				name = "Triple Tag",
 				text = {
-					"Gives {C:attention}#1#{} cop#y1# of the",
+					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
 					"next selected {C:attention}Tag",
 					"{s:0.8,C:inactive}Copying Tags excluded",
 				},
@@ -3331,14 +3331,14 @@ return {
 				name = "The Automaton",
 				text = {
 					"Creates up to {C:attention}#1#",
-					"random {C:cry_code}Code{} card#s1#",
+					"random {C:cry_code}Code{} card#<s>1#",
 					"{C:inactive}(Must have room)",
 				},
 			},
 			c_cry_eclipse = {
 				name = "The Eclipse",
 				text = {
-					"Enhances {C:attention}#1#{} selected card#s1#",
+					"Enhances {C:attention}#1#{} selected card#<s>1#",
 					"into an {C:attention}Echo Card",
 				},
 			},
@@ -3361,7 +3361,7 @@ return {
 			c_cry_seraph = {
 				name = "The Seraph",
 				text = {
-					"Enhances {C:attention}#1#{} selected card#s1#",
+					"Enhances {C:attention}#1#{} selected card#<s>1#",
 					"into a {C:attention}Light Card",
 				},
 			},
@@ -3426,7 +3426,7 @@ return {
 				name = "Dexterity",
 				text = {
 					"Permanently",
-					"gain {C:blue}+#1#{} hand#s1#",
+					"gain {C:blue}+#1#{} hand#<s>1#",
 					"each round",
 				},
 				unlock = {
@@ -3462,7 +3462,7 @@ return {
 			v_cry_fabric = {
 				name = "Universal Fabric",
 				text = {
-					"{C:dark_edition}+#1#{} Joker slot#s1#",
+					"{C:dark_edition}+#1#{} Joker slot#<s>1#",
 				},
 				unlock = {
 					"Redeem {C:dark_edition}Antimatter",
@@ -3497,9 +3497,9 @@ return {
 			v_cry_overstock_multi = {
 				name = "Multistock",
 				text = {
-					"{C:attention}+#1#{} card slot#s1#,",
-					"{C:attention}+#1#{} booster pack slot#s1#,",
-					"and {C:attention}+#1#{} voucher slot#s1#,",
+					"{C:attention}+#1#{} card slot#<s>1#,",
+					"{C:attention}+#1#{} booster pack slot#<s>1#,",
+					"and {C:attention}+#1#{} voucher slot#<s>1#,",
 					"available in shop",
 				},
 				unlock = {
@@ -3617,7 +3617,7 @@ return {
 				name = "The 3 Rs",
 				text = {
 					"Permanently",
-					"gain {C:red}+#1#{} discard#s1#",
+					"gain {C:red}+#1#{} discard#<s>1#",
 					"each round",
 				},
 				unlock = {
@@ -3717,7 +3717,7 @@ return {
 				name = "Flickering",
 				text = {
 					"Destroyed after",
-					"{C:attention}#1#{} trigger#s1#",
+					"{C:attention}#1#{} trigger#<s>1#",
 				},
 			},
 			cry_possessed = {
@@ -3956,35 +3956,35 @@ return {
 				name = "Program Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#s2#",
+					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
 				},
 			},
 			p_cry_code_normal_2 = {
 				name = "Program Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#s2#",
+					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
 				},
 			},
 			p_cry_code_jumbo_1 = {
 				name = "Jumbo Program Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#s2#",
+					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
 				},
 			},
 			p_cry_code_mega_1 = {
 				name = "Mega Program Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#s2#",
+					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
 				},
 			},
 			p_cry_empowered = {
 				name = "Spectral Pack [Empowered Tag]",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:spectral} Spectral{} card#s2#",
+					"{C:attention}#2#{C:spectral} Spectral{} card#<s>2#",
 					"{s:0.8,C:inactive}(Generated by Empowered Tag)",
 				},
 			},
@@ -3992,21 +3992,21 @@ return {
 				name = "Meme Pack",
 				text = {
 					"Choose {C:attention}#1#{} of",
-					"up to {C:attention}#2# Meme Joker#s2#{}",
+					"up to {C:attention}#2# Meme Joker#<s>2#{}",
 				},
 			},
 			p_cry_meme_two = {
 				name = "Meme Pack",
 				text = {
 					"Choose {C:attention}#1#{} of",
-					"up to {C:attention}#2# Meme Joker#s2#{}",
+					"up to {C:attention}#2# Meme Joker#<s>2#{}",
 				},
 			},
 			p_cry_meme_three = {
 				name = "Meme Pack",
 				text = {
 					"Choose {C:attention}#1#{} of",
-					"up to {C:attention}#2# Meme Joker#s2#{}",
+					"up to {C:attention}#2# Meme Joker#<s>2#{}",
 				},
 			},
 			undiscovered_code = {
@@ -4039,7 +4039,7 @@ return {
 				name = "Azure Seal",
 				text = {
 					"Create {C:attention}#1#{} {C:dark_edition}Negative{}",
-					"{C:planet}Planet#s1#{} for played",
+					"{C:planet}Planet#<s>1#{} for played",
 					"{C:attention}poker hand{}, then",
 					"{C:red}destroy{} this card",
 				},
@@ -4389,7 +4389,7 @@ return {
 		rnj_loc_txts = {
 			stats = {
 				plus_mult = { "{C:red}+#2#{} Mult" },
-				plus_chips = { "{C:blue}+#2#{} Chip#s2#" },
+				plus_chips = { "{C:blue}+#2#{} Chip#<s>2#" },
 				x_mult = { "{X:red,C:white} X#2#{} Mult" },
 				x_chips = { "{X:blue,C:white} X#2#{} Chips" },
 				h_size = { "{C:attention}+#2#{} Hand Size" },
@@ -4397,17 +4397,17 @@ return {
 			},
 			stats_inactive = {
 				plus_mult = { "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)" },
-				plus_chips = { "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chip#s1#)" },
+				plus_chips = { "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chip#<s>1#)" },
 				x_mult = { "{C:inactive}(Currently {X:red,C:white} X#1# {C:inactive} Mult)" },
 				x_chips = { "{C:inactive}(Currently {X:blue,C:white} X#1# {C:inactive} Chips)" },
 				h_size = { "{C:inactive}(Currently {C:attention}+#1#{C:inactive} Hand Size)" },
 				money = { "{C:inactive}(Currently {C:money}+$#1#{C:inactive})" },
 			},
 			actions = {
-				make_joker = { "Create {C:attention}#2# Joker#s2#{}" },
-				make_tarot = { "Create {C:attention}#2#{C:tarot} Tarot{} card#s2#" },
-				make_planet = { "Create {C:attention}#2#{C:planet} Planet{} card#s2#" },
-				make_spectral = { "Create {C:attention}#2#{C:spectral} Spectral{} card#s2#" },
+				make_joker = { "Create {C:attention}#2# Joker#<s>2#{}" },
+				make_tarot = { "Create {C:attention}#2#{C:tarot} Tarot{} card#<s>2#" },
+				make_planet = { "Create {C:attention}#2#{C:planet} Planet{} card#<s>2#" },
+				make_spectral = { "Create {C:attention}#2#{C:spectral} Spectral{} card#<s>2#" },
 				add_dollars = { "Earn {C:money}$#2#{}" },
 			},
 			contexts = {
@@ -4460,8 +4460,8 @@ return {
 				poker_hand = { "if hand is a {C:attention}#3#{}" },
 				or_more = { "if hand contains {C:attention}#3#{} or more cards" },
 				or_less = { "if hand contains {C:attention}#3#{} or less cards" },
-				hands_left = { "if #3# {C:blue}hand#s3#{} remaining at end of round" },
-				discards_left = { "if #3# {C:red}discard#s3#{} remaining at end of round" },
+				hands_left = { "if #3# {C:blue}hand#<s>3#{} remaining at end of round" },
+				discards_left = { "if #3# {C:red}discard#<s>3#{} remaining at end of round" },
 				first_discard = { "if it's the {C:attention}first {C:attention}discard{}" },
 				last_discard = { "if it's the {C:attention}last {C:attention}discard{}" },
 				odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },
