@@ -386,7 +386,7 @@ local wee_fib = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
-			local rank = SMODS.Ranks[context.other_card.base.value].key
+			local rank = context.other_card:get_id()
 			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
 
@@ -795,7 +795,7 @@ local triplet_rhythm = {
 		if context.joker_main and context.scoring_hand then
 			local threes = 0
 			for i = 1, #context.scoring_hand do
-				if SMODS.Ranks[context.scoring_hand[i].base.value].key == "3" then
+				if context.scoring_hand[i]:get_id() then
 					threes = threes + 1
 				end
 			end
@@ -1047,7 +1047,7 @@ local eternalflame = {
 	name = "cry-eternalflame",
 	key = "eternalflame",
 	pos = { x = 0, y = 4 },
-	config = { extra = { extra = 0.1, x_mult = 1 } },
+	config = { extra = { extra = 0.2, x_mult = 1 } },
 	rarity = 3,
 	order = 100,
 	cost = 9,
@@ -2732,11 +2732,7 @@ local happy = {
 	eternal_compat = false,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
-		if
-			context.selling_self
-			and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit
-			and not context.retrigger_joker
-		then
+		if context.selling_self and #G.jokers.cards + G.GAME.joker_buffer <= G.jokers.config.card_limit then
 			local sellcreatejoker = 1
 			G.GAME.joker_buffer = G.GAME.joker_buffer + sellcreatejoker
 			G.E_MANAGER:add_event(Event({
@@ -2766,7 +2762,6 @@ local happy = {
 			and not context.individual
 			and not context.repetition
 			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
-			and not context.retrigger_joker
 		then
 			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker
@@ -6760,7 +6755,7 @@ local exposed = {
 			if not context.other_card:is_face() then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra,
+					repetitions = math.min(40, card.ability.extra),
 					card = card,
 				}
 			end
@@ -6807,7 +6802,7 @@ local mask = {
 			if context.other_card:is_face() then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra,
+					repetitions = math.min(40, card.ability.extra),
 					card = card,
 				}
 			end
@@ -7277,7 +7272,7 @@ local pity_prize = {
 	pos = { x = 5, y = 5 },
 	config = {},
 	rarity = 1,
-	cost = 4,
+	cost = 2,
 	atlas = "atlastwo",
 	order = 129,
 	loc_vars = function(self, info_queue, center)
