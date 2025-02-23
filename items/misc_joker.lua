@@ -6660,7 +6660,7 @@ local kittyprinter = {
 	rarity = 2,
 	cost = 6,
 	atlas = "atlasone",
-	order = 129,
+	order = 133,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.Xmult } }
@@ -7387,7 +7387,7 @@ local digitalhallucinations = {
 	name = "cry-Digital Hallucinations",
 	key = "digitalhallucinations",
 	pos = { x = 0, y = 7 },
-	order = 129,
+	order = 130,
 	config = { odds = 2 },
 	loc_vars = function(self, info_queue, card)
 		return {
@@ -7551,7 +7551,7 @@ local arsonist = {
 	rarity = 3,
 	cost = 5,
 	atlas = "atlasone",
-	order = 129,
+	order = 131,
 	loc_vars = function(self, info_queue, center)
 		return { vars = {} }
 	end,
@@ -7589,7 +7589,7 @@ local zooble = {
 	rarity = 2,
 	cost = 6,
 	atlas = "atlasone",
-	order = 129,
+	order = 132,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.mult, center.ability.extra.a_mult } }
 	end,
