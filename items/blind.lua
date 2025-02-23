@@ -884,11 +884,11 @@ local obsidian_orb = {
 
 			--add new debuffs
 			for _, v in ipairs(G.playing_cards) do
-				self:debuff_card(v)
+				self:recalc_debuff(v)
 			end
 			for _, v in ipairs(G.jokers.cards) do
 				if not reset then
-					self:debuff_card(v, true)
+					self:recalc_debuff(v, true)
 				end
 			end
 		end
@@ -1163,12 +1163,12 @@ local obsidian_orb = {
 			end
 		end
 	end,
-	debuff_card = function(self, card, from_blind)
+	recalc_debuff = function(self, card, from_blind)
 		if card and type(card) == "table" and card.area then
 			for k, _ in pairs(G.GAME.defeated_blinds) do
 				s = G.P_BLINDS[k]
-				if s.debuff_card then
-					s:debuff_card(card, from_blind)
+				if s.recalc_debuff then
+					s:recalc_debuff(card, from_blind)
 				end
 				if s.debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
 					--this part is buggy for some reason
