@@ -577,8 +577,8 @@ function cry_get_gameset(card, center)
 	local gameset = G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 	if Cryptid_config.experimental and center.extra_gamesets then
 		for i = 1, #center.extra_gamesets do
-			if center.extra_gamesets[i] == "experimental_"..gameset then
-				gameset = "experimental_"..gameset
+			if center.extra_gamesets[i] == "experimental_" .. gameset then
+				gameset = "experimental_" .. gameset
 				break
 			elseif center.extra_gamesets[i] == "experimental" then
 				gameset = "experimental"

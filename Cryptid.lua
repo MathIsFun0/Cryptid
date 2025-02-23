@@ -250,7 +250,7 @@ local cryptidConfigTab = function()
 	})
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
 		button = "reset_gameset_config",
-		label = { localize("b_reset_gameset_"..(G.PROFILES[G.SETTINGS.profile].cry_gameset or 'mainline')) },
+		label = { localize("b_reset_gameset_" .. (G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline")) },
 		minw = 5,
 	})
 	return {
