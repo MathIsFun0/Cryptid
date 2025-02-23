@@ -669,17 +669,14 @@ local pickle = {
 		if context.setting_blind and not context.blueprint then
 			card.ability.extra.tags = card.ability.extra.tags - card.ability.extra.tags_mod
 			if to_big(card.ability.extra.tags) > to_big(0) then
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({ type = "variable", key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus", vars = { card.ability.extra.tags_mod } })[1],
-						colour = G.C.FILTER,
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus",
+						vars = { card.ability.extra.tags_mod },
+					})[1],
+					colour = G.C.FILTER,
+				})
 				return nil, true
 			else
 				G.E_MANAGER:add_event(Event({
@@ -6669,9 +6666,7 @@ local kittyprinter = {
 		return { vars = { card.ability.extra.Xmult } }
 	end,
 	calculate = function(self, card, context)
-		if
-			context.joker_main
-		then
+		if context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
@@ -7022,7 +7017,7 @@ local cookie = {
 	cost = 4,
 	atlas = "atlastwo",
 	order = 129,
-	config = {extra = {chips = 150, chip_mod = 1}},
+	config = { extra = { chips = 150, chip_mod = 1 } },
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,

@@ -741,14 +741,14 @@ local tagability = Tag.set_ability
 function Tag:set_ability()
 	tagability(self)
 	if self.ability.blind_type then
-		
 		G.GAME.cry_shiny_choices = G.GAME.cry_shiny_choices or {}
 		G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] or {}
-		
+
 		if not G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] then
 			G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] = cry_rollshiny()
 		end
-		self.ability.shiny = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] == 'shiny' and true
+		self.ability.shiny = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] == "shiny"
+			and true
 	end
 end
 

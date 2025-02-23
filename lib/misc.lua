@@ -460,7 +460,7 @@ function save_cryptid()
 		shinytags = {},
 	}
 	data.shinytags = copy_table(Cryptid.shinytagdata)
-	compress_and_save( G.SETTINGS.profile..'/'..'cryptidsave.jkr', STR_PACK(data))
+	compress_and_save(G.SETTINGS.profile .. "/" .. "cryptidsave.jkr", STR_PACK(data))
 end
 
 local sppref = set_profile_progress
