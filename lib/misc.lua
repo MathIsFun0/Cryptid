@@ -183,39 +183,39 @@ end
 
 -- simple plural s function for localisation
 function cry_pls(str, vars)
-	local inside = str:match("<(.-)>")	-- finds args
+	local inside = str:match("<(.-)>") -- finds args
 	local _table = {}
 	if inside then
-		for v in inside:gmatch("[^,]+") do	-- adds args to array
+		for v in inside:gmatch("[^,]+") do -- adds args to array
 			table.insert(_table, v)
 		end
 	end
-	local num = vars[tonumber(string.match(str, ">(%d+)"))]	-- gets the number outside angle brackets, and its corresponding variable
-	local plural = _table[1]	-- default
-	local checks = {[1] = "="}
+	local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets the number outside angle brackets, and its corresponding variable
+	local plural = _table[1] -- default
+	local checks = { [1] = "=" }
 	if #_table > 1 then
 		for i = 2, #_table do
 			local isnum = tonumber(_table[i])
 			if isnum then
-				checks[isnum] = ">"..(_table[i+1] or "")
+				checks[isnum] = ">" .. (_table[i + 1] or "")
 				i = i + 1
 			elseif i == 2 then
-				checks[1] = "=".._table[i]
+				checks[1] = "=" .. _table[i]
 			else
-				print('Unexpected string: '.._table[i])
+				print("Unexpected string: " .. _table[i])
 			end
 		end
 	end
 	local function fch(str, c)
-		return string.sub(str, 1, 1) == c	-- gets first char and returns boolean
+		return string.sub(str, 1, 1) == c -- gets first char and returns boolean
 	end
 	for k, v in pairs(checks) do
-		if fch(v, '=') then
+		if fch(v, "=") then
 			if math.abs(to_big(num) - k) < to_big(0.001) then
 				return string.sub(v, 2, -1)
 			end
-		elseif fch(v, '>') then
-			if to_big(num) >= to_big(k-0.001) then
+		elseif fch(v, ">") then
+			if to_big(num) >= to_big(k - 0.001) then
 				return string.sub(v, 2, -1)
 			end
 		end
@@ -487,7 +487,7 @@ function save_cryptid()
 		shinytags = {},
 	}
 	data.shinytags = copy_table(Cryptid.shinytagdata)
-	compress_and_save( G.SETTINGS.profile..'/'..'cryptidsave.jkr', STR_PACK(data))
+	compress_and_save(G.SETTINGS.profile .. "/" .. "cryptidsave.jkr", STR_PACK(data))
 end
 
 local sppref = set_profile_progress
