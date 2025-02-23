@@ -795,7 +795,7 @@ local triplet_rhythm = {
 		if context.joker_main and context.scoring_hand then
 			local threes = 0
 			for i = 1, #context.scoring_hand do
-				if context.scoring_hand[i]:get_id() then
+				if context.scoring_hand[i]:get_id() == 3 then
 					threes = threes + 1
 				end
 			end
@@ -1498,7 +1498,7 @@ local fspinner = {
 		return { vars = { center.ability.extra.chips, center.ability.extra.chip_mod } }
 	end,
 	rarity = 1,
-	cost = 6,
+	cost = 5,
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
