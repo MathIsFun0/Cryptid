@@ -1493,7 +1493,7 @@ local items = {
 	--verisimile, WHY IS THIS AN EXOTIC????????????????????
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
-	formidiulosus
+	formidiulosus,
 }
 return {
 	name = "Exotic Jokers",
