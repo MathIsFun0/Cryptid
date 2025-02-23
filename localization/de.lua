@@ -3699,7 +3699,7 @@ return {
 			cry_notif_jimball_d1 = 'Jimball spielt den Song "Funkytown",',
 			cry_notif_jimball_d2 = "welcher urheberrechtlich geschützt ist und nicht",
 			cry_notif_jimball_d3 = "für Streams und Videos genutzt werden kann.",
-			
+
 			cry_gameset_explanation = {
 				"Wähle eine Gameset Konfiguartion",
 				"für diese Karte.",
