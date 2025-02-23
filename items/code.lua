@@ -1,14 +1,10 @@
 --note to self: refer to https://docs.google.com/document/d/1LNaIouU3vrtWIuPBdFCqLyjYAjVtq7t64xjHnckEY50/edit for order of remaining consumables
 local code = {
-	--[[
-	I'm assuming this won't work so it's commented out for now - Jevonn
 	dependencies = {
 		items = {
 			"set_cry_code",
 		},
 	},
-	]]
-	--
 	object_type = "ConsumableType",
 	key = "Code",
 	primary_colour = HEX("14b341"),
