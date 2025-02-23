@@ -4240,6 +4240,7 @@ return {
 			cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
 			cry_mus_alt_bg = "Background Music (by MathIsFun_)",
 			cry_family = "Family Friendly Mode",
+			cry_experimental = "Experimental Mode",
 
 			k_cry_program_pack = "Program Pack",
 			k_cry_meme_pack = "Meme Pack",
@@ -4343,8 +4344,16 @@ return {
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Madness",
 			cry_gameset_custom = "Modified",
+			cry_gameset_experimental = "Experimental",
+			cry_gameset_experimental_modest = "Experimental (Modest)",
+			cry_gameset_experimental_mainline = "Experimental (Mainline)",
+			cry_gameset_experimental_madness = "Experimental (Madness)",
 
 			cry_view_set_contents = "View Items in Set",
+
+			b_reset_gameset_modest = "Reset Gameset Config (Modest)",
+			b_reset_gameset_mainline = "Reset Gameset Config (Mainline)",
+			b_reset_gameset_madness = "Reset Gameset Config (Madness)",
 		},
 		labels = {
 			food_jokers = "Food Jokers",

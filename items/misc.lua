@@ -1203,7 +1203,6 @@ local gold_edition = {
 				and context.consumeable == card
 			)
 		then
-			print(context)
 			return { p_dollars = self.config.dollars } -- updated value
 		end
 	end,

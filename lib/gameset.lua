@@ -575,6 +575,17 @@ function cry_get_gameset(card, center)
 		end
 	end
 	local gameset = G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
+	if Cryptid_config.experimental and center.extra_gamesets then
+		for i = 1, #center.extra_gamesets do
+			if center.extra_gamesets[i] == "experimental_"..gameset then
+				gameset = "experimental_"..gameset
+				break
+			elseif center.extra_gamesets[i] == "experimental" then
+				gameset = "experimental"
+				break
+			end
+		end
+	end
 	if
 		G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides
 		and G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides[center.key]
@@ -844,6 +855,12 @@ function Card:cry_set_gameset(center, gameset)
 	if empty then
 		G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides = nil
 	end
+	G:save_progress()
+end
+
+function G.FUNCS.reset_gameset_config()
+	G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides = nil
+	cry_update_obj_registry()
 	G:save_progress()
 end
 

@@ -186,11 +186,6 @@ Cryptid.shared_gamesets[gameset_key].role.draw_major = self
 Cryptid.shared_gamesets[gameset_key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
 Cryptid.shared_gamesets[gameset_key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
 end
-if self.gameset_select and Card.get_gameset(cry_get_center(self.config.center.key), cry_get_center(self.config.center.key)) == gameset_key then
-Cryptid.shared_gamesets.selected.role.draw_major = self
-Cryptid.shared_gamesets.selected:draw_shader('dissolve', nil, nil, nil, self.children.center)
-Cryptid.shared_gamesets.selected:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
-end
 '''
 match_indent = true
 

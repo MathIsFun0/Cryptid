@@ -458,7 +458,7 @@ function Card:set_cost()
 	end
 end
 
--- Modify to display badges for credits
+-- Modify to display badges for credits and some gameset badges
 -- todo: make this optional
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
@@ -604,6 +604,17 @@ function SMODS.create_mod_badges(obj, badges)
 				},
 			}
 		end
+	end
+	if safe_get(G,"ACTIVE_MOD_UI","id") == "Cryptid" and obj and not obj.force_gameset then
+		local set = cry_get_gameset(obj)
+		if set == "disabled" or obj.set == "Content Set" then
+			return
+		end
+		local card_type = localize('cry_gameset_'..cry_get_gameset(obj))
+		if card_type == "ERROR" then
+			card_type = localize('cry_gameset_custom')
+		end
+		badges[#badges + 1] = create_badge(card_type, set == "modest" and G.C.GREEN or set == "mainline" and G.C.RED or set == "madness" and G.C.CRY_EXOTIC or G.C.CRY_ASCENDANT)
 	end
 end
 

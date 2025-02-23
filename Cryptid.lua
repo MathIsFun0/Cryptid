@@ -234,13 +234,24 @@ local cryptidConfigTab = function()
 		scale = 0.6,
 		id = "your_collection_jokers",
 	})
-	--Add warning UI later for family mode
+	--Add warning notifications later for family mode
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_family"),
 		active_colour = G.C.MONEY,
 		ref_table = Cryptid_config,
 		ref_value = "family_mode",
 		callback = reload_cryptid_localization,
+	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_experimental"),
+		active_colour = G.C.MONEY,
+		ref_table = Cryptid_config,
+		ref_value = "experimental",
+	})
+	cry_nodes[#cry_nodes + 1] = UIBox_button({
+		button = "reset_gameset_config",
+		label = { localize("b_reset_gameset_"..(G.PROFILES[G.SETTINGS.profile].cry_gameset or 'mainline')) },
+		minw = 5,
 	})
 	return {
 		n = G.UIT.ROOT,
