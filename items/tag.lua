@@ -235,23 +235,21 @@ local gambler = {
 		if context.type == "new_blind_choice" then
 			if pseudorandom("cry_gambler_tag") < G.GAME.probabilities.normal / tag.config.odds then
 				local lock = tag.ID
-				G.CONTROLLER.locks[lock] = true
-				tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
-					local emp = Tag("tag_cry_empowered")
-					if tag.ability.shiny then -- good fucking luck
+            			G.CONTROLLER.locks[lock] = true
+				tag:yep('+', G.C.SECONDARY_SET.Spectral,function() 
+                    			local emp = Tag("tag_cry_empowered")
+					if tag.ability.shiny then	-- good fucking luck
 						emp.ability.shiny = cry_rollshinybool()
 					end
 					add_tag(emp)
-					emp:apply_to_run({ type = "new_blind_choice" })
-					G.CONTROLLER.locks[lock] = nil
-					return true
-				end)
+					emp:apply_to_run({type = 'new_blind_choice'})
+                    			G.CONTROLLER.locks[lock] = nil
+                    			return true
+                		end)
 			else
 				tag:nope()
 				for i = 1, #G.GAME.tags do
-					if G.GAME.tags[i]:apply_to_run({ type = "new_blind_choice" }) then
-						break
-					end
+					if G.GAME.tags[i]:apply_to_run({type = 'new_blind_choice'}) then break end
 				end
 			end
 			tag.triggered = true
@@ -285,13 +283,13 @@ local bundle = {
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.ATTENTION, function()
-				local tags = { "standard", "charm", "meteor", "buffoon" }
+				local tags = {'standard', 'charm', 'meteor', 'buffoon'}
 				for i, v in ipairs(tags) do
-					local _tag = Tag("tag_" .. v)
+					local _tag = Tag("tag_"..v)
 					_tag.ability.shiny = cry_rollshinybool()
 					add_tag(_tag)
 					if i == 1 then
-						_tag:apply_to_run({ type = "new_blind_choice" })
+						_tag:apply_to_run({type = 'new_blind_choice'})
 					end
 				end
 				G.CONTROLLER.locks[lock] = nil
@@ -1073,7 +1071,7 @@ local booster = {
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.BLUE, function()
-				G.GAME.boostertag = true
+				G.GAME.boostertag = (G.GAME.boostertag or 0) + 1
 				G.CONTROLLER.locks[lock] = nil
 				return true
 			end)
