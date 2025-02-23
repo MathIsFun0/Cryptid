@@ -387,7 +387,7 @@ local wee_fib = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			local rank = context.other_card:get_id()
-			if rank == "Ace" or rank == "2" or rank == "3" or rank == "5" or rank == "8" then
+			if rank == 14 or rank == 2 or rank == 3 or rank == 5 or rank == 8 then
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
 
 				return {
