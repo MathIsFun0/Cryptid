@@ -1,0 +1,503 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Randomize poker hands after RNG is set up
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.pseudorandom.hashed_seed = pseudohash(self.GAME.pseudorandom.seed)"
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_misprint_min and not args.savetext then
+    for k, v in pairs(G.GAME.hands) do
+        v.chips = to_big(cry_format(v.chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.mult = to_big(cry_format(v.mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.l_chips = cry_format(v.l_chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+        v.l_mult = cry_format(v.l_mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+        v.s_chips = v.chips
+        v.s_mult = v.mult
+    end
+end
+'''
+match_indent = true
+
+# Packs
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
+position = "before"
+payload = '''
+cry_misprintize(card)
+'''
+match_indent = true
+
+# Prevent pack softlocks
+# Off by One Error effect
+# Booster Tag effect
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
+position = "after"
+payload = '''
+G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
+if G.GAME.modifiers.cry_misprint_min then
+    G.GAME.pack_size = self.ability.extra
+    if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
+    self.ability.extra = G.GAME.pack_size
+    G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
+    --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
+end
+if G.GAME.cry_oboe then
+    self.ability.extra = self.ability.extra + G.GAME.cry_oboe
+    G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
+    G.GAME.cry_oboe = nil
+    G.GAME.pack_size = self.ability.extra
+end
+if G.GAME.boostertag then
+    self.ability.extra = self.ability.extra * 2
+    G.GAME.pack_choices = G.GAME.pack_choices * 2
+    G.GAME.boostertag = nil
+    G.GAME.pack_size = self.ability.extra
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name:find('Arcana') then"
+position = "before"
+payload = '''
+if self.ability.extra < 1 then self.ability.extra = 1 end
+'''
+match_indent = true
+
+# Vouchers
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
+position = "before"
+payload = '''
+cry_misprintize(card)
+if G.GAME.events.ev_cry_choco2 then
+    card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+    card:set_cost()
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
+position = "before"
+payload = '''
+cry_misprintize(card)
+if G.GAME.events.ev_cry_choco2 then
+    card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+    card:set_cost()
+end
+'''
+match_indent = true
+
+# Fractional Ante Bugs
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.ante = G.GAME.round_resets.ante + mod"
+position = "after"
+payload = "G.GAME.round_resets.ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.ante)))) or math.floor(G.GAME.round_resets.ante)"
+match_indent = true
+
+# UI Bugs
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "_size*G.CARD_W,"
+position = "at"
+payload = "math.max(1,math.min(_size,5))*G.CARD_W,"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "_size*G.CARD_W*1.1,"
+position = "at"
+payload = "math.max(1,math.min(_size,5))*G.CARD_W*1.1,"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "_size*G.CARD_W*1.1 + 0.5,"
+position = "at"
+payload = "math.max(1,math.min(_size,5))*G.CARD_W*1.1 + 0.5,"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "{card_limit = _size, type = 'consumeable', highlight_limit = 1})"
+position = "at"
+payload = "{card_limit = math.max(1,_size), type = 'consumeable', highlight_limit = 1})"
+match_indent = true
+
+# Death and a CCD Patch
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then"
+position = "at"
+payload = "if (self.ability.consumeable.mod_num - ((G.GAME.modifiers.cry_consumable_reduce and (self.ability.name ~= 'Death')) and (self.ability.consumeable.mod_num > 1) and 1 or 0)) >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then"
+match_indent = true
+
+# mod_num has no limit
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.ability.consumeable.mod_num = math.min(5, self.ability.consumeable.max_highlighted)"
+position = "at"
+payload = "self.ability.consumeable.mod_num = self.ability.consumeable.max_highlighted"
+match_indent = true
+
+# Infinite Deck
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "self.config.highlighted_limit = config.highlight_limit or 5"
+position = "at"
+payload = "self.config.highlighted_limit = config.highlight_limit or G.GAME.modifiers.cry_highlight_limit or 5"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"
+position = "at"
+payload = "if #G.hand.highlighted <= (G.GAME.blind and G.GAME.blind.name == 'cry-Sapphire Stamp' and not G.GAME.blind.disabled and 1 or 0) or G.GAME.blind.block_play then"
+match_indent = true
+
+# Hieroglyph
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "ease_ante(-center_table.extra)"
+position = "at"
+payload = "ease_ante(math.floor(-center_table.extra))"
+match_indent = true
+
+# Get Cryptid to display and work with card selections
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif _c.name == 'Cryptid' then loc_vars = {cfg.extra}"
+position = "at"
+payload = '''elseif _c.name == 'Cryptid' then loc_vars = {cfg.extra, cfg.max_highlighted}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'local _card = copy_card(G.hand.highlighted[1], nil, nil, G.playing_card)'
+position = "at"
+payload = '''
+for q = 1, #G.hand.highlighted do
+local _card = copy_card(G.hand.highlighted[q], nil, nil, G.playing_card)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "new_cards[#new_cards+1] = _card"
+position = "after"
+payload = "end"
+match_indent = true
+
+# Get seal spectrals to display and work with card selections
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''
+(?<indent>[\t ]*)elseif _c\.set == 'Spectral' then '''
+position = 'after'
+# match_indent = true
+line_prepend = '$indent    '
+payload = '''
+
+if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then
+    loc_vars = {cfg.max_highlighted}
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'local conv_card = G.hand.highlighted[1]'
+position = "at"
+payload = '''
+for q = 1, #G.hand.highlighted do
+local conv_card = G.hand.highlighted[q]
+G.E_MANAGER:add_event(Event({func = function()
+    play_sound('tarot1')
+    used_tarot:juice_up(0.3, 0.5)
+    return true end }))
+
+G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+    conv_card:set_seal(self.ability.extra, nil, true)
+    return true end }))
+end
+delay(0.5)
+G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+end--[[
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Aura' then"
+position = "before"
+payload = "--]]"
+match_indent = true
+
+# Fractional pricing
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))"
+position = "after"
+payload = '''
+    if self.ability.set == 'Joker' then
+        self.cost = cry_format(self.cost * G.GAME.cry_shop_joker_price_modifier,'%.2f') end
+    if self.misprint_cost_fac then
+        self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f')
+    if not G.GAME.modifiers.cry_misprint_min then self.cost = math.floor(self.cost) end end
+'''
+match_indent = true
+
+# the d in disp stands for disparity (match internal values to display values)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:apply_to_run(center)"
+position = "after"
+payload = '''
+if (self and self.ability and self.ability.extra_disp) then	-- redeeming through centers isn't misprinted
+	local self_disp = self.ability.extra_disp
+	local orig_disp = self.config.center.config.extra_disp
+	local self_extra = self.ability.extra
+	local orig_extra = self.config.center.config.extra
+
+	local new_fac = self_disp / orig_disp
+	self.ability.extra = new_fac*orig_extra
+end
+'''
+match_indent = true
+
+# I LOVE HARDCODING
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.hand:change_size(1)"
+position = "at"
+payload = '''
+G.hand:change_size(center_table.extra)
+'''
+match_indent = true
+
+# YOU LOVE HARDCODING
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "change_shop_size(1)"
+position = "at"
+payload = '''
+change_shop_size(center_table.extra)
+'''
+match_indent = true
+
+# WE ALL LOVE HARDCODING
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''if center_table\.name \=\= 'Antimatter' then\n\s+G\.E_MANAGER\:add_event\(Event\(\{func = function\(\)\n\s+if G\.jokers then \n\s+G\.jokers\.config\.card_limit \= G\.jokers\.config\.card_limit \+ 1\n\s+end\n\s+return true end \}\)\)\n\s+end'''
+position = "at"
+payload = '''
+    if center_table.name == 'Antimatter' then
+        G.E_MANAGER:add_event(Event({func = function()
+            if G.jokers then
+                G.jokers.config.card_limit = G.jokers.config.card_limit + center_table.extra
+            end
+            return true end }))
+    end
+'''
+
+# AAAA
+[[patches]]
+[patches.regex]
+target = "card.lua"
+pattern = '''if center_table\.name \=\= 'Crystal Ball' then\n\s+G\.E_MANAGER:add_event\(Event\(\{func \= function\(\)\n\s+G\.consumeables\.config\.card_limit \= G.consumeables\.config\.card_limit \+ 1\n\s+return true end }\)\)\n\s+end'''
+position = "at"
+payload = '''
+    if center_table.name == 'Crystal Ball' then
+        G.E_MANAGER:add_event(Event({func = function()
+            G.consumeables.config.card_limit = G.consumeables.config.card_limit + center_table.extra
+            return true end }))
+    end
+'''
+
+# anyway how's your day going?
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == "Clearance Sale" or _c.name == "Liquidation" then loc_vars = {cfg.extra}'''
+position = "after"
+payload = '''
+elseif _c.name == "Crystal Ball" or _c.name == "Omen Globe" then loc_vars = {cfg.extra}
+'''
+match_indent = true
+
+# doing pretty good myself
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if _c.name == "Overstock" or _c.name == 'Overstock Plus' then'''
+position = "at"
+payload = '''
+if _c.name == "Overstock" or _c.name == "Overstock Plus" then loc_vars = {cfg.extra}
+'''
+match_indent = true
+
+# spent the whole day reviving misprinted vouchers
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == "Blank" or _c.name == "Antimatter" then'''
+position = "at"
+payload = '''
+elseif _c.name == "Blank" or _c.name == "Antimatter" then loc_vars = {cfg.extra}
+'''
+match_indent = true
+
+# but whatever, not like i was doing anything anyway
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''UIBox_button({label = {localize('b_reroll_boss'), localize('$')..'10'}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil'''
+position = "at"
+payload = '''
+UIBox_button({label = {localize('b_reroll_boss'), localize('$')..cry_cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+'''
+match_indent = true
+
+# worth it in the end ig, it was bugging me
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and'''
+position = "at"
+payload = '''
+if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(cry_cheapest_boss_reroll()) >= to_big(0)) and
+'''
+match_indent = true
+
+# see you around
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if not G.from_boss_tag then ease_dollars(-10) end'''
+position = "at"
+payload = '''
+if not G.from_boss_tag then ease_dollars(-cry_cheapest_boss_reroll()) end
+'''
+match_indent = true
+
+# hi i'm back and i'm fixing this thing that breaks sometimes for no reason (it really shouldn't)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_overstock_norm =  {order = 1,     discovered = false, unlocked = true , available = true, cost = 10, name = "Overstock", pos = {x=0,y=0}, set = "Voucher", config = {}},'''
+position = "at"
+payload = '''
+v_overstock_norm =  {order = 1,     discovered = false, unlocked = true , available = true, cost = 10, name = "Overstock", pos = {x=0,y=0}, set = "Voucher", config = {extra = 1}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_crystal_ball=     {order = 9,    discovered = false, unlocked = true , available = true, cost = 10, name = "Crystal Ball", pos = {x=2,y=2}, set = "Voucher", config = {extra = 3}},'''
+position = "at"
+payload = '''
+v_crystal_ball=     {order = 9,    discovered = false, unlocked = true , available = true, cost = 10, name = "Crystal Ball", pos = {x=2,y=2}, set = "Voucher", config = {extra = 1}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_overstock_plus=   {order = 2,     discovered = false, unlocked = false, available = true, cost = 10, name = "Overstock Plus", pos = {x=0,y=1}, set = "Voucher", config = {}, requires = {'v_overstock_norm'},unlock_condition = {type = 'c_shop_dollars_spent', extra = 2500}},'''
+position = "at"
+payload = '''
+v_overstock_plus=   {order = 2,     discovered = false, unlocked = false, available = true, cost = 10, name = "Overstock Plus", pos = {x=0,y=1}, set = "Voucher", config = {extra = 1}, requires = {'v_overstock_norm'},unlock_condition = {type = 'c_shop_dollars_spent', extra = 2500}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_antimatter=       {order = 24,    discovered = false, unlocked = false, available = true, cost = 10, name = "Antimatter", pos = {x=7,y=1}, set = "Voucher", config = {extra = 15}, requires = {'v_blank'},unlock_condition = {type = 'blank_redeems', extra = 10}},'''
+position = "at"
+payload = '''
+v_antimatter=       {order = 24,    discovered = false, unlocked = false, available = true, cost = 10, name = "Antimatter", pos = {x=7,y=1}, set = "Voucher", config = {extra = 1}, requires = {'v_blank'},unlock_condition = {type = 'blank_redeems', extra = 10}},
+'''
+match_indent = true
+
+# whyyyyyyyyy
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.tarot_rate = 4*center_table.extra'''
+position = "at"
+payload = '''
+G.GAME.tarot_rate = G.GAME.tarot_rate*center_table.extra
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.planet_rate = 4*center_table.extra'''
+position = "at"
+payload = '''
+G.GAME.planet_rate = G.GAME.planet_rate*center_table.extra
+'''
+match_indent = true
+
+# keep vanilla rates by modifying tycoons
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_tarot_tycoon=     {order = 18,     discovered = false, unlocked = false, available = true,cost = 10, name = "Tarot Tycoon", pos = {x=1,y=1}, set = "Voucher", config = {extra = 32/4, extra_disp = 4}, requires = {'v_tarot_merchant'},unlock_condition = {type = 'c_tarots_bought', extra = 50}},'''
+position = "at"
+payload = '''
+v_tarot_tycoon=     {order = 18,     discovered = false, unlocked = false, available = true,cost = 10, name = "Tarot Tycoon", pos = {x=1,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_tarot_merchant'},unlock_condition = {type = 'c_tarots_bought', extra = 50}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/4, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},'''
+position = "at"
+payload = '''
+v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},
+'''
+match_indent = true

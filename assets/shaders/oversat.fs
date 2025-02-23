@@ -24,7 +24,7 @@ vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
 	float t = time * 10.0 + 2003.;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/max(texture_details.b, texture_details.a);
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 2.3 * max(texture_details.b, texture_details.a);
-	
+
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
 	vec2 field_part3 = uv_scaled_centered + 50.*vec2(sin(-t / 87.53218), sin(-t / 49.0000));
@@ -134,12 +134,12 @@ vec4 RGBtoHSV(vec4 rgb)
 
 vec4 HSVtoRGB(vec4 hsv) {
     vec4 rgb;
-    
+
     float h = hsv.x * 6.0;
     float c = hsv.z * hsv.y;
     float x = c * (1.0 - abs(mod(h, 2.0) - 1.0));
     float m = hsv.z - c;
-    
+
     if (h < 1.0) {
         rgb = vec4(c, x, 0.0, hsv.a);
     } else if (h < 2.0) {
@@ -153,19 +153,19 @@ vec4 HSVtoRGB(vec4 hsv) {
     } else {
         rgb = vec4(c, 0.0, x, hsv.a);
     }
-    
+
     rgb.rgb += m;
-    
+
     return rgb;
 }
 vec3 increaseContrast(vec3 color, float amount)
 {
     // Convert from [0,1] to [-0.5,0.5] range
     vec3 centered = color - 0.5;
-    
+
     // Increase contrast
     centered *= amount;
-    
+
     // Convert back to [0,1] range and clamp
     return clamp(centered + 0.5, 0.0, 1.0);
 }
@@ -173,7 +173,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 {
     vec4 tex = Texel(texture, texture_coords);
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-	
+
 	// Dummy, doesn't do anything but at least it makes the shader useable
     if (uv.x > uv.x * 2.){
         uv = oversat;
@@ -192,7 +192,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float t = oversat.y*2.221 + time;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 50.;
-	
+
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
 	vec2 field_part3 = uv_scaled_centered + 50.*vec2(sin(-t / 87.53218), sin(-t / 49.0000));

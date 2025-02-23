@@ -1,0 +1,130 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Apply booster pack edition and stickers to contents - by Jen Walter
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "card.T.x = self.T.x"
+position = "before"
+payload = '''
+local edi = self.edition or {}
+if edi.type then
+	if card.ability.name ~= "cry-meteor"
+ 	and card.ability.name ~= "cry-exoplanet"
+  	and card.ability.name ~= "cry-stardust" then
+		card:set_edition({[edi.type] = true})
+  	end
+end
+local stickers = {'eternal', 'perishable', 'rental', 'banana'}
+for _, v in ipairs(stickers) do
+	if self.ability[v] then
+		card.ability[v] = self.ability[v]
+	end
+end
+'''
+match_indent = true
+
+# save ability (to deal with re-misprinting)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.vouchers:emplace(card_to_save)"
+position = "before"
+payload = '''
+card_to_save.ability.extra = self and self.ability.extra or card_to_save.ability.extra
+'''
+match_indent = true
+
+# patch for stickers in challenge ui
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if v.eternal then card:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(card, true)
+	end
+end
+'''
+match_indent = true
+
+# same deal for actual game
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if v.eternal then _joker:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(_joker, true)
+	end
+end
+'''
+match_indent = true
+
+# remove eternal badge
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.eternal then badges[#badges + 1] = 'eternal' end"
+position = "at"
+payload = '''
+if not self.ability.cry_absolute then
+	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
+end
+'''
+match_indent = true
+
+# remove old pinned badge
+# i am fully aware that these badge removals may break stuff since they are good targets
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.pinned then badges[#badges + 1] = 'pinned_left' end"
+position = "at"
+payload = '''
+-- if self.pinned then badges[#badges + 1] = 'pinned_left' end
+'''
+match_indent = true
+
+# don't draw old perishable texture
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.perishable then'''
+position = "at"
+payload = '''if self.ability.perishable and not layer then'''
+match_indent = true
+
+# Adds cry_debuff_immune card modifier
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'if self.ability and self.ability.perma_debuff then self.debuff = true end'
+position = "after"
+payload = '''
+if self.cry_debuff_immune then
+	self.debuff = false
+end
+'''
+match_indent = true
+
+# Removes cry_debuff_immune at the end of the round
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'for i = 1, #G.jokers.cards do'
+position = "before"
+payload = '''
+for i = 1, #G.playing_cards do
+	local CARD = G.playing_cards[i]
+    CARD.cry_debuff_immune = false
+end
+'''
+match_indent = true
