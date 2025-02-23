@@ -1073,7 +1073,9 @@ local glass_edition = {
 		end
 
 		if
-			context.cardarea == G.jokers and context.post_trigger and context.other_card == card --animation-wise this looks weird sometimes
+			context.cardarea == G.jokers
+			and context.post_trigger
+			and context.other_card == card --animation-wise this looks weird sometimes
 		then
 			if
 				not card.ability.eternal
@@ -1191,10 +1193,12 @@ local gold_edition = {
 			(
 				context.post_trigger -- for when on jonklers
 				and context.other_card == card
-			) or (
+			)
+			or (
 				context.main_scoring -- for when on playing cards
 				and context.cardarea == G.play
-			) or (
+			)
+			or (
 				context.using_consumeable -- for when using a consumable
 				and context.consumeable == card
 			)

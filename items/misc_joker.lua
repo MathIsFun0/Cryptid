@@ -1943,7 +1943,7 @@ local hunger = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context) -- haha one liner
-		return context.using_consumeable and {p_dollars = card.ability.extra.money}
+		return context.using_consumeable and { p_dollars = card.ability.extra.money }
 	end,
 	cry_credits = {
 		idea = {
