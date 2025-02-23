@@ -8,4 +8,6 @@ return {
 	},
 	["family_mode"] = false,
 	["experimental"] = false,
+	["HTTPS"] = false,
+	["menu"] = false,
 }

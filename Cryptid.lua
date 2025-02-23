@@ -226,6 +226,7 @@ local cryptidConfigTab = function()
 	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 	cry_nodes[#cry_nodes + 1] = config
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
+		colour = G.C.CRY_GREENGRADIENT,
 		button = "your_collection_content_sets",
 		label = { localize("b_content_sets") },
 		count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
@@ -237,18 +238,31 @@ local cryptidConfigTab = function()
 	--Add warning notifications later for family mode
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_family"),
-		active_colour = G.C.MONEY,
+		active_colour = HEX("40c76d"),
 		ref_table = Cryptid_config,
 		ref_value = "family_mode",
 		callback = reload_cryptid_localization,
 	})
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_experimental"),
-		active_colour = G.C.MONEY,
+		active_colour = HEX("1f8505"),
 		ref_table = Cryptid_config,
 		ref_value = "experimental",
 	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_feat_https module"),
+		active_colour = HEX("b1c78d"),
+		ref_table = Cryptid_config,
+		ref_value = "HTTPS",
+	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_feat_menu"),
+		active_colour = HEX("1c5c23"),
+		ref_table = Cryptid_config,
+		ref_value = "menu",
+	})
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
+		colour = G.C.CRY_ALTGREENGRADIENT,
 		button = "reset_gameset_config",
 		label = { localize("b_reset_gameset_" .. (G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline")) },
 		minw = 5,
@@ -292,26 +306,31 @@ local cryptidTabs = function()
 				}
 				settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_jimball"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "jimball_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_code"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "code_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_exotic"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "exotic_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_high_score"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "big_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_alt_bg"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "alt_bg_music",

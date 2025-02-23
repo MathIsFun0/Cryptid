@@ -375,7 +375,7 @@ end
 
 --Changes main menu colors and stuff
 --has to be modified with new enabling system
-if true then --Cryptid.enabled["Menu"] then
+if Cryptid_config.menu then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
