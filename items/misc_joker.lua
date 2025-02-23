@@ -1942,18 +1942,8 @@ local hunger = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.money } }
 	end,
-	calculate = function(self, card, context) --This didn't work for Jevonn for some reason but it works for me :joker:
-		if context.using_consumeable then --shush
-			ease_dollars(card.ability.extra.money)
-			card_eval_status_text(
-				context.blueprint_card or card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
-			)
-		end
+	calculate = function(self, card, context) -- haha one liner
+		return context.using_consumeable and {p_dollars = card.ability.extra.money}
 	end,
 	cry_credits = {
 		idea = {

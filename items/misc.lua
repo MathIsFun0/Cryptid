@@ -1073,7 +1073,7 @@ local glass_edition = {
 		end
 
 		if
-			context.cardarea == G.jokers and context.post_trigger --animation-wise this looks weird sometimes
+			context.cardarea == G.jokers and context.post_trigger and context.other_card == card --animation-wise this looks weird sometimes
 		then
 			if
 				not card.ability.eternal
@@ -1187,11 +1187,20 @@ local gold_edition = {
 		card.edition.cry_gold_seed = pseudorandom("e_cry_gold") * 2 - 1
 	end,
 	calculate = function(self, card, context)
-        	if context.post_trigger or (context.using_consumeable and context.consumeable == card) or (context.main_scoring and context.cardarea == G.play and self.config.active) then
-            		SMODS.calculate_effect({ p_dollars = self.config.dollars }, card, true)
-			self.config.active = nil
-        	else if not self.config.active then
-			self.config.active = true
+		if
+			(
+				context.post_trigger -- for when on jonklers
+				and context.other_card == card
+			) or (
+				context.main_scoring -- for when on playing cards
+				and context.cardarea == G.play
+			) or (
+				context.using_consumeable -- for when using a consumable
+				and context.consumeable == card
+			)
+		then
+			print(context)
+			return { p_dollars = self.config.dollars } -- updated value
 		end
 	end,
 }
