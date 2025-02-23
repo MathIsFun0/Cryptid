@@ -136,7 +136,7 @@ local universum = {
 	end,
 	cry_credits = {
 		idea = { "Ein13" },
-		art = { "Ein13/hydrogenperoxiide" },
+		art = { "Ein13","hydrogenperoxiide" },
 	},
 	init = function(self)
 		--Universum Patches
@@ -1169,7 +1169,7 @@ local energia = {
 	end,
 	cry_credits = {
 		idea = { "jenwalter666" },
-		art = { "Kailen" },
+		art = { "unexian" },
 		code = { "Math" },
 	},
 }

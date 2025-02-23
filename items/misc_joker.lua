@@ -6983,7 +6983,7 @@ local cookie = {
 	cost = 4,
 	atlas = "atlastwo",
 	order = 133,
-	config = { extra = { chips = 150, chip_mod = 1 } },
+	config = { extra = { chips = 200, chip_mod = 1 } },
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
