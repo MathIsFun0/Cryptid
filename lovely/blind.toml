@@ -51,3 +51,19 @@ payload = '''
 	end
 '''
 match_indent = true
+
+# Shut the up plz and ty
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''sendWarnMessage(("Blind object %s has debuff_card function, recalc_debuff is preferred"):format(obj.key), obj.set)'''
+position = "at"
+payload = '''
+-- sendWarnMessage(("Blind object %s has debuff_card function, recalc_debuff is preferred"):format(obj.key), obj.set)
+'''
+match_indent = true
+
+
+
+
+
