@@ -1603,9 +1603,9 @@ return {
 			j_cry_jtron = {
 				name = "Jimbo-tron 9000",
 				text = {
-                    "This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
 					"for each default {C:attention}Joker{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)"
+					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
 				},
 			},
 			j_cry_kidnap = {

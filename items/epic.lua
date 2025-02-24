@@ -1893,18 +1893,17 @@ local jtron = {
 	atlas = "atlasepic",
 	pos = { x = 2, y = 5 },
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue+1] = G.P_CENTERS.j_joker
-		center.ability.extra.current = 1 + center.ability.extra.bonus * #SMODS.find_card('j_joker')
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_joker
+		center.ability.extra.current = 1 + center.ability.extra.bonus * #SMODS.find_card("j_joker")
 		return { vars = { center.ability.extra.bonus, center.ability.extra.current } }
 	end,
 	calculate = function(self, card, context)
-		card.ability.extra.current = 1 + card.ability.extra.bonus * #SMODS.find_card('j_joker')
-		if
-			context.cardarea == G.jokers
-			and context.joker_main
-		then
+		card.ability.extra.current = 1 + card.ability.extra.bonus * #SMODS.find_card("j_joker")
+		if context.cardarea == G.jokers and context.joker_main then
 			return {
-				message = localize{type='variable',key='a_powmult',vars={number_format(card.ability.extra.current)}},
+				message = localize({ type = "variable", key = "a_powmult", vars = {
+					number_format(card.ability.extra.current),
+				} }),
 				Emult_mod = card.ability.extra.current,
 				colour = G.C.DARK_EDITION,
 			}
@@ -1914,7 +1913,7 @@ local jtron = {
 		idea = { "AlexZGreat" },
 		art = { "Darren_the_frog" },
 		code = { "candycanearter" },
-	}
+	},
 }
 return {
 	name = "Epic Jokers",
