@@ -1755,7 +1755,7 @@ local gardenfork = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and not context.blueprint then
+		if context.cardarea == G.jokers and context.before then
 			for i = 1, #context.full_hand do
 				if context.scoring_hand[i]:get_id() == 14 then
 					for j = 1, #context.full_hand do
