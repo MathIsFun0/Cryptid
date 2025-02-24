@@ -7600,6 +7600,75 @@ local zooble = {
 		},
 	},
 }
+local lebaron_james = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-LeBaron James",
+	key = "lebaron_james",
+	pos = { x = 2, y = 5 },
+	config = {extra = {h_mod = 1, h_size = 0}},
+	rarity = 3,
+	cost = 6,
+	atlas = "atlasone",
+	order = 133,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.h_mod,center.ability.extra.h_size} }
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if SMODS.Ranks[context.other_card.base.value].key == "King" then
+				G.hand:change_size(math.min(1000-card.ability.extra.h_size, card.ability.extra.h_mod))
+				card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+				return {
+					message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
+					colour = G.C.FILTER,
+					card = card,
+				}
+			end
+		end
+		if context.end_of_round and not context.individual and not context.repetition then
+			G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
+			card.ability.extra.h_size = 0
+			return {
+				card = card,
+				message = localize("k_reset"),
+			}
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
+	end,
+	cry_credits = {
+		idea = {
+			"indefenite_idiot", "HexaCryonic"
+		},
+		code = {
+			"AlexZGreat"
+		},
+		art = {
+			"lamborghiniofficial"
+		}
+	},
+	init = function(self)
+		-- Calculate enhancements for kings as if held in hand
+		-- Note that for enhancements that work when played and held in hand, this will fail
+		-- Not tested since no enhancements use this yet (Steel is weird, and Gold won't work)
+		local cce = Card.calculate_enhancement
+		function Card:calculate_enhancement(context)
+			local ret = cce(self, context)
+			if not ret and next(SMODS.find_card("j_cry_lebaron_james")) and SMODS.Ranks[self.base.value].key == "King" and context.cardarea == G.play then
+				context.cardarea = G.hand
+				local ret = cce(self, context)
+				context.cardarea = G.play
+			end
+			return ret
+		end
+	end
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7710,6 +7779,7 @@ local miscitems = {
 	fuckedup,
 	foolhardy,
 	translucent,
+	lebaron_james,
 }
 return {
 	name = "Misc. Jokers",
