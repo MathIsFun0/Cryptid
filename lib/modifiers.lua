@@ -734,6 +734,45 @@ SMODS.Sticker({
 		end
 	end,
 })
+
+-- shiny tag hooks
+
+local tagability = Tag.set_ability
+function Tag:set_ability()
+	tagability(self)
+	if self.ability.blind_type then
+		G.GAME.cry_shiny_choices = G.GAME.cry_shiny_choices or {}
+		G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] or {}
+
+		if not G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] then
+			G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] = cry_rollshiny()
+		end
+		self.ability.shiny = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] == "shiny"
+			and true
+	end
+end
+
+local ycollecref = G.FUNCS.your_collection
+G.FUNCS.your_collection = function(e)
+	ycollecref(e)
+	G.cry_current_tagpage = nil
+end
+local omuicryref = G.FUNCS.openModUI_Cryptid
+G.FUNCS.openModUI_Cryptid = function(e)
+	omuicryref(e)
+	G.cry_current_tagpage = nil
+end
+
+function cry_shinytag_tally()
+	local ret = 0
+	for k, v in pairs(Cryptid.shinytagdata) do
+		if Cryptid.shinytagdata[k] then
+			ret = ret + 1
+		end
+	end
+	return ret
+end
+
 -- temp crappy overwrite for voucher ui until smods does stuff
 
 function G.UIDEF.used_vouchers()

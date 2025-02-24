@@ -252,12 +252,15 @@ payload = '''if true then'''
 match_indent = true
 
 # Energia - detect blind skips from tag
+# kitty printer - add cat tag
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
 pattern = '''add_tag(_tag.config.ref_table)'''
 position = "at"
-payload = '''add_tag(_tag.config.ref_table, true)'''
+payload = '''
+add_tag( next(SMODS.find_card('j_cry_kittyprinter')) and Tag('tag_cry_cat') or _tag.config.ref_table, true)
+'''
 match_indent = true
 
 # Energia - don't add tags from save load
@@ -420,6 +423,19 @@ if (not self.ability.orbital_hand) or (not G.GAME.hands[self.ability.orbital_han
 		if v.visible then _poker_hands[#_poker_hands+1] = k end
 	end
 	self.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed('orbital'))
+end
+'''
+match_indent = true
+
+# kitty printer 2 (for some reason i can't figure out how to not create another object here)
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "local _tag = Tag(G.GAME.round_resets.blind_tags[blind_choice], nil, blind_choice)"
+position = "after"
+payload = '''
+if next(SMODS.find_card('j_cry_kittyprinter')) then
+	_tag = Tag('tag_cry_cat', nil, blind_choice)
 end
 '''
 match_indent = true

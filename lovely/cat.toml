@@ -90,6 +90,13 @@ tag_sprite.click = function(_self)
 					}))
 
 					other_cat.ability.level = other_cat.ability.level + 1
+					
+					if self.ability.shiny then
+						if not Cryptid.shinytagdata[self.key] then
+							Cryptid.shinytagdata[self.key] = true
+							save_cryptid()
+						end
+					end
 
 					G.E_MANAGER:add_event(Event({
 						trigger = 'after',
@@ -173,4 +180,181 @@ payload = '''
 if self.key == 'tag_cry_cat' then
 	play_sound('cry_meow'..math.random(4), 1.26, 0.12);
 end'''
+match_indent = true
+
+
+
+
+# shiny tags
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''local tag_sprite = Sprite(0,0,_size*1,_size*1,G.ASSET_ATLAS[(not self.hide_ability) and G.P_TAGS[self.key].atlas or "tags"], (self.hide_ability) and G.tag_undiscovered.pos or self.pos)'''
+position = "at"
+payload = '''
+local tagatlas = G.ASSET_ATLAS[(not self.hide_ability) and G.P_TAGS[self.key].atlas or "tags"]
+if self.ability.shiny and not self.hide_ability then
+	if not G.P_TAGS[self.key].atlas then
+		tagatlas = G.ASSET_ATLAS['cry_shinyv']
+	elseif G.P_TAGS[self.key].atlas == 'cry_tag_cry' then
+		tagatlas = G.ASSET_ATLAS['cry_shinyc']
+	end
+end
+
+local tag_sprite = Sprite(0,0,_size*1,_size*1,tagatlas, (self.hide_ability) and G.tag_undiscovered.pos or self.pos)
+'''
+match_indent = true
+
+# define function
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "function save_run()"
+position = "before"
+payload = '''
+function cry_rollshiny()
+	local prob = 1
+	if next(SMODS.find_card('j_lucky_cat')) then prob = 3 end
+	if pseudorandom("cry_shiny") < prob / 4096 then
+		return 'shiny'
+	end
+	return 'normal'
+end
+
+function cry_rollshinybool()
+	if cry_rollshiny() == 'shiny' then 
+		return true
+	end
+	return false
+end
+'''
+match_indent = true
+
+# collection
+# nice pattern match?
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+						opt_callback = 'your_collection_tags_page',
+						focus_args = { snap_to = true, nav = 'wide' },
+						current_option = page,
+						colour = G.C.RED,
+						no_pips = true
+					})
+				}
+			}'''
+position = "after"
+payload = '''
+,
+    cry_shinytag_tally() > 0 and create_toggle{ -- tally function runs way too often but whatever
+      label = localize('k_cry_shiny'), 
+      w = 0,
+      ref_table = G, 
+      ref_value = "showshinytags" 
+    } or nil,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+if not v.discovered then temp_tag.hide_ability = true end
+'''
+position = "before"
+payload = '''
+if G.showshinytags then 
+	temp_tag.ability.shiny = true
+	if not Cryptid.shinytagdata[temp_tag.key] then
+		temp_tag.hide_ability = true
+	end
+end
+'''
+match_indent = true
+
+# i can't seem to get the tag page easily
+# i'm also surprised this doesn't multipatch
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+local page = args.cycle_config.current_option or 1
+'''
+position = "at"
+payload = '''
+if args then G.cry_current_tagpage = args.cycle_config.current_option end
+local page = args and args.cycle_config.current_option or G.cry_current_tagpage or 1
+'''
+match_indent = true
+
+# update collection
+# scuffed
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+self.E_MANAGER:update(self.real_dt)
+'''
+position = "before"
+payload = '''
+if not G.showshinytags then G.showshinytags = false end
+if not G.showshinytags_b then G.showshinytags_b = false end
+
+if G.showshinytags ~= G.showshinytags_b then
+	G.showshinytags_b = G.showshinytags
+	G.FUNCS.your_collection_tags_page()
+end
+'''
+match_indent = true
+
+# save+loading time
+
+# cryptidsave stuff
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+if not love.filesystem.getInfo(G.SETTINGS.profile..'/'..'meta.jkr') then love.filesystem.append( G.SETTINGS.profile..'/'..'meta.jkr', 'return {}') end
+'''
+position = "after"
+payload = '''
+if not love.filesystem.getInfo(G.SETTINGS.profile..'/'..'cryptidsave.jkr') then love.filesystem.append( G.SETTINGS.profile..'/'..'cryptidsave.jkr', 'return {}') end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+local meta = STR_UNPACK(get_compressed(G.SETTINGS.profile..'/'..'meta.jkr') or 'return {}')
+'''
+position = "after"
+payload = '''
+local cryptidsave = STR_UNPACK(get_compressed(G.SETTINGS.profile..'/'..'cryptidsave.jkr') or 'return {}')
+
+if cryptidsave and cryptidsave.shinytags then
+	Cryptid.shinytagdata = copy_table(cryptidsave.shinytags)
+else
+	-- populated later when tags actually exist
+	Cryptid.shinytagdata = {}
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''tag.lua'''
+pattern = '''
+function Tag:yep(message, _colour, func)
+'''
+position = "after"
+payload = '''
+if self.ability.shiny then
+	if not Cryptid.shinytagdata[self.key] then
+		Cryptid.shinytagdata[self.key] = true
+		save_cryptid()
+	end
+end
+'''
 match_indent = true
