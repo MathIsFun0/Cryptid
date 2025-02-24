@@ -262,25 +262,7 @@ local sync_catalyst = {
 			"Math",
 		},
 	},
-	unlocked = false,
-	check_for_unlock = function(self, args)
-		if safe_get(G, "jokers") and safe_get(G.GAME, "round_resets", "ante") and G.GAME.round_resets.ante < 9 then
-			local rarities = {}
-			for i = 1, #G.jokers.cards do
-				local card = G.jokers.cards[i]
-				rarities[card.config.center.rarity .. "_rarity"] = true
-			end
-			if rarities["3_rarity"] and rarities["4_rarity"] and rarities["cry_epic_rarity"] then
-				unlock_card(self)
-			end
-		end
-		if args.type == "cry_lock_all" then
-			lock_card(self)
-		end
-		if args.type == "cry_unlock_all" then
-			unlock_card(self)
-		end
-	end,
+	unlocked = true,
 }
 
 -- Negative Joker
