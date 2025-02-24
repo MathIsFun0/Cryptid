@@ -786,7 +786,7 @@ return {
 				name = "Joker de test",
 				text = {
 					"{C:chips}+#1#{} Jeton#<s>1#",
-					"{C:inactive}Salut! :3"
+					"{C:inactive}Salut! :3",
 				},
 			},
 			j_cry_test_mainline = {
@@ -794,7 +794,7 @@ return {
 				text = {
 					"{C:chips}+#1#{} Jeton#<s>1#",
 					"{C:money}+$44{} lorsque la {C:attention}Blinde{} est sélectionnée",
-					"{C:inactive}Salut! :3"
+					"{C:inactive}Salut! :3",
 				},
 			},
 			j_cry_test_madness = {
@@ -802,7 +802,7 @@ return {
 				text = {
 					"{C:chips}+#1#{} Jeton#<s>1#",
 					"{C:money}+$44444{} lorsque la {C:attention}Blinde{} est sélectionnée",
-					"{C:inactive}Salut! :3"
+					"{C:inactive}Salut! :3",
 				},
 			},
 			j_cry_test_cryptid_in_2025 = {
@@ -810,7 +810,7 @@ return {
 				text = {
 					"{C:chips}+#1#{} Jeton#<s>1#",
 					"{C:money}+$44444{} lorsque la {C:attention}Blinde{} est sélectionnée",
-					"{C:inactive}On est où, là, Jen's Almanac?"
+					"{C:inactive}On est où, là, Jen's Almanac?",
 				},
 			},
 			j_cry_adroit = {
@@ -2292,7 +2292,7 @@ return {
 					"Gagner une partie",
 					"avec comme dernière main",
 					"un {E:1,C:attention}Rempart",
-				}
+				},
 			},
 			j_cry_subtle = {
 				name = "Joker subtil",
@@ -2332,7 +2332,7 @@ return {
 					"Gagner une partie",
 					"avec comme dernière main",
 					"un {E:1,C:attention}Pentacle flush", -- TODO: *what* do we use for hand names??
-				}
+				},
 			},
 			j_cry_sync_catalyst = {
 				name = "Catalyse Synchro",
@@ -2416,7 +2416,7 @@ return {
 					"avec comme dernière main",
 					"un {E:1,C:attention}Full flush",
 					-- okay for this one i think the betterfr hand name fits better
-				}
+				},
 			},
 			j_cry_universe = {
 				name = "L'Univers",
@@ -2541,7 +2541,7 @@ return {
 					"avec comme dernière main",
 					"un {E:1,C:attention}Bordel",
 					-- now do we have the family friendly mode here too or
-				}
+				},
 			},
 			j_cry_zooble = {
 				name = "Zooble",
@@ -2653,7 +2653,8 @@ return {
 				},
 			},
 			c_cry_universe = {
-				name = Cryptid_config.family_mode and "L'entièreté de l'univers observable" or "l'entièreté du putain d'univers",
+				name = Cryptid_config.family_mode and "L'entièreté de l'univers observable"
+					or "l'entièreté du putain d'univers",
 				text = {
 					"{S:0.8}({S:0.8,V:1}niv.#1#{S:0.8}){} Améliore",
 					"{C:attention}#2#",
@@ -4032,12 +4033,12 @@ return {
 		tutorial = {
 			cry_intro_1 = {
 				"Salut, je suis {C:attention}Joseph J. Joker{},",
-				"et bienvenue dans {C:cry_exotic,E:1}Cryptid{} !"
+				"et bienvenue dans {C:cry_exotic,E:1}Cryptid{} !",
 			},
 			cry_intro_2 = {
 				"On dirait que vous n'avez jamais joué",
 				"à {C:cry_exotic,E:1}Cryptid{} sur ce profil auparavant.",
-				"Laisse-moi te montrer comment ça marche, par ici !"
+				"Laisse-moi te montrer comment ça marche, par ici !",
 			},
 			cry_intro_3 = {
 				"*obtient des mains*",
@@ -4046,7 +4047,7 @@ return {
 				"C'est très dur d'expliquer ce mod",
 				"en quelques phrases, mais ce que je peux te dire",
 				"c'est que tu vas avoir des parties de {C:cry_exotic,E:1}taré !",
-				"On est très loin du {C:attention}Joker Poker{} classique, tu vois..."
+				"On est très loin du {C:attention}Joker Poker{} classique, tu vois...",
 			},
 			cry_intro_5 = {
 				"Comme tu peux le remarquer par ces",
@@ -4062,38 +4063,38 @@ return {
 			cry_modest_2 = {
 				"Mais modeste ne veut pas non plus dire nul, tu pourras",
 				"toujours rencontrer les nouvelles gimmicks de Cryptid !",
-				"Qui sait ce qu'il se passera dans tes prochaines manches..."
+				"Qui sait ce qu'il se passera dans tes prochaines manches...",
 			},
 			cry_mainline_1 = {
 				"Envie de {E:1,C:attention}casser{} le jeu ? Bonne nouvelle,",
 				"avec le style {C:cry_ascendant}Médian{}, tu peux maintenant le faire",
-				"sans que tout parte en sucette immédiatement !"
+				"sans que tout parte en sucette immédiatement !",
 			},
 			cry_mainline_2 = {
 				"La folie est toujours là, mais il y a un",
 				"{C:cry_ascendant}système de progression{} qui t'attend pour t'acclimater",
-				"au gameplay déjanté. Mais reste quand même sur tes gardes..."
+				"au gameplay déjanté. Mais reste quand même sur tes gardes...",
 			},
 			cry_mainline_3 = {
 				"Tu seras totalement plus puissant, mais",
 				"j'ai aussi créé de nombreux {E:1,C:dark_edition}boss{} qui vont",
-				"te faire regretter d'avoir choisi ce {C:cry_ascendant}style{}..."
+				"te faire regretter d'avoir choisi ce {C:cry_ascendant}style{}...",
 			},
 			cry_madness_1 = {
 				"T'as envie de complètement {C:red,E:1}réduire en cendres{} ton PC ?",
 				"C'est génial ! Le style {C:cry_ascendant}Maboul{} est plus du genre",
-				"à envoyer {E:1,C:red}tout équilibrage par la fenêtre !"
+				"à envoyer {E:1,C:red}tout équilibrage par la fenêtre !",
 			},
 			cry_madness_2 = {
 				"Et pour ça, j'ai passé de nombreuses nuits blanches",
 				"à bosser sur ce style pour qu'il soit",
-				"{C:cry_ascendant}PARFAITEMENT ÉQUILIBRÉ{}, comme tu le souhaitais !"
+				"{C:cry_ascendant}PARFAITEMENT ÉQUILIBRÉ{}, comme tu le souhaitais !",
 			},
 			cry_madness_3 = {
 				"Tu commences avec tout ce qui est possible débloqué",
 				"comme ça tu peux libérer tout le {C:red,E:1}potentiel ultime{}",
 				"de Cryptid dès le début ! Mais fais attention, il y a plus de chances",
-				"que tu {C:attention,E:1}plantes le jeu{} plus que tu ne perds de partie..."
+				"que tu {C:attention,E:1}plantes le jeu{} plus que tu ne perds de partie...",
 			},
 		},
 		poker_hands = {
