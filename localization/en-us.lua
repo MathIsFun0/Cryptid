@@ -66,6 +66,7 @@ return {
 				text = {
 					"All cards are {C:dark_edition}#1#{}",
 					"Cards cannot change editions",
+					"{C:inactive}(Click to edit)",
 				},
 			},
 			b_cry_encoded = {
@@ -91,6 +92,7 @@ return {
 				text = {
 					"All {C:attention}playing cards{}",
 					"are {C:attention}#1#{}(s)",
+					"{C:inactive}(Click to edit)",
 				},
 			},
 			b_cry_glowing = {
@@ -129,6 +131,7 @@ return {
 				name = "Sticker Deck",
 				text = {
 					"All cards are {C:attention}#1#{}",
+					"{C:inactive}(Click to edit)",
 				},
 			},
 			b_cry_sl_deck = {
@@ -136,6 +139,7 @@ return {
 				text = {
 					"All playing cards have a {C:dark_edition}#1#{}",
 					"Cards cannot change seals",
+					"{C:inactive}(Click to edit)",
 				},
 			},
 			b_cry_spooky = {
@@ -151,6 +155,7 @@ return {
 				text = {
 					"All playing cards are {C:dark_edition}#1#",
 					"and cannot change suits",
+					"{C:inactive}(Click to edit)",
 				},
 			},
 			b_cry_very_fair = {
@@ -1452,7 +1457,7 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = "Fucked-Up Joker",
+				name = Cryptid_config.family_mode and "Tidy Joker" or "Fucked-Up Joker",
 				text = {
 					"{C:red}+#1#{} Mult if played",
 					"hand contains",
@@ -2163,9 +2168,7 @@ return {
 				text = {
 					"After scoring {C:attention}#2#{} {C:inactive}[#1#]{} Enhanced",
 					"cards, sell this card to",
-					"create an {C:cry_epic}Epic{} {C:attention}Joker{}",
-					"{C:inactive,s:0.8}Will create a {C:red,s:0.8}Rare{} {C:attention,s:0.8}Joker{}",
-					"{C:inactive,s:0.8}if {C:cry_epic,s:0.8}Epic{} {C:inactive,s:0.8}Jokers are disabled{}",
+					"create a(n) {V:1}#3#{} {C:attention}Joker{}",
 				},
 			},
 			j_cry_savvy = {
@@ -2549,7 +2552,7 @@ return {
 				},
 			},
 			j_cry_wtf = {
-				name = "The Fuck!?",
+				name = Cryptid_config.family_mode and "The Cluster" or "The Fuck!?",
 				text = {
 					"{X:mult,C:white} X#1# {} Mult if played",
 					"hand contains",
@@ -2671,7 +2674,7 @@ return {
 				},
 			},
 			c_cry_universe = {
-				name = "The Universe In Its Fucking Entirety",
+				name = Cryptid_config.family_mode and "Universe" or "The Universe In Its Fucking Entirety",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
 					"{C:attention}#2#",
@@ -2883,7 +2886,7 @@ return {
 				name = "Summoning",
 				text = {
 					"Create a random",
-					"{C:cry_epic}Epic{} {C:joker}Joker{}, destroy",
+					"{V:1}#1#{} {C:joker}Joker{}, destroy",
 					"one random {C:joker}Joker{}",
 				},
 			},
@@ -4067,8 +4070,6 @@ return {
 			cry_intro_1 = {
 				"Hello, I'm {C:attention}Joseph J. Joker{}!",
 				"Welcome to {C:cry_exotic,E:1}Cryptid{}!",
-				"{s:0.8}Note: You are currently playing an early version",
-				"{s:0.8}of the refactor. Expect issues!",
 			},
 			cry_intro_2 = {
 				"It looks like you've never",
@@ -4088,6 +4089,8 @@ return {
 				"As you might be able to tell by these",
 				"{C:cry_ascendant}gamesets{}, I like the letter {C:attention}M{}.",
 				"Select a gameset for me to explain...",
+				"{s:0.8}Note: Gameset balancing is a heavy work in progress.",
+				"{s:0.8}Expect things to change frequently!",
 			},
 			cry_modest_1 = {
 				"Seeking an experience close to vanilla?",
@@ -4131,9 +4134,9 @@ return {
 		},
 		poker_hands = {
 			["cry_Bulwark"] = "Bulwark",
-			["cry_Clusterfuck"] = "Clusterfuck",
+			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Cluster" or "Clusterfuck",
 			["cry_UltPair"] = "Ultimate Pair",
-			["cry_WholeDeck"] = "The Entire Fucking Deck",
+			["cry_WholeDeck"] = Cryptid_config.family_mode and "Fifty Two" or "The Entire Fucking Deck",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4244,6 +4247,8 @@ return {
 			cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
 			cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
 			cry_mus_alt_bg = "Background Music (by MathIsFun_)",
+			cry_family = "Family Friendly Mode",
+			cry_experimental = "Experimental Mode",
 
 			k_cry_program_pack = "Program Pack",
 			k_cry_meme_pack = "Meme Pack",
@@ -4335,7 +4340,7 @@ return {
 			k_cry_cursed = "Cursed",
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",
-			k_planet_universe = "The Actual Fucking Universe",
+			k_planet_universe = Cryptid_config.family_mode and "Universe" or "The Actual Fucking Universe",
 
 			cry_notif_jimball_1 = "Jimball",
 			cry_notif_jimball_2 = "Copyright Notice",
@@ -4352,8 +4357,16 @@ return {
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Madness",
 			cry_gameset_custom = "Modified",
+			cry_gameset_experimental = "Experimental",
+			cry_gameset_experimental_modest = "Experimental (Modest)",
+			cry_gameset_experimental_mainline = "Experimental (Mainline)",
+			cry_gameset_experimental_madness = "Experimental (Madness)",
 
 			cry_view_set_contents = "View Items in Set",
+
+			b_reset_gameset_modest = "Reset Gameset Config (Modest)",
+			b_reset_gameset_mainline = "Reset Gameset Config (Mainline)",
+			b_reset_gameset_madness = "Reset Gameset Config (Madness)",
 		},
 		labels = {
 			food_jokers = "Food Jokers",
