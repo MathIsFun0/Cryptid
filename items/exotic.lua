@@ -136,7 +136,7 @@ local universum = {
 	end,
 	cry_credits = {
 		idea = { "Ein13" },
-		art = { "Ein13/hydrogenperoxiide" },
+		art = { "Ein13", "hydrogenperoxiide" },
 	},
 	init = function(self)
 		--Universum Patches
@@ -1169,7 +1169,7 @@ local energia = {
 	end,
 	cry_credits = {
 		idea = { "jenwalter666" },
-		art = { "Kailen" },
+		art = { "unexian" },
 		code = { "Math" },
 	},
 }
@@ -1446,12 +1446,7 @@ local formidiulosus = {
 				G.jokers:emplace(card)
 			end
 		end
-		if
-			context.cardarea == G.jokers
-			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and not context.before
-			and not context.after
-		then
+		if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
@@ -1493,7 +1488,7 @@ local items = {
 	--verisimile, WHY IS THIS AN EXOTIC????????????????????
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
-	--formidiulosus
+	formidiulosus,
 }
 return {
 	name = "Exotic Jokers",
