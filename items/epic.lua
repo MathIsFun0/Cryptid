@@ -1901,9 +1901,13 @@ local jtron = {
 		card.ability.extra.current = 1 + card.ability.extra.bonus * #SMODS.find_card("j_joker")
 		if context.cardarea == G.jokers and context.joker_main then
 			return {
-				message = localize({ type = "variable", key = "a_powmult", vars = {
-					number_format(card.ability.extra.current),
-				} }),
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.current),
+					},
+				}),
 				Emult_mod = card.ability.extra.current,
 				colour = G.C.DARK_EDITION,
 			}
