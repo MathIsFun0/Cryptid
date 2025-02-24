@@ -1,0 +1,109 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# This is sacrilegious
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.starting_deck_size = #G.playing_cards"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_ccd then
+    for k, v in pairs(G.playing_cards) do
+        v:set_ability(get_random_consumable('cry_ccd',{"no_doe", "no_grc"}, nil, nil, true), true, nil)
+    end
+end
+'''
+match_indent = true
+
+# Aura use conditions
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition) then return true end"
+position = "at"
+payload = '''
+if self.area ~= G.hand then
+    return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition)
+else
+    local idx = 1
+    if G.hand.highlighted[1] == self then
+        local idx = 2
+    end
+    return (#G.hand.highlighted == 2) and (not G.hand.highlighted[idx].edition)
+end
+'''
+match_indent = true
+
+# Prevent counting CCD consumables for pack uses
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if area == G.consumeables then"
+position = "at"
+payload = "if area == G.consumeables or area == G.hand then"
+match_indent = true
+
+# Fix bugs from removing CCD
+# This really shouldn't be in the card drawing code, but it doesn't really matter since that's where it crashes anyway lol
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not self.config.center.discovered and (self.ability.consumeable or self.config.center.unlocked) and not self.config.center.demo and not self.bypass_discovery_center then"
+position = "before"
+payload = "if self.ability.set == 'Enhanced' then self.ability.consumeable = nil end"
+match_indent = true
+
+# ui, ui, ui
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''name_from_rows(AUT.name, is_playing_card and G.C.WHITE or nil),'''
+position = "at"
+payload = '''
+AUT.ccd and name_from_rows(AUT.ccd.name, G.C.WHITE) or nil,
+AUT.ccd and desc_from_rows(AUT.ccd.main) or nil,
+name_from_rows(AUT.name, is_playing_card and G.C.WHITE or nil),
+'''
+match_indent = true
+
+# i love patching like five billion things
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end, self)'''
+position = "before"
+payload = '''
+if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then
+	loc_vars = loc_vars or {}
+	loc_vars.ccd = {
+		playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
+		nominal_chips = self.base.nominal > 0 and self.base.nominal or nil,
+		bonus_chips = (self.ability.bonus + (self.ability.perma_bonus or 0)) > 0 and (self.ability.bonus + (self.ability.perma_bonus or 0)) or nil,
+	}
+end
+'''
+match_indent = true
+
+# lalala ok this is a mess
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''local loc_vars = {}'''
+position = "before"
+payload = '''
+if specific_vars and specific_vars.ccd then
+	full_UI_table.ccd = {name = {}, main = {}}
+	localize{type = 'other', key = 'playing_card', set = 'Other', nodes = full_UI_table.ccd.name, vars = {localize(specific_vars.ccd.value, 'ranks'), localize(specific_vars.ccd.suit, 'suits_plural'), colours = {specific_vars.ccd.colour}}}
+	full_UI_table.ccd.name = full_UI_table.ccd.name[1]
+	if specific_vars.ccd.nominal_chips then 
+		localize{type = 'other', key = 'card_chips', nodes = full_UI_table.ccd.main, vars = {specific_vars.ccd.nominal_chips}}
+	end
+	if specific_vars.ccd.bonus_chips then
+		localize{type = 'other', key = 'card_extra_chips', nodes = full_UI_table.ccd.main, vars = {specific_vars.ccd.bonus_chips}}
+	end
+end
+'''
+match_indent = true
