@@ -357,7 +357,7 @@ return {
 				text = {
 					"Nhân không thể",
 					"nhiều hơn Chip",
-			},
+				},
 			},
 			bl_cry_vermillion_virus = {
 				name = "Vermillion Virus",
@@ -558,7 +558,7 @@ return {
 				text = {
 					"Biến đổi {C:cry_code}#1#{} lá bài đã chọn",
 					"thành bậc {C:cry_code}mong muốn",
-					},
+				},
 			},
 		},
 		["Content Set"] = {
@@ -4413,7 +4413,9 @@ return {
 				ending_shop = { "ở cuối {C:attention}shop{}" },
 				skip_blind = { "khi một {C:attention}blind{} bị bỏ qua" },
 				skipping_booster = { "khi bỏ qua một {C:attention}Gói Bài{}" },
-				playing_card_added = { "mỗi khi một {C:attention}lá bài thường{} được thêm vào bộ bài của bạn", },
+				playing_card_added = {
+					"mỗi khi một {C:attention}lá bài thường{} được thêm vào bộ bài của bạn",
+				},
 				first_hand_drawn = { "khi ván bắt đầu" },
 				setting_blind = { "khi {C:attention}Blind{} được chọn" },
 				remove_playing_cards = { "khi một lá bài bị phá hủy" },
@@ -4496,7 +4498,9 @@ return {
 			ch_c_cry_all_banana = { "Mọi Joker đều có {C:eternal}Chuối Tiêu{}" },
 			ch_c_all_rnj = { "Mọi Joker đều là {C:attention}RNJoker{}" },
 			ch_c_cry_sticker_sheet_plus = { "Tất cả lá bài có thể mua đều có nhãn" },
-			ch_c_cry_rush_hour = { "Mọi Boss Blind đều là {C:attention}The Clock{} hoặc {C:attention}Lavender Loop" },
+			ch_c_cry_rush_hour = {
+				"Mọi Boss Blind đều là {C:attention}The Clock{} hoặc {C:attention}Lavender Loop",
+			},
 			ch_c_cry_rush_hour_ii = { "Mọi Blind đều là {C:attention}Boss Blind{}" },
 			ch_c_cry_rush_hour_iii = {
 				"{C:attention}The Clock{} và {C:attention}Lavender Loop{} tăng trưởng nhanh hơn {C:attention}gấp đôi{}",
