@@ -1446,11 +1446,7 @@ local formidiulosus = {
 				G.jokers:emplace(card)
 			end
 		end
-		if
-			context.cardarea == G.jokers
-			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and context.joker_main
-		then
+		if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
