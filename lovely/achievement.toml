@@ -1,0 +1,38 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+## Cryptid Achievements
+
+# Check to earn some achievements on startup
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''check_for_unlock({type = 'blind_discoveries'})'''
+position = "after"
+payload = '''
+if change_context ~= "splash" then
+    if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_used_crash'] and G.ACHIEVEMENTS['ach_cry_used_crash'].earned) then check_for_unlock({type = 'ach_cry_used_crash'}) end
+    if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_traffic_jam'] and G.ACHIEVEMENTS['ach_cry_traffic_jam'].earned) then check_for_unlock({type = 'win_challenge_startup'}) end
+    if not (G.ACHIEVEMENTS and G.ACHIEVEMENTS['ach_cry_perfectly_balanced'] and G.ACHIEVEMENTS['ach_cry_perfectly_balanced'].earned) then check_for_unlock({type = 'win_stake_startup'}) end
+end'''
+match_indent = true
+
+# Cryptid the Cryptid check
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''new_cards[#new_cards+1] = _card'''
+position = "before"
+payload = '''if _card.config.center.key == "c_cryptid" then check_for_unlock({type = "cryptid_the_cryptid"}) end'''
+match_indent = true
+
+# WHAT HAVE YOU DONE check
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''local sliced_card = G.jokers.cards[my_pos+1]'''
+position = "after"
+payload = '''if sliced_card.config.center.rarity == "cry_exotic" then check_for_unlock({type = "what_have_you_done"}) end'''
+match_indent = true

@@ -1,0 +1,31 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Rush Hour - remove tags
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if type == 'Small' then"
+position = "at"
+payload = "if type == 'Small' and not G.GAME.modifiers.cry_no_tags then"
+match_indent = true
+
+# Rush Hour - remove tags
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "elseif type == 'Big' then"
+position = "at"
+payload = "elseif type == 'Big' and not G.GAME.modifiers.cry_no_tags then"
+match_indent = true
+
+# Rush Hour - remove tags
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "elseif not run_info then"
+position = "at"
+payload = "elseif type == 'Boss' and not run_info then"
+match_indent = true

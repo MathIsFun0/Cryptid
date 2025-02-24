@@ -1,0 +1,176 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 1
+
+# what in ze fuck am i cooking
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.states.collide.can = true'''
+position = "after"
+payload = '''
+if self.key == 'tag_cry_cat' then tag_sprite.states.click.can = true; tag_sprite.states.drag.can = true end
+'''
+match_indent = true
+
+# m
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Node.stop_hover(_self); _self.hover_tilt = 0 end'''
+position = "after"
+payload = '''
+tag_sprite.click = function(_self)
+        if self.key == 'tag_cry_cat' and self.HUD_tag then
+		for i = 1, #G.GAME.tags do
+			local other_cat = G.GAME.tags[i]
+			if other_cat.key == 'tag_cry_cat' then
+				if not self.ability.level then self.ability.level = 1 end
+				if not other_cat.ability.level then other_cat.ability.level = 1 end	-- setting ability just doesn't seem to be working... so you get this
+				if (self.ability.level == other_cat.ability.level) and (other_cat ~= self) and not cry_too_fast_kitty then
+					cry_too_fast_kitty = true
+					local perc = (other_cat.ability.level + 1)/10
+					if perc > 1 then perc = 1 end
+
+					local edition = G.P_CENTER_POOLS.Edition[1]
+					local j = 1
+					while j < other_cat.ability.level + 1 do
+						for i = 2, #G.P_CENTER_POOLS.Edition do
+							j = j + 1
+							if j >= other_cat.ability.level + 1 then
+								edition = G.P_CENTER_POOLS.Edition[i]
+								break
+							end
+						end
+					end
+
+					G.E_MANAGER:add_event(Event({
+						delay = 0.0,
+						trigger = 'immediate',
+						func = (function()
+							attention_text({
+								text = ""..other_cat.ability.level,
+								colour = G.C.WHITE,
+								scale = 1,
+								hold = 0.3/G.SETTINGS.GAMESPEED,
+								cover = other_cat.HUD_tag,
+								cover_colour = G.C.DARK_EDITION,
+								align = 'cm',
+							})
+							play_sound('generic1', 0.8 + perc/2, 0.6)
+							play_sound('multhit1', 0.9 + perc/2, 0.4)
+							return true
+						end)
+					}))
+					G.E_MANAGER:add_event(Event({
+						delay = 0.0,
+						trigger = 'immediate',
+						func = (function()
+							attention_text({
+								text = "-",
+								colour = G.C.WHITE,
+								scale = 1,
+								hold = 0.3/G.SETTINGS.GAMESPEED,
+								cover = self.HUD_tag,
+								cover_colour = G.C.RED,
+								align = 'cm',
+							})
+							return true
+						end)
+					}))
+					G.E_MANAGER:add_event(Event({
+						func = (function()
+							self.HUD_tag.states.visible = false
+							return true
+						end)
+					}))
+					G.E_MANAGER:add_event(Event({		-- i have no idea what this does but i'm not messing with it
+						func = func
+					}))
+
+					other_cat.ability.level = other_cat.ability.level + 1
+
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.7,
+						func = (function()
+							other_cat:juice_up(0.25, 0.1)
+							other_cat.ability.edshader = edition.shader
+							play_sound(edition.sound.sound, (edition.sound.per or 1)*1.3, (edition.sound.vol or 0.25)*0.6)
+							self:remove()
+							cry_too_fast_kitty = nil
+							return true
+						end)
+					}))
+					break
+				end
+			end
+		end
+	end
+end
+'''
+match_indent = true
+
+# tag_sprite draw
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Node.stop_hover(_self); _self.hover_tilt = 0 end'''
+position = "after"
+payload = '''
+tag_sprite.draw = function(_self)
+	if not _self.states.visible then return end
+
+	_self.tilt_var = self.tilt_var or {mx = 0, my = 0, dx = _self.tilt_var.dx or 0, dy = _self.tilt_var.dy or 0, amt = 0}
+	_self.tilt_var.mx, _self.tilt_var.my = G.CONTROLLER.cursor_position.x, G.CONTROLLER.cursor_position.y
+        _self.tilt_var.amt = math.abs(_self.hover_offset.y + _self.hover_offset.x - 10)*0.3
+
+        _self.ARGS.send_to_shader = _self.ARGS.send_to_shader or {}
+        _self.ARGS.send_to_shader[1] = math.min(_self.VT.r*3, 1) + G.TIMERS.REAL/(28) + (_self.juice and _self.juice.r*10 or 0) + _self.tilt_var.amt
+        _self.ARGS.send_to_shader[2] = G.TIMERS.REAL*2
+
+	_self.tilt_var = _self.tilt_var or {}
+	_self.tilt_var.mx, _self.tilt_var.my =G.CONTROLLER.cursor_position.x,G.CONTROLLER.cursor_position.y
+
+	_self.role.draw_major = _self
+	_self:draw_shader('dissolve', 0.1)
+	local ed = _self.config.tag.ability.edshader
+	if ed then
+		if ed == 'foil' or ed == 'cry_noisy' then
+			_self:draw_shader('dissolve')
+		end
+		_self:draw_shader(ed, nil, _self.ARGS.send_to_shader)
+		if ed == 'negative' or ed == 'cry_oversat' then
+			_self:draw_shader('negative_shine', nil, _self.ARGS.send_to_shader)
+		end
+	else
+		_self:draw_shader('dissolve')
+	end
+	add_to_drawhash(_self)
+end
+'''
+match_indent = true
+
+# init tilt_var
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''tag_sprite.T.scale = 1'''
+position = "before"
+payload = '''
+tag_sprite.tilt_var = {mx = 0, my = 0, dx = 0, dy = 0, amt = 0}
+'''
+match_indent = true
+
+# make the cat tag meow (can probably do this without injecting?)
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = '''play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)'''
+position = "before"
+payload = '''
+if self.key == 'tag_cry_cat' then
+	play_sound('cry_meow'..math.random(4), 1.26, 0.12);
+end'''
+match_indent = true

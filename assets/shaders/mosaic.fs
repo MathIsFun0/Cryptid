@@ -24,7 +24,7 @@ vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
 	float t = time * 10.0 + 2003.;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/max(texture_details.b, texture_details.a);
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 2.3 * max(texture_details.b, texture_details.a);
-	
+
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
 	vec2 field_part3 = uv_scaled_centered + 50.*vec2(sin(-t / 87.53218), sin(-t / 49.0000));
@@ -103,7 +103,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float t = mosaic.y*7.221 + time;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 250.;
-	
+
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
 	vec2 field_part3 = uv_scaled_centered + 50.*vec2(sin(-t / 87.53218), sin(-t / 49.0000));
@@ -111,7 +111,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float field = (1.+ (
         cos(length(field_part1) / 19.483) + sin(length(field_part2) / 33.155) * cos(field_part2.y / 15.73) +
         cos(length(field_part3) / 27.193) * sin(field_part3.x / 21.92) ))/2.;
-	
+
 	float res = (.5 + .5* cos( (mosaic.x) * 2.612 + ( field + -.5 ) *3.14));
 
 	number low = min(tex.b, min(tex.g, tex.r));
@@ -120,13 +120,13 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	number gridsize = 0.6;
     number fac = max(max(0., 7.*abs(cos(uv.x*gridsize*20.))-6.), max(0., 7.*cos(uv.y*gridsize*45.)-6.));
-	
+
 	hsl.x = hsl.x + res + fac;
-	hsl.y = hsl.y*1.3;	
+	hsl.y = hsl.y*1.3;
 	hsl.z = hsl.z*0.6+0.4;
 
     tex =(1.-delta)*tex + delta*RGB(hsl)*vec4(0.6,0.5,1.4,tex.a);
-	
+
 	return dissolve_mask(tex*colour, texture_coords, uv);
 }
 

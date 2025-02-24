@@ -1,0 +1,375 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Code UI disables hold R shortcut
+[[patches]]
+[patches.pattern]
+target = "engine/controller.lua"
+pattern = 'if key == "r" and not G.SETTINGS.paused then'
+position = "at"
+payload = 'if key == "r" and not G.SETTINGS.paused and not (G.GAME and G.GAME.USING_CODE) then'
+match_indent = true
+
+
+# Payload - cash out UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif config.name == 'interest' then"
+position = "before"
+payload = '''
+elseif config.name == 'interest_payload' then
+table.insert(left_text, {n=G.UIT.T, config={text = num_dollars, scale = 0.8*scale, colour = G.C.SECONDARY_SET.Code, shadow = true, juice = true}})
+table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount*config.payload, 5, G.GAME.interest_amount*config.payload*G.GAME.interest_cap/5}}}, colours = {G.C.SECONDARY_SET.Code}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})
+'''
+match_indent = true
+
+# Payload - cash out
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then"
+position = "at"
+payload = '''
+if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest and G.GAME.cry_payload then
+    add_round_eval_row({bonus = true, payload = G.GAME.cry_payload, name='interest_payload', pitch = pitch, dollars = G.GAME.interest_amount*G.GAME.cry_payload*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})
+    pitch = pitch + 0.06
+    if not G.GAME.seeded and not G.GAME.challenge then
+        if G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5) == G.GAME.interest_amount*G.GAME.interest_cap/5 then
+            G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak + 1
+        else
+            G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = 0
+        end
+    end
+    check_for_unlock({type = 'interest_streak'})
+    dollars = dollars + G.GAME.interest_amount*G.GAME.cry_payload*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
+    G.GAME.cry_payload = nil
+elseif G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then'''
+match_indent = true
+
+# Revert - fix a crash
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if area and area.cards[1] then"
+position = "at"
+payload = "if area and area.cards and area.cards[1] then"
+match_indent = true
+
+# Crash - use glitched shader
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.SHADERS['CRT']:send('glitch_intensity', 0)--0.1*G.SETTINGS.GRAPHICS.crt/100 + (G.screenwipe_amt) + 1)"
+position = "at"
+payload = "G.SHADERS['CRT']:send('glitch_intensity', glitched_intensity or 0)"
+match_indent = true
+
+# Semicolon - don't lose
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.RESET_JIGGLES = true'''
+position = 'after'
+match_indent = true
+payload = '''
+if G.GAME.current_round.semicolon then
+    game_over = false
+end
+'''
+
+# Semicolon - end screen text
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''localize\('ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
+position = 'at'
+# match_indent = true
+line_prepend = ''
+payload = '''(G.GAME.current_round.semicolon and ";" or localize('ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
+
+# Semicolon - polished UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''{n=G.UIT.T, config={text = localize('b_cash_out')..": ", scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true}},'''
+position = "at"
+payload = '''{n=G.UIT.T, config={text = G.GAME.current_round.semicolon and localize('k_end_blind') or (localize('b_cash_out')..": "), scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true}},'''
+match_indent = true
+
+# Semicolon - polished UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''{n=G.UIT.T, config={text = localize('$')..config.dollars, scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+position = "at"
+payload = '''{n=G.UIT.T, config={text = not G.GAME.current_round.semicolon and localize('$')..config.dollars or ';', scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+match_indent = true
+
+# Semicolon - polished UI
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''{n=G.UIT.R, config={id = 'cash_out_button', align = "cm", padding = 0.1, minw = 7, r = 0.15, colour = G.C.ORANGE, shadow = true, hover = true, one_press = true, button = 'cash_out', focus_args = {snap_to = true}}, nodes={'''
+position = "at"
+payload = '''{n=G.UIT.R, config={id = 'cash_out_button', align = "cm", padding = 0.1, minw = 7, r = 0.15, colour = G.GAME.current_round.semicolon and G.C.SET.Code or G.C.ORANGE, shadow = true, hover = true, one_press = true, button = 'cash_out', focus_args = {snap_to = true}}, nodes={'''
+match_indent = true
+
+# Semicolon - reset value at start of round
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.blind:set_blind(G.GAME.round_resets.blind)"
+position = "after"
+payload = '''
+G.GAME.current_round.semicolon = false
+'''
+match_indent = true
+
+# Delete - placeholder booster, in the case that all are deleted
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''return center\nend\n\nfunction get_current_pool\(_type, _rarity, _legendary, _append\)'''
+position = "before"
+payload = '''if not center then center = G.P_CENTERS['p_buffoon_normal_1'] end '''
+
+# Delete - banished keys prevent pool stuff, guess we're going for this method after all
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if v.yes_pool_flag and not G.GAME.pool_flags[v.yes_pool_flag] then add = nil end'''
+position = "after"
+payload = '''if G.GAME.cry_banished_keys[v.key] then add = nil end'''
+match_indent = true
+
+# Delete - multiuse 1
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if card.area and (not nc or card.area == G.pack_cards) then card.area:remove_card(card) end'''
+position = "before"
+payload = '''
+local cry_muse = false
+if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) then
+	cry_muse = true
+	dont_dissolve = true
+end
+'''
+match_indent = true
+
+# Delete - multiuse 2
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if (prev_state == G.STATES.TAROT_PACK or prev_state == G.STATES.PLANET_PACK or'''
+position = "before"
+payload = '''
+if cry_muse then
+	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+	card:set_cost()
+	delay(0.4)
+
+	-- i make my own card eval status text :D
+
+	card:juice_up()
+	play_sound('generic1')
+	attention_text({
+		text = format_ui_value(card.ability.cry_multiuse),
+		scale = 1.1,
+		hold = 0.6,
+		major = card,
+		backdrop_colour = G.C.SECONDARY_SET[card.config.center.set],
+		align = 'bm',
+		offset = {x = 0, y = 0.2}
+	})
+
+	delay(0.8)
+	local _area = area ~= G.pack_cards and area or G.consumeables
+	draw_card(G.play, _area, 1, 'up', true, card, nil, true)
+end
+'''
+match_indent = true
+
+# Delete - init table to avoid headaches
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ecto_minus = 1,'''
+position = "after"
+payload = '''
+cry_banished_keys = {},
+'''
+match_indent = true
+
+# Run - don't clear shop
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.shop then self.shop:remove(); self.shop = nil end'''
+position = "at"
+payload = '''if self.shop and not G.GAME.USING_CODE then self.shop:remove(); self.shop = nil end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''ease_background_colour_blind(G.STATES.SHOP)'''
+position = "at"
+payload = '''if not G.GAME.USING_RUN then ease_background_colour_blind(G.STATES.SHOP) end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.STATE == self.STATES.SELECTING_HAND then'''
+position = "before"
+payload = '''
+if G.GAME.USING_RUN then
+	if not (self.STATE == self.STATES.STANDARD_PACK or self.STATE == self.STATES.BUFFOON_PACK or self.STATE == self.STATES.PLANET_PACK or self.STATE == self.STATES.TAROT_PACK or self.STATE == self.STATES.SPECTRAL_PACK or self.STATE == self.STATES.SMODS_BOOSTER_OPENED) then -- do you are have stupid
+		self.STATE = self.STATES.SHOP
+	end
+	if G.GAME.blind then G.GAME.blind:change_colour() end	-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+	if G.load_cry_runarea then
+		G.cry_runarea = CardArea(
+			G.discard.T.x,
+			G.discard.T.y,
+			G.discard.T.w,
+			G.discard.T.h,
+			{ type = "discard", card_limit = 1e100 }
+		)
+		G.cry_runarea:load(G.load_cry_runarea)
+		G.load_cry_runarea = nil
+	end
+end
+'''
+match_indent = true
+
+# Run - handle packs (this is incredibly invasive)
+# we can't do "draw from run to hand" because modded packs presumably don't get ovewritten like that
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''for i=1, hand_space do --draw cards from deckL'''
+position = "before"
+payload = '''if not G.GAME.USING_RUN then'''
+match_indent = true
+# the inconsistency hurts
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.FUNCS.draw_from_hand_to_deck()'''
+position = "at"
+payload = '''if not G.GAME.USING_RUN then
+	G.FUNCS.draw_from_hand_to_deck()
+else
+	G.FUNCS.draw_from_hand_to_run()
+end'''
+match_indent = true
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '''end\n\s+G\.FUNCS\.discard_cards_from_highlighted \= function\(e, hook\)'''
+position = "before"
+payload = '''
+else
+	for i = 1, #G.cry_runarea.cards do
+		draw_card(G.cry_runarea,G.hand, i*100/#G.cry_runarea.cards,'up', true)
+	end
+end
+G.FUNCS.draw_from_hand_to_run = function(e)	-- might as well just slap this here
+	local hand_count = #G.hand.cards
+	for i=1, hand_count do --draw cards from deck
+		draw_card(G.hand, G.cry_runarea, i*100/hand_count,'down', nil, nil,  0.08)
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''G.shop.alignment.offset.y = -5.3'''
+position = "at"
+payload = '''if not G.shop then return true end
+G.shop.alignment.offset.y = -5.3'''
+match_indent = true
+
+# Increase highlight limit for consumables
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1})"
+position = "at"
+payload = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1e100})"
+match_indent = true
+
+# Increase highlight limit for jokers
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "{card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1})"
+position = "at"
+payload = "{card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1e100})"
+match_indent = true
+
+# Satellite Uplink
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''card = create_card("Planet", G.pack_cards, nil, nil, true, true, nil, 'pl1')'''
+position = "at"
+payload = '''
+if G.GAME.used_vouchers.v_cry_satellite_uplink and pseudorandom('cry_satellite_uplink') > 0.8 then
+    card = create_card("Code", G.pack_cards, nil, nil, true, true, nil, 'pl2')
+else
+    card = create_card("Planet", G.pack_cards, nil, nil, true, true, nil, 'pl1')
+end
+'''
+match_indent = true
+
+# Exploit - reset variables
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''-- TARGET: effects after hand evaluation'''
+position = "after"
+payload = '''
+G.E_MANAGER:add_event(Event({
+	func = function()
+		G.GAME.cry_exploit_override = nil
+		return true
+	end
+}))
+'''
+match_indent = true
+
+# Exploit - patch into smods
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''disp_text = text'''
+position = "before"
+payload = '''
+text = G.GAME.cry_exploit_override or text
+'''
+match_indent = true
+
+# Double Tag makes exact copy of rework tag
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = 'add_tag(Tag(_context.tag.key))'
+position = "at"
+payload = '''
+	local tag = Tag(_context.tag.key)
+	if _context.tag.key == "tag_cry_rework" then
+		tag.ability.rework_edition = _context.tag.ability.rework_edition
+		tag.ability.rework_key = _context.tag.ability.rework_key
+	end
+	add_tag(tag)
+'''
+match_indent = true
