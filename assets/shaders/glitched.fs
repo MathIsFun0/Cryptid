@@ -24,7 +24,7 @@ vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
 	float t = time * 10.0 + 2003.;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/max(texture_details.b, texture_details.a);
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 2.3 * max(texture_details.b, texture_details.a);
-	
+
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
 	vec2 field_part3 = uv_scaled_centered + 50.*vec2(sin(-t / 87.53218), sin(-t / 49.0000));
@@ -108,19 +108,19 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec2 texCoordsR = texture_coords;
     vec2 texCoordsG = texture_coords;
     vec2 texCoordsB = texture_coords;
-    
+
     float iTime = tan(2. * time);
 
     texCoordsR.x += (0.004 * rand(vec2(iTime, uv.y))) - 0.002 + (POLY_THROWAWAY * 0.0000001);
     texCoordsG.x += (0.007 * rand(vec2(iTime*2., uv.y*0.9))) - 0.0035 + (POLY_THROWAWAY * 0.0000001);
     texCoordsB.x += (0.010 * rand(vec2(iTime*3., uv.y*0.8))) - 0.005 + (POLY_THROWAWAY_2 * 0.0000001);
-    
+
     vec4 texR = Texel(texture, texCoordsR);
     vec4 texG = Texel(texture, texCoordsG);
     vec4 texB = Texel(texture, texCoordsB);
-    
+
     vec4 tex = vec4(texR.r, texG.g, texB.b, texR.a);
-    
+
     return dissolve_mask(tex*colour, texture_coords, uv);
 }
 

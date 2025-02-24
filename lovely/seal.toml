@@ -1,0 +1,20 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 10
+
+
+# Call Card:calculate_seal() with destroying_card context
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '(?<indent>[\t ]*)if destroyed then \n'
+position = 'before'
+line_prepend = '$indent'
+payload = '''
+if scoring_hand[i]:calculate_seal({destroying_card = scoring_hand[i], full_hand = G.play.cards}) and not scoring_hand[i].ability.eternal then
+    destroyed = true
+end
+
+'''
+

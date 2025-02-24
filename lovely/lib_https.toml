@@ -1,0 +1,74 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# hi it's me toneblock and i'm being stupid again! (Game:update inject)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.FILE_HANDLER and G.FILE_HANDLER and G.FILE_HANDLER.update_queued and ('''
+position = "before"
+payload = '''
+if not GLOBAL_cry_member_count_delay then GLOBAL_cry_member_count_delay = 0 end
+if (GLOBAL_cry_member_count_delay > 5) or not GLOBAL_cry_member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
+	if update_cry_member_count then update_cry_member_count() end	-- i honestly hate nil checks like this, wish there was a shorthand
+	GLOBAL_cry_member_count_delay = 0
+else
+	GLOBAL_cry_member_count_delay = GLOBAL_cry_member_count_delay + dt
+end
+'''
+match_indent = true
+
+# call update_cry_member_count() whenever the collection is opened to ensure it updates properly on title collection if it can (better than running it on loc_vars)
+# it's not computationally intense at all, so whatever
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.FUNCS.your_collection = function(e)'''
+position = "after"
+payload = '''
+if update_cry_member_count then update_cry_member_count() end
+'''
+match_indent = true
+
+# notice if https is disabled (by default)
+# also does some other things since this is patching in the same spot (SDM0 easter egg)
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if _c.set == 'Other' then"
+position = "before"
+payload = '''
+if _c.name == 'cry-membershipcard' or _c.name == 'cry-membershipcardtwo' then
+	if not Cryptid.enabled["HTTPS Module"] then
+		if G.localization.descriptions.Other.cry_https_disabled then
+			main_end = {}
+			localize{type = 'other', key = 'cry_https_disabled', nodes = main_end, vars = {}}
+			main_end = main_end[1]
+		end
+	end
+end
+if _c.name == 'cry-translucent Joker' then
+	if G.jokers and G.jokers.cards then
+                for k, v in ipairs(G.jokers.cards) do
+                    if (v.edition and v.edition.negative) and (G.localization.descriptions.Other.remove_negative)then
+                        main_end = {}
+                        localize{type = 'other', key = 'remove_negative', nodes = main_end, vars = {}}
+                        main_end = main_end[1]
+                        break
+                    end
+                end
+        end
+end
+if _c.name == 'cry-blurred Joker' then
+	if (SMODS.Mods["sdm0sstuff"] or {}).can_load then
+		if G.localization.descriptions.Other.blurred_sdm0 then
+			main_end = {}
+			localize{type = 'other', key = 'blurred_sdm0', nodes = main_end, vars = {}}
+			main_end = main_end[1]
+		end
+	end
+end
+'''
+match_indent = true
