@@ -1640,6 +1640,15 @@ return {
 					"{C:attention}Jokers",
 				},
 			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Played and scoring {C:attention}Kings{} give",
+					"{C:attention}+#1#{} hand size for the round",
+					"and trigger {C:attention}held in hand{} effects",
+					"{C:inactive}(Currently {C:attention}+#2#{C:inactive} hand size)",
+				},
+			},
 			j_cry_lightupthenight = {
 				name = "Light Up the Night",
 				text = {

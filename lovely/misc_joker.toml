@@ -1,0 +1,21 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# LeBaron James - Calculate Steel effects when played
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if context.cardarea == G.hand and context.main_scoring then"
+position = "at"
+payload = "if (context.cardarea == G.hand or context.cardarea == G.play and next(SMODS.find_card('j_cry_lebaron_james')) and safe_get(SMODS.Ranks,safe_get(card,'base','value') or 'm','key') == 'King') and context.main_scoring then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "ret.playing_card = {}"
+position = "at"
+payload = "ret.playing_card = ret.playing_card or {}"
+match_indent = true
