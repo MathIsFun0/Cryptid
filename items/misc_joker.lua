@@ -7610,18 +7610,18 @@ local lebaron_james = {
 	name = "cry-LeBaron James",
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
-	config = {extra = {h_mod = 1, h_size = 0}},
+	config = { extra = { h_mod = 1, h_size = 0 } },
 	rarity = 3,
 	cost = 6,
 	atlas = "atlasone",
 	order = 133,
 	loc_vars = function(self, info_queue, center)
-		return { vars = {center.ability.extra.h_mod,center.ability.extra.h_size} }
+		return { vars = { center.ability.extra.h_mod, center.ability.extra.h_size } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual then
 			if SMODS.Ranks[context.other_card.base.value].key == "King" then
-				G.hand:change_size(math.min(1000-card.ability.extra.h_size, card.ability.extra.h_mod))
+				G.hand:change_size(math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
 				card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
 				return {
 					message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
@@ -7631,7 +7631,7 @@ local lebaron_james = {
 			end
 		end
 		if context.end_of_round and not context.individual and not context.repetition then
-			G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
+			G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
 			card.ability.extra.h_size = 0
 			return {
 				card = card,
@@ -7640,18 +7640,19 @@ local lebaron_james = {
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-1*math.min(1000, card.ability.extra.h_size))
+		G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
 	end,
 	cry_credits = {
 		idea = {
-			"indefenite_idiot", "HexaCryonic"
+			"indefenite_idiot",
+			"HexaCryonic",
 		},
 		code = {
-			"AlexZGreat"
+			"AlexZGreat",
 		},
 		art = {
-			"lamborghiniofficial"
-		}
+			"lamborghiniofficial",
+		},
 	},
 	init = function(self)
 		-- Calculate enhancements for kings as if held in hand
@@ -7660,14 +7661,19 @@ local lebaron_james = {
 		local cce = Card.calculate_enhancement
 		function Card:calculate_enhancement(context)
 			local ret = cce(self, context)
-			if not ret and next(SMODS.find_card("j_cry_lebaron_james")) and SMODS.Ranks[self.base.value].key == "King" and context.cardarea == G.play then
+			if
+				not ret
+				and next(SMODS.find_card("j_cry_lebaron_james"))
+				and SMODS.Ranks[self.base.value].key == "King"
+				and context.cardarea == G.play
+			then
 				context.cardarea = G.hand
 				local ret = cce(self, context)
 				context.cardarea = G.play
 			end
 			return ret
 		end
-	end
+	end,
 }
 local miscitems = {
 	jimball_sprite,
