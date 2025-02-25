@@ -909,8 +909,13 @@ end
 -- Forced joker triggering, used by Demicolon
 function force_calculate(card)
 	local context = safe_get(Cryptid.force_contexts, card.config.center.key)
-	if not context then
+	if not (context and context[1]) then
 		return false
+	end
+	if type(context[1]) == "function" then
+		context = context[1](context[2] or {})
+	else
+		context = context[1]
 	end
 	context.forced = true
 	local eval, post = eval_card(card, context)
@@ -919,14 +924,52 @@ function force_calculate(card)
 	return eval and true or post
 end
 
+function __context(t, arg)
+	local ret = arg or {}
+	for k, v in pairs(t) do
+		ret[k] = v
+	end
+	return ret
+end
+
+function __joker_main(t)
+	return __context(t, { cardarea = G.jokers, joker_main = true })
+end
+
+function __individual_play(t)
+	return __context(t, { cardarea = G.play, individual = true })
+end
+
+function __poker_hand(t)
+	return { poker_hands = { [t] = {"m"} } }
+end
+
+__any_suit = { other_card = { is_suit = function(self) return true end } }
+
+-- How these work: {constructor function, extra args}
 Cryptid.force_contexts = {
 	-- Vanilla Jokers (collection order)
-
+	-- Page 1
+	j_joker = {__joker_main},
+	j_greedy_joker = {__individual_play, __any_suit},
+	j_lusty_joker = {__individual_play, __any_suit},
+	j_wrathful_joker = {__individual_play, __any_suit},
+	j_gluttenous_joker = {__individual_play, __any_suit},
+	j_jolly = {__joker_main, __poker_hand("Pair")},
+	j_zany = {__joker_main, __poker_hand("Three of a Kind")},
+	j_mad = {__joker_main, __poker_hand("Two Pair")},
+	j_crazy = {__joker_main, __poker_hand("Straight")},
+	j_droll = {__joker_main, __poker_hand("Flush")},
+	j_sly = {__joker_main, __poker_hand("Pair")},
+	j_wily = {__joker_main, __poker_hand("Three of a Kind")},
+	j_clever = {__joker_main, __poker_hand("Two Pair")},
+	j_devious = {__joker_main, __poker_hand("Straight")},
+	j_crafty = {__joker_main, __poker_hand("Flush")},
 	-- Cryptid Jokers (alphabetical order probably?)
-	j_cry_demicolon = { joker_main = true },
-	j_cry_m = { selling_card = true, card = {
+	j_cry_demicolon = {__joker_main},
+	j_cry_m = {{ selling_card = true, card = {
 		is_jolly = function(self)
 			return true
 		end,
-	} },
+	} }},
 }
