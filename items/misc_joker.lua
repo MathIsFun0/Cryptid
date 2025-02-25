@@ -7610,24 +7610,29 @@ local lebaron_james = {
 	name = "cry-LeBaron James",
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
-	config = { extra = { h_mod = 1, h_size = 0 } },
+	config = { extra = { h_mod = 1, h_size = 0} },
 	rarity = 3,
 	cost = 6,
 	atlas = "atlasone",
 	order = 133,
+	no_dbl = true,
+	immutable = true, -- has issues with value manip and not easy to fix
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.h_mod, center.ability.extra.h_size } }
+		return { vars = { center.ability.extra.h_mod, math.min(1000,center.ability.extra.h_size) } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual then
 			if SMODS.Ranks[context.other_card.base.value].key == "King" then
-				G.hand:change_size(math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
-				card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
-				return {
-					message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
-					colour = G.C.FILTER,
-					card = card,
-				}
+				local h_size = math.max(0,math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
+				G.hand:change_size(h_size)
+				card.ability.extra.h_size = card.ability.extra.h_size + h_size
+				if h_size > 0 then
+					return {
+						message = localize({ type = "variable", key = "a_handsize", vars = { h_size } }),
+						colour = G.C.FILTER,
+						card = card,
+					}
+				end
 			end
 		end
 		if context.end_of_round and not context.individual and not context.repetition then
