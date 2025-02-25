@@ -4361,7 +4361,7 @@ local duos = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
 			if
-				context.poker_hands ~= nil and next(context.poker_hands["Two Pair"])
+				context.poker_hands ~= nil and next(context.poker_hands[card.ability.type])
 				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
 			then
 				return {
@@ -4407,7 +4407,7 @@ local home = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Full House"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4451,7 +4451,7 @@ local nuts = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Straight Flush"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4495,7 +4495,7 @@ local quintet = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Five of a Kind"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4511,7 +4511,7 @@ local quintet = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Five of a Kind" then
+		if args.type == "win" and G.GAME.last_hand_played == "Five of a Kind" then
 			return true
 		end
 	end,
@@ -4549,7 +4549,7 @@ local unity = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Flush House"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4565,7 +4565,7 @@ local unity = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Flush House" then
+		if args.type == "win" and G.GAME.last_hand_played == "Flush House" then
 			return true
 		end
 	end,
@@ -4603,7 +4603,7 @@ local swarm = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Flush Five"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4619,7 +4619,7 @@ local swarm = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Flush Five" then
+		if args.type == "win" and G.GAME.last_hand_played == "Flush Five" then
 			return true
 		end
 	end,
@@ -4659,7 +4659,7 @@ local stronghold = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_Bulwark"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4675,7 +4675,7 @@ local stronghold = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_Bulwark" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_Bulwark" then
 			return true
 		end
 	end,
@@ -4704,7 +4704,7 @@ local wtf = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_Clusterfuck"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4720,7 +4720,7 @@ local wtf = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_Clusterfuck" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_Clusterfuck" then
 			return true
 		end
 	end,
@@ -4749,7 +4749,7 @@ local clash = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_UltPair"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4765,7 +4765,7 @@ local clash = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_UltPair" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_UltPair" then
 			return true
 		end
 	end,
@@ -4792,7 +4792,7 @@ local filler = {
 	cost = 1,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and context.poker_hands and next(context.poker_hands["High Card"]) then
+		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.type]) then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 				colour = G.C.RED,
