@@ -1213,7 +1213,7 @@ return {
 				text = {
 					"Trigger the {C:attention}Joker{} to the right",
 					"{E:1}regardless of its usual conditions",
-				}
+				},
 			},
 			j_cry_delirious = {
 				name = "Delirious Joker",

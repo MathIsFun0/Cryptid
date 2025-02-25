@@ -686,7 +686,8 @@ local m = {
 			return context.forced and {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
 				Xmult_mod = card.ability.extra.x_mult,
-			} or nil, true
+			} or nil,
+				true
 		end
 	end,
 	cry_credits = {
@@ -1928,7 +1929,7 @@ local demicolon = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main then
-			for i = 1, #G.jokers.cards-1 do
+			for i = 1, #G.jokers.cards - 1 do
 				if G.jokers.cards[i] == card then
 					if not Talisman.disable_anims then
 						G.E_MANAGER:add_event(Event({
@@ -1938,7 +1939,7 @@ local demicolon = {
 							end,
 						}))
 					end
-					return nil, force_calculate(G.jokers.cards[i+1])
+					return nil, force_calculate(G.jokers.cards[i + 1])
 				end
 			end
 		end
