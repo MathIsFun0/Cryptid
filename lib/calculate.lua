@@ -952,10 +952,14 @@ function __setting_blind(t)
 end
 
 function __poker_hand(t)
-	return { poker_hands = { [t] = {"m"} } }
+	return { poker_hands = { [t] = { "m" } } }
 end
 
-__any_suit = { other_card = { is_suit = function(self) return true end } }
+__any_suit = { other_card = {
+	is_suit = function(self)
+		return true
+	end,
+} }
 
 -- How these work: {constructor function, extra args, wrapper func}
 Cryptid.force_contexts = {
@@ -1014,10 +1018,10 @@ Cryptid.force_contexts = {
 		end end
 	},
 	-- Cryptid Jokers (alphabetical order probably?)
-	j_cry_demicolon = {__joker_main},
-	j_cry_m = {{ selling_card = true, card = {
+	j_cry_demicolon = { __joker_main },
+	j_cry_m = { { selling_card = true, card = {
 		is_jolly = function(self)
 			return true
 		end,
-	} }},
+	} } },
 }
