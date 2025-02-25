@@ -923,9 +923,13 @@ function force_calculate(card)
 	end
 	context.forced = true
 	temp = {}
-	if trig then trig(true, temp, card) end
+	if trig then
+		trig(true, temp, card)
+	end
 	local eval, post = eval_card(card, context)
-	if trig then trig(false, temp, card) end
+	if trig then
+		trig(false, temp, card)
+	end
 	local effects = { eval }
 	SMODS.trigger_effects(effects, card)
 	return eval and true or post
@@ -952,7 +956,7 @@ function __individual_play(t)
 end
 
 function __setting_blind(t)
-	return __context(t, { setting_blind = true})
+	return __context(t, { setting_blind = true })
 end
 
 function __poker_hand(t)
@@ -969,34 +973,38 @@ __any_suit = { other_card = {
 Cryptid.force_contexts = {
 	-- Vanilla Jokers (collection order)
 	-- Page 1
-	j_joker = {__joker_main},
-	j_greedy_joker = {__individual_play, __any_suit},
-	j_lusty_joker = {__individual_play, __any_suit},
-	j_wrathful_joker = {__individual_play, __any_suit},
-	j_gluttenous_joker = {__individual_play, __any_suit},
-	j_jolly = {__joker_main, __poker_hand("Pair")},
-	j_zany = {__joker_main, __poker_hand("Three of a Kind")},
-	j_mad = {__joker_main, __poker_hand("Two Pair")},
-	j_crazy = {__joker_main, __poker_hand("Straight")},
-	j_droll = {__joker_main, __poker_hand("Flush")},
-	j_sly = {__joker_main, __poker_hand("Pair")},
-	j_wily = {__joker_main, __poker_hand("Three of a Kind")},
-	j_clever = {__joker_main, __poker_hand("Two Pair")},
-	j_devious = {__joker_main, __poker_hand("Straight")},
-	j_crafty = {__joker_main, __poker_hand("Flush")},
+	j_joker = { __joker_main },
+	j_greedy_joker = { __individual_play, __any_suit },
+	j_lusty_joker = { __individual_play, __any_suit },
+	j_wrathful_joker = { __individual_play, __any_suit },
+	j_gluttenous_joker = { __individual_play, __any_suit },
+	j_jolly = { __joker_main, __poker_hand("Pair") },
+	j_zany = { __joker_main, __poker_hand("Three of a Kind") },
+	j_mad = { __joker_main, __poker_hand("Two Pair") },
+	j_crazy = { __joker_main, __poker_hand("Straight") },
+	j_droll = { __joker_main, __poker_hand("Flush") },
+	j_sly = { __joker_main, __poker_hand("Pair") },
+	j_wily = { __joker_main, __poker_hand("Three of a Kind") },
+	j_clever = { __joker_main, __poker_hand("Two Pair") },
+	j_devious = { __joker_main, __poker_hand("Straight") },
+	j_crafty = { __joker_main, __poker_hand("Flush") },
 	-- Page 2
-	j_half = {__joker_main, { full_hand = {} }},
-	j_stencil = {__joker_main},
+	j_half = { __joker_main, { full_hand = {} } },
+	j_stencil = { __joker_main },
 	-- Four Fingers, Mime, Credit Card
-	j_ceremonial = {__setting_blind}, --TODO: also trigger mult, acts janky with multiple triggers
-	j_banner = {__joker_main},
-	j_mystic_summit = {__joker_main, nil, function(trigger, memory)
-		if trigger then
-			memory.discards = G.GAME.current_round.discards_left
-			G.GAME.current_round.discards_left = 0
-		else
-			G.GAME.current_round.discards_left = memory.discards
-		end end
+	j_ceremonial = { __setting_blind }, --TODO: also trigger mult, acts janky with multiple triggers
+	j_banner = { __joker_main },
+	j_mystic_summit = {
+		__joker_main,
+		nil,
+		function(trigger, memory)
+			if trigger then
+				memory.discards = G.GAME.current_round.discards_left
+				G.GAME.current_round.discards_left = 0
+			else
+				G.GAME.current_round.discards_left = memory.discards
+			end
+		end,
 	},
 	j_marble = {__no_context, nil, function(trigger, memory, _card) --Doesn't play nicely, redoing from scratch
 		if trigger then
