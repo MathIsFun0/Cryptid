@@ -1258,7 +1258,7 @@ return {
 				name = "Jimbo-tron 9000",
 				text = {
 					"Dieser Joker bekommt {X:dark_edition,C:white} ^#1# {} Mult",
-					"für jeden standart {C:attention}Joker{}",
+					"für jeden Standard {C:attention}Joker{}",
 					"{C:inactive}(Momentan {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
 				},
 			},
