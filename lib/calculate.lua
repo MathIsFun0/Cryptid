@@ -908,13 +908,19 @@ end
 
 -- Forced joker triggering, used by Demicolon
 function force_calculate(card)
-	local context = {}
-	if card.config.center.force_context then
-		context = card.config.center.force_context
-	end
+	local context = safe_get(Cryptid.force_contexts, card.config.center.key)
+	if not context then return false end
 	context.forced = true
 	local eval, post = eval_card(card, context)
 	local effects = {eval}
 	SMODS.trigger_effects(effects, card)
 	return eval and true or post
 end
+
+Cryptid.force_contexts = {
+	-- Vanilla Jokers (collection order)
+
+	-- Cryptid Jokers (alphabetical order probably?)
+	j_cry_demicolon = {joker_main = true},
+	j_cry_m = {selling_card = true, card = {is_jolly = function(self) return true end}},
+}

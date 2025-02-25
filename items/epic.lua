@@ -661,10 +661,6 @@ local m = {
 		return { vars = { center.ability.extra.extra, center.ability.extra.x_mult } }
 	end,
 	atlas = "atlasepic",
-	force_context = {
-		selling_card = true,
-		card = { is_jolly = function(self) return true end},
-	},
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
@@ -1916,6 +1912,12 @@ local demicolon = {
 			"set_cry_misc_joker",
 		},
 	},
+	gameset_config = {
+		modest = { disabled = true},
+		mainline = { disabled = true},
+		madness = { disabled = true},
+	},
+	extra_gamesets = {"experimental"},
 	name = "cry-Demicolon",
 	key = "demicolon",
 	pos = { x = 3, y = 5 },
