@@ -32,7 +32,7 @@ return {
 				},
 			},
 			b_cry_bountiful = {
-				name = "Bộ Bài Phong phú",
+				name = "Bộ Bài Phong Phú",
 				text = {
 					"Sau khi {C:blue}Chơi{} hoặc {C:red}Bỏ Bài{},",
 					"luôn bốc {C:attention}5{} lá",
@@ -154,8 +154,8 @@ return {
 			b_cry_st_deck = {
 				name = "Bộ Bài Đồng Chất",
 				text = {
-					"Mọi lá bài thường đều có chất {C:dark_edition}#1#",
-					"và không thể đổi chất",
+					"Mọi lá bài thường đều có",
+					"chất {C:dark_edition}#1#{} và không thể đổi chất",
 					"{C:inactive}(Nhấn để chỉnh sửa)",
 				},
 			},
@@ -313,8 +313,8 @@ return {
 			bl_cry_sapphire_stamp = {
 				name = "Sapphire Stamp",
 				text = {
-					"Chọn thêm một lá, bỏ chọn",
-					"1 lá ngẫu nhiên trước khi tính điểm",
+					"Chọn thêm một lá, bỏ chọn 1 lá",
+					"ngẫu nhiên trước khi tính điểm",
 				},
 			},
 			bl_cry_shackle = {
@@ -570,7 +570,7 @@ return {
 				},
 			},
 			set_cry_code = {
-				name = "Code Cards",
+				name = "Lá Code",
 				text = {
 					"{C:cry_code}Lá Code{} và",
 					"nội dung liên quan",
@@ -602,7 +602,7 @@ return {
 				name = "Joker Ngoại Lai",
 				text = {
 					"Joker mạnh khủng khiếp",
-					"với độ hiếm {C:cry_exotic}Ngoại Lai{}",
+					"có độ hiếm {C:cry_exotic}Ngoại Lai{}",
 				},
 			},
 			set_cry_m = {
@@ -681,7 +681,7 @@ return {
 			set_cry_voucher = {
 				name = "Phiếu Khác",
 				text = {
-					"{C:attention}Phiếu{} Cấp 1 và 2",
+					"{C:attention}Phiếu{} cấp 1 và 2",
 					"được thêm bởi Cryptid",
 				},
 			},
