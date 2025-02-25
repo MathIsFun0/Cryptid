@@ -1599,6 +1599,14 @@ return {
 					"{C:inactive,s:0.8}Nghe có vẻ không sao...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
+					"cho mỗi {C:attention}Joker{} mặc định",
+					"{C:inactive}(Hiện tại là {X:dark_edition,C:white}^#2#{C:inactive} Nhân)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Bắt Cóc",
 				text = {
@@ -1637,6 +1645,15 @@ return {
 					"với {C:attention}5 Lá Bài Ấn Bản{} hoặc",
 					"{C:attention}Joker Ấn Bản",
 					"trở lên",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Lá {C:attention}Già{} đã chơi ghi điểm thêm",
+					"{C:attention}+#1#{} lá giữ trong tay cho ván này",
+					"và kích hoạt hiệu ứng {C:attention}giữ trong tay{}",
+					"{C:inactive}(Hiện tại là {C:attention}+#2#{C:inactive} lá giữ trong tay)",
 				},
 			},
 			j_cry_lightupthenight = {
