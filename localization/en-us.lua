@@ -1600,6 +1600,14 @@ return {
 					"{C:inactive,s:0.8}Seems legit...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"for each default {C:attention}Joker{}",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Kidnapping",
 				text = {
@@ -1638,6 +1646,15 @@ return {
 					"with {C:attention}5{} or more",
 					"{C:attention}Editioned Cards{} or",
 					"{C:attention}Jokers",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Played and scoring {C:attention}Kings{} give",
+					"{C:attention}+#1#{} hand size for the round",
+					"and trigger {C:attention}held in hand{} effects",
+					"{C:inactive}(Currently {C:attention}+#2#{C:inactive} hand size)",
 				},
 			},
 			j_cry_lightupthenight = {
