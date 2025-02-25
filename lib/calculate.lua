@@ -917,7 +917,7 @@ function force_calculate(card)
 		trig = context[3]
 	end
 	if type(context[1]) == "function" then
-		context = context[1](context[2] or {})
+		context = context[1](context[2] or {}, card)
 	else
 		context = context[1]
 	end
@@ -937,6 +937,10 @@ function __context(t, arg)
 		ret[k] = v
 	end
 	return ret
+end
+
+function __no_context(t)
+	return __context(t)
 end
 
 function __joker_main(t)
@@ -994,7 +998,7 @@ Cryptid.force_contexts = {
 			G.GAME.current_round.discards_left = memory.discards
 		end end
 	},
-	j_marble = {__context, nil, function(trigger, memory, _card) --Doesn't play nicely, redoing from scratch
+	j_marble = {__no_context, nil, function(trigger, memory, _card) --Doesn't play nicely, redoing from scratch
 		if trigger then
 			local front = pseudorandom_element(G.P_CARDS, pseudoseed('marb_fr'))
 			G.playing_card = (G.playing_card and G.playing_card + 1) or 1
