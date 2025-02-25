@@ -1208,6 +1208,13 @@ return {
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
+			j_cry_demicolon = {
+				name = "Demicolon",
+				text = {
+					"Trigger the {C:attention}Joker{} to the right",
+					"{E:1}regardless of its usual conditions",
+				}
+			},
 			j_cry_delirious = {
 				name = "Delirious Joker",
 				text = {

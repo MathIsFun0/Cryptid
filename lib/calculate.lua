@@ -905,3 +905,16 @@ function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, ne
 		end
 	end
 end
+
+-- Forced joker triggering, used by Demicolon
+function force_calculate(card)
+	local context = {}
+	if card.config.center.force_context then
+		context = card.config.center.force_context
+	end
+	context.forced = true
+	local eval, post = eval_card(card, context)
+	local effects = {eval}
+	SMODS.trigger_effects(effects, card)
+	return eval and true or post
+end
