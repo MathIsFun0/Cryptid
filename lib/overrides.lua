@@ -629,7 +629,7 @@ end
 
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
-	if G.GAME.current_round.free_rerolls < 0 then
+	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
 	if next(find_joker("cry-crustulum")) or G.GAME.current_round.free_rerolls > 0 then

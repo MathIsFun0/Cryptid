@@ -566,10 +566,10 @@ local choco9 = {
 	init = function(self)
 		local ed = ease_dollars
 		function ease_dollars(mod, instant)
-			if mod == 0 then
+			if to_big(mod) == to_big(0) then
 				return
 			end
-			if G.GAME.events.ev_cry_choco9 and mod > to_big(0) then
+			if G.GAME.events.ev_cry_choco9 and to_big(mod) > to_big(0) then
 				mod = mod * 2
 			end
 			return ed(mod, instant)
