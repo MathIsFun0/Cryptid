@@ -1006,28 +1006,49 @@ Cryptid.force_contexts = {
 			end
 		end,
 	},
-	j_marble = {__no_context, nil, function(trigger, memory, _card) --Doesn't play nicely, redoing from scratch
-		if trigger then
-			local front = pseudorandom_element(G.P_CARDS, pseudoseed('marb_fr'))
-			G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-			local card = Card(G.discard.T.x + G.discard.T.w/2, G.discard.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.m_stone, {playing_card = G.playing_card})
-			G.E_MANAGER:add_event(Event({
-				func = function() 
-					card:start_materialize({G.C.SECONDARY_SET.Enhanced})
-					G.deck:emplace(card)
-					table.insert(G.playing_cards, card)
-					return true
-				end}))
-			card_eval_status_text(_card, 'extra', nil, nil, nil, {message = localize('k_plus_stone'), colour = G.C.SECONDARY_SET.Enhanced})
-			
-			G.E_MANAGER:add_event(Event({
-				func = function() 
-					G.deck.config.card_limit = G.deck.config.card_limit + 1
-					return true
-				end})) 
-			
-			playing_card_joker_effects({card})
-		end end
+	j_marble = {
+		__no_context,
+		nil,
+		function(trigger, memory, _card) --Doesn't play nicely, redoing from scratch
+			if trigger then
+				local front = pseudorandom_element(G.P_CARDS, pseudoseed("marb_fr"))
+				G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+				local card = Card(
+					G.discard.T.x + G.discard.T.w / 2,
+					G.discard.T.y,
+					G.CARD_W,
+					G.CARD_H,
+					front,
+					G.P_CENTERS.m_stone,
+					{ playing_card = G.playing_card }
+				)
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:start_materialize({ G.C.SECONDARY_SET.Enhanced })
+						G.deck:emplace(card)
+						table.insert(G.playing_cards, card)
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					_card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_plus_stone"), colour = G.C.SECONDARY_SET.Enhanced }
+				)
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.deck.config.card_limit = G.deck.config.card_limit + 1
+						return true
+					end,
+				}))
+
+				playing_card_joker_effects({ card })
+			end
+		end,
 	},
 	-- Cryptid Jokers (alphabetical order probably?)
 	j_cry_demicolon = { __joker_main },
