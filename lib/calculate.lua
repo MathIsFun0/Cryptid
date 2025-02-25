@@ -914,7 +914,7 @@ function force_calculate(card)
 	end
 	context.forced = true
 	local eval, post = eval_card(card, context)
-	local effects = {eval}
+	local effects = { eval }
 	SMODS.trigger_effects(effects, card)
 	return eval and true or post
 end
