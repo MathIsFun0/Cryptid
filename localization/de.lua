@@ -1254,6 +1254,14 @@ return {
 					"{C:inactive,s:0.8}Seems legit...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"Dieser Joker bekommt {X:dark_edition,C:white} ^#1# {} Mult",
+					"für jeden standart {C:attention}Joker{}",
+					"{C:inactive}(Momentan {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Entführung",
 				text = {
@@ -1286,6 +1294,15 @@ return {
 					"Füge {C:dark_edition}Polychrome{} zu",
 					"einem zufälligen {C:attention}Joker{} hinzu",
 					"wenn {C:attention}Boss Blind{} besiegt wird",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Gespeilte und gewertete {C:attention}Könige{} geben",
+					"{C:attention}+#1#{} Handgröße für diese Runde",
+					"und lösen {C:attention}in der Hand{} Effekte aus",
+					"{C:inactive}(Momentan {C:attention}+#2#{C:inactive} Handgröße)",
 				},
 			},
 			j_cry_lightupthenight = {
