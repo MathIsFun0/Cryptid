@@ -320,7 +320,7 @@ function get_m_jokers()
 	local mcount = 0
 	if G.jokers then
 		for i = 1, #G.jokers.cards do
-			if safe_get(G.jokers.cards[i], "pools", "M") then
+			if safe_get(G.jokers.cards[i].config.center, "pools", "M") then
 				mcount = mcount + 1
 			end
 			if G.jokers.cards[i].ability.name == "cry-mprime" then

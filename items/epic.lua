@@ -392,7 +392,7 @@ local error_joker = {
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN then
-			cry_error_msgs[#cry_error_msgs].string = "%%" .. predict_card_for_shop()
+			cry_error_msgs[#cry_error_msgs].string = "%%" .. (pcall(predict_card_for_shop) or "J6")
 		else
 			cry_error_msgs[#cry_error_msgs].string = "%%J6"
 		end

@@ -3101,6 +3101,7 @@ local ctrl_v = {
 					card:add_to_deck()
 					table.insert(G.playing_cards, card)
 					G.hand:emplace(card)
+					playing_card_joker_effects({card})
 					return true
 				end,
 			}))
