@@ -189,38 +189,38 @@ function cry_pls(str, vars)
 		for v in inside:gmatch("[^,]+") do -- adds args to array
 			table.insert(_table, v)
 		end
-	end
-	local num = vars and vars[tonumber(string.match(str, ">(%d+)"))] or 1 -- gets the number outside angle brackets, and its corresponding variable
-	local plural = _table[1] -- default
-	local checks = { [1] = "=" }
-	if #_table > 1 then
-		for i = 2, #_table do
-			local isnum = tonumber(_table[i])
-			if isnum then
-				checks[isnum] = ">" .. (_table[i + 1] or "")
-				i = i + 1
-			elseif i == 2 then
-				checks[1] = "=" .. _table[i]
-			else
-				print("Unexpected string: " .. _table[i])
+		local num = vars[tonumber(string.match(str, ">(%d+)"))]
+		local plural = _table[1] -- default
+		local checks = { [1] = "=" }
+		if #_table > 1 then
+			for i = 2, #_table do
+				local isnum = tonumber(_table[i])
+				if isnum then
+					checks[isnum] = ">" .. (_table[i + 1] or "")
+					i = i + 1
+				elseif i == 2 then
+					checks[1] = "=" .. _table[i]
+				else
+					print("Unexpected string: " .. _table[i])
+				end
 			end
 		end
-	end
-	local function fch(str, c)
-		return string.sub(str, 1, 1) == c -- gets first char and returns boolean
-	end
-	for k, v in pairs(checks) do
-		if fch(v, "=") then
-			if math.abs(to_big(num) - k) < to_big(0.001) then
-				return string.sub(v, 2, -1)
-			end
-		elseif fch(v, ">") then
-			if to_big(num) >= to_big(k - 0.001) then
-				return string.sub(v, 2, -1)
+		local function fch(str, c)
+			return string.sub(str, 1, 1) == c -- gets first char and returns boolean
+		end
+		for k, v in pairs(checks) do
+			if fch(v, "=") then
+				if math.abs(to_big(num) - k) < to_big(0.001) then
+					return string.sub(v, 2, -1)
+				end
+			elseif fch(v, ">") then
+				if to_big(num) >= to_big(k - 0.001) then
+					return string.sub(v, 2, -1)
+				end
 			end
 		end
+		return plural
 	end
-	return plural
 end
 
 -- generate a random edition (e.g. Antimatter Deck)
