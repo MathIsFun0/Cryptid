@@ -52,6 +52,7 @@ Cryptid.edeck_sprites = {
 		rental = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 3 } },
 		pinned = { atlas = "cry_atlasenhanced", pos = { x = 0, y = 5 } },
 		banana = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 4 } },
+		cry_rigged = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 6 } },
 	},
 	suit = {
 		order = 4,
