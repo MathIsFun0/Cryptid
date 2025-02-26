@@ -16,6 +16,13 @@ local very_fair = {
 	end,
 	init = function(self)
 		very_fair_quip = {}
+		local avts = SMODS.add_voucher_to_shop
+		function SMODS.add_voucher_to_shop(...)
+			if G.GAME.modifiers.cry_no_vouchers then
+				return
+			end
+			return avts(...)
+		end
 	end,
 }
 local equilibrium = {

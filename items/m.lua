@@ -368,7 +368,7 @@ local mneon = {
 		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i]:is_jolly() or safe_get(G.jokers.cards[i], "pools", "M") then
+				if G.jokers.cards[i]:is_jolly() or safe_get(G.jokers.cards[i].config.center, "pools", "M") then
 					jollycount = jollycount + 1
 				end
 			end
@@ -1220,7 +1220,7 @@ local mprime = {
 		elseif context.other_joker then
 			if
 				context.other_joker
-				and (context.other_joker:is_jolly() or safe_get(context.other_joker, "pools", "M"))
+				and (context.other_joker:is_jolly() or safe_get(context.other_joker.config.center, "pools", "M"))
 			then
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
@@ -1286,7 +1286,7 @@ local macabre = {
 							v ~= card
 							and not v:is_jolly()
 							and v.config.center.key ~= "j_cry_mprime"
-							and not (v.ability.eternal or v.getting_sliced or safe_get(v, "pools", "M"))
+							and not (v.ability.eternal or v.getting_sliced or safe_get(v.config.center, "pools", "M"))
 						then
 							destroyed_jokers[#destroyed_jokers + 1] = v
 						end

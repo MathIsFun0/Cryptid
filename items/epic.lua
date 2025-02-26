@@ -262,25 +262,7 @@ local sync_catalyst = {
 			"Math",
 		},
 	},
-	unlocked = false,
-	check_for_unlock = function(self, args)
-		if safe_get(G, "jokers") and safe_get(G.GAME, "round_resets", "ante") and G.GAME.round_resets.ante < 9 then
-			local rarities = {}
-			for i = 1, #G.jokers.cards do
-				local card = G.jokers.cards[i]
-				rarities[card.config.center.rarity .. "_rarity"] = true
-			end
-			if rarities["3_rarity"] and rarities["4_rarity"] and rarities["cry_epic_rarity"] then
-				unlock_card(self)
-			end
-		end
-		if args.type == "cry_lock_all" then
-			lock_card(self)
-		end
-		if args.type == "cry_unlock_all" then
-			unlock_card(self)
-		end
-	end,
+	unlocked = true,
 }
 
 -- Negative Joker
@@ -410,7 +392,7 @@ local error_joker = {
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN then
-			cry_error_msgs[#cry_error_msgs].string = "%%" .. predict_card_for_shop()
+			cry_error_msgs[#cry_error_msgs].string = "%%" .. (pcall(predict_card_for_shop) or "J6")
 		else
 			cry_error_msgs[#cry_error_msgs].string = "%%J6"
 		end
@@ -1881,6 +1863,44 @@ local spectrogram = {
 		},
 	},
 }
+local jtron = {
+	object_type = "Joker",
+	name = "cry-jtron",
+	key = "jtron",
+	config = { extra = { bonus = 1, current = 0 } },
+	rarity = "cry_epic",
+	cost = 14,
+	order = 64,
+	blueprint_compat = true,
+	atlas = "atlasepic",
+	pos = { x = 2, y = 5 },
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_joker
+		center.ability.extra.current = 1 + center.ability.extra.bonus * #SMODS.find_card("j_joker")
+		return { vars = { center.ability.extra.bonus, center.ability.extra.current } }
+	end,
+	calculate = function(self, card, context)
+		card.ability.extra.current = 1 + card.ability.extra.bonus * #SMODS.find_card("j_joker")
+		if context.cardarea == G.jokers and context.joker_main then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.current),
+					},
+				}),
+				Emult_mod = card.ability.extra.current,
+				colour = G.C.DARK_EDITION,
+			}
+		end
+	end,
+	cry_credits = {
+		idea = { "AlexZGreat" },
+		art = { "Darren_the_frog" },
+		code = { "candycanearter" },
+	},
+}
 return {
 	name = "Epic Jokers",
 	items = {
@@ -1907,5 +1927,6 @@ return {
 		soccer,
 		fleshpanopticon,
 		spectrogram,
+		jtron,
 	},
 }

@@ -439,3 +439,20 @@ if next(SMODS.find_card('j_cry_kittyprinter')) then
 end
 '''
 match_indent = true
+
+# avoids a game-locking crash related to opened booster being nil
+# remove this as soon as a fix is done
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "SMODS.OPENED_BOOSTER.config.center:update_pack(dt)"
+position = "at"
+payload = '''
+if not SMODS.OPENED_BOOSTER then 
+	G.STATE = G.STATES.SHOP
+	print('Error: SMODS.OPENED_BOOSTER is nil. Game recovered by setting game state to shop.')
+else
+	SMODS.OPENED_BOOSTER.config.center:update_pack(dt)
+end
+'''
+match_indent = true

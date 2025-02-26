@@ -190,7 +190,11 @@ function cry_pls(str, vars)
 			table.insert(_table, v)
 		end
 	end
-	local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets the number outside angle brackets, and its corresponding variable
+	if not vars then
+		num = 1 -- Hopefully prevents a crash if no level data
+	else
+		local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets the number outside angle brackets, and its corresponding variable
+	end
 	local plural = _table[1] -- default
 	local checks = { [1] = "=" }
 	if #_table > 1 then
@@ -316,7 +320,7 @@ function get_m_jokers()
 	local mcount = 0
 	if G.jokers then
 		for i = 1, #G.jokers.cards do
-			if safe_get(G.jokers.cards[i], "pools", "M") then
+			if safe_get(G.jokers.cards[i].config.center, "pools", "M") then
 				mcount = mcount + 1
 			end
 			if G.jokers.cards[i].ability.name == "cry-mprime" then

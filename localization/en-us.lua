@@ -1600,6 +1600,14 @@ return {
 					"{C:inactive,s:0.8}Seems legit...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"for each default {C:attention}Joker{}",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Kidnapping",
 				text = {
@@ -1646,6 +1654,15 @@ return {
 					"with {C:attention}5{} or more",
 					"{C:attention}Editioned Cards{} or",
 					"{C:attention}Jokers",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Played and scoring {C:attention}Kings{} give",
+					"{C:attention}+#1#{} hand size for the round",
+					"and trigger {C:attention}held in hand{} effects",
+					"{C:inactive}(Currently {C:attention}+#2#{C:inactive} hand size)",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -4402,7 +4419,7 @@ return {
 		rnj_loc_txts = {
 			stats = {
 				plus_mult = { "{C:red}+#2#{} Mult" },
-				plus_chips = { "{C:blue}+#2#{} Chip#<s>2#" },
+				plus_chips = { "{C:blue}+#2#{} Chip(s)" },
 				x_mult = { "{X:red,C:white} X#2#{} Mult" },
 				x_chips = { "{X:blue,C:white} X#2#{} Chips" },
 				h_size = { "{C:attention}+#2#{} Hand Size" },
@@ -4410,17 +4427,17 @@ return {
 			},
 			stats_inactive = {
 				plus_mult = { "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)" },
-				plus_chips = { "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chip#<s>1#)" },
+				plus_chips = { "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chip(s))" },
 				x_mult = { "{C:inactive}(Currently {X:red,C:white} X#1# {C:inactive} Mult)" },
 				x_chips = { "{C:inactive}(Currently {X:blue,C:white} X#1# {C:inactive} Chips)" },
 				h_size = { "{C:inactive}(Currently {C:attention}+#1#{C:inactive} Hand Size)" },
 				money = { "{C:inactive}(Currently {C:money}+$#1#{C:inactive})" },
 			},
 			actions = {
-				make_joker = { "Create {C:attention}#2# Joker#<s>2#{}" },
-				make_tarot = { "Create {C:attention}#2#{C:tarot} Tarot{} card#<s>2#" },
-				make_planet = { "Create {C:attention}#2#{C:planet} Planet{} card#<s>2#" },
-				make_spectral = { "Create {C:attention}#2#{C:spectral} Spectral{} card#<s>2#" },
+				make_joker = { "Create {C:attention}#2# Joker(s){}" },
+				make_tarot = { "Create {C:attention}#2#{C:tarot} Tarot{} card(s)" },
+				make_planet = { "Create {C:attention}#2#{C:planet} Planet{} card(s)" },
+				make_spectral = { "Create {C:attention}#2#{C:spectral} Spectral{} card(s)" },
 				add_dollars = { "Earn {C:money}$#2#{}" },
 			},
 			contexts = {
@@ -4473,8 +4490,8 @@ return {
 				poker_hand = { "if hand is a {C:attention}#3#{}" },
 				or_more = { "if hand contains {C:attention}#3#{} or more cards" },
 				or_less = { "if hand contains {C:attention}#3#{} or less cards" },
-				hands_left = { "if #3# {C:blue}hand#<s>3#{} remaining at end of round" },
-				discards_left = { "if #3# {C:red}discard#<s>3#{} remaining at end of round" },
+				hands_left = { "if #3# {C:blue}hand(s){} remaining at end of round" },
+				discards_left = { "if #3# {C:red}discard(s){} remaining at end of round" },
 				first_discard = { "if it's the {C:attention}first {C:attention}discard{}" },
 				last_discard = { "if it's the {C:attention}last {C:attention}discard{}" },
 				odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },

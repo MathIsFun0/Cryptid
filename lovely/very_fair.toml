@@ -7,14 +7,10 @@ priority = -1
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()"
-position = "at"
+pattern = "self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or SMODS.get_next_vouchers()"
+position = "after"
 payload = '''
-if not self.GAME.modifiers.cry_no_vouchers then
-    if not G.GAME.modifiers.cry_voucher_restock_antes or G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 then
-        self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()
-    end
-else
+if self.GAME.modifiers.cry_no_vouchers then
     very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
 end
 '''
@@ -25,19 +21,14 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "G.GAME.current_round.voucher = get_next_voucher_key()"
-position = "at"
+pattern = "G.GAME.current_round.voucher = SMODS.get_next_vouchers()"
+position = "after"
 payload = '''
-if not G.GAME.modifiers.cry_no_vouchers then
-    if not G.GAME.modifiers.cry_voucher_restock_antes or G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 then
-        G.GAME.current_round.voucher = get_next_voucher_key()
-    end
-else
+if G.GAME.modifiers.cry_no_vouchers then
     very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
 end
 '''
 match_indent = true
-
 
 # Change empty voucher text on Very Fair Deck
 # This ain't localized, but that's a vanilla issue anyway

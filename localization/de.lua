@@ -1254,6 +1254,14 @@ return {
 					"{C:inactive,s:0.8}Seems legit...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"Dieser Joker bekommt {X:dark_edition,C:white} ^#1# {} Mult",
+					"für jeden Standard {C:attention}Joker{}",
+					"{C:inactive}(Momentan {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Entführung",
 				text = {
@@ -1286,6 +1294,15 @@ return {
 					"Füge {C:dark_edition}Polychrome{} zu",
 					"einem zufälligen {C:attention}Joker{} hinzu",
 					"wenn {C:attention}Boss Blind{} besiegt wird",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Gespeilte und gewertete {C:attention}Könige{} geben",
+					"{C:attention}+#1#{} Handgröße für diese Runde",
+					"und lösen {C:attention}in der Hand{} Effekte aus",
+					"{C:inactive}(Momentan {C:attention}+#2#{C:inactive} Handgröße)",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -3890,9 +3907,9 @@ return {
 			{ "VERSUCHST SPÄTER NOCHMAL", "HINWEIS: DU WIRST NICHT", "GENUG GELD HABEN" },
 			{ "HÄ?", '"GUTSCHEINE"?', "DAS IST NICHTMAL EIN WORT..." },
 			{ 'HALTE "R"', "UM ALLE GUTSCHEINE", "NACHZUFÜLLEN" },
-			{ "WÜSSTEST DU?", "ALT+F4 DRÜCKEN", "GIBT KOSTENLOSE GUTSCHEINE!" },
+			{ "WUSSTEST DU?", "ALT+F4 DRÜCKEN", "GIBT KOSTENLOSE GUTSCHEINE!" },
 			{ "TUHT MIR LEID,", "ES GIBT KEINE GUTSCHEINE", "WEGEN BUDGETVERKÜRZUNGEN" },
-			{ "RUFE 1-600-JIMBO AN", "UM DEINE ERFAHRUNG MIR", "GUTSCHEINEN ZU BEWERTEN" },
+			{ "RUFE 1-600-JIMBO AN", "UM DEINE ERFAHRUNG MIT", "GUTSCHEINEN ZU BEWERTEN" },
 			{ "BESIEGE", "ANTE 39 BOSS BLIND", "ZUM NACHFÜLLEN" },
 			{ "ZAUBERTRICK", "ICH HABE DIESEN GUTSCHEIN", "VERSCHWINDEN LASSEN" },
 			{ "WARUM IST EIN", "GUTSCHEIN WIE EIN", "SCHREIBTISCH?" },
@@ -3913,11 +3930,11 @@ return {
 			{ "ES GIBT KEINEN", "WEINACHTSMANN", "UND AUCH KEINE GUTSCHEINE" },
 			{ "", "GUTNEIN", "" },
 			{ "DU", "HAST GERADE", "DAS SPIEL VERLOREN" },
-			{ "CAN ICH DIR IN DIESEN", "IN DIESEN SCHWEREN ZEITEN", "EIN SCHÖNES EI ANBIETEN?" },
-			{ "BERÜHRE ETWAS GRASS", "ANSTATT DIESES", "DECK ZU BENUZEN" },
+			{ "KANN ICH DIR IN DIESEN", "IN DIESEN SCHWEREN ZEITEN", "EIN SCHÖNES EI ANBIETEN?" },
+			{ "BERÜHRE ETWAS GRASS", "ANSTATT DIESES", "DECK ZU BENUTZEN" },
 			{ "DU KÖNNTEST JETZT", "GERADE MIT DEM BLAUEN", "DECK SPEILEN" },
 			{ "KOSTENLOSE EXOTISCHE JOKER", "HOHLE SIE BEVOR", "ES ZU SPÄT IST (ausverkauft)" },
-			{ "DU KANNST BEWEISEN, DASS", "ICH FALSCH LIEGE INDEM", "DU DEN UNSICHBAREN GUTSCHEIN KAUFST" },
+			{ "DU KANNST BEWEISEN, DASS", "ICH FALSCH LIEGE INDEM", "DU DEN UNSICHTBAREN GUTSCHEIN KAUFST" },
 			{ "", "keine gutscheine?", "" },
 			{
 				"siehst du diese werbung?",

@@ -1196,14 +1196,14 @@ local seal_the_deal = {
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
 		local sealtable = { "blue", "red", "purple" }
-		if Cryptid.enabled["Misc."] then
+		if cry_card_enabled("cry_azure") then
 			sealtable[#sealtable + 1] = "azure"
 		end
-		if Cryptid.enabled["Code Cards"] then
+		if cry_card_enabled("cry_green") then
 			sealtable[#sealtable + 1] = "green"
 		end
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed("abc"))
-		if G.P_CENTERS["j_cry_seal_the_deal"].discovered then
+		if self.discovered then
 			--Gold (ULTRA RARE!!!!!!!!)
 			if pseudorandom("xyz") <= 0.000001 and not (card.area and card.area.config.collection) then
 				card.children.center:set_sprite_pos({ x = 6, y = 4 })
@@ -1757,7 +1757,7 @@ local gardenfork = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and not context.blueprint then
+		if context.cardarea == G.jokers and context.before then
 			for i = 1, #context.full_hand do
 				if context.scoring_hand[i]:get_id() == 14 then
 					for j = 1, #context.full_hand do
@@ -4363,7 +4363,7 @@ local duos = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
 			if
-				context.poker_hands ~= nil and next(context.poker_hands["Two Pair"])
+				context.poker_hands ~= nil and next(context.poker_hands[card.ability.type])
 				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
 			then
 				return {
@@ -4409,7 +4409,7 @@ local home = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Full House"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4453,7 +4453,7 @@ local nuts = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Straight Flush"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4497,7 +4497,7 @@ local quintet = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Five of a Kind"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4513,7 +4513,7 @@ local quintet = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Five of a Kind" then
+		if args.type == "win" and G.GAME.last_hand_played == "Five of a Kind" then
 			return true
 		end
 	end,
@@ -4551,7 +4551,7 @@ local unity = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Flush House"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4567,7 +4567,7 @@ local unity = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Flush House" then
+		if args.type == "win" and G.GAME.last_hand_played == "Flush House" then
 			return true
 		end
 	end,
@@ -4605,7 +4605,7 @@ local swarm = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Flush Five"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4621,7 +4621,7 @@ local swarm = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Flush Five" then
+		if args.type == "win" and G.GAME.last_hand_played == "Flush Five" then
 			return true
 		end
 	end,
@@ -4661,7 +4661,7 @@ local stronghold = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_Bulwark"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4677,7 +4677,7 @@ local stronghold = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_Bulwark" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_Bulwark" then
 			return true
 		end
 	end,
@@ -4706,7 +4706,7 @@ local wtf = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_Clusterfuck"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4722,7 +4722,7 @@ local wtf = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_Clusterfuck" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_Clusterfuck" then
 			return true
 		end
 	end,
@@ -4751,7 +4751,7 @@ local clash = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_UltPair"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4767,7 +4767,7 @@ local clash = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_UltPair" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_UltPair" then
 			return true
 		end
 	end,
@@ -4794,7 +4794,7 @@ local filler = {
 	cost = 1,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and context.poker_hands and next(context.poker_hands["High Card"]) then
+		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.type]) then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 				colour = G.C.RED,
@@ -7637,6 +7637,86 @@ local zooble = {
 		},
 	},
 }
+local lebaron_james = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-LeBaron James",
+	key = "lebaron_james",
+	pos = { x = 2, y = 5 },
+	config = { extra = { h_mod = 1, h_size = 0 } },
+	rarity = 3,
+	cost = 6,
+	atlas = "atlasone",
+	order = 133,
+	no_dbl = true,
+	immutable = true, -- has issues with value manip and not easy to fix
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.h_mod, math.min(1000, center.ability.extra.h_size) } }
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if SMODS.Ranks[context.other_card.base.value].key == "King" then
+				local h_size = math.max(0, math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
+				G.hand:change_size(h_size)
+				card.ability.extra.h_size = card.ability.extra.h_size + h_size
+				if h_size > 0 then
+					return {
+						message = localize({ type = "variable", key = "a_handsize", vars = { h_size } }),
+						colour = G.C.FILTER,
+						card = card,
+					}
+				end
+			end
+		end
+		if context.end_of_round and not context.individual and not context.repetition then
+			G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
+			card.ability.extra.h_size = 0
+			return {
+				card = card,
+				message = localize("k_reset"),
+			}
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
+	end,
+	cry_credits = {
+		idea = {
+			"indefenite_idiot",
+			"HexaCryonic",
+		},
+		code = {
+			"AlexZGreat",
+		},
+		art = {
+			"lamborghiniofficial",
+		},
+	},
+	init = function(self)
+		-- Calculate enhancements for kings as if held in hand
+		-- Note that for enhancements that work when played and held in hand, this will fail
+		-- Not tested since no enhancements use this yet (Steel is weird, and Gold won't work)
+		local cce = Card.calculate_enhancement
+		function Card:calculate_enhancement(context)
+			local ret = cce(self, context)
+			if
+				not ret
+				and next(SMODS.find_card("j_cry_lebaron_james"))
+				and SMODS.Ranks[self.base.value].key == "King"
+				and context.cardarea == G.play
+			then
+				context.cardarea = G.hand
+				local ret = cce(self, context)
+				context.cardarea = G.play
+			end
+			return ret
+		end
+	end,
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7748,6 +7828,7 @@ local miscitems = {
 	fuckedup,
 	foolhardy,
 	translucent,
+	lebaron_james,
 }
 return {
 	name = "Misc. Jokers",
