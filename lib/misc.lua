@@ -190,11 +190,7 @@ function cry_pls(str, vars)
 			table.insert(_table, v)
 		end
 	end
-	if not vars then
-		num = 1 -- Hopefully prevents a crash if no level data
-	else
-		local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets the number outside angle brackets, and its corresponding variable
-	end
+	local num = vars and vars[tonumber(string.match(str, ">(%d+)"))] or 1 -- gets the number outside angle brackets, and its corresponding variable
 	local plural = _table[1] -- default
 	local checks = { [1] = "=" }
 	if #_table > 1 then
