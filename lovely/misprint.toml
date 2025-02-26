@@ -80,7 +80,7 @@ match_indent = true
 # Vouchers
 [[patches]]
 [patches.pattern]
-target = "game.lua"
+target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
