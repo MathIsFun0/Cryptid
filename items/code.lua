@@ -1071,7 +1071,9 @@ local rigged = {
 	badge_colour = HEX("14b341"),
 	draw = function(self, card) --don't draw shine
 		local notilt = nil
-		if card.area and card.area.config.type == 'deck' then notilt = true end
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
 		if not G.shared_stickers["cry_rigged2"] then
 			G.shared_stickers["cry_rigged2"] =
 				Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 })

@@ -1944,7 +1944,9 @@ local absolute = {
 	no_sticker_sheet = true,
 	draw = function(self, card, layer)
 		local notilt = nil
-		if card.area and card.area.config.type == 'deck' then notilt = true end
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
 		G.shared_stickers["cry_absolute"].role.draw_major = card
 		G.shared_stickers["cry_absolute"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 		G.shared_stickers["cry_absolute"]:draw_shader(
