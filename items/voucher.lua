@@ -329,32 +329,28 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			+ math.floor(card and card.ability.extra or self.config.extra) --Booster slots
+		local mod = math.floor(card and card.ability.extra or self.config.extra)
+		SMODS.change_booster_limit(mod)
 		G.E_MANAGER:add_event(Event({
 			func = function() --card slot
-				change_shop_size(math.floor(card and card.ability.extra or self.config.extra))
+				-- why is this in an event?
+				change_shop_size(mod)
 				return true
 			end,
 		}))
-		cry_bonusvouchermod(math.floor(card and card.ability.extra or self.config.extra))
+		SMODS.change_voucher_limit(mod)
 	end,
 	unredeem = function(self, card)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			- math.floor(card and card.ability.extra or self.config.extra) --Booster slots
+		local mod = math.floor(card and card.ability.extra or self.config.extra)
+		SMODS.change_booster_limit(-mod)
 		G.E_MANAGER:add_event(Event({
 			func = function() --card slot
-				change_shop_size(-1 * math.floor(card and card.ability.extra or self.config.extra))
+				-- why is this in an event?
+				change_shop_size(-mod)
 				return true
 			end,
 		}))
-		cry_bonusvouchermod(-1 * math.floor(card and card.ability.extra or self.config.extra))
+		SMODS.change_voucher_limit(-mod)
 	end,
 }
 local massproduct = { --All cards and packs in the shop cost $1

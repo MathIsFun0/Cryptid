@@ -7,9 +7,13 @@ local cat = {
 	},
 	atlas = "tag_cry",
 	pos = { x = 0, y = 2 },
+	config = { level = 1 },
 	key = "cat",
 	name = "cry-Cat Tag",
 	order = 12,
+	loc_vars = function(self, info_queue, tag)
+		return { vars = { tag.ability.level } }
+	end,
 }
 local epic_tag = {
 	object_type = "Tag",

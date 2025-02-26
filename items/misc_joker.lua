@@ -842,18 +842,12 @@ local booster = {
 		return { vars = { math.min(25, center.ability.extra.booster_slots) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			+ math.min(25, card.ability.extra.booster_slots)
+		local mod = math.min(25, card.ability.extra.booster_slots)
+		SMODS.change_booster_limit(mod)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			- math.min(25, card.ability.extra.booster_slots)
+		local mod = math.min(25, card.ability.extra.booster_slots)
+		SMODS.change_booster_limit(-mod)
 	end,
 	cry_credits = {
 		idea = {

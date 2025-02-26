@@ -391,9 +391,8 @@ local error_joker = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		local ok, ret = pcall(predict_card_for_shop)
-		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN and ok then
-			cry_error_msgs[#cry_error_msgs].string = "%%" .. ret
+		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN then
+			cry_error_msgs[#cry_error_msgs].string = "%%" .. (pcall(predict_card_for_shop) or "J6")
 		else
 			cry_error_msgs[#cry_error_msgs].string = "%%J6"
 		end
@@ -1633,7 +1632,7 @@ local soccer = {
 			"set_cry_epic",
 		},
 	},
-	immutable = true,
+	immutable = true,	-- i swear i changed this... whatever
 	rarity = "cry_epic",
 	order = 58,
 	cost = 20,
@@ -1641,28 +1640,25 @@ local soccer = {
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.holygrail } }
 	end,
-	add_to_deck = function(self, card, from_debuff) --TODO: Card in booster packs, Voucher slots
+	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
+		local mod = card.ability.extra.holygrail
 		G.jokers.config.card_limit = G.jokers.config.card_limit
-			+ ((Card.get_gameset(card) == "modest") and 0 or card.ability.extra.holygrail)
-		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.holygrail
-		G.hand:change_size(card.ability.extra.holygrail)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs + card.ability.extra.holygrail
-		change_shop_size(card.ability.extra.holygrail)
+			+ ((Card.get_gameset(card) == "modest") and 0 or mod)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + mod
+		G.hand:change_size(mod)
+		SMODS.change_booster_limit(mod)
+		SMODS.change_voucher_limit(mod)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
+		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
+		local mod = card.ability.extra.holygrail
 		G.jokers.config.card_limit = G.jokers.config.card_limit
-			- ((Card.get_gameset(card) == "modest") and 0 or card.ability.extra.holygrail)
-		G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.holygrail
-		G.hand:change_size(-card.ability.extra.holygrail)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs - card.ability.extra.holygrail
-		change_shop_size(card.ability.extra.holygrail * -1)
+			+ ((Card.get_gameset(card) == "modest") and 0 or -mod)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit - mod
+		G.hand:change_size(-mod)
+		SMODS.change_booster_limit(-mod)
+		SMODS.change_voucher_limit(-mod)
 	end,
 	cry_credits = {
 		idea = {
