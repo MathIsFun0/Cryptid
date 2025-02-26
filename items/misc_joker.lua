@@ -6656,7 +6656,7 @@ local kittyprinter = {
 	name = "cry-kittyprinter",
 	key = "kittyprinter",
 	config = { extra = { Xmult = 2 } },
-	pos = { x = 2, y = 5 },
+	pos = { x = 3, y = 5 },
 	rarity = 2,
 	cost = 6,
 	atlas = "atlasone",
