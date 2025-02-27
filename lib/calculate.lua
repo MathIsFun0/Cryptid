@@ -4,7 +4,7 @@
 local ec = eval_card
 function eval_card(card, context)
 	if card.will_shatter then
-		return
+		return {}
 	end
 	-- Store old probability for later reference
 	local ggpn = G.GAME.probabilities.normal
