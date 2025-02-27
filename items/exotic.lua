@@ -704,11 +704,19 @@ local scalae = {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		local example = {2, 3, 4}
+		local example = { 2, 3, 4 }
 		for i = 1, #example do
-			example[i] = to_big(example[i])^(card.ability.extra.scale+1)
+			example[i] = to_big(example[i]) ^ (card.ability.extra.scale + 1)
 		end
-		return { vars = { number_format(card.ability.extra.scale + 1), number_format(card.ability.extra.scale_mod), example[1], example[2], example[3] } }
+		return {
+			vars = {
+				number_format(card.ability.extra.scale + 1),
+				number_format(card.ability.extra.scale_mod),
+				example[1],
+				example[2],
+				example[3],
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "Mathguy" },
