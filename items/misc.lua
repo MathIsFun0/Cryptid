@@ -7,7 +7,7 @@ local meme_digital_hallucinations_compat = {
 		ccard:set_edition({ negative = true }, true)
 		ccard:add_to_deck()
 		G.jokers:emplace(ccard) --Note: Will break if any non-Joker gets added to the meme pool
-	end
+	end,
 }
 local meme1 = {
 	object_type = "Booster",
