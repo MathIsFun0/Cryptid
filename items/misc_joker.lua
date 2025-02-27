@@ -6760,7 +6760,7 @@ local exposed = {
 	atlas = "atlastwo",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { math.min(40, center.ability.extra) } }
 	end,
 	update = function(self, card, dt)
 		if G.deck and card.added_to_deck then
@@ -6807,7 +6807,7 @@ local mask = {
 	order = 124,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { math.min(40, center.ability.extra) } }
 	end,
 	update = function(self, card, dt)
 		if G.deck and card.added_to_deck then
