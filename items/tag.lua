@@ -169,8 +169,8 @@ local empoweredPack = {
 			ccard:set_edition({ negative = true }, true)
 			ccard:add_to_deck()
 			G.consumeables:emplace(ccard)
-		end
-	}
+		end,
+	},
 }
 local empowered = {
 	object_type = "Tag",
