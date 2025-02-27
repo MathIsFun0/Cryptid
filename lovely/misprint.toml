@@ -57,9 +57,9 @@ if G.GAME.cry_oboe then
     G.GAME.cry_oboe = nil
 end
 if G.GAME.boostertag and G.GAME.boostertag > 0 then
-    self.ability.extra = self.ability.extra * (2^G.GAME.boostertag)
-    G.GAME.pack_choices = G.GAME.pack_choices * (2^G.GAME.boostertag)
-    G.GAME.boostertag = 0
+    self.ability.extra = self.ability.extra * 2
+    G.GAME.pack_choices = G.GAME.pack_choices * 2
+    G.GAME.boostertag = math.max(0, G.GAME.boostertag - 1)
 end
 self.ability.extra = math.min(self.ability.extra, 1000)
 G.GAME.pack_choices = math.min(G.GAME.pack_choices, 1000)
