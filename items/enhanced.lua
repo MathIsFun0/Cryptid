@@ -382,6 +382,9 @@ return {
 			end
 		end
 		function cry_enhancement_config_UI(center)
+			if not center.edeck_type then
+				return
+			end
 			G.SETTINGS.paused = true
 			G.your_collection = {}
 			G.your_collection[1] = CardArea(

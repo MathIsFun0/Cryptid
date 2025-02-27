@@ -20,6 +20,16 @@ local code = {
 	can_stack = true,
 	can_divide = true,
 }
+local code_digital_hallucinations_compat = {
+	colour = HEX("14b341"),
+	loc_key = "cry_plus_code",
+	create = function()
+		local ccard = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "diha")
+		ccard:set_edition({ negative = true }, true)
+		ccard:add_to_deck()
+		G.consumeables:emplace(ccard)
+	end
+}
 local pack1 = {
 	dependencies = {
 		items = {
@@ -51,6 +61,7 @@ local pack1 = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local pack2 = {
 	dependencies = {
@@ -83,6 +94,7 @@ local pack2 = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local packJ = {
 	dependencies = {
@@ -115,6 +127,7 @@ local packJ = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local packM = {
 	dependencies = {
@@ -147,6 +160,7 @@ local packM = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local console = {
 	dependencies = {
@@ -2225,7 +2239,7 @@ local machinecode = {
 	use = function(self, card, area, copier)
 		local card = create_card(
 			"Consumeables",
-			G.consumables,
+			G.consumeables,
 			nil,
 			nil,
 			nil,
@@ -2245,7 +2259,7 @@ local machinecode = {
 			a[b] = (a[b] or 0) + 1
 		end
 		for k, v in pairs(a) do
-			local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, k.key)
+			local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, k.key)
 			card:set_edition({ cry_glitched = true })
 			card:add_to_deck()
 			if Incantation then
@@ -4362,7 +4376,7 @@ local CodeJoker = {
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			play_sound("timpani")
-			local card = create_card("Code", G.consumables, nil, nil, nil, nil)
+			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
 			card:set_edition({
 				negative = true,
 			})
@@ -4608,7 +4622,7 @@ local blender = {
 			and not context.consumeable.beginning_end
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_blender")
+				local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, nil, "cry_blender")
 				card:add_to_deck()
 				G.consumeables:emplace(card)
 			end

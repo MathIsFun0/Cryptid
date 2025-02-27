@@ -156,6 +156,21 @@ local empoweredPack = {
 		end
 	end,
 	group_key = "k_spectral_pack",
+	cry_digital_hallucinations = {
+		colour = G.C.SECONDARY_SET.Spectral,
+		loc_key = "k_plus_spectral",
+		create = function()
+			local ccard
+			if pseudorandom(pseudoseed("diha")) < 0.5 then
+				ccard = create_card("Spectral", G.consumeables, nil, nil, true, true, "c_soul")
+			else
+				ccard = create_card("Spectral", G.consumeables, nil, nil, true, true, "c_cry_gateway")
+			end
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end
+	}
 }
 local empowered = {
 	object_type = "Tag",

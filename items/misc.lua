@@ -1,4 +1,14 @@
 -- Packs
+local meme_digital_hallucinations_compat = {
+	colour = G.C.CRY_ASCENDANT,
+	loc_key = "k_plus_joker",
+	create = function()
+		local ccard = create_card("Meme", G.jokers, nil, nil, true, true, nil, "diha")
+		ccard:set_edition({ negative = true }, true)
+		ccard:add_to_deck()
+		G.jokers:emplace(ccard) --Note: Will break if any non-Joker gets added to the meme pool
+	end
+}
 local meme1 = {
 	object_type = "Booster",
 	dependencies = {
@@ -43,6 +53,7 @@ local meme1 = {
 		SMODS.Booster.update_pack(self, dt)
 	end,
 	group_key = "k_cry_meme_pack",
+	cry_digital_hallucinations = meme_digital_hallucinations_compat,
 }
 local meme2 = {
 	object_type = "Booster",
@@ -89,6 +100,7 @@ local meme2 = {
 		SMODS.Booster.update_pack(self, dt)
 	end,
 	group_key = "k_cry_meme_pack",
+	cry_digital_hallucinations = meme_digital_hallucinations_compat,
 }
 local meme3 = {
 	object_type = "Booster",
@@ -136,6 +148,7 @@ local meme3 = {
 		SMODS.Booster.update_pack(self, dt)
 	end,
 	group_key = "k_cry_meme_pack",
+	cry_digital_hallucinations = meme_digital_hallucinations_compat,
 }
 
 if not AurinkoAddons then
@@ -1796,7 +1809,7 @@ local blessing = {
 					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card(
 						"Consumeables",
-						G.consumables,
+						G.consumeables,
 						nil,
 						nil,
 						nil,

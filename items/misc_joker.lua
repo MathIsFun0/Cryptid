@@ -7404,6 +7404,27 @@ local digitalhallucinations = {
 			)
 		then
 			local boosty = context.card
+			-- finally mod compat?
+			if boosty.config.center.cry_digital_hallucinations then
+				local conf = boosty.config.center.cry_digital_hallucinations
+				G.E_MANAGER:add_event(Event({
+					trigger = "before",
+					delay = 0.0,
+					func = function()
+						conf.create()
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize(conf.loc_key), colour = conf.colour }
+				)
+				return nil, true
+			end
 			local consums = { "Arcana", "Celestial", "Spectral" }
 			local short1 = { "tarot", "planet", "spectral" }
 			local short2 = { "Tarot", "Planet", "Spectral" }
@@ -7413,7 +7434,7 @@ local digitalhallucinations = {
 						trigger = "before",
 						delay = 0.0,
 						func = function()
-							local ccard = create_card(short2[i], G.consumables, nil, nil, nil, nil, nil, "diha")
+							local ccard = create_card(short2[i], G.consumeables, nil, nil, nil, nil, nil, "diha")
 							ccard:set_edition({ negative = true }, true)
 							ccard:add_to_deck()
 							G.consumeables:emplace(ccard)
@@ -7430,28 +7451,6 @@ local digitalhallucinations = {
 					)
 					return nil, true -- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
 				end
-			end
-			if boosty.ability.name:find("code") then
-				G.E_MANAGER:add_event(Event({
-					trigger = "before",
-					delay = 0.0,
-					func = function()
-						local ccard = create_card("Code", G.consumables, nil, nil, nil, nil, nil, "diha")
-						ccard:set_edition({ negative = true }, true)
-						ccard:add_to_deck()
-						G.consumeables:emplace(ccard)
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					context.blueprint_card or card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("cry_plus_code"), colour = G.C.SET.Code }
-				)
-				return nil, true
 			end
 			if boosty.ability.name:find("Buffoon") then
 				G.E_MANAGER:add_event(Event({
