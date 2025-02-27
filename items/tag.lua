@@ -252,11 +252,6 @@ local gambler = {
 				end)
 			else
 				tag:nope()
-				for i = 1, #G.GAME.tags do
-					if G.GAME.tags[i]:apply_to_run({ type = "new_blind_choice" }) then
-						break
-					end
-				end
 			end
 			tag.triggered = true
 			return true

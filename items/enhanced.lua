@@ -363,14 +363,14 @@ return {
 		function Card:click()
 			ccl(self)
 			if
-				Galdur
+				Galdur and safe_get(Galdur, "run_setup", "current_page") == 1
 					and (self.edeck_select or (self.area == safe_get(Galdur, "run_setup", "selected_deck_area") and safe_get(
 						self,
 						"config",
 						"center",
 						"edeck_type"
 					)))
-				or (
+				or (not Galdur) and (
 					safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type")
 					and (self.back == "viewed_back" or self.edeck_select)
 				)

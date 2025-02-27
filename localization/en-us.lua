@@ -8,6 +8,14 @@ return {
 					"of {C:attention}every{} deck",
 				},
 			},
+			b_cry_antimatter_balanced = {
+				name = "Antimatter Deck",
+				text = {
+					"Applies the {C:legendary,E:1}upsides{}",
+					"of {C:attention}every{} deck won",
+					"with {C:gold}Gold Stake{}",
+				},
+			},
 			b_cry_beige = {
 				name = "Beige Deck",
 				text = {

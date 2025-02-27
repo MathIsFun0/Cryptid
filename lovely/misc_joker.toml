@@ -33,7 +33,7 @@ if G.GAME.jokers_sold then
 		if self.config.center.key == G.GAME.jokers_sold[i] then contained = true end
 	end
 	if not contained then table.insert(G.GAME.jokers_sold, self.config.center.key) end
-else
+elseif self.config.center.set == "Joker" then
 	G.GAME.jokers_sold = {self.config.center.key}
 end
 '''
