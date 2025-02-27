@@ -40,7 +40,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
+pattern = "G.GAME.pack_choices = self.ability.choose or self.config.center.config.choose or 1"
 position = "after"
 payload = '''
 G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
