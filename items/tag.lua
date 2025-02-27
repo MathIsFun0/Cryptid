@@ -12,7 +12,7 @@ local cat = {
 	name = "cry-Cat Tag",
 	order = 12,
 	loc_vars = function(self, info_queue, tag)
-		return { vars = { tag.ability.level } }
+		return { vars = { tag.ability.level or 1 } }
 	end,
 }
 local epic_tag = {
@@ -246,12 +246,21 @@ local gambler = {
 						emp.ability.shiny = cry_rollshinybool()
 					end
 					add_tag(emp)
+					tag.triggered = true
 					emp:apply_to_run({ type = "new_blind_choice" })
 					G.CONTROLLER.locks[lock] = nil
 					return true
 				end)
 			else
 				tag:nope()
+				tag.triggered = true
+				for i = 1, #G.GAME.tags do
+					if G.GAME.tags[i] ~= tag then
+						if G.GAME.tags[i]:apply_to_run({ type = "new_blind_choice" }) then
+							break
+						end
+					end
+				end
 			end
 			tag.triggered = true
 			return true
@@ -290,6 +299,7 @@ local bundle = {
 					_tag.ability.shiny = cry_rollshinybool()
 					add_tag(_tag)
 					if i == 1 then
+						tag.triggered = true
 						_tag:apply_to_run({ type = "new_blind_choice" })
 					end
 				end
