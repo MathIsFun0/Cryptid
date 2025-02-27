@@ -35,9 +35,16 @@ local white_hole = {
 		for k, v in ipairs(G.handlist) do
 			if to_big(G.GAME.hands[v].level) > to_big(1) then
 				local this_removed_levels = G.GAME.hands[v].level - 1
-				removed_levels = removed_levels + this_removed_levels
-				if v ~= _hand or not modest then
-					level_up_hand(used_consumable, v, true, -this_removed_levels)
+				if
+					-- Due to how these poker hands are loaded they still techically exist even if Poker Hand Stuff is disabled
+					-- Because they still exist, While Hole needs to ignore levels from these if disabled (via Black Hole, Planet.lua, etc...)
+					(v ~= "cry_Bulwark" and v ~= "cry_Clusterfuck" and v ~= "cry_UltPair" and v ~= "cry_WholeDeck")
+					or cry_card_enabled("set_cry_poker_hand_stuff") == true
+				then
+					if v ~= _hand or not modest then
+						removed_levels = removed_levels + this_removed_levels
+						level_up_hand(used_consumable, v, true, -this_removed_levels)
+					end
 				end
 			end
 		end
