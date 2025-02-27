@@ -169,6 +169,7 @@ function Game:init_game_object()
 	-- Add initial dropshot and number blocks card
 	g.current_round.cry_nb_card = { rank = "Ace" }
 	g.current_round.cry_dropshot_card = { suit = "Spades" }
+	g.monstermult = 1
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	return g

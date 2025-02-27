@@ -1806,7 +1806,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "exp" },
+					{ ref_table = "card.ability.extra", ref_value = "monster", retrigger_type = "exp" },
 				},
 			},
 		},
