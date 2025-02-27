@@ -1358,7 +1358,7 @@ return {
 			j_cry_exoplanet = {
 				name = "Exoplanet",
 				text = {
-					"{C:dark_edition}Holographic{} cards",
+					"Other {C:dark_edition}Holographic{} cards",
 					"each give {C:mult}+#1#{} Mult",
 				},
 			},
@@ -1830,7 +1830,7 @@ return {
 			j_cry_meteor = {
 				name = "Meteor Shower",
 				text = {
-					"{C:dark_edition}Foil{} cards each",
+					"Other {C:dark_edition}Foil{} cards each",
 					"give {C:chips}+#1#{} Chip#<s>1#",
 				},
 			},
@@ -2315,7 +2315,7 @@ return {
 			j_cry_stardust = {
 				name = "Stardust",
 				text = {
-					"{C:dark_edition}Polychrome{} cards",
+					"Other {C:dark_edition}Polychrome{} cards",
 					"each give {X:mult,C:white}X#1#{} Mult",
 				},
 			},
@@ -2468,7 +2468,7 @@ return {
 			j_cry_universe = {
 				name = "Universe",
 				text = {
-					"{C:dark_edition}Astral{} cards",
+					"Other {C:dark_edition}Astral{} cards",
 					"each give {X:dark_edition,C:white}^#1#{} Mult",
 				},
 			},
