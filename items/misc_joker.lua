@@ -7458,7 +7458,16 @@ local digitalhallucinations = {
 					trigger = "before",
 					delay = 0.0,
 					func = function()
-						local ccard = create_card(boosty.ability.name:find("meme") and "Meme" or "Joker", G.jokers, nil, nil, nil, nil, nil, "diha")	-- who up wasting their cycles rn
+						local ccard = create_card(
+							boosty.ability.name:find("meme") and "Meme" or "Joker",
+							G.jokers,
+							nil,
+							nil,
+							nil,
+							nil,
+							nil,
+							"diha"
+						) -- who up wasting their cycles rn
 						ccard:set_edition({ negative = true }, true)
 						ccard:add_to_deck()
 						G.jokers:emplace(ccard)
