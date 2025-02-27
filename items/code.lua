@@ -2105,7 +2105,7 @@ local delete = {
 			a = G.shop_vouchers
 			c = G.shop_vouchers.highlighted[1]
 			if c.shop_voucher then
-				G.GAME.current_round.voucher = nil
+				G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
 				G.GAME.current_round.cry_voucher_edition = nil
 				G.GAME.current_round.cry_voucher_stickers =
 					{ eternal = false, perishable = false, rental = false, pinned = false, banana = false }
@@ -2826,7 +2826,7 @@ local rework = {
 	cost = 4,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] =
-			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]" } }
+			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]", "n" } }
 		return { vars = {} }
 	end,
 	can_use = function(self, card)

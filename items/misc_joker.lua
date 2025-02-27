@@ -7457,7 +7457,16 @@ local digitalhallucinations = {
 					trigger = "before",
 					delay = 0.0,
 					func = function()
-						local ccard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "diha")
+						local ccard = create_card(
+							boosty.ability.name:find("meme") and "Meme" or "Joker",
+							G.jokers,
+							nil,
+							nil,
+							nil,
+							nil,
+							nil,
+							"diha"
+						) -- who up wasting their cycles rn
 						ccard:set_edition({ negative = true }, true)
 						ccard:add_to_deck()
 						G.jokers:emplace(ccard)
@@ -7492,6 +7501,7 @@ local digitalhallucinations = {
 						ccard:set_edition({ negative = true }, true)
 						ccard:start_materialize({ G.C.SECONDARY_SET.Enhanced })
 						G.play:emplace(ccard)
+						playing_card_joker_effects({ ccard }) -- odd timing
 						table.insert(G.playing_cards, ccard)
 						return true
 					end,
@@ -7512,8 +7522,6 @@ local digitalhallucinations = {
 					end,
 				}))
 				draw_card(G.play, G.deck, 90, "up", nil)
-
-				playing_card_joker_effects({ true }) -- who knows what most this stuff does, i just copied it from marble jonkler
 				return nil, true
 			end
 		end
