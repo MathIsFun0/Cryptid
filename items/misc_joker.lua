@@ -7453,12 +7453,12 @@ local digitalhallucinations = {
 				)
 				return nil, true
 			end
-			if boosty.ability.name:find("Buffoon") then
+			if boosty.ability.name:find("Buffoon") or boosty.ability.name:find("meme") then
 				G.E_MANAGER:add_event(Event({
 					trigger = "before",
 					delay = 0.0,
 					func = function()
-						local ccard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "diha")
+						local ccard = create_card(boosty.ability.name:find("meme") and "Meme" or "Joker", G.jokers, nil, nil, nil, nil, nil, "diha")	-- who up wasting their cycles rn
 						ccard:set_edition({ negative = true }, true)
 						ccard:add_to_deck()
 						G.jokers:emplace(ccard)
