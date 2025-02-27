@@ -7493,7 +7493,7 @@ local digitalhallucinations = {
 						ccard:set_edition({ negative = true }, true)
 						ccard:start_materialize({ G.C.SECONDARY_SET.Enhanced })
 						G.play:emplace(ccard)
-						playing_card_joker_effects({ccard})	-- odd timing
+						playing_card_joker_effects({ ccard }) -- odd timing
 						table.insert(G.playing_cards, ccard)
 						return true
 					end,
