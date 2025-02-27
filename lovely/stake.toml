@@ -151,7 +151,7 @@ payload = '''
 eternal = self.ability and self.ability.eternal,
 perishable = self.ability and self.ability.perishable,
 perish_tally = self.ability and self.ability.perish_tally,
-rental = self.ability and self.ability.rental
+rental = self.ability and self.ability.rental,
 '''
 match_indent = true
 
