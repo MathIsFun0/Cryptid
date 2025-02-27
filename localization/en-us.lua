@@ -1365,7 +1365,7 @@ return {
 			j_cry_exposed = {
 				name = "Exposed",
 				text = {
-					"Retrigger all non-{C:attention}face{} cards",
+					"Retrigger all scored non-{C:attention}face{} cards",
 					"{C:attention}#1#{} additional time#<s>1#",
 					"All {C:attention}face{} cards are debuffed",
 				},
@@ -1758,7 +1758,7 @@ return {
 			j_cry_mask = {
 				name = "Mask",
 				text = {
-					"Retrigger all {C:attention}face{} cards",
+					"Retrigger all scored {C:attention}face{} cards",
 					"{C:attention}#1#{} additional time#<s>1#",
 					"All non-{C:attention}face{} cards are debuffed",
 				},
