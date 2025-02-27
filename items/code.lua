@@ -2812,7 +2812,7 @@ local rework = {
 	cost = 4,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] =
-			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]" } }
+			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]", "n" } }
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
