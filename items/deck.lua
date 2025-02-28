@@ -597,7 +597,6 @@ local antimatter = {
 				for k, v in pairs(vouchers) do
 					if G.P_CENTERS[v] then
 						G.GAME.used_vouchers[v] = true
-						G.GAME.cry_owned_vouchers[v] = true
 						G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
 						Card.apply_to_run(nil, G.P_CENTERS[v])
 					end
