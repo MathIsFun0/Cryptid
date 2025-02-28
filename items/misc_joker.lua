@@ -1016,7 +1016,7 @@ local big_cube = {
 		if context.joker_main then
 			return {
 				message = localize({ type = "variable", key = "a_xchips", vars = { card.ability.extra.x_chips } }),
-				Xchip_mod = card.ability.extra.x_chips,
+				Xchip_mod = self.config.extra.x_chips,
 				colour = G.C.CHIPS,
 			}
 		end
