@@ -258,7 +258,7 @@ local lock = {
 	order = 1,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = {key = 'eternal', set = 'Other'}
+		info_queue[#info_queue + 1] = { key = "eternal", set = "Other" }
 	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
