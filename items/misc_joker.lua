@@ -7718,6 +7718,42 @@ local lebaron_james = {
 		end
 	end,
 }
+local huntingseason = { -- If played hand contains three cards, destroy the middle card after scoring
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-huntingseason",
+	key = "huntingseason",
+	pos = { x = 4, y = 0 },
+	order = 134,
+	immutable = true,
+	rarity = 3,
+	cost = 4,
+	blueprint_compat = false,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if
+			(context.cardarea == G.play or context.cardarea == "unscored")
+			and context.destroy_card == context.full_hand[2]
+			and #context.full_hand == 3 -- 3 cards in played hand
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
+			return { remove = true }
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Nova",
+		},
+		code = {
+			"Nova",
+		},
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7830,6 +7866,7 @@ local miscitems = {
 	foolhardy,
 	translucent,
 	lebaron_james,
+	huntingseason,
 }
 return {
 	name = "Misc. Jokers",
