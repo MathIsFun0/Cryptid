@@ -7730,8 +7730,8 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 	pos = { x = 4, y = 0 },
 	order = 134,
 	immutable = true,
-	rarity = 3,
-	cost = 4,
+	rarity = 2,
+	cost = 7,
 	blueprint_compat = false,
 	atlas = "placeholders",
 	calculate = function(self, card, context)
