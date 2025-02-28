@@ -1565,6 +1565,13 @@ return {
 					"using a {C:attention}consumable{}",
 				},
 			},
+			j_cry_huntingseason = {
+				name = "Hunting Season",
+				text = {
+					"If played hand contains exactly {C:attention}3{} cards,",
+					"{C:red}destroy{} the {C:attention}center{} card after scoring",
+				},
+			},
 			j_cry_iterum = {
 				name = "Iterum",
 				text = {
