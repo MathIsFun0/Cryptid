@@ -81,36 +81,6 @@ local dropshot = {
 			"Math",
 		},
 	},
-	init = function(self)
-		local gigo = Game.init_game_object
-		function Game:init_game_object()
-			local g = gigo(self)
-			g.current_round.cry_dropshot_card = { suit = "Spades" }
-			return g
-		end
-		local rcc = reset_castle_card
-		function reset_castle_card()
-			rcc()
-			if not G.GAME.current_round.cry_dropshot_card then
-				G.GAME.current_round.cry_dropshot_card = {}
-			end
-			G.GAME.current_round.cry_dropshot_card.suit = "Spades"
-			local valid_castle_cards = {}
-			for k, v in ipairs(G.playing_cards) do
-				if v.ability.effect ~= "Stone Card" then
-					valid_castle_cards[#valid_castle_cards + 1] = v
-				end
-			end
-			if valid_castle_cards[1] then
-				local castle_card =
-					pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
-				if not G.GAME.current_round.cry_dropshot_card then
-					G.GAME.current_round.cry_dropshot_card = {}
-				end
-				G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
-			end
-		end
-	end,
 }
 local happyhouse = {
 	object_type = "Joker",
