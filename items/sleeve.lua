@@ -329,7 +329,31 @@ if CardSleeves then
 		end,
 	})
 
-	--local beigesleeve
+	local beigesleeve = CardSleeves.Sleeve({
+		key = "beige_sleeve",
+		name = "Beige Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 3, y = 1 },
+		unlocked = true,
+		unlock_condition = { deck = "Beige Deck", stake = 1 },
+		loc_vars = function(self)
+			local key
+			if self.get_current_deck_key() == "b_cry_beige" then
+				key = self.key .. "_alt"
+				return {key = key, vars = {}}
+			end
+			return {vars = {}}
+		end,
+
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			if self.get_current_deck_key() ~= "b_cry_beige" then
+				G.GAME.modifiers.cry_common_value_quad = true
+			else
+				G.GAME.modifiers.cry_uncommon_value_quad = true
+			end
+		end,
+	})
 
 	local legendarysleeve = CardSleeves.Sleeve({
 		key = "legendary_sleeve",
@@ -438,6 +462,7 @@ if CardSleeves then
 			encodedsleeve,
 			nostalgicsleeve,
 			bountifulsleeve,
+			beigesleeve,
 			legendarysleeve,
 			spookysleeve,
 		}

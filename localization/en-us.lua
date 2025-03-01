@@ -2726,6 +2726,20 @@ return {
 			},
 		},
 		Sleeve = {
+			sleeve_cry_beige_sleeve = {
+				name = "Beige Sleeve",
+				text = {
+					"{C:attention}Common{} Jokers have",
+					"{C:attention}quadrupled{} values",
+				},
+			},
+			sleeve_cry_beige_sleeve_alt = {
+				name = "Beige Sleeve",
+				text = {
+					"{C:attention}Uncommon{} Jokers have",
+					"{C:attention}quadrupled{} values",
+				},
+			},
 			sleeve_cry_beta_sleeve = {
 				name = "Nostalgic Sleeve",
 				text = {
