@@ -155,7 +155,7 @@ function cry_ascend(num) -- edit this function at your leisure
 	else
 		return math.max(
 			num,
-			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ G.GAME.current_round.current_hand.cry_asc_num or 0)
+			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ (G.GAME.current_round.current_hand.cry_asc_num or 0))
 		)
 	end
 end
