@@ -7654,6 +7654,7 @@ local lebaron_james = {
 		},
 	},
 	name = "cry-LeBaron James",
+	pools = { ["Meme"] = true },
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
 	config = { extra = { h_mod = 1, h_size = 0 } },
