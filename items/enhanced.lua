@@ -1,3 +1,4 @@
+--bruh
 local atlasenhanced = {
 	object_type = "Atlas",
 	key = "atlasenhanced",
@@ -46,13 +47,16 @@ Cryptid.edeck_sprites = {
 	},
 	sticker = {
 		order = 3,
-		default = { atlas = "centers", pos = { x = 5, y = 2 } },
-		eternal = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 2 } },
-		perishable = { atlas = "cry_atlasenhanced", pos = { x = 0, y = 3 } },
-		rental = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 3 } },
-		pinned = { atlas = "cry_atlasenhanced", pos = { x = 0, y = 5 } },
-		banana = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 4 } },
-		cry_rigged = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 6 } },
+		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
+		eternal = { atlas = "cry_atlasdeck", pos = { x = 6, y = 0 } },
+		perishable = { atlas = "cry_atlasdeck", pos = { x = 7, y = 0 } },
+		rental = { atlas = "cry_atlasdeck", pos = { x = 8, y = 0 } },
+		pinned = { atlas = "cry_atlasdeck", pos = { x = 7, y = 1 } },
+		banana = { atlas = "cry_atlasdeck", pos = { x = 6, y = 1 } },
+		cry_rigged = { atlas = "cry_atlasdeck", pos = { x = 8, y = 1 } },
+		cry_absolute = { atlas = "cry_atlasdeck", pos = { x = 8, y = 2 } },
+		cry_possessed = { atlas = "cry_atlasdeck", pos = { x = 7, y = 2 } },
+		cry_flickering = { atlas = "cry_atlasdeck", pos = { x = 6, y = 2 } },
 	},
 	suit = {
 		order = 4,
