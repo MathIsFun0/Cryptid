@@ -713,16 +713,15 @@ local ritual = {
 	atlas = "atlasnotjokers",
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
-		--TODO: CCD card compat
-		if #G.hand.highlighted > card.ability.max_highlighted then
-			return false
-		end
-		for _, v in ipairs(G.hand.highlighted) do
-			if v.edition then
-				return false
+		if card.area ~= G.hand then
+			return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition)
+		else
+			local idx = 1
+			if G.hand.highlighted[1] == card then
+				idx = 2
 			end
+			return (#G.hand.highlighted == 2) and (not G.hand.highlighted[idx].edition)
 		end
-		return true
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
