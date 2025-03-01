@@ -598,7 +598,12 @@ local antimatter = {
 					if G.P_CENTERS[v] then
 						G.GAME.used_vouchers[v] = true
 						G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
-						Card.apply_to_run(nil, G.P_CENTERS[v])
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								Card.apply_to_run(nil, G.P_CENTERS[v])
+								return true
+							end,
+						}))
 					end
 				end
 			end
