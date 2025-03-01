@@ -672,7 +672,7 @@ local antimatter = {
 			if (wormholecheck or 0) ~= 0 then
 				G.GAME.modifiers.cry_negative_rate = 20
 
-				if cry_card_enabled("set_cry_epic") == true then
+				if cry_card_enabled("set_cry_exotic") == true then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							if G.jokers then
