@@ -1498,7 +1498,6 @@ local fspinner = {
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
-	atlas = "fspinner",
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
 			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
@@ -1753,9 +1752,9 @@ local gardenfork = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before then
 			for i = 1, #context.full_hand do
-				if context.scoring_hand[i]:get_id() == 14 then
+				if context.full_hand[i]:get_id() == 14 then
 					for j = 1, #context.full_hand do
-						if context.scoring_hand[j]:get_id() == 7 then -- :( ekshpenshive
+						if context.full_hand[j]:get_id() == 7 then -- :( ekshpenshive
 							ease_dollars(card.ability.extra.money)
 							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 						end

@@ -247,7 +247,7 @@ local oversat = {
 				return cry_misprintize_val(val, {
 					min = 2,
 					max = 2,
-				}, is_card_big(card), true)
+				}, is_card_big(card))
 			end)
 		end
 	end,
@@ -347,7 +347,7 @@ local glitched = {
 				return cry_misprintize_val(val, {
 					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card), true)
+				}, is_card_big(card))
 			end)
 		end
 	end,

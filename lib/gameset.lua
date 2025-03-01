@@ -936,11 +936,13 @@ end
 ---- CARD ENABLING SYSTEM ----
 ------------------------------
 
+---@type fun(self: SMODS.GameObject|table, reason: table)?
 SMODS.GameObject._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 	end
 end
+---@type fun(self: SMODS.GameObject|table)?
 SMODS.GameObject.enable = function(self)
 	if self.cry_disabled then
 		self.cry_disabled = nil
@@ -950,6 +952,7 @@ end
 -- Note: For custom pools, these only support Center.pools, not ObjectType.cards
 -- That could cause issues with mod compat in the future
 -- Potential improvement: automatic pool detection from gamesets?
+---@type fun(self: SMODS.Center|table, reason: table)?
 SMODS.Center._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
@@ -960,6 +963,7 @@ SMODS.Center._disable = function(self, reason)
 		G.P_CENTERS[self.key] = nil
 	end
 end
+---@type fun(self: SMODS.Center|table)?
 SMODS.Center.enable = function(self)
 	if self.cry_disabled then
 		self.cry_disabled = nil
@@ -970,6 +974,8 @@ SMODS.Center.enable = function(self)
 		end
 	end
 end
+
+---@type fun(self: SMODS.Joker|table)?
 SMODS.Joker.enable = function(self)
 	if self.cry_disabled then
 		SMODS.Center.enable(self)
@@ -980,6 +986,7 @@ SMODS.Joker.enable = function(self)
 		end
 	end
 end
+---@type fun(self: SMODS.Joker|table, reason: table)?
 SMODS.Joker._disable = function(self, reason)
 	if not self.cry_disabled then
 		SMODS.Center._disable(self, reason)
@@ -990,6 +997,7 @@ SMODS.Joker._disable = function(self, reason)
 		end
 	end
 end
+---@type fun(self: SMODS.Joker|table, rarity: string|number)?
 SMODS.Joker.set_rarity = function(self, rarity)
 	SMODS.remove_pool(G.P_JOKER_RARITY_POOLS[self.rarity], self.key)
 	self.rarity = rarity
@@ -1000,12 +1008,14 @@ SMODS.Joker.set_rarity = function(self, rarity)
 	end
 end
 
+---@type fun(self: SMODS.Consumable|table)?
 SMODS.Consumable.enable = function(self)
 	if self.cry_disabled then
 		SMODS.Center.enable(self)
 		SMODS.insert_pool(G.P_CENTER_POOLS["Consumeables"], self)
 	end
 end
+---@type fun(self: SMODS.Consumable|table, reason: table)?
 SMODS.Consumable._disable = function(self, reason)
 	if not self.cry_disabled then
 		SMODS.Center._disable(self, reason)
@@ -1013,6 +1023,7 @@ SMODS.Consumable._disable = function(self, reason)
 	end
 end
 
+---@type fun(self: SMODS.Tag|table, reason: table)?
 SMODS.Tag._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
@@ -1020,6 +1031,7 @@ SMODS.Tag._disable = function(self, reason)
 		G.P_TAGS[self.key] = nil
 	end
 end
+---@type fun(self: SMODS.Tag|table)?
 SMODS.Tag.enable = function(self)
 	if self.cry_disabled then
 		self.cry_disabled = nil
@@ -1028,12 +1040,14 @@ SMODS.Tag.enable = function(self)
 	end
 end
 
+---@type fun(self: SMODS.Blind|table, reason: table)?
 SMODS.Blind._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 		G.P_BLINDS[self.key] = nil
 	end
 end
+---@type fun(self: SMODS.Blind|table)?
 SMODS.Blind.enable = function(self)
 	if self.cry_disabled then
 		self.cry_disabled = nil
@@ -1042,12 +1056,14 @@ SMODS.Blind.enable = function(self)
 end
 
 --Removing seals from the center table causes issues
+---@type fun(self: SMODS.Seal|table, reason: table)?
 SMODS.Seal._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
 		SMODS.remove_pool(G.P_CENTER_POOLS[self.set], self.key)
 	end
 end
+---@type fun(self: SMODS.Seal|table)?
 SMODS.Seal.enable = function(self)
 	if self.cry_disabled then
 		self.cry_disabled = nil
@@ -1056,6 +1072,7 @@ SMODS.Seal.enable = function(self)
 end
 
 --Removing editions from the center table causes issues, so instead we make them unable to spawn naturally
+---@type fun(self: SMODS.Seal|table, reason: table)?
 SMODS.Edition._disable = function(self, reason)
 	if not self.cry_disabled then
 		self.cry_disabled = reason or { type = "manual" } --used to display more information that can be used later
@@ -1066,6 +1083,7 @@ SMODS.Edition._disable = function(self, reason)
 		end
 	end
 end
+---@type fun(self: SMODS.Seal|table)?
 SMODS.Edition.enable = function(self)
 	if self.cry_disabled then
 		self.cry_disabled = nil
