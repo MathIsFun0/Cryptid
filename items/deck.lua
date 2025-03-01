@@ -676,7 +676,8 @@ local antimatter = {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							if G.jokers then
-								local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
+								local card =
+									create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
 								card:add_to_deck()
 								card:start_materialize()
 								G.jokers:emplace(card)
