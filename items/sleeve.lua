@@ -339,9 +339,9 @@ if CardSleeves then
 			local key
 			if self.get_current_deck_key() == "b_cry_beige" then
 				key = self.key .. "_alt"
-				return {key = key, vars = {}}
+				return { key = key, vars = {} }
 			end
-			return {vars = {}}
+			return { vars = {} }
 		end,
 
 		trigger_effect = function(self, args) end,
