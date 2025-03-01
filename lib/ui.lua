@@ -160,7 +160,9 @@ SMODS.DrawStep({
 					* math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14)
 					* (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
 			local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL)
-				+ 0.07 * math.sin(G.TIMERS.REAL * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+				+ 0.07
+					* math.sin(G.TIMERS.REAL * math.pi * 5)
+					* (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
 
 			self.children.floating_sprite.role.draw_major = self
 			self.children.floating_sprite:draw_shader(
