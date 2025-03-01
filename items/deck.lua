@@ -260,8 +260,8 @@ local legendary = {
 	pos = { x = 0, y = 6 },
 	atlas = "atlasdeck",
 	order = 15,
-	trigger_effect = function(self, args)
-		if args.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
+	calculate = function(self, back, context)
+		if context.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
 			if G.jokers then
 				if #G.jokers.cards < G.jokers.config.card_limit then
 					local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
@@ -390,8 +390,8 @@ local glowing = {
 		return { vars = { " " } }
 	end,
 	atlas = "glowing",
-	trigger_effect = function(self, args)
-		if args.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
+	calculate = function(self, back, context)
+		if context.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					cry_with_deck_effects(G.jokers.cards[i], function(card)
@@ -492,11 +492,11 @@ local antimatter = {
 		cry_forced_draw_amount = 5,
 	},
 	pos = { x = 2, y = 0 },
-	trigger_effect = function(self, args)
-		if args.context ~= "final_scoring_step" then
-			antimatter_trigger_effect(self, args)
+	calculate = function(self, back, context)
+		if context.context ~= "final_scoring_step" then
+			antimatter_trigger_effect(self, context)
 		else
-			return antimatter_trigger_effect_final_scoring_step(self, args)
+			return antimatter_trigger_effect_final_scoring_step(self, context)
 		end
 	end,
 	apply = function(self)
@@ -671,24 +671,21 @@ local antimatter = {
 			-- Wormhole deck
 			if (wormholecheck or 0) ~= 0 then
 				G.GAME.modifiers.cry_negative_rate = 20
-				--[[
 
-				Needs to check if exotic Jokers exist are enabled (whenever that happens)
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-
-				]]
-				--
+				if cry_card_enabled("set_cry_exotic") == true then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.jokers then
+								local card =
+									create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+								return true
+							end
+						end,
+					}))
+				end
 			end
 			-- Redeemed deck
 			if (redeemedcheck or 0) ~= 0 then
@@ -721,9 +718,8 @@ local antimatter = {
 					end,
 				}))
 			end
-			--Encoded Deck (TBA)
+			--Encoded Deck
 			if (encodedcheck or 0) ~= 0 then
-				--[[
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
@@ -749,23 +745,26 @@ local antimatter = {
 						end
 					end,
 				}))
-				]]
-				--
 			end
 		end
 
-		function antimatter_trigger_effect_final_scoring_step(self, args)
+		function antimatter_trigger_effect_final_scoring_step(self, context)
 			local critcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
 			local plasmacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
 
-			if args.context == "final_scoring_step" then
+			if cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
+				critcheck = 1
+				plasmacheck = 1
+			end
+
+			if context.context == "final_scoring_step" then
 				local crit_poll = pseudorandom(pseudoseed("cry_critical"))
 				crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
 				--Critical Deck
 				if (critcheck or 0) ~= 0 then
 					if crit_poll < self.config.cry_crit_rate then
-						args.mult = args.mult ^ 2
-						update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
+						context.mult = context.mult ^ 2
+						update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								play_sound("talisman_emult", 1)
@@ -784,11 +783,11 @@ local antimatter = {
 					end
 				end
 				--Plasma Deck
-				local tot = args.chips + args.mult
+				local tot = context.chips + context.mult
 				if (plasmacheck or 0) ~= 0 then
-					args.chips = math.floor(tot / 2)
-					args.mult = math.floor(tot / 2)
-					update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
+					context.chips = math.floor(tot / 2)
+					context.mult = math.floor(tot / 2)
+					update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -837,16 +836,22 @@ local antimatter = {
 
 					delay(0.6)
 				end
-				return args.chips, args.mult
+				return context.chips, context.mult
 			end
 		end
 
-		function antimatter_trigger_effect(self, args)
+		function antimatter_trigger_effect(self, context)
 			local glowingcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_glowing", "wins", 8)
 			local legendarycheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
 			local anaglyphcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8)
 
-			if args.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
+			if cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
+				glowingcheck = 1
+				legendarycheck = 1
+				anaglyphcheck = 1
+			end
+
+			if context.context == "eval" and safe_get(G.GAME, "last_blind", "boss") then
 				--Glowing Deck
 				if (glowingcheck or 0) ~= 0 then
 					for i = 1, #G.jokers.cards do
@@ -906,6 +911,7 @@ local antimatter = {
 			if not voucher_table or type(voucher_table) ~= "table" then
 				voucher_table = {}
 			end
+			local skip = (cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
 
 			-- Add Vouchers into the table by key
 			local function already_exists(t, voucher)
@@ -923,8 +929,6 @@ local antimatter = {
 				end
 			end
 
-			--Checks for nils in the extremely nested thing i'm checking for
-
 			local nebulacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
 			local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
 			local zodiaccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
@@ -932,22 +936,22 @@ local antimatter = {
 				safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
 
 			--Nebula Deck
-			if (nebulacheck or 0) ~= 0 then
+			if (nebulacheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_telescope")
 			end
 			-- Magic Deck
-			if (magiccheck or 0) ~= 0 then
+			if (magiccheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
 			end
 
 			-- Zodiac Deck
-			if (zodiaccheck or 0) ~= 0 then
+			if (zodiaccheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_tarot_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_planet_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
 			end
 			-- Deck Of Equilibrium
-			if (equilibriumcheck or 0) ~= 0 then
+			if (equilibriumcheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_plus")
 			end
@@ -955,8 +959,7 @@ local antimatter = {
 		end
 		--Does this even need to be a function idk
 		function get_antimatter_consumables(consumable_table)
-			--Checks for nils in the extremely nested thing i'm checking for
-			-- Create a table or use one that is passed into the function
+			local skip = (cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
 			if not consumable_table or type(consumable_table) ~= "table" then
 				consumable_table = {}
 			end
@@ -966,34 +969,16 @@ local antimatter = {
 			local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
 			local ghostcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
 
-			if (magiccheck or 0) ~= 0 then
+			if (magiccheck or 0) ~= 0 or skip then
 				table.insert(consumable_table, "c_fool")
 				table.insert(consumable_table, "c_fool")
 			end
-			if (ghostcheck or 0) ~= 0 then
+			if (ghostcheck or 0) ~= 0 or skip then
 				table.insert(consumable_table, "c_hex")
 			end
 
 			return consumable_table
 		end
-
-		--[[
-		local test = antimatter_trigger_effect
-		function antimatter_trigger_effect(self, args)
-			test(self, args)
-			if args.context == "eval" then
-				ease_dollars(900)
-			end
-		end
-		local test2 = get_antimatter_consumables
-		function get_antimatter_consumables(consumable_table)
-			if not consumable_table or type(consumable_table) ~= "table" then consumable_table = {} end
-			table.insert(consumable_table, "c_soul")
-			table.insert(consumable_table, "c_soul")
-			return test2(consumable_table)
-		end
-		]]
-		--
 	end,
 }
 
