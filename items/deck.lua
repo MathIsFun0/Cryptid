@@ -911,6 +911,7 @@ local antimatter = {
 			if not voucher_table or type(voucher_table) ~= "table" then
 				voucher_table = {}
 			end
+			local skip = (cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
 
 			-- Add Vouchers into the table by key
 			local function already_exists(t, voucher)
@@ -928,8 +929,6 @@ local antimatter = {
 				end
 			end
 
-			--Checks for nils in the extremely nested thing i'm checking for
-
 			local nebulacheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
 			local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
 			local zodiaccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
@@ -937,22 +936,22 @@ local antimatter = {
 				safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
 
 			--Nebula Deck
-			if (nebulacheck or 0) ~= 0 then
+			if (nebulacheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_telescope")
 			end
 			-- Magic Deck
-			if (magiccheck or 0) ~= 0 then
+			if (magiccheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
 			end
 
 			-- Zodiac Deck
-			if (zodiaccheck or 0) ~= 0 then
+			if (zodiaccheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_tarot_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_planet_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
 			end
 			-- Deck Of Equilibrium
-			if (equilibriumcheck or 0) ~= 0 then
+			if (equilibriumcheck or 0) ~= 0 or skip then
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_plus")
 			end
@@ -960,8 +959,7 @@ local antimatter = {
 		end
 		--Does this even need to be a function idk
 		function get_antimatter_consumables(consumable_table)
-			--Checks for nils in the extremely nested thing i'm checking for
-			-- Create a table or use one that is passed into the function
+			local skip = (cry_get_gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
 			if not consumable_table or type(consumable_table) ~= "table" then
 				consumable_table = {}
 			end
@@ -971,34 +969,16 @@ local antimatter = {
 			local magiccheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
 			local ghostcheck = safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
 
-			if (magiccheck or 0) ~= 0 then
+			if (magiccheck or 0) ~= 0 or skip then
 				table.insert(consumable_table, "c_fool")
 				table.insert(consumable_table, "c_fool")
 			end
-			if (ghostcheck or 0) ~= 0 then
+			if (ghostcheck or 0) ~= 0 or skip then
 				table.insert(consumable_table, "c_hex")
 			end
 
 			return consumable_table
 		end
-
-		--[[
-		local test = antimatter_trigger_effect
-		function antimatter_trigger_effect(self, context)
-			test(self, context)
-			if context.context == "eval" then
-				ease_dollars(900)
-			end
-		end
-		local test2 = get_antimatter_consumables
-		function get_antimatter_consumables(consumable_table)
-			if not consumable_table or type(consumable_table) ~= "table" then consumable_table = {} end
-			table.insert(consumable_table, "c_soul")
-			table.insert(consumable_table, "c_soul")
-			return test2(consumable_table)
-		end
-		]]
-		--
 	end,
 }
 
