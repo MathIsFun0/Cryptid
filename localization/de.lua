@@ -1302,7 +1302,6 @@ return {
 					"Gespeilte und gewertete {C:attention}Könige{} geben",
 					"{C:attention}+#1#{} Handgröße für diese Runde",
 					"und lösen {C:attention}in der Hand{} Effekte aus",
-					"{C:inactive}(Momentan {C:attention}+#2#{C:inactive} Handgröße)",
 				},
 			},
 			j_cry_lightupthenight = {

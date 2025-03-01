@@ -1724,7 +1724,7 @@ local fleshpanopticon = {
 			card.gone = false
 			G.GAME.blind.chips = G.GAME.blind.chips * card.ability.extra.boss_size
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-			G.HUD_blind:recalculate(true)
+			G.HUD_blind:recalculate()
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.E_MANAGER:add_event(Event({

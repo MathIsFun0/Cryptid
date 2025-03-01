@@ -144,9 +144,15 @@ local happyhouse = {
 			if
 				card.ability.extra.check == 114
 				and G.GAME.round_resets.ante < 8
-				and not (
-					G.GAME.selected_back.effect.center.key == "antimatter"
-					or G.GAME.selected_back.effect.center.key == "equilibrium"
+				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
+				and (
+					not CardSleeves
+					or (
+						CardSleeves
+						and G.GAME.selected_sleeve
+						--	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
+						and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve"
+					)
 				)
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })
@@ -1498,7 +1504,6 @@ local fspinner = {
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
-	atlas = "fspinner",
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
 			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
@@ -1751,16 +1756,19 @@ local gardenfork = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before then
+		if context.cardarea == G.jokers and context.before and context.full_hand then
+			local has_ace = false
+			local has_7 = false
 			for i = 1, #context.full_hand do
-				if context.scoring_hand[i]:get_id() == 14 then
-					for j = 1, #context.full_hand do
-						if context.scoring_hand[j]:get_id() == 7 then -- :( ekshpenshive
-							ease_dollars(card.ability.extra.money)
-							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
-						end
-					end
+				if context.full_hand[i]:get_id() == 14 then
+					has_ace = true
+				elseif context.full_hand[i]:get_id() == 7 then
+					has_7 = true
 				end
+			end
+			if has_ace and has_7 then
+				ease_dollars(card.ability.extra.money)
+				return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 			end
 		end
 	end,
@@ -7646,9 +7654,10 @@ local lebaron_james = {
 		},
 	},
 	name = "cry-LeBaron James",
+	pools = { ["Meme"] = true },
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
-	config = { extra = { h_mod = 1, h_size = 0 } },
+	config = { extra = { h_mod = 1 } },
 	rarity = 3,
 	cost = 6,
 	atlas = "atlasone",
@@ -7656,34 +7665,23 @@ local lebaron_james = {
 	no_dbl = true,
 	immutable = true, -- has issues with value manip and not easy to fix
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.h_mod, math.min(1000, center.ability.extra.h_size) } }
+		return { vars = { center.ability.extra.h_mod } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual then
-			if SMODS.Ranks[context.other_card.base.value].key == "King" then
+			if context.other_card:get_id() == 13 then
 				local h_size = math.max(0, math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
-				G.hand:change_size(h_size)
-				card.ability.extra.h_size = card.ability.extra.h_size + h_size
-				if h_size > 0 then
+				G.hand:change_size(math.floor(h_size))
+				G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + math.floor(h_size)
+				if math.floor(h_size) > 0 then
 					return {
-						message = localize({ type = "variable", key = "a_handsize", vars = { h_size } }),
+						message = localize({ type = "variable", key = "a_handsize", vars = { math.floor(h_size) } }),
 						colour = G.C.FILTER,
 						card = card,
 					}
 				end
 			end
 		end
-		if context.end_of_round and not context.individual and not context.repetition then
-			G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
-			card.ability.extra.h_size = 0
-			return {
-				card = card,
-				message = localize("k_reset"),
-			}
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
 	end,
 	cry_credits = {
 		idea = {

@@ -1166,8 +1166,7 @@ end
 --Cryptid (THE MOD) localization
 local function parse_loc_txt(center)
 	center.text_parsed = {}
-	if not center.text then
-	else
+	if center.text then
 		for _, line in ipairs(center.text) do
 			center.text_parsed[#center.text_parsed + 1] = loc_parse_string(line)
 		end
@@ -1185,6 +1184,7 @@ local function parse_loc_txt(center)
 end
 local il = init_localization
 function init_localization()
+	il()
 	if G.SETTINGS.language == "en-us" then
 		G.localization.descriptions.Spectral.c_cryptid.text[2] = "{C:attention}#2#{} selected card"
 		G.localization.descriptions.Spectral.c_talisman.text[2] = "to {C:attention}#1#{} selected"
@@ -1199,9 +1199,9 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	if Cryptid.obj_buffer and Cryptid.obj_buffer.Stake then
-		for i = 1, #Cryptid.obj_buffer.Stake do
-			local key = Cryptid.obj_buffer.Stake[i].key
+	if Cryptid.object_buffer and Cryptid.object_buffer.Stake then
+		for i = 1, #Cryptid.object_buffer.Stake do
+			local key = Cryptid.object_buffer.Stake[i].key
 			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 			if color then
 				local sticker_key = key:sub(7) .. "_sticker"
@@ -1223,7 +1223,6 @@ function init_localization()
 			end
 		end
 	end
-	il()
 end
 
 --Fix a corrupted game state

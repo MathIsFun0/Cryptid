@@ -1653,7 +1653,6 @@ return {
 					"Lá {C:attention}Già{} đã chơi ghi điểm thêm",
 					"{C:attention}+#1#{} lá giữ trong tay cho ván này",
 					"và kích hoạt hiệu ứng {C:attention}giữ trong tay{}",
-					"{C:inactive}(Hiện tại là {C:attention}+#2#{C:inactive} lá giữ trong tay)",
 				},
 			},
 			j_cry_lightupthenight = {

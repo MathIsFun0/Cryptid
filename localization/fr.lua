@@ -1,9 +1,7 @@
 --[[
 Progress:
 
-Decks: Almost [ChatSigna]
-    Beta Deck TODO
-    Note from Jevonn: Enchanced decks are planned to have their localization done differently, don't worry about these for now
+Decks: Yes [ChatSigna]
 Jokers: Yes [HastagGuigui]
 Code Cards: Yes [ChatSigna]
 Deck Sleeves (requires Decksleeves Mod): Yes [HastagGuigui]
@@ -14,7 +12,7 @@ Planets: Yes [HastagGuigui]
 Dictonary: Yes [HastagGuigui]
 Editions: Yes [HastagGuigui]
 Vouchers: Yes [HastagGuigui]
-Enhancements (aka echo card): Yes [HastagGuigui]
+Enhancements: Yes [HastagGuigui]
 Tags: Yes [HastagGuigui]
 Other (packs, stickers, etc): Yes [HastagGuigui]
 Misc: Yes [HastagGuigui]
@@ -1634,7 +1632,6 @@ return {
 					"Les {C:attention}Rois{} comptés donnent",
 					"{C:attention}+#1#{} à la taille de la main cette manche",
 					"et redéclenchent les effets des cartes {C:attention}tenues en main{}",
-					"{C:inactive}(Actuellement {C:attention}+#2#{C:inactive} taille de main)",
 				},
 			},
 			j_cry_lightupthenight = {
