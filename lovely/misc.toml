@@ -3,15 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = -1
 
-# Shine on Oversaturated to make it more noticable
-[[patches]]
-[patches.pattern]
-target = 'card.lua'
-pattern = "if (self.edition and self.edition.negative) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
-position = 'at'
-match_indent = true
-payload = "if (self.edition and (self.edition.negative or self.edition.cry_oversat)) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
-
 # Detect if edition comes from copy_card
 [[patches]]
 [patches.pattern]
@@ -453,5 +444,19 @@ if not SMODS.OPENED_BOOSTER then
 else
 	SMODS.OPENED_BOOSTER.config.center:update_pack(dt)
 end
+'''
+match_indent = true
+
+# Created cards match suits of suit deck
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "card.playing_card = G.playing_card"
+position = "after"
+payload = '''
+if G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_force_suit) end
+if G.GAME.modifiers.cry_force_enhancement then card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]) end
+if G.GAME.modifiers.cry_force_edition then card:set_edition({[G.GAME.modifiers.cry_force_edition]=true},true,true) end
+if G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
 '''
 match_indent = true
