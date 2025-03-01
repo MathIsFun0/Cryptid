@@ -671,24 +671,20 @@ local antimatter = {
 			-- Wormhole deck
 			if (wormholecheck or 0) ~= 0 then
 				G.GAME.modifiers.cry_negative_rate = 20
-				--[[
 
-				Needs to check if exotic Jokers exist are enabled (whenever that happens)
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-
-				]]
-				--
+				if cry_card_enabled("set_cry_epic") == true then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.jokers then
+								local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+								return true
+							end
+						end,
+					}))
+				end
 			end
 			-- Redeemed deck
 			if (redeemedcheck or 0) ~= 0 then
