@@ -563,7 +563,7 @@ function is_card_big(joker)
 end
 
 --Utility function to check things without erroring
----@param t table 
+---@param t table
 ---@param ... any
 ---@return table|false
 function safe_get(t, ...)

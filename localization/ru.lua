@@ -3114,7 +3114,7 @@ return {
 			cry_inactive = "Inactive",
 
 			k_cry_epic = "Epic",
-			k_cry_exotic ="Exotic",
+			k_cry_exotic = "Exotic",
 		},
 		labels = {
 			food_jokers = "Food Jokers",
@@ -3138,7 +3138,7 @@ return {
 			cry_oversat = "Oversaturated",
 
 			k_cry_epic = "Epic",
-			k_cry_exotic ="Exotic",
+			k_cry_exotic = "Exotic",
 		},
 		rnj_loc_txts = {
 			stats = {
