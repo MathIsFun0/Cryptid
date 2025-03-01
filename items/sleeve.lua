@@ -64,7 +64,6 @@ if CardSleeves then
 		end,
 	})
 
-
 	local misprintsleeve = CardSleeves.Sleeve({
 		key = "misprint_sleeve",
 		name = "Misprinted Sleeve",
