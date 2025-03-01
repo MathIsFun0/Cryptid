@@ -7657,7 +7657,7 @@ local lebaron_james = {
 	pools = { ["Meme"] = true },
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
-	config = { extra = { h_mod = 1, h_size = 0 } },
+	config = { extra = { h_mod = 1 } },
 	rarity = 3,
 	cost = 6,
 	atlas = "atlasone",
@@ -7665,34 +7665,23 @@ local lebaron_james = {
 	no_dbl = true,
 	immutable = true, -- has issues with value manip and not easy to fix
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.h_mod, math.min(1000, center.ability.extra.h_size) } }
+		return { vars = { center.ability.extra.h_mod } }
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual then
-			if SMODS.Ranks[context.other_card.base.value].key == "King" then
+			if context.other_card:get_id() == 13 then
 				local h_size = math.max(0, math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
-				G.hand:change_size(h_size)
-				card.ability.extra.h_size = card.ability.extra.h_size + h_size
-				if h_size > 0 then
+				G.hand:change_size(math.floor(h_size))
+				G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + math.floor(h_size)
+				if math.floor(h_size) > 0 then
 					return {
-						message = localize({ type = "variable", key = "a_handsize", vars = { h_size } }),
+						message = localize({ type = "variable", key = "a_handsize", vars = { math.floor(h_size) } }),
 						colour = G.C.FILTER,
 						card = card,
 					}
 				end
 			end
 		end
-		if context.end_of_round and not context.individual and not context.repetition then
-			G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
-			card.ability.extra.h_size = 0
-			return {
-				card = card,
-				message = localize("k_reset"),
-			}
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
 	end,
 	cry_credits = {
 		idea = {
