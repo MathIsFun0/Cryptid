@@ -1,11 +1,5 @@
---bruh
-local atlasenhanced = {
-	object_type = "Atlas",
-	key = "atlasenhanced",
-	path = "atlasdeck.png",
-	px = 71,
-	py = 95,
-}
+--Move all the stuff in here into atlasdeck.png later
+--Also a lot of the edition decks have wrong proportions so those also need to get fixed
 local atlasedition = {
 	object_type = "Atlas",
 	key = "atlaseditiondeck",
@@ -17,7 +11,7 @@ local atlasedition = {
 Cryptid.edeck_sprites = {
 	edition = {
 		order = 1,
-		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
 		foil = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 0 } },
 		holo = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 0 } },
 		polychrome = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 0 } },
@@ -33,17 +27,17 @@ Cryptid.edeck_sprites = {
 	},
 	enhancement = {
 		order = 2,
-		default = { atlas = "centers", pos = { x = 5, y = 2 } },
-		m_bonus = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 3 } },
-		m_mult = { atlas = "cry_atlasenhanced", pos = { x = 2, y = 3 } },
-		m_wild = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 3 } },
-		m_glass = { atlas = "cry_atlasenhanced", pos = { x = 4, y = 3 } },
-		m_steel = { atlas = "centers", pos = { x = 6, y = 1 } },
-		m_stone = { atlas = "centers", pos = { x = 5, y = 0 } },
-		m_gold = { atlas = "centers", pos = { x = 6, y = 0 } },
-		m_lucky = { atlas = "centers", pos = { x = 4, y = 1 } },
-		m_cry_echo = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 5 } },
-		m_cry_light = { atlas = "cry_misc", pos = { x = 0, y = 3 } },
+		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
+		m_bonus = { atlas = "cry_atlasdeck", pos = { x = 3, y = 3 } },
+		m_mult = { atlas = "cry_atlasdeck", pos = { x = 2, y = 3 } },
+		m_wild = { atlas = "cry_atlasdeck", pos = { x = 5, y = 3 } },
+		m_glass = { atlas = "cry_atlasdeck", pos = { x = 4, y = 3 } },
+		m_steel = { atlas = "cry_atlasdeck", pos = { x = 8, y = 4 } },
+		m_stone = { atlas = "cry_atlasdeck", pos = { x = 6, y = 4 } },
+		m_gold = { atlas = "cry_atlasdeck", pos = { x = 7, y = 4 } },
+		m_lucky = { atlas = "cry_atlasdeck", pos = { x = 6, y = 3 } },
+		m_cry_echo = { atlas = "cry_atlasdeck", pos = { x = 1, y = 5 } },
+		m_cry_light = { atlas = "cry_atlasdeck", pos = { x = 7, y = 3 } },
 	},
 	sticker = {
 		order = 3,
@@ -60,21 +54,21 @@ Cryptid.edeck_sprites = {
 	},
 	suit = {
 		order = 4,
-		default = { atlas = "centers", pos = { x = 5, y = 2 } },
-		Diamonds = { atlas = "cry_atlasenhanced", pos = { x = 2, y = 1 } },
-		Hearts = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 1 } },
-		Spades = { atlas = "cry_atlasenhanced", pos = { x = 4, y = 1 } },
-		Clubs = { atlas = "cry_atlasenhanced", pos = { x = 5, y = 1 } },
+		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
+		Diamonds = { atlas = "cry_atlasdeck", pos = { x = 2, y = 1 } },
+		Hearts = { atlas = "cry_atlasdeck", pos = { x = 3, y = 1 } },
+		Spades = { atlas = "cry_atlasdeck", pos = { x = 4, y = 1 } },
+		Clubs = { atlas = "cry_atlasdeck", pos = { x = 5, y = 1 } },
 	},
 	seal = {
 		order = 5,
-		default = { atlas = "centers", pos = { x = 5, y = 2 } },
+		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
 		Gold = { atlas = "centers", pos = { x = 1, y = 2 } },
-		Red = { atlas = "centers", pos = { x = 0, y = 0 } },
-		Blue = { atlas = "cry_atlasenhanced", pos = { x = 2, y = 2 } },
-		Purple = { atlas = "cry_atlasenhanced", pos = { x = 1, y = 2 } },
+		Red = { atlas = "cry_atlasdeck", pos = { x = 0, y = 2 } },
+		Blue = { atlas = "cry_atlasdeck", pos = { x = 2, y = 2 } },
+		Purple = { atlas = "cry_atlasdeck", pos = { x = 1, y = 2 } },
 		cry_azure = { atlas = "centers", pos = { x = 0, y = 2 } },
-		cry_green = { atlas = "cry_atlasenhanced", pos = { x = 3, y = 5 } },
+		cry_green = { atlas = "cry_atlasdeck", pos = { x = 3, y = 5 } },
 	},
 }
 
@@ -436,5 +430,5 @@ return {
 			})
 		end
 	end,
-	items = { e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasenhanced, atlasedition },
+	items = { e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasedition },
 }
