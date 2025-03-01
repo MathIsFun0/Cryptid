@@ -2726,6 +2726,15 @@ return {
 			},
 		},
 		Sleeve = {
+			sleeve_cry_beta_sleeve = {
+				name = "Nostalgic Sleeve",
+				text = {
+					"{C:attention}Joker{} and {C:attention}Consumable{}",
+					"slots are {C:attention}combined",
+					"{C:attention}Nostalgic{} Blinds replace",
+					"their updated Blind",
+				},
+			},
 			sleeve_cry_bountiful_sleeve = {
 				name = "Bountiful Sleeve",
 				text = {
@@ -2775,6 +2784,15 @@ return {
 					"{C:attention,T:v_overstock_plus}+2 Shop Slots",
 				},
 			},
+			sleeve_cry_glowing_sleeve = {
+				name = "Glowing Sleeve",
+				text = {
+					"Multiply the values of",
+					"all Jokers by {X:dark_edition,C:white} X1.25 {}",
+					"when Boss Blind is defeated",
+					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
+				},
+			},
 			sleeve_cry_infinite_sleeve = {
 				name = "Unlimited Sleeve",
 				text = {
@@ -2803,6 +2821,15 @@ return {
 					"Start with an {C:eternal}Eternal{} {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
 					"After each {C:attention}Ante{}, create a",
 					"{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
+				},
+			},
+			sleeve_cry_very_fair_sleeve = {
+				name = "Very Fair Sleeve",
+				text = {
+					"{C:blue}-2{} hands, {C:red}-2{} discards",
+					"every round",
+					"{C:attention}Vouchers{} no longer",
+					"appear in the shop",
 				},
 			},
 			sleeve_cry_wormhole_sleeve = {
