@@ -490,11 +490,10 @@ local bonk = {
 	object_type = "Joker",
 	name = "cry-bonk",
 	key = "bonk",
-	pools = { ["M"] = true },
+	pools = { ["M"] = true, ["Meme"] = true },
 	order = 256,
 	pos = { x = 2, y = 2 },
 	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" } },
-	pools = { ["Meme"] = true },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
