@@ -1,9 +1,9 @@
 -- Update the Cryptid member count using HTTPS
 function update_cry_member_count()
-	if Cryptid.enabled["HTTPS Module"] == true and Cryptid.mod_path then
+	if Cryptid_config.HTTPS and Cryptid.path and false then
 		if not GLOBAL_cry_member_update_thread then
 			-- start up the HTTPS thread if needed
-			local file_data = assert(NFS.newFileData(Cryptid.mod_path .. "https/thread.lua"))
+			local file_data = assert(NFS.newFileData(Cryptid.path .. "https/thread.lua"))
 			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
 			GLOBAL_cry_member_update_thread:start()
 		end
@@ -23,6 +23,6 @@ function update_cry_member_count()
 		end
 	else
 		-- Use a fallback value if HTTPS is disabled (you all are awesome)
-		GLOBAL_cry_member_count = 20000
+		GLOBAL_cry_member_count = 24000
 	end
 end
