@@ -9,6 +9,20 @@ return {
 					"von {C:attention}jedem{} Deck",
 				},
 			},
+			b_cry_antimatter_balanced = {
+				name = "Antimaterie Deck",
+				text = {
+					"Hat die {C:legendary,E:1}positiven Effekte{}",
+					"von {C:attention}jedem{} Deck",
+					"mit dem du {C:gold}Goldenen Einsatz{} gewonnen hast",
+				},
+			},
+			b_cry_beige = {
+				name = "Beiges Deck",
+				text = {
+					"{C:attention}Gewöhnliche{} Joker haben",
+					"{C:attention}vierfache{} Werte",
+				},
 			b_cry_beta = {
 				name = "Nostalgisches Deck",
 				text = {
@@ -2236,6 +2250,29 @@ return {
 			},
 		},
 		Sleeve = {
+			sleeve_cry_beige_sleeve = {
+				name = "Beige Hülle",
+				text = {
+					"{C:attention}Gewöhnliche{} Joker haben",
+					"{C:attention}vierfache{} Werte",
+				},
+			},
+			sleeve_cry_beige_sleeve_alt = {
+				name = "Beige Hülle",
+				text = {
+					"{C:attention}Ungewöhnliche{} Joker haben",
+					"{C:attention}vierfache{} Werte",
+				},
+			},
+			sleeve_cry_beta_sleeve = {
+				name = "Nostalgische Hülle",
+				text = {
+					"{C:attention}Joker{} und {C:attention}Verbrauchgegenstände{}",
+					"Slots sind {C:attention}zusammengefasst",
+					"{C:attention}Nostalgische{} Blinds ersetzen",
+					"ihre neuen Versionen.",
+				},
+			},
 			sleeve_cry_bountiful_sleeve = {
 				name = "Größzügige Hülle",
 				text = {
@@ -2285,6 +2322,15 @@ return {
 					"{C:attention,T:v_overstock_plus}Überbestand Plus",
 				},
 			},
+			sleeve_cry_glowing_sleeve = {
+				name = "Glühende Hülle",
+				text = {
+					"Multipliziere die Werte",
+					"aller Joker mit {X:dark_edition,C:white} X1.25 {}",
+					"wenn die Boss Blind besiegt wurde.",
+					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person",
+				},
+			},
 			sleeve_cry_infinite_sleeve = {
 				name = "Unendliche Hülle",
 				text = {
@@ -2314,6 +2360,15 @@ return {
 					"Starte mit einem {C:eternal}Ewigen{} {C:attention,T:j_cry_chocolate_dice}Schokoladenwürfel",
 					"Nach jeder {C:attention}Ante{}, erstelle eine",
 					"{C:cry_candy}Süßigkeit{} oder einen {X:cry_cursed,C:white}Verfluchten{} Joker",
+				},
+			},
+			sleeve_cry_very_fair_sleeve = {
+				name = "Sehr Faire Hülle",
+				text = {
+					"{C:blue}-2{} Hände, {C:red}-2{} Abwürfe",
+					"jede Runde",
+					"{C:attention}Gutscheine{} erscheinen",
+					"nicht mehr im Shop",
 				},
 			},
 			sleeve_cry_wormhole_sleeve = {
