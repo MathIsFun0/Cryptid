@@ -337,7 +337,7 @@ local home_realtor = {
 	atlas = "cry_achievements",
 	--reset_on_startup = true,
 	unlock_condition = function(self, args)
-		--todo: check for doe/antimatter sleeves
+		--TODO: check for antimatter sleeve in the check_unlock when it's added
 		if args.type == "home_realtor" then
 			return true
 		end

@@ -144,9 +144,15 @@ local happyhouse = {
 			if
 				card.ability.extra.check == 114
 				and G.GAME.round_resets.ante < 8
-				and not (
-					G.GAME.selected_back.effect.center.key == "antimatter"
-					or G.GAME.selected_back.effect.center.key == "equilibrium"
+				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
+				and (
+					not CardSleeves
+					or (
+						CardSleeves
+						and G.GAME.selected_sleeve
+						--	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
+						and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve"
+					)
 				)
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })
@@ -1750,16 +1756,19 @@ local gardenfork = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before then
+		if context.cardarea == G.jokers and context.before and context.full_hand then
+			local has_ace = false
+			local has_7 = false
 			for i = 1, #context.full_hand do
 				if context.full_hand[i]:get_id() == 14 then
-					for j = 1, #context.full_hand do
-						if context.full_hand[j]:get_id() == 7 then -- :( ekshpenshive
-							ease_dollars(card.ability.extra.money)
-							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
-						end
-					end
+					has_ace = true
+				elseif context.full_hand[i]:get_id() == 7 then
+					has_7 = true
 				end
+			end
+			if has_ace and has_7 then
+				ease_dollars(card.ability.extra.money)
+				return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 			end
 		end
 	end,
