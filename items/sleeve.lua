@@ -345,6 +345,31 @@ if CardSleeves then
 			G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
 		end,
 	})
+	local antimattersleeve = CardSleeves.Sleeve({
+		key = "antimatter_sleeve",
+		name = "Antimatter Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 0, y = 2 },
+		config = { 
+			cry_antimatter = true,
+			cry_crit_rate = 0.25, --Critical Deck
+			cry_legendary_rate = 0.2, --Legendary Deck
+			-- Enhanced Decks
+			cry_force_enhancement = "random",
+			cry_force_edition = "random",
+			cry_force_seal = "random",
+			cry_forced_draw_amount = 5,
+		},
+		unlocked = true,
+		unlock_condition = { deck = "Antimatter Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = {} }
+		end,
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			antimatter_apply()
+		end,
+	})
 	local sleeveitems = {}
 	if CardSleeves then
 		sleeveitems = {
@@ -360,6 +385,7 @@ if CardSleeves then
 			legendarysleeve,
 			spookysleeve,
 			bountifulsleeve,
+			antimattersleeve,
 		}
 	end
 end
