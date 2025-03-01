@@ -1498,7 +1498,6 @@ local fspinner = {
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
-	atlas = "fspinner",
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
 			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)

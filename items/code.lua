@@ -1207,7 +1207,7 @@ local hooked = {
 					var = localize({ type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key })
 				end
 			end
-			var = var or "[no joker found - " .. (card.hook_id or "nil") .. "]"
+			var = var or ("[no joker found - " .. (card.hook_id or "nil") .. "]")
 		end
 		return { vars = { var or "hooked Joker" } }
 	end,
