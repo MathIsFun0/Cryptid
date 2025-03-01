@@ -144,15 +144,15 @@ local happyhouse = {
 			if
 				card.ability.extra.check == 114
 				and G.GAME.round_resets.ante < 8
-				and not (
-					G.GAME.selected_back.effect.center.key == "antimatter"
-					or G.GAME.selected_back.effect.center.key == "equilibrium"
-				)
-				and (not CardSleeves
-					or (CardSleeves
-					and G.GAME.selected_sleeve
-				--	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
-					and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve")
+				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
+				and (
+					not CardSleeves
+					or (
+						CardSleeves
+						and G.GAME.selected_sleeve
+						--	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
+						and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve"
+					)
 				)
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })

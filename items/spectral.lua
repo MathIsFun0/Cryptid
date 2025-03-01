@@ -714,13 +714,13 @@ local ritual = {
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
 		if card.area ~= G.hand then
-			return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition)
+			return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and not G.hand.highlighted[1].edition
 		else
 			local idx = 1
 			if G.hand.highlighted[1] == card then
 				idx = 2
 			end
-			return (#G.hand.highlighted == 2) and (not G.hand.highlighted[idx].edition)
+			return (#G.hand.highlighted == 2) and not G.hand.highlighted[idx].edition
 		end
 	end,
 	use = function(self, card, area, copier)
