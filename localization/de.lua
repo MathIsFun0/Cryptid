@@ -23,6 +23,7 @@ return {
 					"{C:attention}Gewöhnliche{} Joker haben",
 					"{C:attention}vierfache{} Werte",
 				},
+			},
 			b_cry_beta = {
 				name = "Nostalgisches Deck",
 				text = {
