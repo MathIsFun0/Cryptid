@@ -366,11 +366,12 @@ return {
 					G.cry_edeck_select = true
 				else
 					if self.edeck_select then
-						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] = self.edeck_select
+						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] =
+							self.edeck_select
 					end
-					G.FUNCS.overlay_menu{
-						definition = G.UIDEF.run_setup('main_menu_play'),
-					}
+					G.FUNCS.overlay_menu({
+						definition = G.UIDEF.run_setup("main_menu_play"),
+					})
 					G.cry_edeck_select = nil
 				end
 			end
