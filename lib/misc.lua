@@ -189,33 +189,39 @@ function cry_pls(str, vars)
 		for v in inside:gmatch("[^,]+") do -- adds args to array
 			table.insert(_table, v)
 		end
-		local num = vars[tonumber(string.match(str, ">(%d+)"))]
+		local num = vars[tonumber(string.match(str, ">(%d+)"))]	-- gets reference variable
 		local plural = _table[1] -- default
-		local checks = { [1] = "=" }
+		local checks = { [1] = "=" }	-- checks 1 by default
+		local checks1mod = false	-- tracks if 1 was modified
 		if #_table > 1 then
 			for i = 2, #_table do
 				local isnum = tonumber(_table[i])
 				if isnum then
-					checks[isnum] = ">" .. (_table[i + 1] or "")
+					if not checks1mod then checks[1] = nil end	-- dumb stuff
+					checks[isnum] = "<" .. (_table[i + 1] or "")	-- do less than for custom values
+					if isnum == 1 then checks1mod = true end
 					i = i + 1
 				elseif i == 2 then
 					checks[1] = "=" .. _table[i]
-				else
-					print("Unexpected string: " .. _table[i])
 				end
 			end
 		end
 		local function fch(str, c)
 			return string.sub(str, 1, 1) == c -- gets first char and returns boolean
 		end
-		for k, v in pairs(checks) do
-			if fch(v, "=") then
+		local keys = {}
+		for k in pairs(checks) do
+			table.insert(keys, k)
+		end
+		table.sort(keys, function(a, b) return a < b end)
+		for _, k in ipairs(keys) do
+			if fch(checks[k], "=") then
 				if math.abs(to_big(num) - k) < to_big(0.001) then
-					return string.sub(v, 2, -1)
+					return string.sub(checks[k], 2, -1)
 				end
-			elseif fch(v, ">") then
-				if to_big(num) >= to_big(k - 0.001) then
-					return string.sub(v, 2, -1)
+			elseif fch(checks[k], "<") then
+				if to_big(num) < to_big(k - 0.001) then
+					return string.sub(checks[k], 2, -1)
 				end
 			end
 		end
