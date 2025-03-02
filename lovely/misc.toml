@@ -438,7 +438,7 @@ target = "game.lua"
 pattern = "SMODS.OPENED_BOOSTER.config.center:update_pack(dt)"
 position = "at"
 payload = '''
-if not SMODS.OPENED_BOOSTER then 
+if not SMODS.OPENED_BOOSTER then
 	G.STATE = G.STATES.SHOP
 	print('Error: SMODS.OPENED_BOOSTER is nil. Game recovered by setting game state to shop.')
 else
@@ -458,5 +458,27 @@ if G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_fo
 if G.GAME.modifiers.cry_force_enhancement then card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]) end
 if G.GAME.modifiers.cry_force_edition then card:set_edition({[G.GAME.modifiers.cry_force_edition]=true},true,true) end
 if G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force_seal) end
+'''
+match_indent = true
+
+# Remove G.cry_edeck_select on back
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "G.FUNCS.setup_run = function(e)"
+position = "after"
+payload = '''
+	G.cry_edeck_select = nil
+'''
+match_indent = true
+
+# Remove G.cry_edeck_select on escape key press
+[[patches]]
+[patches.pattern]
+target = "engine/controller.lua"
+pattern = '''if key == "escape" then'''
+position = "after"
+payload = '''
+	G.cry_edeck_select = nil
 '''
 match_indent = true
