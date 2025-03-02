@@ -361,10 +361,18 @@ return {
 				or not Galdur
 					and (safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
 			then
-				if self.edeck_select then
-					G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] = self.edeck_select
+				if not G.cry_edeck_select then
+					cry_enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center)
+					G.cry_edeck_select = true
+				else
+					if self.edeck_select then
+						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] = self.edeck_select
+					end
+					G.FUNCS.overlay_menu{
+						definition = G.UIDEF.run_setup('main_menu_play'),
+					}
+					G.cry_edeck_select = nil
 				end
-				cry_enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center)
 			end
 		end
 		function cry_enhancement_config_UI(center)
