@@ -7640,7 +7640,7 @@ local lebaron_james = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual then
 			if context.other_card:get_id() == 13 then
-				local h_size = math.max(0, math.min(1000 - card.ability.extra.h_size, card.ability.extra.h_mod))
+				local h_size = math.max(0, math.min(1000 - 0, card.ability.extra.h_mod))
 				G.hand:change_size(math.floor(h_size))
 				G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + math.floor(h_size)
 				if math.floor(h_size) > 0 then
