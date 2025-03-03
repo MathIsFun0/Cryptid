@@ -16,7 +16,7 @@ SMODS.PokerHand({
 	},
 	evaluate = function(parts, hand)
 		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_asteroidbelt") ~= true then
-			return
+			return {}
 		end
 		local stones = {}
 		for i, card in ipairs(hand) do
@@ -25,6 +25,24 @@ SMODS.PokerHand({
 			end
 		end
 		return #stones >= 5 and { stones } or {}
+	end,
+})
+SMODS.PokerHandPart({
+	key = "cfpart",
+	func = function(hand)
+		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_void") ~= true then
+			return {}
+		end
+		local eligible_cards = {}
+		for i, card in ipairs(hand) do
+			if true then --card.ability.name ~= "Gold Card"
+				eligible_cards[#eligible_cards + 1] = card
+			end
+		end
+		if #eligible_cards > 7 then
+			return { eligible_cards }
+		end
+		return {}
 	end,
 })
 SMODS.PokerHand({
@@ -45,15 +63,13 @@ SMODS.PokerHand({
 		{ "C_5", true },
 	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_void") ~= true then
-			return
-		end
 		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
-		if #hand > 7 then
+		if next(parts.cry_cfpart) then
 			if not other_hands then
-				return { hand }
+				return { SMODS.merge_lists(parts.cry_cfpart) }
 			end
 		end
+		return {}
 	end,
 })
 SMODS.PokerHand({
@@ -110,7 +126,7 @@ SMODS.PokerHand({
 			end
 		end
 		if sc_max == #scored_cards / 2 - 1 and sc_unique == 1 then
-			return
+			return {}
 		end
 		if #scored_cards >= 8 then
 			return { scored_cards }
