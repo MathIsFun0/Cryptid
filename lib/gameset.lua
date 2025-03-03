@@ -1593,7 +1593,7 @@ function create_generic_card(center, x, y)
 		card.config.center.key = center.key
 	end
 	if safe_get(center, "config", "cry_force_sticker") then
-		SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
+		-- SMODS.Stickers[center.config.cry_force_sticker]:apply(card, true)
 	end
 	return card
 end
