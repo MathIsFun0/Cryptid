@@ -1452,6 +1452,7 @@ local longboi = {
 	},
 }
 local ret_items = {
+	jollysus,
 	bubblem,
 	foodm,
 	mstack,
