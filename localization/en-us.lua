@@ -2862,6 +2862,15 @@ return {
 					"when Boss Blind is defeated {C:inactive}(must have room){}",
 				},
 			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Antimatter Sleeve",
+				text = {
+					"applies the {C:attention}effects{}",
+					"and {C:attention}special effects{}",
+					"of all deck sleeves",
+					"{C:red}WIP",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_adversary = {
