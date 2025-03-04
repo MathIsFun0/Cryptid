@@ -449,7 +449,7 @@ if CardSleeves then
 		name = "Antimatter Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 0, y = 2 },
-		config = { 
+		config = {
 			cry_antimatter = true,
 			cry_crit_rate = 0.25, --Critical Deck
 			cry_legendary_rate = 0.2, --Legendary Deck
