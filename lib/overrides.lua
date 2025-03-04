@@ -1189,7 +1189,6 @@ local function parse_loc_txt(center)
 end
 local il = init_localization
 function init_localization()
-	il()
 	if G.SETTINGS.language == "en-us" then
 		G.localization.descriptions.Spectral.c_cryptid.text[2] = "{C:attention}#2#{} selected card"
 		G.localization.descriptions.Spectral.c_talisman.text[2] = "to {C:attention}#1#{} selected"
@@ -1204,6 +1203,7 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
+	il()
 	if Cryptid.object_buffer and Cryptid.object_buffer.Stake then
 		for i = 1, #Cryptid.object_buffer.Stake do
 			local key = Cryptid.object_buffer.Stake[i].key
