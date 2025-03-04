@@ -21,7 +21,7 @@ target = 'functions/common_events.lua'
 pattern = "if not strip_edition then"
 position = 'before'
 payload = '''
-if new_card.ability.name == "cry-longboi" then new_card.ability.extra.monster = G.GAME.monstermult end
+if new_card.ability.name == "cry-longboi" then new_card:set_ability(new_card.config.center) end
 '''
 match_indent = true
 

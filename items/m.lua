@@ -1438,6 +1438,11 @@ local longboi = {
 	end,
 	set_ability = function(self, card, from_debuff)
 		card.ability.extra.monster = G.GAME and G.GAME.monstermult or 1
+		if card.ability.extra.monster >= 1234567654321 then
+			card.children.center:set_sprite_pos({ x = 7, y = 5 })
+		elseif card.ability.extra.monster >= 12321 then
+			card.children.center:set_sprite_pos({ x = 7, y = 6 })
+		end
 	end,
 	cry_credits = {
 		idea = {
