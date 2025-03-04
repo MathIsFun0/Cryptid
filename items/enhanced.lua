@@ -63,11 +63,11 @@ Cryptid.edeck_sprites = {
 	seal = {
 		order = 5,
 		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
-		Gold = { atlas = "centers", pos = { x = 1, y = 2 } },
+		Gold = { atlas = "cry_atlasdeck", pos = { x = 3, y = 2 } },
 		Red = { atlas = "cry_atlasdeck", pos = { x = 0, y = 2 } },
 		Blue = { atlas = "cry_atlasdeck", pos = { x = 2, y = 2 } },
 		Purple = { atlas = "cry_atlasdeck", pos = { x = 1, y = 2 } },
-		cry_azure = { atlas = "centers", pos = { x = 0, y = 2 } },
+		cry_azure = { atlas = "cry_atlasdeck", pos = { x = 8, y = 3 } },
 		cry_green = { atlas = "cry_atlasdeck", pos = { x = 3, y = 5 } },
 	},
 }
