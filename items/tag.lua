@@ -1,4 +1,15 @@
 local cat = {
+	cry_credits = {
+		idea = {
+			"Catman",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -16,6 +27,17 @@ local cat = {
 	end,
 }
 local epic_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Math",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -60,6 +82,17 @@ local epic_tag = {
 	end,
 }
 local schematic = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -107,6 +140,18 @@ local schematic = {
 	end,
 }
 local empoweredPack = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+			"Mjiojio",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Booster",
 	dependencies = {
 		items = {
@@ -180,6 +225,18 @@ local empoweredPack = {
 	},
 }
 local empowered = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+			"Mjiojio",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -239,6 +296,17 @@ local empowered = {
 	end,
 }
 local gambler = {
+	cry_credits = {
+		idea = {
+			"Catman",
+		},
+		art = {
+			"SpoofyGuy",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -290,6 +358,17 @@ local gambler = {
 	end,
 }
 local bundle = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -334,6 +413,17 @@ local bundle = {
 	end,
 }
 local memory = {
+	cry_credits = {
+		idea = {
+			"y_not_tony",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -396,6 +486,17 @@ local memory = {
 	end,
 }
 local glitched_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -437,6 +538,17 @@ local glitched_tag = {
 	end,
 }
 local oversat_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -478,6 +590,17 @@ local oversat_tag = {
 	end,
 }
 local mosaic_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -519,6 +642,17 @@ local mosaic_tag = {
 	end,
 }
 local gold_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -560,6 +694,17 @@ local gold_tag = {
 	end,
 }
 local glass_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -601,6 +746,17 @@ local glass_tag = {
 	end,
 }
 local blur_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -643,6 +799,17 @@ local blur_tag = {
 }
 --order 8 reserved for Noisy tag (if it ever has a shader / comes into existence)
 local astral_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -684,6 +851,17 @@ local astral_tag = {
 	end,
 }
 local m_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -725,6 +903,17 @@ local m_tag = {
 	end,
 }
 local double_m_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -768,6 +957,17 @@ local double_m_tag = {
 	end,
 }
 local banana = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -837,6 +1037,17 @@ local banana = {
 	end,
 }
 local scope = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -866,6 +1077,17 @@ local scope = {
 	end,
 }
 local loss = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -918,6 +1140,17 @@ local loss = {
 	end,
 }
 local gourmand = {
+	cry_credits = {
+		idea = {
+			"Personthateatcheese",
+		},
+		art = {
+			"Personthateatcheese",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -951,6 +1184,17 @@ local gourmand = {
 	end,
 }
 local better_top_up = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -992,6 +1236,17 @@ local better_top_up = {
 	end,
 }
 local better_voucher = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"Mystic Misclick",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -1069,6 +1324,17 @@ local better_voucher = {
 	end,
 }
 local booster = {
+	cry_credits = {
+		idea = {
+			"Watermelon Lover",
+		},
+		art = {
+			"Maw",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {

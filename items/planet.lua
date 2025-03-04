@@ -1,4 +1,15 @@
 local timantti = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -72,6 +83,17 @@ local timantti = {
 	end,
 }
 local klubi = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -145,6 +167,17 @@ local klubi = {
 	end,
 }
 local sydan = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -218,6 +251,17 @@ local sydan = {
 	end,
 }
 local lapio = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -291,6 +335,17 @@ local lapio = {
 	end,
 }
 local kaikki = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -365,6 +420,17 @@ local kaikki = {
 	end,
 }
 local planetlua = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -659,6 +725,17 @@ local planetlua = {
 	end,
 }
 local nstar = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -783,6 +860,18 @@ local nstar = {
 	end,
 }
 local sunplanet = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Jevonn",
+			"Toneblock",
+		},
+	},
 	--TODO: disable ascendant hands if this is disabled
 	dependencies = {
 		items = {
@@ -920,6 +1009,17 @@ local sunplanet = {
 	end,
 }
 local abelt = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -955,6 +1055,17 @@ local abelt = {
 	generate_ui = 0,
 }
 local void = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -990,6 +1101,17 @@ local void = {
 	generate_ui = 0,
 }
 local marsmoons = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -1025,6 +1147,17 @@ local marsmoons = {
 	generate_ui = 0,
 }
 local universe = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",

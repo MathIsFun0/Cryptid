@@ -1,4 +1,15 @@
 local white_hole = {
+	cry_credits = {
+		idea = {
+			"y_not_tony",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -107,6 +118,17 @@ local white_hole = {
 	end,
 }
 local vacuum = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"Linus Goof Balls",
+		},
+		code = {
+			"jenwalter666",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -183,6 +205,17 @@ local vacuum = {
 	end,
 }
 local hammerspace = {
+	cry_credits = {
+		idea = {
+			"jenwalter666",
+		},
+		art = {
+			"AlexZGreat",
+		},
+		code = {
+			"jenwalter666",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -243,6 +276,17 @@ local hammerspace = {
 	end,
 }
 local lock = {
+	cry_credits = {
+		idea = {
+			"Ein13",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"jenwalter666",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -358,6 +402,17 @@ local lock = {
 	end,
 }
 local trade = {
+	cry_credits = {
+		idea = {
+			"5381",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -481,6 +536,17 @@ local trade = {
 	end,
 }
 local analog = {
+	cry_credits = {
+		idea = {
+			"y_not_tony",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -541,6 +607,19 @@ local analog = {
 	end,
 }
 local summoning = {
+	cry_credits = {
+		idea = {
+			"AlexZGreat",
+		},
+		art = {
+			--Summoning's sprite takes some parts from an unused sprite by Rattlingsnow so i'm crediting both users
+			"Kailen",
+			"RattlingSnow353",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -608,6 +687,17 @@ local summoning = {
 	end,
 }
 local replica = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {

@@ -1,14 +1,5 @@
 --note to self: refer to https://docs.google.com/document/d/1LNaIouU3vrtWIuPBdFCqLyjYAjVtq7t64xjHnckEY50/edit for order of remaining consumables
 local code = {
-	--[[
-	I'm assuming this won't work so it's commented out for now - Jevonn
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	]]
-	--
 	object_type = "ConsumableType",
 	key = "Code",
 	primary_colour = HEX("14b341"),
@@ -31,6 +22,17 @@ local code_digital_hallucinations_compat = {
 	end,
 }
 local pack1 = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -64,6 +66,17 @@ local pack1 = {
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local pack2 = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -97,6 +110,17 @@ local pack2 = {
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local packJ = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -130,6 +154,17 @@ local packJ = {
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local packM = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -163,6 +198,17 @@ local packM = {
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local console = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"p_cry_code_normal_1",
@@ -211,6 +257,17 @@ local console = {
 	end,
 }
 local crash = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -778,6 +835,17 @@ local crash = {
 	end,
 }
 local payload = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -807,6 +875,17 @@ local payload = {
 	end,
 }
 local reboot = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -849,6 +928,17 @@ local reboot = {
 	end,
 }
 local revert = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -896,6 +986,17 @@ local revert = {
 	end,
 }
 local semicolon = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -957,6 +1058,17 @@ local semicolon = {
 	end,
 }
 local malware = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1021,6 +1133,17 @@ local malware = {
 	end,
 }
 local seed = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1111,6 +1234,17 @@ local rigged = {
 	end,
 }
 local hook = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1221,6 +1355,17 @@ local hooked = {
 	end,
 }
 local variable = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"AlexZGreat",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1509,6 +1654,17 @@ local variable = {
 	end,
 }
 local class = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1783,6 +1939,17 @@ local class = {
 	end,
 }
 local commit = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1850,6 +2017,17 @@ local commit = {
 	end,
 }
 local merge = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1950,6 +2128,17 @@ local merge = {
 	end,
 }
 local multiply = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1998,6 +2187,17 @@ local multiply = {
 	end,
 }
 local divide = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2054,6 +2254,18 @@ local divide = {
 	end,
 }
 local delete = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+			"Toneblock",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2174,6 +2386,17 @@ local delete = {
 	]]
 }
 local spaghetti = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2207,6 +2430,17 @@ local spaghetti = {
 	end,
 }
 local machinecode = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2466,6 +2700,17 @@ local machinecode = {
 	end,
 }
 local run = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2567,6 +2812,17 @@ local run = {
 	end,
 }
 local exploit = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Toneblock",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2772,6 +3028,17 @@ local exploit = {
 	end,
 }
 local oboe = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2807,6 +3074,17 @@ local oboe = {
 	end,
 }
 local rework = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2875,6 +3153,17 @@ local rework = {
 	end,
 }
 local rework_tag = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"c_cry_rework",
@@ -3084,6 +3373,17 @@ local patch = {
 	end,
 }
 local ctrl_v = {
+	cry_credits = {
+		idea = {
+			"ItsFlowwey",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Foegro",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3176,6 +3476,17 @@ local ctrl_v = {
 	end,
 }
 local inst = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Foegro",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3242,6 +3553,17 @@ local inst = {
 	end,
 }
 local alttab = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Toneblock",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3325,6 +3647,17 @@ local alttab = {
 	end,
 }
 local automaton = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3404,6 +3737,17 @@ local green_seal = {
 	end,
 }
 local source = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"cry_green",
@@ -3461,6 +3805,17 @@ local source = {
 	end,
 }
 local pointer = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -4310,6 +4665,17 @@ local pointer = {
 	end,
 }
 local encoded = {
+	cry_credits = {
+		idea = {
+			"I forgot",
+		},
+		art = {
+			"Kailen",
+		},
+		code = {
+			"Kailen",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
