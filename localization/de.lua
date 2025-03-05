@@ -1449,7 +1449,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult für jedes Mitglied",
 					"im {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Momentan {X:mult,C:white}X#2#{C:inactive} Mult)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1458,7 +1458,7 @@ return {
 					"{C:chips}+#1#{} Chips für jedes Mitglied",
 					"im {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Momentan {C:chips}+#2#{C:inactive} Chips)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {

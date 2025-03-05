@@ -394,29 +394,32 @@ local glitched = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	-- Note: This is happening even when it shouldn't (like in deck view)
-	-- Also messes with rank sort order a bit for some reason
+	-- Note: Duping playing cards resets the base chips for some reason
 	on_apply = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {
-				min = 0.1,
-				max = 10,
-			}, nil, true)
-		end)
-		if card.config.center.apply_glitched then
-			card.config.center:apply_glitched(card, function(val)
-				return cry_misprintize_val(val, {
-					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card))
+		if not card.ability.cry_glitched then
+			cry_with_deck_effects(card, function(card)
+				cry_misprintize(card, {
+					min = 0.1,
+					max = 10,
+				}, nil, true)
 			end)
+			if card.config.center.apply_glitched then
+				card.config.center:apply_glitched(card, function(val)
+					return cry_misprintize_val(val, {
+						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+					}, is_card_big(card))
+				end)
+			end
 		end
+		card.ability.cry_glitched = true
 	end,
 	on_remove = function(card)
 		cry_with_deck_effects(card, function(card)
 			cry_misprintize(card, { min = 1, max = 1 }, true)
 			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
+		card.ability.cry_glitched = nil
 	end,
 	init = function(self)
 		local randtext = {

@@ -1458,7 +1458,7 @@ return {
 					"{X:mult,C:white}X#1#{} multi por cada miembro",
 					"en el {C:attention}Discord de Cryptid{}",
 					"{C:inactive}(Actual: {X:mult,C:white}X#2#{C:inactive} multi)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1467,7 +1467,7 @@ return {
 					"{C:chips}+#1#{} fichas por cada miembro",
 					"en el {C:attention}Discord de Cryptid{}",
 					"{C:inactive}(Actual: {C:chips}+#2#{C:inactive} fichas)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {
