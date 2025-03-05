@@ -519,7 +519,9 @@ local glitched_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -572,7 +574,9 @@ local oversat_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -625,7 +629,9 @@ local mosaic_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -678,7 +684,9 @@ local gold_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -731,7 +739,9 @@ local glass_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -784,7 +794,9 @@ local blur_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -838,7 +850,9 @@ local astral_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -891,7 +905,9 @@ local m_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then tag:nope() end
+			if cry_forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
