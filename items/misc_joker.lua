@@ -7731,6 +7731,57 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 		},
 	},
 }
+local albuquerque = { -- If played hand contains three cards, destroy the middle card after scoring
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-albuquerque",
+	key = "albuquerque",
+	pools = { ["Meme"] = true },
+	config = { extra = { mult = 11, chips = 24 } },
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.mult, center.ability.extra.chips } }
+	end,
+	pos = { x = 1, y = 0 },
+	order = 135,
+	immutable = true,
+	rarity = 1,
+	cost = 5,
+	blueprint_compat = true,
+	atlas = "placeholders",
+	init = function(self)
+		G.FUNCS.notif_albuquerque = function()
+			Cryptid_config.Cryptid.albuquerque_music = false
+			G:save_settings()
+			G.FUNCS:exit_overlay_menu()
+			-- todo: autosave settings (Not sure if this autosaves it)
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			Cryptid.notification_overlay("albuquerque")
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				mult = card.ability.extra.mult,
+				chips = card.ability.extra.chips
+			}
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"astrapboy",
+		},
+		code = {
+			"astrapboy",
+		},
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7844,6 +7895,7 @@ local miscitems = {
 	translucent,
 	lebaron_james,
 	huntingseason,
+	albuquerque
 }
 return {
 	name = "Misc. Jokers",

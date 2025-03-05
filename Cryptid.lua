@@ -20,7 +20,9 @@
 if not Cryptid then
 	Cryptid = {}
 end
-local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
+local mod_path = "" ..
+	 SMODS.current_mod
+	 .path              -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
 Cryptid_config = SMODS.current_mod.config
 
@@ -307,6 +309,12 @@ local cryptidTabs = function()
 					label = localize("cry_mus_jimball"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "jimball_music",
+				})
+				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
+					label = localize("cry_mus_albuquerque"),
+					ref_table = Cryptid_config.Cryptid,
+					ref_value = "albuquerque_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
 					active_colour = G.C.CRY_JOLLY,

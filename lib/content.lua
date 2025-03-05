@@ -207,8 +207,8 @@ SMODS.PokerHand({
 			local wilds = {}
 			for i, card in ipairs(hand) do
 				if
-					(card.config.center_key ~= "m_wild" and not card.config.center.any_suit)
-					and (card.config.center_key ~= "m_stone" and not card.config.center.no_rank)
+					 (card.config.center_key ~= "m_wild" and not card.config.center.any_suit)
+					 and (card.config.center_key ~= "m_stone" and not card.config.center.no_rank)
 				then -- i don't know if these are different... this could be completely redundant but redundant is better than broken
 					local rank = card:get_id()
 					local suit = card.base.suit
@@ -351,8 +351,8 @@ SMODS.Atlas({
 	py = 95,
 	inject = function(self)
 		local file_path = type(self.path) == "table"
-				and (self.path[G.SETTINGS.language] or self.path["default"] or self.path["en-us"])
-			or self.path
+			 and (self.path[G.SETTINGS.language] or self.path["default"] or self.path["en-us"])
+			 or self.path
 		if file_path == "DEFAULT" then
 			return
 		end
@@ -364,23 +364,23 @@ SMODS.Atlas({
 			return
 		end
 		self.full_path = (self.mod and self.mod.path or SMODS.path)
-			.. "assets/"
-			.. G.SETTINGS.GRAPHICS.texture_scaling
-			.. "x/"
-			.. file_path
+			 .. "assets/"
+			 .. G.SETTINGS.GRAPHICS.texture_scaling
+			 .. "x/"
+			 .. file_path
 		local file_data =
-			assert(NFS.newFileData(self.full_path), ("Failed to collect file data for Atlas %s"):format(self.key))
+			 assert(NFS.newFileData(self.full_path), ("Failed to collect file data for Atlas %s"):format(self.key))
 		self.image_data = assert(
 			love.image.newImageData(file_data),
 			("Failed to initialize image data for Atlas %s"):format(self.key)
 		)
 		self.image =
-			love.graphics.newImage(self.image_data, { mipmaps = true, dpiscale = G.SETTINGS.GRAPHICS.texture_scaling })
+			 love.graphics.newImage(self.image_data, { mipmaps = true, dpiscale = G.SETTINGS.GRAPHICS.texture_scaling })
 		G[self.atlas_table][self.key_noloc or self.key] = self
 		G.shared_sticker_banana =
-			Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], { x = 5, y = 2 })
+			 Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], { x = 5, y = 2 })
 		G.shared_sticker_pinned =
-			Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], { x = 5, y = 0 })
+			 Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], { x = 5, y = 0 })
 	end,
 })
 SMODS.Sound({
@@ -446,10 +446,22 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return next(find_joker("cry-Jimball"))
-			and Cryptid_config.Cryptid
-			and Cryptid_config.Cryptid.jimball_music
-			-- Lowering priority for edition Jimballs later
-			and 7
+			 and Cryptid_config.Cryptid
+			 and Cryptid_config.Cryptid.jimball_music
+			 -- Lowering priority for edition Jimballs later
+			 and 7
+	end,
+})
+SMODS.Sound({
+	key = "music_albuquerque",
+	path = "music_albuquerque.ogg",
+	sync = false,
+	pitch = 1,
+	select_music_track = function()
+		return next(find_joker("cry-albuquerque"))
+			 and Cryptid_config.Cryptid
+			 and Cryptid_config.Cryptid.albuquerque_music
+			 and 7
 	end,
 })
 SMODS.Sound({
@@ -457,15 +469,15 @@ SMODS.Sound({
 	path = "music_code.ogg",
 	select_music_track = function()
 		return Cryptid_config.Cryptid
-			and Cryptid_config.Cryptid.code_music
-			and (
-				(
-					G.pack_cards
-					and G.pack_cards.cards
-					and G.pack_cards.cards[1]
-					and G.pack_cards.cards[1].ability.set == "Code"
-				) or (G.GAME and G.GAME.USING_CODE)
-			)
+			 and Cryptid_config.Cryptid.code_music
+			 and (
+				 (
+					 G.pack_cards
+					 and G.pack_cards.cards
+					 and G.pack_cards.cards[1]
+					 and G.pack_cards.cards[1].ability.set == "Code"
+				 ) or (G.GAME and G.GAME.USING_CODE)
+			 )
 	end,
 })
 SMODS.Sound({
@@ -473,8 +485,8 @@ SMODS.Sound({
 	path = "music_big.ogg",
 	select_music_track = function()
 		return Cryptid_config.Cryptid
-			and Cryptid_config.Cryptid.big_music
-			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
+			 and Cryptid_config.Cryptid.big_music
+			 and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 	end,
 })
 SMODS.Sound({
@@ -483,8 +495,8 @@ SMODS.Sound({
 	volume = 0.4,
 	select_music_track = function()
 		return Cryptid_config.Cryptid
-			and Cryptid_config.Cryptid.exotic_music
-			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+			 and Cryptid_config.Cryptid.exotic_music
+			 and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
 SMODS.Sound({
@@ -498,8 +510,9 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
-			and Cryptid_config.Cryptid.alt_bg_music
+			 and
+			 (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
+			 and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
 SMODS.Sound({
@@ -513,8 +526,9 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
-			and Cryptid_config.Cryptid.alt_bg_music
+			 and
+			 (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
+			 and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
 SMODS.Sound({
@@ -528,8 +542,9 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
-			and Cryptid_config.Cryptid.alt_bg_music
+			 and
+			 (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
+			 and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
 SMODS.Atlas({
