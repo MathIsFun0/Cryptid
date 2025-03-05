@@ -1,6 +1,7 @@
 return {
 	["Cryptid"] = {
 		["jimball_music"] = true,
+		["albuquerque_music"] = true,
 		["code_music"] = true,
 		["exotic_music"] = true,
 		["big_music"] = true,

@@ -62,8 +62,8 @@ function Cryptid.advanced_find_joker(name, rarity, edition, ability, non_debuff,
 					check = check + 1
 				end
 				if
-					edition
-					and (v.edition and v.edition.key == edition) --[[ make this use Cryptid.safe_get later? if it's possible anyways]]
+					 edition
+					 and (v.edition and v.edition.key == edition) --[[ make this use Cryptid.safe_get later? if it's possible anyways]]
 				then
 					check = check + 1
 				end
@@ -103,8 +103,8 @@ function Cryptid.advanced_find_joker(name, rarity, edition, ability, non_debuff,
 					check = check + 1
 				end
 				if
-					edition
-					and (v.edition and v.edition.key == edition) --[[ make this use Cryptid.safe_get later? if it's possible anyways]]
+					 edition
+					 and (v.edition and v.edition.key == edition) --[[ make this use Cryptid.safe_get later? if it's possible anyways]]
 				then
 					check = check + 1
 				end
@@ -184,16 +184,16 @@ function Cryptid.pluralize(str, vars)
 			table.insert(_table, v)
 		end
 		local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets reference variable
-		local plural = _table[1] -- default
-		local checks = { [1] = "=" } -- checks 1 by default
-		local checks1mod = false -- tracks if 1 was modified
+		local plural = _table[1]                            -- default
+		local checks = { [1] = "=" }                        -- checks 1 by default
+		local checks1mod = false                            -- tracks if 1 was modified
 		if #_table > 1 then
 			for i = 2, #_table do
 				local isnum = tonumber(_table[i])
 				if isnum then
 					if not checks1mod then
 						checks[1] = nil
-					end -- dumb stuff
+					end                                -- dumb stuff
 					checks[isnum] = "<" .. (_table[i + 1] or "") -- do less than for custom values
 					if isnum == 1 then
 						checks1mod = true
@@ -340,8 +340,8 @@ function Card:no(m, no_no)
 		if self.infinifusion then
 			for i = 1, #self.infinifusion do
 				if
-					G.P_CENTERS[self.infinifusion[i].key][m]
-					or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key])
+					 G.P_CENTERS[self.infinifusion[i].key][m]
+					 or (G.GAME and G.GAME[m] and G.GAME[m][self.infinifusion[i].key])
 				then
 					return true
 				end
@@ -410,10 +410,10 @@ if Cryptid_config.menu then
 			{
 				shader = "splash",
 				send = {
-					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
+					{ name = "time",       ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
 					{ name = "vort_speed", val = 0.4 },
-					{ name = "colour_1", ref_table = G.C, ref_value = "CRY_EXOTIC" },
-					{ name = "colour_2", ref_table = G.C, ref_value = "DARK_EDITION" },
+					{ name = "colour_1",   ref_table = G.C,      ref_value = "CRY_EXOTIC" },
+					{ name = "colour_2",   ref_table = G.C,      ref_value = "DARK_EDITION" },
 				},
 			},
 		})
@@ -471,8 +471,8 @@ function Cryptid.bonus_voucher_mod(mod)
 					card:set_cost()
 				end
 				if
-					G.GAME.modifiers.cry_enable_flipped_in_shop
-					and pseudorandom("cry_flip_vouch" .. G.GAME.round_resets.ante) > 0.7
+					 G.GAME.modifiers.cry_enable_flipped_in_shop
+					 and pseudorandom("cry_flip_vouch" .. G.GAME.round_resets.ante) > 0.7
 				then
 					card.cry_flipped = true
 				end
@@ -544,6 +544,7 @@ Cryptid.big_num_whitelist = {
 	j_cry_chili_pepper = true,
 	j_cry_cursor = true,
 	j_cry_jimball = true,
+	j_cry_albuquerque = true,
 	j_cry_eternalflame = true,
 	j_cry_fspinner = true,
 	j_cry_krustytheclown = true,
@@ -582,6 +583,7 @@ function Cryptid.safe_get(t, ...)
 	end
 	return current
 end
+
 --Functions used by boss blinds
 function Blind:cry_ante_base_mod(dt)
 	if not self.disabled then
@@ -592,6 +594,7 @@ function Blind:cry_ante_base_mod(dt)
 	end
 	return 0
 end
+
 function Blind:cry_round_base_mod(dt)
 	if not self.disabled then
 		local obj = self.config.blind
@@ -601,6 +604,7 @@ function Blind:cry_round_base_mod(dt)
 	end
 	return 1
 end
+
 function Blind:cry_cap_score(score)
 	if not self.disabled then
 		local obj = self.config.blind
@@ -610,6 +614,7 @@ function Blind:cry_cap_score(score)
 	end
 	return score
 end
+
 function Blind:cry_after_play()
 	if not self.disabled then
 		local obj = self.config.blind
@@ -618,6 +623,7 @@ function Blind:cry_after_play()
 		end
 	end
 end
+
 function Blind:cry_before_play()
 	if not self.disabled then
 		local obj = self.config.blind
@@ -626,6 +632,7 @@ function Blind:cry_before_play()
 		end
 	end
 end
+
 function Blind:cry_calc_ante_gain()
 	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
 		local card
@@ -646,14 +653,15 @@ function Blind:cry_calc_ante_gain()
 	end
 	return 1
 end
+
 function Cryptid.enhanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
-		"e_" .. (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
-		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
-		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
-		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
-		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
+		 "e_" .. (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
+		 Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
+		 Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
+		 Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
+		 Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
 	-- Do Stuff
 	edition = (Cryptid.safe_get(G.P_CENTERS, edition) and edition or "e_foil"):sub(3)
 	enhancement = Cryptid.safe_get(G.P_CENTERS, enhancement) and enhancement or "m_bonus"
@@ -676,6 +684,7 @@ function Cryptid.enhanced_deck_info(deck)
 	end
 	return ret.edition, ret.enhancement, ret.sticker, ret.suit, ret.seal
 end
+
 function Cryptid.post_process(center)
 	if center.pools and center.pools.M then
 		local vc = center.calculate

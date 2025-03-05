@@ -25,7 +25,8 @@ local dropshot = {
 				),
 				center.ability.extra.x_mult,
 				colours = {
-					G.C.SUITS[G.GAME.current_round.cry_dropshot_card and G.GAME.current_round.cry_dropshot_card.suit or "Spades"],
+					G.C.SUITS
+						 [G.GAME.current_round.cry_dropshot_card and G.GAME.current_round.cry_dropshot_card.suit or "Spades"],
 				},
 			},
 		}
@@ -105,25 +106,25 @@ local happyhouse = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.cardarea == G.jokers
-			and context.before
-			and not context.blueprint
-			and not context.retrigger_joker
+			 context.cardarea == G.jokers
+			 and context.before
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			card.ability.extra.check = card.ability.extra.check + 1
 			if
-				card.ability.extra.check == 114
-				and G.GAME.round_resets.ante < 8
-				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
-				and (
-					not CardSleeves
-					or (
-						CardSleeves
-						and G.GAME.selected_sleeve
-						--	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
-						and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve"
-					)
-				)
+				 card.ability.extra.check == 114
+				 and G.GAME.round_resets.ante < 8
+				 and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
+				 and (
+					 not CardSleeves
+					 or (
+						 CardSleeves
+						 and G.GAME.selected_sleeve
+						 --	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
+						 and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve"
+					 )
+				 )
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })
 			end
@@ -201,6 +202,7 @@ local maximized = {
 			end
 			return id
 		end
+
 		--Fix issues with View Deck and Maximized
 		local gui_vd = G.UIDEF.view_deck
 		function G.UIDEF.view_deck(unplayed_only)
@@ -231,7 +233,7 @@ local potofjokes = {
 		return {
 			vars = {
 				center.ability.extra.h_size < 0 and center.ability.extra.h_size
-					or "+" .. math.min(1000, center.ability.extra.h_size),
+				or "+" .. math.min(1000, center.ability.extra.h_size),
 				center.ability.extra.h_mod,
 			},
 		}
@@ -301,8 +303,8 @@ local queensgambit = {
 	calculate = function(self, card, context)
 		if context.destroying_card and not context.blueprint then
 			if
-				G.GAME.current_round.current_hand.handname == "Royal Flush"
-				and SMODS.Ranks[context.destroying_card.base.value].key == "Queen"
+				 G.GAME.current_round.current_hand.handname == "Royal Flush"
+				 and SMODS.Ranks[context.destroying_card.base.value].key == "Queen"
 			then
 				card_eval_status_text(
 					card,
@@ -459,8 +461,8 @@ local whip = {
 				end
 				if two and seven then
 					if
-						(#twosuits > 1 or #sevensuits > 1)
-						or (#twosuits == 1 and #sevensuits == 1 and twosuits[1] ~= sevensuits[1])
+						 (#twosuits > 1 or #sevensuits > 1)
+						 or (#twosuits == 1 and #sevensuits == 1 and twosuits[1] ~= sevensuits[1])
 					then
 						card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_mod
 						card_eval_status_text(card, "extra", nil, nil, nil, {
@@ -869,11 +871,11 @@ local chili_pepper = {
 			}
 		end
 		if
-			context.end_of_round
-			and not context.blueprint
-			and not context.individual
-			and not context.repetition
-			and not context.retrigger_joker
+			 context.end_of_round
+			 and not context.blueprint
+			 and not context.individual
+			 and not context.repetition
+			 and not context.retrigger_joker
 		then
 			card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
@@ -1039,9 +1041,9 @@ local eternalflame = {
 				Xmult_mod = card.ability.extra.x_mult,
 			}
 		elseif
-			context.selling_card
-			and (context.card.sell_cost >= 3 or Card.get_gameset(card) ~= "modest")
-			and not context.blueprint
+			 context.selling_card
+			 and (context.card.sell_cost >= 3 or Card.get_gameset(card) ~= "modest")
+			 and not context.blueprint
 		then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			card_eval_status_text(
@@ -1137,10 +1139,10 @@ local seal_the_deal = {
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		if
-			context.after
-			and G.GAME.current_round.hands_left == 0
-			and not context.blueprint
-			and not context.retrigger_joker
+			 context.after
+			 and G.GAME.current_round.hands_left == 0
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			G.E_MANAGER:add_event(Event({
 				trigger = "before",
@@ -1177,7 +1179,7 @@ local seal_the_deal = {
 			--Gold (ULTRA RARE!!!!!!!!)
 			if pseudorandom("xyz") <= 0.000001 and not (card.area and card.area.config.collection) then
 				card.children.center:set_sprite_pos({ x = 6, y = 4 })
-			--Others
+				--Others
 			elseif card.ability.extra == "red" then
 				card.children.center:set_sprite_pos({ x = 6, y = 0 })
 			elseif card.ability.extra == "azure" then
@@ -1389,7 +1391,7 @@ local sus = {
 				end
 			end
 			card.ability.chosen_card = card.ability.chosen_card
-				or pseudorandom_element(choosable_cards, pseudoseed("cry_sus"))
+				 or pseudorandom_element(choosable_cards, pseudoseed("cry_sus"))
 			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
 				card.ability.used_round = G.GAME.round
 				local deletable_cards = {}
@@ -1998,11 +2000,11 @@ local redbloon = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.end_of_round
-			and not context.blueprint
-			and not context.individual
-			and not context.repetition
-			and not context.retrigger_joker
+			 context.end_of_round
+			 and not context.blueprint
+			 and not context.individual
+			 and not context.repetition
+			 and not context.retrigger_joker
 		then
 			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
 			if card.ability.extra.rounds_remaining > 0 then
@@ -2258,12 +2260,12 @@ local unjust_dagger = {
 			end
 		end
 		if
-			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
-			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
+			 context.setting_blind
+			 and not (context.blueprint_card or self).getting_sliced
+			 and my_pos
+			 and G.jokers.cards[my_pos - 1]
+			 and not G.jokers.cards[my_pos - 1].ability.eternal
+			 and not G.jokers.cards[my_pos - 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos - 1]
 			sliced_card.getting_sliced = true
@@ -2340,12 +2342,12 @@ local monkey_dagger = {
 			end
 		end
 		if
-			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
-			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
+			 context.setting_blind
+			 and not (context.blueprint_card or self).getting_sliced
+			 and my_pos
+			 and G.jokers.cards[my_pos - 1]
+			 and not G.jokers.cards[my_pos - 1].ability.eternal
+			 and not G.jokers.cards[my_pos - 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos - 1]
 			sliced_card.getting_sliced = true
@@ -2422,12 +2424,12 @@ local pirate_dagger = {
 			end
 		end
 		if
-			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
-			and my_pos
-			and G.jokers.cards[my_pos + 1]
-			and not G.jokers.cards[my_pos + 1].ability.eternal
-			and not G.jokers.cards[my_pos + 1].getting_sliced
+			 context.setting_blind
+			 and not (context.blueprint_card or self).getting_sliced
+			 and my_pos
+			 and G.jokers.cards[my_pos + 1]
+			 and not G.jokers.cards[my_pos + 1].ability.eternal
+			 and not G.jokers.cards[my_pos + 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos + 1]
 			sliced_card.getting_sliced = true
@@ -2497,11 +2499,11 @@ local mondrian = {
 			}
 		end
 		if
-			context.end_of_round
-			and G.GAME.current_round.discards_used == 0
-			and not context.blueprint
-			and not context.individual
-			and not context.repetition
+			 context.end_of_round
+			 and G.GAME.current_round.discards_used == 0
+			 and not context.blueprint
+			 and not context.individual
+			 and not context.repetition
 		then
 			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 			return {
@@ -2551,10 +2553,10 @@ local sapling = {
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		if
-			context.individual
-			and context.cardarea == G.play
-			and not context.blueprint
-			and not context.retrigger_joker
+			 context.individual
+			 and context.cardarea == G.play
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			if context.other_card.ability.effect ~= "Base" then
 				card.ability.extra.score = card.ability.extra.score + 1
@@ -2732,10 +2734,10 @@ local happy = {
 			return nil, true
 		end
 		if
-			context.end_of_round
-			and not context.individual
-			and not context.repetition
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+			 context.end_of_round
+			 and not context.individual
+			 and not context.repetition
+			 and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 		then
 			local roundcreatejoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + roundcreatejoker
@@ -2797,10 +2799,10 @@ local meteor = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
-			context.other_joker
-			and context.other_joker.edition
-			and context.other_joker.edition.foil == true
-			and card ~= context.other_joker
+			 context.other_joker
+			 and context.other_joker.edition
+			 and context.other_joker.edition.foil == true
+			 and card ~= context.other_joker
 		then
 			if not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
@@ -2825,11 +2827,11 @@ local meteor = {
 			end
 		end
 		if
-			context.individual
-			and context.cardarea == G.hand
-			and context.other_card.edition
-			and context.other_card.edition.foil == true
-			and not context.end_of_round
+			 context.individual
+			 and context.cardarea == G.hand
+			 and context.other_card.edition
+			 and context.other_card.edition.foil == true
+			 and not context.end_of_round
 		then
 			if context.other_card.debuff then
 				return {
@@ -2881,10 +2883,10 @@ local exoplanet = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
-			context.other_joker
-			and context.other_joker.edition
-			and context.other_joker.edition.holo == true
-			and card ~= context.other_joker
+			 context.other_joker
+			 and context.other_joker.edition
+			 and context.other_joker.edition.holo == true
+			 and card ~= context.other_joker
 		then
 			if not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
@@ -2909,11 +2911,11 @@ local exoplanet = {
 			end
 		end
 		if
-			context.individual
-			and context.cardarea == G.hand
-			and context.other_card.edition
-			and context.other_card.edition.holo == true
-			and not context.end_of_round
+			 context.individual
+			 and context.cardarea == G.hand
+			 and context.other_card.edition
+			 and context.other_card.edition.holo == true
+			 and not context.end_of_round
 		then
 			if context.other_card.debuff then
 				return {
@@ -2965,10 +2967,10 @@ local stardust = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
-			context.other_joker
-			and context.other_joker.edition
-			and context.other_joker.edition.polychrome == true
-			and card ~= context.other_joker
+			 context.other_joker
+			 and context.other_joker.edition
+			 and context.other_joker.edition.polychrome == true
+			 and card ~= context.other_joker
 		then
 			if not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
@@ -2993,11 +2995,11 @@ local stardust = {
 			end
 		end
 		if
-			context.individual
-			and context.cardarea == G.hand
-			and context.other_card.edition
-			and context.other_card.edition.polychrome == true
-			and not context.end_of_round
+			 context.individual
+			 and context.cardarea == G.hand
+			 and context.other_card.edition
+			 and context.other_card.edition.polychrome == true
+			 and not context.end_of_round
 		then
 			if context.other_card.debuff then
 				return {
@@ -3043,8 +3045,8 @@ local rnjoker = {
 			vars = {
 				(card.ability.extra and card.ability.extra.value_mod and card.ability.extra.value) or 0,
 				(card.ability.extra and card.ability.extra.value and card.ability.extra.value_mod)
-					or (card.ability.extra and card.ability.extra.value)
-					or 0,
+				or (card.ability.extra and card.ability.extra.value)
+				or 0,
 				card.ability.extra and card.ability.extra.cond_value or 0,
 				cry_prob(
 					card.ability.cry_prob,
@@ -3097,29 +3099,29 @@ local rnjoker = {
 						valid_context = false
 					end
 					if
-						(j_context == "individual_play")
-						and context.individual
-						and not context.repetition
-						and (context.cardarea == G.play)
+						 (j_context == "individual_play")
+						 and context.individual
+						 and not context.repetition
+						 and (context.cardarea == G.play)
 					then
 						valid_context = true
 						indiv = true
 					end
 					if
-						(j_context == "individual_hand_score")
-						and context.individual
-						and not context.repetition
-						and (context.cardarea == G.hand)
-						and not context.end_of_round
+						 (j_context == "individual_hand_score")
+						 and context.individual
+						 and not context.repetition
+						 and (context.cardarea == G.hand)
+						 and not context.end_of_round
 					then
 						valid_context = true
 						indiv = true
 					end
 					if
-						(j_context == "individual_hand_end")
-						and context.individual
-						and not context.repetition
-						and (context.cardarea == G.hand and context.end_of_round)
+						 (j_context == "individual_hand_end")
+						 and context.individual
+						 and not context.repetition
+						 and (context.cardarea == G.hand and context.end_of_round)
 					then
 						valid_context = true
 						indiv = true
@@ -3136,19 +3138,19 @@ local rnjoker = {
 						if j.cond then
 							if j.cond == "buy_common" then
 								if
-									context.card
-									and context.card.ability
-									and (context.card.ability.set == "Joker")
-									and (context.card.config.center.rarity == 1)
+									 context.card
+									 and context.card.ability
+									 and (context.card.ability.set == "Joker")
+									 and (context.card.config.center.rarity == 1)
 								then
 									cond_passed = true
 								end
 							elseif j.cond == "buy_uncommon" then
 								if
-									context.card
-									and context.card.ability
-									and (context.card.ability.set == "Joker")
-									and (context.card.config.center.rarity == 2)
+									 context.card
+									 and context.card.ability
+									 and (context.card.ability.set == "Joker")
+									 and (context.card.config.center.rarity == 2)
 								then
 									cond_passed = true
 								end
@@ -3282,14 +3284,14 @@ local rnjoker = {
 								end
 							elseif j.cond == "odds" then
 								if
-									pseudorandom("rnj")
-									< (
-										cry_prob(
-											card.ability.cry_prob,
-											card.ability.extra.cond_value,
-											card.ability.cry_rigged
-										) / card.ability.extra.cond_value
-									)
+									 pseudorandom("rnj")
+									 < (
+										 cry_prob(
+											 card.ability.cry_prob,
+											 card.ability.extra.cond_value,
+											 card.ability.cry_rigged
+										 ) / card.ability.extra.cond_value
+									 )
 								then
 									cond_passed = true
 								end
@@ -3336,7 +3338,7 @@ local rnjoker = {
 								}
 							elseif j.scale_value then
 								card.ability.extra.value = card.ability.extra.value
-									+ (card.ability.extra.value_mod * times_passed)
+									 + (card.ability.extra.value_mod * times_passed)
 								card_eval_status_text(
 									card,
 									"extra",
@@ -3366,13 +3368,13 @@ local rnjoker = {
 								if j.act == "make_joker" then
 									local amount = card.ability.extra.value * times_passed
 									if
-										(G.jokers.config.card_limit + j_mod - #G.jokers.cards - G.GAME.joker_buffer)
-										< amount
+										 (G.jokers.config.card_limit + j_mod - #G.jokers.cards - G.GAME.joker_buffer)
+										 < amount
 									then
 										amount = G.jokers.config.card_limit
-											+ j_mod
-											- #G.jokers.cards
-											- G.GAME.joker_buffer
+											 + j_mod
+											 - #G.jokers.cards
+											 - G.GAME.joker_buffer
 									end
 									if amount > 0 then
 										G.GAME.joker_buffer = G.GAME.joker_buffer + amount
@@ -3406,17 +3408,17 @@ local rnjoker = {
 								elseif j.act == "make_tarot" then
 									local amount = card.ability.extra.value * times_passed
 									if
-										(
-											G.consumeables.config.card_limit
-											+ c_mod
-											- #G.consumeables.cards
-											- G.GAME.consumeable_buffer
-										) < amount
+										 (
+											 G.consumeables.config.card_limit
+											 + c_mod
+											 - #G.consumeables.cards
+											 - G.GAME.consumeable_buffer
+										 ) < amount
 									then
 										amount = G.consumeables.config.card_limit
-											+ c_mod
-											- #G.consumeables.cards
-											- G.GAME.consumeable_buffer
+											 + c_mod
+											 - #G.consumeables.cards
+											 - G.GAME.consumeable_buffer
 									end
 									if amount > 0 then
 										G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + amount
@@ -3426,8 +3428,8 @@ local rnjoker = {
 											func = function()
 												for i = 1, amount do
 													if
-														G.consumeables.config.card_limit + c_mod
-														> #G.consumeables.cards
+														 G.consumeables.config.card_limit + c_mod
+														 > #G.consumeables.cards
 													then
 														local card = create_card(
 															"Tarot",
@@ -3453,17 +3455,17 @@ local rnjoker = {
 								elseif j.act == "make_planet" then
 									local amount = card.ability.extra.value * times_passed
 									if
-										(
-											G.consumeables.config.card_limit
-											+ c_mod
-											- #G.consumeables.cards
-											- G.GAME.consumeable_buffer
-										) < amount
+										 (
+											 G.consumeables.config.card_limit
+											 + c_mod
+											 - #G.consumeables.cards
+											 - G.GAME.consumeable_buffer
+										 ) < amount
 									then
 										amount = G.consumeables.config.card_limit
-											+ c_mod
-											- #G.consumeables.cards
-											- G.GAME.consumeable_buffer
+											 + c_mod
+											 - #G.consumeables.cards
+											 - G.GAME.consumeable_buffer
 									end
 									if amount > 0 then
 										G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + amount
@@ -3473,8 +3475,8 @@ local rnjoker = {
 											func = function()
 												for i = 1, amount do
 													if
-														G.consumeables.config.card_limit + c_mod
-														> #G.consumeables.cards
+														 G.consumeables.config.card_limit + c_mod
+														 > #G.consumeables.cards
 													then
 														local card = create_card(
 															"Planet",
@@ -3500,17 +3502,17 @@ local rnjoker = {
 								elseif j.act == "make_spectral" then
 									local amount = card.ability.extra.value * times_passed
 									if
-										(
-											G.consumeables.config.card_limit
-											+ c_mod
-											- #G.consumeables.cards
-											- G.GAME.consumeable_buffer
-										) < amount
+										 (
+											 G.consumeables.config.card_limit
+											 + c_mod
+											 - #G.consumeables.cards
+											 - G.GAME.consumeable_buffer
+										 ) < amount
 									then
 										amount = G.consumeables.config.card_limit
-											+ c_mod
-											- #G.consumeables.cards
-											- G.GAME.consumeable_buffer
+											 + c_mod
+											 - #G.consumeables.cards
+											 - G.GAME.consumeable_buffer
 									end
 									if amount > 0 then
 										G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + amount
@@ -3520,8 +3522,8 @@ local rnjoker = {
 											func = function()
 												for i = 1, amount do
 													if
-														G.consumeables.config.card_limit + c_mod
-														> #G.consumeables.cards
+														 G.consumeables.config.card_limit + c_mod
+														 > #G.consumeables.cards
 													then
 														local card = create_card(
 															"Spectral",
@@ -3571,14 +3573,14 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								pseudorandom("rnj")
-								< (
-									cry_prob(
-										card.ability.cry_prob,
-										card.ability.extra.cond_value,
-										card.ability.cry_rigged
-									) / card.ability.extra.cond_value
-								)
+								 pseudorandom("rnj")
+								 < (
+									 cry_prob(
+										 card.ability.cry_prob,
+										 card.ability.extra.cond_value,
+										 card.ability.cry_rigged
+									 ) / card.ability.extra.cond_value
+								 )
 							then
 								cond_passed = true
 							end
@@ -3661,14 +3663,14 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								pseudorandom("rnj")
-								< (
-									cry_prob(
-										card.ability.cry_prob,
-										card.ability.extra.cond_value,
-										card.ability.cry_rigged
-									) / card.ability.extra.cond_value
-								)
+								 pseudorandom("rnj")
+								 < (
+									 cry_prob(
+										 card.ability.cry_prob,
+										 card.ability.extra.cond_value,
+										 card.ability.cry_rigged
+									 ) / card.ability.extra.cond_value
+								 )
 							then
 								cond_passed = true
 							end
@@ -3703,13 +3705,13 @@ local rnjoker = {
 			end
 		end
 		if
-			not context.individual
-			and not context.repetition
-			and not card.debuff
-			and context.end_of_round
-			and not context.blueprint
-			and G.GAME.blind.boss
-			and not (G.GAME.blind.config and G.GAME.blind.config.bonus)
+			 not context.individual
+			 and not context.repetition
+			 and not card.debuff
+			 and context.end_of_round
+			 and not context.blueprint
+			 and G.GAME.blind.boss
+			 and not (G.GAME.blind.config and G.GAME.blind.config.bonus)
 		then
 			local hand_size = 0
 			if card.ability and card.ability.abilities then
@@ -3770,10 +3772,10 @@ local rnjoker = {
 		end
 		local new_loc = { text = {} }
 		if
-			card.ability
-			and card.ability.abilities
-			and card.ability.abilities[1].loc_txt
-			and #card.ability.abilities[1].loc_txt
+			 card.ability
+			 and card.ability.abilities
+			 and card.ability.abilities[1].loc_txt
+			 and #card.ability.abilities[1].loc_txt
 		then
 			for i, j in ipairs(card.ability.abilities[1].loc_txt) do
 				table.insert(new_loc.text, j)
@@ -3782,7 +3784,7 @@ local rnjoker = {
 		end
 		if not full_UI_table.name then
 			full_UI_table.name =
-				localize({ type = "name", set = self.set, key = target.key or self.key, nodes = full_UI_table.name })
+				 localize({ type = "name", set = self.set, key = target.key or self.key, nodes = full_UI_table.name })
 		end
 		if specific_vars and specific_vars.debuffed then
 			target = {
@@ -3884,9 +3886,9 @@ local rnjoker = {
 				scale = false
 			end
 			if
-				((stat == "h_size") or (stat == "money"))
-				and (context == "individual_play" or context == "individual_hand_score" or context == "individual_hand_end")
-				and is_stat
+				 ((stat == "h_size") or (stat == "money"))
+				 and (context == "individual_play" or context == "individual_hand_score" or context == "individual_hand_end")
+				 and is_stat
 			then
 				scale = true
 			end
@@ -3898,13 +3900,13 @@ local rnjoker = {
 				values.value = stat_val or 0
 				values.stat = stat
 				if
-					scale
-					or (
-						(context ~= "joker_main")
-						and (context ~= "other_joker")
-						and (context ~= "individual_play")
-						and (context ~= "individual_hand_score")
-					)
+					 scale
+					 or (
+						 (context ~= "joker_main")
+						 and (context ~= "other_joker")
+						 and (context ~= "individual_play")
+						 and (context ~= "individual_hand_score")
+					 )
 				then
 					values.value = ((stat == "x_mult") or (stat == "x_chips")) and 1 or 0
 					scale = true
@@ -4188,26 +4190,27 @@ local rnjoker = {
 			values.text_parsed = text_parsed
 			card.ability.abilities = { values }
 		end
+
 		function Cryptid.direct_localize(loc_target, args, misc_cat)
 			if loc_target then
 				for _, lines in
-					ipairs(
-						args.type == "unlocks" and loc_target.unlock_parsed
-							or args.type == "name" and loc_target.name_parsed
-							or (args.type == "text" or args.type == "tutorial" or args.type == "quips") and loc_target
-							or loc_target.text_parsed
-					)
+				ipairs(
+					args.type == "unlocks" and loc_target.unlock_parsed
+					or args.type == "name" and loc_target.name_parsed
+					or (args.type == "text" or args.type == "tutorial" or args.type == "quips") and loc_target
+					or loc_target.text_parsed
+				)
 				do
 					local final_line = {}
 					for _, part in ipairs(lines) do
 						local assembled_string = ""
 						for _, subpart in ipairs(part.strings) do
 							assembled_string = assembled_string
-								.. (
-									type(subpart) == "string" and subpart
-									or format_ui_value(args.vars[tonumber(subpart[1])])
-									or "ERROR"
-								)
+								 .. (
+									 type(subpart) == "string" and subpart
+									 or format_ui_value(args.vars[tonumber(subpart[1])])
+									 or "ERROR"
+								 )
 						end
 						local desc_scale = G.LANG.font.DESCSCALE
 						if G.F_MOBILE_UI then
@@ -4221,8 +4224,8 @@ local rnjoker = {
 										string = { assembled_string },
 										colours = {
 											(part.control.V and args.vars.colours[tonumber(part.control.V)])
-												or (part.control.C and loc_colour(part.control.C))
-												or G.C.UI.TEXT_LIGHT,
+											or (part.control.C and loc_colour(part.control.C))
+											or G.C.UI.TEXT_LIGHT,
 										},
 										bump = true,
 										silent = true,
@@ -4233,7 +4236,7 @@ local rnjoker = {
 										y_offset = -0.6,
 										spacing = math.max(0, 0.32 * (17 - #assembled_string)),
 										scale = (0.55 - 0.004 * #assembled_string)
-											* (part.control.s and tonumber(part.control.s) or 1),
+											 * (part.control.s and tonumber(part.control.s) or 1),
 									}),
 								},
 							}
@@ -4254,7 +4257,7 @@ local rnjoker = {
 										string = { assembled_string },
 										colours = {
 											part.control.V and args.vars.colours[tonumber(part.control.V)]
-												or loc_colour(part.control.C or nil),
+											or loc_colour(part.control.C or nil),
 										},
 										float = _float,
 										silent = _silent,
@@ -4282,8 +4285,8 @@ local rnjoker = {
 											text = assembled_string,
 											colour = loc_colour(part.control.C or nil),
 											scale = 0.32
-												* (part.control.s and tonumber(part.control.s) or 1)
-												* desc_scale,
+												 * (part.control.s and tonumber(part.control.s) or 1)
+												 * desc_scale,
 										},
 									},
 								},
@@ -4293,12 +4296,12 @@ local rnjoker = {
 								n = G.UIT.T,
 								config = {
 									detailed_tooltip = part.control.T
-											and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T])
-										or nil,
+										 and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T])
+										 or nil,
 									text = assembled_string,
 									shadow = args.shadow,
 									colour = part.control.V and args.vars.colours[tonumber(part.control.V)]
-										or loc_colour(part.control.C or nil, args.default_col),
+										 or loc_colour(part.control.C or nil, args.default_col),
 									scale = 0.32 * (part.control.s and tonumber(part.control.s) or 1) * desc_scale,
 								},
 							}
@@ -4335,8 +4338,8 @@ local duos = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
 			if
-				context.poker_hands ~= nil and next(context.poker_hands[card.ability.type])
-				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
+				 context.poker_hands ~= nil and next(context.poker_hands[card.ability.type])
+				 or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
 			then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
@@ -5702,8 +5705,8 @@ local wheelhope = {
 		end
 		if context.consumeable then
 			if
-				context.consumeable.ability.name == "The Wheel of Fortune"
-				and not context.consumeable.cry_wheel_success
+				 context.consumeable.ability.name == "The Wheel of Fortune"
+				 and not context.consumeable.cry_wheel_success
 			then
 				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
 				card_eval_status_text(
@@ -5803,16 +5806,16 @@ local oldblueprint = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if
-			context.end_of_round2
-			and not context.individual
-			and not context.repetition
-			and not context.blueprint
-			and not context.retrigger_joker
+			 context.end_of_round2
+			 and not context.individual
+			 and not context.repetition
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			if
-				pseudorandom("oldblueprint")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
+				 pseudorandom("oldblueprint")
+				 < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+				 / card.ability.extra.odds
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -5933,10 +5936,10 @@ local night = {
 				}
 			end
 		elseif
-			context.cardarea == G.jokers
-			and context.after
-			and not context.blueprint
-			and not context.retrigger_joker
+			 context.cardarea == G.jokers
+			 and context.after
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			if G.GAME.current_round.hands_left <= 0 then
 				G.E_MANAGER:add_event(Event({
@@ -6023,9 +6026,9 @@ local busdriver = {
 		if context.joker_main and (card.ability.extra.mult > 0) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
-				pseudorandom("busdriver")
-				< 1
-					- (1 / (cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) * oddy))
+				 pseudorandom("busdriver")
+				 < 1
+				 - (1 / (cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) * oddy))
 			then
 				return {
 					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
@@ -6083,7 +6086,7 @@ local translucent = {
 					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_duplicated_ex") })
 					local chosen_joker = pseudorandom_element(jokers, pseudoseed("trans"))
 					local _card =
-						copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
+						 copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
 					_card:add_to_deck()
 					_card:set_banana(true)
 					_card.ability.perishable = true -- Done manually to bypass perish compat
@@ -6228,7 +6231,7 @@ local kscope = {
 			if #eligiblejokers > 0 then
 				--you just lost the game
 				local eligible_card =
-					pseudorandom_element(eligiblejokers, pseudoseed("nevergonnagiveyouupnevergonnaletyoudown"))
+					 pseudorandom_element(eligiblejokers, pseudoseed("nevergonnagiveyouupnevergonnaletyoudown"))
 				local edition = { polychrome = true }
 				eligible_card:set_edition(edition, true)
 				check_for_unlock({ type = "have_edition" })
@@ -6271,7 +6274,7 @@ local cryptidmoment = {
 			for k, v in ipairs(G.jokers.cards) do
 				if v.set_cost then
 					v.ability.extra_value = (v.ability.extra_value or 0)
-						+ math.max(1, math.floor(card.ability.extra.money))
+						 + math.max(1, math.floor(card.ability.extra.money))
 					v:set_cost()
 				end
 			end
@@ -6373,10 +6376,10 @@ local oldinvisible = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.selling_card
-			and context.card.ability.set == "Joker"
-			and not context.blueprint
-			and not context.retrigger_joker
+			 context.selling_card
+			 and context.card.ability.set == "Joker"
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			if card.ability.extra >= 3 then
 				card.ability.extra = 0
@@ -6390,7 +6393,7 @@ local oldinvisible = {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local card =
-								copy_card(pseudorandom_element(eligibleJokers, pseudoseed("cry_oldinvis")), nil)
+								 copy_card(pseudorandom_element(eligibleJokers, pseudoseed("cry_oldinvis")), nil)
 							card:add_to_deck()
 							G.jokers:emplace(card)
 							return true
@@ -6519,10 +6522,10 @@ local universe = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if
-			context.other_joker
-			and context.other_joker.edition
-			and context.other_joker.edition.cry_astral == true
-			and card ~= context.other_joker
+			 context.other_joker
+			 and context.other_joker.edition
+			 and context.other_joker.edition.cry_astral == true
+			 and card ~= context.other_joker
 		then
 			if not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
@@ -6548,11 +6551,11 @@ local universe = {
 			end
 		end
 		if
-			context.individual
-			and context.cardarea == G.hand
-			and context.other_card.edition
-			and context.other_card.edition.cry_astral == true
-			and not context.end_of_round
+			 context.individual
+			 and context.cardarea == G.hand
+			 and context.other_card.edition
+			 and context.other_card.edition.cry_astral == true
+			 and not context.end_of_round
 		then
 			if context.other_card.debuff then
 				return {
@@ -6673,27 +6676,27 @@ local kidnap = {
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		if
-			context.selling_card
-			and (
-				(
-					context.card.ability.name == "Sly Joker"
-					or context.card.ability.name == "Wily Joker"
-					or context.card.ability.name == "Clever Joker"
-					or context.card.ability.name == "Devious Joker"
-					or context.card.ability.name == "Crafty Joker"
-				)
-				or context.card.ability.effect == "Type Mult"
-				or context.card.ability.effect == "Cry Type Mult"
-				or context.card.ability.effect == "Cry Type Chips"
-				--[[
+			 context.selling_card
+			 and (
+				 (
+					 context.card.ability.name == "Sly Joker"
+					 or context.card.ability.name == "Wily Joker"
+					 or context.card.ability.name == "Clever Joker"
+					 or context.card.ability.name == "Devious Joker"
+					 or context.card.ability.name == "Crafty Joker"
+				 )
+				 or context.card.ability.effect == "Type Mult"
+				 or context.card.ability.effect == "Cry Type Mult"
+				 or context.card.ability.effect == "Cry Type Chips"
+				 --[[
 				Other developers can add effect == "Boost Kidnapping"
                 to their joker config if they want it to boost kidnapping when sold
 				]]
-				--
-				or context.card.ability.effect == "Boost Kidnapping"
-				or context.card:is_jolly()
-			)
-			and not context.blueprint
+				 --
+				 or context.card.ability.effect == "Boost Kidnapping"
+				 or context.card:is_jolly()
+			 )
+			 and not context.blueprint
 		then
 			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
 			return {
@@ -7087,10 +7090,10 @@ local necromancer = {
 	end,
 	calculate = function(self, card, context)
 		if
-			context.selling_card
-			and context.card.sell_cost > 0
-			and context.card.config.center.set == "Joker"
-			and G.GAME.jokers_sold
+			 context.selling_card
+			 and context.card.sell_cost > 0
+			 and context.card.config.center.set == "Joker"
+			 and G.GAME.jokers_sold
 		then
 			local card = create_card(
 				"Joker",
@@ -7380,11 +7383,11 @@ local digitalhallucinations = {
 		-- some cards need to be handled slightly differently anyway, adding mod support can't really be automatic in some circumstances
 
 		if
-			context.open_booster
-			and (
-				pseudorandom("digi")
-				< cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) / card.ability.odds
-			)
+			 context.open_booster
+			 and (
+				 pseudorandom("digi")
+				 < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) / card.ability.odds
+			 )
 		then
 			local boosty = context.card
 			-- finally mod compat?
@@ -7432,7 +7435,8 @@ local digitalhallucinations = {
 						nil,
 						{ message = localize("k_plus_" .. short1[i]), colour = G.C.SECONDARY_SET[short2[i]] }
 					)
-					return nil, true -- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
+					return nil,
+						 true -- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
 				end
 			end
 			if boosty.ability.name:find("Buffoon") then
@@ -7678,10 +7682,10 @@ local lebaron_james = {
 		function Card:calculate_enhancement(context)
 			local ret = cce(self, context)
 			if
-				not ret
-				and next(SMODS.find_card("j_cry_lebaron_james"))
-				and SMODS.Ranks[self.base.value].key == "King"
-				and context.cardarea == G.play
+				 not ret
+				 and next(SMODS.find_card("j_cry_lebaron_james"))
+				 and SMODS.Ranks[self.base.value].key == "King"
+				 and context.cardarea == G.play
 			then
 				context.cardarea = G.hand
 				local ret = cce(self, context)
@@ -7709,11 +7713,11 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 	atlas = "placeholders",
 	calculate = function(self, card, context)
 		if
-			(context.cardarea == G.play or context.cardarea == "unscored")
-			and context.destroy_card == context.full_hand[2]
-			and #context.full_hand == 3 -- 3 cards in played hand
-			and not context.blueprint
-			and not context.retrigger_joker
+			 (context.cardarea == G.play or context.cardarea == "unscored")
+			 and context.destroy_card == context.full_hand[2]
+			 and #context.full_hand == 3 -- 3 cards in played hand
+			 and not context.blueprint
+			 and not context.retrigger_joker
 		then
 			return { remove = true }
 		end
@@ -7724,6 +7728,57 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 		},
 		code = {
 			"Nova",
+		},
+	},
+}
+local albuquerque = { -- If played hand contains three cards, destroy the middle card after scoring
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-albuquerque",
+	key = "albuquerque",
+	pools = { ["Meme"] = true },
+	config = { extra = { mult = 11, chips = 14 } },
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.mult, center.ability.extra.chips } }
+	end,
+	pos = { x = 1, y = 0 },
+	order = 135,
+	immutable = true,
+	rarity = 1,
+	cost = 5,
+	blueprint_compat = true,
+	atlas = "placeholders",
+	init = function(self)
+		G.FUNCS.notif_albuquerque = function()
+			Cryptid_config.Cryptid.albuquerque_music = false
+			G:save_settings()
+			G.FUNCS:exit_overlay_menu()
+			-- todo: autosave settings (Not sure if this autosaves it)
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			Cryptid.notification_overlay("albuquerque")
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				mult = card.ability.extra.mult,
+				chips = card.ability.extra.chips
+			}
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"astrapboy",
+		},
+		code = {
+			"astrapboy",
 		},
 	},
 }
@@ -7840,6 +7895,7 @@ local miscitems = {
 	translucent,
 	lebaron_james,
 	huntingseason,
+	albuquerque
 }
 return {
 	name = "Misc. Jokers",
