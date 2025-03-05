@@ -165,16 +165,14 @@ position = "at"
 payload = "for i = 1, G.GAME.modifiers.cry_no_boosters and 0 or G.GAME.modifiers.cry_booster_packs or 2 do"
 match_indent = true
 
-
 # Quartz Stake - pinned effect applies in every type of slot
 [[patches]]
 [patches.pattern]
 target = "cardarea.lua"
 pattern = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 < b.T.x + b.T.w/2 end)"
 position = "at"
-payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*(a.pinned and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*(b.pinned and b.sort_id or 0) end)"
+payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end)"
 match_indent = true
-
 
 # Quartz Stake - render pinned sticker
 [[patches]]

@@ -708,3 +708,9 @@ function reload_cryptid_localization()
 	SMODS.handle_loc_file(Cryptid.path)
 	return init_localization()
 end
+
+-- Checks if all jokers in shop will have editions (via Curate, Edition Decks, etc.)
+-- Will cause edition tags to Nope!
+function cry_forced_edition()
+	return G.GAME.modifiers.cry_force_edition or G.GAME.used_vouchers.v_cry_curate
+end

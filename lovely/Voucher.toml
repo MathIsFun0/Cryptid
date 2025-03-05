@@ -29,9 +29,6 @@ self.shop_cry_bonusvoucher = cardTable.shop_cry_bonusvoucher
 '''
 match_indent = true
 
-
-
-
 # get rid of this dumb hackfix in :redeem()
 # also track vouchers redeemed
 [[patches]]
