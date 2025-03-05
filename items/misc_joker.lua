@@ -7749,7 +7749,7 @@ local emergencystim = { -- When sold, create a Drained Stim
 	atlas = "placeholders",
 	calculate = function(self, card, context)
 		if
-			context.joker_main -- card is sold
+			context.selling_self -- card is sold
 		then
 			local cardstim = create_card("Food", G.jokers, nil, nil, nil, nil, "j_cry_drainedstim", "cry_emergencystim")
 				cardstim:add_to_deck()
