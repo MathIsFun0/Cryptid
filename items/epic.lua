@@ -1915,12 +1915,7 @@ local clockwork = { -- Steel Support: The Joker
 	cost = 12,
 	blueprint_compat = true,
 	atlas = "placeholders",
-	in_pool = function(self)
-		if not true then -- TODO: make it say "if deck has steel cards"
-			return false
-		end
-		return true
-	end,
+	enhancement_gate = "m_steel", -- lucky joker uses this? hopefully it works
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.counters.c1, center.ability.counters.c2, center.ability.counters.c3, center.ability.counters.c4, center.ability.extra.xmult, center.ability.extra.xmult_mod, center.ability.extra.steelenhc, center.ability.extra.steel_mod } }
 	end,
