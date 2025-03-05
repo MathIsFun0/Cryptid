@@ -1109,14 +1109,13 @@ return {
 					"you {C:attention}click",
 				},
 			},
-	    		j_cry_clockwork = { -- make this better please
+	    		j_cry_clockwork = {
 				 name = "Clockwork Joker",
 				 text = {
-		                        "Every {C:attention}second{} {C:inactive}(#1#){} hand played retriggers all steel cards,",
-                                        "every {C:attention}third{} {C:inactive}(#2#){} hand played, this joker gains {C:mult}#6#x Mult{},",
-                                        "every {C:attention}fifth{} {C:inactive}(#3#){} hand played, create a Negative Chariot,",
-                                        "every {C:attention}seventh{} {C:inactive}(#4#){} hand played, Steel cards give an additional {C:mult}#8#x{} more {C:mult}Mult{}",
-                                        "{C:inactive}Currently gives #5#x Mult on trigger and #7#x Mult on Steel{}",
+		                        "Retrigger all Steel Cards every {C:attention}2{} {C:inactive}(#1#){} hands.",
+                                        "This joker gains {C:mult}#6#x Mult{} {C:inactive}(#5#){} every {C:attention}3{} {C:inactive}(#2#){} hands,",
+                                        "Turn the first played card Steel every {C:attention}5{} {C:inactive}(#3){} hands,",
+                                        "Steel cards give {C:mult}+X#8# Mult {C:inactive}(X#7#){} every {C:attention}7{} {c:inactive}(#4#){} hands",
                                 },
                         },
 			j_cry_CodeJoker = {
