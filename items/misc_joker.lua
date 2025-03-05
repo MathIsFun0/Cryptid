@@ -7741,7 +7741,7 @@ local albuquerque = { -- If played hand contains three cards, destroy the middle
 	name = "cry-albuquerque",
 	key = "albuquerque",
 	pools = { ["Meme"] = true },
-	config = { extra = { mult = 11, chips = 14 } },
+	config = { extra = { mult = 11, chips = 24 } },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.mult, center.ability.extra.chips } }
 	end,
