@@ -6841,7 +6841,12 @@ local tropical_smoothie = {
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
 						Cryptid.with_deck_effects(v, function(cards)
-							Cryptid.misprintize(cards, { min = card.ability.extra, max = card.ability.extra }, nil, true)
+							Cryptid.misprintize(
+								cards,
+								{ min = card.ability.extra, max = card.ability.extra },
+								nil,
+								true
+							)
 						end)
 						check = true
 					end

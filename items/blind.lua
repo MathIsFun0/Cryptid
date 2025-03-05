@@ -549,7 +549,11 @@ local shackle = {
 		return #Cryptid.advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
-		if (card.area == G.jokers) and not G.GAME.blind.disabled and Cryptid.safe_get(card, "edition", "negative") == true then
+		if
+			(card.area == G.jokers)
+			and not G.GAME.blind.disabled
+			and Cryptid.safe_get(card, "edition", "negative") == true
+		then
 			return true
 		end
 		return false

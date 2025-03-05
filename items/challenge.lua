@@ -17,7 +17,7 @@ local sticker_sheet = {
 	},
 	restrictions = {
 		banned_cards = {
-			{ id = "c_cry_lock" }
+			{ id = "c_cry_lock" },
 		},
 		banned_other = {},
 	},
@@ -38,7 +38,7 @@ local sticker_sheet_plus = {
 	},
 	restrictions = {
 		banned_cards = {
-			{ id = "c_cry_lock" }
+			{ id = "c_cry_lock" },
 		},
 		banned_other = {},
 	},
@@ -406,7 +406,7 @@ local onlycard = {
 			{
 				id = "p_cry_code_normal_1",
 				ids = { "p_cry_code_normal_1", "p_cry_code_normal_2", "p_cry_code_jumbo_1", "p_cry_code_mega_1" },
-			}
+			},
 		},
 		banned_other = {
 			{ id = "bl_house", type = "blind" },
@@ -482,7 +482,7 @@ local joker_poker = {
 			{ id = "j_cry_CodeJoker" },
 			{ id = "j_cry_copypaste" },
 			{ id = "j_cry_blender" },
-			{ id = "j_cry_python" }
+			{ id = "j_cry_python" },
 		},
 		banned_other = {
 			{ id = "bl_hook", type = "blind" },
@@ -562,7 +562,19 @@ if (SMODS.Mods["jen"] or {}).can_load then
 	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_cryptid_ex" }
 end
 --end of banned cards
-local challenges = { sticker_sheet, sticker_sheet_plus, onlycard, ballin, boss_rush, rng, dagger_war, rush_hour, rush_hour_ii, rush_hour_iii, joker_poker }
+local challenges = {
+	sticker_sheet,
+	sticker_sheet_plus,
+	onlycard,
+	ballin,
+	boss_rush,
+	rng,
+	dagger_war,
+	rush_hour,
+	rush_hour_ii,
+	rush_hour_iii,
+	joker_poker,
+}
 
 for k, v in pairs(G.P_CENTERS) do
 	if v.set == "Joker" then

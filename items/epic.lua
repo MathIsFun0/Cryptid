@@ -596,18 +596,19 @@ local error_joker = {
 			local polled_rate = pseudorandom(Cryptid.predict_pseudoseed("cdt" .. G.GAME.round_resets.ante)) * total_rate
 			local check_rate = 0
 			-- need to preserve order to leave RNG unchanged
-			local rates = {
-				{ type = "Joker", val = G.GAME.joker_rate },
-				{ type = "Tarot", val = G.GAME.tarot_rate },
-				{ type = "Planet", val = G.GAME.planet_rate },
+			local rates =
 				{
-					type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(Cryptid.predict_pseudoseed("illusion")) > 0.6)
-							and "Enhanced"
-						or "Base",
-					val = G.GAME.playing_card_rate,
-				},
-				{ type = "Spectral", val = G.GAME.spectral_rate },
-			}
+					{ type = "Joker", val = G.GAME.joker_rate },
+					{ type = "Tarot", val = G.GAME.tarot_rate },
+					{ type = "Planet", val = G.GAME.planet_rate },
+					{
+						type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(
+							Cryptid.predict_pseudoseed("illusion")
+						) > 0.6) and "Enhanced" or "Base",
+						val = G.GAME.playing_card_rate,
+					},
+					{ type = "Spectral", val = G.GAME.spectral_rate },
+				}
 			for _, v in ipairs(SMODS.ConsumableType.obj_buffer) do
 				if not (v == "Tarot" or v == "Planet" or v == "Spectral") then
 					table.insert(rates, { type = v, val = G.GAME[v:lower() .. "_rate"] })
@@ -1571,7 +1572,11 @@ local altgoogol = {
 										nil,
 										nil,
 										nil,
-										(gameset == "modest" and (Cryptid.safe_get(chosen_joker, "edition", "negative")) or nil)
+										(
+											gameset == "modest"
+												and (Cryptid.safe_get(chosen_joker, "edition", "negative"))
+											or nil
+										)
 									)
 									card:add_to_deck()
 									G.jokers:emplace(card)
