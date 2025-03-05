@@ -37,7 +37,7 @@ local meme1 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enabled["Misc. Jokers"]
+			Cryptid.enabled("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
@@ -94,7 +94,7 @@ local meme2 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enabled["Misc. Jokers"]
+			Cryptid.enabled("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memetwo_" .. G.GAME.round_resets.ante) > 0.997 then
@@ -151,7 +151,7 @@ local meme3 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enabled["Misc. Jokers"]
+			Cryptid.enable("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memethree_" .. G.GAME.round_resets.ante) > 0.997 then
@@ -289,24 +289,24 @@ local oversat = {
 		return G.GAME.edition_rate * self.weight
 	end,
 	on_apply = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, {
 				min = 2,
 				max = 2,
 			}, nil, true)
 		end)
 		if card.config.center.apply_oversat then
 			card.config.center:apply_oversat(card, function(val)
-				return cry_misprintize_val(val, {
+				return Cryptid.misprintize_val(val, {
 					min = 2,
 					max = 2,
-				}, is_card_big(card))
+				}, Cryptid.is_card_big(card))
 			end)
 		end
 	end,
 	on_remove = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, { min = 0.5, max = 0.5 }, nil, true)
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, { min = 0.5, max = 0.5 }, nil, true)
 		end)
 	end,
 	init = function(self)
@@ -397,27 +397,27 @@ local glitched = {
 	-- Note: Duping playing cards resets the base chips for some reason
 	on_apply = function(card)
 		if not card.ability.cry_glitched then
-			cry_with_deck_effects(card, function(card)
-				cry_misprintize(card, {
+			Cryptid.with_deck_effects(card, function(card)
+				Cryptid.misprintize(card, {
 					min = 0.1,
 					max = 10,
 				}, nil, true)
 			end)
 			if card.config.center.apply_glitched then
 				card.config.center:apply_glitched(card, function(val)
-					return cry_misprintize_val(val, {
+					return Cryptid.misprintize_val(val, {
 						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-					}, is_card_big(card))
+					}, Cryptid.is_card_big(card))
 				end)
 			end
 		end
 		card.ability.cry_glitched = true
 	end,
 	on_remove = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, { min = 1, max = 1 }, true)
-			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
+			Cryptid.misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 		card.ability.cry_glitched = nil
 	end,
@@ -508,14 +508,14 @@ local glitched = {
 
 		AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 			local modc = G.GAME.hands[hand].l_chips
-				* cry_log_random(
+				* Cryptid.log_random(
 					pseudoseed("cry_aurinko_chips_misprint" .. G.GAME.round_resets.ante),
 					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
 					(G.GAME.modifiers.cry_misprint_max or 1) * 10
 				)
 				* amount
 			local modm = G.GAME.hands[hand].l_mult
-				* cry_log_random(
+				* Cryptid.log_random(
 					pseudoseed("cry_aurinko_mult_misprint" .. G.GAME.round_resets.ante),
 					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
 					(G.GAME.modifiers.cry_misprint_max or 1) * 10
@@ -1427,7 +1427,7 @@ local double_sided = {
 					local area = e.config.ref_table.area
 					area:remove_card(e.config.ref_table)
 					mergedcard:init_dbl_side()
-					copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
+					Cryptid.copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
 					e.config.ref_table:remove()
 					e.config.ref_table = nil
 					return true
@@ -1575,7 +1575,7 @@ local double_sided = {
 				self.ability.eternal = true
 			end
 		end
-		function copy_dbl_card(C, c, deck_effects)
+		function Cryptid.copy_dbl_card(C, c, deck_effects)
 			if not deck_effects then
 				Cdeck = C.added_to_deck
 				cdeck = c.added_to_deck
@@ -1590,11 +1590,11 @@ local double_sided = {
 				self:set_edition(nil, true)
 			end
 			if not self.dbl_side then
-				self.dbl_side = cry_deep_copy(self)
+				self.dbl_side = Cryptid.deep_copy(self)
 				self.dbl_side:set_ability(G.P_CENTERS.j_joker)
 				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
-					self.dbl_side = cry_deep_copy(self)
+					self.dbl_side = Cryptid.deep_copy(self)
 					self.dbl_side:set_ability(G.P_CENTERS.c_base)
 				end
 				self.dbl_side.added_to_deck = false
@@ -1603,7 +1603,7 @@ local double_sided = {
 		end
 		function Card:dbl_side_flip()
 			local init_dbl_side = self:init_dbl_side()
-			local tmp_side = cry_deep_copy(self.dbl_side)
+			local tmp_side = Cryptid.deep_copy(self.dbl_side)
 			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
 			self.T.w, self.T.h = G.CARD_W, G.CARD_H
 			local active_side = self
@@ -1613,8 +1613,8 @@ local double_sided = {
 			if not init_dbl_side then
 				active_side:remove_from_deck(true)
 			end
-			copy_dbl_card(self, self.dbl_side, false)
-			copy_dbl_card(tmp_side, self, false)
+			Cryptid.copy_dbl_card(self, self.dbl_side, false)
+			Cryptid.copy_dbl_card(tmp_side, self, false)
 			active_side:add_to_deck(true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
 			if self.base then
@@ -1664,7 +1664,7 @@ local double_sided = {
 				end
 			end
 			if cardTable.dbl_side then
-				self.dbl_side = cry_deep_copy(self)
+				self.dbl_side = Cryptid.deep_copy(self)
 				cload(self.dbl_side, cardTable.dbl_side)
 				if self.dbl_side.ability.set == "Default" and self.ability.set ~= "Default" then
 					self.dbl_side:set_ability(G.P_CENTERS.c_base, true)
@@ -1999,7 +1999,7 @@ local blessing = {
 			func = function()
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
-					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
+					local forced_key = Cryptid.random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card(
 						"Consumeables",
 						G.consumeables,

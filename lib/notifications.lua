@@ -1,6 +1,6 @@
 -- notifications.lua - Adds notification system for Cryptid
 
-function create_cryptid_notif_overlay(key)
+function Cryptid.notification_overlay(key)
 	if not G.SETTINGS.cryptid_notifs then -- I want this to be across profiles
 		G.SETTINGS.cryptid_notifs = {}
 	end

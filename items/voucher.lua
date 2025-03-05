@@ -248,7 +248,7 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 		},
 	},
 	in_pool = function(self)
-		local mcheck = get_m_jokers()
+		local mcheck = Cryptid.get_m_jokers()
 		if mcheck > 0 then
 			return true
 		end
@@ -282,7 +282,7 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 		},
 	},
 	in_pool = function(self)
-		local mcheck = get_m_jokers()
+		local mcheck = Cryptid.get_m_jokers()
 		if mcheck > 0 then
 			return true
 		end
@@ -318,7 +318,7 @@ local pairamount_plus = { --Retrigger all M Jokers once for every pair contained
 		},
 	},
 	in_pool = function(self)
-		local mcheck = get_m_jokers()
+		local mcheck = Cryptid.get_m_jokers()
 		if mcheck > 0 then
 			return true
 		end
@@ -922,10 +922,10 @@ local asteroglyph = { --Set Ante to 0
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
 	loc_vars = function(self, info_queue)
-		return { vars = { asteroglyph_ante() } }
+		return { vars = { Cryptid.asteroglyph_ante() } }
 	end,
 	redeem = function(self)
-		local mod = -G.GAME.round_resets.ante + asteroglyph_ante()
+		local mod = -G.GAME.round_resets.ante + Cryptid.asteroglyph_ante()
 		ease_ante(mod)
 		G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0
 				and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300)
@@ -950,7 +950,7 @@ local asteroglyph = { --Set Ante to 0
 		end
 	end,
 	init = function(self)
-		function asteroglyph_ante()
+		function Cryptid.asteroglyph_ante()
 			if not (G.GAME or {}).modifiers then
 				return 0
 			end
@@ -1385,7 +1385,7 @@ return {
 	init = function()
 		--Add T3 Voucher pool for Golden Voucher Tag (in Tags.lua) and maybe other things in the future
 		-- Uncursed this -Math
-		function get_next_megavoucher_key(_from_tag)
+		function Cryptid.next_tier3_key(_from_tag)
 			local _pool, _pool_key = get_current_pool("Tier3")
 			if _from_tag then
 				_pool_key = "Voucher_fromtag"

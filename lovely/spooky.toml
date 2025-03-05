@@ -35,7 +35,7 @@ if G.GAME.events.ev_cry_choco10 then
     end
     if add then
         local card = create_card('Joker', G.jokers, true, nil, nil, nil, nil, 'cry_antique')
-        cry_misprintize(card)
+        Cryptid.misprintize(card)
         card.misprint_cost_fac = 50/card.cost
         card:set_cost()
         create_shop_card_ui(card, 'Voucher', G.shop_vouchers)

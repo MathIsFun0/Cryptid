@@ -139,7 +139,7 @@ local choco_dice = {
 		then
 			--todo: check if duplicates of event are already started/finished
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
-			card.ability.extra.roll = roll_dice("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
+			card.ability.extra.roll = Cryptid.roll("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:start()
 			return {
 				message = tostring(card.ability.extra.roll),
@@ -703,7 +703,7 @@ local spy = {
 				desc_nodes[#desc_nodes + 1] = res.main_end
 			end
 		else
-			local secret_card = cry_deep_copy(G.P_CENTERS[card.ability.extra.secret_card])
+			local secret_card = Cryptid.deep_copy(G.P_CENTERS[card.ability.extra.secret_card])
 			secret_card.ability = secret_card.config
 			local target = {
 				type = "descriptions",
@@ -1359,8 +1359,8 @@ local jawbreaker = {
 							not Card.no(G.jokers.cards[i - 1], "immune_to_chemach", true)
 							and not Card.no(G.jokers.cards[i - 1], "immutable", true)
 						then
-							cry_with_deck_effects(G.jokers.cards[i - 1], function(card)
-								cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
+								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 							end)
 						end
 					end
@@ -1369,8 +1369,8 @@ local jawbreaker = {
 							not Card.no(G.jokers.cards[i + 1], "immune_to_chemach", true)
 							and not Card.no(G.jokers.cards[i + 1], "immutable", true)
 						then
-							cry_with_deck_effects(G.jokers.cards[i + 1], function(card)
-								cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
+								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 							end)
 						end
 					end

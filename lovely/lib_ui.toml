@@ -59,7 +59,7 @@ match_indent = true
 target = '''=[SMODS _ "src/card_draw.lua"]'''
 pattern = "if self.debuff then"
 position = "at"
-payload = "if self.debuff or cry_get_gameset(self) == 'disabled' or (self.config.center.gameset_config and self.config.center.gameset_config[cry_get_gameset(self)] and self.config.center.gameset_config[cry_get_gameset(self)].disabled) or (self.config.center.cry_disabled and not self.gameset_select) then"
+payload = "if self.debuff or Cryptid.gameset(self) == 'disabled' or (self.config.center.gameset_config and self.config.center.gameset_config[Cryptid.gameset(self)] and self.config.center.gameset_config[Cryptid.gameset(self)].disabled) or (self.config.center.cry_disabled and not self.gameset_select) then"
 match_indent = true
 
 # Shine on Oversaturated to make it more noticable

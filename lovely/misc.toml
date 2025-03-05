@@ -489,6 +489,6 @@ target = "tag.lua"
 pattern = "local _applied = nil"
 position = "after"
 payload = '''
-if cry_forced_edition() then self:nope() end
+if Cryptid.forced_edition() then self:nope() end
 '''
 match_indent = true

@@ -196,7 +196,7 @@ local empoweredPack = {
 	create_card = function(self, card, i)
 		if
 			i % 2 == 1
-			and cry_card_enabled("c_cry_gateway") == true
+			and Cryptid.enabled("c_cry_gateway") == true
 			and not G.GAME.used_jokers["c_cry_gateway"]
 			and not next(find_joker("Showman"))
 		then
@@ -254,7 +254,7 @@ local empowered = {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
-		if Cryptid.enabled["Exotic Jokers"] then
+		if Cryptid.enabled("c_cry_gateway") then
 			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		end
 		return { vars = {} }
@@ -280,7 +280,7 @@ local empowered = {
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true, true)
 				end
 				card:start_materialize()
@@ -519,7 +519,7 @@ local glitched_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -574,7 +574,7 @@ local oversat_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -629,7 +629,7 @@ local mosaic_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -684,7 +684,7 @@ local gold_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -739,7 +739,7 @@ local glass_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -794,7 +794,7 @@ local blur_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -850,7 +850,7 @@ local astral_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -905,7 +905,7 @@ local m_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
-			if cry_forced_edition() then
+			if Cryptid.forced_edition() then
 				tag:nope()
 			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
@@ -1151,7 +1151,7 @@ local loss = {
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true, true)
 				end
 				card:start_materialize()
@@ -1292,7 +1292,7 @@ local better_voucher = {
 		if context.type == "voucher_add" then
 			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
 				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
-				local voucher_key = get_next_megavoucher_key(true)
+				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
 				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				local card = Card(
@@ -1304,13 +1304,13 @@ local better_voucher = {
 					G.P_CENTERS[voucher_key],
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
-				cry_misprintize(card)
+				Cryptid.misprintize(card)
 				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
 				card:start_materialize()
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true)
 				end
 

@@ -41,7 +41,7 @@ target = "game.lua"
 pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
 position = "before"
 payload = '''
-if true --[[Cryptid.enabled["Menu"]--]] then card:set_ability(get_random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
+if true --[[Cryptid.enabled["Menu"]--]] then card:set_ability(Cryptid.random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
 '''
 match_indent = true
 
@@ -181,7 +181,6 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Cryptid = {}
-Cryptid.enabled = {}
 Cryptid.aliases = {}
 function cry_format(...)
 	return ...
@@ -220,7 +219,7 @@ assembled_string = assembled_string..(type(subpart) == 'string' and subpart or f
 '''
 position = "at"
 payload = '''
-assembled_string = assembled_string..(type(subpart) == 'string' and subpart or cry_pls(subpart[1], args.vars) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or Cryptid.pluralize(subpart[1], args.vars) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
 '''
 match_indent = true
 

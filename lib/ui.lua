@@ -7,7 +7,7 @@ SMODS.DrawStep({
 	key = "back_edition",
 	order = 5,
 	func = function(self)
-		if safe_get(self, "area", "config", "type") == "deck" then
+		if Cryptid.safe_get(self, "area", "config", "type") == "deck" then
 			local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
 			if currentBack.effect.config.cry_force_edition and not currentBack.effect.config.cry_antimatter then
 				if currentBack.effect.config.cry_force_edition_shader then
@@ -75,8 +75,8 @@ SMODS.DrawStep({
 				self.children.center:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
 			end
 			if currentBack.effect.center.edeck_type then
-				local edition, enhancement, sticker, suit, seal = cry_get_enchanced_deck_info(currentBack)
-				local sprite = cry_edeck_atlas_update(currentBack.effect.center)
+				local edition, enhancement, sticker, suit, seal = Cryptid.enhanced_deck_info(currentBack)
+				local sprite = Cryptid.edeck_atlas_update(currentBack.effect.center)
 				self.children.back.atlas = G.ASSET_ATLAS[sprite.atlas] or self.children.back.atlas
 				self.children.back.sprite_pos = sprite.pos
 				self.children.back:reset()

@@ -60,7 +60,7 @@ if G.GAME.used_vouchers.v_cry_double_down then
         for i = 1, #area.cards do
             if area.cards[i].dbl_side then
                 --tweak to do deck effects with on the flip side
-                cry_misprintize(area.cards[i].dbl_side, {min = 1.5, max = 1.5}, nil, true)
+                Cryptid.misprintize(area.cards[i].dbl_side, {min = 1.5, max = 1.5}, nil, true)
                 card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
             end
         end
@@ -275,7 +275,7 @@ match_indent = true
 target = "functions/state_events.lua"
 pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 position = "at"
-payload = "delay(0.4); ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1); cry_apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+payload = "delay(0.4); ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1); Cryptid.apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
 match_indent = true
 
 

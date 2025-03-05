@@ -17,15 +17,12 @@
 -- If you're looking for a specific feature, browse the Items folder to see how it is implemented.
 -- If you're looking for a specific function, check the lib folder to see if it is there.
 
--- Initialize some important variables
 if not Cryptid then
 	Cryptid = {}
 end
 local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
 Cryptid_config = SMODS.current_mod.config
--- This will save the current state even when settings are modified
-Cryptid.enabled = copy_table(Cryptid_config)
 
 -- Enable optional features
 SMODS.current_mod.optional_features = {
@@ -184,7 +181,7 @@ end
 local inj = SMODS.injectItems
 function SMODS.injectItems(...)
 	inj(...)
-	cry_update_obj_registry()
+	Cryptid.update_obj_registry()
 	for _, t in ipairs({
 		G.P_CENTERS,
 		G.P_BLINDS,
@@ -241,7 +238,7 @@ local cryptidConfigTab = function()
 		active_colour = HEX("40c76d"),
 		ref_table = Cryptid_config,
 		ref_value = "family_mode",
-		callback = reload_cryptid_localization,
+		callback = Cryptid.reload_localization,
 	})
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_experimental"),

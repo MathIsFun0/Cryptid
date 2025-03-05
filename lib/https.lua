@@ -11,7 +11,7 @@ local function apply_discord_member_count(code, body, headers)
 		GLOBAL_cry_member_count = string.match(body, '"approximate_member_count"%s*:%s*(%d+)')
 	end
 end
-function update_cry_member_count()
+function Cryptid.update_member_count()
 	if Cryptid_config.HTTPS then
 		if (os.time() - last_update_time >= 60) or initial then
 			initial = false

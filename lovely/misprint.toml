@@ -12,10 +12,10 @@ position = "after"
 payload = '''
 if G.GAME.modifiers.cry_misprint_min and not args.savetext then
     for k, v in pairs(G.GAME.hands) do
-        v.chips = to_big(cry_format(v.chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
-        v.mult = to_big(cry_format(v.mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
-        v.l_chips = cry_format(v.l_chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
-        v.l_mult = cry_format(v.l_mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+        v.chips = to_big(cry_format(v.chips * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.mult = to_big(cry_format(v.mult * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.l_chips = cry_format(v.l_chips * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+        v.l_mult = cry_format(v.l_mult * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
         v.s_chips = v.chips
         v.s_mult = v.mult
     end
@@ -30,7 +30,7 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-cry_misprintize(card)
+Cryptid.misprintize(card)
 '''
 match_indent = true
 
@@ -49,7 +49,7 @@ if G.GAME.modifiers.cry_misprint_min then
     if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
-    --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
+    --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * Cryptid.log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
 end
 if G.GAME.cry_oboe then
     self.ability.extra = self.ability.extra + G.GAME.cry_oboe
@@ -84,7 +84,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-cry_misprintize(card)
+Cryptid.misprintize(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -98,7 +98,7 @@ target = "tag.lua"
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-cry_misprintize(card)
+Cryptid.misprintize(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -394,7 +394,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({label = {localize('b_reroll_boss'), localize('$')..'10'}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil'''
 position = "at"
 payload = '''
-UIBox_button({label = {localize('b_reroll_boss'), localize('$')..cry_cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
 '''
 match_indent = true
 
@@ -405,7 +405,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and'''
 position = "at"
 payload = '''
-if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(cry_cheapest_boss_reroll()) >= to_big(0)) and
+if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(Cryptid.cheapest_boss_reroll()) >= to_big(0)) and
 '''
 match_indent = true
 
@@ -416,7 +416,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''if not G.from_boss_tag then ease_dollars(-10) end'''
 position = "at"
 payload = '''
-if not G.from_boss_tag then ease_dollars(-cry_cheapest_boss_reroll()) end
+if not G.from_boss_tag then ease_dollars(-Cryptid.cheapest_boss_reroll()) end
 '''
 match_indent = true
 

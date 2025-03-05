@@ -50,7 +50,7 @@ local white_hole = {
 					-- Due to how these poker hands are loaded they still techically exist even if Poker Hand Stuff is disabled
 					-- Because they still exist, While Hole needs to ignore levels from these if disabled (via Black Hole, Planet.lua, etc...)
 					(v ~= "cry_Bulwark" and v ~= "cry_Clusterfuck" and v ~= "cry_UltPair" and v ~= "cry_WholeDeck")
-					or cry_card_enabled("set_cry_poker_hand_stuff") == true
+					or Cryptid.enabled("set_cry_poker_hand_stuff") == true
 				then
 					if v ~= _hand or not modest then
 						removed_levels = removed_levels + this_removed_levels
@@ -266,7 +266,7 @@ local hammerspace = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					CARD:set_ability(get_random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true))
+					CARD:set_ability(Cryptid.random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true))
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -349,10 +349,8 @@ local lock = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					if Cryptid.enabled["Spooky"] then
-						CARD.ability.cry_possessed = nil
-						SMODS.Stickers.cry_flickering:apply(CARD, nil)
-					end
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -636,8 +634,8 @@ local summoning = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				cry_card_enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
-				colours = { G.C.RARITY[cry_card_enabled("set_cry_epic") == true and "cry_epic" or 3] },
+				Cryptid.enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
+				colours = { G.C.RARITY[Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 3] },
 			},
 		}
 	end,
@@ -645,7 +643,7 @@ local summoning = {
 		return #G.jokers.cards > 0
 			and #G.jokers.cards <= G.jokers.config.card_limit
 			--Prevent use if slots are full and all jokers are eternal (would exceed limit)
-			and #advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
+			and #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -656,7 +654,7 @@ local summoning = {
 			end
 		end
 		local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed("cry_summoning"))
-		local value = cry_card_enabled("set_cry_epic") == true and "cry_epic" or 0.99
+		local value = Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 0.99
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",

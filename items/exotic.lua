@@ -315,7 +315,7 @@ local exponentia = {
 							vars = { number_format(to_big(v.ability.extra.Emult)) },
 						}),
 					})
-					exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+					Cryptid.exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
 				end
 			end
 			return ret
@@ -693,7 +693,7 @@ local scalae = {
 					) ^ card.ability.extra.scale
 				)
 			)
-			if (new_scale < to_big(1e100)) or not is_card_big(joker) then
+			if (new_scale < to_big(1e100)) or not Cryptid.is_card_big(joker) then
 				if new_scale >= to_big(1e300) then
 					new_scale = 1e300
 				else
@@ -831,7 +831,7 @@ local circulus_pistoris = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
+				Cryptid.safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
 				center.ability.extra.hands_remaining,
 			},
 		}
@@ -845,7 +845,7 @@ local circulus_pistoris = {
 			)
 		then
 			local pi = math.pi
-			if safe_get(card, "edition", "cry_oversat") then
+			if Cryptid.safe_get(card, "edition", "cry_oversat") then
 				pi = 2 * pi
 			end
 			return {
@@ -854,7 +854,7 @@ local circulus_pistoris = {
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",
-					vars = { (safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
+					vars = { (Cryptid.safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
 				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
@@ -1118,8 +1118,8 @@ local gemino = {
 			local check = false
 			local card = G.jokers.cards[1]
 			if not Card.no(G.jokers.cards[1], "immutable", true) then
-				cry_with_deck_effects(G.jokers.cards[1], function(card)
-					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+					Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
 				check = true
 			end
@@ -1429,7 +1429,7 @@ local formidiulosus = {
 	no_dbl = true,
 	update = function(self, card, front)
 		card.ability.extra.Emult = 1
-			+ (card.ability.extra.Emult_mod * #advanced_find_joker(nil, "cry_candy", nil, nil, true))
+			+ (card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true))
 	end,
 	calculate = function(self, card, context)
 		if

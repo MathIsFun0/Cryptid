@@ -596,7 +596,7 @@ function Card:calculate_joker(context)
 	return ret, trig
 end
 
-function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
 	local jkr = self
 	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
 	if jkr.ability and type(jkr.ability) == "table" then
@@ -751,7 +751,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
 	end
 end
 
-function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+function Cryptid.compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
 	local jkr = self
 	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
 	if jkr.ability and type(jkr.ability) == "table" then

@@ -15,7 +15,7 @@ local jollysus = {
 	},
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		if cry_card_enabled("e_cry_m") == true then
+		if Cryptid.enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
 		return { vars = { center.ability.extra.active } }
@@ -39,7 +39,7 @@ local jollysus = {
 					card.ability.extra.spawn = false
 				end
 				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
-				if cry_card_enabled("e_cry_m") == true then
+				if Cryptid.enabled("e_cry_m") == true then
 					card:set_edition({ cry_m = true })
 				end
 				card:add_to_deck()
@@ -58,7 +58,7 @@ local jollysus = {
 				card.ability.extra.spawn = false
 			end
 			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "jollysus")
-			if cry_card_enabled("e_cry_m") == true then
+			if Cryptid.enabled("e_cry_m") == true then
 				card:set_edition({ cry_m = true })
 			end
 			card:add_to_deck()
@@ -368,7 +368,7 @@ local mneon = {
 		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i]:is_jolly() or safe_get(G.jokers.cards[i].config.center, "pools", "M") then
+				if G.jokers.cards[i]:is_jolly() or Cryptid.safe_get(G.jokers.cards[i].config.center, "pools", "M") then
 					jollycount = jollycount + 1
 				end
 			end
@@ -648,7 +648,7 @@ local scrabble = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, card)
-		if cry_card_enabled("e_cry_m") == true then
+		if Cryptid.enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
 		return {
@@ -668,7 +668,7 @@ local scrabble = {
 			then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
-				if cry_card_enabled("e_cry_m") == true then
+				if Cryptid.enabled("e_cry_m") == true then
 					card:set_edition({ cry_m = true })
 				end
 				card:add_to_deck()
@@ -1219,7 +1219,7 @@ local mprime = {
 		elseif context.other_joker then
 			if
 				context.other_joker
-				and (context.other_joker:is_jolly() or safe_get(context.other_joker.config.center, "pools", "M"))
+				and (context.other_joker:is_jolly() or Cryptid.safe_get(context.other_joker.config.center, "pools", "M"))
 			then
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
@@ -1285,7 +1285,7 @@ local macabre = {
 							v ~= card
 							and not v:is_jolly()
 							and v.config.center.key ~= "j_cry_mprime"
-							and not (v.ability.eternal or v.getting_sliced or safe_get(v.config.center, "pools", "M"))
+							and not (v.ability.eternal or v.getting_sliced or Cryptid.safe_get(v.config.center, "pools", "M"))
 						then
 							destroyed_jokers[#destroyed_jokers + 1] = v
 						end
@@ -1477,7 +1477,7 @@ local ret_items = {
 	mprime,
 }
 --retriggering system for M Vouchers
-function get_m_retriggers(self, card, context)
+function Cryptid.get_m_retriggers(self, card, context)
 	local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
 	if G.GAME.used_vouchers.v_cry_pairamount_plus then
 		local pairs = 0

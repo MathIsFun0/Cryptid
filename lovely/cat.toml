@@ -94,7 +94,7 @@ tag_sprite.click = function(_self)
 					if self.ability.shiny then
 						if not Cryptid.shinytagdata[self.key] then
 							Cryptid.shinytagdata[self.key] = true
-							save_cryptid()
+							Cryptid.save()
 						end
 					end
 
@@ -247,7 +247,7 @@ pattern = '''
 position = "after"
 payload = '''
 ,
-    cry_shinytag_tally() > 0 and create_toggle{ -- tally function runs way too often but whatever
+    Cryptid.shinytag_tally() > 0 and create_toggle{ -- tally function runs way too often but whatever
       label = localize('k_cry_shiny'), 
       w = 0,
       ref_table = G, 
@@ -353,7 +353,7 @@ payload = '''
 if self.ability.shiny then
 	if not Cryptid.shinytagdata[self.key] then
 		Cryptid.shinytagdata[self.key] = true
-		save_cryptid()
+		Cryptid.save()
 	end
 end
 '''

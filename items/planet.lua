@@ -59,10 +59,10 @@ local timantti = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -143,10 +143,10 @@ local klubi = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -227,10 +227,10 @@ local sydan = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -311,10 +311,10 @@ local lapio = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -396,10 +396,10 @@ local kaikki = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -766,7 +766,7 @@ local nstar = {
 
 		--Add +1 to amount of neutron stars used this run
 		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-		local neutronhand = neutronstarrandomhand() --Random poker hand
+		local neutronhand = Cryptid.get_random_hand() --Random poker hand
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize(neutronhand, "poker_hands"),
 			chips = G.GAME.hands[neutronhand].chips,
@@ -788,7 +788,7 @@ local nstar = {
 		local neutronhand = "n/a"
 		for i = 1, number do
 			G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-			neutronhand = neutronstarrandomhand()
+			neutronhand = Cryptid.get_random_hand()
 			handstolv[neutronhand] = (handstolv[neutronhand] or 0) + G.GAME.neutronstarsusedinthisrun
 		end
 		for k, v in pairs(handstolv) do
@@ -833,7 +833,7 @@ local nstar = {
 		end
 	end,
 	init = function(self)
-		function neutronstarrandomhand(ignore, seed, allowhidden)
+		function Cryptid.get_random_hand(ignore, seed, allowhidden)
 			--From JenLib's get_random_hand
 			local chosen_hand
 			ignore = ignore or {}
@@ -910,7 +910,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				cry_pulse_flame(0.01, sunlevel)
+				Cryptid.pulse_flame(0.01, sunlevel)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -950,7 +950,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				cry_pulse_flame(0.01, (sunlevel - 1) + number)
+				Cryptid.pulse_flame(0.01, (sunlevel - 1) + number)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -1192,7 +1192,7 @@ local universe = {
 	end,
 	generate_ui = 0,
 }
-function suit_level_up(center, card, area, copier, number)
+function Cryptid.suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
 	if not number then
 		number = 1

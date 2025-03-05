@@ -72,12 +72,12 @@ Cryptid.edeck_sprites = {
 	},
 }
 
-cry_edeck_atlas_update = function(self)
+Cryptid.edeck_atlas_update = function(self)
 	local sprite = Cryptid.edeck_sprites[self.edeck_type]
 	if not sprite then
 		error(self.edeck_type)
 	end
-	local enh_info = { cry_get_enchanced_deck_info(self) }
+	local enh_info = { Cryptid.enhanced_deck_info(self) }
 	sprite = sprite[enh_info[sprite.order]] or sprite.default
 	self.atlas, self.pos = sprite.atlas, sprite.pos
 	return sprite
@@ -95,13 +95,13 @@ local e_deck = {
 	order = 17,
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
-		local aaa = cry_get_enchanced_deck_info(self)
+		local aaa = Cryptid.enhanced_deck_info(self)
 		return { vars = { localize({ type = "name_text", set = "Edition", key = "e_" .. aaa }) } }
 	end,
 	edeck_type = "edition",
 	config = { cry_no_edition_price = true },
 	apply = function(self)
-		local aaa = cry_get_enchanced_deck_info(self)
+		local aaa = Cryptid.enhanced_deck_info(self)
 		G.GAME.modifiers.cry_force_edition = aaa
 		--Ban Edition tags (They will never redeem)
 		for k, v in pairs(G.P_TAGS) do
@@ -133,11 +133,11 @@ local et_deck = {
 	edeck_type = "enhancement",
 	config = {},
 	loc_vars = function(self, info_queue, center)
-		local _, bbb = cry_get_enchanced_deck_info(self)
+		local _, bbb = Cryptid.enhanced_deck_info(self)
 		return { vars = { localize({ type = "name_text", set = "Enhanced", key = bbb }) } }
 	end,
 	apply = function(self)
-		local aaa, bbb = cry_get_enchanced_deck_info(self)
+		local aaa, bbb = Cryptid.enhanced_deck_info(self)
 		G.GAME.modifiers.cry_force_enhancement = bbb
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -164,14 +164,14 @@ local sk_deck = {
 	edeck_type = "sticker",
 	config = {},
 	loc_vars = function(self, info_queue, center)
-		local _, _, ccc = cry_get_enchanced_deck_info(self)
+		local _, _, ccc = Cryptid.enhanced_deck_info(self)
 		if ccc == "pinned" then
 			ccc = "pinned_left"
 		end
 		return { vars = { localize({ type = "name_text", set = "Other", key = ccc }) } }
 	end,
 	apply = function(self)
-		local aaa, bbb, ccc = cry_get_enchanced_deck_info(self)
+		local aaa, bbb, ccc = Cryptid.enhanced_deck_info(self)
 		G.GAME.modifiers.cry_force_sticker = ccc
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -203,11 +203,11 @@ local st_deck = {
 	pos = { x = 5, y = 2 },
 	edeck_type = "suit",
 	loc_vars = function(self, info_queue, center)
-		local _, _, _, ddd = cry_get_enchanced_deck_info(self)
+		local _, _, _, ddd = Cryptid.enhanced_deck_info(self)
 		return { vars = { localize(ddd, "suits_plural") } }
 	end,
 	apply = function(self)
-		local aaa, bbb, ccc, ddd = cry_get_enchanced_deck_info(self)
+		local aaa, bbb, ccc, ddd = Cryptid.enhanced_deck_info(self)
 		if ddd == "Spades" then
 			G.GAME.bosses_used["bl_goad"] = 1e308
 		elseif ddd == "Hearts" then
@@ -242,11 +242,11 @@ local sl_deck = {
 	config = {},
 	edeck_type = "seal",
 	loc_vars = function(self, info_queue, center)
-		local _, _, _, _, eee = cry_get_enchanced_deck_info(self)
+		local _, _, _, _, eee = Cryptid.enhanced_deck_info(self)
 		return { vars = { localize({ type = "name_text", set = "Other", key = eee:lower() .. "_seal" }) } }
 	end,
 	apply = function(self)
-		local aaa, bbb, ccc, ddd, eee = cry_get_enchanced_deck_info(self)
+		local aaa, bbb, ccc, ddd, eee = Cryptid.enhanced_deck_info(self)
 		G.GAME.modifiers.cry_force_seal = eee
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -311,7 +311,7 @@ return {
 			then
 				self.config.center.immutable = true
 			end
-			if safe_get(center, "name") == "Default Base" then -- scuffed
+			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,
 					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement)
@@ -351,18 +351,18 @@ return {
 			ccl(self)
 			if
 				Galdur
-					and safe_get(Galdur, "run_setup", "current_page") == 1
-					and (self.edeck_select or (self.area == safe_get(Galdur, "run_setup", "selected_deck_area") and safe_get(
+					and Cryptid.safe_get(Galdur, "run_setup", "current_page") == 1
+					and (self.edeck_select or (self.area == Cryptid.safe_get(Galdur, "run_setup", "selected_deck_area") and Cryptid.safe_get(
 						self,
 						"config",
 						"center",
 						"edeck_type"
 					)))
 				or not Galdur
-					and (safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
+					and (Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
 			then
 				if not G.cry_edeck_select then
-					cry_enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center)
+					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center)
 					G.cry_edeck_select = true
 				else
 					if self.edeck_select then
@@ -376,7 +376,7 @@ return {
 				end
 			end
 		end
-		function cry_enhancement_config_UI(center)
+		function Cryptid.enhancement_config_UI(center)
 			if not center.edeck_type then
 				return
 			end
@@ -412,10 +412,10 @@ return {
 			end
 
 			for i = 1, #editions do
-				local _center = cry_deep_copy(center)
+				local _center = Cryptid.deep_copy(center)
 				_center.config["cry_force_" .. center.edeck_type] = editions[i]
-				cry_edeck_atlas_update(_center)
-				local card = create_generic_card(_center)
+				Cryptid.edeck_atlas_update(_center)
+				local card = Cryptid.generic_card(_center)
 				card.edeck_select = editions[i]
 				G.your_collection[1]:emplace(card)
 			end

@@ -15,7 +15,7 @@ SMODS.PokerHand({
 		{ "S_A", true, "m_stone" },
 	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_asteroidbelt") ~= true then
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
 			return {}
 		end
 		local stones = {}
@@ -30,7 +30,7 @@ SMODS.PokerHand({
 SMODS.PokerHandPart({
 	key = "cfpart",
 	func = function(hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_void") ~= true then
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_void") ~= true then
 			return {}
 		end
 		local eligible_cards = {}
@@ -90,7 +90,7 @@ SMODS.PokerHand({
 		{ "H_7", true },
 	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_marsmoons") ~= true then
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_marsmoons") ~= true then
 			return
 		end
 		local scoring_pairs = {}
@@ -195,7 +195,7 @@ SMODS.PokerHand({
 		{ "D_2", true },
 	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_universe") ~= true then
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_universe") ~= true then
 			return
 		end
 		if #hand >= 52 then
@@ -484,7 +484,7 @@ SMODS.Sound({
 	select_music_track = function()
 		return Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.exotic_music
-			and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
 SMODS.Sound({

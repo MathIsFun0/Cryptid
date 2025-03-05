@@ -9,7 +9,7 @@ priority = -1
 target = "functions/common_events.lua"
 pattern = "if context.cardarea == G.hand and context.main_scoring then"
 position = "at"
-payload = "if (context.cardarea == G.hand or context.cardarea == G.play and next(SMODS.find_card('j_cry_lebaron_james')) and safe_get(SMODS.Ranks,safe_get(card,'base','value') or 'm','key') == 'King') and context.main_scoring then"
+payload = "if (context.cardarea == G.hand or context.cardarea == G.play and next(SMODS.find_card('j_cry_lebaron_james')) and Cryptid.safe_get(SMODS.Ranks,Cryptid.safe_get(card,'base','value') or 'm','key') == 'King') and context.main_scoring then"
 match_indent = true
 
 [[patches]]

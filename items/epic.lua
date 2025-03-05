@@ -391,8 +391,8 @@ local error_joker = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		local ok, ret = pcall(predict_card_for_shop)
-		if safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN and ok then
+		local ok, ret = pcall(Cryptid.predict_card_for_shop)
+		if Cryptid.safe_get(G.GAME, "pseudorandom") and G.STAGE == G.STAGES.RUN and ok then
 			cry_error_msgs[#cry_error_msgs].string = "%%" .. ret
 		else
 			cry_error_msgs[#cry_error_msgs].string = "%%J6"
@@ -498,7 +498,7 @@ local error_joker = {
 			and not context.blueprint
 		then
 			local eval = function(card)
-				return (safe_get(card, "ability", "loyalty_remaining") == 0) and not G.RESET_JIGGLES
+				return (Cryptid.safe_get(card, "ability", "loyalty_remaining") == 0) and not G.RESET_JIGGLES
 			end
 			juice_card_until(card, eval, true)
 			local jokers = {}
@@ -582,18 +582,18 @@ local error_joker = {
 			{ string = "%%ERROR", colour = G.C.CRY_ASCENDANT }, --temp string, this will be modified
 		}
 
-		function predict_pseudoseed(key)
+		function Cryptid.predict_pseudoseed(key)
 			local M = G.GAME.pseudorandom[key] or pseudohash(key .. (G.GAME.pseudorandom.seed or ""))
 			local m = math.abs(tonumber(string.format("%.13f", (2.134453429141 + M * 1.72431234) % 1)))
 			return (m + (G.GAME.pseudorandom.hashed_seed or 0)) / 2
 		end
 
-		function predict_card_for_shop()
+		function Cryptid.predict_card_for_shop()
 			local total_rate = G.GAME.joker_rate + G.GAME.playing_card_rate
 			for _, v in ipairs(SMODS.ConsumableType.obj_buffer) do
 				total_rate = total_rate + (G.GAME[v:lower() .. "_rate"] or 0)
 			end
-			local polled_rate = pseudorandom(predict_pseudoseed("cdt" .. G.GAME.round_resets.ante)) * total_rate
+			local polled_rate = pseudorandom(Cryptid.predict_pseudoseed("cdt" .. G.GAME.round_resets.ante)) * total_rate
 			local check_rate = 0
 			-- need to preserve order to leave RNG unchanged
 			local rates = {
@@ -601,7 +601,7 @@ local error_joker = {
 				{ type = "Tarot", val = G.GAME.tarot_rate },
 				{ type = "Planet", val = G.GAME.planet_rate },
 				{
-					type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(predict_pseudoseed("illusion")) > 0.6)
+					type = (G.GAME.used_vouchers["v_illusion"] and pseudorandom(Cryptid.predict_pseudoseed("illusion")) > 0.6)
 							and "Enhanced"
 						or "Base",
 					val = G.GAME.playing_card_rate,
@@ -845,7 +845,7 @@ local number_blocks = {
 			vars = {
 				center.ability.extra.money,
 				center.ability.extra.money_mod,
-				localize(safe_get(G.GAME, "current_round", "cry_nb_card", "rank") or "Ace", "ranks"),
+				localize(Cryptid.safe_get(G.GAME, "current_round", "cry_nb_card", "rank") or "Ace", "ranks"),
 			},
 		}
 	end,
@@ -1276,7 +1276,7 @@ local curse_sob = {
 	},
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if safe_get(G, "jokers") then
+		if Cryptid.safe_get(G, "jokers") then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.center.key == "j_obelisk" and G.jokers.cards[i].ability.eternal then
 					unlock_card(self)
@@ -1571,7 +1571,7 @@ local altgoogol = {
 										nil,
 										nil,
 										nil,
-										(gameset == "modest" and (safe_get(chosen_joker, "edition", "negative")) or nil)
+										(gameset == "modest" and (Cryptid.safe_get(chosen_joker, "edition", "negative")) or nil)
 									)
 									card:add_to_deck()
 									G.jokers:emplace(card)
@@ -1758,7 +1758,7 @@ local fleshpanopticon = {
 						nil,
 						nil,
 						nil,
-						Cryptid.enabled["Exotic Jokers"] and "c_cry_gateway" or "c_soul",
+						Cryptid.enabled("c_cry_gateway") and "c_cry_gateway" or "c_soul",
 						"sup"
 					)
 					card:set_edition({ negative = true }, true)

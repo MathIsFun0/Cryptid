@@ -26,7 +26,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-                delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = cry_ascend(G.GAME.hands[text].mult), chips = cry_ascend(G.GAME.hands[text].chips)})
+                delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = Cryptid.ascend(G.GAME.hands[text].mult), chips = Cryptid.ascend(G.GAME.hands[text].chips)})
 '''
 match_indent = true
 
@@ -54,7 +54,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-        mult = mod_mult(cry_ascend(G.GAME.hands[text].mult))
+        mult = mod_mult(Cryptid.ascend(G.GAME.hands[text].mult))
 '''
 match_indent = true
 
@@ -67,7 +67,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-        hand_chips = mod_chips(cry_ascend(G.GAME.hands[text].chips))
+        hand_chips = mod_chips(Cryptid.ascend(G.GAME.hands[text].chips))
 '''
 match_indent = true
 
@@ -80,7 +80,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-update_hand_text({delay = 0}, {chips = cry_ascend(G.GAME.hands[hand].chips), StatusText = true})
+update_hand_text({delay = 0}, {chips = Cryptid.ascend(G.GAME.hands[hand].chips), StatusText = true})
 '''
 match_indent = true
 
@@ -93,7 +93,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-update_hand_text({delay = 0}, {mult = cry_ascend(G.GAME.hands[hand].mult), StatusText = true})
+update_hand_text({delay = 0}, {mult = Cryptid.ascend(G.GAME.hands[hand].mult), StatusText = true})
 '''
 match_indent = true
 
@@ -122,7 +122,7 @@ update_hand_text({immediate = true, nopulse = nil, delay = 0}, {handname=disp_te
 '''
 position = "at"
 payload = '''
-update_hand_text({immediate = true, nopulse = nil, delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = cry_ascend(G.GAME.hands[text].mult), chips = cry_ascend(G.GAME.hands[text].chips)})
+update_hand_text({immediate = true, nopulse = nil, delay = 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = Cryptid.ascend(G.GAME.hands[text].mult), chips = Cryptid.ascend(G.GAME.hands[text].chips)})
 '''
 match_indent = true
 

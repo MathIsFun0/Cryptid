@@ -947,7 +947,7 @@ local compound_interest = {
 			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
 			local old = card.ability.extra.percent
 			card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
-			compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
+			Cryptid.compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
 			if bonus > to_big(0) then
 				return bonus
 			end
@@ -1166,10 +1166,10 @@ local seal_the_deal = {
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
 		local sealtable = { "blue", "red", "purple" }
-		if cry_card_enabled("cry_azure") then
+		if Cryptid.enabled("cry_azure") then
 			sealtable[#sealtable + 1] = "azure"
 		end
-		if cry_card_enabled("cry_green") then
+		if Cryptid.enabled("cry_green") then
 			sealtable[#sealtable + 1] = "green"
 		end
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed("abc"))
@@ -1292,7 +1292,7 @@ local jimball = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			create_cryptid_notif_overlay("jimball")
+			Cryptid.notification_overlay("jimball")
 		end
 	end,
 	atlas = "jimball",
@@ -2543,8 +2543,8 @@ local sapling = {
 			vars = {
 				center.ability.extra.score,
 				center.ability.extra.req,
-				cry_card_enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
-				colours = { G.C.RARITY[cry_card_enabled("set_cry_epic") == true and "cry_epic" or 3] },
+				Cryptid.enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
+				colours = { G.C.RARITY[Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 3] },
 			},
 		}
 	end,
@@ -2568,7 +2568,7 @@ local sapling = {
 			end
 		elseif context.selling_self and not context.blueprint and not context.retrigger_joker then
 			if card.ability.extra.score >= card.ability.extra.req then
-				local value = cry_card_enabled("set_cry_epic") == true and "cry_epic" or 0.99
+				local value = Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 0.99
 				card_eval_status_text(
 					card,
 					"extra",
@@ -3063,7 +3063,7 @@ local rnjoker = {
 	blueprint_compat = true,
 	set_ability = function(self, card, initial, delay_sprites)
 		card.ability.abilities = {}
-		rnjoker_randomize(card)
+		Cryptid.rnjoker_randomize(card)
 	end,
 	calculate = function(self, card, context)
 		if card.ability and card.ability.abilities then
@@ -3720,7 +3720,7 @@ local rnjoker = {
 				end
 			end
 			G.hand:change_size(-hand_size)
-			rnjoker_randomize(card)
+			Cryptid.rnjoker_randomize(card)
 			return {
 				message = localize("k_reset"),
 				colour = G.C.RED,
@@ -3792,7 +3792,7 @@ local rnjoker = {
 			}
 			localize(target)
 		else
-			localalize_with_direct(new_loc, target)
+			Cryptid.direct_localize(new_loc, target)
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
@@ -3819,7 +3819,7 @@ local rnjoker = {
 		},
 	},
 	init = function(self)
-		function rnjoker_randomize(card)
+		function Cryptid.rnjoker_randomize(card)
 			card.ability.abilities = {}
 			card.ability.extra = {}
 			card.ability.extra.value = {}
@@ -4188,7 +4188,7 @@ local rnjoker = {
 			values.text_parsed = text_parsed
 			card.ability.abilities = { values }
 		end
-		function localalize_with_direct(loc_target, args, misc_cat)
+		function Cryptid.direct_localize(loc_target, args, misc_cat)
 			if loc_target then
 				for _, lines in
 					ipairs(
@@ -6840,8 +6840,8 @@ local tropical_smoothie = {
 			for i, v in pairs(G.jokers.cards) do
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
-						cry_with_deck_effects(v, function(cards)
-							cry_misprintize(cards, { min = card.ability.extra, max = card.ability.extra }, nil, true)
+						Cryptid.with_deck_effects(v, function(cards)
+							Cryptid.misprintize(cards, { min = card.ability.extra, max = card.ability.extra }, nil, true)
 						end)
 						check = true
 					end
@@ -7188,8 +7188,8 @@ local oil_lamp = { --You want it? It's yours my friend
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							check = true
-							cry_with_deck_effects(G.jokers.cards[i + 1], function(cards)
-								cry_misprintize(
+							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(cards)
+								Cryptid.misprintize(
 									cards,
 									{ min = card.ability.extra.increase, max = card.ability.extra.increase },
 									nil,
@@ -7249,8 +7249,8 @@ local tax_fraud = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calc_dollar_bonus = function(self, card)
-		if #advanced_find_joker(nil, nil, nil, { "rental" }, true) ~= 0 then
-			return card.ability.extra.money * #advanced_find_joker(nil, nil, nil, { "rental" }, true)
+		if #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true) ~= 0 then
+			return card.ability.extra.money * #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true)
 		end
 	end,
 	cry_credits = {

@@ -100,7 +100,7 @@ function Card:unredeem()
 	end
 	G.E_MANAGER:add_event(Event({
 		func = function()
-			cry_update_used_vouchers()
+			Cryptid.update_used_vouchers()
 			return true
 		end,
 	}))
@@ -274,13 +274,13 @@ function Card:set_ability(center, initial, delay_sprites)
 	local edition = nil
 	local sticker = nil
 	local random = nil
-	if safe_get(G, "GAME", "modifiers", "cry_force_edition") then
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_edition") then
 		edition = G.GAME.modifiers.cry_force_edition
 	end
-	if safe_get(G, "GAME", "modifiers", "cry_force_sticker") then
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_sticker") then
 		sticker = G.GAME.modifiers.cry_force_sticker
 	end
-	if safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
 		random = true
 	end
 	if
@@ -290,7 +290,7 @@ function Card:set_ability(center, initial, delay_sprites)
 		if edition and not random then
 			self:set_edition({ [edition] = true }, true, true)
 		elseif random then
-			self:set_edition(cry_poll_random_edition(), true, true)
+			self:set_edition(Cryptid.poll_random_edition(), true, true)
 		end
 		if sticker then
 			self.ability[sticker] = true
@@ -331,13 +331,13 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_jui
 	dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
 	G.E_MANAGER:add_event(Event({
 		func = function()
-			cry_update_used_vouchers()
+			Cryptid.update_used_vouchers()
 			return true
 		end,
 	}))
 end
 
-function cry_update_used_vouchers()
+function Cryptid.update_used_vouchers()
 	if G and G.GAME and G.vouchers then
 		G.GAME.used_vouchers = {}
 		for i, v in ipairs(G.vouchers.cards) do
@@ -347,7 +347,7 @@ function cry_update_used_vouchers()
 end
 
 -- check if Director's Cut or Retcon offers a cheaper reroll price
-function cry_cheapest_boss_reroll()
+function Cryptid.cheapest_boss_reroll()
 	local cheapest = 1e300
 	local vouchers = {
 		SMODS.find_card("v_directors_cut"),
@@ -388,16 +388,20 @@ G.FUNCS.evaluate_round = function()
 	G.GAME.interest_cap = cry_best_interest_cap() -- blehhhhhh
 	evaluateroundref()
 end
-
+function Cryptid.edition_to_table(edition) -- look mom i figured it out (this does NOT need to be a function)
+	if edition then
+		return { [edition] = true }
+	end
+end
 function cry_get_next_voucher_edition() -- currently only for edition decks, can be modified if voucher editioning becomes more important
 	if G.GAME.modifiers.cry_force_edition then
-		return cry_edition_to_table(G.GAME.modifiers.cry_force_edition)
+		return Cryptid.edition_to_table(G.GAME.modifiers.cry_force_edition)
 	elseif G.GAME.modifiers.cry_force_random_edition then
-		return cry_poll_random_edition()
+		return Cryptid.poll_random_edition()
 	end
 end
 -- code to generate Stickers for Vouchers (and boosters), based on that for Jokers
-function cry_get_next_voucher_stickers(booster)
+function Cryptid.next_voucher_stickers(booster)
 	local rate = 0.3
 	if booster then
 		rate = 0.2

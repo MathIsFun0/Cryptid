@@ -148,7 +148,7 @@ target = "game.lua"
 pattern = "card.ability.booster_pos = i"
 position = "before"
 payload = '''
-local stickers = cry_get_next_voucher_stickers(true)	-- don't mind the name
+local stickers = Cryptid.next_voucher_stickers(true)	-- don't mind the name
 for k, v in pairs(stickers) do
 	card.ability[k] = v
 end
