@@ -375,22 +375,28 @@ function Game:update(dt)
 				--Update UI
 				--todo: in blinds screen, too
 				if G.blind_select_opts then
-					local blind_UI = G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
-					local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-					if chip_text_node then
-						chip_text_node.config.text = number_format(
-							get_blind_amount(G.GAME.round_resets.blind_ante)
-								* G.GAME.starting_params.ante_scaling
-								* G.GAME.CRY_BLINDS[c]
-						)
-						chip_text_node.config.scale = score_number_scale(
-							0.9,
-							get_blind_amount(G.GAME.round_resets.blind_ante)
-								* G.GAME.starting_params.ante_scaling
-								* G.GAME.CRY_BLINDS[c]
-						)
+					if (SMODS.Mods["StrangeLib"] or {}).can_load then
+						StrangeLib.dynablind.blind_choice_scores[c] = get_blind_amount(G.GAME.round_resets.blind_ante)
+							* G.GAME.starting_params.ante_scaling * G.GAME.CRY_BLINDS[c]
+						StrangeLib.dynablind.blind_choice_score_texts[c] = number_format(StrangeLib.dynablind.blind_choice_scores[c])
+					else
+						local blind_UI = G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
+						local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
+						if chip_text_node then
+							chip_text_node.config.text = number_format(
+								get_blind_amount(G.GAME.round_resets.blind_ante)
+									* G.GAME.starting_params.ante_scaling
+									* G.GAME.CRY_BLINDS[c]
+							)
+							chip_text_node.config.scale = score_number_scale(
+								0.9,
+								get_blind_amount(G.GAME.round_resets.blind_ante)
+									* G.GAME.starting_params.ante_scaling
+									* G.GAME.CRY_BLINDS[c]
+							)
+						end
+						G.blind_select_opts[string.lower(c)]:recalculate()
 					end
-					G.blind_select_opts[string.lower(c)]:recalculate()
 				end
 			elseif
 				G.GAME.round_resets.blind_states[c] ~= "Defeated"
