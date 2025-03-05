@@ -1897,7 +1897,8 @@ local jtron = {
 		code = { "candycanearter" },
 	},
 }
-local clockwork = { -- Retriggers steels every 2nd hand, scaling xmult every 3rd hand, negative chariot every 5th hand, stronger steels every 7th hand
+-- Retriggers steels every 2nd hand, scaling xmult every 3rd hand, first card to steel every 5th hand, stronger steels every 7th hand
+local clockwork = { -- Steel Support: The Joker
 	object_type = "Joker",
 	dependencies = {
 		items = {
@@ -1941,21 +1942,6 @@ local clockwork = { -- Retriggers steels every 2nd hand, scaling xmult every 3rd
 			end
 			if card.ability.counters.c3 >= 4 then
 				card.ability.counters.c3 = 0
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.4,
-					func = function()
-						if G.consumeables.config.card_limit > #G.consumeables.cards then
-							play_sound("timpani")
-							local _card = create_card("Tarot", G.consumeables, nil, nil, nil, nil, "c_chariot", "clockwork")
-							_card:set_edition({ negative = true }, true)
-							_card:add_to_deck()
-							G.consumeables:emplace(_card)
-							card:juice_up(0.3, 0.5)
-						end
-						return true
-					end,
-				}))
 			else
 				card.ability.counters.c3 = card.ability.counters.c3 + 1
 			end
@@ -1981,7 +1967,9 @@ local clockwork = { -- Retriggers steels every 2nd hand, scaling xmult every 3rd
 		then
 			return { xmult = card.ability.extra.xmult }
 		end
-		-- effect 3 handled above
+		if context.before and context.cardarea == G.play and card.ability.counters.c3 == 0 then -- effect 3
+			context.full_hand[1]:set_ability(G.P_CENTERS["m_steel"], nil, true)
+		end
 		if context.individual and context.cardarea == G.hand and context.other_card.ability.effect == "Steel Card" and card.ability.extra.steelenhc > 1 then -- effect 4
 			return { xmult = card.ability.extra.steelenhc }
 		end
