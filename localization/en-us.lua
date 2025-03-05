@@ -1259,6 +1259,14 @@ return {
 					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
 				},
 			},
+			j_cry_drainedstim = {
+				name = "Drained Stim",
+				text = {
+					"Each played card gives",
+					"{X:mult,C:white}X#1#{} Mult when scored,",
+					"{C:red,E:2}self destructs{} at end of round",
+				},
+			},
 			j_cry_dropshot = {
 				name = "Dropshot",
 				text = {
@@ -1310,6 +1318,12 @@ return {
 					"when {C:attention}Blind{} is selected",
 					"{C:inactive,s:0.8}\"If you can't handle me at my 1x,",
 					"{C:inactive,s:0.8}you don't deserve me at my 2x\"",
+				},
+			},
+			j_cry_emergencystim = {
+				name = "Emergency Stim",
+				text = {
+					"When sold, creates {C:attention}Drained Stim{}",
 				},
 			},
 			j_cry_energia = {
