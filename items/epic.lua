@@ -1977,7 +1977,7 @@ local clockwork = { -- Steel Support: The Joker
 	end
 	cry_credits = {
 		idea = {
-			"Nova and cassknows",
+			"cassknows",
 		},
 		code = {
 			"Nova",
