@@ -69,7 +69,11 @@ local function process_items(f, mod)
 					}
 					item.mod_path = mod.path
 					if item.key then
-						item.key = mod.prefix .. "_" .. item.key
+						if item.object_type and SMODS[item.object_type].class_prefix then
+							item.key = SMODS[item.object_type].class_prefix .. "_" .. mod.prefix .. "_" .. item.key
+						else
+							item.key = mod.prefix .. "_" .. item.key
+						end
 					end
 					if item.atlas then
 						item.atlas = mod.prefix .. "_" .. item.atlas
