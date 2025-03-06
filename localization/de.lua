@@ -619,6 +619,16 @@ return {
 					"{C:inactive,s:0.8}Kopiert keine Nostalgischen Googol Play Karten{}",
 				},
 			},
+			j_cry_altgoogol_balanced = {
+				name = "Nostalgische Googol Play Karte",
+				text = {
+					"Verkaufe diese Karte um",
+					"{C:attention}#1#{} Kopie#<n>1# von dem linkesten {C:attention}Joker{} zu machen",
+					"{C:inactive,s:0.8}Kopiert keine Nostalgischen Googol Play Karten{}",
+					"{C:inactive}(Muss Platz haben){}",
+					--todo: add "removes negative from copy" like Ankh/Invis Joker
+				},
+			},
 			j_cry_antennastoheaven = {
 				name = "...Wie Antennen zum Himmel",
 				text = {
@@ -787,6 +797,20 @@ return {
 					"{C:attention}Löse{} alle {C:attention}Jokers{} auf der linken Seite",
 					"{C:attention}so oft neu aus{} wie du nicht-{C:blue}Gewöhnliche{C:attention} Joker{}",
 					"auf der rechten Seite hast",
+				},
+			},
+			j_cry_canvas_balanced = {
+				name = "Leinwand",
+				text = {
+					"{C:attention}Löse{} alle {C:attention}Jokers{} auf der linken Seite",
+					"{C:attention}so oft neu aus{} wie du nicht-{C:blue}Gewöhnliche{C:attention} Joker{}",
+					"auf der rechten Seite hast",
+					"{C:inactive}(Up to 2 retriggers)"
+				},
+				unlock = {
+					"Löse einen {C:attention}Joker",
+					"{C:attention}114{} mal in einer",
+					"Hand erneut aus.",
 				},
 			},
 			j_cry_caramel = {
@@ -1461,6 +1485,15 @@ return {
 					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
+			j_cry_membershipcardtwo_balanced = {
+				name = "Alte Mitgliedskarte", --Could probably have a diff Name imo
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1# für jedes Mitglied",
+					"im {C:attention}Cryptid Discord{}",
+					"{C:inactive}(Momentan {C:chips}+#2#{C:inactive} Chip#<s>2#)",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+				},
+			},
 			j_cry_meteor = {
 				name = "Meteorschauer",
 				text = {
@@ -1864,6 +1897,20 @@ return {
 					"{C:attention}+#1#{} Karte im Shop",
 				},
 			},
+			j_cry_soccer_balanced = {
+				name = "Einer für Alle", --changed the name from latin because this isn't exotic
+				text = {
+					"{C:attention}+#1#{} Joker Slot#<s>1#",
+					"{C:attention}+#1#{} Booster Packer Slot#<s>1#",
+					"{C:attention}+#1#{} Handgröße",
+					"{C:attention}+#1#{} Verbrauchsgegenstand Slot#<s>1#",
+					"{C:attention}+#1#{} Karte#<n>1# im Shop",
+				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit nur {C:attention}High Card",
+				},
+			},
 			j_cry_fleshpanopticon = {
 				name = "Fleischpanoptikum",
 				text = {
@@ -1936,6 +1983,14 @@ return {
 				name = "Supercell",
 				text = {
 					"{C:chips}+#1#{} Chips, {C:mult}+#1#{} Mult,",
+					"{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
+					"Verdiene {C:money}$#3#{} am",
+					"Ende der Runde",
+				},
+			},
+			j_cry_supercell_balanced = {
+				name = "Supercell",
+				text = {
 					"{X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#2#{} Mult",
 					"Verdiene {C:money}$#3#{} am",
 					"Ende der Runde",
