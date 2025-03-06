@@ -805,7 +805,7 @@ return {
 					"{C:attention}Löse{} alle {C:attention}Jokers{} auf der linken Seite",
 					"{C:attention}so oft neu aus{} wie du nicht-{C:blue}Gewöhnliche{C:attention} Joker{}",
 					"auf der rechten Seite hast",
-					"{C:inactive}(Up to 2 retriggers)"
+					"{C:inactive}(Up to 2 retriggers)",
 				},
 				unlock = {
 					"Löse einen {C:attention}Joker",
