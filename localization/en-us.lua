@@ -1064,7 +1064,7 @@ return {
 					"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
 					"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
 					"to the right of this Joker",
-					"{C:inactive}(Up to 2 retriggers)"
+					"{C:inactive}(Up to 2 retriggers)",
 				},
 				unlock = {
 					"Retrigger a {C:attention}Joker",
