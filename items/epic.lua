@@ -914,9 +914,9 @@ local double_scale = {
 		modest = { cost = 20, center = { rarity = 4 } },
 		exp_modest = { cost = 11 },
 	},
-	extra_gamesets = {"exp_modest"},
+	extra_gamesets = { "exp_modest" },
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, {exp_modest = "modest"}) }
+		return { key = Cryptid.gameset_loc(self, { exp_modest = "modest" }) }
 	end,
 	order = 6,
 	rarity = "cry_epic",

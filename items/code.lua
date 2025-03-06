@@ -4727,16 +4727,20 @@ local CodeJoker = {
 	pos = { x = 2, y = 4 },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
-		return { key = Cryptid.gameset_loc(self, { exp_modest = "modest" })}
+		return { key = Cryptid.gameset_loc(self, { exp_modest = "modest" }) }
 	end,
-	extra_gamesets = {"exp_modest"},
+	extra_gamesets = { "exp_modest" },
 	rarity = "cry_epic",
 	cost = 11,
 	order = 109,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or self).getting_sliced and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest") then
+		if
+			context.setting_blind
+			and not (context.blueprint_card or self).getting_sliced
+			and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest")
+		then
 			play_sound("timpani")
 			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
 			card:set_edition({
@@ -4813,16 +4817,12 @@ local copypaste = {
 		}
 	end,
 	atlas = "atlasepic",
-	extra_gamesets = {"exp_modest"},
+	extra_gamesets = { "exp_modest" },
 	gameset_config = {
-		exp_modest = { cost = 8, center = { rarity = 3}},
+		exp_modest = { cost = 8, center = { rarity = 3 } },
 	},
 	calculate = function(self, card, context)
-		if
-			context.pull_card
-			and context.card.ability.set == "Code"
-			and Cryptid.gameset(card) == "exp_modest"
-		then
+		if context.pull_card and context.card.ability.set == "Code" and Cryptid.gameset(card) == "exp_modest" then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -5251,7 +5251,7 @@ return {
 					c1.children.buy_button = nil
 					remove_nils(c1.children)
 					G.consumeables:emplace(c1)
-					SMODS.calculate_context({ pull_card = true, card = c1})
+					SMODS.calculate_context({ pull_card = true, card = c1 })
 					G.GAME.pack_choices = G.GAME.pack_choices - 1
 					if G.GAME.pack_choices <= 0 then
 						G.FUNCS.end_consumeable(nil, delay_fac)

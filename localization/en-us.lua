@@ -1323,7 +1323,7 @@ return {
 				text = {
 					"Scaling {C:attention}Jokers{}",
 					"scale {C:attention}twice{} as fast",
-					"{C:inactive,s:0.8}\"It's called double scale, not quadratic scale!\"",
+					'{C:inactive,s:0.8}"It\'s called double scale, not quadratic scale!"',
 				},
 			},
 			j_cry_dropshot = {
