@@ -34,8 +34,10 @@ local supercell = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, {modest = "balanced"}),
-			vars = { center.ability.extra.stat1, center.ability.extra.stat2, center.ability.extra.money } }
+		return {
+			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
+			vars = { center.ability.extra.stat1, center.ability.extra.stat2, center.ability.extra.money },
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main then
@@ -108,7 +110,7 @@ local membershipcardtwo = {
 			a = 8
 		end
 		return {
-			key = Cryptid.gameset_loc(self, {modest = "balanced"}),
+			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
 			vars = { card.ability.extra.chips, card.ability.extra.chips * math.floor(GLOBAL_cry_member_count / a) },
 		}
 	end,
@@ -328,7 +330,7 @@ local canvas = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, {modest = "balanced"}) }
+		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }) }
 	end,
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker then
@@ -1553,8 +1555,7 @@ local altgoogol = {
 		madness = { center = { blueprint_compat = true }, copies = 2 },
 	},
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, {modest = "balanced"}),
-			vars = { center.ability.copies } }
+		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.copies } }
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
@@ -1649,8 +1650,7 @@ local soccer = {
 	cost = 20,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, {modest = "balanced"}),
-			vars = { center.ability.extra.holygrail } }
+		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.extra.holygrail } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)

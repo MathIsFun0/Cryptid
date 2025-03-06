@@ -473,7 +473,7 @@ local antimatter = {
 		},
 	},
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, {mainline = "balanced", modest = "balanced"}) }
+		return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
 	end,
 	name = "cry-Antimatter",
 	order = 76,
