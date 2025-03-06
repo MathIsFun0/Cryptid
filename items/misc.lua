@@ -151,7 +151,7 @@ local meme3 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enable("j_cry_waluigi")
+			Cryptid.enabled("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memethree_" .. G.GAME.round_resets.ante) > 0.997 then
