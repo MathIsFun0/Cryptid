@@ -8,7 +8,8 @@ SMODS.DrawStep({
 	order = 5,
 	func = function(self)
 		if Cryptid.safe_get(self, "area", "config", "type") == "deck" then
-			local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
+            -- following here is a horrendous mod compatability line
+			local currentBack = not self.params.galdur_selector and ((Galdur and Galdur.config.use and type(self.params.galdur_back) == 'table' and self.params.galdur_back) or type(self.params.viewed_back) == 'table' and self.params.viewed_back or (self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back)) or Back(G.P_CENTERS['b_red'])
 			if currentBack.effect.config.cry_force_edition and not currentBack.effect.config.cry_antimatter then
 				if currentBack.effect.config.cry_force_edition_shader then
 					self.children.back:draw_shader(
