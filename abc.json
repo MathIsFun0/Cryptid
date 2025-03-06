@@ -12,6 +12,6 @@
 	"version": "0.5.5~dev_JSON_arc",
 	"dependencies": [
 		"Talisman (>=2.0.9)",
-		"Steamodded (>=1.0.0~ALPHA-1312c)"
+		"Steamodded (Steamodded>=1.0.0~BETA-0301a)"
 	],
 }
