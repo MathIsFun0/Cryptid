@@ -146,9 +146,25 @@ function Cryptid.misprintize(card, override, force_reset, stack)
 			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
-			Cryptid.misprintize_tbl(card.config.center_key, card, "ability", nil, override, stack, Cryptid.is_card_big(card))
+			Cryptid.misprintize_tbl(
+				card.config.center_key,
+				card,
+				"ability",
+				nil,
+				override,
+				stack,
+				Cryptid.is_card_big(card)
+			)
 			if card.base then
-				Cryptid.misprintize_tbl(card.config.card_key, card, "base", nil, override, stack, Cryptid.is_card_big(card))
+				Cryptid.misprintize_tbl(
+					card.config.card_key,
+					card,
+					"base",
+					nil,
+					override,
+					stack,
+					Cryptid.is_card_big(card)
+				)
 			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then

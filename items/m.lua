@@ -1219,7 +1219,9 @@ local mprime = {
 		elseif context.other_joker then
 			if
 				context.other_joker
-				and (context.other_joker:is_jolly() or Cryptid.safe_get(context.other_joker.config.center, "pools", "M"))
+				and (
+					context.other_joker:is_jolly() or Cryptid.safe_get(context.other_joker.config.center, "pools", "M")
+				)
 			then
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
@@ -1285,7 +1287,11 @@ local macabre = {
 							v ~= card
 							and not v:is_jolly()
 							and v.config.center.key ~= "j_cry_mprime"
-							and not (v.ability.eternal or v.getting_sliced or Cryptid.safe_get(v.config.center, "pools", "M"))
+							and not (
+								v.ability.eternal
+								or v.getting_sliced
+								or Cryptid.safe_get(v.config.center, "pools", "M")
+							)
 						then
 							destroyed_jokers[#destroyed_jokers + 1] = v
 						end
