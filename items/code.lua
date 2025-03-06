@@ -5191,7 +5191,10 @@ return {
 		--Code from Betmma's Vouchers
 		G.FUNCS.can_reserve_card = function(e)
 			local c1 = e.config.ref_table
-			if #G.consumeables.cards < G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0) then
+			if
+				#G.consumeables.cards
+				< G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+			then
 				e.config.colour = G.C.GREEN
 				e.config.button = "reserve_card"
 			else

@@ -324,7 +324,7 @@ local queensgambit = {
 						return true
 					end,
 				}))
-				return {remove = true}
+				return { remove = true }
 			end
 		end
 	end,
