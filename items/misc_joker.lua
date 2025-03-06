@@ -7731,6 +7731,142 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 		},
 	},
 }
+local emergencystim = { -- When sold, create a Drained Stim
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-emergencystim",
+	key = "emergencystim",
+	pos = { x = 2, y = 0 },
+	order = 136,
+	immutable = true,
+	rarity = 2,
+	cost = 7,
+	blueprint_compat = false,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if
+			context.selling_self -- card is sold
+		then
+			local cardstim = create_card("Food", G.jokers, nil, nil, nil, nil, "j_cry_drainedstim", "cry_emergencystim")
+				cardstim:add_to_deck()
+				G.jokers:emplace(cardstim) -- create drained stim
+			G.E_MANAGER:add_event(Event({ 
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
+		end
+	end,
+	cry_credits = {
+		art = {
+			"Inspector_B",
+		},
+		idea = {
+			"Nova",
+		},
+		code = {
+			"Nova",
+		},
+	},
+}
+local drainedstim = { -- Cards give x2 mult when scored, self destructs at end of round
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-drainedstim",
+	key = "drainedstim",
+	pos = { x = 2, y = 0 },
+	order = 137,
+	immutable = true,
+	rarity = 2,
+	cost = 7,
+	blueprint_compat = true,
+	atlas = "placeholders",
+	config = { extra = { x_mult = 2 } },
+	calculate = function(self, card, context)
+		if
+			context.individual and context.cardarea == G.play 
+		then
+			return {
+				x_mult = 2,
+				colour = G.C.RED,
+				card = card,
+				}
+		end
+		if --i just stole all this from caramel
+			context.end_of_round
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+			and not context.retrigger_joker
+		then
+			G.E_MANAGER:add_event(Event({ 
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
+		end
+			
+	end,
+	cry_credits = {
+		art = {
+			"Inspector_B",
+		},
+		idea = {
+			"Nova",
+		},
+		code = {
+			"Nova",
+		},
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7844,6 +7980,8 @@ local miscitems = {
 	translucent,
 	lebaron_james,
 	huntingseason,
+	emergencystim,
+	drainedstim,
 }
 return {
 	name = "Misc. Jokers",
