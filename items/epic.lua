@@ -253,15 +253,15 @@ local sync_catalyst = {
 				colour = { 0.8, 0.45, 0.85, 1 },
 				func = function()
 					G.E_MANAGER:add_event(Event({
-						trigger = 'after',
-						func = (function() 
-							play_sound('gong', 0.94, 0.3)
-							play_sound('gong', 0.94*1.5, 0.2)
-							play_sound('tarot1', 1.5)
+						trigger = "after",
+						func = function()
+							play_sound("gong", 0.94, 0.3)
+							play_sound("gong", 0.94 * 1.5, 0.2)
+							play_sound("tarot1", 1.5)
 							return true
-						end)
+						end,
 					}))
-				end
+				end,
 			}
 		end
 	end,
