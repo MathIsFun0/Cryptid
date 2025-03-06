@@ -303,7 +303,6 @@ local queensgambit = {
 			if
 				G.GAME.current_round.current_hand.handname == "Royal Flush"
 				and context.destroying_card:get_id() == 12
-				and not context.destroying_card.ability.eternal
 			then
 				card_eval_status_text(
 					card,
@@ -324,7 +323,7 @@ local queensgambit = {
 						return true
 					end,
 				}))
-				return { remove = true }
+				return { remove = not context.destroying_card.ability.eternal }
 			end
 		end
 	end,
