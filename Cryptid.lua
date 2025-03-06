@@ -68,6 +68,7 @@ local function process_items(f, mod)
 						key = false,
 						atlas = false,
 					}
+					item.mod_path = mod.path
 					if item.key then
 						item.key = mod.prefix .. "_" .. item.key
 					end
@@ -150,7 +151,7 @@ for _, mod in pairs(SMODS.Mods) do
 				end
 				process_items(f, mod)
 			end
-			if file == "Cryptid" then
+			if file == "Cryptid" and path .. "Cryptid/" ~= Cryptid.path then
 				local files = NFS.getDirectoryItems(path .. "Cryptid")
 				for _, file in ipairs(files) do
 					print("[CRYPTID] Loading file " .. file .. " from " .. mod.id)

@@ -260,3 +260,12 @@ if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
 end
 '''
 match_indent = true
+
+# Cross-Mod Content - allow Cryptid to load atlas/sound/shader files from other mods
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = "self.full_path = (self.mod and self.mod.path or SMODS.path) .."
+position = "at"
+payload = "self.full_path = (self.mod_path or self.mod and self.mod.path or SMODS.path) .."
+match_indent = true
