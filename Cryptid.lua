@@ -1,4 +1,3 @@
---- STEAMODDED HEADER
 --- MOD_NAME: Cryptid
 --- MOD_ID: Cryptid
 --- PREFIX: cry
