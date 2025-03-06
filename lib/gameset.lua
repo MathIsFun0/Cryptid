@@ -932,6 +932,15 @@ function Cryptid.get_center(key, m)
 	return m.obj_table and m.obj_table[key]
 end
 
+function Cryptid.gameset_loc(card, config)
+	local gameset = Cryptid.gameset(card)
+	if config[gameset] then
+		return card.key .. "_" .. config[gameset]
+	else
+		return card.key
+	end
+end
+
 ------------------------------
 ---- CARD ENABLING SYSTEM ----
 ------------------------------
