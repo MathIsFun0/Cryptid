@@ -767,7 +767,7 @@ G.FUNCS.openModUI_Cryptid = function(e)
 	G.cry_current_tagpage = nil
 end
 
-function cry_shinytag_tally()
+function Cryptid.shinytag_tally()
 	local ret = 0
 	for k, v in pairs(Cryptid.shinytagdata) do
 		if Cryptid.shinytagdata[k] then

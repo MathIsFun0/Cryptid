@@ -27,14 +27,16 @@ target = "card.lua"
 pattern = 'local eval, post = eval_card(self, {selling_self = true})'
 position = "before"
 payload = '''
-if G.GAME.jokers_sold then
-	local contained = false
-	for i = 1, #G.GAME.jokers_sold do
-		if self.config.center.key == G.GAME.jokers_sold[i] then contained = true end
+if self.config.center.set == "Joker" and self.config.center.key ~= "j_cry_necromancer" then
+	if G.GAME.jokers_sold then
+		local contained = false
+		for i = 1, #G.GAME.jokers_sold do
+			if self.config.center.key == G.GAME.jokers_sold[i] then contained = true end
+		end
+		if not contained then table.insert(G.GAME.jokers_sold, self.config.center.key) end
+	else
+		G.GAME.jokers_sold = {self.config.center.key}
 	end
-	if not contained then table.insert(G.GAME.jokers_sold, self.config.center.key) end
-elseif self.config.center.set == "Joker" then
-	G.GAME.jokers_sold = {self.config.center.key}
 end
 '''
 match_indent = true

@@ -288,26 +288,32 @@ local oversat = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
+	-- Note: Duping playing cards resets the base chips for some reason
 	on_apply = function(card)
-		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.misprintize(card, {
-				min = 2,
-				max = 2,
-			}, nil, true)
-		end)
-		if card.config.center.apply_oversat then
-			card.config.center:apply_oversat(card, function(val)
-				return Cryptid.misprintize_val(val, {
+		if not card.ability.cry_oversat then
+			Cryptid.with_deck_effects(card, function(card)
+				Cryptid.misprintize(card, {
 					min = 2,
 					max = 2,
-				}, Cryptid.is_card_big(card))
+				}, nil, true)
 			end)
+			if card.config.center.apply_oversat then
+				card.config.center:apply_oversat(card, function(val)
+					return Cryptid.misprintize_val(val, {
+						min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
+					}, Cryptid.is_card_big(card))
+				end)
+			end
 		end
+		card.ability.cry_oversat = true
 	end,
 	on_remove = function(card)
 		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.misprintize(card, { min = 0.5, max = 0.5 }, nil, true)
+			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
+			Cryptid.misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
+		card.ability.cry_oversat = nil
 	end,
 	init = function(self)
 		AurinkoAddons.cry_oversat = function(card, hand, instant, amount)

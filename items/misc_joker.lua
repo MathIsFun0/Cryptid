@@ -324,7 +324,7 @@ local queensgambit = {
 						return true
 					end,
 				}))
-				return nil, true
+				return {remove = true}
 			end
 		end
 	end,
@@ -7092,6 +7092,7 @@ local necromancer = {
 			and context.card.sell_cost > 0
 			and context.card.config.center.set == "Joker"
 			and G.GAME.jokers_sold
+			and #G.GAME.jokers_sold > 0
 		then
 			local card = create_card(
 				"Joker",
