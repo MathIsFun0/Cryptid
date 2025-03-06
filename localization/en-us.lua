@@ -876,6 +876,21 @@ return {
 					"a random {C:attention}Joker{}",
 				},
 			},
+			j_cry_astral_bottle_mainline = {
+				name = "Astral in a Bottle",
+				text = {
+					"When sold, apply {C:dark_edition}Astral{}",
+					"and {C:attention}Perishable{} to",
+					"different, random {C:attention}Jokers{}",
+				},
+			},
+			j_cry_astral_bottle_madness = {
+				name = "Astral in a Bottle",
+				text = {
+					"When sold, apply {C:dark_edition}Astral{}",
+					"to a random {C:attention}Joker{}",
+				},
+			},
 			j_cry_big_cube = {
 				name = "Big Cube",
 				text = {
@@ -1145,6 +1160,18 @@ return {
 					"{C:cry_code}Code Card",
 				},
 			},
+			j_cry_CodeJoker_modest = {
+				name = "Code Joker",
+				text = {
+					"Create a {C:dark_edition}Negative{}",
+					"{C:cry_code}Code Card{} when",
+					"{C:attention}Boss Blind{} is selected",
+				},
+				unlock = {
+					"Discover {C:attention}every",
+					"{C:cry_code}Code Card",
+				},
+			},
 			j_cry_coin = {
 				name = "Crypto Coin",
 				text = {
@@ -1171,7 +1198,15 @@ return {
 					"{C:inactive}(Must have room)",
 				},
 			},
-			j_cry_copypaste2 = {
+			j_cry_copypaste_modest = {
+				name = "Copy/Paste",
+				text = {
+					"Duplicate pulled",
+					"{C:cry_code}Code{} cards",
+					"{C:inactive}(Must have room)",
+				},
+			},
+			j_cry_copypaste_madness = {
 				name = "Copy/Paste",
 				text = {
 					"{C:green}#1# in #2#{} chance to duplicate",
@@ -1281,6 +1316,14 @@ return {
 					"scale {C:attention}quadratically",
 					"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
 					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
+				},
+			},
+			["j_cry_Double Scale_modest"] = {
+				name = "Double Scale",
+				text = {
+					"Scaling {C:attention}Jokers{}",
+					"scale {C:attention}twice{} as fast",
+					"{C:inactive,s:0.8}\"It's called double scale, not quadratic scale!\"",
 				},
 			},
 			j_cry_dropshot = {
@@ -4494,10 +4537,10 @@ return {
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Madness",
 			cry_gameset_custom = "Modified",
-			cry_gameset_experimental = "Experimental",
-			cry_gameset_experimental_modest = "Experimental (Modest)",
-			cry_gameset_experimental_mainline = "Experimental (Mainline)",
-			cry_gameset_experimental_madness = "Experimental (Madness)",
+			cry_gameset_exp = "Experimental",
+			cry_gameset_exp_modest = "Experimental (Modest)",
+			cry_gameset_exp_mainline = "Experimental (Mainline)",
+			cry_gameset_exp_madness = "Experimental (Madness)",
 
 			cry_view_set_contents = "View Items in Set",
 

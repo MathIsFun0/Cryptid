@@ -4317,10 +4317,10 @@ return {
 			cry_gameset_mainline = "Médian",
 			cry_gameset_madness = "Maboul",
 			cry_gameset_custom = "Modifié",
-			cry_gameset_experimental = "Expérimental",
-			cry_gameset_experimental_modest = "Expérimental (Modeste)",
-			cry_gameset_experimental_mainline = "Expérimental (Médian)",
-			cry_gameset_experimental_madness = "Expérimental (Maboul)",
+			cry_gameset_exp = "Expérimental",
+			cry_gameset_exp_modest = "Expérimental (Modeste)",
+			cry_gameset_exp_mainline = "Expérimental (Médian)",
+			cry_gameset_exp_madness = "Expérimental (Maboul)",
 
 			cry_view_set_contents = "Voir les objets dans le set",
 

@@ -4354,10 +4354,10 @@ return {
 			cry_gameset_mainline = "M Chính",
 			cry_gameset_madness = "M Điên Loạn",
 			cry_gameset_custom = "Đã Sửa Đổi",
-			cry_gameset_experimental = "Thử Nghiệm",
-			cry_gameset_experimental_modest = "Thử Nghiệm (M Khiêm Tốn)",
-			cry_gameset_experimental_mainline = "Experimental (M Chính)",
-			cry_gameset_experimental_madness = "Experimental (M Điên Loạn)",
+			cry_gameset_exp = "Thử Nghiệm",
+			cry_gameset_exp_modest = "Thử Nghiệm (M Khiêm Tốn)",
+			cry_gameset_exp_mainline = "Experimental (M Chính)",
+			cry_gameset_exp_madness = "Experimental (M Điên Loạn)",
 
 			cry_view_set_contents = "Xem Vật Phẩm trong Thiết Lập",
 

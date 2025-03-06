@@ -3781,10 +3781,10 @@ return {
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Madness",
 			cry_gameset_custom = "Modifiziert",
-			cry_gameset_experimental = "Experimentel",
-			cry_gameset_experimental_modest = "Experimentel (Modest)",
-			cry_gameset_experimental_mainline = "Experimentel (Mainline)",
-			cry_gameset_experimental_madness = "Experimentel (Madness)",
+			cry_gameset_exp = "Experimentel",
+			cry_gameset_exp_modest = "Experimentel (Modest)",
+			cry_gameset_exp_mainline = "Experimentel (Mainline)",
+			cry_gameset_exp_madness = "Experimentel (Madness)",
 
 			cry_view_set_contents = "Siehe Gegenstände im set",
 

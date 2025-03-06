@@ -910,7 +910,12 @@ local double_scale = {
 	},
 	gameset_config = {
 		modest = { cost = 20, center = { rarity = 4 } },
+		exp_modest = { cost = 11 },
 	},
+	extra_gamesets = {"exp_modest"},
+	loc_vars = function(self, info_queue, center)
+		return { key = Cryptid.gameset_loc(self, {exp_modest = "modest"}) }
+	end,
 	order = 6,
 	rarity = "cry_epic",
 	cost = 18,
@@ -918,6 +923,10 @@ local double_scale = {
 	atlas = "atlasepic",
 	--todo: support jokers that scale multiple variables
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+		print(orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+		if Cryptid.gameset(self) == "exp_modest" then
+			return true_base * 2
+		end
 		return orig_scale_scale + true_base
 	end,
 	cry_credits = {
