@@ -70,3 +70,21 @@ pattern = "if (self.edition and self.edition.negative) or (self.ability.name == 
 position = 'at'
 match_indent = true
 payload = "if (self.edition and (self.edition.negative or self.edition.cry_oversat)) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
+
+# Make description UI always appear if card is highlighted
+[[patches]]
+[patches.pattern]
+target = "engine/node.lua"
+pattern = "if self.children.h_popup then"
+position = 'at'
+match_indent = true
+payload = "if self.children.h_popup and not self.highlighted then"
+
+# Let description tooltips work for any object
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,"
+position = 'at'
+match_indent = true
+payload = "detailed_tooltip = part.control.T and Cryptid.get_center(part.control.T) or nil,"

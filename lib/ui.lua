@@ -222,3 +222,17 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "front" },
 })
 SMODS.draw_ignore_keys.floating_sprite2 = true
+
+
+-- Make hover UI collidable - so we can detect collision and display tooltips
+local m = Card.move
+function Card:move(dt)
+	m(self, dt)
+	if self.children.h_popup then
+		self.children.h_popup.states.collide.can = true
+		if not self.highlighted and not self.states.hover.is then
+			self.children.h_popup:remove()
+			self.children.h_popup = nil
+		end
+	end
+end

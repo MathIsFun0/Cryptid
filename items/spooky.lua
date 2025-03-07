@@ -117,10 +117,6 @@ local choco_dice = {
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		if not center then --tooltip
-		elseif not center.added_to_deck then
-			for i = 1, 10 do
-				info_queue[#info_queue + 1] = { set = "Other", key = "ev_cry_choco" .. i }
-			end
 		else
 			SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]:loc_vars(info_queue, center)
 		end
