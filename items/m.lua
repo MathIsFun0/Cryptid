@@ -779,7 +779,8 @@ local sacrifice = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn", "George the Rat",
+			"Jevonn",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",

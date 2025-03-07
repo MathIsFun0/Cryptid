@@ -75,7 +75,8 @@ local dropshot = {
 			"Mystic Misclick",
 		},
 		art = {
-			"Mystic Misclick", "George the Rat",
+			"Mystic Misclick",
+			"George the Rat",
 		},
 		code = {
 			"Math",
@@ -688,7 +689,8 @@ local pickle = {
 			"5381",
 		},
 		art = {
-			"Mystic Misclick", "unexian",
+			"Mystic Misclick",
+			"unexian",
 		},
 		code = {
 			"Math",
@@ -916,7 +918,8 @@ local chili_pepper = {
 			"Mystic Misclick",
 		},
 		art = {
-			"Mystic Misclick", "George the Rat",
+			"Mystic Misclick",
+			"George the Rat",
 		},
 		code = {
 			"Math",
@@ -1448,7 +1451,8 @@ local sus = {
 			"Math",
 		},
 		art = {
-			"Jevonn", "unexian",
+			"Jevonn",
+			"unexian",
 		},
 		code = {
 			"Math",
@@ -1500,7 +1504,8 @@ local fspinner = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn", "George the Rat",
+			"Jevonn",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -2603,7 +2608,8 @@ local sapling = {
 			"Mjiojio",
 		},
 		art = {
-			"Jevonn", "George the Rat",
+			"Jevonn",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -5669,7 +5675,8 @@ local coin = {
 			"Squiddy",
 		},
 		art = {
-			"Timetoexplode", "George the Rat",
+			"Timetoexplode",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -5900,7 +5907,8 @@ local oldblueprint = {
 			"Linus Goof Balls",
 		},
 		art = {
-			"Linus Goof Balls", "unexian",
+			"Linus Goof Balls",
+			"unexian",
 		},
 		code = {
 			"Math",

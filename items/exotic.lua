@@ -806,7 +806,7 @@ local stella_mortis = {
 	end,
 	cry_credits = {
 		idea = { "SMG9000" },
-		art = { "SMG9000", "George the Rat", "patchy", "lolxDdj"},
+		art = { "SMG9000", "George the Rat", "patchy", "lolxDdj" },
 		code = { "SMG9000" },
 	},
 }
