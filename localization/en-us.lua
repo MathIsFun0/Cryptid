@@ -4358,6 +4358,7 @@ return {
 			ach_cry_ult_full_skip = "Ultimate Full Skip",
 			ach_cry_used_crash = "We Told You Not To",
 			ach_cry_what_have_you_done = "WHAT HAVE YOU DONE?!",
+			ach_cry_pin = "Pin of Shame",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
@@ -4380,6 +4381,7 @@ return {
 			ach_cry_ult_full_skip = "Win in 1 round",
 			ach_cry_used_crash = "Use ://CRASH",
 			ach_cry_what_have_you_done = "Delete or Sacrifice an Exotic Joker",
+			ach_cry_pin = "Lose a run to The Pin",
 		},
 		challenge_names = {
 			c_cry_ballin = "Ballin'",

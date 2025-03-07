@@ -394,6 +394,20 @@ local perfectly_balanced = {
 		end
 	end,
 }
+local pin = {
+	object_type = "Achievement",
+	key = "pin",
+	order = 21,
+	hidden_text = true,
+	pos = { x = 3, y = 0 },
+	atlas = "cry_achievements",
+	bypass_all_unlocked = true,
+	unlock_condition = function(self, args)
+		if args.type == "lose_to_specific_blind" and args.blind == "cry-pin" then
+			return true
+		end
+	end,
+}
 
 -- TODO: Add new Achievements.
 -- Current Ideas (Normal):
@@ -446,5 +460,6 @@ local achievement_objects = {
 	home_realtor,
 	traffic_jam,
 	perfectly_balanced,
+	--pin, Needs to be screened
 }
 return { name = "Achievements", items = achievement_objects }

@@ -63,7 +63,18 @@ payload = '''
 '''
 match_indent = true
 
-
-
+# track game overs by blinds on profiles
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local blind_choice = {config = G.GAME.blind.config.blind or G.P_BLINDS.bl_small}'''
+position = "after"
+payload = '''
+local cry_defeated_by = blind_choice.config.name or "Small Blind"
+if not G.PROFILES[G.SETTINGS.profile].cry_defeated_by_blind then G.PROFILES[G.SETTINGS.profile].cry_defeated_by_blind = {} end
+G.PROFILES[G.SETTINGS.profile].cry_defeated_by_blind[cry_defeated_by] = (G.PROFILES[G.SETTINGS.profile].cry_defeated_by_blind[cry_defeated_by] or 0) + 1
+check_for_unlock({ type = "lose_to_specific_blind", blind = cry_defeated_by, amount = G.PROFILES[G.SETTINGS.profile].cry_defeated_by_blind[cry_defeated_by] })
+'''
+match_indent = true
 
 
