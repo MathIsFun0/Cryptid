@@ -75,7 +75,7 @@ local dropshot = {
 			"Mystic Misclick",
 		},
 		art = {
-			"Mystic Misclick",
+			"Mystic Misclick", "George the Rat",
 		},
 		code = {
 			"Math",
@@ -688,7 +688,7 @@ local pickle = {
 			"5381",
 		},
 		art = {
-			"Mystic Misclick",
+			"Mystic Misclick", "unexian",
 		},
 		code = {
 			"Math",
@@ -916,7 +916,7 @@ local chili_pepper = {
 			"Mystic Misclick",
 		},
 		art = {
-			"Mystic Misclick",
+			"Mystic Misclick", "George the Rat",
 		},
 		code = {
 			"Math",
@@ -1448,7 +1448,7 @@ local sus = {
 			"Math",
 		},
 		art = {
-			"Jevonn",
+			"Jevonn", "unexian",
 		},
 		code = {
 			"Math",
@@ -1500,7 +1500,7 @@ local fspinner = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn",
+			"Jevonn", "George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -2535,7 +2535,7 @@ local sapling = {
 	},
 	name = "cry-sapling",
 	key = "sapling",
-	pos = { x = 3, y = 2 },
+	pos = { x = 3, y = 2 }, --todo animations
 	config = { extra = { score = 0, req = 18, check = nil } },
 	rarity = 2,
 	cost = 6,
@@ -2603,7 +2603,7 @@ local sapling = {
 			"Mjiojio",
 		},
 		art = {
-			"Jevonn",
+			"Jevonn", "George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -5669,7 +5669,7 @@ local coin = {
 			"Squiddy",
 		},
 		art = {
-			"Timetoexplode",
+			"Timetoexplode", "George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -5900,7 +5900,7 @@ local oldblueprint = {
 			"Linus Goof Balls",
 		},
 		art = {
-			"Linus Goof Balls",
+			"Linus Goof Balls", "unexian",
 		},
 		code = {
 			"Math",
@@ -7584,7 +7584,7 @@ local arsonist = {
 			"AlexZGreat",
 		},
 		art = {
-			"Darren_the_frog",
+			"Darren_The_Frog",
 		},
 		code = {
 			"AlexZGreat",

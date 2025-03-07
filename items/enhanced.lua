@@ -16,6 +16,7 @@ Cryptid.edeck_sprites = {
 		holo = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 0 } },
 		polychrome = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 0 } },
 		negative = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 0 } },
+		cry_glitched = { atlas = "cry_atlaseditiondeck", pos = { x = 4, y = 0 } }, 
 		cry_mosaic = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 1 } },
 		cry_oversat = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 1 } },
 		cry_glass = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 1 } },

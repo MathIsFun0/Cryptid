@@ -1929,7 +1929,7 @@ local jtron = {
 	end,
 	cry_credits = {
 		idea = { "AlexZGreat" },
-		art = { "Darren_the_frog" },
+		art = { "Darren_The_Frog" },
 		code = { "candycanearter" },
 	},
 }

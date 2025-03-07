@@ -136,7 +136,7 @@ local universum = {
 	end,
 	cry_credits = {
 		idea = { "Ein13" },
-		art = { "Ein13", "hydrogenperoxiide" },
+		art = { "Ein13", "hydro" },
 	},
 	init = function(self)
 		--Universum Patches
@@ -427,7 +427,7 @@ local redeo = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Jevonn" },
+		art = { "Jevonn", "Darren_The_Frog" },
 		code = { "Math", "jenwalter666" },
 	},
 	init = function(self)
@@ -505,7 +505,7 @@ local effarcire = {
 	end,
 	cry_credits = {
 		idea = { "Frix" },
-		art = { "AlexZGreat" },
+		art = { "AlexZGreat", "Catformer" },
 		code = { "jenwalter666" },
 	},
 }
@@ -806,7 +806,7 @@ local stella_mortis = {
 	end,
 	cry_credits = {
 		idea = { "SMG9000" },
-		art = { "SMG9000" },
+		art = { "SMG9000", "George the Rat", "patchy", "lolxDdj"},
 		code = { "SMG9000" },
 	},
 }
@@ -862,7 +862,7 @@ local circulus_pistoris = {
 	end,
 	cry_credits = {
 		idea = { "SMG9000", "Math" }, --not sure if there's more ppl I'm missing
-		art = { "HexaCryonic" },
+		art = { "HexaCryonic", "ori" },
 		code = { "SMG9000", "Math" },
 	},
 }
@@ -985,7 +985,7 @@ local aequilibrium = {
 	--
 	cry_credits = {
 		idea = { "Elial2" },
-		art = { "Elial2" },
+		art = { "Elial2", "unexian", "hydro" },
 		code = { "Elial2" },
 	},
 }
@@ -1037,7 +1037,7 @@ local facile = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Kailen" },
+		art = { "Kailen", "hydro" },
 		code = { "Jevonn" },
 	},
 }
@@ -1059,7 +1059,7 @@ local gemino = {
 			"Jolly Open Winner",
 			"Requiacity",
 		},
-		art = { "Requiacity" },
+		art = { "unexian" },
 		code = { "Math" },
 	},
 	rarity = "cry_exotic",
@@ -1474,7 +1474,7 @@ local formidiulosus = {
 	end,
 	cry_credits = {
 		idea = { "HexaCryonic", "Kailen" },
-		art = { "Foegro" },
+		art = { "Foegro", "hydro" },
 		code = { "Foegro" },
 	},
 }
