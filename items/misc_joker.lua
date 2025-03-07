@@ -2554,6 +2554,7 @@ local sapling = {
 				center.ability.extra.req,
 				Cryptid.enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
 				colours = { G.C.RARITY[Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 3] },
+				Cryptid.enabled("set_cry_epic") == true and localize("cry_sapling_an") or localize("cry_sapling_a"),
 			},
 		}
 	end,
