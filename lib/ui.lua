@@ -223,7 +223,6 @@ SMODS.DrawStep({
 })
 SMODS.draw_ignore_keys.floating_sprite2 = true
 
-
 -- Make hover UI collidable - so we can detect collision and display tooltips
 local m = Card.move
 function Card:move(dt)
