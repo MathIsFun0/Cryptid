@@ -67,7 +67,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = '{n=G.UIT.C, config={align = "cl", minw = rwidth}, nodes={{n=G.UIT.T, config={text = tostring(profile_data.career_stats.c_wins),colour = G.C.RED, shadow = true, scale = 1*scale}}}}'
 position = "after"
-payload = ',{n=G.UIT.C, config={align = "cl", minw = rwidth}, nodes={{n=G.UIT.O, config={object = gameset_sprite(1, _profile)}}}}'
+payload = ',{n=G.UIT.C, config={align = "cl", minw = rwidth}, nodes={{n=G.UIT.O, config={object = Cryptid.gameset_sprite(1, _profile)}}}}'
 match_indent = true
 
 # Gameset sprite in deck select
@@ -76,7 +76,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = '{n=G.UIT.C, config={align = "cm", minw = 2.5}, nodes={}}'
 position = "at"
-payload = '{n=G.UIT.C, config={align = "cm", minw = 0.2}, nodes={}},{n=G.UIT.C, config={align = "cl", minw = rwidth}, nodes={{n=G.UIT.O, config={object = gameset_sprite()}}}}'
+payload = '{n=G.UIT.C, config={align = "cm", minw = 0.2}, nodes={}},{n=G.UIT.C, config={align = "cl", minw = rwidth}, nodes={{n=G.UIT.O, config={object = Cryptid.gameset_sprite()}}}}'
 match_indent = true
 
 # Gameset sprite in win screen
@@ -101,7 +101,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "not show_win_cta and UIBox_button({button = 'go_to_menu', label = {localize('b_main_menu')}, minw = 2.5, maxw = 2.5, minh = 1, focus_args = {nav = 'wide'}}) or nil,"
 position = "after"
-payload = '{n=G.UIT.R, config={align = "cm", minw = rwidth}, nodes={{n=G.UIT.O, config={object = gameset_sprite()}}}},'
+payload = '{n=G.UIT.R, config={align = "cm", minw = rwidth}, nodes={{n=G.UIT.O, config={object = Cryptid.gameset_sprite()}}}},'
 match_indent = true
 
 # Gameset sprite in lose screen
@@ -110,7 +110,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "show_lose_cta and"
 position = "before"
-payload = '{n=G.UIT.R, config={align = "cm"}, nodes={{n=G.UIT.C, config={align = "cm", minw = rwidth}, nodes={{n=G.UIT.O, config={object = gameset_sprite()}}}},'
+payload = '{n=G.UIT.R, config={align = "cm"}, nodes={{n=G.UIT.C, config={align = "cm", minw = rwidth}, nodes={{n=G.UIT.O, config={object = Cryptid.gameset_sprite()}}}},'
 match_indent = true
 
 [[patches]]
@@ -139,7 +139,7 @@ position = "after"
 payload = '''if _c.cry_disabled or (_c.force_gameset and _c.force_gameset == 'disabled') then
     if _c.cry_disabled then
         if _c.cry_disabled.type == "card_dependency" then
-            local name = cry_get_center(_c.cry_disabled.key) and localize{type = 'name_text', set = cry_get_center(_c.cry_disabled.key).set, key = _c.cry_disabled.key} or _c.cry_disabled.key
+            local name = Cryptid.get_center(_c.cry_disabled.key) and localize{type = 'name_text', set = Cryptid.get_center(_c.cry_disabled.key).set, key = _c.cry_disabled.key} or _c.cry_disabled.key
             info_queue[#info_queue+1] = {key = 'disabled_card_dependency', set = 'Other', specific_vars = {name}}
         elseif _c.cry_disabled.type == "mod_dependency" then
             local name = Cryptid.cross_mod_names[_c.cry_disabled.key] or _c.cry_disabled.key
@@ -156,37 +156,6 @@ payload = '''if _c.cry_disabled or (_c.force_gameset and _c.force_gameset == 'di
         info_queue[#info_queue+1] = {key = 'disabled', set = 'Other'}
     end
 end'''
-match_indent = true
-
-# render gameset as sticker
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.sticker and G.shared_stickers[self.sticker] then"
-position = "before"
-payload = '''
-if not Cryptid.shared_gamesets then
-    Cryptid.shared_gamesets = {
-        modest = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 0,y = 0}),
-        mainline = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 1,y = 0}),
-        madness = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 2,y = 0}),
-        custom = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 3,y = 0}),
-        selected = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], {x = 0,y = 4}),
-    }
-end
-local gameset_key
-if self.config.center.force_gameset then
-    gameset_key = self.config.center.force_gameset
-    if gameset_key ~= "disabled" and gameset_key ~= "modest" and gameset_key ~= "mainline" and gameset_key ~= "madness" then
-        gameset_key = "custom"
-    end
-end
-if self.gameset_select and Cryptid.shared_gamesets[gameset_key] then
-Cryptid.shared_gamesets[gameset_key].role.draw_major = self
-Cryptid.shared_gamesets[gameset_key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
-Cryptid.shared_gamesets[gameset_key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
-end
-'''
 match_indent = true
 
 # replace rarity badge with gameset
@@ -218,18 +187,6 @@ if not card.gameset_select and card.config.center and card.config.center.cry_dis
     card_type = localize('cry_gameset_disabled')
 end
 '''
-match_indent = true
-
-
-# make disabled cards visually debuffed
-# warning: this also patches a lot of extra stuff, but that shouldn't matter
-#          since you shouldn't be able to access them outside of the collection anyway
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.debuff then"
-position = "at"
-payload = "if self.debuff or cry_get_gameset(self) == 'disabled' or (self.config.center.gameset_config and self.config.center.gameset_config[cry_get_gameset(self)] and self.config.center.gameset_config[cry_get_gameset(self)].disabled) or (self.config.center.cry_disabled and not self.gameset_select) then"
 match_indent = true
 
 # Descriptions for Backs and Blinds in gameset UI

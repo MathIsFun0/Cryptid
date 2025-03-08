@@ -9,7 +9,7 @@ SMODS.Event = SMODS.GameObject:extend({
 		"key",
 	},
 	inject = function() end,
-	set = "Event",
+	set = "Other",
 	class_prefix = "ev",
 	-- This should be called to start an event.
 	start = function(self)

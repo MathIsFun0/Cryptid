@@ -119,7 +119,7 @@ local test3 = {
 		},
 	},
 	loc_vars = function(self, info_queue, card)
-		local a, b, c, d, e = cry_get_enchanced_deck_info()
+		local a, b, c, d, e = Cryptid.enhanced_deck_info()
 		return { vars = { a, b, c, d, e } }
 	end,
 	cry_credits = {

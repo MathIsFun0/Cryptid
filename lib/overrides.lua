@@ -40,7 +40,11 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 			for _, id in ipairs(valid_pools) do
 				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
+					if
+						v.unlocked == true
+						and not Cryptid.no(v, "doe", k)
+						and not (G.GAME.banned_keys[v.key] or G.GAME.cry_banished_keys[v.key])
+					then
 						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 					end
 				end
@@ -66,15 +70,15 @@ function get_new_boss()
 	if G.GAME.modifiers.cry_beta then
 		local bl_key = string.sub(bl, 4)
 		local nostalgicblinds = {
-			arm = (cry_card_enabled("bl_cry_oldarm") == true),
-			fish = (cry_card_enabled("bl_cry_oldfish") == true),
-			flint = (cry_card_enabled("bl_cry_oldflint") == true),
-			house = (cry_card_enabled("bl_cry_oldhouse") == true),
-			manacle = (cry_card_enabled("bl_cry_oldmanacle") == true),
-			mark = (cry_card_enabled("bl_cry_oldmark") == true),
-			ox = (cry_card_enabled("bl_cry_oldox") == true),
-			pillar = (cry_card_enabled("bl_cry_oldpillar") == true),
-			serpent = (cry_card_enabled("bl_cry_oldserpent") == true),
+			arm = (Cryptid.enabled("bl_cry_oldarm") == true),
+			fish = (Cryptid.enabled("bl_cry_oldfish") == true),
+			flint = (Cryptid.enabled("bl_cry_oldflint") == true),
+			house = (Cryptid.enabled("bl_cry_oldhouse") == true),
+			manacle = (Cryptid.enabled("bl_cry_oldmanacle") == true),
+			mark = (Cryptid.enabled("bl_cry_oldmark") == true),
+			ox = (Cryptid.enabled("bl_cry_oldox") == true),
+			pillar = (Cryptid.enabled("bl_cry_oldpillar") == true),
+			serpent = (Cryptid.enabled("bl_cry_oldserpent") == true),
 		}
 		if nostalgicblinds[bl_key] then
 			return "bl_cry_old" .. bl_key
@@ -169,6 +173,7 @@ function Game:init_game_object()
 	-- Add initial dropshot and number blocks card
 	g.current_round.cry_nb_card = { rank = "Ace" }
 	g.current_round.cry_dropshot_card = { suit = "Spades" }
+	g.monstermult = 1
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	return g
@@ -229,6 +234,8 @@ G.C.CRY_BLOSSOM = { 0, 0, 0, 0 }
 G.C.CRY_AZURE = { 0, 0, 0, 0 }
 G.C.CRY_ASCENDANT = { 0, 0, 0, 0 }
 G.C.CRY_JOLLY = { 0, 0, 0, 0 }
+G.C.CRY_GREENGRADIENT = { 0, 0, 0, 0 }
+G.C.CRY_ALTGREENGRADIENT = { 0, 0, 0, 0 }
 Cryptid.C = {
 	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
 	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
@@ -241,8 +248,9 @@ Cryptid.C = {
 	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
 	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
 	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
+	GREENGRADIENT = { HEX("51e099"), HEX("1e523a") },
+	ALTGREENGRADIENT = { HEX("6bb565"), HEX("bd28bf") },
 }
-
 cry_pointer_dt = 0
 cry_jimball_dt = 0
 cry_glowing_dt = 0
@@ -268,7 +276,7 @@ function Game:update(dt)
 		AllowDividing("Code")
 		CryptidIncanCompat = true
 	end
-	if cry_card_enabled("set_cry_timer") == true then
+	if Cryptid.enabled("set_cry_timer") == true then
 		cry_pointer_dt = cry_pointer_dt + dt
 		cry_jimball_dt = cry_jimball_dt + dt
 		cry_glowing_dt = cry_glowing_dt + dt
@@ -420,7 +428,7 @@ function Card:set_cost()
 	-- Makes the edition cost increase usually present not apply if this variable is true
 	-- Used for some of the Jen's almanac edition decks because having the price increase apply was "unfun"
 	if self.edition and G.GAME.modifiers.cry_no_edition_price then
-		local m = cry_deep_copy(self.edition)
+		local m = Cryptid.deep_copy(self.edition)
 		self.edition = nil
 		sc(self)
 		self.edition = m
@@ -605,12 +613,12 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 		end
 	end
-	if safe_get(G, "ACTIVE_MOD_UI", "id") == "Cryptid" and obj and not obj.force_gameset then
-		local set = cry_get_gameset(obj)
+	if Cryptid.safe_get(G, "ACTIVE_MOD_UI", "id") == "Cryptid" and obj and not obj.force_gameset then
+		local set = Cryptid.gameset(obj)
 		if set == "disabled" or obj.set == "Content Set" then
 			return
 		end
-		local card_type = localize("cry_gameset_" .. cry_get_gameset(obj))
+		local card_type = localize("cry_gameset_" .. Cryptid.gameset(obj))
 		if card_type == "ERROR" then
 			card_type = localize("cry_gameset_custom")
 		end
@@ -626,7 +634,7 @@ end
 
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
-	if G.GAME.current_round.free_rerolls < 0 then
+	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
 	if next(find_joker("cry-crustulum")) or G.GAME.current_round.free_rerolls > 0 then
@@ -659,9 +667,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	local ps = pseudoseed
 	if area == "ERROR" then
 		pseudo = function(x)
-			return pseudorandom(predict_pseudoseed(x))
+			return pseudorandom(Cryptid.predict_pseudoseed(x))
 		end
-		ps = predict_pseudoseed
+		ps = Cryptid.predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
 	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
@@ -669,8 +677,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	local function aeqviable(center)
 		return center.unlocked
-			and not center_no(center, "doe")
-			and not center_no(center, "aeq")
+			and not Cryptid.no(center, "doe")
+			and not Cryptid.no(center, "aeq")
 			and not (center.rarity == 6 or center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity and not legendary then
@@ -979,15 +987,20 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		card:set_edition(nil, true)
 	end
 	if G.GAME.modifiers.cry_force_random_edition and area ~= G.pack_cards then
-		local edition = cry_poll_random_edition()
+		local edition = Cryptid.poll_random_edition()
 		card:set_edition(edition, true)
 	end
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
-		cry_misprintize(card)
+		Cryptid.misprintize(card)
 	end
 	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
 		if card.config.center.rarity == 1 then
-			cry_misprintize(card, { min = 4, max = 4 }, nil, true)
+			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
+		end
+	end
+	if _type == "Joker" and G.GAME.modifiers.cry_uncommon_value_quad then
+		if card.config.center.rarity == 2 then
+			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
 		end
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
@@ -1162,8 +1175,7 @@ end
 --Cryptid (THE MOD) localization
 local function parse_loc_txt(center)
 	center.text_parsed = {}
-	if not center.text then
-	else
+	if center.text then
 		for _, line in ipairs(center.text) do
 			center.text_parsed[#center.text_parsed + 1] = loc_parse_string(line)
 		end
@@ -1195,9 +1207,10 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	if Cryptid.obj_buffer and Cryptid.obj_buffer.Stake then
-		for i = 1, #Cryptid.obj_buffer.Stake do
-			local key = Cryptid.obj_buffer.Stake[i].key
+	il()
+	if Cryptid.object_buffer and Cryptid.object_buffer.Stake then
+		for i = 1, #Cryptid.object_buffer.Stake do
+			local key = Cryptid.object_buffer.Stake[i].key
 			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 			if color then
 				local sticker_key = key:sub(7) .. "_sticker"
@@ -1219,7 +1232,6 @@ function init_localization()
 			end
 		end
 	end
-	il()
 end
 
 --Fix a corrupted game state

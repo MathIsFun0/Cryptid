@@ -17,7 +17,12 @@ local gateway = {
 	order = 90,
 	hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
 	can_use = function(self, card)
-		return true
+		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) > 0 then
+			return #G.jokers.cards < G.jokers.config.card_limit
+		else
+			--Don't allow use if everything is eternal and there is no room
+			return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
+		end
 	end,
 	use = function(self, card, area, copier)
 		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
@@ -136,7 +141,7 @@ local universum = {
 	end,
 	cry_credits = {
 		idea = { "Ein13" },
-		art = { "Ein13", "hydrogenperoxiide" },
+		art = { "Ein13", "hydro" },
 	},
 	init = function(self)
 		--Universum Patches
@@ -315,7 +320,7 @@ local exponentia = {
 							vars = { number_format(to_big(v.ability.extra.Emult)) },
 						}),
 					})
-					exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+					Cryptid.exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
 				end
 			end
 			return ret
@@ -427,7 +432,7 @@ local redeo = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Jevonn" },
+		art = { "Jevonn", "Darren_The_Frog" },
 		code = { "Math", "jenwalter666" },
 	},
 	init = function(self)
@@ -505,7 +510,7 @@ local effarcire = {
 	end,
 	cry_credits = {
 		idea = { "Frix" },
-		art = { "AlexZGreat" },
+		art = { "AlexZGreat", "Catformer" },
 		code = { "jenwalter666" },
 	},
 }
@@ -693,7 +698,7 @@ local scalae = {
 					) ^ card.ability.extra.scale
 				)
 			)
-			if (new_scale < to_big(1e100)) or not is_card_big(joker) then
+			if (new_scale < to_big(1e100)) or not Cryptid.is_card_big(joker) then
 				if new_scale >= to_big(1e300) then
 					new_scale = 1e300
 				else
@@ -704,7 +709,19 @@ local scalae = {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(card.ability.extra.scale + 1), number_format(card.ability.extra.scale_mod) } }
+		local example = { 2, 3, 4 }
+		for i = 1, #example do
+			example[i] = to_big(example[i]) ^ (card.ability.extra.scale + 1)
+		end
+		return {
+			vars = {
+				number_format(card.ability.extra.scale + 1),
+				number_format(card.ability.extra.scale_mod),
+				example[1],
+				example[2],
+				example[3],
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "Mathguy" },
@@ -794,7 +811,7 @@ local stella_mortis = {
 	end,
 	cry_credits = {
 		idea = { "SMG9000" },
-		art = { "SMG9000" },
+		art = { "SMG9000", "George the Rat", "patchy", "lolxDdj" },
 		code = { "SMG9000" },
 	},
 }
@@ -819,7 +836,7 @@ local circulus_pistoris = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
+				Cryptid.safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
 				center.ability.extra.hands_remaining,
 			},
 		}
@@ -833,7 +850,7 @@ local circulus_pistoris = {
 			)
 		then
 			local pi = math.pi
-			if safe_get(card, "edition", "cry_oversat") then
+			if Cryptid.safe_get(card, "edition", "cry_oversat") then
 				pi = 2 * pi
 			end
 			return {
@@ -842,7 +859,7 @@ local circulus_pistoris = {
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",
-					vars = { (safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
+					vars = { (Cryptid.safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
 				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
@@ -850,7 +867,7 @@ local circulus_pistoris = {
 	end,
 	cry_credits = {
 		idea = { "SMG9000", "Math" }, --not sure if there's more ppl I'm missing
-		art = { "HexaCryonic" },
+		art = { "HexaCryonic", "ori" },
 		code = { "SMG9000", "Math" },
 	},
 }
@@ -973,7 +990,7 @@ local aequilibrium = {
 	--
 	cry_credits = {
 		idea = { "Elial2" },
-		art = { "Elial2" },
+		art = { "Elial2", "unexian", "hydro" },
 		code = { "Elial2" },
 	},
 }
@@ -1025,7 +1042,7 @@ local facile = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Kailen" },
+		art = { "Kailen", "hydro" },
 		code = { "Jevonn" },
 	},
 }
@@ -1047,7 +1064,7 @@ local gemino = {
 			"Jolly Open Winner",
 			"Requiacity",
 		},
-		art = { "Requiacity" },
+		art = { "unexian" },
 		code = { "Math" },
 	},
 	rarity = "cry_exotic",
@@ -1106,8 +1123,8 @@ local gemino = {
 			local check = false
 			local card = G.jokers.cards[1]
 			if not Card.no(G.jokers.cards[1], "immutable", true) then
-				cry_with_deck_effects(G.jokers.cards[1], function(card)
-					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+					Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
 				check = true
 			end
@@ -1417,7 +1434,7 @@ local formidiulosus = {
 	no_dbl = true,
 	update = function(self, card, front)
 		card.ability.extra.Emult = 1
-			+ (card.ability.extra.Emult_mod * #advanced_find_joker(nil, "cry_candy", nil, nil, true))
+			+ (card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true))
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1446,12 +1463,7 @@ local formidiulosus = {
 				G.jokers:emplace(card)
 			end
 		end
-		if
-			context.cardarea == G.jokers
-			and (to_big(card.ability.extra.Emult) > to_big(1))
-			and not context.before
-			and not context.after
-		then
+		if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
@@ -1467,7 +1479,7 @@ local formidiulosus = {
 	end,
 	cry_credits = {
 		idea = { "HexaCryonic", "Kailen" },
-		art = { "Foegro" },
+		art = { "Foegro", "hydro" },
 		code = { "Foegro" },
 	},
 }

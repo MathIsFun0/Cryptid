@@ -1,14 +1,5 @@
 --note to self: refer to https://docs.google.com/document/d/1LNaIouU3vrtWIuPBdFCqLyjYAjVtq7t64xjHnckEY50/edit for order of remaining consumables
 local code = {
-	--[[
-	I'm assuming this won't work so it's commented out for now - Jevonn
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	]]
-	--
 	object_type = "ConsumableType",
 	key = "Code",
 	primary_colour = HEX("14b341"),
@@ -20,7 +11,28 @@ local code = {
 	can_stack = true,
 	can_divide = true,
 }
+local code_digital_hallucinations_compat = {
+	colour = HEX("14b341"),
+	loc_key = "cry_plus_code",
+	create = function()
+		local ccard = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "diha")
+		ccard:set_edition({ negative = true }, true)
+		ccard:add_to_deck()
+		G.consumeables:emplace(ccard)
+	end,
+}
 local pack1 = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -51,8 +63,20 @@ local pack1 = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local pack2 = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -83,8 +107,20 @@ local pack2 = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local packJ = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -115,8 +151,20 @@ local packJ = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local packM = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -147,8 +195,20 @@ local packM = {
 		}
 	end,
 	group_key = "k_cry_program_pack",
+	cry_digital_hallucinations = code_digital_hallucinations_compat,
 }
 local console = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"p_cry_code_normal_1",
@@ -185,7 +245,7 @@ local console = {
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true, true)
 				end
 				card:start_materialize()
@@ -197,6 +257,17 @@ local console = {
 	end,
 }
 local crash = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -764,6 +835,17 @@ local crash = {
 	end,
 }
 local payload = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -793,6 +875,17 @@ local payload = {
 	end,
 }
 local reboot = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -835,6 +928,17 @@ local reboot = {
 	end,
 }
 local revert = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -882,6 +986,17 @@ local revert = {
 	end,
 }
 local semicolon = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -943,6 +1058,17 @@ local semicolon = {
 	end,
 }
 local malware = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1007,6 +1133,17 @@ local malware = {
 	end,
 }
 local seed = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1051,7 +1188,7 @@ local seed = {
 		if G.consumeables.highlighted[1] then
 			G.consumeables.highlighted[1].ability.cry_rigged = true
 		end
-		if safe_get(G, "pack_cards", "highlighted", 1) then
+		if Cryptid.safe_get(G, "pack_cards", "highlighted", 1) then
 			G.pack_cards.highlighted[1].ability.cry_rigged = true
 		end
 	end,
@@ -1070,6 +1207,10 @@ local rigged = {
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	draw = function(self, card) --don't draw shine
+		local notilt = nil
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
 		if not G.shared_stickers["cry_rigged2"] then
 			G.shared_stickers["cry_rigged2"] =
 				Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 })
@@ -1078,21 +1219,32 @@ local rigged = {
 		G.shared_stickers[self.key].role.draw_major = card
 		G.shared_stickers["cry_rigged2"].role.draw_major = card
 
-		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 
 		card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
-		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 		G.shared_stickers["cry_rigged2"]:draw_shader(
 			"hologram",
 			nil,
 			card.ARGS.send_to_shader,
-			nil,
+			notilt,
 			card.children.center
 		) -- this doesn't really do much tbh, but the slight effect is nice
 		card.hover_tilt = card.hover_tilt * 2
 	end,
 }
 local hook = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1189,7 +1341,7 @@ local hooked = {
 					var = localize({ type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key })
 				end
 			end
-			var = var or "[no joker found - " .. (card.hook_id or "nil") .. "]"
+			var = var or ("[no joker found - " .. (card.hook_id or "nil") .. "]")
 		end
 		return { vars = { var or "hooked Joker" } }
 	end,
@@ -1203,6 +1355,17 @@ local hooked = {
 	end,
 }
 local variable = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"AlexZGreat",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1221,7 +1384,7 @@ local variable = {
 	order = 8,
 	config = { max_highlighted = 2, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
+		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -1491,6 +1654,17 @@ local variable = {
 	end,
 }
 local class = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1509,7 +1683,7 @@ local class = {
 	order = 16,
 	config = { max_highlighted = 1, extra = { enteredrank = "" } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
+		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
@@ -1667,7 +1841,7 @@ local class = {
 							delay = 0.15,
 							func = function()
 								CARD:flip()
-								CARD:set_ability(get_random_consumable("cry_class"), true, nil)
+								CARD:set_ability(Cryptid.random_consumable("cry_class"), true, nil)
 								play_sound("tarot2", percent)
 								CARD:juice_up(0.3, 0.3)
 								return true
@@ -1765,6 +1939,17 @@ local class = {
 	end,
 }
 local commit = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1832,6 +2017,17 @@ local commit = {
 	end,
 }
 local merge = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1932,6 +2128,17 @@ local merge = {
 	end,
 }
 local multiply = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -1958,8 +2165,8 @@ local multiply = {
 			G.jokers.highlighted[1].config.cry_multiply = 1
 		end
 		G.jokers.highlighted[1].config.cry_multiply = G.jokers.highlighted[1].config.cry_multiply * 2
-		cry_with_deck_effects(G.jokers.highlighted[1], function(card)
-			cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+		Cryptid.with_deck_effects(G.jokers.highlighted[1], function(card)
+			Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 		end)
 	end,
 	init = function(self)
@@ -1970,8 +2177,8 @@ local multiply = {
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.cry_multiply then
 					m = G.jokers.cards[i].config.cry_multiply
-					cry_with_deck_effects(G.jokers.cards[i], function(card)
-						cry_misprintize(card, { min = 1 / m, max = 1 / m }, nil, true)
+					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
+						Cryptid.misprintize(card, { min = 1 / m, max = 1 / m }, nil, true)
 					end)
 					G.jokers.cards[i].config.cry_multiply = nil
 				end
@@ -1980,6 +2187,17 @@ local multiply = {
 	end,
 }
 local divide = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2036,6 +2254,18 @@ local divide = {
 	end,
 }
 local delete = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+			"Toneblock",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2054,7 +2284,7 @@ local delete = {
 	cost = 4,
 	config = { cry_multiuse = 3 },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
 	end,
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
@@ -2087,7 +2317,7 @@ local delete = {
 			a = G.shop_vouchers
 			c = G.shop_vouchers.highlighted[1]
 			if c.shop_voucher then
-				G.GAME.current_round.voucher = nil
+				G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
 				G.GAME.current_round.cry_voucher_edition = nil
 				G.GAME.current_round.cry_voucher_stickers =
 					{ eternal = false, perishable = false, rental = false, pinned = false, banana = false }
@@ -2156,6 +2386,17 @@ local delete = {
 	]]
 }
 local spaghetti = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2189,6 +2430,17 @@ local spaghetti = {
 	end,
 }
 local machinecode = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2209,24 +2461,24 @@ local machinecode = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			main_start = {
-				randomchar(codechars6),
-				randomchar(codechars6),
-				randomchar(codechars6),
-				randomchar(codechars6),
-				randomchar(codechars6),
-				randomchar(codechars6),
+				Cryptid.randomchar(codechars6),
+				Cryptid.randomchar(codechars6),
+				Cryptid.randomchar(codechars6),
+				Cryptid.randomchar(codechars6),
+				Cryptid.randomchar(codechars6),
+				Cryptid.randomchar(codechars6),
 			},
 		}
 	end,
 	use = function(self, card, area, copier)
 		local card = create_card(
 			"Consumeables",
-			G.consumables,
+			G.consumeables,
 			nil,
 			nil,
 			nil,
 			nil,
-			get_random_consumable("cry_machinecode", nil, "c_cry_machinecode").key,
+			Cryptid.random_consumable("cry_machinecode", nil, "c_cry_machinecode").key,
 			c_cry_machinecode
 		)
 		card:set_edition({ cry_glitched = true })
@@ -2237,11 +2489,11 @@ local machinecode = {
 		local a = {}
 		local b
 		for i = 1, number do
-			b = get_random_consumable("cry_machinecode", nil, "c_cry_machinecode")
+			b = Cryptid.random_consumable("cry_machinecode", nil, "c_cry_machinecode")
 			a[b] = (a[b] or 0) + 1
 		end
 		for k, v in pairs(a) do
-			local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, k.key)
+			local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, k.key)
 			card:set_edition({ cry_glitched = true })
 			card:add_to_deck()
 			if Incantation then
@@ -2428,7 +2680,7 @@ local machinecode = {
 		codechars8 = { "M", "W", "m", "w", "¤", "¶", "Ø", "ø", "Ł" }
 		codechars9 = { "&", "@", "©", "«", "®", "»" }
 		codechars10 = { "Æ", "æ", "Œ", "œ" }
-		function randomchar(arr)
+		function Cryptid.randomchar(arr)
 			return {
 				n = G.UIT.O,
 				config = {
@@ -2448,6 +2700,17 @@ local machinecode = {
 	end,
 }
 local run = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2462,7 +2725,7 @@ local run = {
 	atlas = "code",
 	order = 6,
 	can_use = function(self, card)
-		return safe_get(G.GAME, "blind", "in_blind")
+		return Cryptid.safe_get(G.GAME, "blind", "in_blind")
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
@@ -2549,6 +2812,17 @@ local run = {
 	end,
 }
 local exploit = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Toneblock",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2567,7 +2841,7 @@ local exploit = {
 	order = 28,
 	config = { cry_multiuse = 2, extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
 	loc_vars = function(self, info_queue, card)
-		return { vars = { safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
 	end,
 	can_use = function(self, card)
 		return true
@@ -2754,6 +3028,17 @@ local exploit = {
 	end,
 }
 local oboe = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2774,9 +3059,9 @@ local oboe = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		if not card then
-			return { vars = { self.config.extra.choices, (safe_get(G.GAME, "cry_oboe") or 0) } }
+			return { vars = { self.config.extra.choices, (Cryptid.safe_get(G.GAME, "cry_oboe") or 0) } }
 		end
-		return { vars = { card.ability.extra.choices, (safe_get(G.GAME, "cry_oboe") or 0) } }
+		return { vars = { card.ability.extra.choices, (Cryptid.safe_get(G.GAME, "cry_oboe") or 0) } }
 	end,
 	can_use = function(self, card)
 		return true
@@ -2789,6 +3074,17 @@ local oboe = {
 	end,
 }
 local rework = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -2808,7 +3104,7 @@ local rework = {
 	cost = 4,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] =
-			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]" } }
+			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]", "n" } }
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
@@ -2857,6 +3153,17 @@ local rework = {
 	end,
 }
 local rework_tag = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"c_cry_rework",
@@ -2882,13 +3189,13 @@ local rework_tag = {
 			end
 			return r
 		end
-		local ed = safe_get(tag, "ability", "rework_edition")
+		local ed = Cryptid.safe_get(tag, "ability", "rework_edition")
 				and localize({ type = "name_text", set = "Edition", key = tag.ability.rework_edition })
 			or "[" .. string.lower(localize("k_edition")) .. "]"
 		return {
 			vars = {
 				ed,
-				safe_get(tag, "ability", "rework_key")
+				Cryptid.safe_get(tag, "ability", "rework_key")
 						and localize({ type = "name_text", set = "Joker", key = tag.ability.rework_key })
 					or "[" .. string.lower(localize("k_joker")) .. "]",
 				string.sub(ed, 1, 1) ~= "[" and p(ed) or "n",
@@ -2999,10 +3306,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					if Cryptid.enabled["Spooky"] then
-						CARD.ability.cry_possessed = nil
-						SMODS.Stickers.cry_flickering:apply(CARD, nil)
-					end
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -3025,11 +3330,9 @@ local patch = {
 					if not CARD.sob then
 						CARD:set_eternal(nil)
 					end
-					CARD.ability.banana = nil
-					if Cryptid.enabled["Spooky"] then
-						CARD.ability.cry_possessed = nil
-						SMODS.Stickers.cry_flickering:apply(CARD, nil)
-					end
+					CARD.ability.banana = notify_alert
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -3053,10 +3356,8 @@ local patch = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					if Cryptid.enabled["Spooky"] then
-						CARD.ability.cry_possessed = nil
-						SMODS.Stickers.cry_flickering:apply(CARD, nil)
-					end
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -3066,6 +3367,17 @@ local patch = {
 	end,
 }
 local ctrl_v = {
+	cry_credits = {
+		idea = {
+			"ItsFlowwey",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Foegro",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3101,6 +3413,7 @@ local ctrl_v = {
 					card:add_to_deck()
 					table.insert(G.playing_cards, card)
 					G.hand:emplace(card)
+					playing_card_joker_effects({ card })
 					return true
 				end,
 			}))
@@ -3157,6 +3470,17 @@ local ctrl_v = {
 	end,
 }
 local inst = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Foegro",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3223,6 +3547,17 @@ local inst = {
 	end,
 }
 local alttab = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Toneblock",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3243,7 +3578,7 @@ local alttab = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		local ret = localize("k_none")
-		if safe_get(G.GAME, "blind", "in_blind") then
+		if Cryptid.safe_get(G.GAME, "blind", "in_blind") then
 			if G.GAME.blind:get_type() == "Small" then
 				ret = localize({ type = "name_text", key = G.GAME.round_resets.blind_tags.Small, set = "Tag" })
 			elseif G.GAME.blind:get_type() == "Big" then
@@ -3255,7 +3590,7 @@ local alttab = {
 		return { vars = { ret } }
 	end,
 	can_use = function(self, card)
-		return safe_get(G.GAME, "blind", "in_blind")
+		return Cryptid.safe_get(G.GAME, "blind", "in_blind")
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -3306,6 +3641,17 @@ local alttab = {
 	end,
 }
 local automaton = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -3320,7 +3666,7 @@ local automaton = {
 	order = 5,
 	atlas = "code",
 	loc_vars = function(self, info_queue, card)
-		return { vars = { safe_get(card, "ability", "create") or self.config.create } }
+		return { vars = { Cryptid.safe_get(card, "ability", "create") or self.config.create } }
 	end,
 	can_use = function(self, card)
 		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
@@ -3385,6 +3731,17 @@ local green_seal = {
 	end,
 }
 local source = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"cry_green",
@@ -3442,6 +3799,17 @@ local source = {
 	end,
 }
 local pointer = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -4291,6 +4659,17 @@ local pointer = {
 	end,
 }
 local encoded = {
+	cry_credits = {
+		idea = {
+			"I forgot",
+		},
+		art = {
+			"Kailen",
+		},
+		code = {
+			"Kailen",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_code",
@@ -4348,16 +4727,22 @@ local CodeJoker = {
 	pos = { x = 2, y = 4 },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+		return { key = Cryptid.gameset_loc(self, { exp_modest = "modest" }) }
 	end,
+	extra_gamesets = { "exp_modest" },
 	rarity = "cry_epic",
 	cost = 11,
 	order = 109,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+		if
+			context.setting_blind
+			and not (context.blueprint_card or self).getting_sliced
+			and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest")
+		then
 			play_sound("timpani")
-			local card = create_card("Code", G.consumables, nil, nil, nil, nil)
+			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
 			card:set_edition({
 				negative = true,
 			})
@@ -4385,7 +4770,7 @@ local CodeJoker = {
 			local count2 = 0
 			for k, v in pairs(G.P_CENTER_POOLS["Code"]) do
 				count2 = count2 + 1
-				if safe_get(v, "discovered") == true then
+				if Cryptid.safe_get(v, "discovered") == true then
 					count = count + 1
 				end
 			end
@@ -4428,16 +4813,41 @@ local copypaste = {
 				) or 1,
 				card and card.ability.extra.odds or 2,
 			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
-			key = Card.get_gameset(card) ~= "madness" and "j_cry_copypaste" or "j_cry_copypaste2",
+			key = Cryptid.gameset_loc(self, { madness = "madness", exp_modest = "modest" }),
 		}
 	end,
 	atlas = "atlasepic",
+	extra_gamesets = { "exp_modest" },
+	gameset_config = {
+		exp_modest = { cost = 8, center = { rarity = 3 } },
+	},
 	calculate = function(self, card, context)
+		if context.pull_card and context.card.ability.set == "Code" and Cryptid.gameset(card) == "exp_modest" then
+			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local cards = copy_card(context.card)
+						cards:add_to_deck()
+						G.consumeables:emplace(cards)
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_copied_ex") }
+				)
+			end
+		end
 		if
 			context.using_consumeable
 			and context.consumeable.ability.set == "Code"
 			and not context.consumeable.beginning_end
 			and not card.ability.extra.ckt
+			and Cryptid.gameset(card) ~= "exp_modest"
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				if
@@ -4603,7 +5013,7 @@ local blender = {
 			and not context.consumeable.beginning_end
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				local card = create_card("Consumeables", G.consumables, nil, nil, nil, nil, nil, "cry_blender")
+				local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, nil, "cry_blender")
 				card:add_to_deck()
 				G.consumeables:emplace(card)
 			end
@@ -4811,7 +5221,11 @@ return {
 		end
 		--Code from Betmma's Vouchers
 		G.FUNCS.can_reserve_card = function(e)
-			if #G.consumeables.cards < G.consumeables.config.card_limit then
+			local c1 = e.config.ref_table
+			if
+				#G.consumeables.cards
+				< G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+			then
 				e.config.colour = G.C.GREEN
 				e.config.button = "reserve_card"
 			else
@@ -4837,6 +5251,7 @@ return {
 					c1.children.buy_button = nil
 					remove_nils(c1.children)
 					G.consumeables:emplace(c1)
+					SMODS.calculate_context({ pull_card = true, card = c1 })
 					G.GAME.pack_choices = G.GAME.pack_choices - 1
 					if G.GAME.pack_choices <= 0 then
 						G.FUNCS.end_consumeable(nil, delay_fac)

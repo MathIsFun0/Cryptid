@@ -1,5 +1,26 @@
 -- Packs
+local meme_digital_hallucinations_compat = {
+	colour = G.C.CRY_ASCENDANT,
+	loc_key = "k_plus_joker",
+	create = function()
+		local ccard = create_card("Meme", G.jokers, nil, nil, true, true, nil, "diha")
+		ccard:set_edition({ negative = true }, true)
+		ccard:add_to_deck()
+		G.jokers:emplace(ccard) --Note: Will break if any non-Joker gets added to the meme pool
+	end,
+}
 local meme1 = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Booster",
 	dependencies = {
 		items = {
@@ -16,7 +37,7 @@ local meme1 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enabled["Misc. Jokers"]
+			Cryptid.enabled("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
@@ -43,13 +64,24 @@ local meme1 = {
 		SMODS.Booster.update_pack(self, dt)
 	end,
 	group_key = "k_cry_meme_pack",
+	cry_digital_hallucinations = meme_digital_hallucinations_compat,
 }
 local meme2 = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Booster",
 	dependencies = {
 		items = {
 			"set_cry_misc",
-			"p_cry_meme_1",
 		},
 	},
 	key = "meme_two",
@@ -62,7 +94,7 @@ local meme2 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enabled["Misc. Jokers"]
+			Cryptid.enabled("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memetwo_" .. G.GAME.round_resets.ante) > 0.997 then
@@ -89,14 +121,24 @@ local meme2 = {
 		SMODS.Booster.update_pack(self, dt)
 	end,
 	group_key = "k_cry_meme_pack",
+	cry_digital_hallucinations = meme_digital_hallucinations_compat,
 }
 local meme3 = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Booster",
 	dependencies = {
 		items = {
 			"set_cry_misc",
-			"p_cry_meme_1",
-			"p_cry_meme_two",
 		},
 	},
 	key = "meme_three",
@@ -109,7 +151,7 @@ local meme3 = {
 	weight = 0.18 / 3, --0.18 base ÷ 3 since there are 3 identical packs
 	create_card = function(self, card)
 		if
-			Cryptid.enabled["Misc. Jokers"]
+			Cryptid.enabled("j_cry_waluigi")
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memethree_" .. G.GAME.round_resets.ante) > 0.997 then
@@ -136,6 +178,7 @@ local meme3 = {
 		SMODS.Booster.update_pack(self, dt)
 	end,
 	group_key = "k_cry_meme_pack",
+	cry_digital_hallucinations = meme_digital_hallucinations_compat,
 }
 
 if not AurinkoAddons then
@@ -149,6 +192,18 @@ local mosaic_shader = {
 	path = "mosaic.fs",
 }
 local mosaic = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		--Replace with Shader later
+		art = {
+			"Math",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -202,6 +257,17 @@ local oversat_shader = {
 	path = "oversat.fs",
 }
 local oversat = {
+	cry_credits = {
+		idea = {
+			"Math",
+		},
+		art = {
+			"Math",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -222,26 +288,32 @@ local oversat = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
+	-- Note: Duping playing cards resets the base chips for some reason
 	on_apply = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {
-				min = 2,
-				max = 2,
-			}, nil, true)
-		end)
-		if card.config.center.apply_oversat then
-			card.config.center:apply_oversat(card, function(val)
-				return cry_misprintize_val(val, {
+		if not card.ability.cry_oversat then
+			Cryptid.with_deck_effects(card, function(card)
+				Cryptid.misprintize(card, {
 					min = 2,
 					max = 2,
-				}, is_card_big(card), true)
+				}, nil, true)
 			end)
+			if card.config.center.apply_oversat then
+				card.config.center:apply_oversat(card, function(val)
+					return Cryptid.misprintize_val(val, {
+						min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
+					}, Cryptid.is_card_big(card))
+				end)
+			end
 		end
+		card.ability.cry_oversat = true
 	end,
 	on_remove = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, { min = 0.5, max = 0.5 }, nil, true)
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
+			Cryptid.misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
+		card.ability.cry_oversat = nil
 	end,
 	init = function(self)
 		AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
@@ -300,6 +372,14 @@ local glitched_shader = {
 	path = "glitched.fs",
 }
 local glitched = {
+	cry_credits = {
+		art = {
+			"Samario",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -320,29 +400,32 @@ local glitched = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	-- Note: This is happening even when it shouldn't (like in deck view)
-	-- Also messes with rank sort order a bit for some reason
+	-- Note: Duping playing cards resets the base chips for some reason
 	on_apply = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, {
-				min = 0.1,
-				max = 10,
-			}, nil, true)
-		end)
-		if card.config.center.apply_glitched then
-			card.config.center:apply_glitched(card, function(val)
-				return cry_misprintize_val(val, {
-					min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-					max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-				}, is_card_big(card), true)
+		if not card.ability.cry_glitched then
+			Cryptid.with_deck_effects(card, function(card)
+				Cryptid.misprintize(card, {
+					min = 0.1,
+					max = 10,
+				}, nil, true)
 			end)
+			if card.config.center.apply_glitched then
+				card.config.center:apply_glitched(card, function(val)
+					return Cryptid.misprintize_val(val, {
+						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+					}, Cryptid.is_card_big(card))
+				end)
+			end
 		end
+		card.ability.cry_glitched = true
 	end,
 	on_remove = function(card)
-		cry_with_deck_effects(card, function(card)
-			cry_misprintize(card, { min = 1, max = 1 }, true)
-			cry_misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
+			Cryptid.misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
+		card.ability.cry_glitched = nil
 	end,
 	init = function(self)
 		local randtext = {
@@ -431,14 +514,14 @@ local glitched = {
 
 		AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
 			local modc = G.GAME.hands[hand].l_chips
-				* cry_log_random(
+				* Cryptid.log_random(
 					pseudoseed("cry_aurinko_chips_misprint" .. G.GAME.round_resets.ante),
 					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
 					(G.GAME.modifiers.cry_misprint_max or 1) * 10
 				)
 				* amount
 			local modm = G.GAME.hands[hand].l_mult
-				* cry_log_random(
+				* Cryptid.log_random(
 					pseudoseed("cry_aurinko_mult_misprint" .. G.GAME.round_resets.ante),
 					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
 					(G.GAME.modifiers.cry_misprint_max or 1) * 10
@@ -525,6 +608,15 @@ local astral_shader = {
 	path = "astral.fs",
 }
 local astral = {
+	cry_credits = {
+		--Don't remember who came up with this idea
+		art = {
+			"AlexZGreat",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -578,6 +670,17 @@ local blurred_shader = {
 	path = "blur.fs",
 }
 local blurred = {
+	cry_credits = {
+		idea = {
+			"stupid",
+		},
+		art = {
+			"stupid",
+		},
+		code = {
+			"stupid",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -641,6 +744,17 @@ local noisy_stats = {
 	},
 }
 local noisy = {
+	cry_credits = {
+		idea = {
+			"Math",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -902,6 +1016,18 @@ local jollyeditionshader = {
 	path = "m.fs",
 }
 local jollyedition = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"stupid",
+			"Math",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -1034,6 +1160,17 @@ local glass_shader = {
 	end,
 }
 local glass_edition = {
+	cry_credits = {
+		idea = {
+			"Math",
+		},
+		art = {
+			"stupid",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -1163,6 +1300,17 @@ local gold_shader = {
 	end,
 }
 local gold_edition = {
+	cry_credits = {
+		idea = {
+			"Math",
+		},
+		art = {
+			"stupid",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Edition",
 	dependencies = {
 		items = {
@@ -1219,9 +1367,9 @@ local double_sided = {
 		modest = { disabled = true },
 		mainline = { disabled = true },
 		madness = { disabled = true },
-		experimental = {},
+		exp = {},
 	},
-	extra_gamesets = { "experimental" },
+	extra_gamesets = { "exp" },
 	key = "double_sided",
 	shader = false,
 	order = 32,
@@ -1235,6 +1383,9 @@ local double_sided = {
 		vol = 0.3,
 	},
 	cry_credits = {
+		code = {
+			"Math",
+		},
 		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
@@ -1282,7 +1433,7 @@ local double_sided = {
 					local area = e.config.ref_table.area
 					area:remove_card(e.config.ref_table)
 					mergedcard:init_dbl_side()
-					copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
+					Cryptid.copy_dbl_card(e.config.ref_table, mergedcard.dbl_side)
 					e.config.ref_table:remove()
 					e.config.ref_table = nil
 					return true
@@ -1430,7 +1581,7 @@ local double_sided = {
 				self.ability.eternal = true
 			end
 		end
-		function copy_dbl_card(C, c, deck_effects)
+		function Cryptid.copy_dbl_card(C, c, deck_effects)
 			if not deck_effects then
 				Cdeck = C.added_to_deck
 				cdeck = c.added_to_deck
@@ -1445,11 +1596,11 @@ local double_sided = {
 				self:set_edition(nil, true)
 			end
 			if not self.dbl_side then
-				self.dbl_side = cry_deep_copy(self)
+				self.dbl_side = Cryptid.deep_copy(self)
 				self.dbl_side:set_ability(G.P_CENTERS.j_joker)
 				-- self.dbl_side:set_base(G.P_CARDS.empty) -- RIGHT HERE THIS RIGHT HERE THATS YOUR DAM CULPRIT
 				if self.area == G.hand then
-					self.dbl_side = cry_deep_copy(self)
+					self.dbl_side = Cryptid.deep_copy(self)
 					self.dbl_side:set_ability(G.P_CENTERS.c_base)
 				end
 				self.dbl_side.added_to_deck = false
@@ -1458,7 +1609,7 @@ local double_sided = {
 		end
 		function Card:dbl_side_flip()
 			local init_dbl_side = self:init_dbl_side()
-			local tmp_side = cry_deep_copy(self.dbl_side)
+			local tmp_side = Cryptid.deep_copy(self.dbl_side)
 			self.children.center.scale = { x = self.children.center.atlas.px, y = self.children.center.atlas.py }
 			self.T.w, self.T.h = G.CARD_W, G.CARD_H
 			local active_side = self
@@ -1468,8 +1619,8 @@ local double_sided = {
 			if not init_dbl_side then
 				active_side:remove_from_deck(true)
 			end
-			copy_dbl_card(self, self.dbl_side, false)
-			copy_dbl_card(tmp_side, self, false)
+			Cryptid.copy_dbl_card(self, self.dbl_side, false)
+			Cryptid.copy_dbl_card(tmp_side, self, false)
 			active_side:add_to_deck(true)
 			self.children.center:set_sprite_pos(G.P_CENTERS[self.config.center.key].pos)
 			if self.base then
@@ -1519,7 +1670,7 @@ local double_sided = {
 				end
 			end
 			if cardTable.dbl_side then
-				self.dbl_side = cry_deep_copy(self)
+				self.dbl_side = Cryptid.deep_copy(self)
 				cload(self.dbl_side, cardTable.dbl_side)
 				if self.dbl_side.ability.set == "Default" and self.ability.set ~= "Default" then
 					self.dbl_side:set_ability(G.P_CENTERS.c_base, true)
@@ -1626,6 +1777,12 @@ local meld = {
 		end
 	end,
 	cry_credits = {
+		art = {
+			"Linus Goof Balls",
+		},
+		code = {
+			"Math",
+		},
 		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
@@ -1652,6 +1809,17 @@ local meld = {
 
 -- Enhancements/Tarots
 local echo = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"Coronacht",
+		},
+		code = {
+			"AlexZGreat",
+		},
+	},
 	object_type = "Enhancement",
 	dependencies = {
 		items = {
@@ -1686,6 +1854,17 @@ local echo = {
 	end,
 }
 local eclipse = {
+	cry_credits = {
+		idea = {
+			"Mystick Misclick",
+		},
+		art = {
+			"AlexZGreat",
+		},
+		code = {
+			"AlexZGreat",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -1707,6 +1886,17 @@ local eclipse = {
 	end,
 }
 local light = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"AlexZGreat",
+		},
+		code = {
+			"AlexZGreat",
+		},
+	},
 	object_type = "Enhancement",
 	dependencies = {
 		items = {
@@ -1747,6 +1937,17 @@ local light = {
 	end,
 }
 local seraph = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"sachertote",
+		},
+		code = {
+			"AlexZGreat",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -1768,6 +1969,17 @@ local seraph = {
 	end,
 }
 local blessing = {
+	cry_credits = {
+		idea = {
+			"5381",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -1793,10 +2005,10 @@ local blessing = {
 			func = function()
 				if G.consumeables.config.card_limit > #G.consumeables.cards then
 					play_sound("timpani")
-					local forced_key = get_random_consumable("blessing", nil, "c_cry_blessing")
+					local forced_key = Cryptid.random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card(
 						"Consumeables",
-						G.consumables,
+						G.consumeables,
 						nil,
 						nil,
 						nil,
@@ -1817,6 +2029,17 @@ local blessing = {
 
 -- Seals
 local azure_seal = {
+	cry_credits = {
+		idea = {
+			"stupid",
+		},
+		art = {
+			"stupid",
+		},
+		code = {
+			"stupid",
+		},
+	},
 	object_type = "Seal",
 	dependencies = {
 		items = {
@@ -1867,6 +2090,17 @@ local azure_seal = {
 	end,
 }
 local typhoon = {
+	cry_credits = {
+		idea = {
+			"stupid",
+		},
+		art = {
+			"stupid",
+		},
+		code = {
+			"stupid",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -1943,20 +2177,24 @@ local absolute = {
 	should_apply = false,
 	no_sticker_sheet = true,
 	draw = function(self, card, layer)
+		local notilt = nil
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
 		G.shared_stickers["cry_absolute"].role.draw_major = card
-		G.shared_stickers["cry_absolute"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_absolute"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 		G.shared_stickers["cry_absolute"]:draw_shader(
 			"polychrome",
 			nil,
 			card.ARGS.send_to_shader,
-			nil,
+			notilt,
 			card.children.center
 		)
 		G.shared_stickers["cry_absolute"]:draw_shader(
 			"voucher",
 			nil,
 			card.ARGS.send_to_shader,
-			nil,
+			notilt,
 			card.children.center
 		)
 	end,

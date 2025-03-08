@@ -1,4 +1,15 @@
 local cat = {
+	cry_credits = {
+		idea = {
+			"Catman",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -7,11 +18,26 @@ local cat = {
 	},
 	atlas = "tag_cry",
 	pos = { x = 0, y = 2 },
+	config = { level = 1 },
 	key = "cat",
 	name = "cry-Cat Tag",
 	order = 12,
+	loc_vars = function(self, info_queue, tag)
+		return { vars = { tag.ability.level or 1 } }
+	end,
 }
 local epic_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Math",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -56,6 +82,17 @@ local epic_tag = {
 	end,
 }
 local schematic = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -103,6 +140,18 @@ local schematic = {
 	end,
 }
 local empoweredPack = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+			"Mjiojio",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Booster",
 	dependencies = {
 		items = {
@@ -145,15 +194,49 @@ local empoweredPack = {
 		G.booster_pack_sparkles:fade(1, 0)
 	end,
 	create_card = function(self, card, i)
-		if i % 2 == 1 and Cryptid.enabled["Exotic Jokers"] then
+		if
+			i % 2 == 1
+			and Cryptid.enabled("c_cry_gateway") == true
+			and not G.GAME.used_jokers["c_cry_gateway"]
+			and not next(find_joker("Showman"))
+		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
-		else
+		elseif not G.GAME.used_jokers["c_soul"] and not next(find_joker("Showman")) then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
+		else
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
 		end
 	end,
 	group_key = "k_spectral_pack",
+	cry_digital_hallucinations = {
+		colour = G.C.SECONDARY_SET.Spectral,
+		loc_key = "k_plus_spectral",
+		create = function()
+			local ccard
+			if pseudorandom(pseudoseed("diha")) < 0.5 then
+				ccard = create_card("Spectral", G.consumeables, nil, nil, true, true, "c_soul")
+			else
+				ccard = create_card("Spectral", G.consumeables, nil, nil, true, true, "c_cry_gateway")
+			end
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end,
+	},
 }
 local empowered = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+			"Mjiojio",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -171,7 +254,7 @@ local empowered = {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
-		if Cryptid.enabled["Exotic Jokers"] then
+		if Cryptid.enabled("c_cry_gateway") then
 			info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		end
 		return { vars = {} }
@@ -197,7 +280,7 @@ local empowered = {
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true, true)
 				end
 				card:start_materialize()
@@ -213,6 +296,17 @@ local empowered = {
 	end,
 }
 local gambler = {
+	cry_credits = {
+		idea = {
+			"Catman",
+		},
+		art = {
+			"SpoofyGuy",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -224,7 +318,7 @@ local gambler = {
 	order = 13,
 	atlas = "tag_cry",
 	pos = { x = 2, y = 0 },
-	config = { type = "immediate", odds = 4 },
+	config = { type = "new_blind_choice", odds = 4 },
 	min_ante = 2,
 	key = "gambler",
 	loc_vars = function(self, info_queue)
@@ -232,18 +326,31 @@ local gambler = {
 		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
 	end,
 	apply = function(self, tag, context)
-		if context.type == "immediate" then
+		if context.type == "new_blind_choice" then
 			if pseudorandom("cry_gambler_tag") < G.GAME.probabilities.normal / tag.config.odds then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
 				tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
-					local tag = Tag("tag_cry_empowered")
-					add_tag(tag)
+					local emp = Tag("tag_cry_empowered")
+					if tag.ability.shiny then -- good fucking luck
+						emp.ability.shiny = cry_rollshinybool()
+					end
+					add_tag(emp)
+					tag.triggered = true
+					emp:apply_to_run({ type = "new_blind_choice" })
 					G.CONTROLLER.locks[lock] = nil
 					return true
 				end)
 			else
 				tag:nope()
+				tag.triggered = true
+				for i = 1, #G.GAME.tags do
+					if G.GAME.tags[i] ~= tag then
+						if G.GAME.tags[i]:apply_to_run({ type = "new_blind_choice" }) then
+							break
+						end
+					end
+				end
 			end
 			tag.triggered = true
 			return true
@@ -251,6 +358,17 @@ local gambler = {
 	end,
 }
 local bundle = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -261,7 +379,7 @@ local bundle = {
 	order = 16,
 	atlas = "tag_cry",
 	pos = { x = 0, y = 0 },
-	config = { type = "immediate" },
+	config = { type = "new_blind_choice" },
 	key = "bundle",
 	min_ante = 2,
 	loc_vars = function(self, info_queue)
@@ -272,14 +390,20 @@ local bundle = {
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
-		if context.type == "immediate" then
+		if context.type == "new_blind_choice" then
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.ATTENTION, function()
-				add_tag(Tag("tag_standard"))
-				add_tag(Tag("tag_charm"))
-				add_tag(Tag("tag_meteor"))
-				add_tag(Tag("tag_buffoon"))
+				local tags = { "standard", "charm", "meteor", "buffoon" }
+				for i, v in ipairs(tags) do
+					local _tag = Tag("tag_" .. v)
+					_tag.ability.shiny = cry_rollshinybool()
+					add_tag(_tag)
+					if i == 1 then
+						tag.triggered = true
+						_tag:apply_to_run({ type = "new_blind_choice" })
+					end
+				end
 				G.CONTROLLER.locks[lock] = nil
 				return true
 			end)
@@ -289,6 +413,17 @@ local bundle = {
 	end,
 }
 local memory = {
+	cry_credits = {
+		idea = {
+			"y_not_tony",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -351,6 +486,17 @@ local memory = {
 	end,
 }
 local glitched_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -373,6 +519,9 @@ local glitched_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -392,6 +541,17 @@ local glitched_tag = {
 	end,
 }
 local oversat_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -414,6 +574,9 @@ local oversat_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -433,6 +596,17 @@ local oversat_tag = {
 	end,
 }
 local mosaic_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -455,6 +629,9 @@ local mosaic_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -474,6 +651,17 @@ local mosaic_tag = {
 	end,
 }
 local gold_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -496,6 +684,9 @@ local gold_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -515,6 +706,17 @@ local gold_tag = {
 	end,
 }
 local glass_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -537,6 +739,9 @@ local glass_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -556,6 +761,17 @@ local glass_tag = {
 	end,
 }
 local blur_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -578,6 +794,9 @@ local blur_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -598,6 +817,17 @@ local blur_tag = {
 }
 --order 8 reserved for Noisy tag (if it ever has a shader / comes into existence)
 local astral_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -620,6 +850,9 @@ local astral_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -639,6 +872,17 @@ local astral_tag = {
 	end,
 }
 local m_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -661,6 +905,9 @@ local m_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
@@ -680,6 +927,17 @@ local m_tag = {
 	end,
 }
 local double_m_tag = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -702,21 +960,7 @@ local double_m_tag = {
 	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card
-			local option = {}
-			for k, _ in pairs(Cryptid.M_jokers) do
-				if G.P_CENTERS[k] then
-					option[#option + 1] = k
-				end
-			end
-			card = create_card(
-				"Joker",
-				context.area,
-				nil,
-				nil,
-				nil,
-				nil,
-				pseudorandom_element(option, pseudoseed("M_is_love_M_is_life"))
-			)
+			card = create_card("M", context.area, nil, nil, nil, nil, nil, pseudoseed("M_is_love_M_is_life"))
 			card:set_edition({
 				cry_m = true,
 			})
@@ -737,6 +981,17 @@ local double_m_tag = {
 	end,
 }
 local banana = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -806,6 +1061,17 @@ local banana = {
 	end,
 }
 local scope = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -835,6 +1101,17 @@ local scope = {
 	end,
 }
 local loss = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -874,7 +1151,7 @@ local loss = {
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true, true)
 				end
 				card:start_materialize()
@@ -887,6 +1164,17 @@ local loss = {
 	end,
 }
 local gourmand = {
+	cry_credits = {
+		idea = {
+			"Personthateatcheese",
+		},
+		art = {
+			"Personthateatcheese",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -920,6 +1208,17 @@ local gourmand = {
 	end,
 }
 local better_top_up = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -961,6 +1260,17 @@ local better_top_up = {
 	end,
 }
 local better_voucher = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"Mystic Misclick",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -982,7 +1292,7 @@ local better_voucher = {
 		if context.type == "voucher_add" then
 			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
 				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
-				local voucher_key = get_next_megavoucher_key(true)
+				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
 				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				local card = Card(
@@ -994,13 +1304,13 @@ local better_voucher = {
 					G.P_CENTERS[voucher_key],
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
-				cry_misprintize(card)
+				Cryptid.misprintize(card)
 				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
 				card:start_materialize()
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
 					card:set_edition(nil, true)
 				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = cry_poll_random_edition()
+					local edition = Cryptid.poll_random_edition()
 					card:set_edition(edition, true)
 				end
 
@@ -1038,6 +1348,17 @@ local better_voucher = {
 	end,
 }
 local booster = {
+	cry_credits = {
+		idea = {
+			"Watermelon Lover",
+		},
+		art = {
+			"Maw",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Tag",
 	dependencies = {
 		items = {
@@ -1059,7 +1380,7 @@ local booster = {
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.BLUE, function()
-				G.GAME.boostertag = true
+				G.GAME.boostertag = (G.GAME.boostertag or 0) + 1
 				G.CONTROLLER.locks[lock] = nil
 				return true
 			end)

@@ -117,10 +117,6 @@ local choco_dice = {
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		if not center then --tooltip
-		elseif not center.added_to_deck then
-			for i = 1, 10 do
-				info_queue[#info_queue + 1] = { set = "Other", key = "ev_cry_choco" .. i }
-			end
 		else
 			SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]:loc_vars(info_queue, center)
 		end
@@ -139,7 +135,7 @@ local choco_dice = {
 		then
 			--todo: check if duplicates of event are already started/finished
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
-			card.ability.extra.roll = roll_dice("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
+			card.ability.extra.roll = Cryptid.roll("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:start()
 			return {
 				message = tostring(card.ability.extra.roll),
@@ -566,10 +562,10 @@ local choco9 = {
 	init = function(self)
 		local ed = ease_dollars
 		function ease_dollars(mod, instant)
-			if mod == 0 then
+			if to_big(mod) == to_big(0) then
 				return
 			end
-			if G.GAME.events.ev_cry_choco9 and mod > to_big(0) then
+			if G.GAME.events.ev_cry_choco9 and to_big(mod) > to_big(0) then
 				mod = mod * 2
 			end
 			return ed(mod, instant)
@@ -703,7 +699,7 @@ local spy = {
 				desc_nodes[#desc_nodes + 1] = res.main_end
 			end
 		else
-			local secret_card = cry_deep_copy(G.P_CENTERS[card.ability.extra.secret_card])
+			local secret_card = Cryptid.deep_copy(G.P_CENTERS[card.ability.extra.secret_card])
 			secret_card.ability = secret_card.config
 			local target = {
 				type = "descriptions",
@@ -1359,8 +1355,8 @@ local jawbreaker = {
 							not Card.no(G.jokers.cards[i - 1], "immune_to_chemach", true)
 							and not Card.no(G.jokers.cards[i - 1], "immutable", true)
 						then
-							cry_with_deck_effects(G.jokers.cards[i - 1], function(card)
-								cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
+								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 							end)
 						end
 					end
@@ -1369,8 +1365,8 @@ local jawbreaker = {
 							not Card.no(G.jokers.cards[i + 1], "immune_to_chemach", true)
 							and not Card.no(G.jokers.cards[i + 1], "immutable", true)
 						then
-							cry_with_deck_effects(G.jokers.cards[i + 1], function(card)
-								cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
+								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 							end)
 						end
 					end

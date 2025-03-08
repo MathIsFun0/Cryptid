@@ -1,12 +1,11 @@
---- STEAMODDED HEADER
 --- MOD_NAME: Cryptid
 --- MOD_ID: Cryptid
 --- PREFIX: cry
 --- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
 --- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
 --- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.9, Steamodded>=1.0.0~ALPHA-1312c]
---- VERSION: 0.5.4
+--- DEPENDENCIES: [Talisman>=2.0.9, Steamodded>=1.0.0~BETA-0301a]
+--- VERSION: 0.5.5~dev
 --- PRIORITY: 2147483647
 
 ----------------------------------------------
@@ -17,15 +16,12 @@
 -- If you're looking for a specific feature, browse the Items folder to see how it is implemented.
 -- If you're looking for a specific function, check the lib folder to see if it is there.
 
--- Initialize some important variables
 if not Cryptid then
 	Cryptid = {}
 end
 local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
 Cryptid_config = SMODS.current_mod.config
--- This will save the current state even when settings are modified
-Cryptid.enabled = copy_table(Cryptid_config)
 
 -- Enable optional features
 SMODS.current_mod.optional_features = {
@@ -71,8 +67,13 @@ local function process_items(f, mod)
 						key = false,
 						atlas = false,
 					}
+					item.mod_path = mod.path
 					if item.key then
-						item.key = mod.prefix .. "_" .. item.key
+						if item.object_type and SMODS[item.object_type].class_prefix then
+							item.key = SMODS[item.object_type].class_prefix .. "_" .. mod.prefix .. "_" .. item.key
+						else
+							item.key = mod.prefix .. "_" .. item.key
+						end
 					end
 					if item.atlas then
 						item.atlas = mod.prefix .. "_" .. item.atlas
@@ -153,7 +154,7 @@ for _, mod in pairs(SMODS.Mods) do
 				end
 				process_items(f, mod)
 			end
-			if file == "Cryptid" then
+			if file == "Cryptid" and path .. "Cryptid/" ~= Cryptid.path then
 				local files = NFS.getDirectoryItems(path .. "Cryptid")
 				for _, file in ipairs(files) do
 					print("[CRYPTID] Loading file " .. file .. " from " .. mod.id)
@@ -184,7 +185,7 @@ end
 local inj = SMODS.injectItems
 function SMODS.injectItems(...)
 	inj(...)
-	cry_update_obj_registry()
+	Cryptid.update_obj_registry()
 	for _, t in ipairs({
 		G.P_CENTERS,
 		G.P_BLINDS,
@@ -226,6 +227,7 @@ local cryptidConfigTab = function()
 	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 	cry_nodes[#cry_nodes + 1] = config
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
+		colour = G.C.CRY_GREENGRADIENT,
 		button = "your_collection_content_sets",
 		label = { localize("b_content_sets") },
 		count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
@@ -237,18 +239,31 @@ local cryptidConfigTab = function()
 	--Add warning notifications later for family mode
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_family"),
-		active_colour = G.C.MONEY,
+		active_colour = HEX("40c76d"),
 		ref_table = Cryptid_config,
 		ref_value = "family_mode",
-		callback = reload_cryptid_localization,
+		callback = Cryptid.reload_localization,
 	})
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_experimental"),
-		active_colour = G.C.MONEY,
+		active_colour = HEX("1f8505"),
 		ref_table = Cryptid_config,
 		ref_value = "experimental",
 	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_feat_https module"),
+		active_colour = HEX("b1c78d"),
+		ref_table = Cryptid_config,
+		ref_value = "HTTPS",
+	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_feat_menu"),
+		active_colour = HEX("1c5c23"),
+		ref_table = Cryptid_config,
+		ref_value = "menu",
+	})
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
+		colour = G.C.CRY_ALTGREENGRADIENT,
 		button = "reset_gameset_config",
 		label = { localize("b_reset_gameset_" .. (G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline")) },
 		minw = 5,
@@ -292,26 +307,31 @@ local cryptidTabs = function()
 				}
 				settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_jimball"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "jimball_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_code"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "code_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_exotic"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "exotic_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_high_score"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "big_music",
 				})
 				settings.nodes[#settings.nodes + 1] = create_toggle({
+					active_colour = G.C.CRY_JOLLY,
 					label = localize("cry_mus_alt_bg"),
 					ref_table = Cryptid_config.Cryptid,
 					ref_value = "alt_bg_music",

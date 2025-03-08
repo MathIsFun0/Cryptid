@@ -1,28 +1,28 @@
 -- Update the Cryptid member count using HTTPS
-function update_cry_member_count()
-	if Cryptid.enabled["HTTPS Module"] == true and Cryptid.mod_path then
-		if not GLOBAL_cry_member_update_thread then
-			-- start up the HTTPS thread if needed
-			local file_data = assert(NFS.newFileData(Cryptid.mod_path .. "https/thread.lua"))
-			GLOBAL_cry_member_update_thread = love.thread.newThread(file_data)
-			GLOBAL_cry_member_update_thread:start()
-		end
-		local old = GLOBAL_cry_member_count or 5624
-		-- get the HTTPS thread's value for Cryptid members
-		local ret = love.thread.getChannel("member_count"):pop()
-		if ret then
-			GLOBAL_cry_member_count = string.match(ret, '"approximate_member_count"%s*:%s*(%d+)') -- string matching a json is odd but should be fine?
-		end
-		if not GLOBAL_cry_member_count then
-			GLOBAL_cry_member_count = old
-			-- Something failed, print the error
-			local error = love.thread.getChannel("member_error"):pop()
-			if error then
-				sendDebugMessage(error)
-			end
+local member_fallback = 24000
+local https = require("SMODS.https")
+local last_update_time = 0
+local initial = true
+local function apply_discord_member_count(code, body, headers)
+	if not GLOBAL_cry_member_count then
+		GLOBAL_cry_member_count = member_fallback
+	end
+	if body then
+		GLOBAL_cry_member_count = string.match(body, '"approximate_member_count"%s*:%s*(%d+)')
+	end
+end
+function Cryptid.update_member_count()
+	if Cryptid_config.HTTPS then
+		if (os.time() - last_update_time >= 60) or initial then
+			initial = false
+			last_update_time = os.time()
+			https.asyncRequest(
+				"https://discord.com/api/v10/invites/eUf9Ur6RyB?with_counts=true" .. "&v=" .. tostring(os.time()),
+				apply_discord_member_count
+			)
 		end
 	else
 		-- Use a fallback value if HTTPS is disabled (you all are awesome)
-		GLOBAL_cry_member_count = 20000
+		GLOBAL_cry_member_count = member_fallback
 	end
 end

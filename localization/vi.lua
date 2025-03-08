@@ -32,7 +32,7 @@ return {
 				},
 			},
 			b_cry_bountiful = {
-				name = "Bộ Bài Phong phú",
+				name = "Bộ Bài Phong Phú",
 				text = {
 					"Sau khi {C:blue}Chơi{} hoặc {C:red}Bỏ Bài{},",
 					"luôn bốc {C:attention}5{} lá",
@@ -63,6 +63,14 @@ return {
 					"Xác suất {C:green}#1# trên 8{} cho {X:dark_edition,C:white} ^0.5 {} Nhân",
 				},
 			},
+			b_cry_e_deck = {
+				name = "Bộ Bài Ấn Bản",
+				text = {
+					"Mọi lá bài đều có {C:dark_edition}#1#{}",
+					"Lá bài không thể thay đổi ấn bản",
+					"{C:inactive}(Nhấn để chỉnh sửa)",
+				},
+			},
 			b_cry_encoded = {
 				name = "Bộ Bài Mã Hóa",
 				text = {
@@ -79,6 +87,14 @@ return {
 					"xuất hiện trong shop,",
 					"bắt đầu với",
 					"{C:attention,T:v_overstock_plus}Siêu Quá Trữ",
+				},
+			},
+			b_cry_et_deck = {
+				name = "Bộ Bài Cường Hoá",
+				text = {
+					"Mọi {C:attention}lá bài thường{}",
+					"đều là {C:attention}#1#{}",
+					"{C:inactive}(Nhấn để chỉnh sửa)",
 				},
 			},
 			b_cry_glowing = {
@@ -112,12 +128,35 @@ return {
 					"ngay {C:attention}các cấp bổ sung{} của nó",
 				},
 			},
+			b_cry_sk_deck = {
+				name = "Bộ Bài Nhãn",
+				text = {
+					"Mọi lá bài đều có nhãn {C:attention}#1#{}",
+					"{C:inactive}(Nhấn để chỉnh sửa)",
+				},
+			},
+			b_cry_sl_deck = {
+				name = "Bộ Bài Con Dấu",
+				text = {
+					"Mọi lá bài thường đều có {C:dark_edition}#1#{}",
+					"Lá bài không thể thay đổi con dấu",
+					"{C:inactive}(Nhấn để chỉnh sửa)",
+				},
+			},
 			b_cry_spooky = {
 				name = "Bộ Bài Ma Quái",
 				text = {
 					"Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla {C:eternal}Vĩnh Hằng",
 					"Sau mỗi {C:attention}Ante{}, tạo ra",
-					"viên {C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền Rủa",
+					"viên {C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền_Rủa",
+				},
+			},
+			b_cry_st_deck = {
+				name = "Bộ Bài Đồng Chất",
+				text = {
+					"Mọi lá bài thường đều có",
+					"chất {C:dark_edition}#1#{} và không thể đổi chất",
+					"{C:inactive}(Nhấn để chỉnh sửa)",
 				},
 			},
 			b_cry_very_fair = {
@@ -274,8 +313,8 @@ return {
 			bl_cry_sapphire_stamp = {
 				name = "Sapphire Stamp",
 				text = {
-					"Chọn thêm một lá, bỏ chọn",
-					"1 lá ngẫu nhiên trước khi tính điểm",
+					"Chọn thêm một lá, bỏ chọn 1 lá",
+					"ngẫu nhiên trước khi tính điểm",
 				},
 			},
 			bl_cry_shackle = {
@@ -311,6 +350,13 @@ return {
 				text = {
 					"Lật úp các lá ngửa trong tay",
 					"sau mỗi tay bài đã chơi",
+				},
+			},
+			bl_cry_trophy = {
+				name = "Lemon Trophy",
+				text = {
+					"Nhân không thể",
+					"nhiều hơn Chip",
 				},
 			},
 			bl_cry_vermillion_virus = {
@@ -515,6 +561,131 @@ return {
 				},
 			},
 		},
+		["Content Set"] = {
+			set_cry_blind = {
+				name = "Blind",
+				text = {
+					"{C:attention}Boss Blind{} được",
+					"thêm bởi Cryptid",
+				},
+			},
+			set_cry_code = {
+				name = "Lá Code",
+				text = {
+					"{C:cry_code}Lá Code{} và",
+					"nội dung liên quan",
+				},
+			},
+			set_cry_cursed = {
+				name = "Joker Nguyền Rủa",
+				text = {
+					"Joker gây hại với",
+					"độ hiếm {X:cry_cursed,C:white}Nguyền_Rủa{}",
+				},
+			},
+			set_cry_deck = {
+				name = "Bộ Bài",
+				text = {
+					"{C:attention}Bộ Bài{} được",
+					"thêm bởi Cryptid",
+				},
+			},
+			set_cry_epic = {
+				name = "Joker Sử Thi",
+				text = {
+					"Joker có độ hiếm",
+					"{C:cry_epic}Sử Thi{}",
+					"{C:inactive,s:0.8}(Giữa Hiếm và Huyền Thoại)",
+				},
+			},
+			set_cry_exotic = {
+				name = "Joker Ngoại Lai",
+				text = {
+					"Joker mạnh khủng khiếp",
+					"có độ hiếm {C:cry_exotic}Ngoại Lai{}",
+				},
+			},
+			set_cry_m = {
+				name = "Joker M",
+				text = {
+					"Joker liên quan",
+					"đến chữ {C:attention}M{}",
+					"và {C:attention}Joker Vui Nhộn",
+				},
+			},
+			set_cry_misc = {
+				name = "Khác",
+				text = {
+					"Vật phẩm không thuộc",
+					"bất kì {C:cry_ascendant}Nhóm",
+					"{C:cry_ascendant}Chủ Đề{} nào",
+				},
+			},
+			set_cry_misc_joker = {
+				name = "Joker Khác",
+				text = {
+					"Joker không thuộc",
+					"bất kì {C:cry_ascendant}Nhóm",
+					"{C:cry_ascendant}Chủ Đề{} nào",
+				},
+			},
+			set_cry_planet = {
+				name = "Lá Hành Tinh",
+				text = {
+					"Lá {C:planet}Hành Tinh{} khác",
+					"được thêm bởi Cryptid",
+				},
+			},
+			set_cry_poker_hand_stuff = {
+				name = "Tay Poker",
+				text = {
+					"Thêm 4 {C:attention}tay poker mới",
+					"và cho phép {C:attention}tay Thăng Thiên",
+				},
+			},
+			set_cry_spectral = {
+				name = "Lá Siêu Linh",
+				text = {
+					"Lá {C:spectral}Siêu Linh{} được",
+					"thêm bởi Cryptid",
+				},
+			},
+			set_cry_spooky = {
+				name = "Bản Cập Nhật Ma Quái",
+				text = {
+					"Nội dung Bản Cập Nhật Ma Quái,",
+					"bao gồm Joker {C:cry_candy}Kẹo{}",
+				},
+			},
+			set_cry_tag = {
+				name = "Nhãn Bỏ Qua",
+				text = {
+					"{C:attention}Nhãn{} được thêm",
+					"bởi Cryptid",
+				},
+			},
+			set_cry_tier3 = {
+				name = "Phiếu Cấp 3",
+				text = {
+					"Một {C:attention}cấp{} bổ sung",
+					"của Phiếu",
+				},
+			},
+			set_cry_timer = {
+				name = "Cơ Chế Thời Gian",
+				text = {
+					"Vật phẩm có hiệu ứng",
+					"và cơ chế {C:attention}thời gian",
+				},
+			},
+			set_cry_voucher = {
+				name = "Phiếu Khác",
+				text = {
+					"{C:attention}Phiếu{} cấp 1 và 2",
+					"được thêm bởi Cryptid",
+				},
+			},
+		},
 		Edition = {
 			e_cry_astral = {
 				name = "Thiên Tú",
@@ -617,6 +788,33 @@ return {
 			},
 		},
 		Joker = {
+			j_cry_test_modest = {
+				name = "Joker Thử Nghiệm",
+				text = {
+					"{C:chips}+#1#{} Chip#s1#",
+				},
+			},
+			j_cry_test_mainline = {
+				name = "Joker Thử Nghiệm",
+				text = {
+					"{C:chips}+#1#{} Chip#s1#",
+					"{C:money}+$44{} khi {C:attention}Blind{} được chọn",
+				},
+			},
+			j_cry_test_madness = {
+				name = "Joker Thử Nghiệm",
+				text = {
+					"{C:chips}+#1#{} Chip#s1#",
+					"{C:money}+$44444{} khi {C:attention}Blind{} được chọn",
+				},
+			},
+			j_cry_test_cryptid_in_2025 = {
+				name = "Joker Thử Nghiệm",
+				text = {
+					"{C:chips}+#1#{} Chip#s1#",
+					"{C:money}+$44444{} khi {C:attention}Blind{} được chọn",
+				},
+			},
 			j_cry_adroit = {
 				name = "Joker Khéo Léo",
 				text = {
@@ -740,7 +938,7 @@ return {
 			j_cry_boredom = {
 				name = "Buồn Chán",
 				text = {
-					"Xác suất {C:green}#1# trong #2#{} để",
+					"Xác suất {C:green}#1# trên #2#{} để",
 					"{C:attention}tái kích{} mỗi lá {C:attention}Joker{}",
 					"hoặc {C:attention}lá bài đã chơi{}",
 					"{C:inactive,s:0.8}Không tác dụng lên lá Buồn Chán khác{}",
@@ -935,9 +1133,17 @@ return {
 			j_cry_copypaste = {
 				name = "Copy/Paste",
 				text = {
-					"Khi một lá {C:cry_code}Code{} được dùng,",
-					"Xác suất {C:green}#1# trên #2#{} tạo ra bản sao",
-					"vào ô tiêu thụ",
+					"Xác suất {C:green}#1# trên #2#{} để nhân bản",
+					"lá {C:cry_code}Code{} đã sử dụng",
+					"{C:red}Dùng được một lần mỗi ván{}",
+					"{C:inactive}(Phải có ô trống)",
+				},
+			},
+			j_cry_copypaste2 = {
+				name = "Copy/Paste",
+				text = {
+					"Xác suất {C:green}#1# trên #2#{} để nhân bản",
+					"lá {C:cry_code}Code{} đã sử dụng",
 					"{C:inactive}(Phải có ô trống)",
 				},
 			},
@@ -1125,10 +1331,19 @@ return {
 				},
 			},
 			j_cry_eternalflame = {
-				name = "Ngọn lửa Vĩnh hằng",
+				name = "Ngọn Lửa Vĩnh Hằng",
 				text = {
 					"Joker này thêm {X:mult,C:white} X#1# {} Nhân",
-					"cho mỗi lá đã {C:attention}bán{}",
+					"mỗi lá bài {C:attention}đã bán{} với",
+					"{C:attention}giá bán{} tối thiểu {C:money}$3{}",
+					"{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
+				},
+			},
+			j_cry_eternalflame2 = {
+				name = "Ngọn Lửa Vĩnh Hằng",
+				text = {
+					"Joker này thêm {X:mult,C:white} X#1# {} Nhân",
+					"mỗi lá bài {C:attention}đã bán{}",
 					"{C:inactive}(Hiện tại là {X:mult,C:white} X#2# {C:inactive} Nhân)",
 				},
 			},
@@ -1218,7 +1433,7 @@ return {
 			j_cry_formidiulosus = {
 				name = "Khu Tà",
 				text = {
-					"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền Rủa{}, phá hủy nó",
+					"Khi nhận một Joker {X:cry_cursed,C:white}Nguyền_Rủa{}, phá hủy nó",
 					"Tạo ra {C:attention}#1#{} viên {C:cry_candy}Kẹo {C:dark_edition}Âm Bản{} vào cuối Shop",
 					"Thêm {X:dark_edition,C:white}^#2#{} Nhân cho mỗi viên {C:cry_candy}Kẹo{} đang sở hữu",
 					"{C:inactive}(Hiện tại lạ {X:dark_edition,C:white}^#3#{C:inactive} Nhân)",
@@ -1242,7 +1457,7 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = 'Joker "Hết Cứu"',
+				name = Cryptid_config.family_mode and "Joker Ngăn Nắp" or 'Joker "Hết Cứu"',
 				text = {
 					"{C:red}+#1#{} Nhân nếu",
 					"tay bài đã chơi",
@@ -1384,6 +1599,14 @@ return {
 					"{C:inactive,s:0.8}Nghe có vẻ không sao...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
+					"cho mỗi {C:attention}Joker{} mặc định",
+					"{C:inactive}(Hiện tại là {X:dark_edition,C:white}^#2#{C:inactive} Nhân)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Bắt Cóc",
 				text = {
@@ -1422,6 +1645,14 @@ return {
 					"với {C:attention}5 Lá Bài Ấn Bản{} hoặc",
 					"{C:attention}Joker Ấn Bản",
 					"trở lên",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Lá {C:attention}Già{} đã chơi ghi điểm thêm",
+					"{C:attention}+#1#{} lá giữ trong tay cho ván này",
+					"và kích hoạt hiệu ứng {C:attention}giữ trong tay{}",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -1565,7 +1796,7 @@ return {
 					"{X:mult,C:white}X#1#{} Nhân cho mỗi thành viên",
 					"ở trong {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1574,7 +1805,7 @@ return {
 					"{C:chips}+#1#{} Chip cho mỗi thành viên",
 					"ở trong {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Hiện tại là {C:chips}+#2#{C:inactive} Chip)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {
@@ -1633,9 +1864,9 @@ return {
 				name = "Sứ Đồ Thập Tam",
 				text = {
 					"Tạo ra một {C:legendary}Joker M{} ở cuối ván",
-					"thêm {X:dark_edition,C:white}^#1#{} Nhân cho mỗi {C:attention}Joker Vui Nhộn{} hoặc {C:legendary}Joker M ",
-					"Tăng {X:dark_edition,C:white}^#2#{} khi một {C:attention}Joker Vui Nhộn{} được {C:attention}bán",
-					"{C:inactive,s:0.8}(Ngoại trừ Thập Tam)",
+					"thêm {X:dark_edition,C:white}^#1#{} Nhân cho mỗi {C:attention}Joker Vui Nhộn{} hoặc {C:legendary}Joker M",
+					"Tăng thêm {X:dark_edition,C:white}^#2#{} khi một {C:attention}Joker Vui Nhộn{} được {C:attention}bán",
+					"{C:inactive,s:0.8}(Ngoại trừ Sứ Đồ Thập Tam)",
 				},
 			},
 			j_cry_mstack = {
@@ -2174,7 +2405,7 @@ return {
 				text = {
 					"Khi {C:attention}bán{}:",
 					"Xác suất {C:green}#1# trên #2#{} để tạo ra {C:attention}2{} viên {C:cry_candy}Kẹo",
-					"Nếu trật, tạo ra một Joker {X:cry_cursed,C:white}Nguyền Rủa{}",
+					"Nếu trật, tạo ra một Joker {X:cry_cursed,C:white}Nguyền_Rủa{}",
 					"{C:inactive}(Có thể tràn ô Joker)",
 				},
 			},
@@ -2326,7 +2557,7 @@ return {
 				},
 			},
 			j_cry_wtf = {
-				name = "CHUẨN ĐỆCH!?",
+				name = Cryptid_config.family_mode and "Chuẩn Đống" or "CHUẨN ĐỆCH!?",
 				text = {
 					"{X:mult,C:white} X#1# {} Nhân nếu",
 					"tay bài đã chơi",
@@ -2448,7 +2679,7 @@ return {
 				},
 			},
 			c_cry_universe = {
-				name = "Toàn Bộ Cái Vũ Trụ Chết Tiệt",
+				name = Cryptid_config.family_mode and "Vũ Trụ" or "Toàn Bộ Cái Vũ Trụ Chết Tiệt",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Nâng level",
 					"{C:attention}#2#",
@@ -2544,7 +2775,7 @@ return {
 				text = {
 					"Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla {C:eternal}Vĩnh Hằng",
 					"Sau mỗi {C:attention}Ante{}, tạo ra",
-					"viên {C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền Rủa",
+					"viên {C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền_Rủa",
 				},
 			},
 			sleeve_cry_wormhole_sleeve = {
@@ -2690,6 +2921,14 @@ return {
 				},
 			},
 			c_cry_white_hole = {
+				name = "Lỗ Trắng",
+				text = {
+					"Nâng level tay poker",
+					"{C:legendary,E:1}chơi nhiều nhất{} lên 4 lần",
+					"{C:attention}Loại bỏ{} mọi level khỏi tay poker khác,",
+				},
+			},
+			c_cry_white_hole2 = {
 				name = "Lỗ Trắng",
 				text = {
 					"{C:attention}Loại bỏ{} mọi level khỏi các tay poker,",
@@ -3415,6 +3654,33 @@ return {
 			},
 		},
 		Other = {
+			disabled = {
+				name = "Vô Hiệu",
+				text = {
+					"Không còn xuất hiện",
+					"trong trận",
+				},
+			},
+			disabled_card_dependency = {
+				name = "Vô Hiệu",
+				text = {
+					"Yêu cầu {C:attention}#1#",
+				},
+			},
+			disabled_mod_dependency = {
+				name = "Vô Hiệu",
+				text = {
+					"Yêu cầu mod:",
+					"{C:attention}#1#",
+				},
+			},
+			disabled_mod_conflict = {
+				name = "Vô Hiệu",
+				text = {
+					"Không tương thích với mod:",
+					"{C:attention}#1#",
+				},
+			},
 			banana = {
 				name = "Chuối Tiêu",
 				text = {
@@ -3724,7 +3990,7 @@ return {
 				text = {
 					"Chọn {C:attention}#1#{} trong tối đa",
 					"{C:attention}#2#{} lá {C:spectral}Siêu Linh",
-					"{s:0.8,C:inactive}(Được tạo bởi nhãn Siêu Cường)",
+					"{s:0.8,C:inactive}(Được tạo bởi Nhãn Siêu Cường)",
 				},
 			},
 			p_cry_meme_1 = {
@@ -3802,11 +4068,77 @@ return {
 		},
 	},
 	misc = {
+		tutorial = {
+			cry_intro_1 = {
+				"Chào, tôi tên là {C:attention}Joseph J. Joker{}!",
+				"Chào mừng đến với {C:cry_exotic,E:1}Cryptid{}!",
+			},
+			cry_intro_2 = {
+				"Có vẻ như bạn chưa từng chơi",
+				"{C:cry_exotic,E:1}Cryptid{} bao giờ.",
+				"Để tôi cho bạn xem cách nó hoạt động nhé!",
+			},
+			cry_intro_3 = {
+				"*mọc tay*",
+			},
+			cry_intro_4 = {
+				"Thật khó để tóm tắt mod này trong",
+				"vài câu, nhưng tôi sẽ nói rằng bạn sắp",
+				"có một chuyến đi {C:cry_exotic,E:1}dữ dội{} đó!",
+				"Đây không còn là {C:attention}Joker Poker{} bạn biết nữa đâu...",
+			},
+			cry_intro_5 = {
+				"Chắc là bạn cũng đoán được thông qua các {C:cry_ascendant}thiết lập{}",
+				"sau rồi, tôi thì rất thích chữ {C:attention}M{}.",
+				"Hãy chọn một thiết lập để tôi giải thích...",
+				"{s:0.8}Lưu ý: Cân bằng thiết lập là một quá trình tốn kém và",
+				"{s:0.8}lâu dài. Không có gì chắc như đinh đóng cột đâu!",
+			},
+			cry_modest_1 = {
+				"Bạn đang mong muốn một trải nghiệm gần với bản gốc?",
+				"Thế thì thiết lập {C:cry_ascendant}M Khiêm Tốn{} là dành cho bạn!",
+			},
+			cry_modest_2 = {
+				"Tuy nhiên, hãy cẩn thận với những cơ chế ẩn",
+				"đằng sau Cryptid! Ban không bao giờ biết",
+				"được thứ gì đang lấp ló ở ván sau đâu...",
+			},
+			cry_mainline_1 = {
+				"Bạn muốn {E:1,C:attention}phá{} game à? Tui vui đây, bạn hoàn toàn",
+				"có thể làm thế mà không đi quá sâu vào nội dung!",
+			},
+			cry_mainline_2 = {
+				"Mọi thứ vẫn rất là điên rồ nha, nhưng bạn vẫn",
+				"còn cơ hội trải nghiệm hệ thống {C:cry_ascendant}tiến triển{}.",
+				"Chỉ cần đừng tận hưởng quá là được...",
+			},
+			cry_mainline_3 = {
+				"Bởi vì bạn chắc chắn sẽ ngày càng mạnh hơn, nhưng",
+				"tôi nghĩ một vài {E:1,C:dark_edition}Boss Blind{} mới có thể",
+				"khiến bạn hối hận vì đã chọn {C:cry_ascendant}thiết lập{} này...",
+			},
+			cry_madness_1 = {
+				"Bạn muốn {C:red,E:1}nổ banh{} ổ cứng luôn à?",
+				"Ồ, vui đấy! Thiết lập {C:cry_ascendant}M Điên Loạn{} nói",
+				"'Cân bằng là {E:1,C:red}CÁI MÉO GÌ!?{}'",
+			},
+			cry_madness_2 = {
+				"Tôi đã bỏ ra hàng tuần mất ngủ và nốc nhiều",
+				"{C:green}Mountain Dew{} vl ra để đảm bảo rằng thiết lập này là",
+				"{C:cry_ascendant}CỰC KÌ CÂN BẰNG{}, chỉ dành cho bạn thôi!",
+			},
+			cry_madness_3 = {
+				"Tất cả mọi thứ đều được mở khoá, vì thế hoàn toàn",
+				"có thể giải phóng {C:red,E:1}toàn bộ sức mạnh{} của Cryptid!",
+				"Chỉ cần cẩn thận đừng để {C:attention,E:1}crash{} game,",
+				"điều đó có lẽ sẽ xảy ra trước khi bạn thua trận...",
+			},
+		},
 		poker_hands = {
 			["cry_Bulwark"] = "Tường Thành",
-			["cry_Clusterfuck"] = "Mớ Đệch",
+			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Mớ Hỗn Độn" or "Mớ Đệch",
 			["cry_UltPair"] = "Đôi Tối Thượng",
-			["cry_WholeDeck"] = "Đệch Mịa Cả Bộ Bài",
+			["cry_WholeDeck"] = Cryptid_config.family_mode and "Năm Hai Lá" or "Đệch Mịa Cả Bộ Bài",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -3842,7 +4174,7 @@ return {
 			ach_cry_niw_uoy = "!gnắhT nếihC",
 			ach_cry_now_the_fun_begins = "Cuộc Vui Giờ mới Bắt Đầu.",
 			ach_cry_patience_virtue = "Kiên Nhẫn là Đức Tính Tốt",
-			ach_cry_perfectly_balanced = "Perfectly Balanced",
+			ach_cry_perfectly_balanced = "Cực Kì Cân Bằng",
 			ach_cry_pull_request = "Pull Request",
 			ach_cry_traffic_jam = "Tắc Đường",
 			ach_cry_ult_full_skip = "Cú Full Skip Tối Thượng",
@@ -3916,6 +4248,9 @@ return {
 			cry_mus_code = "Lá Code (://LETS_BREAK_THE_GAME bởi HexaCryonic)",
 			cry_mus_exotic = "Joker Ngoại Lai (Joker in Latin bởi AlexZGreat)",
 			cry_mus_high_score = "Điểm Cao (Final Boss [For Your Computer] bởi AlexZGreat)",
+			cry_mus_alt_bg = "Nhạc Nền (bởi MathIsFun_)",
+			cry_family = "Chế Độ Thận Thiện với Gia Đình",
+			cry_experimental = "Chế Độ Thử Nghiệm",
 
 			k_cry_program_pack = "Gói Chương Trình",
 			k_cry_meme_pack = "Gói Meme",
@@ -3938,6 +4273,15 @@ return {
 			cry_joke_placeholder = "(bội số của 8)",
 
 			k_code = "Code",
+			k_content_set = "Thiết Lập Chủ Đề",
+			b_content_sets = "Thiết Lập Chủ Đề",
+			--Why aren't these in vanilla?
+			b_tag = "Nhãn",
+			b_blind = "Blind",
+
+			b_tarot_rate = "Tần suất Tarot",
+			b_planet_rate = "Tần suất Hành Tinh",
+
 			k_unique = "Độc Nhất",
 			b_code_cards = "Lá Code",
 			b_unique_cards = "Lá Độc Nhất",
@@ -3960,10 +4304,6 @@ return {
 
 			b_flip = "LẬT LẠI",
 			b_merge = "HỢP NHẤT",
-
-			cry_hand_bulwark = "Tường Thành",
-			cry_hand_clusterfuck = "Mớ Đệch",
-			cry_hand_ultpair = "Đôi Tối Thượng",
 
 			cry_asc_hands = "Tay Thăng Thiên",
 			cry_p_star = "Sao",
@@ -3997,17 +4337,38 @@ return {
 			k_cry_cursed = "Nguyền Rủa",
 			k_planet_disc = "Đĩa Cận Sao",
 			k_planet_satellite = "Vệ Tinh Tự Nhiên",
-			k_planet_universe = "Đệch Mịa Cả Cái Vũ Trụ",
+			k_planet_universe = Cryptid_config.family_mode and "Vũ Trụ" or "Đệch Mịa Cả Cái Vũ Trụ",
 
 			cry_notif_jimball_1 = "Jimball",
 			cry_notif_jimball_2 = "Cảnh Báo Bản Quyền",
 			cry_notif_jimball_d1 = 'Jimball sẽ phát bài "Funkytown",',
 			cry_notif_jimball_d2 = "có bản quyền và ảnh hưởng lớn",
 			cry_notif_jimball_d3 = "đến stream và video.",
+
+			cry_gameset_explanation = {
+				"Chọn nhóm thiết lập",
+				"để áp dụng lên lá này.",
+			},
+			cry_gameset_disabled = "Vô hiệu",
+			cry_gameset_modest = "M Khiên Tốn",
+			cry_gameset_mainline = "M Chính",
+			cry_gameset_madness = "M Điên Loạn",
+			cry_gameset_custom = "Đã Sửa Đổi",
+			cry_gameset_exp = "Thử Nghiệm",
+			cry_gameset_exp_modest = "Thử Nghiệm (M Khiêm Tốn)",
+			cry_gameset_exp_mainline = "Experimental (M Chính)",
+			cry_gameset_exp_madness = "Experimental (M Điên Loạn)",
+
+			cry_view_set_contents = "Xem Vật Phẩm trong Thiết Lập",
+
+			b_reset_gameset_modest = "Đặt Lại Thiết Lập (M Khiêm Tốn)",
+			b_reset_gameset_mainline = "Đặt Lại Thiết Lập (M Chính)",
+			b_reset_gameset_madness = "Đặt Lại Thiết Lập (M Điên Loạn)",
 		},
 		labels = {
 			food_jokers = "Joker Thực Phẩm",
 			banana = "Chuối Tiêu",
+			pinned = "Bị Ghim",
 			cry_absolute = "Tuyệt Đối",
 			code = "Code",
 			unique = "Độc Nhất",
@@ -4130,9 +4491,10 @@ return {
 			a_powchips_minus = { "-^#1# Chip" },
 			a_powmultchips_minus = { "-^#1# Nhân+Chip" },
 			a_round_minus = { "-#1# Ván" },
-
-			a_tag = { "Nhãn #1#" },
-			a_tags = { "Nhãn #1#" },
+			a_tag_minus = { "-#1# Nhãn" },
+			a_tags_minus = { "-#1# Nhãn" },
+			a_tag = { "+ Nhãn #1#" },
+			a_tags = { "+ Nhãn #1#" },
 
 			cry_sticker_name = { "Nhãn #1#" },
 			cry_sticker_desc = {

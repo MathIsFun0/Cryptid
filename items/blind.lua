@@ -546,10 +546,14 @@ local shackle = {
 		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then
 			return false
 		end
-		return #advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
+		return #Cryptid.advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
-		if (card.area == G.jokers) and not G.GAME.blind.disabled and safe_get(card, "edition", "negative") == true then
+		if
+			(card.area == G.jokers)
+			and not G.GAME.blind.disabled
+			and Cryptid.safe_get(card, "edition", "negative") == true
+		then
 			return true
 		end
 		return false
@@ -577,7 +581,7 @@ local pin = {
 		if not G.jokers or not G.jokers.cards then
 			return false
 		end
-		return #advanced_find_joker(nil, { 1, 2, 3 }, nil, nil, true) < #G.jokers.cards
+		return #Cryptid.advanced_find_joker(nil, { 1, 2, 3 }, nil, nil, true) < #G.jokers.cards
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if
@@ -665,7 +669,7 @@ local tornado = {
 	order = 94,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
-		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
+		return { vars = { "" .. ((Cryptid.safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
@@ -673,10 +677,10 @@ local tornado = {
 		end
 	end,
 	in_pool = function()
-		return #advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
+		return #Cryptid.advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
 	end,
 	collection_loc_vars = function(self)
-		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
+		return { vars = { "" .. ((Cryptid.safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
 		if
@@ -1301,7 +1305,9 @@ local trophy = {
 	order = 95,
 	boss_colour = HEX("bbdb44"),
 	set_blind = function(self, reset, silent)
-		G.GAME.trophymod = true
+		if not reset then
+			G.GAME.trophymod = true
+		end
 	end,
 	defeat = function(self, silent)
 		if G.GAME.trophymod then

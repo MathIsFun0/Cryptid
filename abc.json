@@ -1,0 +1,17 @@
+{
+	"id": "Cryptid",
+	"name": "Cryptid",
+	"display_name": "Cryptid",
+	"author": ["MathIsFun_, Cryptid and Balatro Discords"],
+	"description": "Adds unbalanced ideas to Balatro.",
+	"prefix": "cry",
+	"main_file": "Cryptid.lua",
+	"priority": 114,
+	"badge_colour": "708b91",
+	"badge_text_colour": "FFFFFF",
+	"version": "0.5.5~dev_JSON_arc",
+	"dependencies": [
+		"Talisman (>=2.0.9)",
+		"Steamodded (>=1.0.0~BETA-0301a)"
+	],
+}

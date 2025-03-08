@@ -1,51 +1,47 @@
 if CardSleeves then
-	local encodedsleeve = CardSleeves.Sleeve({
-		key = "encoded_sleeve",
-		name = "Encoded Sleeve",
+	local veryfairsleeve = CardSleeves.Sleeve({
+		key = "very_fair_sleeve",
+		name = "Very Fair Sleeve",
 		atlas = "atlasSleeves",
-		pos = { x = 1, y = 0 },
-		config = {},
+		pos = { x = 0, y = 2 },
+		config = { hands = -2, discards = -2 },
 		unlocked = true,
-		unlock_condition = { deck = "Encoded Deck", stake = 1 },
+		unlock_condition = { deck = "Very Fair Deck", stake = 1 },
 		loc_vars = function(self)
 			return { vars = {} }
 		end,
-
 		trigger_effect = function(self, args) end,
 		apply = function(self)
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					if G.jokers then
-						-- Adding a before spawning becuase jen banned copy_paste
-						if
-							G.P_CENTERS["j_cry_CodeJoker"]
-							and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
-						then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-						end
-						if
-							G.P_CENTERS["j_cry_copypaste"]
-							and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"])
-						then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-						end
-						return true
-					end
-				end,
-			}))
+			G.GAME.starting_params.hands = G.GAME.starting_params.hands + self.config.hands
+			G.GAME.starting_params.discards = G.GAME.starting_params.discards + self.config.discards
+			G.GAME.modifiers.cry_no_vouchers = true
+		end,
+		init = function(self)
+			very_fair_quip = {}
+			local avts = SMODS.add_voucher_to_shop
+			function SMODS.add_voucher_to_shop(...)
+				if G.GAME.modifiers.cry_no_vouchers then
+					return
+				end
+				return avts(...)
+			end
+		end,
+	})
 
-			--DOWNSIDE:
-
-			G.GAME.joker_rate = 0
-			G.GAME.planet_rate = 0
-			G.GAME.tarot_rate = 0
-			G.GAME.code_rate = 1e100
+	local infinitesleeve = CardSleeves.Sleeve({
+		key = "infinite_sleeve",
+		name = "Unlimited Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 4, y = 0 },
+		config = { cry_highlight_limit = 1e20, hand_size = 1 },
+		unlocked = true,
+		unlock_condition = { deck = "Infinite Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = {} }
+		end,
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
 		end,
 	})
 
@@ -82,40 +78,6 @@ if CardSleeves then
 			if self.get_current_deck_key() == "b_cry_antimatter" then
 				G.GAME.modifiers.cry_misprint_min = 1
 			end
-		end,
-	})
-
-	local infinitesleeve = CardSleeves.Sleeve({
-		key = "infinite_sleeve",
-		name = "Unlimited Sleeve",
-		atlas = "atlasSleeves",
-		pos = { x = 4, y = 0 },
-		config = { cry_highlight_limit = 1e20, hand_size = 1 },
-		unlocked = true,
-		unlock_condition = { deck = "Infinite Deck", stake = 1 },
-		loc_vars = function(self)
-			return { vars = {} }
-		end,
-		trigger_effect = function(self, args) end,
-		apply = function(self)
-			G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
-		end,
-	})
-
-	local conveyorsleeve = CardSleeves.Sleeve({
-		key = "conveyor_sleeve",
-		name = "Conveyor Sleeve",
-		atlas = "atlasSleeves",
-		pos = { x = 5, y = 0 },
-		config = { cry_conveyor = true },
-		unlocked = true,
-		unlock_condition = { deck = "Conveyor Deck", stake = 1 },
-		loc_vars = function(self)
-			return { vars = {} }
-		end,
-		trigger_effect = function(self, args) end,
-		apply = function(self)
-			G.GAME.modifiers.cry_conveyor = true
 		end,
 	})
 
@@ -166,6 +128,23 @@ if CardSleeves then
 		end,
 	})
 
+	local conveyorsleeve = CardSleeves.Sleeve({
+		key = "conveyor_sleeve",
+		name = "Conveyor Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 5, y = 0 },
+		config = { cry_conveyor = true },
+		unlocked = true,
+		unlock_condition = { deck = "Conveyor Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = {} }
+		end,
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			G.GAME.modifiers.cry_conveyor = true
+		end,
+	})
+
 	local redeemedsleeve = CardSleeves.Sleeve({
 		key = "redeemed_sleeve",
 		name = "Redeemed Sleeve",
@@ -179,6 +158,30 @@ if CardSleeves then
 		end,
 		apply = function(self)
 			G.GAME.modifiers.cry_redeemed = true
+		end,
+	})
+
+	local glowingsleeve = CardSleeves.Sleeve({
+		key = "glowing_sleeve",
+		name = "Glowing Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 0, y = 2 },
+		config = { cry_glowing = true },
+		unlocked = true,
+		unlock_condition = { deck = "Glowing Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = { " " } }
+		end,
+		calculate = function(self, back, context)
+			if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
+				for i = 1, #G.jokers.cards do
+					if not Card.no(G.jokers.cards[i], "immutable", true) then
+						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
+							Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+						end)
+					end
+				end
+			end
 		end,
 	})
 
@@ -238,6 +241,119 @@ if CardSleeves then
 			end
 		end,
 	})
+
+	local encodedsleeve = CardSleeves.Sleeve({
+		key = "encoded_sleeve",
+		name = "Encoded Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 1, y = 0 },
+		config = {},
+		unlocked = true,
+		unlock_condition = { deck = "Encoded Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = {} }
+		end,
+
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.jokers then
+						-- Adding a before spawning becuase jen banned copy_paste
+						if
+							G.P_CENTERS["j_cry_CodeJoker"]
+							and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
+						then
+							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+							card:add_to_deck()
+							card:start_materialize()
+							G.jokers:emplace(card)
+						end
+						if
+							G.P_CENTERS["j_cry_copypaste"]
+							and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"])
+						then
+							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+							card:add_to_deck()
+							card:start_materialize()
+							G.jokers:emplace(card)
+						end
+						return true
+					end
+				end,
+			}))
+
+			--DOWNSIDE:
+
+			G.GAME.joker_rate = 0
+			G.GAME.planet_rate = 0
+			G.GAME.tarot_rate = 0
+			G.GAME.code_rate = 1e100
+		end,
+	})
+
+	local nostalgicsleeve = CardSleeves.Sleeve({
+		key = "beta_sleeve",
+		name = "Nostalgic Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 0, y = 2 },
+		config = { cry_beta = true },
+		unlocked = true,
+		unlock_condition = { deck = "Nostalgic Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = {} }
+		end,
+
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			G.GAME.modifiers.cry_beta = true
+		end,
+	})
+
+	local bountifulsleeve = CardSleeves.Sleeve({
+		key = "bountiful_sleeve",
+		name = "Bountiful Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 0, y = 2 },
+		config = { cry_forced_draw_amount = 5 },
+		unlocked = true,
+		unlock_condition = { deck = "Bountiful Deck", stake = 1 },
+		loc_vars = function(self)
+			return { vars = {} }
+		end,
+
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
+		end,
+	})
+
+	local beigesleeve = CardSleeves.Sleeve({
+		key = "beige_sleeve",
+		name = "Beige Sleeve",
+		atlas = "atlasSleeves",
+		pos = { x = 3, y = 1 },
+		unlocked = true,
+		unlock_condition = { deck = "Beige Deck", stake = 1 },
+		loc_vars = function(self)
+			local key
+			if self.get_current_deck_key() == "b_cry_beige" then
+				key = self.key .. "_alt"
+				return { key = key, vars = {} }
+			end
+			return { vars = {} }
+		end,
+
+		trigger_effect = function(self, args) end,
+		apply = function(self)
+			if self.get_current_deck_key() ~= "b_cry_beige" then
+				G.GAME.modifiers.cry_common_value_quad = true
+			else
+				G.GAME.modifiers.cry_uncommon_value_quad = true
+			end
+		end,
+	})
+
 	local legendarysleeve = CardSleeves.Sleeve({
 		key = "legendary_sleeve",
 		name = "Legendary Sleeve",
@@ -328,38 +444,52 @@ if CardSleeves then
 			}))
 		end,
 	})
-	local bountifulsleeve = CardSleeves.Sleeve({
-		key = "bountiful_sleeve",
-		name = "Bountiful Sleeve",
+	local antimattersleeve = CardSleeves.Sleeve({
+		key = "antimatter_sleeve",
+		name = "Antimatter Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 0, y = 2 },
-		config = { cry_forced_draw_amount = 5 },
+		config = {
+			cry_antimatter = true,
+			cry_crit_rate = 0.25, --Critical Deck
+			cry_legendary_rate = 0.2, --Legendary Deck
+			-- Enhanced Decks
+			cry_force_enhancement = "random",
+			cry_force_edition = "random",
+			cry_force_seal = "random",
+			cry_forced_draw_amount = 5,
+		},
 		unlocked = true,
-		unlock_condition = { deck = "Bountiful Deck", stake = 1 },
+		unlock_condition = { deck = "Antimatter Deck", stake = 1 },
 		loc_vars = function(self)
 			return { vars = {} }
 		end,
-
 		trigger_effect = function(self, args) end,
 		apply = function(self)
-			G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
+			Cryptid.antimatter_apply()
 		end,
 	})
+
 	local sleeveitems = {}
 	if CardSleeves then
 		sleeveitems = {
-			encodedsleeve,
+			veryfairsleeve,
+			infinitesleeve,
 			equilibriumsleeve,
 			misprintsleeve,
-			infinitesleeve,
-			conveyorsleeve,
 			CCDsleeve,
 			wormholesleeve,
+			conveyorsleeve,
 			redeemedsleeve,
+			glowingsleeve,
 			criticalsleeve,
+			encodedsleeve,
+			nostalgicsleeve,
+			bountifulsleeve,
+			beigesleeve,
 			legendarysleeve,
 			spookysleeve,
-			bountifulsleeve,
+			antimattersleeve,
 		}
 	end
 end

@@ -1890,6 +1890,7 @@ return {
 					"en el {C:attention}Discord de Cryptid{}",
 					"{C:inactive}(Actual: {X:mult,C:white}X#2#{C:inactive} multi)",
 					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -2901,7 +2902,7 @@ return {
 				},
 			},
 			sleeve_cry_glowing_sleeve = {
-				name = "Glowing Sleeve",
+				name = "Funda Brillante",
 				text = {
 					"Multiplica los valores de",
 					"todos los comodines por {X:dark_edition,C:white} X1.25 {}",

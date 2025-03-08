@@ -1,4 +1,15 @@
 local timantti = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -48,10 +59,10 @@ local timantti = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -72,6 +83,17 @@ local timantti = {
 	end,
 }
 local klubi = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -121,10 +143,10 @@ local klubi = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -145,6 +167,17 @@ local klubi = {
 	end,
 }
 local sydan = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -194,10 +227,10 @@ local sydan = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -218,6 +251,17 @@ local sydan = {
 	end,
 }
 local lapio = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -267,10 +311,10 @@ local lapio = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -291,6 +335,17 @@ local lapio = {
 	end,
 }
 local kaikki = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -341,10 +396,10 @@ local kaikki = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(self, card, area, copier)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(self, card, area, copier, number)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -365,6 +420,17 @@ local kaikki = {
 	end,
 }
 local planetlua = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -659,6 +725,17 @@ local planetlua = {
 	end,
 }
 local nstar = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -689,7 +766,7 @@ local nstar = {
 
 		--Add +1 to amount of neutron stars used this run
 		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-		local neutronhand = neutronstarrandomhand() --Random poker hand
+		local neutronhand = Cryptid.get_random_hand() --Random poker hand
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize(neutronhand, "poker_hands"),
 			chips = G.GAME.hands[neutronhand].chips,
@@ -711,7 +788,7 @@ local nstar = {
 		local neutronhand = "n/a"
 		for i = 1, number do
 			G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-			neutronhand = neutronstarrandomhand()
+			neutronhand = Cryptid.get_random_hand()
 			handstolv[neutronhand] = (handstolv[neutronhand] or 0) + G.GAME.neutronstarsusedinthisrun
 		end
 		for k, v in pairs(handstolv) do
@@ -756,7 +833,7 @@ local nstar = {
 		end
 	end,
 	init = function(self)
-		function neutronstarrandomhand(ignore, seed, allowhidden)
+		function Cryptid.get_random_hand(ignore, seed, allowhidden)
 			--From JenLib's get_random_hand
 			local chosen_hand
 			ignore = ignore or {}
@@ -783,6 +860,18 @@ local nstar = {
 	end,
 }
 local sunplanet = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Jevonn",
+			"Toneblock",
+		},
+	},
 	--TODO: disable ascendant hands if this is disabled
 	dependencies = {
 		items = {
@@ -821,7 +910,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				cry_pulse_flame(0.01, sunlevel)
+				Cryptid.pulse_flame(0.01, sunlevel)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -861,7 +950,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				cry_pulse_flame(0.01, (sunlevel - 1) + number)
+				Cryptid.pulse_flame(0.01, (sunlevel - 1) + number)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -920,6 +1009,17 @@ local sunplanet = {
 	end,
 }
 local abelt = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -955,6 +1055,17 @@ local abelt = {
 	generate_ui = 0,
 }
 local void = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -990,6 +1101,17 @@ local void = {
 	generate_ui = 0,
 }
 local marsmoons = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -1025,6 +1147,17 @@ local marsmoons = {
 	generate_ui = 0,
 }
 local universe = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -1059,7 +1192,7 @@ local universe = {
 	end,
 	generate_ui = 0,
 }
-function suit_level_up(center, card, area, copier, number)
+function Cryptid.suit_level_up(center, card, area, copier, number)
 	local used_consumable = copier or card
 	if not number then
 		number = 1

@@ -95,11 +95,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["Pair"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		["Two Pair"] = 4,
 		["Three of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		["Straight"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
-		["Flush"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
+		["Straight"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
 		["Full House"] = 5,
 		["Four of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5, --debatable
+		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5, --debatable
 		["cry_Bulwark"] = 5,
 		["Five of a Kind"] = 5,
 		["Flush House"] = 5,
@@ -110,7 +110,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	}
 
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
-	if hand_table[text] and cry_card_enabled("set_cry_poker_hand_stuff") == true then
+	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
 				and #_cards - hand_table[text]
 			or #scoring_hand - hand_table[text]
@@ -130,11 +130,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		or ""
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
-function cry_ascend(num) -- edit this function at your leisure
-	if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then
+function Cryptid.ascend(num) -- edit this function at your leisure
+	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
-	if cry_get_gameset() == "modest" then
+	if Cryptid.gameset() == "modest" then
 		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
 		if not G.GAME.current_round.current_hand.cry_asc_num then
 			return num
@@ -155,11 +155,11 @@ function cry_ascend(num) -- edit this function at your leisure
 	else
 		return math.max(
 			num,
-			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ G.GAME.current_round.current_hand.cry_asc_num or 0)
+			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ (G.GAME.current_round.current_hand.cry_asc_num or 0))
 		)
 	end
 end
-function cry_pulse_flame(duration, intensity) -- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
+function Cryptid.pulse_flame(duration, intensity) -- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
 	G.cry_flame_override = G.cry_flame_override or {}
 	G.cry_flame_override["duration"] = duration or 0.01
 	G.cry_flame_override["intensity"] = intensity or 2

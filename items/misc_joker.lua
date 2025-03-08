@@ -76,41 +76,12 @@ local dropshot = {
 		},
 		art = {
 			"Mystic Misclick",
+			"George the Rat",
 		},
 		code = {
 			"Math",
 		},
 	},
-	init = function(self)
-		local gigo = Game.init_game_object
-		function Game:init_game_object()
-			local g = gigo(self)
-			g.current_round.cry_dropshot_card = { suit = "Spades" }
-			return g
-		end
-		local rcc = reset_castle_card
-		function reset_castle_card()
-			rcc()
-			if not G.GAME.current_round.cry_dropshot_card then
-				G.GAME.current_round.cry_dropshot_card = {}
-			end
-			G.GAME.current_round.cry_dropshot_card.suit = "Spades"
-			local valid_castle_cards = {}
-			for k, v in ipairs(G.playing_cards) do
-				if v.ability.effect ~= "Stone Card" then
-					valid_castle_cards[#valid_castle_cards + 1] = v
-				end
-			end
-			if valid_castle_cards[1] then
-				local castle_card =
-					pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
-				if not G.GAME.current_round.cry_dropshot_card then
-					G.GAME.current_round.cry_dropshot_card = {}
-				end
-				G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
-			end
-		end
-	end,
 }
 local happyhouse = {
 	object_type = "Joker",
@@ -144,9 +115,15 @@ local happyhouse = {
 			if
 				card.ability.extra.check == 114
 				and G.GAME.round_resets.ante < 8
-				and not (
-					G.GAME.selected_back.effect.center.key == "antimatter"
-					or G.GAME.selected_back.effect.center.key == "equilibrium"
+				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
+				and (
+					not CardSleeves
+					or (
+						CardSleeves
+						and G.GAME.selected_sleeve
+						--	and G.GAME.selected_sleeve ~= "sleeve_cry_antimatter_sleeve"	TODO: Add check if Antimatter sleeve gets added
+						and G.GAME.selected_sleeve ~= "sleeve_cry_equilibrium_sleeve"
+					)
 				)
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })
@@ -326,7 +303,7 @@ local queensgambit = {
 		if context.destroying_card and not context.blueprint then
 			if
 				G.GAME.current_round.current_hand.handname == "Royal Flush"
-				and SMODS.Ranks[context.destroying_card.base.value].key == "Queen"
+				and context.destroying_card:get_id() == 12
 			then
 				card_eval_status_text(
 					card,
@@ -347,7 +324,7 @@ local queensgambit = {
 						return true
 					end,
 				}))
-				return nil, true
+				return { remove = not context.destroying_card.ability.eternal }
 			end
 		end
 	end,
@@ -638,19 +615,21 @@ local pickle = {
 	calculate = function(self, card, context)
 		if context.skip_blind then
 			for i = 1, math.min(20, card.ability.extra.tags) do
-				local tag = Tag(get_next_tag_key("cry_pickle"))
-				if tag.name == "Orbital Tag" then
-					local _poker_hands = {}
-					for k, v in pairs(G.GAME.hands) do
-						if v.visible then
-							_poker_hands[#_poker_hands + 1] = k
-						end
-					end
-					tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pickle_orbital"))
-				end
-				if tag.name == "Boss Tag" then
+				local tag_key = get_next_tag_key("cry_pickle")
+				if tag_key == "tag_boss" then
 					i = i - 1 --skip these, as they can cause bugs with pack opening from other tags
 				else
+					local tag = Tag(tag_key)
+					if tag.name == "Orbital Tag" then
+						local _poker_hands = {}
+						for k, v in pairs(G.GAME.hands) do
+							if v.visible then
+								_poker_hands[#_poker_hands + 1] = k
+							end
+						end
+						tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pickle_orbital"))
+					end
+					tag.ability.shiny = cry_rollshinybool()
 					add_tag(tag)
 				end
 			end
@@ -670,8 +649,8 @@ local pickle = {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
-						key = card.ability.extra.tags == 1 and "a_tag_minus" or "a_tags_minus",
-						vars = { card.ability.extra.tags },
+						key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus",
+						vars = { card.ability.extra.tags_mod },
 					})[1],
 					colour = G.C.FILTER,
 				})
@@ -711,6 +690,7 @@ local pickle = {
 		},
 		art = {
 			"Mystic Misclick",
+			"unexian",
 		},
 		code = {
 			"Math",
@@ -840,18 +820,12 @@ local booster = {
 		return { vars = { math.min(25, center.ability.extra.booster_slots) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			+ math.min(25, card.ability.extra.booster_slots)
+		local mod = math.min(25, card.ability.extra.booster_slots)
+		SMODS.change_booster_limit(mod)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if not G.GAME.modifiers.cry_booster_packs then
-			G.GAME.modifiers.cry_booster_packs = 2
-		end
-		G.GAME.modifiers.cry_booster_packs = G.GAME.modifiers.cry_booster_packs
-			- math.min(25, card.ability.extra.booster_slots)
+		local mod = math.min(25, card.ability.extra.booster_slots)
+		SMODS.change_booster_limit(-mod)
 	end,
 	cry_credits = {
 		idea = {
@@ -945,6 +919,7 @@ local chili_pepper = {
 		},
 		art = {
 			"Mystic Misclick",
+			"George the Rat",
 		},
 		code = {
 			"Math",
@@ -975,7 +950,7 @@ local compound_interest = {
 			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
 			local old = card.ability.extra.percent
 			card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
-			compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
+			Cryptid.compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
 			if bonus > to_big(0) then
 				return bonus
 			end
@@ -1194,14 +1169,14 @@ local seal_the_deal = {
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
 		local sealtable = { "blue", "red", "purple" }
-		if Cryptid.enabled["Misc."] then
+		if Cryptid.enabled("cry_azure") then
 			sealtable[#sealtable + 1] = "azure"
 		end
-		if Cryptid.enabled["Code Cards"] then
+		if Cryptid.enabled("cry_green") then
 			sealtable[#sealtable + 1] = "green"
 		end
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed("abc"))
-		if G.P_CENTERS["j_cry_seal_the_deal"].discovered then
+		if self.discovered then
 			--Gold (ULTRA RARE!!!!!!!!)
 			if pseudorandom("xyz") <= 0.000001 and not (card.area and card.area.config.collection) then
 				card.children.center:set_sprite_pos({ x = 6, y = 4 })
@@ -1320,7 +1295,7 @@ local jimball = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			create_cryptid_notif_overlay("jimball")
+			Cryptid.notification_overlay("jimball")
 		end
 	end,
 	atlas = "jimball",
@@ -1477,6 +1452,7 @@ local sus = {
 		},
 		art = {
 			"Jevonn",
+			"unexian",
 		},
 		code = {
 			"Math",
@@ -1502,7 +1478,6 @@ local fspinner = {
 	order = 77,
 	blueprint_compat = true,
 	perishable_compat = false,
-	atlas = "fspinner",
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
 			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
@@ -1530,6 +1505,7 @@ local fspinner = {
 		},
 		art = {
 			"Jevonn",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -1755,16 +1731,19 @@ local gardenfork = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and not context.blueprint then
+		if context.cardarea == G.jokers and context.before and context.full_hand then
+			local has_ace = false
+			local has_7 = false
 			for i = 1, #context.full_hand do
-				if context.other_card:get_id() == 14 then
-					for j = 1, #context.full_hand do
-						if context.other_card:get_id() == 7 then -- :( ekshpenshive
-							ease_dollars(card.ability.extra.money)
-							return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
-						end
-					end
+				if context.full_hand[i]:get_id() == 14 then
+					has_ace = true
+				elseif context.full_hand[i]:get_id() == 7 then
+					has_7 = true
 				end
+			end
+			if has_ace and has_7 then
+				ease_dollars(card.ability.extra.money)
+				return { message = "$" .. card.ability.extra.money, colour = G.C.MONEY }
 			end
 		end
 	end,
@@ -1933,6 +1912,10 @@ local hunger = {
 	name = "cry-hunger",
 	key = "hunger",
 	config = { extra = { money = 3 } },
+	extra_gamesets = { "exp_modest" },
+	gameset_config = {
+		exp_modest = { extra = { money = 2 } },
+	},
 	pos = { x = 3, y = 0 },
 	rarity = 2,
 	cost = 6,
@@ -2071,7 +2054,7 @@ local redbloon = {
 			"Roguefort Cookie",
 		},
 		art = {
-			"Jevonn",
+			"Darren_The_Frog",
 		},
 		code = {
 			"Jevonn",
@@ -2557,7 +2540,7 @@ local sapling = {
 	},
 	name = "cry-sapling",
 	key = "sapling",
-	pos = { x = 3, y = 2 },
+	pos = { x = 3, y = 2 }, --todo animations
 	config = { extra = { score = 0, req = 18, check = nil } },
 	rarity = 2,
 	cost = 6,
@@ -2569,8 +2552,9 @@ local sapling = {
 			vars = {
 				center.ability.extra.score,
 				center.ability.extra.req,
-				cry_card_enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
-				colours = { G.C.RARITY[cry_card_enabled("set_cry_epic") == true and "cry_epic" or 3] },
+				Cryptid.enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
+				colours = { G.C.RARITY[Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 3] },
+				Cryptid.enabled("set_cry_epic") == true and localize("cry_sapling_an") or localize("cry_sapling_a"),
 			},
 		}
 	end,
@@ -2594,7 +2578,7 @@ local sapling = {
 			end
 		elseif context.selling_self and not context.blueprint and not context.retrigger_joker then
 			if card.ability.extra.score >= card.ability.extra.req then
-				local value = cry_card_enabled("set_cry_epic") == true and "cry_epic" or 0.99
+				local value = Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 0.99
 				card_eval_status_text(
 					card,
 					"extra",
@@ -2626,6 +2610,7 @@ local sapling = {
 		},
 		art = {
 			"Jevonn",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -2707,7 +2692,7 @@ local spaceglobe = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn",
+			"Selicre",
 		},
 		code = {
 			"Jevonn",
@@ -3089,7 +3074,7 @@ local rnjoker = {
 	blueprint_compat = true,
 	set_ability = function(self, card, initial, delay_sprites)
 		card.ability.abilities = {}
-		rnjoker_randomize(card)
+		Cryptid.rnjoker_randomize(card)
 	end,
 	calculate = function(self, card, context)
 		if card.ability and card.ability.abilities then
@@ -3746,7 +3731,7 @@ local rnjoker = {
 				end
 			end
 			G.hand:change_size(-hand_size)
-			rnjoker_randomize(card)
+			Cryptid.rnjoker_randomize(card)
 			return {
 				message = localize("k_reset"),
 				colour = G.C.RED,
@@ -3818,7 +3803,7 @@ local rnjoker = {
 			}
 			localize(target)
 		else
-			localalize_with_direct(new_loc, target)
+			Cryptid.direct_localize(new_loc, target)
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
@@ -3845,7 +3830,7 @@ local rnjoker = {
 		},
 	},
 	init = function(self)
-		function rnjoker_randomize(card)
+		function Cryptid.rnjoker_randomize(card)
 			card.ability.abilities = {}
 			card.ability.extra = {}
 			card.ability.extra.value = {}
@@ -4214,7 +4199,7 @@ local rnjoker = {
 			values.text_parsed = text_parsed
 			card.ability.abilities = { values }
 		end
-		function localalize_with_direct(loc_target, args, misc_cat)
+		function Cryptid.direct_localize(loc_target, args, misc_cat)
 			if loc_target then
 				for _, lines in
 					ipairs(
@@ -4361,7 +4346,7 @@ local duos = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
 			if
-				context.poker_hands ~= nil and next(context.poker_hands["Two Pair"])
+				context.poker_hands ~= nil and next(context.poker_hands[card.ability.type])
 				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
 			then
 				return {
@@ -4407,7 +4392,7 @@ local home = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Full House"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4451,7 +4436,7 @@ local nuts = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Straight Flush"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4495,7 +4480,7 @@ local quintet = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Five of a Kind"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4511,7 +4496,7 @@ local quintet = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Five of a Kind" then
+		if args.type == "win" and G.GAME.last_hand_played == "Five of a Kind" then
 			return true
 		end
 	end,
@@ -4549,7 +4534,7 @@ local unity = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Flush House"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4565,7 +4550,7 @@ local unity = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Flush House" then
+		if args.type == "win" and G.GAME.last_hand_played == "Flush House" then
 			return true
 		end
 	end,
@@ -4603,7 +4588,7 @@ local swarm = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["Flush Five"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4619,7 +4604,7 @@ local swarm = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "Flush Five" then
+		if args.type == "win" and G.GAME.last_hand_played == "Flush Five" then
 			return true
 		end
 	end,
@@ -4659,7 +4644,7 @@ local stronghold = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_Bulwark"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4675,7 +4660,7 @@ local stronghold = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_Bulwark" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_Bulwark" then
 			return true
 		end
 	end,
@@ -4704,7 +4689,7 @@ local wtf = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_Clusterfuck"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4720,7 +4705,7 @@ local wtf = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_Clusterfuck" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_Clusterfuck" then
 			return true
 		end
 	end,
@@ -4749,7 +4734,7 @@ local clash = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands["cry_UltPair"]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 					colour = G.C.RED,
@@ -4765,7 +4750,7 @@ local clash = {
 		return false
 	end,
 	check_for_unlock = function(self, args)
-		if args.type == "cry_win_with_hand" and args.hand == "cry_UltPair" then
+		if args.type == "win" and G.GAME.last_hand_played == "cry_UltPair" then
 			return true
 		end
 	end,
@@ -4792,7 +4777,7 @@ local filler = {
 	cost = 1,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and context.poker_hands and next(context.poker_hands["High Card"]) then
+		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.type]) then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 				colour = G.C.RED,
@@ -5692,6 +5677,7 @@ local coin = {
 		},
 		art = {
 			"Timetoexplode",
+			"George the Rat",
 		},
 		code = {
 			"Jevonn",
@@ -5923,6 +5909,7 @@ local oldblueprint = {
 		},
 		art = {
 			"Linus Goof Balls",
+			"unexian",
 		},
 		code = {
 			"Math",
@@ -6610,6 +6597,7 @@ local astral_bottle = {
 		},
 	},
 	name = "cry-astral_bottle",
+	extra_gamesets = { "exp_modest", "exp_mainline", "exp_madness" },
 	key = "astral_bottle",
 	eternal_compat = false,
 	pos = { x = 7, y = 0 },
@@ -6622,25 +6610,83 @@ local astral_bottle = {
 		if not center.edition or (center.edition and not center.edition.cry_astral) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
 		end
+		return {
+			key = Cryptid.gameset_loc(
+				self,
+				{ exp_modest = "mainline", exp_mainline = "mainline", exp_madness = "madness" }
+			),
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.selling_self and not context.retrigger_joker and not context.blueprint then
+			local g = Cryptid.gameset(card)
+			local effect = { { astral = true, perishable = true } }
+			if g == "exp_modest" or g == "exp_mainline" then
+				effect = { { astral = true }, { perishable = true } }
+			end
+			if g == "exp_madness" then
+				effect = { { astral = true } }
+			end
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff and not G.jokers.cards[i].edition then
 					jokers[#jokers + 1] = G.jokers.cards[i]
 				end
 			end
-			if #jokers > 0 then
+			if #jokers >= #effect then
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_duplicated_ex") })
-				local chosen_joker = pseudorandom_element(jokers, pseudoseed("trans"))
-				chosen_joker:set_edition({ cry_astral = true })
-				chosen_joker.ability.perishable = true -- Done manually to bypass perish compat
-				chosen_joker.ability.perish_tally = G.GAME.perishable_rounds
+				for i = 1, #effect do
+					local chosen_joker = pseudorandom_element(jokers, pseudoseed("astral_bottle"))
+					if effect[i].astral then
+						chosen_joker:set_edition({ cry_astral = true })
+					end
+					if effect[i].perishable then
+						chosen_joker.ability.perishable = true -- Done manually to bypass perish compat
+						chosen_joker.ability.perish_tally = G.GAME.perishable_rounds
+					end
+					for i = 1, #jokers do
+						if jokers[i] == chosen_joker then
+							table.remove(jokers, i)
+							break
+						end
+					end
+				end
 				return nil, true
 			else
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers") })
 			end
+		end
+	end,
+}
+local kittyprinter = {
+	dependencies = {
+		items = {
+			"tag_cry_cat",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-kittyprinter",
+	key = "kittyprinter",
+	config = { extra = { Xmult = 2 } },
+	pos = { x = 3, y = 5 },
+	rarity = 2,
+	cost = 6,
+	atlas = "atlasone",
+	order = 133,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { card.ability.extra.Xmult },
+				}),
+				Xmult_mod = card.ability.extra.Xmult,
+			}
 		end
 	end,
 }
@@ -6732,7 +6778,7 @@ local exposed = {
 	atlas = "atlastwo",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { math.min(40, center.ability.extra) } }
 	end,
 	update = function(self, card, dt)
 		if G.deck and card.added_to_deck then
@@ -6779,7 +6825,7 @@ local mask = {
 	order = 124,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { math.min(40, center.ability.extra) } }
 	end,
 	update = function(self, card, dt)
 		if G.deck and card.added_to_deck then
@@ -6834,8 +6880,13 @@ local tropical_smoothie = {
 			for i, v in pairs(G.jokers.cards) do
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
-						cry_with_deck_effects(v, function(cards)
-							cry_misprintize(cards, { min = card.ability.extra, max = card.ability.extra }, nil, true)
+						Cryptid.with_deck_effects(v, function(cards)
+							Cryptid.misprintize(
+								cards,
+								{ min = card.ability.extra, max = card.ability.extra },
+								nil,
+								true
+							)
 						end)
 						check = true
 					end
@@ -7080,6 +7131,7 @@ local necromancer = {
 			and context.card.sell_cost > 0
 			and context.card.config.center.set == "Joker"
 			and G.GAME.jokers_sold
+			and #G.GAME.jokers_sold > 0
 		then
 			local card = create_card(
 				"Joker",
@@ -7182,8 +7234,8 @@ local oil_lamp = { --You want it? It's yours my friend
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							check = true
-							cry_with_deck_effects(G.jokers.cards[i + 1], function(cards)
-								cry_misprintize(
+							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(cards)
+								Cryptid.misprintize(
 									cards,
 									{ min = card.ability.extra.increase, max = card.ability.extra.increase },
 									nil,
@@ -7243,8 +7295,8 @@ local tax_fraud = {
 		return { vars = { center.ability.extra.money } }
 	end,
 	calc_dollar_bonus = function(self, card)
-		if #advanced_find_joker(nil, nil, nil, { "rental" }, true) ~= 0 then
-			return card.ability.extra.money * #advanced_find_joker(nil, nil, nil, { "rental" }, true)
+		if #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true) ~= 0 then
+			return card.ability.extra.money * #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true)
 		end
 	end,
 	cry_credits = {
@@ -7280,10 +7332,13 @@ local pity_prize = {
 	end,
 	calculate = function(self, card, context)
 		if context.skipping_booster then
-			local tag
+			local tag_key
 			repeat
-				tag = Tag(get_next_tag_key("cry_pity_prize"))
-			until tag.name ~= "Boss Tag" and tag.name ~= "Gambler's Tag" and tag.name ~= "Empowered Tag"
+				tag_key = get_next_tag_key("cry_pity_prize")
+			until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+			-- this is my first time seeing repeat... wtf
+			local tag = Tag(tag_key)
+			tag.ability.shiny = cry_rollshinybool()
 			if tag.name == "Orbital Tag" then
 				local _poker_hands = {}
 				for k, v in pairs(G.GAME.hands) do
@@ -7373,6 +7428,27 @@ local digitalhallucinations = {
 			)
 		then
 			local boosty = context.card
+			-- finally mod compat?
+			if boosty.config.center.cry_digital_hallucinations then
+				local conf = boosty.config.center.cry_digital_hallucinations
+				G.E_MANAGER:add_event(Event({
+					trigger = "before",
+					delay = 0.0,
+					func = function()
+						conf.create()
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize(conf.loc_key), colour = conf.colour }
+				)
+				return nil, true
+			end
 			local consums = { "Arcana", "Celestial", "Spectral" }
 			local short1 = { "tarot", "planet", "spectral" }
 			local short2 = { "Tarot", "Planet", "Spectral" }
@@ -7382,7 +7458,7 @@ local digitalhallucinations = {
 						trigger = "before",
 						delay = 0.0,
 						func = function()
-							local ccard = create_card(short2[i], G.consumables, nil, nil, nil, nil, nil, "diha")
+							local ccard = create_card(short2[i], G.consumeables, nil, nil, nil, nil, nil, "diha")
 							ccard:set_edition({ negative = true }, true)
 							ccard:add_to_deck()
 							G.consumeables:emplace(ccard)
@@ -7400,34 +7476,21 @@ local digitalhallucinations = {
 					return nil, true -- this triggers BEFORE a retrigger joker and looks like jank. i can't get a message showing up without status text so this is the best option rn
 				end
 			end
-			if boosty.ability.name:find("code") then
-				G.E_MANAGER:add_event(Event({
-					trigger = "before",
-					delay = 0.0,
-					func = function()
-						local ccard = create_card("Code", G.consumables, nil, nil, nil, nil, nil, "diha")
-						ccard:set_edition({ negative = true }, true)
-						ccard:add_to_deck()
-						G.consumeables:emplace(ccard)
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					context.blueprint_card or card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("cry_plus_code"), colour = G.C.SET.Code }
-				)
-				return nil, true
-			end
 			if boosty.ability.name:find("Buffoon") then
 				G.E_MANAGER:add_event(Event({
 					trigger = "before",
 					delay = 0.0,
 					func = function()
-						local ccard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "diha")
+						local ccard = create_card(
+							boosty.ability.name:find("meme") and "Meme" or "Joker",
+							G.jokers,
+							nil,
+							nil,
+							nil,
+							nil,
+							nil,
+							"diha"
+						) -- who up wasting their cycles rn
 						ccard:set_edition({ negative = true }, true)
 						ccard:add_to_deck()
 						G.jokers:emplace(ccard)
@@ -7462,6 +7525,7 @@ local digitalhallucinations = {
 						ccard:set_edition({ negative = true }, true)
 						ccard:start_materialize({ G.C.SECONDARY_SET.Enhanced })
 						G.play:emplace(ccard)
+						playing_card_joker_effects({ ccard }) -- odd timing
 						table.insert(G.playing_cards, ccard)
 						return true
 					end,
@@ -7482,8 +7546,6 @@ local digitalhallucinations = {
 					end,
 				}))
 				draw_card(G.play, G.deck, 90, "up", nil)
-
-				playing_card_joker_effects({ true }) -- who knows what most this stuff does, i just copied it from marble jonkler
 				return nil, true
 			end
 		end
@@ -7522,7 +7584,7 @@ local arsonist = {
 		if context.destroying_card then
 			local eval = evaluate_poker_hand(context.full_hand)
 			if next(eval["Full House"]) then
-				return true
+				return not context.destroying_card.ability.eternal
 			end
 		end
 	end,
@@ -7531,7 +7593,7 @@ local arsonist = {
 			"AlexZGreat",
 		},
 		art = {
-			"Darren_the_frog",
+			"Darren_The_Frog",
 		},
 		code = {
 			"AlexZGreat",
@@ -7597,6 +7659,115 @@ local zooble = {
 		},
 		code = {
 			"AlexZGreat",
+		},
+	},
+}
+local lebaron_james = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-LeBaron James",
+	pools = { ["Meme"] = true },
+	key = "lebaron_james",
+	pos = { x = 2, y = 5 },
+	config = { extra = { h_mod = 1 } },
+	rarity = 3,
+	cost = 6,
+	atlas = "atlasone",
+	order = 133,
+	no_dbl = true,
+	immutable = true, -- has issues with value manip and not easy to fix
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.h_mod } }
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if context.other_card:get_id() == 13 then
+				local h_size = math.max(0, math.min(1000 - 0, card.ability.extra.h_mod))
+				G.hand:change_size(math.floor(h_size))
+				G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + math.floor(h_size)
+				if math.floor(h_size) > 0 then
+					return {
+						message = localize({ type = "variable", key = "a_handsize", vars = { math.floor(h_size) } }),
+						colour = G.C.FILTER,
+						card = card,
+					}
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"indefenite_idiot",
+			"HexaCryonic",
+		},
+		code = {
+			"AlexZGreat",
+		},
+		art = {
+			"lamborghiniofficial",
+		},
+	},
+	init = function(self)
+		-- Calculate enhancements for kings as if held in hand
+		-- Note that for enhancements that work when played and held in hand, this will fail
+		-- Not tested since no enhancements use this yet (Steel is weird, and Gold won't work)
+		local cce = Card.calculate_enhancement
+		function Card:calculate_enhancement(context)
+			local ret = cce(self, context)
+			if
+				not ret
+				and next(SMODS.find_card("j_cry_lebaron_james"))
+				and SMODS.Ranks[self.base.value].key == "King"
+				and context.cardarea == G.play
+			then
+				context.cardarea = G.hand
+				local ret = cce(self, context)
+				context.cardarea = G.play
+			end
+			return ret
+		end
+	end,
+}
+local huntingseason = { -- If played hand contains three cards, destroy the middle card after scoring
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-huntingseason",
+	key = "huntingseason",
+	pos = { x = 4, y = 5 },
+	order = 134,
+	immutable = true,
+	rarity = 2,
+	cost = 7,
+	blueprint_compat = false,
+	atlas = "atlasone",
+	calculate = function(self, card, context)
+		if
+			(context.cardarea == G.play or context.cardarea == "unscored")
+			and context.destroy_card == context.full_hand[2]
+			and #context.full_hand == 3 -- 3 cards in played hand
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
+			return { remove = not context.destroy_card.ability.eternal }
+		end
+	end,
+	cry_credits = {
+		art = {
+			"Unexian",
+		},
+		idea = {
+			"Nova",
+		},
+		code = {
+			"Nova",
 		},
 	},
 }
@@ -7683,6 +7854,7 @@ local miscitems = {
 	savvy,
 	subtle,
 	discreet,
+	kittyprinter,
 	kidnap,
 	exposed,
 	mask,
@@ -7710,6 +7882,8 @@ local miscitems = {
 	fuckedup,
 	foolhardy,
 	translucent,
+	lebaron_james,
+	huntingseason,
 }
 return {
 	name = "Misc. Jokers",

@@ -1236,7 +1236,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult for each member",
 					"in the {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1245,7 +1245,7 @@ return {
 					"{C:chips}+#1#{} Chips for each member",
 					"in the {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {
@@ -3083,7 +3083,7 @@ return {
 			k_disable_music = "Disable Music",
 
 			k_cry_epic = "Epic",
-			k_cry_epic = "Exotic",
+			k_cry_exotic = "Exotic",
 
 			cry_notif_jimball_1 = "Jimball",
 			cry_notif_jimball_2 = "Copyright Notice",
@@ -3113,7 +3113,7 @@ return {
 			cry_oversat = "Oversaturated",
 
 			k_cry_epic = "Epic",
-			k_cry_epic = "Exotic",
+			k_cry_exotic = "Exotic",
 		},
 		rnj_loc_txts = {
 			stats = {

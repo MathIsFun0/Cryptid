@@ -41,7 +41,7 @@ target = "game.lua"
 pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
 position = "before"
 payload = '''
-if true --[[Cryptid.enabled["Menu"]--]] then card:set_ability(get_random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
+if true --[[Cryptid.enabled["Menu"]--]] then card:set_ability(Cryptid.random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
 '''
 match_indent = true
 
@@ -77,16 +77,6 @@ if self.config.center.soul_pos and self.config.center.soul_pos.extra and (self.c
     self.children.floating_sprite2:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
 end
 '''
-match_indent = true
-
-# If your exotic sprites are getting screwed up, this is probably why
-# This really needs to be turned into a regex patch
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = '''if not v.custom_draw and k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
-position = "at"
-payload = '''if not v.custom_draw and k ~= 'focused_ui' and k ~= "front" and k ~= "back" and k ~= "soul_parts" and k ~= "center" and k ~= 'floating_sprite' and k ~= 'floating_sprite2' and k~= "shadow" and k~= "use_button" and k ~= 'buy_button' and k ~= 'buy_and_use_button' and k~= "debuff" and k ~= 'price' and k~= 'particles' and k ~= 'h_popup' then v:draw() end'''
 match_indent = true
 
 
@@ -191,7 +181,6 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Cryptid = {}
-Cryptid.enabled = {}
 Cryptid.aliases = {}
 function cry_format(...)
 	return ...
@@ -230,7 +219,7 @@ assembled_string = assembled_string..(type(subpart) == 'string' and subpart or f
 '''
 position = "at"
 payload = '''
-assembled_string = assembled_string..(type(subpart) == 'string' and subpart or cry_pls(subpart[1], args.vars) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or Cryptid.pluralize(subpart[1], args.vars) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
 '''
 match_indent = true
 
@@ -270,4 +259,13 @@ if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
 	keep = false
 end
 '''
+match_indent = true
+
+# Cross-Mod Content - allow Cryptid to load atlas/sound/shader files from other mods
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = "self.full_path = (self.mod and self.mod.path or SMODS.path) .."
+position = "at"
+payload = "self.full_path = (self.mod_path or self.mod and self.mod.path or SMODS.path) .."
 match_indent = true
