@@ -17,7 +17,12 @@ local gateway = {
 	order = 90,
 	hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
 	can_use = function(self, card)
-		return true
+		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
+			return #G.jokers.cards < G.jokers.config.card_limit
+		else
+			--Don't allow use if everything is eternal and there is no room
+			return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
+		end
 	end,
 	use = function(self, card, area, copier)
 		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
