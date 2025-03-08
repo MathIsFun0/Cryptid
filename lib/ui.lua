@@ -256,6 +256,10 @@ function Card:force_popup()
 		if SMODS.Mods["incantation"] and self.area == G.consumeables then
 			return false
 		end
+		-- Other areas where it doesn't work well
+		if self.area == G.pack_cards then
+			return false
+		end
 		return true
 	end
 end
