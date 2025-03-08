@@ -245,7 +245,11 @@ function Card:force_popup()
 			return false
 		end
 		-- Playing cards
-		if self.config.center.set == "Default" or self.config.center.set == "Base" or self.config.center.set  == "Enhanced" then
+		if
+			self.config.center.set == "Default"
+			or self.config.center.set == "Base"
+			or self.config.center.set == "Enhanced"
+		then
 			return false
 		end
 		-- Incantation mod compat
