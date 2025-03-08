@@ -261,7 +261,6 @@ end
 local cainit = CardArea.init
 function CardArea:init(X, Y, W, H, config)
 	if config.collection then
-		print("m")
 		config.highlight_limit = config.card_limit
 	end
 	return cainit(self, X, Y, W, H, config)
