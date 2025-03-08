@@ -229,9 +229,48 @@ function Card:move(dt)
 	m(self, dt)
 	if self.children.h_popup then
 		self.children.h_popup.states.collide.can = true
-		if not self.highlighted and not self.states.hover.is then
+		if not self:force_popup() and not self.states.hover.is then
 			self.children.h_popup:remove()
 			self.children.h_popup = nil
 		end
 	end
+end
+
+-- This defines when we should show a card's description even when it's not hovered
+function Card:force_popup()
+	-- Must be selected
+	if self.highlighted then
+		-- Remove all popups in the pause menu (collection excluded)
+		if G.SETTINGS.paused and not self.area.config.collection then
+			return false
+		end
+		-- Playing cards
+		if self.config.center.set == "Default" or self.config.center.set == "Base" or self.config.center.set  == "Enhanced" then
+			return false
+		end
+		-- Incantation mod compat
+		if SMODS.Mods["incantation"] and self.area == G.consumeables then
+			return false
+		end
+		return true
+	end
+end
+
+-- Hacky hook to make cards selectable in the collection
+-- Unfortunately this doesn't play nicely with gameset UI
+local cainit = CardArea.init
+function CardArea:init(X, Y, W, H, config)
+	if config.collection then
+		print("m")
+		config.highlight_limit = config.card_limit
+	end
+	return cainit(self, X, Y, W, H, config)
+end
+
+local cach = CardArea.can_highlight
+function CardArea:can_highlight(card)
+	if self.config.collection then
+		return true
+	end
+	return cach(self)
 end
