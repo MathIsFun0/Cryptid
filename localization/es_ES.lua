@@ -8,6 +8,14 @@ return {
 					"de {C:attention}todas{} las barajas",
 				},
 			},
+			b_cry_antimatter_balanced = {
+				name = "Baraja de antimateria",
+				text = {
+					"Aplica las {C:legendary,E:1}ventajas{}",
+					"de {C:attention}todas{} las barajas completadas",
+					"en la dificultad {C:gold}Pozo de oro{}",
+				},
+			},
 			b_cry_beige = {
 				name = "Baraja castaña",
 				text = {
@@ -21,7 +29,7 @@ return {
 					"Las ranuras de {C:attention}comodín{} y",
 					"{C:attention}consumibles{} se {C:attention}combinan",
 					"Las ciegas {C:attention}nostálgicas{} reemplazan",
-					"sus ciegas actualizadas",
+					"sus ciegas actualizadas"
 				},
 			},
 			b_cry_blank = {
@@ -64,7 +72,7 @@ return {
 			b_cry_e_deck = {
 				name = "Baraja de edición",
 				text = {
-					"Todas las cartas son {C:dark_edition}#1#{}",
+					"Todas las cartas son {C:dark_edition}#1#s{}",
 					"Las cartas no pueden cambiar de edición",
 					"{C:inactive}(clic para editar)",
 				},
@@ -91,7 +99,7 @@ return {
 				name = "Baraja de mejora",
 				text = {
 					"Todas las {C:attention}cartas de juego{}",
-					"are {C:attention}#1#{}(s)",
+					"son {C:attention}#1#{}",
 					"{C:inactive}(clic para editar)",
 				},
 			},
@@ -655,7 +663,7 @@ return {
 				},
 			},
 			set_cry_spooky = {
-				name = "Spooky Update",
+				name = "Actualización espeluznant",
 				text = {
 					"Contenido de la Actualización espeluznante,",
 					"incluyendo Comodines de {C:cry_candy}dulce{}",
@@ -827,7 +835,7 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1#",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_altgoogol = {
 				name = "Carta de Googol Play nostálgica",
@@ -835,6 +843,16 @@ return {
 					"Vende esta carta para crear",
 					"{C:attention}#1#{} copia#<s>1# del {C:attention}Joker{} del extremo izquierdo",
 					"{C:inactive,s:0.8}No copia otras Cartas de Googol Play nostálgicas{}",
+				},
+			},
+			j_cry_altgoogol_balanced = {
+				name = "Carta de Googol Play nostálgica",
+				text = {
+					"Vende esta carta para crear",
+					"{C:attention}#1#{} copia#<s>1# del {C:attention}Joker{} del extremo izquierdo",
+					"{C:inactive,s:0.8}No copia otras Cartas de Googol Play nostálgicas{}",
+					"{C:inactive}(debe haber espacio){}",
+					--"{C:inactive,s:0.9}(Elimina el {C:dark_edition,s:0.9}Negativo{C:inactive,s:0.9} de la copia)",
 				},
 			},
 			j_cry_antennastoheaven = {
@@ -857,7 +875,7 @@ return {
 					"contiene un {C:attention}Full{},",
 					"{C:red}destruye{} todas las cartas",
 					"después de puntuar",
-				},
+				}
 			},
 			j_cry_astral_bottle = {
 				name = "Astral en una botella",
@@ -865,9 +883,23 @@ return {
 					"Al venderse, aplica {C:dark_edition}Astral{}",
 					"y {C:attention}Perecedero{} a",
 					"un {C:attention}comodín{} aleatorio",
+				}
+			},
+			j_cry_astral_bottle_mainline = {
+				name = "Astral en una botella",
+				text = {
+					"Al venderse, aplica {C:dark_edition}Astral{}",
+					"y {C:attention}Perecedero{} a",
+					"diferentes {C:attention}comodines{} aleatorios",
 				},
 			},
-
+			j_cry_astral_bottle_madness = {
+				name = "Astral en una botella",
+				text = {
+					"Al venderse, aplica {C:dark_edition}Astral{}",
+					"a un {C:attention}comodín{} aleatorio",
+				},
+			},
 			j_cry_big_cube = {
 				name = "Cubo grande",
 				text = {
@@ -890,8 +922,8 @@ return {
 					"Si un {C:attention}#1#{} se juega o está en tu mano,",
 					"establece {C:chips}fichas{} y {C:mult}multi{} a 0",
 					"{C:red,E:2}se autodestruye{} si no hay un {C:attention}#1#{} en la baraja",
-					"{C:inactive,s:0.8}La categoría no cambia",
-				},
+					"{C:inactive,s:0.8}La categoría no cambia"
+				}
 			},
 			j_cry_blender = {
 				name = "Blender",
@@ -924,7 +956,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_bonusjoker = {
 				name = "Comodín adicional",
@@ -954,8 +986,8 @@ return {
 				},
 				unlock = {
 					"Quédate AFK en la",
-					"pantalla de título",
-					"por {C:attention}10 minutos",
+					'pantalla de título',
+					'por {C:attention}10 minutos'
 				},
 			},
 			j_cry_brittle = {
@@ -963,8 +995,8 @@ return {
 				text = {
 					"Por las siguiente#<s>1# {C:attention}#1#{} mano#<s>1#,",
 					"añade {C:attention}Piedra{}, {C:attention}Oro{}, o {C:attention}Acero{} a",
-					"la carta del extremo derecho que puntúa",
-				},
+					"la carta del extremo derecho que puntúa"
+				}
 			},
 			j_cry_bubblem = {
 				name = "Burbuja M",
@@ -989,23 +1021,23 @@ return {
 				text = {
 					"Vende esta carta para crear {C:attention}#1#{} {C:cry_candy}dulce#<s>1#",
 					"{C:attention}+#2#{} {C:cry_candy}dulce#<s>2#{} cada {C:attention}2{} ciegas derrotadas",
-					"{C:attention}+#3#{} {C:cry_candy}dulce#<s>3#{} al derrotar la {C:attention}ciega jefe{}",
-				},
+					"{C:attention}+#3#{} {C:cry_candy}dulce#<s>3#{} al derrotar la {C:attention}ciega jefe{}"
+				}
 			},
 			j_cry_candy_buttons = {
 				name = "Botones de dulce",
 				text = {
 					"Las siguiente#<s>1# {C:attention}#1#{} renovaci#<ones,ón>1#",
 					"cuestan {C:money}$1{}",
-				},
+				}
 			},
 			j_cry_candy_cane = {
 				name = "Bastón de dulce",
 				text = {
 					"Por las siguiente#<s>1# {C:attention}#1#{} ronda#<s>1#,",
 					"las cartas de juego otorgan {C:money}$#2#",
-					"cuando se {C:attention}reactivan",
-				},
+					"cuando se {C:attention}reactivan"
+				}
 			},
 			j_cry_candy_dagger = {
 				name = "Daga de dulce",
@@ -1013,14 +1045,14 @@ return {
 					"Cuando se selecciona la {C:attention}ciega{},",
 					"destruye al comodín de la derecha",
 					"para crear un {C:cry_candy}dulce{}",
-				},
+				}
 			},
 			j_cry_candy_sticks = {
 				name = "Palos de dulce",
 				text = {
 					"El efecto de la siguiente ciega jefe se desactiva",
 					"hasta que hayas jugado {C:attention}#1#{} mano#<s>1#",
-				},
+				}
 			},
 			j_cry_canvas = {
 				name = "Lienzo",
@@ -1031,8 +1063,22 @@ return {
 				},
 				unlock = {
 					"Reactiva un {C:attention}comodín",
-					"{C:attention}114{} veces",
-					"en una mano",
+					'{C:attention}114{} veces',
+					'en una mano'
+				},
+			},
+			j_cry_canvas_balanced = {
+				name = "Canvas",
+				text = {
+					"{C:attention}Reactiva{} todos los {C:attention}comodines{} a la izquierda",
+					"una vez por {C:attention}todos{} los {C:attention}comodines{} no-{C:blue}comunes",
+					"a la derecha de este comodín",
+					"{C:inactive}(hasta 2 reactivaciones)",
+				},
+				unlock = {
+					"Reactiva un {C:attention}comodín",
+					'{C:attention}114{} veces',
+					'en una mano'
 				},
 			},
 			j_cry_caramel = {
@@ -1065,7 +1111,7 @@ return {
 					"Gira un {C:green}d10{} al derrotar",
 					"la {C:attention}ciega jefe{} para",
 					"empezar un {C:cry_ascendant,E:1}evento",
-					"{C:inactive}(Actual: #1#)",
+					"{C:inactive}(Actual: #1#)"
 				},
 			},
 			j_cry_circulus_pistoris = {
@@ -1085,10 +1131,10 @@ return {
 					"Comodines {C:cry_exotic}exóticos{} otorgan {X:mult,C:white} X#4# {} multi",
 				},
 				unlock = {
-					"Obtén un comodín {C:red}raro{},",
-					"{C:cry_epic}épico{} y {C:legendary}legendario{}",
-					"antes de la {C:attention}apuesta 9",
-				},
+					'Obtén un comodín {C:red}raro{},',
+					'{C:cry_epic}épico{} y {C:legendary}legendario{}',
+					'antes de la {C:attention}apuesta 9'
+				}
 			},
 			j_cry_clash = {
 				name = "El conflicto",
@@ -1100,7 +1146,7 @@ return {
 				unlock = {
 					"Gana una partida con",
 					"tu última mano siendo",
-					"una {E:1,C:attention}Pareja suprema",
+					"una {E:1,C:attention}Pareja suprema"
 				},
 			},
 			j_cry_clicked_cookie = {
@@ -1120,7 +1166,19 @@ return {
 				},
 				unlock = {
 					"Descubre {C:attention}todas",
-					"las {C:cry_code}cartas de código",
+					'las {C:cry_code}cartas de código'
+				},
+			},
+			j_cry_CodeJoker_modest = {
+				name = "Code Joker",
+				text = {
+					"Crea una {C:cry_code}carta de código{}",
+					"{C:dark_edition}negativa{} cuando se",
+					"selecciona una {C:attention}ciega jefe{}",
+				},
+				unlock = {
+					"Descubre {C:attention}todas",
+					'las {C:cry_code}cartas de código'
 				},
 			},
 			j_cry_coin = {
@@ -1149,11 +1207,27 @@ return {
 					"{C:inactive}(debe haber espacio)",
 				},
 			},
+			j_cry_copypaste_modest = {
+				name = "Copiar y pegar",
+				text = {
+					"Duplica las cartas de ",
+					"{C:cry_code}código{} tiradas",
+					"{C:inactive}(debe haber espacio)",
+				},
+			},
+			j_cry_copypaste_madness = {
+				name = "Copiar y pegar",
+				text = {
+					"{C:green}#1# in #2#{} probabilidades de",
+					"duplicar cartas de {C:cry_code}código{} usadas",
+					"{C:inactive}(debe haber espacio)",
+				},
+			},
 			j_cry_cotton_candy = {
 				name = "Algodón de azúcar",
 				text = {
 					"Al venderse, los {C:attention}comodines{}",
-					"adyacentes se vuelven {C:dark_edition}negativos{}",
+					"adyacentes se vuelven {C:dark_edition}negativos{}"
 				},
 			},
 			j_cry_crustulum = {
@@ -1189,7 +1263,7 @@ return {
 				},
 				unlock = {
 					"Consigue un {C:attention}Obelisco",
-					"{C:purple}eterno{}",
+					"{C:purple}eterno{}"
 				},
 			},
 			j_cry_cursor = {
@@ -1216,7 +1290,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_digitalhallucinations = {
 				name = "Halucinaciones digitales",
@@ -1233,7 +1307,7 @@ return {
 					"{C:chips}+#1#{} fichas",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_doodlem = {
 				name = "Garabato M",
@@ -1253,6 +1327,14 @@ return {
 					"{C:inactive,s:0.8}(crece por by +1, +2, +3)",
 				},
 			},
+			["j_cry_Double Scale_modest"] = {
+				name = "Escala doble",
+				text = {
+					"Los {C:attention}comodines{} escaladores",
+					"aumentan el {C:attention}doble{} de rápido",
+					'{C:inactive,s:0.8}"¡Se llama Escala doble, no Escala cuadrática!"',
+				},
+			},
 			j_cry_dropshot = {
 				name = "Tiro al blanco",
 				text = {
@@ -1263,8 +1345,8 @@ return {
 				},
 				unlock = {
 					"Juega una {C:attention}Carta más alta{}",
-					"con {C:attention}4{} cartas",
-					"del {C:attention}mismo palo",
+					'con {C:attention}4{} cartas',
+					'del {C:attention}mismo palo'
 				},
 			},
 			j_cry_dubious = {
@@ -1273,7 +1355,7 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1#",
 					"si la mano contiene",
 					"una {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_duos = {
 				name = "Los dúos",
@@ -1282,28 +1364,28 @@ return {
 					"si la mano contiene",
 					"una {C:attention}#2#",
 				},
-				unlock = {
+				unlock={
 					"Gana una partida",
 					"sin jugar",
 					"una {E:1,C:attention}Doble pareja",
 				},
 			},
 			j_cry_duplicare = {
-				name = "Duplicare",
+				name = 'Duplicare',
 				text = {
 					"Este comodín gana {X:mult,C:white} X#2# {} multi",
 					"cuando un {C:attention}comodín{} o",
 					"carta de juego puntúa",
 					"{C:inactive}(Actual: {X:mult,C:white} X#1# {C:inactive} multi)",
-				},
+				}
 			},
 			j_cry_effarcire = {
 				name = "Effarcire",
 				text = {
 					"Saca tu {C:green}baraja completa{} a tu mano",
 					"al seleccionar una {C:attention}ciega{}",
-					'{C:inactive,s:0.8}"Si no puedes manejarme a mi 1x,',
-					'{C:inactive,s:0.8}no me mereces a mi 2x"',
+					"{C:inactive,s:0.8}\"Si no puedes manejarme a mi 1x,",
+					"{C:inactive,s:0.8}no me mereces a mi 2x\"",
 				},
 			},
 			j_cry_energia = {
@@ -1464,7 +1546,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_gardenfork = {
 				name = "El jardín de las bifurcaciones",
@@ -1488,8 +1570,8 @@ return {
 					"{C:green}#1# en #2#{} probabilidades para",
 					"{C:attention}poseer{} un {C:attention}comodín{} aleatorio",
 					"{C:green}#1# en #3#{} probabilidades para",
-					"{E:2,C:red}autodestruirse",
-				},
+					"{E:2,C:red}autodestruirse"
+				}
 			},
 			j_cry_giggly = {
 				name = "Comodín absurdo",
@@ -1497,7 +1579,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"una {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_goldjoker = {
 				name = "Comodín de oro",
@@ -1517,7 +1599,7 @@ return {
 				},
 				unlock = {
 					"Consigue {C:attention}1.0e100{} fichas",
-					"en una sola mano",
+					"en una sola mano"
 				},
 			},
 			j_cry_happy = {
@@ -1541,12 +1623,12 @@ return {
 			},
 			j_cry_home = {
 				name = "El hogar",
-				text = {
+				text={
 					"{X:mult,C:white} X#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
 				},
-				unlock = {
+				unlock={
 					"Gana una partida",
 					"sin jugar",
 					"un {E:1,C:attention}Full",
@@ -1557,6 +1639,13 @@ return {
 				text = {
 					"Gana {C:money}$#1#{} cuando",
 					"usas un {C:attention}consumible{}",
+				},
+			},
+			j_cry_huntingseason = {
+				name = "Época de caza",
+				text = {
+					"Si la mano jugada contiene exactalemte {C:attention}3{} cartas,",
+					"{C:red}destruye{} la carta {C:attention}central{} después de puntuar",
 				},
 			},
 			j_cry_iterum = {
@@ -1574,7 +1663,7 @@ return {
 					"Al derrotar la {C:attention}ciega jefe,",
 					"{C:attention}duplica{} los valores de los comodines adyacentes",
 					"{E:2,C:red}se autodestruye{}",
-				},
+				}
 			},
 			j_cry_jimball = {
 				name = "Jimball",
@@ -1588,7 +1677,7 @@ return {
 				unlock = {
 					"Gana una partida",
 					"jugando {C:attention}sólo un tipo de{}",
-					"{C:attention}mano de póker",
+					'{C:attention}mano de póker'
 				},
 			},
 			j_cry_jollysus = {
@@ -1599,6 +1688,14 @@ return {
 					"{C:red}Funciona una vez por ronda{}",
 					"{C:inactive}#1#{}",
 					"{C:inactive,s:0.8}Parece legítimo...{}",
+				},
+			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"Este comodín gana {X:dark_edition,C:white}^#1#{} multi",
+					"por cada {C:attention}Comodín{} por defecto",
+					"{C:inactive}(Actual: {X:dark_edition,C:white}^#2#{C:inactive} multi)",
 				},
 			},
 			j_cry_kidnap = {
@@ -1616,7 +1713,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_krustytheclown = {
 				name = "Krusty el Payaso",
@@ -1636,9 +1733,17 @@ return {
 				},
 				unlock = {
 					"Vence una {C:attention}ciega jefe",
-					"con {C:attention}5{} o más",
-					"{C:attention}cartas {} o {C:attention}comodines",
-					"con {C:attention}ediciones",
+					'con {C:attention}5{} o más',
+					'{C:attention}cartas {} o {C:attention}comodines',
+					'con {C:attention}ediciones'
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"{C:attention}Reyes{} jugados y puntuados otorgan",
+					"{C:attention}+#1#{} tamaño de mano por esta ronda",
+					"y activan efectos de {C:attention}tener en la mano{}",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -1722,7 +1827,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"una {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_mario = {
 				name = "Mario",
@@ -1750,7 +1855,7 @@ return {
 				},
 				unlock = {
 					"Juega un {C:attention}Cinco de color{}",
-					"de {C:attention}Reyes",
+					'de {C:attention}Reyes'
 				},
 			},
 			j_cry_maze = {
@@ -1775,8 +1880,8 @@ return {
 				text = {
 					"Vende esta carta para {C:attention}multiplicar",
 					"el valor de venta de todos los",
-					"{C:attention}consumibles{} por {X:attention,C:white}X#1#",
-				},
+					"{C:attention}consumibles{} por {X:attention,C:white}X#1#"
+				}
 			},
 			j_cry_membershipcard = {
 				name = "Carta de afiliación",
@@ -1784,7 +1889,7 @@ return {
 					"{X:mult,C:white}X#1#{} multi por cada miembro",
 					"en el {C:attention}Discord de Cryptid{}",
 					"{C:inactive}(Actual: {X:mult,C:white}X#2#{C:inactive} multi)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1793,7 +1898,16 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1# por cada miembro",
 					"en el {C:attention}Discord de Cryptid{}",
 					"{C:inactive}(Actual: {C:chips}+#2#{C:inactive} fichas)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+				},
+			},
+			j_cry_membershipcardtwo_balanced = {
+				name = "Carta de miembro antigua",
+				text = {
+					"{C:chips}+#1#{} ficha#<s>1# por cada {C:attention}8{} miembros",
+					"en el {C:attention}Discord de Cryptid{}",
+					"{C:inactive}(Actual: {C:chips}+#2#{C:inactive} fichas)",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {
@@ -1838,7 +1952,7 @@ return {
 					"{C:green}#1# en #2#{} probabilidades para",
 					"{C:attention}destruir{} objetos comprados",
 					"Divide tu dinero en 2 cuando se {C:attention}vende",
-				},
+				}
 			},
 			j_cry_morse = {
 				name = "Código morse",
@@ -1916,7 +2030,7 @@ return {
 				},
 			},
 			j_cry_notebook = {
-				name = "Cuaderno",
+				name = "El Muaderno",
 				text = {
 					"{C:green} #1# en #2#{} probabilidades para conseguir {C:dark_edition}+#6#{} ranura#<s>6#",
 					"de comodín por cada {C:attention}renovación{} en la tienda",
@@ -1945,7 +2059,7 @@ return {
 				unlock = {
 					"Gana una partida",
 					"sin jugar",
-					"una {E:1,C:attention}Escalera de color",
+					"una {E:1,C:attention}Escalera de color"
 				},
 			},
 			j_cry_nutty = {
@@ -1954,13 +2068,13 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_oil_lamp = {
 				name = "Lámpara de aceite",
 				text = {
 					"Al final de la ronda, aumenta los valores del",
-					"comodín a la {C:attention}derecha{} por {X:attention,C:white}X#1#{}",
+					"comodín a la {C:attention}derecha{} por {X:attention,C:white}X#1#{}"
 				},
 			},
 
@@ -2041,8 +2155,8 @@ return {
 					"{C:blue}#2#{} cada runda",
 				},
 				unlock = {
-					"Aumenta tu {C:attention}tamaño de mano",
-					"a {C:attention}12",
+					'Aumenta tu {C:attention}tamaño de mano',
+					'a {C:attention}12'
 				},
 			},
 			j_cry_primus = {
@@ -2067,8 +2181,8 @@ return {
 				name = "Calabaza tallada",
 				text = {
 					"Las siguientes {C:attention}#1#{} ciegas jefes",
-					"tendrán sus abilidades",
-					"{C:attention}desactivadas",
+					'tendrán sus habilidades',
+					'{C:attention}desactivadas'
 				},
 			},
 			j_cry_python = {
@@ -2099,7 +2213,7 @@ return {
 				unlock = {
 					"Gana una partida con",
 					"tu última mano siendo",
-					"un {E:1,C:attention}Repóquer",
+					"un {E:1,C:attention}Repóquer"
 				},
 			},
 			j_cry_redbloon = {
@@ -2120,13 +2234,13 @@ return {
 				},
 			},
 			j_cry_rescribere = {
-				name = "Rescribere",
+				name = 'Rescribere',
 				text = {
 					"Cuando un {C:attention}comodín{} es vendido,",
 					"añade sus efectos a",
 					"todos los otros comodines",
-					"{C:inactive,s:0.8}No afecta a otros Rescribere{}",
-				},
+					"{C:inactive,s:0.8}No afecta a otros Rescribere{}"
+				}
 			},
 			j_cry_reverse = {
 				name = "Carta de reversa",
@@ -2145,8 +2259,8 @@ return {
 				},
 				unlock = {
 					"{C:green}1 en 20{} probabilidades",
-					"de desbloquear esta carta",
-					"al {C:attention}terminar una partida",
+					'de desbloquear esta carta',
+					'al {C:attention}terminar una partida'
 				},
 			},
 			j_cry_sacrifice = {
@@ -2164,7 +2278,7 @@ return {
 				text = {
 					"Después de puntuar {C:attention}#2#{} {C:inactive}[#1#]{} cartas",
 					"mejoradas, vende esta carta para",
-					"crear un {C:attention}comodín{} {V:1}#3#{}",
+					"crear #4# {C:attention}comodín{} {V:1}#3#{}",
 				},
 			},
 			j_cry_savvy = {
@@ -2173,7 +2287,7 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1#",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_Scalae = {
 				name = "Scalae",
@@ -2206,7 +2320,7 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1#",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_silly = {
 				name = "Comodín bobo",
@@ -2214,7 +2328,7 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_smallestm = {
 				name = "Diminuto",
@@ -2225,7 +2339,7 @@ return {
 					"{C:inactive,s:0.8}ok so básicamente soy muy peque",
 				},
 			},
-			j_cry_soccer = { --why tf is this called soccer again -AlexSC
+			j_cry_soccer = { --why tf is this called soccer again
 				name = "Uno para todos",
 				text = {
 					"{C:attention}+#1#{} ranura#<s>1# de comodín",
@@ -2233,11 +2347,25 @@ return {
 					"{C:attention}+#1#{} tamaño de mano",
 					"{C:attention}+#1#{} ranura#<s>1# de consumible",
 					"{C:attention}+#1#{} ranura#<s>1# de carta en la tienda",
-					"{C:attention}+#1#{} ranura#<s>1# de vales",
+					"{C:attention}+#1#{} ranura#<s>1# de vales"
 				},
 				unlock = {
-					"Gana una partida sólo",
-					"jugando {C:attention}Carta más alta",
+					'Gana una partida sólo',
+					'jugando {C:attention}Carta más alta'
+				},
+			},
+			j_cry_soccer_balanced = {
+				name = "Uno para todos",
+				text = {
+					"{C:attention}+#1#{} ranura#<s>1# de paquete potenciador",
+					"{C:attention}+#1#{} tamaño de mano",
+					"{C:attention}+#1#{} ranura#<s>1# de consumible",
+					"{C:attention}+#1#{} ranura#<s>1# de carta en la tienda",
+					"{C:attention}+#1#{} ranura#<s>1# de vales"
+				},
+				unlock = {
+					'Gana una partida sólo',
+					'jugando {C:attention}Carta más alta'
 				},
 			},
 			j_cry_fleshpanopticon = {
@@ -2247,7 +2375,7 @@ return {
 					"Al derrotar una {C:attention}ciega jefe{},",
 					"{C:red}se autodestruye{}, y crea",
 					"una carta de {C:spectral}Portal{} {C:dark_edition}negativa{}",
-					'{C:inactive,s:0.8}"Esta prisión... para mantenerme...?"',
+					"{C:inactive,s:0.8}\"Esta prisión... para mantenerme...?\""
 				},
 			},
 
@@ -2321,12 +2449,20 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1#",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
+				}
 			},
 			j_cry_supercell = {
 				name = "Supercell",
 				text = {
 					"{C:chips}+#1#{} ficha#<s>1#, {C:mult}+#1#{} multi,",
+					"{X:chips,C:white}X#2#{} fichas, {X:mult,C:white}X#2#{} multi",
+					"Gana {C:money}$#3#{} al",
+					"final de la ronda",
+				},
+			},
+			j_cry_supercell_balanced = {
+				name = "Supercell",
+				text = {
 					"{X:chips,C:white}X#2#{} fichas, {X:mult,C:white}X#2#{} multi",
 					"Gana {C:money}$#3#{} al",
 					"final de la ronda",
@@ -2352,8 +2488,8 @@ return {
 				unlock = {
 					"Gana una partida con",
 					"tu última mano siendo",
-					"un {E:1,C:attention}Cinco de color",
-				},
+					"un {E:1,C:attention}Cinco de color"
+				}
 			},
 			j_cry_sync_catalyst = {
 				name = "Catalizador de sincronización",
@@ -2679,35 +2815,58 @@ return {
 					"{C:attention}#2#",
 					"{C:mult}+#3#{} multi y",
 					"{C:chips}+#4#{} ficha#<s>4#",
-				},
+				}
 			},
 			c_cry_sunplanet = {
-				name = "Sol", --already translated heh
+				name = 'Sol', --already translated heh
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Aumenta el poder de",
 					"las {C:attention}manos ascendidas{} por {X:gold,C:white}0.05{}",
-					"{C:inactive}(Actual: {X:gold,C:white}X(#2#^asc){C:inactive})",
-				},
+					"{C:inactive}(Actual: {X:gold,C:white}X(#2#^asc){C:inactive})"
+				}
 			},
 		},
 		Sleeve = {
+			sleeve_cry_beige_sleeve = {
+				name = "Funda Castaña",
+				text = {
+					"Los comodines {C:attention}comunes{}",
+					"tienen valores {C:attention}cuadruplicados{}",
+				},
+			},
+			sleeve_cry_beige_sleeve_alt = {
+				name = "Funda Castaña",
+				text = {
+					"Los comodines {C:attention}inusuales{}",
+					"tienen valores {C:attention}cuadruplicados{}",
+				},
+			},
+			sleeve_cry_beta_sleeve = {
+				name = "Funda Nostálgica",
+				text = {
+					"Las ranuras de {C:attention}comodín{} y",
+					"{C:attention}consumibles{} se {C:attention}combinan",
+					"Las ciegas {C:attention}nostálgicas{} reemplazan",
+					"sus ciegas actualizadas"
+				},
+			},
 			sleeve_cry_bountiful_sleeve = {
-				name = "Manga abundante",
+				name = "Funda Abundante",
 				text = {
 					"Siempre saca 5 cartas después",
 					"de cada {C:attention}mano jugada{} o {C:attention}descarte{}",
 				},
 			},
 			sleeve_cry_ccd_sleeve = {
-				name = "Manga CCD",
+				name = "Funda CCD",
 				text = {
 					"Todas las cartas también son",
 					"un consumible {C:attention}aleatorio{}",
 				},
 			},
 			sleeve_cry_conveyor_sleeve = {
-				name = "Manga transportadora",
+				name = "Funda Transportadora",
 				text = {
 					"Los comodines {C:attention}no{} se pueden mover",
 					"Al principio de la runda,",
@@ -2716,7 +2875,7 @@ return {
 				},
 			},
 			sleeve_cry_critical_sleeve = {
-				name = "Manga crítica",
+				name = "Funda Crítica",
 				text = {
 					"Después de cada mano jugada,",
 					"{C:green}#1# en 4{} probabilidades para {X:dark_edition,C:white} ^2 {} multi",
@@ -2724,7 +2883,7 @@ return {
 				},
 			},
 			sleeve_cry_encoded_sleeve = {
-				name = "Manga codificada",
+				name = "Funda Codificada",
 				text = {
 					"Comienza con un {C:cry_code,T:j_cry_CodeJoker}Comodín de código{}",
 					"y {C:cry_code,T:j_cry_copypaste}Copiar y pegar{}",
@@ -2732,7 +2891,7 @@ return {
 				},
 			},
 			sleeve_cry_equilibrium_sleeve = {
-				name = "Manga balanceada",
+				name = "Funda Balanceada",
 				text = {
 					"Todas las cartas tienen la ",
 					"{C:attention}misma probabilidad{} de",
@@ -2741,8 +2900,17 @@ return {
 					"{C:attention,T:v_overstock_plus}+2 ranuras de carta",
 				},
 			},
+			sleeve_cry_glowing_sleeve = {
+				name = "Glowing Sleeve",
+				text = {
+					"Multiplica los valores de",
+					"todos los comodines por {X:dark_edition,C:white} X1.25 {}",
+					"cuando se derrota a la {C:attention}ciega jefe{}",
+					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
+				},
+			},
 			sleeve_cry_infinite_sleeve = {
-				name = "Baraja infinita",
+				name = "Funda Infinita",
 				text = {
 					"Puedes seleccionar {C:attention}cualquier",
 					"cantidad de cartas",
@@ -2750,29 +2918,38 @@ return {
 				},
 			},
 			sleeve_cry_misprint_sleeve = {
-				name = "Manga de errata",
+				name = "Funda de Errata",
 				text = {
 					"Los valures de cartas",
 					"se {C:attention}aleatorizan",
 				},
 			},
 			sleeve_cry_redeemed_sleeve = {
-				name = "Manga redimida",
+				name = "Funda Redimida",
 				text = {
 					"Cuando se compra un {C:attention}vale{},",
 					"obtén sus {C:attention}niveles extras",
 				},
 			},
 			sleeve_cry_spooky_sleeve = {
-				name = "Manga espeluznante",
+				name = "Funda Espeluznante",
 				text = {
 					"Comienza con un {C:attention,T:j_cry_chocolate_dice}Dado de chocolate {C:eternal}eterno{}",
 					"Después de cada {C:attention}apuesta{}, crea un comodín",
 					"de {C:cry_candy}dulce{} o {X:cry_cursed,C:white}maldito{}",
+				}
+			},
+			sleeve_cry_very_fair_sleeve = { --is there going to be an achievement for vfd + vfs
+				name = "Funda Muy Justa",
+				text = {
+					"{C:blue}-2{} hands, {C:red}-2{} discards",
+					"every round",
+					"{C:attention}Vouchers{} no longer",
+					"appear in the shop",
 				},
 			},
 			sleeve_cry_wormhole_sleeve = {
-				name = "Manga de agujero de gusano",
+				name = "Funda de Agujero de Gusano",
 				text = {
 					"Comienza con un comodín {C:cry_exotic}exótico{C:attention}",
 					"Los comodines son {C:attention}20X{} más",
@@ -2781,12 +2958,21 @@ return {
 				},
 			},
 			sleeve_cry_legendary_sleeve = {
-				name = "Manga legendaria<",
+				name = "Funda Legendaria",
 				text = {
 					"Comienza con un comodín {C:legendary}legendario{C:legendary}",
 					"{C:green}1 en 5{} probabilidades para crear otro",
 					"cuando se derrota a la ciega jefe",
 					"{C:inactive}(debe haber espacio){}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Funda de Antimateria",
+				text = {
+					"Aplica los {C:attention}efectos{}",
+					"y {C:attention}efectos especiales{}",
+					"de {C:attention}todas{} las fundas",
+					"{C:red}WIP",
 				},
 			},
 		},
@@ -2814,7 +3000,7 @@ return {
 					"{C:dark_edition}negativas{} de un",
 					"consumible {C:attention}al azar{}",
 					"en tu posesión",
-					"{C:inactive,s:0.8}No copia otros Recámara{}",
+					"{C:inactive,s:0.8}No copia otros Recámara{}"
 				},
 			},
 			c_cry_conduit = {
@@ -3718,7 +3904,7 @@ return {
 				text = {
 					"Destruido después de",
 					"{C:attention}#1#{} activaciones",
-					"{C:inactive}({C:attention}#2#{C:inactive} restantes)",
+					"{C:inactive}({C:attention}#2#{C:inactive} restantes)"
 				},
 			},
 			cry_flickering_desc = { --used by choco dice
@@ -3733,7 +3919,7 @@ return {
 				text = {
 					"{C:attention}Deshabilita{} e {C:attention}invierte{}",
 					"los efectos, si es posible",
-					"Se destruye junto con {C:attention}Fantasma",
+					"Se destruye junto con {C:attention}Fantasma"
 				},
 			},
 			food_jokers = {
@@ -3746,10 +3932,11 @@ return {
 				},
 			},
 			ev_cry_choco0 = {
-				name = "",
+				name = "Eventos posibles",
 				text = {
-					"Detalles de un {C:cry_ascendant,E:1}evento{}",
-					"activo aparecerán aquí",
+					"{T:ev_cry_choco1}1{} {T:ev_cry_choco2}2{} {T:ev_cry_choco3}3{} {T:ev_cry_choco4}4{} {T:ev_cry_choco5}5{}",
+					"{T:ev_cry_choco6}6{} {T:ev_cry_choco7}7{} {T:ev_cry_choco8}8{} {T:ev_cry_choco9}9{} {T:ev_cry_choco10}10{}",
+					"{C:inactive}(pasa el cursor para info.)",
 				},
 			},
 			ev_cry_choco1 = {
@@ -3759,8 +3946,8 @@ return {
 					"{C:green}1 en 3{} probabilidades of ser Parpadeantes",
 					"Crea un {C:attention}Fantasma",
 					"{C:inactive,s:0.7}Has sido poseído por un fantasma, y tu",
-					"{C:inactive,s:0.7}consciencia está parpadeando.",
-				},
+					"{C:inactive,s:0.7}consciencia está parpadeando."
+				}
 			},
 			ev_cry_choco2 = {
 				name = "2: Casa embrujada",
@@ -3770,7 +3957,7 @@ return {
 					"Los precios de {C:attention}vales{} se duplican",
 					"{C:inactive,s:0.7}¡Los espíritus espeluznantes han tomado el control!",
 					"{C:inactive,s:0.7}¡No toques nada y sale lo más rápido que puedas!",
-				},
+				}
 			},
 			ev_cry_choco3 = {
 				name = "3: Brebajes de bruja",
@@ -3781,7 +3968,7 @@ return {
 					"{C:inactive,s:0.7}¡Has sido secuestrado por una bruja!",
 					"{C:inactive,s:0.7}Ella te ofrece 3 pociones, mirándote de cerca.",
 					"{C:inactive,s:0.7}Escoje una, para que ella no escoja por tí.",
-				},
+				}
 			},
 			ev_cry_choco4 = {
 				name = "4: Abismo lunar",
@@ -3790,8 +3977,8 @@ return {
 					"de convertirse en una figura de {C:club}tréboles{} al azar",
 					"Divide {C:attention}multi{} por la cantidad de cartas de figura jugadas",
 					"{C:inactive,s:0.7}Hasta un hombre que es puro al corazón",
-					"{C:inactive,s:0.7}y dice sus oraciones a la noche...",
-				},
+					"{C:inactive,s:0.7}y dice sus oraciones a la noche..."
+				}
 			},
 			ev_cry_choco5 = {
 				name = "5: Chupasangre",
@@ -3800,8 +3987,8 @@ return {
 					"{C:green}1 en 3{} chance de destruir",
 					"cartas de {C:heart}corazones{} y {C:diamond}diamantes{}",
 					"{C:inactive,s:0.7}Ten cuidado en la oscuridad de la noche, por",
-					"{C:inactive,s:0.7,E:1}ellos en las sombras{C:inactive,s:0.7} buscan saciar su sed...",
-				},
+					"{C:inactive,s:0.7,E:1}ellos en las sombras{C:inactive,s:0.7} buscan saciar su sed..."
+				}
 			},
 			ev_cry_choco6 = {
 				name = "6: Por favor toma uno",
@@ -3809,8 +3996,8 @@ return {
 					"Al {C:attention}terminar una ronda{}, abre un",
 					"paquete {C:attention}potenciador{} al azar",
 					"{C:inactive,s:0.7}Mientras paseas por las calles, ves una",
-					"{C:inactive,s:0.7}caja de varios paquetes potenciadores. ¡Mejor agarrar uno!",
-				},
+					"{C:inactive,s:0.7}caja de varios paquetes potenciadores. ¡Mejor agarrar uno!"
+				}
 			},
 			ev_cry_choco7 = {
 				name = "7: Ambiente festivo",
@@ -3819,8 +4006,8 @@ return {
 					"Las tiendas tienen un {C:attention}Dulce o truco{} cada ronda",
 					"Los {C:cry_candy}dulces{} otorgan {C:money}$3{} al obtenerse",
 					"{C:inactive,s:0.7}Toda la vecindad está decorada por el empeño espeluznante,",
-					"{C:inactive,s:0.7}¡ven a disfrutar del ambiente festivo!",
-				},
+					"{C:inactive,s:0.7}¡ven a disfrutar del ambiente festivo!"
+				}
 			},
 			ev_cry_choco8 = {
 				name = "8: Lluvia de dulces",
@@ -3829,8 +4016,8 @@ return {
 					"por cada mano restante; obtén un {C:attention}comodín de comida{}",
 					"cuando un {C:cry_candy}dulce{} es generado",
 					"{C:inactive,s:0.7}¡Los dulces llueven del cielo! Rápido,",
-					"{C:inactive,s:0.7,E:1}¡agarra lo más que puedas!",
-				},
+					"{C:inactive,s:0.7,E:1}¡agarra lo más que puedas!"
+				}
 			},
 			ev_cry_choco9 = {
 				name = "9: Riquezas fantasmales",
@@ -3841,7 +4028,7 @@ return {
 					"{C:inactive,s:0.7}te visita en el medio de la noche!",
 					"{C:inactive,s:0.7}Sin una palabra, colocan una bolsa de dinero en tus manos,",
 					"{C:inactive,s:0.7}sonríen cálidamente, y se despiden mientras se desvanecen en el aire.",
-				},
+				}
 			},
 			ev_cry_choco10 = {
 				name = "10: Antigüedad venerada",
@@ -3851,7 +4038,7 @@ return {
 					"Sólo comprable como el {C:attention}último{} objeto en la tienda",
 					"{C:inactive,s:0.7}Has atraído la atención del espíritu de una rélica,",
 					"{C:inactive,s:0.7}pero no va a ser fácil de calmar.",
-				},
+				}
 			},
 			cry_https_disabled = {
 				name = "M",
@@ -4075,8 +4262,8 @@ return {
 				"¡Bienvenido a {C:cry_exotic,E:1}Cryptid{}!",
 			},
 			cry_intro_2 = {
-				"Parece que nunca has jugado antes",
-				"{C:cry_exotic,E:1}Cryptid{} en este perfil.",
+				"Parece que nunca has jugado",
+				"antes {C:cry_exotic,E:1}Cryptid{} en este perfil.",
 				"¡Déjame mostrarte como funcionan las cosas!",
 			},
 			cry_intro_3 = {
@@ -4084,7 +4271,7 @@ return {
 			},
 			cry_intro_4 = {
 				"Es difícil resumir este mod en",
-				"pocas oraciones, ¡pero lo que diré",
+				"pocas oraciones, ¡pero lo que te diré",
 				"es que te espera un viaje {C:cry_exotic,E:1}salvaje{}!",
 				"Este no es el mismo {C:attention}póker de comodines{} que conoces...",
 			},
@@ -4124,7 +4311,7 @@ return {
 				"'¿Balance? {E:1,C:red}¿¡QUÉ ES ESO!?{}'",
 			},
 			cry_madness_2 = {
-				"He pasado semanas de noches llenas de{C:green}Mountain Dew{}",
+				"He pasado semanas de noches llenas de {C:green}Mountain Dew{}",
 				"trabajando para asegurar que este conjunto sea ",
 				"{C:cry_ascendant}PERFECTAMENTE BALANCEADO{}, ¡sólo para tí!",
 			},
@@ -4136,28 +4323,28 @@ return {
 			},
 		},
 		poker_hands = {
-			["cry_Bulwark"] = "Baluarte",
-			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Desorden" or "Lío de mierda",
-			["cry_UltPair"] = "Pareja suprema",
-			["cry_WholeDeck"] = Cryptid_config.family_mode and "Cincuenta y dos" or "Toda la puta baraja",
+			['cry_Bulwark'] = "Baluarte",
+			['cry_Clusterfuck'] = Cryptid_config.family_mode and "Desorden" or "Lío de mierda",
+			['cry_UltPair'] = "Pareja suprema",
+			['cry_WholeDeck'] = Cryptid_config.family_mode and "Cincuenta y dos" or "Toda la puta baraja",
 		},
 		poker_hand_descriptions = {
-			["cry_Bulwark"] = {
-				"5 cartas, sin categoría ni palo",
+			['cry_Bulwark'] = {
+				'5 cartas, sin categoría ni palo',
 			},
-			["cry_Clusterfuck"] = {
-				"Al menos 8 cartas que no",
-				"contengan una Pareja, Color o Escalera",
+			['cry_Clusterfuck'] = {
+				'Al menos 8 cartas que no',
+				'contengan una Pareja, Color o Escalera',
 			},
-			["cry_UltPair"] = {
-				"Dos Doble pareja, donde cada",
-				"Doble pareja es un palo único, por un total",
-				"de 2 palos entre las dos",
+			['cry_UltPair'] = {
+				'Dos Doble pareja, donde cada',
+				'Doble pareja es un palo único, por un total',
+				'de 2 palos entre las dos',
 			},
-			["cry_WholeDeck"] = {
-				"Una mano que contenga cada",
-				"carta en una baraja de 52 cartas.",
-				"¿Estás loco?",
+			['cry_WholeDeck'] = {
+				'Una mano que contenga cada',
+				'carta en una baraja de 52 cartas.',
+				'¿Estás loco?',
 			},
 		},
 		achievement_names = {
@@ -4181,6 +4368,7 @@ return {
 			ach_cry_ult_full_skip = "Ultimate Full Skip",
 			ach_cry_used_crash = "Te Dijimos Que No Lo Hagas",
 			ach_cry_what_have_you_done = "¡¿QUÉ ACABAS DE HACER?!",
+			ach_cry_pin = "Pin de la vergüenza",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
@@ -4203,6 +4391,7 @@ return {
 			ach_cry_ult_full_skip = "Gana en 1 ronda",
 			ach_cry_used_crash = "Usa ://CHOQUE",
 			ach_cry_what_have_you_done = "Elimina o sacrifica un comodín exótico",
+			ach_cry_pin = "Pierde una partida contra El Alfiler",
 		},
 		challenge_names = {
 			c_cry_ballin = "Ballin'",
@@ -4240,7 +4429,7 @@ return {
 			cry_feat_planets = "Planetas",
 			cry_feat_jokerdisplay = "JokerDisplay (no hace nada)",
 			cry_feat_tags = "Etiquetas",
-			cry_feat_sleeves = "Mangas",
+			cry_feat_sleeves = "Fundas",
 			cry_feat_spectrals = "Espectrales",
 			cry_feat_spooky = "Actualización espeluznante",
 			["cry_feat_more stakes"] = "Pozos",
@@ -4356,12 +4545,15 @@ return {
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Maníaco",
 			cry_gameset_custom = "Modificado",
-			cry_gameset_experimental = "Experimental",
-			cry_gameset_experimental_modest = "Experimental (Modesto)",
-			cry_gameset_experimental_mainline = "Experimental (Mainline)",
-			cry_gameset_experimental_madness = "Experimental (Maníaco)",
+			cry_gameset_exp = "Experimental",
+			cry_gameset_exp_modest = "Experimental (Modesto)",
+			cry_gameset_exp_mainline = "Experimental (Mainline)",
+			cry_gameset_exp_madness = "Experimental (Maníaco)",
 
 			cry_view_set_contents = "Ver objetos en el conjunto",
+
+			cry_sapling_an = "un", --spanish literally has no distinction between these
+			cry_sapling_a = "un", --but just in case
 
 			b_reset_gameset_modest = "Reiniciar configuración de conjunto (Modesto)",
 			b_reset_gameset_mainline = "Reiniciar configuración de conjunto (Mainline)",
@@ -4519,11 +4711,11 @@ return {
 			ch_c_cry_rush_hour_iii = {
 				"{C:attention}El reloj{} y {C:attention}Ciclo lavanda{} aumentan el {C:attention}doble{} de rápido",
 			},
-			ch_c_cry_no_tags = { "Saltar ciegas no está {C:attention}permitido{}" },
-			ch_c_cry_no_vouchers = { "Los {C:attention}vales{} ya no aparecen en la tienda" },
-			ch_c_cry_no_boosters = { "Los {C:attention}paquetes potenciadores{} ya no aparecen en la tienda" },
-			ch_c_cry_no_rerolls = { "Las renovaciones no están {C:attention}permitidas{}" },
-			ch_c_cry_no_consumables = { "Los {C:attention}consumibles{} ya no aparecen" },
+			ch_c_cry_no_tags = {"Saltar ciegas no está {C:attention}permitido{}"},
+			ch_c_cry_no_vouchers = {"Los {C:attention}vales{} ya no aparecen en la tienda"},
+			ch_c_cry_no_boosters = {"Los {C:attention}paquetes potenciadores{} ya no aparecen en la tienda"},
+			ch_c_cry_no_rerolls = {"Las renovaciones no están {C:attention}permitidas{}"},
+			ch_c_cry_no_consumables = {"Los {C:attention}consumibles{} ya no aparecen"}
 		},
 		-- Thanks to many members of the community for contributing to all of these quips!
 		-- There's too many to credit so just go here: https://discord.com/channels/1116389027176787968/1209506360987877408/1237971471146553406
@@ -4569,17 +4761,33 @@ return {
 			{ "EXÓTICOS GRATIS", "CONSÍGUELOS ANTES DE QUE", "SEA DEMASIADO TARDE (se acabaron)" },
 			{ "PRUÉBALOS MAL", "COMPRA UN VALE", "INVISIBLE POR $10" },
 			{ "", "¿sin vales?", "" },
-			{ "¿ves este anuncio?", "si lo ves, está funcionando", "y lo puedes tener como tuyo" },
+			{ 
+				"¿ves este anuncio?",
+				"si lo ves, está funcionando",
+				"y lo puedes tener como tuyo"
+			},
 			{ "TE ESTÁS PERDIENDO EN", "AL MENOS 5 VALES AHORA", "tonktonktonktonktonk" },
 			{ "10", "20 SIN VALES XD", "30 GOTO 10" },
 			{ "LOS VALES", "SON ARTÍCULOS PREMIUM", "$199.99 JÓLARES PARA DESBLOQUEAR" },
 			{ "¡¿SIN VALES?!", "SÓLO EN POZO ASCENDENTE", "BARAJA MUY JUSTA" },
 			{ "¿DISFRUTANDO TU", "EXPERIENCIA DE VALES? DÁNOS UNA CALIFICACIÓN", "DE CINCO ESTRELLAS EN JESTELP" },
-			{ "VALES GRATIS", "VALES CERCA DE TÍ", "CONSIGUE VALES RÁPIDO CON ESTE TRUCO" },
+			{
+				"VALES GRATIS",
+				"VALES CERCA DE TÍ",
+				"CONSIGUE VALES RÁPIDO CON ESTE TRUCO"
+			},
 			{ "INTRODUCIENDO", "¡EL PRIMER VALE NIVEL 0!", "(llegando pronto a Cryptid 1.0)" },
-			{ "¡UN VALE!", "ES SÓLO IMAGINARIO", "IMAGINAMOS QUE LO QUERÍAS, ESO SÍ" },
+			{
+				"¡UN VALE!",
+				"ES SÓLO IMAGINARIO",
+				"IMAGINAMOS QUE LO QUERÍAS, ESO SÍ"
+			},
 			{ "DESACTIVA TU ADBLOCKER", "SIN ANUNCIOS, NO PODRÍAMOS", "VENDERTE NINGÚN VALE" },
-			{ "SI TIENES", "UN PROBLEMA CON ESTO", "ENVÍA UN CORREO A NORESPONSE@JMAIL.COM" },
+			{
+				"SI TIENES",
+				"UN PROBLEMA CON ESTO",
+				"ENVÍA UN CORREO A NORESPONSE@JMAIL.COM"
+			},
 			{ "SIN DINERO SUFICIENTE", "PARA COMPRAR ESTE VALE", "¿PARA QUÉ PONERLO AQUÍ?" },
 			{ "¿QUIERES UN VALE?", "ENTONCES CÁLLATE", "NO PUEDES TENER NINGUNO LOL" },
 			{ "^$%& NINGÚN", "VALE ^%&% %&$^% PARA", "$%&%%$ %&$&*%$^ TÍ" },
