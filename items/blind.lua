@@ -1305,7 +1305,9 @@ local trophy = {
 	order = 95,
 	boss_colour = HEX("bbdb44"),
 	set_blind = function(self, reset, silent)
-		if not reset then G.GAME.trophymod = true end
+		if not reset then
+			G.GAME.trophymod = true
+		end
 	end,
 	defeat = function(self, silent)
 		if G.GAME.trophymod then
