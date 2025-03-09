@@ -280,7 +280,16 @@ else
 		draw_card(G.cry_runarea,G.hand, i*100/#G.cry_runarea.cards,'up', true)
 	end
 end
-G.FUNCS.draw_from_hand_to_run = function(e)	-- might as well just slap this here
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.FUNCS.draw_from_deck_to_hand = function(e)'''
+position = "before"
+payload = '''
+G.FUNCS.draw_from_hand_to_run = function(e)
 	local hand_count = #G.hand.cards
 	for i=1, hand_count do --draw cards from deck
 		draw_card(G.hand, G.cry_runarea, i*100/hand_count,'down', nil, nil,  0.08)
