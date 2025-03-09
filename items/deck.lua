@@ -220,7 +220,9 @@ local redeemed = {
 								else
 									area = G.play
 								end
-								if not G.cry_redeemed_buffer then G.cry_redeemed_buffer = {} end
+								if not G.cry_redeemed_buffer then
+									G.cry_redeemed_buffer = {}
+								end
 								if not G.cry_redeemed_buffer[v.key] and v.unlocked then
 									local card = create_card("Voucher", area, nil, nil, nil, nil, v.key)
 									G.cry_redeemed_buffer[v.key] = true
