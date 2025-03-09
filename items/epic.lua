@@ -109,12 +109,11 @@ local membershipcardtwo = {
 		if Card.get_gameset(card) == "modest" then
 			a = 8
 		end
-		-- HATA DÜZELTME: "or 0" eklendi
 		return {
 			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
 			vars = {
 				card.ability.extra.chips,
-				card.ability.extra.chips * math.floor((GLOBAL_cry_member_count or 0) / a),
+				card.ability.extra.chips * math.floor(Cryptid.member_count / a),
 			},
 		}
 	end,
@@ -124,15 +123,13 @@ local membershipcardtwo = {
 			if Card.get_gameset(card) == "modest" then
 				a = 8
 			end
-			-- HATA DÜZELTME: "or 0" eklendi
-			local member_count = GLOBAL_cry_member_count or 0
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_chips",
-					vars = { card.ability.extra.chips * math.floor(member_count / a) },
+					vars = { card.ability.extra.chips * math.floor(Cryptid.member_count / a) },
 				}),
-				chip_mod = card.ability.extra.chips * math.floor(member_count / a),
+				chip_mod = card.ability.extra.chips * math.floor(Cryptid.member_count / a),
 			}
 		end
 	end,

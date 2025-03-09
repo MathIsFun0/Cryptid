@@ -3,12 +3,10 @@ local member_fallback = 24000
 local https = require("SMODS.https")
 local last_update_time = 0
 local initial = true
+Cryptid.member_count = member_fallback
 local function apply_discord_member_count(code, body, headers)
-	if not GLOBAL_cry_member_count then
-		GLOBAL_cry_member_count = member_fallback
-	end
 	if body then
-		GLOBAL_cry_member_count = string.match(body, '"approximate_member_count"%s*:%s*(%d+)')
+		Cryptid.member_count = string.match(body, '"approximate_member_count"%s*:%s*(%d+)')
 	end
 end
 function Cryptid.update_member_count()
@@ -21,8 +19,5 @@ function Cryptid.update_member_count()
 				apply_discord_member_count
 			)
 		end
-	else
-		-- Use a fallback value if HTTPS is disabled (you all are awesome)
-		GLOBAL_cry_member_count = member_fallback
-	end
+	end --you all are awesome :)
 end

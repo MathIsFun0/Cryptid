@@ -10,12 +10,12 @@ target = "game.lua"
 pattern = '''if G.FILE_HANDLER and G.FILE_HANDLER and G.FILE_HANDLER.update_queued and ('''
 position = "before"
 payload = '''
-if not GLOBAL_cry_member_count_delay then GLOBAL_cry_member_count_delay = 0 end
-if (GLOBAL_cry_member_count_delay > 5) or not GLOBAL_cry_member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
+if not Cryptid.member_count_delay then Cryptid.member_count_delay = 0 end
+if (Cryptid.member_count_delay > 5) or not Cryptid.member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
 	if Cryptid.update_member_count then Cryptid.update_member_count() end	-- i honestly hate nil checks like this, wish there was a shorthand
-	GLOBAL_cry_member_count_delay = 0
+	Cryptid.member_count_delay = 0
 else
-	GLOBAL_cry_member_count_delay = GLOBAL_cry_member_count_delay + dt
+	Cryptid.member_count_delay = Cryptid.member_count_delay + dt
 end
 '''
 match_indent = true
