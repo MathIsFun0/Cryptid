@@ -1,19 +1,6 @@
---- MOD_NAME: Cryptid
---- MOD_ID: Cryptid
---- PREFIX: cry
---- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
---- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
---- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.9, Steamodded>=1.0.0~BETA-0301a]
---- VERSION: 0.5.5~dev
---- PRIORITY: 2147483647
-
-----------------------------------------------
-------------MOD CODE -------------------------
-
 -- Welcome to the Cryptid source code!
 -- This is the main file for the mod, where everything is loaded and initialized.
--- If you're looking for a specific feature, browse the Items folder to see how it is implemented.
+-- If you're looking for a specific feature, browse the items folder to see how it is implemented.
 -- If you're looking for a specific function, check the lib folder to see if it is there.
 
 if not Cryptid then
