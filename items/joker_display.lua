@@ -1753,8 +1753,7 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
-			card.joker_display_values.stat =
-				math.max(1, card.ability.extra.Xmult_mod * Cryptid.member_count)
+			card.joker_display_values.stat = math.max(1, card.ability.extra.Xmult_mod * Cryptid.member_count)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_cryptidmoment"] = {
