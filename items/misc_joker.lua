@@ -1369,7 +1369,12 @@ local sus = {
 		local function is_impostor(card)
 			return card.base.value and SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
 		end
-		if context.end_of_round and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then
+		if
+			context.end_of_round
+			and context.cardarea == G.jokers
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
 			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
 				card.ability.chosen_card = nil
 			end
