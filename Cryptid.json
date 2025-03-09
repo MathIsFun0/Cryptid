@@ -13,5 +13,8 @@
 	"dependencies": [
 		"Talisman (>=2.0.9)",
 		"Steamodded (>=1.0.0~BETA-0308a)"
+	],
+	"conflicts": [
+		"Saturn"
 	]
 }
