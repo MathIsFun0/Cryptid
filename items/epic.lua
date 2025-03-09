@@ -112,9 +112,9 @@ local membershipcardtwo = {
 		-- HATA DÜZELTME: "or 0" eklendi
 		return {
 			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
-			vars = { 
-				card.ability.extra.chips, 
-				card.ability.extra.chips * math.floor((GLOBAL_cry_member_count or 0) / a) 
+			vars = {
+				card.ability.extra.chips,
+				card.ability.extra.chips * math.floor((GLOBAL_cry_member_count or 0) / a),
 			},
 		}
 	end,
