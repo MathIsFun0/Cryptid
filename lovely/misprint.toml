@@ -12,10 +12,10 @@ position = "after"
 payload = '''
 if G.GAME.modifiers.cry_misprint_min and not args.savetext then
     for k, v in pairs(G.GAME.hands) do
-        v.chips = to_big(cry_format(v.chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
-        v.mult = to_big(cry_format(v.mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
-        v.l_chips = cry_format(v.l_chips * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
-        v.l_mult = cry_format(v.l_mult * cry_log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+        v.chips = to_big(cry_format(v.chips * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.mult = to_big(cry_format(v.mult * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g"))
+        v.l_chips = cry_format(v.l_chips * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
+        v.l_mult = cry_format(v.l_mult * Cryptid.log_random(pseudoseed('cry_misprint'),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2g")
         v.s_chips = v.chips
         v.s_mult = v.mult
     end
@@ -30,17 +30,17 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-cry_misprintize(card)
+Cryptid.misprintize(card)
 '''
 match_indent = true
 
 # Prevent pack softlocks
 # Off by One Error effect
-# Booster Tag effect 
+# Booster Tag effect
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "G.GAME.pack_choices = self.config.center.config.choose or 1"
+pattern = "G.GAME.pack_choices = self.ability.choose or self.config.center.config.choose or 1"
 position = "after"
 payload = '''
 G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
@@ -49,20 +49,21 @@ if G.GAME.modifiers.cry_misprint_min then
     if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
-    --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * cry_log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
+    --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * Cryptid.log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
 end
 if G.GAME.cry_oboe then
     self.ability.extra = self.ability.extra + G.GAME.cry_oboe
     G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
     G.GAME.cry_oboe = nil
-    G.GAME.pack_size = self.ability.extra
 end
-if G.GAME.boostertag then
+if G.GAME.boostertag and G.GAME.boostertag > 0 then
     self.ability.extra = self.ability.extra * 2
     G.GAME.pack_choices = G.GAME.pack_choices * 2
-    G.GAME.boostertag = nil
-    G.GAME.pack_size = self.ability.extra
+    G.GAME.boostertag = math.max(0, G.GAME.boostertag - 1)
 end
+self.ability.extra = math.min(self.ability.extra, 1000)
+G.GAME.pack_choices = math.min(G.GAME.pack_choices, 1000)
+G.GAME.pack_size = self.ability.extra
 '''
 match_indent = true
 
@@ -79,11 +80,11 @@ match_indent = true
 # Vouchers
 [[patches]]
 [patches.pattern]
-target = "game.lua"
+target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-cry_misprintize(card)
+Cryptid.misprintize(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -97,7 +98,7 @@ target = "tag.lua"
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-cry_misprintize(card)
+Cryptid.misprintize(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -231,7 +232,7 @@ position = 'after'
 line_prepend = '$indent    '
 payload = '''
 
-if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then 
+if _c.name == 'Talisman' or _c.name == 'Medium' or _c.name == 'Trance' or _c.name == 'Deja Vu' then
     loc_vars = {cfg.max_highlighted}
 end
 '''
@@ -274,10 +275,10 @@ target = "card.lua"
 pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))"
 position = "after"
 payload = '''
-    if self.ability.set == 'Joker' then 
+    if self.ability.set == 'Joker' then
         self.cost = cry_format(self.cost * G.GAME.cry_shop_joker_price_modifier,'%.2f') end
-    if self.misprint_cost_fac then 
-        self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f') 
+    if self.misprint_cost_fac then
+        self.cost = cry_format(self.cost * self.misprint_cost_fac,'%.2f')
     if not G.GAME.modifiers.cry_misprint_min then self.cost = math.floor(self.cost) end end
 '''
 match_indent = true
@@ -294,7 +295,7 @@ if (self and self.ability and self.ability.extra_disp) then	-- redeeming through
 	local orig_disp = self.config.center.config.extra_disp
 	local self_extra = self.ability.extra
 	local orig_extra = self.config.center.config.extra
-	
+
 	local new_fac = self_disp / orig_disp
 	self.ability.extra = new_fac*orig_extra
 end
@@ -332,7 +333,7 @@ position = "at"
 payload = '''
     if center_table.name == 'Antimatter' then
         G.E_MANAGER:add_event(Event({func = function()
-            if G.jokers then 
+            if G.jokers then
                 G.jokers.config.card_limit = G.jokers.config.card_limit + center_table.extra
             end
             return true end }))
@@ -393,7 +394,7 @@ target = "functions/UI_definitions.lua"
 pattern = '''UIBox_button({label = {localize('b_reroll_boss'), localize('$')..'10'}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil'''
 position = "at"
 payload = '''
-UIBox_button({label = {localize('b_reroll_boss'), localize('$')..cry_cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
 '''
 match_indent = true
 
@@ -404,7 +405,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''if ((G.GAME.dollars-G.GAME.bankrupt_at) - 10 >= 0) and'''
 position = "at"
 payload = '''
-if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(cry_cheapest_boss_reroll()) >= to_big(0)) and
+if ((to_big(G.GAME.dollars)-to_big(G.GAME.bankrupt_at)) - to_big(Cryptid.cheapest_boss_reroll()) >= to_big(0)) and
 '''
 match_indent = true
 
@@ -415,7 +416,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''if not G.from_boss_tag then ease_dollars(-10) end'''
 position = "at"
 payload = '''
-if not G.from_boss_tag then ease_dollars(-cry_cheapest_boss_reroll()) end
+if not G.from_boss_tag then ease_dollars(-Cryptid.cheapest_boss_reroll()) end
 '''
 match_indent = true
 

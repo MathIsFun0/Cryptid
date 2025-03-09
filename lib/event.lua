@@ -9,7 +9,7 @@ SMODS.Event = SMODS.GameObject:extend({
 		"key",
 	},
 	inject = function() end,
-	set = "Event",
+	set = "Other",
 	class_prefix = "ev",
 	-- This should be called to start an event.
 	start = function(self)
@@ -31,7 +31,7 @@ SMODS.Event = SMODS.GameObject:extend({
 local gfco = G.FUNCS.cash_out
 G.FUNCS.cash_out = function(e)
 	local ret = gfco(e)
-	SMODS.calculate_context{ cash_out = true }
+	SMODS.calculate_context({ cash_out = true })
 	return ret
 end
 
@@ -39,6 +39,6 @@ end
 local guis = G.UIDEF.shop
 G.UIDEF.shop = function(e)
 	local ret = guis(e)
-	SMODS.calculate_context{ start_shop = true }
+	SMODS.calculate_context({ start_shop = true })
 	return ret
 end

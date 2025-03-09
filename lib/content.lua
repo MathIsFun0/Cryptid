@@ -1,79 +1,105 @@
 -- content.lua - adds SMODS objects for content that should always be loaded
 
 SMODS.PokerHand({
-   	key = 'Bulwark',
-    	visible = false,
-    	chips = 100,
-   	mult = 10,
-    	l_chips = 50,
-    	l_mult = 1,
-    	example = {
-        	{ 'S_A',    true, 'm_stone' },
-        	{ 'S_A',    true, 'm_stone' },
-        	{ 'S_A',    true, 'm_stone' },
-        	{ 'S_A',    true, 'm_stone' },
-        	{ 'S_A',    true, 'm_stone' },
-    	},
+	key = "Bulwark",
+	visible = false,
+	chips = 100,
+	mult = 10,
+	l_chips = 50,
+	l_mult = 1,
+	example = {
+		{ "S_A", true, "m_stone" },
+		{ "S_A", true, "m_stone" },
+		{ "S_A", true, "m_stone" },
+		{ "S_A", true, "m_stone" },
+		{ "S_A", true, "m_stone" },
+	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
+			return {}
+		end
 		local stones = {}
 		for i, card in ipairs(hand) do
-			if card.config.center_key == 'm_stone' or (card.config.center.no_rank and card.config.center.no_suit) then stones[#stones+1] = card end
+			if card.config.center_key == "m_stone" or (card.config.center.no_rank and card.config.center.no_suit) then
+				stones[#stones + 1] = card
+			end
 		end
-		return #stones >= 5 and {stones} or {}
+		return #stones >= 5 and { stones } or {}
+	end,
+})
+SMODS.PokerHandPart({
+	key = "cfpart",
+	func = function(hand)
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_void") ~= true then
+			return {}
+		end
+		local eligible_cards = {}
+		for i, card in ipairs(hand) do
+			if true then --card.ability.name ~= "Gold Card"
+				eligible_cards[#eligible_cards + 1] = card
+			end
+		end
+		if #eligible_cards > 7 then
+			return { eligible_cards }
+		end
+		return {}
 	end,
 })
 SMODS.PokerHand({
-	key = 'Clusterfuck',
-    	visible = false,
-    	chips = 200,
-    	mult = 19,
-    	l_chips = 40,
-    	l_mult = 4,
-    	example = {
-        	{ 'S_A',    true },
-        	{ 'C_K',    true },
-        	{ 'H_J',    true },
-        	{ 'S_T',    true },
-        	{ 'D_9',    true },
-        	{ 'D_8',    true },
-        	{ 'S_6',    true },
-       		{ 'C_5',    true },
-    	},
-    	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
-   		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
-    		if #hand > 7 then
-      			if not other_hands then return {hand} end
-      		end
-    	end,
+	key = "Clusterfuck",
+	visible = false,
+	chips = 200,
+	mult = 19,
+	l_chips = 40,
+	l_mult = 4,
+	example = {
+		{ "S_A", true },
+		{ "C_K", true },
+		{ "H_J", true },
+		{ "S_T", true },
+		{ "D_9", true },
+		{ "D_8", true },
+		{ "S_6", true },
+		{ "C_5", true },
+	},
+	evaluate = function(parts, hand)
+		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
+		if next(parts.cry_cfpart) then
+			if not other_hands then
+				return { SMODS.merge_lists(parts.cry_cfpart) }
+			end
+		end
+		return {}
+	end,
 })
 SMODS.PokerHand({
-	key = 'UltPair',
-    	visible = false,
-    	chips = 220,
+	key = "UltPair",
+	visible = false,
+	chips = 220,
 	mult = 22,
-    	l_chips = 40,
-    	l_mult = 4,
-    	example = {
-        	{ 'S_A',    true },
-        	{ 'S_A',    true },
-        	{ 'S_T',    true },
-	        { 'S_T',    true },
-        	{ 'H_K',    true },
-        	{ 'H_K',    true },
-        	{ 'H_7',    true },
-        	{ 'H_7',    true },
-    	},
+	l_chips = 40,
+	l_mult = 4,
+	example = {
+		{ "S_A", true },
+		{ "S_A", true },
+		{ "S_T", true },
+		{ "S_T", true },
+		{ "H_K", true },
+		{ "H_K", true },
+		{ "H_7", true },
+		{ "H_7", true },
+	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_marsmoons") ~= true then
+			return
+		end
 		local scoring_pairs = {}
 		local unique_suits = 0
 		for suit, _ in pairs(SMODS.Suits) do
 			local scoring_suit_pairs = {}
 			for i = 1, #parts._2 do
 				if parts._2[i][1]:is_suit(suit) and parts._2[i][2]:is_suit(suit) then
-					scoring_suit_pairs[#scoring_suit_pairs+1] = i
+					scoring_suit_pairs[#scoring_suit_pairs + 1] = i
 				end
 			end
 			if #scoring_suit_pairs >= 2 then
@@ -83,7 +109,9 @@ SMODS.PokerHand({
 				end
 			end
 		end
-		if unique_suits < 2 then return end
+		if unique_suits < 2 then
+			return
+		end
 		local scored_cards = {}
 		local sc_max = 0
 		local sc_unique = 0
@@ -93,82 +121,132 @@ SMODS.PokerHand({
 					sc_unique = sc_unique + 1
 				end
 				sc_max = math.max(sc_max, scoring_pairs[i])
-				scored_cards[#scored_cards+1] = parts._2[i][1]
-				scored_cards[#scored_cards+1] = parts._2[i][2]
+				scored_cards[#scored_cards + 1] = parts._2[i][1]
+				scored_cards[#scored_cards + 1] = parts._2[i][2]
 			end
 		end
-		if sc_max == #scored_cards/2 - 1 and sc_unique == 1 then return end
+		if sc_max == #scored_cards / 2 - 1 and sc_unique == 1 then
+			return {}
+		end
 		if #scored_cards >= 8 then
-			return {scored_cards}
+			return { scored_cards }
 		end
 	end,
 })
 SMODS.PokerHand({
-	key = 'WholeDeck',
-    	visible = false,
-    	chips = 525252525252525252525252525252,
-   	mult = 52525252525252525252525252525,
-    	l_chips = 52525252525252525252525252525,
-    	l_mult = 5252525252525252525252525252,
-    	example = {
-		{ 'S_A',    true },{ 'H_A',    true },{ 'C_A',    true },{ 'D_A',    true },
-                { 'S_K',    true },{ 'H_K',    true },{ 'C_K',    true },{ 'D_K',    true },
-                { 'S_Q',    true },{ 'H_Q',    true },{ 'C_Q',    true },{ 'D_Q',    true },
-                { 'S_J',    true },{ 'H_J',    true },{ 'C_J',    true },{ 'D_J',    true },
-                { 'S_T',    true },{ 'H_T',    true },{ 'C_T',    true },{ 'D_T',    true },
-                { 'S_9',    true },{ 'H_9',    true },{ 'C_9',    true },{ 'D_9',    true },
-                { 'S_8',    true },{ 'H_8',    true },{ 'C_8',    true },{ 'D_8',    true },
-                { 'S_7',    true },{ 'H_7',    true },{ 'C_7',    true },{ 'D_7',    true },
-                { 'S_6',    true },{ 'H_6',    true },{ 'C_6',    true },{ 'D_6',    true },
-                { 'S_5',    true },{ 'H_5',    true },{ 'C_5',    true },{ 'D_5',    true },
-                { 'S_4',    true },{ 'H_4',    true },{ 'C_4',    true },{ 'D_4',    true },
-		{ 'S_3',    true },{ 'H_3',    true },{ 'C_3',    true },{ 'D_3',    true },
-                { 'S_2',    true },{ 'H_2',    true },{ 'C_2',    true },{ 'D_2',    true },
-    	},
+	key = "WholeDeck",
+	visible = false,
+	chips = 525252525252525252525252525252,
+	mult = 52525252525252525252525252525,
+	l_chips = 52525252525252525252525252525,
+	l_mult = 5252525252525252525252525252,
+	example = {
+		{ "S_A", true },
+		{ "H_A", true },
+		{ "C_A", true },
+		{ "D_A", true },
+		{ "S_K", true },
+		{ "H_K", true },
+		{ "C_K", true },
+		{ "D_K", true },
+		{ "S_Q", true },
+		{ "H_Q", true },
+		{ "C_Q", true },
+		{ "D_Q", true },
+		{ "S_J", true },
+		{ "H_J", true },
+		{ "C_J", true },
+		{ "D_J", true },
+		{ "S_T", true },
+		{ "H_T", true },
+		{ "C_T", true },
+		{ "D_T", true },
+		{ "S_9", true },
+		{ "H_9", true },
+		{ "C_9", true },
+		{ "D_9", true },
+		{ "S_8", true },
+		{ "H_8", true },
+		{ "C_8", true },
+		{ "D_8", true },
+		{ "S_7", true },
+		{ "H_7", true },
+		{ "C_7", true },
+		{ "D_7", true },
+		{ "S_6", true },
+		{ "H_6", true },
+		{ "C_6", true },
+		{ "D_6", true },
+		{ "S_5", true },
+		{ "H_5", true },
+		{ "C_5", true },
+		{ "D_5", true },
+		{ "S_4", true },
+		{ "H_4", true },
+		{ "C_4", true },
+		{ "D_4", true },
+		{ "S_3", true },
+		{ "H_3", true },
+		{ "C_3", true },
+		{ "D_3", true },
+		{ "S_2", true },
+		{ "H_2", true },
+		{ "C_2", true },
+		{ "D_2", true },
+	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then return end
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_universe") ~= true then
+			return
+		end
 		if #hand >= 52 then
 			local deck_booleans = {}
-		        local scored_cards = {}
-		        for i = 1, 52 do
-		        	table.insert(deck_booleans, false)  -- i could write this out but nobody wants to see that
-		        end
-		        local wilds = {}
-		        for i, card in ipairs(hand) do
-		        	if (card.config.center_key ~= 'm_wild' and not card.config.center.any_suit)
-		            	and (card.config.center_key ~= 'm_stone' and not card.config.center.no_rank) then    -- i don't know if these are different... this could be completely redundant but redundant is better than broken
-		                	local rank = card:get_id()
-		                	local suit = card.base.suit
-		                	local suit_int = 0
-		                	suit_table = {"Spades", "Hearts", "Clubs", "Diamonds"}
-		                	for i = 1, 4 do
-		                    		if suit == suit_table[i] then suit_int = i end
-		                	end
-		                	if suit_int > 0 then    -- check for custom rank here to prevent breakage?
-		                    		deck_booleans[suit_int+((rank-2)*4)] = true
-		                    		table.insert(scored_cards, card)
-		                	end
-		            	elseif (card.config.center_key == 'm_wild' or card.config.center.any_suit) then
-		                	table.insert(wilds, card)
-		            	end
-		        end
-		        for i, card in ipairs(wilds) do    -- this 100% breaks with custom ranks
-		        	local rank = card:get_id()
-		            	for i = 1, 4 do
-		                	if not deck_booleans[i+((rank-2)*4)] then
-		                    		deck_booleans[i+((rank-2)*4)] = true
-		                    		break
-		                	end
-		            	end
-		            	table.insert(scored_cards, card)
-		        end
-		        local entire_fucking_deck = true
-		        for i = 1, #deck_booleans do
-		        	if deck_booleans[i] == false then entire_fucking_deck = false break end
-		        end
-		        if entire_fucking_deck == true then
-		        	return {scored_cards}
-		        end
+			local scored_cards = {}
+			for i = 1, 52 do
+				table.insert(deck_booleans, false) -- i could write this out but nobody wants to see that
+			end
+			local wilds = {}
+			for i, card in ipairs(hand) do
+				if
+					(card.config.center_key ~= "m_wild" and not card.config.center.any_suit)
+					and (card.config.center_key ~= "m_stone" and not card.config.center.no_rank)
+				then -- i don't know if these are different... this could be completely redundant but redundant is better than broken
+					local rank = card:get_id()
+					local suit = card.base.suit
+					local suit_int = 0
+					suit_table = { "Spades", "Hearts", "Clubs", "Diamonds" }
+					for i = 1, 4 do
+						if suit == suit_table[i] then
+							suit_int = i
+						end
+					end
+					if suit_int > 0 then -- check for custom rank here to prevent breakage?
+						deck_booleans[suit_int + ((rank - 2) * 4)] = true
+						table.insert(scored_cards, card)
+					end
+				elseif card.config.center_key == "m_wild" or card.config.center.any_suit then
+					table.insert(wilds, card)
+				end
+			end
+			for i, card in ipairs(wilds) do -- this 100% breaks with custom ranks
+				local rank = card:get_id()
+				for i = 1, 4 do
+					if not deck_booleans[i + ((rank - 2) * 4)] then
+						deck_booleans[i + ((rank - 2) * 4)] = true
+						break
+					end
+				end
+				table.insert(scored_cards, card)
+			end
+			local entire_fucking_deck = true
+			for i = 1, #deck_booleans do
+				if deck_booleans[i] == false then
+					entire_fucking_deck = false
+					break
+				end
+			end
+			if entire_fucking_deck == true then
+				return { scored_cards }
+			end
 		end
 		return
 	end,
@@ -222,46 +300,47 @@ SMODS.ConsumableType({
 -- Pool used by Food Jokers
 SMODS.ObjectType({
 	key = "Food",
-    	default = "j_reserved_parking",
+	default = "j_reserved_parking",
 	cards = {},
-    	inject = function(self)
-        	SMODS.ObjectType.inject(self)
-        	-- insert base game food jokers
-        	self:inject_card(G.P_CENTERS.j_gros_michel)
-        	self:inject_card(G.P_CENTERS.j_egg)
-        	self:inject_card(G.P_CENTERS.j_ice_cream)
-        	self:inject_card(G.P_CENTERS.j_cavendish)
-        	self:inject_card(G.P_CENTERS.j_turtle_bean)
-        	self:inject_card(G.P_CENTERS.j_diet_cola)
-        	self:inject_card(G.P_CENTERS.j_popcorn)
-       		self:inject_card(G.P_CENTERS.j_ramen)
-        	self:inject_card(G.P_CENTERS.j_selzer)
-    	end
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		-- insert base game food jokers
+		self:inject_card(G.P_CENTERS.j_gros_michel)
+		self:inject_card(G.P_CENTERS.j_egg)
+		self:inject_card(G.P_CENTERS.j_ice_cream)
+		self:inject_card(G.P_CENTERS.j_cavendish)
+		self:inject_card(G.P_CENTERS.j_turtle_bean)
+		self:inject_card(G.P_CENTERS.j_diet_cola)
+		self:inject_card(G.P_CENTERS.j_popcorn)
+		self:inject_card(G.P_CENTERS.j_ramen)
+		self:inject_card(G.P_CENTERS.j_selzer)
+	end,
 })
 SMODS.ObjectType({
 	object_type = "ObjectType",
-    	key = "Meme",
-    	default = "j_mr_bones",
+	key = "Meme",
+	default = "j_mr_bones",
 	cards = {},
-    	inject = function(self)
-        	SMODS.ObjectType.inject(self)
-        	-- insert base game meme jokers
-        	self:inject_card(G.P_CENTERS.j_mr_bones)
-        	self:inject_card(G.P_CENTERS.j_obelisk)
-       		self:inject_card(G.P_CENTERS.j_jolly)
-        	self:inject_card(G.P_CENTERS.j_space)
-    	end
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		-- insert base game meme jokers
+		self:inject_card(G.P_CENTERS.j_mr_bones)
+		self:inject_card(G.P_CENTERS.j_four_fingers) --loss reference
+		self:inject_card(G.P_CENTERS.j_obelisk)
+		self:inject_card(G.P_CENTERS.j_jolly)
+		self:inject_card(G.P_CENTERS.j_space)
+	end,
 })
 SMODS.ObjectType({
 	object_type = "ObjectType",
-    	key = "Tier3",
-    	default = "v_blank",
+	key = "Tier3",
+	default = "v_blank",
 	cards = {},
 })
 SMODS.ObjectType({
 	object_type = "ObjectType",
-    	key = "M",
-    	default = "j_jolly",
+	key = "M",
+	default = "j_jolly",
 	cards = {},
 })
 --Stickers and modifiers used by Challenges+Stakes
@@ -403,9 +482,9 @@ SMODS.Sound({
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return Cryptid_config.Cryptid 
-			and Cryptid_config.Cryptid.exotic_music 
-			and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+		return Cryptid_config.Cryptid
+			and Cryptid_config.Cryptid.exotic_music
+			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
 SMODS.Sound({
@@ -419,11 +498,7 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (
-				G.PROFILES[G.SETTINGS.profile].cry_gameset
-					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline"
-				or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness"
-			)
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -438,11 +513,7 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (
-				G.PROFILES[G.SETTINGS.profile].cry_gameset
-					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness"
-				or G.selectedGameset == "madness"
-			)
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -457,11 +528,7 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (
-				G.PROFILES[G.SETTINGS.profile].cry_gameset
-					and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest"
-				or G.selectedGameset == "modest"
-			)
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -531,6 +598,21 @@ SMODS.Atlas({
 	px = 34,
 	py = 34,
 })
+
+-- shiny tags
+SMODS.Atlas({
+	key = "shinyv",
+	path = "shinyv.png",
+	px = 34,
+	py = 34,
+})
+SMODS.Atlas({
+	key = "shinyc",
+	path = "shinyc.png",
+	px = 34,
+	py = 34,
+})
+
 SMODS.Atlas({
 	key = "atlasdeck",
 	path = "atlasdeck.png",

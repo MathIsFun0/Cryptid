@@ -37,7 +37,7 @@ if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest and G.GAME.cry_paylo
     add_round_eval_row({bonus = true, payload = G.GAME.cry_payload, name='interest_payload', pitch = pitch, dollars = G.GAME.interest_amount*G.GAME.cry_payload*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})
     pitch = pitch + 0.06
     if not G.GAME.seeded and not G.GAME.challenge then
-        if G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5) == G.GAME.interest_amount*G.GAME.interest_cap/5 then 
+        if G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5) == G.GAME.interest_amount*G.GAME.interest_cap/5 then
             G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak + 1
         else
             G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = 0
@@ -156,7 +156,7 @@ local cry_muse = false
 if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) then
 	cry_muse = true
 	dont_dissolve = true
-end	
+end
 '''
 match_indent = true
 
@@ -172,24 +172,24 @@ if cry_muse then
 	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
 	card:set_cost()
 	delay(0.4)
-	
+
 	-- i make my own card eval status text :D
-	
+
 	card:juice_up()
 	play_sound('generic1')
 	attention_text({
 		text = format_ui_value(card.ability.cry_multiuse),
-		scale = 1.1, 
+		scale = 1.1,
 		hold = 0.6,
 		major = card,
 		backdrop_colour = G.C.SECONDARY_SET[card.config.center.set],
 		align = 'bm',
 		offset = {x = 0, y = 0.2}
 	})
-	
+
 	delay(0.8)
-	draw_card(G.play, area, 1, 'up', true, card, nil, true)
-	tprint(area)
+	local _area = area ~= G.pack_cards and area or G.consumeables
+	draw_card(G.play, _area, 1, 'up', true, card, nil, true)
 end
 '''
 match_indent = true
@@ -280,7 +280,16 @@ else
 		draw_card(G.cry_runarea,G.hand, i*100/#G.cry_runarea.cards,'up', true)
 	end
 end
-G.FUNCS.draw_from_hand_to_run = function(e)	-- might as well just slap this here
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.FUNCS.draw_from_deck_to_hand = function(e)'''
+position = "before"
+payload = '''
+G.FUNCS.draw_from_hand_to_run = function(e)
 	local hand_count = #G.hand.cards
 	for i=1, hand_count do --draw cards from deck
 		draw_card(G.hand, G.cry_runarea, i*100/hand_count,'down', nil, nil,  0.08)

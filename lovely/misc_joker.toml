@@ -1,0 +1,42 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# LeBaron James - Calculate Steel effects when played
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if context.cardarea == G.hand and context.main_scoring then"
+position = "at"
+payload = "if (context.cardarea == G.hand or context.cardarea == G.play and next(SMODS.find_card('j_cry_lebaron_james')) and Cryptid.safe_get(SMODS.Ranks,Cryptid.safe_get(card,'base','value') or 'm','key') == 'King') and context.main_scoring then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "ret.playing_card = {}"
+position = "at"
+payload = "ret.playing_card = ret.playing_card or {}"
+match_indent = true
+
+# Necromancer - Joker Sell list
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = 'local eval, post = eval_card(self, {selling_self = true})'
+position = "before"
+payload = '''
+if self.config.center.set == "Joker" and self.config.center.key ~= "j_cry_necromancer" then
+	if G.GAME.jokers_sold then
+		local contained = false
+		for i = 1, #G.GAME.jokers_sold do
+			if self.config.center.key == G.GAME.jokers_sold[i] then contained = true end
+		end
+		if not contained then table.insert(G.GAME.jokers_sold, self.config.center.key) end
+	else
+		G.GAME.jokers_sold = {self.config.center.key}
+	end
+end
+'''
+match_indent = true

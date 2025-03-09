@@ -18,76 +18,114 @@ function loc_colour(_c, _default)
 end
 
 -- More advanced version of find joker for things that need to find very specific things
-function advanced_find_joker(name, rarity, edition, ability, non_debuff)
+function Cryptid.advanced_find_joker(name, rarity, edition, ability, non_debuff, area)
 	local jokers = {}
-	if not G.jokers or not G.jokers.cards then return {} end
+	if not G.jokers or not G.jokers.cards then
+		return {}
+	end
 	local filter = 0
-	if name then filter = filter + 1 end
-	if edition then filter = filter + 1 end
+	if name then
+		filter = filter + 1
+	end
+	if edition then
+		filter = filter + 1
+	end
 	if type(rarity) ~= "table" then
-		if type(rarity) == "string" then 
+		if type(rarity) == "string" then
 			rarity = { rarity }
 		else
 			rarity = nil
 		end
 	end
-	if rarity then filter = filter + 1 end
+	if rarity then
+		filter = filter + 1
+	end
 	if type(ability) ~= "table" then
-		if type(ability) == "string" then 
+		if type(ability) == "string" then
 			ability = { ability }
 		else
 			ability = nil
 		end
 	end
-	if ability then filter = filter + 1 end
+	if ability then
+		filter = filter + 1
+	end
 	-- return nothing if function is called with no useful arguments
-	if filter == 0 then return {} end
-	for k, v in pairs(G.jokers.cards) do
-		if v and type(v) == 'table' and (non_debuff or not v.debuff) then
-			local check = 0
-			if name and v.ability.name == name then check = check + 1 end
-			if edition and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]] then check = check + 1 end
-			if rarity then
-				--Passes as valid if rarity matches ANY of the values in the rarity table
-				for _, a in ipairs(rarity) do
-					if v.config.center.rarity == a then
+	if filter == 0 then
+		return {}
+	end
+	if not area or area == "j" then
+		for k, v in pairs(G.jokers.cards) do
+			if v and type(v) == "table" and (non_debuff or not v.debuff) then
+				local check = 0
+				if name and v.ability.name == name then
+					check = check + 1
+				end
+				if
+					edition
+					and (v.edition and v.edition.key == edition) --[[ make this use Cryptid.safe_get later? if it's possible anyways]]
+				then
+					check = check + 1
+				end
+				if rarity then
+					--Passes as valid if rarity matches ANY of the values in the rarity table
+					for _, a in ipairs(rarity) do
+						if v.config.center.rarity == a then
+							check = check + 1
+							break
+						end
+					end
+				end
+				if ability then
+					--Only passes if the joker has everything in the ability table
+					local abilitycheck = true
+					for _, b in ipairs(ability) do
+						if not v.ability[b] then
+							abilitycheck = false
+							break
+						end
+					end
+					if abilitycheck then
 						check = check + 1
-						break
 					end
 				end
-			end
-			if ability then
-				--Only passes if the joker has everything in the ability table
-				local abilitycheck = true
-				for _, b in ipairs(ability) do
-					if not v.ability[b] then
-						abilitycheck = false
-						break
-					end
+				if check == filter then
+					table.insert(jokers, v)
 				end
-				if abilitycheck then check = check + 1 end
 			end
-			if check == filter then table.insert(jokers, v) end
 		end
 	end
-	for k, v in pairs(G.consumeables.cards) do
-		if v and type(v) == 'table' and (non_debuff or not v.debuff) then
-			local check = 0
-			if name and v.ability.name == name then check = check + 1 end
-			if edition and (v.edition and v.edition.key == edition) --[[ make this use safe_get later? if it's possible anyways]] then check = check + 1 end
-			if ability then
-				--Only passes if the joker has everything in the ability table
-				local abilitycheck = true
-				for _, b in ipairs(ability) do
-					if not v.ability[b] then
-						abilitycheck = false
-						break
+	if not area or area == "c" then
+		for k, v in pairs(G.consumeables.cards) do
+			if v and type(v) == "table" and (non_debuff or not v.debuff) then
+				local check = 0
+				if name and v.ability.name == name then
+					check = check + 1
+				end
+				if
+					edition
+					and (v.edition and v.edition.key == edition) --[[ make this use Cryptid.safe_get later? if it's possible anyways]]
+				then
+					check = check + 1
+				end
+				if ability then
+					--Only passes if the joker has everything in the ability table
+					local abilitycheck = true
+					for _, b in ipairs(ability) do
+						if not v.ability[b] then
+							abilitycheck = false
+							break
+						end
+					end
+					if abilitycheck then
+						check = check + 1
 					end
 				end
-				if abilitycheck then check = check + 1 end
+				--Consumables don't have a rarity, so this should ignore it in that case (untested lmfao)
+				if check == filter then
+					table.insert(jokers, v)
+				end
 			end
-			--Consumables don't have a rarity, so this should ignore it in that case (untested lmfao)
-			if check == filter then table.insert(jokers, v) end
 		end
 	end
 	return jokers
@@ -137,33 +175,62 @@ function Card:set_sprites(_center, _front)
 	end
 end
 
-function cry_edition_to_table(edition) -- look mom i figured it out (this does NOT need to be a function)
-	if edition then
-		return { [edition] = true }
-	end
-end
-
 -- simple plural s function for localisation
-function cry_pls(str, vars)
-	if string.sub(str, 1, 1) == 'p' 
-	or string.sub(str, 1, 1) == 's' 
-	or string.sub(str, 1, 1) == 'y' then
-		num = vars[tonumber(string.sub(str, 2, -1))]
-		if num then
-			if math.abs(to_big(num) - 1) > to_big(0.001) then
-				return string.sub(str, 1, 1) == 'y' and 'ies' 
-				or 's'
-			else
-				return string.sub(str, 1, 1) == 'y' and 'y' 
-				or ''
+function Cryptid.pluralize(str, vars)
+	local inside = str:match("<(.-)>") -- finds args
+	local _table = {}
+	if inside then
+		for v in inside:gmatch("[^,]+") do -- adds args to array
+			table.insert(_table, v)
+		end
+		local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets reference variable
+		local plural = _table[1] -- default
+		local checks = { [1] = "=" } -- checks 1 by default
+		local checks1mod = false -- tracks if 1 was modified
+		if #_table > 1 then
+			for i = 2, #_table do
+				local isnum = tonumber(_table[i])
+				if isnum then
+					if not checks1mod then
+						checks[1] = nil
+					end -- dumb stuff
+					checks[isnum] = "<" .. (_table[i + 1] or "") -- do less than for custom values
+					if isnum == 1 then
+						checks1mod = true
+					end
+					i = i + 1
+				elseif i == 2 then
+					checks[1] = "=" .. _table[i]
+				end
 			end
 		end
+		local function fch(str, c)
+			return string.sub(str, 1, 1) == c -- gets first char and returns boolean
+		end
+		local keys = {}
+		for k in pairs(checks) do
+			table.insert(keys, k)
+		end
+		table.sort(keys, function(a, b)
+			return a < b
+		end)
+		for _, k in ipairs(keys) do
+			if fch(checks[k], "=") then
+				if math.abs(to_big(num) - k) < to_big(0.001) then
+					return string.sub(checks[k], 2, -1)
+				end
+			elseif fch(checks[k], "<") then
+				if to_big(num) < to_big(k - 0.001) then
+					return string.sub(checks[k], 2, -1)
+				end
+			end
+		end
+		return plural
 	end
-	return false -- idk it doesn't really matter
 end
 
 -- generate a random edition (e.g. Antimatter Deck)
-function cry_poll_random_edition()
+function Cryptid.poll_random_edition()
 	local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
 	while random_edition.key == "e_base" do
 		random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
@@ -173,7 +240,7 @@ function cry_poll_random_edition()
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
-function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undiscovered)
+function Cryptid.random_consumable(seed, excluded_flags, banned_card, pool, no_undiscovered)
 	-- set up excluded flags - these are the kinds of consumables we DON'T want to have generating
 	excluded_flags = excluded_flags or { "hidden", "no_doe", "no_grc" }
 	local selection = "n/a"
@@ -188,7 +255,7 @@ function get_random_consumable(seed, excluded_flags, banned_card, pool, no_undis
 		-- check if it is valid
 		if selection.discovered or not no_undiscovered then
 			for k, v in pairs(excluded_flags) do
-				if not center_no(selection, v, key, true) then
+				if not Cryptid.no(selection, v, key, true) then
 					--Makes the consumable invalid if it's a specific card unless it's set to
 					--I use this so cards don't create copies of themselves (eg potential inf Blessing chain, Hammerspace from Hammerspace...)
 					if not banned_card or (banned_card and banned_card ~= key) then
@@ -219,7 +286,7 @@ function Card:is_jolly()
 	return false
 end
 
-function cry_with_deck_effects(card, func)
+function Cryptid.with_deck_effects(card, func)
 	if not card.added_to_deck then
 		return func(card)
 	else
@@ -230,7 +297,7 @@ function cry_with_deck_effects(card, func)
 	end
 end
 
-function cry_deep_copy(obj, seen)
+function Cryptid.deep_copy(obj, seen)
 	if type(obj) ~= "table" then
 		return obj
 	end
@@ -241,7 +308,7 @@ function cry_deep_copy(obj, seen)
 	local res = setmetatable({}, getmetatable(obj))
 	s[obj] = res
 	for k, v in pairs(obj) do
-		res[cry_deep_copy(k, s)] = cry_deep_copy(v, s)
+		res[Cryptid.deep_copy(k, s)] = Cryptid.deep_copy(v, s)
 	end
 	return res
 end
@@ -251,11 +318,11 @@ function SMODS.current_mod.reset_game_globals(run_start)
 end
 
 --Used for m vouchers, perhaps this can have more applications in the future
-function get_m_jokers()
+function Cryptid.get_m_jokers()
 	local mcount = 0
 	if G.jokers then
 		for i = 1, #G.jokers.cards do
-			if safe_get(G.jokers.cards[i], "pools", "M") then
+			if Cryptid.safe_get(G.jokers.cards[i].config.center, "pools", "M") then
 				mcount = mcount + 1
 			end
 			if G.jokers.cards[i].ability.name == "cry-mprime" then
@@ -291,16 +358,16 @@ function Card:no(m, no_no)
 	return Card.no(self, "no_" .. m, true)
 end
 
-function center_no(center, m, key, no_no)
+function Cryptid.no(center, m, key, no_no)
 	if no_no then
 		return center[m] or (G.GAME and G.GAME[m] and G.GAME[m][key]) or false
 	end
-	return center_no(center, "no_" .. m, key, true)
+	return Cryptid.no(center, "no_" .. m, key, true)
 end
 
 --todo: move to respective stake file
 --[from pre-refactor] make this always active to prevent crashes
-function cry_apply_ante_tax()
+function Cryptid.apply_ante_tax()
 	if G.GAME.modifiers.cry_ante_tax then
 		local tax = math.max(
 			0,
@@ -314,12 +381,20 @@ end
 
 --Changes main menu colors and stuff
 --has to be modified with new enabling system
-if true then --Cryptid.enabled["Menu"] then
+if Cryptid_config.menu then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
 		-- adds a Cryptid spectral to the main menu
-		local newcard = create_card("Spectral", G.title_top, nil, nil, nil, nil, "c_cryptid", "elial1")
+		local newcard = Card(
+			G.title_top.T.x,
+			G.title_top.T.y,
+			G.CARD_W,
+			G.CARD_H,
+			G.P_CARDS.empty,
+			G.P_CENTERS.c_cryptid,
+			{ bypass_discovery_center = true }
+		)
 		-- recenter the title
 		G.title_top.T.w = G.title_top.T.w * 1.7675
 		G.title_top.T.x = G.title_top.T.x - 0.8
@@ -328,6 +403,7 @@ if true then --Cryptid.enabled["Menu"] then
 		newcard.T.w = newcard.T.w * 1.1 * 1.2
 		newcard.T.h = newcard.T.h * 1.1 * 1.2
 		newcard.no_ui = true
+		newcard.states.visible = false
 
 		-- make the title screen use different background colors
 		G.SPLASH_BACK:define_draw_steps({
@@ -341,43 +417,93 @@ if true then --Cryptid.enabled["Menu"] then
 				},
 			},
 		})
+
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			blockable = false,
+			blocking = false,
+			func = function()
+				if change_context == "splash" then
+					newcard.states.visible = true
+					newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, true, 2.5)
+				else
+					newcard.states.visible = true
+					newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.2)
+				end
+				return true
+			end,
+		}))
+
 		return ret
 	end
 end
 
 -- just dumping this garbage here
 -- this just ensures that extra voucher slots work as expected
-function cry_bonusvouchermod(mod)
-	if not G.GAME.shop then return end
+function Cryptid.bonus_voucher_mod(mod)
+	if not G.GAME.shop then
+		return
+	end
 	G.GAME.cry_bonusvouchercount = G.GAME.cry_bonusvouchercount + mod
 	if G.shop_jokers and G.shop_jokers.cards then
 		G.shop:recalculate()
-		if mod > 0 then		-- not doing minus mod because it'd be janky and who really cares
-			for i = 1, G.GAME.cry_bonusvouchercount+1 - #G.shop_vouchers.cards do
+		if mod > 0 then -- not doing minus mod because it'd be janky and who really cares
+			for i = 1, G.GAME.cry_bonusvouchercount + 1 - #G.shop_vouchers.cards do
 				local curr_bonus = G.GAME.current_round.cry_bonusvouchers
-				curr_bonus[#curr_bonus+1] = get_next_voucher_key()
-				
-				
+				curr_bonus[#curr_bonus + 1] = get_next_voucher_key()
+
 				-- this could be a function but it's done like what... 3 times? it doesn't matter rn
-				
-				local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
-					G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[curr_bonus[#curr_bonus]],{bypass_discovery_center = true, bypass_discovery_ui = true})
+
+				local card = Card(
+					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
+					G.shop_vouchers.T.y,
+					G.CARD_W,
+					G.CARD_H,
+					G.P_CARDS.empty,
+					G.P_CENTERS[curr_bonus[#curr_bonus]],
+					{ bypass_discovery_center = true, bypass_discovery_ui = true }
+				)
 				card.shop_cry_bonusvoucher = #curr_bonus
-				cry_misprintize(card)
+				Cryptid.misprintize(card)
 				if G.GAME.events.ev_cry_choco2 then
 					card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 					card:set_cost()
 				end
-				if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
+				if
+					G.GAME.modifiers.cry_enable_flipped_in_shop
+					and pseudorandom("cry_flip_vouch" .. G.GAME.round_resets.ante) > 0.7
+				then
 					card.cry_flipped = true
 				end
-				create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
 				card:start_materialize()
 				if G.GAME.current_round.cry_voucher_edition then
 					card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
 				end
 				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				G.shop_vouchers:emplace(card)
+			end
+		end
+	end
+end
+
+function Cryptid.save()
+	local data = {
+		shinytags = {},
+	}
+	data.shinytags = copy_table(Cryptid.shinytagdata)
+	compress_and_save(G.SETTINGS.profile .. "/" .. "cryptidsave.jkr", STR_PACK(data))
+end
+
+local sppref = set_profile_progress
+function set_profile_progress()
+	sppref()
+	if not Cryptid.shinytagdata.init then
+		for k, v in pairs(G.P_TAGS) do
+			if Cryptid.shinytagdata[k] == nil then
+				Cryptid.shinytagdata.init = true
+				Cryptid.shinytagdata[k] = false
 			end
 		end
 	end
@@ -433,19 +559,24 @@ Cryptid.big_num_whitelist = {
 	j_cry_mprime = true,
 }
 
-function is_card_big(joker)
+function Cryptid.is_card_big(joker)
 	local center = joker.config and joker.config.center
-	if not center then return false end
+	if not center then
+		return false
+	end
 	return Cryptid.big_num_whitelist[center.key or "Nope!"] --[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
 
 --Utility function to check things without erroring
-function safe_get(t, ...)
+---@param t table
+---@param ... any
+---@return table|false
+function Cryptid.safe_get(t, ...)
 	local current = t
-	for _, k in ipairs({...}) do
+	for _, k in ipairs({ ... }) do
 		if current[k] == nil then
-		return false
+			return false
 		end
 		current = current[k]
 	end
@@ -515,32 +646,32 @@ function Blind:cry_calc_ante_gain()
 	end
 	return 1
 end
-function cry_get_enchanced_deck_info(deck)
+function Cryptid.enhanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
-	"e_"..(safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"), 
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus", 
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
-	safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
+		"e_" .. (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
+		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
+		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
+		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
+		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
 	-- Do Stuff
-	edition = (safe_get(G.P_CENTERS,edition) and edition or "e_foil"):sub(3)
-	enhancement = safe_get(G.P_CENTERS,enhancement) and enhancement or "m_bonus"
-	sticker = safe_get(SMODS.Stickers,sticker) and sticker or "eternal"
-	suit = safe_get(SMODS.Suits,suit) and suit or "Spades"
-	seal = safe_get(G.P_SEALS,seal) and seal or "Gold"
+	edition = (Cryptid.safe_get(G.P_CENTERS, edition) and edition or "e_foil"):sub(3)
+	enhancement = Cryptid.safe_get(G.P_CENTERS, enhancement) and enhancement or "m_bonus"
+	sticker = Cryptid.safe_get(SMODS.Stickers, sticker) and sticker or "eternal"
+	suit = Cryptid.safe_get(SMODS.Suits, suit) and suit or "Spades"
+	seal = Cryptid.safe_get(G.P_SEALS, seal) and seal or "Gold"
 	local ret = {
 		edition = edition,
 		enhancement = enhancement,
 		sticker = sticker,
 		suit = suit,
-		seal = seal
+		seal = seal,
 	}
 	for k, _ in pairs(ret) do
-		if G.GAME.modifiers["cry_force_"..k] and not G.GAME.viewed_back then
-			ret[k] = G.GAME.modifiers["cry_force_"..k]
-		elseif safe_get(deck,"config","cry_force_"..k) then
-			ret[k] = deck.config["cry_force_"..k]
+		if G.GAME.modifiers["cry_force_" .. k] and not G.GAME.viewed_back then
+			ret[k] = G.GAME.modifiers["cry_force_" .. k]
+		elseif Cryptid.safe_get(deck, "config", "cry_force_" .. k) then
+			ret[k] = deck.config["cry_force_" .. k]
 		end
 	end
 	return ret.edition, ret.enhancement, ret.sticker, ret.suit, ret.seal
@@ -551,7 +682,7 @@ function Cryptid.post_process(center)
 		center.calculate = function(self, card, context)
 			local ret, trig = vc(self, card, context)
 			if context.retrigger_joker_check and context.other_card == card then
-				local reps = get_m_retriggers(self, card, context)
+				local reps = Cryptid.get_m_retriggers(self, card, context)
 				if reps > 0 then
 					return {
 						message = localize("k_again_ex"),
@@ -563,4 +694,17 @@ function Cryptid.post_process(center)
 			return ret, trig
 		end
 	end
+end
+
+-- Wrapper G.FUNCS function to reset localization
+-- For resetting localization on the fly for family friendly toggle
+function Cryptid.reload_localization()
+	SMODS.handle_loc_file(Cryptid.path)
+	return init_localization()
+end
+
+-- Checks if all jokers in shop will have editions (via Curate, Edition Decks, etc.)
+-- Will cause edition tags to Nope!
+function Cryptid.forced_edition()
+	return G.GAME.modifiers.cry_force_edition or G.GAME.used_vouchers.v_cry_curate
 end

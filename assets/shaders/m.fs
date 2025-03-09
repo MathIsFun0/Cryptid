@@ -24,11 +24,11 @@ float sdParabola(vec2 pos, float wi, float he)
     float q = pos.x*ik*ik*0.25;
     float h = q*q - p*p*p;
     float r = sqrt(abs(h));
-    float x = (h>0.0) ? 
+    float x = (h>0.0) ?
         pow(q+r,1.0/3.0) - pow(abs(q-r),1.0/3.0)*sign(r-q) :
         2.0*cos(atan(r/q)/3.0)*sqrt(p);
     x = min(x,wi);
-    return length(pos-vec2(x,he-x*x/ik)) * 
+    return length(pos-vec2(x,he-x*x/ik)) *
            sign(ik*(pos.y-he)+pos.x*pos.x);
 }
 
@@ -88,7 +88,7 @@ vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv)
 	float t = time * 10.0 + 2003.;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/max(texture_details.b, texture_details.a);
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 2.3 * max(texture_details.b, texture_details.a);
-	
+
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
 	vec2 field_part3 = uv_scaled_centered + 50.*vec2(sin(-t / 87.53218), sin(-t / 49.0000));

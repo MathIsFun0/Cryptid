@@ -1,0 +1,99 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Antimatter Deck
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = "self.children.back:draw_shader('dissolve')"
+position = "at"
+payload = '''
+local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
+if currentBack and currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
+    self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader)
+    self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader)
+else
+    self.children.back:draw_shader('dissolve')
+end
+'''
+match_indent = true
+
+# render gameset as sticker
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = "if self.sticker and G.shared_stickers[self.sticker] then"
+position = "before"
+payload = '''
+if not Cryptid.shared_gamesets then
+    Cryptid.shared_gamesets = {
+        modest = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 0,y = 0}),
+        mainline = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 1,y = 0}),
+        madness = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 2,y = 0}),
+        custom = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 3,y = 0}),
+        selected = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], {x = 0,y = 4}),
+    }
+end
+local gameset_key
+if self.config.center.force_gameset then
+    gameset_key = self.config.center.force_gameset
+    if gameset_key ~= "disabled" and gameset_key ~= "modest" and gameset_key ~= "mainline" and gameset_key ~= "madness" then
+        gameset_key = "custom"
+    end
+end
+if self.gameset_select and Cryptid.shared_gamesets[gameset_key] then
+Cryptid.shared_gamesets[gameset_key].role.draw_major = self
+Cryptid.shared_gamesets[gameset_key]:draw_shader('dissolve', nil, nil, nil, self.children.center)
+Cryptid.shared_gamesets[gameset_key]:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
+end
+'''
+match_indent = true
+
+# make disabled cards visually debuffed
+# warning: this also patches a lot of extra stuff, but that shouldn't matter
+#          since you shouldn't be able to access them outside of the collection anyway
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = "if self.debuff then"
+position = "at"
+payload = "if self.debuff or Cryptid.gameset(self) == 'disabled' or (self.config.center.gameset_config and self.config.center.gameset_config[Cryptid.gameset(self)] and self.config.center.gameset_config[Cryptid.gameset(self)].disabled) or (self.config.center.cry_disabled and not self.gameset_select) then"
+match_indent = true
+
+# Shine on Oversaturated to make it more noticable
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = "if (self.edition and self.edition.negative) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
+position = 'at'
+match_indent = true
+payload = "if (self.edition and (self.edition.negative or self.edition.cry_oversat)) or (self.ability.name == 'Antimatter' and (self.config.center.discovered or self.bypass_discovery_center)) then"
+
+# Make description UI always appear if card is highlighted
+[[patches]]
+[patches.pattern]
+target = "engine/node.lua"
+pattern = "if self.children.h_popup then"
+position = 'at'
+match_indent = true
+payload = "if self.children.h_popup and not (self.force_popup and self:force_popup()) then"
+
+# Let description tooltips work for any object
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,"
+position = 'at'
+match_indent = true
+payload = "detailed_tooltip = part.control.T and Cryptid.get_center(part.control.T) or nil,"
+
+# Remove consumable use UI in the collection
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.highlighted and self.area and self.area.config.type ~= 'shop' then"
+position = 'at'
+match_indent = true
+payload = "if self.highlighted and self.area and self.area.config.type ~= 'shop' and not self.area.config.collection then"

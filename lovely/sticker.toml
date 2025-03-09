@@ -80,7 +80,7 @@ if self.ability.banana then
                                 if self.area then self.area:remove_card(self) end
                                 self:remove()
                                 self = nil
-                            return true; end})) 
+                            return true; end}))
                     return true
                 end
             }))
@@ -148,7 +148,7 @@ target = "game.lua"
 pattern = "card.ability.booster_pos = i"
 position = "before"
 payload = '''
-local stickers = cry_get_next_voucher_stickers(true)	-- don't mind the name
+local stickers = Cryptid.next_voucher_stickers(true)	-- don't mind the name
 for k, v in pairs(stickers) do
 	card.ability[k] = v
 end

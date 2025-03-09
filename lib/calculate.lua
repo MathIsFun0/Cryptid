@@ -4,7 +4,7 @@
 local ec = eval_card
 function eval_card(card, context)
 	if card.will_shatter then
-		return
+		return {}, {}
 	end
 	-- Store old probability for later reference
 	local ggpn = G.GAME.probabilities.normal
@@ -440,8 +440,10 @@ function SMODS.calculate_context(context, return_table)
 		local _card = context.consumeable
 		--calculate the joker effects
 		local eval, post = eval_card(_card, context)
-		local effects = {eval}
-		for _,v in ipairs(post) do effects[#effects+1] = v end
+		local effects = { eval }
+		for _, v in ipairs(post) do
+			effects[#effects + 1] = v
+		end
 
 		if context.other_joker then
 			for k, v in pairs(effects[1]) do
@@ -453,16 +455,20 @@ function SMODS.calculate_context(context, return_table)
 			for rt = 1, #effects[1].retriggers do
 				context.retrigger_joker = effects[1].retriggers[rt].retrigger_card
 				local rt_eval, rt_post = eval_card(_card, context)
-				table.insert(effects, {effects[1].retriggers[rt]})
+				table.insert(effects, { effects[1].retriggers[rt] })
 				table.insert(effects, rt_eval)
-				for _,v in ipairs(rt_post) do effects[#effects+1] = v end
+				for _, v in ipairs(rt_post) do
+					effects[#effects + 1] = v
+				end
 			end
 			context.retrigger_joker = false
 		end
 		if return_table then
-			for _,v in ipairs(effects) do 
-				if v.jokers and not v.jokers.card then v.jokers.card = _card end
-				return_table[#return_table+1] = v
+			for _, v in ipairs(effects) do
+				if v.jokers and not v.jokers.card then
+					v.jokers.card = _card
+				end
+				return_table[#return_table + 1] = v
 			end
 		else
 			SMODS.trigger_effects(effects, _card)
@@ -590,7 +596,7 @@ function Card:calculate_joker(context)
 	return ret, trig
 end
 
-function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
 	local jkr = self
 	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
 	if jkr.ability and type(jkr.ability) == "table" then
@@ -745,7 +751,7 @@ function exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale
 	end
 end
 
-function compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
+function Cryptid.compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
 	local jkr = self
 	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
 	if jkr.ability and type(jkr.ability) == "table" then
