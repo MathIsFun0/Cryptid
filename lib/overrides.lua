@@ -318,13 +318,13 @@ function Game:update(dt)
 			v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
 		end
 	end
-	local ui_callers = {'pointer', 'class', 'variable', 'exploit'}
-	local choose_refs = {'CARD', 'ENH', 'RANK', 'HAND'}
+	local ui_callers = { "pointer", "class", "variable", "exploit" }
+	local choose_refs = { "CARD", "ENH", "RANK", "HAND" }
 	for i = 1, #ui_callers do
-		local v = 'CHOOSE_'..choose_refs[i]
+		local v = "CHOOSE_" .. choose_refs[i]
 		if not G.OVERLAY_MENU and not G[v] and G.GAME.USING_UI == ui_callers[i] then
-			G[v]  = UIBox({
-				definition = _G[ 'create_UIBox_'..ui_callers[i] ](card),
+			G[v] = UIBox({
+				definition = _G["create_UIBox_" .. ui_callers[i]](card),
 				config = {
 					align = "cm",
 					offset = { x = 0, y = 10 },

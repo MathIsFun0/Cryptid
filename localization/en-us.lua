@@ -4453,27 +4453,27 @@ return {
 			cry_tax_placeholder = "(X0.4 blind requirement)",
 			cry_joke_placeholder = "(multiple of 8)",
 
-            k_code = "Code",
-            k_content_set = "Thematic Set",
-            b_content_sets = "Thematic Sets",
-            --Why aren't these in vanilla?
-            b_tag = "Tag",
-            b_blind = "Blind",
+			k_code = "Code",
+			k_content_set = "Thematic Set",
+			b_content_sets = "Thematic Sets",
+			--Why aren't these in vanilla?
+			b_tag = "Tag",
+			b_blind = "Blind",
 
-            k_current = "Current",
-            b_browse_cap = "BROWSE",
-            b_select_cap = "SELECT",
-            b_code_terminal_cap = "TERMINAL",
-            
-            b_tarot_rate = "Tarot Rate",
-            b_planet_rate = "Planet Rate",
-            
-            k_unique = "Unique",
-            b_code_cards = "Code Cards",
-            b_unique_cards = "Unique Cards",
-            b_pull = "PULL",
-            cry_hooked_ex = "Hooked!",
-            k_end_blind = "End Blind",
+			k_current = "Current",
+			b_browse_cap = "BROWSE",
+			b_select_cap = "SELECT",
+			b_code_terminal_cap = "TERMINAL",
+
+			b_tarot_rate = "Tarot Rate",
+			b_planet_rate = "Planet Rate",
+
+			k_unique = "Unique",
+			b_code_cards = "Code Cards",
+			b_unique_cards = "Unique Cards",
+			b_pull = "PULL",
+			cry_hooked_ex = "Hooked!",
+			k_end_blind = "End Blind",
 
 			b_tarot_rate = "Tarot Rate",
 			b_planet_rate = "Planet Rate",
@@ -4594,27 +4594,30 @@ return {
 			cry_noisy = "Noisy",
 			cry_oversat = "Oversaturated",
 
-            k_cry_epic = "Epic",
-            k_cry_exotic = "Exotic",
-            k_cry_candy = "Candy",
-            k_cry_cursed  = "Cursed",
-        },
-        terminal_cry = {
-            -- this is bad
-            -- nobody will be localising this because i will change it
-            cryptidbr = {"Cryptid ["}, usingsmodsbr = {"] using SMODS, configured to "},
-            exit = {'Type "exit" or press "escape" to leave the terminal.'},
-            error = {"Error: "},
-            success = {"Success: "},
-            identified_object = {"identified object"},
-            identified_illegal_object = {"identified illegal object"},
-            could_not_find_object = {"could not find object from input"},
-            identified_enh = {"identified enhancement"},
-            identified_edition1 = {"identified"}, identified_edition2 = {"of class Edition, expected Enhancement"},
-            identified_cheat1 = {"Passcode"}, identified_cheat2 = {"recognised. "},
-            could_not_find_enhancement = {"could not find enhancement from input"},
-            you_may_now_exit = {"You may now exit the terminal."},
-        },
+			k_cry_epic = "Epic",
+			k_cry_exotic = "Exotic",
+			k_cry_candy = "Candy",
+			k_cry_cursed = "Cursed",
+		},
+		terminal_cry = {
+			-- this is bad
+			-- nobody will be localising this because i will change it
+			cryptidbr = { "Cryptid [" },
+			usingsmodsbr = { "] using SMODS, configured to " },
+			exit = { 'Type "exit" or press "escape" to leave the terminal.' },
+			error = { "Error: " },
+			success = { "Success: " },
+			identified_object = { "identified object" },
+			identified_illegal_object = { "identified illegal object" },
+			could_not_find_object = { "could not find object from input" },
+			identified_enh = { "identified enhancement" },
+			identified_edition1 = { "identified" },
+			identified_edition2 = { "of class Edition, expected Enhancement" },
+			identified_cheat1 = { "Passcode" },
+			identified_cheat2 = { "recognised. " },
+			could_not_find_enhancement = { "could not find enhancement from input" },
+			you_may_now_exit = { "You may now exit the terminal." },
+		},
 		rnj_loc_txts = {
 			stats = {
 				plus_mult = { "{C:red}+#2#{} Mult" },
