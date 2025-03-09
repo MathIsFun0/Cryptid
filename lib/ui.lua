@@ -291,6 +291,8 @@ end
 -- Prevent hover UI from being redrawn
 local ch = Card.hover
 function Card:hover()
-	if self.children.h_popup then return end
+	if self.children.h_popup then
+		return
+	end
 	ch(self)
 end
