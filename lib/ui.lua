@@ -279,10 +279,18 @@ function CardArea:init(X, Y, W, H, config)
 	return cainit(self, X, Y, W, H, config)
 end
 
+-- Allow highlighting in the collection
 local cach = CardArea.can_highlight
 function CardArea:can_highlight(card)
 	if self.config.collection then
 		return true
 	end
 	return cach(self)
+end
+
+-- Prevent hover UI from being redrawn
+local ch = Card.hover
+function Card:hover()
+	if self.children.h_popup then return end
+	ch(self)
 end

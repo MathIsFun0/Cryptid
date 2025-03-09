@@ -88,3 +88,12 @@ pattern = "detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or
 position = 'at'
 match_indent = true
 payload = "detailed_tooltip = part.control.T and Cryptid.get_center(part.control.T) or nil,"
+
+# Remove consumable use UI in the collection
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.highlighted and self.area and self.area.config.type ~= 'shop' then"
+position = 'at'
+match_indent = true
+payload = "if self.highlighted and self.area and self.area.config.type ~= 'shop' and not self.area.config.collection then"
