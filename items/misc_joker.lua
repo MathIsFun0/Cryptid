@@ -6876,6 +6876,7 @@ local tropical_smoothie = {
 	cost = 5,
 	order = 125,
 	atlas = "atlastwo",
+	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,
