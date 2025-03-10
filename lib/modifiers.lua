@@ -382,11 +382,24 @@ function cry_best_interest_cap()
 	end
 	return best
 end
-
 local evaluateroundref = G.FUNCS.evaluate_round
 G.FUNCS.evaluate_round = function()
 	G.GAME.interest_cap = cry_best_interest_cap() -- blehhhhhh
-	evaluateroundref()
+	if G.GAME.current_round.semicolon then
+		add_round_eval_row({ dollars = 0, name = "blind1", pitch = 0.95, saved = true })
+		G.E_MANAGER:add_event(Event({
+			trigger = "before",
+			delay = 1.3 * math.min(G.GAME.blind.dollars + 2, 7) / 2 * 0.15 + 0.5,
+			func = function()
+				G.GAME.blind:defeat()
+				return true
+			end,
+		}))
+		delay(0.2)
+		add_round_eval_row({ name = "bottom", dollars = 0 })
+	else
+		return evaluateroundref()
+	end
 end
 function Cryptid.edition_to_table(edition) -- look mom i figured it out (this does NOT need to be a function)
 	if edition then

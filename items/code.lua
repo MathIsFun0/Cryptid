@@ -1035,27 +1035,6 @@ local semicolon = {
 			"other"
 		)
 	end,
-	init = function(self)
-		--don't evaluate round
-		local gfer = G.FUNCS.evaluate_round
-		function G.FUNCS.evaluate_round()
-			if G.GAME.current_round.semicolon then
-				add_round_eval_row({ dollars = 0, name = "blind1", pitch = 0.95, saved = true })
-				G.E_MANAGER:add_event(Event({
-					trigger = "before",
-					delay = 1.3 * math.min(G.GAME.blind.dollars + 2, 7) / 2 * 0.15 + 0.5,
-					func = function()
-						G.GAME.blind:defeat()
-						return true
-					end,
-				}))
-				delay(0.2)
-				add_round_eval_row({ name = "bottom", dollars = 0 })
-			else
-				return gfer()
-			end
-		end
-	end,
 }
 local malware = {
 	cry_credits = {
