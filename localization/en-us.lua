@@ -1572,6 +1572,12 @@ return {
 					"a {C:attention}#2#",
 				},
 			},
+			j_cry_doppelganger = {
+				name = "Joker?",
+				text = {
+					"{C:red}+#1#{} Mult",
+				},
+			},
 			j_cry_goldjoker = {
 				name = "Gold Joker",
 				text = {

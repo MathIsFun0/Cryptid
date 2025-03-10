@@ -4845,6 +4845,47 @@ local giggly = {
 		},
 	},
 }
+local doppelganger = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-doppelganger",
+	key = "doppelganger",
+	effect = "Cry Type Mult",
+	pos = { x = 0, y = 1 },
+	config = { t_mult = 400, type = "High Card" },
+	order = 16,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.t_mult, localize(card.ability.type, "poker_hands") } }
+	end,
+	atlas = "placeholders",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main and context.poker_hands and next(context.poker_hands["High Card"]) then
+			return {
+				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.t_mult } }),
+				colour = G.C.RED,
+				mult_mod = card.ability.t_mult,
+			}
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"PyroCreep",
+		},
+		art = {
+			"LocalThunk",
+		},
+		code = {
+			"Mr. Dingus",
+		},
+	},
+}
 local nutty = {
 	object_type = "Joker",
 	dependencies = {
@@ -7846,6 +7887,7 @@ local miscitems = {
 	oldinvisible,
 	fractal,
 	giggly,
+	doppelganger,
 	nutty,
 	manic,
 	silly,
