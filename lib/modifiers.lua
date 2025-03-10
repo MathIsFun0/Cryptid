@@ -371,7 +371,7 @@ function cry_best_interest_cap()
 	local vouchers = {
 		SMODS.find_card("v_seed_money"),
 		SMODS.find_card("v_money_tree"),
-		SMODS.find_card("v_cry_money_beanstalk"),
+		SMODS.find_card("v_cry_moneybean"),
 	}
 	for _, table in ipairs(vouchers) do
 		for i, v in ipairs(table) do
