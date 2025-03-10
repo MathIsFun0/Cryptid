@@ -939,7 +939,6 @@ local double_scale = {
 	atlas = "atlasepic",
 	--todo: support jokers that scale multiple variables
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-		print(orig_scale_scale, true_base, orig_scale_base, new_scale_base)
 		if Cryptid.gameset(self) == "exp_modest" then
 			return true_base * 2
 		end
