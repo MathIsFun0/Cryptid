@@ -103,3 +103,36 @@ if (SMODS.Mods["malverk"] or {}).can_load then
 		},
 	})
 end
+
+--Make extra modifiers display on the Next Ante Preview
+if (SMODS.Mods["AntePreview"] or {}).can_load then
+	local predict_hook = predict_next_ante
+	function predict_next_ante()
+		local small = "bl_small"
+		local big = "bl_big"
+		if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
+			big = get_new_boss()
+		elseif G.GAME.modifiers.cry_rush_hour_ii then
+			small = get_new_boss()
+			big = get_new_boss()
+		end
+		local predictions = predict_hook()
+		if G.GAME.modifiers.cry_no_tags then
+			for _, pred in pairs(predictions) do
+				pred.tag = nil
+			end
+		end
+		predictions.Small.blind = small
+		predictions.Big.blind = big
+		if G.P_BLINDS[predictions.Small.blind].boss then
+			G.GAME.bosses_used[predictions.Small.blind] = G.GAME.bosses_used[predictions.Small.blind] - 1
+		end
+		if G.P_BLINDS[predictions.Big.blind].boss then
+			G.GAME.bosses_used[predictions.Big.blind] = G.GAME.bosses_used[predictions.Big.blind] - 1
+		end
+		if G.GAME.modifiers.cry_no_small_blind then
+			predictions.Small = nil
+		end
+		return predictions
+	end
+end
