@@ -1437,7 +1437,6 @@ local items = {
 }
 return {
 	name = "Exotic Jokers",
-	init = function()
-	end,
+	init = function() end,
 	items = items,
 }
