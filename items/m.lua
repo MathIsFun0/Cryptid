@@ -1482,6 +1482,7 @@ local ret_items = {
 	smallestm,
 	biggestm,
 	mprime,
+	scrabble,
 }
 --retriggering system for M Vouchers
 function Cryptid.get_m_retriggers(self, card, context)
