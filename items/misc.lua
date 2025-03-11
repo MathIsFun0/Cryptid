@@ -1093,7 +1093,8 @@ local jollyedition = {
 			local full_UI_table =
 				gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
 			if
-				card and Cryptid.safe_get(card, "edition", "cry_m")
+				card
+				and Cryptid.safe_get(card, "edition", "cry_m")
 				and ((not card.ability) or card.ability.set ~= "Edition")
 				and type(Cryptid.safe_get(full_UI_table, "name")) == "table"
 				and Cryptid.safe_get(full_UI_table.name, 1, "nodes", 1, "config", "object", "config")
