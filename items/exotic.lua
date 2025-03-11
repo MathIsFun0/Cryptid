@@ -831,6 +831,7 @@ local circulus_pistoris = {
 	cost = 10 * math.pi,
 	order = 509,
 	blueprint_compat = true,
+	immutable = true,
 	atlas = "atlasexotic",
 	soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
 	loc_vars = function(self, info_queue, center)
