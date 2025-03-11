@@ -296,3 +296,209 @@ function Card:hover()
 	end
 	ch(self)
 end
+
+local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
+function G.UIDEF.use_and_sell_buttons(card)
+	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
+	-- Allow code cards to be reserved
+	if (card.area == G.pack_cards and G.pack_cards) and card.ability.consumeable then --Add a use button
+		if card.ability.set == "Code" then
+			return {
+				n = G.UIT.ROOT,
+				config = { padding = -0.1, colour = G.C.CLEAR },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							minh = 0.7 * card.T.h,
+							maxw = 0.7 * card.T.w - 0.15,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "use_card",
+							func = "can_reserve_card",
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_pull"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.55,
+									shadow = true,
+								},
+							},
+						},
+					},
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							maxw = 0.9 * card.T.w - 0.15,
+							minh = 0.1 * card.T.h,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "Do you know that this parameter does nothing?",
+							func = "can_use_consumeable",
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_use"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.45,
+									shadow = true,
+								},
+							},
+						},
+					},
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					-- Betmma can't explain it, neither can I
+				},
+			}
+		end
+	end
+	-- Remove sell button from cursed jokers
+	if
+		card.area
+		and card.area.config.type == "joker"
+		and card.config
+		and card.config.center
+		and card.config.center.rarity == "cry_cursed"
+		and card.ability.name ~= "cry-Monopoly"
+	then
+		table.remove(abc.nodes[1].nodes, 1)
+	end
+	if card.config and card.config.center and card.config.center.key == "c_cry_potion" then
+		table.remove(abc.nodes[1].nodes, 1)
+	end
+	if
+		card.area
+		and card.edition
+		and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
+		and card.edition.cry_double_sided
+		and not Card.no(card, "dbl")
+	then
+		local use = {
+			n = G.UIT.C,
+			config = { align = "cr" },
+			nodes = {
+				{
+					n = G.UIT.C,
+					config = {
+						ref_table = card,
+						align = "cr",
+						maxw = 1.25,
+						padding = 0.1,
+						r = 0.08,
+						hover = true,
+						shadow = true,
+						colour = G.C.UI.BACKGROUND_INACTIVE,
+						one_press = true,
+						button = "flip",
+						func = "can_flip_card",
+					},
+					nodes = {
+						{ n = G.UIT.B, config = { w = 0.1, h = 0.3 } },
+						{
+							n = G.UIT.T,
+							config = {
+								text = localize("b_flip"),
+								colour = G.C.UI.TEXT_LIGHT,
+								scale = 0.3,
+								shadow = true,
+							},
+						},
+					},
+				},
+			},
+		}
+		local m = abc.nodes[1]
+		if not card.added_to_deck then
+			use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+			if card.ability.consumeable then
+				m = abc
+			end
+		end
+		m.nodes = m.nodes or {}
+		table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+			use,
+		} })
+		return abc
+	end
+	if
+		card.area
+		and (card.area == G.jokers or card.area == G.consumeables or card.area == G.hand)
+		and (not card.edition or not card.edition.cry_double_sided)
+		and not card.ability.eternal
+		and not Card.no(card, "dbl")
+	then
+		for i = 1, #card.area.cards do
+			if card.area.cards[i].edition and card.area.cards[i].edition.cry_double_sided then
+				local use = {
+					n = G.UIT.C,
+					config = { align = "cr" },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = {
+								ref_table = card,
+								align = "cr",
+								maxw = 1.25,
+								padding = 0.1,
+								r = 0.08,
+								hover = true,
+								shadow = true,
+								colour = G.C.UI.BACKGROUND_INACTIVE,
+								one_press = true,
+								button = "flip_merge",
+								func = "can_flip_merge_card",
+							},
+							nodes = {
+								{ n = G.UIT.B, config = { w = 0.1, h = 0.3 } },
+								{
+									n = G.UIT.T,
+									config = {
+										text = localize("b_merge"),
+										colour = G.C.UI.TEXT_LIGHT,
+										scale = 0.3,
+										shadow = true,
+									},
+								},
+							},
+						},
+					},
+				}
+				local m = abc.nodes[1]
+				if not card.added_to_deck then
+					use.nodes[1].nodes = { use.nodes[1].nodes[2] }
+					if card.ability.consumeable then
+						m = abc
+					end
+				end
+				m.nodes = m.nodes or {}
+				table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+					use,
+				} })
+				return abc
+			end
+		end
+	end
+	return abc
+end
