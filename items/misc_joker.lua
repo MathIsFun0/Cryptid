@@ -739,18 +739,6 @@ local cube = {
 			"Math",
 		},
 	},
-	init = function(self)
-		local sc = Card.set_cost
-		function Card:set_cost()
-			sc(self)
-			if self.ability.name == "cry-Cube" then
-				self.cost = -27
-			end
-			if self.ability.name == "cry-Big Cube" then
-				self.cost = 27
-			end
-		end
-	end,
 }
 local triplet_rhythm = {
 	object_type = "Joker",

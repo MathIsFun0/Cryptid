@@ -526,24 +526,6 @@ return {
 				SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
 			end,
 		}, true)
-
-		local sc = Card.set_cost
-		function Card:set_cost()
-			sc(self)
-			if self.ability.set == "Voucher" and G.GAME.modifiers.cry_voucher_price_hike then
-				self.cost = math.floor(self.cost * G.GAME.modifiers.cry_voucher_price_hike)
-				--Update related costs
-				self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
-				if
-					self.area
-					and self.ability.couponed
-					and (self.area == G.shop_jokers or self.area == G.shop_booster)
-				then
-					self.cost = 0
-				end
-				self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
-			end
-		end
 		for _, v in pairs(self.items) do
 			if v.object_type == "Stake" then
 				v.sticker_pos = v.pos
