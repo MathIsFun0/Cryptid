@@ -1093,19 +1093,12 @@ local jollyedition = {
 			local full_UI_table =
 				gcui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
 			if
-				card
-				and card.edition
-				and card.edition.cry_m
-				and (not card.ability or card.ability.set ~= "Edition")
-				and full_UI_table
-				and full_UI_table.name
-				and type(full_UI_table.name) == "table"
-				and full_UI_table.name[1]
-				and full_UI_table.name[1].config
-				and full_UI_table.name[1].config.object
-				and full_UI_table.name[1].config.object.config
+				card and Cryptid.safe_get(card, "edition", "cry_m")
+				and ((not card.ability) or card.ability.set ~= "Edition")
+				and type(Cryptid.safe_get(full_UI_table, "name")) == "table"
+				and Cryptid.safe_get(full_UI_table.name, 1, "nodes", 1, "config", "object", "config")
 			then
-				local conf = full_UI_table.name[1].config.object.config
+				local conf = full_UI_table.name[1].nodes[1].config.object.config
 				if conf.string and #conf.string > 0 then
 					local function m_ify_word(text)
 						-- Define a pattern for vowels
@@ -1140,8 +1133,8 @@ local jollyedition = {
 						return result
 					end
 					conf.string[1] = m_ify(conf.string[1])
-					full_UI_table.name[1].config.object:remove()
-					full_UI_table.name[1].config.object = DynaText(conf)
+					full_UI_table.name[1].nodes[1].config.object:remove()
+					full_UI_table.name[1].nodes[1].config.object = DynaText(conf)
 				end
 			end
 			return full_UI_table
