@@ -307,6 +307,26 @@ end
 local updateref = Card.update
 function Card:update(dt)
 	updateref(self, dt)
+	if self.area then
+		if self.area.config.type == "discard" or self.area.config.type == "deck" then
+			return --prevent lagging event queues with unneeded flips
+		end
+	end
+	if self.sprite_facing == "back" and self.edition and self.edition.cry_double_sided then
+		self.sprite_facing = "front"
+		self.facing = "front"
+		if self.flipping == "f2b" then
+			self.flipping = "b2f"
+		end
+		self:dbl_side_flip()
+	end
+	if self.ability.cry_absolute then -- feedback loop... may be problematic
+		self.cry_absolute = true
+	end
+	if self.cry_absolute then
+		self.ability.cry_absolute = true
+		self.ability.eternal = true
+	end
 	if self.ability.pinned then
 		self.pinned = true
 	end -- gluing these variables together
@@ -385,6 +405,7 @@ end
 local evaluateroundref = G.FUNCS.evaluate_round
 G.FUNCS.evaluate_round = function()
 	G.GAME.interest_cap = cry_best_interest_cap() -- blehhhhhh
+	--Semicolon Stuff
 	if G.GAME.current_round.semicolon then
 		add_round_eval_row({ dollars = 0, name = "blind1", pitch = 0.95, saved = true })
 		G.E_MANAGER:add_event(Event({

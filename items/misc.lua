@@ -1557,30 +1557,6 @@ local double_sided = {
 			end
 			return retval
 		end
-		local cupd = Card.update
-		function Card:update(dt)
-			cupd(self, dt)
-			if self.area then
-				if self.area.config.type == "discard" or self.area.config.type == "deck" then
-					return --prevent lagging event queues with unneeded flips
-				end
-			end
-			if self.sprite_facing == "back" and self.edition and self.edition.cry_double_sided then
-				self.sprite_facing = "front"
-				self.facing = "front"
-				if self.flipping == "f2b" then
-					self.flipping = "b2f"
-				end
-				self:dbl_side_flip()
-			end
-			if self.ability.cry_absolute then -- feedback loop... may be problematic
-				self.cry_absolute = true
-			end
-			if self.cry_absolute then
-				self.ability.cry_absolute = true
-				self.ability.eternal = true
-			end
-		end
 		function Cryptid.copy_dbl_card(C, c, deck_effects)
 			if not deck_effects then
 				Cdeck = C.added_to_deck
