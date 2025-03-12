@@ -438,7 +438,8 @@ local redeo = {
 	init = function(self)
 		local ed = ease_dollars
 		function ease_dollars(mod, x)
-			ed(mod, x)
+			local mod_val = (type(mod) == "table" and tonumber(mod.array[1]) * (mod.sign or 1) or mod)
+			ed(mod_val, x)
 			for i = 1, #G.jokers.cards do
 				local effects = G.jokers.cards[i]:calculate_joker({ cry_ease_dollars = mod })
 			end
