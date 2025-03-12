@@ -15,7 +15,7 @@ local function apply_discord_member_count(code, body, headers)
 	end
 end
 function Cryptid.update_member_count()
-	if Cryptid_config.HTTPS then
+	if Cryptid_config.HTTPS and https then
 		if (os.time() - last_update_time >= 60) or initial then
 			initial = false
 			last_update_time = os.time()
