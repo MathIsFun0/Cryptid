@@ -705,7 +705,11 @@ local m = {
 					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }) }
 				)
 			end
-			return nil, true
+			return context.forced and {
+				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
+				Xmult_mod = card.ability.extra.x_mult,
+			} or nil,
+				true
 		end
 	end,
 	cry_credits = {
@@ -1935,6 +1939,57 @@ local jtron = {
 		code = { "candycanearter" },
 	},
 }
+
+local demicolon = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	gameset_config = {
+		modest = { disabled = true },
+		mainline = { disabled = true },
+		madness = { disabled = true },
+	},
+	extra_gamesets = { "experimental" },
+	name = "cry-Demicolon",
+	key = "demicolon",
+	pos = { x = 3, y = 5 },
+	order = -114,
+	atlas = "atlasepic",
+	rarity = "cry_epic",
+	cost = 17,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			for i = 1, #G.jokers.cards - 1 do
+				if G.jokers.cards[i] == card then
+					if not Talisman.disable_anims then
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								card:juice_up(0.5, 0.5)
+								return true
+							end,
+						}))
+					end
+					return nil, force_calculate(G.jokers.cards[i + 1])
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
+}
 return {
 	name = "Epic Jokers",
 	items = {
@@ -1962,5 +2017,6 @@ return {
 		fleshpanopticon,
 		spectrogram,
 		jtron,
+		demicolon,
 	},
 }

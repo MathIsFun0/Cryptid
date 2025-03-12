@@ -905,3 +905,156 @@ function Cryptid.compound_interest_scale_mod(self, orig_scale_scale, orig_scale_
 		end
 	end
 end
+
+-- Forced joker triggering, used by Demicolon
+function force_calculate(card)
+	local context = safe_get(Cryptid.force_contexts, card.config.center.key)
+	if not (context and context[1]) then
+		return false
+	end
+	local trig
+	if context[3] then
+		trig = context[3]
+	end
+	if type(context[1]) == "function" then
+		context = context[1](context[2] or {}, card)
+	else
+		context = context[1]
+	end
+	context.forced = true
+	temp = {}
+	if trig then
+		trig(true, temp, card)
+	end
+	local eval, post = eval_card(card, context)
+	if trig then
+		trig(false, temp, card)
+	end
+	local effects = { eval }
+	SMODS.trigger_effects(effects, card)
+	return eval and true or post
+end
+
+function __context(t, arg)
+	local ret = arg or {}
+	for k, v in pairs(t) do
+		ret[k] = v
+	end
+	return ret
+end
+
+function __no_context(t)
+	return __context(t)
+end
+
+function __joker_main(t)
+	return __context(t, { cardarea = G.jokers, joker_main = true })
+end
+
+function __individual_play(t)
+	return __context(t, { cardarea = G.play, individual = true })
+end
+
+function __setting_blind(t)
+	return __context(t, { setting_blind = true })
+end
+
+function __poker_hand(t)
+	return { poker_hands = { [t] = { "m" } } }
+end
+
+__any_suit = { other_card = {
+	is_suit = function(self)
+		return true
+	end,
+} }
+
+-- How these work: {constructor function, extra args, wrapper func}
+Cryptid.force_contexts = {
+	-- Vanilla Jokers (collection order)
+	-- Page 1
+	j_joker = { __joker_main },
+	j_greedy_joker = { __individual_play, __any_suit },
+	j_lusty_joker = { __individual_play, __any_suit },
+	j_wrathful_joker = { __individual_play, __any_suit },
+	j_gluttenous_joker = { __individual_play, __any_suit },
+	j_jolly = { __joker_main, __poker_hand("Pair") },
+	j_zany = { __joker_main, __poker_hand("Three of a Kind") },
+	j_mad = { __joker_main, __poker_hand("Two Pair") },
+	j_crazy = { __joker_main, __poker_hand("Straight") },
+	j_droll = { __joker_main, __poker_hand("Flush") },
+	j_sly = { __joker_main, __poker_hand("Pair") },
+	j_wily = { __joker_main, __poker_hand("Three of a Kind") },
+	j_clever = { __joker_main, __poker_hand("Two Pair") },
+	j_devious = { __joker_main, __poker_hand("Straight") },
+	j_crafty = { __joker_main, __poker_hand("Flush") },
+	-- Page 2
+	j_half = { __joker_main, { full_hand = {} } },
+	j_stencil = { __joker_main },
+	-- Four Fingers, Mime, Credit Card
+	j_ceremonial = { __setting_blind }, --TODO: also trigger mult, acts janky with multiple triggers
+	j_banner = { __joker_main },
+	j_mystic_summit = {
+		__joker_main,
+		nil,
+		function(trigger, memory)
+			if trigger then
+				memory.discards = G.GAME.current_round.discards_left
+				G.GAME.current_round.discards_left = 0
+			else
+				G.GAME.current_round.discards_left = memory.discards
+			end
+		end,
+	},
+	j_marble = {
+		__no_context,
+		nil,
+		function(trigger, memory, _card) --Doesn't play nicely, redoing from scratch
+			if trigger then
+				local front = pseudorandom_element(G.P_CARDS, pseudoseed("marb_fr"))
+				G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+				local card = Card(
+					G.discard.T.x + G.discard.T.w / 2,
+					G.discard.T.y,
+					G.CARD_W,
+					G.CARD_H,
+					front,
+					G.P_CENTERS.m_stone,
+					{ playing_card = G.playing_card }
+				)
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:start_materialize({ G.C.SECONDARY_SET.Enhanced })
+						G.deck:emplace(card)
+						table.insert(G.playing_cards, card)
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					_card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_plus_stone"), colour = G.C.SECONDARY_SET.Enhanced }
+				)
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.deck.config.card_limit = G.deck.config.card_limit + 1
+						return true
+					end,
+				}))
+
+				playing_card_joker_effects({ card })
+			end
+		end,
+	},
+	-- Cryptid Jokers (alphabetical order probably?)
+	j_cry_demicolon = { __joker_main },
+	j_cry_m = { { selling_card = true, card = {
+		is_jolly = function(self)
+			return true
+		end,
+	} } },
+}
