@@ -1946,7 +1946,10 @@ local clockwork = { -- Steel Support: The Joker
 	name = "cry-clockwork",
 	key = "clockwork",
 	pos = { x = 2, y = 0 },
-	config = { counters = { c1 = 0, c2 = 0, c3 = 0, c4 = 0 }, extra = { xmult = 1, xmult_mod = 0.5, steelenhc = 1, steel_mod = 0.2 } },
+	config = {
+		counters = { c1 = 0, c2 = 0, c3 = 0, c4 = 0 },
+		extra = { xmult = 1, xmult_mod = 0.5, steelenhc = 1, steel_mod = 0.2 },
+	},
 	order = 135,
 	immutable = false,
 	rarity = "cry_epic",
@@ -1955,12 +1958,21 @@ local clockwork = { -- Steel Support: The Joker
 	atlas = "placeholders",
 	enhancement_gate = "m_steel", -- lucky joker uses this? hopefully it works
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.counters.c1, center.ability.counters.c2, center.ability.counters.c3, center.ability.counters.c4, center.ability.extra.xmult, center.ability.extra.xmult_mod, center.ability.extra.steelenhc, center.ability.extra.steel_mod } }
+		return {
+			vars = {
+				center.ability.counters.c1,
+				center.ability.counters.c2,
+				center.ability.counters.c3,
+				center.ability.counters.c4,
+				center.ability.extra.xmult,
+				center.ability.extra.xmult_mod,
+				center.ability.extra.steelenhc,
+				center.ability.extra.steel_mod,
+			},
+		}
 	end,
 	calculate = function(self, card, context)
-		if
-			context.before and context.cardarea == G.jokers and not context.blueprint and not context.retrigger
-		then
+		if context.before and context.cardarea == G.jokers and not context.blueprint and not context.retrigger then
 			if card.ability.counters.c1 >= 1 then
 				card.ability.counters.c1 = 0
 			else
@@ -2003,7 +2015,12 @@ local clockwork = { -- Steel Support: The Joker
 		if context.before and context.cardarea == G.play and card.ability.counters.c3 == 0 then -- effect 3
 			context.full_hand[1]:set_ability(G.P_CENTERS["m_steel"], nil, true)
 		end
-		if context.individual and context.cardarea == G.hand and context.other_card.ability.effect == "Steel Card" and card.ability.extra.steelenhc > 1 then -- effect 4
+		if
+			context.individual
+			and context.cardarea == G.hand
+			and context.other_card.ability.effect == "Steel Card"
+			and card.ability.extra.steelenhc > 1
+		then -- effect 4
 			return { xmult = card.ability.extra.steelenhc }
 		end
 	end,
