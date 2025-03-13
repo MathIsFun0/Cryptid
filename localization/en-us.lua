@@ -488,7 +488,7 @@ return {
 				text = {
 					"Remove all {C:cry_code}debuffs",
 					"from currently visible items",
-					"{C:cry_code}Resets{} shop state"
+					"{C:cry_code}Resets{} shop state",
 				},
 			},
 			c_cry_payload = {
