@@ -10,7 +10,9 @@ target = "tag.lua"
 pattern = '''tag_sprite.states.collide.can = true'''
 position = "after"
 payload = '''
-if self.key == 'tag_cry_cat' then tag_sprite.states.click.can = true; tag_sprite.states.drag.can = true end
+if self.key == 'tag_cry_cat' or G.GAME and G.GAME.USING_CODE then 
+	tag_sprite.states.click.can = true; tag_sprite.states.drag.can = true 
+end
 '''
 match_indent = true
 
@@ -22,6 +24,10 @@ pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Nod
 position = "after"
 payload = '''
 tag_sprite.click = function(_self)
+	if G.GAME and G.GAME.USING_CODE then	-- for pointer
+		G.FUNCS.exit_overlay_menu()
+		G.ENTERED_CARD = self.key
+	end
         if self.key == 'tag_cry_cat' and self.HUD_tag then
 		for i = 1, #G.GAME.tags do
 			local other_cat = G.GAME.tags[i]
