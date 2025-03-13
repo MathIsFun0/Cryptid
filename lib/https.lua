@@ -6,7 +6,6 @@ local initial = true
 Cryptid.member_count = member_fallback
 if not succ then
 	sendErrorMessage("HTTP module could not be loaded. " .. tostring(https), "Cryptid")
-	return
 end
 
 local function apply_discord_member_count(code, body, headers)
