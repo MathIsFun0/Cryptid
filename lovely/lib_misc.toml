@@ -41,7 +41,7 @@ target = "game.lua"
 pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
 position = "before"
 payload = '''
-if true --[[Cryptid.enabled["Menu"]--]] then card:set_ability(Cryptid.random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
+if Cryptid.random_consumable --[[Cryptid.enabled["Menu"]--]] then card:set_ability(Cryptid.random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
 '''
 match_indent = true
 
