@@ -974,6 +974,10 @@ local revert = {
 	init = function(self)
 		local sr = save_run
 		function save_run()
+			--Sneaking this here but hopefully fixes pointer UI crashes
+			if G.GAME.USING_CODE then
+				return
+			end
 			if G.GAME.round_resets.ante ~= G.GAME.cry_revert_ante then
 				G.GAME.cry_revert_ante = G.GAME.round_resets.ante
 				G.GAME.cry_revert = nil

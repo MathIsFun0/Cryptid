@@ -708,3 +708,27 @@ end
 function Cryptid.forced_edition()
 	return G.GAME.modifiers.cry_force_edition or G.GAME.used_vouchers.v_cry_curate
 end
+
+-- Add Ctrl+Space for Pointer UI in Debug Mode
+local ckpu = Controller.key_press_update
+function Controller:key_press_update(key, dt)
+	ckpu(self, key, dt)
+	if key == "space" and G.STAGE == G.STAGES.RUN and not _RELEASE_MODE and (self.held_keys['lctrl'] or self.held_keys['rctrl'] or self.held_keys['lgui'] or self.held_keys['rgui']) and not G.GAME.USING_CODE then
+		G.GAME.USING_CODE = true
+		G.GAME.USING_POINTER = true
+		G.ENTERED_CARD = ""
+		G.CHOOSE_CARD = UIBox({
+			definition = create_UIBox_pointer(card),
+			config = {
+				align = "cm",
+				offset = { x = 0, y = 10 },
+				major = G.ROOM_ATTACH,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+		G.CHOOSE_CARD.alignment.offset.y = 0
+		G.ROOM.jiggle = G.ROOM.jiggle + 1
+		G.CHOOSE_CARD:align_to_major()
+	end
+end
