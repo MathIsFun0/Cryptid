@@ -1443,7 +1443,7 @@ local longboi = {
 			}
 		end
 	end,
-	set_ability = function(self, card, from_debuff)
+	set_ability = function(self, card, initial, delay_sprites)
 		card.ability.extra.monster = G.GAME and G.GAME.monstermult or 1
 		if card.ability.extra.monster >= 1234567654321 then
 			card.children.center:set_sprite_pos({ x = 7, y = 5 })

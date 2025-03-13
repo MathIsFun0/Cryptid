@@ -2024,11 +2024,11 @@ local clockwork = { -- Steel Support: The Joker
 			return { xmult = card.ability.extra.steelenhc }
 		end
 	end,
-	add_to_deck = function(self, card, from_debuff)
-		math.floor(pseudorandom("Clockwork1") * 1 + 0.5)
-		math.floor(pseudorandom("Clockwork2") * 2 + 0.5)
-		math.floor(pseudorandom("Clockwork3") * 4 + 0.5)
-		math.floor(pseudorandom("Clockwork4") * 6 + 0.5)
+	set_ability = function(self, card, initial, delay_sprites)
+		card.ability.counters.c1 = math.floor(pseudorandom("Clockwork1") * 1 + 0.5)
+		card.ability.counters.c2 = math.floor(pseudorandom("Clockwork2") * 2 + 0.5)
+		card.ability.counters.c3 = math.floor(pseudorandom("Clockwork3") * 4 + 0.5)
+		card.ability.counters.c4 = math.floor(pseudorandom("Clockwork4") * 6 + 0.5)
 	end,
 	cry_credits = {
 		idea = {
