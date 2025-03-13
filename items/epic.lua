@@ -2012,7 +2012,7 @@ local clockwork = { -- Steel Support: The Joker
 		math.floor(pseudorandom("Clockwork2") * 2 + 0.5)
 		math.floor(pseudorandom("Clockwork3") * 4 + 0.5)
 		math.floor(pseudorandom("Clockwork4") * 6 + 0.5)
-	end
+	end,
 	cry_credits = {
 		idea = {
 			"cassknows",
