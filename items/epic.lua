@@ -1981,7 +1981,6 @@ local clockwork = { -- Steel Support: The Joker
 			if card.ability.counters.c2 >= 2 then
 				card.ability.counters.c2 = 0
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-				return { message = "Upgrade!" }
 			else
 				card.ability.counters.c2 = card.ability.counters.c2 + 1
 			end
@@ -1993,9 +1992,11 @@ local clockwork = { -- Steel Support: The Joker
 			if card.ability.counters.c4 >= 6 then
 				card.ability.counters.c4 = 0
 				card.ability.extra.steelenhc = card.ability.extra.steelenhc + card.ability.extra.steel_mod
-				return { message = "Upgrade!" }
 			else
 				card.ability.counters.c4 = card.ability.counters.c4 + 1
+			end
+			if card.ability.counters.c2 == 0 or card.ability.counters.c4 == 0 then
+				return { message = "Upgrade!" } -- bweeehh
 			end
 		end
 		if context.repetition and context.cardarea == G.play and card.ability.counters.c1 == 0 then -- effect 1
