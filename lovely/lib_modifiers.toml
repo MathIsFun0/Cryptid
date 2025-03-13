@@ -118,13 +118,10 @@ match_indent = true
 # Removes cry_debuff_immune at the end of the round
 [[patches]]
 [patches.pattern]
-target = "functions/state_events.lua"
-pattern = 'for i = 1, #G.jokers.cards do'
-position = "before"
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '-- TARGET: effects after end of round evaluation'
+position = "after"
 payload = '''
-for i = 1, #G.playing_cards do
-	local CARD = G.playing_cards[i]
-    CARD.cry_debuff_immune = false
-end
+card.cry_debuff_immune = false
 '''
 match_indent = true

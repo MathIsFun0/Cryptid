@@ -3278,15 +3278,6 @@ local patch = {
 					end
 					CARD.debuff = false
 					CARD.cry_debuff_immune = true
-					CARD.ability.perishable = nil
-					CARD.pinned = nil
-					CARD:set_rental(nil)
-					if not CARD.sob then
-						CARD:set_eternal(nil)
-					end
-					CARD.ability.banana = nil
-					CARD.ability.cry_possessed = nil
-					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -3303,15 +3294,6 @@ local patch = {
 						CARD:flip()
 					end
 					CARD.debuff = false
-					CARD.ability.perishable = nil
-					CARD.pinned = nil
-					CARD:set_rental(nil)
-					if not CARD.sob then
-						CARD:set_eternal(nil)
-					end
-					CARD.ability.banana = notify_alert
-					CARD.ability.cry_possessed = nil
-					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -3328,15 +3310,6 @@ local patch = {
 						CARD:flip()
 					end
 					CARD.debuff = false
-					CARD.ability.perishable = nil
-					CARD.pinned = nil
-					CARD:set_rental(nil)
-					if not CARD.sob then
-						CARD:set_eternal(nil)
-					end
-					CARD.ability.banana = nil
-					CARD.ability.cry_possessed = nil
-					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -5108,7 +5081,7 @@ local code_cards = {
 	oboe,
 	rework,
 	rework_tag,
-	--patch,
+	patch,
 	ctrl_v,
 	inst,
 	alttab,

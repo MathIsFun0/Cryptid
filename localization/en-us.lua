@@ -486,8 +486,9 @@ return {
 			c_cry_patch = {
 				name = "://PATCH",
 				text = {
-					"Remove all debuffs and stickers",
+					"Remove all {C:cry_code}debuffs",
 					"from currently visible items",
+					"{C:cry_code}Resets{} shop state"
 				},
 			},
 			c_cry_payload = {
