@@ -2018,6 +2018,7 @@ local clockwork = { -- Steel Support: The Joker
 		if
 			context.individual
 			and context.cardarea == G.hand
+			and not context.end_of_round
 			and context.other_card.ability.effect == "Steel Card"
 			and card.ability.extra.steelenhc > 1
 		then -- effect 4
