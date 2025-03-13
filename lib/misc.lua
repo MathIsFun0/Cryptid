@@ -713,7 +713,13 @@ end
 local ckpu = Controller.key_press_update
 function Controller:key_press_update(key, dt)
 	ckpu(self, key, dt)
-	if key == "space" and G.STAGE == G.STAGES.RUN and not _RELEASE_MODE and (self.held_keys['lctrl'] or self.held_keys['rctrl'] or self.held_keys['lgui'] or self.held_keys['rgui']) and not G.GAME.USING_CODE then
+	if
+		key == "space"
+		and G.STAGE == G.STAGES.RUN
+		and not _RELEASE_MODE
+		and (self.held_keys["lctrl"] or self.held_keys["rctrl"] or self.held_keys["lgui"] or self.held_keys["rgui"])
+		and not G.GAME.USING_CODE
+	then
 		G.GAME.USING_CODE = true
 		G.GAME.USING_POINTER = true
 		G.ENTERED_CARD = ""
