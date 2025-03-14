@@ -4141,6 +4141,7 @@ local pointer = {
 			translucent = "translucent joker",
 			circulus = "circulus pistoris",
 			macabre = "macabre joker",
+			cat_owl = "cat owl",
 			-- Jen's Almanac aliases
 			freddy = "freddy snowshoe",
 			paupovlin = "paupovlin revere",

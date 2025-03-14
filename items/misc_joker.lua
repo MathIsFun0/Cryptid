@@ -7765,6 +7765,43 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 		},
 	},
 }
+local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"m_cry_echo",
+			"set_cry_misc",
+		},
+	},
+	name = "cry-cat_owl",
+	pools = { ["Meme"] = true },
+	key = "cat_owl",
+	pos = { x = 6, y = 5 },
+	order = 135,
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = false,
+	atlas = "atlasone",
+	calculate = function(self, card, context)
+        if context.check_enhancement then
+            if context.other_card.config.center.key == "m_lucky" then
+                return {m_cry_echo = true}
+            end
+            if context.other_card.config.center.key == "m_cry_echo" then
+                return {m_lucky = true}
+            end
+        end
+	end,
+	cry_credits = {
+		idea = {
+			"Math",
+		},
+		code = {
+			"Math",
+		},
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7878,6 +7915,7 @@ local miscitems = {
 	translucent,
 	lebaron_james,
 	huntingseason,
+	cat_owl,
 }
 return {
 	name = "Misc. Jokers",

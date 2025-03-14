@@ -14,20 +14,17 @@ Cryptid_config = SMODS.current_mod.config
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
 	post_trigger = true,
-	cardareas = {
-		unscored = true,
-	},
+	quantum_enhancements = true,
 	-- Here are some other ones Steamodded has
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
 	--[[
-	quantum_enhancements = true,
 	-- These ones add new card areas that Steamodded will calculate through
 	-- Might already be useful for sticker calc
 	cardareas = {
 		deck = true,
 		discard = true,
 	}
-	]]
+	--]]
 }
 
 --Load Library Files

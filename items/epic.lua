@@ -1354,7 +1354,7 @@ local bonusjoker = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
-			if context.other_card.ability.effect == "Bonus Card" then
+			if SMODS.has_enhancement(context.other_card, "m_bonus") then
 				if
 					pseudorandom("bonusjoker")
 						< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
@@ -1441,7 +1441,7 @@ local multjoker = {
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if
-				context.other_card.ability.effect == "Mult Card"
+				SMODS.has_enhancement(context.other_card, "m_mult")
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
 				if
@@ -1511,7 +1511,7 @@ local goldjoker = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
-			if context.other_card.ability.effect == "Gold Card" then
+			if SMODS.has_enhancement(context.other_card, "m_gold") then
 				card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1521,7 +1521,7 @@ local goldjoker = {
 			end
 		end
 		if context.individual and context.cardarea == G.play then
-			if context.other_card.ability.effect == "Gold Card" then
+			if SMODS.has_enhancement(context.other_card, "m_gold") then
 				card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
 				return {
 					message = localize("k_upgrade_ex"),
@@ -2007,7 +2007,7 @@ local clockwork = { -- Steel Support: The Joker
 			end
 		end
 		if context.repetition and context.cardarea == G.hand and card.ability.counters.c1 == 0 then -- effect 1
-			if context.other_card.ability.effect == "Steel Card" then
+			if SMODS.has_enhancement(context.other_card, "m_steel") then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -2033,7 +2033,7 @@ local clockwork = { -- Steel Support: The Joker
 			context.individual
 			and context.cardarea == G.hand
 			and not context.end_of_round
-			and context.other_card.ability.effect == "Steel Card"
+			and SMODS.has_enhancement(context.other_card, "m_steel")
 			and card.ability.extra.steelenhc > 1
 		then -- effect 4
 			return { xmult = card.ability.extra.steelenhc }

@@ -1081,6 +1081,15 @@ return {
 					"for the next {C:attention}#2#{} round#<s>2#",
 				},
 			},
+			j_cry_cat_owl = {
+				name = "Cat Owl",
+				text = {
+					"{C:attention}Lucky Cards{} are also",
+					"considered {C:attention}Echo Cards",
+					"{C:attention}Echo Cards{} are also",
+					"considered {C:attention}Lucky Cards",
+				}
+			},
 			j_cry_chad = {
 				name = "Chad",
 				text = {
