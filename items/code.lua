@@ -4749,6 +4749,7 @@ local CodeJoker = {
 	cry_credits = {
 		idea = {
 			"Kailen",
+			"Auto Watto",
 		},
 		art = {
 			"Kailen",
