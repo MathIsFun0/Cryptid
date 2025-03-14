@@ -7800,6 +7800,9 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 		code = {
 			"Math",
 		},
+		art = {
+			"George the Rat",
+		}
 	},
 }
 local miscitems = {
