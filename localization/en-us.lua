@@ -1088,7 +1088,7 @@ return {
 					"considered {C:attention}Echo Cards",
 					"{C:attention}Echo Cards{} are also",
 					"considered {C:attention}Lucky Cards",
-				}
+				},
 			},
 			j_cry_chad = {
 				name = "Chad",

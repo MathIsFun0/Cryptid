@@ -7784,14 +7784,14 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 	blueprint_compat = false,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-        if context.check_enhancement then
-            if context.other_card.config.center.key == "m_lucky" then
-                return {m_cry_echo = true}
-            end
-            if context.other_card.config.center.key == "m_cry_echo" then
-                return {m_lucky = true}
-            end
-        end
+		if context.check_enhancement then
+			if context.other_card.config.center.key == "m_lucky" then
+				return { m_cry_echo = true }
+			end
+			if context.other_card.config.center.key == "m_cry_echo" then
+				return { m_lucky = true }
+			end
+		end
 	end,
 	cry_credits = {
 		idea = {
