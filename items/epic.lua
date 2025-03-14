@@ -1945,7 +1945,7 @@ local clockwork = { -- Steel Support: The Joker
 	},
 	name = "cry-clockwork",
 	key = "clockwork",
-	pos = { x = 2, y = 0 },
+	pos = { x = 5, y = 5 },
 	config = {
 		limits = { l1 = 2, l2 = 3, l3 = 5, l4 = 7 },
 		counters = { c1 = 0, c2 = 0, c3 = 0, c4 = 0 },
@@ -1956,7 +1956,7 @@ local clockwork = { -- Steel Support: The Joker
 	rarity = "cry_epic",
 	cost = 12,
 	blueprint_compat = true,
-	atlas = "placeholders",
+	atlas = "atlasone",
 	enhancement_gate = "m_steel", -- lucky joker uses this? hopefully it works
 	loc_vars = function(self, info_queue, center)
 		local function process_var(m, cap)
@@ -2080,6 +2080,9 @@ local clockwork = { -- Steel Support: The Joker
 			"Nova",
 			"Math",
 		},
+		art = {
+			"unexian",
+		}
 	},
 }
 return {
