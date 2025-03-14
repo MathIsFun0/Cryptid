@@ -263,7 +263,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 		end
 		if #dbl_info.scaler == 2 then
 			if
-				not (not orig_ability[dbl_info.scaler[1]] or not orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]])
+				not (not orig_ability[dbl_info.scaler[1]] or type(orig_ability[dbl_info.scaler[1]]) == "number" or not orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]])
 			then
 				orig_scale_scale = orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
 			end
