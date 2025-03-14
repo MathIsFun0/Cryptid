@@ -1994,14 +1994,14 @@ local clockwork = { -- Steel Support: The Joker
 
 			card.ability.counters.c1 = clamp(card.ability.counters.c1, card.ability.limits.l1) -- ticker 1
 
-			card.ability.counters.c2 = clamp(card.ability.counters.c1, card.ability.limits.l2) -- ticker 2
+			card.ability.counters.c2 = clamp(card.ability.counters.c2, card.ability.limits.l2) -- ticker 2
 			if card.ability.counters.c2 == 0 then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 			end
 
-			card.ability.counters.c3 = clamp(card.ability.counters.c1, card.ability.limits.l3) -- ticker 3
+			card.ability.counters.c3 = clamp(card.ability.counters.c3, card.ability.limits.l3) -- ticker 3
 
-			card.ability.counters.c4 = clamp(card.ability.counters.c1, card.ability.limits.l4) -- ticker 4
+			card.ability.counters.c4 = clamp(card.ability.counters.c4, card.ability.limits.l4) -- ticker 4
 			if card.ability.counters.c4 == 0 then
 				card.ability.extra.steelenhc = card.ability.extra.steelenhc + card.ability.extra.steel_mod
 			end
