@@ -1960,7 +1960,7 @@ local clockwork = { -- Steel Support: The Joker
 	enhancement_gate = "m_steel", -- lucky joker uses this? hopefully it works
 	loc_vars = function(self, info_queue, center)
 		local function process_var(m, cap)
-			if (m >= cap - 1) then
+			if m >= cap - 1 then
 				return localize("k_active_ex")
 			end
 			return cap - m - 1
@@ -1984,28 +1984,27 @@ local clockwork = { -- Steel Support: The Joker
 	end,
 	calculate = function(self, card, context)
 		if context.before and context.cardarea == G.jokers and not context.blueprint and not context.retrigger then
-        	local function clamp(c, l)
-				local m = c+1
-				if c+1 >= l then
+			local function clamp(c, l)
+				local m = c + 1
+				if c + 1 >= l then
 					return 0
 				end
 				return m
 			end
-			
+
 			card.ability.counters.c1 = clamp(card.ability.counters.c1, card.ability.limits.l1) -- ticker 1
-			
-            card.ability.counters.c2 = clamp(card.ability.counters.c1, card.ability.limits.l2) -- ticker 2
+
+			card.ability.counters.c2 = clamp(card.ability.counters.c1, card.ability.limits.l2) -- ticker 2
 			if card.ability.counters.c2 == 0 then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 			end
-            		
+
 			card.ability.counters.c3 = clamp(card.ability.counters.c1, card.ability.limits.l3) -- ticker 3
-			
+
 			card.ability.counters.c4 = clamp(card.ability.counters.c1, card.ability.limits.l4) -- ticker 4
 			if card.ability.counters.c4 == 0 then
 				card.ability.extra.steelenhc = card.ability.extra.steelenhc + card.ability.extra.steel_mod
 			end
-
 		end
 		if context.repetition and context.cardarea == G.hand and card.ability.counters.c1 == 0 then -- effect 1
 			if context.other_card.ability.effect == "Steel Card" then
@@ -2021,9 +2020,13 @@ local clockwork = { -- Steel Support: The Joker
 		then
 			return { xmult = card.ability.extra.xmult }
 		end
-		if context.before and context.cardarea == G.jokers 
-		and not context.blueprint_card
-		and not context.retrigger_joker and card.ability.counters.c3 == 0 then -- effect 3
+		if
+			context.before
+			and context.cardarea == G.jokers
+			and not context.blueprint_card
+			and not context.retrigger_joker
+			and card.ability.counters.c3 == 0
+		then -- effect 3
 			context.full_hand[1]:set_ability(G.P_CENTERS["m_steel"], nil, true)
 		end
 		if
@@ -2036,12 +2039,21 @@ local clockwork = { -- Steel Support: The Joker
 			return { xmult = card.ability.extra.steelenhc }
 		end
 		--imo this secret effect can be madness only -Math
-		if context.after and context.cardarea == G.jokers and not context.blueprint_card and not context.retrigger_joker then
-			if card.ability.counters.c1 == 0 and card.ability.counters.c2 == 0 and card.ability.counters.c3 == 0 and card.ability.counters.c4 == 0 then
+		if
+			context.after
+			and context.cardarea == G.jokers
+			and not context.blueprint_card
+			and not context.retrigger_joker
+		then
+			if
+				card.ability.counters.c1 == 0
+				and card.ability.counters.c2 == 0
+				and card.ability.counters.c3 == 0
+				and card.ability.counters.c4 == 0
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local m =
-							copy_card(card)
+						local m = copy_card(card)
 						m:add_to_deck()
 						G.jokers:emplace(m)
 						return true
@@ -2065,7 +2077,8 @@ local clockwork = { -- Steel Support: The Joker
 			"cassknows",
 		},
 		code = {
-			"Nova", "Math",
+			"Nova",
+			"Math",
 		},
 	},
 }
