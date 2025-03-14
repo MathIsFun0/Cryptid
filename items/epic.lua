@@ -1973,32 +1973,18 @@ local clockwork = { -- Steel Support: The Joker
 	end,
 	calculate = function(self, card, context)
 		if context.before and context.cardarea == G.jokers and not context.blueprint and not context.retrigger then
-			if card.ability.counters.c1 >= 1 then
-				card.ability.counters.c1 = 0
-			else
-				card.ability.counters.c1 = card.ability.counters.c1 + 1
-			end
-			if card.ability.counters.c2 >= 2 then
-				card.ability.counters.c2 = 0
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-			else
-				card.ability.counters.c2 = card.ability.counters.c2 + 1
-			end
-			if card.ability.counters.c3 >= 4 then
-				card.ability.counters.c3 = 0
-			else
-				card.ability.counters.c3 = card.ability.counters.c3 + 1
-			end
-			if card.ability.counters.c4 >= 6 then
-				card.ability.counters.c4 = 0
-				card.ability.extra.steelenhc = card.ability.extra.steelenhc + card.ability.extra.steel_mod
-			else
-				card.ability.counters.c4 = card.ability.counters.c4 + 1
-			end
-			if card.ability.counters.c2 == 0 or card.ability.counters.c4 == 0 then
-				return { message = "Upgrade!" } -- bweeehh
-			end
-		end
+        		card.ability.counters.c1 = math.fmod(card.ability.counters.c1 + 1, 2) -- ticker 1
+			if card.ability.counters.c2 == 0 then -- ticker 2
+                		card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+            		end
+            		card.ability.counters.c2 = math.fmod(card.ability.counters.c2 + 1, 3)
+            		card.ability.counters.c3 = math.fmod(card.ability.counters.c3 + 1, 5) -- ticker 3
+			if card.ability.counters.c4 == 0 then -- ticker 4
+                		card.ability.extra.steelenhc = card.ability.extra.steelenhc + card.ability.extra.steel_mod
+            		end
+            		card.ability.counters.c4 = math.fmod(card.ability.counters.c4 + 1, 7)
+
+        	end
 		if context.repetition and context.cardarea == G.play and card.ability.counters.c1 == 0 then -- effect 1
 			if context.other_card.ability.effect == "Steel Card" then
 				return {
