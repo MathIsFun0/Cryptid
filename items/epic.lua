@@ -2082,7 +2082,7 @@ local clockwork = { -- Steel Support: The Joker
 		},
 		art = {
 			"unexian",
-		}
+		},
 	},
 }
 return {
