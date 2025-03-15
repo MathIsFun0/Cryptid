@@ -469,7 +469,8 @@ if CardSleeves then
 		end,
 		init = function(self)
 			function Cryptid.antisleeve_apply()
-				local blueScheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_blue", "wins", 8)
+				local blueScheck =
+					Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_blue", "wins", 8)
 				if Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
 					blueScheck = blueScheck + 1
 				end
@@ -477,9 +478,9 @@ if CardSleeves then
 					G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
 				end
 			end
-		end
+		end,
 	})
-	
+
 	local sleeveitems = {}
 	if CardSleeves then
 		sleeveitems = {
