@@ -7617,14 +7617,16 @@ local zooble = {
 			if not (next(context.poker_hands["Straight"]) or next(context.poker_hands["Straight Flush"])) then
 				local unique_ranks = {}
 				for i, v in pairs(context.scoring_hand) do
-					local not_unique = false
-					for i = 1, #unique_ranks do
-						if unique_ranks[i] == v:get_id() then
-							not_unique = true
+					if not (SMODS.has_no_rank(v) and not v.vampired) then
+						local not_unique = false
+						for i = 1, #unique_ranks do
+							if unique_ranks[i] == v:get_id() then
+								not_unique = true
+							end
 						end
-					end
-					if not not_unique then
-						unique_ranks[#unique_ranks + 1] = v:get_id()
+						if not not_unique then
+							unique_ranks[#unique_ranks + 1] = v:get_id()
+						end
 					end
 				end
 				if #unique_ranks >= 1 then
@@ -7637,7 +7639,7 @@ local zooble = {
 				end
 			end
 		end
-		if context.joker_main and context.cardarea == G.jokers then
+		if context.joker_main and card.ability.extra.mult > 0 then
 			return {
 				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
 				mult_mod = card.ability.extra.mult,
