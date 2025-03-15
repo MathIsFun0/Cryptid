@@ -2044,9 +2044,9 @@ local clockwork = { -- Steel Support: The Joker
 			and context.cardarea == G.jokers
 			and not context.blueprint_card
 			and not context.retrigger_joker
-		then
-			if
-				card.ability.counters.c1 == 0
+		then -- The Clockwork Joker is canonically a non-binary self-replicating machine amoeba, that self replicates every 21 minutes. Their pronouns are any/all; they are several billion tiny jokers
+			if -- in a trench coat, constantly ticking in an almost perfect yet flawed mechanism. Its only purpose is the strengthening and spreading of the steel world; everything else is meaningless to it.
+				card.ability.counters.c1 == 0 -- lore by nova :3
 				and card.ability.counters.c2 == 0
 				and card.ability.counters.c3 == 0
 				and card.ability.counters.c4 == 0
