@@ -453,7 +453,6 @@ if CardSleeves then
 			cry_antimatter = true,
 			cry_crit_rate = 0.25, --Critical Deck
 			cry_legendary_rate = 0.2, --Legendary Deck
-			-- Enhanced Decks
 			cry_force_enhancement = "random",
 			cry_force_edition = "random",
 			cry_force_seal = "random",
@@ -466,10 +465,21 @@ if CardSleeves then
 		end,
 		trigger_effect = function(self, args) end,
 		apply = function(self)
-			Cryptid.antimatter_apply()
+			Cryptid.antisleeve_apply()
 		end,
+		init = function(self)
+			function Cryptid.antisleeve_apply()
+				local blueScheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_blue", "wins", 8)
+				if Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
+					blueScheck = blueScheck + 1
+				end
+				if (blueScheck or 0) ~= 0 then
+					G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
+				end
+			end
+		end
 	})
-
+	
 	local sleeveitems = {}
 	if CardSleeves then
 		sleeveitems = {
