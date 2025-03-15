@@ -938,7 +938,6 @@ local noisy = {
 		desc_nodes[#desc_nodes + 1] = chip_ui
 	end,
 	init = function(self)
-
 		local randtext = {
 			"A",
 			"B",
@@ -1046,7 +1045,10 @@ local noisy = {
 				}))
 				update_hand_text(
 					{ delay = 0 },
-					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
+					{
+						chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
+						StatusText = true,
+					}
 				)
 				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 				for i = 1, math.random(2, 4) do
@@ -1066,7 +1068,10 @@ local noisy = {
 				}))
 				update_hand_text(
 					{ delay = 0 },
-					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
+					{
+						mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
+						StatusText = true,
+					}
 				)
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 			elseif hand == G.handlist[#G.handlist] then
