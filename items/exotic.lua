@@ -855,8 +855,8 @@ local circulus_pistoris = {
 				pi = 2 * pi
 			end
 			return {
-				Echip_mod = pi * 10,
-				Emult_mod = pi * 10,
+				Echip_mod = pi,
+				Emult_mod = pi,
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",

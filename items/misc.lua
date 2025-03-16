@@ -938,6 +938,90 @@ local noisy = {
 		desc_nodes[#desc_nodes + 1] = chip_ui
 	end,
 	init = function(self)
+		local randtext = {
+			"A",
+			"B",
+			"C",
+			"D",
+			"E",
+			"F",
+			"G",
+			"H",
+			"I",
+			"J",
+			"K",
+			"L",
+			"M",
+			"N",
+			"O",
+			"P",
+			"Q",
+			"R",
+			"S",
+			"T",
+			"U",
+			"V",
+			"W",
+			"X",
+			"Y",
+			"Z",
+			" ",
+			"a",
+			"b",
+			"c",
+			"d",
+			"e",
+			"f",
+			"g",
+			"h",
+			"i",
+			"j",
+			"k",
+			"l",
+			"m",
+			"n",
+			"o",
+			"p",
+			"q",
+			"r",
+			"s",
+			"t",
+			"u",
+			"v",
+			"w",
+			"x",
+			"y",
+			"z",
+			"0",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"+",
+			"-",
+			"?",
+			"!",
+			"$",
+			"%",
+			"[",
+			"]",
+			"(",
+			")",
+		}
+
+		local function obfuscatedtext(length)
+			local str = ""
+			for i = 1, length do
+				str = str .. randtext[math.random(#randtext)]
+			end
+			return str
+		end
+
 		AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
 			local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
 			local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
@@ -959,10 +1043,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text(
-					{ delay = 0 },
-					{ chips = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modc)), StatusText = true }
-				)
+				update_hand_text({ delay = 0 }, {
+					chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
+					StatusText = true,
+				})
 				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
 				for i = 1, math.random(2, 4) do
 					update_hand_text(
@@ -979,10 +1063,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text(
-					{ delay = 0 },
-					{ mult = (amount > to_big(0) and "+" or "-") .. number_format(math.abs(modm)), StatusText = true }
-				)
+				update_hand_text({ delay = 0 }, {
+					mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
+					StatusText = true,
+				})
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
 			elseif hand == G.handlist[#G.handlist] then
 				G.E_MANAGER:add_event(Event({
