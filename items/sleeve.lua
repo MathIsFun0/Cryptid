@@ -463,18 +463,24 @@ if CardSleeves then
 		loc_vars = function(self)
 			return { vars = {} }
 		end,
-		trigger_effect = function(self, args) end,
+		trigger_effect = function(self, args)
+			if context.context ~= "final_scoring_step" then
+				Cryptid.antimatter_trigger(self, context)
+			else
+				return Cryptid.antimatter_trigger_final_scoring(self, context)
+			end
+		end,
 		apply = function(self)
 			Cryptid.antisleeve_apply()
 		end,
 		init = function(self)
 			function Cryptid.antisleeve_apply()
-				local blueScheck =
-					Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_blue", "wins", 8)
-				if Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
-					blueScheck = blueScheck + 1
+				local bluecheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8)
+				
+				if Cryptid.gameset(G.P_CENTERS.casl_cry_antimatter_sleeve) == "madness" then
+					bluecheck = bluecheck + 1
 				end
-				if (blueScheck or 0) ~= 0 then
+				if (bluecheck or 0) ~= 0 then
 					G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
 				end
 			end

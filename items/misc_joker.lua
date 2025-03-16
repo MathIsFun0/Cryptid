@@ -7920,7 +7920,7 @@ local miscitems = {
 	translucent,
 	lebaron_james,
 	huntingseason,
-	cat_owl,
+	--cat_owl,
 }
 return {
 	name = "Misc. Jokers",
