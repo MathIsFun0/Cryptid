@@ -7783,6 +7783,10 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 	cost = 8,
 	blueprint_compat = false,
 	atlas = "atlasone",
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_lucky
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
+	end,
 	calculate = function(self, card, context)
 		if context.check_enhancement then
 			if context.other_card.config.center.key == "m_lucky" then
