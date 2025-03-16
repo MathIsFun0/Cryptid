@@ -476,7 +476,7 @@ if CardSleeves then
 		init = function(self)
 			function Cryptid.antisleeve_apply()
 				local bluecheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8)
-				
+
 				if Cryptid.gameset(G.P_CENTERS.casl_cry_antimatter_sleeve) == "madness" then
 					bluecheck = bluecheck + 1
 				end
