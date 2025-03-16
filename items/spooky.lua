@@ -117,6 +117,10 @@ local choco_dice = {
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
 		if not center then --tooltip
+		elseif not center.added_to_deck then
+			for i = 1, 10 do
+				info_queue[#info_queue + 1] = { set = "Other", key = "ev_cry_choco" .. i }
+			end
 		else
 			SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]:loc_vars(info_queue, center)
 		end
@@ -1688,6 +1692,61 @@ local candy_sticks = {
 		},
 	},
 }
+
+local crazybus = {
+	object_type = "Joker",
+	immutable = true,
+	pools = { ["Meme"] = true },
+	atlas = "placeholders",
+	pos = { x = 3, y = 0 },
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		},
+	},
+	name = "cry-crazybus",
+	key = "crazybus",
+	config = {
+	  extra = {
+		 Xmult = 0.1,
+		 Xmult_limit = 5
+	  }
+	},
+	loc_vars = function(self, info_queue, card)
+	  local stg = card.ability.extra
+	  return {
+		 vars = {
+			stg.Xmult_limit, stg.Xmult
+		 }
+	  }
+	end,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	rarity = "cry_cursed",
+	cost = 8,
+	order = 136,
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context)
+		local Xmult_penalty = 50 - ((G.SETTINGS.SOUND.music_volume + G.SETTINGS.SOUND.volume) / 2)
+	  if context.joker_main then
+		 return {
+			message = localize({ type = "variable", key = "a_xmult", vars = { -Xmult_penalty * 0.1 } }),
+			Xmult_mod = -Xmult_penalty * 0.1,
+			colour = G.C.MULT,
+		 }
+	  end
+	end,
+	cry_credits = {
+		idea = {
+			"astrapboy",
+		},
+		code = {
+			"astrapboy",
+		},
+	},
+}
 items = {
 	cotton_candy,
 	wrapped,
@@ -1720,9 +1779,39 @@ items = {
 	brittle,
 	monopoly_money,
 	candy_sticks,
+	crazybus
 }
 return {
 	name = "Spooky",
-	init = function() end,
+	init = function()
+		--Cursed rarity patches
+		local sc = Card.set_cost
+		function Card:set_cost()
+			sc(self)
+			if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
+				self.sell_cost = 0
+				self.sell_cost_label = 0
+			end
+		end
+		--Really hacky patch to remove sell button for cursed jokers
+		local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
+		function G.UIDEF.use_and_sell_buttons(card)
+			local m = G_UIDEF_use_and_sell_buttons_ref(card)
+			if
+				card.area
+				and card.area.config.type == "joker"
+				and card.config
+				and card.config.center
+				and card.config.center.rarity == "cry_cursed"
+				and card.ability.name ~= "cry-Monopoly"
+			then
+				table.remove(m.nodes[1].nodes, 1)
+			end
+			if card.config and card.config.center and card.config.center.key == "c_cry_potion" then
+				table.remove(m.nodes[1].nodes, 1)
+			end
+			return m
+		end
+	end,
 	items = items,
 }

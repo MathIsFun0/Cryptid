@@ -453,6 +453,16 @@ SMODS.Sound({
 	end,
 })
 SMODS.Sound({
+	key = "music_crazybus",
+	path = "music_crazybus.ogg",
+	sync = false,
+	pitch = 1,
+	select_music_track = function()
+		return next(find_joker("cry-crazybus"))
+			and Cryptid_config.Cryptid
+	end,
+})
+SMODS.Sound({
 	key = "music_code",
 	path = "music_code.ogg",
 	select_music_track = function()
