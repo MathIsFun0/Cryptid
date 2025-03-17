@@ -1598,7 +1598,7 @@ local wario = {
 			"Auto Watto",
 		},
 		art = {
-			"Linus Goof Balls",
+			"Auto Watto",
 		},
 		code = {
 			"Auto Watto",
