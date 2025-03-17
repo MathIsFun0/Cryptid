@@ -4656,7 +4656,8 @@ local pointer = {
 local encoded = {
 	cry_credits = {
 		idea = {
-			"I forgot",
+			"Auto Watto",
+			"Kailen",
 		},
 		art = {
 			"Kailen",
