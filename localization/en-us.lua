@@ -1464,6 +1464,12 @@ return {
 					"All {C:attention}face{} cards are debuffed",
 				},
 			},
+			j_cry_eyeofhagane = {
+				name = "Eye of Hagene",
+				text = {
+					"All played {C:attention}face{} cards become {C:attention}Steel{}"
+					},
+			},
 			j_cry_facile = {
 				name = "Facile",
 				text = {
