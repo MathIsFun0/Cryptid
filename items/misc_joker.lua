@@ -7837,9 +7837,9 @@ local eyeofhagane = {
 		end
 	end,
 	cry_credits = {
-		idea = { "Soren", },
-		code = { "Nova", },
-		art = { "Soren", },
+		idea = { "Soren" },
+		code = { "Nova" },
+		art = { "Soren" },
 	},
 }
 local miscitems = {
