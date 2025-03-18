@@ -3754,6 +3754,7 @@ local rnjoker = {
 		G.hand:change_size(-hand_size)
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		card = card or self:create_fake_card()
 		local len = (
 			card.ability
 			and card.ability.abilities
@@ -3784,6 +3785,7 @@ local rnjoker = {
 			end
 			new_loc.text_parsed = card.ability.abilities[1].text_parsed
 		end
+		new_loc.text_parsed = new_loc.text_parsed or {}
 		if not full_UI_table.name then
 			full_UI_table.name =
 				localize({ type = "name", set = self.set, key = target.key or self.key, nodes = full_UI_table.name })
@@ -7821,12 +7823,12 @@ local eyeofhagane = {
 	name = "cry-eyeofhagane",
 	key = "eyeofhagane",
 	order = 136,
-	pos = { x = 4, y = 1 },
+	pos = { x = 5, y = 6 },
 	rarity = 2,
 	cost = 6,
 	blueprint_compat = false,
 	immutable = true,
-	atlas = "placeholders", -- https://discord.com/channels/1264429948970733782/1274103559113150629/1351479917367263312
+	atlas = "atlastwo", -- https://discord.com/channels/1264429948970733782/1274103559113150629/1351479917367263312
 	calculate = function(self, card, context)
 		if context.before then
 			for i = 1, #context.full_hand do

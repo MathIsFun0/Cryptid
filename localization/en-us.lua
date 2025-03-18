@@ -1465,7 +1465,7 @@ return {
 				},
 			},
 			j_cry_eyeofhagane = {
-				name = "Eye of Hagene",
+				name = "Eye of Hagane",
 				text = {
 					"All played {C:attention}face{} cards become {C:attention}Steel{}",
 				},
