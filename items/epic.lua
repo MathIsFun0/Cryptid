@@ -599,6 +599,7 @@ local error_joker = {
 			{ string = "Jolly", colour = G.C.CRY_JOLLY },
 			{ string = "Tags", colour = G.C.RED },
 			{ string = "Cryptids", colour = G.C.SECONDARY_SET.Spectral },
+			{ string = "Glop", colour = G.C.CRY_ALTGREENGRADIENT },
 			{ string = "%%ERROR", colour = G.C.CRY_ASCENDANT }, --temp string, this will be modified
 		}
 
