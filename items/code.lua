@@ -4037,7 +4037,7 @@ local pointer = {
 			monopoly = "monopoly money",
 			notebook = "the motebook",
 			motebook = "the motebook",
-			mcdonalds = "fast food m"
+			mcdonalds = "fast food m",
 			--Vouchers
 			["overstock+"] = "overstock plus",
 			directorscut = "director's cut",
