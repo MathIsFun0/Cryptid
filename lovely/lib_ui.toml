@@ -87,7 +87,7 @@ target = "functions/misc_functions.lua"
 pattern = "detailed_tooltip = part.control.T and (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T]) or nil,"
 position = 'at'
 match_indent = true
-payload = "detailed_tooltip = part.control.T and Cryptid.get_center(part.control.T) or nil,"
+payload = "detailed_tooltip = part.control.T and (Cryptid.get_center(part.control.T) or (G.P_CENTERS[part.control.T] or G.P_TAGS[part.control.T])) or nil,"
 
 # Remove consumable use UI in the collection
 [[patches]]

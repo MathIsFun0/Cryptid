@@ -494,81 +494,29 @@ local antimatter = {
 	pos = { x = 2, y = 0 },
 	calculate = function(self, back, context)
 		if context.context ~= "final_scoring_step" then
-			Cryptid.antimatter_trigger(self, context)
+			Cryptid.antimatter_trigger(self, context, Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
 		else
-			return Cryptid.antimatter_trigger_final_scoring(self, context)
+			return Cryptid.antimatter_trigger_final_scoring(
+				self,
+				context,
+				Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness"
+			)
 		end
 	end,
 	apply = function(self)
-		Cryptid.antimatter_apply()
+		Cryptid.antimatter_apply(Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
 	end,
 	atlas = "atlasdeck",
 	init = function(self)
-		function Cryptid.antimatter_apply()
-			local bluecheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8)
-			local yellowcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8)
-			local abandonedcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_abandoned", "wins", 8)
-			local ghostcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
-			local redcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_red", "wins", 8)
-			local checkeredcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_checkered", "wins", 8)
-			local erraticcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_erratic", "wins", 8)
-			local blackcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_black", "wins", 8)
-			local paintedcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_painted", "wins", 8)
-			local greencheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8)
-			local spookycheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_spooky", "wins", 8)
-			local equilibriumcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
-			local misprintcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_misprint", "wins", 8)
-			local infinitecheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_infinite", "wins", 8)
-			local wormholecheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_wormhole", "wins", 8)
-			local redeemedcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_redeemed", "wins", 8)
-			local legendarycheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
-			local encodedcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_encoded", "wins", 8)
-			local world = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_world_deck", "wins", 8)
-			local sun = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_sun_deck", "wins", 8)
-			local star = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_star_deck", "wins", 8)
-			local moon = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_moon_deck", "wins", 8)
-
-			if Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
-				bluecheck = 1
-				yellowcheck = 1
-				abandonedcheck = 1
-				ghostcheck = 1
-				redcheck = 1
-				checkeredcheck = 1
-				erraticcheck = 1
-				blackcheck = 1
-				paintedcheck = 1
-				greencheck = 1
-				spookycheck = 1
-				equilibriumcheck = 1
-				misprintcheck = 1
-				infinitecheck = 1
-				wormholecheck = 1
-				redeemedcheck = 1
-				legendarycheck = 1
-				encodedcheck = 1
-				world = 1
-				sun = 1
-				star = 1
-				moon = 1
-			end
-
+		function Cryptid.antimatter_apply(skip)
 			--Blue Deck
-			if (bluecheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_blue", "wins", 8) or 0 ~= 0) or skip
+			then
 				G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
 			end
 			--All Consumables (see Cryptid.get_antimatter_consumables)
-			local querty = Cryptid.get_antimatter_consumables()
+			local querty = Cryptid.get_antimatter_consumables(nil, skip)
 			if #querty > 0 then
 				delay(0.4)
 				G.E_MANAGER:add_event(Event({
@@ -585,23 +533,33 @@ local antimatter = {
 				}))
 			end
 			--Yellow Deck
-			if (yellowcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8) or 0) ~= 0
+				or skip
+			then
 				G.GAME.starting_params.dollars = G.GAME.starting_params.dollars + 10
 			end
 			--Abandoned Deck
-			if (abandonedcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_abandoned", "wins", 8) or 0) ~= 0
+				or skip
+			then
 				G.GAME.starting_params.no_faces = true
 			end
 			--Ghost Deck
-			if (ghostcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0) ~= 0 or skip
+			then
 				G.GAME.spectral_rate = 2
 			end
 			-- Red Deck
-			if (redcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_red", "wins", 8) or 0) ~= 0 or skip
+			then
 				G.GAME.starting_params.discards = G.GAME.starting_params.discards + 1
 			end
 			-- All Decks with Vouchers (see Cryptid.get_antimatter_vouchers)
-			local vouchers = Cryptid.get_antimatter_vouchers()
+			local vouchers = Cryptid.get_antimatter_vouchers(nil, skip)
 			if #vouchers > 0 then
 				for k, v in pairs(vouchers) do
 					if G.P_CENTERS[v] then
@@ -617,7 +575,10 @@ local antimatter = {
 				end
 			end
 			-- Checkered Deck
-			if (checkeredcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_checkered", "wins", 8) or 0) ~= 0
+				or skip
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						for k, v in pairs(G.playing_cards) do
@@ -633,57 +594,89 @@ local antimatter = {
 				}))
 			end
 			-- Erratic Deck
-			if (erraticcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_erratic", "wins", 8) or 0) ~= 0
+				or skip
+			then
 				G.GAME.starting_params.erratic_suits_and_ranks = true
 			end
 			-- Black Deck
-			if (blackcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_black", "wins", 8) or 0) ~= 0 or skip
+			then
 				G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 1
 			end
 			-- Painted Deck
-			if (paintedcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_painted", "wins", 8) or 0) ~= 0
+				or skip
+			then
 				G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 2
 			end
 			-- Green Deck
-			if (greencheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8) or 0) ~= 0 or skip
+			then
 				G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 1) + 1
 				G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + 1
 			end
 			-- Spooky Deck
-			if (spookycheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_spooky", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.GAME.modifiers.cry_spooky = true
 				G.GAME.modifiers.cry_curse_rate = 0
-				--[[
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-				]]
-				--
+				if Cryptid.enabled("j_cry_chocolate_dice") == true then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.jokers then
+								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+								return true
+							end
+						end,
+					}))
+				end
 			end
 			-- Deck of Equilibrium
-			if (equilibriumcheck or 0) ~= 0 then
+			if
+				(
+						Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
+						or 0
+					)
+					~= 0
+				or skip
+			then
 				G.GAME.modifiers.cry_equilibrium = true
 			end
 			-- Misprint Deck
-			if (misprintcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_misprint", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.GAME.modifiers.cry_misprint_min = 1
 				G.GAME.modifiers.cry_misprint_max = 10
 			end
 			-- Infinite Deck
-			if (infinitecheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_infinite", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.GAME.modifiers.cry_highlight_limit = 1e20
 				G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 1
 			end
 			-- Wormhole deck
-			if (wormholecheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_wormhole", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.GAME.modifiers.cry_negative_rate = 20
 
 				if Cryptid.enabled("set_cry_exotic") == true then
@@ -702,24 +695,26 @@ local antimatter = {
 				end
 			end
 			-- Redeemed deck
-			if (redeemedcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_redeemed", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.GAME.modifiers.cry_redeemed = true
 			end
-			-- Deck of the Moon, Deck of the Sun, Deck of the Stars, Deck of the World
-			if (world or 0) ~= 0 then
-				G.GAME.bosses_used["bl_goad"] = 1e308
-			end
-			if (star or 0) ~= 0 then
-				G.GAME.bosses_used["bl_window"] = 1e308
-			end
-			if (sun or 0) ~= 0 then
-				G.GAME.bosses_used["bl_head"] = 1e308
-			end
-			if (moon or 0) ~= 0 then
-				G.GAME.bosses_used["bl_club"] = 1e308
-			end
+			--[[
+			G.GAME.bosses_used["bl_goad"] = 1e308
+			G.GAME.bosses_used["bl_window"] = 1e308
+			G.GAME.bosses_used["bl_head"] = 1e308
+			G.GAME.bosses_used["bl_club"] = 1e308
+			]]
+			--
 			--Legendary Deck
-			if (legendarycheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
@@ -733,13 +728,18 @@ local antimatter = {
 				}))
 			end
 			--Encoded Deck
-			if (encodedcheck or 0) ~= 0 then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_encoded", "wins", 8) or 0)
+					~= 0
+				or skip
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
 							if
 								G.P_CENTERS["j_cry_CodeJoker"]
 								and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
+								and Cryptid.enabled("j_cry_CodeJoker") == true
 							then
 								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
 								card:add_to_deck()
@@ -748,6 +748,7 @@ local antimatter = {
 							end
 							if
 								G.P_CENTERS["j_cry_copypaste"]
+								and Cryptid.enabled("j_cry_copypaste") == true
 								and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"])
 							then
 								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
@@ -760,23 +761,28 @@ local antimatter = {
 					end,
 				}))
 			end
+			--Beige Deck
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_beige", "wins", 8) or 0) ~= 0
+				or skip
+			then
+				G.GAME.modifiers.cry_common_value_quad = true
+			end
 		end
 
-		function Cryptid.antimatter_trigger_final_scoring(self, context)
-			local critcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
-			local plasmacheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
-
-			if Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
-				critcheck = 1
-				plasmacheck = 1
-			end
-
+		function Cryptid.antimatter_trigger_final_scoring(self, context, skip)
 			if context.context == "final_scoring_step" then
 				local crit_poll = pseudorandom(pseudoseed("cry_critical"))
 				crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
 				--Critical Deck
-				if (critcheck or 0) ~= 0 then
+				if
+					(
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_critical", "wins", 8)
+							or 0
+						)
+						~= 0
+					or skip
+				then
 					if crit_poll < self.config.cry_crit_rate then
 						context.mult = context.mult ^ 2
 						update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
@@ -799,7 +805,11 @@ local antimatter = {
 				end
 				--Plasma Deck
 				local tot = context.chips + context.mult
-				if (plasmacheck or 0) ~= 0 then
+				if
+					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8) or 0)
+						~= 0
+					or skip
+				then
 					context.chips = math.floor(tot / 2)
 					context.mult = math.floor(tot / 2)
 					update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
@@ -854,24 +864,17 @@ local antimatter = {
 				return context.chips, context.mult
 			end
 		end
-
-		function Cryptid.antimatter_trigger(self, context)
-			local glowingcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_glowing", "wins", 8)
-			local legendarycheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8)
-			local anaglyphcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8)
-
-			if Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" then
-				glowingcheck = 1
-				legendarycheck = 1
-				anaglyphcheck = 1
-			end
-
+		function Cryptid.antimatter_trigger(self, context, skip)
 			if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
 				--Glowing Deck
-				if (glowingcheck or 0) ~= 0 then
+				if
+					(
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_glowing", "wins", 8)
+							or 0
+						)
+						~= 0
+					or skip
+				then
 					for i = 1, #G.jokers.cards do
 						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
 							Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
@@ -879,16 +882,40 @@ local antimatter = {
 					end
 				end
 				--Legendary Deck
-				if G.jokers and (legendarycheck or 0) ~= 0 then
-					if #G.jokers.cards < G.jokers.config.card_limit then
-						local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
-						legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
-						if legendary_poll < self.config.cry_legendary_rate then
-							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
+				if G.jokers then
+					if
+						(
+								Cryptid.safe_get(
+									G.PROFILES,
+									G.SETTINGS.profile,
+									"deck_usage",
+									"b_cry_legendary",
+									"wins",
+									8
+								) or 0
+							)
+							~= 0
+						or skip
+					then
+						if #G.jokers.cards < G.jokers.config.card_limit then
+							local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
+							legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
+							if legendary_poll < self.config.cry_legendary_rate then
+								local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+								return true
+							else
+								card_eval_status_text(
+									G.jokers,
+									"jokers",
+									nil,
+									nil,
+									nil,
+									{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
+								)
+							end
 						else
 							card_eval_status_text(
 								G.jokers,
@@ -896,22 +923,17 @@ local antimatter = {
 								nil,
 								nil,
 								nil,
-								{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
+								{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
 							)
 						end
-					else
-						card_eval_status_text(
-							G.jokers,
-							"jokers",
-							nil,
-							nil,
-							nil,
-							{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
-						)
 					end
 				end
 				--Anaglyph Deck
-				if (anaglyphcheck or 0) ~= 0 then
+				if
+					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8) or 0)
+						~= 0
+					or skip
+				then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							add_tag(Tag("tag_double"))
@@ -923,19 +945,15 @@ local antimatter = {
 				end
 			end
 		end
-
-		function Cryptid.get_antimatter_vouchers(voucher_table)
+		function Cryptid.get_antimatter_vouchers(voucher_table, skip)
 			-- Create a table or use one that is passed into the function
 			if not voucher_table or type(voucher_table) ~= "table" then
 				voucher_table = {}
 			end
-			local skip = (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
-
 			-- Add Vouchers into the table by key
 			local function already_exists(t, voucher)
 				for _, v in ipairs(t) do
 					if v == voucher then
-						--print("sus")
 						return true
 					end
 				end
@@ -946,55 +964,56 @@ local antimatter = {
 					table.insert(t, voucher)
 				end
 			end
-
-			local nebulacheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
-			local magiccheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
-			local zodiaccheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
-			local equilibriumcheck =
-				Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
-
 			--Nebula Deck
-			if (nebulacheck or 0) ~= 0 or skip then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8) or 0 ~= 0)
+				or skip
+			then
 				Add_voucher_to_the_table(voucher_table, "v_telescope")
 			end
 			-- Magic Deck
-			if (magiccheck or 0) ~= 0 or skip then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8) or 0 ~= 0) or skip
+			then
 				Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
 			end
-
 			-- Zodiac Deck
-			if (zodiaccheck or 0) ~= 0 or skip then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8) or 0 ~= 0)
+				or skip
+			then
 				Add_voucher_to_the_table(voucher_table, "v_tarot_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_planet_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
 			end
 			-- Deck Of Equilibrium
-			if (equilibriumcheck or 0) ~= 0 or skip then
+			if
+				(
+					Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
+					or 0 ~= 0
+				) or skip
+			then
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_plus")
 			end
 			return voucher_table
 		end
 		--Does this even need to be a function idk
-		function Cryptid.get_antimatter_consumables(consumable_table)
-			local skip = (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
+		function Cryptid.get_antimatter_consumables(consumable_table, skip)
 			if not consumable_table or type(consumable_table) ~= "table" then
 				consumable_table = {}
 			end
-
-			-- Add Consumables into the table by key
-
-			local magiccheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
-			local ghostcheck = Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
-
-			if (magiccheck or 0) ~= 0 or skip then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8) or 0 ~= 0) or skip
+			then
 				table.insert(consumable_table, "c_fool")
 				table.insert(consumable_table, "c_fool")
 			end
-			if (ghostcheck or 0) ~= 0 or skip then
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0 ~= 0) or skip
+			then
 				table.insert(consumable_table, "c_hex")
 			end
-
 			return consumable_table
 		end
 	end,

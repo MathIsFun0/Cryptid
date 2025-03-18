@@ -2927,7 +2927,7 @@ local exploit = {
 			local hand_table = {
 				["High Card"] = { "high card", "high", "1oak", "1 of a kind", "haha one" },
 				["Pair"] = { "pair", "2oak", "2 of a kind", "m" },
-				["Two Pair"] = { "two pair", "2 pair", "mm" },
+				["Two Pair"] = { "two pair", "2 pair", "mm", "pairpair" },
 				["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips", "triangle" },
 				["Straight"] = { "straight", "lesbian", "gay", "bisexual", "asexual" },
 				["Flush"] = { "flush", "skibidi", "toilet", "floosh" },
@@ -4000,6 +4000,7 @@ local pointer = {
 			oldgoogle = "nostalgic googol play card",
 			oldgoogleplay = "nostalgic googol play card",
 			oldgoogleplaycard = "nostalgic googol play card",
+			ngpc = "nostalgic googol play card",
 			localthunk = "supercell",
 			["1fa"] = "one for all",
 			["jolly?"] = "jolly joker?",
@@ -4036,6 +4037,7 @@ local pointer = {
 			monopoly = "monopoly money",
 			notebook = "the motebook",
 			motebook = "the motebook",
+			mcdonalds = "fast food m",
 			--Vouchers
 			["overstock+"] = "overstock plus",
 			directorscut = "director's cut",
@@ -4656,7 +4658,8 @@ local pointer = {
 local encoded = {
 	cry_credits = {
 		idea = {
-			"I forgot",
+			"Auto Watto",
+			"Kailen",
 		},
 		art = {
 			"Kailen",
