@@ -4000,6 +4000,7 @@ local pointer = {
 			oldgoogle = "nostalgic googol play card",
 			oldgoogleplay = "nostalgic googol play card",
 			oldgoogleplaycard = "nostalgic googol play card",
+			ngpc = "nostalgic googol play card",
 			localthunk = "supercell",
 			["1fa"] = "one for all",
 			["jolly?"] = "jolly joker?",
@@ -4036,6 +4037,7 @@ local pointer = {
 			monopoly = "monopoly money",
 			notebook = "the motebook",
 			motebook = "the motebook",
+			mcdonalds = "fast food m"
 			--Vouchers
 			["overstock+"] = "overstock plus",
 			directorscut = "director's cut",
