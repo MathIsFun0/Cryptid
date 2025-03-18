@@ -7811,6 +7811,37 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 		},
 	},
 }
+local eyeofhagane = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-eyeofhagane",
+	key = "eyeofhagane",
+	order = 136,
+	pos = { x = 4, y = 1 },
+	rarity = 2,
+	cost = 6,
+	blueprint_compat = false,
+	immutable = true,
+	atlas = "placeholders", -- https://discord.com/channels/1264429948970733782/1274103559113150629/1351479917367263312
+	calculate = function(self, card, context)
+		if context.before then
+			for i = 1, #context.full_hand do
+				if context.full_hand[i]:is_face() then
+					context.full_hand[i]:set_ability(G.P_CENTERS["m_steel"], nil, true)
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = { "Soren", },
+		code = { "Nova", },
+		art = { "Soren", },
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7925,6 +7956,7 @@ local miscitems = {
 	lebaron_james,
 	huntingseason,
 	cat_owl,
+	eyeofhagane,
 }
 return {
 	name = "Misc. Jokers",
