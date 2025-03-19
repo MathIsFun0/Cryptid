@@ -48,7 +48,7 @@ local pack1 = {
 	order = 1,
 	weight = 0.96,
 	create_card = function(self, card)
-		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
+		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
@@ -92,7 +92,7 @@ local pack2 = {
 	order = 2,
 	weight = 0.96,
 	create_card = function(self, card)
-		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
+		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_2")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
@@ -136,7 +136,7 @@ local packJ = {
 	order = 3,
 	weight = 0.48,
 	create_card = function(self, card)
-		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
+		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_j")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
@@ -180,7 +180,7 @@ local packM = {
 	order = 4,
 	weight = 0.12,
 	create_card = function(self, card)
-		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program")
+		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_m")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.SET.Code)
