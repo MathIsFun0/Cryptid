@@ -1137,7 +1137,7 @@ local seed = {
 	name = "cry-Seed",
 	key = "seed",
 	pos = {
-		x = 9,
+		x = 10,
 		y = 1,
 	},
 	config = {},
