@@ -629,7 +629,7 @@ local pickle = {
 						end
 						tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pickle_orbital"))
 					end
-					tag.ability.shiny = cry_rollshinybool()
+					tag.ability.shiny = Cryptid.is_shiny()
 					add_tag(tag)
 				end
 			end
@@ -7307,7 +7307,7 @@ local tax_fraud = {
 		},
 	},
 }
---TODO update desc
+
 local pity_prize = {
 	object_type = "Joker",
 	dependencies = {
@@ -7317,6 +7317,7 @@ local pity_prize = {
 	},
 	name = "cry-Pity-Prize",
 	key = "pity_prize",
+	blueprint_compat = true,
 	pos = { x = 5, y = 5 },
 	config = {},
 	rarity = 1,
@@ -7334,7 +7335,7 @@ local pity_prize = {
 			until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
 			-- this is my first time seeing repeat... wtf
 			local tag = Tag(tag_key)
-			tag.ability.shiny = cry_rollshinybool()
+			tag.ability.shiny = Cryptid.is_shiny()
 			if tag.name == "Orbital Tag" then
 				local _poker_hands = {}
 				for k, v in pairs(G.GAME.hands) do
@@ -7672,6 +7673,7 @@ local lebaron_james = {
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
 	config = { extra = { h_mod = 1 } },
+	blueprint_compat = true,
 	rarity = 3,
 	cost = 6,
 	atlas = "atlasone",

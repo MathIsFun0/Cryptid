@@ -1061,7 +1061,7 @@ local smallestm = {
 			--This isn't retrigger joker compatible for some reason
 			if context.scoring_name == card.ability.extra.type then
 				local tag = Tag("tag_cry_double_m")
-				tag.ability.shiny = cry_rollshinybool()
+				tag.ability.shiny = Cryptid.is_shiny()
 				add_tag(tag)
 				play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
 				play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
