@@ -205,31 +205,6 @@ local tag_sprite = Sprite(0,0,_size*1,_size*1,tagatlas, (self.hide_ability) and 
 '''
 match_indent = true
 
-# define function
-[[patches]]
-[patches.pattern]
-target = "functions/misc_functions.lua"
-pattern = "function save_run()"
-position = "before"
-payload = '''
-function cry_rollshiny()
-	local prob = 1
-	if next(SMODS.find_card('j_lucky_cat')) then prob = 3 end
-	if pseudorandom("cry_shiny") < prob / 4096 then
-		return 'shiny'
-	end
-	return 'normal'
-end
-
-function cry_rollshinybool()
-	if cry_rollshiny() == 'shiny' then 
-		return true
-	end
-	return false
-end
-'''
-match_indent = true
-
 # collection
 # nice pattern match?
 [[patches]]

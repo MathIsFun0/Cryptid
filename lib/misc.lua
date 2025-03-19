@@ -738,3 +738,19 @@ function Controller:key_press_update(key, dt)
 		G.CHOOSE_CARD:align_to_major()
 	end
 end
+
+function Cryptid.roll_shiny()
+	local prob = 1
+	if next(SMODS.find_card('j_lucky_cat')) then prob = 3 end
+	if pseudorandom("cry_shiny") < prob / 4096 then
+		return 'shiny'
+	end
+	return 'normal'
+end
+
+function Cryptid.is_shiny()
+	if Cryptid.roll_shiny() == 'shiny' then 
+		return true
+	end
+	return false
+end

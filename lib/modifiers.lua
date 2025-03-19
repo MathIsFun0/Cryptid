@@ -783,7 +783,7 @@ function Tag:set_ability()
 		G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] or {}
 
 		if not G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] then
-			G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] = cry_rollshiny()
+			G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] = Cryptid.roll_shiny()
 		end
 		self.ability.shiny = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] == "shiny"
 			and true

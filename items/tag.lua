@@ -332,7 +332,7 @@ local gambler = {
 				tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
 					local emp = Tag("tag_cry_empowered")
 					if tag.ability.shiny then -- good fucking luck
-						emp.ability.shiny = cry_rollshinybool()
+						emp.ability.shiny = Cryptid.is_shiny()
 					end
 					add_tag(emp)
 					tag.triggered = true
@@ -396,7 +396,7 @@ local bundle = {
 				local tags = { "standard", "charm", "meteor", "buffoon" }
 				for i, v in ipairs(tags) do
 					local _tag = Tag("tag_" .. v)
-					_tag.ability.shiny = cry_rollshinybool()
+					_tag.ability.shiny = Cryptid.is_shiny()
 					add_tag(_tag)
 					if i == 1 then
 						tag.triggered = true
