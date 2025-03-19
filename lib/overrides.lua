@@ -176,6 +176,7 @@ function Game:init_game_object()
 	g.monstermult = 1
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
+	g.jokers_sold = {}
 	return g
 end
 
@@ -473,6 +474,38 @@ function Card:set_cost()
 		self.sell_cost = 0
 		self.sell_cost_label = 0
 	end
+end
+local sell_card_stuff = Card.sell_card
+function Card:sell_card()
+	if self.config.center.set == "Joker" then
+		if self.config.center.key ~= "j_cry_necromancer" then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == self.config.center.key then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, self.config.center.key)
+			end
+		end
+		-- Add Jolly Joker to the pool if card was treated as Jolly Joker
+		if self:is_jolly() then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == "j_jolly" then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, "j_jolly")
+			end
+		end
+	end
+	--G.P_CENTERS.j_jolly
+	sell_card_stuff(self)
 end
 
 -- Modify to display badges for credits and some gameset badges

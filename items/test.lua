@@ -119,7 +119,7 @@ local test3 = {
 		},
 	},
 	loc_vars = function(self, info_queue, card)
-		local a, b, c, d, e = Cryptid.enhanced_deck_info()
+		local a, b, c, d, e = 1, 2, 3, 4, 5
 		return { vars = { a, b, c, d, e } }
 	end,
 	cry_credits = {
@@ -190,4 +190,84 @@ local test4 = {
 		end
 	end,
 }
-return { items = { test, test2, test3, test4 }, disabled = true }
+local kidnap2 = {
+	object_type = "Joker",
+	name = "cry-kidnap2",
+	key = "kidnap2",
+	pos = { x = 1, y = 2 },
+	config = {
+		extra = 1,
+	},
+	rarity = 1,
+	cost = 4,
+	loc_txt = {
+		name = "asd",
+		text = {
+			"Earn {C:money}$#1#{} at end of round",
+			"per unique {C:attention}Type Mult{} or",
+			"{C:attention}Type Chips{} Joker sold this run",
+			"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
+		},
+	},
+	blueprint_compat = false,
+	loc_vars = function(self, info_queue, center)
+		local value = 0
+		if G.GAME and G.GAME.jokers_sold then
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if
+					G.P_CENTERS[v].effect == "Type Mult"
+					or G.P_CENTERS[v].effect == "Cry Type Mult"
+					or G.P_CENTERS[v].effect == "Cry Type Chips"
+					or G.P_CENTERS[v].effect == "Boost Kidnapping"
+					or (
+						G.P_CENTERS[v].name == "Sly Joker"
+						or G.P_CENTERS[v].name == "Wily Joker"
+						or G.P_CENTERS[v].name == "Clever Joker"
+						or G.P_CENTERS[v].name == "Devious Joker"
+						or G.P_CENTERS[v].name == "Crafty Joker"
+					)
+				then
+					value = value + 1
+				end
+			end
+		end
+		return { vars = { center.ability.extra, center.ability.extra * value } }
+	end,
+	atlas = "atlasone",
+	calc_dollar_bonus = function(self, card)
+		local value = 0
+		for _, v in ipairs(G.GAME.jokers_sold) do
+			if
+				G.P_CENTERS[v].effect == "Type Mult"
+				or G.P_CENTERS[v].effect == "Cry Type Mult"
+				or G.P_CENTERS[v].effect == "Cry Type Chips"
+				or G.P_CENTERS[v].effect == "Boost Kidnapping"
+				or (
+					G.P_CENTERS[v].name == "Sly Joker"
+					or G.P_CENTERS[v].name == "Wily Joker"
+					or G.P_CENTERS[v].name == "Clever Joker"
+					or G.P_CENTERS[v].name == "Devious Joker"
+					or G.P_CENTERS[v].name == "Crafty Joker"
+				)
+			then
+				value = value + 1
+			end
+		end
+		if value == 0 then
+			return
+		end
+		return card.ability.extra * value
+	end,
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
+}
+return { items = { test, test2, test3, test4, kidnap2 }, disabled = true }
