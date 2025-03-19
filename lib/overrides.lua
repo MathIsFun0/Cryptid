@@ -286,7 +286,7 @@ function Game:update(dt)
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
 		cry_pointer_dt = 0
 		local pointerobj = G.P_CENTERS.c_cry_pointer
-		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+		pointerobj.pos.x = (pointerobj.pos.x == 11) and 12 or 11
 	end
 	if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
 		cry_jimball_dt = 0

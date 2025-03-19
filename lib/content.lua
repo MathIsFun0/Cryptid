@@ -632,12 +632,6 @@ SMODS.Atlas({
 	py = 95,
 })
 SMODS.Atlas({
-	key = "code",
-	path = "c_cry_code.png",
-	px = 71,
-	py = 95,
-})
-SMODS.Atlas({
 	key = "pack",
 	path = "pack_cry.png",
 	px = 71,
@@ -645,17 +639,17 @@ SMODS.Atlas({
 })
 SMODS.UndiscoveredSprite({
 	key = "Code",
-	atlas = "code",
+	atlas = "atlasnotjokers",
 	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
+	pos = { x = 9, y = 5 },
 	px = 71,
 	py = 95,
 })
 SMODS.UndiscoveredSprite({
 	key = "Unique",
-	atlas = "code",
+	atlas = "atlasnotjokers",
 	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
+	pos = { x = 9, y = 5 },
 	px = 71,
 	py = 95,
 })
