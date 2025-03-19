@@ -445,8 +445,10 @@ local memory = {
 	end,
 	preview_ui = function(self)
 		if G.GAME.cry_last_tag_used then
+			local tag = Tag(G.GAME.cry_last_tag_used, true)
+			tag.ability.orbital_hand = G.GAME.cry_memory_orbital
 			local tag_sprite
-			_, tag_sprite = Tag(G.GAME.cry_last_tag_used, true):generate_UI(0.4)
+			_, tag_sprite = tag:generate_UI(0.4)
 			return {
 				n = G.UIT.C,
 				nodes = { {
@@ -454,6 +456,7 @@ local memory = {
 					nodes = {
 						{ n = G.UIT.T, config = { text = ">", colour = G.C.WHITE, scale = 0.4 } },
 						{ n = G.UIT.O, config = { object = tag_sprite } },
+						G.P_TAGS[G.GAME.cry_last_tag_used].preview_ui and G.P_TAGS[G.GAME.cry_last_tag_used].preview_ui(tag)
 					}
 				} }
 			}
