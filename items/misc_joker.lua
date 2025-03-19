@@ -7831,16 +7831,31 @@ local eyeofhagane = {
 	atlas = "atlastwo", -- https://discord.com/channels/1264429948970733782/1274103559113150629/1351479917367263312
 	calculate = function(self, card, context)
 		if context.before then
-			for i = 1, #context.full_hand do
-				if context.full_hand[i]:is_face() then
-					context.full_hand[i]:set_ability(G.P_CENTERS["m_steel"], nil, true)
+			local faces = {}
+			for k, v in ipairs(context.scoring_hand) do
+				if v:is_face() then 
+					faces[#faces+1] = v
+					v:set_ability(G.P_CENTERS.m_steel, nil, true)
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							v:juice_up()
+							return true
+						end
+					})) 
 				end
+			end
+			if #faces > 0 then 
+				return {
+					message = "Steel",
+					colour = G.C.UI.TEXT_INACTIVE,
+					card = self
+				}
 			end
 		end
 	end,
 	cry_credits = {
 		idea = { "Soren" },
-		code = { "Nova" },
+		code = { "Lexi" },
 		art = { "Soren" },
 	},
 }
