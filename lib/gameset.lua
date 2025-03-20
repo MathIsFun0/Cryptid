@@ -1194,8 +1194,8 @@ SMODS.ContentSet({
 })
 SMODS.ContentSet({
 	key = "code",
-	atlas = "code",
-	pos = { x = 0, y = 0 }, --://CRASH
+	atlas = "atlasnotjokers",
+	pos = { x = 7, y = 0 }, --://CRASH
 	cry_order = -39,
 })
 SMODS.ContentSet({
