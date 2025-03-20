@@ -7959,7 +7959,7 @@ local miscitems = {
 	translucent,
 	lebaron_james,
 	huntingseason,
-	cat_owl,
+	--cat_owl,
 	eyeofhagane,
 }
 return {
