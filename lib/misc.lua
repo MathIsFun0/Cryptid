@@ -216,7 +216,7 @@ function Cryptid.pluralize(str, vars)
 		end)
 		for _, k in ipairs(keys) do
 			if fch(checks[k], "=") then
-				if to_big(math.abs((num) - k)) < to_big(0.001) then
+				if to_big(math.abs(num - k)) < to_big(0.001) then
 					return string.sub(checks[k], 2, -1)
 				end
 			elseif fch(checks[k], "<") then
