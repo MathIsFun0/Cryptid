@@ -407,7 +407,7 @@ return {
 			}
 			local editions = {}
 			for _, v in pairs(pool_table[center.edeck_type]) do
-				if v.key ~= "e_base" and not v.no_edeck then
+				if v.key ~= "e_base" and not v.no_edeck and Cryptid.safe_get(v, "mod", "id") ~= "jen" then
 					editions[#editions + 1] = (center.edeck_type == "edition" and v.key:sub(3)) or v.key
 				end
 			end
