@@ -718,9 +718,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
-		return center.unlocked
-			and not Cryptid.no(center, "doe")
-			and not (center.rarity == "cry_exotic")
+		return center.unlocked and not Cryptid.no(center, "doe") and not (center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity and not legendary then
 		if not G.GAME.aequilibriumkey then
