@@ -20,7 +20,7 @@ SMODS.PokerHand({
 		end
 		local stones = {}
 		for i, card in ipairs(hand) do
-			if card.config.center_key == "m_stone" or (card.config.center.no_rank and card.config.center.no_suit) then
+			if card.config.center_key == "m_stone" or (card.config.center.no_rank and card.config.center.no_suit and not card.config.center.not_stoned) then
 				stones[#stones + 1] = card
 			end
 		end
@@ -35,7 +35,7 @@ SMODS.PokerHandPart({
 		end
 		local eligible_cards = {}
 		for i, card in ipairs(hand) do
-			if true then --card.ability.name ~= "Gold Card"
+			if not card.config.center.not_fucked then --card.ability.name ~= "Gold Card"
 				eligible_cards[#eligible_cards + 1] = card
 			end
 		end
