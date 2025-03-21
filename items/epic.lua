@@ -398,11 +398,6 @@ local error_joker = {
 			"set_cry_epic",
 		},
 	},
-	conflicts = {
-		mods = {
-			"jen",
-		},
-	},
 	immutable = true,
 	rarity = "cry_epic",
 	cost = 1,
@@ -1227,11 +1222,6 @@ local curse_sob = {
 	},
 	gameset_config = {
 		modest = { cost = 20, center = { rarity = 4 } },
-	},
-	conflicts = {
-		mods = {
-			"jen",
-		},
 	},
 	rarity = "cry_epic",
 	cost = 9,
