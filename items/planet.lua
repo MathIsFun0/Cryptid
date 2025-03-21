@@ -59,10 +59,10 @@ local timantti = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -143,10 +143,10 @@ local klubi = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -227,10 +227,10 @@ local sydan = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -311,10 +311,10 @@ local lapio = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -396,10 +396,10 @@ local kaikki = {
 		}
 	end,
 	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1192,12 +1192,25 @@ local universe = {
 	end,
 	generate_ui = 0,
 }
-function Cryptid.suit_level_up(center, card, area, copier, number)
+function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 	local used_consumable = copier or card
 	if not number then
 		number = 1
 	end
-	for _, v in pairs(card.config.center.config.hand_types) do
+	if not poker_hands then
+		poker_hands = { "Two Pair", "Straight Flush" }
+	end
+	if message then
+		card_eval_status_text(
+			card,
+			"extra",
+			nil,
+			nil,
+			nil,
+			{ message = localize("k_level_up_ex"), colour = G.C.FILTER }
+		)
+	end
+	for _, v in pairs(poker_hands) do
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize(v, "poker_hands"),
 			chips = G.GAME.hands[v].chips,
