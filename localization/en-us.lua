@@ -1466,11 +1466,11 @@ return {
 			},
 			j_cry_eyeofhagane = {
 				name = "Eye of Hagane",
-                text = {
-                    "All played {C:attention}face{} cards",
-                    "become {C:attention}Steel{} cards",
-                    "when scored",
-                },
+				text = {
+					"All played {C:attention}face{} cards",
+					"become {C:attention}Steel{} cards",
+					"when scored",
+				},
 			},
 			j_cry_facile = {
 				name = "Facile",
