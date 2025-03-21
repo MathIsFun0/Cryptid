@@ -1,4 +1,3 @@
-
 local achievement_atlas = {
 	object_type = "Atlas",
 	key = "achievements",
@@ -424,7 +423,6 @@ local pin = {
 		end
 	end,
 }
-
 
 -- TODO: Add new Achievements.
 -- Current Ideas (Normal):
