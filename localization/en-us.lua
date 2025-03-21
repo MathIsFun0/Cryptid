@@ -3026,7 +3026,7 @@ return {
 				name = "Conduit",
 				text = {
 					"Swap the {C:attention}editions{} of",
-					"{C:attention}2{} selected cards or {C:attention}Jokers{}",
+					"{C:attention}2{} selected playing cards or {C:attention}Jokers{}",
 				},
 			},
 			c_cry_gateway = {
