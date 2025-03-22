@@ -4192,7 +4192,7 @@ return {
 				},
 			},
 			p_cry_empowered = {
-				name = "Spectral Pack [Empowered Tag]",
+				name = "Empowered Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:spectral} Spectral{} card#<s>2#",
@@ -4345,6 +4345,7 @@ return {
 			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Cluster" or "Clusterfuck",
 			["cry_UltPair"] = "Ultimate Pair",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "The Entire Deck" or "The Entire Fucking Deck",
+			["cry-Cluster Bulwark"] = "Clusterwark",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {

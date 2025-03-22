@@ -108,6 +108,7 @@ local test3 = {
 	pos = { x = 2, y = 1 },
 	rarity = 1,
 	cost = 2,
+	blueprint_compat = true,
 	discovered = true,
 	atlas = "atlastwo",
 	loc_txt = {
@@ -140,6 +141,30 @@ local test3 = {
 				"Four of a Kind",
 				"Straight Flush",
 			}, true)
+		elseif context.pre_discard and not context.hook then
+			local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+				G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+			if disp_text == "cry-Cluster Bulwark" then
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex") }
+				)
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+					handname = localize(text, "poker_hands"),
+					chips = G.GAME.hands[text].chips,
+					mult = G.GAME.hands[text].mult,
+					level = G.GAME.hands[text].level,
+				})
+				level_up_hand(context.blueprint_card or card, text, nil, 6)
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+					{ mult = 0, chips = 0, handname = "", level = "" }
+				)
+			end
 		end
 	end,
 }

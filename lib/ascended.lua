@@ -12,6 +12,14 @@ end
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
 	local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+	-- Display text if played hand contains a Cluster and a Bulwark
+	-- Not Ascended hand related but this hooks in the same spot so i'm lumping it here anyways muahahahahahaha
+	if text == "cry_Clusterfuck" then
+		if next(poker_hands["cry_Bulwark"]) then
+			disp_text = "cry-Cluster Bulwark"
+			loc_disp_text = localize(disp_text, "poker_hands")
+		end
+	end
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind") then
 			local rank_array = {}
