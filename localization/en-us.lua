@@ -4192,7 +4192,7 @@ return {
 				},
 			},
 			p_cry_empowered = {
-				name = "Spectral Pack [Empowered Tag]",
+				name = "Empowered Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:spectral} Spectral{} card#<s>2#",
