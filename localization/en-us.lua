@@ -4345,6 +4345,7 @@ return {
 			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Cluster" or "Clusterfuck",
 			["cry_UltPair"] = "Ultimate Pair",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "The Entire Deck" or "The Entire Fucking Deck",
+			["cry-Cluster Bulwark"] = "Clusterwark",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
