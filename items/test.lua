@@ -153,15 +153,12 @@ local test3 = {
 					nil,
 					{ message = localize("k_upgrade_ex") }
 				)
-				update_hand_text(
-					{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-					{
-						handname = localize(text, "poker_hands"),
-						chips = G.GAME.hands[text].chips,
-						mult = G.GAME.hands[text].mult,
-						level = G.GAME.hands[text].level,
-					}
-				)
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+					handname = localize(text, "poker_hands"),
+					chips = G.GAME.hands[text].chips,
+					mult = G.GAME.hands[text].mult,
+					level = G.GAME.hands[text].level,
+				})
 				level_up_hand(context.blueprint_card or card, text, nil, 6)
 				update_hand_text(
 					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
