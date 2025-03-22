@@ -398,7 +398,7 @@ local joke = {
 		return { vars = { "8", localize("cry_joke_placeholder") } }
 	end,
 	cry_calc_ante_gain = function(self)
-		if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) * 2 then
 			if G.GAME.round_resets.ante == 1 then
 				G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true
 			end
