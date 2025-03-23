@@ -3900,6 +3900,7 @@ local pointer = {
 			G.CHOOSE_CARD:remove()
 			G.GAME.USING_CODE = false
 			G.GAME.USING_POINTER = false
+			G.DEBUG_POINTER = false
 		end
 		G.FUNCS.pointer_apply_previous = function()
 			if G.PREVIOUS_ENTERED_CARD then
@@ -4220,10 +4221,10 @@ local pointer = {
 				local created = false
 				if
 					G.P_CENTERS[current_card].set == "Joker"
-					and G.P_CENTERS[current_card].unlocked
+					and (G.DEBUG_POINTER or (G.P_CENTERS[current_card].unlocked
 					and not G.GAME.banned_keys[current_card]
 					and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
-					and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
+					and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))))
 				then
 					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
 					card:add_to_deck()
@@ -4232,8 +4233,8 @@ local pointer = {
 				end
 				if
 					G.P_CENTERS[current_card].consumeable
-					and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
-					and not G.GAME.banned_keys[current_card]
+					and (G.DEBUG_POINTER or (G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
+					and not G.GAME.banned_keys[current_card]))
 				then
 					local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 					if card.ability.name and card.ability.name == "cry-Chambered" then
@@ -4245,8 +4246,8 @@ local pointer = {
 				end
 				if
 					G.P_CENTERS[current_card].set == "Voucher"
-					and G.P_CENTERS[current_card].unlocked
-					and not G.GAME.banned_keys[current_card]
+					and G.DEBUG_POINTER or (G.P_CENTERS[current_card].unlocked
+					and not G.GAME.banned_keys[current_card])
 				then
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
@@ -4283,8 +4284,8 @@ local pointer = {
 				end
 				if
 					G.P_CENTERS[current_card].set == "Booster"
-					and not G.GAME.banned_keys[current_card]
-					and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card("j_jen_p03") ~= 0)
+					and (G.DEBUG_POINTER or (not G.GAME.banned_keys[current_card]
+					and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card("j_jen_p03") ~= 0)))
 					and G.STATE ~= G.STATES.TAROT_PACK
 					and G.STATE ~= G.STATES.SPECTRAL_PACK
 					and G.STATE ~= G.STATES.STANDARD_PACK
@@ -4303,6 +4304,7 @@ local pointer = {
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
+					G.DEBUG_POINTER = false
 					return
 				end
 			end
@@ -4317,7 +4319,7 @@ local pointer = {
 					current_card = i
 				end
 			end
-			if current_card and not G.P_CENTERS[current_card] and not G.GAME.banned_keys[current_card] then
+			if current_card and (G.DEBUG_POINTER or (not G.P_CENTERS[current_card] and not G.GAME.banned_keys[current_card])) then
 				local created = false
 				local t = Tag(current_card, nil, "Big")
 				add_tag(t)
@@ -4340,6 +4342,7 @@ local pointer = {
 				G.CHOOSE_CARD:remove()
 				G.GAME.USING_CODE = false
 				G.GAME.USING_POINTER = false
+				G.DEBUG_POINTER = false
 				return
 			end
 			for i, v in pairs(G.P_BLINDS) do
@@ -4359,7 +4362,7 @@ local pointer = {
 				current_card
 				and not G.P_CENTERS[current_card]
 				and not G.P_TAGS[current_card]
-				and not G.GAME.banned_keys[current_card]
+				and (G.DEBUG_POINTER or not G.GAME.banned_keys[current_card])
 			then
 				local created = false
 				if not G.GAME.blind or (G.GAME.blind.name == "" or not G.GAME.blind.blind_set) then
@@ -4417,6 +4420,7 @@ local pointer = {
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
+					G.DEBUG_POINTER = false
 				end
 			end
 			if not current_card then -- if card isn't created yet, try playing cards
@@ -4610,6 +4614,7 @@ local pointer = {
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
+					G.DEBUG_POINTER = false
 
 					G.E_MANAGER:add_event(Event({
 						func = function()
