@@ -3,7 +3,7 @@
 --Redefine these here because they're always used
 Cryptid.base_values = {}
 function Cryptid.calculate_misprint(initial, min, max)
-	local big_a = (type(initial) ~= "table" and to_big(initial)) or initial
+	local big_initial = (type(initial) ~= "table" and to_big(initial)) or initial
 	local big_min = (type(min) ~= "table" and to_big(min)) or min
 	local big_max = (type(max) ~= "table" and to_big(max)) or max
 
@@ -13,7 +13,7 @@ function Cryptid.calculate_misprint(initial, min, max)
 		big_max
 	)
 
-	local calc = big_a * grow
+	local calc = big_initial * grow
 
 	if calc > to_big(-1e100) and calc < to_big(1e100) then
 		calc = to_number(calc)
