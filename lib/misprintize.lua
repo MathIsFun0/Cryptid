@@ -103,14 +103,14 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 end
 function Cryptid.misprintize_val(val, override, big)
 	if is_number(val) then
+		
+
 		val = Cryptid.sanity_check(
 			cry_format(
-				val
-					* Cryptid.log_random(
-						pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-						override and override.min or G.GAME.modifiers.cry_misprint_min,
-						override and override.max or G.GAME.modifiers.cry_misprint_max
-					),
+				Cryptid.calculate_misprint(
+					val, 
+					override and override.min or G.GAME.modifiers.cry_misprint_min,
+					override and override.max or G.GAME.modifiers.cry_misprint_max),
 				"%.2g"
 			),
 			big
