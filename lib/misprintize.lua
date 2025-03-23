@@ -57,20 +57,6 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 							),
 						big
 					)
-
-					-- tbl[k] = Cryptid.sanity_check(
-					-- 	clear and Cryptid.base_values[name][k]
-					-- 		or cry_format(
-					-- 			(stack and tbl[k] or Cryptid.base_values[name][k])
-					-- 			* Cryptid.log_random(
-					-- 					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-					-- 					override and override.min or G.GAME.modifiers.cry_misprint_min,
-					-- 					override and override.max or G.GAME.modifiers.cry_misprint_max
-					-- 				),
-					-- 			"%.2g"
-					-- 		),
-					-- 	big
-					-- )
 				end
 			else
 				for _k, _v in pairs(tbl[k]) do
@@ -108,20 +94,6 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 								),
 							big
 						)
-
-						-- tbl[k][_k] = Cryptid.sanity_check(
-						-- 	clear and Cryptid.base_values[name][k][_k]
-						-- 		or cry_format(
-						-- 			(stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
-						-- 				* Cryptid.log_random(
-						-- 					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-						-- 					override and override.min or G.GAME.modifiers.cry_misprint_min,
-						-- 					override and override.max or G.GAME.modifiers.cry_misprint_max
-						-- 				),
-						-- 			"%.2g"
-						-- 		),
-						-- 	big
-						-- )
 					end
 				end
 			end
