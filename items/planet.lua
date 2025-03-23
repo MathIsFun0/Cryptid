@@ -766,7 +766,7 @@ local nstar = {
 
 		--Add +1 to amount of neutron stars used this run
 		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-		local neutronhand = Cryptid.get_random_hand() --Random poker hand
+		local neutronhand = Cryptid.get_random_hand(nil, "nstar" .. G.GAME.round_resets.ante) --Random poker hand
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize(neutronhand, "poker_hands"),
 			chips = G.GAME.hands[neutronhand].chips,
