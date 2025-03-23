@@ -560,9 +560,6 @@ Cryptid.big_num_whitelist = {
 	j_cry_stella_mortis = true,
 	j_cry_hugem = true,
 	j_cry_mprime = true,
-	j_cry_oil_lamp = true,
-	j_cry_compound_interest = true,
-	j_cry_googol_play = true,
 }
 
 function Cryptid.is_card_big(joker)
