@@ -725,6 +725,7 @@ function Controller:key_press_update(key, dt)
 	then
 		G.GAME.USING_CODE = true
 		G.GAME.USING_POINTER = true
+		G.DEBUG_POINTER = true
 		G.ENTERED_CARD = ""
 		G.CHOOSE_CARD = UIBox({
 			definition = create_UIBox_pointer(card),

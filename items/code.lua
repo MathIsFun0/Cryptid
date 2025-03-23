@@ -3900,6 +3900,7 @@ local pointer = {
 			G.CHOOSE_CARD:remove()
 			G.GAME.USING_CODE = false
 			G.GAME.USING_POINTER = false
+			G.DEBUG_POINTER = false
 		end
 		G.FUNCS.pointer_apply_previous = function()
 			if G.PREVIOUS_ENTERED_CARD then
@@ -4043,6 +4044,12 @@ local pointer = {
 			notebook = "the motebook",
 			motebook = "the motebook",
 			mcdonalds = "fast food m",
+			code = "code joker",
+			copypaste = "copy/paste",
+			translucent = "translucent joker",
+			circulus = "circulus pistoris",
+			macabre = "macabre joker",
+			cat_owl = "cat owl",
 			--Vouchers
 			["overstock+"] = "overstock plus",
 			directorscut = "director's cut",
@@ -4144,12 +4151,6 @@ local pointer = {
 			box = "the box",
 			windmill = "the windmill",
 			clock = "the clock",
-			code = "code joker",
-			copypaste = "copy/paste",
-			translucent = "translucent joker",
-			circulus = "circulus pistoris",
-			macabre = "macabre joker",
-			cat_owl = "cat owl",
 			-- Jen's Almanac aliases
 			freddy = "freddy snowshoe",
 			paupovlin = "paupovlin revere",
@@ -4163,23 +4164,53 @@ local pointer = {
 			gourmand = "the gourmand",
 			saint = "the saint",
 			genius = "the genius",
+			r_fool = "the genius",
 			scientist = "the scientist",
-			peasant = "the peasant",
-			adversary = "the adversary",
-			rivals = "the rivals",
-			hitchhiker = "the hitchhiker",
-			angel = "the angel",
-			collapse = "the collapse",
+			r_magician = "the scientist",
 			lowlaywoman = "the low laywoman",
 			laywoman = "the low laywoman",
+			r_priestess = "the low laywoman",
+			peasant = "the peasant",
+			r_empress = "the peasant",
 			servant = "the servant",
+			r_emperor = "the servant",
+			adversary = "the adversary",
+			r_hierophant = "the adversary",
+			rivals = "the rivals",
+			r_lovers = "the rivals",
+			hitchhiker = "the hitchhiker",
+			r_chariot = "the hitchhiker",
+			injustice = "c_jen_reverse_justice",
+			r_justice = "c_jen_reverse_justice",
 			extrovert = "the extrovert",
+			r_hermit = "the extrovert",
 			discofpenury = "the disc of penury",
+			r_wheeloffortune = "the disc of penury",
+			r_wof = "the disc of penury",
+			infirmity = "infirmity",
+			r_strength = "infirmity",
+			zen = "zen",
+			r_hangedman = "zen",
+			life = "life",
+			r_death = "life",
+			prodigality = "prodigality",
+			r_temperance = "prodigality",
+			angel = "the angel",
+			r_devil = "the angel",
+			collapse = "the collapse",
+			r_tower = "the collapse",
 			flash = "the flash",
+			r_star = "the flash",
 			eclipsespectral = "c_jen_reverse_moon",
 			eclipsetorat = "c_jen_reverse_moon",
+			r_moon = "c_jen_reverse_moon",
 			darkness = "the darkness",
-			void = "the void",
+			r_sun = "the darkness",
+			cunctation = "cunctation",
+			r_judgement = "cunctation",
+			desolate = "desolate",
+			r_world = "desolate",
+			-- jen tokens
 			topuptoken = "top-up token",
 			sagittarius = "sagittarius a*",
 			["sagitarius a*"] = "sagittarius a*", --minor spelling mistakes are forgiven
@@ -4220,10 +4251,15 @@ local pointer = {
 				local created = false
 				if
 					G.P_CENTERS[current_card].set == "Joker"
-					and G.P_CENTERS[current_card].unlocked
-					and not G.GAME.banned_keys[current_card]
-					and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
-					and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
+					and (
+						G.DEBUG_POINTER
+						or (
+							G.P_CENTERS[current_card].unlocked
+							and not G.GAME.banned_keys[current_card]
+							and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
+							and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
+						)
+					)
 				then
 					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
 					card:add_to_deck()
@@ -4232,8 +4268,13 @@ local pointer = {
 				end
 				if
 					G.P_CENTERS[current_card].consumeable
-					and G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
-					and not G.GAME.banned_keys[current_card]
+					and (
+						G.DEBUG_POINTER
+						or (
+							G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
+							and not G.GAME.banned_keys[current_card]
+						)
+					)
 				then
 					local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 					if card.ability.name and card.ability.name == "cry-Chambered" then
@@ -4244,9 +4285,8 @@ local pointer = {
 					created = true
 				end
 				if
-					G.P_CENTERS[current_card].set == "Voucher"
-					and G.P_CENTERS[current_card].unlocked
-					and not G.GAME.banned_keys[current_card]
+					G.P_CENTERS[current_card].set == "Voucher" and G.DEBUG_POINTER
+					or (G.P_CENTERS[current_card].unlocked and not G.GAME.banned_keys[current_card])
 				then
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
@@ -4283,8 +4323,9 @@ local pointer = {
 				end
 				if
 					G.P_CENTERS[current_card].set == "Booster"
-					and not G.GAME.banned_keys[current_card]
-					and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card("j_jen_p03") ~= 0)
+					and (G.DEBUG_POINTER or (not G.GAME.banned_keys[current_card] and (G.P_CENTERS[current_card].name ~= "Exotic Buffoon Pack" or #SMODS.find_card(
+						"j_jen_p03"
+					) ~= 0)))
 					and G.STATE ~= G.STATES.TAROT_PACK
 					and G.STATE ~= G.STATES.SPECTRAL_PACK
 					and G.STATE ~= G.STATES.STANDARD_PACK
@@ -4303,6 +4344,7 @@ local pointer = {
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
+					G.DEBUG_POINTER = false
 					return
 				end
 			end
@@ -4317,7 +4359,10 @@ local pointer = {
 					current_card = i
 				end
 			end
-			if current_card and not G.P_CENTERS[current_card] and not G.GAME.banned_keys[current_card] then
+			if
+				current_card
+				and (G.DEBUG_POINTER or (not G.P_CENTERS[current_card] and not G.GAME.banned_keys[current_card]))
+			then
 				local created = false
 				local t = Tag(current_card, nil, "Big")
 				add_tag(t)
@@ -4340,6 +4385,7 @@ local pointer = {
 				G.CHOOSE_CARD:remove()
 				G.GAME.USING_CODE = false
 				G.GAME.USING_POINTER = false
+				G.DEBUG_POINTER = false
 				return
 			end
 			for i, v in pairs(G.P_BLINDS) do
@@ -4359,7 +4405,7 @@ local pointer = {
 				current_card
 				and not G.P_CENTERS[current_card]
 				and not G.P_TAGS[current_card]
-				and not G.GAME.banned_keys[current_card]
+				and (G.DEBUG_POINTER or not G.GAME.banned_keys[current_card])
 			then
 				local created = false
 				if not G.GAME.blind or (G.GAME.blind.name == "" or not G.GAME.blind.blind_set) then
@@ -4417,6 +4463,7 @@ local pointer = {
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
+					G.DEBUG_POINTER = false
 				end
 			end
 			if not current_card then -- if card isn't created yet, try playing cards
@@ -4610,6 +4657,7 @@ local pointer = {
 					G.CHOOSE_CARD:remove()
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
+					G.DEBUG_POINTER = false
 
 					G.E_MANAGER:add_event(Event({
 						func = function()
