@@ -37,7 +37,7 @@ local test = {
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.joker_main then
 			return {
 				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
 				chip_mod = card.ability.extra.chips,
@@ -108,20 +108,15 @@ local test3 = {
 	pos = { x = 2, y = 1 },
 	rarity = 1,
 	cost = 2,
+	blueprint_compat = true,
 	discovered = true,
 	atlas = "atlastwo",
 	loc_txt = {
-		name = "Loc var man B)",
+		name = "function dump man B)",
 		text = {
-			"{C:attention}#1#",
-			"{C:green}#2#",
-			"{C:inactive}#3##4##5#",
+			"{C:attention}What does the fox say?",
 		},
 	},
-	loc_vars = function(self, info_queue, card)
-		local a, b, c, d, e = 1, 2, 3, 4, 5
-		return { vars = { a, b, c, d, e } }
-	end,
 	cry_credits = {
 		idea = {
 			"Jevonn",
@@ -133,6 +128,45 @@ local test3 = {
 			"Jevonn",
 		},
 	},
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.individual and not context.repetition then
+			Cryptid.suit_level_up(context.blueprint_card or card, nil, 1, {
+				"High Card",
+				"Pair",
+				"Two Pair",
+				"Three of a Kind",
+				"Straight",
+				"Flush",
+				"Full House",
+				"Four of a Kind",
+				"Straight Flush",
+			}, true)
+		elseif context.pre_discard and not context.hook then
+			local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+				G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+			if disp_text == "cry-Cluster Bulwark" then
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex") }
+				)
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+					handname = localize(text, "poker_hands"),
+					chips = G.GAME.hands[text].chips,
+					mult = G.GAME.hands[text].mult,
+					level = G.GAME.hands[text].level,
+				})
+				level_up_hand(context.blueprint_card or card, text, nil, 6)
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+					{ mult = 0, chips = 0, handname = "", level = "" }
+				)
+			end
+		end
+	end,
 }
 local test4 = {
 	object_type = "Joker",
@@ -161,7 +195,6 @@ local test4 = {
 	end,
 	update = function(self, card, front)
 		if G.STAGE == G.STAGES.RUN then
-			G.GAME.round_resets.discards = G.GAME.round_resets.discards + 1
 			other_joker = G.jokers.cards[1]
 			if other_joker then
 				if G.GAME.current_round.discards_used % 3 == 0 then
