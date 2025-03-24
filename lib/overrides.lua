@@ -191,7 +191,7 @@ function reset_castle_card()
 	G.GAME.current_round.cry_dropshot_card.suit = "Spades"
 	local valid_castle_cards = {}
 	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= "Stone Card" then
+		if not SMODS.has_no_suit(v) then
 			valid_castle_cards[#valid_castle_cards + 1] = v
 		end
 	end
