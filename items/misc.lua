@@ -41,7 +41,7 @@ local meme1 = {
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
-				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+				return create_card("Meme", G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
@@ -98,7 +98,7 @@ local meme2 = {
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memetwo_" .. G.GAME.round_resets.ante) > 0.997 then
-				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+				return create_card("Meme", G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memetwo")
@@ -155,7 +155,7 @@ local meme3 = {
 			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
 		then
 			if pseudorandom("memethree_" .. G.GAME.round_resets.ante) > 0.997 then
-				return create_card(nil, G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
+				return create_card("Meme", G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
 		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memethree")
