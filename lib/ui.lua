@@ -242,7 +242,7 @@ function Card:move(dt)
 end
 
 function Card:get_banned_force_popup_areas()
-	return {G.pack_cards}
+	return { G.pack_cards }
 end
 -- This defines when we should show a card's description even when it's not hovered
 function Card:force_popup()
