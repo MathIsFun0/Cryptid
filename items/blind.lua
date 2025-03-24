@@ -427,7 +427,7 @@ local hammer = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				card.ability.effect ~= "Stone Card"
+				not SMODS.has_no_rank(card)
 				and (
 					card.base.value == "3"
 					or card.base.value == "5"
@@ -462,7 +462,7 @@ local magic = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				card.ability.effect ~= "Stone Card"
+				not SMODS.has_no_rank(card)
 				and (
 					card.base.value == "2"
 					or card.base.value == "4"
