@@ -9,6 +9,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
 				if
 					is_number(tbl[k])
+					and not (k == "perish_tally")
 					and not (k == "id")
 					and not (k == "colour")
 					and not (k == "suit_nominal")
@@ -43,7 +44,6 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
-						and not (k == "perish_tally")
 						and not (k == "colour")
 						and not (_k == "suit_nominal")
 						and not (_k == "base_nominal")
