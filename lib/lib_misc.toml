@@ -1,0 +1,259 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Make the splash screen more jolly
+# Requires "Custom Main Menu" config to be enabled
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_joker'])"
+position = "after"
+payload = '''
+if Cryptid_config.menu then
+	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'],{bypass_discovery_center = true, bypass_discovery_ui = true})
+end
+'''
+match_indent = true
+
+# Make cards in splash screen CCD cards
+# Disabling this because it caused fps drops on profiles with nothing discovered
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if math.random() > 0.8 then card.sprite_facing = 'back'; card.facing = 'back' end"
+position = "before"
+payload = '''
+--if Cryptid.random_consumable then card:set_ability(Cryptid.random_consumable('cry_splash',{"no_grc"},nil,nil,true), true, nil) end
+'''
+match_indent = true
+
+# Show Glitched Edition to confirm Cryptid is Active if custom main menu is enabled
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "replace_card.states.visible = false"
+position = "before"
+payload = '''
+if Cryptid_config.menu then
+	replace_card:set_edition(G.P_CENTERS.e_cry_glitched and 'e_cry_glitched' or 'e_negative',true,true)
+end
+'''
+match_indent = true
+
+# Patch related crash
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not initial then G.GAME.blind:debuff_card(self) end"
+position = "at"
+payload = "if not initial and G.GAME and G.GAME.blind then G.GAME.blind:debuff_card(self) end"
+match_indent = true
+
+# Draw midground layer
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.config.center.soul_pos and (self.config.center.discovered or self.bypass_discovery_center) then"
+position = "after"
+payload = '''
+if self.config.center.soul_pos and self.config.center.soul_pos.extra and (self.config.center.discovered or self.bypass_discovery_center) then
+    local scale_mod = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+    local rotate_mod = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+    self.children.floating_sprite2:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
+    self.children.floating_sprite2:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
+end
+'''
+match_indent = true
+
+
+# Custom variables in info queue
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end)"
+position = "after"
+payload = "if _c.specific_vars then specific_vars = _c.specific_vars end"
+match_indent = true
+
+# Fix not all cards returning to hand on big hands
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "{card_limit = 500, type = 'discard'})"
+position = "at"
+payload = "{card_limit = 1e308, type = 'discard'})"
+match_indent = true
+
+# When hand size exceeds deck size, space the cards as if the hand size was equal to the deck size
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "function CardArea:align_cards()"
+position = "after"
+payload = '''
+    if self.config.type == 'hand' then
+        self.config.temp_limit = math.min(self.config.card_limit, #G.playing_cards)
+    end
+'''
+match_indent = true
+
+# Crash fix
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
+position = "at"
+payload = "if not G.SAVED_GAME or not G.SAVED_GAME.VERSION or G.SAVED_GAME.VERSION < '0.9.2' then"
+match_indent = true
+
+# Register banned bosses for rush hour
+# Also initializes disabled/enabled cards
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "set_profile_progress()"
+position = "before"
+payload = '''
+for i = 1, #G.CHALLENGES do
+    if (G.CHALLENGES[i].id == 'c_cry_rush_hour' or G.CHALLENGES[i].id == 'c_cry_rush_hour_ii' or G.CHALLENGES[i].id == 'c_cry_rush_hour_iii') and #G.CHALLENGES[i].restrictions.banned_other == 0 then
+        for k, v in pairs(G.P_BLINDS) do
+            if k ~= "bl_cry_clock" and k ~= "bl_cry_lavender_loop" and v.boss then
+                G.CHALLENGES[i].restrictions.banned_other[#G.CHALLENGES[i].restrictions.banned_other+1] = {id = k, type = 'blind'}
+            end
+        end
+    end
+end
+'''
+match_indent = true
+
+# Prevent Jokers from spitting empty messages
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "text = extra.message or text"
+position = "after"
+payload = "if not text or text == '' then return end"
+match_indent = true
+
+# Add default pool value for Consumeables
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'else _pool[#_pool + 1] = "j_joker"'
+position = "before"
+payload = '''elseif _type == 'Consumeables' then _pool[#_pool + 1] = "c_ceres"'''
+match_indent = true
+
+# hand size forgiveness if playing negative or antimatter deck (someone please fix)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "function Game:update_draw_to_hand(dt)"
+position = "after"
+payload = '''
+if G.GAME.selected_back and (G.GAME.selected_back.name == 'cry--Negative Deck' or G.GAME.selected_back.name == 'cry-Antimatter') and G.hand.config.card_limit <= 0 then	-- 'cry--Negative Deck'... sure
+	G.hand.config.card_limit = 1
+end
+'''
+match_indent = true
+
+# init Cryptid global through lovely
+# so other mods can add things to obj pools
+# and define some stub functions so that the game does not immediately crash when talisman isn't loaded
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''function love.load()'''
+position = "before"
+payload = '''
+Cryptid = {}
+Cryptid.aliases = {}
+function cry_format(...)
+	return ...
+end
+
+-- These ones are deprecated, they do not do anything and are just here to prevent crashes
+Cryptid.memepack = {}
+Cryptid.food = {}
+Cryptid.M_jokers = {}
+Cryptid.Megavouchers = {}
+'''
+match_indent = true
+
+# Adds cry_creating_card event
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+    check_for_unlock({type = 'have_edition'})
+end
+'''
+position = "after"
+payload = '''
+SMODS.calculate_context{cry_creating_card = true, card = card}
+'''
+match_indent = true
+
+# plural handler (annoyingly fragile overwrite)
+# also i pass the whole vars here, even though it's inefficient, just because it looks better
+# whatever
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+position = "at"
+payload = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or (Cryptid.pluralize and Cryptid.pluralize(subpart[1], args.vars)) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+match_indent = true
+
+# prevent misprint crashing when big
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+for i = self.ability.extra.min, self.ability.extra.max do
+    r_mults[#r_mults+1] = tostring(i)
+end
+'''
+position = "at"
+payload = '''
+if self.ability.extra.max - self.ability.extra.min < 500 then
+	for i = self.ability.extra.min, self.ability.extra.max do
+	    r_mults[#r_mults+1] = tostring(i)
+	end
+else
+	for i = 1, 50 do
+		r_mults[#r_mults+1] = tostring(math.random(self.ability.extra.min, self.ability.extra.max))
+	end
+end
+
+'''
+match_indent = true
+
+# handle banned playing cards
+# this must patch into pseudorandom_element to not break Steamodded in_pool logic
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if keep then"
+position = "before"
+payload = '''
+if G.GAME and G.GAME.cry_banned_pcards and G.GAME.cry_banned_pcards[k] then
+	keep = false
+end
+'''
+match_indent = true
+
+# Cross-Mod Content - allow Cryptid to load atlas/sound/shader files from other mods
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = "self.full_path = (self.mod and self.mod.path or SMODS.path) .."
+position = "at"
+payload = "self.full_path = (self.mod_path or self.mod and self.mod.path or SMODS.path) .."
+match_indent = true
