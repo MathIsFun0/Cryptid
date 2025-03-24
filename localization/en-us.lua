@@ -2700,6 +2700,14 @@ return {
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
+			j_cry_wonka_bar = {
+				name = "Wonka Bar",
+				text = {
+					"Sell this card to",
+					"permanently gain {C:attention}+#1#{}",
+					"card selection limit",
+				},
+			},
 			j_cry_wrapped = {
 				name = "Wrapped Candy",
 				text = {
