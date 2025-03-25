@@ -4155,9 +4155,10 @@ local pointer = {
 			freddy = "freddy snowshoe",
 			paupovlin = "paupovlin revere",
 			poppin = "paupovlin revere",
-			jen = "jen walter",
 			dandy = 'Dandicus "Dandy" Dancifer',
-			--should I add "reverse ___" prefixes for the reverse tarots?
+			jen = "jen walter",
+			jen2 = "Jen Walter the Wondergeist",
+			jen3 = "Jen Walter the Wondergeist (Ascended)",
 			survivor = "the survivor",
 			monk = "the monk",
 			hunter = "the hunter",
