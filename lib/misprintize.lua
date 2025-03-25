@@ -140,6 +140,7 @@ function Cryptid.sanity_check(val, is_big)
 		if val < to_big(-1e300) then
 			return -1e300
 		end
+		return to_number(val)
 	end
 	return val
 end
