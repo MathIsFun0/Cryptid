@@ -1610,6 +1610,7 @@ return {
 			j_cry_kidnap = {
 				name = "Bắt Cóc",
 				text = {
+					"{C:red}Outdated Description{}",
 					"Nhận {C:money}$#2#{} ở cuối ván",
 					"Tiền thưởng tăng thêm {C:money}$#1#{}",
 					"khi một Joker {C:attention}+Nhân Tay Bài{} hoặc",
