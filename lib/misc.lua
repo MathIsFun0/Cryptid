@@ -512,54 +512,8 @@ function set_profile_progress()
 	end
 end
 
-Cryptid.big_num_whitelist = {
-	j_ride_the_bus = true,
-	j_egg = true,
-	j_runner = true,
-	j_ice_cream = true,
-	j_constellation = true,
-	j_green_joker = true,
-	j_red_card = true,
-	j_madness = true,
-	j_square = true,
-	j_vampire = true,
-	j_hologram = true,
-	j_obelisk = true,
-	j_turtle_bean = true,
-	j_lucky_cat = true,
-	j_flash = true,
-	j_popcorn = true,
-	j_trousers = true,
-	j_ramen = true,
-	j_castle = true,
-	j_campfire = true,
-	j_throwback = true,
-	j_glass = true,
-	j_wee = true,
-	j_hit_the_road = true,
-	j_caino = true,
-	j_yorick = true,
-	-- Once all Cryptid Jokers get support for this, these can be removed
-	j_cry_dropshot = true,
-	j_cry_wee_fib = true,
-	j_cry_whip = true,
-	j_cry_pickle = true,
-	j_cry_chili_pepper = true,
-	j_cry_cursor = true,
-	j_cry_jimball = true,
-	j_cry_eternalflame = true,
-	j_cry_fspinner = true,
-	j_cry_krustytheclown = true,
-	j_cry_antennastoheaven = true,
-	j_cry_mondrian = true,
-	j_cry_spaceglobe = true,
-	j_cry_m = true,
-	j_cry_exponentia = true,
-	j_cry_crustulum = true,
-	j_cry_primus = true,
-	j_cry_stella_mortis = true,
-	j_cry_hugem = true,
-	j_cry_mprime = true,
+Cryptid.big_num_blacklist = {
+	-- empty for now add more later
 }
 
 function Cryptid.is_card_big(joker)
@@ -567,7 +521,16 @@ function Cryptid.is_card_big(joker)
 	if not center then
 		return false
 	end
-	return Cryptid.big_num_whitelist[center.key or "Nope!"] --[[or
+
+	print(center.immutable)
+
+	if center.immutable and center.immutable == true then
+		return false
+	end
+
+	local in_blacklist = Cryptid.big_num_blacklist[center.key or "Nope!"]
+
+	return Cryptid.big_num_blacklist[center.key or "Nope!"] or false--[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
 
