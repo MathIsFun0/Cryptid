@@ -6686,6 +6686,11 @@ local kittyprinter = {
 	end,
 }
 local kidnap = {
+	dependencies = {
+ 		items = {
+ 			"set_cry_misc_joker",
+ 		},
+ 	},
 	object_type = "Joker",
 	name = "cry-kidnap",
 	key = "kidnap",
