@@ -516,21 +516,113 @@ Cryptid.big_num_blacklist = {
 	-- empty for now add more later
 }
 
+--[[
+	List of immutable jokers:
+	Cryptid:
+		Epic:
+			sync_catalyst
+			canvas
+			error_joker
+			M
+			double_scale
+			curse_sob
+			bonusjoker
+			altgoogol
+			soccer
+
+		Exotic:
+			speculo
+			effarcire
+			circulus_pistoris
+			gemino
+			verisimile
+
+		M:
+			jollysus
+			bubblem
+			loopy
+			reverse
+
+		Misc_Jokers:
+			happyhouse
+			maximized
+			queensgambit
+			seal_the_deal
+			maze
+			panopticon
+			happy
+			translucent
+			kscope
+			oldinvisible
+			necromancer
+			lebaron_james
+			huntingseason
+			eyeofhagane
+		
+		Spooky:
+			wrapped
+			choco_dice
+			potion
+			spy
+			
+	Base:
+		Fortune Teller
+		Shoot the Moon
+		Riff-raff
+		Chaos the Clown
+		Dusk
+		Mime
+		Hack
+		Sock and Buskin
+		Invisible Joker
+		Swashbuckler
+		Smeared Joker
+		Certificate
+		Mr. Bones
+		Diet Cola
+		Luchador
+		Midas Mask
+		Shortcut
+		Seance
+		Superposition
+		Sixth Sense
+		DNA
+		Splash
+		Supernova
+		Pareidolia
+		Raised Fist
+		Marble Joker
+		Four Fingers
+		Joker Stencil
+		Showman
+		Blueprint
+		Oops! All 6s
+		Brainstorm
+		Cartomancer
+		Astronomer
+		Burnt Joker
+		Chicot
+		Perkeo
+]]
+
 function Cryptid.is_card_big(joker)
 	local center = joker.config and joker.config.center
 	if not center then
 		return false
 	end
 
-	print(center.immutable)
+	print('center.immutable '..tostring(center.immutable)..' for '..center.key)
 
 	if center.immutable and center.immutable == true then
+		print('returning false for '..center.key)
 		return false
 	end
 
-	local in_blacklist = Cryptid.big_num_blacklist[center.key or "Nope!"]
+	local in_blacklist = not (Cryptid.big_num_blacklist[center.key or "Nope!"] or false)
 
-	return Cryptid.big_num_blacklist[center.key or "Nope!"] or false--[[or
+	print('returning '..tostring(in_blacklist)..' for '..center.key)
+
+	return in_blacklist --[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
 
