@@ -517,7 +517,7 @@ Cryptid.big_num_blacklist = {
 }
 
 --[[
-	List of immutable jokers:
+	List of immutable jokers (these will return false for is_card_big):
 	Cryptid:
 		Epic:
 			sync_catalyst
@@ -535,7 +535,6 @@ Cryptid.big_num_blacklist = {
 			effarcire
 			circulus_pistoris
 			gemino
-			verisimile
 
 		M:
 			jollysus
@@ -562,9 +561,7 @@ Cryptid.big_num_blacklist = {
 		Spooky:
 			wrapped
 			choco_dice
-			potion
-			spy
-			
+
 	Base:
 		Fortune Teller
 		Shoot the Moon
@@ -611,18 +608,13 @@ function Cryptid.is_card_big(joker)
 		return false
 	end
 
-	print('center.immutable '..tostring(center.immutable)..' for '..center.key)
-
 	if center.immutable and center.immutable == true then
-		print('returning false for '..center.key)
 		return false
 	end
 
-	local in_blacklist = not (Cryptid.big_num_blacklist[center.key or "Nope!"] or false)
+	local in_blacklist = Cryptid.big_num_blacklist[center.key or "Nope!"] or false
 
-	print('returning '..tostring(in_blacklist)..' for '..center.key)
-
-	return in_blacklist --[[or
+	return not in_blacklist --[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
 

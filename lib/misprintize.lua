@@ -133,6 +133,14 @@ function Cryptid.sanity_check(val, is_big)
 	if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 		return 1e300
 	end
+	if type(val) == "table" then
+		if val > to_big(1e300) then
+			return 1e300
+		end
+		if val < to_big(-1e300) then
+			return -1e300
+		end
+	end
 	return val
 end
 function Cryptid.misprintize(card, override, force_reset, stack)
