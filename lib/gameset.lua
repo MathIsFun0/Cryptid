@@ -1183,6 +1183,12 @@ SMODS.ContentSet({
 	key = "m",
 	atlas = "atlasepic",
 	pos = { x = 3, y = 1 }, --m
+	cry_order = -23,
+})
+SMODS.ContentSet({
+	key = "meme",
+	atlas = "atlastwo",
+	pos = { x = 2, y = 4 }, --Happy House
 	cry_order = -22,
 })
 SMODS.ContentSet({
@@ -1215,7 +1221,7 @@ SMODS.ContentSet({
 	key = "deck",
 	atlas = "atlasdeck",
 	pos = { x = 4, y = 5 }, --Critical Deck
-	cry_order = -23,
+	cry_order = -24,
 })
 SMODS.ContentSet({
 	key = "spooky",
@@ -1240,7 +1246,7 @@ SMODS.ContentSet({
 	key = "misc",
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 }, --Echo Card
-	cry_order = -22,
+	cry_order = -21,
 })
 SMODS.ContentSet({
 	key = "misc_joker",

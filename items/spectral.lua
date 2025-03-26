@@ -604,6 +604,78 @@ local analog = {
 		ease_ante(card.ability.ante)
 	end,
 }
+local typhoon = {
+	cry_credits = {
+		idea = {
+			"stupid",
+		},
+		art = {
+			"stupid",
+		},
+		code = {
+			"stupid",
+		},
+	},
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+			"cry_azure",
+		},
+	},
+	set = "Spectral",
+	name = "cry-Typhoon",
+	key = "typhoon",
+	order = 8,
+	config = {
+		-- This will add a tooltip.
+		mod_conv = "cry_azure_seal",
+		-- Tooltip args
+		seal = { planets_amount = 3 },
+		max_highlighted = 1,
+	},
+	loc_vars = function(self, info_queue, center)
+		-- Handle creating a tooltip with set args.
+		info_queue[#info_queue + 1] =
+			{ set = "Other", key = "cry_azure_seal", specific_vars = { self.config.seal.planets_amount } }
+		return { vars = { center.ability.max_highlighted } }
+	end,
+	cost = 4,
+	atlas = "atlasnotjokers",
+	pos = { x = 0, y = 4 },
+	use = function(self, card, area, copier) --Good enough
+		local used_consumable = copier or card
+		for i = 1, #G.hand.highlighted do
+			local highlighted = G.hand.highlighted[i]
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					highlighted:juice_up(0.3, 0.5)
+					return true
+				end,
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.1,
+				func = function()
+					if highlighted then
+						highlighted:set_seal("cry_azure")
+					end
+					return true
+				end,
+			}))
+			delay(0.5)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
+		end
+	end,
+}
 local summoning = {
 	cry_credits = {
 		idea = {
@@ -1138,6 +1210,7 @@ local spectrals = {
 	lock,
 	trade,
 	analog,
+	typhoon,
 	replica,
 	adversary,
 	chambered,
