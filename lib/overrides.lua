@@ -1032,12 +1032,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		Cryptid.misprintize(card)
 	end
-	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
+	if card.ability.set == "Joker" and G.GAME.modifiers.cry_common_value_quad then
 		if card.config.center.rarity == 1 then
 			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
 		end
 	end
-	if _type == "Joker" and G.GAME.modifiers.cry_uncommon_value_quad then
+	if card.ability.set == "Joker" and G.GAME.modifiers.cry_uncommon_value_quad then
 		if card.config.center.rarity == 2 then
 			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
 		end
