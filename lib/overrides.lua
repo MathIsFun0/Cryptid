@@ -191,7 +191,7 @@ function reset_castle_card()
 	G.GAME.current_round.cry_dropshot_card.suit = "Spades"
 	local valid_castle_cards = {}
 	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= "Stone Card" then
+		if not SMODS.has_no_suit(v) then
 			valid_castle_cards[#valid_castle_cards + 1] = v
 		end
 	end
@@ -714,7 +714,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		ps = Cryptid.predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)

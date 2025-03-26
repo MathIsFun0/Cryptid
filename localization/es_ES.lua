@@ -1701,6 +1701,7 @@ return {
 			j_cry_kidnap = {
 				name = "Secuestro",
 				text = {
+					"{C:red}Outdated Description{}",
 					"Gana {C:money}$#2#{} al final de la ronda",
 					"Aumenta el pago por {C:money}$#1#{}",
 					"cuando un comodín de {C:attention}tipo multi{}",

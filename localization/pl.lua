@@ -1278,6 +1278,7 @@ return {
 			j_cry_kidnap = {
 				name = "Porwanie",
 				text = {
+					"{C:red}Outdated Description{}",
 					"Zyskujesz {C:money}$#2#{} na końcu rundy",
 					"Wypłata rośnie o {C:money}$#1#{}",
 					"kiedy Joker {C:attention}mnożnikowy{} lub",

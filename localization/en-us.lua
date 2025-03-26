@@ -1720,10 +1720,10 @@ return {
 			j_cry_kidnap = {
 				name = "Kidnapping",
 				text = {
-					"Earn {C:money}$#2#{} at end of round",
-					"Increase payout by {C:money}$#1#{}",
-					"when a {C:attention}Type Mult{} or",
-					"{C:attention}Type Chips{} Joker is sold",
+					"Earn {C:money}$#1#{} at end of round",
+					"per unique {C:attention}Type Mult{} or",
+					"{C:attention}Type Chips{} Joker sold this run",
+					"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
 				},
 			},
 			j_cry_kittyprinter = {
@@ -2056,7 +2056,7 @@ return {
 				},
 			},
 			j_cry_notebook = {
-				name = "The Motebook",
+				name = "Motebook",
 				text = {
 					"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+#6#{} Joker",
 					"slot#<s>6# per {C:attention}reroll{} in the shop",
