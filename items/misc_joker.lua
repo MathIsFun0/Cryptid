@@ -6686,63 +6686,69 @@ local kittyprinter = {
 	end,
 }
 local kidnap = {
-	object_type = "Joker",
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
 		},
 	},
+	object_type = "Joker",
 	name = "cry-kidnap",
 	key = "kidnap",
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 1, money_mod = 3 },
+		extra = 4,
 	},
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
+		local value = 0
+		if G.GAME and G.GAME.jokers_sold then
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if
+					G.P_CENTERS[v].effect == "Type Mult"
+					or G.P_CENTERS[v].effect == "Cry Type Mult"
+					or G.P_CENTERS[v].effect == "Cry Type Chips"
+					or G.P_CENTERS[v].effect == "Boost Kidnapping"
+					or (
+						G.P_CENTERS[v].name == "Sly Joker"
+						or G.P_CENTERS[v].name == "Wily Joker"
+						or G.P_CENTERS[v].name == "Clever Joker"
+						or G.P_CENTERS[v].name == "Devious Joker"
+						or G.P_CENTERS[v].name == "Crafty Joker"
+					)
+				then
+					value = value + 1
+				end
+			end
+		end
+		return { vars = { center.ability.extra, center.ability.extra * value } }
 	end,
 	atlas = "atlasone",
-	calculate = function(self, card, context)
-		if
-			context.selling_card
-			and (
-				(
-					context.card.ability.name == "Sly Joker"
-					or context.card.ability.name == "Wily Joker"
-					or context.card.ability.name == "Clever Joker"
-					or context.card.ability.name == "Devious Joker"
-					or context.card.ability.name == "Crafty Joker"
-				)
-				or context.card.ability.effect == "Type Mult"
-				or context.card.ability.effect == "Cry Type Mult"
-				or context.card.ability.effect == "Cry Type Chips"
-				--[[
-				Other developers can add effect == "Boost Kidnapping"
-                to their joker config if they want it to boost kidnapping when sold
-				]]
-				--
-				or context.card.ability.effect == "Boost Kidnapping"
-				or context.card:is_jolly()
-			)
-			and not context.blueprint
-		then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("k_upgrade_ex"),
-					colour = G.C.MONEY,
-				}),
-			}
-		end
-	end,
 	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			return card.ability.extra.money
+		local value = 0
+		for _, v in ipairs(G.GAME.jokers_sold) do
+			if
+				G.P_CENTERS[v].effect == "Type Mult"
+				or G.P_CENTERS[v].effect == "Cry Type Mult"
+				or G.P_CENTERS[v].effect == "Cry Type Chips"
+				or G.P_CENTERS[v].effect == "Boost Kidnapping"
+				or (
+					G.P_CENTERS[v].name == "Sly Joker"
+					or G.P_CENTERS[v].name == "Wily Joker"
+					or G.P_CENTERS[v].name == "Clever Joker"
+					or G.P_CENTERS[v].name == "Devious Joker"
+					or G.P_CENTERS[v].name == "Crafty Joker"
+				)
+			then
+				value = value + 1
+			end
 		end
+		if value == 0 then
+			return
+		end
+		return card.ability.extra * value
 	end,
 	cry_credits = {
 		idea = {

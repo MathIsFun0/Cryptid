@@ -223,13 +223,34 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_kidnap"] = {
 		text = {
 			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
+			{ ref_table = "card.joker_display_values", ref_value = "extra" },
 		},
 		text_config = { colour = G.C.GOLD },
 		reminder_text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
 		calc_function = function(card)
+			local abc = 0
+			if G.GAME and G.GAME.jokers_sold then
+				for _, v in ipairs(G.GAME.jokers_sold) do
+					if
+						G.P_CENTERS[v].effect == "Type Mult"
+						or G.P_CENTERS[v].effect == "Cry Type Mult"
+						or G.P_CENTERS[v].effect == "Cry Type Chips"
+						or G.P_CENTERS[v].effect == "Boost Kidnapping"
+						or (
+							G.P_CENTERS[v].name == "Sly Joker"
+							or G.P_CENTERS[v].name == "Wily Joker"
+							or G.P_CENTERS[v].name == "Clever Joker"
+							or G.P_CENTERS[v].name == "Devious Joker"
+							or G.P_CENTERS[v].name == "Crafty Joker"
+						)
+					then
+						abc = abc + 1
+					end
+				end
+			end
+			card.joker_display_values.extra = card.ability.extra * abc
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}

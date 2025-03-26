@@ -29,32 +29,27 @@ local timantti = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["High Card"].level or 1
-		local leveltwo = G.GAME.hands["Pair"].level or 1
-		local levelthree = G.GAME.hands["Two Pair"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("High Card", "poker_hands"),
 				localize("Pair", "poker_hands"),
 				localize("Two Pair", "poker_hands"),
-				G.GAME.hands["High Card"].level,
-				G.GAME.hands["Pair"].level,
-				G.GAME.hands["Two Pair"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["High Card"].level),
+				number_format(G.GAME.hands["Pair"].level),
+				number_format(G.GAME.hands["Two Pair"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["High Card"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["High Card"].level)):to_number()]
+					),
+					(to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
+						math.min(7, G.GAME.hands["Pair"].level)
+					):to_number()]),
+					(
+						to_big(G.GAME.hands["Two Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Two Pair"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -113,32 +108,27 @@ local klubi = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["Three of a Kind"].level or 1
-		local leveltwo = G.GAME.hands["Straight"].level or 1
-		local levelthree = G.GAME.hands["Flush"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("Three of a Kind", "poker_hands"),
 				localize("Straight", "poker_hands"),
 				localize("Flush", "poker_hands"),
-				G.GAME.hands["Three of a Kind"].level,
-				G.GAME.hands["Straight"].level,
-				G.GAME.hands["Flush"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["Three of a Kind"].level),
+				number_format(G.GAME.hands["Straight"].level),
+				number_format(G.GAME.hands["Flush"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Three of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Three of a Kind"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Straight"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight"].level)):to_number()]
+					),
+					(to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
+						math.min(7, G.GAME.hands["Flush"].level)
+					):to_number()]),
+				},
 			},
 		}
 	end,
@@ -197,32 +187,28 @@ local sydan = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["Full House"].level or 1
-		local leveltwo = G.GAME.hands["Four of a Kind"].level or 1
-		local levelthree = G.GAME.hands["Straight Flush"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("Full House", "poker_hands"),
 				localize("Four of a Kind", "poker_hands"),
 				localize("Straight Flush", "poker_hands"),
-				G.GAME.hands["Full House"].level,
-				G.GAME.hands["Four of a Kind"].level,
-				G.GAME.hands["Straight Flush"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["Full House"].level),
+				number_format(G.GAME.hands["Four of a Kind"].level),
+				number_format(G.GAME.hands["Straight Flush"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Full House"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Full House"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Four of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Four of a Kind"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Straight Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight Flush"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -281,32 +267,28 @@ local lapio = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["Five of a Kind"].level or 1
-		local leveltwo = G.GAME.hands["Flush House"].level or 1
-		local levelthree = G.GAME.hands["Flush Five"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("Five of a Kind", "poker_hands"),
 				localize("Flush House", "poker_hands"),
 				localize("Flush Five", "poker_hands"),
-				G.GAME.hands["Five of a Kind"].level,
-				G.GAME.hands["Flush House"].level,
-				G.GAME.hands["Flush Five"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["Five of a Kind"].level),
+				number_format(G.GAME.hands["Flush House"].level),
+				number_format(G.GAME.hands["Flush Five"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Five of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Five of a Kind"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Flush House"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush House"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Flush Five"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush Five"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -372,17 +354,7 @@ local kaikki = {
 		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
 		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
 		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
+
 		return {
 			vars = {
 				localize("cry_Bulwark", "poker_hands"),
@@ -391,7 +363,20 @@ local kaikki = {
 				G.GAME.hands["cry_Bulwark"].level,
 				G.GAME.hands["cry_Clusterfuck"].level,
 				G.GAME.hands["cry_UltPair"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -1037,18 +1022,18 @@ local abelt = {
 		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_Bulwark"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
 		return {
 			vars = {
 				localize("cry_hand_bulwark"),
 				G.GAME.hands["cry_Bulwark"].level,
 				G.GAME.hands["cry_Bulwark"].l_mult,
 				G.GAME.hands["cry_Bulwark"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -1083,18 +1068,18 @@ local void = {
 		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_Clusterfuck"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
 		return {
 			vars = {
 				localize("cry_Clusterfuck"),
 				G.GAME.hands["cry_Clusterfuck"].level,
 				G.GAME.hands["cry_Clusterfuck"].l_mult,
 				G.GAME.hands["cry_Clusterfuck"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -1140,7 +1125,12 @@ local marsmoons = {
 				G.GAME.hands["cry_UltPair"].level,
 				G.GAME.hands["cry_UltPair"].l_mult,
 				G.GAME.hands["cry_UltPair"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
@@ -1175,18 +1165,18 @@ local universe = {
 		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_WholeDeck"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
 		return {
 			vars = {
 				localize("cry_UltPair"),
 				G.GAME.hands["cry_WholeDeck"].level,
 				G.GAME.hands["cry_WholeDeck"].l_mult,
 				G.GAME.hands["cry_WholeDeck"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,

@@ -177,7 +177,7 @@ target = "tag.lua"
 pattern = '''play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)'''
 position = "before"
 payload = '''
-if self.key == 'tag_cry_cat' then
+if self.key == 'tag_cry_cat' and not self.hide_ability then
 	play_sound('cry_meow'..math.random(4), 1.26, 0.12);
 end'''
 match_indent = true
