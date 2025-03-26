@@ -7864,59 +7864,70 @@ local eyeofhagane = {
 		art = { "Soren" },
 	},
 }
-local familiar_currency = { -- At the end of round: if the player has more than 19$ take away 19$ and make a random meme Joker
-	object_type = "Joker",
-	dependencies = {
-		items = {
-			"set_cry_meme",
+local familiar_currency =
+	{ -- At the end of round: if the player has more than 19$ take away 19$ and make a random meme Joker
+		object_type = "Joker",
+		dependencies = {
+			items = {
+				"set_cry_meme",
+			},
 		},
-	},
-	name = "cry-Familiar Currency",
-	key = "familiar_currency",
-	pos = { x = 0, y = 6 },
-	config = { extra = 19 },
-	order = 137,
-	rarity = 3,
-	cost = 0,
-	blueprint_compat = true,
-	atlas = "atlasone",
-	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra }}
-	end,
-	calculate = function(self, card, context)
-		if
-			context.end_of_round
-			and not context.individual
-			and not context.repetition
-			and not (context.blueprint_card or card).getting_sliced
-		then
-			if to_big(G.GAME.dollars - G.GAME.bankrupt_at) >= to_big(card.ability.extra)
-			and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+		name = "cry-Familiar Currency",
+		key = "familiar_currency",
+		pos = { x = 0, y = 6 },
+		config = { extra = 19 },
+		order = 137,
+		rarity = 3,
+		cost = 0,
+		blueprint_compat = true,
+		atlas = "atlasone",
+		loc_vars = function(self, info_queue, center)
+			return { vars = { center.ability.extra } }
+		end,
+		calculate = function(self, card, context)
+			if
+				context.end_of_round
+				and not context.individual
+				and not context.repetition
+				and not (context.blueprint_card or card).getting_sliced
 			then
-				G.GAME.joker_buffer = G.GAME.joker_buffer + 1
-				ease_dollars(-card.ability.extra)
-				G.E_MANAGER:add_event(Event({func = function()
-					SMODS.add_card({set = "Meme", key_append = "fcc"})
-					G.GAME.joker_buffer = 0
-					return true
-				end}))
-				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
+				if
+					to_big(G.GAME.dollars - G.GAME.bankrupt_at) >= to_big(card.ability.extra)
+					and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+				then
+					G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+					ease_dollars(-card.ability.extra)
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							SMODS.add_card({ set = "Meme", key_append = "fcc" })
+							G.GAME.joker_buffer = 0
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_plus_joker"), colour = G.C.BLUE }
+					)
+				end
 			end
-		end
-	end,
-	cry_credits = {
-		idea = {
-			"Gud Username",
-			"y_not_tony",
+		end,
+		cry_credits = {
+			idea = {
+				"Gud Username",
+				"y_not_tony",
+			},
+			code = {
+				"SDM_0",
+			},
+			art = {
+				"Gud Username",
+			},
 		},
-		code = {
-			"SDM_0",
-		},
-		art = {
-			"Gud Username",
-		},
-	},
-}
+	}
 local miscitems = {
 	jimball_sprite,
 	dropshot,

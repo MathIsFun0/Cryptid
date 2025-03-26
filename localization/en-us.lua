@@ -621,7 +621,7 @@ return {
 				name = "Meme",
 				text = {
 					"Things related to",
-					"multiple references"
+					"multiple references",
 				},
 			},
 			set_cry_misc = {
@@ -1493,7 +1493,7 @@ return {
 					"Create a {C:attention}Meme Joker{}",
 					"at the end of round",
 					"for {C:money}$#1#{} {C:inactive}(if possible)",
-					"{C:inactive}(Must have room)"
+					"{C:inactive}(Must have room)",
 				},
 			},
 			j_cry_filler = {
