@@ -8,6 +8,17 @@ G.FUNCS.cry_asc_UI_set = function(e)
 	end
 	e.config.object:update_text()
 end
+
+local evaluateroundref = G.FUNCS.evaluate_round
+
+function G.FUNCS.evaluate_round()
+	evaluateroundref()
+	if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+	end
+end
+
 -- this is a hook to make funny "x of a kind"/"flush x" display text
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
@@ -19,6 +30,13 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			disp_text = "cry-Cluster Bulwark"
 			loc_disp_text = localize(disp_text, "poker_hands")
 		end
+	end
+	if #scoring_hand > 5 then
+		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
+		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
+	else
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
 	end
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind") then
