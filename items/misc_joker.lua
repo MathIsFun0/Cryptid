@@ -241,6 +241,10 @@ local potofjokes = {
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
 			G.hand:change_size(math.min(math.max(0, 1000 - card.ability.extra.h_size), card.ability.extra.h_mod))
 			card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+			if to_big(card.ability.extra.h_size) > 1000 then 
+				card.ability.extra.h_size = 1000 
+				card.abiliyt.extra.h_mod = 0
+			end
 			return {
 				message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
 				colour = G.C.FILTER,
