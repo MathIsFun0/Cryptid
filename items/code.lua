@@ -3607,7 +3607,7 @@ local automaton = {
 			"HexaCryonic",
 		},
 		art = {
-			"HexaCryonic",
+			"unze2unze4",
 		},
 		code = {
 			"Math",
