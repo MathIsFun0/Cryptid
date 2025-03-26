@@ -3607,7 +3607,7 @@ local automaton = {
 			"HexaCryonic",
 		},
 		art = {
-			"HexaCryonic",
+			"unze2unze4",
 		},
 		code = {
 			"Math",
@@ -4155,9 +4155,10 @@ local pointer = {
 			freddy = "freddy snowshoe",
 			paupovlin = "paupovlin revere",
 			poppin = "paupovlin revere",
-			jen = "jen walter",
 			dandy = 'Dandicus "Dandy" Dancifer',
-			--should I add "reverse ___" prefixes for the reverse tarots?
+			jen = "jen walter",
+			jen2 = "Jen Walter the Wondergeist",
+			jen3 = "Jen Walter the Wondergeist (Ascended)",
 			survivor = "the survivor",
 			monk = "the monk",
 			hunter = "the hunter",
@@ -4255,6 +4256,7 @@ local pointer = {
 						G.DEBUG_POINTER
 						or (
 							G.P_CENTERS[current_card].unlocked
+							and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 							and not G.GAME.banned_keys[current_card]
 							and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
 							and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
@@ -4272,6 +4274,7 @@ local pointer = {
 						G.DEBUG_POINTER
 						or (
 							G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
+							and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 							and not G.GAME.banned_keys[current_card]
 						)
 					)

@@ -1588,6 +1588,7 @@ return {
 			j_cry_kidnap = {
 				name = "绑架",
 				text = {
+					"{C:red}Outdated Description{}",
 					"每回合结尾获得{C:money}$#2#{}",
 					"每卖掉一张{C:attention}倍率{}或者{C:attention}筹码{}小丑时",
 					"增加{C:money}$#1#{}",

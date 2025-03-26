@@ -241,6 +241,9 @@ function Card:move(dt)
 	end
 end
 
+function Card:get_banned_force_popup_areas()
+	return { G.pack_cards }
+end
 -- This defines when we should show a card's description even when it's not hovered
 function Card:force_popup()
 	-- Must be selected
@@ -262,8 +265,10 @@ function Card:force_popup()
 			return false
 		end
 		-- Other areas where it doesn't work well
-		if self.area == G.pack_cards then
-			return false
+		for i, v in ipairs(self:get_banned_force_popup_areas()) do
+			if self.area == v then
+				return false
+			end
 		end
 		return true
 	end
