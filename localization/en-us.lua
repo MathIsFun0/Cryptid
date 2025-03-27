@@ -1472,6 +1472,15 @@ return {
 					"when scored",
 				},
 			},
+			j_cry_highfive = {
+				name = "High Five",
+				text = {
+					"If highest {C:attention}scoring rank{}",
+					"is {C:attention}5{}, convert {C:attention}all{} scoring cards",
+					"into {C:attention}5{}s",
+					"{s:0.8,C:inactive}Aces are considered 1"
+				},
+			},
 			j_cry_facile = {
 				name = "Facile",
 				text = {
@@ -4534,6 +4543,7 @@ return {
 			cry_good_luck_ex = "Good luck!",
 			cry_sus_ex = "Impostor!",
 			cry_jolly_ex = "Jolly Up!",
+			cry_highfive_ex = "High Five!",
 			cry_m_minus = "m",
 			cry_m = "M",
 			cry_m_ex = "M!",

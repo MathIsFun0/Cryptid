@@ -7874,6 +7874,65 @@ local eyeofhagane = {
 		art = { "Soren" },
 	},
 }
+
+local highfive = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-highfive",
+	key = "highfive",
+	order = 137,
+	atlas = "placeholders",
+	pos = { x = 3, y = 0},
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = true,
+	rarity = 2,
+	cost = 5,
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context)
+		if context.final_scoring_step then
+			local maximum = -math.huge
+			for k, v in ipairs(context.scoring_hand) do
+				local thunk = v.base.id == 14 and 1 or v.base.id
+				if thunk > maximum then maximum = thunk end
+				sendDebugMessage(maximum.. " is de max lol")
+			end
+
+			if maximum == 5 then
+            for index = 1, #context.scoring_hand do
+					local v = context.scoring_hand[index]
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							 assert(SMODS.change_base(v, _, "5"))
+							 v:juice_up()
+							 return true
+						end
+				  }))
+				end
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						 play_sound("cry_whapoosh")
+						 return true
+					end,
+			  }))
+				
+
+				return {
+					message = localize("cry_highfive_ex")
+				}
+			end
+		end
+	end,
+	cry_credits = {
+		idea = { "cassknows" },
+		code = { "astrapboy" }
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7989,6 +8048,7 @@ local miscitems = {
 	huntingseason,
 	--cat_owl,
 	eyeofhagane,
+	highfive
 }
 return {
 	name = "Misc. Jokers",
