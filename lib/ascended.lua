@@ -130,7 +130,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_WholeDeck"] = 52,
 	}
 	-- Change mult and chips colors if hand is ascended
-	if #scoring_hand > hand_table[text] then
+	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] then
 		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
 	else
