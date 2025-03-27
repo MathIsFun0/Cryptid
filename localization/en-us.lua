@@ -617,6 +617,13 @@ return {
 					"and {C:attention}Jolly Joker",
 				},
 			},
+			set_cry_meme = {
+				name = "Meme",
+				text = {
+					"Things related to",
+					"multiple references",
+				},
+			},
 			set_cry_misc = {
 				name = "Misc.",
 				text = {
@@ -1478,6 +1485,15 @@ return {
 					"{X:dark_edition,C:white}^#1#{} Mult if",
 					"played cards are scored",
 					"{C:attention}#2#{} or fewer times",
+				},
+			},
+			j_cry_familiar_currency = {
+				name = "Familiar Currency",
+				text = {
+					"Create a {C:attention}Meme Joker{}",
+					"at the end of round",
+					"for {C:money}$#1#{} {C:inactive}(if possible)",
+					"{C:inactive}(Must have room)",
 				},
 			},
 			j_cry_filler = {

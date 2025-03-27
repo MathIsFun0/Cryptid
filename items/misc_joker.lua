@@ -87,7 +87,7 @@ local happyhouse = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-happyhouse",
@@ -728,7 +728,7 @@ local cube = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-Cube",
@@ -1089,7 +1089,7 @@ local nice = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-Nice",
@@ -1223,7 +1223,7 @@ local chad = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-Chad",
@@ -1268,7 +1268,7 @@ local jimball = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-Jimball",
@@ -1368,7 +1368,7 @@ local sus = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-SUS",
@@ -1636,7 +1636,7 @@ local krustytheclown = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-krustytheclown",
@@ -1685,7 +1685,7 @@ local blurred = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-blurred Joker",
@@ -4647,7 +4647,6 @@ local stronghold = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_asteroidbelt",
 		},
@@ -4692,7 +4691,6 @@ local wtf = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_void",
 		},
@@ -4737,7 +4735,6 @@ local clash = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_marsmoons",
 		},
@@ -4782,7 +4779,7 @@ local filler = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-filler",
@@ -5130,7 +5127,6 @@ local bonkers = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_asteroidbelt",
 		},
@@ -5168,7 +5164,6 @@ local fuckedup = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_void",
 		},
@@ -5206,7 +5201,6 @@ local foolhardy = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_marsmoons",
 		},
@@ -5549,7 +5543,6 @@ local adroit = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_asteroidbelt",
 		},
@@ -5587,7 +5580,6 @@ local penetrating = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_void",
 		},
@@ -5625,7 +5617,6 @@ local treacherous = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 			"c_cry_marsmoons",
 		},
@@ -6484,7 +6475,6 @@ local fractal = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
 			"set_cry_poker_hand_stuff",
 		},
 	},
@@ -7698,7 +7688,7 @@ local lebaron_james = {
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 		},
 	},
 	name = "cry-LeBaron James",
@@ -7808,7 +7798,7 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 	object_type = "Joker",
 	dependencies = {
 		items = {
-			"set_cry_misc_joker",
+			"set_cry_meme",
 			"m_cry_echo",
 			"set_cry_misc",
 		},
@@ -7894,6 +7884,70 @@ local eyeofhagane = {
 		art = { "Soren" },
 	},
 }
+local familiar_currency =
+	{ -- At the end of round: if the player has more than 19$ take away 19$ and make a random meme Joker
+		object_type = "Joker",
+		dependencies = {
+			items = {
+				"set_cry_meme",
+			},
+		},
+		name = "cry-Familiar Currency",
+		key = "familiar_currency",
+		pos = { x = 0, y = 6 },
+		config = { extra = 19 },
+		order = 137,
+		rarity = 3,
+		cost = 0,
+		blueprint_compat = true,
+		atlas = "atlasone",
+		loc_vars = function(self, info_queue, center)
+			return { vars = { center.ability.extra } }
+		end,
+		calculate = function(self, card, context)
+			if
+				context.end_of_round
+				and not context.individual
+				and not context.repetition
+				and not (context.blueprint_card or card).getting_sliced
+			then
+				if
+					to_big(G.GAME.dollars - G.GAME.bankrupt_at) >= to_big(card.ability.extra)
+					and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
+				then
+					G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+					ease_dollars(-card.ability.extra)
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							SMODS.add_card({ set = "Meme", key_append = "fcc" })
+							G.GAME.joker_buffer = 0
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_plus_joker"), colour = G.C.BLUE }
+					)
+				end
+			end
+		end,
+		cry_credits = {
+			idea = {
+				"Gud Username",
+				"y_not_tony",
+			},
+			code = {
+				"SDM_0",
+			},
+			art = {
+				"Gud Username",
+			},
+		},
+	}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -8009,6 +8063,7 @@ local miscitems = {
 	huntingseason,
 	--cat_owl,
 	eyeofhagane,
+	familiar_currency,
 }
 return {
 	name = "Misc. Jokers",
