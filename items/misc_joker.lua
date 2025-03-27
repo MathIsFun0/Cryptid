@@ -289,7 +289,7 @@ local potofjokes = {
 		},
 		code = {
 			"Math",
-			"beavis",
+			"BobJoe400",
 		},
 	},
 	unlocked = false,
