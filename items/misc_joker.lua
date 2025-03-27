@@ -289,6 +289,7 @@ local potofjokes = {
 		},
 		code = {
 			"Math",
+			"beavis",
 		},
 	},
 	unlocked = false,
