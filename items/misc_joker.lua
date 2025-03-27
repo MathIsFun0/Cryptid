@@ -7886,11 +7886,11 @@ local highfive = {
 	key = "highfive",
 	order = 137,
 	atlas = "placeholders",
-	pos = { x = 3, y = 0},
+	pos = { x = 2, y = 0},
 	blueprint_compat = false,
 	eternal_compat = true,
 	perishable_compat = true,
-	rarity = 2,
+	rarity = 3,
 	cost = 5,
 	unlocked = true,
 	discovered = true,
@@ -7925,11 +7925,10 @@ local highfive = {
 							 return true
 						end,
 				  }))
-				end
-
-				return {
+				  return {
 					message = localize("cry_highfive_ex")
 				}
+				end
 			end
 		end
 	end,
