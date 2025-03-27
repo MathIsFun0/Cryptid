@@ -7,11 +7,7 @@ function Cryptid.calculate_misprint(initial, min, max)
 	local big_min = (type(min) ~= "table" and to_big(min)) or min
 	local big_max = (type(max) ~= "table" and to_big(max)) or max
 
-	local grow = Cryptid.log_random(
-		pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-		big_min,
-		big_max
-	)
+	local grow = Cryptid.log_random(pseudoseed("cry_misprint" .. G.GAME.round_resets.ante), big_min, big_max)
 
 	local calc = big_initial * grow
 
@@ -54,17 +50,11 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 					tbl[k] = Cryptid.sanity_check(
 						clear and Cryptid.base_values[name][k]
-							or cry_format(
-								Cryptid.calculate_misprint(initial, min, max),
-								"%.2g"
-							),
+							or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
 						big
 					)
 				end
-			elseif
-				not (k == "immutable") 
-			then
-
+			elseif not (k == "immutable") then
 				for _k, _v in pairs(tbl[k]) do
 					if
 						is_number(tbl[k][_k])
@@ -92,13 +82,10 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
-	
+
 						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][k][_k]
-								or cry_format(
-									Cryptid.calculate_misprint(initial, min, max),
-									"%.2g"
-								),
+								or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
 							big
 						)
 					end
@@ -110,14 +97,13 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 end
 function Cryptid.misprintize_val(val, override, big)
 	if is_number(val) then
-		
-
 		val = Cryptid.sanity_check(
 			cry_format(
 				Cryptid.calculate_misprint(
-					val, 
+					val,
 					override and override.min or G.GAME.modifiers.cry_misprint_min,
-					override and override.max or G.GAME.modifiers.cry_misprint_max),
+					override and override.max or G.GAME.modifiers.cry_misprint_max
+				),
 				"%.2g"
 			),
 			big
