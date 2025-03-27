@@ -2177,6 +2177,7 @@ return {
 					"{C:attention}#1#{} hand size,",
 					"increases by",
 					"{C:blue}#2#{} every round",
+					"{C:inactive}(Maximum {}{C:attention}#3#{}{C:inactive} hand size){}",
 				},
 				unlock = {
 					"Increase your {C:attention}handsize",

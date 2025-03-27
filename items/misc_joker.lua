@@ -221,7 +221,7 @@ local potofjokes = {
 	},
 	name = "cry-Pot of Jokes",
 	key = "pot_of_jokes",
-	config = { extra = { h_size = -2, h_mod = 1 } },
+	config = { extra = { h_size = -2, h_mod = 1 }, immutable = { h_added = 0, h_mod_max = 1000 } },
 	pos = { x = 5, y = 0 },
 	rarity = 3,
 	order = 104,
@@ -234,19 +234,38 @@ local potofjokes = {
 				center.ability.extra.h_size < 0 and center.ability.extra.h_size
 					or "+" .. math.min(1000, center.ability.extra.h_size),
 				center.ability.extra.h_mod,
+				"+" .. center.ability.immutable.h_mod_max,
 			},
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			if to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod) >= to_big(1000) then
-				card.ability.extra.h_size = 1000
+			if
+				to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod)
+				>= to_big(card.ability.immutable.h_mod_max)
+			then
+				card.ability.extra.h_size = card.ability.immutable.h_mod_max
 				card.ability.extra.h_mod = 0
+
+				-- Fallback for if Pot of Jokes comes into this calcuate function with large h_size
+				if card.ability.immutable.h_added < card.ability.immutable.h_mod_max then
+					local delta = card.ability.immutable.h_mod_max - card.ability.immutable.h_added
+
+					G.hand:change_size(delta)
+
+					card.ability.immutable.h_added = card.ability.immutable.h_mod_max
+				end
 			end
 
-			G.hand:change_size(math.min(math.max(0, 1000 - card.ability.extra.h_size), card.ability.extra.h_mod))
+			local delta = math.min(
+				math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size),
+				card.ability.extra.h_mod
+			)
+
+			G.hand:change_size(delta)
 
 			card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+			card.ability.immutable.h_added = card.ability.immutable.h_added + delta
 
 			return {
 				message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
@@ -256,10 +275,10 @@ local potofjokes = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.hand:change_size(math.min(1000, card.ability.extra.h_size))
+		G.hand:change_size(math.min(card.ability.immutable.h_mod_max, card.ability.extra.h_size))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
+		G.hand:change_size(-1 * math.min(card.ability.immutable.h_mod_max, card.ability.extra.h_size))
 	end,
 	cry_credits = {
 		idea = {
@@ -270,6 +289,7 @@ local potofjokes = {
 		},
 		code = {
 			"Math",
+			"BobJoe400",
 		},
 	},
 	unlocked = false,
