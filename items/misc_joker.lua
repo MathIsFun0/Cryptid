@@ -221,8 +221,7 @@ local potofjokes = {
 	},
 	name = "cry-Pot of Jokes",
 	key = "pot_of_jokes",
-	config = { extra = { h_size = -2, h_mod = 1,},
-               immutable = { h_added = 0, h_mod_max = 1000,}},
+	config = { extra = { h_size = -2, h_mod = 1 }, immutable = { h_added = 0, h_mod_max = 1000 } },
 	pos = { x = 5, y = 0 },
 	rarity = 3,
 	order = 104,
@@ -241,7 +240,10 @@ local potofjokes = {
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			if to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod) >= to_big(card.ability.immutable.h_mod_max) then
+			if
+				to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod)
+				>= to_big(card.ability.immutable.h_mod_max)
+			then
 				card.ability.extra.h_size = card.ability.immutable.h_mod_max
 				card.ability.extra.h_mod = 0
 
@@ -255,7 +257,10 @@ local potofjokes = {
 				end
 			end
 
-			local delta = math.min(math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size), card.ability.extra.h_mod)
+			local delta = math.min(
+				math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size),
+				card.ability.extra.h_mod
+			)
 
 			G.hand:change_size(delta)
 
@@ -284,6 +289,7 @@ local potofjokes = {
 		},
 		code = {
 			"Math",
+			"BobJoe400",
 		},
 	},
 	unlocked = false,

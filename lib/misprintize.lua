@@ -23,10 +23,14 @@ function Cryptid.calculate_misprint(initial, min, max)
 end
 
 function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big)
-	local prob_max = 1e9
+	local prob_max = 1e69 -- funny number
+
 	if name and ref_tbl and ref_value then
+		-- print('Current joker: '..name)
+
 		tbl = Cryptid.deep_copy(ref_tbl[ref_value])
 		for k, v in pairs(tbl) do
+			-- print('\tCurrent key: '..k)
 			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
 				if
 					is_number(tbl[k])
@@ -53,7 +57,13 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 					local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 
-					if (k == "cry_prob")
+					if (k == "cry_prob"
+						-- Hack for vanilla jokers that use the extra field to describe their odds
+						or ((name == "j_8_ball"
+							 or name == "j_business"
+							 or name == "j_space"
+							 or name == "j_hallucination")
+						    and k == "extra"))
 						and (to_big(initial) > to_big(prob_max)
 							 or to_big(min) > to_big(prob_max)
 							 or to_big(max) > to_big(prob_max))
@@ -73,22 +83,22 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					)
 				end
 			elseif
-				not (k == "immutable") 
+				not (k == "immutable")
+				and not (k == "colour")
 			then
-
 				for _k, _v in pairs(tbl[k]) do
+					-- print('\t\tCurrent key: '.._k)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
-						and not (k == "colour")
 						and not (_k == "suit_nominal")
 						and not (_k == "base_nominal")
 						and not (_k == "face_nominal")
 						and not (_k == "qty")
-						and not (k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
+						and not (_k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
 						and not (_k == "selected_d6_face")
-						and not (k == "d_size")
-						and not (k == "h_size")
+						and not (_k == "d_size")
+						and not (_k == "h_size")
 					then --Refer to above
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
@@ -104,11 +114,12 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 						
-						if (k == "odds")
+						if (_k == "odds")
 							and (to_big(initial) > to_big(prob_max)
 								or to_big(min) > to_big(prob_max)
 								or to_big(max) > to_big(prob_max))
 						then
+							print('\t\t\t got "odds"')
 							initial = Cryptid.base_values[name][k][_k] * prob_max
 							min = 1
 							max = 1
