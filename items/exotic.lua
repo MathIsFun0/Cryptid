@@ -320,7 +320,11 @@ local exponentia = {
 							vars = { number_format(to_big(v.ability.extra.Emult)) },
 						}),
 					})
-					Cryptid.exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+					Cryptid.apply_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult, {
+						base = { { "extra", "Emult" } },
+						scaler = { { "extra", "Emult_mod" } },
+						scaler_base = { v.ability.extra.Emult_mod },
+					})
 				end
 			end
 			return ret
