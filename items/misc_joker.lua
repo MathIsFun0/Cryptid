@@ -239,8 +239,15 @@ local potofjokes = {
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+			if to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod) >= to_big(1000) then
+				card.ability.extra.h_size = 1000
+				card.ability.extra.h_mod = 0
+			end
+
 			G.hand:change_size(math.min(math.max(0, 1000 - card.ability.extra.h_size), card.ability.extra.h_mod))
+
 			card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+
 			return {
 				message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
 				colour = G.C.FILTER,
@@ -629,7 +636,7 @@ local pickle = {
 						end
 						tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pickle_orbital"))
 					end
-					tag.ability.shiny = cry_rollshinybool()
+					tag.ability.shiny = Cryptid.is_shiny()
 					add_tag(tag)
 				end
 			end
@@ -1598,7 +1605,7 @@ local wario = {
 			"Auto Watto",
 		},
 		art = {
-			"Linus Goof Balls",
+			"Auto Watto",
 		},
 		code = {
 			"Auto Watto",
@@ -3754,6 +3761,7 @@ local rnjoker = {
 		G.hand:change_size(-hand_size)
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+		card = card or self:create_fake_card()
 		local len = (
 			card.ability
 			and card.ability.abilities
@@ -3784,6 +3792,7 @@ local rnjoker = {
 			end
 			new_loc.text_parsed = card.ability.abilities[1].text_parsed
 		end
+		new_loc.text_parsed = new_loc.text_parsed or {}
 		if not full_UI_table.name then
 			full_UI_table.name =
 				localize({ type = "name", set = self.set, key = target.key or self.key, nodes = full_UI_table.name })
@@ -6684,63 +6693,69 @@ local kittyprinter = {
 	end,
 }
 local kidnap = {
-	object_type = "Joker",
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
 		},
 	},
+	object_type = "Joker",
 	name = "cry-kidnap",
 	key = "kidnap",
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 1, money_mod = 3 },
+		extra = 4,
 	},
 	rarity = 1,
 	cost = 4,
 	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.money_mod, center.ability.extra.money } }
+		local value = 0
+		if G.GAME and G.GAME.jokers_sold then
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if
+					G.P_CENTERS[v].effect == "Type Mult"
+					or G.P_CENTERS[v].effect == "Cry Type Mult"
+					or G.P_CENTERS[v].effect == "Cry Type Chips"
+					or G.P_CENTERS[v].effect == "Boost Kidnapping"
+					or (
+						G.P_CENTERS[v].name == "Sly Joker"
+						or G.P_CENTERS[v].name == "Wily Joker"
+						or G.P_CENTERS[v].name == "Clever Joker"
+						or G.P_CENTERS[v].name == "Devious Joker"
+						or G.P_CENTERS[v].name == "Crafty Joker"
+					)
+				then
+					value = value + 1
+				end
+			end
+		end
+		return { vars = { center.ability.extra, center.ability.extra * value } }
 	end,
 	atlas = "atlasone",
-	calculate = function(self, card, context)
-		if
-			context.selling_card
-			and (
-				(
-					context.card.ability.name == "Sly Joker"
-					or context.card.ability.name == "Wily Joker"
-					or context.card.ability.name == "Clever Joker"
-					or context.card.ability.name == "Devious Joker"
-					or context.card.ability.name == "Crafty Joker"
-				)
-				or context.card.ability.effect == "Type Mult"
-				or context.card.ability.effect == "Cry Type Mult"
-				or context.card.ability.effect == "Cry Type Chips"
-				--[[
-				Other developers can add effect == "Boost Kidnapping"
-                to their joker config if they want it to boost kidnapping when sold
-				]]
-				--
-				or context.card.ability.effect == "Boost Kidnapping"
-				or context.card:is_jolly()
-			)
-			and not context.blueprint
-		then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
-			return {
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("k_upgrade_ex"),
-					colour = G.C.MONEY,
-				}),
-			}
-		end
-	end,
 	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			return card.ability.extra.money
+		local value = 0
+		for _, v in ipairs(G.GAME.jokers_sold) do
+			if
+				G.P_CENTERS[v].effect == "Type Mult"
+				or G.P_CENTERS[v].effect == "Cry Type Mult"
+				or G.P_CENTERS[v].effect == "Cry Type Chips"
+				or G.P_CENTERS[v].effect == "Boost Kidnapping"
+				or (
+					G.P_CENTERS[v].name == "Sly Joker"
+					or G.P_CENTERS[v].name == "Wily Joker"
+					or G.P_CENTERS[v].name == "Clever Joker"
+					or G.P_CENTERS[v].name == "Devious Joker"
+					or G.P_CENTERS[v].name == "Crafty Joker"
+				)
+			then
+				value = value + 1
+			end
 		end
+		if value == 0 then
+			return
+		end
+		return card.ability.extra * value
 	end,
 	cry_credits = {
 		idea = {
@@ -7305,7 +7320,7 @@ local tax_fraud = {
 		},
 	},
 }
---TODO update desc
+
 local pity_prize = {
 	object_type = "Joker",
 	dependencies = {
@@ -7315,6 +7330,7 @@ local pity_prize = {
 	},
 	name = "cry-Pity-Prize",
 	key = "pity_prize",
+	blueprint_compat = true,
 	pos = { x = 5, y = 5 },
 	config = {},
 	rarity = 1,
@@ -7332,7 +7348,7 @@ local pity_prize = {
 			until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
 			-- this is my first time seeing repeat... wtf
 			local tag = Tag(tag_key)
-			tag.ability.shiny = cry_rollshinybool()
+			tag.ability.shiny = Cryptid.is_shiny()
 			if tag.name == "Orbital Tag" then
 				local _poker_hands = {}
 				for k, v in pairs(G.GAME.hands) do
@@ -7670,6 +7686,7 @@ local lebaron_james = {
 	key = "lebaron_james",
 	pos = { x = 2, y = 5 },
 	config = { extra = { h_mod = 1 } },
+	blueprint_compat = true,
 	rarity = 3,
 	cost = 6,
 	atlas = "atlasone",
@@ -7785,6 +7802,10 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 	cost = 8,
 	blueprint_compat = false,
 	atlas = "atlasone",
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_lucky
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_echo
+	end,
 	calculate = function(self, card, context)
 		if context.check_enhancement then
 			if context.other_card.config.center.key == "m_lucky" then
@@ -7805,6 +7826,52 @@ local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 		art = {
 			"George the Rat",
 		},
+	},
+}
+local eyeofhagane = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-eyeofhagane",
+	key = "eyeofhagane",
+	order = 136,
+	pos = { x = 5, y = 6 },
+	rarity = 2,
+	cost = 6,
+	blueprint_compat = false,
+	immutable = true,
+	atlas = "atlastwo", -- https://discord.com/channels/1264429948970733782/1274103559113150629/1351479917367263312
+	calculate = function(self, card, context)
+		if context.before then
+			local faces = {}
+			for k, v in ipairs(context.scoring_hand) do
+				if v:is_face() then
+					faces[#faces + 1] = v
+					v:set_ability(G.P_CENTERS.m_steel, nil, true)
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							v:juice_up()
+							return true
+						end,
+					}))
+				end
+			end
+			if #faces > 0 then
+				return {
+					message = "Steel",
+					colour = G.C.UI.TEXT_INACTIVE,
+					card = self,
+				}
+			end
+		end
+	end,
+	cry_credits = {
+		idea = { "Soren" },
+		code = { "Lexi" },
+		art = { "Soren" },
 	},
 }
 local miscitems = {
@@ -7895,8 +7962,8 @@ local miscitems = {
 	exposed,
 	mask,
 	tropical_smoothie,
-	pumpkin,
-	carved_pumpkin,
+	--pumpkin,
+	--carved_pumpkin,
 	cookie,
 	necromancer,
 	oil_lamp,
@@ -7921,6 +7988,7 @@ local miscitems = {
 	lebaron_james,
 	huntingseason,
 	--cat_owl,
+	eyeofhagane,
 }
 return {
 	name = "Misc. Jokers",
