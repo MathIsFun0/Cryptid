@@ -7900,7 +7900,6 @@ local highfive = {
 			for k, v in ipairs(context.scoring_hand) do
 				local thunk = v.base.id == 14 and 1 or v.base.id
 				if thunk > maximum then maximum = thunk end
-				sendDebugMessage(maximum.. " is de max lol")
 			end
 
 			if maximum == 5 then
@@ -7920,7 +7919,6 @@ local highfive = {
 						 return true
 					end,
 			  }))
-				
 
 				return {
 					message = localize("cry_highfive_ex")
