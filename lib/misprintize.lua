@@ -23,6 +23,7 @@ function Cryptid.calculate_misprint(initial, min, max)
 end
 
 function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big)
+	local prob_max = 1e9
 	if name and ref_tbl and ref_value then
 		tbl = Cryptid.deep_copy(ref_tbl[ref_value])
 		for k, v in pairs(tbl) do
@@ -49,6 +50,16 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					local initial = (stack and tbl[k] or Cryptid.base_values[name][k])
 					local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 					local max = override and override.max or G.GAME.modifiers.cry_misprint_max
+
+					if (k == "cry_prob")
+						and (to_big(initial) > to_big(prob_max)
+							 or to_big(min) > to_big(prob_max)
+							 or to_big(max) > to_big(prob_max))
+					then
+						initial = Cryptid.base_values[name][k] * prob_max
+						min = 1
+						max = 1
+					end
 
 					tbl[k] = Cryptid.sanity_check(
 						clear and Cryptid.base_values[name][k]
@@ -85,7 +96,17 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
-	
+						
+						if (k == "odds")
+							and (to_big(initial) > to_big(prob_max)
+								or to_big(min) > to_big(prob_max)
+								or to_big(max) > to_big(prob_max))
+						then
+							initial = Cryptid.base_values[name][k][_k] * prob_max
+							min = 1
+							max = 1
+						end
+
 						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][k][_k]
 								or cry_format(
