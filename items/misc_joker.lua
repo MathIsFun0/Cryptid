@@ -7898,7 +7898,7 @@ local highfive = {
 		if context.final_scoring_step then
 			local maximum = -math.huge
 			for k, v in ipairs(context.scoring_hand) do
-				local thunk = v.base.id == 14 and 1 or v.base.id
+				local thunk = v.base.rank == "Ace" and 1 or v.base.nominal
 				if thunk > maximum then maximum = thunk end
 			end
 
