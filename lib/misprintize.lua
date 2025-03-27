@@ -41,7 +41,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 				end
 			elseif
 				not (k == "immutable") 
-				then
+			then
 
 				for _k, _v in pairs(tbl[k]) do
 					if
