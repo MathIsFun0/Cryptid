@@ -8,6 +8,18 @@ G.FUNCS.cry_asc_UI_set = function(e)
 	end
 	e.config.object:update_text()
 end
+
+-- Needed because get_poker_hand_info isnt called at the end of the road
+local evaluateroundref = G.FUNCS.evaluate_round
+function G.FUNCS.evaluate_round()
+	evaluateroundref()
+	-- This is just the easiest way to check if its gold because lua is annoying
+	if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+	end
+end
+
 -- this is a hook to make funny "x of a kind"/"flush x" display text
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
@@ -20,6 +32,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			loc_disp_text = localize(disp_text, "poker_hands")
 		end
 	end
+
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind") then
 			local rank_array = {}
@@ -116,7 +129,14 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
 	}
-
+	-- Change mult and chips colors if hand is ascended
+	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] then
+		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
+		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
+	else
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+	end
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
 	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
