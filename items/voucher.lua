@@ -37,20 +37,22 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 	init = function(self)
 		--Copies and upgrades
 		local tinit = Tag.init
-		function Tag:init(tag, y, z)
-			if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
-				tag = "tag_cry_triple"
+		function Tag:init(tag, for_collection, _blind_type)
+			if not for_collection then
+				if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+					tag = "tag_cry_triple"
+				end
+				if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
+					tag = "tag_cry_quadruple"
+				end
+				if
+					(tag == "tag_double" or tag == "tag_cry_triple" or tag == "tag_cry_quadruple")
+					and G.GAME.used_vouchers.v_cry_clone_machine
+				then
+					tag = "tag_cry_quintuple"
+				end
 			end
-			if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
-				tag = "tag_cry_quadruple"
-			end
-			if
-				(tag == "tag_double" or tag == "tag_cry_triple" or tag == "tag_cry_quadruple")
-				and G.GAME.used_vouchers.v_cry_clone_machine
-			then
-				tag = "tag_cry_quintuple"
-			end
-			return tinit(self, tag, y, z)
+			return tinit(self, tag, for_collection, _blind_type)
 		end
 	end,
 }
