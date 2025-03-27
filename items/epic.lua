@@ -398,11 +398,6 @@ local error_joker = {
 			"set_cry_epic",
 		},
 	},
-	conflicts = {
-		mods = {
-			"jen",
-		},
-	},
 	immutable = true,
 	rarity = "cry_epic",
 	cost = 1,
@@ -599,6 +594,7 @@ local error_joker = {
 			{ string = "Jolly", colour = G.C.CRY_JOLLY },
 			{ string = "Tags", colour = G.C.RED },
 			{ string = "Cryptids", colour = G.C.SECONDARY_SET.Spectral },
+			{ string = "Glop", colour = G.C.CRY_ALTGREENGRADIENT },
 			{ string = "%%ERROR", colour = G.C.CRY_ASCENDANT }, --temp string, this will be modified
 		}
 
@@ -1226,11 +1222,6 @@ local curse_sob = {
 	},
 	gameset_config = {
 		modest = { cost = 20, center = { rarity = 4 } },
-	},
-	conflicts = {
-		mods = {
-			"jen",
-		},
 	},
 	rarity = "cry_epic",
 	cost = 9,

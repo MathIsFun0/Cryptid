@@ -478,7 +478,7 @@ function SMODS.calculate_context(context, return_table)
 			SMODS.trigger_effects(effects, _card)
 		end
 	end
-	smcc(context, return_table)
+	local ret = smcc(context, return_table)
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.post_jokers = true
@@ -486,6 +486,7 @@ function SMODS.calculate_context(context, return_table)
 			context.post_jokers = nil
 		end
 	end
+	return ret
 end
 
 function Card:calculate_joker(context)

@@ -20,7 +20,10 @@ SMODS.PokerHand({
 		end
 		local stones = {}
 		for i, card in ipairs(hand) do
-			if card.config.center_key == "m_stone" or (card.config.center.no_rank and card.config.center.no_suit) then
+			if
+				card.config.center_key == "m_stone"
+				or (card.config.center.no_rank and card.config.center.no_suit and not card.config.center.not_stoned)
+			then
 				stones[#stones + 1] = card
 			end
 		end
@@ -35,7 +38,7 @@ SMODS.PokerHandPart({
 		end
 		local eligible_cards = {}
 		for i, card in ipairs(hand) do
-			if true then --card.ability.name ~= "Gold Card"
+			if not card.config.center.not_fucked then --card.ability.name ~= "Gold Card"
 				eligible_cards[#eligible_cards + 1] = card
 			end
 		end
@@ -632,12 +635,6 @@ SMODS.Atlas({
 	py = 95,
 })
 SMODS.Atlas({
-	key = "code",
-	path = "c_cry_code.png",
-	px = 71,
-	py = 95,
-})
-SMODS.Atlas({
 	key = "pack",
 	path = "pack_cry.png",
 	px = 71,
@@ -645,17 +642,17 @@ SMODS.Atlas({
 })
 SMODS.UndiscoveredSprite({
 	key = "Code",
-	atlas = "code",
-	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
+	atlas = "atlasnotjokers",
+	path = "atlasnotjokers.png",
+	pos = { x = 9, y = 5 },
 	px = 71,
 	py = 95,
 })
 SMODS.UndiscoveredSprite({
 	key = "Unique",
-	atlas = "code",
-	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
+	atlas = "atlasnotjokers",
+	path = "atlasnotjokers.png",
+	pos = { x = 9, y = 5 },
 	px = 71,
 	py = 95,
 })

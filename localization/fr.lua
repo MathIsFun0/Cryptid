@@ -1589,6 +1589,7 @@ return {
 			j_cry_kidnap = {
 				name = "Kidnapping",
 				text = {
+					"{C:red}Outdated Description{}",
 					"Gagne {C:money}$#2#{} à la fin de la manche",
 					"Augmente le gain de {C:money}$#1#{}",
 					"lorsqu'un Joker {C:attention}type {C:mult}multi{} ou",

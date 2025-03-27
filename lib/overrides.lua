@@ -176,6 +176,7 @@ function Game:init_game_object()
 	g.monstermult = 1
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
+	g.jokers_sold = {}
 	return g
 end
 
@@ -190,7 +191,7 @@ function reset_castle_card()
 	G.GAME.current_round.cry_dropshot_card.suit = "Spades"
 	local valid_castle_cards = {}
 	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= "Stone Card" then
+		if not SMODS.has_no_suit(v) then
 			valid_castle_cards[#valid_castle_cards + 1] = v
 		end
 	end
@@ -285,7 +286,7 @@ function Game:update(dt)
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
 		cry_pointer_dt = 0
 		local pointerobj = G.P_CENTERS.c_cry_pointer
-		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+		pointerobj.pos.x = (pointerobj.pos.x == 11) and 12 or 11
 	end
 	if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
 		cry_jimball_dt = 0
@@ -473,6 +474,38 @@ function Card:set_cost()
 		self.sell_cost = 0
 		self.sell_cost_label = 0
 	end
+end
+local sell_card_stuff = Card.sell_card
+function Card:sell_card()
+	if self.config.center.set == "Joker" then
+		if self.config.center.key ~= "j_cry_necromancer" then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == self.config.center.key then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, self.config.center.key)
+			end
+		end
+		-- Add Jolly Joker to the pool if card was treated as Jolly Joker
+		if self:is_jolly() then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == "j_jolly" then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, "j_jolly")
+			end
+		end
+	end
+	--G.P_CENTERS.j_jolly
+	sell_card_stuff(self)
 end
 
 -- Modify to display badges for credits and some gameset badges
@@ -681,14 +714,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		ps = Cryptid.predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
-		return center.unlocked
-			and not Cryptid.no(center, "doe")
-			and not Cryptid.no(center, "aeq")
-			and not (center.rarity == 6 or center.rarity == "cry_exotic")
+		return center.unlocked and not Cryptid.no(center, "doe") and not (center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity and not legendary then
 		if not G.GAME.aequilibriumkey then
@@ -1002,12 +1032,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		Cryptid.misprintize(card)
 	end
-	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
+	if card.ability.set == "Joker" and G.GAME.modifiers.cry_common_value_quad then
 		if card.config.center.rarity == 1 then
 			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
 		end
 	end
-	if _type == "Joker" and G.GAME.modifiers.cry_uncommon_value_quad then
+	if card.ability.set == "Joker" and G.GAME.modifiers.cry_uncommon_value_quad then
 		if card.config.center.rarity == 2 then
 			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
 		end

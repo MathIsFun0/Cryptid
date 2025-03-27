@@ -285,9 +285,7 @@ local rng = {
 			{ id = "tag_cry_epic" },
 		},
 		banned_cards = {
-			{ id = "j_cry_equilib" },
 			{ id = "c_cry_delete" },
-			{ id = "p_cry_meme_1", ids = { "p_cry_meme_1", "p_cry_meme_two", "p_cry_meme_three" } },
 		},
 		banned_other = {},
 	},

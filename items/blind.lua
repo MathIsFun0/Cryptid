@@ -398,7 +398,7 @@ local joke = {
 		return { vars = { "8", localize("cry_joke_placeholder") } }
 	end,
 	cry_calc_ante_gain = function(self)
-		if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) * 2 then
 			if G.GAME.round_resets.ante == 1 then
 				G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true
 			end
@@ -427,7 +427,7 @@ local hammer = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				card.ability.effect ~= "Stone Card"
+				not SMODS.has_no_rank(card)
 				and (
 					card.base.value == "3"
 					or card.base.value == "5"
@@ -462,7 +462,7 @@ local magic = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				card.ability.effect ~= "Stone Card"
+				not SMODS.has_no_rank(card)
 				and (
 					card.base.value == "2"
 					or card.base.value == "4"
@@ -774,15 +774,22 @@ local sapphire_stamp = {
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
+			G.GAME.stamp_mod = true
 			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 1
 		end
 	end,
 	defeat = function(self, silent)
+		if G.GAME.stamp_mod then
+			G.GAME.stamp_mod = nil
+		end
 		if not G.GAME.blind.disabled then
 			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
 		end
 	end,
 	disable = function(self, silent)
+		if G.GAME.stamp_mod then
+			G.GAME.stamp_mod = nil
+		end
 		if not G.GAME.blind.disabled then
 			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
 		end

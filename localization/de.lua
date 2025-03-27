@@ -1304,6 +1304,7 @@ return {
 			j_cry_kidnap = {
 				name = "Entführung",
 				text = {
+					"{C:red}Outdated Description{}",
 					"Verdiene {C:money}$#2#{} am Ende der Runde",
 					"Erhöhe Auszahlung um {C:money}$#1#{}",
 					"wenn ein {C:attention}Mult Typ{} oder",

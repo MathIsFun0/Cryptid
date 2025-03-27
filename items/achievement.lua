@@ -269,10 +269,25 @@ local ult_full_skip = {
 	end,
 }
 
+local youre_fucking_kidding = {
+	object_type = "Achievement",
+	key = "youre_fucking_kidding",
+	order = 15,
+	hidden_text = true,
+	bypass_all_unlocked = true,
+	atlas = "cry_achievements",
+	-- reset_on_startup = true,
+	unlock_condition = function(self, args)
+		if args.type == "discard_custom" and next(evaluate_poker_hand(args.cards)["cry_WholeDeck"]) then
+			return true
+		end
+	end,
+}
+
 local patience_virtue = {
 	object_type = "Achievement",
 	key = "patience_virtue",
-	order = 15,
+	order = 16,
 	bypass_all_unlocked = true,
 	hidden_text = true,
 	pos = { x = 2, y = 0 },
@@ -299,7 +314,7 @@ local patience_virtue = {
 local pull_request = {
 	object_type = "Achievement",
 	key = "pull_request",
-	order = 16,
+	order = 17,
 	bypass_all_unlocked = true,
 	hidden_text = true,
 	pos = { x = 2, y = 0 },
@@ -315,7 +330,7 @@ local pull_request = {
 local ace_through_crash = {
 	object_type = "Achievement",
 	key = "ace_in_crash",
-	order = 17,
+	order = 18,
 	bypass_all_unlocked = true,
 	pos = { x = 2, y = 0 },
 	atlas = "cry_achievements",
@@ -330,7 +345,7 @@ local ace_through_crash = {
 local home_realtor = {
 	object_type = "Achievement",
 	key = "home_realtor",
-	order = 18,
+	order = 19,
 	bypass_all_unlocked = true,
 	hidden_text = true,
 	pos = { x = 2, y = 0 },
@@ -347,7 +362,7 @@ local home_realtor = {
 local traffic_jam = {
 	object_type = "Achievement",
 	key = "traffic_jam",
-	order = 19,
+	order = 20,
 	bypass_all_unlocked = true,
 	hidden_text = true,
 	pos = { x = 2, y = 0 },
@@ -377,7 +392,7 @@ local traffic_jam = {
 local perfectly_balanced = {
 	object_type = "Achievement",
 	key = "perfectly_balanced",
-	order = 20,
+	order = 21,
 	bypass_all_unlocked = true,
 	hidden_text = true,
 	pos = { x = 2, y = 0 },
@@ -397,7 +412,7 @@ local perfectly_balanced = {
 local pin = {
 	object_type = "Achievement",
 	key = "pin",
-	order = 21,
+	order = 22,
 	hidden_text = true,
 	pos = { x = 3, y = 0 },
 	atlas = "cry_achievements",
@@ -430,6 +445,7 @@ local pin = {
 -- Ultimate Full Skip: Win in 1 round
 -- Legally Blind: Obtain a Blurred Blurred Joker
 -- Cryptid the Cryptid: Use Cryptid on Cryptid
+-- You're Fucking Kidding/You Can't Be Serious: Discard your entire deck
 -- Implemented (Platinum)
 -- Patience is a Virtue: Wait out Lavender Loop for 2 minutes before playing first hand and beat it
 -- Pull Request: Have ://COMMIT spawn the same Joker that it destroyed
@@ -455,6 +471,7 @@ local achievement_objects = {
 	jokes_on_you,
 	freak_house,
 	ult_full_skip,
+	youre_fucking_kidding,
 	patience_virtue,
 	ace_through_crash,
 	home_realtor,

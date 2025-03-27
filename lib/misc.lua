@@ -184,6 +184,9 @@ function Cryptid.pluralize(str, vars)
 			table.insert(_table, v)
 		end
 		local num = vars[tonumber(string.match(str, ">(%d+)"))] -- gets reference variable
+		if type(num) == "string" then
+			num = (Big and to_number(to_big(num))) or num
+		end
 		local plural = _table[1] -- default
 		local checks = { [1] = "=" } -- checks 1 by default
 		local checks1mod = false -- tracks if 1 was modified
@@ -216,7 +219,7 @@ function Cryptid.pluralize(str, vars)
 		end)
 		for _, k in ipairs(keys) do
 			if fch(checks[k], "=") then
-				if math.abs(to_big(num) - k) < to_big(0.001) then
+				if to_big(math.abs(num - k)) < to_big(0.001) then
 					return string.sub(checks[k], 2, -1)
 				end
 			elseif fch(checks[k], "<") then
@@ -277,7 +280,7 @@ end
 
 -- checks for Jolly Jokers or cards that are supposed to be treated as jolly jokers
 function Card:is_jolly()
-	if self.ability.name == "Jolly Joker" then
+	if self.ability.name == "Jolly Joker" or self.ability.name == "cry-jollysus Joker" then
 		return true
 	end
 	if self.edition and self.edition.key == "e_cry_m" then
@@ -722,6 +725,7 @@ function Controller:key_press_update(key, dt)
 	then
 		G.GAME.USING_CODE = true
 		G.GAME.USING_POINTER = true
+		G.DEBUG_POINTER = true
 		G.ENTERED_CARD = ""
 		G.CHOOSE_CARD = UIBox({
 			definition = create_UIBox_pointer(card),
@@ -737,4 +741,22 @@ function Controller:key_press_update(key, dt)
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_CARD:align_to_major()
 	end
+end
+
+function Cryptid.roll_shiny()
+	local prob = 1
+	if next(SMODS.find_card("j_lucky_cat")) then
+		prob = 3
+	end
+	if pseudorandom("cry_shiny") < prob / 4096 then
+		return "shiny"
+	end
+	return "normal"
+end
+
+function Cryptid.is_shiny()
+	if Cryptid.roll_shiny() == "shiny" then
+		return true
+	end
+	return false
 end

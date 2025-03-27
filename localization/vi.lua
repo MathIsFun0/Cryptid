@@ -1610,10 +1610,11 @@ return {
 			j_cry_kidnap = {
 				name = "Bắt Cóc",
 				text = {
-					"Nhận {C:money}$#2#{} ở cuối ván",
+					"Nhận {C:money}$#1#{} ở cuối ván",
 					"Tiền thưởng tăng thêm {C:money}$#1#{}",
 					"khi một Joker {C:attention}+Nhân Tay Bài{} hoặc",
 					"{C:attention}+Chip Tay Bài{} được bán",
+					"{C:inactive}(Hiện tại là {C:money}$#2#{C:inactive})",
 				},
 			},
 			j_cry_kooky = {
@@ -3986,7 +3987,7 @@ return {
 				},
 			},
 			p_cry_empowered = {
-				name = "Gói Siêu Linh [Nhãn Siêu Cường]",
+				name = "Nhãn Siêu Cường",
 				text = {
 					"Chọn {C:attention}#1#{} trong tối đa",
 					"{C:attention}#2#{} lá {C:spectral}Siêu Linh",

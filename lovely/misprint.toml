@@ -180,7 +180,7 @@ match_indent = true
 target = "functions/button_callbacks.lua"
 pattern = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"
 position = "at"
-payload = "if #G.hand.highlighted <= (G.GAME.blind and G.GAME.blind.name == 'cry-Sapphire Stamp' and not G.GAME.blind.disabled and 1 or 0) or G.GAME.blind.block_play then"
+payload = "if #G.hand.highlighted <= (G.GAME.stamp_mod and 1 or 0) or G.GAME.blind.block_play then"
 match_indent = true
 
 # Hieroglyph

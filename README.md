@@ -10,8 +10,8 @@ Cryptid currently adds:
 
 
 ### [Official Discord](https://discord.gg/cryptid)
-
-### [Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
+### [Mac Video Installation Guide](https://youtu.be/l5ni7fHgwTE?si=GAN5t5-y_IuEv8uA)
+### [Not Mac Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
 
 ### Frequently asked questions
 * Credit to @jenwalter666 for creating this FAQ (forwarded from Cryptid Discord)
@@ -50,12 +50,3 @@ Talisman may be configured to be on **BigNum** mode, which has a maximum limit o
 
 Be sure to give us as much information about the bug/crash as possible. A way to reproduce the bug/crash is also especially useful information to help us fix it.
 Remember; just saying you're crashing doesn't tell us anything. We need to know the details!
-
-> *How can I disable a specific boss blind/joker/etc.?*
-
-Let's use Blinds as an example.
-
-In your Balatro mods folder, navigate to `\Cryptid\Items` and find `Blinds.lua`. (Different types of items will be contained in different Lua files in this folder.)
-
-Towards the end of the file, there's an array named `items_togo`, near line 1230.  You can disable specific Blinds by deleting the relevant lines here.  These settings will take effect on a restart.
-Most other files will have a similar items array near the bottom of the file that you can modify to remove specific things from Cryptid. This system will be changed to be in-game before Cryptid 0.6.0.

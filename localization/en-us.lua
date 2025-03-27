@@ -1464,6 +1464,14 @@ return {
 					"All {C:attention}face{} cards are debuffed",
 				},
 			},
+			j_cry_eyeofhagane = {
+				name = "Eye of Hagane",
+				text = {
+					"All played {C:attention}face{} cards",
+					"become {C:attention}Steel{} cards",
+					"when scored",
+				},
+			},
 			j_cry_facile = {
 				name = "Facile",
 				text = {
@@ -1712,10 +1720,10 @@ return {
 			j_cry_kidnap = {
 				name = "Kidnapping",
 				text = {
-					"Earn {C:money}$#2#{} at end of round",
-					"Increase payout by {C:money}$#1#{}",
-					"when a {C:attention}Type Mult{} or",
-					"{C:attention}Type Chips{} Joker is sold",
+					"Earn {C:money}$#1#{} at end of round",
+					"per unique {C:attention}Type Mult{} or",
+					"{C:attention}Type Chips{} Joker sold this run",
+					"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
 				},
 			},
 			j_cry_kittyprinter = {
@@ -2048,7 +2056,7 @@ return {
 				},
 			},
 			j_cry_notebook = {
-				name = "The Motebook",
+				name = "Motebook",
 				text = {
 					"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+#6#{} Joker",
 					"slot#<s>6# per {C:attention}reroll{} in the shop",
@@ -3020,7 +3028,7 @@ return {
 				name = "Conduit",
 				text = {
 					"Swap the {C:attention}editions{} of",
-					"{C:attention}2{} selected cards or {C:attention}Jokers{}",
+					"{C:attention}2{} selected playing cards or {C:attention}Jokers{}",
 				},
 			},
 			c_cry_gateway = {
@@ -4184,7 +4192,7 @@ return {
 				},
 			},
 			p_cry_empowered = {
-				name = "Spectral Pack [Empowered Tag]",
+				name = "Empowered Pack",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:spectral} Spectral{} card#<s>2#",
@@ -4337,6 +4345,7 @@ return {
 			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Cluster" or "Clusterfuck",
 			["cry_UltPair"] = "Ultimate Pair",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "The Entire Deck" or "The Entire Fucking Deck",
+			["cry-Cluster Bulwark"] = "Clusterwark",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4379,6 +4388,8 @@ return {
 			ach_cry_used_crash = "We Told You Not To",
 			ach_cry_what_have_you_done = "WHAT HAVE YOU DONE?!",
 			ach_cry_pin = "Pin of Shame",
+			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "You Can't Be Serious"
+				or "You're Fucking Kidding",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
@@ -4402,6 +4413,7 @@ return {
 			ach_cry_used_crash = "Use ://CRASH",
 			ach_cry_what_have_you_done = "Delete or Sacrifice an Exotic Joker",
 			ach_cry_pin = "Lose a run to The Pin",
+			ach_cry_youre_fucking_kidding = "Discard " .. localize("cry_WholeDeck", "poker_hands"),
 		},
 		challenge_names = {
 			c_cry_ballin = "Ballin'",
