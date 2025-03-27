@@ -2996,6 +2996,16 @@ return {
 					"{C:red}WIP",
 				},
 			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Antimatter Sleeve",
+				text = {
+					"applies the {C:attention}effects{}",
+					"and {C:attention}special effects{}",
+					"of {C:attention}every{} slevee won",
+					"with {C:gold}Gold Stake{}",
+					"{C:red}WIP",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_adversary = {

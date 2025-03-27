@@ -460,8 +460,8 @@ if CardSleeves then
 		},
 		unlocked = true,
 		unlock_condition = { deck = "Antimatter Deck", stake = 1 },
-		loc_vars = function(self)
-			return { vars = {} }
+		loc_vars = function(self, info_queue, center)
+			return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
 		end,
 		trigger_effect = function(self, args)
 			if context.context ~= "final_scoring_step" then
