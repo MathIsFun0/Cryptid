@@ -7902,23 +7902,30 @@ local highfive = {
 				if thunk > maximum then maximum = thunk end
 			end
 
+			local whapoosh = false
 			if maximum == 5 then
             for index = 1, #context.scoring_hand do
 					local v = context.scoring_hand[index]
+					if v.base.id ~= 5 then
+						whapoosh = true
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								 assert(SMODS.change_base(v, _, "5"))
+								 v:juice_up()
+								 return true
+							end
+					  }))
+					end
+				end
+
+				if whapoosh then
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							 assert(SMODS.change_base(v, _, "5"))
-							 v:juice_up()
+							 play_sound("cry_whapoosh")
 							 return true
-						end
+						end,
 				  }))
 				end
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						 play_sound("cry_whapoosh")
-						 return true
-					end,
-			  }))
 
 				return {
 					message = localize("cry_highfive_ex")
