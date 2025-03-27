@@ -667,7 +667,6 @@ local scalae = {
 	atlas = "atlasexotic",
 	order = 311,
 	config = { extra = { scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1 } },
-	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
 		--initialize tracking object
 		card.ability.extra.scale = to_big(card.ability.extra.scale)

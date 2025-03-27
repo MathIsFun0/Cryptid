@@ -53,7 +53,8 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
 	if self.ability and type(self.ability) == "table" then
 		-- if we've never defined a scale info table for this card ID, create a copy of its initial abilities
-		if not G.GAME.cry_double_scale[self.sort_id] then
+		-- also reset it if it's in the old format, to semi-support saves
+		if not G.GAME.cry_double_scale[self.sort_id] or type(G.GAME.cry_double_scale[self.sort_id].scaler_base) == "number" then
 			G.GAME.cry_double_scale[self.sort_id] = { ability = { double_scale = true } }
 			for k, v in pairs(self.ability) do
 				if type(self.ability[k]) ~= "table" then
