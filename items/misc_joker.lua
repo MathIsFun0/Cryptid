@@ -7934,7 +7934,7 @@ local highfive = {
 			if maximum == 5 and fives ~= #context.scoring_hand then
 				for index = 1, #context.scoring_hand do
 					local v = context.scoring_hand[index]
-					if v:get_id() ~= "5" and not SMODS.has_no_rank(v) then
+					if v:get_id() ~= 5 and not SMODS.has_no_rank(v) then
 						whapoosh = true
 						G.E_MANAGER:add_event(Event({
 							func = function()
