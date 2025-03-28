@@ -1725,7 +1725,7 @@ local wonka_bar = {
 		code = {
 			"Glitchkat10",
 		},
-	}
+	},
 }
 items = {
 	cotton_candy,
