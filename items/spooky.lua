@@ -1688,6 +1688,45 @@ local candy_sticks = {
 		},
 	},
 }
+-- Wonka Bar
+-- Sell this card to permanently gain +1 card selection limit
+local wonka_bar = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		},
+	},
+	key = "wonka_bar",
+	name = "cry_wonka_bar",
+	config = { extra = 1 },
+	pos = { x = 1, y = 3 },
+	order = 146,
+	rarity = "cry_candy",
+	cost = 10,
+	eternal_compat = false,
+	atlas = "atlasspooky",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+			card.ability.extra = math.floor(card.ability.extra)
+			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Inspector_B",
+		},
+		art = {
+			"George the Rat",
+		},
+		code = {
+			"Glitchkat10",
+		},
+	},
+}
 items = {
 	cotton_candy,
 	wrapped,
@@ -1720,6 +1759,7 @@ items = {
 	brittle,
 	monopoly_money,
 	candy_sticks,
+	wonka_bar,
 }
 return {
 	name = "Spooky",
