@@ -443,6 +443,10 @@ SMODS.Sound({
 	path = "studiofromhelsinki.ogg",
 })
 SMODS.Sound({
+	key = "whapoosh",
+	path = "whapoosh.ogg",
+})
+SMODS.Sound({
 	key = "music_jimball",
 	path = "music_jimball.ogg",
 	sync = false,
