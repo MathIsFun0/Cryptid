@@ -4471,6 +4471,7 @@ return {
 			cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
 			cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
 			cry_mus_alt_bg = "Background Music (by MathIsFun_)",
+			cry_force_tooltips = "Force Tooltips",
 			cry_family = "Family Friendly Mode",
 			cry_experimental = "Experimental Mode",
 
