@@ -7885,8 +7885,8 @@ local highfive = {
 	name = "cry-highfive",
 	key = "highfive",
 	order = 137,
-	atlas = "placeholders",
-	pos = { x = 2, y = 0},
+	atlas = "atlastwo",
+	pos = { x = 4, y = 1},
 	blueprint_compat = false,
 	eternal_compat = true,
 	perishable_compat = true,
@@ -7936,6 +7936,7 @@ local highfive = {
 	end,
 	cry_credits = {
 		idea = { "cassknows" },
+		art = {"MarioFan597"},
 		code = { "astrapboy" }
 	},
 }
@@ -8053,7 +8054,7 @@ local miscitems = {
 	lebaron_james,
 	huntingseason,
 	--cat_owl,
-	eyeofhagane,
+	--eyeofhagane, (apparently this wasn't screened)
 	highfive
 }
 return {
