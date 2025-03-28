@@ -62,7 +62,7 @@ target = "card.lua"
 pattern = "if self.ability.name ~= 'Seeing Double' and self.ability.x_mult > 1 and (self.ability.type == '' or next(context.poker_hands[self.ability.type])) then"
 position = "at"
 payload = '''
-if self.ability.name ~= 'Seeing Double' and to_big(self.ability.x_mult) > to_big(1) and (self.ability.type == '' or next(context.poker_hands[self.ability.type])) then
+if self.ability.name ~= 'Seeing Double' and to_big(self.ability.x_mult) > to_big(1) and (self.ability.type == '' or (context.poker_hands[self.ability.type] and next(context.poker_hands[self.ability.type]))) then
 '''
 match_indent = true
 
@@ -82,7 +82,7 @@ target = "card.lua"
 pattern = "if self.ability.t_mult > 0 and next(context.poker_hands[self.ability.type]) then"
 position = "at"
 payload = '''
-if to_big(self.ability.t_mult) > to_big(0) and next(context.poker_hands[self.ability.type]) then
+if to_big(self.ability.t_mult) > to_big(0) and (context.poker_hands[self.ability.type] and next(context.poker_hands[self.ability.type])) then
 '''
 match_indent = true
 
@@ -92,7 +92,7 @@ target = "card.lua"
 pattern = "if self.ability.t_chips > 0 and next(context.poker_hands[self.ability.type]) then"
 position = "at"
 payload = '''
-if to_big(self.ability.t_chips) > to_big(0) and next(context.poker_hands[self.ability.type]) then
+if to_big(self.ability.t_chips) > to_big(0) and (context.poker_hands[self.ability.type] and next(context.poker_hands[self.ability.type])) then
 '''
 match_indent = true
 
