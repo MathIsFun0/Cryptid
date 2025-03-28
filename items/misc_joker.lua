@@ -289,6 +289,7 @@ local potofjokes = {
 		},
 		code = {
 			"Math",
+			"BobJoe400",
 		},
 	},
 	unlocked = false,
@@ -8007,7 +8008,7 @@ local miscitems = {
 	lebaron_james,
 	huntingseason,
 	--cat_owl,
-	eyeofhagane,
+	--eyeofhagane, (apparently this wasn't screened)
 }
 return {
 	name = "Misc. Jokers",
