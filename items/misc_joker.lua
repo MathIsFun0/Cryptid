@@ -7906,7 +7906,7 @@ local highfive = {
 	key = "highfive",
 	order = 137,
 	atlas = "atlastwo",
-	pos = { x = 4, y = 1},
+	pos = { x = 4, y = 1 },
 	blueprint_compat = false,
 	eternal_compat = true,
 	perishable_compat = true,
@@ -7920,44 +7920,46 @@ local highfive = {
 			for k, v in ipairs(context.scoring_hand) do
 				if not SMODS.has_no_rank(v) then
 					local thunk = v.base.value == "Ace" and 1 or v.base.nominal
-					if thunk > maximum then maximum = thunk end
+					if thunk > maximum then
+						maximum = thunk
+					end
 				end
 			end
 
 			local whapoosh = false
 			if maximum == 5 then
-            for index = 1, #context.scoring_hand do
+				for index = 1, #context.scoring_hand do
 					local v = context.scoring_hand[index]
 					if v.base.value ~= "5" and not SMODS.has_no_rank(v) then
 						whapoosh = true
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								 assert(SMODS.change_base(v, _, "5"))
-								 v:juice_up()
-								 return true
-							end
-					  }))
+								assert(SMODS.change_base(v, _, "5"))
+								v:juice_up()
+								return true
+							end,
+						}))
 					end
 				end
 
 				if whapoosh then
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							 play_sound("cry_whapoosh")
-							 return true
+							play_sound("cry_whapoosh")
+							return true
 						end,
-				  }))
-				  return {
-					message = localize("cry_highfive_ex")
-				}
+					}))
+					return {
+						message = localize("cry_highfive_ex"),
+					}
 				end
 			end
 		end
 	end,
 	cry_credits = {
 		idea = { "cassknows" },
-		art = {"MarioFan597"},
-		code = { "astrapboy" }
+		art = { "MarioFan597" },
+		code = { "astrapboy" },
 	},
 }
 local miscitems = {
@@ -8075,7 +8077,7 @@ local miscitems = {
 	huntingseason,
 	--cat_owl,
 	--eyeofhagane, (apparently this wasn't screened)
-	highfive
+	highfive,
 }
 return {
 	name = "Misc. Jokers",

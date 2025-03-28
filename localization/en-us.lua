@@ -1478,7 +1478,7 @@ return {
 					"If highest {C:attention}scoring rank{}",
 					"is {C:attention}5{}, convert {C:attention}all{} scoring cards",
 					"into {C:attention}5{}s",
-					"{s:0.8,C:inactive}Aces are considered 1"
+					"{s:0.8,C:inactive}Aces are considered 1",
 				},
 			},
 			j_cry_facile = {
