@@ -53,16 +53,24 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 					local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 
-					if (k == "cry_prob"
-						-- Hack for vanilla jokers that use the extra field to describe their odds
-						or ((name == "j_8_ball"
-							 or name == "j_business"
-							 or name == "j_space"
-							 or name == "j_hallucination")
-						    and k == "extra"))
-						and (to_big(initial) > to_big(prob_max)
-							 or to_big(min) > to_big(prob_max)
-							 or to_big(max) > to_big(prob_max))
+					if
+						(
+							k == "cry_prob"
+							-- Hack for vanilla jokers that use the extra field to describe their odds
+							or (
+								(
+									name == "j_8_ball"
+									or name == "j_business"
+									or name == "j_space"
+									or name == "j_hallucination"
+								) and k == "extra"
+							)
+						)
+						and (
+							to_big(initial) > to_big(prob_max)
+							or to_big(min) > to_big(prob_max)
+							or to_big(max) > to_big(prob_max)
+						)
 					then
 						initial = Cryptid.base_values[name][k] * prob_max
 						min = 1
@@ -75,10 +83,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						big
 					)
 				end
-			elseif
-				not (k == "immutable")
-				and not (k == "colour")
-			then
+			elseif not (k == "immutable") and not (k == "colour") then
 				for _k, _v in pairs(tbl[k]) do
 					-- print('\t\tCurrent key: '.._k)
 					if
@@ -106,11 +111,14 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
-						
-						if (_k == "odds")
-							and (to_big(initial) > to_big(prob_max)
+
+						if
+							(_k == "odds")
+							and (
+								to_big(initial) > to_big(prob_max)
 								or to_big(min) > to_big(prob_max)
-								or to_big(max) > to_big(prob_max))
+								or to_big(max) > to_big(prob_max)
+							)
 						then
 							print('\t\t\t got "odds"')
 							initial = Cryptid.base_values[name][k][_k] * prob_max
