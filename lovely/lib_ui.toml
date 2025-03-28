@@ -78,7 +78,9 @@ target = "engine/node.lua"
 pattern = "if self.children.h_popup then"
 position = 'at'
 match_indent = true
-payload = "if self.children.h_popup and not (self.force_popup and self:force_popup()) then"
+payload = '''
+if self.children.h_popup and not (self.force_popup and self:force_popup() and Cryptid["force_tooltips"]) then
+'''
 
 # Let description tooltips work for any object
 [[patches]]
