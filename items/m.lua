@@ -304,7 +304,7 @@ local mstack = {
 			and not context.retrigger_joker
 		then
 			card.ability.extra.check = true
-			if card.ability.extra.sell + 1 >= card.ability.extra.sell_req then
+			if to_big(card.ability.extra.sell) + 1 >= to_big(card.ability.extra.sell_req) then
 				if not context.blueprint or context.retrigger_joker then
 					card.ability.extra.retriggers = card.ability.extra.retriggers + 1
 				end
