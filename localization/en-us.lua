@@ -60,7 +60,7 @@ return {
 				},
 				unlock = {
 					"Beat {C:attention}The Serpent",
-					"without {C:red}discarding"
+					"without {C:red}discarding",
 				},
 			},
 			b_cry_CCD = {
