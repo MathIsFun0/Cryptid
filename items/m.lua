@@ -1324,7 +1324,7 @@ local macabre = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
 			vars = {
-				math.min(center.ability.immutable.max_add, center.ability.extra.add)
+				math.min(center.ability.immutable.max_spawn, center.ability.extra.add)
 			}
 		}
 	end,
