@@ -166,9 +166,6 @@ function Cryptid.misprintize(card, override, force_reset, stack)
 			and not stack
 		or not Card.no(card, "immutable", true)
 	then
-		if card.ability.name == "Ace Aequilibrium" then
-			return
-		end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}
