@@ -21,7 +21,13 @@ local supercell = {
 	object_type = "Joker",
 	name = "cry-supercell",
 	key = "supercell",
-	config = { extra = { stat1 = 15, stat2 = 2, money = 3 } },
+	config = {
+		extra = {
+			stat1 = 15,
+			stat2 = 2,
+			money = 3
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -93,9 +99,16 @@ local membershipcardtwo = {
 	object_type = "Joker",
 	name = "cry-membershipcardtwo",
 	key = "membershipcardtwo",
-	config = { extra = { chips = 1 } },
+	config = {
+		extra = { chips = 1 },
+		immutable = { chips_mod = 1}
+	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 },
+			immutable = { chips_mod = 8 }
+		},
 	},
 	dependencies = {
 		items = {
@@ -109,31 +122,23 @@ local membershipcardtwo = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, card)
-		local a = 1
-		if Card.get_gameset(card) == "modest" then
-			a = 8
-		end
 		return {
 			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
 			vars = {
 				number_format(card.ability.extra.chips),
-				number_format(lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / a))),
+				number_format(lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod))),
 			},
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main and to_big(card.ability.extra.chips) > to_big(0) then
-			local a = 1
-			if Card.get_gameset(card) == "modest" then
-				a = 8
-			end
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_chips",
-					vars = { number_format(lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / a))) },
+					vars = { number_format(lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod))) },
 				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / a)),
+				chip_mod = lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)),
 			}
 		end
 	end,
@@ -156,7 +161,12 @@ local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
 	key = "googol_play",
-	config = { extra = { Xmult = 1e100, odds = 8 } },
+	config = {
+		extra = {
+			Xmult = 1e100,
+			odds = 8
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -230,7 +240,10 @@ local sync_catalyst = {
 		},
 	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 }
+		},
 	},
 	pos = { x = 5, y = 2 },
 	rarity = "cry_epic",
@@ -394,7 +407,12 @@ local error_joker = {
 	name = "cry-Error",
 	key = "error",
 	pos = { x = 4, y = 2 },
-	config = { extra = { sell_rounds = 0, active = false } },
+	config = {
+		extra = {
+			sell_rounds = 0,
+			active = false
+		}
+	},
 	dependencies = {
 		items = {
 			-- Note: This currently does not have a dependency on Glitched because there's a fallback.
@@ -661,9 +679,19 @@ local m = {
 	name = "cry-m",
 	key = "m",
 	pos = { x = 3, y = 1 },
-	config = { extra = { extra = 13, x_mult = 1 } },
+	config = {
+		extra = {
+			extra = 13,
+			x_mult = 1
+		}
+	},
 	gameset_config = {
-		modest = { extra = { extra = 1, x_mult = 1 } },
+		modest = {
+			extra = {
+				extra = 1,
+				x_mult = 1
+			}
+		},
 	},
 	dependencies = {
 		items = {
@@ -855,7 +883,12 @@ local number_blocks = {
 	object_type = "Joker",
 	name = "cry-Number Blocks",
 	key = "number_blocks",
-	config = { extra = { money_mod = 1, money = 1 } },
+	config = {
+		extra = {
+			money_mod = 1,
+			money = 1
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -930,7 +963,10 @@ local double_scale = {
 		},
 	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 }
+		},
 		exp_modest = { cost = 11 },
 	},
 	extra_gamesets = { "exp_modest" },
@@ -971,7 +1007,10 @@ local oldcandy = {
 	key = "oldcandy",
 	pos = { x = 4, y = 1 },
 	order = 43,
-	config = { extra = { hand_size = 3 } },
+	config = {
+		extra = { hand_size = 3 },
+		immutable = { max_hand_size_mod = 1000 }
+	},
 	gameset_config = {
 		modest = { extra = { hand_size = 1 } },
 	},
@@ -982,7 +1021,7 @@ local oldcandy = {
 	},
 	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { number_format(math.max(1, math.floor(center.ability.extra.hand_size))) } }
+		return { vars = { number_format(math.min(center.ability.immutable.max_hand_size_mod, math.max(1, math.floor(center.ability.extra.hand_size)))) } }
 	end,
 	rarity = "cry_epic",
 	cost = 9,
@@ -990,7 +1029,7 @@ local oldcandy = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.selling_self and not context.blueprint then
-			G.hand:change_size(math.max(1, math.floor(card.ability.extra.hand_size)))
+			G.hand:change_size(lenient_bignum(math.min(card.ability.immutable.max_hand_size_mod, math.max(1, math.floor(card.ability.extra.hand_size)))))
 			return nil, true
 		end
 	end,
@@ -1020,8 +1059,14 @@ local circus = {
 			rare_mult_mod = 2,
 			epic_mult_mod = 3,
 			legend_mult_mod = 4,
-			exotic_mult_mod = 20
+			exotic_mult_mod = 20,
 		},
+		rarity_map = {
+			[3] = "rare_mult_mod",
+			[4] = "legend_mult_mod",
+			["cry_epic"] = "epic_mult_mod",
+			["cry_exotic"] = "exotic_mult_mod"
+		}
 	},
 	dependencies = {
 		items = {
@@ -1044,75 +1089,31 @@ local circus = {
 	cost = 16,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
+        local function calculate_xmult(mult_mod)
+            if not Talisman.config_file.disable_anims then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end,
+                }))
+            end
+
+            local xmult = lenient_bignum(math.max(1, card.ability.extra.Xmult) * mult_mod)
+            return {
+                message = localize({
+                    type = "variable",
+                    key = "a_xmult",
+                    vars = { number_format(xmult) }
+                }),
+                Xmult_mod = xmult,
+            }
+        end
+
 		if context.other_joker and card ~= context.other_joker then
-			if context.other_joker.config.center.rarity == 3 then --Rare
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.rare_mult_mod)},
-					}),
-					Xmult_mod = lenient_bignum(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.rare_mult_mod),
-				}
-			elseif context.other_joker.config.center.rarity == 4 then --Legendary
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.epic_mult_mod) },
-					}),
-					Xmult_mod = lenient_bignum(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.epic_mult_mod),
-				}
-			elseif context.other_joker.config.center.rarity == "cry_epic" then --Epic
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.legend_mult_mod) },
-					}),
-					Xmult_mod = lenient_bignum(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.legend_mult_mod),
-				}
-			elseif context.other_joker.config.center.rarity == "cry_exotic" then --Exotic
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.exotic_mult_mod) },
-					}),
-					Xmult_mod = lenient_bignum(math.max(1, card.ability.extra.Xmult) * card.ability.immutable.exotic_mult_mod),
-				}
+			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
+			if mod_key then
+				return calculate_xmult(card.ability.immutable[mod_key])
 			end
 		end
 	end,
@@ -1125,6 +1126,7 @@ local circus = {
 		},
 		code = {
 			"Jevonn",
+			"BobJoe400"
 		},
 	},
 }
@@ -1135,7 +1137,12 @@ local caramel = {
 	object_type = "Joker",
 	name = "cry-caramel",
 	key = "caramel",
-	config = { extra = { x_mult = 1.75, rounds_remaining = 11 } },
+	config = {
+		extra = {
+			x_mult = 1.75,
+			rounds_remaining = 11
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1146,7 +1153,12 @@ local caramel = {
 	cost = 12,
 	order = 106,
 	gameset_config = {
-		modest = { extra = { x_mult = 1.5, rounds_remaining = 6 } },
+		modest = {
+			extra = {
+				x_mult = 1.5,
+				rounds_remaining = 6
+			}
+		},
 	},
 	pools = { ["Food"] = true },
 	blueprint_compat = true,
@@ -1243,7 +1255,10 @@ local curse_sob = {
 		},
 	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 }
+		},
 	},
 	rarity = "cry_epic",
 	cost = 9,
@@ -1343,7 +1358,10 @@ local bonusjoker = {
 	key = "bonusjoker",
 	pos = { x = 3, y = 2 },
 	config = {
-		extra = { odds = 8, add = 1 },
+		extra = {
+			odds = 8,
+			add = 1
+		},
 		immutable = {check = 0}
 	},
 	dependencies = {
@@ -1508,7 +1526,12 @@ local goldjoker = {
 	object_type = "Joker",
 	name = "cry-gold Joker",
 	key = "goldjoker",
-	config = { extra = { percent_mod = 2, percent = 0 } },
+	config = {
+		extra = {
+			percent_mod = 2,
+			percent = 0
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1593,9 +1616,15 @@ local altgoogol = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	gameset_config = {
-		modest = { cost = 15, copies = 1 },
+		modest = {
+			cost = 15,
+			copies = 1
+		},
 		mainline = { copies = 2 },
-		madness = { center = { blueprint_compat = true }, copies = 2 },
+		madness = {
+			center = { blueprint_compat = true },
+			copies = 2
+		},
 	},
 	loc_vars = function(self, info_queue, center)
 		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.copies } }
@@ -1927,7 +1956,7 @@ local jtron = {
 	key = "jtron",
 	config = { 
 		extra = { bonus = 1 },
-		immutable = {current = 0 },
+		immutable = { current = 0 },
 	},
 	rarity = "cry_epic",
 	cost = 14,
@@ -1979,10 +2008,25 @@ local clockwork = { -- Steel Support: The Joker
 	key = "clockwork",
 	pos = { x = 5, y = 5 },
 	config = {
-		extra = { xmult = 1, xmult_mod = 0.25, steelenhc = 1, steel_mod = 0.1 },
+		extra = {
+			xmult = 1,
+			xmult_mod = 0.25,
+			steelenhc = 1,
+			steel_mod = 0.1
+		},
 		immutable = {
-			limits = { l1 = 2, l2 = 3, l3 = 5, l4 = 7 },
-			counters = { c1 = 0, c2 = 0, c3 = 0, c4 = 0 },
+			limits = {
+				l1 = 2,
+				l2 = 3,
+				l3 = 5,
+				l4 = 7
+			},
+			counters = {
+				c1 = 0,
+				c2 = 0,
+				c3 = 0,
+				c4 = 0
+			},
 		}
 	},
 	order = 135,
