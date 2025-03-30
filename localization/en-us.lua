@@ -1012,8 +1012,8 @@ return {
 				name = "Candy Basket",
 				text = {
 					"Sell this card to create {C:attention}#1#{} {C:cry_candy}Cand#<ies,y>1#",
-					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}2{} Blinds defeated",
-					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>3#{} when {C:attention}Boss Blind{} defeated",
+					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}#3#{} Blinds defeated",
+					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>4#{} when {C:attention}Boss Blind{} defeated",
 				},
 			},
 			j_cry_candy_buttons = {
@@ -1594,9 +1594,9 @@ return {
 				name = "Ghost",
 				text = {
 					"At end of round:",
-					"{C:green}#1# in #2#{} chance to",
-					"{C:attention}possess{} a random {C:attention}Joker",
 					"{C:green}#1# in #3#{} chance to",
+					"{C:attention}possess{} a random {C:attention}Joker",
+					"{C:green}#2# in #4#{} chance to",
 					"{E:2,C:red}self destruct",
 				},
 			},
@@ -2566,7 +2566,7 @@ return {
 				name = "Trick-or-Treat",
 				text = {
 					"When {C:attention}sold{}:",
-					"{C:green}#1# in #2#{} chance to create {C:attention}2{} {C:cry_candy}Candies",
+					"{C:green}#1# in #2#{} chance to create {C:attention}#3{} {C:cry_candy}Candies",
 					"Otherwise, create a {X:cry_cursed,C:white}Cursed{} Joker",
 					"{C:inactive}(Can overflow)",
 				},
