@@ -2824,8 +2824,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Aumenta el poder de",
-					"las {C:attention}manos ascendidas{} por {X:gold,C:white}#2#{}",
-					"{C:inactive}(Actual: {X:gold,C:white}X(#3#^asc){C:inactive})",
+					"las {C:attention}manos ascendidas{} por {X:gold,C:white}0.05{}",
+					"{C:inactive}(Actual: {X:gold,C:white}X(#2#^asc){C:inactive})",
 				},
 			},
 		},
