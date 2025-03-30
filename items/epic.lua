@@ -1033,10 +1033,10 @@ local circus = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.rare_mult_mod),
-				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.epic_mult_mod),
-				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.legend_mult_mod),
-				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.exotic_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.rare_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.epic_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.legend_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.exotic_mult_mod),
 			},
 		}
 	end,
