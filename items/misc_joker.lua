@@ -7916,10 +7916,14 @@ local highfive = {
 	discovered = true,
 	calculate = function(self, card, context)
 		if context.final_scoring_step then
-			local maximum = -math.huge
+			local maximum = -1
+			local fives = 0
 			for k, v in ipairs(context.scoring_hand) do
 				if not SMODS.has_no_rank(v) then
-					local thunk = v.base.value == "Ace" and 1 or v.base.nominal
+					local thunk = v:get_id() == 14 and 1 or v:get_id()
+					if thunk == 5 then
+						fives = fives + 1
+					end
 					if thunk > maximum then
 						maximum = thunk
 					end
@@ -7927,10 +7931,10 @@ local highfive = {
 			end
 
 			local whapoosh = false
-			if maximum == 5 then
+			if maximum == 5 and fives ~= #context.scoring_hand then
 				for index = 1, #context.scoring_hand do
 					local v = context.scoring_hand[index]
-					if v.base.value ~= "5" and not SMODS.has_no_rank(v) then
+					if v:get_id() ~= 5 and not SMODS.has_no_rank(v) then
 						whapoosh = true
 						G.E_MANAGER:add_event(Event({
 							func = function()
