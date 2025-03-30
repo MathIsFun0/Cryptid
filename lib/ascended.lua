@@ -130,7 +130,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_WholeDeck"] = 52,
 	}
 	-- Change mult and chips colors if hand is ascended
-	if #scoring_hand > hand_table[text] then
+	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] then
 		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
 	else
@@ -152,7 +152,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	end
 
 	G.GAME.current_round.current_hand.cry_asc_num_text = (
-		G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0
+		G.GAME.current_round.current_hand.cry_asc_num and ((type(G.GAME.current_round.current_hand.cry_asc_num) == "table" and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0)) or G.GAME.current_round.current_hand.cry_asc_num > 0))
 	)
 			and " (+" .. G.GAME.current_round.current_hand.cry_asc_num .. ")"
 		or ""
@@ -176,14 +176,14 @@ function Cryptid.ascend(num) -- edit this function at your leisure
 				* (
 					1
 					+ 0.1
-					+ (0.05 * (G.GAME.sunnumber or 0))
-					+ ((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * (G.GAME.current_round.current_hand.cry_asc_num or 0))
+					+ to_big(0.05 * (G.GAME.sunnumber or 0))
+					+ to_big((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * to_big(G.GAME.current_round.current_hand.cry_asc_num or 0))
 				)
 		)
 	else
 		return math.max(
 			num,
-			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ (G.GAME.current_round.current_hand.cry_asc_num or 0))
+			num * to_big((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ to_big(G.GAME.current_round.current_hand.cry_asc_num or 0))
 		)
 	end
 end
