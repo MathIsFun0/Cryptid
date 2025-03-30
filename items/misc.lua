@@ -340,7 +340,7 @@ local oversat = {
 					end,
 				}))
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -570,7 +570,7 @@ local glitched = {
 					StatusText = true,
 				})
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
