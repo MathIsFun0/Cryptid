@@ -4,7 +4,12 @@ local jollysus = {
 	name = "cry-jollysus Joker",
 	key = "jollysus",
 	pos = { x = 3, y = 1 },
-	config = { extra = { spawn = true, active = localize("k_active_ex") } },
+	config = {
+		extra = {
+			spawn = true,
+			active = localize("k_active_ex")
+		}
+	},
 	rarity = 1,
 	cost = 4,
 	order = 267,
@@ -97,7 +102,12 @@ local bubblem = {
 	pools = { ["M"] = true },
 	order = 251,
 	pos = { x = 0, y = 0 },
-	config = { extra = { spawn = false, type = "Three of a Kind" } },
+	config = {
+		extra = {
+			spawn = false,
+			type = "Three of a Kind"
+		}
+	},
 	rarity = 1,
 	cost = 2,
 	eternal_compat = false,
@@ -170,7 +180,13 @@ local foodm = {
 	name = "cry-foodm",
 	key = "foodm",
 	pools = { ["M"] = true, ["Food"] = true },
-	config = { extra = { mult = 40, rounds_remaining = 2, round_inc = 1 } },
+	config = { 
+		xtra = {
+			mult = 40,
+			rounds_remaining = 2,
+			round_inc = 1
+		}
+	},
 	pos = { x = 4, y = 2 },
 	rarity = 1,
 	dependencies = {
@@ -370,7 +386,12 @@ local mneon = {
 	pools = { ["M"] = true },
 	pos = { x = 4, y = 2 },
 	order = 254,
-	config = { extra = { bonus = 1, money = 0 } },
+	config = {
+		extra = {
+			bonus = 1,
+			money = 0
+		}
+	},
 	rarity = 2,
 	cost = 7,
 	perishable_compat = false,
@@ -426,7 +447,16 @@ local notebook = {
 	pos = { x = 1, y = 0 },
 	order = 255,
 	config = {
-		extra = { odds = 7, slot = 0, jollies = 4, check = true, active = "Active", inactive = "", add = 1 },
+		extra = {
+			odds = 7,
+			jollies = 4,
+			check = true,
+			active = "Active",
+			inactive = "",
+		},
+		immutable = {
+			slot = 0
+		}
 	},
 	rarity = 3,
 	cost = 9,
@@ -437,7 +467,7 @@ local notebook = {
 			vars = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
-				number_format(card.ability.extra.slot),
+				number_format(card.ability.immutable.slot),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
 				number_format(card.ability.extra.add),
@@ -463,7 +493,7 @@ local notebook = {
 				or pseudorandom("cry_notebook")
 					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
-				card.ability.extra.slot = lenient_bignum(card.ability.extra.slot + card.ability.extra.add)
+				card.ability.immutable.slot = lenient_bignum(card.ability.immutable.slot + card.ability.extra.add)
 				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
@@ -487,10 +517,10 @@ local notebook = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.slot)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.immutable.slot)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra.slot)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.immutable.slot)
 	end,
 	cry_credits = {
 		idea = {
@@ -514,7 +544,14 @@ local bonk = {
 	pools = { ["M"] = true, ["Meme"] = true },
 	order = 256,
 	pos = { x = 2, y = 2 },
-	config = { extra = { chips = 6, bonus = 1, xchips = 3, type = "Pair" } },
+	config = {
+		extra = {
+			chips = 6,
+			bonus = 1,
+			xchips = 3,
+			type = "Pair"
+		}
+	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
@@ -927,7 +964,10 @@ local doodlem = {
 		},
 	},
 	config = { 
-		extra = { add = 1, init = 2 },
+		extra = {
+			add = 1,
+			init = 2
+		},
 		immutable = { max_jollies = 25 }
 	},
 	pos = { x = 2, y = 0 },
@@ -999,7 +1039,10 @@ local virgo = {
 	pos = { x = 1, y = 2 },
 	soul_pos = { x = 10, y = 0, extra = { x = 2, y = 2 } },
 	config = {
-		extra = { bonus = 4, type = "Pair" },
+		extra = {
+			bonus = 4,
+			type = "Pair"
+		},
 		immutable = { max_summons = 80 }
 	},
 	rarity = "cry_epic",
@@ -1138,7 +1181,14 @@ local biggestm = {
 	object_type = "Joker",
 	name = "cry-biggestm",
 	key = "biggestm",
-	config = { extra = { x_mult = 7, type = "Pair", check = false, text = "Inactive" } },
+	config = {
+		extra = {
+			x_mult = 7,
+			type = "Pair",
+			check = false,
+			text = "Inactive"
+		}
+	},
 	pos = { x = 3, y = 3 },
 	display_size = { w = 1.7 * 71, h = 1.7 * 95 },
 	dependencies = {
@@ -1220,10 +1270,20 @@ local mprime = {
 	key = "mprime",
 	pos = { x = 0, y = 5 },
 	soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
-	config = { extra = { mult = 1.05, bonus = 0.04 } },
+	config = {
+		extra = {
+			mult = 1.05,
+			bonus = 0.04
+		}
+	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		return { vars = { center.ability.extra.mult, center.ability.extra.bonus } }
+		return {
+			vars = {
+				number_format(center.ability.extra.mult),
+				number_format(center.ability.extra.bonus)
+			}
+		}
 	end,
 	rarity = "cry_exotic",
 	cost = 50,
@@ -1400,9 +1460,13 @@ local megg = {
 	eternal_compat = false,
 	pos = { x = 0, y = 4 },
 	order = 262,
-	config = { 
-		extra = { amount = 0, amount_mod = 1 },
-		immutable = { max_amount = 200 }},
+	config = {
+		extra = {
+			amount = 0,
+			amount_mod = 1
+		},
+		immutable = { max_amount = 200 }
+	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
@@ -1469,7 +1533,10 @@ local longboi = {
 	key = "longboi",
 	pos = { x = 5, y = 4 },
 	config = {
-		extra = { monster = 1, bonus = 0.75 },
+		extra = {
+			monster = 1,
+			bonus = 0.75
+		},
 		immutable = { max_bonus = 0.75 }
 	},
 	rarity = 1,
