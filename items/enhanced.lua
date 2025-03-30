@@ -121,8 +121,8 @@ local e_deck = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'discover_amount' then
-			if G.DISCOVER_TALLIES.editions.tally/G.DISCOVER_TALLIES.editions.of >=1 then 
+		if args.type == "discover_amount" then
+			if G.DISCOVER_TALLIES.editions.tally / G.DISCOVER_TALLIES.editions.of >= 1 then
 				unlock_card(self)
 			end
 		end

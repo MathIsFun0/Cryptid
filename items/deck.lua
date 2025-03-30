@@ -26,7 +26,7 @@ local very_fair = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'win_deck' then
+		if args.type == "win_deck" then
 			if get_deck_win_stake("b_cry_blank") > 0 then
 				unlock_card(self)
 			end
@@ -155,7 +155,7 @@ local infinite = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'hand_contents' then
+		if args.type == "hand_contents" then
 			if #args.cards >= 6 then
 				unlock_card(self)
 			end
@@ -355,8 +355,8 @@ local redeemed = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'discover_amount' then
-			if G.DISCOVER_TALLIES.vouchers.tally/G.DISCOVER_TALLIES.vouchers.of >=1 then 
+		if args.type == "discover_amount" then
+			if G.DISCOVER_TALLIES.vouchers.tally / G.DISCOVER_TALLIES.vouchers.of >= 1 then
 				unlock_card(self)
 			end
 		end
@@ -561,7 +561,7 @@ local glowing = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'win_deck' then
+		if args.type == "win_deck" then
 			if get_deck_win_stake("b_cry_beige") > 0 then
 				unlock_card(self)
 			end
@@ -592,7 +592,7 @@ local beta = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'win_deck' then
+		if args.type == "win_deck" then
 			if get_deck_win_stake() >= 9 then
 				unlock_card(self)
 			end
@@ -623,8 +623,11 @@ local bountiful = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'round_win' then
-			if G.GAME.blind.name == 'The Serpent' and G.GAME.current_round.discards_left == G.GAME.round_resets.discards then
+		if args.type == "round_win" then
+			if
+				G.GAME.blind.name == "The Serpent"
+				and G.GAME.current_round.discards_left == G.GAME.round_resets.discards
+			then
 				unlock_card(self)
 			end
 		end
@@ -653,7 +656,7 @@ local beige = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'discover_amount' then
+		if args.type == "discover_amount" then
 			if args.amount >= 200 then
 				unlock_card(self)
 			end
@@ -665,7 +668,6 @@ local beige = {
 			unlock_card(self)
 		end
 	end,
-	
 }
 local blank = {
 	object_type = "Back",
@@ -1231,7 +1233,7 @@ local antimatter = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if args.type == 'win_deck' then
+		if args.type == "win_deck" then
 			if get_deck_win_stake("b_cry_blank") > 0 and get_deck_win_stake() >= 8 then
 				unlock_card(self)
 			end

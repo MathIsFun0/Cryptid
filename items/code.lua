@@ -3808,7 +3808,7 @@ local pointer = {
 		G.CHOOSE_CARD.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_CARD:align_to_major()
-		check_for_unlock({cry_used_consumable = "c_cry_pointer"})
+		check_for_unlock({ cry_used_consumable = "c_cry_pointer" })
 	end,
 	init = function(self)
 		function create_UIBox_pointer(card)
