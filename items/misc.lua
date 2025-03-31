@@ -350,7 +350,7 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text({ delay = 1.3 }, { chips = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true })
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -360,7 +360,7 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text({ delay = 1.3 }, { mult = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true })
 			end
 		end
 	end,
@@ -1078,7 +1078,7 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text({ delay = 1.3 }, { chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true })
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1088,7 +1088,7 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text({ delay = 1.3 }, { mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true })
 			end
 		end
 	end,
