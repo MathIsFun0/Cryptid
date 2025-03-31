@@ -1682,7 +1682,7 @@ return {
 					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
 					"{X:mult,C:white} X#1# {} Mult when scored",
-					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} repetitions)"
+					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} repetitions)",
 				},
 			},
 			j_cry_jawbreaker = {
@@ -1781,7 +1781,7 @@ return {
 					"Played and scoring {C:attention}Kings{} give",
 					"{C:attention}+#1#{} hand size for the round",
 					"and trigger {C:attention}held in hand{} effects",
-					"{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive})"
+					"{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive})",
 				},
 			},
 			j_cry_lightupthenight = {

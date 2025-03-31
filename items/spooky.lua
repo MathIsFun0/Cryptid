@@ -827,12 +827,12 @@ local trick_or_treat = {
 	config = {
 		extra = {
 			odds = 4,
-			num_candies = 2
+			num_candies = 2,
 		},
 		immutable = {
 			prob_mod = 3,
-			max_candies = 40
-		}
+			max_candies = 40,
+		},
 	},
 
 	key = "trick_or_treat",
@@ -846,8 +846,14 @@ local trick_or_treat = {
 	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.selling_self then
-			if pseudorandom(pseudoseed("cry_trick_or_treat")) 
-				< cry_prob(card.ability.cry_prob * card.ability.immutable.prob_mod, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+			if
+				pseudorandom(pseudoseed("cry_trick_or_treat"))
+				< cry_prob(
+						card.ability.cry_prob * card.ability.immutable.prob_mod,
+						card.ability.extra.odds,
+						card.ability.cry_rigged
+					)
+					/ card.ability.extra.odds
 			then
 				local spawn_num = math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies)
 
@@ -866,10 +872,14 @@ local trick_or_treat = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				cry_prob(center.ability.cry_prob * center.ability.immutable.prob_mod, center.ability.extra.odds, center.ability.cry_rigged),
+				cry_prob(
+					center.ability.cry_prob * center.ability.immutable.prob_mod,
+					center.ability.extra.odds,
+					center.ability.cry_rigged
+				),
 				center.ability.extra.odds,
-				number_format(center.ability.extra.num_candies)
-			}
+				number_format(center.ability.extra.num_candies),
+			},
 		}
 	end,
 }
@@ -899,7 +909,7 @@ local candy_basket = {
 			current_win_count = 0,
 			wins_needed = 2,
 			max_spawn = 100,
-		}
+		},
 	},
 	calculate = function(self, card, context)
 		if context.selling_self then
@@ -913,7 +923,9 @@ local candy_basket = {
 			card.ability.immutable.current_win_count = card.ability.immutable.current_win_count + 1
 
 			if G.GAME.blind.boss then
-				card.ability.extra.candies = lenient_bignum(card.ability.extra.candies + card.ability.extra.candy_mod * card.ability.extra.candy_boss_mod)
+				card.ability.extra.candies = lenient_bignum(
+					card.ability.extra.candies + card.ability.extra.candy_mod * card.ability.extra.candy_boss_mod
+				)
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
 				card.ability.immutable.current_win_count = 0
@@ -1023,7 +1035,7 @@ local ghost = {
 			odds = 1,
 			possess_rate = 2,
 			destroy_rate = 6,
-		}
+		},
 	},
 	rarity = "cry_cursed",
 	cost = 0,
@@ -1043,7 +1055,11 @@ local ghost = {
 		then
 			if
 				pseudorandom(pseudoseed("cry_ghost_destroy"))
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds * card.ability.extra.destroy_rate, card.ability.cry_rigged)
+				< cry_prob(
+						card.ability.cry_prob,
+						card.ability.extra.odds * card.ability.extra.destroy_rate,
+						card.ability.cry_rigged
+					)
 					/ (card.ability.extra.odds * card.ability.extra.destroy_rate)
 			then
 				G.E_MANAGER:add_event(Event({
@@ -1066,7 +1082,11 @@ local ghost = {
 			--todo: let multiple ghosts possess multiple jokers
 			if
 				pseudorandom(pseudoseed("cry_ghost_possess"))
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds * card.ability.extra.possess_rate, card.ability.cry_rigged)
+				< cry_prob(
+						card.ability.cry_prob,
+						card.ability.extra.odds * card.ability.extra.possess_rate,
+						card.ability.cry_rigged
+					)
 					/ (card.ability.extra.odds * card.ability.extra.possess_rate)
 			then
 				for i = 1, #G.jokers.cards do
@@ -1090,8 +1110,16 @@ local ghost = {
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds * card.ability.extra.possess_rate, card.ability.cry_rigged),
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds * card.ability.extra.destroy_rate, card.ability.cry_rigged),
+				cry_prob(
+					card.ability.cry_prob,
+					card.ability.extra.odds * card.ability.extra.possess_rate,
+					card.ability.cry_rigged
+				),
+				cry_prob(
+					card.ability.cry_prob,
+					card.ability.extra.odds * card.ability.extra.destroy_rate,
+					card.ability.cry_rigged
+				),
 				card.ability.extra.odds * card.ability.extra.possess_rate,
 				card.ability.extra.odds * card.ability.extra.destroy_rate,
 			},
@@ -1249,8 +1277,8 @@ local candy_cane = {
 		return {
 			vars = {
 				number_format(center.ability.extra.rounds),
-				number_format(center.ability.extra.dollars)
-			}
+				number_format(center.ability.extra.dollars),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -1478,9 +1506,11 @@ local mellowcreme = {
 		if context.selling_self then
 			for k, v in ipairs(G.consumeables.cards) do
 				if v.set_cost then
-					v.ability.extra_value = lenient_bignum((v.ability.extra_value or 0)
-						+ (math.max(1, math.floor(v.cost / 2)) + (v.ability.extra_value or 0))
-							* (card.ability.extra.sell_mult - 1))
+					v.ability.extra_value = lenient_bignum(
+						(v.ability.extra_value or 0)
+							+ (math.max(1, math.floor(v.cost / 2)) + (v.ability.extra_value or 0))
+								* (card.ability.extra.sell_mult - 1)
+					)
 					v:set_cost()
 				end
 			end
@@ -1636,13 +1666,13 @@ local candy_sticks = {
 	name = "cry-Candy-Sticks",
 	pos = { x = 5, y = 2 },
 	order = 145,
-	config = { 
+	config = {
 		extra = { hands = 1 },
 		immutable = {
 			boss = {},
-			clockscore = 0
-		}
- 	},
+			clockscore = 0,
+		},
+	},
 	rarity = "cry_candy",
 	cost = 3,
 	atlas = "atlasspooky",
