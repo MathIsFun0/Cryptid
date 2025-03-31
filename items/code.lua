@@ -3636,7 +3636,7 @@ local global = {
 		return #G.hand.highlighted + #G.consumeables.highlighted == 2
 	end,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = { key = "cry_global", set = "Other", vars = {} }
+		info_queue[#info_queue + 1] = { key = "cry_global_sticker", set = "Other", vars = {} }
 	end,
 	use = function(self, card, area, copier)
 		if area then
