@@ -306,7 +306,14 @@ local negative = {
 	name = "cry-Negative Joker",
 	key = "negative",
 	pos = { x = 1, y = 3 },
-	config = { extra = 4 },
+	config = {
+		extra = {
+			slots = 4
+		},
+		immutable = {
+			max_slots = 100
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -320,13 +327,13 @@ local negative = {
 	order = 70,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { number_format(center.ability.extra) } }
+		return { vars = { number_format(center.ability.extra.slots) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.slots)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra.slots)
 	end,
 	cry_credits = {
 		idea = {

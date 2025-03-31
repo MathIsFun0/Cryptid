@@ -487,7 +487,10 @@ local tenebris = {
 	config = {
 		extra = {
 			slots = 25,
-			money = 25
+			money = 25,
+		},
+		immutable = {
+			max_slots = 100
 		}
 	},
 	rarity = "cry_exotic",
@@ -500,16 +503,16 @@ local tenebris = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.slots),
-				number_format(center.ability.extra.money)
-			}
+				number_format(math.min(center.ability.immutable.max_slots, center.ability.extra.slots)),
+				number_format(center.ability.extra.money),
+			},
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.slots)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + number_format(math.min(card.ability.immutable.max_slots, card.ability.extra.slots)))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra.slots)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - number_format(math.min(card.ability.immutable.max_slots, card.ability.extra.slots)))
 	end,
 	cry_credits = {
 		idea = { "Gold" },
