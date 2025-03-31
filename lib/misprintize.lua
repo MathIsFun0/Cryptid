@@ -20,6 +20,16 @@ end
 
 function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big)
 	local prob_max = 1e69 -- funny number
+	local max_slots = 100
+	local max_booster_slots = 25
+
+	local function num_too_big(initial, min, max, limit)
+		return (
+			to_big(initial) > to_big(max_slots)
+			or to_big(min) > to_big(max_slots)
+			or to_big(max) > to_big(max_slots)
+		)
+	end
 
 	if name and ref_tbl and ref_value then
 		-- print('Current joker: '..name)
@@ -66,11 +76,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 								) and k == "extra"
 							)
 						)
-						and (
-							to_big(initial) > to_big(prob_max)
-							or to_big(min) > to_big(prob_max)
-							or to_big(max) > to_big(prob_max)
-						)
+						and num_too_big(initial, min, max, prob_max)
 					then
 						initial = Cryptid.base_values[name][k] * prob_max
 						min = 1
@@ -121,6 +127,37 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						then
 							print('\t\t\t got "odds"')
 							initial = Cryptid.base_values[name][k][_k] * prob_max
+							min = 1
+							max = 1
+						end
+
+						if
+							(
+								k == "slots"
+								-- Hack for jokers that give slots
+								and (
+									name == "j_cry_tenebris"
+									or name == "j_cry_negative"
+								)
+							)
+							and num_too_big(initial, min, max, max_slots)
+						then
+							initial = max_slots
+							min = 1
+							max = 1
+						end
+
+						if
+							(
+								k == "booster_slots"
+								-- Hack for jokers that give booster_slots
+								and (
+									name == "j_cry_booster"
+								)
+							)
+							and num_too_big(initial, min, max, max_booster_slots)
+						then
+							initial = max_booster_slots
 							min = 1
 							max = 1
 						end

@@ -467,7 +467,8 @@ local notebook = {
 			inactive = "",
 		},
 		immutable = {
-			slot = 0,
+			slots = 0,
+			max_slots = 100
 		},
 	},
 	rarity = 3,
@@ -479,7 +480,7 @@ local notebook = {
 			vars = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
-				number_format(card.ability.immutable.slot),
+				number_format(card.ability.immutable.slots),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
 				number_format(card.ability.extra.add),
@@ -505,7 +506,12 @@ local notebook = {
 				or pseudorandom("cry_notebook")
 					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
-				card.ability.immutable.slot = lenient_bignum(card.ability.immutable.slot + card.ability.extra.add)
+				local add_remain = math.min(0,card.ability.immutable.max_slots - card.ability.extra.add)
+				if add_remain <= 0 then
+					card.ability.extra.add = 0
+				end
+
+				card.ability.immutable.slots = lenient_bignum(card.ability.immutable.slots + card.ability.extra.add)
 				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
@@ -529,10 +535,10 @@ local notebook = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.immutable.slot)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.immutable.slots)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.immutable.slot)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.immutable.slots)
 	end,
 	cry_credits = {
 		idea = {
