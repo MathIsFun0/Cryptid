@@ -1011,12 +1011,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			check_for_unlock({ type = "have_edition" })
 		end
 	end
-	if
-		(card.ability.set == "Code")
-		and G.GAME.used_vouchers.v_cry_quantum_computing
-	then
+	if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
 		local tot = 0
-		for k, v in pairs(SMODS.find_card('v_cry_quantum_computing')) do
+		for k, v in pairs(SMODS.find_card("v_cry_quantum_computing")) do
 			tot = tot + v.ability.extra
 		end
 		if card.ability.cry_multiuse then

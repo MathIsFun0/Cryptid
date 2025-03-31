@@ -1167,7 +1167,13 @@ local seed = {
 		end
 		if G.hand.highlighted[1] then
 			G.hand.highlighted[1].ability.cry_rigged = true
-			G.E_MANAGER:add_event(Event({trigger = 'after',func = function() G.hand:unhighlight_all(); return true end }))
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				func = function()
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
 		end
 		if G.consumeables.highlighted[1] then
 			G.consumeables.highlighted[1].ability.cry_rigged = true
@@ -1175,7 +1181,6 @@ local seed = {
 		if Cryptid.safe_get(G, "pack_cards", "highlighted", 1) then
 			G.pack_cards.highlighted[1].ability.cry_rigged = true
 		end
-		
 	end,
 }
 local rigged = {
@@ -3689,10 +3694,7 @@ local global_sticker = {
 		card.hover_tilt = card.hover_tilt * 2
 	end,
 	calculate = function(self, card, context)
-        	if 
-			(context.setting_blind or context.open_booster) 
-			and context.cardarea == G.deck 
-		then 
+		if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
 			draw_card(G.deck, G.hand, nil, nil, nil, card)
 			--[[card.globalticks = (card.globalticks or 1) - 1
 			if card.globalticks == 0 then
