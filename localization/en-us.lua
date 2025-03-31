@@ -4628,6 +4628,7 @@ return {
 			unique = "Unique",
 			cry_rigged = "Rigged",
 			cry_hooked = "Hooked",
+			cry_global_sticker = "Global",
 			cry_flickering = "Flickering",
 			cry_possessed = "Possessed",
 
