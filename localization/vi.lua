@@ -197,7 +197,7 @@ return {
 			bl_cry_clock = {
 				name = "The Clock",
 				text = {
-					"+0.1X điểm yêu cầu mỗi 3 giây",
+					"+0.1X điểm yêu cầu mỗi 12 giây",
 					"đã trôi trong ante này",
 				},
 			},
@@ -225,7 +225,7 @@ return {
 			bl_cry_lavender_loop = {
 				name = "Lavender Loop",
 				text = {
-					"1.25X điểm yêu cầu mỗi 1.5 giây",
+					"1.25X điểm yêu cầu mỗi 6 giây",
 					"đã trôi trong ván này",
 				},
 			},
