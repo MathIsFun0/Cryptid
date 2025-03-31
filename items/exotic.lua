@@ -1269,20 +1269,13 @@ local verisimile = {
 			then
 				local variable = context.other_joker
 				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra)
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.xmult) },
-						}),
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			elseif
 				context.other_joker.ability.name == "Reserved Parking"
 				or context.other_joker.ability.name == "Bloodstone"
@@ -1294,58 +1287,37 @@ local verisimile = {
 			then
 				local variable = context.other_joker
 				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra.odds)
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.xmult) },
-						}),
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			elseif context.other_joker.ability.name == "cry-notebook" then
 				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
 				local variable = context.other_joker
 				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra.odds)
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.xmult) },
-						}),
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			end
 			return nil, true
 		elseif context.consumeable and not context.blueprint then
 			if context.consumeable.ability.name == "The Wheel of Fortune" and context.consumeable.cry_wheel_success then
 				local variable = context.consumeable
 				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra) --Doesn't account for misprintizing for some reason
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.xmult) },
-						}),
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			end
 		elseif context.joker_main and (to_big(card.ability.extra.xmult) > to_big(1)) then
 			return {

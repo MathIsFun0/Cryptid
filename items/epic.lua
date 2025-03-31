@@ -750,20 +750,13 @@ local m = {
 				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
 				--But I would rather have this than constant card_eval_status_text spam
 				--If anyone knows a solution feel free to do a pr xd
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.x_mult) },
-						}),
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.x_mult) },
+					}),
+				})
 			end
 			return nil, true
 		end
@@ -1107,8 +1100,8 @@ local circus = {
 				[3] = "rare_mult_mod",
 				[4] = "legend_mult_mod",
 				["cry_epic"] = "epic_mult_mod",
-				["cry_exotic"] = "exotic_mult_mod"
-			}
+				["cry_exotic"] = "exotic_mult_mod",
+			},
 		},
 	},
 	dependencies = {

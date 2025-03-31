@@ -1216,20 +1216,13 @@ local eternalflame = {
 			and not context.blueprint
 		then
 			card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
-					}),
-				}
-			)
+			card_eval_status_text(card, "extra", nil, nil, nil, {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.x_mult) },
+				}),
+			})
 			return nil, true
 		end
 	end,
@@ -1932,22 +1925,15 @@ local blurred = {
 					ease_hands_played(
 						math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra.extra_hands)
 					)
-					card_eval_status_text(
-						context.blueprint_card or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{
-							message = localize({
-								type = "variable",
-								key = "a_hands",
-								vars = {
-									math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra.extra_hands),
-								},
-							}),
-						}
-					)
+					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
+						message = localize({
+							type = "variable",
+							key = "a_hands",
+							vars = {
+								math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra.extra_hands),
+							},
+						}),
+					})
 					return true
 				end,
 			}))
@@ -6514,20 +6500,13 @@ local wheelhope = {
 				and not context.consumeable.cry_wheel_success
 			then
 				card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.x_mult) },
-						}),
-					}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.x_mult) },
+					}),
+				})
 				return nil, true
 			end
 		end

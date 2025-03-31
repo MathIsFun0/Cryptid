@@ -4858,8 +4858,8 @@ local copypaste = {
 	config = {
 		extra = {
 			odds = 2,
-			ckt = nil
-		}
+			ckt = nil,
+		},
 	}, -- what is a ckt
 	rarity = "cry_epic",
 	cost = 14,
@@ -4979,8 +4979,8 @@ local cut = {
 	config = {
 		extra = {
 			Xmult = 1,
-			Xmult_mod = 0.5
-		}
+			Xmult_mod = 0.5,
+		},
 	},
 	pos = { x = 2, y = 2 },
 	rarity = 2,
@@ -5045,8 +5045,8 @@ local cut = {
 		return {
 			vars = {
 				number_format(center.ability.extra.Xmult_mod),
-				number_format(center.ability.extra.Xmult)
-			}
+				number_format(center.ability.extra.Xmult),
+			},
 		}
 	end,
 	cry_credits = {
@@ -5115,8 +5115,8 @@ local python = {
 	config = {
 		extra = {
 			Xmult = 1,
-			Xmult_mod = 0.15
-		}
+			Xmult_mod = 0.15,
+		},
 	},
 	pos = { x = 4, y = 2 },
 	rarity = 2,
@@ -5129,8 +5129,8 @@ local python = {
 		return {
 			vars = {
 				number_format(center.ability.extra.Xmult_mod),
-				number_format(center.ability.extra.Xmult)
-			}
+				number_format(center.ability.extra.Xmult),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -5156,7 +5156,11 @@ local python = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.Xmult) } }),
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult) },
+				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
