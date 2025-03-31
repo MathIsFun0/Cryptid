@@ -650,9 +650,6 @@ local lavender_loop = {
 			return 1.25 ^ (dt / (1.5 / G.SETTINGS.GAMESPEED * 4))
 		end
 	end,
-	defeat = function(self, silent)
-		G.GAME.cry_test = nil
-	end,
 }
 local tornado = {
 	dependencies = {
