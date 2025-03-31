@@ -198,7 +198,7 @@ return {
 				name = "L'Horloge",
 				text = {
 					"+0.1X du score requis toutes",
-					"les 3 secondes passées dans cette Ante",
+					"les 12 secondes passées dans cette Ante",
 				},
 			},
 			bl_cry_hammer = {
@@ -226,7 +226,7 @@ return {
 				name = "Boucle Lavande",
 				text = {
 					"1.25X du score requis toutes les",
-					"1.5 secondes passées dans cette manche",
+					"6 secondes passées dans cette manche",
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -2665,8 +2665,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Augmente la puissance des",
-					"mains {C:attention}ascensionnées{} de {X:gold,C:white}0.05{}",
-					"{C:inactive}(Actuellement {X:gold,C:white}X(#2#^asc){C:inactive})",
+					"mains {C:attention}ascensionnées{} de {X:gold,C:white}#2#{}",
+					"{C:inactive}(Actuellement {X:gold,C:white}X(#3#^asc){C:inactive})",
 				},
 			},
 		},

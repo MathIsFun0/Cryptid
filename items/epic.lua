@@ -21,7 +21,13 @@ local supercell = {
 	object_type = "Joker",
 	name = "cry-supercell",
 	key = "supercell",
-	config = { extra = { stat1 = 15, stat2 = 2, money = 3 } },
+	config = {
+		extra = {
+			stat1 = 15,
+			stat2 = 2,
+			money = 3
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -36,7 +42,11 @@ local supercell = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
-			vars = { center.ability.extra.stat1, center.ability.extra.stat2, center.ability.extra.money },
+			vars = {
+				number_format(center.ability.extra.stat1),
+				number_format(center.ability.extra.stat2),
+				number_format(center.ability.extra.money),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -45,24 +55,24 @@ local supercell = {
 				if Card.get_gameset(card) ~= "modest" then
 					return {
 						message = localize("cry_gaming_ex"),
-						chip_mod = card.ability.extra.stat1,
-						mult_mod = card.ability.extra.stat1,
-						Xchip_mod = card.ability.extra.stat2,
-						Xmult_mod = card.ability.extra.stat2,
+						chip_mod = lenient_bignum(card.ability.extra.stat1),
+						mult_mod = lenient_bignum(card.ability.extra.stat1),
+						Xchip_mod = lenient_bignum(card.ability.extra.stat2),
+						Xmult_mod = lenient_bignum(card.ability.extra.stat2),
 					}
 				else
 					return {
 						message = localize("cry_gaming_ex"),
-						Xchip_mod = card.ability.extra.stat2,
-						Xmult_mod = card.ability.extra.stat2,
+						Xchip_mod = lenient_bignum(card.ability.extra.stat2),
+						Xmult_mod = lenient_bignum(card.ability.extra.stat2),
 					}
 				end
 			end
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			return card.ability.extra.money
+		if to_big(card.ability.extra.money) > to_big(0) then
+			return lenient_bignum(card.ability.extra.money)
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -89,9 +99,16 @@ local membershipcardtwo = {
 	object_type = "Joker",
 	name = "cry-membershipcardtwo",
 	key = "membershipcardtwo",
-	config = { extra = { chips = 1 } },
+	config = {
+		extra = { chips = 1 },
+		immutable = { chips_mod = 1}
+	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 },
+			immutable = { chips_mod = 8 }
+		},
 	},
 	dependencies = {
 		items = {
@@ -105,31 +122,23 @@ local membershipcardtwo = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, card)
-		local a = 1
-		if Card.get_gameset(card) == "modest" then
-			a = 8
-		end
 		return {
 			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
 			vars = {
-				card.ability.extra.chips,
-				card.ability.extra.chips * math.floor(Cryptid.member_count / a),
+				number_format(card.ability.extra.chips),
+				number_format(lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod))),
 			},
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and card.ability.extra.chips > 0 then
-			local a = 1
-			if Card.get_gameset(card) == "modest" then
-				a = 8
-			end
+		if context.joker_main and to_big(card.ability.extra.chips) > to_big(0) then
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_chips",
-					vars = { card.ability.extra.chips * math.floor(Cryptid.member_count / a) },
+					vars = { number_format(lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod))) },
 				}),
-				chip_mod = card.ability.extra.chips * math.floor(Cryptid.member_count / a),
+				chip_mod = lenient_bignum(card.ability.extra.chips * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)),
 			}
 		end
 	end,
@@ -152,7 +161,12 @@ local googol_play = {
 	object_type = "Joker",
 	name = "cry-Googol Play Card",
 	key = "googol_play",
-	config = { extra = { Xmult = 1e100, odds = 8 } },
+	config = {
+		extra = {
+			Xmult = 1e100,
+			odds = 8
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -173,7 +187,7 @@ local googol_play = {
 			vars = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
-				card.ability.extra.Xmult,
+				number_format(card.ability.extra.Xmult),
 			},
 		}
 	end,
@@ -184,8 +198,8 @@ local googol_play = {
 				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
-				Xmult_mod = card.ability.extra.Xmult,
+				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.Xmult) } }),
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -226,7 +240,10 @@ local sync_catalyst = {
 		},
 	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 }
+		},
 	},
 	pos = { x = 5, y = 2 },
 	rarity = "cry_epic",
@@ -303,13 +320,13 @@ local negative = {
 	order = 70,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { number_format(center.ability.extra) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra)
 	end,
 	cry_credits = {
 		idea = {
@@ -390,7 +407,12 @@ local error_joker = {
 	name = "cry-Error",
 	key = "error",
 	pos = { x = 4, y = 2 },
-	config = { extra = { sell_rounds = 0, active = false } },
+	config = {
+		extra = {
+			sell_rounds = 0,
+			active = false
+		}
+	},
 	dependencies = {
 		items = {
 			-- Note: This currently does not have a dependency on Glitched because there's a fallback.
@@ -657,9 +679,19 @@ local m = {
 	name = "cry-m",
 	key = "m",
 	pos = { x = 3, y = 1 },
-	config = { extra = { extra = 13, x_mult = 1 } },
+	config = {
+		extra = {
+			extra = 13,
+			x_mult = 1
+		}
+	},
 	gameset_config = {
-		modest = { extra = { extra = 1, x_mult = 1 } },
+		modest = {
+			extra = {
+				extra = 1,
+				x_mult = 1
+			}
+		},
 	},
 	dependencies = {
 		items = {
@@ -676,18 +708,23 @@ local m = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		return { vars = { center.ability.extra.extra, center.ability.extra.x_mult } }
+		return {
+			vars = {
+				number_format(center.ability.extra.extra),
+				number_format(center.ability.extra.x_mult),
+			}
+		}
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
+				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 				Xmult_mod = card.ability.extra.x_mult,
 			}
 		end
 		if context.selling_card and context.card:is_jolly() and not context.blueprint then
-			card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.extra
+			card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
 			if not context.retrigger_joker then
 				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
 				--But I would rather have this than constant card_eval_status_text spam
@@ -698,7 +735,7 @@ local m = {
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }) }
+					{ message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }) }
 				)
 			end
 			return nil, true
@@ -846,7 +883,12 @@ local number_blocks = {
 	object_type = "Joker",
 	name = "cry-Number Blocks",
 	key = "number_blocks",
-	config = { extra = { money_mod = 1, money = 1 } },
+	config = {
+		extra = {
+			money_mod = 1,
+			money = 1
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -860,8 +902,8 @@ local number_blocks = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				center.ability.extra.money,
-				center.ability.extra.money_mod,
+				number_format(center.ability.extra.money),
+				number_format(center.ability.extra.money_mod),
 				localize(Cryptid.safe_get(G.GAME, "current_round", "cry_nb_card", "rank") or "Ace", "ranks"),
 			},
 		}
@@ -883,7 +925,7 @@ local number_blocks = {
 					card = card,
 				}
 			else
-				card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
+				card.ability.extra.money = lenient_bignum(card.ability.extra.money + card.ability.extra.money_mod)
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 				return nil, true
 			end
@@ -891,7 +933,7 @@ local number_blocks = {
 	end,
 	calc_dollar_bonus = function(self, card)
 		if card.ability.extra.money > 0 then
-			return card.ability.extra.money
+			return lenient_bignum(card.ability.extra.money)
 		end
 	end,
 	cry_credits = {
@@ -921,7 +963,10 @@ local double_scale = {
 		},
 	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 }
+		},
 		exp_modest = { cost = 11 },
 	},
 	extra_gamesets = { "exp_modest" },
@@ -936,9 +981,9 @@ local double_scale = {
 	--todo: support jokers that scale multiple variables
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
 		if Cryptid.gameset(self) == "exp_modest" then
-			return true_base * 2
+			return lenient_bignum(true_base * 2)
 		end
-		return orig_scale_scale + true_base
+		return lenient_bignum(orig_scale_scale + true_base)
 	end,
 	cry_credits = {
 		idea = {
@@ -962,7 +1007,10 @@ local oldcandy = {
 	key = "oldcandy",
 	pos = { x = 4, y = 1 },
 	order = 43,
-	config = { extra = { hand_size = 3 } },
+	config = {
+		extra = { hand_size = 3 },
+		immutable = { max_hand_size_mod = 1000 }
+	},
 	gameset_config = {
 		modest = { extra = { hand_size = 1 } },
 	},
@@ -973,7 +1021,7 @@ local oldcandy = {
 	},
 	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { math.max(1, math.floor(center.ability.extra.hand_size)) } }
+		return { vars = { number_format(math.min(center.ability.immutable.max_hand_size_mod, math.max(1, math.floor(center.ability.extra.hand_size)))) } }
 	end,
 	rarity = "cry_epic",
 	cost = 9,
@@ -981,7 +1029,7 @@ local oldcandy = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.selling_self and not context.blueprint then
-			G.hand:change_size(math.max(1, math.floor(card.ability.extra.hand_size)))
+			G.hand:change_size(lenient_bignum(math.min(card.ability.immutable.max_hand_size_mod, math.max(1, math.floor(card.ability.extra.hand_size)))))
 			return nil, true
 		end
 	end,
@@ -1005,7 +1053,21 @@ local circus = {
 	name = "cry-circus",
 	key = "circus",
 	pos = { x = 4, y = 4 },
-	config = { extra = { Xmult = 1 } },
+	config = {
+		extra = { Xmult = 1 },
+		immutable = {
+			rare_mult_mod = 2,
+			epic_mult_mod = 3,
+			legend_mult_mod = 4,
+			exotic_mult_mod = 20,
+		},
+		rarity_map = {
+			[3] = "rare_mult_mod",
+			[4] = "legend_mult_mod",
+			["cry_epic"] = "epic_mult_mod",
+			["cry_exotic"] = "exotic_mult_mod"
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1016,10 +1078,10 @@ local circus = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				(math.max(1, center.ability.extra.Xmult) * 2),
-				(math.max(1, center.ability.extra.Xmult) * 3),
-				(math.max(1, center.ability.extra.Xmult) * 4),
-				(math.max(1, center.ability.extra.Xmult) * 20),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.rare_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.epic_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.legend_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.exotic_mult_mod),
 			},
 		}
 	end,
@@ -1027,75 +1089,31 @@ local circus = {
 	cost = 16,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
+        local function calculate_xmult(mult_mod)
+            if not Talisman.config_file.disable_anims then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end,
+                }))
+            end
+
+            local xmult = lenient_bignum(math.max(1, card.ability.extra.Xmult) * mult_mod)
+            return {
+                message = localize({
+                    type = "variable",
+                    key = "a_xmult",
+                    vars = { number_format(xmult) }
+                }),
+                Xmult_mod = xmult,
+            }
+        end
+
 		if context.other_joker and card ~= context.other_joker then
-			if context.other_joker.config.center.rarity == 3 then --Rare
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { (math.max(1, card.ability.extra.Xmult) * 2) },
-					}),
-					Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 2),
-				}
-			elseif context.other_joker.config.center.rarity == 4 then --Legendary
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { (math.max(1, card.ability.extra.Xmult) * 4) },
-					}),
-					Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 4),
-				}
-			elseif context.other_joker.config.center.rarity == "cry_epic" then --Epic
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { (math.max(1, card.ability.extra.Xmult) * 3) },
-					}),
-					Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 3),
-				}
-			elseif context.other_joker.config.center.rarity == "cry_exotic" then --Exotic
-				if not Talisman.config_file.disable_anims then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
-							return true
-						end,
-					}))
-				end
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { (math.max(1, card.ability.extra.Xmult) * 20) },
-					}),
-					Xmult_mod = (math.max(1, card.ability.extra.Xmult) * 20),
-				}
+			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
+			if mod_key then
+				return calculate_xmult(card.ability.immutable[mod_key])
 			end
 		end
 	end,
@@ -1108,6 +1126,7 @@ local circus = {
 		},
 		code = {
 			"Jevonn",
+			"BobJoe400"
 		},
 	},
 }
@@ -1118,7 +1137,12 @@ local caramel = {
 	object_type = "Joker",
 	name = "cry-caramel",
 	key = "caramel",
-	config = { extra = { x_mult = 1.75, rounds_remaining = 11 } },
+	config = {
+		extra = {
+			x_mult = 1.75,
+			rounds_remaining = 11
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1129,20 +1153,30 @@ local caramel = {
 	cost = 12,
 	order = 106,
 	gameset_config = {
-		modest = { extra = { x_mult = 1.5, rounds_remaining = 6 } },
+		modest = {
+			extra = {
+				x_mult = 1.5,
+				rounds_remaining = 6
+			}
+		},
 	},
 	pools = { ["Food"] = true },
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_mult, center.ability.extra.rounds_remaining } }
+		return {
+			vars = {
+				number_format(center.ability.extra.x_mult),
+				number_format(center.ability.extra.rounds_remaining),
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.individual then
 			if context.cardarea == G.play then
 				return {
-					x_mult = card.ability.extra.x_mult,
+					x_mult = lenient_bignum(card.ability.extra.x_mult),
 					colour = G.C.RED,
 					card = card,
 				}
@@ -1155,8 +1189,8 @@ local caramel = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.rounds_remaining = card.ability.extra.rounds_remaining - 1
-			if card.ability.extra.rounds_remaining > 0 then
+			card.ability.extra.rounds_remaining = lenient_bignum(card.ability.extra.rounds_remaining - 1)
+			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
 				return {
 					message = { localize("cry_minus_round") },
 					colour = G.C.FILTER,
@@ -1221,7 +1255,10 @@ local curse_sob = {
 		},
 	},
 	gameset_config = {
-		modest = { cost = 20, center = { rarity = 4 } },
+		modest = {
+			cost = 20,
+			center = { rarity = 4 }
+		},
 	},
 	rarity = "cry_epic",
 	cost = 9,
@@ -1320,13 +1357,19 @@ local bonusjoker = {
 	name = "cry-Bonus Joker",
 	key = "bonusjoker",
 	pos = { x = 3, y = 2 },
-	config = { extra = { odds = 8, check = 0, add = 1 } },
+	config = {
+		extra = {
+			odds = 8,
+			add = 1
+		},
+		immutable = {check = 0}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
 		},
 	},
-	immutable = true,
+	immutable = false,
 	rarity = "cry_epic",
 	cost = 11,
 	order = 75,
@@ -1338,7 +1381,7 @@ local bonusjoker = {
 			vars = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
-				card.ability.extra.add,
+				number_format(card.ability.extra.add),
 			},
 		}
 	end,
@@ -1349,20 +1392,20 @@ local bonusjoker = {
 				if
 					pseudorandom("bonusjoker")
 						< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
-					and card.ability.extra.check < 2
+					and card.ability.immutable.check < 2
 					and not context.retrigger_joker
 				then
 					local option = pseudorandom_element({ 1, 2 }, pseudoseed("bonusjoker"))
 					if option == 1 then
 						if not context.blueprint then
-							card.ability.extra.check = card.ability.extra.check + 1
+							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.add
+						G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
 					else
 						if not context.blueprint then
-							card.ability.extra.check = card.ability.extra.check + 1
+							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.add
+						G.consumeables.config.card_limit = lenient_bignum(G.consumeables.config.card_limit + card.ability.extra.add)
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1374,13 +1417,13 @@ local bonusjoker = {
 		end
 		if
 			context.end_of_round
-			and card.ability.extra.check ~= 0
+			and card.ability.immutable.check ~= 0
 			and not context.blueprint
 			and not context.retrigger_joker
 			and not context.individual
 			and not context.repetition
 		then
-			card.ability.extra.check = 0
+			card.ability.immutable.check = 0
 			return {
 				message = localize("k_reset"),
 				card = card,
@@ -1483,7 +1526,12 @@ local goldjoker = {
 	object_type = "Joker",
 	name = "cry-gold Joker",
 	key = "goldjoker",
-	config = { extra = { percent_mod = 2, percent = 0 } },
+	config = {
+		extra = {
+			percent_mod = 2,
+			percent = 0
+		}
+	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1498,12 +1546,17 @@ local goldjoker = {
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
-		return { vars = { center.ability.extra.percent, center.ability.extra.percent_mod } }
+		return {
+			vars = {
+				number_format(center.ability.extra.percent),
+				number_format(center.ability.extra.percent_mod),
+			}
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+				card.ability.extra.percent = lenient_bignum(card.ability.extra.percent + card.ability.extra.percent_mod)
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
 					card = card,
@@ -1513,7 +1566,7 @@ local goldjoker = {
 		end
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
+				card.ability.extra.percent = lenient_bignum(card.ability.extra.percent + card.ability.extra.percent_mod)
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
@@ -1523,8 +1576,8 @@ local goldjoker = {
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0)))
-		if bonus > to_big(0) then
+		local bonus = lenient_bignum(math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0))))
+		if to_big(bonus) > to_big(0) then
 			return bonus
 		end
 	end,
@@ -1563,9 +1616,15 @@ local altgoogol = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
 	gameset_config = {
-		modest = { cost = 15, copies = 1 },
+		modest = {
+			cost = 15,
+			copies = 1
+		},
 		mainline = { copies = 2 },
-		madness = { center = { blueprint_compat = true }, copies = 2 },
+		madness = {
+			center = { blueprint_compat = true },
+			copies = 2
+		},
 	},
 	loc_vars = function(self, info_queue, center)
 		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.copies } }
@@ -1836,7 +1895,10 @@ local spectrogram = {
 	name = "cry-Spectrogram",
 	key = "spectrogram",
 	pos = { x = 1, y = 5 },
-	config = { extra = { echonum = 0 } },
+	config = {
+		extra = {},
+		immutable = { echonum = 0 }
+	},
 	rarity = "cry_epic",
 	cost = 9,
 	order = 133,
@@ -1853,19 +1915,19 @@ local spectrogram = {
 	end,
 	calculate = function(self, card, context)
 		if context.before and context.cardarea == G.jokers then
-			card.ability.extra.echonum = 0
+			card.ability.immutable.echonum = 0
 			for i, v in pairs(context.scoring_hand) do
 				if v.config.center_key == "m_cry_echo" and not v.debuff then
-					card.ability.extra.echonum = card.ability.extra.echonum + 1
+					card.ability.immutable.echonum = card.ability.immutable.echonum + 1
 				end
 			end
 		end
 
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if card.ability.extra.echonum and card.ability.extra.echonum > 0 then
+			if card.ability.immutable.echonum and card.ability.immutable.echonum > 0 then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = card.ability.extra.echonum,
+					repetitions = card.ability.immutable.echonum,
 					card = card,
 				}
 			end
@@ -1892,7 +1954,10 @@ local jtron = {
 	},
 	name = "cry-jtron",
 	key = "jtron",
-	config = { extra = { bonus = 1, current = 0 } },
+	config = { 
+		extra = { bonus = 1 },
+		immutable = { current = 0 },
+	},
 	rarity = "cry_epic",
 	cost = 14,
 	order = 64,
@@ -1901,21 +1966,26 @@ local jtron = {
 	pos = { x = 2, y = 5 },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_joker
-		center.ability.extra.current = 1 + center.ability.extra.bonus * #SMODS.find_card("j_joker")
-		return { vars = { center.ability.extra.bonus, center.ability.extra.current } }
+		center.ability.immutable.current = lenient_bignum(1 + center.ability.extra.bonus * #SMODS.find_card("j_joker"))
+		return {
+			vars = {
+				number_format(center.ability.extra.bonus),
+				number_format(center.ability.immutable.current),
+			},
+		}
 	end,
 	calculate = function(self, card, context)
-		card.ability.extra.current = 1 + card.ability.extra.bonus * #SMODS.find_card("j_joker")
+		card.ability.immutable.current = lenient_bignum(1 + card.ability.extra.bonus * #SMODS.find_card("j_joker"))
 		if context.cardarea == G.jokers and context.joker_main then
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_powmult",
 					vars = {
-						number_format(card.ability.extra.current),
+						number_format(card.ability.immutable.current),
 					},
 				}),
-				Emult_mod = card.ability.extra.current,
+				Emult_mod = lenient_bignum(card.ability.immutable.current),
 				colour = G.C.DARK_EDITION,
 			}
 		end
@@ -1938,9 +2008,26 @@ local clockwork = { -- Steel Support: The Joker
 	key = "clockwork",
 	pos = { x = 5, y = 5 },
 	config = {
-		limits = { l1 = 2, l2 = 3, l3 = 5, l4 = 7 },
-		counters = { c1 = 0, c2 = 0, c3 = 0, c4 = 0 },
-		extra = { xmult = 1, xmult_mod = 0.25, steelenhc = 1, steel_mod = 0.1 },
+		extra = {
+			xmult = 1,
+			xmult_mod = 0.25,
+			steelenhc = 1,
+			steel_mod = 0.1
+		},
+		immutable = {
+			limits = {
+				l1 = 2,
+				l2 = 3,
+				l3 = 5,
+				l4 = 7
+			},
+			counters = {
+				c1 = 0,
+				c2 = 0,
+				c3 = 0,
+				c4 = 0
+			},
+		}
 	},
 	order = 135,
 	immutable = false,
@@ -1958,18 +2045,18 @@ local clockwork = { -- Steel Support: The Joker
 		end
 		return {
 			vars = {
-				process_var(center.ability.counters.c1, center.ability.limits.l1),
-				process_var(center.ability.counters.c2, center.ability.limits.l2),
-				process_var(center.ability.counters.c3, center.ability.limits.l3),
-				process_var(center.ability.counters.c4, center.ability.limits.l4),
-				center.ability.extra.xmult,
-				center.ability.extra.xmult_mod,
-				center.ability.extra.steelenhc,
-				center.ability.extra.steel_mod,
-				center.ability.limits.l1,
-				center.ability.limits.l2,
-				center.ability.limits.l3,
-				center.ability.limits.l4,
+				process_var(center.ability.immutable.counters.c1, center.ability.immutable.limits.l1),
+				process_var(center.ability.immutable.counters.c2, center.ability.immutable.limits.l2),
+				process_var(center.ability.immutable.counters.c3, center.ability.immutable.limits.l3),
+				process_var(center.ability.immutable.counters.c4, center.ability.immutable.limits.l4),
+				number_format(center.ability.extra.xmult),
+				number_format(center.ability.extra.xmult_mod),
+				number_format(center.ability.extra.steelenhc),
+				number_format(center.ability.extra.steel_mod),
+				center.ability.immutable.limits.l1,
+				center.ability.immutable.limits.l2,
+				center.ability.immutable.limits.l3,
+				center.ability.immutable.limits.l4,
 			},
 		}
 	end,
@@ -1983,21 +2070,21 @@ local clockwork = { -- Steel Support: The Joker
 				return m
 			end
 
-			card.ability.counters.c1 = clamp(card.ability.counters.c1, card.ability.limits.l1) -- ticker 1
+			card.ability.immutable.counters.c1 = clamp(card.ability.immutable.counters.c1, card.ability.immutable.limits.l1) -- ticker 1
 
-			card.ability.counters.c2 = clamp(card.ability.counters.c2, card.ability.limits.l2) -- ticker 2
-			if card.ability.counters.c2 == 0 then
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+			card.ability.immutable.counters.c2 = clamp(card.ability.immutable.counters.c2, card.ability.immutable.limits.l2) -- ticker 2
+			if card.ability.immutable.counters.c2 == 0 then
+				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + card.ability.extra.xmult_mod)
 			end
 
-			card.ability.counters.c3 = clamp(card.ability.counters.c3, card.ability.limits.l3) -- ticker 3
+			card.ability.immutable.counters.c3 = clamp(card.ability.immutable.counters.c3, card.ability.immutable.limits.l3) -- ticker 3
 
-			card.ability.counters.c4 = clamp(card.ability.counters.c4, card.ability.limits.l4) -- ticker 4
-			if card.ability.counters.c4 == 0 then
-				card.ability.extra.steelenhc = card.ability.extra.steelenhc + card.ability.extra.steel_mod
+			card.ability.immutable.counters.c4 = clamp(card.ability.immutable.counters.c4, card.ability.immutable.limits.l4) -- ticker 4
+			if card.ability.immutable.counters.c4 == 0 then
+				card.ability.extra.steelenhc = lenient_bignum(card.ability.extra.steelenhc + card.ability.extra.steel_mod)
 			end
 		end
-		if context.repetition and context.cardarea == G.hand and card.ability.counters.c1 == 0 then -- effect 1
+		if context.repetition and context.cardarea == G.hand and card.ability.immutable.counters.c1 == 0 then -- effect 1
 			if SMODS.has_enhancement(context.other_card, "m_steel") then
 				return {
 					message = localize("k_again_ex"),
@@ -2016,7 +2103,7 @@ local clockwork = { -- Steel Support: The Joker
 			and context.cardarea == G.jokers
 			and not context.blueprint_card
 			and not context.retrigger_joker
-			and card.ability.counters.c3 == 0
+			and card.ability.immutable.counters.c3 == 0
 		then -- effect 3
 			context.full_hand[1]:set_ability(G.P_CENTERS["m_steel"], nil, true)
 		end
@@ -2025,9 +2112,9 @@ local clockwork = { -- Steel Support: The Joker
 			and context.cardarea == G.hand
 			and not context.end_of_round
 			and SMODS.has_enhancement(context.other_card, "m_steel")
-			and card.ability.extra.steelenhc > 1
+			and to_big(card.ability.extra.steelenhc) > to_big(1)
 		then -- effect 4
-			return { xmult = card.ability.extra.steelenhc }
+			return { xmult = lenient_bignum(card.ability.extra.steelenhc) }
 		end
 		--imo this secret effect can be madness only -Math
 		if
@@ -2037,10 +2124,10 @@ local clockwork = { -- Steel Support: The Joker
 			and not context.retrigger_joker
 		then -- The Clockwork Joker is canonically a non-binary self-replicating machine amoeba, that self replicates every 21 minutes. Their pronouns are any/all; they are several billion tiny jokers
 			if -- in a trench coat, constantly ticking in an almost perfect yet flawed mechanism. Its only purpose is the strengthening and spreading of the steel world; everything else is meaningless to it.
-				card.ability.counters.c1 == 0 -- lore by nova :3
-				and card.ability.counters.c2 == 0
-				and card.ability.counters.c3 == 0
-				and card.ability.counters.c4 == 0
+				card.ability.immutable.counters.c1 == 0 -- lore by nova :3
+				and card.ability.immutable.counters.c2 == 0
+				and card.ability.immutable.counters.c3 == 0
+				and card.ability.immutable.counters.c4 == 0
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -2058,10 +2145,10 @@ local clockwork = { -- Steel Support: The Joker
 		end
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
-		card.ability.counters.c1 = math.floor(pseudorandom("Clockwork1") * (card.ability.limits.l1 - 1) + 0.5)
-		card.ability.counters.c2 = math.floor(pseudorandom("Clockwork2") * (card.ability.limits.l2 - 1) + 0.5)
-		card.ability.counters.c3 = math.floor(pseudorandom("Clockwork3") * (card.ability.limits.l3 - 1) + 0.5)
-		card.ability.counters.c4 = math.floor(pseudorandom("Clockwork4") * (card.ability.limits.l4 - 1) + 0.5)
+		card.ability.immutable.counters.c1 = math.floor(pseudorandom("Clockwork1") * (card.ability.immutable.limits.l1 - 1) + 0.5)
+		card.ability.immutable.counters.c2 = math.floor(pseudorandom("Clockwork2") * (card.ability.immutable.limits.l2 - 1) + 0.5)
+		card.ability.immutable.counters.c3 = math.floor(pseudorandom("Clockwork3") * (card.ability.immutable.limits.l3 - 1) + 0.5)
+		card.ability.immutable.counters.c4 = math.floor(pseudorandom("Clockwork4") * (card.ability.immutable.limits.l4 - 1) + 0.5)
 	end,
 	cry_credits = {
 		idea = {

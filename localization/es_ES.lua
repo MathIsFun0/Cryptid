@@ -206,7 +206,7 @@ return {
 				name = "El reloj",
 				text = {
 					"+0.1X requisitos de ciega por cada",
-					"3 segundos pasados en esta apuesta",
+					"12 segundos pasados en esta apuesta",
 				},
 			},
 			bl_cry_hammer = {
@@ -234,7 +234,7 @@ return {
 				name = "Ciclo lavanda",
 				text = {
 					"1.25X requisitos de ciega por cada",
-					"1.5 segundos pasados en esta ronda",
+					"6 segundos pasados en esta ronda",
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -2824,8 +2824,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Aumenta el poder de",
-					"las {C:attention}manos ascendidas{} por {X:gold,C:white}0.05{}",
-					"{C:inactive}(Actual: {X:gold,C:white}X(#2#^asc){C:inactive})",
+					"las {C:attention}manos ascendidas{} por {X:gold,C:white}#2#{}",
+					"{C:inactive}(Actual: {X:gold,C:white}X(#3#^asc){C:inactive})",
 				},
 			},
 		},

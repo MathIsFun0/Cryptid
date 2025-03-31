@@ -205,7 +205,7 @@ return {
 				name = "The Clock",
 				text = {
 					"+0.1X blind requirements every",
-					"3 seconds spent this ante",
+					"12 seconds spent this ante",
 				},
 			},
 			bl_cry_hammer = {
@@ -233,7 +233,7 @@ return {
 				name = "Lavender Loop",
 				text = {
 					"1.25X blind requirements every",
-					"1.5 seconds spent this round",
+					"6 seconds spent this round",
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -1012,8 +1012,8 @@ return {
 				name = "Candy Basket",
 				text = {
 					"Sell this card to create {C:attention}#1#{} {C:cry_candy}Cand#<ies,y>1#",
-					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}2{} Blinds defeated",
-					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>3#{} when {C:attention}Boss Blind{} defeated",
+					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}#3#{} Blinds defeated",
+					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>4#{} when {C:attention}Boss Blind{} defeated",
 				},
 			},
 			j_cry_candy_buttons = {
@@ -1472,6 +1472,15 @@ return {
 					"when scored",
 				},
 			},
+			j_cry_highfive = {
+				name = "High Five",
+				text = {
+					"If highest {C:attention}scoring rank{}",
+					"is {C:attention}5{}, convert {C:attention}all{} scoring cards",
+					"into {C:attention}5{}s",
+					"{s:0.8,C:inactive}Aces are considered 1",
+				},
+			},
 			j_cry_facile = {
 				name = "Facile",
 				text = {
@@ -1585,9 +1594,9 @@ return {
 				name = "Ghost",
 				text = {
 					"At end of round:",
-					"{C:green}#1# in #2#{} chance to",
-					"{C:attention}possess{} a random {C:attention}Joker",
 					"{C:green}#1# in #3#{} chance to",
+					"{C:attention}possess{} a random {C:attention}Joker",
+					"{C:green}#2# in #4#{} chance to",
 					"{E:2,C:red}self destruct",
 				},
 			},
@@ -1634,8 +1643,8 @@ return {
 				name = "Happy House",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult only after",
-					"playing {C:attention}114{} hands{}",
-					"{C:inactive}(Currently #2#/114){}",
+					"playing {C:attention}#3#{} hands{}",
+					"{C:inactive}(Currently #2#/#3#){}",
 					"{C:inactive,s:0.8}There is no place like home!{}",
 				},
 			},
@@ -1673,6 +1682,7 @@ return {
 					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
 					"{X:mult,C:white} X#1# {} Mult when scored",
+					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} repetitions)"
 				},
 			},
 			j_cry_jawbreaker = {
@@ -1771,6 +1781,7 @@ return {
 					"Played and scoring {C:attention}Kings{} give",
 					"{C:attention}+#1#{} hand size for the round",
 					"and trigger {C:attention}held in hand{} effects",
+					"{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive})"
 				},
 			},
 			j_cry_lightupthenight = {
@@ -2020,9 +2031,9 @@ return {
 			j_cry_necromancer = {
 				name = "Necromancer",
 				text = {
-					"When a Joker is {C:attention}sold{} for more than {C:attention}$0{},",
+					"When a Joker is {C:attention}sold{} for more than {C:attention}#1#{},",
 					"gain a {C:attention}random{} Joker {C:attention}sold{} this run",
-					"with {C:money}$0{} sell value",
+					"with {C:money}#1#{} sell value",
 				},
 			},
 			j_cry_negative = {
@@ -2557,7 +2568,7 @@ return {
 				name = "Trick-or-Treat",
 				text = {
 					"When {C:attention}sold{}:",
-					"{C:green}#1# in #2#{} chance to create {C:attention}2{} {C:cry_candy}Candies",
+					"{C:green}#1# in #2#{} chance to create {C:attention}#3{} {C:cry_candy}Candies",
 					"Otherwise, create a {X:cry_cursed,C:white}Cursed{} Joker",
 					"{C:inactive}(Can overflow)",
 				},
@@ -2699,6 +2710,14 @@ return {
 					"if {C:attention}played hand{} contains a",
 					"{C:attention}2{} and {C:attention}7{} of different suits",
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+				},
+			},
+			j_cry_wonka_bar = {
+				name = "Wonka Bar",
+				text = {
+					"Sell this card to",
+					"permanently gain {C:attention}+#1#{}",
+					"card selection limit",
 				},
 			},
 			j_cry_wrapped = {
@@ -2845,8 +2864,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Increase power of",
-					"{C:attention}Ascended{} hands by {X:gold,C:white}0.05{}",
-					"{C:inactive}(Currently {X:gold,C:white}X(#2#^asc){C:inactive})",
+					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
+					"{C:inactive}(Currently {X:gold,C:white}X(#3#^asc){C:inactive})",
 				},
 			},
 		},
@@ -4462,6 +4481,7 @@ return {
 			cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
 			cry_mus_high_score = "High Score (Final Boss [For Your Computer] by AlexZGreat)",
 			cry_mus_alt_bg = "Background Music (by MathIsFun_)",
+			cry_force_tooltips = "Force Tooltips",
 			cry_family = "Family Friendly Mode",
 			cry_experimental = "Experimental Mode",
 
@@ -4535,6 +4555,7 @@ return {
 			cry_good_luck_ex = "Good luck!",
 			cry_sus_ex = "Impostor!",
 			cry_jolly_ex = "Jolly Up!",
+			cry_highfive_ex = "High Five!",
 			cry_m_minus = "m",
 			cry_m = "M",
 			cry_m_ex = "M!",

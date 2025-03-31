@@ -39,7 +39,7 @@ G.GAME.hands[text].played_this_round = G.GAME.hands[text].played_this_round + 1
 '''
 position = "before"
 payload = '''
-if G.GAME.current_round.current_hand.cry_asc_num > (G.GAME.cry_exploit_override and 1 or 0) then
+if G.GAME.current_round.current_hand.cry_asc_num and (((type(G.GAME.current_round.current_hand.cry_asc_num) == "table" and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(G.GAME.cry_exploit_override and 1 or 0)) or G.GAME.current_round.current_hand.cry_asc_num > (G.GAME.cry_exploit_override and 1 or 0)))) then
 	G.GAME.cry_asc_played = G.GAME.cry_asc_played and G.GAME.cry_asc_played+1 or 1
 end
 '''

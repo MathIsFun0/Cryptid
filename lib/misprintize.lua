@@ -93,7 +93,6 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						and not (_k == "base_nominal")
 						and not (_k == "face_nominal")
 						and not (_k == "qty")
-						and not (_k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
 						and not (_k == "selected_d6_face")
 						and not (_k == "d_size")
 						and not (_k == "h_size")
@@ -198,9 +197,6 @@ function Cryptid.misprintize(card, override, force_reset, stack)
 			and not stack
 		or not Card.no(card, "immutable", true)
 	then
-		if card.ability.name == "Ace Aequilibrium" then
-			return
-		end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}
