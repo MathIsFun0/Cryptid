@@ -1103,12 +1103,12 @@ local circus = {
 			epic_mult_mod = 3,
 			legend_mult_mod = 4,
 			exotic_mult_mod = 20,
-		},
-		rarity_map = {
-			[3] = "rare_mult_mod",
-			[4] = "legend_mult_mod",
-			["cry_epic"] = "epic_mult_mod",
-			["cry_exotic"] = "exotic_mult_mod",
+			rarity_map = {
+				[3] = "rare_mult_mod",
+				[4] = "legend_mult_mod",
+				["cry_epic"] = "epic_mult_mod",
+				["cry_exotic"] = "exotic_mult_mod"
+			}
 		},
 	},
 	dependencies = {
