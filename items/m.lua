@@ -181,7 +181,7 @@ local foodm = {
 	key = "foodm",
 	pools = { ["M"] = true, ["Food"] = true },
 	config = { 
-		xtra = {
+		extra = {
 			mult = 40,
 			rounds_remaining = 2,
 			round_inc = 1
@@ -448,6 +448,7 @@ local notebook = {
 	order = 255,
 	config = {
 		extra = {
+			add = 1,
 			odds = 7,
 			jollies = 4,
 			check = true,
