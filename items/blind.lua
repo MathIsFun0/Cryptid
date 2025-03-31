@@ -327,7 +327,7 @@ local clock = {
 		if G.SETTINGS.paused then
 			return 0
 		else
-			return 0.1 * dt / 3
+			return 0.1 * (dt * G.SETTINGS.GAMESPEED / 4) / 3
 		end
 	end,
 }
@@ -637,14 +637,17 @@ local lavender_loop = {
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1) * (G.SETTINGS.paused and 0 or 1)
+				- dt
+					* (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
+					* (G.SETTINGS.paused and 0 or 1)
+					* G.SETTINGS.GAMESPEED
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
-		if G.SETTINGS.paused then
+		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / 1.5)
+			return 1.25 ^ (dt / (1.5 / G.SETTINGS.GAMESPEED * 4))
 		end
 	end,
 }

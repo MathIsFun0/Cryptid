@@ -144,7 +144,7 @@ return {
 				name = "The Clock",
 				text = {
 					"+0.1X blind requirements every",
-					"3 seconds spent this ante",
+					"12 seconds spent this ante",
 				},
 			},
 			bl_cry_hammer = {
@@ -172,7 +172,7 @@ return {
 				name = "Lavender Loop",
 				text = {
 					"1.25X blind requirements every",
-					"1.5 seconds spent this round",
+					"6 seconds spent this round",
 				},
 			},
 			bl_cry_obsidian_orb = {
