@@ -2868,8 +2868,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}等级.#1#{S:0.8}){}",
 					"使{C:attention}晋升{}牌型的指数",
-					"增加{X:gold,C:white}0.05{}",
-					"{C:inactive}(目前指数 {X:gold,C:white}X(#2#^晋升数){C:inactive})",
+					"增加{X:gold,C:white}#2#{}",
+					"{C:inactive}(目前指数 {X:gold,C:white}X(#3#^晋升数){C:inactive})",
 				},
 			},
 		},
