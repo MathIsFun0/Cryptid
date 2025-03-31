@@ -1781,6 +1781,7 @@ return {
 					"Played and scoring {C:attention}Kings{} give",
 					"{C:attention}+#1#{} hand size for the round",
 					"and trigger {C:attention}held in hand{} effects",
+					"{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive})"
 				},
 			},
 			j_cry_lightupthenight = {
@@ -2030,9 +2031,9 @@ return {
 			j_cry_necromancer = {
 				name = "Necromancer",
 				text = {
-					"When a Joker is {C:attention}sold{} for more than {C:attention}$0{},",
+					"When a Joker is {C:attention}sold{} for more than {C:attention}#1#{},",
 					"gain a {C:attention}random{} Joker {C:attention}sold{} this run",
-					"with {C:money}$0{} sell value",
+					"with {C:money}#1#{} sell value",
 				},
 			},
 			j_cry_negative = {
