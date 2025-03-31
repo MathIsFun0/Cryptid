@@ -1167,6 +1167,7 @@ local seed = {
 		end
 		if G.hand.highlighted[1] then
 			G.hand.highlighted[1].ability.cry_rigged = true
+			G.E_MANAGER:add_event(Event({trigger = 'after',func = function() G.hand:unhighlight_all(); return true end }))
 		end
 		if G.consumeables.highlighted[1] then
 			G.consumeables.highlighted[1].ability.cry_rigged = true
@@ -1174,6 +1175,7 @@ local seed = {
 		if Cryptid.safe_get(G, "pack_cards", "highlighted", 1) then
 			G.pack_cards.highlighted[1].ability.cry_rigged = true
 		end
+		
 	end,
 }
 local rigged = {
@@ -3601,6 +3603,104 @@ local alttab = {
 		delay(1.1)
 	end,
 }
+-- Always draw "global" stickered cards in opening hand, global applies global sticker to one card
+local global = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Nova",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
+	object_type = "Consumable",
+	set = "Code",
+	name = "cry-global",
+	key = "global",
+	pos = {
+		x = 7,
+		y = 5,
+	},
+	config = {},
+	cost = 4,
+	atlas = "atlasnotjokers",
+	order = 29,
+	can_use = function(self, card)
+		--the card itself and one playing card (idk how to get it to be just itself and a playing card, so it can be done on consumables atm
+		return #G.hand.highlighted + #G.consumeables.highlighted == 2
+	end,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = "cry_global_sticker", set = "Other", vars = {} }
+	end,
+	use = function(self, card, area, copier)
+		if area then
+			area:remove_from_highlighted(card)
+		end
+		if G.hand.highlighted[1] then
+			G.hand.highlighted[1].ability.cry_global = true
+		end
+	end,
+}
+local global_sticker = {
+	dependencies = {
+		items = {
+			"c_cry_global",
+		},
+	},
+	object_type = "Sticker",
+	atlas = "sticker",
+	pos = { x = 6, y = 1 },
+	key = "cry_global_sticker",
+	no_sticker_sheet = true, -- also what does this and next line do?
+	prefix_config = { key = false },
+	badge_colour = HEX("14b341"),
+	draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
+		local notilt = nil
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
+		if not G.shared_stickers["cry_rigged2"] then
+			G.shared_stickers["cry_rigged2"] =
+				Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 })
+		end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers["cry_rigged2"].role.draw_major = card
+
+		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+		card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+		G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+		G.shared_stickers["cry_rigged2"]:draw_shader(
+			"hologram",
+			nil,
+			card.ARGS.send_to_shader,
+			notilt,
+			card.children.center
+		) -- this doesn't really do much tbh, but the slight effect is nice
+		card.hover_tilt = card.hover_tilt * 2
+	end,
+	calculate = function(self, card, context)
+        	if 
+			(context.setting_blind or context.open_booster) 
+			and context.cardarea == G.deck 
+		then 
+			draw_card(G.deck, G.hand, nil, nil, nil, card)
+			--[[card.globalticks = (card.globalticks or 1) - 1
+			if card.globalticks == 0 then
+				card.global = nil
+			end--]]
+		end
+	end,
+}
 local automaton = {
 	cry_credits = {
 		idea = {
@@ -5189,6 +5289,8 @@ local code_cards = {
 	ctrl_v,
 	inst,
 	alttab,
+	--global,
+	--global_sticker,
 	encoded,
 	spaghetti,
 	CodeJoker,

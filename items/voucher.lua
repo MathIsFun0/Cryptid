@@ -194,7 +194,7 @@ local satellite_uplink = { --Code cards may appear in any of the Celestial Packs
 	end,
 	requires = { "v_cry_command_prompt" },
 }
-local quantum_computing = { --Code cards can spawn with Negative addition
+local quantum_computing = { --Code cards spawn with +1 use
 	cry_credits = {
 		idea = {
 			"HexaCryonic",
@@ -219,9 +219,10 @@ local quantum_computing = { --Code cards can spawn with Negative addition
 	order = 92,
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 3 },
+	config = { extra = 1 },
 	pools = { ["Tier3"] = true },
-	loc_vars = function(self, info_queue)
-		return { vars = {} }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	requires = { "v_cry_satellite_uplink" },
 }

@@ -1014,9 +1014,16 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if
 		(card.ability.set == "Code")
 		and G.GAME.used_vouchers.v_cry_quantum_computing
-		and pseudorandom("cry_quantum_computing") > 0.7
 	then
-		card:set_edition({ negative = true })
+		local tot = 0
+		for k, v in pairs(SMODS.find_card('v_cry_quantum_computing')) do
+			tot = tot + v.ability.extra
+		end
+		if card.ability.cry_multiuse then
+			card.ability.cry_multiuse = card.ability.cry_multiuse + tot
+		else
+			card.ability.cry_multiuse = tot + 1
+		end
 	end
 	if
 		G.GAME.modifiers.cry_force_edition
