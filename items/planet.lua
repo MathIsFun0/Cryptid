@@ -874,7 +874,7 @@ local sunplanet = {
 	atlas = "atlasnotjokers",
 	order = 7,
 	config = {
-		extra = 0.05
+		extra = 0.05,
 	},
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("cry_p_star"), get_type_colour(self or card.config, card), nil, 1.2)
@@ -958,7 +958,8 @@ local sunplanet = {
 		}))
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + number })
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number*card.ability.extra or number*card.ability.extra
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number * card.ability.extra
+			or number * card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
