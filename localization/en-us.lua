@@ -446,7 +446,7 @@ return {
 				name = "://GLOBAL",
 				text = {
 					"Select a playing card",
-					"to become {C:cry_code}Global{}"
+					"to become {C:cry_code}Global{}",
 				},
 			},
 			c_cry_hook = {
