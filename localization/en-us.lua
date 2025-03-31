@@ -1643,8 +1643,8 @@ return {
 				name = "Happy House",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult only after",
-					"playing {C:attention}114{} hands{}",
-					"{C:inactive}(Currently #2#/114){}",
+					"playing {C:attention}#3#{} hands{}",
+					"{C:inactive}(Currently #2#/#3#){}",
 					"{C:inactive,s:0.8}There is no place like home!{}",
 				},
 			},
@@ -1682,6 +1682,7 @@ return {
 					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
 					"{X:mult,C:white} X#1# {} Mult when scored",
+					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} repetitions)"
 				},
 			},
 			j_cry_jawbreaker = {
