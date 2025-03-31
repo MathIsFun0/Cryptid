@@ -474,7 +474,7 @@ return {
 			bl_cry_lavender_loop = {
 				name = "薰衣草环",
 				text = {
-					"在boss回合中每经过1.5秒",
+					"在boss回合中每经过6秒",
 					"盲注要求增加1.25倍",
 				},
 			},
