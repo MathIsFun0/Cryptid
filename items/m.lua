@@ -7,8 +7,8 @@ local jollysus = {
 	config = {
 		extra = {
 			spawn = true,
-			active = localize("k_active_ex")
-		}
+			active = localize("k_active_ex"),
+		},
 	},
 	rarity = 1,
 	cost = 4,
@@ -105,8 +105,8 @@ local bubblem = {
 	config = {
 		extra = {
 			spawn = false,
-			type = "Three of a Kind"
-		}
+			type = "Three of a Kind",
+		},
 	},
 	rarity = 1,
 	cost = 2,
@@ -180,12 +180,12 @@ local foodm = {
 	name = "cry-foodm",
 	key = "foodm",
 	pools = { ["M"] = true, ["Food"] = true },
-	config = { 
+	config = {
 		extra = {
 			mult = 40,
 			rounds_remaining = 2,
-			round_inc = 1
-		}
+			round_inc = 1,
+		},
 	},
 	pos = { x = 4, y = 2 },
 	rarity = 1,
@@ -210,7 +210,11 @@ local foodm = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			return {
-				message = localize({ type = "variable", key = "a_mult", vars = { number_format(card.ability.extra.mult) } }),
+				message = localize({
+					type = "variable",
+					key = "a_mult",
+					vars = { number_format(card.ability.extra.mult) },
+				}),
 				mult_mod = lenient_bignum(card.ability.extra.mult),
 				colour = G.C.MULT,
 			}
@@ -261,10 +265,15 @@ local foodm = {
 			and not context.retrigger_joker
 			and context.card:is_jolly()
 		then
-			card.ability.extra.rounds_remaining = lenient_bignum(card.ability.extra.rounds_remaining + card.ability.extra.round_inc)
+			card.ability.extra.rounds_remaining =
+				lenient_bignum(card.ability.extra.rounds_remaining + card.ability.extra.round_inc)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize({ type = "variable", key = "a_round", vars = { number_format(card.ability.extra.round_inc) } }),
+					message = localize({
+						type = "variable",
+						key = "a_round",
+						vars = { number_format(card.ability.extra.round_inc) },
+					}),
 					colour = G.C.FILTER,
 				}),
 			}
@@ -288,16 +297,16 @@ local mstack = {
 	key = "mstack",
 	pools = { ["M"] = true },
 	order = 253,
-	config = { 
+	config = {
 		extra = {
 			sell = 0,
 			sell_req = 3,
 			retriggers = 1,
-			check = false
+			check = false,
 		},
 		immutable = {
-			max_retriggers = 40
-		}
+			max_retriggers = 40,
+		},
 	},
 	dependencies = {
 		items = { "set_cry_m" },
@@ -314,8 +323,8 @@ local mstack = {
 			vars = {
 				number_format(center.ability.extra.retriggers),
 				number_format(center.ability.extra.sell_req),
-				number_format(center.ability.extra.sell)
-			}
+				number_format(center.ability.extra.sell),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -351,7 +360,9 @@ local mstack = {
 				card.ability.extra.sell = card.ability.extra.sell + 1
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = number_format(card.ability.extra.sell) .. "/" .. number_format(card.ability.extra.sell_req),
+						message = number_format(card.ability.extra.sell) .. "/" .. number_format(
+							card.ability.extra.sell_req
+						),
 						colour = G.C.FILTER,
 					}),
 				}
@@ -389,8 +400,8 @@ local mneon = {
 	config = {
 		extra = {
 			bonus = 1,
-			money = 0
-		}
+			money = 0,
+		},
 	},
 	rarity = 2,
 	cost = 7,
@@ -401,8 +412,8 @@ local mneon = {
 		return {
 			vars = {
 				number_format(center.ability.extra.bonus),
-				number_format(center.ability.extra.money)
-			}
+				number_format(center.ability.extra.money),
+			},
 		}
 	end,
 	atlas = "atlastwo",
@@ -414,8 +425,8 @@ local mneon = {
 					jollycount = jollycount + 1
 				end
 			end
-			card.ability.extra.money = lenient_bignum(card.ability.extra.money
-				+ math.max(1, card.ability.extra.bonus) * (jollycount or 1))
+			card.ability.extra.money =
+				lenient_bignum(card.ability.extra.money + math.max(1, card.ability.extra.bonus) * (jollycount or 1))
 			return { message = localize("cry_m_ex") }
 		end
 	end,
@@ -456,8 +467,8 @@ local notebook = {
 			inactive = "",
 		},
 		immutable = {
-			slot = 0
-		}
+			slot = 0,
+		},
 	},
 	rarity = 3,
 	cost = 9,
@@ -550,8 +561,8 @@ local bonk = {
 			chips = 6,
 			bonus = 1,
 			xchips = 3,
-			type = "Pair"
-		}
+			type = "Pair",
+		},
 	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
@@ -608,7 +619,11 @@ local bonk = {
 					}))
 				end
 				return {
-					message = localize({ type = "variable", key = "a_chips", vars = { number_format(card.ability.extra.chips) } }),
+					message = localize({
+						type = "variable",
+						key = "a_chips",
+						vars = { number_format(card.ability.extra.chips) },
+					}),
 					chip_mod = lenient_bignum(card.ability.extra.chips),
 				}
 			end
@@ -771,11 +786,11 @@ local sacrifice = {
 			jollies = 3,
 			unc = 1,
 			text = localize("k_active_ex"),
-			spawn = true
+			spawn = true,
 		},
 		immutable = {
-			max_spawns = 30
-		}
+			max_spawns = 30,
+		},
 	},
 	pos = { x = 5, y = 2 },
 	order = 259,
@@ -865,9 +880,9 @@ local reverse = {
 	dependencies = {
 		items = { "set_cry_m" },
 	},
-	config = { 
+	config = {
 		extra = { type = "Pair" },
-		immutable = { max_spawns = 100 }
+		immutable = { max_spawns = 100 },
 	},
 	pools = { ["Meme"] = true, ["M"] = true },
 	pos = { x = 0, y = 0 },
@@ -912,8 +927,10 @@ local reverse = {
 						return true
 					end,
 				}))
-				local spawnamount = math.min(card.ability.immutable.max_spawns, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-					+ 1 -- +1 to account for reverse card self destruct
+				local spawnamount = math.min(
+					card.ability.immutable.max_spawns,
+					G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer)
+				) + 1 -- +1 to account for reverse card self destruct
 				G.GAME.joker_buffer = G.GAME.joker_buffer + spawnamount
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -964,12 +981,12 @@ local doodlem = {
 			"set_cry_epic",
 		},
 	},
-	config = { 
+	config = {
 		extra = {
 			add = 1,
-			init = 2
+			init = 2,
 		},
-		immutable = { max_jollies = 25 }
+		immutable = { max_jollies = 25 },
 	},
 	pos = { x = 2, y = 0 },
 	rarity = "cry_epic",
@@ -982,8 +999,8 @@ local doodlem = {
 		return {
 			vars = {
 				number_format(center.ability.extra.add),
-				number_format(center.ability.extra.init)
-			}
+				number_format(center.ability.extra.init),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -1042,9 +1059,9 @@ local virgo = {
 	config = {
 		extra = {
 			bonus = 4,
-			type = "Pair"
+			type = "Pair",
 		},
-		immutable = { max_summons = 80 }
+		immutable = { max_summons = 80 },
 	},
 	rarity = "cry_epic",
 	cost = 8,
@@ -1058,8 +1075,8 @@ local virgo = {
 		return {
 			vars = {
 				number_format(center.ability.extra.bonus),
-				localize(center.ability.extra.type, "poker_hands")
-			}
+				localize(center.ability.extra.type, "poker_hands"),
+			},
 		}
 	end,
 	atlas = "atlasepic",
@@ -1083,7 +1100,7 @@ local virgo = {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local summon = lenient_bignum(math.floor((card.ability.extra_value + 4) / 4))
-							if summon == nil or to_big(summon) < to_big(1)  then
+							if summon == nil or to_big(summon) < to_big(1) then
 								summon = 1
 							end --precautionary measure, just in case
 							for i = 1, math.min(card.ability.immutable.max_summons, summon) do --another precautionary measure
@@ -1187,8 +1204,8 @@ local biggestm = {
 			x_mult = 7,
 			type = "Pair",
 			check = false,
-			text = "Inactive"
-		}
+			text = "Inactive",
+		},
 	},
 	pos = { x = 3, y = 3 },
 	display_size = { w = 1.7 * 71, h = 1.7 * 95 },
@@ -1216,7 +1233,11 @@ local biggestm = {
 	calculate = function(self, card, context)
 		if context.joker_main and card.ability.extra.check then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.x_mult) },
+				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
 				colour = G.C.MULT,
 			}
@@ -1274,16 +1295,16 @@ local mprime = {
 	config = {
 		extra = {
 			mult = 1.05,
-			bonus = 0.04
-		}
+			bonus = 0.04,
+		},
 	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
 			vars = {
 				number_format(center.ability.extra.mult),
-				number_format(center.ability.extra.bonus)
-			}
+				number_format(center.ability.extra.bonus),
+			},
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1344,7 +1365,11 @@ local mprime = {
 					}))
 				end
 				return {
-					message = localize({ type = "variable", key = "a_powmult", vars = { number_format(card.ability.extra.mult) } }),
+					message = localize({
+						type = "variable",
+						key = "a_powmult",
+						vars = { number_format(card.ability.extra.mult) },
+					}),
 					Emult_mod = lenient_bignum(card.ability.extra.mult),
 					colour = G.C.DARK_EDITION,
 					card = card,
@@ -1379,14 +1404,14 @@ local macabre = {
 	display_size = { w = 1.2 * 71, h = 1.2 * 95 },
 	config = {
 		extra = { add = 1 },
-		immutable = { max_spawn = 15 }
+		immutable = { max_spawn = 15 },
 	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
 			vars = {
-				math.min(center.ability.immutable.max_spawn, center.ability.extra.add)
-			}
+				math.min(center.ability.immutable.max_spawn, center.ability.extra.add),
+			},
 		}
 	end,
 	rarity = 1,
@@ -1464,9 +1489,9 @@ local megg = {
 	config = {
 		extra = {
 			amount = 0,
-			amount_mod = 1
+			amount_mod = 1,
 		},
-		immutable = { max_amount = 200 }
+		immutable = { max_amount = 200 },
 	},
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
@@ -1487,7 +1512,8 @@ local megg = {
 			and to_big(card.ability.extra.amount) < to_big(card.ability.immutable.max_amount)
 			and not (context.individual or context.repetition or context.blueprint)
 		then
-			card.ability.extra.amount = lenient_bignum(card.ability.extra.amount + math.max(1, card.ability.extra.amount_mod))
+			card.ability.extra.amount =
+				lenient_bignum(card.ability.extra.amount + math.max(1, card.ability.extra.amount_mod))
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
 			end
@@ -1536,9 +1562,9 @@ local longboi = {
 	config = {
 		extra = {
 			monster = 1,
-			bonus = 0.75
+			bonus = 0.75,
 		},
-		immutable = { max_bonus = 0.75 }
+		immutable = { max_bonus = 0.75 },
 	},
 	rarity = 1,
 	cost = 5,
@@ -1557,7 +1583,9 @@ local longboi = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
-			G.GAME.monstermult = lenient_bignum(G.GAME.monstermult + math.max(card.ability.immutable.max_bonus, card.ability.extra.bonus))
+			G.GAME.monstermult = lenient_bignum(
+				G.GAME.monstermult + math.max(card.ability.immutable.max_bonus, card.ability.extra.bonus)
+			)
 			if not context.retrigger_joker then
 				return {
 					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
@@ -1568,7 +1596,11 @@ local longboi = {
 			end
 		elseif context.joker_main and to_big(card.ability.extra.monster) > to_big(1) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.monster) } }),
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.monster) },
+				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.monster),
 			}
 		end

@@ -76,11 +76,11 @@ local iterum = {
 	config = {
 		extra = {
 			x_mult = 2,
-			repetitions = 1
+			repetitions = 1,
 		},
 		immutable = {
-			max_repetitions = 40
-		}
+			max_repetitions = 40,
+		},
 	},
 	pos = { x = 0, y = 1 },
 	rarity = "cry_exotic",
@@ -95,7 +95,7 @@ local iterum = {
 				number_format(center.ability.extra.x_mult),
 				math.min(center.ability.immutable.max_repetitions, center.ability.extra.repetitions),
 				center.ability.immutable.max_repetitions,
-			}
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -315,8 +315,8 @@ local exponentia = {
 			vars = {
 				number_format(center.ability.extra.Emult_mod),
 				number_format(center.ability.extra.Emult),
-		},
-	}
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
@@ -329,13 +329,14 @@ local exponentia = {
 		function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
 			local ret = scie(effect, scored_card, key, amount, from_edition)
 			if
-				(key == "x_mult"
-				or key == "xmult"
-				or key == "Xmult"
-				or key == "x_mult_mod"
-				or key == "xmult_mod"
-				or key == "Xmult_mod")
-				and amount ~= 1
+				(
+					key == "x_mult"
+					or key == "xmult"
+					or key == "Xmult"
+					or key == "x_mult_mod"
+					or key == "xmult_mod"
+					or key == "Xmult_mod"
+				) and amount ~= 1
 			then
 				for _, v in pairs(find_joker("cry-Exponentia")) do
 					local old = v.ability.extra.Emult
@@ -347,7 +348,12 @@ local exponentia = {
 							vars = { number_format(v.ability.extra.Emult) },
 						}),
 					})
-					Cryptid.exponentia_scale_mod(v, lenient_bignum(v.ability.extra.Emult_mod), old, v.ability.extra.Emult)
+					Cryptid.exponentia_scale_mod(
+						v,
+						lenient_bignum(v.ability.extra.Emult_mod),
+						old,
+						v.ability.extra.Emult
+					)
 				end
 			end
 			return ret
@@ -443,11 +449,14 @@ local redeo = {
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	calculate = function(self, card, context)
 		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
-			card.ability.extra.money_remaining = lenient_bignum(card.ability.extra.money_remaining - context.cry_ease_dollars)
+			card.ability.extra.money_remaining =
+				lenient_bignum(card.ability.extra.money_remaining - context.cry_ease_dollars)
 			local ante_mod = 0
 			while to_big(card.ability.extra.money_remaining) >= to_big(card.ability.extra.money_req) do
-				card.ability.extra.money_remaining = lenient_bignum(card.ability.extra.money_remaining - card.ability.extra.money_req)
-				card.ability.extra.money_req = lenient_bignum(card.ability.extra.money_req + card.ability.extra.money_mod)
+				card.ability.extra.money_remaining =
+					lenient_bignum(card.ability.extra.money_remaining - card.ability.extra.money_req)
+				card.ability.extra.money_req =
+					lenient_bignum(card.ability.extra.money_req + card.ability.extra.money_mod)
 				card.ability.extra.money_mod = lenient_bignum(math.ceil(card.ability.extra.money_mod * 1.06))
 				ante_mod = lenient_bignum(ante_mod - card.ability.extra.ante_reduction)
 			end
@@ -487,8 +496,8 @@ local tenebris = {
 	config = {
 		extra = {
 			slots = 25,
-			money = 25
-		}
+			money = 25,
+		},
 	},
 	rarity = "cry_exotic",
 	cost = 50,
@@ -501,8 +510,8 @@ local tenebris = {
 		return {
 			vars = {
 				number_format(center.ability.extra.slots),
-				number_format(center.ability.extra.money)
-			}
+				number_format(center.ability.extra.money),
+			},
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -571,8 +580,8 @@ local crustulum = {
 	config = {
 		extra = {
 			chips = 0,
-			chip_mod = 4
-		}
+			chip_mod = 4,
+		},
 	},
 	pos = { x = 0, y = 2 },
 	soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
@@ -594,14 +603,22 @@ local crustulum = {
 		if context.reroll_shop and not context.blueprint then
 			card.ability.extra.chips = lenient_bignum(card.ability.extra.chips + card.ability.extra.chip_mod)
 			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize({ type = "variable", key = "a_chips", vars = { number_format(card.ability.extra.chips) } }),
+				message = localize({
+					type = "variable",
+					key = "a_chips",
+					vars = { number_format(card.ability.extra.chips) },
+				}),
 				colour = G.C.CHIPS,
 			})
 			return nil, true
 		end
 		if context.joker_main and to_big(card.ability.extra.chips) > to_big(0) then
 			return {
-				message = localize({ type = "variable", key = "a_chips", vars = { number_format(card.ability.extra.chips) } }),
+				message = localize({
+					type = "variable",
+					key = "a_chips",
+					vars = { number_format(card.ability.extra.chips) },
+				}),
 				chip_mod = lenient_bignum(card.ability.extra.chips),
 			}
 		end
@@ -634,8 +651,8 @@ local primus = {
 	config = {
 		extra = {
 			Emult = 1.01,
-			Emult_mod = 0.17
-		}
+			Emult_mod = 0.17,
+		},
 	},
 	pos = { x = 0, y = 4 },
 	rarity = "cry_exotic",
@@ -726,8 +743,8 @@ local scalae = {
 		},
 		immutable = {
 			shadow_scale = 1,
-			shadow_scale_mod = 1
-		}
+			shadow_scale_mod = 1,
+		},
 	},
 	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
@@ -748,15 +765,15 @@ local scalae = {
 		if joker.ability.name ~= "cry-Scalae" then
 			local new_scale = lenient_bignum(
 				to_big(true_base)
-				* (
-					(
-						1
-						+ (
-							(to_big(orig_scale_scale) / to_big(true_base))
-							^ (to_big(1) / to_big(card.ability.extra.scale))
-						)
-					) ^ card.ability.extra.scale
-				)
+					* (
+						(
+							1
+							+ (
+								(to_big(orig_scale_scale) / to_big(true_base))
+								^ (to_big(1) / to_big(card.ability.extra.scale))
+							)
+						) ^ card.ability.extra.scale
+					)
 			)
 			if Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
 				new_scale = 1e300
@@ -798,8 +815,8 @@ local stella_mortis = {
 	config = {
 		extra = {
 			Emult = 1,
-			Emult_mod = 0.4
-		}
+			Emult_mod = 0.4,
+		},
 	},
 	pos = { x = 3, y = 5 },
 	rarity = "cry_exotic",
@@ -831,7 +848,8 @@ local stella_mortis = {
 					quota = planet_to_destroy:getEvalQty()
 				end
 				planet_to_destroy.getting_sliced = true
-				card.ability.extra.Emult = lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
+				card.ability.extra.Emult =
+					lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
@@ -845,7 +863,9 @@ local stella_mortis = {
 							type = "variable",
 							key = "a_powmult",
 							vars = {
-								number_format(lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)),
+								number_format(
+									lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
+								),
 							},
 						}),
 					})
@@ -871,8 +891,8 @@ local stella_mortis = {
 		return {
 			vars = {
 				number_format(center.ability.extra.Emult_mod),
-				number_format(center.ability.extra.Emult)
-			}
+				number_format(center.ability.extra.Emult),
+			},
 		}
 	end,
 	cry_credits = {
@@ -895,8 +915,8 @@ local circulus_pistoris = {
 		extra = {
 			Emult = math.pi,
 			Echips = math.pi,
-			hands_remaining = 3
-		}
+			hands_remaining = 3,
+		},
 	},
 	pos = { x = 0, y = 3 },
 	rarity = "cry_exotic",
@@ -957,8 +977,8 @@ local aequilibrium = {
 	config = {
 		extra = {
 			jokers = 2,
-			card = nil
-		}
+			card = nil,
+		},
 	},
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
@@ -1017,8 +1037,8 @@ local facile = {
 			check = 10,
 		},
 		immutable = {
-			check2 = 0
-		}
+			check2 = 0,
+		},
 	},
 	pos = { x = 6, y = 2 },
 	soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
@@ -1175,13 +1195,16 @@ local energia = {
 	blueprint_compat = false,
 	perishable_compat = false,
 	order = 514,
-	config = { 
+	config = {
 		extra = { tags = 1, tag_mod = 1 },
 		immutable = { max_tags = 40 },
 	},
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { math.min(center.ability.extra.tags, center.ability.immutable.max_tags), center.ability.extra.tag_mod },
+			vars = {
+				math.min(center.ability.extra.tags, center.ability.immutable.max_tags),
+				center.ability.extra.tag_mod,
+			},
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1252,7 +1275,13 @@ local verisimile = {
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.xmult) } }) }
+					{
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { number_format(card.ability.extra.xmult) },
+						}),
+					}
 				)
 			elseif
 				context.other_joker.ability.name == "Reserved Parking"
@@ -1271,7 +1300,13 @@ local verisimile = {
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.xmult) } }) }
+					{
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { number_format(card.ability.extra.xmult) },
+						}),
+					}
 				)
 			elseif context.other_joker.ability.name == "cry-notebook" then
 				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
@@ -1283,7 +1318,13 @@ local verisimile = {
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.xmult) } }) }
+					{
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { number_format(card.ability.extra.xmult) },
+						}),
+					}
 				)
 			end
 			return nil, true
@@ -1297,12 +1338,22 @@ local verisimile = {
 					nil,
 					nil,
 					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.xmult) } }) }
+					{
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { number_format(card.ability.extra.xmult) },
+						}),
+					}
 				)
 			end
 		elseif context.joker_main and (to_big(card.ability.extra.xmult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.xmult) } }),
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.xmult) },
+				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
 			}
 		end
@@ -1334,7 +1385,7 @@ local duplicare = {
 		return {
 			vars = {
 				number_format(center.ability.extra.Xmult),
-				number_format(center.ability.extra.Xmult_mod)
+				number_format(center.ability.extra.Xmult_mod),
 			},
 		}
 	end,
@@ -1448,11 +1499,11 @@ local formidiulosus = {
 	config = {
 		extra = {
 			Emult_mod = 0.01,
-			Emult = 1
+			Emult = 1,
 		},
 		immutable = {
-			num_candies = 3
-		}
+			num_candies = 3,
+		},
 	},
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -1469,8 +1520,9 @@ local formidiulosus = {
 	atlas = "atlasexotic",
 	no_dbl = true,
 	update = function(self, card, front)
-		card.ability.extra.Emult = lenient_bignum(1
-			+ (card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true)))
+		card.ability.extra.Emult = lenient_bignum(
+			1 + (card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true))
+		)
 	end,
 	calculate = function(self, card, context)
 		if
