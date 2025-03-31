@@ -3660,7 +3660,7 @@ local global_sticker = {
 	no_sticker_sheet = true, -- also what does this and next line do?
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
-	--[[draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
+	draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
 		local notilt = nil
 		if card.area and card.area.config.type == "deck" then
 			notilt = true
@@ -3685,7 +3685,19 @@ local global_sticker = {
 			card.children.center
 		) -- this doesn't really do much tbh, but the slight effect is nice
 		card.hover_tilt = card.hover_tilt * 2
-	end,--]]
+	end,
+	calculate = function(self, card, context)
+        	if 
+			(context.setting_blind or context.open_booster) 
+			and context.cardarea == G.deck 
+		then 
+			draw_card(G.deck, G.hand, nil, nil, nil, card)
+			--[[card.globalticks = (card.globalticks or 1) - 1
+			if card.globalticks == 0 then
+				card.global = nil
+			end--]]
+		end
+	end,
 }
 local automaton = {
 	cry_credits = {
