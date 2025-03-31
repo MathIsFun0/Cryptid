@@ -442,12 +442,19 @@ return {
 					"{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
 				},
 			},
+			c_cry_global = {
+				name = "://GLOBAL",
+				text = {
+					"Select a playing card",
+					"to become {C:cry_code}Global{}"
+				},
+			},
 			c_cry_hook = {
 				name = "HOOK://",
 				text = {
 					"Select two Jokers to become {C:cry_code}Hooked",
 					"{C:inactive,s:0.8}Only works properly if Jokers trigger in the same context,",
-					"{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
+					"{C:inactive,s:0.8}such as Joker and The Duo (both joker_main)",
 				},
 			},
 			c_cry_inst = {
@@ -3931,6 +3938,12 @@ return {
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",
 					"trigger {C:cry_code}#1#",
+				},
+			},
+			cry_global_sticker = {
+				name = "Global",
+				text = {
+					"Always drawn after {C:cry_code}First Hand Drawn{}",
 				},
 			},
 			cry_flickering = {
