@@ -1394,7 +1394,7 @@ local jimball = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.xmult_mod),
+				number_format(center.ability.extra.x_mult_mod),
 				number_format(center.ability.extra.x_mult)
 			}
 		}
@@ -1840,21 +1840,21 @@ local blurred = {
 	order = 51,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { math.min(center.ability.immutable.max_hand_size_mod, center.ability.extra.extra_hand_size) }}
+		return { vars = { math.min(center.ability.immutable.max_hand_size_mod, center.ability.extra.extra_hands) }}
 	end,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					ease_hands_played(math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra))
+					ease_hands_played(math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra.extra_hands))
 					card_eval_status_text(
 						context.blueprint_card or card,
 						"extra",
 						nil,
 						nil,
 						nil,
-						{ message = localize({ type = "variable", key = "a_hands", vars = { math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra.extra_hand_size) } }) }
+						{ message = localize({ type = "variable", key = "a_hands", vars = { math.min(card.ability.immutable.max_hand_size_mod, card.ability.extra.extra_hands) } }) }
 					)
 					return true
 				end,
@@ -4570,7 +4570,7 @@ local duos = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4581,7 +4581,7 @@ local duos = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			if
-				context.poker_hands ~= nil and next(context.poker_hands[card.ability.type])
+				context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type])
 				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
 			then
 				return {
@@ -4627,7 +4627,7 @@ local home = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4637,7 +4637,7 @@ local home = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -4681,7 +4681,7 @@ local nuts = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4691,7 +4691,7 @@ local nuts = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -4735,7 +4735,7 @@ local quintet = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4745,7 +4745,7 @@ local quintet = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -4799,7 +4799,7 @@ local unity = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4809,7 +4809,7 @@ local unity = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -4863,7 +4863,7 @@ local swarm = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4873,7 +4873,7 @@ local swarm = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -4929,7 +4929,7 @@ local stronghold = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4939,7 +4939,7 @@ local stronghold = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -4984,7 +4984,7 @@ local wtf = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -4994,7 +4994,7 @@ local wtf = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -5039,7 +5039,7 @@ local clash = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5049,7 +5049,7 @@ local clash = {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
-			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.type]) then
+			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 					colour = G.C.RED,
@@ -5092,7 +5092,7 @@ local filler = {
 		return {
 			vars = {
 				number_format(card.ability.extra.x_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5102,7 +5102,7 @@ local filler = {
 	cost = 1,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.type]) then
+		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.extra.type]) then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { number_format(card.ability.extra.x_mult) } }),
 				colour = G.C.RED,
@@ -5143,7 +5143,12 @@ local giggly = {
 	},
 	order = 16,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.t_mult, localize(card.ability.type, "poker_hands") } }
+		return {
+			vars = {
+				number_format(card.ability.extra.t_mult),
+				localize(card.ability.extra.type, "poker_hands")
+			}
+		}
 	end,
 	atlas = "atlasthree",
 	rarity = 1,
@@ -5192,7 +5197,7 @@ local nutty = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5243,7 +5248,7 @@ local manic = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5294,7 +5299,7 @@ local silly = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5345,7 +5350,7 @@ local delirious = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5401,7 +5406,7 @@ local wacky = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5458,7 +5463,7 @@ local kooky = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5517,7 +5522,7 @@ local bonkers = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5565,7 +5570,7 @@ local fuckedup = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5613,7 +5618,7 @@ local foolhardy = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_mult),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5660,7 +5665,7 @@ local dubious = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5711,7 +5716,7 @@ local shrewd = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5762,7 +5767,7 @@ local tricksy = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5813,7 +5818,7 @@ local foxy = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5864,7 +5869,7 @@ local savvy = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5921,7 +5926,7 @@ local subtle = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -5978,7 +5983,7 @@ local discreet = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -6027,12 +6032,17 @@ local adroit = {
 	pos = { x = 7, y = 4 },
 	effect = "Cry Type Chips",
 	order = 116,
-	config = { t_chips = 170, type = "cry_Bulwark" },
+	config = {
+		extra = {
+			t_chips = 170,
+			type = "cry_Bulwark"
+		}
+	},
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -6080,7 +6090,7 @@ local penetrating = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -6128,7 +6138,7 @@ local treacherous = {
 		return {
 			vars = {
 				number_format(card.ability.extra.t_chips),
-				localize(card.ability.type, "poker_hands")
+				localize(card.ability.extra.type, "poker_hands")
 			}
 		}
 	end,
@@ -7711,7 +7721,7 @@ local necromancer = {
 	order = 126,
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { card.ability.immutable.sell_cost.min } }
+		return { vars = { center.ability.immutable.sell_cost_min } }
 	end,
 	calculate = function(self, card, context)
 		if
