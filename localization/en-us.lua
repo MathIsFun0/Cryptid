@@ -3943,7 +3943,8 @@ return {
 			cry_global_sticker = {
 				name = "Global",
 				text = {
-					"Always drawn after {C:cry_code}First Hand Drawn{}",
+					"Always drawn after",
+					"{C:cry_code}First Hand Drawn{}",
 				},
 			},
 			cry_flickering = {
