@@ -3650,7 +3650,7 @@ local global = {
 			area:remove_from_highlighted(card)
 		end
 		if G.hand.highlighted[1] then
-			G.hand.highlighted[1].ability.cry_global = true
+			G.hand.highlighted[1].ability.cry_global_sticker = true
 		end
 	end,
 }
