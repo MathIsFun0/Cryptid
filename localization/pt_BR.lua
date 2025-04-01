@@ -189,7 +189,7 @@ return {
 				text = {
 					"Começe com um Curinga {C:legendary}Lendário{C:legendary}",
 					"{C:green}1 em 5{} de chance para criar outro",
-					"quando o Blind Chefe é derrotado", 
+					"quando o Blind Chefe é derrotado",
 					"{C:inactive}(precisa ter espaço){}",
 				},
 			},
@@ -447,7 +447,7 @@ return {
 				name = "FISGAR://",
 				text = {
 					"Selecione dois Coringas para se tornarem {C:cry_code}fisgado",
-					"{C:inactive,s:0.8}Apenas Funciona apropriadamente se os Coringas", 
+					"{C:inactive,s:0.8}Apenas Funciona apropriadamente se os Coringas",
 					"ativarem no mesmo contexto,",
 					"{C:inactive,s:0.8}Como os Coringas e A Dupla (ambos pós-pontuados)",
 				},
@@ -1397,8 +1397,8 @@ return {
 				text = {
 					"Compre {C:green}o baralho inteiro{} para a sua mão",
 					"quando o {C:attention}Blind{} é selecionado",
-					"{C:inactive,s:0.8}\"Muito bem, tô só aquecendo",
-					"{C:inactive,s:0.8}ISSO! eu quero MAIS\"",
+					'{C:inactive,s:0.8}"Muito bem, tô só aquecendo',
+					'{C:inactive,s:0.8}ISSO! eu quero MAIS"',
 				},
 			},
 			j_cry_energia = {
@@ -3381,7 +3381,10 @@ return {
 			},
 			tag_cry_cat = {
 				name = "Marca Gato",
-				text = { "Skelleton Juice fez a tradução mas nínguem vai acreditar em você.", "{C:inactive}Nível {C:dark_edition}#1#"},
+				text = {
+					"Skelleton Juice fez a tradução mas nínguem vai acreditar em você.",
+					"{C:inactive}Nível {C:dark_edition}#1#",
+				},
 			},
 			tag_cry_console = {
 				name = "Marca Console",
