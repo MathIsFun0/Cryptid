@@ -15,6 +15,7 @@
 		"Steamodded (>=1.0.0~BETA-0314c)"
 	],
 	"conflicts": [
-		"Saturn"
+		"Saturn",
+		"AntePreview (>= 2.0.0~0c16a) (<<3.0.0)"
 	]
 }
