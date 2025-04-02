@@ -285,10 +285,10 @@ local potofjokes = {
 				end
 			end
 
-			local delta = math.min(
+			local delta = to_number(math.min(
 				math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size),
 				card.ability.extra.h_mod
-			)
+			))
 
 			G.hand:change_size(delta)
 
@@ -904,11 +904,11 @@ local booster = {
 		return { vars = { math.min(center.ability.immutable.max_slots, center.ability.extra.booster_slots) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		local mod = math.min(card.ability.immutable.max_slots, card.ability.extra.booster_slots)
+		local mod = to_number(math.min(card.ability.immutable.max_slots, card.ability.extra.booster_slots))
 		SMODS.change_booster_limit(mod)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		local mod = math.min(card.ability.immutable.max_slots, card.ability.extra.booster_slots)
+		local mod = to_number(math.min(card.ability.immutable.max_slots, card.ability.extra.booster_slots))
 		SMODS.change_booster_limit(-mod)
 	end,
 	cry_credits = {
@@ -1353,7 +1353,7 @@ local chad = {
 			if context.other_card == G.jokers.cards[1] then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers),
+					repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
 					card = card,
 				}
 			else
@@ -1993,7 +1993,7 @@ local nosound = {
 				if context.other_card:get_id() == 7 then
 					return {
 						message = localize("k_again_ex"),
-						repetitions = math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers),
+						repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
 						card = card,
 					}
 				end
@@ -2144,7 +2144,7 @@ local weegaming = {
 				if context.other_card:get_id() == 2 then
 					return {
 						message = localize("k_again_ex"),
-						repetitions = math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers),
+						repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
 						card = card,
 					}
 				end
@@ -7423,7 +7423,7 @@ local exposed = {
 			if not context.other_card:is_face() then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers),
+					repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
 					card = card,
 				}
 			end
@@ -7473,7 +7473,7 @@ local mask = {
 			if context.other_card:is_face() then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers),
+					repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
 					card = card,
 				}
 			end

@@ -323,7 +323,7 @@ local mstack = {
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.extra.retriggers, card.ability.immutable.max_retriggers),
+					repetitions = to_number(math.min(card.ability.extra.retriggers, card.ability.immutable.max_retriggers)),
 					card = card,
 				}
 			end
@@ -495,12 +495,12 @@ local notebook = {
 				or pseudorandom("cry_notebook")
 					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
-				local add_remain = math.min(0,card.ability.immutable.max_slots - card.ability.extra.add)
-				if add_remain <= 0 then
+				card.ability.immutable.slots = to_number(math.min(card.ability.immutable.max_slots, lenient_bignum(card.ability.immutable.slots + to_big(card.ability.extra.add))))
+				
+				if card.ability.immutable.slots >= card.ability.immutable.max_slots then
 					card.ability.extra.add = 0
 				end
-
-				card.ability.immutable.slots = lenient_bignum(card.ability.immutable.slots + to_big(card.ability.extra.add))
+				
 				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.add))
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
