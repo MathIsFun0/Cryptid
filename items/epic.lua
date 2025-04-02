@@ -330,10 +330,10 @@ local negative = {
 		return { vars = { number_format(center.ability.extra.slots) } }
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.slots)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.slots))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra.slots)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - to_big(card.ability.extra.slots))
 	end,
 	cry_credits = {
 		idea = {
@@ -988,7 +988,7 @@ local double_scale = {
 	--todo: support jokers that scale multiple variables
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
 		if Cryptid.gameset(self) == "exp_modest" then
-			return lenient_bignum(true_base * 2)
+			return lenient_bignum(to_big(true_base) * 2)
 		end
 		return lenient_bignum(orig_scale_scale + true_base)
 	end,
@@ -1106,16 +1106,16 @@ local circus = {
                 }))
             end
 
-            local xmult = lenient_bignum(math.max(1, card.ability.extra.Xmult) * mult_mod)
-            return {
-                message = localize({
-                    type = "variable",
-                    key = "a_xmult",
-                    vars = { number_format(xmult) }
-                }),
-                Xmult_mod = xmult,
-            }
-        end
+			local xmult = lenient_bignum(math.max(1, to_big(card.ability.extra.Xmult)) * to_big(mult_mod))
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(xmult) },
+				}),
+				Xmult_mod = xmult,
+			}
+		end
 
 		if context.other_joker and card ~= context.other_joker then
 			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
@@ -1196,7 +1196,7 @@ local caramel = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.rounds_remaining = lenient_bignum(card.ability.extra.rounds_remaining - 1)
+			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) - 1)
 			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
 				return {
 					message = { localize("cry_minus_round") },
@@ -1583,7 +1583,7 @@ local goldjoker = {
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		local bonus = lenient_bignum(math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 0))))
+		local bonus = lenient_bignum(math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 0))))
 		if to_big(bonus) > to_big(0) then
 			return bonus
 		end
@@ -1973,7 +1973,7 @@ local jtron = {
 	pos = { x = 2, y = 5 },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_joker
-		center.ability.immutable.current = lenient_bignum(1 + center.ability.extra.bonus * #SMODS.find_card("j_joker"))
+		center.ability.immutable.current = lenient_bignum(1 + to_big(center.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 		return {
 			vars = {
 				number_format(center.ability.extra.bonus),
@@ -1982,7 +1982,7 @@ local jtron = {
 		}
 	end,
 	calculate = function(self, card, context)
-		card.ability.immutable.current = lenient_bignum(1 + card.ability.extra.bonus * #SMODS.find_card("j_joker"))
+		card.ability.immutable.current = lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 		if context.cardarea == G.jokers and context.joker_main then
 			return {
 				message = localize({
