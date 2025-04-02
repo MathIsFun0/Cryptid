@@ -952,14 +952,14 @@ local number_blocks = {
 					card = card,
 				}
 			else
-				card.ability.extra.money = lenient_bignum(card.ability.extra.money + card.ability.extra.money_mod)
+				card.ability.extra.money = lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 				return nil, true
 			end
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
+		if to_big(card.ability.extra.money) > to_big(0) then
 			return lenient_bignum(card.ability.extra.money)
 		end
 	end,

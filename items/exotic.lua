@@ -743,25 +743,17 @@ local scalae = {
 		extra = {
 			scale = 1,
 			scale_mod = 1,
-		},
-		immutable = {
-			shadow_scale = 1,
-			shadow_scale_mod = 1,
-		},
+		}
 	},
 	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			card.ability.extra.scale = lenient_bignum(card.ability.extra.scale + card.ability.extra.scale_mod)
-			card.ability.extra.shadow_scale = lenient_bignum(card.ability.extra.scale)
-			card.ability.extra.shadow_scale_mod = lenient_bignum(card.ability.extra.scale_mod)
+			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)
 			return {
 				message = localize("k_upgrade_ex"),
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		card.ability.extra.scale = lenient_bignum(card.ability.extra.shadow_scale)
-		card.ability.extra.scale_mod = lenient_bignum(card.ability.extra.shadow_scale_mod)
 		return
 	end,
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
@@ -775,7 +767,7 @@ local scalae = {
 								(to_big(orig_scale_scale) / to_big(true_base))
 								^ (to_big(1) / to_big(card.ability.extra.scale))
 							)
-						) ^ card.ability.extra.scale
+						) ^ to_big(card.ability.extra.scale)
 					)
 			)
 			if Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
