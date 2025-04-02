@@ -855,7 +855,7 @@ local trick_or_treat = {
 					)
 					/ card.ability.extra.odds
 			then
-				local spawn_num = math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies)
+				local spawn_num = to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
 
 				for i = 1, spawn_num do
 					local new_card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")

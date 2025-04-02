@@ -103,7 +103,7 @@ local iterum = {
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions),
+					repetitions = to_number(math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions)),
 					card = card,
 				}
 			end
@@ -1216,7 +1216,7 @@ local energia = {
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
 			local value = #G.GAME.tags or 0
-			local t = math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags)
+			local t = to_number(math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags))
 			card.ability.extra.tags = lenient_bignum(card.ability.extra.tags + card.ability.extra.tag_mod)
 			if t > 0 then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
