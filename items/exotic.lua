@@ -450,15 +450,15 @@ local redeo = {
 	calculate = function(self, card, context)
 		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
 			card.ability.extra.money_remaining =
-				lenient_bignum(card.ability.extra.money_remaining - context.cry_ease_dollars)
+				lenient_bignum(to_big(card.ability.extra.money_remaining) - context.cry_ease_dollars)
 			local ante_mod = 0
 			while to_big(card.ability.extra.money_remaining) >= to_big(card.ability.extra.money_req) do
 				card.ability.extra.money_remaining =
-					lenient_bignum(card.ability.extra.money_remaining - card.ability.extra.money_req)
+					lenient_bignum(to_big(card.ability.extra.money_remaining) - card.ability.extra.money_req)
 				card.ability.extra.money_req =
 					lenient_bignum(card.ability.extra.money_req + card.ability.extra.money_mod)
-				card.ability.extra.money_mod = lenient_bignum(math.ceil(card.ability.extra.money_mod * 1.06))
-				ante_mod = lenient_bignum(ante_mod - card.ability.extra.ante_reduction)
+				card.ability.extra.money_mod = lenient_bignum(math.ceil(to_big(card.ability.extra.money_mod) * 1.06))
+				ante_mod = lenient_bignum(ante_mod - to_big(card.ability.extra.ante_reduction))
 			end
 			if ante_mod < 0 then
 				ease_ante(ante_mod)
@@ -518,10 +518,10 @@ local tenebris = {
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + number_format(math.min(card.ability.immutable.max_slots, card.ability.extra.slots)))
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - number_format(math.min(card.ability.immutable.max_slots, card.ability.extra.slots)))
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
 	end,
 	cry_credits = {
 		idea = { "Gold" },
@@ -852,7 +852,7 @@ local stella_mortis = {
 				end
 				planet_to_destroy.getting_sliced = true
 				card.ability.extra.Emult =
-					lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
+					lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
@@ -867,7 +867,7 @@ local stella_mortis = {
 							key = "a_powmult",
 							vars = {
 								number_format(
-									lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
+									lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
 								),
 							},
 						}),

@@ -764,7 +764,7 @@ local pickle = {
 			return nil, true
 		end
 		if context.setting_blind and not context.blueprint then
-			card.ability.extra.tags = lenient_bignum(card.ability.extra.tags - card.ability.extra.tags_mod)
+			card.ability.extra.tags = lenient_bignum(to_big(card.ability.extra.tags) - card.ability.extra.tags_mod)
 			if to_big(card.ability.extra.tags) > to_big(0) then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
@@ -1010,8 +1010,8 @@ local chili_pepper = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.Xmult = lenient_bignum(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)
-			card.ability.extra.rounds_remaining = lenient_bignum(card.ability.extra.rounds_remaining - 1)
+			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
+			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) - 1)
 			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
 				return {
 					message = localize({
@@ -1095,15 +1095,10 @@ local compound_interest = {
 	calc_dollar_bonus = function(self, card)
 		if G.GAME.dollars > to_big(0) then
 			local bonus =
-				lenient_bignum(math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1))))
+				lenient_bignum(math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 1))))
 			local old = lenient_bignum(card.ability.extra.percent)
-			card.ability.extra.percent = lenient_bignum(card.ability.extra.percent + card.ability.extra.percent_mod)
-			Cryptid.compound_interest_scale_mod(
-				card,
-				lenient_bignum(card.ability.extra.percent_mod),
-				old,
-				card.ability.extra.percent
-			)
+			card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+			Cryptid.compound_interest_scale_mod(card, lenient_bignum(card.ability.extra.percent_mod), old, card.ability.extra.percent)
 			if to_big(bonus) > to_big(0) then
 				return bonus
 			end
@@ -2279,7 +2274,7 @@ local redbloon = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.rounds_remaining = lenient_bignum(card.ability.extra.rounds_remaining - 1)
+			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) - 1)
 			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
 				return {
 					message = { localize("cry_minus_round") },
@@ -2497,7 +2492,7 @@ local magnet = {
 	atlas = "atlastwo",
 	calc_dollar_bonus = function(self, card)
 		if to_big(#G.jokers.cards) <= to_big(card.ability.extra.slots) then
-			return lenient_bignum(card.ability.extra.money * card.ability.extra.Xmoney)
+			return lenient_bignum(to_big(card.ability.extra.money) * card.ability.extra.Xmoney)
 		else
 			return lenient_bignum(card.ability.extra.money)
 		end
@@ -2569,7 +2564,7 @@ local unjust_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + sliced_card.sell_cost * 0.2)
+					card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + sliced_card.sell_cost * 0.2)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -2580,7 +2575,7 @@ local unjust_dagger = {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { number_format(lenient_bignum(card.ability.extra.x_mult + 0.2 * sliced_card.sell_cost)) },
+					vars = { number_format(lenient_bignum(to_big(card.ability.extra.x_mult) + 0.2 * sliced_card.sell_cost)) },
 				}),
 				colour = G.C.RED,
 				no_juice = true,
@@ -2655,7 +2650,7 @@ local monkey_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.chips = lenient_bignum(card.ability.extra.chips + sliced_card.sell_cost * 10)
+					card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + sliced_card.sell_cost * 10)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -2666,7 +2661,7 @@ local monkey_dagger = {
 				message = localize({
 					type = "variable",
 					key = "a_chips",
-					vars = { number_format(lenient_bignum(card.ability.extra.chips + 10 * sliced_card.sell_cost)) },
+					vars = { number_format(lenient_bignum(to_big(card.ability.extra.chips) + 10 * sliced_card.sell_cost)) },
 				}),
 				colour = G.C.CHIPS,
 				no_juice = true,
@@ -2742,7 +2737,7 @@ local pirate_dagger = {
 				func = function()
 					G.GAME.joker_buffer = 0
 					card.ability.extra.x_chips =
-						lenient_bignum(card.ability.extra.x_chips + sliced_card.sell_cost * 0.25)
+						lenient_bignum(to_big(card.ability.extra.x_chips) + sliced_card.sell_cost * 0.25)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -2753,7 +2748,7 @@ local pirate_dagger = {
 				message = localize({
 					type = "variable",
 					key = "a_xchips",
-					vars = { number_format(lenient_bignum(card.ability.extra.x_chips + 0.25 * sliced_card.sell_cost)) },
+					vars = { number_format(lenient_bignum(to_big(card.ability.extra.x_chips) + 0.25 * sliced_card.sell_cost)) },
 				}),
 				colour = G.C.CHIPS,
 				no_juice = true,
@@ -4663,6 +4658,63 @@ local rnjoker = {
 		end
 	end,
 }
+local filler = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-filler",
+	key = "filler",
+	pos = { x = 0, y = 1 },
+	pools = { ["Meme"] = true },
+	config = {
+		extra = {
+			Xmult = 1.00000000000003,
+			type = "High Card",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.Xmult),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 3,
+	order = 89,
+	cost = 1,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.extra.type]) then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult) },
+				}),
+				colour = G.C.RED,
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+			}
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Mathguy",
+		},
+		art = {
+			"Mathguy",
+		},
+		code = {
+			"Mathguy",
+		},
+	},
+	unlocked = false,
+	unlock_condition = { type = "win_no_hand", extra = "High Card" },
+}
 local duos = {
 	object_type = "Joker",
 	dependencies = {
@@ -4683,7 +4735,7 @@ local duos = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -4693,7 +4745,7 @@ local duos = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if
 				context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type])
 				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
@@ -4702,10 +4754,10 @@ local duos = {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -4744,7 +4796,7 @@ local home = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -4754,16 +4806,16 @@ local home = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -4802,7 +4854,7 @@ local nuts = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -4812,16 +4864,16 @@ local nuts = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -4860,7 +4912,7 @@ local quintet = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -4870,16 +4922,16 @@ local quintet = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = number_format(card.ability.extra.x_mult),
+					Xmult_mod = number_format(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -4928,7 +4980,7 @@ local unity = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -4938,16 +4990,16 @@ local unity = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -4996,7 +5048,7 @@ local swarm = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -5006,16 +5058,16 @@ local swarm = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -5066,7 +5118,7 @@ local stronghold = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -5076,16 +5128,16 @@ local stronghold = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -5125,7 +5177,7 @@ local wtf = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -5135,16 +5187,16 @@ local wtf = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -5184,7 +5236,7 @@ local clash = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(card.ability.extra.x_mult),
+				number_format(card.ability.extra.Xmult),
 				localize(card.ability.extra.type, "poker_hands"),
 			},
 		}
@@ -5194,16 +5246,16 @@ local clash = {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
+						vars = { number_format(card.ability.extra.Xmult) },
 					}),
 					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -5220,63 +5272,6 @@ local clash = {
 		end
 	end,
 	unlocked = false,
-}
-local filler = {
-	object_type = "Joker",
-	dependencies = {
-		items = {
-			"set_cry_misc_joker",
-		},
-	},
-	name = "cry-filler",
-	key = "filler",
-	pos = { x = 0, y = 1 },
-	pools = { ["Meme"] = true },
-	config = {
-		extra = {
-			Xmult = 1.00000000000003,
-			type = "High Card",
-		},
-	},
-	loc_vars = function(self, info_queue, card)
-		return {
-			vars = {
-				number_format(card.ability.extra.x_mult),
-				localize(card.ability.extra.type, "poker_hands"),
-			},
-		}
-	end,
-	atlas = "atlasthree",
-	rarity = 3,
-	order = 89,
-	cost = 1,
-	blueprint_compat = true,
-	calculate = function(self, card, context)
-		if context.joker_main and context.poker_hands and next(context.poker_hands[card.ability.extra.type]) then
-			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
-			}
-		end
-	end,
-	cry_credits = {
-		idea = {
-			"Mathguy",
-		},
-		art = {
-			"Mathguy",
-		},
-		code = {
-			"Mathguy",
-		},
-	},
-	unlocked = false,
-	unlock_condition = { type = "win_no_hand", extra = "High Card" },
 }
 local giggly = {
 	object_type = "Joker",
@@ -6426,7 +6421,7 @@ local coin = {
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.ability.set == "Joker" then
 			local mod = math.floor(pseudorandom(pseudoseed("coin")) * card.ability.immutable.money_mod)
-			local option = lenient_bignum(card.ability.extra.money * mod)
+			local option = lenient_bignum(to_big(card.ability.extra.money) * mod)
 			ease_dollars(option)
 			card_eval_status_text(
 				context.blueprint_card or card,
@@ -6841,7 +6836,7 @@ local busdriver = {
 						key = "a_mult_minus",
 						vars = { number_format(card.ability.extra.mult) },
 					}),
-					mult_mod = lenient_bignum(card.ability.extra.mult * -1),
+					mult_mod = lenient_bignum(to_big(card.ability.extra.mult) * -1),
 					colour = G.C.MULT,
 				}
 			end
@@ -6995,7 +6990,7 @@ local membershipcard = {
 		return {
 			vars = {
 				number_format(card.ability.extra.Xmult_mod),
-				number_format(lenient_bignum(card.ability.extra.Xmult_mod * Cryptid.member_count)),
+				number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)),
 			},
 		}
 	end,
@@ -7005,9 +7000,9 @@ local membershipcard = {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { number_format(lenient_bignum(card.ability.extra.Xmult_mod * Cryptid.member_count)) },
+					vars = { number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)) },
 				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult_mod * Cryptid.member_count),
+				Xmult_mod = lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count),
 			}
 		end
 	end,
@@ -7546,7 +7541,7 @@ local kidnap = {
 		return {
 			vars = {
 				number_format(center.ability.extra.money),
-				number_format(lenient_bignum(center.ability.extra.money * value)),
+				number_format(lenient_bignum(to_big(center.ability.extra.money) * value)),
 			},
 		}
 	end,
@@ -7573,7 +7568,7 @@ local kidnap = {
 		if value == 0 then
 			return
 		end
-		return lenient_bignum(card.ability.extra.money * value)
+		return lenient_bignum(to_big(card.ability.extra.money) * value)
 	end,
 	cry_credits = {
 		idea = {
@@ -7828,7 +7823,7 @@ local carved_pumpkin = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
 			if G.GAME.blind:get_type() == "Boss" then
-				card.ability.extra.disables = lenient_bignum(card.ability.extra.disables - 1)
+				card.ability.extra.disables = lenient_bignum(to_big(card.ability.extra.disables) - 1)
 				card:juice_up()
 				if card.ability.extra.disables <= 0 then
 					card:start_dissolve()
@@ -7933,7 +7928,7 @@ local cookie = {
 					{ message = localize("k_eaten_ex"), colour = G.C.CHIPS }
 				)
 			else
-				card.ability.extra.chips = lenient_bignum(card.ability.extra.chips - card.ability.extra.chip_mod)
+				card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) - card.ability.extra.chip_mod)
 				card_eval_status_text(
 					card,
 					"extra",
@@ -8504,7 +8499,7 @@ local zooble = {
 				end
 				if #unique_ranks >= 1 then
 					card.ability.extra.mult =
-						lenient_bignum(card.ability.extra.mult + (#unique_ranks * card.ability.extra.a_mult))
+						lenient_bignum(card.ability.extra.mult + (#unique_ranks * to_big(card.ability.extra.a_mult)))
 					return {
 						message = localize("k_upgrade_ex"),
 						colour = G.C.RED,

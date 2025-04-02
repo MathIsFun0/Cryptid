@@ -940,7 +940,7 @@ local candy_basket = {
 				number_format(math.floor(center.ability.extra.candies)),
 				number_format(center.ability.extra.candy_mod),
 				center.ability.immutable.wins_needed,
-				number_format(lenient_bignum(center.ability.extra.candy_mod * center.ability.extra.candy_boss_mod)),
+				number_format(lenient_bignum(to_big(center.ability.extra.candy_mod) * center.ability.extra.candy_boss_mod)),
 			},
 		}
 	end,
@@ -1305,7 +1305,7 @@ local candy_cane = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.rounds = lenient_bignum(card.ability.extra.rounds - 1)
+			card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 			if to_big(card.ability.extra.rounds) > to_big(0) then
 				return {
 					message = { localize("cry_minus_round") },
@@ -1363,7 +1363,7 @@ local candy_buttons = {
 	end,
 	calculate = function(self, card, context)
 		if context.reroll_shop and not context.blueprint then
-			card.ability.extra.rerolls = lenient_bignum(card.ability.extra.rerolls - 1)
+			card.ability.extra.rerolls = lenient_bignum(to_big(card.ability.extra.rerolls) - 1)
 			if to_big(card.ability.extra.rerolls) <= to_big(0) then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1548,7 +1548,7 @@ local brittle = {
 		then
 			local _card = context.scoring_hand[#context.scoring_hand]
 			if not _card.brittled then
-				card.ability.extra.rounds = lenient_bignum(card.ability.extra.rounds - 1)
+				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
 				_card.brittled = true
 				_card:set_ability(G.P_CENTERS[enhancement], nil, true)
@@ -1701,7 +1701,7 @@ local candy_sticks = {
 			}))
 		end
 		if context.after and G.GAME.blind:get_type() == "Boss" then
-			card.ability.extra.hands = lenient_bignum(card.ability.extra.hands - 1)
+			card.ability.extra.hands = lenient_bignum(to_big(card.ability.extra.hands) - 1)
 		end
 		if
 			(

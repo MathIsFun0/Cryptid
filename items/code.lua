@@ -5007,7 +5007,7 @@ local cut = {
 
 			if codecard_to_destroy then
 				codecard_to_destroy.getting_sliced = true
-				card.ability.extra.Xmult = lenient_bignum(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)
+				card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
