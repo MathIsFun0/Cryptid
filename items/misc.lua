@@ -1306,7 +1306,7 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and (
+				and not (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
 				)
