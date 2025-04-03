@@ -2161,7 +2161,7 @@ local clockwork = { -- Steel Support: The Joker
 			and context.cardarea == G.hand
 			and not context.end_of_round
 			and SMODS.has_enhancement(context.other_card, "m_steel")
-			and to_big(card.ability.extra.steelenhc) > to_big(1)
+			and to_big(card.ability.extra.steelenhc) ~= to_big(1)
 		then -- effect 4
 			return { xmult = lenient_bignum(card.ability.extra.steelenhc) }
 		end
