@@ -262,13 +262,22 @@ local tax = {
 		local value = self:loc_vars().vars[1]
 		return {
 			n = G.UIT.C,
-			nodes = { {
-				n = G.UIT.R,
-				nodes = {
-					{ n = G.UIT.O, config = { object = get_stake_sprite(G.GAME.stake, 0.25) } },
-					{ n = G.UIT.T, config = { text = number_format(value), colour = G.C.RED, scale = score_number_scale(0.5, value) } }
-				}
-			} }
+			nodes = {
+				{
+					n = G.UIT.R,
+					nodes = {
+						{ n = G.UIT.O, config = { object = get_stake_sprite(G.GAME.stake, 0.25) } },
+						{
+							n = G.UIT.T,
+							config = {
+								text = number_format(value),
+								colour = G.C.RED,
+								scale = score_number_scale(0.5, value),
+							},
+						},
+					},
+				},
+			},
 		}
 	end,
 	collection_loc_vars = function(self)
@@ -409,7 +418,10 @@ local joke = {
 	end,
 	preview_ui = function(self)
 		local value = self:loc_vars().vars[2]
-		return { n = G.UIT.T, config = { text = number_format(value), colour = G.C.ORANGE, scale = score_number_scale(0.5, value) } }
+		return {
+			n = G.UIT.T,
+			config = { text = number_format(value), colour = G.C.ORANGE, scale = score_number_scale(0.5, value) },
+		}
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { "8", localize("cry_joke_placeholder") } }

@@ -367,7 +367,7 @@ SMODS.Atlas({
 	py = 95,
 	inject = function(self)
 		local file_path = type(self.path) == "table"
-			and (self.path[G.SETTINGS.language] or self.path["default"] or self.path["en-us"])
+				and (self.path[G.SETTINGS.language] or self.path["default"] or self.path["en-us"])
 			or self.path
 		if file_path == "DEFAULT" then
 			return
@@ -518,8 +518,7 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and
-			(G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -534,8 +533,7 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and
-			(G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -549,9 +547,8 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
-	return G.STAGE == G.STAGES.MAIN_MENU
-			and
-			(G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
+		return G.STAGE == G.STAGES.MAIN_MENU
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })

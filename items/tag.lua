@@ -451,14 +451,17 @@ local memory = {
 			_, tag_sprite = last_tag:generate_UI(0.4)
 			return {
 				n = G.UIT.C,
-				nodes = { {
-					n = G.UIT.R,
-					nodes = {
-						{ n = G.UIT.T, config = { text = ">", colour = G.C.WHITE, scale = 0.4 } },
-						{ n = G.UIT.O, config = { object = tag_sprite } },
-						G.P_TAGS[G.GAME.cry_last_tag_used].preview_ui and G.P_TAGS[G.GAME.cry_last_tag_used]:preview_ui(last_tag)
-					}
-				} }
+				nodes = {
+					{
+						n = G.UIT.R,
+						nodes = {
+							{ n = G.UIT.T, config = { text = ">", colour = G.C.WHITE, scale = 0.4 } },
+							{ n = G.UIT.O, config = { object = tag_sprite } },
+							G.P_TAGS[G.GAME.cry_last_tag_used].preview_ui
+								and G.P_TAGS[G.GAME.cry_last_tag_used]:preview_ui(last_tag),
+						},
+					},
+				},
 			}
 		end
 	end,
