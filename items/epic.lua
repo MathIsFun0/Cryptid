@@ -2026,8 +2026,16 @@ local clockwork = { -- Steel Support: The Joker
 			and not context.end_of_round
 			and SMODS.has_enhancement(context.other_card, "m_steel")
 			and card.ability.extra.steelenhc ~= 1
-		then -- effect 4
-			return { xmult = card.ability.extra.steelenhc }
+		then
+			if context.other_card.debuff then
+				return {
+					message = localize("k_debuffed"),
+					colour = G.C.RED,
+					card = card,
+				}
+			else -- effect 4
+				return { xmult = card.ability.extra.steelenhc }
+			end
 		end
 		--imo this secret effect can be madness only -Math
 		if
