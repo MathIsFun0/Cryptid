@@ -1122,6 +1122,22 @@ local spookydeck = {
 			end
 		end
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local candy_dagger = {
 	object_type = "Joker",
