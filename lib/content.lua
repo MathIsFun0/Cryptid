@@ -1,5 +1,12 @@
 -- content.lua - adds SMODS objects for content that should always be loaded
 
+SMODS.Atlas({
+	key = "poker_hands",
+	path = "hands.png",
+	px = 53,
+	py = 13,
+})
+
 SMODS.PokerHand({
 	key = "Bulwark",
 	visible = false,
@@ -14,6 +21,8 @@ SMODS.PokerHand({
 		{ "S_A", true, "m_stone" },
 		{ "S_A", true, "m_stone" },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
 	evaluate = function(parts, hand)
 		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
 			return {}
@@ -65,6 +74,8 @@ SMODS.PokerHand({
 		{ "S_6", true },
 		{ "C_5", true },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 1 },
 	evaluate = function(parts, hand)
 		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
 		if next(parts.cry_cfpart) then
@@ -92,6 +103,8 @@ SMODS.PokerHand({
 		{ "H_7", true },
 		{ "H_7", true },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 2 },
 	evaluate = function(parts, hand)
 		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_marsmoons") ~= true then
 			return
@@ -354,7 +367,7 @@ SMODS.Atlas({
 	py = 95,
 	inject = function(self)
 		local file_path = type(self.path) == "table"
-				and (self.path[G.SETTINGS.language] or self.path["default"] or self.path["en-us"])
+			and (self.path[G.SETTINGS.language] or self.path["default"] or self.path["en-us"])
 			or self.path
 		if file_path == "DEFAULT" then
 			return
@@ -505,7 +518,8 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
+			and
+			(G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -520,7 +534,8 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
+			and
+			(G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
@@ -534,8 +549,9 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
-		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
+	return G.STAGE == G.STAGES.MAIN_MENU
+			and
+			(G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "modest" or G.selectedGameset == "modest")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
