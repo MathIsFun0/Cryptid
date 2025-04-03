@@ -7161,6 +7161,8 @@ local necromancer = {
 			and context.card.config.center.set == "Joker"
 			and G.GAME.jokers_sold
 			and #G.GAME.jokers_sold > 0
+			and not context.blueprint
+			and not context.retrigger_joker
 		then
 			local card = create_card(
 				"Joker",
