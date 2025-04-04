@@ -129,13 +129,13 @@ match_indent = true
 # hyperspace splasher
 [[patches]]
 [patches.pattern]
-target = "state_events.lua"
+target = "function/state_events.lua"
 pattern = '''
-if next(find_joker('Splash')) then
+local splashed = SMODS.always_scores(G.play.cards[i]) or next(find_joker('Splash'))
 '''
 position = "at"
 payload = '''
-if next(find_joker('Splash')) or G.GAME.used_vouchers.v_cry_hyperspacetether then
+local splashed = SMODS.always_scores(G.play.cards[i]) or next(find_joker('Splash')) next(find_joker('Splash')) or G.GAME.used_vouchers.v_cry_hyperspacetether
 '''
 match_indent = true
 
