@@ -3808,6 +3808,7 @@ local pointer = {
 		G.CHOOSE_CARD.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_CARD:align_to_major()
+		check_for_unlock({ cry_used_consumable = "c_cry_pointer" })
 	end,
 	init = function(self)
 		function create_UIBox_pointer(card)
@@ -4767,6 +4768,18 @@ local encoded = {
 				end
 			end,
 		}))
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_pointer" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local CodeJoker = {

@@ -1820,7 +1820,7 @@ local wario = {
 			"Auto Watto",
 		},
 		art = {
-			"Auto Watto",
+			"MarioFan597",
 		},
 		code = {
 			"Auto Watto",
