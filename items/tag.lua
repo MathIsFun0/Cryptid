@@ -443,6 +443,28 @@ local memory = {
 			or localize("k_none")
 		return { vars = { self.config.num, loc_tag } }
 	end,
+	preview_ui = function(self, tag)
+		if G.GAME.cry_last_tag_used then
+			local last_tag = Tag(G.GAME.cry_last_tag_used, true)
+			last_tag.ability.orbital_hand = G.GAME.cry_memory_orbital
+			local tag_sprite
+			_, tag_sprite = last_tag:generate_UI(0.4)
+			return {
+				n = G.UIT.C,
+				nodes = {
+					{
+						n = G.UIT.R,
+						nodes = {
+							{ n = G.UIT.T, config = { text = ">", colour = G.C.WHITE, scale = 0.4 } },
+							{ n = G.UIT.O, config = { object = tag_sprite } },
+							G.P_TAGS[G.GAME.cry_last_tag_used].preview_ui
+								and G.P_TAGS[G.GAME.cry_last_tag_used]:preview_ui(last_tag),
+						},
+					},
+				},
+			}
+		end
+	end,
 	apply = function(self, tag, context)
 		if context.type == "immediate" and G.GAME.cry_last_tag_used then
 			local lock = tag.ID

@@ -11,7 +11,7 @@ target = "game.lua"
 pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_joker'])"
 position = "after"
 payload = '''
-if Cryptid_config.menu then
+if ((Cryptid_config and Cryptid_config.menu) or false) then
 	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_jolly'],{bypass_discovery_center = true, bypass_discovery_ui = true})
 end
 '''
@@ -36,7 +36,7 @@ target = "game.lua"
 pattern = "replace_card.states.visible = false"
 position = "before"
 payload = '''
-if Cryptid_config.menu then
+if ((Cryptid_config and Cryptid_config.menu) or false) then
 	replace_card:set_edition(G.P_CENTERS.e_cry_glitched and 'e_cry_glitched' or 'e_negative',true,true)
 end
 '''

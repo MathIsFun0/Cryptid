@@ -1306,7 +1306,7 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and (
+				and not (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
 				)
@@ -2079,6 +2079,7 @@ local typhoon = {
 	pos = { x = 0, y = 4 },
 	use = function(self, card, area, copier) --Good enough
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_typhoon" })
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
 			G.E_MANAGER:add_event(Event({
