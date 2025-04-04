@@ -855,7 +855,7 @@ local trick_or_treat = {
 					)
 					/ card.ability.extra.odds
 			then
-				local spawn_num = math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies)
+				local spawn_num = to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
 
 				for i = 1, spawn_num do
 					local new_card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
@@ -940,7 +940,7 @@ local candy_basket = {
 				number_format(math.floor(center.ability.extra.candies)),
 				number_format(center.ability.extra.candy_mod),
 				center.ability.immutable.wins_needed,
-				number_format(lenient_bignum(center.ability.extra.candy_mod * center.ability.extra.candy_boss_mod)),
+				number_format(lenient_bignum(to_big(center.ability.extra.candy_mod) * center.ability.extra.candy_boss_mod)),
 			},
 		}
 	end,
@@ -1193,6 +1193,22 @@ local spookydeck = {
 			end
 		end
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local candy_dagger = {
 	object_type = "Joker",
@@ -1305,7 +1321,7 @@ local candy_cane = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.rounds = lenient_bignum(card.ability.extra.rounds - 1)
+			card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 			if to_big(card.ability.extra.rounds) > to_big(0) then
 				return {
 					message = { localize("cry_minus_round") },
@@ -1363,7 +1379,7 @@ local candy_buttons = {
 	end,
 	calculate = function(self, card, context)
 		if context.reroll_shop and not context.blueprint then
-			card.ability.extra.rerolls = lenient_bignum(card.ability.extra.rerolls - 1)
+			card.ability.extra.rerolls = lenient_bignum(to_big(card.ability.extra.rerolls) - 1)
 			if to_big(card.ability.extra.rerolls) <= to_big(0) then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1548,7 +1564,7 @@ local brittle = {
 		then
 			local _card = context.scoring_hand[#context.scoring_hand]
 			if not _card.brittled then
-				card.ability.extra.rounds = lenient_bignum(card.ability.extra.rounds - 1)
+				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
 				_card.brittled = true
 				_card:set_ability(G.P_CENTERS[enhancement], nil, true)
@@ -1701,7 +1717,7 @@ local candy_sticks = {
 			}))
 		end
 		if context.after and G.GAME.blind:get_type() == "Boss" then
-			card.ability.extra.hands = lenient_bignum(card.ability.extra.hands - 1)
+			card.ability.extra.hands = lenient_bignum(to_big(card.ability.extra.hands) - 1)
 		end
 		if
 			(

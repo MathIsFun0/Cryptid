@@ -103,7 +103,7 @@ local iterum = {
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions),
+					repetitions = to_number(math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions)),
 					card = card,
 				}
 			end
@@ -450,15 +450,15 @@ local redeo = {
 	calculate = function(self, card, context)
 		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
 			card.ability.extra.money_remaining =
-				lenient_bignum(card.ability.extra.money_remaining - context.cry_ease_dollars)
+				lenient_bignum(to_big(card.ability.extra.money_remaining) - context.cry_ease_dollars)
 			local ante_mod = 0
 			while to_big(card.ability.extra.money_remaining) >= to_big(card.ability.extra.money_req) do
 				card.ability.extra.money_remaining =
-					lenient_bignum(card.ability.extra.money_remaining - card.ability.extra.money_req)
+					lenient_bignum(to_big(card.ability.extra.money_remaining) - card.ability.extra.money_req)
 				card.ability.extra.money_req =
 					lenient_bignum(card.ability.extra.money_req + card.ability.extra.money_mod)
-				card.ability.extra.money_mod = lenient_bignum(math.ceil(card.ability.extra.money_mod * 1.06))
-				ante_mod = lenient_bignum(ante_mod - card.ability.extra.ante_reduction)
+				card.ability.extra.money_mod = lenient_bignum(math.ceil(to_big(card.ability.extra.money_mod) * 1.06))
+				ante_mod = lenient_bignum(ante_mod - to_big(card.ability.extra.ante_reduction))
 			end
 			if ante_mod < 0 then
 				ease_ante(ante_mod)
@@ -498,6 +498,9 @@ local tenebris = {
 			slots = 25,
 			money = 25,
 		},
+		immutable = {
+			max_slots = 100
+		}
 	},
 	rarity = "cry_exotic",
 	cost = 50,
@@ -509,16 +512,16 @@ local tenebris = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.slots),
+				number_format(math.min(center.ability.immutable.max_slots, center.ability.extra.slots)),
 				number_format(center.ability.extra.money),
 			},
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.slots)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.extra.slots)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
 	end,
 	cry_credits = {
 		idea = { "Gold" },
@@ -740,25 +743,17 @@ local scalae = {
 		extra = {
 			scale = 1,
 			scale_mod = 1,
-		},
-		immutable = {
-			shadow_scale = 1,
-			shadow_scale_mod = 1,
-		},
+		}
 	},
 	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			card.ability.extra.scale = lenient_bignum(card.ability.extra.scale + card.ability.extra.scale_mod)
-			card.ability.extra.shadow_scale = lenient_bignum(card.ability.extra.scale)
-			card.ability.extra.shadow_scale_mod = lenient_bignum(card.ability.extra.scale_mod)
+			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)
 			return {
 				message = localize("k_upgrade_ex"),
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		card.ability.extra.scale = lenient_bignum(card.ability.extra.shadow_scale)
-		card.ability.extra.scale_mod = lenient_bignum(card.ability.extra.shadow_scale_mod)
 		return
 	end,
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
@@ -772,7 +767,7 @@ local scalae = {
 								(to_big(orig_scale_scale) / to_big(true_base))
 								^ (to_big(1) / to_big(card.ability.extra.scale))
 							)
-						) ^ card.ability.extra.scale
+						) ^ to_big(card.ability.extra.scale)
 					)
 			)
 			if Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
@@ -849,7 +844,7 @@ local stella_mortis = {
 				end
 				planet_to_destroy.getting_sliced = true
 				card.ability.extra.Emult =
-					lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
+					lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
@@ -864,7 +859,7 @@ local stella_mortis = {
 							key = "a_powmult",
 							vars = {
 								number_format(
-									lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)
+									lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
 								),
 							},
 						}),
@@ -1213,7 +1208,7 @@ local energia = {
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
 			local value = #G.GAME.tags or 0
-			local t = math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags)
+			local t = to_number(math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags))
 			card.ability.extra.tags = lenient_bignum(card.ability.extra.tags + card.ability.extra.tag_mod)
 			if t > 0 then
 				card_eval_status_text(card, "extra", nil, nil, nil, {

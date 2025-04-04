@@ -119,6 +119,20 @@ local e_deck = {
 			end,
 		}))
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "discover_amount" then
+			if G.DISCOVER_TALLIES.editions.tally / G.DISCOVER_TALLIES.editions.of >= 1 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local et_deck = {
 	object_type = "Back",
@@ -150,6 +164,18 @@ local et_deck = {
 		}))
 	end,
 	draw = cry_edeck_draw,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_vacuum" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local sk_deck = {
 	object_type = "Back",
@@ -188,6 +214,18 @@ local sk_deck = {
 				return true
 			end,
 		}))
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_lock" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local st_deck = {
@@ -228,6 +266,18 @@ local st_deck = {
 			end,
 		}))
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_replica" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local sl_deck = {
 	object_type = "Back",
@@ -257,6 +307,18 @@ local sl_deck = {
 				return true
 			end,
 		}))
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_typhoon" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 

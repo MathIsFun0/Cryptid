@@ -226,7 +226,7 @@ local foodm = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
-			card.ability.extra.rounds_remaining = lenient_bignum(card.ability.extra.rounds_remaining - 1)
+			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) - 1)
 			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
 				return {
 					message = { localize("cry_minus_round") },
@@ -265,8 +265,7 @@ local foodm = {
 			and not context.retrigger_joker
 			and context.card:is_jolly()
 		then
-			card.ability.extra.rounds_remaining =
-				lenient_bignum(card.ability.extra.rounds_remaining + card.ability.extra.round_inc)
+			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) + card.ability.extra.round_inc)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
@@ -332,7 +331,7 @@ local mstack = {
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(card.ability.extra.retriggers, card.ability.immutable.max_retriggers),
+					repetitions = to_number(math.min(card.ability.extra.retriggers, card.ability.immutable.max_retriggers)),
 					card = card,
 				}
 			end
@@ -426,7 +425,7 @@ local mneon = {
 				end
 			end
 			card.ability.extra.money =
-				lenient_bignum(card.ability.extra.money + math.max(1, card.ability.extra.bonus) * (jollycount or 1))
+				lenient_bignum(to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1))
 			return { message = localize("cry_m_ex") }
 		end
 	end,
@@ -467,7 +466,8 @@ local notebook = {
 			inactive = "",
 		},
 		immutable = {
-			slot = 0,
+			slots = 0,
+			max_slots = 100
 		},
 	},
 	rarity = 3,
@@ -479,7 +479,7 @@ local notebook = {
 			vars = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
-				number_format(card.ability.immutable.slot),
+				number_format(card.ability.immutable.slots),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
 				number_format(card.ability.extra.add),
@@ -505,8 +505,13 @@ local notebook = {
 				or pseudorandom("cry_notebook")
 					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
-				card.ability.immutable.slot = lenient_bignum(card.ability.immutable.slot + card.ability.extra.add)
-				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
+				card.ability.immutable.slots = to_number(math.min(card.ability.immutable.max_slots, lenient_bignum(card.ability.immutable.slots + to_big(card.ability.extra.add))))
+				
+				if card.ability.immutable.slots >= card.ability.immutable.max_slots then
+					card.ability.extra.add = 0
+				end
+				
+				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.add))
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
 				return {
@@ -529,10 +534,10 @@ local notebook = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.immutable.slot)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.immutable.slots))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - card.ability.immutable.slot)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - to_big(card.ability.immutable.slots))
 	end,
 	cry_credits = {
 		idea = {
@@ -571,7 +576,7 @@ local bonk = {
 				number_format(center.ability.extra.chips),
 				number_format(center.ability.extra.bonus),
 				localize(center.ability.extra.type, "poker_hands"),
-				number_format(lenient_bignum(center.ability.extra.chips * center.ability.extra.xchips)),
+				number_format(lenient_bignum(to_big(center.ability.extra.chips) * center.ability.extra.xchips)),
 			},
 		}
 	end,
@@ -583,7 +588,7 @@ local bonk = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
-				card.ability.extra.chips = lenient_bignum(card.ability.extra.chips + card.ability.extra.bonus)
+				card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.bonus)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("k_upgrade_ex"),
 					colour = G.C.CHIPS,
@@ -605,9 +610,9 @@ local bonk = {
 					message = localize({
 						type = "variable",
 						key = "a_chips",
-						vars = { number_format(lenient_bignum(card.ability.extra.chips * card.ability.extra.xchips)) },
+						vars = { number_format(lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips)) },
 					}),
-					chip_mod = lenient_bignum(card.ability.extra.chips * card.ability.extra.xchips),
+					chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 				}
 			else
 				if not Talisman.config_file.disable_anims then
@@ -630,7 +635,7 @@ local bonk = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		card.ability.extra.xchips = lenient_bignum(math.floor(lenient_bignum(card.ability.extra.xchips + 0.5))) --lua moment
+		card.ability.extra.xchips = lenient_bignum(math.floor(to_big(card.ability.extra.xchips) + 0.5)) --lua moment
 	end,
 	cry_credits = {
 		idea = {
@@ -1087,7 +1092,7 @@ local virgo = {
 			and next(context.poker_hands["Pair"])
 			and not context.blueprint
 		then
-			card.ability.extra_value = lenient_bignum(card.ability.extra_value + card.ability.extra.bonus) --this doesn't seem to work with retrigger jokers. Intentional?
+			card.ability.extra_value = lenient_bignum(card.ability.extra_value + to_big(card.ability.extra.bonus)) --this doesn't seem to work with retrigger jokers. Intentional?
 			card:set_cost()
 			card_eval_status_text(card, "extra", nil, nil, nil, {
 				message = localize("k_val_up"),
@@ -1099,7 +1104,7 @@ local virgo = {
 				func = function()
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							local summon = lenient_bignum(math.floor((card.ability.extra_value + 4) / 4))
+							local summon = lenient_bignum(math.floor((to_big(card.ability.extra_value) + card.ability.extra.bonus) / card.ability.extra.bonus))
 							if summon == nil or to_big(summon) < to_big(1) then
 								summon = 1
 							end --precautionary measure, just in case

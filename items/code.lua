@@ -3808,6 +3808,7 @@ local pointer = {
 		G.CHOOSE_CARD.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_CARD:align_to_major()
+		check_for_unlock({ cry_used_consumable = "c_cry_pointer" })
 	end,
 	init = function(self)
 		function create_UIBox_pointer(card)
@@ -4768,6 +4769,18 @@ local encoded = {
 			end,
 		}))
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_pointer" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local CodeJoker = {
 	dependencies = {
@@ -5007,7 +5020,7 @@ local cut = {
 
 			if codecard_to_destroy then
 				codecard_to_destroy.getting_sliced = true
-				card.ability.extra.Xmult = lenient_bignum(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)
+				card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
