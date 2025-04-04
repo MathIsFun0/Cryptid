@@ -7,6 +7,11 @@ return {
 					"Applies the {C:legendary,E:1}upsides{}",
 					"of {C:attention}every{} deck",
 				},
+				unlock = {
+					"Win a run",
+					"with {C:attention}Blank Deck",
+					"on {C:attention}Gold Stake",
+				},
 			},
 			b_cry_antimatter_balanced = {
 				name = "Antimatter Deck",
@@ -22,6 +27,11 @@ return {
 					"{C:attention}Common{} Jokers have",
 					"{C:attention}quadrupled{} values",
 				},
+				unlock = {
+					"Discover at least",
+					"{C:attention}200{} items from",
+					"your collection",
+				},
 			},
 			b_cry_beta = {
 				name = "Nostalgic Deck",
@@ -30,6 +40,10 @@ return {
 					"slots are {C:attention}combined",
 					"{C:attention}Nostalgic{} Blinds replace",
 					"their updated Blind",
+				},
+				unlock = {
+					"Win a run",
+					"on {C:attention}Pink Stake",
 				},
 			},
 			b_cry_blank = {
@@ -44,12 +58,19 @@ return {
 					"After {C:blue}Play{} or {C:red}Discard{},",
 					"always draw {C:attention}5{} cards",
 				},
+				unlock = {
+					"Beat {C:attention}The Serpent",
+					"without {C:red}discarding",
+				},
 			},
 			b_cry_CCD = {
 				name = "CCD Deck",
 				text = {
 					"Every card is also",
 					"a {C:attention}random{} consumable",
+				},
+				unlock = {
+					"Use {C:spectral}Hammerspace",
 				},
 			},
 			b_cry_conveyor = {
@@ -60,6 +81,9 @@ return {
 					"{C:attention}duplicate{} rightmost Joker",
 					"and {C:attention}destroy{} leftmost Joker",
 				},
+				unlock = {
+					"Use {C:spectral}Analog",
+				},
 			},
 			b_cry_critical = {
 				name = "Critical Deck",
@@ -67,6 +91,9 @@ return {
 					"After each hand played,",
 					"{C:green}#1# in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
 					"{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+				},
+				unlock = {
+					"Obtain a {C:attention}Rigged Joker",
 				},
 			},
 			b_cry_e_deck = {
@@ -76,6 +103,10 @@ return {
 					"Cards cannot change editions",
 					"{C:inactive}(Click to edit)",
 				},
+				unlock = {
+					"Discover every",
+					"{C:dark_edition}Edition",
+				},
 			},
 			b_cry_encoded = {
 				name = "Encoded Deck",
@@ -83,6 +114,9 @@ return {
 					"Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
 					"and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
 					"Only {C:cry_code}Code Cards{} appear in shop",
+				},
+				unlock = {
+					"Use {C:spectral}POINTER://",
 				},
 			},
 			b_cry_equilibrium = {
@@ -94,6 +128,10 @@ return {
 					"start run with",
 					"{C:attention,T:v_overstock_plus}Overstock Plus",
 				},
+				unlock = {
+					"Have {C:attention}100 Jokers",
+					"at the same time",
+				},
 			},
 			b_cry_et_deck = {
 				name = "Enhancement Deck",
@@ -101,6 +139,9 @@ return {
 					"All {C:attention}playing cards{}",
 					"are {C:attention}#1#{}(s)",
 					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Vacuum",
 				},
 			},
 			b_cry_glowing = {
@@ -111,6 +152,10 @@ return {
 					"when Boss Blind is defeated",
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
 				},
+				unlock = {
+					"Win a run",
+					"with {C:attention}Beige Deck",
+				},
 			},
 			b_cry_infinite = {
 				name = "Infinite Deck",
@@ -118,6 +163,10 @@ return {
 					"You can select {C:attention}any",
 					"number of cards",
 					"{C:attention}+1{} hand size",
+				},
+				unlock = {
+					"Play a hand containing",
+					"{C:attention}6{} or more cards",
 				},
 			},
 			b_cry_misprint = {
@@ -127,6 +176,9 @@ return {
 					"and poker hands",
 					"are {C:attention}randomized",
 				},
+				unlock = {
+					"Obtain a {C:dark_edition}Glitched{C:attention} Joker",
+				},
 			},
 			b_cry_redeemed = {
 				name = "Redeemed Deck",
@@ -134,12 +186,19 @@ return {
 					"When a {C:attention}Voucher{} is purchased,",
 					"gain its {C:attention}extra tiers",
 				},
+				unlock = {
+					"Discover every",
+					"{C:attention}Voucher",
+				},
 			},
 			b_cry_sk_deck = {
 				name = "Sticker Deck",
 				text = {
 					"All cards are {C:attention}#1#{}",
 					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Lock",
 				},
 			},
 			b_cry_sl_deck = {
@@ -149,6 +208,9 @@ return {
 					"Cards cannot change seals",
 					"{C:inactive}(Click to edit)",
 				},
+				unlock = {
+					"Use {C:spectral}Typhoon",
+				},
 			},
 			b_cry_spooky = {
 				name = "Spooky Deck",
@@ -157,6 +219,9 @@ return {
 					"After each {C:attention}Ante{}, create a",
 					"{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
 				},
+				unlock = {
+					"Obtain a {C:cry_candy}Candy{C:attention} Joker",
+				},
 			},
 			b_cry_st_deck = {
 				name = "Suit Deck",
@@ -164,6 +229,9 @@ return {
 					"All playing cards are {C:dark_edition}#1#",
 					"and cannot change suits",
 					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Replica",
 				},
 			},
 			b_cry_very_fair = {
@@ -174,6 +242,10 @@ return {
 					"{C:attention}Vouchers{} no longer",
 					"appear in the shop",
 				},
+				unlock = {
+					"Win a run",
+					"with {C:attention}Blank Deck",
+				},
 			},
 			b_cry_wormhole = {
 				name = "Wormhole Deck",
@@ -183,6 +255,9 @@ return {
 					"likely to be {C:dark_edition}Negative",
 					"{C:attention}-2{} Joker slots",
 				},
+				unlock = {
+					"Obtain an {C:cry_exotic}Exotic{C:attention} Joker",
+				},
 			},
 			b_cry_legendary = {
 				name = "Legendary Deck",
@@ -190,6 +265,10 @@ return {
 					"Start with a {C:legendary}Legendary{C:legendary} Joker",
 					"{C:green}1 in 5{} chance to create another",
 					"when Boss Blind is defeated {C:inactive}(must have room){}",
+				},
+				unlock = {
+					"Have {C:attention}2 Legendary Jokers",
+					"at the same time",
 				},
 			},
 		},
