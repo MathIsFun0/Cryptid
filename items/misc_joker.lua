@@ -965,7 +965,11 @@ local compound_interest = {
 			local bonus = math.max(0, math.floor(0.01 * card.ability.extra.percent * (G.GAME.dollars or 1)))
 			local old = card.ability.extra.percent
 			card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_mod
-			Cryptid.compound_interest_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent)
+			Cryptid.apply_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent, {
+				base = { { "extra", "percent" } },
+				scaler = { { "extra", "percent_mod" } },
+				scaler_base = { card.ability.extra.percent_mod },
+			})
 			if bonus > to_big(0) then
 				return bonus
 			end
