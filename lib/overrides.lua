@@ -1188,7 +1188,7 @@ end
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
 	if
-		(card.ability.name == "cry-Negative Joker" and card.ability.extra >= 1)
+		(card.ability.name == "cry-Negative Joker" and card.ability.extra.slots >= 1)
 		or (card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1)
 		or (card.ability.name == "cry-Tenebris" and card.ability.extra.slots >= 1)
 	then
@@ -1200,7 +1200,7 @@ end
 local gfcsc = G.FUNCS.can_select_card
 G.FUNCS.can_select_card = function(e)
 	if
-		(e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra >= 1)
+		(e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra.slots >= 1)
 		or (e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1)
 		or (e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1)
 	then
