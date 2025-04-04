@@ -154,7 +154,7 @@ return {
 				name = "Zegar",
 				text = {
 					"+0.1X wymagań przeszkadzajki",
-					"co 3 sekundy tego wejścia",
+					"co 12 sekundy tego wejścia",
 				},
 			},
 			bl_cry_hammer = {
@@ -182,7 +182,7 @@ return {
 				name = "Lawendowa Pętla",
 				text = {
 					"1,25x wymagań przeszkadzajki",
-					"co 1,5 sekundy tego wejścia",
+					"co 6 sekundy tego wejścia",
 				},
 			},
 			bl_cry_obsidian_orb = {

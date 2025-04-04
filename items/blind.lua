@@ -258,6 +258,28 @@ local tax = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling } } -- no bignum?
 	end,
+	preview_ui = function(self)
+		local value = self:loc_vars().vars[1]
+		return {
+			n = G.UIT.C,
+			nodes = {
+				{
+					n = G.UIT.R,
+					nodes = {
+						{ n = G.UIT.O, config = { object = get_stake_sprite(G.GAME.stake, 0.25) } },
+						{
+							n = G.UIT.T,
+							config = {
+								text = number_format(value),
+								colour = G.C.RED,
+								scale = score_number_scale(0.5, value),
+							},
+						},
+					},
+				},
+			},
+		}
+	end,
 	collection_loc_vars = function(self)
 		return { vars = { localize("cry_tax_placeholder") } }
 	end,
@@ -327,7 +349,7 @@ local clock = {
 		if G.SETTINGS.paused then
 			return 0
 		else
-			return 0.1 * dt / 3
+			return 0.1 * (dt * G.SETTINGS.GAMESPEED / 4) / 3
 		end
 	end,
 }
@@ -392,6 +414,13 @@ local joke = {
 					G.GAME.round_resets.ante + (G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante)
 				) or 8,
 			},
+		}
+	end,
+	preview_ui = function(self)
+		local value = self:loc_vars().vars[2]
+		return {
+			n = G.UIT.T,
+			config = { text = number_format(value), colour = G.C.ORANGE, scale = score_number_scale(0.5, value) },
 		}
 	end,
 	collection_loc_vars = function(self)
@@ -637,14 +666,17 @@ local lavender_loop = {
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1) * (G.SETTINGS.paused and 0 or 1)
+				- dt
+					* (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
+					* (G.SETTINGS.paused and 0 or 1)
+					* G.SETTINGS.GAMESPEED
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
-		if G.SETTINGS.paused then
+		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / 1.5)
+			return 1.25 ^ (dt / (1.5 / G.SETTINGS.GAMESPEED * 4))
 		end
 	end,
 }

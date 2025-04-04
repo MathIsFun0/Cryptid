@@ -874,7 +874,7 @@ local sunplanet = {
 	atlas = "atlasnotjokers",
 	order = 7,
 	config = {
-		extra = 0.05
+		extra = 0.05,
 	},
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("cry_p_star"), get_type_colour(self or card.config, card), nil, 1.2)
@@ -889,7 +889,7 @@ local sunplanet = {
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = sunlevel }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -915,7 +915,7 @@ local sunplanet = {
 				return true
 			end,
 		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + 1 })
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(sunlevel + 1) })
 		delay(2.6)
 		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + card.ability.extra or card.ability.extra
 		update_hand_text(
@@ -930,7 +930,7 @@ local sunplanet = {
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = sunlevel }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -956,9 +956,13 @@ local sunplanet = {
 				return true
 			end,
 		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + number })
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
+			{ level = to_big(sunlevel + number) }
+		)
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number*card.ability.extra or number*card.ability.extra
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number * card.ability.extra
+			or number * card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
