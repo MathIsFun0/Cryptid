@@ -325,11 +325,11 @@ local negative = {
 	pos = { x = 1, y = 3 },
 	config = {
 		extra = {
-			slots = 4
+			slots = 4,
 		},
 		immutable = {
-			max_slots = 100
-		}
+			max_slots = 100,
+		},
 	},
 	dependencies = {
 		items = {
@@ -952,7 +952,8 @@ local number_blocks = {
 					card = card,
 				}
 			else
-				card.ability.extra.money = lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
+				card.ability.extra.money =
+					lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 				return nil, true
 			end
@@ -1620,7 +1621,8 @@ local goldjoker = {
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		local bonus = lenient_bignum(math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 0))))
+		local bonus =
+			lenient_bignum(math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 0))))
 		if to_big(bonus) > to_big(0) then
 			return bonus
 		end
@@ -2010,7 +2012,8 @@ local jtron = {
 	pos = { x = 2, y = 5 },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_joker
-		center.ability.immutable.current = lenient_bignum(1 + to_big(center.ability.extra.bonus) * #SMODS.find_card("j_joker"))
+		center.ability.immutable.current =
+			lenient_bignum(1 + to_big(center.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 		return {
 			vars = {
 				number_format(center.ability.extra.bonus),
@@ -2019,7 +2022,8 @@ local jtron = {
 		}
 	end,
 	calculate = function(self, card, context)
-		card.ability.immutable.current = lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
+		card.ability.immutable.current =
+			lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 		if context.cardarea == G.jokers and context.joker_main then
 			return {
 				message = localize({

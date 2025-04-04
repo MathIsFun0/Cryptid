@@ -103,7 +103,9 @@ local iterum = {
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = to_number(math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions)),
+					repetitions = to_number(
+						math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions)
+					),
 					card = card,
 				}
 			end
@@ -499,8 +501,8 @@ local tenebris = {
 			money = 25,
 		},
 		immutable = {
-			max_slots = 100
-		}
+			max_slots = 100,
+		},
 	},
 	rarity = "cry_exotic",
 	cost = 50,
@@ -518,10 +520,14 @@ local tenebris = {
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
+		G.jokers.config.card_limit = lenient_bignum(
+			G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
+		G.jokers.config.card_limit = lenient_bignum(
+			G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		)
 	end,
 	cry_credits = {
 		idea = { "Gold" },
@@ -743,7 +749,7 @@ local scalae = {
 		extra = {
 			scale = 1,
 			scale_mod = 1,
-		}
+		},
 	},
 	--todo: support jokers that scale multiple variables
 	calculate = function(self, card, context)
@@ -859,7 +865,9 @@ local stella_mortis = {
 							key = "a_powmult",
 							vars = {
 								number_format(
-									lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
+									lenient_bignum(
+										card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota
+									)
 								),
 							},
 						}),

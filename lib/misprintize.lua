@@ -76,8 +76,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 									or name == "j_hallucination"
 								) and k == "extra"
 							)
-						)
-						and num_too_big(initial, min, max, prob_max)
+						) and num_too_big(initial, min, max, prob_max)
 					then
 						initial = Cryptid.base_values[name][k] * prob_max
 						min = 1
@@ -140,12 +139,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 							(
 								k == "slots"
 								-- Hack for jokers that give slots
-								and (
-									name == "j_cry_tenebris"
-									or name == "j_cry_negative"
-								)
-							)
-							and num_too_big(initial, min, max, max_slots)
+								and (name == "j_cry_tenebris" or name == "j_cry_negative")
+							) and num_too_big(initial, min, max, max_slots)
 						then
 							initial = max_slots
 							min = 1
@@ -156,11 +151,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 							(
 								k == "booster_slots"
 								-- Hack for jokers that give booster_slots
-								and (
-									name == "j_cry_booster"
-								)
-							)
-							and num_too_big(initial, min, max, max_booster_slots)
+								and (name == "j_cry_booster")
+							) and num_too_big(initial, min, max, max_booster_slots)
 						then
 							initial = max_booster_slots
 							min = 1
