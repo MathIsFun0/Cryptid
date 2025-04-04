@@ -265,7 +265,8 @@ local foodm = {
 			and not context.retrigger_joker
 			and context.card:is_jolly()
 		then
-			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) + card.ability.extra.round_inc)
+			card.ability.extra.rounds_remaining =
+				lenient_bignum(to_big(card.ability.extra.rounds_remaining) + card.ability.extra.round_inc)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
@@ -331,7 +332,9 @@ local mstack = {
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = to_number(math.min(card.ability.extra.retriggers, card.ability.immutable.max_retriggers)),
+					repetitions = to_number(
+						math.min(card.ability.extra.retriggers, card.ability.immutable.max_retriggers)
+					),
 					card = card,
 				}
 			end
@@ -424,8 +427,9 @@ local mneon = {
 					jollycount = jollycount + 1
 				end
 			end
-			card.ability.extra.money =
-				lenient_bignum(to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1))
+			card.ability.extra.money = lenient_bignum(
+				to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1)
+			)
 			return { message = localize("cry_m_ex") }
 		end
 	end,
@@ -467,7 +471,7 @@ local notebook = {
 		},
 		immutable = {
 			slots = 0,
-			max_slots = 100
+			max_slots = 100,
 		},
 	},
 	rarity = 3,
@@ -505,12 +509,17 @@ local notebook = {
 				or pseudorandom("cry_notebook")
 					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
-				card.ability.immutable.slots = to_number(math.min(card.ability.immutable.max_slots, lenient_bignum(card.ability.immutable.slots + to_big(card.ability.extra.add))))
-				
+				card.ability.immutable.slots = to_number(
+					math.min(
+						card.ability.immutable.max_slots,
+						lenient_bignum(card.ability.immutable.slots + to_big(card.ability.extra.add))
+					)
+				)
+
 				if card.ability.immutable.slots >= card.ability.immutable.max_slots then
 					card.ability.extra.add = 0
 				end
-				
+
 				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.add))
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
@@ -610,7 +619,9 @@ local bonk = {
 					message = localize({
 						type = "variable",
 						key = "a_chips",
-						vars = { number_format(lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips)) },
+						vars = {
+							number_format(lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips)),
+						},
 					}),
 					chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 				}
@@ -1104,7 +1115,12 @@ local virgo = {
 				func = function()
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							local summon = lenient_bignum(math.floor((to_big(card.ability.extra_value) + card.ability.extra.bonus) / card.ability.extra.bonus))
+							local summon = lenient_bignum(
+								math.floor(
+									(to_big(card.ability.extra_value) + card.ability.extra.bonus)
+										/ card.ability.extra.bonus
+								)
+							)
 							if summon == nil or to_big(summon) < to_big(1) then
 								summon = 1
 							end --precautionary measure, just in case

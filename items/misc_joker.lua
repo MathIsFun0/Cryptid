@@ -295,10 +295,12 @@ local potofjokes = {
 				end
 			end
 
-			local delta = to_number(math.min(
-				math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size),
-				card.ability.extra.h_mod
-			))
+			local delta = to_number(
+				math.min(
+					math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size),
+					card.ability.extra.h_mod
+				)
+			)
 
 			G.hand:change_size(delta)
 
@@ -1094,11 +1096,18 @@ local compound_interest = {
 	end,
 	calc_dollar_bonus = function(self, card)
 		if G.GAME.dollars > to_big(0) then
-			local bonus =
-				lenient_bignum(math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 1))))
+			local bonus = lenient_bignum(
+				math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 1)))
+			)
 			local old = lenient_bignum(card.ability.extra.percent)
-			card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-			Cryptid.compound_interest_scale_mod(card, lenient_bignum(card.ability.extra.percent_mod), old, card.ability.extra.percent)
+			card.ability.extra.percent =
+				lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+			Cryptid.compound_interest_scale_mod(
+				card,
+				lenient_bignum(card.ability.extra.percent_mod),
+				old,
+				card.ability.extra.percent
+			)
 			if to_big(bonus) > to_big(0) then
 				return bonus
 			end
@@ -1410,7 +1419,9 @@ local chad = {
 			if context.other_card == G.jokers.cards[1] then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
+					repetitions = to_number(
+						math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
+					),
 					card = card,
 				}
 			else
@@ -2065,7 +2076,9 @@ local nosound = {
 				if context.other_card:get_id() == 7 then
 					return {
 						message = localize("k_again_ex"),
-						repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
+						repetitions = to_number(
+							math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
+						),
 						card = card,
 					}
 				end
@@ -2216,7 +2229,9 @@ local weegaming = {
 				if context.other_card:get_id() == 2 then
 					return {
 						message = localize("k_again_ex"),
-						repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
+						repetitions = to_number(
+							math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
+						),
 						card = card,
 					}
 				end
@@ -2564,7 +2579,8 @@ local unjust_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + sliced_card.sell_cost * 0.2)
+					card.ability.extra.x_mult =
+						lenient_bignum(to_big(card.ability.extra.x_mult) + sliced_card.sell_cost * 0.2)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -2575,7 +2591,9 @@ local unjust_dagger = {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { number_format(lenient_bignum(to_big(card.ability.extra.x_mult) + 0.2 * sliced_card.sell_cost)) },
+					vars = {
+						number_format(lenient_bignum(to_big(card.ability.extra.x_mult) + 0.2 * sliced_card.sell_cost)),
+					},
 				}),
 				colour = G.C.RED,
 				no_juice = true,
@@ -2650,7 +2668,8 @@ local monkey_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + sliced_card.sell_cost * 10)
+					card.ability.extra.chips =
+						lenient_bignum(to_big(card.ability.extra.chips) + sliced_card.sell_cost * 10)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -2661,7 +2680,9 @@ local monkey_dagger = {
 				message = localize({
 					type = "variable",
 					key = "a_chips",
-					vars = { number_format(lenient_bignum(to_big(card.ability.extra.chips) + 10 * sliced_card.sell_cost)) },
+					vars = {
+						number_format(lenient_bignum(to_big(card.ability.extra.chips) + 10 * sliced_card.sell_cost)),
+					},
 				}),
 				colour = G.C.CHIPS,
 				no_juice = true,
@@ -2748,7 +2769,11 @@ local pirate_dagger = {
 				message = localize({
 					type = "variable",
 					key = "a_xchips",
-					vars = { number_format(lenient_bignum(to_big(card.ability.extra.x_chips) + 0.25 * sliced_card.sell_cost)) },
+					vars = {
+						number_format(
+							lenient_bignum(to_big(card.ability.extra.x_chips) + 0.25 * sliced_card.sell_cost)
+						),
+					},
 				}),
 				colour = G.C.CHIPS,
 				no_juice = true,
@@ -7000,7 +7025,9 @@ local membershipcard = {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)) },
+					vars = {
+						number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)),
+					},
 				}),
 				Xmult_mod = lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count),
 			}
@@ -7625,7 +7652,9 @@ local exposed = {
 			if not context.other_card:is_face() then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
+					repetitions = to_number(
+						math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
+					),
 					card = card,
 				}
 			end
@@ -7675,7 +7704,9 @@ local mask = {
 			if context.other_card:is_face() then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = to_number(math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)),
+					repetitions = to_number(
+						math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
+					),
 					card = card,
 				}
 			end
@@ -7928,7 +7959,8 @@ local cookie = {
 					{ message = localize("k_eaten_ex"), colour = G.C.CHIPS }
 				)
 			else
-				card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) - card.ability.extra.chip_mod)
+				card.ability.extra.chips =
+					lenient_bignum(to_big(card.ability.extra.chips) - card.ability.extra.chip_mod)
 				card_eval_status_text(
 					card,
 					"extra",
