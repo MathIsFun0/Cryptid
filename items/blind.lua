@@ -258,6 +258,28 @@ local tax = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling } } -- no bignum?
 	end,
+	preview_ui = function(self)
+		local value = self:loc_vars().vars[1]
+		return {
+			n = G.UIT.C,
+			nodes = {
+				{
+					n = G.UIT.R,
+					nodes = {
+						{ n = G.UIT.O, config = { object = get_stake_sprite(G.GAME.stake, 0.25) } },
+						{
+							n = G.UIT.T,
+							config = {
+								text = number_format(value),
+								colour = G.C.RED,
+								scale = score_number_scale(0.5, value),
+							},
+						},
+					},
+				},
+			},
+		}
+	end,
 	collection_loc_vars = function(self)
 		return { vars = { localize("cry_tax_placeholder") } }
 	end,
@@ -392,6 +414,13 @@ local joke = {
 					G.GAME.round_resets.ante + (G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante)
 				) or 8,
 			},
+		}
+	end,
+	preview_ui = function(self)
+		local value = self:loc_vars().vars[2]
+		return {
+			n = G.UIT.T,
+			config = { text = number_format(value), colour = G.C.ORANGE, scale = score_number_scale(0.5, value) },
 		}
 	end,
 	collection_loc_vars = function(self)
