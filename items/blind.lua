@@ -640,7 +640,7 @@ local scorch = {
 	object_type = "Blind",
 	name = "cry-scorch",
 	key = "scorch",
-	pos = { x = 0, y = 3 }, -- use Trick as placeholder icon
+	pos = { x = 0, y = 18 }, -- use Trick as placeholder icon
 	boss = {
 		min = 1,
 		max = 10,
