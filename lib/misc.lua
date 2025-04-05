@@ -625,7 +625,7 @@ end
 function Cryptid.safe_get(t, ...)
 	local current = t
 	for _, k in ipairs({ ... }) do
-		if current[k] == nil then
+		if not current or current[k] == nil then
 			return false
 		end
 		current = current[k]

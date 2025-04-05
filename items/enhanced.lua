@@ -334,43 +334,9 @@ return {
 			-- D Invisible Joker
 
 			if
-				center.name == "Fortune Teller"
-				or center.name == "Shoot the Moon"
-				or center.name == "Riff-raff"
-				or center.name == "Chaos the Clown"
-				or center.name == "Dusk"
-				or center.name == "Mime"
-				or center.name == "Hack"
-				or center.name == "Sock and Buskin"
-				or center.name == "Invisible Joker"
-				or center.name == "Swashbuckler"
-				or center.name == "Smeared Joker"
-				or center.name == "Certificate"
-				or center.name == "Mr. Bones"
-				or center.name == "Diet Cola"
-				or center.name == "Luchador"
-				or center.name == "Midas Mask"
-				or center.name == "Shortcut"
-				or center.name == "Seance"
-				or center.name == "Superposition"
-				or center.name == "Sixth Sense"
-				or center.name == "DNA"
-				or center.name == "Splash"
-				or center.name == "Supernova"
-				or center.name == "Pareidolia"
-				or center.name == "Raised Fist"
-				or center.name == "Marble Joker"
-				or center.name == "Four Fingers"
-				or center.name == "Joker Stencil"
-				or center.name == "Showman"
-				or center.name == "Blueprint"
-				or center.name == "Oops! All 6s"
-				or center.name == "Brainstorm"
-				or center.name == "Cartomancer"
-				or center.name == "Astronomer"
-				or center.name == "Burnt Joker"
-				or center.name == "Chicot"
-				or center.name == "Perkeo"
+				center
+				and center.name
+					== ("Fortune Teller" or "Shoot the Moon" or "Riff-raff" or "Chaos the Clown" or "Dusk" or "Mime" or "Hack" or "Sock and Buskin" or "Invisible Joker" or "Swashbuckler" or "Smeared Joker" or "Certificate" or "Mr. Bones" or "Diet Cola" or "Luchador" or "Midas Mask" or "Shortcut" or "Seance" or "Superposition" or "Sixth Sense" or "DNA" or "Splash" or "Supernova" or "Pareidolia" or "Raised Fist" or "Marble Joker" or "Four Fingers" or "Joker Stencil" or "Showman" or "Blueprint" or "Oops! All 6s" or "Brainstorm" or "Cartomancer" or "Astronomer" or "Burnt Joker" or "Chicot" or "Perkeo")
 			then
 				self.config.center.immutable = true
 			end
