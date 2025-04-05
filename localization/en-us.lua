@@ -388,6 +388,14 @@ return {
 					"rarity are debuffed",
 				},
 			},
+			bl_cry_scorch = {
+				name = "The Scorch",
+				text = {
+					"Must play 5 cards,",
+					"destroy played and",
+					"discarded cards",
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pink Bow",
 				text = {
