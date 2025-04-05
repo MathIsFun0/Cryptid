@@ -756,7 +756,7 @@ local scalae = {
 						) ^ to_big(card.ability.extra.scale)
 					)
 			)
-			if Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
+			if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
 				new_scale = 1e300
 			end
 			return new_scale
