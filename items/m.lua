@@ -349,7 +349,7 @@ local mstack = {
 			card.ability.extra.check = true
 			if to_big(card.ability.extra.sell) + 1 >= to_big(card.ability.extra.sell_req) then
 				if not context.blueprint or context.retrigger_joker then
-					card.ability.extra.retriggers = lenient_bignum(card.ability.extra.retriggers + 1)
+					card.ability.extra.retriggers = lenient_bignum(to_big(card.ability.extra.retriggers) + 1)
 				end
 				card.ability.extra.sell = 0
 				return {
@@ -1024,7 +1024,7 @@ local doodlem = {
 			local jollycount = lenient_bignum(card.ability.extra.init)
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i]:is_jolly() then
-					jollycount = lenient_bignum(jollycount + math.floor(card.ability.extra.add))
+					jollycount = lenient_bignum(to_big(jollycount) + math.floor(card.ability.extra.add))
 				end
 			end
 			if to_big(jollycount) > to_big(card.ability.immutable.max_jollies) then
@@ -1118,7 +1118,7 @@ local virgo = {
 							local summon = lenient_bignum(
 								math.floor(
 									(to_big(card.ability.extra_value) + card.ability.extra.bonus)
-										/ card.ability.extra.bonus
+										/ to_big(card.ability.extra.bonus)
 								)
 							)
 							if summon == nil or to_big(summon) < to_big(1) then
@@ -1337,7 +1337,7 @@ local mprime = {
 	calculate = function(self, card, context)
 		if context.selling_card and (context.card:is_jolly()) then
 			if not context.blueprint then
-				card.ability.extra.mult = lenient_bignum(card.ability.extra.mult + card.ability.extra.bonus)
+				card.ability.extra.mult = lenient_bignum(to_big(card.ability.extra.mult) + card.ability.extra.bonus)
 			end
 			if not context.retrigger_joker then
 				card_eval_status_text(
@@ -1534,7 +1534,7 @@ local megg = {
 			and not (context.individual or context.repetition or context.blueprint)
 		then
 			card.ability.extra.amount =
-				lenient_bignum(card.ability.extra.amount + math.max(1, card.ability.extra.amount_mod))
+				lenient_bignum(card.ability.extra.amount + math.max(1, to_big(card.ability.extra.amount_mod)))
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
 			end
@@ -1605,7 +1605,7 @@ local longboi = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
 			G.GAME.monstermult = lenient_bignum(
-				G.GAME.monstermult + math.max(card.ability.immutable.max_bonus, card.ability.extra.bonus)
+				G.GAME.monstermult + math.max(card.ability.immutable.max_bonus, to_big(card.ability.extra.bonus))
 			)
 			if not context.retrigger_joker then
 				return {
@@ -1628,9 +1628,9 @@ local longboi = {
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
 		card.ability.extra.monster = lenient_bignum(G.GAME and G.GAME.monstermult or 1)
-		if card.ability.extra.monster >= 1234567654321 then
+		if to_big(card.ability.extra.monster) >= to_big(1234567654321) then
 			card.children.center:set_sprite_pos({ x = 7, y = 5 })
-		elseif card.ability.extra.monster >= 12321 then
+		elseif to_big(card.ability.extra.monster) >= to_big(12321) then
 			card.children.center:set_sprite_pos({ x = 7, y = 6 })
 		end
 	end,

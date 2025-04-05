@@ -349,7 +349,7 @@ local clock = {
 		if G.SETTINGS.paused then
 			return 0
 		else
-			return 0.1 * (dt * G.SETTINGS.GAMESPEED / 4) / 3
+			return 0.1 * (dt * math.min(G.SETTINGS.GAMESPEED, 4) / 4) / 3
 		end
 	end,
 }
@@ -676,7 +676,7 @@ local lavender_loop = {
 		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / (1.5 / G.SETTINGS.GAMESPEED * 4))
+			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * 4))
 		end
 	end,
 }

@@ -925,12 +925,12 @@ local candy_basket = {
 
 			if G.GAME.blind.boss then
 				card.ability.extra.candies = lenient_bignum(
-					card.ability.extra.candies + card.ability.extra.candy_mod * card.ability.extra.candy_boss_mod
+					card.ability.extra.candies + to_big(card.ability.extra.candy_mod) * card.ability.extra.candy_boss_mod
 				)
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
 				card.ability.immutable.current_win_count = 0
-				card.ability.extra.candies = lenient_bignum(card.ability.extra.candies + card.ability.extra.candy_mod)
+				card.ability.extra.candies = lenient_bignum(to_big(card.ability.extra.candies) + card.ability.extra.candy_mod)
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 			end
 		end
@@ -1526,9 +1526,9 @@ local mellowcreme = {
 			for k, v in ipairs(G.consumeables.cards) do
 				if v.set_cost then
 					v.ability.extra_value = lenient_bignum(
-						(v.ability.extra_value or 0)
-							+ (math.max(1, math.floor(v.cost / 2)) + (v.ability.extra_value or 0))
-								* (card.ability.extra.sell_mult - 1)
+						(to_big(v.ability.extra_value) or 0)
+							+ (math.max(1, math.floor(to_big(v.cost) / 2)) + (v.ability.extra_value or 0))
+								* (to_big(card.ability.extra.sell_mult) - 1)
 					)
 					v:set_cost()
 				end
@@ -1816,7 +1816,7 @@ local wonka_bar = {
 	calculate = function(self, card, context)
 		if context.selling_self and not context.blueprint then
 			card.ability.extra = lenient_bignum(math.floor(card.ability.extra))
-			G.hand.config.highlighted_limit = lenient_bignum(G.hand.config.highlighted_limit + card.ability.extra)
+			G.hand.config.highlighted_limit = lenient_bignum(G.hand.config.highlighted_limit + to_big(card.ability.extra))
 		end
 	end,
 	cry_credits = {

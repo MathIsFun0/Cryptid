@@ -206,7 +206,7 @@ return {
 				name = "O Relogio",
 				text = {
 					"+0.1X  requirimentos do blind a cada",
-					"3 segundos gastos nesta aposta",
+					"12 segundos gastos nesta aposta",
 				},
 			},
 			bl_cry_hammer = {
@@ -234,7 +234,7 @@ return {
 				name = "Loop de Lavanda",
 				text = {
 					"1.25X requerimentos do blind para cada",
-					"1.5 segundos gastos nesta rodada",
+					"6 segundos gastos nesta rodada",
 				},
 			},
 			bl_cry_obsidian_orb = {

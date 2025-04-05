@@ -442,7 +442,7 @@ local wee_fib = {
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			local rank = context.other_card:get_id()
 			if rank == 14 or rank == 2 or rank == 3 or rank == 5 or rank == 8 then
-				card.ability.extra.mult = lenient_bignum(card.ability.extra.mult + card.ability.extra.mult_mod)
+				card.ability.extra.mult = lenient_bignum(to_big(card.ability.extra.mult) + card.ability.extra.mult_mod)
 
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -555,7 +555,7 @@ local whip = {
 						or (#twosuits == 1 and #sevensuits == 1 and twosuits[1] ~= sevensuits[1])
 					then
 						card.ability.extra.x_mult =
-							lenient_bignum(card.ability.extra.x_mult + card.ability.extra.Xmult_mod)
+							lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.Xmult_mod)
 						card_eval_status_text(card, "extra", nil, nil, nil, {
 							message = localize({
 								type = "variable",
@@ -1219,7 +1219,7 @@ local eternalflame = {
 			and (context.card.sell_cost >= 3 or Card.get_gameset(card) ~= "modest")
 			and not context.blueprint
 		then
-			card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
+			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
 			card_eval_status_text(card, "extra", nil, nil, nil, {
 				message = localize({
 					type = "variable",
@@ -1490,7 +1490,7 @@ local jimball = {
 					}
 				end
 			else
-				card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.xmult_mod)
+				card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.xmult_mod)
 				--TODO return the proper upgrade text
 				return nil, true
 			end
@@ -1701,7 +1701,7 @@ local fspinner = {
 			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
 			for k, v in pairs(G.GAME.hands) do
 				if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-					card.ability.extra.chips = lenient_bignum(card.ability.extra.chips + card.ability.extra.chip_mod)
+					card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.chip_mod)
 					return {
 						message = localize("k_upgrade_ex"),
 						card = card,
@@ -1881,7 +1881,7 @@ local krustytheclown = {
 			}
 		end
 		if context.cardarea == G.play and context.individual and not context.blueprint then
-			card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
+			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
 			return {
 				extra = { focus = card, message = localize("k_upgrade_ex") },
 				card = card,
@@ -2142,7 +2142,7 @@ local antennastoheaven = {
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			local rank = context.other_card:get_id()
 			if rank == 4 or rank == 7 then
-				card.ability.extra.x_chips = lenient_bignum(card.ability.extra.x_chips + card.ability.extra.bonus)
+				card.ability.extra.x_chips = lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.bonus)
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
 					card = card,
@@ -2841,7 +2841,7 @@ local mondrian = {
 			and not context.individual
 			and not context.repetition
 		then
-			card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
+			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
 			return {
 				message = localize("k_upgrade_ex"),
 				card = card,
@@ -3011,7 +3011,7 @@ local spaceglobe = {
 						return true
 					end,
 				}))
-				card.ability.extra.x_chips = lenient_bignum(card.ability.extra.x_chips + card.ability.extra.Xchipmod)
+				card.ability.extra.x_chips = lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.Xchipmod)
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
@@ -6519,7 +6519,7 @@ local wheelhope = {
 				context.consumeable.ability.name == "The Wheel of Fortune"
 				and not context.consumeable.cry_wheel_success
 			then
-				card.ability.extra.x_mult = lenient_bignum(card.ability.extra.x_mult + card.ability.extra.extra)
+				card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
@@ -6968,7 +6968,7 @@ local morse = {
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.selling_card and context.card.edition and not context.blueprint then
-			card.ability.extra.money = lenient_bignum(card.ability.extra.money + card.ability.extra.bonus)
+			card.ability.extra.money = lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.bonus)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("k_upgrade_ex"),
@@ -8178,7 +8178,7 @@ local tax_fraud = {
 	calc_dollar_bonus = function(self, card)
 		if #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true) ~= 0 then
 			return lenient_bignum(
-				card.ability.extra.money * #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true)
+				to_big(card.ability.extra.money) * #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true)
 			)
 		end
 	end,
