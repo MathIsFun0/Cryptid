@@ -631,7 +631,7 @@ local pin = {
 -- Must play 5 cards,
 -- Destroy all played and discarded cards
 -- (only appears in endless)
-local scorch = { 
+local scorch = {
 	dependencies = {
 		items = {
 			"set_cry_blind",
@@ -653,13 +653,13 @@ local scorch = {
 		h_size_le = 5,
 	},
 	calculate = function(self, blind, context)
-		if 
+		if
 			context.full_hand
 			and context.destroy_card
-			 and (context.cardarea == G.play or context.cardarea == "unscored")
-			and not G.GAME.blind.disabled 
-		then 
-				return { remove = not context.destroy_card.ability.eternal}
+			and (context.cardarea == G.play or context.cardarea == "unscored")
+			and not G.GAME.blind.disabled
+		then
+			return { remove = not context.destroy_card.ability.eternal }
 		end
 		if context.discard and not G.GAME.blind.disabled then
 			for i, card in ipairs(G.hand.highlighted) do
