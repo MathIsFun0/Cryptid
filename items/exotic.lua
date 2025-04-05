@@ -342,7 +342,7 @@ local exponentia = {
 			then
 				for _, v in pairs(find_joker("cry-Exponentia")) do
 					local old = v.ability.extra.Emult
-					v.ability.extra.Emult = lenient_bignum(v.ability.extra.Emult + v.ability.extra.Emult_mod)
+					v.ability.extra.Emult = lenient_bignum(to_big(v.ability.extra.Emult) + v.ability.extra.Emult_mod)
 					card_eval_status_text(v, "extra", nil, nil, nil, {
 						message = localize({
 							type = "variable",
@@ -458,7 +458,7 @@ local redeo = {
 				card.ability.extra.money_remaining =
 					lenient_bignum(to_big(card.ability.extra.money_remaining) - card.ability.extra.money_req)
 				card.ability.extra.money_req =
-					lenient_bignum(card.ability.extra.money_req + card.ability.extra.money_mod)
+					lenient_bignum(to_big(card.ability.extra.money_req) + card.ability.extra.money_mod)
 				card.ability.extra.money_mod = lenient_bignum(math.ceil(to_big(card.ability.extra.money_mod) * 1.06))
 				ante_mod = lenient_bignum(ante_mod - to_big(card.ability.extra.ante_reduction))
 			end
@@ -610,7 +610,7 @@ local crustulum = {
 	end,
 	calculate = function(self, card, context)
 		if context.reroll_shop and not context.blueprint then
-			card.ability.extra.chips = lenient_bignum(card.ability.extra.chips + card.ability.extra.chip_mod)
+			card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.chip_mod)
 			card_eval_status_text(card, "extra", nil, nil, nil, {
 				message = localize({
 					type = "variable",
@@ -691,7 +691,7 @@ local primus = {
 				end
 			end
 			if check then
-				card.ability.extra.Emult = lenient_bignum(card.ability.extra.Emult + card.ability.extra.Emult_mod)
+				card.ability.extra.Emult = lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = localize("k_upgrade_ex"),
@@ -1217,7 +1217,7 @@ local energia = {
 		if context.cry_add_tag then
 			local value = #G.GAME.tags or 0
 			local t = to_number(math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags))
-			card.ability.extra.tags = lenient_bignum(card.ability.extra.tags + card.ability.extra.tag_mod)
+			card.ability.extra.tags = lenient_bignum(to_big(card.ability.extra.tags) + card.ability.extra.tag_mod)
 			if t > 0 then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
@@ -1271,7 +1271,7 @@ local verisimile = {
 				or context.other_joker.ability.name == "Hallucination"
 			then
 				local variable = context.other_joker
-				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra)
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
@@ -1289,7 +1289,7 @@ local verisimile = {
 				or context.other_joker.ability.name == "cry-scrabble"
 			then
 				local variable = context.other_joker
-				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra.odds)
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
@@ -1300,7 +1300,7 @@ local verisimile = {
 			elseif context.other_joker.ability.name == "cry-notebook" then
 				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
 				local variable = context.other_joker
-				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra.odds)
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
@@ -1313,7 +1313,7 @@ local verisimile = {
 		elseif context.consumeable and not context.blueprint then
 			if context.consumeable.ability.name == "The Wheel of Fortune" and context.consumeable.cry_wheel_success then
 				local variable = context.consumeable
-				card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + variable.ability.extra) --Doesn't account for misprintizing for some reason
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra) --Doesn't account for misprintizing for some reason
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
@@ -1372,7 +1372,7 @@ local duplicare = {
 				or (context.individual and context.cardarea == G.play)
 			)
 		then
-			card.ability.extra.Xmult = lenient_bignum(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)
+			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
