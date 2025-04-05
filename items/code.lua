@@ -2925,12 +2925,49 @@ local exploit = {
 		end
 		G.FUNCS.exploit_apply = function()
 			local hand_table = {
-				["High Card"] = { "high card", "high", "1oak", "1 of a kind", "haha one" },
-				["Pair"] = { "pair", "2oak", "2 of a kind", "m" },
-				["Two Pair"] = { "two pair", "2 pair", "mm", "pairpair" },
-				["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips", "triangle" },
-				["Straight"] = { "straight", "lesbian", "gay", "bisexual", "asexual" },
-				["Flush"] = { "flush", "skibidi", "toilet", "floosh" },
+				["High Card"] = {
+					"high card",
+					"high",
+					"1oak",
+					"1 of a kind",
+					"haha one",
+				},
+				["Pair"] = {
+					"pair",
+					"2oak",
+					"2 of a kind",
+					"m",
+					"window",
+				},
+				["Two Pair"] = {
+					"two pair",
+					"2 pair",
+					"mm",
+					"pairpair",
+					"pair of a kind",
+				},
+				["Three of a Kind"] = {
+					"three of a kind",
+					"3 of a kind",
+					"3oak",
+					"trips",
+					"triangle",
+				},
+				["Straight"] = {
+					"straight",
+					"lesbian",
+					"gay",
+					"bisexual",
+					"asexual",
+					"staircase",
+				},
+				["Flush"] = {
+					"flush",
+					"skibidi",
+					"toilet",
+					"floosh",
+					"monotone",
+				},
 				["Full House"] = {
 					"full house",
 					"full",
@@ -2947,14 +2984,69 @@ local exploit = {
 					"quads",
 					"four to the floor",
 				},
-				["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
-				["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak", "quints" },
-				["Flush House"] = { "flush house", "flouse", "outhouse" },
-				["Flush Five"] = { "flush five", "fish", "you know what that means", "five of a flush" },
-				["cry_Bulwark"] = { "bulwark", "flush rock", "stoned", "stone flush", "flush stone" },
-				["cry_Clusterfuck"] = { "clusterfuck", "fuck", "wtf" },
-				["cry_UltPair"] = { "ultimate pair", "ultpair", "ult pair", "pairpairpair" },
-				["cry_WholeDeck"] = { "the entire fucking deck", "deck", "tefd", "fifty-two", "you are fuck deck" },
+				["Straight Flush"] = {
+					"straight flush",
+					"strush",
+					"slush",
+					"slushie",
+					"slushy",
+					"monotone staircase",
+				},
+				["Five of a Kind"] = {
+					"five of a kind",
+					"5 of a kind",
+					"5oak",
+					"quints",
+				},
+				["Flush House"] = {
+					"flush house",
+					"flouse",
+					"outhouse",
+					"monotone house",
+					"the grey house",
+				},
+				["Flush Five"] = {
+					"flush five",
+					"fish",
+					"you know what that means",
+					"five of a flush",
+					"monotone fish",
+				},
+				["cry_Bulwark"] = {
+					"bulwark",
+					"flush rock",
+					"stoned",
+					"stone flush",
+					"flush stone",
+					"rock and stone",
+				},
+				["cry_Clusterfuck"] = {
+					"clusterfuck",
+					"fuck",
+					"wtf",
+					"cluster",
+					"what",
+				},
+				["cry_UltPair"] = {
+					"ultimate pair",
+					"ultpair",
+					"ult pair",
+					"pairpairpair",
+					"flush pair of a kind of a kind",
+					"2f2oakoak",
+					"two flush two of a kind of a kind",
+				},
+				["cry_WholeDeck"] = {
+					"the entire fucking deck",
+					"deck",
+					"tefd",
+					"fifty-two",
+					"you are fuck deck",
+					"deck of a kind",
+					"the entire deck",
+					"everything of a kind",
+					"everything",
+				},
 			}
 			local current_hand = nil
 			for k, v in pairs(SMODS.PokerHands) do
@@ -3091,13 +3183,21 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1
-			and not G.jokers.highlighted[1].ability.eternal
-			and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
-			and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
-			and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
-			and G.jokers.highlighted[1].config.center.rarity ~= "cry_cursed"
-			and (G.jokers.highlighted[1].ability.name ~= "Diet Cola" or Card.get_gameset(card) == "madness")
+		if not G.GAME.modifiers.cry_beta then
+			return #G.jokers.highlighted == 1
+				and not G.jokers.highlighted[1].ability.eternal
+				and G.jokers.highlighted[1].ability.name
+					~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+						card
+					) == "madness"))
+		else
+			return #G.jokers.highlighted == 2
+				and not G.jokers.highlighted[1].ability.eternal
+				and G.jokers.highlighted[1].ability.name
+					~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+						card
+					) == "madness"))
+		end
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]

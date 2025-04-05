@@ -1944,7 +1944,12 @@ local spectrogram = {
 			end
 		end
 
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+		if
+			context.retrigger_joker_check
+			and not context.retrigger_joker
+			and context.other_card == G.jokers.cards[#G.jokers.cards]
+			and context.other_card ~= self
+		then
 			if card.ability.immutable.echonum and card.ability.immutable.echonum > 0 then
 				return {
 					message = localize("k_again_ex"),
@@ -2135,8 +2140,16 @@ local clockwork = { -- Steel Support: The Joker
 			and not context.end_of_round
 			and SMODS.has_enhancement(context.other_card, "m_steel")
 			and to_big(card.ability.extra.steelenhc) ~= to_big(1)
-		then -- effect 4
-			return { xmult = lenient_bignum(card.ability.extra.steelenhc) }
+		then
+			if context.other_card.debuff then
+				return {
+					message = localize("k_debuffed"),
+					colour = G.C.RED,
+					card = card,
+				}
+			else -- effect 4
+				return { xmult = lenient_bignum(card.ability.extra.steelenhc) }
+			end
 		end
 		--imo this secret effect can be madness only -Math
 		if

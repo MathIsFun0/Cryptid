@@ -1087,7 +1087,7 @@ local big_cube = {
 	name = "cry-Big Cube",
 	key = "big_cube",
 	joker_gate = "cry-Cube",
-	config = { extra = { x_chips = 6 } },
+	config = { extra = { x_chips = 6 }, override_x_chips_check = true },
 	pos = { x = 4, y = 4 },
 	rarity = 1,
 	order = 105,
@@ -7775,6 +7775,8 @@ local necromancer = {
 			and context.card.config.center.set == "Joker"
 			and G.GAME.jokers_sold
 			and #G.GAME.jokers_sold > 0
+			and not context.blueprint
+			and not context.retrigger_joker
 		then
 			local new_card = create_card(
 				"Joker",
