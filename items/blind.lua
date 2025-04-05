@@ -628,7 +628,10 @@ local pin = {
 		return false
 	end,
 }
-local scorch = { -- FIXME: discarded eternal cards still get destroyed
+-- Must play 5 cards,
+-- Destroy all played and discarded cards
+-- (only appears in endless)
+local scorch = { 
 	dependencies = {
 		items = {
 			"set_cry_blind",
@@ -650,10 +653,18 @@ local scorch = { -- FIXME: discarded eternal cards still get destroyed
 		h_size_le = 5,
 	},
 	calculate = function(self, blind, context)
-		if context.destroy_card and not G.GAME.blind.disabled then -- destroy all played cards except eternal
-			return (context.full_hand or context.cardarea == "unscored") and not (context.destroy_card.ability.eternal or context.cardarea == G.hand) -- exclude G.hand because those count as unscored
-		elseif context.discard and not G.GAME.blind.disabled then -- destroy all discarded cards; see FIXME
-			return { remove = true }
+		if 
+			context.full_hand
+			and context.destroy_card
+			 and (context.cardarea == G.play or context.cardarea == "unscored")
+			and not G.GAME.blind.disabled 
+		then 
+				return { remove = not context.destroy_card.ability.eternal}
+		end
+		if context.discard and not G.GAME.blind.disabled then
+			for i, card in ipairs(G.hand.highlighted) do
+				return { remove = not card.ability.eternal }
+			end
 		end
 	end,
 	in_pool = function(self) -- only appears in endless
