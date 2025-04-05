@@ -128,7 +128,8 @@ local membershipcardtwo = {
 				number_format(card.ability.extra.chips),
 				number_format(
 					lenient_bignum(
-						to_big(card.ability.extra.chips) * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)
+						to_big(card.ability.extra.chips)
+							* math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)
 					)
 				),
 			},
@@ -150,7 +151,8 @@ local membershipcardtwo = {
 					},
 				}),
 				chip_mod = lenient_bignum(
-					to_big(card.ability.extra.chips) * math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)
+					to_big(card.ability.extra.chips)
+						* math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)
 				),
 			}
 		end
@@ -1601,7 +1603,8 @@ local goldjoker = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+				card.ability.extra.percent =
+					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
 					card = card,
@@ -1611,7 +1614,8 @@ local goldjoker = {
 		end
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+				card.ability.extra.percent =
+					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
@@ -2124,7 +2128,8 @@ local clockwork = { -- Steel Support: The Joker
 			card.ability.immutable.counters.c2 =
 				clamp(card.ability.immutable.counters.c2, card.ability.immutable.limits.l2) -- ticker 2
 			if card.ability.immutable.counters.c2 == 0 then
-				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + card.ability.extra.xmult_mod)
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + card.ability.extra.xmult_mod)
 			end
 
 			card.ability.immutable.counters.c3 =

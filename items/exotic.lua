@@ -691,7 +691,8 @@ local primus = {
 				end
 			end
 			if check then
-				card.ability.extra.Emult = lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
+				card.ability.extra.Emult =
+					lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = localize("k_upgrade_ex"),
@@ -1289,7 +1290,8 @@ local verisimile = {
 				or context.other_joker.ability.name == "cry-scrabble"
 			then
 				local variable = context.other_joker
-				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",
@@ -1300,7 +1302,8 @@ local verisimile = {
 			elseif context.other_joker.ability.name == "cry-notebook" then
 				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
 				local variable = context.other_joker
-				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
 						type = "variable",

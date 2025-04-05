@@ -1490,7 +1490,8 @@ local jimball = {
 					}
 				end
 			else
-				card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.xmult_mod)
+				card.ability.extra.x_mult =
+					lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.xmult_mod)
 				--TODO return the proper upgrade text
 				return nil, true
 			end
@@ -1701,7 +1702,8 @@ local fspinner = {
 			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
 			for k, v in pairs(G.GAME.hands) do
 				if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-					card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.chip_mod)
+					card.ability.extra.chips =
+						lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.chip_mod)
 					return {
 						message = localize("k_upgrade_ex"),
 						card = card,
@@ -2142,7 +2144,8 @@ local antennastoheaven = {
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			local rank = context.other_card:get_id()
 			if rank == 4 or rank == 7 then
-				card.ability.extra.x_chips = lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.bonus)
+				card.ability.extra.x_chips =
+					lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.bonus)
 				return {
 					extra = { focus = card, message = localize("k_upgrade_ex") },
 					card = card,
@@ -3011,7 +3014,8 @@ local spaceglobe = {
 						return true
 					end,
 				}))
-				card.ability.extra.x_chips = lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.Xchipmod)
+				card.ability.extra.x_chips =
+					lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.Xchipmod)
 				return {
 					message = localize("k_upgrade_ex"),
 					card = card,
