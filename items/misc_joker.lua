@@ -996,7 +996,7 @@ local big_cube = {
 	name = "cry-Big Cube",
 	key = "big_cube",
 	joker_gate = "cry-Cube",
-	config = { extra = { x_chips = 6 } },
+	config = { extra = { x_chips = 6 }, override_x_chips_check = true },
 	pos = { x = 4, y = 4 },
 	rarity = 1,
 	order = 105,
