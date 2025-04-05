@@ -182,7 +182,7 @@ if cry_muse then
 		scale = 1.1,
 		hold = 0.6,
 		major = card,
-		backdrop_colour = G.C.SECONDARY_SET[card.config.center.set],
+		backdrop_colour = G.C.SET[card.config.center.set],
 		align = 'bm',
 		offset = {x = 0, y = 0.2}
 	})
@@ -364,6 +364,21 @@ pattern = '''disp_text = text'''
 position = "before"
 payload = '''
 text = G.GAME.cry_exploit_override or text
+'''
+match_indent = true
+
+# Multiuse localization
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if main_end then'''
+position = "before"
+payload = '''
+if cfg and cfg.cry_multiuse then
+	local loc = {}
+	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse}}
+	desc_nodes[#desc_nodes+1] = loc[1]
+end
 '''
 match_indent = true
 

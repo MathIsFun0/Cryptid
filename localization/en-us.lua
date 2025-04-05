@@ -502,7 +502,6 @@ return {
 					"{C:cry_code}Banish{} any {C:cry_code}selected{}",
 					"shop item, it will no longer",
 					"appear normally this run",
-					"{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
 				},
 			},
 			c_cry_divide = {
@@ -518,7 +517,13 @@ return {
 					"{C:cry_code}Choose{} a {C:cry_code}currently visible{} poker hand,",
 					"next hand is {C:cry_code}calculated{} as that hand,",
 					"and gains {C:cry_code}one{} temp {C:cry_code}Ascension Power{}",
-					"{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
+				},
+			},
+			c_cry_global = {
+				name = "://GLOBAL",
+				text = {
+					"Select a playing card",
+					"to become {C:cry_code}Global{}",
 				},
 			},
 			c_cry_hook = {
@@ -526,7 +531,7 @@ return {
 				text = {
 					"Select two Jokers to become {C:cry_code}Hooked",
 					"{C:inactive,s:0.8}Only works properly if Jokers trigger in the same context,",
-					"{C:inactive,s:0.8}such as Joker and The Duo (both post-scoring)",
+					"{C:inactive,s:0.8}such as Joker and The Duo (both joker_main)",
 				},
 			},
 			c_cry_inst = {
@@ -3849,8 +3854,8 @@ return {
 			v_cry_quantum_computing = {
 				name = "Quantum Computing",
 				text = {
-					"{C:cry_code}Code{} cards can spawn",
-					"with {C:dark_edition}Negative{} edition",
+					"All future {C:cry_code}Code{} cards each",
+					"have {C:cry_code}+#1#{} Multiuse",
 				},
 			},
 			v_cry_repair_man = {
@@ -4010,6 +4015,13 @@ return {
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",
 					"trigger {C:cry_code}#1#",
+				},
+			},
+			cry_global_sticker = {
+				name = "Global",
+				text = {
+					"Always drawn after",
+					"{C:cry_code}First Hand Drawn{}",
 				},
 			},
 			cry_flickering = {
@@ -4358,6 +4370,12 @@ return {
 					'{C:inactive,s:0.8}"I hate this card" - SDM_0, 2024{}',
 				},
 			},
+			cry_multiuse = {
+				name = "m",
+				text = {
+					"{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
+				},
+			},
 		},
 		Unique = {
 			c_cry_potion = {
@@ -4693,6 +4711,7 @@ return {
 			unique = "Unique",
 			cry_rigged = "Rigged",
 			cry_hooked = "Hooked",
+			cry_global_sticker = "Global",
 			cry_flickering = "Flickering",
 			cry_possessed = "Possessed",
 
