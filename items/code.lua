@@ -3183,13 +3183,27 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1
+		if not G.GAME.modifiers.cry_beta then
+			return #G.jokers.highlighted == 1
+				and not G.jokers.highlighted[1].ability.eternal
+				and G.jokers.highlighted[1].ability.name ~= (
+					"cry-meteor"
+					or "cry-exoplanet"
+					or "cry-stardust"
+					or "cry_cursed"
+					or ("Diet Cola" or Card.get_gameset(card) == "madness")
+					)
+		else
+			return #G.jokers.highlighted == 2
 			and not G.jokers.highlighted[1].ability.eternal
-			and G.jokers.highlighted[1].ability.name ~= "cry-meteor"
-			and G.jokers.highlighted[1].ability.name ~= "cry-exoplanet"
-			and G.jokers.highlighted[1].ability.name ~= "cry-stardust"
-			and G.jokers.highlighted[1].config.center.rarity ~= "cry_cursed"
-			and (G.jokers.highlighted[1].ability.name ~= "Diet Cola" or Card.get_gameset(card) == "madness")
+			and G.jokers.highlighted[1].ability.name ~= (
+				"cry-meteor"
+				or "cry-exoplanet"
+				or "cry-stardust"
+				or "cry_cursed"
+				or ("Diet Cola" or Card.get_gameset(card) == "madness")
+				)
+		end
 	end,
 	use = function(self, card, area, copier)
 		local jkr = G.jokers.highlighted[1]
