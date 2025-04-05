@@ -7,7 +7,11 @@ function Cryptid.calculate_misprint(initial, min, max)
 	local big_min = (type(min) ~= "table" and to_big(min)) or min
 	local big_max = (type(max) ~= "table" and to_big(max)) or max
 
-	local grow = Cryptid.log_random(pseudoseed("cry_misprint" .. G.GAME.round_resets.ante), big_min, big_max)
+	local grow = Cryptid.log_random(
+		pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
+		big_min,
+		big_max
+	)
 
 	local calc = big_initial * grow
 
@@ -32,11 +36,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 	end
 
 	if name and ref_tbl and ref_value then
-		-- print('Current joker: '..name)
-
 		tbl = Cryptid.deep_copy(ref_tbl[ref_value])
 		for k, v in pairs(tbl) do
-			-- print('\tCurrent key: '..k)
 			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
 				if
 					is_number(tbl[k])
@@ -84,23 +85,27 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 					tbl[k] = Cryptid.sanity_check(
 						clear and Cryptid.base_values[name][k]
-							or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
+							or cry_format(
+								Cryptid.calculate_misprint(initial, min, max),
+								"%.2g"
+							),
 						big
 					)
 				end
-			elseif not (k == "immutable") and not (k == "colour") then
+			elseif not (k == "immutable") then
 				for _k, _v in pairs(tbl[k]) do
-					-- print('\t\tCurrent key: '.._k)
 					if
 						is_number(tbl[k][_k])
 						and not (_k == "id")
+						and not (k == "colour")
 						and not (_k == "suit_nominal")
 						and not (_k == "base_nominal")
 						and not (_k == "face_nominal")
 						and not (_k == "qty")
+						and not (k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
 						and not (_k == "selected_d6_face")
-						and not (_k == "d_size")
-						and not (_k == "h_size")
+						and not (k == "d_size")
+						and not (k == "h_size")
 					then --Refer to above
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
@@ -156,7 +161,10 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][k][_k]
-								or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
+								or cry_format(
+									Cryptid.calculate_misprint(initial, min, max),
+									"%.2g"
+								),
 							big
 						)
 					end
@@ -168,13 +176,14 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 end
 function Cryptid.misprintize_val(val, override, big)
 	if is_number(val) then
+		
+
 		val = Cryptid.sanity_check(
 			cry_format(
 				Cryptid.calculate_misprint(
-					val,
+					val, 
 					override and override.min or G.GAME.modifiers.cry_misprint_min,
-					override and override.max or G.GAME.modifiers.cry_misprint_max
-				),
+					override and override.max or G.GAME.modifiers.cry_misprint_max),
 				"%.2g"
 			),
 			big

@@ -5153,7 +5153,7 @@ local python = {
 			and context.consumeable.ability.set == "Code"
 			and not context.consumeable.beginning_end
 		then
-			card.ability.extra.Xmult = lenient_bignum(card.ability.extra.Xmult + card.ability.extra.Xmult_mod)
+			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					card_eval_status_text(card, "extra", nil, nil, nil, {
