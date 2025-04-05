@@ -1860,8 +1860,13 @@ local spectrogram = {
 				end
 			end
 		end
-		
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card == G.jokers.cards[#G.jokers.cards] and context.other_card ~= self then
+
+		if
+			context.retrigger_joker_check
+			and not context.retrigger_joker
+			and context.other_card == G.jokers.cards[#G.jokers.cards]
+			and context.other_card ~= self
+		then
 			if card.ability.extra.echonum and card.ability.extra.echonum > 0 then
 				return {
 					message = localize("k_again_ex"),

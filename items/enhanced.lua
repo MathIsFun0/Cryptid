@@ -334,45 +334,9 @@ return {
 			-- D Invisible Joker
 
 			if
-				center and center.name == (
-				"Fortune Teller"
-				or "Shoot the Moon"
-				or "Riff-raff"
-				or "Chaos the Clown"
-				or "Dusk"
-				or "Mime"
-				or "Hack"
-				or "Sock and Buskin"
-				or "Invisible Joker"
-				or "Swashbuckler"
-				or "Smeared Joker"
-				or "Certificate"
-				or "Mr. Bones"
-				or "Diet Cola"
-				or "Luchador"
-				or "Midas Mask"
-				or "Shortcut"
-				or "Seance"
-				or "Superposition"
-				or "Sixth Sense"
-				or "DNA"
-				or "Splash"
-				or "Supernova"
-				or "Pareidolia"
-				or "Raised Fist"
-				or "Marble Joker"
-				or "Four Fingers"
-				or "Joker Stencil"
-				or "Showman"
-				or "Blueprint"
-				or "Oops! All 6s"
-				or "Brainstorm"
-				or "Cartomancer"
-				or "Astronomer"
-				or "Burnt Joker"
-				or "Chicot"
-				or "Perkeo"
-				)
+				center
+				and center.name
+					== ("Fortune Teller" or "Shoot the Moon" or "Riff-raff" or "Chaos the Clown" or "Dusk" or "Mime" or "Hack" or "Sock and Buskin" or "Invisible Joker" or "Swashbuckler" or "Smeared Joker" or "Certificate" or "Mr. Bones" or "Diet Cola" or "Luchador" or "Midas Mask" or "Shortcut" or "Seance" or "Superposition" or "Sixth Sense" or "DNA" or "Splash" or "Supernova" or "Pareidolia" or "Raised Fist" or "Marble Joker" or "Four Fingers" or "Joker Stencil" or "Showman" or "Blueprint" or "Oops! All 6s" or "Brainstorm" or "Cartomancer" or "Astronomer" or "Burnt Joker" or "Chicot" or "Perkeo")
 			then
 				self.config.center.immutable = true
 			end

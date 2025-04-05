@@ -2930,43 +2930,43 @@ local exploit = {
 					"high",
 					"1oak",
 					"1 of a kind",
-					"haha one"
+					"haha one",
 				},
-				["Pair"] = { 
+				["Pair"] = {
 					"pair",
 					"2oak",
 					"2 of a kind",
 					"m",
-					"window"
+					"window",
 				},
-				["Two Pair"] = { 
+				["Two Pair"] = {
 					"two pair",
 					"2 pair",
 					"mm",
 					"pairpair",
-					"pair of a kind"
+					"pair of a kind",
 				},
-				["Three of a Kind"] = { 
-					"three of a kind", 
-					"3 of a kind", 
-					"3oak", 
-					"trips", 
-					"triangle" 
+				["Three of a Kind"] = {
+					"three of a kind",
+					"3 of a kind",
+					"3oak",
+					"trips",
+					"triangle",
 				},
-				["Straight"] = { 
-					"straight", 
-					"lesbian", 
-					"gay", 
-					"bisexual", 
+				["Straight"] = {
+					"straight",
+					"lesbian",
+					"gay",
+					"bisexual",
 					"asexual",
-					"staircase"
+					"staircase",
 				},
-				["Flush"] = { 
-					"flush", 
-					"skibidi", 
-					"toilet", 
+				["Flush"] = {
+					"flush",
+					"skibidi",
+					"toilet",
 					"floosh",
-					"monotone"
+					"monotone",
 				},
 				["Full House"] = {
 					"full house",
@@ -2974,7 +2974,7 @@ local exploit = {
 					"that 70s show",
 					"modern family",
 					"family matters",
-					"the middle"
+					"the middle",
 				},
 				["Four of a Kind"] = {
 					"four of a kind",
@@ -2984,59 +2984,59 @@ local exploit = {
 					"quads",
 					"four to the floor",
 				},
-				["Straight Flush"] = { 
+				["Straight Flush"] = {
 					"straight flush",
 					"strush",
 					"slush",
 					"slushie",
 					"slushy",
-					"monotone staircase"
+					"monotone staircase",
 				},
 				["Five of a Kind"] = {
 					"five of a kind",
 					"5 of a kind",
 					"5oak",
-					"quints"
+					"quints",
 				},
-				["Flush House"] = { 
+				["Flush House"] = {
 					"flush house",
 					"flouse",
 					"outhouse",
 					"monotone house",
-					"the grey house"
+					"the grey house",
 				},
-				["Flush Five"] = { 
+				["Flush Five"] = {
 					"flush five",
 					"fish",
 					"you know what that means",
 					"five of a flush",
-					"monotone fish"
+					"monotone fish",
 				},
-				["cry_Bulwark"] = { 
+				["cry_Bulwark"] = {
 					"bulwark",
 					"flush rock",
 					"stoned",
 					"stone flush",
 					"flush stone",
-					"rock and stone"
+					"rock and stone",
 				},
-				["cry_Clusterfuck"] = { 
+				["cry_Clusterfuck"] = {
 					"clusterfuck",
 					"fuck",
 					"wtf",
 					"cluster",
-					"what"
+					"what",
 				},
-				["cry_UltPair"] = { 
+				["cry_UltPair"] = {
 					"ultimate pair",
 					"ultpair",
 					"ult pair",
 					"pairpairpair",
 					"flush pair of a kind of a kind",
 					"2f2oakoak",
-					"two flush two of a kind of a kind"
+					"two flush two of a kind of a kind",
 				},
-				["cry_WholeDeck"] = { 
+				["cry_WholeDeck"] = {
 					"the entire fucking deck",
 					"deck",
 					"tefd",
@@ -3045,7 +3045,7 @@ local exploit = {
 					"deck of a kind",
 					"the entire deck",
 					"everything of a kind",
-					"everything"
+					"everything",
 				},
 			}
 			local current_hand = nil
@@ -3186,23 +3186,17 @@ local rework = {
 		if not G.GAME.modifiers.cry_beta then
 			return #G.jokers.highlighted == 1
 				and not G.jokers.highlighted[1].ability.eternal
-				and G.jokers.highlighted[1].ability.name ~= (
-					"cry-meteor"
-					or "cry-exoplanet"
-					or "cry-stardust"
-					or "cry_cursed"
-					or ("Diet Cola" or Card.get_gameset(card) == "madness")
-					)
+				and G.jokers.highlighted[1].ability.name
+					~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+						card
+					) == "madness"))
 		else
 			return #G.jokers.highlighted == 2
-			and not G.jokers.highlighted[1].ability.eternal
-			and G.jokers.highlighted[1].ability.name ~= (
-				"cry-meteor"
-				or "cry-exoplanet"
-				or "cry-stardust"
-				or "cry_cursed"
-				or ("Diet Cola" or Card.get_gameset(card) == "madness")
-				)
+				and not G.jokers.highlighted[1].ability.eternal
+				and G.jokers.highlighted[1].ability.name
+					~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+						card
+					) == "madness"))
 		end
 	end,
 	use = function(self, card, area, copier)
