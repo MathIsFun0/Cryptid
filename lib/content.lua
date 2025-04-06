@@ -1,5 +1,12 @@
 -- content.lua - adds SMODS objects for content that should always be loaded
 
+SMODS.Atlas({
+	key = "poker_hands",
+	path = "hands.png",
+	px = 53,
+	py = 13,
+})
+
 SMODS.PokerHand({
 	key = "Bulwark",
 	visible = false,
@@ -14,6 +21,8 @@ SMODS.PokerHand({
 		{ "S_A", true, "m_stone" },
 		{ "S_A", true, "m_stone" },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
 	evaluate = function(parts, hand)
 		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
 			return {}
@@ -65,6 +74,8 @@ SMODS.PokerHand({
 		{ "S_6", true },
 		{ "C_5", true },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 1 },
 	evaluate = function(parts, hand)
 		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
 		if next(parts.cry_cfpart) then
@@ -92,6 +103,8 @@ SMODS.PokerHand({
 		{ "H_7", true },
 		{ "H_7", true },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 2 },
 	evaluate = function(parts, hand)
 		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_marsmoons") ~= true then
 			return

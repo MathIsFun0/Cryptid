@@ -651,7 +651,7 @@ local spy = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - 1
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.joker_main then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 				Xmult_mod = card.ability.x_mult,
@@ -1120,6 +1120,22 @@ local spookydeck = {
 					end,
 				}))
 			end
+		end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
 		end
 	end,
 }

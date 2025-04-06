@@ -17,6 +17,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					and not (k == "face_nominal")
 					and not (k == "qty")
 					and not (k == "x_mult" and v == 1 and not tbl.override_x_mult_check)
+					and not (k == "x_chips" and v == 1 and not tbl.override_x_chips_check)
+					and not (k == "h_x_chips")
 					and not (k == "selected_d6_face")
 				then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
 					if not Cryptid.base_values[name] then
@@ -50,6 +52,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						and not (_k == "face_nominal")
 						and not (_k == "qty")
 						and not (k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
+						and not (k == "x_chips" and v == 1 and not tbl[k].override_x_chips_check)
+						and not (k == "h_x_chips")
 						and not (_k == "selected_d6_face")
 					then --Refer to above
 						if not Cryptid.base_values[name] then

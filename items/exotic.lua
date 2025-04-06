@@ -784,7 +784,7 @@ local stella_mortis = {
 							type = "variable",
 							key = "a_powmult",
 							vars = {
-								number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)),
+								number_format(to_big(card.ability.extra.Emult)),
 							},
 						}),
 					})

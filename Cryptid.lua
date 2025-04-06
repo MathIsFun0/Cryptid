@@ -22,9 +22,9 @@ SMODS.current_mod.optional_features = {
 
 	-- Cryptid uses cardarea deck now
 	cardareas = {
-		deck = true,
-		--discard = true,
-	}
+    deck = true,
+		discard = true, -- used by scorch
+	},
 }
 
 --Load Library Files
