@@ -20,3 +20,32 @@ position = "at"
 payload = "ret.playing_card = ret.playing_card or {}"
 match_indent = true
 
+# *all* of this is for just paved jonkler
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''for i=1, #hand do
+        if hand[i]:is_suit(suit, nil, true) then flush_count = flush_count + 1;  t[#t+1] = hand[i] end'''
+position = "after"
+payload = "if (next(find_joker('cry-paved')) and SMODS.has_enhancement(hand[i], 'm_stone')) then flush_count = flush_count + 1;  t[#t+1] = hand[i]; end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "[SMODS _ 'src/overrides.lua']"
+pattern = "min_length = min_length or 5
+    if min_length < 2 then min_length = 2 end
+    if #hand < min_length then return {} end
+    local ranks = {}"
+position = "after"
+payload = "local pavedcounter = 0; for i=1, #find_joker('cry-paved') do pavedcounter = pavedcounter + 1 end; local stonedcounter = 0"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "[SMODS _ 'src/overrides.lua']"
+pattern = '''local id = card:get_id()'''
+position = "after"
+payload = "if SMODS.has_enhancement(card, 'm_stone') then stonedcounter = stonedcounter + 1; "
+match_indent = true
+# NOT FINISHED
