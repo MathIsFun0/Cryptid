@@ -7968,6 +7968,35 @@ local highfive = {
 		code = { "astrapboy" },
 	},
 }
+
+local paved = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-paved",
+	key = "paved",
+	order = 138,
+	atlas = "placeholders",
+	pos = { x = 2, y = 0 },
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = true,
+	rarity = 2,
+	cost = 6,
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context)
+		if false then return nil end
+	end,
+	cry_credits = {
+		idea = { "InspectorB" },
+		art = { "None" },
+		code = { "Nova" },
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -8084,6 +8113,7 @@ local miscitems = {
 	--cat_owl,
 	--eyeofhagane, (apparently this wasn't screened)
 	highfive,
+	paved,
 }
 return {
 	name = "Misc. Jokers",
