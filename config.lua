@@ -8,6 +8,7 @@ return {
 	},
 	["family_mode"] = false,
 	["experimental"] = false,
+	["force_tooltips"] = true,
 	["HTTPS"] = true,
 	["menu"] = true,
 }

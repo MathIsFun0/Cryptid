@@ -340,7 +340,7 @@ local oversat = {
 					end,
 				}))
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -350,7 +350,10 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -360,7 +363,10 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+				)
 			end
 		end
 	end,
@@ -570,7 +576,7 @@ local glitched = {
 					StatusText = true,
 				})
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1078,7 +1084,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1088,7 +1097,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 			end
 		end
 	end,
@@ -1294,7 +1306,7 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and (
+				and not (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
 				)
@@ -2067,6 +2079,7 @@ local typhoon = {
 	pos = { x = 0, y = 4 },
 	use = function(self, card, area, copier) --Good enough
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_typhoon" })
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
 			G.E_MANAGER:add_event(Event({

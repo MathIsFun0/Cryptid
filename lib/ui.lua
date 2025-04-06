@@ -290,7 +290,7 @@ function CardArea:can_highlight(card)
 	if self.config.collection then
 		return true
 	end
-	return cach(self)
+	return cach(self, card)
 end
 
 -- Prevent hover UI from being redrawn

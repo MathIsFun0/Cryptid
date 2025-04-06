@@ -597,7 +597,9 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
+		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	end
 	return ret, trig
 end
 

@@ -599,6 +599,9 @@ function Card:get_gameset(center)
 end
 local csa = Card.set_ability
 function Card:set_ability(center, y, z)
+	if not center then
+		return
+	end
 	if not center.config then
 		center.config = {} --crashproofing
 	end

@@ -197,7 +197,7 @@ return {
 			bl_cry_clock = {
 				name = "The Clock",
 				text = {
-					"+0.1X điểm yêu cầu mỗi 3 giây",
+					"+0.1X điểm yêu cầu mỗi 12 giây",
 					"đã trôi trong ante này",
 				},
 			},
@@ -225,7 +225,7 @@ return {
 			bl_cry_lavender_loop = {
 				name = "Lavender Loop",
 				text = {
-					"1.25X điểm yêu cầu mỗi 1.5 giây",
+					"1.25X điểm yêu cầu mỗi 6 giây",
 					"đã trôi trong ván này",
 				},
 			},
@@ -2693,8 +2693,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Nâng sức mạnh cho",
-					"các tay bài {C:attention}Thăng Thiên{} lên {X:gold,C:white}0.05{}",
-					"{C:inactive}(Hiện tại là {X:gold,C:white}X(#2#^asc){C:inactive})",
+					"các tay bài {C:attention}Thăng Thiên{} lên {X:gold,C:white}#2#{}",
+					"{C:inactive}(Hiện tại là {X:gold,C:white}X(#3#^asc){C:inactive})",
 				},
 			},
 		},

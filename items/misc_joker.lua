@@ -221,7 +221,7 @@ local potofjokes = {
 	},
 	name = "cry-Pot of Jokes",
 	key = "pot_of_jokes",
-	config = { extra = { h_size = -2, h_mod = 1 } },
+	config = { extra = { h_size = -2, h_mod = 1 }, immutable = { h_added = 0, h_mod_max = 1000 } },
 	pos = { x = 5, y = 0 },
 	rarity = 3,
 	order = 104,
@@ -234,19 +234,38 @@ local potofjokes = {
 				center.ability.extra.h_size < 0 and center.ability.extra.h_size
 					or "+" .. math.min(1000, center.ability.extra.h_size),
 				center.ability.extra.h_mod,
+				"+" .. center.ability.immutable.h_mod_max,
 			},
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			if to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod) >= to_big(1000) then
-				card.ability.extra.h_size = 1000
+			if
+				to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod)
+				>= to_big(card.ability.immutable.h_mod_max)
+			then
+				card.ability.extra.h_size = card.ability.immutable.h_mod_max
 				card.ability.extra.h_mod = 0
+
+				-- Fallback for if Pot of Jokes comes into this calcuate function with large h_size
+				if card.ability.immutable.h_added < card.ability.immutable.h_mod_max then
+					local delta = card.ability.immutable.h_mod_max - card.ability.immutable.h_added
+
+					G.hand:change_size(delta)
+
+					card.ability.immutable.h_added = card.ability.immutable.h_mod_max
+				end
 			end
 
-			G.hand:change_size(math.min(math.max(0, 1000 - card.ability.extra.h_size), card.ability.extra.h_mod))
+			local delta = math.min(
+				math.max(0, card.ability.immutable.h_mod_max - card.ability.extra.h_size),
+				card.ability.extra.h_mod
+			)
+
+			G.hand:change_size(delta)
 
 			card.ability.extra.h_size = card.ability.extra.h_size + card.ability.extra.h_mod
+			card.ability.immutable.h_added = card.ability.immutable.h_added + delta
 
 			return {
 				message = localize({ type = "variable", key = "a_handsize", vars = { card.ability.extra.h_mod } }),
@@ -256,10 +275,10 @@ local potofjokes = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.hand:change_size(math.min(1000, card.ability.extra.h_size))
+		G.hand:change_size(math.min(card.ability.immutable.h_mod_max, card.ability.extra.h_size))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-1 * math.min(1000, card.ability.extra.h_size))
+		G.hand:change_size(-1 * math.min(card.ability.immutable.h_mod_max, card.ability.extra.h_size))
 	end,
 	cry_credits = {
 		idea = {
@@ -270,6 +289,7 @@ local potofjokes = {
 		},
 		code = {
 			"Math",
+			"BobJoe400",
 		},
 	},
 	unlocked = false,
@@ -976,7 +996,7 @@ local big_cube = {
 	name = "cry-Big Cube",
 	key = "big_cube",
 	joker_gate = "cry-Cube",
-	config = { extra = { x_chips = 6 } },
+	config = { extra = { x_chips = 6 }, override_x_chips_check = true },
 	pos = { x = 4, y = 4 },
 	rarity = 1,
 	order = 105,
@@ -1605,7 +1625,7 @@ local wario = {
 			"Auto Watto",
 		},
 		art = {
-			"Auto Watto",
+			"MarioFan597",
 		},
 		code = {
 			"Auto Watto",
@@ -7141,6 +7161,8 @@ local necromancer = {
 			and context.card.config.center.set == "Joker"
 			and G.GAME.jokers_sold
 			and #G.GAME.jokers_sold > 0
+			and not context.blueprint
+			and not context.retrigger_joker
 		then
 			local card = create_card(
 				"Joker",
@@ -7874,6 +7896,78 @@ local eyeofhagane = {
 		art = { "Soren" },
 	},
 }
+
+local highfive = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-highfive",
+	key = "highfive",
+	order = 137,
+	atlas = "atlastwo",
+	pos = { x = 4, y = 1 },
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = true,
+	rarity = 3,
+	cost = 5,
+	unlocked = true,
+	discovered = true,
+	calculate = function(self, card, context)
+		if context.final_scoring_step then
+			local maximum = -1
+			local fives = 0
+			for k, v in ipairs(context.scoring_hand) do
+				if not SMODS.has_no_rank(v) then
+					local thunk = v:get_id() == 14 and 1 or v:get_id()
+					if thunk == 5 then
+						fives = fives + 1
+					end
+					if thunk > maximum then
+						maximum = thunk
+					end
+				end
+			end
+
+			local whapoosh = false
+			if maximum == 5 and fives ~= #context.scoring_hand then
+				for index = 1, #context.scoring_hand do
+					local v = context.scoring_hand[index]
+					if v:get_id() ~= 5 and not SMODS.has_no_rank(v) then
+						whapoosh = true
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								assert(SMODS.change_base(v, _, "5"))
+								v:juice_up()
+								return true
+							end,
+						}))
+					end
+				end
+
+				if whapoosh then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							play_sound("cry_whapoosh")
+							return true
+						end,
+					}))
+					return {
+						message = localize("cry_highfive_ex"),
+					}
+				end
+			end
+		end
+	end,
+	cry_credits = {
+		idea = { "cassknows" },
+		art = { "MarioFan597" },
+		code = { "astrapboy" },
+	},
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -7988,7 +8082,8 @@ local miscitems = {
 	lebaron_james,
 	huntingseason,
 	--cat_owl,
-	eyeofhagane,
+	--eyeofhagane, (apparently this wasn't screened)
+	highfive,
 }
 return {
 	name = "Misc. Jokers",
