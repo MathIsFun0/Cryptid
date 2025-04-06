@@ -19,8 +19,10 @@ SMODS.current_mod.optional_features = {
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
 	-- These ones add new card areas that Steamodded will calculate through
 	-- Might already be useful for sticker calc
+
+	-- Cryptid uses cardarea deck now
 	cardareas = {
-		--deck = true,
+    		deck = true,
 		discard = true, -- used by scorch
 	},
 }
