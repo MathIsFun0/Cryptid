@@ -22,7 +22,7 @@ SMODS.current_mod.optional_features = {
 	cardareas = {
 		--deck = true,
 		discard = true, -- used by scorch
-	}
+	},
 }
 
 --Load Library Files
