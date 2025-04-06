@@ -1,5 +1,5 @@
 -- Update the Cryptid member count using HTTPS
-local member_fallback = 27900
+local member_fallback = 29332
 local succ, https = pcall(require, "SMODS.https")
 local last_update_time = 0
 local initial = true
