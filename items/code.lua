@@ -2708,7 +2708,7 @@ local run = {
 	atlas = "atlasnotjokers",
 	order = 6,
 	can_use = function(self, card)
-		return Cryptid.safe_get(G.GAME, "blind", "in_blind")
+		return Cryptid.safe_get(G.GAME, "blind", "in_blind") and not G.GAME.USING_RUN
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
