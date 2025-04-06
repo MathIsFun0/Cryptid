@@ -40,7 +40,7 @@ return {
 				text = {
 					"Applique les {C:legendary,E:1}effets{}",
 					"de {C:attention}tous{} les jeux",
-					"battus avec la {C:attention}Mise Or"
+					"battus avec la {C:attention}Mise Or",
 				},
 			},
 			b_cry_beige = {
@@ -473,8 +473,8 @@ return {
 				name = "Trophée Citron",
 				text = {
 					"Le multi ne peut pas",
-					"dépasser les jetons"
-				}
+					"dépasser les jetons",
+				},
 			},
 			bl_cry_vermillion_virus = {
 				name = "Virus Vermillion",
@@ -601,7 +601,7 @@ return {
 				text = {
 					"Enlève tous les {C:cry_code}affaiblissements",
 					"de tous les objets visibles",
-					"{C:cry_code}Réinitialise{} la boutique"
+					"{C:cry_code}Réinitialise{} la boutique",
 				},
 			},
 			c_cry_payload = {
@@ -828,7 +828,7 @@ return {
 					"{C:attention}retournée{} pour révéler",
 					"une autre carte",
 					"{C:inactive}(La face vierge peut être fusionnée",
-					"{C:inactive}avec une autre carte)"
+					"{C:inactive}avec une autre carte)",
 				},
 			},
 			e_cry_glass = {
@@ -1466,7 +1466,7 @@ return {
 				text = {
 					"Les {C:attention}Jokers{} augmentant",
 					"augmentent {C:attention}deux fois{} plus vite",
-					'{C:inactive,s:0.8}"Ça s\'appelle la double échelle, pas l\'échelle quadratique!"',
+					"{C:inactive,s:0.8}\"Ça s'appelle la double échelle, pas l'échelle quadratique!\"",
 				},
 			},
 			j_cry_dropshot = {
@@ -4495,7 +4495,7 @@ return {
 			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Capharnaüm" or "Foutoir",
 			["cry_UltPair"] = "Super Paire",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "Jeu complet" or "un putain de jeu complet",
-			["cry-Cluster Bulwark"] = "Capharna-rempart"
+			["cry-Cluster Bulwark"] = "Capharna-rempart",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4538,7 +4538,8 @@ return {
 			ach_cry_used_crash = "Tu t'attendais à quoi ?",
 			ach_cry_what_have_you_done = "QU'EST-CE QUE TU AS FAIT ?!",
 			ach_cry_pin = "L'épingle de la honte",
-			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "J'ai plus besoin de ça" or "Tu te fous de moi",
+			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "J'ai plus besoin de ça"
+				or "Tu te fous de moi",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
