@@ -283,6 +283,7 @@ local rng = {
 			{ id = "tag_rare" },
 			{ id = "tag_top_up" },
 			{ id = "tag_cry_epic" },
+			{ id = "tag_cry_gourmand" },
 		},
 		banned_cards = {
 			{ id = "c_cry_delete" },
