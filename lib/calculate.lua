@@ -599,7 +599,8 @@ function Card:calculate_joker(context)
 	end
 	if 
 		(next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale"))) 
-		or (active_side.ability.name == ("cry-Exponentia" or "cry-Compound Interest") then
+		or (active_side.ability.name == ("cry-Exponentia" or "cry-Compound Interest"))
+	then
 		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
 	return ret, trig
