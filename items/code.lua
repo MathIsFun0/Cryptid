@@ -1586,7 +1586,7 @@ local variable = {
 							trigger = "after",
 							delay = 0.1,
 							func = function()
-								local card = G.hand.highlighted[i]
+								local card = TempCard[i]
 								local suit_prefix = string.sub(card.base.suit, 1, 1) .. "_"
 								local r2suffix = nil
 								if rank_suffix < 10 then
