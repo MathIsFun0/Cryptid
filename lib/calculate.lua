@@ -597,7 +597,9 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
+		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	end
 	return ret, trig
 end
 
@@ -619,6 +621,9 @@ function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, n
 					end
 				end
 			end
+		end
+		if not dbl_info then
+			dbl_info = {}
 		end
 		if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
 			dbl_info.base = { "extra", "Emult" }
