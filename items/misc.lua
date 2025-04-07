@@ -2008,7 +2008,9 @@ local azure_seal = {
 	calculate = function(self, card, context)
 		if context.destroying_card and not card.will_shatter and context.cardarea == G.play then
 			for i, cards in ipairs(context.full_hand) do
-				if cards ~= card then return end
+				if cards ~= card then
+					return
+				end
 			end
 			card.will_shatter = true
 			G.E_MANAGER:add_event(Event({
