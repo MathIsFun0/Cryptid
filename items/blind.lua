@@ -628,6 +628,53 @@ local pin = {
 		return false
 	end,
 }
+-- Must play 5 cards,
+-- Destroy all played and discarded cards
+-- (only appears in endless)
+local scorch = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	object_type = "Blind",
+	name = "cry-scorch",
+	key = "scorch",
+	pos = { x = 0, y = 18 }, -- use Trick as placeholder icon
+	boss = {
+		min = 1,
+		max = 10,
+	},
+	atlas = "blinds",
+	order = 21,
+	boss_colour = HEX("77261a"),
+	debuff = { -- must play 5 cards
+		h_size_ge = 5,
+		h_size_le = 5,
+	},
+	calculate = function(self, blind, context)
+		if
+			context.full_hand
+			and context.destroy_card
+			and (context.cardarea == G.play or context.cardarea == "unscored")
+			and not G.GAME.blind.disabled
+		then
+			return { remove = not context.destroy_card.ability.eternal }
+		end
+		if context.discard and not G.GAME.blind.disabled then
+			for i, card in ipairs(G.hand.highlighted) do
+				return { remove = not card.ability.eternal }
+			end
+		end
+	end,
+	in_pool = function(self) -- only appears in endless
+		if G.GAME.round_resets.blind_ante > G.GAME.win_ante then
+			return true
+		else
+			return false
+		end
+	end,
+}
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1379,6 +1426,7 @@ local items_togo = {
 	striker,
 	shackle,
 	pin,
+	scorch,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,
