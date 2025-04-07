@@ -1150,6 +1150,7 @@ local seed = {
 				+ #G.hand.highlighted
 				+ #G.consumeables.highlighted
 				+ (G.pack_cards and #G.pack_cards.highlighted or 0)
+				--+ (G.shop_cards and #G.shop_cards.highlighted or 0) TODO: this so you can use seed when it's in shop
 			== 2
 	end,
 	loc_vars = function(self, info_queue, card)
