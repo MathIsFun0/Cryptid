@@ -1496,6 +1496,10 @@ local variable = {
 			end
 
 			if rank_suffix then
+				local TempCard = {}
+				for i = 1, #G.hand.highlighted do
+					TempCard[i] = G.hand.highlighted[i]
+				end
 				G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
 				G.GAME.USING_CODE = false
 				if rank_suffix == 15 then
@@ -1518,23 +1522,23 @@ local variable = {
 							return true
 						end,
 					}))
-					for i = 1, #G.hand.highlighted do
+					for i = 1, #TempCard do
 						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("card1", percent)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
 					end
 					delay(0.2)
-					for i = 1, #G.hand.highlighted do
-						local CARD = G.hand.highlighted[i]
-						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local CARD = TempCard[i]
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
@@ -1563,21 +1567,21 @@ local variable = {
 							return true
 						end,
 					}))
-					for i = 1, #G.hand.highlighted do
-						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("card1", percent)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
 					end
 					delay(0.2)
-					for i = 1, #G.hand.highlighted do
+					for i = 1, #TempCard do
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.1,
@@ -1603,15 +1607,15 @@ local variable = {
 							end,
 						}))
 					end
-					for i = 1, #G.hand.highlighted do
-						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("tarot2", percent, 0.6)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
