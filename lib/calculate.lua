@@ -622,6 +622,9 @@ function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, n
 				end
 			end
 		end
+		if not dbl_info then
+			dbl_info = {}
+		end
 		if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
 			dbl_info.base = { "extra", "Emult" }
 			dbl_info.scaler = { "extra", "Emult_mod" }
