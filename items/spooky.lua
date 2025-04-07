@@ -135,7 +135,7 @@ local choco_dice = {
 		then
 			--todo: check if duplicates of event are already started/finished
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
-			card.ability.extra.roll = Cryptid.roll("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
+			card.ability.extra.roll = Cryptid.roll("cry_choco", 2, 10, { ignore_value = card.ability.extra.roll })
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:start()
 			return {
 				message = tostring(card.ability.extra.roll),
@@ -1839,7 +1839,7 @@ items = {
 	wrapped,
 	choco_dice,
 	choco_base_event,
-	choco1,
+	--choco1,
 	choco2,
 	choco3,
 	potion,
@@ -1855,7 +1855,7 @@ items = {
 	trick_or_treat,
 	candy_basket,
 	blacklist,
-	ghost,
+	--ghost,
 	possessed,
 	spookydeck,
 	candy_dagger,

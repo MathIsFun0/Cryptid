@@ -1150,6 +1150,7 @@ local seed = {
 				+ #G.hand.highlighted
 				+ #G.consumeables.highlighted
 				+ (G.pack_cards and #G.pack_cards.highlighted or 0)
+			--+ (G.shop_cards and #G.shop_cards.highlighted or 0) TODO: this so you can use seed when it's in shop
 			== 2
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -2147,9 +2148,15 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1
-			and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true)
-			and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		if not G.GAME.modifiers.cry_beta then
+			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		else
+			return #G.jokers.highlighted == 2
+				and not (
+					Card.no(G.jokers.highlighted[1], "immutable", true)
+					or Card.no(G.jokers.highlighted[2], "immutable", true)
+				)
+		end
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].config.cry_multiply then
@@ -4260,71 +4267,6 @@ local pointer = {
 			box = "the box",
 			windmill = "the windmill",
 			clock = "the clock",
-			-- Jen's Almanac aliases
-			freddy = "freddy snowshoe",
-			paupovlin = "paupovlin revere",
-			poppin = "paupovlin revere",
-			dandy = 'Dandicus "Dandy" Dancifer',
-			jen = "jen walter",
-			jen2 = "Jen Walter the Wondergeist",
-			jen3 = "Jen Walter the Wondergeist (Ascended)",
-			survivor = "the survivor",
-			monk = "the monk",
-			hunter = "the hunter",
-			gourmand = "the gourmand",
-			saint = "the saint",
-			genius = "the genius",
-			r_fool = "the genius",
-			scientist = "the scientist",
-			r_magician = "the scientist",
-			lowlaywoman = "the low laywoman",
-			laywoman = "the low laywoman",
-			r_priestess = "the low laywoman",
-			peasant = "the peasant",
-			r_empress = "the peasant",
-			servant = "the servant",
-			r_emperor = "the servant",
-			adversary = "the adversary",
-			r_hierophant = "the adversary",
-			rivals = "the rivals",
-			r_lovers = "the rivals",
-			hitchhiker = "the hitchhiker",
-			r_chariot = "the hitchhiker",
-			injustice = "c_jen_reverse_justice",
-			r_justice = "c_jen_reverse_justice",
-			extrovert = "the extrovert",
-			r_hermit = "the extrovert",
-			discofpenury = "the disc of penury",
-			r_wheeloffortune = "the disc of penury",
-			r_wof = "the disc of penury",
-			infirmity = "infirmity",
-			r_strength = "infirmity",
-			zen = "zen",
-			r_hangedman = "zen",
-			life = "life",
-			r_death = "life",
-			prodigality = "prodigality",
-			r_temperance = "prodigality",
-			angel = "the angel",
-			r_devil = "the angel",
-			collapse = "the collapse",
-			r_tower = "the collapse",
-			flash = "the flash",
-			r_star = "the flash",
-			eclipsespectral = "c_jen_reverse_moon",
-			eclipsetorat = "c_jen_reverse_moon",
-			r_moon = "c_jen_reverse_moon",
-			darkness = "the darkness",
-			r_sun = "the darkness",
-			cunctation = "cunctation",
-			r_judgement = "cunctation",
-			desolate = "desolate",
-			r_world = "desolate",
-			-- jen tokens
-			topuptoken = "top-up token",
-			sagittarius = "sagittarius a*",
-			["sagitarius a*"] = "sagittarius a*", --minor spelling mistakes are forgiven
-			sagitarius = "sagittarius a*", --minor spelling mistakes are forgiven
 		}
 		for k, v in pairs(aliases) do
 			Cryptid.aliases[k] = v
