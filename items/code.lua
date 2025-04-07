@@ -1150,6 +1150,7 @@ local seed = {
 				+ #G.hand.highlighted
 				+ #G.consumeables.highlighted
 				+ (G.pack_cards and #G.pack_cards.highlighted or 0)
+			--+ (G.shop_cards and #G.shop_cards.highlighted or 0) TODO: this so you can use seed when it's in shop
 			== 2
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -1496,6 +1497,10 @@ local variable = {
 			end
 
 			if rank_suffix then
+				local TempCard = {}
+				for i = 1, #G.hand.highlighted do
+					TempCard[i] = G.hand.highlighted[i]
+				end
 				G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
 				G.GAME.USING_CODE = false
 				if rank_suffix == 15 then
@@ -1518,23 +1523,23 @@ local variable = {
 							return true
 						end,
 					}))
-					for i = 1, #G.hand.highlighted do
+					for i = 1, #TempCard do
 						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("card1", percent)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
 					end
 					delay(0.2)
-					for i = 1, #G.hand.highlighted do
-						local CARD = G.hand.highlighted[i]
-						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local CARD = TempCard[i]
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
@@ -1563,26 +1568,26 @@ local variable = {
 							return true
 						end,
 					}))
-					for i = 1, #G.hand.highlighted do
-						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("card1", percent)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
 					end
 					delay(0.2)
-					for i = 1, #G.hand.highlighted do
+					for i = 1, #TempCard do
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.1,
 							func = function()
-								local card = G.hand.highlighted[i]
+								local card = TempCard[i]
 								local suit_prefix = string.sub(card.base.suit, 1, 1) .. "_"
 								local r2suffix = nil
 								if rank_suffix < 10 then
@@ -1603,15 +1608,15 @@ local variable = {
 							end,
 						}))
 					end
-					for i = 1, #G.hand.highlighted do
-						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("tarot2", percent, 0.6)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
@@ -1790,6 +1795,10 @@ local class = {
 			end
 
 			if enh_suffix then
+				local TempCard = {}
+				for i = 1, #G.hand.highlighted do
+					TempCard[i] = G.hand.highlighted[i]
+				end
 				G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
 				G.GAME.USING_CODE = false
 				if enh_suffix == "ccd" then
@@ -1802,22 +1811,22 @@ local class = {
 							return true
 						end,
 					}))
-					for i = 1, #G.hand.highlighted do
+					for i = 1, #TempCard do
 						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("card1", percent)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
+						delay(0.2)
 					end
-					delay(0.2)
-					for i = 1, #G.hand.highlighted do
-						local CARD = G.hand.highlighted[i]
+					for i = 1, #TempCard do
+						local CARD = TempCard[i]
 						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
@@ -1834,14 +1843,14 @@ local class = {
 				elseif enh_suffix == "null" then
 					local destroyed_cards = {}
 					check_for_unlock({ type = "cheat_used" })
-					for i = #G.hand.highlighted, 1, -1 do
-						local card = G.hand.highlighted[i]
+					for i = #TempCard, 1, -1 do
+						local card = TempCard[i]
 						if not card.ability.eternal then
-							destroyed_cards[#destroyed_cards + 1] = G.hand.highlighted[i]
+							destroyed_cards[#destroyed_cards + 1] = TempCard[i]
 							if card.ability.name == "Glass Card" then
 								card:shatter()
 							else
-								card:start_dissolve(nil, i == #G.hand.highlighted)
+								card:start_dissolve(nil, i == #TempCard)
 							end
 						end
 					end
@@ -1864,39 +1873,39 @@ local class = {
 							return true
 						end,
 					}))
-					for i = 1, #G.hand.highlighted do
-						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("card1", percent)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
 					end
 					delay(0.2)
-					for i = 1, #G.hand.highlighted do
+					for i = 1, #TempCard do
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.1,
 							func = function()
-								G.hand.highlighted[i]:set_ability(G.P_CENTERS[enh_suffix])
+								TempCard[i]:set_ability(G.P_CENTERS[enh_suffix])
 								return true
 							end,
 						}))
 					end
-					for i = 1, #G.hand.highlighted do
-						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					for i = 1, #TempCard do
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 0.15,
 							func = function()
-								G.hand.highlighted[i]:flip()
+								TempCard[i]:flip()
 								play_sound("tarot2", percent, 0.6)
-								G.hand.highlighted[i]:juice_up(0.3, 0.3)
+								TempCard[i]:juice_up(0.3, 0.3)
 								return true
 							end,
 						}))
@@ -2139,9 +2148,15 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1
-			and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true)
-			and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		if not G.GAME.modifiers.cry_beta then
+			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		else
+			return #G.jokers.highlighted == 2
+				and not (
+					Card.no(G.jokers.highlighted[1], "immutable", true)
+					or Card.no(G.jokers.highlighted[2], "immutable", true)
+				)
+		end
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].config.cry_multiply then
@@ -4252,71 +4267,6 @@ local pointer = {
 			box = "the box",
 			windmill = "the windmill",
 			clock = "the clock",
-			-- Jen's Almanac aliases
-			freddy = "freddy snowshoe",
-			paupovlin = "paupovlin revere",
-			poppin = "paupovlin revere",
-			dandy = 'Dandicus "Dandy" Dancifer',
-			jen = "jen walter",
-			jen2 = "Jen Walter the Wondergeist",
-			jen3 = "Jen Walter the Wondergeist (Ascended)",
-			survivor = "the survivor",
-			monk = "the monk",
-			hunter = "the hunter",
-			gourmand = "the gourmand",
-			saint = "the saint",
-			genius = "the genius",
-			r_fool = "the genius",
-			scientist = "the scientist",
-			r_magician = "the scientist",
-			lowlaywoman = "the low laywoman",
-			laywoman = "the low laywoman",
-			r_priestess = "the low laywoman",
-			peasant = "the peasant",
-			r_empress = "the peasant",
-			servant = "the servant",
-			r_emperor = "the servant",
-			adversary = "the adversary",
-			r_hierophant = "the adversary",
-			rivals = "the rivals",
-			r_lovers = "the rivals",
-			hitchhiker = "the hitchhiker",
-			r_chariot = "the hitchhiker",
-			injustice = "c_jen_reverse_justice",
-			r_justice = "c_jen_reverse_justice",
-			extrovert = "the extrovert",
-			r_hermit = "the extrovert",
-			discofpenury = "the disc of penury",
-			r_wheeloffortune = "the disc of penury",
-			r_wof = "the disc of penury",
-			infirmity = "infirmity",
-			r_strength = "infirmity",
-			zen = "zen",
-			r_hangedman = "zen",
-			life = "life",
-			r_death = "life",
-			prodigality = "prodigality",
-			r_temperance = "prodigality",
-			angel = "the angel",
-			r_devil = "the angel",
-			collapse = "the collapse",
-			r_tower = "the collapse",
-			flash = "the flash",
-			r_star = "the flash",
-			eclipsespectral = "c_jen_reverse_moon",
-			eclipsetorat = "c_jen_reverse_moon",
-			r_moon = "c_jen_reverse_moon",
-			darkness = "the darkness",
-			r_sun = "the darkness",
-			cunctation = "cunctation",
-			r_judgement = "cunctation",
-			desolate = "desolate",
-			r_world = "desolate",
-			-- jen tokens
-			topuptoken = "top-up token",
-			sagittarius = "sagittarius a*",
-			["sagitarius a*"] = "sagittarius a*", --minor spelling mistakes are forgiven
-			sagitarius = "sagittarius a*", --minor spelling mistakes are forgiven
 		}
 		for k, v in pairs(aliases) do
 			Cryptid.aliases[k] = v

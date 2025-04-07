@@ -448,7 +448,7 @@ if CardSleeves then
 		key = "antimatter_sleeve",
 		name = "Antimatter Sleeve",
 		atlas = "atlasSleeves",
-		pos = { x = 0, y = 2 },
+		pos = { x = 0, y = 1 },
 		config = {
 			cry_antimatter = true,
 			cry_crit_rate = 0.25, --Critical Deck
