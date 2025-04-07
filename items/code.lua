@@ -2149,7 +2149,13 @@ local multiply = {
 	can_use = function(self, card)
 		if not G.GAME.modifiers.cry_beta then
 			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
-		else return #G.jokers.highlighted == 2 and not (Card.no(G.jokers.highlighted[1], "immutable", true) or Card.no(G.jokers.highlighted[2], "immutable", true)) end
+		else
+			return #G.jokers.highlighted == 2
+				and not (
+					Card.no(G.jokers.highlighted[1], "immutable", true)
+					or Card.no(G.jokers.highlighted[2], "immutable", true)
+				)
+		end
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].config.cry_multiply then
