@@ -1556,7 +1556,7 @@ local items = {
 	exponentia,
 	speculo,
 	redeo,
-	tenebris,
+	--tenebris, disabled due to bignum crash
 	effarcire,
 	effarcire_sprite,
 	crustulum,
@@ -1571,7 +1571,7 @@ local items = {
 	--verisimile, WHY IS THIS AN EXOTIC????????????????????
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
-	formidiulosus,
+	--formidiulosus, see tenebris
 }
 return {
 	name = "Exotic Jokers",
