@@ -2147,9 +2147,9 @@ local multiply = {
 	},
 	cost = 4,
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 1
-			and not Card.no(G.jokers.highlighted[1], "immune_to_chemach", true)
-			and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		if not G.GAME.modifiers.cry_beta then
+			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
+		else return #G.jokers.highlighted == 2 and not (Card.no(G.jokers.highlighted[1], "immutable", true) or Card.no(G.jokers.highlighted[2], "immutable", true)) end
 	end,
 	use = function(self, card, area, copier)
 		if not G.jokers.highlighted[1].config.cry_multiply then
