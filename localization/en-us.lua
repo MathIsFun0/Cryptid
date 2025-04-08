@@ -468,6 +468,14 @@ return {
 			},
 		},
 		Code = {
+			c_cry_assemble = {
+				name = "://ASSEMBLE",
+				text = {
+					"Add {C:cry_code}Mult{} to the",
+					"{C:cry_code}selected hand{} equal to",
+					"how many jokers are owned",
+				},
+			},
 			c_cry_alttab = {
 				name = "://ALTTAB",
 				text = {
