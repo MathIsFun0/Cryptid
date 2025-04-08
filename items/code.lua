@@ -2286,7 +2286,7 @@ local hook = { -- Hook://, applies Hooked to two jokers
 	order = 14,
 	no_pool_flag = "beta_deck",
 	can_use = function(self, card)
-		return #G.jokers.highlighted == 2
+		return false
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
@@ -2627,7 +2627,7 @@ local cryfunction =
 		object_type = "Consumable",
 		set = "Code",
 		name = "cry-Function",
-		key = "function",
+		key = "cryfunction",
 		pos = { x = 11, y = 0 },
 		cost = 4,
 		atlas = "atlasnotjokers",
@@ -3458,7 +3458,7 @@ local crylog =
 		object_type = "Consumable",
 		set = "Code",
 		name = "cry-Log",
-		key = "log",
+		key = "crylog",
 		pos = { x = 12, y = 4 },
 		cost = 4,
 		atlas = "atlasnotjokers",
