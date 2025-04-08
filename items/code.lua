@@ -2450,16 +2450,20 @@ local assemble = { -- ://Assemble, add the number of jokers to selected cards +m
 	can_use = function(self, card)
 		if not G.GAME.modifiers.cry_beta then
 			return (#G.hand.highlighted > 0 and #G.consumeables.highlighted == 1 and #G.jokers.cards > 0)
-		else 
+		else
 			return (#G.hand.highlighted > 0 and #G.jokers.highlighted == 1 and #G.jokers.cards > 1)
 		end
 	end,
 	use = function(self, card, area, copier)
-		G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult + #G.jokers.cards
+		G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult = G.GAME.hands[G.FUNCS.get_poker_hand_info(
+			G.hand.highlighted
+		)].mult + #G.jokers.cards
 		G.hand:unhighlight_all()
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult + (#G.jokers.cards * number)
+		G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult = G.GAME.hands[G.FUNCS.get_poker_hand_info(
+			G.hand.highlighted
+		)].mult + (#G.jokers.cards * number)
 		G.hand:unhighlight_all()
 	end,
 }
