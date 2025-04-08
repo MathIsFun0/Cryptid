@@ -876,7 +876,7 @@ local keygen = { -- ://Keygen, create a Perishable Banana voucher, destroy the p
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-}
+} -- UNIMPLEMENTED
 
 local payload =
 	{ -- ://Payload, triple interest gained on next cash out, stacks exponentially (multiplicative on modest)
@@ -1334,7 +1334,7 @@ local crynperror = { -- ://NPERROR, add last played hand back to your hand, mult
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-}
+} -- UNIMPLEMENTED
 
 local rework =
 	{ -- ://Rework, destroy a selected joker, create a Rework Tag of that joker with an upgraded edition via collection
@@ -2256,7 +2256,7 @@ local cryupdate = { -- ://Update, TBD, missing art
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-} -- MISSING ART!!!
+} -- MISSING ART!!! -- UNIMPLEMENTED
 
 local hook = { -- Hook://, applies Hooked to two jokers
 	cry_credits = {
@@ -2456,7 +2456,7 @@ local assemble = { -- ://Assemble, add the number of jokers to selected cards +m
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-}
+} -- UNIMPLEMENTED
 
 local inst =
 	{ -- ://Instantiate, draw 2 cards; one with selected card's rank and the other with selected card's suit (if possible)
@@ -2631,7 +2631,7 @@ local cryfunction =
 		-- bulk_use = function(self, card, area, copier, number)
 
 		-- end,
-	}
+	} -- UNIMPLEMENTED
 
 local run = { -- ://Run, visit a shop mid-blind
 	cry_credits = {
@@ -3461,7 +3461,7 @@ local crylog =
 		-- bulk_use = function(self, card, area, copier, number)
 
 		-- end,
-	}
+	} -- UNIMPLEMENTED
 
 local quantify = { -- ://Quantify, TBD
 	cry_credits = {
@@ -3497,7 +3497,7 @@ local quantify = { -- ://Quantify, TBD
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-} -- MISSING ART!!!
+} -- MISSING ART!!! -- UNIMPLEMENTED
 
 local divide = { -- ://Divide, halves item costs in shop
 	cry_credits = {
