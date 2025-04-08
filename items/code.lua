@@ -2256,7 +2256,7 @@ local cryupdate = { -- ://Update, TBD, missing art
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-}-- UNIMPLEMENTED
+} -- UNIMPLEMENTED
 
 local hook = { -- Hook://, applies Hooked to two jokers
 	cry_credits = {
