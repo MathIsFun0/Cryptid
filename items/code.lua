@@ -3124,7 +3124,7 @@ local global_sticker =
 			end--]]
 			end
 		end,
-	} -- MISSING ART!!!
+	}
 
 local variable = { -- ://Variable, change 2 selected cards' ranks to one of your choosing
 	cry_credits = {
