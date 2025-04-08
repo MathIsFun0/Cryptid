@@ -21,7 +21,7 @@ local gateway = {
 			return #G.jokers.cards < to_number(G.jokers.config.card_limit)
 		else
 			--Don't allow use if everything is eternal and there is no room
-			return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
+			return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < to_number(G.jokers.config.card_limit)
 		end
 	end,
 	use = function(self, card, area, copier)
