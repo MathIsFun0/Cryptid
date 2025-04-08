@@ -2006,35 +2006,39 @@ local azure_seal = {
 	pos = { x = 0, y = 2 },
 	-- This is still quite jank
 	calculate = function(self, card, context)
-		if context.destroying_card and not card.will_shatter then
-			card.will_shatter = true
-			G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.0,
-				func = function()
-					local card_type = "Planet"
-					local _planet = nil
-					if G.GAME.last_hand_played then
-						for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-							if v.config.hand_type == G.GAME.last_hand_played then
-								_planet = v.key
-								break
+		if context.destroying_card and context.cardarea == G.play then
+			for i, cards in ipairs(context.full_hand) do
+				if cards == card then
+					card.will_shatter = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "before",
+						delay = 0.0,
+						func = function()
+							local card_type = "Planet"
+							local _planet = nil
+							if G.GAME.last_hand_played then
+								for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+									if v.config.hand_type == G.GAME.last_hand_played then
+										_planet = v.key
+										break
+									end
+								end
 							end
-						end
-					end
 
-					for i = 1, self.config.planets_amount do
-						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
+							for i = 1, self.config.planets_amount do
+								local card =
+									create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
 
-						card:set_edition({ negative = true }, true)
-						card:add_to_deck()
-						G.consumeables:emplace(card)
-					end
-					return true
-				end,
-			}))
-
-			return { remove = true }
+								card:set_edition({ negative = true }, true)
+								card:add_to_deck()
+								G.consumeables:emplace(card)
+							end
+							return true
+						end,
+					}))
+					return { remove = true }
+				end
+			end
 		end
 	end,
 }
