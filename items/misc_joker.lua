@@ -7914,8 +7914,6 @@ local highfive = {
 	perishable_compat = true,
 	rarity = 3,
 	cost = 5,
-	unlocked = true,
-	discovered = true,
 	calculate = function(self, card, context)
 		if context.final_scoring_step then
 			local maximum = -1
