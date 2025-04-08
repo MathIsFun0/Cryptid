@@ -2026,7 +2026,8 @@ local azure_seal = {
 							end
 
 							for i = 1, self.config.planets_amount do
-								local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
+								local card =
+									create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
 
 								card:set_edition({ negative = true }, true)
 								card:add_to_deck()
