@@ -3040,6 +3040,7 @@ local global = { -- ://Global, gives a selected card the Global sticker
 		},
 		art = {
 			"HexaCryonic",
+			"Gemstonez",
 		},
 		code = {
 			"Nova",
@@ -3083,7 +3084,7 @@ local global_sticker =
 		},
 		object_type = "Sticker",
 		atlas = "sticker",
-		pos = { x = 6, y = 1 },
+		pos = { x = 6, y = 5 },
 		key = "cry_global_sticker",
 		no_sticker_sheet = true, -- also what does this and next line do?
 		prefix_config = { key = false },
