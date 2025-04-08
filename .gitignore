@@ -1,4 +1,3 @@
 # LSP setting files (add more if applicable)
 .vscode/*
 .luarc.json
-.lovelyignore

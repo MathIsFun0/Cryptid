@@ -547,9 +547,6 @@ end
 
 -- designed to work on any object type
 function Cryptid.gameset(card, center)
-	if Jen then
-		return "madness"
-	end
 	if not center then
 		if not card then
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"

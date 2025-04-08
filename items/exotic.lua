@@ -17,37 +17,31 @@ local gateway = {
 	order = 90,
 	hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
 	can_use = function(self, card)
-		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) > 0 then
-			return #G.jokers.cards < G.jokers.config.card_limit
-		else
-			--Don't allow use if everything is eternal and there is no room
-			return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
-		end
+		--Don't allow use if everything is eternal and there is no room
+		return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
 	end,
 	use = function(self, card, area, copier)
-		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
-			local deletable_jokers = {}
-			for k, v in pairs(G.jokers.cards) do
-				if not v.ability.eternal then
-					deletable_jokers[#deletable_jokers + 1] = v
-				end
+		local deletable_jokers = {}
+		for k, v in pairs(G.jokers.cards) do
+			if not v.ability.eternal then
+				deletable_jokers[#deletable_jokers + 1] = v
 			end
-			local _first_dissolve = nil
-			G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.75,
-				func = function()
-					for k, v in pairs(deletable_jokers) do
-						if v.config.center.rarity == "cry_exotic" then
-							check_for_unlock({ type = "what_have_you_done" })
-						end
-						v:start_dissolve(nil, _first_dissolve)
-						_first_dissolve = true
-					end
-					return true
-				end,
-			}))
 		end
+		local _first_dissolve = nil
+		G.E_MANAGER:add_event(Event({
+			trigger = "before",
+			delay = 0.75,
+			func = function()
+				for k, v in pairs(deletable_jokers) do
+					if v.config.center.rarity == "cry_exotic" then
+						check_for_unlock({ type = "what_have_you_done" })
+					end
+					v:start_dissolve(nil, _first_dissolve)
+					_first_dissolve = true
+				end
+				return true
+			end,
+		}))
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,

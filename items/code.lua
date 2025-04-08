@@ -7,7 +7,7 @@ local code = {
 	collection_rows = { 4, 4 }, -- 4 pages for all code cards
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = (SMODS.Mods["jen"] or {}).can_load and "c_cry_oboe" or "c_cry_crash",
+	default = "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
 }
@@ -3902,9 +3902,6 @@ local pointer = {
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return true
-	end,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { (SMODS.Mods["jen"] or {}).can_load and "and OMEGA consumables " or "" } }
 	end,
 	use = function(self, card, area, copier)
 		G.GAME.USING_CODE = true
