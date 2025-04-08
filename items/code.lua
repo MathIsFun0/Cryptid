@@ -845,10 +845,10 @@ local crash = { -- ://Crash, 1/6 to ACE, otherwise crash; determined by run seed
 local keygen = { -- ://Keygen, create a Perishable Banana voucher, destroy the previous Keygen voucher if exists
 	cry_credits = {
 		idea = {
-			"?",
+			"HexaCryonic",
 		},
 		art = {
-			"?",
+			"HexaCryonic",
 		},
 		code = {
 			"Nova",
@@ -1303,10 +1303,10 @@ local malware = { -- ://Malware, apply Glitched edition to held in hand cards
 local crynperror = { -- ://NPERROR, add last played hand back to your hand, multi-use 2
 	cry_credits = {
 		idea = {
-			"?",
+			"HexaCryonic",
 		},
 		art = {
-			"?",
+			"HexaCryonic",
 		},
 		code = {
 			"Nova",
@@ -2225,7 +2225,7 @@ local patch = { -- ://Patch, removes all visible debuffs
 local cryupdate = { -- ://Update, TBD, missing art
 	cry_credits = {
 		idea = {
-			"?",
+			"HexaCryonic",
 		},
 		art = {
 			"Gemstonez",
@@ -2425,10 +2425,10 @@ local oboe = { -- ://Off By One, the next opened booster pack has +1/+1 slots/se
 local assemble = { -- ://Assemble, add the number of jokers to selected cards +mult (like how the cards give +chips)
 	cry_credits = {
 		idea = {
-			"?",
+			"HexaCryonic",
 		},
 		art = {
-			"?",
+			"HexaCryonic",
 		},
 		code = {
 			"Nova",
@@ -2600,10 +2600,10 @@ local cryfunction =
 	{ -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
 		cry_credits = {
 			idea = {
-				"?",
+				"HexaCryonic",
 			},
 			art = {
-				"?",
+				"HexaCryonic",
 			},
 			code = {
 				"Nova",
@@ -3039,8 +3039,8 @@ local global = { -- ://Global, gives a selected card the Global sticker
 			"HexaCryonic",
 		},
 		art = {
-			"HexaCryonic",
-			"Gemstonez",
+			"Card Art: HexaCryonic",
+			"Sticker Art: Gemstonez",
 		},
 		code = {
 			"Nova",
@@ -3431,10 +3431,10 @@ local crylog =
 	{ -- ://Log, View one of: Next ante's blinds/vouchers, next 5 cards/packs in shop, draw order for current blind (if in blind), Multi-use 2
 		cry_credits = {
 			idea = {
-				"?",
+				"HexaCryonic",
 			},
 			art = {
-				"?",
+				"HexaCryonic",
 			},
 			code = {
 				"Nova",
