@@ -535,6 +535,12 @@ return {
 					"and gains {C:cry_code}one{} temp {C:cry_code}Ascension Power{}",
 				},
 			},
+			c_cry_cryfunction = {
+				name = "FUNCTION://",
+				text = {
+					"To Be {C:cry_code}Implemented{}",
+				},
+			},
 			c_cry_global = {
 				name = "://GLOBAL",
 				text = {
@@ -545,9 +551,7 @@ return {
 			c_cry_hook = {
 				name = "HOOK://",
 				text = {
-					"Select two Jokers to become {C:cry_code}Hooked",
-					"{C:inactive,s:0.8}Only works properly if Jokers trigger in the same context,",
-					"{C:inactive,s:0.8}such as Joker and The Duo (both joker_main)",
+					"To Be {C:cry_code}Implemented{}",
 				},
 			},
 			c_cry_inst = {
@@ -556,6 +560,18 @@ return {
 					"Draw a card with selected card's {C:cry_code}rank{}",
 					"and one with selected card's {C:cry_code}suit{}",
 					"{C:inactive}(if possible){}",
+				},
+			},
+			c_cry_keygen = {
+				name = "://KEYGEN",
+				text = {
+					"To Be {C:cry_code}Implemented{}",
+				},
+			},
+			c_cry_crylog = {
+				name = "://LOG",
+				text = {
+					"To Be {C:cry_code}Implemented{}",
 				},
 			},
 			c_cry_machinecode = {
@@ -583,6 +599,12 @@ return {
 					"end of round",
 				},
 			},
+			c_cry_nperror = {
+				name = "://NPERROR",
+				text = {
+					"To Be {C:cry_code}Implemented{}",
+				},
+			},
 			c_cry_patch = {
 				name = "://PATCH",
 				text = {
@@ -605,6 +627,12 @@ return {
 					"{C:cry_code}#1#{} extra card#<s>1# and",
 					"{C:cry_code}#1#{} extra choice#<s>1#",
 					"{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
+				},
+			},
+			c_cry_quantify = {
+				name = "://QUANTIFY",
+				text = {
+					"To Be {C:cry_code}Implemented{}",
 				},
 			},
 			c_cry_reboot = {
@@ -655,6 +683,12 @@ return {
 				text = {
 					"Create a {C:cry_code}Glitched",
 					"Food Joker",
+				},
+			},
+			c_cry_cryupdate = {
+				name = "://UPDATE",
+				text = {
+					"To Be {C:cry_code}Determined{}",
 				},
 			},
 			c_cry_variable = {
