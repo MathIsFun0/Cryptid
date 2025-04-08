@@ -2228,7 +2228,7 @@ local cryupdate = { -- ://Update, TBD, missing art
 			"?",
 		},
 		art = {
-			"?",
+			"Gemstonez",
 		},
 		code = {
 			"Nova",
@@ -2243,7 +2243,7 @@ local cryupdate = { -- ://Update, TBD, missing art
 	set = "Code",
 	name = "cry-Update",
 	key = "cryupdate",
-	pos = { x = 9, y = 5 },
+	pos = { x = 6, y = 4 },
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 13,
@@ -2256,7 +2256,7 @@ local cryupdate = { -- ://Update, TBD, missing art
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-} -- MISSING ART!!! -- UNIMPLEMENTED
+}-- UNIMPLEMENTED
 
 local hook = { -- Hook://, applies Hooked to two jokers
 	cry_credits = {
