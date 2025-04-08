@@ -5863,7 +5863,7 @@ local oldblueprint = {
 								G.jokers:remove_card(card)
 								card:remove()
 								card = nil
-								if G.P_CENTERS["j_blueprint"].unlocked and G.GAME.oldbpfactor < 10 then
+								if G.P_CENTERS["j_blueprint"].unlocked and (G.GAME.oldbpfactor and G.GAME.oldbpfactor < 10) then
 									G.GAME.oldbpfactor = math.min(((G.GAME.oldbpfactor or 1) * 3), 10)
 								end
 								return true
