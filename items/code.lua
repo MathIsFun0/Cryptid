@@ -285,7 +285,7 @@ local crash = { -- ://Crash, 1/6 to ACE, otherwise crash; determined by run seed
 	name = "cry-Crash",
 	key = "crash",
 	pos = { x = 7, y = 0 },
-	config = {},
+	no_collection = true,
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 0,
