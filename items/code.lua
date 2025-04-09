@@ -851,7 +851,7 @@ local keygen = { -- ://Keygen, create a Perishable Banana voucher, destroy the p
 			"HexaCryonic",
 		},
 		code = {
-			"Nova",
+			"SMG9000",
 		},
 	},
 	dependencies = {
@@ -868,15 +868,76 @@ local keygen = { -- ://Keygen, create a Perishable Banana voucher, destroy the p
 	atlas = "atlasnotjokers",
 	order = 1,
 	can_use = function(self, card)
-		return false
+		return true
 	end,
-	-- use = function(self, card, area, copier)
+	use = function(self, card, area, copier)
+		local area
+		if G.STATE == G.STATES.HAND_PLAYED then
+			if not G.redeemed_vouchers_during_hand then
+				G.redeemed_vouchers_during_hand =
+					CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+			end
+			area = G.redeemed_vouchers_during_hand
+			else
+				area = G.play
+		end
+		for i = 1, #G.vouchers.cards do
+			if G.vouchers.cards[i].ability.keygen then
+				local unredeemed_voucher = G.vouchers.cards[i]
+				local card = copy_card(unredeemed_voucher)
+				card.ability.extra = copy_table(unredeemed_voucher.ability.extra)
+				if card.facing == "back" then
+					card:flip()
+				end
 
-	-- end,
-	-- bulk_use = function(self, card, area, copier, number)
+				card:start_materialize()
+				area:emplace(card)
+				card.cost = 0
+				card.shop_voucher = false
+				local current_round_voucher = G.GAME.current_round.voucher
+				card:unredeem()
+				G.GAME.current_round.voucher = current_round_voucher
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0,
+					func = function()
+						card:start_dissolve()
+						unredeemed_voucher:start_dissolve()
+						return true
+					end,
+				}))
+			end
+		end
 
-	-- end,
-} -- UNIMPLEMENTED
+		local _pool = get_current_pool("Voucher", nil, nil, nil, true)
+		local center = pseudorandom_element(_pool, pseudoseed("cry_keygen_redeem"))
+		local it = 1
+		while center == "UNAVAILABLE" do
+			it = it + 1
+			center = pseudorandom_element(_pool, pseudoseed("cry_keygen_redeem_resample" .. it))
+		end
+		local card = create_card("Voucher", area, nil, nil, nil, nil, center)
+		card:start_materialize()
+		area:emplace(card)
+		card:set_perishable(true)
+		card.ability.perishable = true
+		card.ability.banana = true
+		card.ability.keygen = true
+		card.cost = 0
+		card.shop_voucher = false
+		local current_round_voucher = G.GAME.current_round.voucher
+		card:redeem()
+		G.GAME.current_round.voucher = current_round_voucher
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				card:start_dissolve()
+				return true
+			end,
+		}))
+		end,
+}
 
 local payload =
 	{ -- ://Payload, triple interest gained on next cash out, stacks exponentially (multiplicative on modest)
