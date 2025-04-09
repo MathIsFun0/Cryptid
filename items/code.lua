@@ -3104,19 +3104,19 @@ local global_sticker =
 			if card.area and card.area.config.type == "deck" then
 				notilt = true
 			end
-			if not G.shared_stickers["cry_rigged2"] then
-				G.shared_stickers["cry_rigged2"] =
-					Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 })
+			if not G.shared_stickers["cry_global_sticker"] then
+				G.shared_stickers["cry_global_sticker"] =
+					Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
 			end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
 
 			G.shared_stickers[self.key].role.draw_major = card
-			G.shared_stickers["cry_rigged2"].role.draw_major = card
+			G.shared_stickers["cry_global_sticker"].role.draw_major = card
 
 			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 
 			card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
-			G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
-			G.shared_stickers["cry_rigged2"]:draw_shader(
+			G.shared_stickers["cry_global_sticker"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+			G.shared_stickers["cry_global_sticker"]:draw_shader(
 				"hologram",
 				nil,
 				card.ARGS.send_to_shader,
