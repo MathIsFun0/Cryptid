@@ -395,7 +395,7 @@ function cry_best_interest_cap()
 	}
 	for _, table in ipairs(vouchers) do
 		for i, v in ipairs(table) do
-			if v.ability.extra >= best then
+		 if to_big(v.ability.extra) >= to_big(best) then
 				best = v.ability.extra
 			end
 		end
