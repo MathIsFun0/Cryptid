@@ -4596,7 +4596,6 @@ return {
 
 			cry_tax_placeholder = "(X0.4 blind requirement)",
 			cry_joke_placeholder = "(multiple of 8)",
-			cry_greed_placeholder = "(0.25X base)",
 
 			k_code = "Code",
 			k_content_set = "Thematic Set",
