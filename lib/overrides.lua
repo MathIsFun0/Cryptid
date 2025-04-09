@@ -1017,7 +1017,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			tot = tot + v.ability.extra
 		end
 		if card.ability.cry_multiuse then
-			card.ability.cry_multiuse = math.ceiling((card.ability.cry_multiuse + tot))
+			card.ability.cry_multiuse = math.ceil((card.ability.cry_multiuse + tot))
 		else
 			card.ability.cry_multiuse = tot + 1
 		end
