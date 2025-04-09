@@ -565,7 +565,9 @@ return {
 			c_cry_keygen = {
 				name = "://KEYGEN",
 				text = {
-					"To Be {C:cry_code}Implemented{}",
+					"Create a random {C:cry_code}Perishable Banana{}",
+					"voucher, {C:cry_code}destroy{} previously created",
+					"voucher created this way.",
 				},
 			},
 			c_cry_crylog = {
