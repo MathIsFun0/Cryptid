@@ -41,7 +41,8 @@ local cj = Card.calculate_joker
 
 function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	-- blacklist certain jokers that we don't want to affect the scale rate of
-	if self.ability.name == "cry-happyhouse"
+	if
+		self.ability.name == "cry-happyhouse"
 		or self.ability.name == "Acrobat"
 		or self.ability.name == "cry-sapling"
 		or self.ability.name == "cry-mstack"
@@ -54,7 +55,10 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	if self.ability and type(self.ability) == "table" then
 		-- if we've never defined a scale info table for this card ID, create a copy of its initial abilities
 		-- also reset it if it's in the old format, to semi-support saves
-		if not G.GAME.cry_double_scale[self.sort_id] or type(G.GAME.cry_double_scale[self.sort_id].scaler_base) == "number" then
+		if
+			not G.GAME.cry_double_scale[self.sort_id]
+			or type(G.GAME.cry_double_scale[self.sort_id].scaler_base) == "number"
+		then
 			G.GAME.cry_double_scale[self.sort_id] = { ability = { double_scale = true } }
 			for k, v in pairs(self.ability) do
 				if type(self.ability[k]) ~= "table" then
@@ -69,10 +73,12 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 		end
 
 		local dbl_info = G.GAME.cry_double_scale[self.sort_id]
-		
+
 		-- allow mods to define their own info if cryptid wouldn't be able to automatically detect it
 		if type(self.config.center.cry_double_scale_info) == "function" then
-			if not dbl_info.scaler then self.config.center:cry_double_scale_info(self, dbl_info) end
+			if not dbl_info.scaler then
+				self.config.center:cry_double_scale_info(self, dbl_info)
+			end
 		-- handle some specific jokers manually
 		elseif self.ability.name == "cry-Number Blocks" then
 			dbl_info.base = { { "extra", "money" } }
@@ -111,14 +117,18 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 			dbl_info.scaler = { { "extra" } }
 			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra }
 		-- ignore completely, we handle this separately
-		elseif self.ability.name == "Throwback" or self.ability.name == "cry-Exponentia" or self.ability.name == "cry-Compound Interest" then
+		elseif
+			self.ability.name == "Throwback"
+			or self.ability.name == "cry-Exponentia"
+			or self.ability.name == "cry-Compound Interest"
+		then
 		-- now, we try to define any other jokers' scale info ourselves
 		else
 			-- initialize the tables we'll be using to store scale info in
-			dbl_info.base = dbl_info.base or { } -- keys of values that are getting scaled
-			dbl_info.scaler = dbl_info.scaler or { } -- keys of factors that increase those values
-			dbl_info.scaler_base = dbl_info.scaler_base or { } -- the original value of the scale factor
-			dbl_info.scaler_tracker = dbl_info.scaler_tracker or { } -- list of keys that we've written info for already_exists
+			dbl_info.base = dbl_info.base or {} -- keys of values that are getting scaled
+			dbl_info.scaler = dbl_info.scaler or {} -- keys of factors that increase those values
+			dbl_info.scaler_base = dbl_info.scaler_base or {} -- the original value of the scale factor
+			dbl_info.scaler_tracker = dbl_info.scaler_tracker or {} -- list of keys that we've written info for already_exists
 			-- list of default calculation fields and their default state; we can skip these
 			local default_modifiers = {
 				mult = 0,
@@ -161,11 +171,10 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 								-- if the difference is extremely close, and we haven't found an even better match,
 								-- then mark this as the best fit so far
 								and to_number(to_big(predicted_mod / u)) >= 0.999
-								and to_number(to_big(predicted_mod / u))
-									< to_number(to_big(best_coeff))
+								and to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff))
 							then
 								best_coeff = to_number(to_big(predicted_mod / u))
-								best_key = { "extra" , l }
+								best_key = { "extra", l }
 							end
 						end
 					end
@@ -191,8 +200,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 										not dbl_info.scaler_tracker[l .. "/" .. _l]
 										and is_number(_u)
 										and to_number(to_big(predicted_mod / _u)) >= 0.999
-										and to_number(to_big(predicted_mod / _u))
-											< to_number(to_big(best_coeff))
+										and to_number(to_big(predicted_mod / _u)) < to_number(to_big(best_coeff))
 									then
 										best_coeff = to_number(to_big(predicted_mod / _u))
 										best_key = { l, _l }
@@ -229,7 +237,11 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 							local best_key = { "" }
 							local best_coeff = 10 ^ 100
 							for l, u in pairs(self.ability) do
-								if not dbl_info.scaler_tracker[l] and is_number(u) and to_number(to_big(predicted_mod / u)) >= 0.999 then
+								if
+									not dbl_info.scaler_tracker[l]
+									and is_number(u)
+									and to_number(to_big(predicted_mod / u)) >= 0.999
+								then
 									if to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff)) then
 										best_coeff = to_number(to_big(predicted_mod / u))
 										best_key = { l }
@@ -268,7 +280,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 			for info_i = 1, #dbl_info.scaler do
 				if not dbl_info.scaler_base[info_i] then
 					dbl_info.scaler_base[info_i] = #dbl_info.scaler[info_i] == 2
-						and orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+							and orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
 						or orig_ability[dbl_info.scaler[info_i][1]]
 				end
 			end
@@ -276,7 +288,11 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
 
 	-- now, if the joker has scaler info defined, do the actual double scale stuff
-	if G.GAME.cry_double_scale[self.sort_id] and G.GAME.cry_double_scale[self.sort_id].scaler and #G.GAME.cry_double_scale[self.sort_id].scaler > 0 then
+	if
+		G.GAME.cry_double_scale[self.sort_id]
+		and G.GAME.cry_double_scale[self.sort_id].scaler
+		and #G.GAME.cry_double_scale[self.sort_id].scaler > 0
+	then
 		local dbl_info = G.GAME.cry_double_scale[self.sort_id]
 		-- loop through each value in the scaler info and see what changed
 		for info_i = 1, #dbl_info.scaler do
@@ -336,7 +352,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 				end
 				local true_base = dbl_info.scaler_base[info_i]
 				-- if the new value is different from the previous value, then it has been scaled
-				if new_scale_base and ((to_big(math.abs(new_scale_base - orig_scale_base)) > to_big(0))) then
+				if new_scale_base and (to_big(math.abs(new_scale_base - orig_scale_base)) > to_big(0)) then
 					-- now, check for any jokers that affect scaling
 					for i = 1, #G.jokers.cards do
 						local obj = G.jokers.cards[i].config.center
@@ -401,7 +417,10 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 									G.GAME.probabilities.normal = 1e9
 								end
 								-- check if another joker is retriggering our scale-affecting joker
-								local check = cj(G.jokers.cards[j], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
+								local check = cj(
+									G.jokers.cards[j],
+									{ retrigger_joker_check = true, other_card = G.jokers.cards[i] }
+								)
 								if G.jokers.cards[j].ability.cry_rigged then
 									G.GAME.probabilities.normal = ggpn
 								end
@@ -448,7 +467,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 										if G.jokers.cards[i].ability.cry_rigged then
 											G.GAME.probabilities.normal = ggpn
 										end
-			
+
 										if o then
 											if #dbl_info.scaler[info_i] == 2 then
 												if
@@ -457,7 +476,8 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 														or not self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
 													)
 												then
-													self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]] = o
+													self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]] =
+														o
 													orig_scale_scale = o
 												end
 											else
@@ -679,14 +699,20 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 				end
 			end
 		end
-		if G.GAME.cry_double_scale[jkr.sort_id] and scaler_info and (not G.GAME.cry_double_scale[jkr.sort_id].scaler or #G.GAME.cry_double_scale[jkr.sort_id].scaler == 0) then
+		if
+			G.GAME.cry_double_scale[jkr.sort_id]
+			and scaler_info
+			and (not G.GAME.cry_double_scale[jkr.sort_id].scaler or #G.GAME.cry_double_scale[jkr.sort_id].scaler == 0)
+		then
 			for k, v in pairs(scaler_info) do
 				G.GAME.cry_double_scale[jkr.sort_id][k] = v
 			end
 		end
 	end
 	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
-	if not dbl_info then return end
+	if not dbl_info then
+		return
+	end
 	for info_i = 1, #dbl_info.scaler do
 		local true_base = dbl_info.scaler_base[info_i]
 		for i = 1, #G.jokers.cards do
@@ -740,7 +766,8 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 					if G.jokers.cards[j].ability.cry_rigged then
 						G.GAME.probabilities.normal = 1e9
 					end
-					local check = cj(G.jokers.cards[j], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
+					local check =
+						cj(G.jokers.cards[j], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
 					if G.jokers.cards[j].ability.cry_rigged then
 						G.GAME.probabilities.normal = ggpn
 					end
