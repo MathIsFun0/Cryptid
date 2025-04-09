@@ -683,6 +683,11 @@ local greed = {
 			"set_cry_blind",
 		},
 	},
+	config = {
+		money_factor = 5,
+		blind_mod = 0.25,
+		max_scale = 5000,
+	},
 	object_type = "Blind",
 	name = "cry-greed",
 	key = "greed",
@@ -698,18 +703,42 @@ local greed = {
 	loc_vars = function(self, info_queue, card)
 		return {
 		    vars = {
-		        number_format(card.ability.extra.money_factor),
-		        number_format(lenient_bignum((get_blind_amount(G.GAME.round_resets.ante) * to_big(card.ability.extra.blind_mod))),
+		        number_format(self.config.money_factor),
+		        number_format(lenient_bignum((get_blind_amount(G.GAME.round_resets.ante) * self.config.blind_mod))),
 		    }
 		}
 	end,
 	collection_loc_vars = function(self)
-		return { vars = { localize("cry_greed_placeholder") } }
+		return {
+			vars = {
+				number_format(self.config.money_factor),
+				"("..number_format(self.config.blind_mod).."X base)"
+			}
+		}
 	end,
 	set_blind = function(self, reset, silent)
-		if #G.GAME.dollars < 5000 then -- what do you mean dollars is a table?
-			G.GAME.blind.chips = (get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + ((math.floor(G.GAME.dollars / 5)) * ((get_blind_amount(G.GAME.round_resets.ante) * 0.25))) -- go my equations
-		else G.GAME.blind.chips = (get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + (1000 * ((get_blind_amount(G.GAME.round_resets.ante) * 0.25))) -- set cap at $5000
+		if to_big(G.GAME.dollars) < to_big(self.config.max_scale) then
+			G.GAME.blind.chips = -- go my equations
+			(
+				(
+					get_blind_amount(G.GAME.round_resets.ante)
+						* G.GAME.starting_params.ante_scaling
+				) + (
+					math.floor(G.GAME.dollars / self.config.money_factor)
+						* ((get_blind_amount(G.GAME.round_resets.ante) * self.config.blind_mod))
+				)
+			)
+		else 
+			G.GAME.blind.chips = -- set cap at $5000
+			(
+				(
+					get_blind_amount(G.GAME.round_resets.ante)
+						* G.GAME.starting_params.ante_scaling
+				) + (
+					math.floor(self.config.max_scale / self.config.money_factor) -- 1000 extra increments
+						* ((get_blind_amount(G.GAME.round_resets.ante) * self.config.blind_mod))
+				)
+			)
 		end
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
