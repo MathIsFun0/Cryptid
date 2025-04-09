@@ -675,6 +675,40 @@ local scorch = {
 		end
 	end,
 }
+-- +0.25X blind requirements
+-- for every $5 you have when selected
+local greed = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	object_type = "Blind",
+	name = "cry-greed",
+	key = "greed",
+	pos = { x = 0, y = 0 }, -- use Tax as placeholder icon
+	boss = {
+		min = 1,
+		max = 10,
+	},
+	atlas = "blinds",
+	order = 22,
+	boss_colour = HEX("4ca180"),
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (get_blind_amount(G.GAME.round_resets.ante) * 0.25) } }
+	end,
+	collection_loc_vars = function(self)
+		return { vars = { localize("cry_greed_placeholder") } }
+	end,
+	set_blind = function(self, reset, silent)
+		G.GAME.blind.chips = (get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling) + ((math.floor(G.GAME.dollars / 5)) * ((get_blind_amount(G.GAME.round_resets.ante) * 0.25))) -- go my equations
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+	end,
+	disable = function(self, silent)
+		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling * 2
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+	end,
+}
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1427,6 +1461,7 @@ local items_togo = {
 	shackle,
 	pin,
 	scorch,
+	greed,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,
