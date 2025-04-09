@@ -3106,7 +3106,7 @@ local global_sticker =
 			end
 			if not G.shared_stickers["cry_global_sticker"] then
 				G.shared_stickers["cry_global_sticker"] =
-					Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
+					Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 4, y = 5 })
 			end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
 
 			G.shared_stickers[self.key].role.draw_major = card
