@@ -746,7 +746,7 @@ local scalae = {
 	cost = 50,
 	atlas = "atlasexotic",
 	order = 311,
-	config = { extra = { scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1 } },
+	config = { extra = { scale = 1, scale_mod = 1 } },
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
 			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)

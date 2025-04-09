@@ -93,8 +93,8 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 			dbl_info.scaler = { { "extra", "Xmult_mod" } }
 			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.Xmult_mod }
 		elseif self.ability.name == "cry-Scalae" then
-			dbl_info.base = { { "extra", "shadow_scale" } }
-			dbl_info.scaler = { { "extra", "shadow_scale_mod" } }
+			dbl_info.base = { { "extra", "scale" } }
+			dbl_info.scaler = { { "extra", "scale_mod" } }
 			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.shadow_scale_mod }
 		elseif self.ability.name == "cry-mprime" then
 			dbl_info.base = { { "extra", "mult" } }

@@ -1110,7 +1110,7 @@ local compound_interest = {
 				scaler = { { "extra", "percent_mod" } },
 				scaler_base = { card.ability.extra.percent_mod },
 			})
-			if bonus > to_big(0) then
+			if to_big(bonus) > to_big(0) then
 				return bonus
 			end
 		else
