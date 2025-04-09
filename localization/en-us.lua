@@ -399,8 +399,8 @@ return {
 			bl_cry_greed = {
 				name = "The Greed",
 				text = {
-					"+#1# blind requirement",
-					"per $5 when selected",
+					"+#2# blind requirement",
+					"per $#1# when selected",
 				},
 			},
 			bl_cry_pinkbow = {
