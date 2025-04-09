@@ -351,12 +351,11 @@ local exponentia = {
 							vars = { number_format(v.ability.extra.Emult) },
 						}),
 					})
-					Cryptid.exponentia_scale_mod(
-						v,
-						lenient_bignum(v.ability.extra.Emult_mod),
-						old,
-						v.ability.extra.Emult
-					)
+					Cryptid.apply_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult, {
+						base = { { "extra", "Emult" } },
+						scaler = { { "extra", "Emult_mod" } },
+						scaler_base = { v.ability.extra.Emult_mod },
+					})
 				end
 			end
 			return ret
@@ -747,13 +746,7 @@ local scalae = {
 	cost = 50,
 	atlas = "atlasexotic",
 	order = 311,
-	config = {
-		extra = {
-			scale = 1,
-			scale_mod = 1,
-		},
-	},
-	--todo: support jokers that scale multiple variables
+	config = { extra = { scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1 } },
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
 			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)
