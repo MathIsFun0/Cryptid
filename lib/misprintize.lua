@@ -125,7 +125,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 								or to_big(max) > to_big(prob_max)
 							)
 						then
-							print('\t\t\t got "odds"')
+							-- print('\t\t\t got "odds"')
 							initial = Cryptid.base_values[name][k][_k] * prob_max
 							min = 1
 							max = 1
