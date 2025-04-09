@@ -3074,6 +3074,7 @@ local global = { -- ://Global, gives a selected card the Global sticker
 			return (#G.hand.highlighted + #G.consumeables.highlighted == 2) and not #G.consumeables.highlighted == 2
 		else
 			return (#G.hand.highlighted + #G.jokers.highlighted == 2) and not #G.jokers.highlighted == 2
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_global_sticker", set = "Other", vars = {} }
