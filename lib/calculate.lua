@@ -40,387 +40,462 @@ end
 local cj = Card.calculate_joker
 
 function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
+	-- blacklist certain jokers that we don't want to affect the scale rate of
 	if
-		self.ability.name ~= "cry-happyhouse"
-		and self.ability.name ~= "Acrobat"
-		and self.ability.name ~= "cry-sapling"
-		and self.ability.name ~= "cry-mstack"
-		and self.ability.name ~= "cry-notebook"
-		and self.ability.name ~= "Invisible Joker"
-		and self.ability.name ~= "cry-Old Invisible Joker"
+		self.ability.name == "cry-happyhouse"
+		or self.ability.name == "Acrobat"
+		or self.ability.name == "cry-sapling"
+		or self.ability.name == "cry-mstack"
+		or self.ability.name == "cry-notebook"
+		or self.ability.name == "Invisible Joker"
+		or self.ability.name == "cry-Old Invisible Joker"
 	then
-		local jkr = self
-		if jkr.ability and type(jkr.ability) == "table" then
-			if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
-				if not G.GAME.cry_double_scale[jkr.sort_id] then
-					G.GAME.cry_double_scale[jkr.sort_id] = { ability = { double_scale = true } }
-				end
-				for k, v in pairs(jkr.ability) do
-					if type(jkr.ability[k]) ~= "table" then
-						G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
-					else
-						G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
-						for _k, _v in pairs(jkr.ability[k]) do
-							G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
-						end
+		return
+	end
+	if self.ability and type(self.ability) == "table" then
+		-- if we've never defined a scale info table for this card ID, create a copy of its initial abilities
+		-- also reset it if it's in the old format, to semi-support saves
+		if
+			not G.GAME.cry_double_scale[self.sort_id]
+			or type(G.GAME.cry_double_scale[self.sort_id].scaler_base) == "number"
+		then
+			G.GAME.cry_double_scale[self.sort_id] = { ability = { double_scale = true } }
+			for k, v in pairs(self.ability) do
+				if type(self.ability[k]) ~= "table" then
+					G.GAME.cry_double_scale[self.sort_id].ability[k] = v
+				else
+					G.GAME.cry_double_scale[self.sort_id].ability[k] = {}
+					for _k, _v in pairs(self.ability[k]) do
+						G.GAME.cry_double_scale[self.sort_id].ability[k][_k] = _v
 					end
 				end
 			end
-			if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
-				local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
-				if jkr.ability.name == "cry-Number Blocks" then
-					dbl_info.base = { "extra", "money" }
-					dbl_info.scaler = { "extra", "money_mod" }
-					dbl_info.scaler_base = jkr.ability.extra.money_mod
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "cry-Exponentia" then
-					dbl_info.base = { "extra", "Emult" }
-					dbl_info.scaler = { "extra", "Emult_mod" }
-					dbl_info.scaler_base = jkr.ability.extra.Emult_mod
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "cry-Redeo" then
-					dbl_info.base = { "extra", "money_req" }
-					dbl_info.scaler = { "extra", "money_mod" }
-					dbl_info.scaler_base = jkr.ability.extra.money_mod
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "cry-Chili Pepper" then
-					dbl_info.base = { "extra", "Xmult" }
-					dbl_info.scaler = { "extra", "Xmult_mod" }
-					dbl_info.scaler_base = jkr.ability.extra.Xmult_mod
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "cry-Scalae" then
-					dbl_info.base = { "extra", "shadow_scale" }
-					dbl_info.scaler = { "extra", "shadow_scale_mod" }
-					dbl_info.scaler_base = jkr.ability.extra.scale_mod
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "cry-mprime" then
-					dbl_info.base = { "extra", "mult" }
-					dbl_info.scaler = { "extra", "bonus" }
-					dbl_info.scaler_base = jkr.ability.extra.bonus
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "Yorick" then
-					dbl_info.base = { "x_mult" }
-					dbl_info.scaler = { "extra", "xmult" } --not kidding
-					dbl_info.scaler_base = 1
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "Hologram" then
-					dbl_info.base = { "x_mult" }
-					dbl_info.scaler = { "extra" }
-					dbl_info.scaler_base = jkr.ability.extra
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "Gift Card" then
-					dbl_info.base = { "extra_value" }
-					dbl_info.scaler = { "extra" }
-					dbl_info.scaler_base = jkr.ability.extra
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "Throwback" then
-					dbl_info.base = { "x_mult" }
-					dbl_info.scaler = { "extra" }
-					dbl_info.scaler_base = jkr.ability.x_mult or 1
-					dbl_info.offset = 1
-				end
-				if jkr.ability.name == "Egg" then
-					dbl_info.base = { "extra_value" }
-					dbl_info.scaler = { "extra" }
-					dbl_info.scaler_base = jkr.ability.extra
-					dbl_info.offset = 1
-				end
-				local default_modifiers = {
-					mult = 0,
-					h_mult = 0,
-					h_x_mult = 0,
-					h_dollars = 0,
-					p_dollars = 0,
-					t_mult = 0,
-					t_chips = 0,
-					x_mult = 1,
-					h_size = 0,
-					d_size = 0,
-				}
-				for k, v in pairs(jkr.ability) do
-					--extra_value is ignored because it can be scaled by Gift Card
-					if
-						k ~= "extra_value"
-						and dbl_info.ability[k] ~= v
-						and is_number(v)
-						and is_number(dbl_info.ability[k])
-					then
-						dbl_info.base = { k }
-						local predicted_mod = math.abs(to_number(to_big(v)) - to_number(to_big(dbl_info.ability[k])))
-						local best_key = { "" }
-						local best_coeff = 10 ^ 100
-						for l, u in pairs(jkr.ability) do
-							if not (default_modifiers[l] and default_modifiers[l] == u) then
-								if l ~= k and is_number(u) then
+		end
+
+		local dbl_info = G.GAME.cry_double_scale[self.sort_id]
+
+		-- allow mods to define their own info if cryptid wouldn't be able to automatically detect it
+		if type(self.config.center.cry_double_scale_info) == "function" then
+			if not dbl_info.scaler then
+				self.config.center:cry_double_scale_info(self, dbl_info)
+			end
+		-- handle some specific jokers manually
+		elseif self.ability.name == "cry-Number Blocks" then
+			dbl_info.base = { { "extra", "money" } }
+			dbl_info.scaler = { { "extra", "money_mod" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.money_mod }
+		elseif self.ability.name == "cry-Redeo" then
+			dbl_info.base = { { "extra", "money_req" } }
+			dbl_info.scaler = { { "extra", "money_mod" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.money_mod }
+		elseif self.ability.name == "cry-Chili Pepper" then
+			dbl_info.base = { { "extra", "Xmult" } }
+			dbl_info.scaler = { { "extra", "Xmult_mod" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.Xmult_mod }
+		elseif self.ability.name == "cry-Scalae" then
+			dbl_info.base = { { "extra", "shadow_scale" } }
+			dbl_info.scaler = { { "extra", "shadow_scale_mod" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.shadow_scale_mod }
+		elseif self.ability.name == "cry-mprime" then
+			dbl_info.base = { { "extra", "mult" } }
+			dbl_info.scaler = { { "extra", "bonus" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.bonus }
+		elseif self.ability.name == "Yorick" then
+			dbl_info.base = { { "x_mult" } }
+			dbl_info.scaler = { { "extra", "xmult" } } --not kidding
+			dbl_info.scaler_base = dbl_info.scaler_base or { 1 }
+		elseif self.ability.name == "Hologram" then
+			dbl_info.base = { { "x_mult" } }
+			dbl_info.scaler = { { "extra" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra }
+		elseif self.ability.name == "Gift Card" then
+			dbl_info.base = { { "extra_value" } }
+			dbl_info.scaler = { { "extra" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra }
+		elseif self.ability.name == "Egg" then
+			dbl_info.base = { { "extra_value" } }
+			dbl_info.scaler = { { "extra" } }
+			dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra }
+		-- ignore completely, we handle this separately
+		elseif
+			self.ability.name == "Throwback"
+			or self.ability.name == "cry-Exponentia"
+			or self.ability.name == "cry-Compound Interest"
+		then
+		-- now, we try to define any other jokers' scale info ourselves
+		else
+			-- initialize the tables we'll be using to store scale info in
+			dbl_info.base = dbl_info.base or {} -- keys of values that are getting scaled
+			dbl_info.scaler = dbl_info.scaler or {} -- keys of factors that increase those values
+			dbl_info.scaler_base = dbl_info.scaler_base or {} -- the original value of the scale factor
+			dbl_info.scaler_tracker = dbl_info.scaler_tracker or {} -- list of keys that we've written info for already_exists
+			-- list of default calculation fields and their default state; we can skip these
+			local default_modifiers = {
+				mult = 0,
+				h_mult = 0,
+				h_x_mult = 0,
+				h_dollars = 0,
+				p_dollars = 0,
+				t_mult = 0,
+				t_chips = 0,
+				x_mult = 1,
+				h_size = 0,
+				d_size = 0,
+			}
+			for k, v in pairs(self.ability) do
+				if
+					k ~= "extra_value" -- extra_value is ignored because it can be scaled by Gift Card
+					and not dbl_info.scaler_tracker[k] -- skip if we've already tracked this field
+					and dbl_info.ability[k] ~= v -- compare the original value against its current one to see if it has changed
+					and is_number(v)
+					and is_number(dbl_info.ability[k])
+				then
+					-- we found a new value that's changed since its initial creation
+					-- now we want to figure out scaler info for it
+					local info_i = #dbl_info.base + 1
+					dbl_info.base[info_i] = { k }
+					dbl_info.scaler_tracker[k] = true
+
+					-- get the difference between the current value and the initial value
+					-- we'll use this to determine which ability field is most likely the scaler
+					local predicted_mod = math.abs(to_number(to_big(v)) - to_number(to_big(dbl_info.ability[k])))
+					local best_key = { "" }
+					local best_coeff = 10 ^ 100
+					-- loop through each value in the ability table to find the best match
+					-- start with extra because that's most likely to have the value we want in it
+					if type(self.ability.extra) == "table" then
+						for l, u in pairs(self.ability.extra) do
+							if
+								not dbl_info.scaler_tracker["extra/" .. l] -- skip if we've used this field before
+								and is_number(u) -- and if it's not a number
+								-- if the difference is extremely close, and we haven't found an even better match,
+								-- then mark this as the best fit so far
+								and to_number(to_big(predicted_mod / u)) >= 0.999
+								and to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff))
+							then
+								best_coeff = to_number(to_big(predicted_mod / u))
+								best_key = { "extra", l }
+							end
+						end
+					end
+					-- then do the rest
+					for l, u in pairs(self.ability) do
+						-- skip the field if it's one of the default calc values, we know it's not the scaler
+						if not (default_modifiers[l] and default_modifiers[l] == u) then
+							if not dbl_info.scaler_tracker[l] and is_number(u) then
+								-- if the difference is extremely close, and we haven't found an even better match,
+								-- then mark this as the best fit so far
+								if
+									to_number(to_big(predicted_mod / u)) >= 0.999
+									and to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff))
+								then
+									best_coeff = to_number(to_big(predicted_mod / u))
+									best_key = { l }
+								end
+							end
+							if type(self.ability[l]) == "table" and l ~= "extra" then
+								-- again but for values within other contained tables, excluding extra bc we checked that already
+								for _l, _u in pairs(self.ability[l]) do
 									if
-										to_number(to_big(predicted_mod / u)) >= 0.999
-										and to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff))
+										not dbl_info.scaler_tracker[l .. "/" .. _l]
+										and is_number(_u)
+										and to_number(to_big(predicted_mod / _u)) >= 0.999
+										and to_number(to_big(predicted_mod / _u)) < to_number(to_big(best_coeff))
 									then
+										best_coeff = to_number(to_big(predicted_mod / _u))
+										best_key = { l, _l }
+									end
+								end
+							end
+						end
+					end
+					dbl_info.scaler[info_i] = best_key
+					local tracker_key = best_key[1]
+					if #best_key == 2 then
+						tracker_key = best_key[1] .. "/" .. best_key[2]
+					end
+					dbl_info.scaler_tracker[tracker_key] = true
+				end
+				-- again but for contained tables again
+				if
+					type(self.ability[k]) == "table"
+					and type(dbl_info.ability) == "table"
+					and type(dbl_info.ability[k]) == "table"
+				then
+					for _k, _v in pairs(self.ability[k]) do
+						if
+							not dbl_info.scaler_tracker[k .. "/" .. _k]
+							and dbl_info.ability[k][_k] ~= _v
+							and is_number(_v)
+							and is_number(dbl_info.ability[k][_k])
+						then
+							local info_i = #dbl_info.base + 1
+							dbl_info.base[info_i] = { k, _k }
+							dbl_info.scaler_tracker[k .. "/" .. _k] = true
+
+							local predicted_mod = math.abs(_v - dbl_info.ability[k][_k])
+							local best_key = { "" }
+							local best_coeff = 10 ^ 100
+							for l, u in pairs(self.ability) do
+								if
+									not dbl_info.scaler_tracker[l]
+									and is_number(u)
+									and to_number(to_big(predicted_mod / u)) >= 0.999
+								then
+									if to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff)) then
 										best_coeff = to_number(to_big(predicted_mod / u))
 										best_key = { l }
 									end
 								end
-								if type(jkr.ability[l]) == "table" then
-									for _l, _u in pairs(jkr.ability[l]) do
+								if type(self.ability[l]) == "table" then
+									-- Again!
+									for _l, _u in pairs(self.ability[l]) do
 										if
-											is_number(_u)
+											not dbl_info.scaler_tracker[l .. "/" .. _l]
+											and is_number(_u)
 											and to_number(to_big(predicted_mod / _u)) >= 0.999
-											and to_number(to_big(predicted_mod / _u))
-												< to_number(to_big(best_coeff))
 										then
-											best_coeff = to_number(to_big(predicted_mod / _u))
-											best_key = { l, _l }
-										end
-									end
-								end
-							end
-						end
-						dbl_info.scaler = best_key
-					end
-					if
-						type(jkr.ability[k]) == "table"
-						and type(dbl_info.ability) == "table"
-						and type(dbl_info.ability[k]) == "table"
-					then
-						for _k, _v in pairs(jkr.ability[k]) do
-							if
-								dbl_info.ability[k][_k] ~= _v
-								and is_number(_v)
-								and is_number(dbl_info.ability[k][_k])
-							then
-								dbl_info.base = { k, _k }
-								local predicted_mod = math.abs(_v - dbl_info.ability[k][_k])
-								local best_key = { "" }
-								local best_coeff = 10 ^ 100
-								for l, u in pairs(jkr.ability) do
-									if is_number(u) and to_number(to_big(predicted_mod / u)) >= 0.999 then
-										if to_number(to_big(predicted_mod / u)) < to_number(to_big(best_coeff)) then
-											best_coeff = to_number(to_big(predicted_mod / u))
-											best_key = { l }
-										end
-									end
-									if type(jkr.ability[l]) == "table" then
-										for _l, _u in pairs(jkr.ability[l]) do
 											if
-												(l ~= k or _l ~= _k)
-												and is_number(_u)
-												and to_number(to_big(predicted_mod / _u)) >= 0.999
+												to_number(to_big(predicted_mod / _u))
+												< to_number(to_big(best_coeff))
 											then
-												if
-													to_number(to_big(predicted_mod / _u))
-													< to_number(to_big(best_coeff))
-												then
-													best_coeff = to_number(to_big(predicted_mod / _u))
-													best_key = { l, _l }
-												end
+												best_coeff = to_number(to_big(predicted_mod / _u))
+												best_key = { l, _l }
 											end
 										end
 									end
 								end
-								dbl_info.scaler = best_key
 							end
+							dbl_info.scaler[info_i] = best_key
+							local tracker_key = best_key[1]
+							if #best_key == 2 then
+								tracker_key = best_key[1] .. "/" .. best_key[2]
+							end
+							dbl_info.scaler_tracker[tracker_key] = true
 						end
 					end
 				end
-				if dbl_info.scaler then
-					dbl_info.scaler_base = #dbl_info.scaler == 2
-							and orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-						or orig_ability[dbl_info.scaler[1]]
-					dbl_info.offset = 1
+			end
+			-- define the base values for any newly defined info
+			for info_i = 1, #dbl_info.scaler do
+				if not dbl_info.scaler_base[info_i] then
+					dbl_info.scaler_base[info_i] = #dbl_info.scaler[info_i] == 2
+							and orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+						or orig_ability[dbl_info.scaler[info_i][1]]
 				end
-			end
-		end
-	end
-	local orig_scale_base = nil
-	local orig_scale_scale = nil
-	if G.GAME.cry_double_scale[self.sort_id] and G.GAME.cry_double_scale[self.sort_id].scaler then
-		local jkr = self
-		local dbl_info = G.GAME.cry_double_scale[self.sort_id]
-		if #dbl_info.base == 2 then
-			if
-				not (
-					type(jkr.ability) ~= "table"
-					or not orig_ability[dbl_info.base[1]]
-					or type(orig_ability[dbl_info.base[1]]) ~= "table"
-					or not orig_ability[dbl_info.base[1]][dbl_info.base[2]]
-				)
-			then
-				orig_scale_base = orig_ability[dbl_info.base[1]][dbl_info.base[2]]
-			end
-		else
-			if jkr.ability[dbl_info.base[1]] then
-				orig_scale_base = orig_ability[dbl_info.base[1]]
-			end
-		end
-		if #dbl_info.scaler == 2 then
-			if
-				not (
-					not orig_ability[dbl_info.scaler[1]]
-					or type(orig_ability[dbl_info.scaler[1]]) == "number"
-					or not orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-				)
-			then
-				orig_scale_scale = orig_ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-			end
-		else
-			if orig_ability[dbl_info.scaler[1]] then
-				orig_scale_scale = orig_ability[dbl_info.scaler[1]]
 			end
 		end
 	end
 
-	if orig_scale_base and orig_scale_scale then
-		local new_scale_base = nil
-		local true_base = nil
-		local jkr = self
+	-- now, if the joker has scaler info defined, do the actual double scale stuff
+	if
+		G.GAME.cry_double_scale[self.sort_id]
+		and G.GAME.cry_double_scale[self.sort_id].scaler
+		and #G.GAME.cry_double_scale[self.sort_id].scaler > 0
+	then
 		local dbl_info = G.GAME.cry_double_scale[self.sort_id]
-		if #dbl_info.base == 2 then
-			if
-				not (
-					type(jkr.ability) ~= "table"
-					or not jkr.ability[dbl_info.base[1]]
-					or type(jkr.ability[dbl_info.base[1]]) ~= "table"
-					or not jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
-				)
-			then
-				new_scale_base = jkr.ability[dbl_info.base[1]][dbl_info.base[2]]
-			end
-		else
-			if jkr.ability[dbl_info.base[1]] then
-				new_scale_base = jkr.ability[dbl_info.base[1]]
-			end
-		end
-		true_base = dbl_info.scaler_base
-		if
-			new_scale_base and ((to_big(math.abs(new_scale_base - orig_scale_base)) > to_big(0)) or in_context_scaling)
-		then
-			for i = 1, #G.jokers.cards do
-				local obj = G.jokers.cards[i].config.center
-				if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
-					local ggpn = G.GAME.probabilities.normal
-					if G.jokers.cards[i].ability.cry_rigged then
-						G.GAME.probabilities.normal = 1e9
-					end
-					local o = obj:cry_scale_mod(
-						G.jokers.cards[i],
-						jkr,
-						orig_scale_scale,
-						true_base,
-						orig_scale_base,
-						new_scale_base
+		-- loop through each value in the scaler info and see what changed
+		for info_i = 1, #dbl_info.scaler do
+			-- get the original value of the variable and its scaling factor
+			local orig_scale_base = nil
+			local orig_scale_scale = nil
+			if #dbl_info.base[info_i] == 2 then
+				if -- bunch of safety checks
+					not (
+						type(self.ability) ~= "table"
+						or not orig_ability[dbl_info.base[info_i][1]]
+						or type(orig_ability[dbl_info.base[info_i][1]]) ~= "table"
+						or not orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
 					)
-					if G.jokers.cards[i].ability.cry_rigged then
-						G.GAME.probabilities.normal = ggpn
-					end
-					if o then
-						if #dbl_info.scaler == 2 then
-							if
-								not (
-									not jkr.ability[dbl_info.scaler[1]]
-									or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-								)
-							then
-								jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
-								orig_scale_scale = o
-							end
-						else
-							if jkr.ability[dbl_info.scaler[1]] then
-								jkr.ability[dbl_info.scaler[1]] = o
-								orig_scale_scale = o
-							end
-						end
-						card_eval_status_text(
-							G.jokers.cards[i],
-							"extra",
-							nil,
-							nil,
-							nil,
-							{ message = localize("k_upgrade_ex") }
+				then
+					orig_scale_base = orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
+				end
+			else
+				if self.ability[dbl_info.base[info_i][1]] then
+					orig_scale_base = orig_ability[dbl_info.base[info_i][1]]
+				end
+			end
+			if #dbl_info.scaler[info_i] == 2 then
+				if
+					not (
+						not orig_ability[dbl_info.scaler[info_i][1]]
+						or type(orig_ability[dbl_info.scaler[info_i][1]]) == "number"
+						or not orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+					)
+				then
+					orig_scale_scale = orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+				end
+			else
+				if orig_ability[dbl_info.scaler[info_i][1]] then
+					orig_scale_scale = orig_ability[dbl_info.scaler[info_i][1]]
+				end
+			end
+
+			if orig_scale_base and orig_scale_scale then
+				-- get the *current* value of the variable
+				local new_scale_base = nil
+				if #dbl_info.base[info_i] == 2 then
+					if
+						not (
+							type(self.ability) ~= "table"
+							or not self.ability[dbl_info.base[info_i][1]]
+							or type(self.ability[dbl_info.base[info_i][1]]) ~= "table"
+							or not self.ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
 						)
+					then
+						new_scale_base = self.ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
 					end
-					local reps = {}
-					for i2 = 1, #G.jokers.cards do
-						local _card = G.jokers.cards[i2]
-						local ggpn = G.GAME.probabilities.normal
-						if _card.ability.cry_rigged then
-							G.GAME.probabilities.normal = 1e9
-						end
-						local check =
-							cj(G.jokers.cards[i2], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
-						if _card.ability.cry_rigged then
-							G.GAME.probabilities.normal = ggpn
-						end
-						if type(check) == "table" then
-							reps[i2] = check and check.repetitions and check or 0
-						else
-							reps[i2] = 0
-						end
-						if
-							G.jokers.cards[i2] == G.jokers.cards[i]
-							and G.jokers.cards[i].edition
-							and G.jokers.cards[i].edition.retriggers
-						then
-							local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
-							local check = false --G.jokers.cards[i]:calculate_retriggers()
-							if check and check.repetitions then
-								check.repetitions = check.repetitions + old_repetitions
-								reps[i] = check
+				else
+					if self.ability[dbl_info.base[info_i][1]] then
+						new_scale_base = self.ability[dbl_info.base[info_i][1]]
+					end
+				end
+				local true_base = dbl_info.scaler_base[info_i]
+				-- if the new value is different from the previous value, then it has been scaled
+				if new_scale_base and (to_big(math.abs(new_scale_base - orig_scale_base)) > to_big(0)) then
+					-- now, check for any jokers that affect scaling
+					for i = 1, #G.jokers.cards do
+						local obj = G.jokers.cards[i].config.center
+						-- found one!
+						if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
+							-- rig the probabilities in case that matters for the joker's scaling function
+							local ggpn = G.GAME.probabilities.normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = 1e9
 							end
-						end
-					end
-					for i0, j in ipairs(reps) do
-						if (type(j) == "table") and j.repetitions and (j.repetitions > 0) then
-							for r = 1, j.repetitions do
-								card_eval_status_text(j.card, "jokers", nil, nil, nil, j)
+
+							-- 'o' will be the new factor that the joker should scale by next time
+							local o = obj:cry_scale_mod(
+								G.jokers.cards[i],
+								self,
+								orig_scale_scale,
+								true_base,
+								orig_scale_base,
+								new_scale_base
+							)
+
+							-- return probabilities to normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = ggpn
+							end
+
+							-- the function returned a value, do the scale setting with it
+							if o then
+								-- set the scale factor field to 'o'
+								if #dbl_info.scaler[info_i] == 2 then
+									if
+										not (
+											not self.ability[dbl_info.scaler[info_i][1]]
+											or not self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+										)
+									then
+										self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]] = o
+										orig_scale_scale = o
+									end
+								else
+									if self.ability[dbl_info.scaler[info_i][1]] then
+										self.ability[dbl_info.scaler[info_i][1]] = o
+										orig_scale_scale = o
+									end
+								end
+								-- Upgrade!
+								card_eval_status_text(
+									G.jokers.cards[i],
+									"extra",
+									nil,
+									nil,
+									nil,
+									{ message = localize("k_upgrade_ex") }
+								)
+							end
+
+							-- now, let's check for repetitions on the scale-affecting jokers
+							local reps = {}
+							for j = 1, #G.jokers.cards do
 								local ggpn = G.GAME.probabilities.normal
-								if G.jokers.cards[i].ability.cry_rigged then
+								if G.jokers.cards[j].ability.cry_rigged then
 									G.GAME.probabilities.normal = 1e9
 								end
-								local o = obj:cry_scale_mod(
-									G.jokers.cards[i],
-									jkr,
-									orig_scale_scale,
-									true_base,
-									orig_scale_base,
-									new_scale_base
+								-- check if another joker is retriggering our scale-affecting joker
+								local check = cj(
+									G.jokers.cards[j],
+									{ retrigger_joker_check = true, other_card = G.jokers.cards[i] }
 								)
-								if G.jokers.cards[i].ability.cry_rigged then
+								if G.jokers.cards[j].ability.cry_rigged then
 									G.GAME.probabilities.normal = ggpn
 								end
-								if o then
-									if #dbl_info.scaler == 2 then
-										if
-											not (
-												not jkr.ability[dbl_info.scaler[1]]
-												or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-											)
-										then
-											jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
-											orig_scale_scale = o
+								-- keep track of which joker retriggers the scale-joker
+								if type(check) == "table" then
+									reps[j] = check and check.repetitions and check or 0
+								else
+									reps[j] = 0
+								end
+								-- also check if the edition of the scale-joker will retrigger it
+								if
+									G.jokers.cards[j] == G.jokers.cards[i]
+									and G.jokers.cards[i].edition
+									and G.jokers.cards[i].edition.retriggers
+								then
+									local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
+									-- never mind?
+									local check = false --G.jokers.cards[i]:calculate_retriggers()
+									if check and check.repetitions then
+										check.repetitions = check.repetitions + old_repetitions
+										reps[i] = check
+									end
+								end
+							end
+							-- loop through the repetitions now
+							-- i changed 'j' to be the index instead of the value this isn't confusing at all
+							for j, rep in pairs(reps) do
+								if (type(rep) == "table") and rep.repetitions and (rep.repetitions > 0) then
+									for r = 1, rep.repetitions do
+										card_eval_status_text(rep.card, "jokers", nil, nil, nil, rep)
+										-- now, same thing as before, apply the scale-joker
+										local ggpn = G.GAME.probabilities.normal
+										if G.jokers.cards[i].ability.cry_rigged then
+											G.GAME.probabilities.normal = 1e9
 										end
-									else
-										if jkr.ability[dbl_info.scaler[1]] then
-											jkr.ability[dbl_info.scaler[1]] = o
-											orig_scale_scale = o
+										local o = obj:cry_scale_mod(
+											G.jokers.cards[i],
+											self,
+											orig_scale_scale,
+											true_base,
+											orig_scale_base,
+											new_scale_base
+										)
+										if G.jokers.cards[i].ability.cry_rigged then
+											G.GAME.probabilities.normal = ggpn
+										end
+
+										if o then
+											if #dbl_info.scaler[info_i] == 2 then
+												if
+													not (
+														not self.ability[dbl_info.scaler[info_i][1]]
+														or not self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+													)
+												then
+													self.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]] =
+														o
+													orig_scale_scale = o
+												end
+											else
+												if self.ability[dbl_info.scaler[info_i][1]] then
+													self.ability[dbl_info.scaler[info_i][1]] = o
+													orig_scale_scale = o
+												end
+											end
+											card_eval_status_text(
+												G.jokers.cards[i],
+												"extra",
+												nil,
+												nil,
+												nil,
+												{ message = localize("k_upgrade_ex") }
+											)
 										end
 									end
-									card_eval_status_text(
-										G.jokers.cards[i],
-										"extra",
-										nil,
-										nil,
-										nil,
-										{ message = localize("k_upgrade_ex") }
-									)
 								end
 							end
 						end
@@ -606,9 +681,8 @@ function Card:calculate_joker(context)
 	return ret, trig
 end
 
-function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
-	local jkr = self
-	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+-- used to manually apply scaling if it scales outside of a calculation
+function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_scale_base, scaler_info)
 	if jkr.ability and type(jkr.ability) == "table" then
 		if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
 			if not G.GAME.cry_double_scale[jkr.sort_id] then
@@ -625,18 +699,22 @@ function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, n
 				end
 			end
 		end
-		if not dbl_info then
-			dbl_info = {}
-		end
-		if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
-			dbl_info.base = { "extra", "Emult" }
-			dbl_info.scaler = { "extra", "Emult_mod" }
-			dbl_info.scaler_base = jkr.ability.extra.Emult_mod
-			dbl_info.offset = 1
+		if
+			G.GAME.cry_double_scale[jkr.sort_id]
+			and scaler_info
+			and (not G.GAME.cry_double_scale[jkr.sort_id].scaler or #G.GAME.cry_double_scale[jkr.sort_id].scaler == 0)
+		then
+			for k, v in pairs(scaler_info) do
+				G.GAME.cry_double_scale[jkr.sort_id][k] = v
+			end
 		end
 	end
-	local true_base = dbl_info.scaler_base
-	if true_base then
+	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
+	if not dbl_info then
+		return
+	end
+	for info_i = 1, #dbl_info.scaler do
+		local true_base = dbl_info.scaler_base[info_i]
 		for i = 1, #G.jokers.cards do
 			local obj = G.jokers.cards[i].config.center
 			if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
@@ -656,19 +734,19 @@ function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, n
 					G.GAME.probabilities.normal = ggpn
 				end
 				if o then
-					if #dbl_info.scaler == 2 then
+					if #dbl_info.scaler[info_i] == 2 then
 						if
 							not (
-								not jkr.ability[dbl_info.scaler[1]]
-								or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+								not jkr.ability[dbl_info.scaler[info_i][1]]
+								or not jkr.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
 							)
 						then
-							jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+							jkr.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]] = o
 							orig_scale_scale = o
 						end
 					else
-						if jkr.ability[dbl_info.scaler[1]] then
-							jkr.ability[dbl_info.scaler[1]] = o
+						if jkr.ability[dbl_info.scaler[info_i][1]] then
+							jkr.ability[dbl_info.scaler[info_i][1]] = o
 							orig_scale_scale = o
 						end
 					end
@@ -681,180 +759,25 @@ function Cryptid.exponentia_scale_mod(self, orig_scale_scale, orig_scale_base, n
 						{ message = localize("k_upgrade_ex") }
 					)
 				end
-				local reps = {}
-				for i2 = 1, #G.jokers.cards do
-					local _card = G.jokers.cards[i2]
-					local ggpn = G.GAME.probabilities.normal
-					if _card.ability.cry_rigged then
-						G.GAME.probabilities.normal = 1e9
-					end
-					local check =
-						cj(G.jokers.cards[i2], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
-					if _card.ability.cry_rigged then
-						G.GAME.probabilities.normal = ggpn
-					end
-					if type(check) == "table" then
-						reps[i2] = check and check.repetitions and check or 0
-					else
-						reps[i2] = 0
-					end
-					if
-						G.jokers.cards[i2] == G.jokers.cards[i]
-						and G.jokers.cards[i].edition
-						and G.jokers.cards[i].edition.retriggers
-					then
-						local old_repetitions = reps[i] ~= 0 and reps[i].repetitions or 0
-						local check = false --G.jokers.cards[i]:calculate_retriggers()
-						if check and check.repetitions then
-							check.repetitions = check.repetitions + old_repetitions
-							reps[i] = check
-						end
-					end
-				end
-				for i0, j in ipairs(reps) do
-					if (type(j) == "table") and j.repetitions and (j.repetitions > 0) then
-						for r = 1, j.repetitions do
-							card_eval_status_text(j.card, "jokers", nil, nil, nil, j)
-							local ggpn = G.GAME.probabilities.normal
-							if G.jokers.cards[i].ability.cry_rigged then
-								G.GAME.probabilities.normal = 1e9
-							end
-							local o = obj:cry_scale_mod(
-								G.jokers.cards[i],
-								jkr,
-								orig_scale_scale,
-								true_base,
-								orig_scale_base,
-								new_scale_base
-							)
-							if G.jokers.cards[i].ability.cry_rigged then
-								G.GAME.probabilities.normal = ggpn
-							end
-							if o then
-								if #dbl_info.scaler == 2 then
-									if
-										not (
-											not jkr.ability[dbl_info.scaler[1]]
-											or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-										)
-									then
-										jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
-										orig_scale_scale = o
-									end
-								else
-									if jkr.ability[dbl_info.scaler[1]] then
-										jkr.ability[dbl_info.scaler[1]] = o
-										orig_scale_scale = o
-									end
-								end
-								card_eval_status_text(
-									G.jokers.cards[i],
-									"extra",
-									nil,
-									nil,
-									nil,
-									{ message = localize("k_upgrade_ex") }
-								)
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-end
 
-function Cryptid.compound_interest_scale_mod(self, orig_scale_scale, orig_scale_base, new_scale_base)
-	local jkr = self
-	local dbl_info = G.GAME.cry_double_scale[jkr.sort_id]
-	if jkr.ability and type(jkr.ability) == "table" then
-		if not G.GAME.cry_double_scale[jkr.sort_id] or not G.GAME.cry_double_scale[jkr.sort_id].ability then
-			if not G.GAME.cry_double_scale[jkr.sort_id] then
-				G.GAME.cry_double_scale[jkr.sort_id] = { ability = { double_scale = true } }
-			end
-			for k, v in pairs(jkr.ability) do
-				if type(jkr.ability[k]) ~= "table" then
-					G.GAME.cry_double_scale[jkr.sort_id].ability[k] = v
-				else
-					G.GAME.cry_double_scale[jkr.sort_id].ability[k] = {}
-					for _k, _v in pairs(jkr.ability[k]) do
-						G.GAME.cry_double_scale[jkr.sort_id].ability[k][_k] = _v
-					end
-				end
-			end
-		end
-		if G.GAME.cry_double_scale[jkr.sort_id] and not G.GAME.cry_double_scale[jkr.sort_id].scaler then
-			dbl_info.base = { "extra", "percent" }
-			dbl_info.scaler = { "extra", "percent_mod" }
-			dbl_info.scaler_base = jkr.ability.extra.percent_mod
-			dbl_info.offset = 1
-		end
-	end
-	local true_base = dbl_info.scaler_base
-	if true_base then
-		for i = 1, #G.jokers.cards do
-			local obj = G.jokers.cards[i].config.center
-			if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
-				local ggpn = G.GAME.probabilities.normal
-				if G.jokers.cards[i].ability.cry_rigged then
-					G.GAME.probabilities.normal = 1e9
-				end
-				local o = obj:cry_scale_mod(
-					G.jokers.cards[i],
-					jkr,
-					orig_scale_scale,
-					true_base,
-					orig_scale_base,
-					new_scale_base
-				)
-				if G.jokers.cards[i].ability.cry_rigged then
-					G.GAME.probabilities.normal = ggpn
-				end
-				if o then
-					if #dbl_info.scaler == 2 then
-						if
-							not (
-								not jkr.ability[dbl_info.scaler[1]]
-								or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
-							)
-						then
-							jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
-							orig_scale_scale = o
-						end
-					else
-						if jkr.ability[dbl_info.scaler[1]] then
-							jkr.ability[dbl_info.scaler[1]] = o
-							orig_scale_scale = o
-						end
-					end
-					card_eval_status_text(
-						G.jokers.cards[i],
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_upgrade_ex") }
-					)
-				end
 				local reps = {}
-				for i2 = 1, #G.jokers.cards do
-					local _card = G.jokers.cards[i2]
+				for j = 1, #G.jokers.cards do
 					local ggpn = G.GAME.probabilities.normal
-					if _card.ability.cry_rigged then
+					if G.jokers.cards[j].ability.cry_rigged then
 						G.GAME.probabilities.normal = 1e9
 					end
 					local check =
-						cj(G.jokers.cards[i2], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
-					if _card.ability.cry_rigged then
+						cj(G.jokers.cards[j], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
+					if G.jokers.cards[j].ability.cry_rigged then
 						G.GAME.probabilities.normal = ggpn
 					end
 					if type(check) == "table" then
-						reps[i2] = check and check.repetitions and check or 0
+						reps[j] = check and check.repetitions and check or 0
 					else
-						reps[i2] = 0
+						reps[j] = 0
 					end
 					if
-						G.jokers.cards[i2] == G.jokers.cards[i]
+						G.jokers.cards[j] == G.jokers.cards[i]
 						and G.jokers.cards[i].edition
 						and G.jokers.cards[i].edition.retriggers
 					then
@@ -866,10 +789,10 @@ function Cryptid.compound_interest_scale_mod(self, orig_scale_scale, orig_scale_
 						end
 					end
 				end
-				for i0, j in ipairs(reps) do
-					if (type(j) == "table") and j.repetitions and (j.repetitions > 0) then
-						for r = 1, j.repetitions do
-							card_eval_status_text(j.card, "jokers", nil, nil, nil, j)
+				for j, rep in pairs(reps) do
+					if (type(rep) == "table") and rep.repetitions and (rep.repetitions > 0) then
+						for r = 1, rep.repetitions do
+							card_eval_status_text(rep.card, "jokers", nil, nil, nil, rep)
 							local ggpn = G.GAME.probabilities.normal
 							if G.jokers.cards[i].ability.cry_rigged then
 								G.GAME.probabilities.normal = 1e9
@@ -885,20 +808,21 @@ function Cryptid.compound_interest_scale_mod(self, orig_scale_scale, orig_scale_
 							if G.jokers.cards[i].ability.cry_rigged then
 								G.GAME.probabilities.normal = ggpn
 							end
+
 							if o then
-								if #dbl_info.scaler == 2 then
+								if #dbl_info.scaler[info_i] == 2 then
 									if
 										not (
-											not jkr.ability[dbl_info.scaler[1]]
-											or not jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]]
+											not jkr.ability[dbl_info.scaler[info_i][1]]
+											or not jkr.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
 										)
 									then
-										jkr.ability[dbl_info.scaler[1]][dbl_info.scaler[2]] = o
+										jkr.ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]] = o
 										orig_scale_scale = o
 									end
 								else
-									if jkr.ability[dbl_info.scaler[1]] then
-										jkr.ability[dbl_info.scaler[1]] = o
+									if jkr.ability[dbl_info.scaler[info_i][1]] then
+										jkr.ability[dbl_info.scaler[info_i][1]] = o
 										orig_scale_scale = o
 									end
 								end
