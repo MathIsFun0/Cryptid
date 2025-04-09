@@ -3070,8 +3070,10 @@ local global = { -- ://Global, gives a selected card the Global sticker
 	atlas = "atlasnotjokers",
 	order = 22,
 	can_use = function(self, card)
-		--the card itself and one playing card (idk how to get it to be just itself and a playing card, so it can be done on consumables atm
-		return #G.hand.highlighted + #G.consumeables.highlighted == 2
+		if not G.GAME.modifiers.cry_beta then
+			return (#G.hand.highlighted + #G.consumeables.highlighted == 2) and not #G.consumeables.highlighted == 2
+		else
+			return (#G.hand.highlighted + #G.jokers.highlighted == 2) and not #G.jokers.highlighted == 2
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_global_sticker", set = "Other", vars = {} }
