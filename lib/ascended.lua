@@ -181,21 +181,16 @@ function Cryptid.ascend(num) -- edit this function at your leisure
 				* (
 					1
 					+ 0.1
-					+ to_big(0.05 * (G.GAME.sunnumber or 0))
+					+ to_big(G.GAME.sunnumber or 0)
 					+ to_big(
-						(0.1 + (0.05 * (G.GAME.sunnumber or 0)))
-							* to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
+						(0.1 + (G.GAME.sunnumber or 0)) * to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
 					)
 				)
 		)
 	else
 		return math.max(
 			num,
-			num
-				* to_big(
-					(1.25 + (0.05 * (G.GAME.sunnumber or 0)))
-						^ to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
-				)
+			num * to_big((1.25 + (G.GAME.sunnumber or 0)) ^ to_big(G.GAME.current_round.current_hand.cry_asc_num or 0))
 		)
 	end
 end
