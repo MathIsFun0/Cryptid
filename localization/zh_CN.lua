@@ -474,7 +474,7 @@ return {
 			bl_cry_lavender_loop = {
 				name = "薰衣草环",
 				text = {
-					"在boss回合中每经过1.5秒",
+					"在boss回合中每经过6秒",
 					"盲注要求增加1.25倍",
 				},
 			},
@@ -2868,8 +2868,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}等级.#1#{S:0.8}){}",
 					"使{C:attention}晋升{}牌型的指数",
-					"增加{X:gold,C:white}0.05{}",
-					"{C:inactive}(目前指数 {X:gold,C:white}X(#2#^晋升数){C:inactive})",
+					"增加{X:gold,C:white}#2#{}",
+					"{C:inactive}(目前指数 {X:gold,C:white}X(#3#^晋升数){C:inactive})",
 				},
 			},
 		},

@@ -135,7 +135,7 @@ local choco_dice = {
 		then
 			--todo: check if duplicates of event are already started/finished
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
-			card.ability.extra.roll = Cryptid.roll("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
+			card.ability.extra.roll = Cryptid.roll("cry_choco", 2, 10, { ignore_value = card.ability.extra.roll })
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:start()
 			return {
 				message = tostring(card.ability.extra.roll),
@@ -651,7 +651,7 @@ local spy = {
 		G.jokers.config.card_limit = G.jokers.config.card_limit - 1
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and not context.before and not context.after then
+		if context.joker_main then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
 				Xmult_mod = card.ability.x_mult,
@@ -1120,6 +1120,22 @@ local spookydeck = {
 					end,
 				}))
 			end
+		end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_candy" then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
 		end
 	end,
 }
@@ -1688,12 +1704,51 @@ local candy_sticks = {
 		},
 	},
 }
+-- Wonka Bar
+-- Sell this card to permanently gain +1 card selection limit
+local wonka_bar = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_spooky",
+		},
+	},
+	key = "wonka_bar",
+	name = "cry_wonka_bar",
+	config = { extra = 1 },
+	pos = { x = 1, y = 3 },
+	order = 146,
+	rarity = "cry_candy",
+	cost = 10,
+	eternal_compat = false,
+	atlas = "atlasspooky",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra } }
+	end,
+	calculate = function(self, card, context)
+		if context.selling_self and not context.blueprint then
+			card.ability.extra = math.floor(card.ability.extra)
+			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Inspector_B",
+		},
+		art = {
+			"George the Rat",
+		},
+		code = {
+			"Glitchkat10",
+		},
+	},
+}
 items = {
 	cotton_candy,
 	wrapped,
 	choco_dice,
 	choco_base_event,
-	choco1,
+	--choco1,
 	choco2,
 	choco3,
 	potion,
@@ -1709,7 +1764,7 @@ items = {
 	trick_or_treat,
 	candy_basket,
 	blacklist,
-	ghost,
+	--ghost,
 	possessed,
 	spookydeck,
 	candy_dagger,
@@ -1720,6 +1775,7 @@ items = {
 	brittle,
 	monopoly_money,
 	candy_sticks,
+	wonka_bar,
 }
 return {
 	name = "Spooky",

@@ -340,7 +340,7 @@ local oversat = {
 					end,
 				}))
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -350,7 +350,10 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -360,7 +363,10 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+				)
 			end
 		end
 	end,
@@ -570,7 +576,7 @@ local glitched = {
 					StatusText = true,
 				})
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1078,7 +1084,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1088,7 +1097,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 			end
 		end
 	end,
@@ -1294,7 +1306,7 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and (
+				and not (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
 				)
@@ -1994,35 +2006,39 @@ local azure_seal = {
 	pos = { x = 0, y = 2 },
 	-- This is still quite jank
 	calculate = function(self, card, context)
-		if context.destroying_card and not card.will_shatter then
-			card.will_shatter = true
-			G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.0,
-				func = function()
-					local card_type = "Planet"
-					local _planet = nil
-					if G.GAME.last_hand_played then
-						for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-							if v.config.hand_type == G.GAME.last_hand_played then
-								_planet = v.key
-								break
+		if context.destroying_card and context.cardarea == G.play then
+			for i, cards in ipairs(context.full_hand) do
+				if cards == card then
+					card.will_shatter = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "before",
+						delay = 0.0,
+						func = function()
+							local card_type = "Planet"
+							local _planet = nil
+							if G.GAME.last_hand_played then
+								for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+									if v.config.hand_type == G.GAME.last_hand_played then
+										_planet = v.key
+										break
+									end
+								end
 							end
-						end
-					end
 
-					for i = 1, self.config.planets_amount do
-						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
+							for i = 1, self.config.planets_amount do
+								local card =
+									create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
 
-						card:set_edition({ negative = true }, true)
-						card:add_to_deck()
-						G.consumeables:emplace(card)
-					end
-					return true
-				end,
-			}))
-
-			return { remove = true }
+								card:set_edition({ negative = true }, true)
+								card:add_to_deck()
+								G.consumeables:emplace(card)
+							end
+							return true
+						end,
+					}))
+					return { remove = true }
+				end
+			end
 		end
 	end,
 }
@@ -2067,6 +2083,7 @@ local typhoon = {
 	pos = { x = 0, y = 4 },
 	use = function(self, card, area, copier) --Good enough
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_typhoon" })
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
 			G.E_MANAGER:add_event(Event({

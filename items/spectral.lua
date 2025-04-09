@@ -152,6 +152,7 @@ local vacuum = {
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		local earnings = 0
+		check_for_unlock({ cry_used_consumable = "c_cry_vacuum" })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -235,6 +236,7 @@ local hammerspace = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_hammerspace" })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -309,6 +311,7 @@ local lock = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_lock" })
 		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
@@ -566,6 +569,7 @@ local analog = {
 		return #G.jokers.cards > 0
 	end,
 	use = function(self, card, area, copier)
+		check_for_unlock({ cry_used_consumable = "c_cry_analog" })
 		local used_consumable = copier or card
 		local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
@@ -715,6 +719,7 @@ local replica = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_replica" })
 		local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed("cry_replica_choice"))
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",

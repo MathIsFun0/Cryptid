@@ -873,6 +873,9 @@ local sunplanet = {
 	aurinko = true,
 	atlas = "atlasnotjokers",
 	order = 7,
+	config = {
+		extra = 0.05,
+	},
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("cry_p_star"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
@@ -881,11 +884,12 @@ local sunplanet = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1
+		local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+		G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = sunlevel }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -911,9 +915,9 @@ local sunplanet = {
 				return true
 			end,
 		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + 1 })
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(sunlevel + 1) })
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + 1 or 1
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + card.ability.extra or card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
@@ -921,11 +925,12 @@ local sunplanet = {
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
-		local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1
+		local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+		G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = sunlevel }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -951,9 +956,13 @@ local sunplanet = {
 				return true
 			end,
 		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + number })
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
+			{ level = to_big(sunlevel + number) }
+		)
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number or number
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number * card.ability.extra
+			or number * card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
@@ -973,15 +982,16 @@ local sunplanet = {
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1
+		local levelone = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
 		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
 		if levelone == 1 then
 			planetcolourone = G.C.UI.TEXT_DARK
 		end
 		return {
 			vars = {
-				(G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1,
-				((G.GAME.sunnumber and G.GAME.sunnumber or 0) / 20) + 1.25,
+				(G.GAME.sunlevel or 0) + 1,
+				center.ability.extra or 0.05,
+				(G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25,
 				colours = { planetcolourone },
 			},
 		}
