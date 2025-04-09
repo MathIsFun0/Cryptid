@@ -193,7 +193,7 @@ if cry_muse then
   	else
    		local _area = area ~= G.pack_cards and area or G.jokers
      	end
- 	if #_area.cards < _area.config.card_limit then
+ 	if _area and #_area.cards < _area.config.card_limit then
 		draw_card(G.play, _area, 1, 'up', true, card, nil, true)
 	end
 end
