@@ -188,8 +188,12 @@ if cry_muse then
 	})
 
 	delay(0.8)
-	local _area = area ~= G.pack_cards and area or G.consumeables
-	draw_card(G.play, _area, 1, 'up', true, card, nil, true)
+ 	if not G.GAME.modifiers.cry_beta then
+		local _area = area ~= G.pack_cards and area or G.consumeables
+  	else
+   		local _area = area ~= G.pack_cards and area or G.jokers
+ 	if #_area.cards < _area.config.card_limit then
+		draw_card(G.play, _area, 1, 'up', true, card, nil, true)
 end
 '''
 match_indent = true
