@@ -195,6 +195,7 @@ if cry_muse then
      	end
  	if #_area.cards < _area.config.card_limit then
 		draw_card(G.play, _area, 1, 'up', true, card, nil, true)
+	end
 end
 '''
 match_indent = true
