@@ -696,7 +696,12 @@ local greed = {
 	boss_colour = HEX("4ca180"),
 	mult = 1,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { (get_blind_amount(G.GAME.round_resets.ante) * 0.25) } }
+		return {
+		    vars = {
+		        number_format(card.ability.extra.money_factor),
+		        number_format(lenient_bignum((get_blind_amount(G.GAME.round_resets.ante) * to_big(card.ability.extra.blind_mod))),
+		    }
+		}
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { localize("cry_greed_placeholder") } }
