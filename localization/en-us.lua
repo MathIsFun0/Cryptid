@@ -1099,8 +1099,8 @@ return {
 				name = "Candy Basket",
 				text = {
 					"Sell this card to create {C:attention}#1#{} {C:cry_candy}Cand#<ies,y>1#",
-					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}2{} Blinds defeated",
-					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>3#{} when {C:attention}Boss Blind{} defeated",
+					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}#3#{} Blinds defeated",
+					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>4#{} when {C:attention}Boss Blind{} defeated",
 				},
 			},
 			j_cry_candy_buttons = {
@@ -1681,9 +1681,9 @@ return {
 				name = "Ghost",
 				text = {
 					"At end of round:",
-					"{C:green}#1# in #2#{} chance to",
-					"{C:attention}possess{} a random {C:attention}Joker",
 					"{C:green}#1# in #3#{} chance to",
+					"{C:attention}possess{} a random {C:attention}Joker",
+					"{C:green}#2# in #4#{} chance to",
 					"{E:2,C:red}self destruct",
 				},
 			},
@@ -1730,8 +1730,8 @@ return {
 				name = "Happy House",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult only after",
-					"playing {C:attention}114{} hands{}",
-					"{C:inactive}(Currently #2#/114){}",
+					"playing {C:attention}#3#{} hands{}",
+					"{C:inactive}(Currently #2#/#3#){}",
 					"{C:inactive,s:0.8}There is no place like home!{}",
 				},
 			},
@@ -1769,6 +1769,7 @@ return {
 					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
 					"{X:mult,C:white} X#1# {} Mult when scored",
+					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} repetitions)",
 				},
 			},
 			j_cry_jawbreaker = {
@@ -1867,6 +1868,7 @@ return {
 					"Played and scoring {C:attention}Kings{} give",
 					"{C:attention}+#1#{} hand size for the round",
 					"and trigger {C:attention}held in hand{} effects",
+					"{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive})",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -2116,9 +2118,9 @@ return {
 			j_cry_necromancer = {
 				name = "Necromancer",
 				text = {
-					"When a Joker is {C:attention}sold{} for more than {C:attention}$0{},",
+					"When a Joker is {C:attention}sold{} for more than {C:attention}#1#{},",
 					"gain a {C:attention}random{} Joker {C:attention}sold{} this run",
-					"with {C:money}$0{} sell value",
+					"with {C:money}#1#{} sell value",
 				},
 			},
 			j_cry_negative = {
@@ -2653,7 +2655,7 @@ return {
 				name = "Trick-or-Treat",
 				text = {
 					"When {C:attention}sold{}:",
-					"{C:green}#1# in #2#{} chance to create {C:attention}2{} {C:cry_candy}Candies",
+					"{C:green}#1# in #2#{} chance to create {C:attention}#3{} {C:cry_candy}Candies",
 					"Otherwise, create a {X:cry_cursed,C:white}Cursed{} Joker",
 					"{C:inactive}(Can overflow)",
 				},
