@@ -694,6 +694,7 @@ local greed = {
 	atlas = "blinds",
 	order = 22,
 	boss_colour = HEX("4ca180"),
+	mult = 1,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (get_blind_amount(G.GAME.round_resets.ante) * 0.25) } }
 	end,
@@ -701,11 +702,14 @@ local greed = {
 		return { vars = { localize("cry_greed_placeholder") } }
 	end,
 	set_blind = function(self, reset, silent)
-		G.GAME.blind.chips = (get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling) + ((math.floor(G.GAME.dollars / 5)) * ((get_blind_amount(G.GAME.round_resets.ante) * 0.25))) -- go my equations
+		if #G.GAME.dollars < 5000 then -- what do you mean dollars is a table?
+			G.GAME.blind.chips = (get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + ((math.floor(G.GAME.dollars / 5)) * ((get_blind_amount(G.GAME.round_resets.ante) * 0.25))) -- go my equations
+		else G.GAME.blind.chips = (get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + (1000 * ((get_blind_amount(G.GAME.round_resets.ante) * 0.25))) -- set cap at $5000
+		end
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 	disable = function(self, silent)
-		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling * 2
+		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 }
