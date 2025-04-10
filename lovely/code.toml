@@ -404,3 +404,16 @@ payload = '''
 	add_tag(tag)
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.last_hand_played = text"
+position = "after"
+payload = '''
+G.GAME.last_hand_played_cards = {}
+for i = 1, #G.play.cards do
+	G.GAME.last_hand_played_cards[i] = G.play.cards[i]
+end
+'''
+match_indent = true
