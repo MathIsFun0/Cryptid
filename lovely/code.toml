@@ -193,10 +193,17 @@ if cry_muse then
   	else
    		local _area = area ~= G.pack_cards and area or G.jokers
      	end
- 	if _area and #_area.cards < _area.config.card_limit then
-		draw_card(G.play, _area, 1, 'up', true, card, nil, true)
-	else card:start_dissolve()
- 	end
+ 	if not G.GAME.modifiers.cry_beta then
+		if to_big(G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
+			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+  	else
+		if to_big(G.jokers.cards) < to_big(G.jokers.config.card_limit) then
+			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+    	end
 end
 '''
 match_indent = true
