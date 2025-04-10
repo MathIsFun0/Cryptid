@@ -1362,40 +1362,50 @@ local malware = { -- ://Malware, apply Glitched edition to held in hand cards
 }
 
 local crynperror = { -- ://NPERROR, add last played hand back to your hand, multi-use 2
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"Nova",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	object_type = "Consumable",
-	set = "Code",
-	name = "cry-NPERROR",
-	key = "nperror",
-	pos = { x = 10, y = 5 },
-	cost = 4,
-	atlas = "atlasnotjokers",
-	order = 5,
-	can_use = function(self, card)
-		return false
-	end,
-	-- use = function(self, card, area, copier)
-
-	-- end,
-	-- bulk_use = function(self, card, area, copier, number)
-
-	-- end,
-} -- UNIMPLEMENTED
+    cry_credits = {
+        idea = {
+            "HexaCryonic",
+        },
+        art = {
+            "HexaCryonic",
+        },
+        code = {
+            "Nova",
+        },
+    },
+    dependencies = {
+        items = {
+            "set_cry_code",
+        },
+    },
+    object_type = "Consumable",
+    set = "Code",
+    name = "cry-NPERROR",
+    key = "nperror",
+    pos = { x = 10, y = 5 },
+    cost = 4,
+    atlas = "atlasnotjokers",
+    order = 5,
+    config = { cry_multiuse = 2,},
+    can_use = function(self, card)
+        return G.GAME.last_hand_played_cards and (Cryptid.safe_get(G.GAME, "blind", "in_blind")) -- TODO: work in boosters
+    end,
+    use = function(self, card, area, copier)
+        for i = 1, #G.GAME.last_hand_played_cards do
+            local check = true
+            for j = 1, #G.hand.cards do
+                if G.GAME.last_hand_played_cards[i] == G.hand.cards[j] then
+                    check = nil
+                end
+            end
+            if G.discard.cards[i] and check then
+                draw_card(G.discard, G.hand, i*100/5, 'up', nil,  G.GAME.last_hand_played_cards[i])
+            elseif G.deck.cards[i] and check then
+                draw_card(G.deck, G.hand, i*100/5, 'up', nil, G.GAME.last_hand_played_cards[i])
+            end
+        end
+    end,
+}
 
 local rework =
 	{ -- ://Rework, destroy a selected joker, create a Rework Tag of that joker with an upgraded edition via collection
