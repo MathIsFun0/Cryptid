@@ -604,7 +604,8 @@ return {
 			c_cry_nperror = {
 				name = "://NPERROR",
 				text = {
-					"To Be {C:cry_code}Implemented{}",
+					"Returns the {C:cry_code}last played hand{}",
+					"to your hand",
 				},
 			},
 			c_cry_patch = {
