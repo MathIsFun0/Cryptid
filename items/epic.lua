@@ -890,7 +890,7 @@ local number_blocks = {
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
+		if to_big(card.ability.extra.money) > to_big(0) then
 			return card.ability.extra.money
 		end
 	end,
