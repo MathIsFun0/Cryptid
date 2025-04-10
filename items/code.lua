@@ -3142,9 +3142,9 @@ local global = { -- ://Global, gives a selected card the Global sticker
 	order = 22,
 	can_use = function(self, card)
 		if not G.GAME.modifiers.cry_beta then
-			return (#G.hand.highlighted + #G.consumeables.highlighted == 2) and not #G.consumeables.highlighted == 2
+			return (#G.hand.highlighted == 1 and #G.consumeables.highlighted == 1)
 		else
-			return (#G.hand.highlighted + #G.jokers.highlighted == 2) and not #G.jokers.highlighted == 2
+			return (#G.hand.highlighted == 1 and #G.jokers.highlighted == 1)
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
