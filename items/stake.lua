@@ -118,7 +118,7 @@ local amber = {
 	atlas = "stake",
 	applied_stakes = { "cry_diamond" },
 	modifiers = function()
-		G.GAME.modifiers.cry_booster_packs = 1
+		G.GAME.modifiers.extra_boosters = -1
 	end,
 	shiny = true,
 	order = 17,
