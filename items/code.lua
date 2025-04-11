@@ -2680,10 +2680,10 @@ local revert = { -- ://Revert, loads the game state from the end of the last bos
 local cryfunction = { -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
 	cry_credits = {
 		idea = {
-			"?",
+			"HexaCryonic",
 		},
 		art = {
-			"?",
+			"HexaCryonic",
 		},
 		code = {
 			"Nova",
