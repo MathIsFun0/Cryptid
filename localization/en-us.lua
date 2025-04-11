@@ -538,7 +538,9 @@ return {
 			c_cry_cryfunction = {
 				name = "FUNCTION://",
 				text = {
-					"To Be {C:cry_code}Implemented{}",
+					"Saves the {C:cry_code}Last Three{} consumables used,",
+					"using this card again creates a copy of",
+					"the first with a {C:cry_code}Function://{} sticker"
 				},
 			},
 			c_cry_global = {
@@ -4090,6 +4092,21 @@ return {
 				text = {
 					"Destroyed after",
 					"{C:attention}#1#{} trigger#<s>1#",
+				},
+			},
+			cry_function_sticker = {
+				name = "Function://",
+				text = {
+					"Creates {C:cry_code}#1#{}",
+					"when used",
+				},
+			},
+			cry_function_sticker_desc = { --for function:// card
+				name = "Function://",
+				text = {
+					"Creates the next",
+					"{C:cry_code}Function://{} consumable",
+					"{C:inactive}Currently #1#, #2# and #3#{}"
 				},
 			},
 			cry_possessed = {
