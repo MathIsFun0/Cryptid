@@ -401,7 +401,7 @@ return {
 				text = {
 					"All cards scored",
 					"are debuffed next",
-					"Ante"
+					"Ante",
 				},
 			},
 			bl_cry_pinkbow = {

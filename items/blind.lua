@@ -694,23 +694,31 @@ local collapse = {
 	order = 22,
 	boss_colour = HEX("02DADB"),
 	calculate = function(self, blind, context)
-        if context.final_scoring_step then
-            for i,c in pairs(context.scoring_hand) do
-                G.E_MANAGER:add_event(Event({trigger = "after", delay=.3, func = function ()
-                    play_sound('cancel', 0.7 + 0.05*i, 0.7)
-                    c:set_debuff(true)
-                    c:juice_up(0.4, 0.6)
-                    c.cry_collapse_debuff = true
-                    c.cry_collapse_ante = 2
-                    return true
-                end}))
-            end
+		if context.final_scoring_step then
+			for i, c in pairs(context.scoring_hand) do
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.3,
+					func = function()
+						play_sound("cancel", 0.7 + 0.05 * i, 0.7)
+						c:set_debuff(true)
+						c:juice_up(0.4, 0.6)
+						c.cry_collapse_debuff = true
+						c.cry_collapse_ante = 2
+						return true
+					end,
+				}))
+			end
 
-            G.E_MANAGER:add_event(Event({trigger = "after", delay=1.3, func = function ()
-                return true
-            end}))
-        end
-    end,
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 1.3,
+				func = function()
+					return true
+				end,
+			}))
+		end
+	end,
 }
 
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
