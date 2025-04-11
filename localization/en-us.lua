@@ -396,6 +396,14 @@ return {
 					"discarded cards",
 				},
 			},
+			bl_cry_collapse = {
+				name = "The Collapse",
+				text = {
+					"All cards scored",
+					"are debuffed next",
+					"Ante"
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pink Bow",
 				text = {
