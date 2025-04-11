@@ -2231,7 +2231,14 @@ return {
 				name = "Panopticon",
 				text = {
 					"All hands are considered the",
-					"{C:attention}last hand{} of each round", -- +$4
+					"{C:attention}last hand{} of each round", 
+				},
+			},
+			j_cry_paved = {
+				name = "Paved Joker",
+				text = {
+					"{C:stone}Stone{} cards can fill gaps in a {C:attention}Flush{}",
+					"{C:stone}Stone{} cards can fill {C:attention}1 rank{} gaps in {C:attention}Straights{}",
 				},
 			},
 			j_cry_penetrating = {
