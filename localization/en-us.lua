@@ -452,6 +452,15 @@ return {
 					"exceed Chips",
 				},
 			},
+			j_cry_veritas = {
+				name = "Veritas",
+				text = {
+					"This Joker gains {X:mult,C:white} X#2# {} Mult based on hand {C:attention}Purity{}",
+					"{C:attention}Purity{} starts at 20, and is reduced by",
+					"modifications to played cards and hands",
+					"{C:inactive}(Currently {X:mult,C:white} x#1# {C:inactive} Mult)",
+				},
+			},
 			bl_cry_vermillion_virus = {
 				name = "Vermillion Virus",
 				text = {

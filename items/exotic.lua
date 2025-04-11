@@ -1415,6 +1415,72 @@ local formidiulosus = {
 		code = { "Foegro" },
 	},
 }
+local veritas = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+			"set_cry_exotic",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-Veritas",
+	key = "veritas",
+	pos = { x = 0, y = 0 },
+	blueprint_compat = true,
+	config = { extra = { xmult = 1, xmult_mod = 1 } },
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = { center.ability.extra.xmult, center.ability.extra.xmult_mod },
+		}
+	end,
+	rarity = "cry_exotic",
+	cost = 50,
+	order = 519,
+	atlas = "placeholders",
+	calculate = function(self, card, context)
+		if context.before and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then
+			local purity = 20
+			if #context.full_hand > 5 then
+				purity = purity - 1 * (#context.full_hand + 5)
+			end
+			for i, v in pairs(context.scoring_hand) do
+				if v.config.center_key ~= "base" then -- non-functional
+					purity = purity - 1
+				end
+				if v.edition then
+					purity = purity - 1
+				end
+				if v.seal then
+					purity = purity - 1
+				end -- insert sticker check here
+			end
+			if false then -- next(context.poker_hands["None"])   intended: if hand played is none, +5 purity 
+				purity = purity + 5
+			elseif not (
+				next(context.poker_hands["High Card"])
+				or next(context.poker_hands["Pair"])
+				or next(context.poker_hands["Two Pair"])
+				or next(context.poker_hands["Three of a Kind"])
+				or next(context.poker_hands["Straight"])
+				or next(context.poker_hands["Flush"])
+				or next(context.poker_hands["Full House"])
+				or next(context.poker_hands["Four of a Kind"])
+				or next(context.poker_hands["Straight Flush"])
+				) then
+				purity = purity - 3
+			end
+			card.ability.extra.xmult = card.ability.extra.xmult + (card.ability.extra.xmult_mod * purity)
+			return { message = "Purity: " .. purity .. " -> " .. card.ability.extra.xmult }
+		end
+		if context.joker_main then 
+			return { xmult = card.ability.extra.xmult } 
+		end
+	end,
+	cry_credits = {
+		idea = { "Nova" },
+		code = { "Nova" },
+	},
+}
 local items = {
 	gateway,
 	iterum,
@@ -1438,6 +1504,7 @@ local items = {
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
 	formidiulosus,
+	veritas,
 }
 return {
 	name = "Exotic Jokers",
