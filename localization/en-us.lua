@@ -540,7 +540,7 @@ return {
 				text = {
 					"Saves the {C:cry_code}Last Three{} consumables used,",
 					"using this card again creates a copy of",
-					"the first with a {C:cry_code}Function://{} sticker"
+					"the first with a {C:cry_code}Function://{} sticker",
 				},
 			},
 			c_cry_global = {
@@ -4106,7 +4106,7 @@ return {
 				text = {
 					"Creates the next",
 					"{C:cry_code}Function://{} consumable",
-					"{C:inactive}Currently #1#, #2# and #3#{}"
+					"{C:inactive}Currently #1#, #2# and #3#{}",
 				},
 			},
 			cry_possessed = {
