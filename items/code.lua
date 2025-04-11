@@ -878,8 +878,8 @@ local keygen = { -- ://Keygen, create a Perishable Banana voucher, destroy the p
 					CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
 			end
 			area = G.redeemed_vouchers_during_hand
-			else
-				area = G.play
+		else
+			area = G.play
 		end
 		for i = 1, #G.vouchers.cards do
 			if G.vouchers.cards[i].ability.keygen then
@@ -936,7 +936,7 @@ local keygen = { -- ://Keygen, create a Perishable Banana voucher, destroy the p
 				return true
 			end,
 		}))
-		end,
+	end,
 }
 
 local payload =
@@ -1362,49 +1362,49 @@ local malware = { -- ://Malware, apply Glitched edition to held in hand cards
 }
 
 local crynperror = { -- ://NPERROR, add last played hand back to your hand, multi-use 2
-    cry_credits = {
-        idea = {
-            "HexaCryonic",
-        },
-        art = {
-            "HexaCryonic",
-        },
-        code = {
-            "Nova",
-        },
-    },
-    dependencies = {
-        items = {
-            "set_cry_code",
-        },
-    },
-    object_type = "Consumable",
-    set = "Code",
-    name = "cry-NPERROR",
-    key = "nperror",
-    pos = { x = 10, y = 5 },
-    cost = 4,
-    atlas = "atlasnotjokers",
-    order = 5,
-    config = { cry_multiuse = 2,},
-    can_use = function(self, card)
-        return G.GAME.last_hand_played_cards and (Cryptid.safe_get(G.GAME, "blind", "in_blind")) -- TODO: work in boosters
-    end,
-    use = function(self, card, area, copier)
-        for i = 1, #G.GAME.last_hand_played_cards do
-            local check = true
-            for j = 1, #G.hand.cards do
-                if G.GAME.last_hand_played_cards[i] == G.hand.cards[j] then
-                    check = nil
-                end
-            end
-            if G.discard.cards[i] and check then
-                draw_card(G.discard, G.hand, i*100/5, 'up', nil,  G.GAME.last_hand_played_cards[i])
-            elseif G.deck.cards[i] and check then
-                draw_card(G.deck, G.hand, i*100/5, 'up', nil, G.GAME.last_hand_played_cards[i])
-            end
-        end
-    end,
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Nova",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
+	object_type = "Consumable",
+	set = "Code",
+	name = "cry-NPERROR",
+	key = "nperror",
+	pos = { x = 10, y = 5 },
+	cost = 4,
+	atlas = "atlasnotjokers",
+	order = 5,
+	config = { cry_multiuse = 2 },
+	can_use = function(self, card)
+		return G.GAME.last_hand_played_cards and (Cryptid.safe_get(G.GAME, "blind", "in_blind")) -- TODO: work in boosters
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, #G.GAME.last_hand_played_cards do
+			local check = true
+			for j = 1, #G.hand.cards do
+				if G.GAME.last_hand_played_cards[i] == G.hand.cards[j] then
+					check = nil
+				end
+			end
+			if G.discard.cards[i] and check then
+				draw_card(G.discard, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
+			elseif G.deck.cards[i] and check then
+				draw_card(G.deck, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
+			end
+		end
+	end,
 }
 
 local rework =
@@ -2677,70 +2677,97 @@ local revert = { -- ://Revert, loads the game state from the end of the last bos
 	end,
 }
 
-local cryfunction = { -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
+local cryfunction =
+	{ -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
+		cry_credits = {
+			idea = {
+				"HexaCryonic",
+			},
+			art = {
+				"HexaCryonic",
+			},
+			code = {
+				"Nova",
+			},
 		},
-		art = {
-			"HexaCryonic",
+		dependencies = {
+			items = {
+				"set_cry_code",
+			},
 		},
-		code = {
-			"Nova",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	object_type = "Consumable",
-	set = "Code",
-	name = "cry-Function",
-	key = "cryfunction",
-	atlas = "atlasnotjokers",
-	pos = { x = 11, y = 0 },
-	cost = 4,
-	order = 19,
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = { key = "cry_function_sticker_desc", set = "Other", vars = { (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1], (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2], (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3], } }
-	end,
-	can_use = function(self, card)
-		return true
-	end,
-	use = function(self, card, area, copier)
-		if #G.consumeables.cards < G.consumeables.config.card_limit then
-			if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local new_card = create_card("Code", G.consumeables, nil, nil, nil, nil, "c_cry_cryfunction", "cry_cryfunction")
-						new_card:add_to_deck()
-						G.consumeables:emplace(new_card)
-						G.GAME.consumeable_buffer = 0
-						return true
-					end
+		object_type = "Consumable",
+		set = "Code",
+		name = "cry-Function",
+		key = "cryfunction",
+		atlas = "atlasnotjokers",
+		pos = { x = 11, y = 0 },
+		cost = 4,
+		order = 19,
+		loc_vars = function(self, info_queue, card)
+			info_queue[#info_queue + 1] = {
+				key = "cry_function_sticker_desc",
+				set = "Other",
+				vars = {
+					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
+					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
+					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
+				},
+			}
+		end,
+		can_use = function(self, card)
+			return true
+		end,
+		use = function(self, card, area, copier)
+			if #G.consumeables.cards < G.consumeables.config.card_limit then
+				if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local new_card = create_card(
+								"Code",
+								G.consumeables,
+								nil,
+								nil,
+								nil,
+								nil,
+								"c_cry_cryfunction",
+								"cry_cryfunction"
+							)
+							new_card:add_to_deck()
+							G.consumeables:emplace(new_card)
+							G.GAME.consumeable_buffer = 0
+							return true
+						end,
 					}))
-			elseif not G.GAME.cry_function_cards then
-				G.GAME.cry_function_cards = {}
-				for i = 1, #G.GAME.cry_function_stupid_workaround do
-					G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
+				elseif not G.GAME.cry_function_cards then
+					G.GAME.cry_function_cards = {}
+					for i = 1, #G.GAME.cry_function_stupid_workaround do
+						G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
+					end
+				else
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local new_card = create_card(
+								"Consumeables",
+								G.consumeables,
+								nil,
+								nil,
+								nil,
+								nil,
+								G.GAME.cry_function_cards[1],
+								"cry_cryfunction"
+							)
+							new_card:add_to_deck()
+							new_card.ability.cry_function_sticker = true
+							new_card.ability.cry_function_counter = 1
+							G.consumeables:emplace(new_card)
+							G.GAME.consumeable_buffer = 0
+							return true
+						end,
+					}))
 				end
-			else
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local new_card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, G.GAME.cry_function_cards[1], "cry_cryfunction")
-						new_card:add_to_deck()
-						new_card.ability.cry_function_sticker = true
-						new_card.ability.cry_function_counter = 1
-						G.consumeables:emplace(new_card)
-						G.GAME.consumeable_buffer = 0
-						return true
-					end
-					}))
 			end
-		end
-	end,
-}
+		end,
+	}
 local function_sticker = { -- TODO write this
 	dependencies = {
 		items = {
@@ -2755,7 +2782,7 @@ local function_sticker = { -- TODO write this
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
-	draw = function(self, card) --don't draw shine     
+	draw = function(self, card) --don't draw shine
 		local notilt = nil
 		if card.area and card.area.config.type == "deck" then
 			notilt = true
