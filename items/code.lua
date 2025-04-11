@@ -2703,7 +2703,7 @@ local cryfunction = { -- Function://, Saves the last 3 consumables used on first
 	cost = 4,
 	order = 19,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = { key = "cry_function_desc", set = "Other", vars = { (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1], (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2], (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3], } }
+		info_queue[#info_queue + 1] = { key = "cry_function_sticker_desc", set = "Other", vars = { (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1], (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2], (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3], } }
 	end,
 	can_use = function(self, card)
 		return true
