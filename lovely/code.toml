@@ -208,7 +208,7 @@ end
 '''
 match_indent = true
 
-# Delete - init table to avoid headaches
+# Delete and Function - init tables to avoid headaches
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -216,6 +216,8 @@ pattern = '''ecto_minus = 1,'''
 position = "after"
 payload = '''
 cry_banished_keys = {},
+cry_last_used_consumeables = {},
+cry_function_stupid_workaround = {},
 '''
 match_indent = true
 
