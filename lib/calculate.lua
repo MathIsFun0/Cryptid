@@ -561,6 +561,25 @@ function SMODS.calculate_context(context, return_table)
 			context.post_jokers = nil
 		end
 	end
+
+	if context.debuff_card then
+		local c = context.debuff_card
+		if c.cry_collapse_debuff then
+			ret.debuff = true
+		end
+	end
+	if context.end_of_round and G.GAME.blind.boss then
+		for _, c in pairs(G.playing_cards) do
+			if c.cry_collapse_debuff then
+				c.cry_collapse_ante = c.cry_collapse_ante - 1
+				if c.cry_collapse_ante == 0 then
+					c.cry_collapse_ante = nil
+					c.cry_collapse_debuff = nil
+				end
+			end
+		end
+	end
+
 	return ret
 end
 
